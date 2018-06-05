@@ -35,4 +35,4 @@ public:
 };
 
 } // namespace
-#endif // _U2_STRINGTIE_SUPPORT_H_H
+#endif // _U2_STRINGTIE_SUPPORT_H_

@@ -24,6 +24,8 @@
 #include "StringTieTask.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/FailTask.h>
@@ -34,7 +36,6 @@
 
 #include <U2Gui/DialogUtils.h>
 
-
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/AttributeRelation.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -44,6 +45,7 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
+#include <U2Lang/WorkflowSettings.h>
 
 #include <QThread>
 
@@ -131,7 +133,7 @@ void StringTieWorker::cleanup() {
 }
 
 void StringTieWorker::sl_taskFinished() {
-    StringTieTask *t = dynamic_cast<StringTieTask*>(sender());
+    StringTieTask *t = qobject_cast<StringTieTask*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled()) {
         return;
     }
@@ -139,7 +141,7 @@ void StringTieWorker::sl_taskFinished() {
     QString outputPrimary = t->getSettings().primaryOutputFile;
 
     QVariantMap data;
-    data[TRANSCRIPT_OUT_SLOT_ID] = qVariantFromValue<QString>(outputPrimary);
+    data[TRANSCRIPT_OUT_SLOT_ID] = outputPrimary;
     context->getMonitor()->addOutputFile(outputPrimary, getActor()->getId());
 
     if (t->getSettings().geneAbundanceOutput) {
@@ -147,11 +149,6 @@ void StringTieWorker::sl_taskFinished() {
         context->getMonitor()->addOutputFile(t->getSettings().geneAbundanceOutputFile, getActor()->getId());
     }
     outputPort->put(Message(outputPort->getBusType(), data));
-
-    if (inputPort->isEnded() && !inputPort->hasMessage()) {
-        setDone();
-        outputPort->setEnded();
-    }
 }
 
 StringTieTaskSettings StringTieWorker::getSettings(const QString& inputFile) {
@@ -165,7 +162,7 @@ StringTieTaskSettings StringTieWorker::getSettings(const QString& inputFile) {
     settings.minTransciptLen = getValue<int>(MIN_TRANSCRIPT_LEN);
 
     settings.minAnchorLen = getValue<int>(MIN_ANCHOR_LEN);
-    settings.minJunctionCoverage = getValue<int>(MIN_JUNCTION_COVERAGE);
+    settings.minJunctionCoverage = getValue<double>(MIN_JUNCTION_COVERAGE);
     settings.trimTranscript = getValue<bool>(TRIM_TRANSCRIPT);
     settings.minCoverage = getValue<double>(MIN_COVERAGE);
     settings.minLocusSeparation = getValue<int>(MIN_LOCUS_SEPARATION);
@@ -179,6 +176,10 @@ StringTieTaskSettings StringTieWorker::getSettings(const QString& inputFile) {
     settings.threadNum = getValue<int>(THREAD_NUM);
 
     settings.primaryOutputFile = getValue<QString>(PRIMARY_OUTPUT);
+    if (settings.primaryOutputFile.isEmpty()) {
+        QFileInfo src(inputFile);
+        settings.primaryOutputFile = src.absoluteDir().absolutePath() + QDir::separator() + src.baseName() + "_transcripts.gtf";
+    }
     settings.geneAbundanceOutput = getValue<bool>(GENE_ABUDANCE_OUTPUT);
     settings.geneAbundanceOutputFile = getValue<QString>(GENE_ABUDANCE_OUTPUT_FILE);
     if (settings.geneAbundanceOutput && settings.geneAbundanceOutputFile.isEmpty()) {
@@ -197,8 +198,6 @@ StringTieTaskSettings StringTieWorker::getSettings(const QString& inputFile) {
     return settings;
 }
 
-
-//void StringTieWorker::sl_task
 
 /************************************************************************/
 /* Prompter */
@@ -221,17 +220,16 @@ void StringTieWorkerFactory::init() {
         QMap<Descriptor, DataTypePtr> inputMap;
         Descriptor inSlotDesc(IN_URL_SLOT_ID,
             StringTieWorker::tr("Input URL"),
-                               // description ?
             StringTieWorker::tr("URL(s) of input file(s) in FASTA format with DNA sequences that need to be assembled"));
         inputMap[inSlotDesc] = BaseTypes::STRING_TYPE();
 
         QMap<Descriptor, DataTypePtr> outputMap;
         Descriptor outTranscriptsDescr(TRANSCRIPT_OUT_SLOT_ID,
                                        StringTieWorker::tr("Output URL Transcripts"),
-                                       StringTieWorker::tr(""));
+                                       StringTieWorker::tr("Output URL Transcripts."));
         Descriptor outGeneAbundDescr(GENE_ABUND_OUT_SLOT_ID,
                                   StringTieWorker::tr("Output URL Gene Abundance"),
-                                  StringTieWorker::tr(""));
+                                  StringTieWorker::tr("Output URL Gene Abundance."));
         outputMap[outTranscriptsDescr] = BaseTypes::STRING_TYPE();
         outputMap[outGeneAbundDescr] = BaseTypes::STRING_TYPE();
 
@@ -404,9 +402,9 @@ void StringTieWorkerFactory::init() {
         attributes << new Attribute(multiMappingCorrection, BaseTypes::BOOL_TYPE(), false, true);
         attributes << new Attribute(verboseLog, BaseTypes::BOOL_TYPE(), false, false);
 
-        attributes << new Attribute(threadNum, BaseTypes::NUM_TYPE(), false, 8); // get from cpu info
+        attributes << new Attribute(threadNum, BaseTypes::NUM_TYPE(), false, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
-        attributes << new Attribute(primaryOutput, BaseTypes::STRING_TYPE(), true); // set default value logic
+        attributes << new Attribute(primaryOutput, BaseTypes::STRING_TYPE(), false);
 
         Attribute* geneAbudanceOutputAttr = new Attribute(geneAbudanceOutput, BaseTypes::BOOL_TYPE(), false, false);
         geneAbudanceOutputAttr->addSlotRelation(SlotRelationDescriptor(OUT_PORT_ID, GENE_ABUND_OUT_SLOT_ID,
@@ -427,7 +425,8 @@ void StringTieWorkerFactory::init() {
         Attribute* ballgawnOutputAttr = new Attribute(ballgownOutput, BaseTypes::BOOL_TYPE(), false, false);
         ballgawnOutputAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << ballgawnOutputAttr;
-        Attribute* ballgownOutputFolderAttr = new Attribute(ballgownOutputFolder, BaseTypes::STRING_TYPE(), false);
+        Attribute* ballgownOutputFolderAttr = new Attribute(ballgownOutputFolder, BaseTypes::STRING_TYPE(), false,
+                                                            WorkflowSettings::getWorkflowOutputDirectory() + "ballgown_input" );
         ballgownOutputFolderAttr->addRelation(new VisibilityRelation(BALLGOWN_OUTPUT, true));
         ballgownOutputFolderAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << ballgownOutputFolderAttr;
@@ -438,9 +437,9 @@ void StringTieWorkerFactory::init() {
     delegates[REFERENCE_ANNOTATIONS] = new URLDelegate("", "", false, false);
     {
         QVariantMap map;
-        map["Unstranded"] = "";
-        map["Forward (FR)"] = "--fr";
-        map["Reverse (RF)"] = "--rf";
+        map[StringTieWorker::tr("Unstranded")] = "";
+        map[StringTieWorker::tr("Forward (FR)")] = "--fr";
+        map[StringTieWorker::tr("Reverse (RF)")] = "--rf";
         delegates[READS_ORIENTATION] = new ComboBoxDelegate(map);
     }
     {
@@ -489,13 +488,12 @@ void StringTieWorkerFactory::init() {
         map["decimals"] = 2;
         delegates[MULTI_HIT_FRACTION] = new DoubleSpinBoxDelegate(map);
     }
-    delegates[SKIP_SEQUENCES] = new ComboBoxWithBoolsDelegate();
     delegates[REF_ONLY_ABUDANCE] = new ComboBoxWithBoolsDelegate();
 
     {
         QVariantMap map;
-        map["Enabled"] = true;
-        map["Disabled"] = false;
+        map[StringTieWorker::tr("Enabled")] = true;
+        map[StringTieWorker::tr("Disabled")] = false;
         delegates[MULTI_MAPPING_CORRECTION] = new ComboBoxDelegate(map);
     }
     delegates[VERBOSE_LOG] = new ComboBoxWithBoolsDelegate();
@@ -506,20 +504,19 @@ void StringTieWorkerFactory::init() {
         delegates[THREAD_NUM] = new SpinBoxDelegate(map);
     }
 
-   delegates[PRIMARY_OUTPUT] = new URLDelegate("", "", false, false);
-    delegates[GENE_ABUDANCE_OUTPUT] = new ComboBoxWithBoolsDelegate();
-
     DelegateTags outputUrlTags;
     outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
     outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true, QStringList()));
     outputUrlTags.set(DelegateTags::FORMAT, BaseDocumentFormats::PLAIN_TEXT);
-    delegates[GENE_ABUDANCE_OUTPUT_FILE] = new URLDelegate(outputUrlTags, "stringtie/gene-abidance");
+    delegates[PRIMARY_OUTPUT] = new URLDelegate(outputUrlTags, "stringtie/primary-output");
+    delegates[GENE_ABUDANCE_OUTPUT] = new ComboBoxWithBoolsDelegate();
+    delegates[GENE_ABUDANCE_OUTPUT_FILE] = new URLDelegate(outputUrlTags, "stringtie/gene-abidance-output");
 
     delegates[COVERAGE_REF_OUTPUT] = new ComboBoxWithBoolsDelegate();
     delegates[COVERAGE_REF_OUTPUT_FILE] = new URLDelegate(outputUrlTags, "stringtie/coverage-output");
 
     delegates[BALLGOWN_OUTPUT] = new ComboBoxWithBoolsDelegate();
-    delegates[BALLGOWN_OUTPUT_FOLDER] = new URLDelegate("", "", false, true);
+    delegates[BALLGOWN_OUTPUT_FOLDER] = new URLDelegate("", "", false, true); // set default aoutput
 
 
     // Description of the element
@@ -534,8 +531,8 @@ void StringTieWorkerFactory::init() {
     // Init and register the actor prototype
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new StringTiePrompter());
-    proto->addExternalTool(ET_STRINGTIE, "CAP3_EXT_TOOL_PATH"); // use conts
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ASSEMBLY(), proto);
+    proto->addExternalTool(ET_STRINGTIE, "STRINGTIE_EXT_TOOL_PATH");
+    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_RNA_SEQ(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new StringTieWorkerFactory());

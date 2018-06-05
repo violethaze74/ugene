@@ -29,7 +29,7 @@ namespace U2 {
 
 class StringTieTaskSettings {
 public:
-    StringTieTaskSettings() {}
+    StringTieTaskSettings();
 
     QString inputBam;
 
@@ -40,7 +40,7 @@ public:
     int     minTransciptLen;        // 5
 
     int     minAnchorLen;           // 6
-    int     minJunctionCoverage;    // 7
+    double  minJunctionCoverage;    // 7
     bool    trimTranscript;         // 8
     double  minCoverage;            // 9
     int     minLocusSeparation;     // 10

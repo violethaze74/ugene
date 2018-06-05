@@ -26,7 +26,7 @@ namespace U2 {
 StringTieSupport::StringTieSupport(const QString &name, const QString &path)
     : ExternalTool(name, path) {
 
-    executableFileName="stringtie";
+    executableFileName = "stringtie";
 
     validMessage = "StringTie";
     description = tr("<i>StringTie</i> is a fast and highly efficient assembler"

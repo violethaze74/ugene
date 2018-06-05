@@ -53,7 +53,7 @@ VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVari
 QVariant VisibilityRelation::getAffectResult(const QVariant &influencingValue, const QVariant &,
     DelegateTags *, DelegateTags *) const {
     foreach (const QVariant &v, visibilityValues) {
-        if ((v == influencingValue) ^ invertAffectResult) {
+        if ((v == influencingValue) != invertAffectResult) {
             return true;
         }
     }

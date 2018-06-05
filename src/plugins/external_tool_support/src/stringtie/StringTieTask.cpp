@@ -24,6 +24,28 @@
 
 namespace U2 {
 
+StringTieTaskSettings::StringTieTaskSettings() {
+    minIsoformFraction = 0.1;
+    minTransciptLen = 200;
+
+    minAnchorLen = 10;
+    minJunctionCoverage = 1.0;
+    trimTranscript = true;
+    minCoverage = 2.5;
+    minLocusSeparation = 50;
+
+    multiHitFraction = 0.95;
+    refOnlyAbudance = false;
+    multiMappingCorrection = false;
+    verboseLog = false;
+
+    threadNum = 1;
+
+    geneAbundanceOutput = false;
+    coveredRefOutput = false;
+    ballgownOutput = false;
+}
+
 StringTieTask::StringTieTask(const StringTieTaskSettings& settings)
     : ExternalToolSupportTask(tr("Assemble Transcripts with StringTie task"), TaskFlags_NR_FOSE_COSC),
       settings(settings){
@@ -58,7 +80,6 @@ QStringList StringTieTask::getArguments() const {
     arguments << "-g" << QString::number(settings.minLocusSeparation);
     arguments << "-M" << QString::number(settings.multiHitFraction);
     if (!settings.skipSequences.isEmpty()) {
-        // check format
         arguments << "-x" << settings.skipSequences;
     }
     if (settings.refOnlyAbudance) {
@@ -72,13 +93,13 @@ QStringList StringTieTask::getArguments() const {
     }
     arguments << "-p" << QString::number(settings.threadNum);
     arguments << "-o" << settings.primaryOutputFile;
-    if (settings.geneAbundanceOutput) {
+    if (settings.geneAbundanceOutput && !settings.geneAbundanceOutputFile.isEmpty()) {
         arguments << "-A" << settings.geneAbundanceOutputFile;
     }
-    if (settings.coveredRefOutput) {
+    if (settings.coveredRefOutput && !settings.coveredRefOutputFile.isEmpty()) {
         arguments << "-C" << settings.coveredRefOutputFile;
     }
-    if (settings.ballgownOutput) {
+    if (settings.ballgownOutput && !settings.ballgowmOutputFolder.isEmpty()) {
         arguments << "-b" << settings.ballgowmOutputFolder;
     }
 
