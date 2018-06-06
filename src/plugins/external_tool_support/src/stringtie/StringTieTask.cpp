@@ -65,6 +65,9 @@ const StringTieTaskSettings& StringTieTask::getSettings() const {
 QStringList StringTieTask::getArguments() const {
     QStringList arguments;
     arguments << settings.inputBam;
+    if (!settings.referenceAnnotations.isEmpty()) {
+        arguments << "-G" << settings.referenceAnnotations;
+    }
     if (!settings.readOrientation.isEmpty()) {
         arguments << settings.readOrientation;
     }
