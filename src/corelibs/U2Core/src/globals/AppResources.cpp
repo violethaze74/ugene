@@ -35,7 +35,6 @@
 #include <unistd.h> //for sysconf(3)
 #endif
 #if defined(Q_OS_LINUX)
-#include <proc/readproc.h>
 #include <fstream>
 #endif
 
