@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,6 +40,9 @@ public:
 
     static const QString INPUT_PORT_ID;
     static const QString OUTPUT_PORT_ID;
+
+    static const QString INPUT_SLOT;
+    static const QString PAIRED_INPUT_SLOT;
 
     static const QString INPUT_DATA_ATTR_ID;
     static const QString DATABASE_ATTR_ID;

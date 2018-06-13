@@ -72,8 +72,8 @@ protected:
  */
 class U2LANG_EXPORT VisibilityRelation : public AttributeRelation {
 public:
-    VisibilityRelation(const QString &relatedAttrId, const QVariantList &visibilityValues);
-    VisibilityRelation(const QString &relatedAttrId, const QVariant &visibilityValue);
+    VisibilityRelation(const QString &relatedAttrId, const QVariantList &visibilityValues, bool invertVisibilityRules = false);
+    VisibilityRelation(const QString &relatedAttrId, const QVariant &visibilityValue, bool invertVisibilityRules = false);
 
     virtual QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
         DelegateTags *infTags, DelegateTags *depTags) const;
@@ -83,7 +83,8 @@ public:
     VisibilityRelation *clone() const;
 
 private:
-    QVariantList visibilityValues;
+    QVariantList    visibilityValues;
+    bool            invertAffectResult;
 };
 
 /**

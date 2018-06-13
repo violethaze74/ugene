@@ -575,10 +575,23 @@ QColor GTUtilsSequenceView::getGraphColor(HI::GUITestOpStatus & /*os*/, GSequenc
 #define GT_METHOD_NAME "enableEditingMode"
 void GTUtilsSequenceView::enableEditingMode(GUITestOpStatus &os, bool enable, int sequenceNumber) {
     DetView *detView = getDetViewByNumber(os, sequenceNumber);
+    CHECK_SET_ERR(NULL != detView, "DetView is NULL");
+
     QToolButton *editButton = qobject_cast<QToolButton *>(GTToolbar::getWidgetForActionTooltip(os, GTWidget::findExactWidget<QToolBar *>(os, "", detView), "Edit sequence"));
     CHECK_SET_ERR(NULL != editButton, "'Edit sequence' button is NULL");
     if (editButton->isChecked() != enable) {
-        GTWidget::click(os, editButton);
+        if (editButton->isVisible()) {
+            GTWidget::click(os, editButton);
+        } else {
+            const QPoint gp = detView->mapToGlobal(QPoint(10, detView->rect().height() - 5));
+            GTMouseDriver::moveTo(gp);
+            GTMouseDriver::click();
+            GTGlobals::sleep(500);
+            GTKeyboardDriver::keyClick(Qt::Key_Up);
+            GTGlobals::sleep(200);
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            GTGlobals::sleep(200);
+        }
     }
 }
 #undef GT_METHOD_NAME

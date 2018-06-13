@@ -33,14 +33,19 @@ void AttributeRelation::updateDelegateTags(const QVariant & /*influencingValue*/
 
 }
 
-VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVariantList &_visibilityValues)
-: AttributeRelation(relatedAttrId), visibilityValues(_visibilityValues)
+VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVariantList &_visibilityValues,
+                                       bool invertVisibilityRules)
+    : AttributeRelation(relatedAttrId),
+      visibilityValues(_visibilityValues),
+      invertAffectResult(invertVisibilityRules)
 {
 
 }
 
-VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVariant &visibilityValue)
-: AttributeRelation(relatedAttrId)
+VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVariant &visibilityValue,
+                                       bool invertVisibilityRules)
+    : AttributeRelation(relatedAttrId),
+      invertAffectResult(invertVisibilityRules)
 {
     visibilityValues << visibilityValue;
 }
@@ -48,7 +53,7 @@ VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVari
 QVariant VisibilityRelation::getAffectResult(const QVariant &influencingValue, const QVariant &,
     DelegateTags *, DelegateTags *) const {
     foreach (const QVariant &v, visibilityValues) {
-        if (v == influencingValue) {
+        if ((v == influencingValue) != invertAffectResult) {
             return true;
         }
     }

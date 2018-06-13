@@ -177,12 +177,22 @@ QString SettingsImpl::toMinorVersionKey(const QString& key) const {
     return key + VERSION_KEY_SUFFIX;
 }
 
-QStringList SettingsImpl::getAllKeys(const QString& path) const{
+QStringList SettingsImpl::getAllKeys(const QString& path) const {
     QMutexLocker lock(&threadSafityLock);
 
     QString key = preparePath(path);
     settings->beginGroup(key);
     QStringList allKeys = settings->allKeys();
+    settings->endGroup();
+    return allKeys;
+}
+
+QStringList SettingsImpl::getChildGroups(const QString& path) const {
+    QMutexLocker lock(&threadSafityLock);
+
+    QString key = preparePath(path);
+    settings->beginGroup(key);
+    QStringList allKeys = settings->childGroups();
     settings->endGroup();
     return allKeys;
 }

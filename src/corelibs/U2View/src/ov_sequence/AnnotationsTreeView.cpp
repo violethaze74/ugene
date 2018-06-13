@@ -49,6 +49,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
+#include <U2Core/SignalBlocker.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -421,11 +422,11 @@ void AnnotationsTreeView::sl_onItemSelectionChanged() {
 
 
     QList<QTreeWidgetItem*> items = tree->selectedItems();
-    foreach (QTreeWidgetItem* i, items) {
-        AVItem* item  = static_cast<AVItem*>(i);
+    foreach(QTreeWidgetItem* i, items) {
+        AVItem* item = static_cast<AVItem*>(i);
         if (item->type == AVItemType_Annotation) {
             AVAnnotationItem* aItem = static_cast<AVAnnotationItem*>(item);
-            SAFE_POINT(NULL != aItem->annotation->getGObject(), "Invalid annotation table!",);
+            SAFE_POINT(NULL != aItem->annotation->getGObject(), "Invalid annotation table!", );
             as->addToSelection(aItem->annotation);
         } else if (item->type == AVItemType_Group) {
             AVGroupItem* gItem = static_cast<AVGroupItem*>(item);
@@ -1710,7 +1711,12 @@ void AnnotationsTreeView::sl_annotationClicked(AnnotationSelectionData* asd) {
     }
 
     expandItemRecursevly(item->parent());
-    item->setSelected(setSelected);
+    {
+        SignalBlocker blocker(tree);
+        item->setSelected(setSelected);
+    }
+    SAFE_POINT(asd->locationIdxList.size() == 1, "Incorrect size", );
+    annotationSelection->addToSelection(item->annotation, asd->locationIdxList.first());
     annotationClicked(item, sortedAnnotationSelections, selectedRegion);
 }
 
@@ -1728,8 +1734,12 @@ void AnnotationsTreeView::sl_annotationDoubleClicked(AnnotationSelectionData* as
     QList<AVAnnotationItem*> annotationItems = findAnnotationItems(asd->annotation);
     foreach(AVAnnotationItem* item, annotationItems) {
         expandItemRecursevly(item->parent());
-        item->setSelected(true);
-        annotationDoubleClicked(item, regionToSelect);
+        {
+            SignalBlocker blocker(tree);
+            item->setSelected(true);
+        }
+        SAFE_POINT(asd->locationIdxList.size() == 1, "Incorrect size", );
+        annotationDoubleClicked(item, regionToSelect, asd->locationIdxList.first());
     }
 }
 
@@ -1819,7 +1829,7 @@ void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnot
     }
 }
 
-void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const U2Region& selectedRegion) {
+void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const U2Region& selectedRegion, const int numOfClickedRegion) {
     selectedAnnotation[item] << selectedRegion;
 
     ADVSequenceObjectContext* seqObjCtx = ctx->getSequenceContext(item->getAnnotationTableObject());
@@ -1831,7 +1841,7 @@ void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const 
     AnnotationSelection* annotationSelection = seqObjCtx->getAnnotationsSelection();
     SAFE_POINT(annotationSelection != NULL, "AnnotationSelection is NULL", );
 
-    annotationSelection->addToSelection(item->annotation);
+    annotationSelection->addToSelection(item->annotation, numOfClickedRegion);
 
     U2Region regionToSelect = selectedRegion;
 

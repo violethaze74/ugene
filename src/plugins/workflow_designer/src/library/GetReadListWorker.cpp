@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,8 +35,6 @@
 #include <U2Gui/GUIUtils.h>
 
 #include "GetReadListWorker.h"
-#include "NgsReadsClassificationPlugin.h"
-//#include "util/DatasetValidator.h"
 
 namespace U2 {
 namespace LocalWorkflow {

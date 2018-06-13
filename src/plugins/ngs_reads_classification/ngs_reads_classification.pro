@@ -8,7 +8,6 @@ HEADERS += src/ClassificationFilterWorker.h \
            src/GenomicLibraryDelegate.h \
            src/GenomicLibraryDialog.h \
            src/GenomicLibraryPropertyWidget.h \
-           src/GetReadListWorker.h \
            src/NgsReadsClassificationPlugin.h \
            src/NgsReadsClassificationUtils.h \
            src/TaxonomySupport.h
@@ -20,7 +19,6 @@ SOURCES += src/ClassificationFilterWorker.cpp \
            src/GenomicLibraryDelegate.cpp \
            src/GenomicLibraryDialog.cpp \
            src/GenomicLibraryPropertyWidget.cpp \
-           src/GetReadListWorker.cpp \
            src/NgsReadsClassificationPlugin.cpp \
            src/NgsReadsClassificationUtils.cpp \
            src/TaxonomySupport.cpp

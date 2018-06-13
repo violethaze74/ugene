@@ -2884,8 +2884,8 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
     QTableWidget* tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");
 
-    QRect rect = tw->visualItemRect(tw->item(0, 1));
-    QPoint globalP = tw->viewport()->mapToGlobal(rect.center());
+    QRect rect = tw->visualItemRect(tw->item(2, 1));
+    QPoint globalP = tw->viewport()->mapToGlobal(rect.center() - QPoint(0, 3));
     GTMouseDriver::moveTo(globalP);
     GTMouseDriver::click();
     GTGlobals::sleep(500);
@@ -4571,19 +4571,20 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
     //"Read Sequence" -> "Dump Sequence Info" -> "Write Plain Text"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump sequence info");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");   
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump sequence info");    
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Plain Text");
-
+    GTGlobals::sleep(100);
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"), GTUtilsWorkflowDesigner::getWorker(os, "Dump Sequence Info"));
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Dump Sequence Info"), GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
 
     //2. Save it somewhere using the "Save as..." action
     GTUtilsWorkflowDesigner::saveWorkflowAs(os, sandBoxDir + "dump_sequence.uwl", "Dump Sequence Info");
-
+    GTGlobals::sleep();
     //3. Close WD
     GTUtilsMdi::click( os, GTGlobals::Close );
     GTMouseDriver::click();
+    GTGlobals::sleep();
     //4. Reopen the scheme's file
     //   Expected result: scheme is loaded completely without any error messages in log
     GTFileDialog::openFile(os, sandBoxDir + "dump_sequence.uwl");
@@ -5202,7 +5203,7 @@ GUI_TEST_CLASS_DEFINITION(test_1514){
 //    2. Build a new tree or append the existing tree to this alignment.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk", 0, 0, true));
     GTWidget::click(os,GTAction::button(os,"Build Tree"));
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: there are the MSA Editor with the Tree view inside it.
 
 //    3. Zoom out the tree to its minimum size.
@@ -5228,30 +5229,32 @@ GUI_TEST_CLASS_DEFINITION(test_1514){
         QImage finalImg = pixmap.toImage();
         uiLog.trace(QString("Easy to find. are images equal: %1 at step %2").arg(initImg==finalImg).arg(i));
         if(i==0){
-            CHECK_SET_ERR(!(initImg==finalImg), "images are unexpectidly equal at first step")
+            CHECK_SET_ERR(!(initImg==finalImg), "Images are unexpectidly equal at first step 1")
         }else{
             equalStepFound = (initImg==finalImg);
         }
         i++;
     }
-    CHECK_SET_ERR(equalStepFound, "tree changed it's size up to the end");
+    GTGlobals::sleep(200);
+    CHECK_SET_ERR(equalStepFound, "Tree changed it's size up to the end");
 //    5. Click the "Reset zoom" button on the toolbar.
     GTWidget::click(os, resetZoom);
     GTGlobals::sleep(1000);
     pixmap = GTWidget::getPixmap(os, treeView);
     QImage finalImg = pixmap.toImage();
 //    Expected state: sizes of the tree and alignment reset.
-    CHECK_SET_ERR(initImg==finalImg, "reset zoom action workes wrong")
+    CHECK_SET_ERR(initImg==finalImg, "Reset zoom action workes wrong")
 //    6. Click the "Zoom in" button in the toolbar until alignment and tree sizes stop change.
     while(zoomIn->isEnabled()){
         QPixmap pixmap = GTWidget::getPixmap(os, treeView);
         QImage initImg = pixmap.toImage();
         GTWidget::click(os, zoomIn);
+        GTGlobals::sleep();
         pixmap = GTWidget::getPixmap(os, treeView);
         QImage finalImg = pixmap.toImage();
         uiLog.trace(QString("Easy to find. are images equal: %1 at step %2").arg(initImg==finalImg).arg(i));
         if (i != 12) {
-            CHECK_SET_ERR(!(initImg == finalImg), "images are unexpectidly equal at first step")
+            CHECK_SET_ERR(!(initImg == finalImg), QString("Images are unexpectidly equal at first step2 i=").arg(i));
         }
         i++;
     }
@@ -8097,8 +8100,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     // 1) Create a schema with shrunk elements state.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
-    GTThread::waitForMainThread();
-
+   
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Align with MUSCLE"));
     GTMouseDriver::doubleClick();
 
@@ -8112,12 +8114,12 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     // 2) Save the schema.
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, sandBoxDir + "test.uwl", "Workflow"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Save workflow", GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    GTMouseDriver::click();
-    GTGlobals::sleep(2000);
+    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << "Close all windows", GTGlobals::UseKey);  
+    GTGlobals::sleep();
 
-    // 3) Reopen UGENE WD.
+    // 3) Reopen UGENE WD. 
     GTFileDialog::openFile(os, sandBoxDir, "test.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

@@ -160,8 +160,11 @@ qint64 HttpFileAdapter::readBlock(char* data, qint64 size)
     rwmut.lock();
     qint64 write_offs = 0;
     while( write_offs < size ) {
-        int howmuch = qMin( size - write_offs, (qint64)firstChunkContains() );
-        readFromChunk( data + write_offs, howmuch );
+        qint64 howmuch = qMin( size - write_offs, (qint64)firstChunkContains() );
+        readFromChunk(data + write_offs, howmuch);
+        if (formatMode == TextMode) {
+            cutByteOrderMarks(data, howmuch);
+        }
         write_offs += howmuch;
     }
 

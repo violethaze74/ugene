@@ -881,7 +881,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3266);
     REGISTER_TEST(GUITest_regression_scenarios::test_3270);
     REGISTER_TEST(GUITest_regression_scenarios::test_3274);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3276);
+    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
     REGISTER_TEST(GUITest_regression_scenarios::test_3277);
     REGISTER_TEST(GUITest_regression_scenarios::test_3279);
     REGISTER_TEST(GUITest_regression_scenarios::test_3283);
@@ -1407,6 +1407,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6043);
     REGISTER_TEST(GUITest_regression_scenarios::test_6047);
     REGISTER_TEST(GUITest_regression_scenarios::test_6066);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6071);
     REGISTER_TEST(GUITest_regression_scenarios::test_6087);
 
     //////////////////////////////////////////////////////////////////////////
