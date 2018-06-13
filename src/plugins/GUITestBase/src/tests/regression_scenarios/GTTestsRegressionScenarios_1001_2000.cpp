@@ -2884,8 +2884,8 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
     QTableWidget* tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");
 
-    QRect rect = tw->visualItemRect(tw->item(0, 1));
-    QPoint globalP = tw->viewport()->mapToGlobal(rect.center());
+    QRect rect = tw->visualItemRect(tw->item(2, 1));
+    QPoint globalP = tw->viewport()->mapToGlobal(rect.center() - QPoint(0, 3));
     GTMouseDriver::moveTo(globalP);
     GTMouseDriver::click();
     GTGlobals::sleep(500);
