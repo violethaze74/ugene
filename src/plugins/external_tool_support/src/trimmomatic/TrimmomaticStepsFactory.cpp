@@ -33,7 +33,7 @@ namespace LocalWorkflow {
 /*TrimmomaticSteps*/
 /**************************************************************/
 
-const QStringList TrimmomaticSteps::name = QStringList() << "IlluminaCLIP";
+const QStringList TrimmomaticSteps::name = QStringList() << "IllUMINACLIP";
 
 /**************************************************************/
 /*TrimmomaticBaseController*/
