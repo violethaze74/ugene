@@ -19,23 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DIAMOND_CLASSIFY_PROMPTER_H_
-#define _U2_DIAMOND_CLASSIFY_PROMPTER_H_
-
-#include <U2Lang/WorkflowUtils.h>
+#include "TrimmomaticPrompter.h"
 
 namespace U2 {
 namespace LocalWorkflow {
 
-class DiamondClassifyPrompter : public PrompterBase<DiamondClassifyPrompter> {
-    Q_OBJECT
-public:
-    DiamondClassifyPrompter(Actor *actor);
-private:
-    QString composeRichDoc();
-};
+TrimmomaticPrompter::TrimmomaticPrompter(Actor *actor)
+    : PrompterBase<TrimmomaticPrompter>(actor)
+{
 
-}   // namespace LocalWorkflow
-}   // namespace u2
+}
 
-#endif // _U2_DIAMOND_CLASSIFY_PROMPTER_H_
+QString TrimmomaticPrompter::composeRichDoc() {
+    return tr("Trim, crop and/or remove adapters for input Illumina FASTQ data.");
+}
+
+} // namespace LocalWorkflow
+} // namespace U2

@@ -26,7 +26,6 @@
 #include "DatabaseValidator.h"
 #include "KrakenClassifyPrompter.h"
 #include "KrakenClassifyWorkerFactory.h"
-#include "../ngs_reads_classification/src/GetReadListWorker.h"
 
 namespace U2 {
 namespace Workflow {
@@ -60,14 +59,14 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     IntegralBusPort* input = qobject_cast<IntegralBusPort*>(p);
     CHECK(NULL != input, "");
     const bool paired = actor->getParameter(LocalWorkflow::KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID)->getAttributeValueWithoutScript<QString>() == LocalWorkflow::KrakenClassifyWorkerFactory::PAIRED_END_TEXT;
-    QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::SE_SLOT_ID);
+    QList<Actor*> producers = input->getProducers(LocalWorkflow::KrakenClassifyWorkerFactory::INPUT_SLOT);
     if (producers.isEmpty()) {
         res = false;
         problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory \"Input URL 1\" slot is not connected."), actor->getId()));
     }
 
     if (paired) {
-        QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::PE_SLOT_ID);
+        QList<Actor*> producers = input->getProducers(LocalWorkflow::KrakenClassifyWorkerFactory::PAIRED_INPUT_SLOT);
         if (producers.isEmpty()) {
             res = false;
             problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory \"Input URL 2\" slot is not connected."), actor->getId()));
@@ -75,8 +74,6 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     }
 
     return res;
-
-//    return true;
 }
 
 }   // namesapce Workflow

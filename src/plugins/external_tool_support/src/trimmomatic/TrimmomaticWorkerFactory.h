@@ -19,17 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
-#define _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
+#ifndef _U2_TRIMMOMATIC_WORKER_FACTORY_H_
+#define _U2_TRIMMOMATIC_WORKER_FACTORY_H_
 
 #include <U2Lang/LocalDomain.h>
 
 namespace U2 {
 namespace LocalWorkflow {
 
-class KrakenClassifyWorkerFactory : public DomainFactory {
+class TrimmomaticWorkerFactory : public DomainFactory {
 public:
-    KrakenClassifyWorkerFactory();
+    TrimmomaticWorkerFactory();
 
     Worker *createWorker(Actor *actor);
 
@@ -44,19 +44,25 @@ public:
     static const QString INPUT_SLOT;
     static const QString PAIRED_INPUT_SLOT;
 
+    static const QString OUT_SLOT;
+    static const QString PAIRED_OUT_SLOT;
+
     static const QString INPUT_DATA_ATTR_ID;
-    static const QString DATABASE_ATTR_ID;
+    static const QString TRIMMING_STEPS_ATTR_ID;
     static const QString OUTPUT_URL_ATTR_ID;
-    static const QString QUICK_OPERATION_ATTR_ID;
-    static const QString MIN_HITS_NUMBER_ATTR_ID;
+    static const QString PAIRED_URL_1_ATTR_ID;
+    static const QString PAIRED_URL_2_ATTR_ID;
+    static const QString UNPAIRED_URL_1_ATTR_ID;
+    static const QString UNPAIRED_URL_2_ATTR_ID;
+    static const QString GENERATE_LOG_ATTR_ID;
+    static const QString LOG_URL_ATTR_ID;
     static const QString THREADS_NUMBER_ATTR_ID;
-    static const QString PRELOAD_DATABASE_ATTR_ID;
 
     static const QString SINGLE_END_TEXT;
     static const QString PAIRED_END_TEXT;
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+} // namespace LocalWorkflow
+} // namespace U2
 
-#endif // _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
+#endif // _U2_TRIMMOMATIC_WORKER_FACTORY_H_

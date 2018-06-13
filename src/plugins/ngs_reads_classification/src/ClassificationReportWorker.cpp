@@ -62,7 +62,6 @@
 
 #include "ClassificationReportWorker.h"
 #include "NgsReadsClassificationPlugin.h"
-#include "GetReadListWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {

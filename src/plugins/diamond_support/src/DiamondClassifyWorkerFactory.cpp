@@ -45,7 +45,6 @@
 #include "DiamondSupport.h"
 #include "DiamondTaxonomyDataValidator.h"
 #include "../../ngs_reads_classification/src/DatabaseDelegate.h"
-#include "../../ngs_reads_classification/src/GetReadListWorker.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
@@ -56,6 +55,9 @@ const QString DiamondClassifyWorkerFactory::ACTOR_ID = "diamond-classify";
 const QString DiamondClassifyWorkerFactory::INPUT_PORT_ID = "in";
 const QString DiamondClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";
 const QString DiamondClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
+
+// Slot should be the same as in GetReadsListWorkerFactory
+const QString DiamondClassifyWorkerFactory::INPUT_SLOT = "reads-url1";
 
 const QString DiamondClassifyWorkerFactory::INPUT_DATA_ATTR_ID("input-data");
 const QString DiamondClassifyWorkerFactory::DATABASE_ATTR_ID("database");
@@ -87,19 +89,12 @@ Worker *DiamondClassifyWorkerFactory::createWorker(Actor *actor) {
 void DiamondClassifyWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
-        const Descriptor inSlotDesc(GetReadsListWorkerFactory::SE_SLOT().getId(),
+        const Descriptor inSlotDesc(INPUT_SLOT,
                                     DiamondClassifyPrompter::tr("Input URL"),
                                     DiamondClassifyPrompter::tr("Input URL."));
 
-//        const Descriptor inPairedSlotDesc(BaseSlots::URL_SLOT().getId(),
-//                                          DiamondClassifyPrompter::tr("Input URL(s)"),
-//                                          DiamondClassifyPrompter::tr("Input URL(s)."));
-
         QMap<Descriptor, DataTypePtr> inType;
         inType[inSlotDesc] = BaseTypes::STRING_TYPE();
-
-//        QMap<Descriptor, DataTypePtr> inPairedType;
-//        inPairedType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
 
         QMap<Descriptor, DataTypePtr> outType;
         outType[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
@@ -109,28 +104,16 @@ void DiamondClassifyWorkerFactory::init() {
                                     DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
                                                                 "The input files may contain single-end reads, scaffolds, or \"left\" reads in case of the paired-end sequencing (see \"Input data\" parameter of the element)."));
 
-//        const Descriptor inPairedPortDesc(INPUT_PAIRED_PORT_ID,
-//                                          DiamondClassifyPrompter::tr("Input sequences 2"),
-//                                          DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-//                                                                      "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
-
         const Descriptor outPortDesc(OUTPUT_PORT_ID,
                                      DiamondClassifyPrompter::tr("DIAMOND Classification"),
                                      DiamondClassifyPrompter::tr("A list of sequence names with the associated taxonomy IDs, classified by DIAMOND."));
 
         ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
-//        ports << new PortDescriptor(inPairedPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-paired-in", inPairedType)), true /*input*/);       // FIXME: diamond can't work with paired reads
         ports << new PortDescriptor(outPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
     }
 
     QList<Attribute *> attributes;
     {
-//        const Descriptor inputDataDesc(INPUT_DATA_ATTR_ID, DiamondClassifyPrompter::tr("Input data"),
-//                                             DiamondClassifyPrompter::tr("The input data that should be classified are provided through the input ports of the element.\n\n"
-//                                                                         "To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\". The element has one input port in this case. Pass URL(s) to the corresponding files to this port.\n\n"
-//                                                                         "To classify paired-end (PE) reads, set the value to \"PE reads\". The element has two input ports in this case. Pass URL(s) to the \"left\" and \"right\" reads to the first and the second port correspondingly.\n\n"
-//                                                                         "The input files should be in FASTA or FASTQ formats."));
-
         const Descriptor databaseDesc(DATABASE_ATTR_ID, DiamondClassifyPrompter::tr("Database"),
                                       DiamondClassifyPrompter::tr("Input a binary DIAMOND database file."));
 
@@ -147,8 +130,6 @@ void DiamondClassifyWorkerFactory::init() {
         const Descriptor outputUrlDesc(OUTPUT_URL_ATTR_ID, DiamondClassifyPrompter::tr("Output file"),
                                        DiamondClassifyPrompter::tr("Specify the output file name."));
 
-//        Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, DiamondClassifyTaskSettings::SINGLE_END);       // FIXME: diamond can't work with paired reads
-
         QString diamondDatabasePath;
         U2DataPath *uniref50DataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID);
         if (NULL != uniref50DataPath && uniref50DataPath->isValid()) {
@@ -159,9 +140,6 @@ void DiamondClassifyWorkerFactory::init() {
                 diamondDatabasePath = clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_ITEM_ID);
             }
         }
-
-//        attributes << inputDataAttribute;       // FIXME: diamond can't work with paired reads
-//        inputDataAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << DiamondClassifyTaskSettings::PAIRED_END));       // FIXME: diamond can't work with paired reads
 
         attributes << new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required, diamondDatabasePath);
         attributes << new Attribute(code, BaseTypes::NUM_TYPE(), Attribute::None, 1);
@@ -179,11 +157,6 @@ void DiamondClassifyWorkerFactory::init() {
 
     QMap<QString, PropertyDelegate *> delegates;
     {
-//        QVariantMap inputDataMap;
-//        inputDataMap[SINGLE_END_TEXT] = DiamondClassifyTaskSettings::SINGLE_END;
-//        inputDataMap[PAIRED_END_TEXT] = DiamondClassifyTaskSettings::PAIRED_END;
-//        delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);       // FIXME: diamond can't work with paired reads
-
         {
             QList<StrStrPair> dataPathItems;
             dataPathItems << StrStrPair(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID, NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_ITEM_ID);

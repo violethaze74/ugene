@@ -68,6 +68,7 @@
 #include "FindWorker.h"
 #include "GenericReadActor.h"
 #include "GetFileListWorker.h"
+#include "GetReadListWorker.h"
 #include "GroupWorker.h"
 #include "ImportAnnotationsWorker.h"
 #include "MSA2SequenceWorker.h"
@@ -301,6 +302,7 @@ void CoreLib::init() {
     FilterBamWorkerFactory::init();
     FindWorkerFactory::init();
     GetFileListWorkerFactory::init();
+    GetReadsListWorkerFactory::init();
     GroupWorkerFactory::init();
     ImportAnnotationsWorkerFactory::init();
     MarkSequenceWorkerFactory::init();
@@ -326,6 +328,9 @@ void CoreLib::init() {
 
     initUsersWorkers();
     initExternalToolsWorkers();
+
+    CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::SeReadsListSplitter());
+    CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::PeReadsListSplitter());
 }
 
 void CoreLib::initUsersWorkers() {
@@ -435,6 +440,10 @@ void CoreLib::initIncludedWorkers() {
     }
 }
 
+void CoreLib::cleanup() {
+    CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::SeReadsListSplitter::ID);
+    CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::PeReadsListSplitter::ID);
+}
 
 } // Workflow namespace
 } // U2 namespace

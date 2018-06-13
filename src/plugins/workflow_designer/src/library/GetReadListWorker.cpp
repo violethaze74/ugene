@@ -35,8 +35,6 @@
 #include <U2Gui/GUIUtils.h>
 
 #include "GetReadListWorker.h"
-#include "NgsReadsClassificationPlugin.h"
-//#include "util/DatasetValidator.h"
 
 namespace U2 {
 namespace LocalWorkflow {

@@ -19,23 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DIAMOND_CLASSIFY_PROMPTER_H_
-#define _U2_DIAMOND_CLASSIFY_PROMPTER_H_
-
-#include <U2Lang/WorkflowUtils.h>
+#include "TrimmomaticLogParser.h"
 
 namespace U2 {
-namespace LocalWorkflow {
 
-class DiamondClassifyPrompter : public PrompterBase<DiamondClassifyPrompter> {
-    Q_OBJECT
-public:
-    DiamondClassifyPrompter(Actor *actor);
-private:
-    QString composeRichDoc();
-};
+const QStringList TrimmomaticLogParser::wellKnownErrors = QStringList()
+        << "Exception"
+        << "Unable to determine input files"
+        << "Unable to determine output files"
+        << "Unknown option";
 
-}   // namespace LocalWorkflow
-}   // namespace u2
+TrimmomaticLogParser::TrimmomaticLogParser()
+    : ExternalToolLogParser()
+{
 
-#endif // _U2_DIAMOND_CLASSIFY_PROMPTER_H_
+}
+
+bool TrimmomaticLogParser::isError(const QString &line) const {
+    foreach (const QString &wellKnownErrors, wellKnownErrors) {
+        if (line.contains(wellKnownErrors)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+} // namespace U2

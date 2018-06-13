@@ -19,23 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DIAMOND_CLASSIFY_PROMPTER_H_
-#define _U2_DIAMOND_CLASSIFY_PROMPTER_H_
+#ifndef _U2_TRIMMOMATIC_PROMPTER_H_
+#define _U2_TRIMMOMATIC_PROMPTER_H_
+
+#include <QCoreApplication>
 
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 namespace LocalWorkflow {
 
-class DiamondClassifyPrompter : public PrompterBase<DiamondClassifyPrompter> {
-    Q_OBJECT
+class TrimmomaticPrompter : public PrompterBase<TrimmomaticPrompter> {
+    Q_DECLARE_TR_FUNCTIONS(TrimmomaticPrompter)
 public:
-    DiamondClassifyPrompter(Actor *actor);
+    TrimmomaticPrompter(Actor *actor = NULL);
+
 private:
     QString composeRichDoc();
 };
 
 }   // namespace LocalWorkflow
-}   // namespace u2
+}   // namespace U2
 
-#endif // _U2_DIAMOND_CLASSIFY_PROMPTER_H_
+#endif // _U2_TRIMMOMATIC_PROMPTER_H_

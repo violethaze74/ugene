@@ -145,6 +145,7 @@
 #include "tophat/TopHatSupport.h"
 #include "tophat/TopHatWorker.h"
 #include "trimmomatic/TrimmomaticSupport.h"
+#include "trimmomatic/TrimmomaticWorkerFactory.h"
 #include "utils/ExternalToolSupportAction.h"
 #include "utils/ExternalToolValidateTask.h"
 #include "vcftools/VcfConsensusSupport.h"
@@ -711,6 +712,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::SnpEffFactory::init();
     LocalWorkflow::FastQCFactory::init();
     LocalWorkflow::CutAdaptFastqWorkerFactory::init();
+    LocalWorkflow::TrimmomaticWorkerFactory::init();
     LocalWorkflow::BedtoolsIntersectWorkerFactory::init();
     LocalWorkflow::HmmerBuildWorkerFactory::init();
     LocalWorkflow::HmmerSearchWorkerFactory::init();

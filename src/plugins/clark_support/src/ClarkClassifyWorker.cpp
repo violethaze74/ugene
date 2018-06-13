@@ -59,7 +59,6 @@
 #include "ClarkClassifyWorker.h"
 #include "ClarkSupport.h"
 #include "../ngs_reads_classification/src/DatabaseDelegate.h"
-#include "../ngs_reads_classification/src/GetReadListWorker.h"
 #include "../ngs_reads_classification/src/NgsReadsClassificationUtils.h"
 
 namespace U2 {
@@ -71,8 +70,10 @@ const QString ClarkClassifyWorkerFactory::ACTOR_ID("clark-classify");
 
 static const QString INPUT_PORT("in");
 static const QString PAIRED_INPUT_PORT = "in2";
-static const QString INPUT_SLOT = GetReadsListWorkerFactory::SE_SLOT_ID;
-static const QString PAIRED_INPUT_SLOT = GetReadsListWorkerFactory::PE_SLOT_ID;
+
+// Slots should be the same as in GetReadsListWorkerFactory
+static const QString INPUT_SLOT = "reads-url1";
+static const QString PAIRED_INPUT_SLOT = "reads-url2";
 
 static const QString OUTPUT_PORT("out");
 
@@ -99,10 +100,10 @@ QString ClarkClassifyPrompter::composeRichDoc() {
     const QString databaseUrl = getHyperlink(DB_URL, getURL(DB_URL));
 
     if (getParameter(SEQUENCING_READS).toString() == SINGLE_END) {
-        const QString readsProducerName = getProducersOrUnset(INPUT_PORT, GetReadsListWorkerFactory::SE_SLOT_ID);
+        const QString readsProducerName = getProducersOrUnset(INPUT_PORT, INPUT_SLOT);
         return tr("Classify sequences from <u>%1</u> with CLARK, use %2 database.").arg(readsProducerName).arg(databaseUrl);
     } else {
-        const QString pairedReadsProducerName = getProducersOrUnset(INPUT_PORT, GetReadsListWorkerFactory::PE_SLOT_ID);
+        const QString pairedReadsProducerName = getProducersOrUnset(INPUT_PORT, PAIRED_INPUT_SLOT);
         return tr("Classify paired-end reads from <u>%1</u> with CLARK, use %2 database.")
                 .arg(pairedReadsProducerName).arg(databaseUrl);
     }
@@ -142,14 +143,14 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     IntegralBusPort* input = qobject_cast<IntegralBusPort*>(p);
     CHECK(NULL != input, "");
     const bool paired = actor->getParameter(SEQUENCING_READS)->getAttributeValueWithoutScript<QString>() == PAIRED_END;
-    QList<Actor*> producers = input->getProducers(GetReadsListWorkerFactory::SE_SLOT_ID);
+    QList<Actor*> producers = input->getProducers(INPUT_SLOT);
     if (producers.isEmpty()) {
         res = false;
         problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory \"Input URL 1\" slot is not connected."), actor->getId()));
     }
 
     if (paired) {
-        QList<Actor*> producers = input->getProducers(GetReadsListWorkerFactory::PE_SLOT_ID);
+        QList<Actor*> producers = input->getProducers(PAIRED_INPUT_SLOT);
         if (producers.isEmpty()) {
             res = false;
             problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory \"Input URL 2\" slot is not connected."), actor->getId()));
@@ -175,22 +176,15 @@ void ClarkClassifyWorkerFactory::init() {
                                                                                                        "In case of SE reads or scaffolds use the \"Input URL 1\" slot only.\n\n"
                                                                                                        "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
                                                                                                        "See also the \"Input data\" parameter of the element."));
-//        Descriptor inD2(PAIRED_INPUT_PORT, ClarkClassifyWorker::tr("Input sequences 2"), ClarkClassifyWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided."
-//                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
         Descriptor outD(OUTPUT_PORT, ClarkClassifyWorker::tr("CLARK Classification"), ClarkClassifyWorker::tr("A map of sequence names with the associated taxonomy IDs, classified by CLARK."));
 
-        Descriptor inSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClarkClassifyWorker::tr("Input URL 1"), ClarkClassifyWorker::tr("Input URL 1."));
-        Descriptor inSlot2Descriptor(GetReadsListWorkerFactory::PE_SLOT().getId(), ClarkClassifyWorker::tr("Input URL 2"), ClarkClassifyWorker::tr("Input URL 2."));
+        Descriptor inSlot1Descriptor(INPUT_SLOT, ClarkClassifyWorker::tr("Input URL 1"), ClarkClassifyWorker::tr("Input URL 1."));
+        Descriptor inSlot2Descriptor(PAIRED_INPUT_SLOT, ClarkClassifyWorker::tr("Input URL 2"), ClarkClassifyWorker::tr("Input URL 2."));
 
         QMap<Descriptor, DataTypePtr> inM;
         inM[inSlot1Descriptor] = BaseTypes::STRING_TYPE();
         inM[inSlot2Descriptor] = BaseTypes::STRING_TYPE();
         p << new PortDescriptor(inD, DataTypePtr(new MapDataType("clark.input", inM)), true);
-
-//        QMap<Descriptor, DataTypePtr> inM2;
-//        inM2[GetReadsListWorkerFactory::SE_SLOT()] = BaseTypes::STRING_TYPE();
-//        inM2[GetReadsListWorkerFactory::PE_SLOT()] = BaseTypes::STRING_TYPE();
-//        p << new PortDescriptor(inD2, DataTypePtr(new MapDataType("clark.input-paired-url", inM2)), true);
 
         QMap<Descriptor, DataTypePtr> outM;
         outM[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
@@ -263,7 +257,7 @@ void ClarkClassifyWorkerFactory::init() {
                                                                      "The input files should be in FASTA or FASTQ formats."));
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), Attribute::None, SINGLE_END);
-        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << PAIRED_END));
+        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, PAIRED_INPUT_SLOT, QVariantList() << PAIRED_END));
         a << sequencingReadsAttribute;
         a << new Attribute(tool, BaseTypes::STRING_TYPE(), Attribute::None, ClarkClassifySettings::TOOL_LIGHT);
 

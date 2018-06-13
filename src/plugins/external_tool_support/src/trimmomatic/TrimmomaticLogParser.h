@@ -19,23 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DIAMOND_CLASSIFY_PROMPTER_H_
-#define _U2_DIAMOND_CLASSIFY_PROMPTER_H_
+#ifndef _U2_TRIMMOMATIC_LOG_PARSER_H_
+#define _U2_TRIMMOMATIC_LOG_PARSER_H_
 
-#include <U2Lang/WorkflowUtils.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
-namespace LocalWorkflow {
 
-class DiamondClassifyPrompter : public PrompterBase<DiamondClassifyPrompter> {
-    Q_OBJECT
+class TrimmomaticLogParser : public ExternalToolLogParser {
 public:
-    DiamondClassifyPrompter(Actor *actor);
+    TrimmomaticLogParser();
+
 private:
-    QString composeRichDoc();
+    bool isError(const QString &line) const;
+
+    static const QStringList wellKnownErrors;
 };
 
-}   // namespace LocalWorkflow
-}   // namespace u2
+} // namespace U2
 
-#endif // _U2_DIAMOND_CLASSIFY_PROMPTER_H_
+#endif // _U2_TRIMMOMATIC_LOG_PARSER_H_
