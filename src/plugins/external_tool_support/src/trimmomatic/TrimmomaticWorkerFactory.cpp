@@ -35,10 +35,12 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
 
+#include "TrimmomaticDelegate.h"
 #include "TrimmomaticPrompter.h"
 #include "TrimmomaticSupport.h"
 #include "TrimmomaticWorker.h"
 #include "TrimmomaticWorkerFactory.h"
+
 #include "java/JavaSupport.h"
 
 namespace U2 {
@@ -186,7 +188,6 @@ void TrimmomaticWorkerFactory::init() {
                              TrimmomaticPrompter::tr("Number of threads"),
                              TrimmomaticPrompter::tr("Use multiple threads (-threads)."));
 
-
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, TrimmomaticTaskSettings::SINGLE_END);
         Attribute *trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_TYPE(), Attribute::Required, TrimmomaticPrompter::tr("Configure steps"));
         Attribute *seOutputUrlAttribute = new Attribute(seOutputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
@@ -197,6 +198,7 @@ void TrimmomaticWorkerFactory::init() {
         Attribute *generateLogAttribute = new Attribute(generateLogDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
         Attribute *logUrlAttribute = new Attribute(logUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
         Attribute *threadsAttribute = new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+        Attribute *dialogAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_TYPE());;
 
         seOutputUrlAttribute->addRelation(new VisibilityRelation(INPUT_DATA_ATTR_ID, TrimmomaticTaskSettings::SINGLE_END));
         pairedOutputUrl1Attribute->addRelation(new VisibilityRelation(INPUT_DATA_ATTR_ID, TrimmomaticTaskSettings::PAIRED_END));
@@ -241,6 +243,7 @@ void TrimmomaticWorkerFactory::init() {
             delegates[PAIRED_URL_2_ATTR_ID] = new URLDelegate(outputUrlTags, "trimmomatic/output");
             delegates[UNPAIRED_URL_1_ATTR_ID] = new URLDelegate(outputUrlTags, "trimmomatic/output");
             delegates[UNPAIRED_URL_2_ATTR_ID] = new URLDelegate(outputUrlTags, "trimmomatic/output");
+            delegates[TRIMMING_STEPS_ATTR_ID] = new TrimmomaticDelegate();
         }
 
         delegates[GENERATE_LOG_ATTR_ID] = new ComboBoxWithBoolsDelegate();

@@ -53,8 +53,6 @@
 #include "BedGraphToBigWigWorker.h"
 #include "BigWigSupport.h"
 
-#include "trimmomatic/TrimmomaticDelegate.h"
-
 namespace U2 {
 namespace LocalWorkflow {
 
@@ -142,9 +140,6 @@ void BedGraphToBigWigFactory::init() {
         Descriptor genomeAttrDesc(BedGraphToBigWigWorker::GENOME, BedGraphToBigWigWorker::tr("Genome"),
             BedGraphToBigWigWorker::tr("File with genome length."));
 
-        Descriptor trimmingStepsDesc("dialog-trimmomatic-id", BedGraphToBigWigWorker::tr("Trimming steps"),
-            BedGraphToBigWigWorker::tr("Configure trimming steps that should be performed by Trimmomatic."
-            "(i. e. the specified taxID and all children in the taxonomy tree) into a separate file."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
         Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
@@ -167,7 +162,6 @@ void BedGraphToBigWigFactory::init() {
         a << new Attribute( blockSize, BaseTypes::NUM_TYPE(), false, QVariant(256));
         a << new Attribute( itemsPerSlot, BaseTypes::NUM_TYPE(), false, QVariant(1024));
         a << new Attribute( unc, BaseTypes::BOOL_TYPE(), false, QVariant(false));
-        a << new Attribute(trimmingStepsDesc, BaseTypes::STRING_TYPE());
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -193,8 +187,6 @@ void BedGraphToBigWigFactory::init() {
             vm = dataPath->getDataItemsVariantMap();
         }
         delegates[BedGraphToBigWigWorker::GENOME] = new ComboBoxWithUrlsDelegate(vm);
-        delegates["dialog-trimmomatic-id"] = new TrimmomaticDelegate();
-
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);

@@ -100,7 +100,6 @@ TrimmomaticPropertyWidget::TrimmomaticPropertyWidget(QWidget* parent,
                 DelegateTags* tags) : PropertyWidget(parent, tags) {
     lineEdit = new QLineEdit(this);
     lineEdit->setPlaceholderText(PLACEHOLDER);
-    //lineEdit->setReadOnly();
     lineEdit->setObjectName("trimmomaticPropertyLineEdit");
     lineEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 

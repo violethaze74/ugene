@@ -40,7 +40,7 @@ public:
 class TrimmomaticIlluminaClipSettingsWidget : public QWidget, private Ui_IlluminaClip {
     Q_OBJECT
 public:
-    TrimmomaticIlluminaClipSettingsWidget(TrimmomaticIlluminaClipController* _owner);
+    TrimmomaticIlluminaClipSettingsWidget(TrimmomaticIlluminaClipController* owner);
     ~TrimmomaticIlluminaClipSettingsWidget();
 
     QString getFileName();

@@ -84,15 +84,13 @@ public:
 
     QString getValue() const;
 
-public slots:
-    void sl_checkOkEnabled();
-
 private slots:
     void sl_selectionChanged();
     void sl_addStep(QAction* a);
     void sl_moveStepUp();
     void sl_moveStepDown();
     void sl_removeStep();
+    void sl_checkOkEnabled();
 
 private:
     void emptySelection();
