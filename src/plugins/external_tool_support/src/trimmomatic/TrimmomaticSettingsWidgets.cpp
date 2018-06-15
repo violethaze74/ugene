@@ -24,8 +24,10 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/HelpButton.h>
 
 #include <QFile>
 #include <QFileInfo>
@@ -56,10 +58,15 @@ TrimmomaticIlluminaClipSettingsWidget::TrimmomaticIlluminaClipSettingsWidget(Tri
     const QString mismatchesValue = owner->getMismatches();
     const QString palindromeThresholdValue = owner->getPalindromeThreshold();
     const QString simpleThresholdValue = owner->getSimpleThreshold();
+    const QString optionalParametrsValue = owner->getOptionalParametrs();
+    const bool isOptionalParametrsValue = owner->optionalSettingsEnabled();
     mismatches->setText(mismatchesValue);
     palindromeThreshold->setText(palindromeThresholdValue);
     simpleThreshold->setText(simpleThresholdValue);
+    optionalSettingsDialog = new TrimmomaticOptionalSettings(isOptionalParametrsValue, optionalParametrsValue);
 
+    connect(pushButton, SIGNAL(clicked()), optionalSettingsDialog, SLOT(sl_showDialog()));
+    
     initSaveController();
 }
 
@@ -68,23 +75,32 @@ TrimmomaticIlluminaClipSettingsWidget::~TrimmomaticIlluminaClipSettingsWidget() 
     owner->setMismatches(mismatches->text());
     owner->setPalindromeThreshold(palindromeThreshold->text());
     owner->setSimpleThreshold(simpleThreshold->text());
+    owner->setOptionalParametrs(optionalSettingsDialog->getParametrs());
+    owner->setOptionalSettingsEnabled(optionalSettingsDialog->useOptionalSettings());
     owner->setNullPointerToWidget();
+    delete optionalSettingsDialog;
 }
 
-QString TrimmomaticIlluminaClipSettingsWidget::getFileName() {
+QString TrimmomaticIlluminaClipSettingsWidget::getFileName() const {
     return fileName->text();
 }
 
-QString TrimmomaticIlluminaClipSettingsWidget::getMismatches() {
+QString TrimmomaticIlluminaClipSettingsWidget::getMismatches() const {
     return mismatches->text();
 }
 
-QString TrimmomaticIlluminaClipSettingsWidget::getPalindromeThreshold() {
+QString TrimmomaticIlluminaClipSettingsWidget::getPalindromeThreshold() const {
     return palindromeThreshold->text();
 }
 
-QString TrimmomaticIlluminaClipSettingsWidget::getSimpleThreshold() {
+QString TrimmomaticIlluminaClipSettingsWidget::getSimpleThreshold() const {
     return simpleThreshold->text();
+}
+
+QString TrimmomaticIlluminaClipSettingsWidget::getOptionalParametrs() const {
+    CHECK(optionalSettingsDialog->useOptionalSettings(), QString());
+
+    return optionalSettingsDialog->getParametrs();
 }
 
 void TrimmomaticIlluminaClipSettingsWidget::initSaveController() {
@@ -123,6 +139,57 @@ void TrimmomaticIlluminaClipSettingsWidget::sl_textChanged() {
     owner->setSimpleThreshold(simpleThreshold->text());
 
     owner->setOkEnable(isOkEnable);
+}
+
+/******************************************************************/
+/*TrimmomaticOptionalSettings*/
+/******************************************************************/
+
+static const QString DEFAULT_PARAMETRS = ":8:false";
+
+TrimmomaticOptionalSettings::TrimmomaticOptionalSettings(const bool isChecked, const QString& parametrs) {
+    Ui_IlluminaClipSettings::setupUi(this);
+    new HelpButton(this, buttonBox, "21433685");
+
+    SAFE_POINT(parametrs.contains(":"), "Colon is unexpectably absent", );
+
+    const int colon = parametrs.indexOf(":", 1);
+    const QString minLengthSpinStringValue = parametrs.mid(1, colon - 1);
+    bool ok = false;
+    const int minLengthSpinValue = minLengthSpinStringValue.toInt(&ok);
+    SAFE_POINT(ok, "Unexpected minimal adapter length parameter", );
+
+    const QString keepBothComboStringValue = parametrs.right(parametrs.size() - colon - 1);
+    SAFE_POINT(keepBothComboStringValue == "true" || keepBothComboStringValue == "false",
+        "Unexpected combo box parameter", );
+
+    minLengthSpin->setValue(minLengthSpinValue);
+    keepBothCombo->setCurrentIndex(keepBothComboStringValue == "false" ? 0 : 1);
+    groupBox->setChecked(isChecked);
+}
+
+bool TrimmomaticOptionalSettings::useOptionalSettings() const {
+    return groupBox->isChecked();
+}
+
+QString TrimmomaticOptionalSettings::getParametrs() const {
+    QString result = QString(":%1:%2")
+        .arg(QString::number(minLengthSpin->value()))
+        .arg(keepBothCombo->currentText().toLower());
+
+    return result;
+}
+
+void TrimmomaticOptionalSettings::sl_showDialog() {
+    const bool isChecked = groupBox->isChecked();
+    const int spinValue = minLengthSpin->value();
+    const int comboIndex = keepBothCombo->currentIndex();
+
+    if (QDialog::Rejected == exec()) {
+        groupBox->setChecked(isChecked);
+        minLengthSpin->setValue(spinValue);
+        keepBothCombo->setCurrentIndex(comboIndex);
+    } 
 }
 
 }

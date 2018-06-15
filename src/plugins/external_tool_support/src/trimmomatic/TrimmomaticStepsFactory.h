@@ -69,11 +69,15 @@ public:
     QString getMismatches() const;
     QString getPalindromeThreshold() const;
     QString getSimpleThreshold() const;
+    QString getOptionalParametrs() const;
+    bool optionalSettingsEnabled() const;
 
     void setFileName(const QString& fileName);
     void setMismatches(const QString& mismatches);
     void setPalindromeThreshold(const QString& palindromeThreshold);
     void setSimpleThreshold(const QString& simpleThreshold);
+    void setOptionalParametrs(const QString& optionalParametrs);
+    void setOptionalSettingsEnabled(const bool isEnabled);
 
     void setNullPointerToWidget();
 
@@ -85,6 +89,8 @@ private:
     QString mismatchesValue;
     QString palindromeThresholdValue;
     QString simpleThresholdValue;
+    QString optionalParametrsValue;
+    bool isOptionalSettingsEnabled;
 };
 
 }

@@ -102,6 +102,8 @@ TrimmomaticIlluminaClipController::TrimmomaticIlluminaClipController()
     mismatchesValue = "2";
     palindromeThresholdValue = "30";
     simpleThresholdValue = "10";
+    optionalParametrsValue = ":8:false";
+    isOptionalSettingsEnabled = false;
 }
 
 const QString TrimmomaticIlluminaClipController::getName() const {
@@ -121,12 +123,14 @@ QString TrimmomaticIlluminaClipController::generateReport() const {
     TrimmomaticIlluminaClipSettingsWidget* widget =
         qobject_cast<TrimmomaticIlluminaClipSettingsWidget*>(settingsWidget);
 
-    QString result = QString("%1:%2:%3:%4:%5")
+    const QString optionalParametrs = isOptionalSettingsEnabled ? optionalParametrsValue : QString();
+    QString result = QString("%1:%2:%3:%4:%5%6")
         .arg(NAME)
         .arg(QFileInfo(widget == NULL ? fileNameValue : widget->getFileName()).baseName())
         .arg(widget == NULL ? mismatchesValue : widget->getMismatches())
         .arg(widget == NULL ? palindromeThresholdValue : widget->getPalindromeThreshold())
-        .arg(widget == NULL ? simpleThresholdValue : widget->getSimpleThreshold());
+        .arg(widget == NULL ? simpleThresholdValue : widget->getSimpleThreshold())
+        .arg(widget == NULL ? optionalParametrs : widget->getOptionalParametrs());
 
     return result;
 }
@@ -147,6 +151,14 @@ QString TrimmomaticIlluminaClipController::getSimpleThreshold() const {
     return simpleThresholdValue;
 }
 
+QString TrimmomaticIlluminaClipController::getOptionalParametrs() const {
+    return optionalParametrsValue;
+}
+
+bool TrimmomaticIlluminaClipController::optionalSettingsEnabled() const {
+    return isOptionalSettingsEnabled;
+}
+
 void TrimmomaticIlluminaClipController::setFileName(const QString& fileName) {
     fileNameValue = fileName;
 }
@@ -161,6 +173,14 @@ void TrimmomaticIlluminaClipController::setPalindromeThreshold(const QString& pa
 
 void TrimmomaticIlluminaClipController::setSimpleThreshold(const QString& simpleThreshold) {
     simpleThresholdValue = simpleThreshold;
+}
+
+void TrimmomaticIlluminaClipController::setOptionalParametrs(const QString& optionalParametrs) {
+    optionalParametrsValue = optionalParametrs;
+}
+
+void TrimmomaticIlluminaClipController::setOptionalSettingsEnabled(const bool isEnabled) {
+    isOptionalSettingsEnabled = isEnabled;
 }
 
 void TrimmomaticIlluminaClipController::setNullPointerToWidget() {

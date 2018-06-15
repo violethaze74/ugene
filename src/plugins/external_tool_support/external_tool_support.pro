@@ -225,6 +225,7 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/tcoffee/TCoffeeSupportRunDialog.ui \
          src/trimmomatic/step_settings_forms/Default.ui \
          src/trimmomatic/step_settings_forms/IlluminaClip.ui \
+         src/trimmomatic/step_settings_forms/IlluminaClipSettings.ui \
          src/trimmomatic/TrimmomaticPropertyDialog.ui \
          src/snpeff/SnpEffDatabaseDialog.ui \
          src/spades/SpadesSettings.ui \

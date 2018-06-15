@@ -25,11 +25,13 @@
 
 #include "ui_Default.h"
 #include "ui_IlluminaClip.h"
+#include "ui_IlluminaClipSettings.h"
 
 namespace U2 {
 namespace LocalWorkflow {
     
 class TrimmomaticIlluminaClipController;
+class TrimmomaticOptionalSettings;
 
 class TrimmomaticDefaultSettingsWidget : public QWidget, private Ui_Default {
     Q_DECLARE_TR_FUNCTIONS(TrimmomaticSettingsWidget)
@@ -43,18 +45,32 @@ public:
     TrimmomaticIlluminaClipSettingsWidget(TrimmomaticIlluminaClipController* owner);
     ~TrimmomaticIlluminaClipSettingsWidget();
 
-    QString getFileName();
-    QString getMismatches();
-    QString getPalindromeThreshold();
-    QString getSimpleThreshold();
+    QString getFileName() const;
+    QString getMismatches() const;
+    QString getPalindromeThreshold() const;
+    QString getSimpleThreshold() const;
+    QString getOptionalParametrs() const;
 
 private slots:
     void sl_textChanged();
 
 private:
     void initSaveController();
+
     SaveDocumentController* saveController;
     TrimmomaticIlluminaClipController* owner;
+    TrimmomaticOptionalSettings* optionalSettingsDialog;
+};
+
+class TrimmomaticOptionalSettings : public QDialog, private Ui_IlluminaClipSettings {
+    Q_OBJECT
+public:
+    TrimmomaticOptionalSettings(const bool isChecked, const QString& parametrs);
+    bool useOptionalSettings() const;
+    QString getParametrs() const;
+
+public slots:
+    void sl_showDialog();
 };
 
 }
