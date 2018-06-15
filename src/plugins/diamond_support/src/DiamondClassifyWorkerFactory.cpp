@@ -73,7 +73,7 @@ const QString DiamondClassifyWorkerFactory::BSIZE_ATTR_ID("block-size");
 const QString DiamondClassifyWorkerFactory::CHUNKS_ATTR_ID("index-chunks");
 const QString DiamondClassifyWorkerFactory::OUTPUT_URL_ATTR_ID("output-url");
 
-const QString DiamondClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or scaffolds");
+const QString DiamondClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or contigs");
 const QString DiamondClassifyWorkerFactory::PAIRED_END_TEXT = QObject::tr("PE reads");
 
 DiamondClassifyWorkerFactory::DiamondClassifyWorkerFactory()
@@ -102,7 +102,7 @@ void DiamondClassifyWorkerFactory::init() {
         const Descriptor inPortDesc(INPUT_PORT_ID,
                                     DiamondClassifyPrompter::tr("Input sequences"),
                                     DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                                "The input files may contain single-end reads, scaffolds, or \"left\" reads in case of the paired-end sequencing (see \"Input data\" parameter of the element)."));
+                                                                "The input files may contain single-end reads, contigs, or \"left\" reads in case of the paired-end sequencing (see \"Input data\" parameter of the element)."));
 
         const Descriptor outPortDesc(OUTPUT_PORT_ID,
                                      DiamondClassifyPrompter::tr("DIAMOND Classification"),
@@ -259,7 +259,7 @@ void DiamondClassifyWorkerFactory::init() {
                           DiamondClassifyPrompter::tr("In general, DIAMOND is a sequence aligner for protein and translated DNA searches similar to "
                                                       "the NCBI BLAST software tools. However, it provides a speedup of BLAST ranging up to x20,000.<br>"
                                                       "Using this workflow element one can use DIAMOND for taxonomic classification of short DNA reads "
-                                                      "and longer sequences such as scaffolds."));
+                                                      "and longer sequences such as contigs."));
 
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));

@@ -195,7 +195,7 @@ bool ClassificationFilterValidator::validateParameters(const Actor *actor, Probl
 void ClassificationFilterWorkerFactory::init() {
 
     Descriptor desc( ACTOR_ID, ClassificationFilterWorker::tr("Filter by Classification"),
-        ClassificationFilterWorker::tr("The filter takes files with NGS reads or scaffolds, classified by one of the tools: "
+        ClassificationFilterWorker::tr("The filter takes files with NGS reads or contigs, classified by one of the tools: "
                                        "Kraken, CLARK, DIAMOND, WEVOTE. For each input file it outputs a file with unspecific "
                                        "sequences (i.e. sequences not classified by the tools, taxID = 0) and/or one or several "
                                        "files with sequences that belong to specific taxonomic group(s).") );
@@ -207,7 +207,7 @@ void ClassificationFilterWorkerFactory::init() {
                                                       "<li>URL(s) to FASTQ or FASTA file(s)."
                                                       "<li>Corresponding taxonomy classification of sequences in the files."
                                                       "</ul>"
-                                                      "To process single-end reads or scaffolds, pass the URL(s) to  the \"Input URL 1\" slot.<br><br>"
+                                                      "To process single-end reads or contigs, pass the URL(s) to  the \"Input URL 1\" slot.<br><br>"
                                                       "To process paired-end reads, pass the URL(s) to files with the \"left\" and \"right\" reads to the \"Input URL 1\" and \"Input URL 2\" slots correspondingly.<br><br>"
                                                       "The taxonomy classification data are received by one of the classification tools (Kraken, CLARK, or DIAMOND) and should correspond to the input files."
                 ));
@@ -215,7 +215,7 @@ void ClassificationFilterWorkerFactory::init() {
 //                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
         Descriptor outD(OUTPUT_PORT, ClassificationFilterWorker::tr("Output File(s)"),
                         ClassificationFilterWorker::tr("The port outputs URLs to files with NGS reads, classified by taxon IDs: one file per each specified taxon ID per each input file (or pair of files in case of PE reads).\n\n"
-                                                       "Either one (for SE reads or scaffolds) or two (for PE reads) output slots are used depending on the input data.\n\n"
+                                                       "Either one (for SE reads or contigs) or two (for PE reads) output slots are used depending on the input data.\n\n"
                                                        "See also the \"Input data\" parameter of the element."));
 
 //        Descriptor outD2(OUTPUT_PORT2, ClassificationFilterWorker::tr("Output sequences 2"),
@@ -248,7 +248,7 @@ void ClassificationFilterWorkerFactory::init() {
                                            "Select \"False\" to skip unspecific sequences. At least one specific taxon should be selected in the \"Save sequences with taxID\" parameter in this case."));
 
         Descriptor sequencingReadsDesc(SEQUENCING_READS, ClassificationFilterWorker::tr("Input data"),
-                                             ClassificationFilterWorker::tr("To filter single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\". Use the \"Input URL 1\" slot of the input port.<br><br>"
+                                             ClassificationFilterWorker::tr("To filter single-end (SE) reads or contigs, received by reads de novo assembly, set this parameter to \"SE reads or contigs\". Use the \"Input URL 1\" slot of the input port.<br><br>"
                                                                             "To filter paired-end (PE) reads, set the value to \"PE reads\". Use the \"\"Input URL 1\" and \"Input URL 2\" slots of the input port to input the NGS reads data.<br><br>"
                                                                             "Also, input the classification data, received from Kraken, CLARK, or DIAMOND, to the \"Taxonomy classification data\" input slot.<br><br>"
                                                                             "Either one or two slots of the output port are used depending on the input data."));
@@ -270,7 +270,7 @@ void ClassificationFilterWorkerFactory::init() {
     QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap sequencingReadsMap;
-        sequencingReadsMap[ClassificationFilterWorker::tr("SE reads or scaffolds")] = SINGLE_END;
+        sequencingReadsMap[ClassificationFilterWorker::tr("SE reads or contigs")] = SINGLE_END;
         sequencingReadsMap[ClassificationFilterWorker::tr("PE reads")] = PAIRED_END;
 
         delegates[SEQUENCING_READS] = new ComboBoxDelegate(sequencingReadsMap);

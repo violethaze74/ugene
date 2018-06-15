@@ -2321,10 +2321,10 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
 
 GUI_TEST_CLASS_DEFINITION(test_4295) {
 /* 1. Open Workflow Designer
- * 2. Add elements Read File List and Write Plain Text
+ * 2. Add elements Read File URL(s) and Write Plain Text
  * 3. Set as input file human_T1.fa
  * 3. Add "Element with CMD" _common_data/scenarios/_regression/4295/test_4295.etc
- * 4. Connect elements Read File List > Element with CMD > Write Plain Text
+ * 4. Connect elements Read File URL(s) > Element with CMD > Write Plain Text
  * 5. Run workflow
  * Expected state: no errors in log
  */
@@ -2335,7 +2335,7 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     // start test
     GTLogTracer logTracer;
 
-    GTUtilsWorkflowDesigner::addElement(os, "File List");
+    GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTGlobals::sleep(200);
 
@@ -2350,14 +2350,14 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     GTGlobals::sleep(200);
     WorkflowProcessItem *cmdlineWorker = GTUtilsWorkflowDesigner::getWorker(os, "test_4295");
 
-    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "File List"), cmdlineWorker);
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"), cmdlineWorker);
     GTGlobals::sleep(200);
     GTUtilsWorkflowDesigner::connect(os, cmdlineWorker, GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
     GTGlobals::sleep(200);
     GTUtilsWorkflowDesigner::click(os, "test_4295");
     GTGlobals::sleep(200);
     QTableWidget* table = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-    GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by File List)", GTUtilsWorkflowDesigner::comboValue, table);
+    GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by Read File URL(s))", GTUtilsWorkflowDesigner::comboValue, table);
     GTUtilsWorkflowDesigner::click(os, "test_4295");
 
     class OkClicker : public Filler {
@@ -2954,14 +2954,14 @@ GUI_TEST_CLASS_DEFINITION(test_4386_2) {
 GUI_TEST_CLASS_DEFINITION(test_4391) {
     GTLogTracer logTracer;
 
-//    1. Create workflow { File List -> Cut Adapter }.
+//    1. Create workflow { Read File URL(s) -> Cut Adapter }.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    WorkflowProcessItem *fileList = GTUtilsWorkflowDesigner::addElement(os, "File List");
+    WorkflowProcessItem *fileList = GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)");
     WorkflowProcessItem *cutAdapter = GTUtilsWorkflowDesigner::addElement(os, "Cut Adapter");
     GTUtilsWorkflowDesigner::connect(os, fileList, cutAdapter);
 
 //    2. Set "_common_data/fastq/illumina.fastq" as input.
-    GTUtilsWorkflowDesigner::addInputFile(os, "File List", testDir + "_common_data/fastq/illumina.fastq");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", testDir + "_common_data/fastq/illumina.fastq");
 
 //    3. Run the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);

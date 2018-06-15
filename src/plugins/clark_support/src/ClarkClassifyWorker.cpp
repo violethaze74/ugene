@@ -173,7 +173,7 @@ void ClarkClassifyWorkerFactory::init() {
     QList<PortDescriptor*> p;
     {
         Descriptor inD(INPUT_PORT, ClarkClassifyWorker::tr("Input sequences"), ClarkClassifyWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                                                                       "In case of SE reads or scaffolds use the \"Input URL 1\" slot only.\n\n"
+                                                                                                       "In case of SE reads or contigs use the \"Input URL 1\" slot only.\n\n"
                                                                                                        "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
                                                                                                        "See also the \"Input data\" parameter of the element."));
         Descriptor outD(OUTPUT_PORT, ClarkClassifyWorker::tr("CLARK Classification"), ClarkClassifyWorker::tr("A map of sequence names with the associated taxonomy IDs, classified by CLARK."));
@@ -251,7 +251,7 @@ void ClarkClassifyWorkerFactory::init() {
             ClarkClassifyWorker::tr("Use multiple threads for the classification and, with the \"Load database into memory\" option enabled, for the loading of the database into RAM (-n)."));
 
         Descriptor sequencingReadsDesc(SEQUENCING_READS, ClarkClassifyWorker::tr("Input data"),
-                                             ClarkClassifyWorker::tr("To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\".<br><br>"
+                                             ClarkClassifyWorker::tr("To classify single-end (SE) reads or contigs, received by reads de novo assembly, set this parameter to \"SE reads or contigs\".<br><br>"
                                                                      "To classify paired-end (PE) reads, set the value to \"PE reads\".<br><br>"
                                                                      "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                      "The input files should be in FASTA or FASTQ formats."));
@@ -305,33 +305,19 @@ void ClarkClassifyWorkerFactory::init() {
     QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap sequencingReadsMap;
-        sequencingReadsMap[ClarkClassifyWorker::tr("SE reads or scaffolds")] = SINGLE_END;
+        sequencingReadsMap[ClarkClassifyWorker::tr("SE reads or contigs")] = SINGLE_END;
         sequencingReadsMap[ClarkClassifyWorker::tr("PE reads")] = PAIRED_END;
         delegates[SEQUENCING_READS] = new ComboBoxDelegate(sequencingReadsMap);
 
         QVariantMap toolMap;
         toolMap["CLARK"] = ClarkClassifySettings::TOOL_DEFAULT;
         toolMap["CLARK-l"] = ClarkClassifySettings::TOOL_LIGHT;
-        //toolMap["CLARK-spaced"] = ClarkClassifySettings::TOOL_SPACED; //FIXME spaced not supported yet
         delegates[TOOL_VARIANT] = new ComboBoxDelegate(toolMap);
 
         DelegateTags outputUrlTags;
         outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
         outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareFileFilter("CSV", QStringList("csv"), false, QStringList()));
         delegates[OUTPUT_URL] = new URLDelegate(outputUrlTags, "clark/output");
-
-//        QVariantMap rankMap;
-//        rankMap["Species"] = ClarkClassifySettings::Species;
-//        rankMap["Genus"] = ClarkClassifySettings::Genus;
-//        rankMap["Family"] = ClarkClassifySettings::Family;
-//        rankMap["Order"] = ClarkClassifySettings::Order;
-//        rankMap["Class"] = ClarkClassifySettings::Class;
-//        rankMap["Phylum"] = ClarkClassifySettings::Phylum;
-//        delegates[TAXONOMY_RANK] = new ComboBoxDelegate(rankMap);
-//
-//        DelegateTags tags;
-//        tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::defaultStr());
-//        delegates[TAXONOMY] = new URLDelegate(tags, "clark/taxonomy", true, false, false);
 
         QVariantMap lenMap;
         lenMap["minimum"] = QVariant(2);
@@ -347,7 +333,6 @@ void ClarkClassifyWorkerFactory::init() {
         modeMap["Default"] = ClarkClassifySettings::Default;
         modeMap["Full"] = ClarkClassifySettings::Full;
         modeMap["Express"] = ClarkClassifySettings::Express;
-        //modeMap["Spectrum"] = ClarkClassifySettings::Spectrum; //FIXME spaced not supported yet
         delegates[MODE] = new ComboBoxDelegate(modeMap);
 
         QVariantMap factorMap;
@@ -401,11 +386,9 @@ void ClarkClassifyWorker::init() {
     paired = (getValue<QString>(SEQUENCING_READS) == PAIRED_END);
 
     input = ports.value(/*paired ? PAIRED_INPUT_PORT :*/ INPUT_PORT);
-    //pairedInput = ports.value(PAIRED_INPUT_PORT);
     output = ports.value(OUTPUT_PORT);
 
     SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), );
-//    SAFE_POINT(NULL != pairedInput, QString("Port with id '%1' is NULL").arg(PAIRED_INPUT_PORT), );
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
 
     output->addComplement(input);
