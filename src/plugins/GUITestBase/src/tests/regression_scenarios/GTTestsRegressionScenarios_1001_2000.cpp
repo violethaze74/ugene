@@ -793,7 +793,7 @@ GUI_TEST_CLASS_DEFINITION(test_1037){
 
 GUI_TEST_CLASS_DEFINITION(test_1038) {
 //    1. Open WD
-//    2. Create a scheme with the following elments: "Read assembly", "Write sequence", "Split assembly into sequences"
+//    2. Create a scheme with the following elments: "Read NGS Reads Assembly", "Write sequence", "Split assembly into sequences"
 //    3. Set samples/Assembly/chrM.sorted.bam as an input assembly. Set any output sequence file
 //    4. Run the scheme
 //    5. Open chrM in assembly browser
@@ -801,7 +801,7 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    WorkflowProcessItem* readAsmbl = GTUtilsWorkflowDesigner::addElement(os, "Read Assembly");
+    WorkflowProcessItem* readAsmbl = GTUtilsWorkflowDesigner::addElement(os, "Read NGS Reads Assembly");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/small.bam.sorted.bam");
 
     WorkflowProcessItem* split = GTUtilsWorkflowDesigner::addElement(os, "Split Assembly into Sequences");
@@ -3750,8 +3750,8 @@ GUI_TEST_CLASS_DEFINITION(test_1342) {
     GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTKeyboardDriver::keySequence("mer");
 
-    // 3. use context menu at the edit field : Add element->Data readers->File lists
-    // Expected : there is no "File list" element in the menu. UGENE doesn't crash
+    // 3. use context menu at the edit field : Add element->Data readers->Read File URL(s)
+    // Expected : there is no "Read File URL(s)" element in the menu. UGENE doesn't crash
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CustomPopupChecker));
     GTWidget::click(os, GTWidget::findWidget(os, "sceneView"), Qt::RightButton);
 }
@@ -8413,19 +8413,19 @@ GUI_TEST_CLASS_DEFINITION(test_1918) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //2. Place to the empty scheme "File List" and "File Conversion" elements
-    WorkflowProcessItem *fileList = GTUtilsWorkflowDesigner::addElement(os, "File List");
+    //2. Place to the empty scheme "Read File URL(s)" and "File Conversion" elements
+    WorkflowProcessItem *fileList = GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)");
     WorkflowProcessItem *converter = GTUtilsWorkflowDesigner::addElement(os, "File Format Conversion");
 
     //3. Bind the elements
     GTUtilsWorkflowDesigner::connect(os, fileList, converter);
 
-    //4. Add the following input files to the "File List" dataset: "test/_common_data/mega/MegaTest_1.meg",
+    //4. Add the following input files to the "Read File URL(s)" dataset: "test/_common_data/mega/MegaTest_1.meg",
     //                                                             "test/_common_data/mega/MegaTest_2.meg",
     //                                                             "test/_common_data/clustal/align.aln"
-    GTUtilsWorkflowDesigner::addInputFile(os, "File List", testDir + "_common_data/mega/MegaTest_1.meg");
-    GTUtilsWorkflowDesigner::addInputFile(os, "File List", testDir + "_common_data/mega/MegaTest_2.meg");
-    GTUtilsWorkflowDesigner::addInputFile(os, "File List", testDir + "_common_data/clustal/align.aln");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", testDir + "_common_data/mega/MegaTest_1.meg");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", testDir + "_common_data/mega/MegaTest_2.meg");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", testDir + "_common_data/clustal/align.aln");
 
     //5. Set the following parameters of the "File Conversion" element: { Document format : nexus },
     //                                                                  { Excluded formats : clustal }
@@ -8449,7 +8449,7 @@ GUI_TEST_CLASS_DEFINITION(test_1918) {
 
 GUI_TEST_CLASS_DEFINITION( test_1919 )
 {
-    //1) Create the WD scheme: File list -> File conversions.
+    //1) Create the WD scheme: Read File URL(s) -> File conversions.
     //2) Set input file: a BAM file (e.g _common_data/bam/scerevisiae.bam).
     //3) Set the result format of the converter: BAM
     //4) Run the scheme.
@@ -8459,15 +8459,15 @@ GUI_TEST_CLASS_DEFINITION( test_1919 )
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    GTUtilsWorkflowDesigner::addAlgorithm( os, "File List" );
+    GTUtilsWorkflowDesigner::addAlgorithm( os, "Read File URL(s)" );
     GTUtilsWorkflowDesigner::addAlgorithm( os, "File Format Conversion" );
 
-    WorkflowProcessItem* fileList = GTUtilsWorkflowDesigner::getWorker(os, "File List");
+    WorkflowProcessItem* fileList = GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)");
     WorkflowProcessItem* fileConversion = GTUtilsWorkflowDesigner::getWorker(os, "File Format Conversion");
 
     GTUtilsWorkflowDesigner::connect(os, fileList, fileConversion);
 
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "File List"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read File URL(s)"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/scerevisiae.bam");
 

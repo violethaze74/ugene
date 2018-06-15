@@ -282,7 +282,7 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
 
 GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     //1. Open preferences and set memory limit per task 500000MB
-    //2. Open WD and compose next scheme "File list" -> "SnpEff annotation and filtration"
+    //2. Open WD and compose next scheme "Read File URL(s)" -> "SnpEff annotation and filtration"
     //3. Run schema.
     //Expected state : there is problem on dashboard "A problem occurred during allocating memory for running SnpEff."
     class MemorySetter : public CustomScenario {
@@ -327,7 +327,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_5027_2) {
     //1. Open preferences and set memory limit per task 512MB
-    //2. Open WD and compose next scheme "File list" -> "SnpEff annotation and filtration"
+    //2. Open WD and compose next scheme "Read File URL(s)" -> "SnpEff annotation and filtration"
     //3. Run schema.
     //Expected state : there is problem on dashboard "There is not enough memory to complete the SnpEff execution."
     class MemorySetter : public CustomScenario {
@@ -658,7 +658,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
     GTKeyboardUtils::copy(os);
 
 //    4. Press the next key sequence:
-//        ﻿Windows and Linux: Shift+Ins
+//        Windows and Linux: Shift+Ins
 //        macOS: Meta+Y
 #ifndef Q_OS_MAC
     GTKeyboardUtils::paste(os);
@@ -681,7 +681,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
                   .arg(expectedDocumentsCount).arg(documentsCount));
 
 //    5. Press the next key sequence:
-//        ﻿Windows and Linux: Ctrl+V
+//        Windows and Linux: Ctrl+V
 //        macOS: Cmd+V
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);     // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
 
@@ -1003,7 +1003,7 @@ GUI_TEST_CLASS_DEFINITION(test_5335) {
 
 GUI_TEST_CLASS_DEFINITION(test_5346) {
     // 1. Open WD
-    // 2. Create the workflow: File List - FastQC Quality Control
+    // 2. Create the workflow: Read File URL(s) - FastQC Quality Control
     // 3. Set empty input file
     // Expected state: there is an error "The input file is empty"
     GTLogTracer l;
@@ -1012,7 +1012,7 @@ GUI_TEST_CLASS_DEFINITION(test_5346) {
 
     QString emptyFile = sandBoxDir + "test_5346_empty";
     GTFile::create(os, emptyFile);
-    WorkflowProcessItem* fileList = GTUtilsWorkflowDesigner::addElement(os, "File List");
+    WorkflowProcessItem* fileList = GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, emptyFile);
 
     WorkflowProcessItem* fastqc = GTUtilsWorkflowDesigner::addElement(os, "FastQC Quality Control");
@@ -1317,8 +1317,8 @@ GUI_TEST_CLASS_DEFINITION(test_5412) {
     GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "/_common_data/reads/wrong_order/align_bwa_mem.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsWorkflowDesigner::addInputFile(os, "File List 1", testDir + "/_common_data/reads/wrong_order/e_coli_mess_1.fastq");
-    GTUtilsWorkflowDesigner::addInputFile(os, "File List 2", testDir + "/_common_data/reads/wrong_order/e_coli_mess_2.fastq");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s) 1", testDir + "/_common_data/reads/wrong_order/e_coli_mess_1.fastq");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s) 2", testDir + "/_common_data/reads/wrong_order/e_coli_mess_2.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
     GTUtilsWorkflowDesigner::setParameter(os, "Output folder", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);

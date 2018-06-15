@@ -1298,7 +1298,7 @@ GUI_TEST_CLASS_DEFINITION(test_0750) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show scripting options"));
     GTWidget::click(os, GTAction::button(os, GTAction::findActionByText(os, "Scripting mode")));
 //    3. Drag the "Read from remote database" element to the Scene.
-    GTUtilsWorkflowDesigner::addElement(os, "Read from Remote Database");
+    GTUtilsWorkflowDesigner::addElement(os, "Read Sequence from Remote Database");
 //    4. Press the "..." button of the "Resource IDs" value cell.
 
     class Custom : public CustomScenario {
@@ -2406,13 +2406,13 @@ GUI_TEST_CLASS_DEFINITION(test_0861_5){
 
 GUI_TEST_CLASS_DEFINITION(test_0866) {
 //1. Open WD
-//2. Ad the following elements to the scheme: File List, Write Plain Text 1, Write Plain Text 2
-//3. Connect File List to both writers
-//Expected state: File List connected successfully
+//2. Ad the following elements to the scheme: Read File URL(s), Write Plain Text 1, Write Plain Text 2
+//3. Connect Read File URL(s) to both writers
+//Expected state: Read File URL(s) connected successfully
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    WorkflowProcessItem *fileList = GTUtilsWorkflowDesigner::addElement(os, "File List");
+    WorkflowProcessItem *fileList = GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)");
     WorkflowProcessItem *writer1 = GTUtilsWorkflowDesigner::addElement(os, "Write Plain Text");
     GTUtilsWorkflowDesigner::addElement(os, "Write Plain Text");
 
@@ -2686,7 +2686,7 @@ GUI_TEST_CLASS_DEFINITION(test_0896) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
-    GTUtilsWorkflowDesigner::click(os, "File List");
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bowtie/pattern/e_coli_1000.sam");
 
     GTUtilsWorkflowDesigner::runWorkflow(os);

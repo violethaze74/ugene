@@ -1847,7 +1847,7 @@ void WorkflowView::sl_selectPrototype(Workflow::ActorPrototype* p, bool putToSce
         if (putToScene) {
             addProcess(currentActor, scene->getLastMousePressPoint());
         } else {
-            propertyEditor->setDescriptor(p, tr("Drag the palette element to the scene or just click on the scene to add the element."));
+            propertyEditor->setDescriptor(p, tr("Drag an element to the scene to add it to the workflow."));
             scene->views().at(0)->setCursor(Qt::CrossCursor);
         }
     }

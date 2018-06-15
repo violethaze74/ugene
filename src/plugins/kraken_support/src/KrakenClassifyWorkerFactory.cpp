@@ -66,7 +66,7 @@ const QString KrakenClassifyWorkerFactory::MIN_HITS_NUMBER_ATTR_ID = "min-hits";
 const QString KrakenClassifyWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
 const QString KrakenClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID = "preload";
 
-const QString KrakenClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or scaffolds");
+const QString KrakenClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or contigs");
 const QString KrakenClassifyWorkerFactory::PAIRED_END_TEXT = QObject::tr("PE reads");
 
 KrakenClassifyWorkerFactory::KrakenClassifyWorkerFactory()
@@ -100,7 +100,7 @@ void KrakenClassifyWorkerFactory::init() {
         const Descriptor inPortDesc(INPUT_PORT_ID,
                                     KrakenClassifyPrompter::tr("Input sequences"),
                                     KrakenClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                               "In case of SE reads or scaffolds use the \"Input URL 1\" slot only.\n\n"
+                                                               "In case of SE reads or contigs use the \"Input URL 1\" slot only.\n\n"
                                                                "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
                                                                "See also the \"Input data\" parameter of the element."));
         const Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Kraken Classification"), KrakenClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken."));
@@ -112,7 +112,7 @@ void KrakenClassifyWorkerFactory::init() {
     QList<Attribute *> attributes;
     {
         const Descriptor inputDataDesc(INPUT_DATA_ATTR_ID, KrakenClassifyPrompter::tr("Input data"),
-                                             KrakenClassifyPrompter::tr("To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\".<br><br>"
+                                             KrakenClassifyPrompter::tr("To classify single-end (SE) reads or contigs, received by reads de novo assembly, set this parameter to \"SE reads or contigs\".<br><br>"
                                                                         "To classify paired-end (PE) reads, set the value to \"PE reads\".<br><br>"
                                                                         "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                         "The input files should be in FASTA or FASTQ formats."));

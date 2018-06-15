@@ -1465,9 +1465,9 @@ GUI_TEST_CLASS_DEFINITION(test_3223){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3226) {
-    //1. Create a workflow with a 'File List' element.
+    //1. Create a workflow with a 'Read File URL(s)' element.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "File list");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read File URL(s)");
 
     ////2. Setup alias 'in' for input path.
     QMap<QPoint*, QString> map;
@@ -1476,8 +1476,8 @@ GUI_TEST_CLASS_DEFINITION(test_3226) {
     GTUtilsDialog::waitForDialog(os, new AliasesDialogFiller(os, map));
     GTWidget::click(os, GTAction::button(os, "Set parameter aliases"));
 
-    ////3. Copy and paste the 'File list' element.
-    GTUtilsWorkflowDesigner::click(os, "File List");
+    ////3. Copy and paste the 'Read File URL(s)' element.
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
     //GTKeyboardUtils::copy(os);
     GTWidget::click(os, GTAction::button(os, "Copy action"));
     GTKeyboardUtils::paste(os);
@@ -3829,7 +3829,7 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Assembly");
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read NGS Reads Assembly");
     CHECK_SET_ERR(read != NULL, "Added workflow element is NULL");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dirPath + "chrM.sam");
 
@@ -4624,7 +4624,7 @@ GUI_TEST_CLASS_DEFINITION(test_3715) {
     GTKeyboardDriver::keyClick( 'r', Qt::ControlModifier);
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Read Assembly") != 0, "Workflow errors list cant be empty");
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Read NGS Reads Assembly") != 0, "Workflow errors list cant be empty");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3717){
@@ -5964,7 +5964,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    GTUtilsWorkflowDesigner::click(os, "File List");
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/nrsf-chr21.fastq");
     GTUtilsWorkflowDesigner::createDataset(os);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/control-chr21.fastq");
