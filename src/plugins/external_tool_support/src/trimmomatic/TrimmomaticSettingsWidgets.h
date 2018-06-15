@@ -49,7 +49,7 @@ public:
     QString getMismatches() const;
     QString getPalindromeThreshold() const;
     QString getSimpleThreshold() const;
-    QString getOptionalParametrs() const;
+    QString getOptionalParameters() const;
 
 private slots:
     void sl_textChanged();

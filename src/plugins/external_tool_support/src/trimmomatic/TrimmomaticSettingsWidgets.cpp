@@ -58,12 +58,12 @@ TrimmomaticIlluminaClipSettingsWidget::TrimmomaticIlluminaClipSettingsWidget(Tri
     const QString mismatchesValue = owner->getMismatches();
     const QString palindromeThresholdValue = owner->getPalindromeThreshold();
     const QString simpleThresholdValue = owner->getSimpleThreshold();
-    const QString optionalParametrsValue = owner->getOptionalParametrs();
-    const bool isOptionalParametrsValue = owner->optionalSettingsEnabled();
+    const QString optionalParametresValue = owner->getOptionalParameters();
+    const bool isoptionalParametresValue = owner->optionalSettingsEnabled();
     mismatches->setText(mismatchesValue);
     palindromeThreshold->setText(palindromeThresholdValue);
     simpleThreshold->setText(simpleThresholdValue);
-    optionalSettingsDialog = new TrimmomaticOptionalSettings(isOptionalParametrsValue, optionalParametrsValue);
+    optionalSettingsDialog = new TrimmomaticOptionalSettings(isoptionalParametresValue, optionalParametresValue);
 
     connect(pushButton, SIGNAL(clicked()), optionalSettingsDialog, SLOT(sl_showDialog()));
     
@@ -75,7 +75,7 @@ TrimmomaticIlluminaClipSettingsWidget::~TrimmomaticIlluminaClipSettingsWidget() 
     owner->setMismatches(mismatches->text());
     owner->setPalindromeThreshold(palindromeThreshold->text());
     owner->setSimpleThreshold(simpleThreshold->text());
-    owner->setOptionalParametrs(optionalSettingsDialog->getParametrs());
+    owner->setoptionalParametres(optionalSettingsDialog->getParametrs());
     owner->setOptionalSettingsEnabled(optionalSettingsDialog->useOptionalSettings());
     owner->setNullPointerToWidget();
     delete optionalSettingsDialog;
@@ -97,7 +97,7 @@ QString TrimmomaticIlluminaClipSettingsWidget::getSimpleThreshold() const {
     return simpleThreshold->text();
 }
 
-QString TrimmomaticIlluminaClipSettingsWidget::getOptionalParametrs() const {
+QString TrimmomaticIlluminaClipSettingsWidget::getOptionalParameters() const {
     CHECK(optionalSettingsDialog->useOptionalSettings(), QString());
 
     return optionalSettingsDialog->getParametrs();
