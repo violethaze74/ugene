@@ -155,7 +155,7 @@ void KrakenClassifyWorkerFactory::init() {
 
         attributes << new Attribute(preloadDatabaseDesc, BaseTypes::BOOL_TYPE(), Attribute::None, true);
         attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
-        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+		attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
         minHitsAttribute->addRelation(new VisibilityRelation(QUICK_OPERATION_ATTR_ID, "true"));
         databaseAttribute->addRelation(new DatabaseSizeRelation(PRELOAD_DATABASE_ATTR_ID));
