@@ -41,9 +41,14 @@ class U2GUI_EXPORT HelpButton: public QObject {
 public:
     HelpButton(QObject *parent, QDialogButtonBox *b, const QString& pageId);
     HelpButton(QObject *parent, QAbstractButton *b, const QString& pageId);
+
     void updatePageId(const QString &pageId);
+
+    static const QString INVALID_VALUE;
+
 protected slots:
     virtual void sl_buttonClicked();
+
 protected:
     QString pageId;
     QPushButton *helpButton;

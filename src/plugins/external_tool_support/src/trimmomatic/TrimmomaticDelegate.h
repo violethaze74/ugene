@@ -28,9 +28,7 @@
 
 #include <U2Gui/SaveDocumentController.h>
 
-#include "TrimmomaticSettingsWidgets.h"
-#include "TrimmomaticStepsFactory.h"
-
+#include "TrimmomaticStep.h"
 #include "ui_TrimmomaticPropertyDialog.h"
 
 namespace U2 {
@@ -68,13 +66,12 @@ public slots:
     void setValue(const QVariant& value);
 
 private slots:
+    void sl_textEdited();
     void sl_showDialog();
-
 
 private:
     QLineEdit *lineEdit;
     QToolButton *toolButton;
-    QString text;
 };
 
 class TrimmomaticPropertyDialog : public QDialog, private Ui_TrimmomaticPropertyDialog {
@@ -85,24 +82,28 @@ public:
     QString getValue() const;
 
 private slots:
-    void sl_selectionChanged();
+    void sl_currentRowChanged();
     void sl_addStep(QAction* a);
     void sl_moveStepUp();
     void sl_moveStepDown();
     void sl_removeStep();
-    void sl_checkOkEnabled();
+    void sl_updateOkButton();
 
 private:
     void emptySelection();
-    void disconnectSelectionChanged();
-    void connectSelectionChanged();
     void enableButtons(bool setEnabled);
     static QString defaultDir();
 
-    QList<TrimmomaticBaseController*> steps;
+    void addStep(TrimmomaticStep *step);
+    void parseCommand(const QString &command);
+
+    QList<TrimmomaticStep *> steps;
     QWidget* currentWidget;
-    TrimmomaticDefaultSettingsWidget* defaultWidget;
+    QWidget *defaultSettingsWidget;
     QMenu *menu;
+
+    static const QString DEFAULT_DESCRIPTION;
+    static const QString DEFAULT_SETTINGS_TEXT;
 };
 
 }// namespace LocalWorkflow

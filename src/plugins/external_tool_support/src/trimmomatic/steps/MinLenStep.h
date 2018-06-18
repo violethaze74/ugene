@@ -19,25 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TRIMMOMATIC_SUPPORT_H_
-#define _U2_TRIMMOMATIC_SUPPORT_H_
+#ifndef _U2_MIN_LEN_STEP_H_
+#define _U2_MIN_LEN_STEP_H_
 
-#include <U2Core/ExternalToolRegistry.h>
-
-#define ET_TRIMMOMATIC "Trimmomatic"
+#include "trimmomatic/TrimmomaticStep.h"
 
 namespace U2 {
+namespace LocalWorkflow {
 
-class TrimmomaticSupport : public ExternalTool {
+class MinLenStep : public TrimmomaticStep {
     Q_OBJECT
 public:
-    TrimmomaticSupport(const QString &name, const QString& path = "");
-    ~TrimmomaticSupport();
+    MinLenStep();
+
+    TrimmomaticStepSettingsWidget* createWidget() const;
 
 private:
-    void initTrimmomaticSteps();
+    QString serializeState(const QVariantMap &widgetState) const;
+    QVariantMap parseState(const QString &command) const;
 };
 
-} // namespace U2
+class MinLenStepFactory : public TrimmomaticStepFactory {
+public:
+    static const QString ID;
 
-#endif // _U2_TRIMMOMATIC_SUPPORT_H_
+    MinLenStepFactory();
+
+    MinLenStep *createStep() const;
+};
+
+}   // namespace LocalWorkflow
+}   // namespace U2
+
+#endif // _U2_MIN_LEN_STEP_H_
