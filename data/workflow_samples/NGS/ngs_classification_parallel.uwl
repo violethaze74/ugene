@@ -1,16 +1,14 @@
 #@UGENE_WORKFLOW
 #The workflow takes FASTQ files with metagenomic NGS reads as input and process them as follows:
-# * Pre-processing:
-#   - Filter the reads by the CASAVA header (for Illumina platform).
-#   - Cut the adapter sequences.
-#   - Trim reads ends by quality.
-#   - Provide FastQC reads quality report.
+# * Improve reads quality with Trimmomatic
+# * Provide FastQC reads quality reports
 # * Classification:
 #   - Classify the pre-processed reads with Kraken.
 #   - Classify these reads with CLARK.
 #   - Classify these reads with DIAMOND (in case of SE reads).
 #   - Ensemble the classification output into a CSV file.
 #   - Improve classification with WEVOTE.
+#   - Provide general classification reports
 
 workflow "Parallel NGS reads classification" {
     .meta {

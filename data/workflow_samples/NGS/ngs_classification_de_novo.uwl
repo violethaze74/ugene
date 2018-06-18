@@ -1,14 +1,12 @@
 #@UGENE_WORKFLOW
 #The workflow takes FASTQ files with metagenomic NGS reads as input and process them as follows:
-# * Pre-processing:
-#   - Filter the reads by the CASAVA header (for Illumina platform).
-#   - Cut the adapter sequences.
-#   - Trim reads ends by quality.
-#   - Provide FastQC reads quality report.
+# * Improve reads quality with Trimmomatic
+# * Provide FastQC reads quality reports
 # * De novo assembly:
 #   - Assemble the reads into scaffolds with SPAdes.
 # * Classification:
 #   - Classify the assembled scaffolds with Kraken.
+# * Provide general classification report
 
 
 workflow "Scaffolds assembly and classification" {
