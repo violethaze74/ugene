@@ -5537,10 +5537,10 @@ GUI_TEST_CLASS_DEFINITION(test_2887) {
     //1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //2. Place Tophat element on the scene
-    GTUtilsWorkflowDesigner::addAlgorithm( os, "Find Splice Junctions with TopHat");
+    GTUtilsWorkflowDesigner::addAlgorithm( os, "Map RNA-Seq Reads with TopHat");
     CHECK_OP(os, );
     //3. check "Mate inner distance" parameter is 50
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Find Splice Junctions with TopHat"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Map RNA-Seq Reads with TopHat"));
     GTMouseDriver::click();
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getParameter(os, "Mate inner distance") == "50", "'Mate inner distance', Parameter value doesn't amtch");
 }
