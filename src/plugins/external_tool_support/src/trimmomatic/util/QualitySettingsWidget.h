@@ -19,25 +19,33 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TRIMMOMATIC_SUPPORT_H_
-#define _U2_TRIMMOMATIC_SUPPORT_H_
+#ifndef _U2_QUALITY_SETTINGS_WIDGET_H_
+#define _U2_QUALITY_SETTINGS_WIDGET_H_
 
-#include <U2Core/ExternalToolRegistry.h>
-
-#define ET_TRIMMOMATIC "Trimmomatic"
+#include "ui_QualitySettingsWidget.h"
+#include "trimmomatic/TrimmomaticStep.h"
 
 namespace U2 {
+namespace LocalWorkflow {
 
-class TrimmomaticSupport : public ExternalTool {
+class QualitySettingsWidget : public TrimmomaticStepSettingsWidget, private Ui_QualitySettingsWidget {
     Q_OBJECT
 public:
-    TrimmomaticSupport(const QString &name, const QString& path = "");
-    ~TrimmomaticSupport();
+    QualitySettingsWidget(const QString &toolTip);
+    ~QualitySettingsWidget();
 
-private:
-    void initTrimmomaticSteps();
+    bool validate() const;
+
+    QVariantMap getState() const;
+    void setState(const QVariantMap &state);
+
+    static QString serializeState(const QVariantMap &widgetState);
+    static QVariantMap parseState(const QString &command, const QString &stepName);
+
+    static const QString QUALITY;
 };
 
-} // namespace U2
+}   // namespace LocalWorkflow
+}   // namespace U2
 
-#endif // _U2_TRIMMOMATIC_SUPPORT_H_
+#endif // _U2_QUALITY_SETTINGS_WIDGET_H_
