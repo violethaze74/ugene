@@ -318,7 +318,7 @@ void SpadesWorkerFactory::init() {
     }
 
     Descriptor protoDesc(SpadesWorkerFactory::ACTOR_ID,
-        SpadesWorker::tr("Assemble genomes with SPAdes"),
+        SpadesWorker::tr("Assemble Reads with SPAdes"),
         SpadesWorker::tr("Performes assembly of input short reads."));
 
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
@@ -326,7 +326,7 @@ void SpadesWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new SpadesInputSlotsValidator());
     proto->addExternalTool(ET_SPADES);
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new SpadesWorkerFactory());
 }
 
