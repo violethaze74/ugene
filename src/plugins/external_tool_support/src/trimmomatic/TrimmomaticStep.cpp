@@ -90,7 +90,7 @@ void TrimmomaticStep::setCommand(const QString &command) {
 }
 
 bool TrimmomaticStep::validate() const {
-    return getSettingsWidget()->validate() const;
+    return getSettingsWidget()->validate();
 }
 
 TrimmomaticStepSettingsWidget *TrimmomaticStep::getSettingsWidget() const {
