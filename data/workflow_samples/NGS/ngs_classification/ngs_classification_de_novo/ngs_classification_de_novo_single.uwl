@@ -15,19 +15,6 @@ workflow "SE reads assembly and classification"{
         type:fastqc;
         name:"FastQC Before";
     }
-    casava-filter {
-        type:CASAVAFilter;
-        name:"CASAVA Filter";
-    }
-    cut-adapt {
-        type:CutAdaptFastq;
-        name:"Cut Adapter";
-        adapters-url:"";
-    }
-    quality-trim {
-        type:QualityTrim;
-        name:"Trim by Quality";
-    }
     fastqc-after {
         type:fastqc;
         name:"FastQC After";
@@ -45,111 +32,91 @@ workflow "SE reads assembly and classification"{
         type:classification-report;
         name:Report;
     }
+    trimmomatic {
+        type:trimmomatic;
+        name:Trimmomatic;
+    }
 
     .actor-bindings {
-        cut-adapt.out-file->quality-trim.in-file
-        casava-filter.out-file->cut-adapt.in-file
+        trimmomatic.out->fastqc-after.in-file
+        trimmomatic.out->spades.in-data
         get-se-reads-list.out->fastqc-before.in-file
-        get-se-reads-list.out->casava-filter.in-file
+        get-se-reads-list.out->trimmomatic.in
         spades.out-data->kraken-classify.in
-        quality-trim.out-file->fastqc-after.in-file
-        quality-trim.out-file->spades.in-data
         kraken-classify.out->classification-report.in
     }
 
     get-se-reads-list.reads-url1->fastqc-before.in-file.url
-    get-se-reads-list.reads-url1->casava-filter.in-file.url
-    casava-filter.url->cut-adapt.in-file.url
-    cut-adapt.url->quality-trim.in-file.url
-    quality-trim.url->fastqc-after.in-file.url
+    trimmomatic.reads-url1->fastqc-after.in-file.url
     spades.scaffolds-out->kraken-classify.in.reads-url1
-    quality-trim.url->spades.in-data.readsurl
+    trimmomatic.reads-url1->spades.in-data.readsurl
     kraken-classify.tax-data->classification-report.in.tax-data
+    get-se-reads-list.reads-url1->trimmomatic.in.reads-url1
 
     .meta {
         visual {
-            casava-filter {
-                pos:"-570 -630";
-                style:simple;
-                bg-color-simple:"127 127 127 255";
-                in-file.angle:180;
-                out-file.angle:360;
-            }
             classification-report {
-                pos:"-375 -300";
+                pos:"-480 -315";
                 style:simple;
                 bg-color-simple:"141 126 194 255";
                 in.angle:356.309;
             }
-            cut-adapt {
-                pos:"-375 -630";
-                style:simple;
-                bg-color-simple:"127 127 127 255";
-                in-file.angle:180;
-                out-file.angle:360;
-            }
             fastqc-after {
-                pos:"-60 -525";
+                pos:"-300 -705";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
-                in-file.angle:150.803;
+                in-file.angle:218.454;
             }
             fastqc-before {
-                pos:"-660 -525";
+                pos:"-570 -705";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
-                in-file.angle:138.366;
+                in-file.angle:222.397;
             }
             get-se-reads-list {
-                pos:"-750 -630";
+                pos:"-720 -600";
                 style:simple;
                 bg-color-simple:"23 106 239 255";
                 out.angle:360;
             }
             kraken-classify {
-                pos:"-180 -300";
+                pos:"-285 -315";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:90;
                 out.angle:182.045;
             }
-            quality-trim {
-                pos:"-180 -630";
-                style:simple;
-                bg-color-simple:"127 127 127 255";
-                in-file.angle:180;
-                out-file.angle:272.437;
-            }
             spades {
-                pos:"-180 -450";
+                pos:"-285 -465";
                 style:simple;
                 bg-color-simple:"168 50 117 255";
                 in-data.angle:90;
                 out-data.angle:272.49;
             }
-            casava-filter.out-file->cut-adapt.in-file {
-                text-pos:"-37.3359 -27";
-            }
-            cut-adapt.out-file->quality-trim.in-file {
-                text-pos:"-37.3359 -27";
-            }
-            get-se-reads-list.out->casava-filter.in-file {
-                text-pos:"-43 -27";
+            trimmomatic {
+                pos:"-450 -600";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in.angle:180;
+                out.angle:360;
             }
             get-se-reads-list.out->fastqc-before.in-file {
-                text-pos:"-29.3359 -10";
+                text-pos:"-34.3359 -23";
+            }
+            get-se-reads-list.out->trimmomatic.in {
+                text-pos:"-37.3359 -27";
             }
             kraken-classify.out->classification-report.in {
                 text-pos:"-45 -43";
             }
-            quality-trim.out-file->fastqc-after.in-file {
-                text-pos:"-22.3359 -17";
-            }
-            quality-trim.out-file->spades.in-data {
-                text-pos:"-37.3359 -27";
-            }
             spades.out-data->kraken-classify.in {
                 text-pos:"-37.3359 -14";
+            }
+            trimmomatic.out->fastqc-after.in-file {
+                text-pos:"-52 -27";
+            }
+            trimmomatic.out->spades.in-data {
+                text-pos:"-29 -12";
             }
         }
         wizard {
@@ -171,27 +138,21 @@ workflow "SE reads assembly and classification"{
             page {
                 id:2;
                 next:3;
-                title:Pre-proccessing;
+                title:"Trimmomatic settings";
                 parameters-area {
                     group {
-                        title:"Reads filtration";
+                        title:"Improve reads quality";
                         label-size:120;
-                        quality-trim.qual-id {
+                        trimmomatic.trimming-steps {
                         }
-                        quality-trim.len-id {
-                            label:"Min length";
+                        trimmomatic.generate-log {
                         }
-                        quality-trim.both-ends {
-                            label:"Trim both ends";
-                        }
-                        cut-adapt.front-url {
-                            label:"5’ adapters";
-                        }
-                        cut-adapt.adapters-url {
-                            label:"3’ adapters";
-                        }
-                        cut-adapt.anywhere-url {
-                            label:"5’ and 3’ adapters";
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        trimmomatic.threads {
                         }
                     }
                 }
@@ -263,7 +224,7 @@ workflow "SE reads assembly and classification"{
                         title:"Classification reports";
                         label-size:180;
                         classification-report.output-url {
-                            label:"Report for Kraken classification"
+                            label:"Report for Kraken classification";
                         }
                     }
                 }
