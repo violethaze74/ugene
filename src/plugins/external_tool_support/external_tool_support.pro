@@ -179,12 +179,26 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/trimmomatic/TrimmomaticDelegate.h \
            src/trimmomatic/TrimmomaticLogParser.h \
            src/trimmomatic/TrimmomaticPrompter.h \
-           src/trimmomatic/TrimmomaticSettingsWidgets.h \
-           src/trimmomatic/TrimmomaticStepsFactory.h \
+           src/trimmomatic/TrimmomaticStep.h \
            src/trimmomatic/TrimmomaticSupport.h \
            src/trimmomatic/TrimmomaticTask.h \
            src/trimmomatic/TrimmomaticWorker.h \
            src/trimmomatic/TrimmomaticWorkerFactory.h \
+           src/trimmomatic/steps/AvgQualStep.h \
+           src/trimmomatic/steps/CropStep.h \
+           src/trimmomatic/steps/HeadCropStep.h \
+           src/trimmomatic/steps/IlluminaClipStep.h \
+           src/trimmomatic/steps/LeadingStep.h \
+           src/trimmomatic/steps/MaxInfoStep.h \
+           src/trimmomatic/steps/MinLenStep.h \
+           src/trimmomatic/steps/SlidingWindowStep.h \
+           src/trimmomatic/steps/ToPhred33Step.h \
+           src/trimmomatic/steps/ToPhred64Step.h \
+           src/trimmomatic/steps/TrailingStep.h \
+           src/trimmomatic/util/LengthSettingsWidget.h \
+           src/trimmomatic/util/LineEditHighlighter.h \
+           src/trimmomatic/util/NoSettingsWidget.h \
+           src/trimmomatic/util/QualitySettingsWidget.h \
            src/utils/AlignMsaAction.h \
            src/utils/BaseShortReadsAlignerWorker.h \
            src/utils/BlastDBSelectorWidgetController.h \
@@ -223,10 +237,13 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/mrbayes/MrBayesDialog.ui \
          src/phyml/PhyMLDialog.ui \
          src/tcoffee/TCoffeeSupportRunDialog.ui \
-         src/trimmomatic/step_settings_forms/Default.ui \
-         src/trimmomatic/step_settings_forms/IlluminaClip.ui \
-         src/trimmomatic/step_settings_forms/IlluminaClipSettings.ui \
          src/trimmomatic/TrimmomaticPropertyDialog.ui \
+         src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui \
+         src/trimmomatic/steps/IlluminaClipSettingsWidget.ui \
+         src/trimmomatic/steps/MaxInfoSettingsWidget.ui \
+         src/trimmomatic/steps/SlidingWindowSettingsWidget.ui \
+         src/trimmomatic/util/LengthSettingsWidget.ui \
+         src/trimmomatic/util/QualitySettingsWidget.ui \
          src/snpeff/SnpEffDatabaseDialog.ui \
          src/spades/SpadesSettings.ui \
          src/utils/BlastAllSupportDialog.ui \
@@ -408,12 +425,26 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/trimmomatic/TrimmomaticDelegate.cpp \
            src/trimmomatic/TrimmomaticLogParser.cpp \
            src/trimmomatic/TrimmomaticPrompter.cpp \
-           src/trimmomatic/TrimmomaticSettingsWidgets.cpp \
-           src/trimmomatic/TrimmomaticStepsFactory.cpp \
+           src/trimmomatic/TrimmomaticStep.cpp \
            src/trimmomatic/TrimmomaticSupport.cpp \
            src/trimmomatic/TrimmomaticTask.cpp \
            src/trimmomatic/TrimmomaticWorker.cpp \
            src/trimmomatic/TrimmomaticWorkerFactory.cpp \
+           src/trimmomatic/steps/AvgQualStep.cpp \
+           src/trimmomatic/steps/CropStep.cpp \
+           src/trimmomatic/steps/HeadCropStep.cpp \
+           src/trimmomatic/steps/IlluminaClipStep.cpp \
+           src/trimmomatic/steps/LeadingStep.cpp \
+           src/trimmomatic/steps/MaxInfoStep.cpp \
+           src/trimmomatic/steps/MinLenStep.cpp \
+           src/trimmomatic/steps/SlidingWindowStep.cpp \
+           src/trimmomatic/steps/ToPhred33Step.cpp \
+           src/trimmomatic/steps/ToPhred64Step.cpp \
+           src/trimmomatic/steps/TrailingStep.cpp \
+           src/trimmomatic/util/LengthSettingsWidget.cpp \
+           src/trimmomatic/util/LineEditHighlighter.cpp \
+           src/trimmomatic/util/NoSettingsWidget.cpp \
+           src/trimmomatic/util/QualitySettingsWidget.cpp \
            src/utils/AlignMsaAction.cpp \
            src/utils/BlastDBSelectorWidgetController.cpp \
            src/utils/BaseShortReadsAlignerWorker.cpp \

@@ -19,25 +19,41 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TRIMMOMATIC_SUPPORT_H_
-#define _U2_TRIMMOMATIC_SUPPORT_H_
+#include <QLabel>
+#include <QVBoxLayout>
 
-#include <U2Core/ExternalToolRegistry.h>
-
-#define ET_TRIMMOMATIC "Trimmomatic"
+#include "NoSettingsWidget.h"
 
 namespace U2 {
+namespace LocalWorkflow {
 
-class TrimmomaticSupport : public ExternalTool {
-    Q_OBJECT
-public:
-    TrimmomaticSupport(const QString &name, const QString& path = "");
-    ~TrimmomaticSupport();
+NoSettingsWidget::NoSettingsWidget()
+{
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    setLayout(mainLayout);
+    mainLayout->addWidget(new QLabel(tr("There are no settings for this step.")));
+}
 
-private:
-    void initTrimmomaticSteps();
-};
+bool NoSettingsWidget::validate() const {
+    return true;
+}
 
-} // namespace U2
+QVariantMap NoSettingsWidget::getState() const {
+    return QVariantMap();
+}
 
-#endif // _U2_TRIMMOMATIC_SUPPORT_H_
+void NoSettingsWidget::setState(const QVariantMap &) {
+    // Do nothing
+}
+
+QString NoSettingsWidget::serializeState(const QVariantMap &) {
+    return QString();
+}
+
+QVariantMap NoSettingsWidget::parseState(const QString &) {
+    return QVariantMap();
+}
+
+}   // namespace LocalWorkflow
+}   // namespace U2

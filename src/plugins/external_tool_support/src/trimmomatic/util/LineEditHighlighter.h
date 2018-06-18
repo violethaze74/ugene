@@ -19,25 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TRIMMOMATIC_SUPPORT_H_
-#define _U2_TRIMMOMATIC_SUPPORT_H_
+#ifndef _U2_LINE_EDIT_HIGHLIGHTER_H_
+#define _U2_LINE_EDIT_HIGHLIGHTER_H_
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <QObject>
 
-#define ET_TRIMMOMATIC "Trimmomatic"
+class QLineEdit;
 
 namespace U2 {
 
-class TrimmomaticSupport : public ExternalTool {
+class LineEditHighlighter : public QObject {
     Q_OBJECT
 public:
-    TrimmomaticSupport(const QString &name, const QString& path = "");
-    ~TrimmomaticSupport();
+    LineEditHighlighter(QLineEdit *lineEdit);
+
+private slots:
+    void sl_textChanged(const QString &text);
 
 private:
-    void initTrimmomaticSteps();
+    QLineEdit *lineEdit;
 };
 
-} // namespace U2
+}   // namespace U2
 
-#endif // _U2_TRIMMOMATIC_SUPPORT_H_
+#endif // _U2_LINE_EDIT_HIGHLIGHTER_H_

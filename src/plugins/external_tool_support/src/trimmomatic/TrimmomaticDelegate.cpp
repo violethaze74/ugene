@@ -25,12 +25,14 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/SignalBlocker.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/MultiClickMenu.h>
 #include <U2Gui/WidgetWithLocalToolbar.h>
 
 #include "TrimmomaticDelegate.h"
+#include "TrimmomaticStep.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -102,6 +104,7 @@ TrimmomaticPropertyWidget::TrimmomaticPropertyWidget(QWidget* parent,
     lineEdit->setPlaceholderText(PLACEHOLDER);
     lineEdit->setObjectName("trimmomaticPropertyLineEdit");
     lineEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    connect(lineEdit, SIGNAL(textEdited(QString)), SLOT(sl_textEdited()));
 
     addMainWidget(lineEdit);
 
@@ -116,21 +119,23 @@ TrimmomaticPropertyWidget::TrimmomaticPropertyWidget(QWidget* parent,
 }
 
 QVariant TrimmomaticPropertyWidget::value() {
-    return text;
+    return lineEdit->text();
 }
 
 void TrimmomaticPropertyWidget::setValue(const QVariant& value) {
-    text = value.value<QString>();
-    lineEdit->setText(text);
+    lineEdit->setText(value.value<QString>());
+}
+
+void TrimmomaticPropertyWidget::sl_textEdited() {
+    emit si_valueChanged(value());
 }
 
 void TrimmomaticPropertyWidget::sl_showDialog() {
     QObjectScopedPointer<TrimmomaticPropertyDialog> dialog
-                            (new TrimmomaticPropertyDialog(text, this));
+                            (new TrimmomaticPropertyDialog(lineEdit->text(), this));
     if (QDialog::Accepted == dialog->exec()) {
         CHECK(!dialog.isNull(), );
-        text = dialog->getValue();
-        lineEdit->setText(text);
+        lineEdit->setText(dialog->getValue());
         emit si_valueChanged(value());
     }
 }
@@ -139,97 +144,97 @@ void TrimmomaticPropertyWidget::sl_showDialog() {
 /*TrimmomaticPropertyDialog*/
 /********************************************************************/
 
-static const int differentStepsQuantity = 11;
+const QString TrimmomaticPropertyDialog::DEFAULT_DESCRIPTION = QObject::tr("<html><head></head><body>"
+                                                               "<p>Click <img src=':/external_tool_support/images/add.png' width='16' height='16' /> and select a step. The following options are available:</p>"
+                                                               "<ul>"
+                                                               "<li>ILLUMINACLIP: Cut adapter and other illumina-specific sequences from the read.</li>"
+                                                               "<li>SLIDINGWINDOW: Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold.</li>"
+                                                               "<li>LEADING: Cut bases off the start of a read, if below a threshold quality.</li>"
+                                                               "<li>TRAILING: Cut bases off the end of a read, if below a threshold quality.</li>"
+                                                               "<li>CROP: Cut the read to a specified length.</li>"
+                                                               "<li>HEADCROP: Cut the specified number of bases from the start of the read.</li>"
+                                                               "<li>MINLEN: Drop the read if it is below a specified length.</li>"
+                                                               "<li>AVGQUAL: Drop the read if the average quality is below the specified level.</li>"
+                                                               "<li>TOPHRED33: Convert quality scores to Phred-33.</li>"
+                                                               "<li>TOPHRED64: Convert quality scores to Phred-64.</li>"
+                                                               "</ul>"
+                                                               "</body></html>");
+const QString TrimmomaticPropertyDialog::DEFAULT_SETTINGS_TEXT = QObject::tr("Add a step.");
 
 TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value, 
                                       QWidget *parent) : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "21433685");
+    new HelpButton(this, buttonBox, HelpButton::INVALID_VALUE);
     
     menu = new QMenu(this);
     new MultiClickMenu(menu);
-    for (int i = 0; i < differentStepsQuantity - 10; i++) {//remove -10 in UGENE-6096
-        QAction* step = new QAction(TrimmomaticSteps::name[i], menu->menuAction());
+
+    foreach (TrimmomaticStepFactory *factory, TrimmomaticStepsRegistry::getInstance()->getAllEntries()) {
+        QAction* step = new QAction(factory->getId(), menu->menuAction());
         menu->addAction(step);
     }
+
     buttonAdd->setMenu(menu);
 
     currentWidget = NULL;
+    defaultSettingsWidget = new QLabel(DEFAULT_SETTINGS_TEXT);
     listSteps->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    textDescription->setReadOnly(true);
+
     enableButtons(false);
     emptySelection();
     
-    connectSelectionChanged();
+    connect(listSteps, SIGNAL(currentRowChanged(int)), SLOT(sl_currentRowChanged()));
     connect(menu, SIGNAL(triggered(QAction*)), SLOT(sl_addStep(QAction*)));
-    connect(buttonAdd, SIGNAL(pressed()), SLOT(showMenu()));
     connect(buttonUp, SIGNAL(pressed()), SLOT(sl_moveStepUp()));
     connect(buttonDown, SIGNAL(pressed()), SLOT(sl_moveStepDown()));
     connect(buttonRemove, SIGNAL(pressed()), SLOT(sl_removeStep()));
+
+    parseCommand(value);
 }
 
 QString TrimmomaticPropertyDialog::getValue() const {
     QString result;
-    const int size = steps.size();
-    for (int i = 0; i < size; i++) {
-        result += steps[i]->generateReport();
-        if (i != size - 1) {
-            result += " ";
-        }
+    foreach (TrimmomaticStep *step, steps) {
+        result += step->getCommand();
+        result += " ";
     }
+    result.chop(1);
     return result;
 }
 
-void TrimmomaticPropertyDialog::sl_checkOkEnabled() {
-    bool isEnable = true;
-    foreach(TrimmomaticBaseController* step, steps) {
-        isEnable = isEnable && step->isOkEnable();
+void TrimmomaticPropertyDialog::sl_updateOkButton() {
+    bool isEnabled = !steps.isEmpty();
+    foreach (TrimmomaticStep *step, steps) {
+        isEnabled = isEnabled && step->validate();
     }
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isEnable);
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isEnabled);
 }
 
-void TrimmomaticPropertyDialog::sl_selectionChanged() {
-    CHECK(listSteps->selectedItems().size() == 1, );
+void TrimmomaticPropertyDialog::sl_currentRowChanged() {
+    const int currentStepNumber = listSteps->currentRow();
+    CHECK(-1 != currentStepNumber, );
+    SAFE_POINT(0 <= currentStepNumber && currentStepNumber < listSteps->count(), "Unexpected selected item", );
 
-    QListWidgetItem* currentItem = listSteps->selectedItems().first();
-    const int selectedStepNum = listSteps->row(currentItem);
-    CHECK(selectedStepNum != -1, );
-
-    const int size = listSteps->count();
-    SAFE_POINT(0 <= selectedStepNum && selectedStepNum < size,
-        "Unexpected selected item", );
-
-    TrimmomaticBaseController* selectedStep = steps[selectedStepNum];
+    TrimmomaticStep *selectedStep = steps[currentStepNumber];
 
     textDescription->setText(selectedStep->getDescription());
 
-    delete currentWidget;
-    currentWidget = selectedStep->createWidget();
+    currentWidget->hide();
+    currentWidget = selectedStep->getSettingsWidget();
     widgetStepSettings->layout()->addWidget(currentWidget);
+    currentWidget->show();
 }
 
 void TrimmomaticPropertyDialog::emptySelection() {
-    textDescription->setText(TrimmomaticBaseController::getDefaultDescription());
+    textDescription->setText(DEFAULT_DESCRIPTION);
 
-    delete currentWidget;
-    currentWidget = new TrimmomaticDefaultSettingsWidget();
+    currentWidget = defaultSettingsWidget;
     widgetStepSettings->layout()->addWidget(currentWidget);
+    currentWidget->show();
 }
 
 void TrimmomaticPropertyDialog::sl_addStep(QAction* a) {
-    switch (TrimmomaticSteps::name.indexOf(a->text())) {
-    case 0:
-        TrimmomaticIlluminaClipController* newStep =
-            new TrimmomaticIlluminaClipController;
-        connect(newStep, SIGNAL(si_checkOkEnable()), this, SLOT(sl_checkOkEnabled()));
-        steps << newStep;
-        break;
-    }
-
-    listSteps->addItem(steps.last()->getName());
-    if (steps.size() == 1) {
-        enableButtons(true);
-    }
+    addStep(TrimmomaticStepsRegistry::getInstance()->getById(a->text())->createStep());
 }
 
 void TrimmomaticPropertyDialog::sl_moveStepUp() {
@@ -244,14 +249,14 @@ void TrimmomaticPropertyDialog::sl_moveStepUp() {
 
     CHECK(selectedStepNum != 0, );
 
-    disconnectSelectionChanged();
-    QListWidgetItem* item = listSteps->takeItem(selectedStepNum);
-    SAFE_POINT_EXT(item != NULL, connectSelectionChanged(), );
+    {
+        SignalBlocker signalBlocker(listSteps);
+        Q_UNUSED(signalBlocker);
+        listSteps->insertItem(selectedStepNum - 1, listSteps->takeItem(selectedStepNum));
+    }
 
-    listSteps->insertItem(selectedStepNum - 1, item);
     steps.swap(selectedStepNum, selectedStepNum - 1);
-    connectSelectionChanged();
-    listSteps->setCurrentItem(item);
+    listSteps->setCurrentRow(selectedStepNum - 1);
 }
 
 void TrimmomaticPropertyDialog::sl_moveStepDown() {
@@ -266,14 +271,14 @@ void TrimmomaticPropertyDialog::sl_moveStepDown() {
 
     CHECK(selectedStepNum != size - 1, );
 
-    disconnectSelectionChanged();
-    QListWidgetItem* item = listSteps->takeItem(selectedStepNum);
-    SAFE_POINT_EXT(item != NULL, connectSelectionChanged(), );
+    {
+        SignalBlocker signalBlocker(listSteps);
+        Q_UNUSED(signalBlocker);
+        listSteps->insertItem(selectedStepNum + 1, listSteps->takeItem(selectedStepNum));
+    }
 
-    listSteps->insertItem(selectedStepNum + 1, item);
     steps.swap(selectedStepNum, selectedStepNum + 1);
-    connectSelectionChanged();
-    listSteps->setCurrentItem(item);
+    listSteps->setCurrentRow(selectedStepNum + 1);
 }
 
 void TrimmomaticPropertyDialog::sl_removeStep() {
@@ -286,23 +291,13 @@ void TrimmomaticPropertyDialog::sl_removeStep() {
     SAFE_POINT(0 <= selectedStepNum && selectedStepNum < size,
         "Unexpected selected item", );
 
-    listSteps->takeItem(selectedStepNum);
-    steps.removeAt(selectedStepNum);
-    sl_checkOkEnabled();
+    delete listSteps->takeItem(selectedStepNum);
+    delete steps.takeAt(selectedStepNum);
+    sl_updateOkButton();
     if (steps.size() == 0) {
         enableButtons(false);
         emptySelection();
     }
-}
-
-void TrimmomaticPropertyDialog::disconnectSelectionChanged() {
-    disconnect(listSteps, SIGNAL(itemSelectionChanged()),
-               this, SLOT(sl_selectionChanged()));
-}
-
-void TrimmomaticPropertyDialog::connectSelectionChanged() {
-    connect(listSteps, SIGNAL(itemSelectionChanged()),
-            SLOT(sl_selectionChanged()));
 }
 
 void TrimmomaticPropertyDialog::enableButtons(bool setEnabled) {
@@ -311,6 +306,37 @@ void TrimmomaticPropertyDialog::enableButtons(bool setEnabled) {
     buttonRemove->setEnabled(setEnabled);
 }
 
+void TrimmomaticPropertyDialog::addStep(TrimmomaticStep *step) {
+    steps << step;
+
+    connect(step, SIGNAL(si_valueChanged()), SLOT(sl_updateOkButton()));
+
+    listSteps->addItem(step->getName());
+    sl_updateOkButton();
+    if (steps.size() == 1) {
+        enableButtons(true);
+        listSteps->setCurrentRow(0);
+    }
+}
+
+void TrimmomaticPropertyDialog::parseCommand(const QString &command) {
+    QRegularExpression regexp("[^\\s\\\"']*\"[^\\\"]*\\\"[^\\s\\\"']*"
+                              "|"
+                              "[^\\s\\\"']*'[^']*'[^\\s\\\"']*"
+                              "|"
+                              "[^\\s\\\"']+");
+    QRegularExpressionMatchIterator stepCommands = regexp.globalMatch(command);
+    while (stepCommands.hasNext()) {
+        const QString stepCommand = stepCommands.next().captured();
+        const QString stepId = stepCommand.left(stepCommand.indexOf(":"));
+        TrimmomaticStepFactory *stepFactory = TrimmomaticStepsRegistry::getInstance()->getById(stepId);
+        CHECK_CONTINUE(NULL != stepFactory);
+
+        TrimmomaticStep *step = stepFactory->createStep();
+        step->setCommand(stepCommand);
+        addStep(step);
+    }
+}
 
 }   // namespace LocalWorkflow
 }   // namespace U2
