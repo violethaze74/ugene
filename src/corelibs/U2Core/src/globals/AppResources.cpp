@@ -274,7 +274,7 @@ void AppResourcePool::registerResource(AppResource* r) {
 }
 
 void AppResourcePool::unregisterResource(int id) {
-    SAFE_POINT(resources.contains(id), QString("Resource not found: %1").arg(id), );
+    CHECK(resources.contains(id), );
     delete resources.take(id);
 }
 
