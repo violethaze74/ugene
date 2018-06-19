@@ -1317,8 +1317,8 @@ GUI_TEST_CLASS_DEFINITION(test_5412) {
     GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "/_common_data/reads/wrong_order/align_bwa_mem.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s) 1", testDir + "/_common_data/reads/wrong_order/e_coli_mess_1.fastq");
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s) 2", testDir + "/_common_data/reads/wrong_order/e_coli_mess_2.fastq");
+    GTUtilsWorkflowDesigner::addInputFile(os, "File List 1", testDir + "/_common_data/reads/wrong_order/e_coli_mess_1.fastq");
+    GTUtilsWorkflowDesigner::addInputFile(os, "File List 2", testDir + "/_common_data/reads/wrong_order/e_coli_mess_2.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
     GTUtilsWorkflowDesigner::setParameter(os, "Output folder", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
