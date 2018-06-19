@@ -214,7 +214,7 @@ static bool isSorted(const QString &headerText) {
             continue;
         }
 
-        QStringList tokens = line.split('');
+        QStringList tokens = line.split('\t');
         for (int i = 1; i < tokens.size(); i++) {
             QString &token = tokens[i];
             int colonIdx = token.indexOf(':');
@@ -334,7 +334,7 @@ GUrl BAMUtils::sortBam(const GUrl &bamUrl, const QString &sortedBamBaseName, U2O
     // sort bam
     {
         coreLog.details(BAMUtils::tr("Sort bam file: \"%1\" using %2 Mb of memory. Result sorted file is: \"%3\"")
-            .arg(QString::fromLocal8Bit(bamFileName)).arg(maxMemMB).arg(QString::fromLocal8Bit(sortedFileName)));
+			.arg(QString::fromLocal8Bit(bamFileName)).arg(maxMemMB).arg(QString::fromLocal8Bit(sortedFileName)));
         size_t maxMemBytes = (size_t)(mB2bytes(maxMemMB)); // maxMemMB < 500 Mb, so the conversation is correct!
         bam_sort_core(0, bamFileName.constData(), baseName.toLocal8Bit().constData(), maxMemBytes); //maxMemBytes
     }
@@ -505,7 +505,7 @@ static void createHeader(bam_header_t *header, const QList<GObject*> &objects, U
     header->target_len = new uint32_t[header->n_targets];
 
     QByteArray headerText;
-    headerText += "@HDVN:1.4SO:coordinate\n";
+    headerText += "@HD\tVN:1.4\tSO:coordinate\n";
 
     int objIdx = 0;
     foreach (GObject *obj, objects) {
@@ -527,7 +527,7 @@ static void createHeader(bam_header_t *header, const QList<GObject*> &objects, U
         }
         header->target_len[objIdx] = seqLength;
 
-        headerText += QString("@SQSN:%1LN:%2\n").arg(seqName.constData()).arg(seqLength);
+        headerText += QString("@SQ\tSN:%1\tLN:%2\n").arg(seqName.constData()).arg(seqLength);
 
         objIdx++;
     }
@@ -710,7 +710,7 @@ namespace {
     }
 
     inline QByteArray parseReferenceName(const QByteArray &line) {
-        QList<QByteArray> columns = line.split('');
+        QList<QByteArray> columns = line.split('\t');
         if (columns.size() <= referenceColumn) {
             coreLog.error(BAMUtils::tr("Wrong line in a SAM file."));
             return "*";
