@@ -334,7 +334,7 @@ GUrl BAMUtils::sortBam(const GUrl &bamUrl, const QString &sortedBamBaseName, U2O
     // sort bam
     {
         coreLog.details(BAMUtils::tr("Sort bam file: \"%1\" using %2 Mb of memory. Result sorted file is: \"%3\"")
-			.arg(QString::fromLocal8Bit(bamFileName)).arg(maxMemMB).arg(QString::fromLocal8Bit(sortedFileName)));
+            .arg(QString::fromLocal8Bit(bamFileName)).arg(maxMemMB).arg(QString::fromLocal8Bit(sortedFileName)));
         size_t maxMemBytes = (size_t)(mB2bytes(maxMemMB)); // maxMemMB < 500 Mb, so the conversation is correct!
         bam_sort_core(0, bamFileName.constData(), baseName.toLocal8Bit().constData(), maxMemBytes); //maxMemBytes
     }
