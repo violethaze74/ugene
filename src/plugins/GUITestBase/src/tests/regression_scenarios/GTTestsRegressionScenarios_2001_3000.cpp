@@ -525,7 +525,7 @@ GUI_TEST_CLASS_DEFINITION( test_2021_6 )
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(44, 0), QPoint(44, 0));
 
     //3. Press BACKSPACE
-    GTKeyboardDriver::keyClick(Qt::Key_Backspace);    
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTGlobals::sleep(200);
 
     // 4. Expected state: the gap was deleted, selection moves to the previous symbol.
@@ -535,7 +535,7 @@ GUI_TEST_CLASS_DEFINITION( test_2021_6 )
 
     const QString finalMsaContent = GTClipboard::text(os);
     CHECK_SET_ERR("TAAGACTTCTAATTCGAGCCGAATTAGGTCAACCAGGATAC--C" == finalMsaContent,
-        QString("Unexpected MSA content has occurred: got %1").arg(finalMsaContent)); 
+        QString("Unexpected MSA content has occurred: got %1").arg(finalMsaContent));
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2021_7 )

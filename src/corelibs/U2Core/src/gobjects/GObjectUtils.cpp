@@ -304,7 +304,7 @@ GObject* GObjectUtils::selectObjectByReference(const GObjectReference& r, const 
             firstMatchedByName = o;
         }
     }
-    
+
     return firstMatchedByName;
 }
 

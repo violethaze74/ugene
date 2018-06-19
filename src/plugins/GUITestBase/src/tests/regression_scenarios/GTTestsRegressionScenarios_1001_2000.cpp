@@ -1777,7 +1777,7 @@ GUI_TEST_CLASS_DEFINITION(test_1133) {
     GTGlobals::sleep(500);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item)); 
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1152) {
@@ -4571,8 +4571,8 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
     //"Read Sequence" -> "Dump Sequence Info" -> "Write Plain Text"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");   
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump sequence info");    
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump sequence info");
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Plain Text");
     GTGlobals::sleep(100);
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"), GTUtilsWorkflowDesigner::getWorker(os, "Dump Sequence Info"));
@@ -8100,7 +8100,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     // 1) Create a schema with shrunk elements state.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
-   
+
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Align with MUSCLE"));
     GTMouseDriver::doubleClick();
 
@@ -8116,10 +8116,10 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Save workflow", GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << "Close all windows", GTGlobals::UseKey);  
+    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << "Close all windows", GTGlobals::UseKey);
     GTGlobals::sleep();
 
-    // 3) Reopen UGENE WD. 
+    // 3) Reopen UGENE WD.
     GTFileDialog::openFile(os, sandBoxDir, "test.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

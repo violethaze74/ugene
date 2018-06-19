@@ -41,14 +41,14 @@ public:
 
     QVariant getDisplayValue(const QVariant &value) const;
     PropertyDelegate* clone();
-    QWidget *createEditor(QWidget *parent, 
-                          const QStyleOptionViewItem &option, 
+    QWidget *createEditor(QWidget *parent,
+                          const QStyleOptionViewItem &option,
                           const QModelIndex &index) const;
-    PropertyWidget *createWizardWidget(U2OpStatus &os, 
+    PropertyWidget *createWizardWidget(U2OpStatus &os,
                                                   QWidget *parent) const;
 
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    void setModelData(QWidget *editor, QAbstractItemModel *model, 
+    void setModelData(QWidget *editor, QAbstractItemModel *model,
                                        const QModelIndex &index) const;
 
 private slots:

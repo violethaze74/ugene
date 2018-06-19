@@ -70,20 +70,20 @@ PropertyWidget* TrimmomaticDelegate::createWizardWidget(U2OpStatus &,
     return new TrimmomaticPropertyWidget(parent);
 }
 
-void TrimmomaticDelegate::setEditorData(QWidget *editor, 
+void TrimmomaticDelegate::setEditorData(QWidget *editor,
                                         const QModelIndex &index) const {
     const QVariant value = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    TrimmomaticPropertyWidget* propertyWidget = 
+    TrimmomaticPropertyWidget* propertyWidget =
                     qobject_cast<TrimmomaticPropertyWidget*>(editor);
     propertyWidget->setValue(value);
 }
 
-void TrimmomaticDelegate::setModelData(QWidget *editor, 
-                                       QAbstractItemModel *model, 
+void TrimmomaticDelegate::setModelData(QWidget *editor,
+                                       QAbstractItemModel *model,
                                        const QModelIndex &index) const {
-    TrimmomaticPropertyWidget* propertyWidget = 
+    TrimmomaticPropertyWidget* propertyWidget =
                     qobject_cast<TrimmomaticPropertyWidget*>(editor);
-    model->setData(index, propertyWidget->value(), 
+    model->setData(index, propertyWidget->value(),
                    ConfigurationEditor::ItemValueRole);
 }
 
@@ -161,11 +161,11 @@ const QString TrimmomaticPropertyDialog::DEFAULT_DESCRIPTION = QObject::tr("<htm
                                                                "</body></html>");
 const QString TrimmomaticPropertyDialog::DEFAULT_SETTINGS_TEXT = QObject::tr("Add a step.");
 
-TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value, 
+TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
                                       QWidget *parent) : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, HelpButton::INVALID_VALUE);
-    
+
     menu = new QMenu(this);
     new MultiClickMenu(menu);
 
@@ -182,7 +182,7 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
 
     enableButtons(false);
     emptySelection();
-    
+
     connect(listSteps, SIGNAL(currentRowChanged(int)), SLOT(sl_currentRowChanged()));
     connect(menu, SIGNAL(triggered(QAction*)), SLOT(sl_addStep(QAction*)));
     connect(buttonUp, SIGNAL(pressed()), SLOT(sl_moveStepUp()));

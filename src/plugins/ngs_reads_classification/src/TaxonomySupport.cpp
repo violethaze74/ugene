@@ -677,8 +677,8 @@ TaxonSelectionDialog::TaxonSelectionDialog(const QString &value, QWidget *parent
     setSizePolicy( QSizePolicy::Expanding,  QSizePolicy::Expanding);
 }
 
-QString TaxonSelectionDialog::getValue() const { 
-    return treeModel->getSelected(); 
+QString TaxonSelectionDialog::getValue() const {
+    return treeModel->getSelected();
 }
 
 }   // namespace LocalWorkflow

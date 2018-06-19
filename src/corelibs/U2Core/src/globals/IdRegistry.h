@@ -38,7 +38,7 @@ public:
         } else {
             registry.insert(t->getId(), t);
             return true;
-        } 
+        }
     }
     virtual T* unregisterEntry(const QString& id) {return registry.contains(id) ? registry.take(id) : NULL;}
     virtual ~IdRegistry() { qDeleteAll(registry.values());}
