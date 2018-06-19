@@ -160,8 +160,7 @@ const QString IlluminaClipSettingsWidget::SEED_MISMATCHES = "seedMismatches";
 const QString IlluminaClipSettingsWidget::PALINDROME_CLIP_THRESHOLD = "palindromeClipThreshold";
 const QString IlluminaClipSettingsWidget::SIMPLE_CLIP_THRESHOLD = "simpleClipThreshold";
 
-IlluminaClipSettingsWidget::IlluminaClipSettingsWidget()
-{
+IlluminaClipSettingsWidget::IlluminaClipSettingsWidget() {
     setupUi(this);
 
     new LineEditHighlighter(fileName);

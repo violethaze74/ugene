@@ -86,8 +86,7 @@ QVariantMap SlidingWindowStep::parseState(const QString &command) const {
 const QString SlidingWindowSettingsWidget::WINDOW_SIZE = "windowSize";
 const QString SlidingWindowSettingsWidget::REQUIRED_QUALITY = "requiredQuality";
 
-SlidingWindowSettingsWidget::SlidingWindowSettingsWidget()
-{
+SlidingWindowSettingsWidget::SlidingWindowSettingsWidget() {
     setupUi(this);
 
     leWindowSize->setValidator(new QIntValidator(1, std::numeric_limits<int>::max(), this));

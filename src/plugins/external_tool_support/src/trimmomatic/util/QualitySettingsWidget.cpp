@@ -28,8 +28,7 @@ namespace LocalWorkflow {
 
 const QString QualitySettingsWidget::QUALITY = "quality";
 
-QualitySettingsWidget::QualitySettingsWidget(const QString &toolTip)
-{
+QualitySettingsWidget::QualitySettingsWidget(const QString &toolTip) {
     setupUi(this);
 
     lblQualityThreshold->setToolTip(toolTip);

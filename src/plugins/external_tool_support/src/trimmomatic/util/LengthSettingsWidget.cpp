@@ -29,8 +29,7 @@ namespace LocalWorkflow {
 
 const QString LengthSettingsWidget::LENGTH = "length";
 
-LengthSettingsWidget::LengthSettingsWidget(const QString &toolTip)
-{
+LengthSettingsWidget::LengthSettingsWidget(const QString &toolTip) {
     setupUi(this);
 
     leLength->setValidator(new QIntValidator(1, std::numeric_limits<int>::max(), this));

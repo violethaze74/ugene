@@ -27,8 +27,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-NoSettingsWidget::NoSettingsWidget()
-{
+NoSettingsWidget::NoSettingsWidget() {
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(mainLayout);

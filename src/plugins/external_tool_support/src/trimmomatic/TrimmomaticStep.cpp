@@ -79,7 +79,7 @@ const QString &TrimmomaticStep::getDescription() const {
 }
 
 QString TrimmomaticStep::getCommand() const {
-    const QString serializedState = serializeState(getSettingsWidget()->getState());;
+    const QString serializedState = serializeState(getSettingsWidget()->getState());
     return getId() + (serializedState.isEmpty() ? "" : ":" + serializedState);
 }
 

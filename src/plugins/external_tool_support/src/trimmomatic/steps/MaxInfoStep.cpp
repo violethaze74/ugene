@@ -90,8 +90,7 @@ QVariantMap MaxInfoStep::parseState(const QString &command) const {
 const QString MaxInfoSettingsWidget::TARGET_LENGTH = "targetLength";
 const QString MaxInfoSettingsWidget::STRICTNESS = "strictness";
 
-MaxInfoSettingsWidget::MaxInfoSettingsWidget()
-{
+MaxInfoSettingsWidget::MaxInfoSettingsWidget() {
     setupUi(this);
 
     connect(sbTargetLength, SIGNAL(valueChanged(int)), SIGNAL(si_valueChanged()));
