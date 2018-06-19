@@ -62,6 +62,9 @@ private slots:
 
 private:
     QVariantMap additionalOptions;
+
+    static const QString DEFAULT_SE_ADAPTERS;
+    static const QString DEFAULT_PE_ADAPTERS;
 };
 
 class IlluminaClipAdditionalSettingsDialog : public QDialog, private Ui_IlluminaClipAdditionalSettingsDialog {

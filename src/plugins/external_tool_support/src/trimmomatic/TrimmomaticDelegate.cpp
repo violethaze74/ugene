@@ -27,6 +27,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SignalBlocker.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/MultiClickMenu.h>
 #include <U2Gui/WidgetWithLocalToolbar.h>
@@ -145,7 +146,7 @@ void TrimmomaticPropertyWidget::sl_showDialog() {
 /********************************************************************/
 
 const QString TrimmomaticPropertyDialog::DEFAULT_DESCRIPTION = QObject::tr("<html><head></head><body>"
-                                                               "<p>Click <img src=':/external_tool_support/images/add.png' width='16' height='16' /> and select a step. The following options are available:</p>"
+                                                               "<p>Click the \"Add new step\" button and select a step. The following options are available:</p>"
                                                                "<ul>"
                                                                "<li>ILLUMINACLIP: Cut adapter and other illumina-specific sequences from the read.</li>"
                                                                "<li>SLIDINGWINDOW: Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold.</li>"
@@ -165,6 +166,8 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
                                       QWidget *parent) : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, HelpButton::INVALID_VALUE);
+
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
 
     menu = new QMenu(this);
     new MultiClickMenu(menu);
@@ -202,12 +205,16 @@ QString TrimmomaticPropertyDialog::getValue() const {
     return result;
 }
 
-void TrimmomaticPropertyDialog::sl_updateOkButton() {
-    bool isEnabled = !steps.isEmpty();
-    foreach (TrimmomaticStep *step, steps) {
-        isEnabled = isEnabled && step->validate();
+void TrimmomaticPropertyDialog::sl_valuesChanged() {
+    bool isValid = !steps.isEmpty();
+    for (int i = 0 ; i < steps.size(); i++) {
+        const bool isStepValid = steps[i]->validate();
+        QListWidgetItem *item = listSteps->item(i);
+        SAFE_POINT(NULL != item, QString("Item with number %1 is NULL").arg(i), );
+        item->setBackgroundColor(isStepValid ? GUIUtils::OK_COLOR : GUIUtils::WARNING_COLOR);
+        isValid = isValid && isStepValid;
     }
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isEnabled);
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isValid);
 }
 
 void TrimmomaticPropertyDialog::sl_currentRowChanged() {
@@ -235,6 +242,7 @@ void TrimmomaticPropertyDialog::emptySelection() {
 
 void TrimmomaticPropertyDialog::sl_addStep(QAction* a) {
     addStep(TrimmomaticStepsRegistry::getInstance()->getById(a->text())->createStep());
+    listSteps->setCurrentRow(steps.size() - 1);
 }
 
 void TrimmomaticPropertyDialog::sl_moveStepUp() {
@@ -293,7 +301,7 @@ void TrimmomaticPropertyDialog::sl_removeStep() {
 
     delete listSteps->takeItem(selectedStepNum);
     delete steps.takeAt(selectedStepNum);
-    sl_updateOkButton();
+    sl_valuesChanged();
     if (steps.size() == 0) {
         enableButtons(false);
         emptySelection();
@@ -309,10 +317,10 @@ void TrimmomaticPropertyDialog::enableButtons(bool setEnabled) {
 void TrimmomaticPropertyDialog::addStep(TrimmomaticStep *step) {
     steps << step;
 
-    connect(step, SIGNAL(si_valueChanged()), SLOT(sl_updateOkButton()));
+    connect(step, SIGNAL(si_valueChanged()), SLOT(sl_valuesChanged()));
 
     listSteps->addItem(step->getName());
-    sl_updateOkButton();
+    sl_valuesChanged();
     if (steps.size() == 1) {
         enableButtons(true);
         listSteps->setCurrentRow(0);
