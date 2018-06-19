@@ -160,9 +160,13 @@ const QString IlluminaClipSettingsWidget::SEED_MISMATCHES = "seedMismatches";
 const QString IlluminaClipSettingsWidget::PALINDROME_CLIP_THRESHOLD = "palindromeClipThreshold";
 const QString IlluminaClipSettingsWidget::SIMPLE_CLIP_THRESHOLD = "simpleClipThreshold";
 
+const QString IlluminaClipSettingsWidget::DEFAULT_SE_ADAPTERS = "TruSeq3-SE.fa";
+const QString IlluminaClipSettingsWidget::DEFAULT_PE_ADAPTERS = "TruSeq3-PE-2.fa";
+
 IlluminaClipSettingsWidget::IlluminaClipSettingsWidget() {
     setupUi(this);
 
+    fileName->setText(QDir::toNativeSeparators(QDir("data:").path() + "/adapters/illumina/" + DEFAULT_SE_ADAPTERS));    // The default adapters should be set depending on another attribute value
     new LineEditHighlighter(fileName);
 
     connect(fileName, SIGNAL(textChanged(QString)), SIGNAL(si_valueChanged()));

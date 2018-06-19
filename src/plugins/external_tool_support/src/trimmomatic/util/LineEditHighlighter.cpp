@@ -32,6 +32,7 @@ LineEditHighlighter::LineEditHighlighter(QLineEdit *_lineEdit)
       lineEdit(_lineEdit)
 {
     connect(lineEdit, SIGNAL(textChanged(QString)), SLOT(sl_textChanged(QString)));
+    sl_textChanged(lineEdit->text());
 }
 
 void LineEditHighlighter::sl_textChanged(const QString &text) {

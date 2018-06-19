@@ -114,7 +114,7 @@ Document * LoadPatternsFileTask::getDocumentFromFilePath()
 {
     // loading new document here and not reusing any loaded from the project
     // because a document in the project may be opened in 'merge' mode.
-    
+
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(filePath);
     if (formats.isEmpty()) {
         stateInfo.setError(tr("Detecting format error for file %1").arg(filePath));

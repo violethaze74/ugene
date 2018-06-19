@@ -87,7 +87,7 @@ private slots:
     void sl_moveStepUp();
     void sl_moveStepDown();
     void sl_removeStep();
-    void sl_updateOkButton();
+    void sl_valuesChanged();
 
 private:
     void emptySelection();
