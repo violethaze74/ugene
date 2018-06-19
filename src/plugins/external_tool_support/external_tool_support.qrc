@@ -32,6 +32,5 @@
         <file>images/add.png</file>
         <file>images/down.png</file>
         <file>images/up.png</file>
-        <file>images/little_add.png</file>
     </qresource>
 </RCC>
