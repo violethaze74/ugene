@@ -29,40 +29,55 @@ const QBitArray StrPackUtils::charactersToEscape = StrPackUtils::initCharactersT
 const QString StrPackUtils::LIST_SEPARATOR = ",";
 const QString StrPackUtils::MAP_SEPARATOR = ";";
 const QString StrPackUtils::PAIR_CONNECTOR = "=";
-const QRegExp StrPackUtils::listSeparatorRegExp(QString("^\\\"|(?!\\\\)\\\"%1\\\"|\\\"$").arg(LIST_SEPARATOR));
-const QRegExp StrPackUtils::mapSeparatorRegExp(QString("(?!\\\\)\\\"%1\\\"").arg(MAP_SEPARATOR));
-const QRegExp StrPackUtils::pairSeparatorRegExp(QString("^\\\"|(?!\\\\)\\\"%1\\\"|\\\"$").arg(PAIR_CONNECTOR));
 
-QString StrPackUtils::packStringList(const QStringList &list) {
+const QString StrPackUtils::listSeparatorPattern = QString("^\\%2|(?!\\\\)\\%2%1\\%2|\\%2$").arg(LIST_SEPARATOR);
+const QRegExp StrPackUtils::listSingleQuoteSeparatorRegExp(listSeparatorPattern.arg("\'"));
+const QRegExp StrPackUtils::listDoubleQuoteSeparatorRegExp(listSeparatorPattern.arg("\""));
+
+const QString StrPackUtils::mapSeparatorPattern = QString("(?!\\\\)\\%2%1\\%2").arg(MAP_SEPARATOR);
+const QRegExp StrPackUtils::mapSingleQuoteSeparatorRegExp(mapSeparatorPattern.arg("\'"));
+const QRegExp StrPackUtils::mapDoubleQuoteSeparatorRegExp(mapSeparatorPattern.arg("\""));
+
+const QString StrPackUtils::pairSeparatorPattern = QString("^\\%2|(?!\\\\)\\%2%1\\%2|\\%2$").arg(PAIR_CONNECTOR);
+const QRegExp StrPackUtils::pairSingleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\'"));
+const QRegExp StrPackUtils::pairDoubleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\""));
+
+QString StrPackUtils::packStringList(const QStringList &list, Options options) {
     QString packedList;
     foreach (const QString &string, list) {
-        packedList += wrapString(escapeCharacters(string)) + LIST_SEPARATOR;
+        packedList += wrapString(escapeCharacters(string), options) + LIST_SEPARATOR;
     }
     packedList.chop(LIST_SEPARATOR.size());
     return packedList;
 }
 
-QStringList StrPackUtils::unpackStringList(const QString &string) {
+QStringList StrPackUtils::unpackStringList(const QString &string, Options options) {
     QStringList unpackedList;
-    foreach (const QString &escapedString, string.split(listSeparatorRegExp, QString::SkipEmptyParts)) {
+    const QRegExp separator = (options == SingleQuotes ? listSingleQuoteSeparatorRegExp : listDoubleQuoteSeparatorRegExp);
+    foreach (const QString &escapedString, string.split(separator, QString::SkipEmptyParts)) {
         unpackedList << unescapeCharacters(escapedString);
     }
     return unpackedList;
 }
 
-QString StrPackUtils::packMap(const StrStrMap &map) {
+QString StrPackUtils::packMap(const StrStrMap &map, Options options) {
     QString string;
     foreach (const QString &key, map.keys()) {
-        string += wrapString(escapeCharacters(key)) + PAIR_CONNECTOR + wrapString(escapeCharacters(map[key])) + MAP_SEPARATOR;
+        string += wrapString(escapeCharacters(key), options) +
+                  PAIR_CONNECTOR +
+                  wrapString(escapeCharacters(map[key]), options) +
+                  MAP_SEPARATOR;
     }
     string.chop(MAP_SEPARATOR.size());
     return string;
 }
 
-StrStrMap StrPackUtils::unpackMap(const QString &string) {
+StrStrMap StrPackUtils::unpackMap(const QString &string, Options options) {
     StrStrMap map;
-    foreach (const QString &pair, string.split(mapSeparatorRegExp, QString::SkipEmptyParts)) {
-        const QStringList splittedPair = pair.split(pairSeparatorRegExp, QString::SkipEmptyParts);
+    const QRegExp separator = (options == SingleQuotes ? mapSingleQuoteSeparatorRegExp : mapDoubleQuoteSeparatorRegExp);
+    foreach (const QString &pair, string.split(separator, QString::SkipEmptyParts)) {
+        const QRegExp separator = (options == SingleQuotes ? pairSingleQuoteSeparatorRegExp : pairDoubleQuoteSeparatorRegExp);
+        const QStringList splittedPair = pair.split(separator, QString::SkipEmptyParts);
         Q_ASSERT(splittedPair.size() <= 2);
         map.insert(splittedPair.first(), splittedPair.size() > 1 ? splittedPair[1] : "");
     }
@@ -73,6 +88,7 @@ QBitArray StrPackUtils::initCharactersToEscape() {
     QBitArray map(pow(2, 8 * sizeof(char)));
     map[(int)'\\'] = true;
     map[(int)'\"'] = true;
+    map[(int)'\''] = true;
     return map;
 }
 
@@ -98,8 +114,9 @@ QString StrPackUtils::unescapeCharacters(QString string) {
     return string;
 }
 
-QString StrPackUtils::wrapString(const QString &string) {
-    return "\"" + string + "\"";
+QString StrPackUtils::wrapString(const QString &string, Options options) {
+    const QString wrapChar = (options == SingleQuotes ? "\'" : "\"");
+    return wrapChar + string + wrapChar;
 }
 
 }   // namespace U2

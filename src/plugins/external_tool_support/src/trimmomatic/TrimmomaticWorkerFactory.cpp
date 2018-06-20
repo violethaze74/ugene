@@ -189,7 +189,7 @@ void TrimmomaticWorkerFactory::init() {
                              TrimmomaticPrompter::tr("Use multiple threads (-threads)."));
 
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, TrimmomaticTaskSettings::SINGLE_END);
-        Attribute *trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_TYPE(), Attribute::Required);
+        Attribute *trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_LIST_TYPE(), Attribute::Required);
         Attribute *seOutputUrlAttribute = new Attribute(seOutputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
         Attribute *pairedOutputUrl1Attribute = new Attribute(pairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
         Attribute *pairedOutputUrl2Attribute = new Attribute(pairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
@@ -227,10 +227,6 @@ void TrimmomaticWorkerFactory::init() {
         inputDataMap[SINGLE_END_TEXT] = TrimmomaticTaskSettings::SINGLE_END;
         inputDataMap[PAIRED_END_TEXT] = TrimmomaticTaskSettings::PAIRED_END;
         delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);
-
-        // TODO (UGENE-6095):
-        // Add a custom delegate for TRIMMING_STEPS_ATTR_ID.
-        // The default value in the Property Editor should be "Configure steps".
 
         {
             DelegateTags outputUrlTags;

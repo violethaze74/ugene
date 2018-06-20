@@ -156,9 +156,7 @@ TrimmomaticTaskSettings TrimmomaticWorker::getSettings(U2OpStatus &os) {
         settings.unpairedOutputUrl2 = setAutoUrl(TrimmomaticWorkerFactory::UNPAIRED_URL_2_ATTR_ID, settings.inputUrl2, workingDir, PE_OUTPUT_UNPAIRED_FILE_NAME_SUFFIX);
     }
 
-    // TODO (UGENE-6095, UGENE-6096):
-    // Instead of "HEADCROP:5" specify steps, selected in the custom dialog.
-    settings.trimmingSteps = "HEADCROP:5";
+    settings.trimmingSteps = getValue<QStringList>(TrimmomaticWorkerFactory::TRIMMING_STEPS_ATTR_ID);
 
     if (generateLog) {
         settings.generateLog = true;

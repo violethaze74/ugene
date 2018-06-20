@@ -43,6 +43,11 @@ namespace LocalWorkflow {
 /********************************************************************/
 
 static const QString PLACEHOLDER("Configure steps");
+static const QRegularExpression notQuotedSpaces("[^\\s\\\"']*\"[^\\\"]*\\\"[^\\s\\\"']*"
+                                               "|"
+                                               "[^\\s\\\"']*'[^']*'[^\\s\\\"']*"
+                                               "|"
+                                               "[^\\s\\\"']+");
 
 TrimmomaticDelegate::TrimmomaticDelegate(QObject *parent)
     : PropertyDelegate(parent)
@@ -50,7 +55,7 @@ TrimmomaticDelegate::TrimmomaticDelegate(QObject *parent)
 }
 
 QVariant TrimmomaticDelegate::getDisplayValue(const QVariant &value) const {
-    QString str = value.value<QString>();
+    QString str = value.value<QStringList>().join(" ");
     return str.isEmpty() ? PLACEHOLDER : str;
 }
 
@@ -120,11 +125,19 @@ TrimmomaticPropertyWidget::TrimmomaticPropertyWidget(QWidget* parent,
 }
 
 QVariant TrimmomaticPropertyWidget::value() {
-    return lineEdit->text();
+    QRegularExpressionMatchIterator capturedSteps = notQuotedSpaces.globalMatch(lineEdit->text());
+    QStringList steps;
+    while (capturedSteps.hasNext()) {
+        const QString step = capturedSteps.next().captured();
+        if (!step.isEmpty()) {
+            steps << step;
+        }
+    }
+    return steps;
 }
 
 void TrimmomaticPropertyWidget::setValue(const QVariant& value) {
-    lineEdit->setText(value.value<QString>());
+    lineEdit->setText(value.value<QStringList>().join(" "));
 }
 
 void TrimmomaticPropertyWidget::sl_textEdited() {
@@ -328,12 +341,7 @@ void TrimmomaticPropertyDialog::addStep(TrimmomaticStep *step) {
 }
 
 void TrimmomaticPropertyDialog::parseCommand(const QString &command) {
-    QRegularExpression regexp("[^\\s\\\"']*\"[^\\\"]*\\\"[^\\s\\\"']*"
-                              "|"
-                              "[^\\s\\\"']*'[^']*'[^\\s\\\"']*"
-                              "|"
-                              "[^\\s\\\"']+");
-    QRegularExpressionMatchIterator stepCommands = regexp.globalMatch(command);
+    QRegularExpressionMatchIterator stepCommands = notQuotedSpaces.globalMatch(command);
     while (stepCommands.hasNext()) {
         const QString stepCommand = stepCommands.next().captured();
         const QString stepId = stepCommand.left(stepCommand.indexOf(":"));

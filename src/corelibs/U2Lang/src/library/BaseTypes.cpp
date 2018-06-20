@@ -235,6 +235,14 @@ QVariant StringTypeValueFactory::getValueFromString( const QString & str, bool *
 }
 
 /****************************************
+* StringListTypeValueFactory
+****************************************/
+QVariant StringListTypeValueFactory::getValueFromString(const QString &str, bool *ok) const {
+    setIfNotNull(ok, true);
+    return QVariant::fromValue<QStringList>(StrPackUtils::unpackStringList(str, StrPackUtils::SingleQuotes));
+}
+
+/****************************************
 * BoolTypeValueFactory
 ****************************************/
 const QString BoolTypeValueFactory::TRUE_STR    = "true";

@@ -1630,8 +1630,14 @@ static QString elementsDefinitionBlock(Actor * actor, bool copyMode) {
                 continue;
             }
             QVariant value = attribute->getAttributePureValue();
-            assert(value.isNull() || value.canConvert<QString>());
-            res += HRSchemaSerializer::makeEqualsPair(attributeId, value.toString(), 2, true);
+            assert(value.isNull() || value.canConvert<QString>() || value.canConvert<QStringList>());
+            QString valueString;
+            if (attribute->getAttributeType() == BaseTypes::STRING_LIST_TYPE()) {
+                valueString = StrPackUtils::packStringList(value.toStringList(), StrPackUtils::SingleQuotes);
+            } else {
+                valueString = value.toString();
+            }
+            res += HRSchemaSerializer::makeEqualsPair(attributeId, valueString, 2, true);
         }
     }
 

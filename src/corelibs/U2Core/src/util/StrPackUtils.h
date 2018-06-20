@@ -37,11 +37,16 @@ namespace U2 {
 
 class U2CORE_EXPORT StrPackUtils {
 public:
-    static QString packStringList(const QStringList &list);
-    static QStringList unpackStringList(const QString &string);
+    enum Options {
+        SingleQuotes,
+        DoubleQuotes
+    };
 
-    static QString packMap(const StrStrMap &map);
-    static StrStrMap unpackMap(const QString &string);
+    static QString packStringList(const QStringList &list, Options options = DoubleQuotes);
+    static QStringList unpackStringList(const QString &string, Options options = DoubleQuotes);
+
+    static QString packMap(const StrStrMap &map, Options options = DoubleQuotes);
+    static StrStrMap unpackMap(const QString &string, Options options = DoubleQuotes);
 
 private:
     static QBitArray initCharactersToEscape();
@@ -49,15 +54,24 @@ private:
     static QString escapeCharacters(QString string);
     static QString unescapeCharacters(QString string);
 
-    static QString wrapString(const QString &string);
+    static QString wrapString(const QString &string, Options options = DoubleQuotes);
 
     static const QBitArray charactersToEscape;
     static const QString LIST_SEPARATOR;
     static const QString MAP_SEPARATOR;
     static const QString PAIR_CONNECTOR;
-    static const QRegExp listSeparatorRegExp;
-    static const QRegExp mapSeparatorRegExp;
-    static const QRegExp pairSeparatorRegExp;
+
+    static const QString listSeparatorPattern;
+    static const QRegExp listSingleQuoteSeparatorRegExp;
+    static const QRegExp listDoubleQuoteSeparatorRegExp;
+
+    static const QString mapSeparatorPattern;
+    static const QRegExp mapSingleQuoteSeparatorRegExp;
+    static const QRegExp mapDoubleQuoteSeparatorRegExp;
+
+    static const QString pairSeparatorPattern;
+    static const QRegExp pairSingleQuoteSeparatorRegExp;
+    static const QRegExp pairDoubleQuoteSeparatorRegExp;
 };
 
 }   // namespace U2
