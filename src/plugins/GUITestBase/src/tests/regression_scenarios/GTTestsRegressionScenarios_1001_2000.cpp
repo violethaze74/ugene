@@ -1103,10 +1103,10 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
     //1. Create a scheme with "Read sequence", "Write sequence", "Filter", "Sequence marker" element.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Sequence marker");
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Filter", true);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Sequence");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Sequence", true);
 
     //2. In the "Marker" element create a text qualifier marker containing value "1"
     GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Sequence Marker"));
@@ -1164,8 +1164,8 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     //3) Create schema{ Read sequence->Write sequence }, set valid input and output files
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Sequence");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Sequence", true);
 
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"), GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence"));
 
@@ -1925,8 +1925,8 @@ GUI_TEST_CLASS_DEFINITION(test_1156) {
 GUI_TEST_CLASS_DEFINITION(test_1157) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    WorkflowProcessItem *readSequence = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
-    WorkflowProcessItem *writeSequence = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
+    WorkflowProcessItem *readSequence = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    WorkflowProcessItem *writeSequence = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
 
     QString resultFilePath = testDir + "_common_data/scenarios/sandbox/test_1157.gb";
     GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
@@ -2424,7 +2424,7 @@ GUI_TEST_CLASS_DEFINITION(test_1209) {
 GUI_TEST_CLASS_DEFINITION(test_1210){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    WorkflowProcessItem *readSequence = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
+    WorkflowProcessItem *readSequence = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     WorkflowProcessItem *readAlignment = GTUtilsWorkflowDesigner::addElement(os, "Read Alignment");
     WorkflowProcessItem *callVariants = GTUtilsWorkflowDesigner::addElement(os, "Call Variants with SAMtools");
 
@@ -2864,7 +2864,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     // 2) Add Read Sequence(RS).
-    WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
+    WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
 
     // 3) Add ORF Finder(OF).
     WorkflowProcessItem *orfMarker = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker");
@@ -2873,7 +2873,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
     GTUtilsWorkflowDesigner::connect(os, reader, orfMarker);
 
     // 5) Add Write Sequence(WS).
-    WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
+    WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
 
     // 6) Connect OF with WS.
     GTUtilsWorkflowDesigner::connect(os, orfMarker, writer);
@@ -3124,7 +3124,7 @@ GUI_TEST_CLASS_DEFINITION(test_1288){
 //    3) Create element "Basic Analysis->Find Pattern".
     WorkflowProcessItem* fp = GTUtilsWorkflowDesigner::addElement(os, "Find Pattern");
 //    4) Create element "Data Readers->Read Sequence".
-    WorkflowProcessItem* rs = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
+    WorkflowProcessItem* rs = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
 //    5) Connect "Read Sequence" to "Find Pattern".
     GTUtilsWorkflowDesigner::connect(os, rs, fp);
 //    Wrong state: "Plain text" slot in "Find Pattern" has value "Dataset".
@@ -3474,7 +3474,7 @@ GUI_TEST_CLASS_DEFINITION(test_1319){
 //    1) Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2) Add "Read sequence" on the scene.
-    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
+    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
 //    3) Click the element.
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: bottom datasets panel is visible.
@@ -3495,7 +3495,7 @@ GUI_TEST_CLASS_DEFINITION(test_1319_1){
 //    1) Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2) Add "Read sequence" on the scene.
-    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
+    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
 //    3) Click the element.
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: bottom datasets panel is visible.
@@ -3512,7 +3512,7 @@ GUI_TEST_CLASS_DEFINITION(test_1319_2){
 //    1) Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2) Add "Read sequence" on the scene.
-    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
+    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
 //    3) Click the element.
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: bottom datasets panel is visible.
@@ -4571,8 +4571,8 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
     //"Read Sequence" -> "Dump Sequence Info" -> "Write Plain Text"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump sequence info");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump Sequence Info");
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Plain Text");
     GTGlobals::sleep(100);
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"), GTUtilsWorkflowDesigner::getWorker(os, "Dump Sequence Info"));
@@ -5130,7 +5130,7 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
     WorkflowProcessItem* toBam = GTUtilsWorkflowDesigner::getWorker(os, "To BAM");
     CHECK_SET_ERR(toBam != NULL, "\'To BAM\' element not found");
 
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
     GTGlobals::sleep(500);
 
     WorkflowProcessItem* readSeq = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence 1");
@@ -5923,7 +5923,7 @@ GUI_TEST_CLASS_DEFINITION( test_1595 ){
 //    1) Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2) Add "Read sequence" to the scene.
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
 //    3) Click it.
 //    Expected: datasets widget appears.
 //    4) Add several files.
@@ -7823,8 +7823,8 @@ GUI_TEST_CLASS_DEFINITION(test_1763_1){
 
 //    1. Create Read->Write workflow.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
-    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    2. Set any input/output files
     GTUtilsWorkflowDesigner::click(os, read);
@@ -7891,8 +7891,8 @@ GUI_TEST_CLASS_DEFINITION(test_1764){
 //    1) Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2) Create schema {Read sequence -> Write sequence}
-    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
-    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    3) Set input sequence to "human_T1.fa" from "data/samples/FASTA", set output filename to "readed_fasta.fa"
     GTUtilsWorkflowDesigner::click(os, read);
