@@ -66,6 +66,7 @@ private slots:
 };
 
 class ClassificationReportWorkerFactory : public DomainFactory {
+    Q_DECLARE_TR_FUNCTIONS(ClassificationReportWorkerFactory)
     static const QString ACTOR_ID;
 public:
     static void init();
@@ -77,7 +78,11 @@ public:
 class ClassificationReportTask : public Task {
     Q_OBJECT
 public:
-    ClassificationReportTask(const QMap<TaxID,uint> &data, uint totalCount, const QString &reportUrl, const QString &workingDir);
+    enum SortBy {
+        NUMBER_OF_READS,
+        TAX_ID
+    };
+    ClassificationReportTask(const QMap<TaxID,uint> &data, uint totalCount, const QString &reportUrl, const QString &workingDir, bool allTaxa, SortBy sortBy);
     QString getUrl() const {return url;}
 
 private:
@@ -87,6 +92,8 @@ private:
     const uint totalCount;
     const QString workingDir;
     QString url;
+    bool allTaxa;
+    SortBy sortBy;
 };
 
 } //LocalWorkflow

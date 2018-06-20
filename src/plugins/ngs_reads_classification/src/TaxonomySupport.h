@@ -59,6 +59,7 @@ public:
     QString getRank(TaxID id) const;
     TaxID getParent(TaxID id) const;
     QList<TaxID> getChildren(TaxID id) const;
+    int getElementsCount() const;
     /**
      * @param id
      * @param filter
