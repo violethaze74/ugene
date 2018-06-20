@@ -41,6 +41,7 @@
 #include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaGraphOverview.h>
 
+#include "api/GTMSAEditorStatusWidget.h"
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -1762,6 +1763,27 @@ GUI_TEST_CLASS_DEFINITION(test_5520_2) {
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST+...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5550) {
+//    1. Open "_common_data/fasta/empty.fa".
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: there are next values on the statusbar: "Ln - / 0  Col - / 0  Pos - / -".
+    const QString rowNumberString = GTMSAEditorStatusWidget::getRowNumberString(os);
+    const QString rowsCountString = GTMSAEditorStatusWidget::getRowsCountString(os);
+    const QString columnNumberString = GTMSAEditorStatusWidget::getColumnNumberString(os);
+    const QString columnsCountString = GTMSAEditorStatusWidget::getColumnsCountString(os);
+    const QString sequenceUngappedPositionString = GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
+    const QString sequenceUngappedLengthString = GTMSAEditorStatusWidget::getSequenceUngappedLengthString(os);
+
+    CHECK_SET_ERR("-" == rowNumberString, QString("An incorrect row number label: expected '%1', got '%2'").arg("-").arg(rowNumberString));
+    CHECK_SET_ERR("0" == rowsCountString, QString("An incorrect rows count label: expected '%1', got '%2'").arg("-").arg(rowsCountString));
+    CHECK_SET_ERR("-" == columnNumberString, QString("An incorrect column number label: expected '%1', got '%2'").arg("-").arg(columnNumberString));
+    CHECK_SET_ERR("0" == columnsCountString, QString("An incorrect columns count label: expected '%1', got '%2'").arg("-").arg(columnsCountString));
+    CHECK_SET_ERR("-" == sequenceUngappedPositionString, QString("An incorrect sequence ungapped position label: expected '%1', got '%2'").arg("-").arg(sequenceUngappedPositionString));
+    CHECK_SET_ERR("-" == sequenceUngappedLengthString, QString("An incorrect sequence ungapped length label: expected '%1', got '%2'").arg("-").arg(sequenceUngappedLengthString));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5562_1) {
