@@ -4217,7 +4217,7 @@ GUI_TEST_CLASS_DEFINITION(test_1420) {
 //    1. Select {Tools->ALign to reference->Align short reads} from the main menu.
 //    Expected state: the "Align sequencing reads" dialog appeared.
 //    2. Fill this dialog with:
-//        {Alignment method:}    BWA-SW
+//        {Mapping:}    BWA-SW
 //        {Reference sequence:}    _common_data/fasta/NC_008253.fna
 //        {Result file name:}    somewhere in the temp folder
 //        {Short reads:}        _common_data/reads/long_reads.fasta
