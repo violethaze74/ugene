@@ -3302,6 +3302,53 @@ GUI_TEST_CLASS_DEFINITION(test_4515) {
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 0/0"), "Results string not match");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4523) {
+//    1. Open "data/samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "data/samples/FASTQ/eas.fastq".
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Call context menu on the "human_T1.fa" document, select {Add -> Add object to document...} menu item. Add any sequence object.
+    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "eas.fastq", "EAS54_6_R1_2_1_413_324"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__ADD_MENU << ACTION_PROJECT__ADD_OBJECT));
+    GTUtilsProjectTreeView::callContextMenu(os, "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: "human_T1.fa" document contains two sequence objects.
+    QModelIndex oldIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << "human_T1.fa" << "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QModelIndex addedIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << "human_T1.fa" << "EAS54_6_R1_2_1_413_324");
+
+//    4. Rename both objects in "human_T1.fa" document to "123".
+    GTUtilsProjectTreeView::rename(os, addedIndex, "123");
+    GTGlobals::sleep(500);
+
+    GTUtilsProjectTreeView::rename(os, oldIndex, "123");
+    GTGlobals::sleep(500);
+
+//    Expected state: "human_T1.fa" document contains two sequence objects with the same names.
+    // Ok, I'm sure in the renaming method, skip this check
+
+//    5. Open the second object.
+    GTUtilsProjectTreeView::doubleClickItem(os, addedIndex);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the second object is opened. The second object is highlighted in the Project view.
+    GTUtilsSequenceView::checkSequence(os, "CCCTTCTTGTCTTCAGCGTTTCTCC");
+
+//    6. Open the first object.
+    GTUtilsProjectTreeView::doubleClickItem(os, oldIndex);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the first object is opened. The first object is highlighted in the Project view.
+    const QString sequenceBeginning = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 25);
+    const QString expectedSequenceBeginning = "TTGTCAGATTCACCAAAGTTGAAAT";
+    CHECK_SET_ERR(expectedSequenceBeginning == sequenceBeginning,
+                  QString("The sequence first 25 bases are incorrect: expected '%1', got '%2'")
+                  .arg(expectedSequenceBeginning).arg(sequenceBeginning));
+}
 
 GUI_TEST_CLASS_DEFINITION(test_4524) {
     // Open "data/samples/CLUSTALW/COI.aln".
