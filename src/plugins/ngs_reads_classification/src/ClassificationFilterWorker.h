@@ -89,13 +89,36 @@ protected:
     ClassificationFilterSettings cfg;
 };
 
+class ClassificationFilterValidator : public ActorValidator {
+public:
+    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString>& options) const;
+};
+
 class ClassificationFilterWorkerFactory : public DomainFactory {
-    static const QString ACTOR_ID;
 public:
     static void init();
     static void cleanup();
     ClassificationFilterWorkerFactory() : DomainFactory(ACTOR_ID) {}
     Worker* createWorker(Actor* a) { return new ClassificationFilterWorker(a); }
+
+    static const QString ACTOR_ID;
+
+    static const QString INPUT_PORT;
+    static const QString OUTPUT_PORT;
+
+    static const QString INPUT_SLOT;
+    static const QString PAIRED_INPUT_SLOT;
+
+    static const QString OUTPUT_SLOT;
+    static const QString PAIRED_OUTPUT_SLOT;
+
+    static const QString SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID;
+    static const QString TAXONOMY_RANK;
+    static const QString SEQUENCING_READS;
+    static const QString TAXONS;
+
+    static const QString SINGLE_END;
+    static const QString PAIRED_END;
 };
 
 class ClassificationFilterTask : public Task {
