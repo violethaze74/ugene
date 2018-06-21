@@ -72,7 +72,7 @@ void createTestConnection(HI::GUITestOpStatus &os) {
 
 GUI_TEST_CLASS_DEFINITION(read_gui_test_0001) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
 
     createTestConnection(os);
 
@@ -278,7 +278,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0009) {
 
 GUI_TEST_CLASS_DEFINITION(read_gui_test_0010) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
 
     createTestConnection(os);
 
@@ -315,7 +315,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0010) {
 
 GUI_TEST_CLASS_DEFINITION(read_gui_test_0011) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
 
     createTestConnection(os);
 
@@ -693,7 +693,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0006) {
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "write_to_inaccessible_shared_db.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsWorkflowDesigner::click(os, "Read NGS Reads Assembly");
+    GTUtilsWorkflowDesigner::click(os, "Read Assembly");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/ugenedb/1.bam.ugenedb");
 
     GTUtilsDialog::waitForDialog(os, new AuthenticationDialogFiller(os, GTDatabaseConfig::login(), GTDatabaseConfig::password()));
@@ -713,7 +713,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0006) {
 GUI_TEST_CLASS_DEFINITION(test_3726) {
 //    1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
 //    2. Add "Read Sequence" to the scene.
     createTestConnection(os);
 //    3. Press "Add data from shared databases" on the property editor.
