@@ -1827,7 +1827,7 @@ GUI_TEST_CLASS_DEFINITION( test_2316 ) {
 }
 GUI_TEST_CLASS_DEFINITION( test_2269 ){
     //1. Use main menu: {tools->Align short reeds}
-    //2. Select Bowtie2 as alignment method
+    //2. Select Bowtie2 as a mapping tool
     //3. Try to set incorrect value in "Seed lingth" spinbox(Correct boundaries are: >3, <32)
     AlignShortReadsFiller::Bowtie2Parameters parameters(testDir + "_common_data/scenarios/_regression/1093/",
                                                         "refrence.fa",
@@ -5495,7 +5495,7 @@ GUI_TEST_CLASS_DEFINITION(test_2863){
 GUI_TEST_CLASS_DEFINITION(test_2866) {
 //    1. Use main menu { Tools -> Align to reference -> Align short reads }
 //    Expected state: the "Align Sequencing Reads" dialog has appeared
-//    2. Fill dialog: alignment method: Bowtie
+//    2. Fill dialog: mapping tool: Bowtie
 //                    reference sequence: _common_data/e_coli/NC_008253.gff
 //                    short reads: "_common_data/e_coli/e_coli_1000.fastq"
 //       Click start button

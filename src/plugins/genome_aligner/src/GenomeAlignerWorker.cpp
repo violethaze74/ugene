@@ -199,8 +199,8 @@ QString GenomeAlignerPrompter::composeRichDoc() {
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
     QString genome = getHyperlink(REFERENCE_GENOME, getURL(REFERENCE_GENOME));
 
-    res.append(tr("Aligns reads from <u>%1</u> ").arg(readsUrl));
-    res.append(tr(" to reference genome <u>%1</u>.").arg(genome));
+    res.append(tr("Maps reads from <u>%1</u> ").arg(readsUrl));
+    res.append(tr(" to reference sequence <u>%1</u>.").arg(genome));
 
     return res;
 }

@@ -403,11 +403,11 @@ QString ShortReadsAlignerPrompter::composeRichDoc() {
         QString pairedReadsUrl = pairedReadsProducer ? pairedReadsProducer->getLabel() : unsetStr;
         res.append(tr("Aligns upstream oriented reads from <u>%1</u> and downstream oriented reads from <u>%2</u> ").arg(readsUrl).arg(pairedReadsUrl));
     } else {
-        res.append(tr("Aligns reads from <u>%1</u> ").arg(readsUrl));
+        res.append(tr("Maps reads from <u>%1</u> ").arg(readsUrl));
     }
 
     QString genome = getHyperlink(REFERENCE_GENOME, getURL(REFERENCE_GENOME));
-    res.append(tr(" to reference genome <u>%1</u>.").arg(genome));
+    res.append(tr(" to reference sequence <u>%1</u>.").arg(genome));
 
     return res;
 }

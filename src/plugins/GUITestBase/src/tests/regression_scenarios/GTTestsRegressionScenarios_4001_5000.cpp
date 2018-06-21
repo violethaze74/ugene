@@ -2055,7 +2055,7 @@ GUI_TEST_CLASS_DEFINITION(test_4221) {
 //    1. Use main menu
 //    {tools->NGS data analysis->Map reads to reference}
 //    2.Fill the dialog:
-//    Alignment method: BWA
+//    Mapping tool: BWA
 //    Index algorithm: is
 //    Select any valid input data
 //    Press start
