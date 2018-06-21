@@ -33,6 +33,7 @@
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseTypes.h>
+#include <U2Lang/PairedReadsPortValidator.h>
 #include <U2Lang/WorkflowEnv.h>
 
 #include "TrimmomaticDelegate.h"
@@ -271,6 +272,7 @@ void TrimmomaticWorkerFactory::init() {
     proto->setPrompter(new TrimmomaticPrompter(NULL));
     proto->addExternalTool(ET_JAVA);
     proto->addExternalTool(ET_TRIMMOMATIC);
+    proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
