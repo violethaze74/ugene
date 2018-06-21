@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,6 @@
 #include "KrakenClassifyPrompter.h"
 #include "KrakenSupport.h"
 #include "../../ngs_reads_classification/src/DatabaseDelegate.h"
-#include "../../ngs_reads_classification/src/GetReadListWorker.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
@@ -55,6 +54,10 @@ const QString KrakenClassifyWorkerFactory::ACTOR_ID = "kraken-classify";
 const QString KrakenClassifyWorkerFactory::INPUT_PORT_ID = "in";
 const QString KrakenClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
 
+// Slots should be the same as in GetReadsListWorkerFactory
+const QString KrakenClassifyWorkerFactory::INPUT_SLOT = "reads-url1";
+const QString KrakenClassifyWorkerFactory::PAIRED_INPUT_SLOT = "reads-url2";
+
 const QString KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID = "input-data";
 const QString KrakenClassifyWorkerFactory::DATABASE_ATTR_ID = "database";
 const QString KrakenClassifyWorkerFactory::OUTPUT_URL_ATTR_ID = "output-url";
@@ -63,7 +66,7 @@ const QString KrakenClassifyWorkerFactory::MIN_HITS_NUMBER_ATTR_ID = "min-hits";
 const QString KrakenClassifyWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
 const QString KrakenClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID = "preload";
 
-const QString KrakenClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or scaffolds");
+const QString KrakenClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or contigs");
 const QString KrakenClassifyWorkerFactory::PAIRED_END_TEXT = QObject::tr("PE reads");
 
 KrakenClassifyWorkerFactory::KrakenClassifyWorkerFactory()
@@ -79,11 +82,11 @@ Worker *KrakenClassifyWorkerFactory::createWorker(Actor *actor) {
 void KrakenClassifyWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
-        const Descriptor inSlotDesc(GetReadsListWorkerFactory::SE_SLOT().getId(),
+        const Descriptor inSlotDesc(INPUT_SLOT,
                                        KrakenClassifyPrompter::tr("Input URL 1"),
                                        KrakenClassifyPrompter::tr("Input URL 1."));
 
-        const Descriptor inPairedSlotDesc(GetReadsListWorkerFactory::PE_SLOT().getId(),
+        const Descriptor inPairedSlotDesc(PAIRED_INPUT_SLOT,
                                           KrakenClassifyPrompter::tr("Input URL 2"),
                                           KrakenClassifyPrompter::tr("Input URL 2."));
 
@@ -97,7 +100,7 @@ void KrakenClassifyWorkerFactory::init() {
         const Descriptor inPortDesc(INPUT_PORT_ID,
                                     KrakenClassifyPrompter::tr("Input sequences"),
                                     KrakenClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                               "In case of SE reads or scaffolds use the \"Input URL 1\" slot only.\n\n"
+                                                               "In case of SE reads or contigs use the \"Input URL 1\" slot only.\n\n"
                                                                "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
                                                                "See also the \"Input data\" parameter of the element."));
         const Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Kraken Classification"), KrakenClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken."));
@@ -109,7 +112,7 @@ void KrakenClassifyWorkerFactory::init() {
     QList<Attribute *> attributes;
     {
         const Descriptor inputDataDesc(INPUT_DATA_ATTR_ID, KrakenClassifyPrompter::tr("Input data"),
-                                             KrakenClassifyPrompter::tr("To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\".<br><br>"
+                                             KrakenClassifyPrompter::tr("To classify single-end (SE) reads or contigs, received by reads de novo assembly, set this parameter to \"SE reads or contigs\".<br><br>"
                                                                         "To classify paired-end (PE) reads, set the value to \"PE reads\".<br><br>"
                                                                         "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                         "The input files should be in FASTA or FASTQ formats."));
@@ -137,7 +140,7 @@ void KrakenClassifyWorkerFactory::init() {
                                                                         "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
 
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, KrakenClassifyTaskSettings::SINGLE_END);
-        inputDataAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT_ID, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
+        inputDataAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT_ID, PAIRED_INPUT_SLOT, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
         attributes << inputDataAttribute;
 
         QString minikrakenPath;

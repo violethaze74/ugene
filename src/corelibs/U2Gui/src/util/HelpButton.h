@@ -25,6 +25,9 @@
 #include <QDialogButtonBox>
 #include <QMap>
 #include <QString>
+#include <QPushButton>
+#include <QButtonGroup>
+
 #include <QWidget>
 
 #include <U2Core/global.h>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,6 @@
 #include "KrakenClassifyTask.h"
 #include "KrakenClassifyWorker.h"
 #include "KrakenClassifyWorkerFactory.h"
-#include "../ngs_reads_classification/src/GetReadListWorker.h"
 #include "../ngs_reads_classification/src/NgsReadsClassificationUtils.h"
 
 namespace U2 {
@@ -167,12 +166,12 @@ KrakenClassifyTaskSettings KrakenClassifyWorker::getSettings(U2OpStatus &os) {
     settings.preloadDatabase = getValue<bool>(KrakenClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID);
 
     const Message message = getMessageAndSetupScriptValues(input);
-    settings.readsUrl = message.getData().toMap()[GetReadsListWorkerFactory::SE_SLOT_ID].toString();
+    settings.readsUrl = message.getData().toMap()[KrakenClassifyWorkerFactory::INPUT_SLOT].toString();
 
     if (pairedReadsInput) {
         settings.pairedReads = true;
         //const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
-        settings.pairedReadsUrl = message.getData().toMap()[GetReadsListWorkerFactory::PE_SLOT_ID].toString();//pairedMessage.getData().toMap()[BaseSlots::URL_SLOT().getId()].toString();
+        settings.pairedReadsUrl = message.getData().toMap()[KrakenClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();//pairedMessage.getData().toMap()[BaseSlots::URL_SLOT().getId()].toString();
     }
 
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,7 +59,6 @@
 #include "ClarkClassifyWorker.h"
 #include "ClarkSupport.h"
 #include "../ngs_reads_classification/src/DatabaseDelegate.h"
-#include "../ngs_reads_classification/src/GetReadListWorker.h"
 #include "../ngs_reads_classification/src/NgsReadsClassificationUtils.h"
 
 namespace U2 {
@@ -71,8 +70,10 @@ const QString ClarkClassifyWorkerFactory::ACTOR_ID("clark-classify");
 
 static const QString INPUT_PORT("in");
 static const QString PAIRED_INPUT_PORT = "in2";
-static const QString INPUT_SLOT = GetReadsListWorkerFactory::SE_SLOT_ID;
-static const QString PAIRED_INPUT_SLOT = GetReadsListWorkerFactory::PE_SLOT_ID;
+
+// Slots should be the same as in GetReadsListWorkerFactory
+static const QString INPUT_SLOT = "reads-url1";
+static const QString PAIRED_INPUT_SLOT = "reads-url2";
 
 static const QString OUTPUT_PORT("out");
 
@@ -99,10 +100,10 @@ QString ClarkClassifyPrompter::composeRichDoc() {
     const QString databaseUrl = getHyperlink(DB_URL, getURL(DB_URL));
 
     if (getParameter(SEQUENCING_READS).toString() == SINGLE_END) {
-        const QString readsProducerName = getProducersOrUnset(INPUT_PORT, GetReadsListWorkerFactory::SE_SLOT_ID);
+        const QString readsProducerName = getProducersOrUnset(INPUT_PORT, INPUT_SLOT);
         return tr("Classify sequences from <u>%1</u> with CLARK, use %2 database.").arg(readsProducerName).arg(databaseUrl);
     } else {
-        const QString pairedReadsProducerName = getProducersOrUnset(INPUT_PORT, GetReadsListWorkerFactory::PE_SLOT_ID);
+        const QString pairedReadsProducerName = getProducersOrUnset(INPUT_PORT, PAIRED_INPUT_SLOT);
         return tr("Classify paired-end reads from <u>%1</u> with CLARK, use %2 database.")
                 .arg(pairedReadsProducerName).arg(databaseUrl);
     }
@@ -142,14 +143,14 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     IntegralBusPort* input = qobject_cast<IntegralBusPort*>(p);
     CHECK(NULL != input, "");
     const bool paired = actor->getParameter(SEQUENCING_READS)->getAttributeValueWithoutScript<QString>() == PAIRED_END;
-    QList<Actor*> producers = input->getProducers(GetReadsListWorkerFactory::SE_SLOT_ID);
+    QList<Actor*> producers = input->getProducers(INPUT_SLOT);
     if (producers.isEmpty()) {
         res = false;
         problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory \"Input URL 1\" slot is not connected."), actor->getId()));
     }
 
     if (paired) {
-        QList<Actor*> producers = input->getProducers(GetReadsListWorkerFactory::PE_SLOT_ID);
+        QList<Actor*> producers = input->getProducers(PAIRED_INPUT_SLOT);
         if (producers.isEmpty()) {
             res = false;
             problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory \"Input URL 2\" slot is not connected."), actor->getId()));
@@ -172,25 +173,18 @@ void ClarkClassifyWorkerFactory::init() {
     QList<PortDescriptor*> p;
     {
         Descriptor inD(INPUT_PORT, ClarkClassifyWorker::tr("Input sequences"), ClarkClassifyWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                                                                       "In case of SE reads or scaffolds use the \"Input URL 1\" slot only.\n\n"
+                                                                                                       "In case of SE reads or contigs use the \"Input URL 1\" slot only.\n\n"
                                                                                                        "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
                                                                                                        "See also the \"Input data\" parameter of the element."));
-//        Descriptor inD2(PAIRED_INPUT_PORT, ClarkClassifyWorker::tr("Input sequences 2"), ClarkClassifyWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided."
-//                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
         Descriptor outD(OUTPUT_PORT, ClarkClassifyWorker::tr("CLARK Classification"), ClarkClassifyWorker::tr("A map of sequence names with the associated taxonomy IDs, classified by CLARK."));
 
-        Descriptor inSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClarkClassifyWorker::tr("Input URL 1"), ClarkClassifyWorker::tr("Input URL 1."));
-        Descriptor inSlot2Descriptor(GetReadsListWorkerFactory::PE_SLOT().getId(), ClarkClassifyWorker::tr("Input URL 2"), ClarkClassifyWorker::tr("Input URL 2."));
+        Descriptor inSlot1Descriptor(INPUT_SLOT, ClarkClassifyWorker::tr("Input URL 1"), ClarkClassifyWorker::tr("Input URL 1."));
+        Descriptor inSlot2Descriptor(PAIRED_INPUT_SLOT, ClarkClassifyWorker::tr("Input URL 2"), ClarkClassifyWorker::tr("Input URL 2."));
 
         QMap<Descriptor, DataTypePtr> inM;
         inM[inSlot1Descriptor] = BaseTypes::STRING_TYPE();
         inM[inSlot2Descriptor] = BaseTypes::STRING_TYPE();
         p << new PortDescriptor(inD, DataTypePtr(new MapDataType("clark.input", inM)), true);
-
-//        QMap<Descriptor, DataTypePtr> inM2;
-//        inM2[GetReadsListWorkerFactory::SE_SLOT()] = BaseTypes::STRING_TYPE();
-//        inM2[GetReadsListWorkerFactory::PE_SLOT()] = BaseTypes::STRING_TYPE();
-//        p << new PortDescriptor(inD2, DataTypePtr(new MapDataType("clark.input-paired-url", inM2)), true);
 
         QMap<Descriptor, DataTypePtr> outM;
         outM[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
@@ -257,13 +251,13 @@ void ClarkClassifyWorkerFactory::init() {
             ClarkClassifyWorker::tr("Use multiple threads for the classification and, with the \"Load database into memory\" option enabled, for the loading of the database into RAM (-n)."));
 
         Descriptor sequencingReadsDesc(SEQUENCING_READS, ClarkClassifyWorker::tr("Input data"),
-                                             ClarkClassifyWorker::tr("To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\".<br><br>"
+                                             ClarkClassifyWorker::tr("To classify single-end (SE) reads or contigs, received by reads de novo assembly, set this parameter to \"SE reads or contigs\".<br><br>"
                                                                      "To classify paired-end (PE) reads, set the value to \"PE reads\".<br><br>"
                                                                      "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                      "The input files should be in FASTA or FASTQ formats."));
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), Attribute::None, SINGLE_END);
-        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << PAIRED_END));
+        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, PAIRED_INPUT_SLOT, QVariantList() << PAIRED_END));
         a << sequencingReadsAttribute;
         a << new Attribute(tool, BaseTypes::STRING_TYPE(), Attribute::None, ClarkClassifySettings::TOOL_LIGHT);
 
@@ -311,33 +305,19 @@ void ClarkClassifyWorkerFactory::init() {
     QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap sequencingReadsMap;
-        sequencingReadsMap[ClarkClassifyWorker::tr("SE reads or scaffolds")] = SINGLE_END;
+        sequencingReadsMap[ClarkClassifyWorker::tr("SE reads or contigs")] = SINGLE_END;
         sequencingReadsMap[ClarkClassifyWorker::tr("PE reads")] = PAIRED_END;
         delegates[SEQUENCING_READS] = new ComboBoxDelegate(sequencingReadsMap);
 
         QVariantMap toolMap;
         toolMap["CLARK"] = ClarkClassifySettings::TOOL_DEFAULT;
         toolMap["CLARK-l"] = ClarkClassifySettings::TOOL_LIGHT;
-        //toolMap["CLARK-spaced"] = ClarkClassifySettings::TOOL_SPACED; //FIXME spaced not supported yet
         delegates[TOOL_VARIANT] = new ComboBoxDelegate(toolMap);
 
         DelegateTags outputUrlTags;
         outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
         outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareFileFilter("CSV", QStringList("csv"), false, QStringList()));
         delegates[OUTPUT_URL] = new URLDelegate(outputUrlTags, "clark/output");
-
-//        QVariantMap rankMap;
-//        rankMap["Species"] = ClarkClassifySettings::Species;
-//        rankMap["Genus"] = ClarkClassifySettings::Genus;
-//        rankMap["Family"] = ClarkClassifySettings::Family;
-//        rankMap["Order"] = ClarkClassifySettings::Order;
-//        rankMap["Class"] = ClarkClassifySettings::Class;
-//        rankMap["Phylum"] = ClarkClassifySettings::Phylum;
-//        delegates[TAXONOMY_RANK] = new ComboBoxDelegate(rankMap);
-//
-//        DelegateTags tags;
-//        tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::defaultStr());
-//        delegates[TAXONOMY] = new URLDelegate(tags, "clark/taxonomy", true, false, false);
 
         QVariantMap lenMap;
         lenMap["minimum"] = QVariant(2);
@@ -353,7 +333,6 @@ void ClarkClassifyWorkerFactory::init() {
         modeMap["Default"] = ClarkClassifySettings::Default;
         modeMap["Full"] = ClarkClassifySettings::Full;
         modeMap["Express"] = ClarkClassifySettings::Express;
-        //modeMap["Spectrum"] = ClarkClassifySettings::Spectrum; //FIXME spaced not supported yet
         delegates[MODE] = new ComboBoxDelegate(modeMap);
 
         QVariantMap factorMap;
@@ -407,11 +386,9 @@ void ClarkClassifyWorker::init() {
     paired = (getValue<QString>(SEQUENCING_READS) == PAIRED_END);
 
     input = ports.value(/*paired ? PAIRED_INPUT_PORT :*/ INPUT_PORT);
-    //pairedInput = ports.value(PAIRED_INPUT_PORT);
     output = ports.value(OUTPUT_PORT);
 
     SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), );
-//    SAFE_POINT(NULL != pairedInput, QString("Port with id '%1' is NULL").arg(PAIRED_INPUT_PORT), );
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
 
     output->addComplement(input);

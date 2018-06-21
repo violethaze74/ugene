@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,7 +60,6 @@
 
 #include "ClassificationFilterWorker.h"
 #include "NgsReadsClassificationPlugin.h"
-#include "GetReadListWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -70,12 +69,14 @@ namespace LocalWorkflow {
 const QString ClassificationFilterWorkerFactory::ACTOR_ID("classification-filter");
 
 static const QString INPUT_PORT("in");
-//static const QString PAIRED_INPUT_PORT = "in2";
-//static const QString INPUT_SLOT_CLASSIFICATION = TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT().getId();
-
 static const QString OUTPUT_PORT("out");
-//static const QString OUTPUT_PORT2("out2");
-static const QString OUTPUT_SLOT = BaseSlots::URL_SLOT().getId();
+
+// Slots should be the same as in GetReadsListWorkerFactory
+static const QString INPUT_SLOT = "reads-url1";
+static const QString PAIRED_INPUT_SLOT = "reads-url2";
+
+static const QString OUTPUT_SLOT = "reads-url1";
+static const QString PAIRED_OUTPUT_SLOT = "reads-url2";
 
 
 static const QString SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID("save-unspecific-sequences");
@@ -145,14 +146,14 @@ bool ClassificationFilterValidator::validateSlots(const Actor *actor, ProblemLis
     IntegralBusPort* input = qobject_cast<IntegralBusPort*>(inputPort);
     SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), false);
 
-    QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::SE_SLOT_ID);
+    QList<Actor*> producers = input->getProducers(INPUT_SLOT);
     if (producers.isEmpty()) {
         res = false;
         problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory \"Input URL 1\" slot is not connected."), actor->getId()));
     }
 
     if (paired) {
-        QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::PE_SLOT_ID);
+        QList<Actor*> producers = input->getProducers(PAIRED_INPUT_SLOT);
         if (producers.isEmpty()) {
             res = false;
             problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory \"Input URL 2\" slot is not connected."), actor->getId()));
@@ -194,7 +195,7 @@ bool ClassificationFilterValidator::validateParameters(const Actor *actor, Probl
 void ClassificationFilterWorkerFactory::init() {
 
     Descriptor desc( ACTOR_ID, ClassificationFilterWorker::tr("Filter by Classification"),
-        ClassificationFilterWorker::tr("The filter takes files with NGS reads or scaffolds, classified by one of the tools: "
+        ClassificationFilterWorker::tr("The filter takes files with NGS reads or contigs, classified by one of the tools: "
                                        "Kraken, CLARK, DIAMOND, WEVOTE. For each input file it outputs a file with unspecific "
                                        "sequences (i.e. sequences not classified by the tools, taxID = 0) and/or one or several "
                                        "files with sequences that belong to specific taxonomic group(s).") );
@@ -206,7 +207,7 @@ void ClassificationFilterWorkerFactory::init() {
                                                       "<li>URL(s) to FASTQ or FASTA file(s)."
                                                       "<li>Corresponding taxonomy classification of sequences in the files."
                                                       "</ul>"
-                                                      "To process single-end reads or scaffolds, pass the URL(s) to  the \"Input URL 1\" slot.<br><br>"
+                                                      "To process single-end reads or contigs, pass the URL(s) to  the \"Input URL 1\" slot.<br><br>"
                                                       "To process paired-end reads, pass the URL(s) to files with the \"left\" and \"right\" reads to the \"Input URL 1\" and \"Input URL 2\" slots correspondingly.<br><br>"
                                                       "The taxonomy classification data are received by one of the classification tools (Kraken, CLARK, or DIAMOND) and should correspond to the input files."
                 ));
@@ -214,14 +215,14 @@ void ClassificationFilterWorkerFactory::init() {
 //                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
         Descriptor outD(OUTPUT_PORT, ClassificationFilterWorker::tr("Output File(s)"),
                         ClassificationFilterWorker::tr("The port outputs URLs to files with NGS reads, classified by taxon IDs: one file per each specified taxon ID per each input file (or pair of files in case of PE reads).\n\n"
-                                                       "Either one (for SE reads or scaffolds) or two (for PE reads) output slots are used depending on the input data.\n\n"
+                                                       "Either one (for SE reads or contigs) or two (for PE reads) output slots are used depending on the input data.\n\n"
                                                        "See also the \"Input data\" parameter of the element."));
 
 //        Descriptor outD2(OUTPUT_PORT2, ClassificationFilterWorker::tr("Output sequences 2"),
 //                        ClassificationFilterWorker::tr("URL(s) to the filtered FASTQ or FASTA file(s). The files contain \"right\" reads in case of paired-end sequencing (see \"Input data\" parameter of the element)."));
 
-        Descriptor inSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClassificationFilterWorker::tr("Input URL 1"), ClassificationFilterWorker::tr("Input URL 1."));
-        Descriptor inSlot2Descriptor(GetReadsListWorkerFactory::PE_SLOT().getId(), ClassificationFilterWorker::tr("Input URL 2"), ClassificationFilterWorker::tr("Input URL 2."));
+        Descriptor inSlot1Descriptor(INPUT_SLOT, ClassificationFilterWorker::tr("Input URL 1"), ClassificationFilterWorker::tr("Input URL 1."));
+        Descriptor inSlot2Descriptor(PAIRED_INPUT_SLOT, ClassificationFilterWorker::tr("Input URL 2"), ClassificationFilterWorker::tr("Input URL 2."));
 
         QMap<Descriptor, DataTypePtr> inM;
         inM[inSlot1Descriptor] = BaseTypes::STRING_TYPE();
@@ -229,13 +230,8 @@ void ClassificationFilterWorkerFactory::init() {
         inM[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
         p << new PortDescriptor(inD, DataTypePtr(new MapDataType("filter.input", inM)), true);
 
-//        QMap<Descriptor, DataTypePtr> inM2;
-//        assert(INPUT_SLOT_PE == BaseSlots::URL_SLOT().getId());
-//        inM2[Descriptor(BaseSlots::URL_SLOT().getId(), ClassificationFilterWorker::tr("Input paired reads URL"), ClassificationFilterWorker::tr("Input paired reads URL"))] = BaseTypes::STRING_TYPE();
-//        p << new PortDescriptor(inD2, DataTypePtr(new MapDataType("filter.input-paired-url", inM2)), true);
-
-        Descriptor outSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClassificationFilterWorker::tr("Output URL 1"), ClassificationFilterWorker::tr("Output URL 1."));
-        Descriptor outSlot2Descriptor(GetReadsListWorkerFactory::PE_SLOT().getId(), ClassificationFilterWorker::tr("Output URL 2"), ClassificationFilterWorker::tr("Output URL 2."));
+        Descriptor outSlot1Descriptor(OUTPUT_SLOT, ClassificationFilterWorker::tr("Output URL 1"), ClassificationFilterWorker::tr("Output URL 1."));
+        Descriptor outSlot2Descriptor(PAIRED_OUTPUT_SLOT, ClassificationFilterWorker::tr("Output URL 2"), ClassificationFilterWorker::tr("Output URL 2."));
 
         QMap<Descriptor, DataTypePtr> outM;
         //outM[Descriptor(OUTPUT_SLOT, ClassificationFilterWorker::tr("Output URL(s)"), ClassificationFilterWorker::tr("Output URL(s)"))] = BaseTypes::STRING_TYPE();
@@ -251,11 +247,8 @@ void ClassificationFilterWorkerFactory::init() {
             ClassificationFilterWorker::tr("Select \"True\" to put all unspecific input sequences (i. e. sequences with tax ID = 0) into a separate file.<br>"
                                            "Select \"False\" to skip unspecific sequences. At least one specific taxon should be selected in the \"Save sequences with taxID\" parameter in this case."));
 
-//        Descriptor rank(TAXONOMY_RANK, ClassificationFilterWorker::tr("Taxonomy rank"),
-//            ClassificationFilterWorker::tr("Set the taxonomy rank for the filtering."));
-
         Descriptor sequencingReadsDesc(SEQUENCING_READS, ClassificationFilterWorker::tr("Input data"),
-                                             ClassificationFilterWorker::tr("To filter single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\". Use the \"Input URL 1\" slot of the input port.<br><br>"
+                                             ClassificationFilterWorker::tr("To filter single-end (SE) reads or contigs, received by reads de novo assembly, set this parameter to \"SE reads or contigs\". Use the \"Input URL 1\" slot of the input port.<br><br>"
                                                                             "To filter paired-end (PE) reads, set the value to \"PE reads\". Use the \"\"Input URL 1\" and \"Input URL 2\" slots of the input port to input the NGS reads data.<br><br>"
                                                                             "Also, input the classification data, received from Kraken, CLARK, or DIAMOND, to the \"Taxonomy classification data\" input slot.<br><br>"
                                                                             "Either one or two slots of the output port are used depending on the input data."));
@@ -265,10 +258,11 @@ void ClassificationFilterWorkerFactory::init() {
                                            "(i. e. the specified taxID and all children in the taxonomy tree) into a separate file."));
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), false, SINGLE_END);
-        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << PAIRED_END));
-        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(OUTPUT_PORT, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << PAIRED_END));
+
+        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, PAIRED_INPUT_SLOT, QVariantList() << PAIRED_END));
+        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(OUTPUT_PORT, PAIRED_OUTPUT_SLOT, QVariantList() << PAIRED_END));
+
         a << sequencingReadsAttribute;
-//        a << new Attribute( rank, BaseTypes::STRING_TYPE(), false, ClassificationFilterSettings::SPECIES);
         a << new Attribute(saveUnspecificSequencesDescription, BaseTypes::BOOL_TYPE(), false, true);
         a << new Attribute(saveSequencesWithTaxidDescription, BaseTypes::STRING_TYPE());
     }
@@ -276,19 +270,10 @@ void ClassificationFilterWorkerFactory::init() {
     QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap sequencingReadsMap;
-        sequencingReadsMap[ClassificationFilterWorker::tr("SE reads or scaffolds")] = SINGLE_END;
+        sequencingReadsMap[ClassificationFilterWorker::tr("SE reads or contigs")] = SINGLE_END;
         sequencingReadsMap[ClassificationFilterWorker::tr("PE reads")] = PAIRED_END;
+
         delegates[SEQUENCING_READS] = new ComboBoxDelegate(sequencingReadsMap);
-
-//        QVariantMap rankMap;
-//        rankMap[ClassificationFilterWorker::tr("Species")] = ClassificationFilterSettings::SPECIES;
-//        rankMap[ClassificationFilterWorker::tr("Genus")] = ClassificationFilterSettings::GENUS;
-//        rankMap[ClassificationFilterWorker::tr("Family")] = ClassificationFilterSettings::FAMILY;
-//        rankMap[ClassificationFilterWorker::tr("Order")] = ClassificationFilterSettings::ORDER;
-//        rankMap[ClassificationFilterWorker::tr("Class")] = ClassificationFilterSettings::CLASS;
-//        rankMap[ClassificationFilterWorker::tr("Phylum")] = ClassificationFilterSettings::PHYLUM;
-//        delegates[TAXONOMY_RANK] = new ComboBoxDelegate(rankMap);
-
         delegates[SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID] = new ComboBoxWithBoolsDelegate();
         delegates[TAXONS] = new TaxonomyDelegate();
     }
@@ -364,8 +349,8 @@ Task * ClassificationFilterWorker::tick() {
         const Message message = getMessageAndSetupScriptValues(input);
 
         QVariantMap data = message.getData().toMap();
-        QString readsUrl = data[GetReadsListWorkerFactory::SE_SLOT_ID].toString();
-        QString pairedReadsUrl = data[GetReadsListWorkerFactory::PE_SLOT_ID].toString();
+        QString readsUrl = data[INPUT_SLOT].toString();
+        QString pairedReadsUrl = data[PAIRED_INPUT_SLOT].toString();
         TaxonomyClassificationResult tax = data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT().getId()/*INPUT_SLOT_CLASSIFICATION*/].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
 
         if (cfg.paired && pairedReadsUrl.isEmpty()) {
@@ -404,7 +389,7 @@ void ClassificationFilterWorker::sl_taskFinished(Task *t) {
             QVariantMap m;
             const QString url = it1.next();
             algoLog.trace(QString("Classification filter produced SE: %1").arg(url));
-            m[GetReadsListWorkerFactory::SE_SLOT_ID] = url;
+            m[INPUT_SLOT] = url;
 //            QString datasetName = "Dataset 1"; //TODO use input url or dataset name???
 //            m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
 //            MessageMetadata metadata(url, datasetName);
@@ -414,7 +399,7 @@ void ClassificationFilterWorker::sl_taskFinished(Task *t) {
 //                QVariantMap m;
                 const QString url = it2.next();
                 QString datasetName = "Dataset 1"; //TODO use input url or dataset name???
-                m[GetReadsListWorkerFactory::PE_SLOT_ID] = url;
+                m[PAIRED_INPUT_SLOT] = url;
 //                m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
 //                MessageMetadata metadata(url, datasetName);
 //                context->getMetadataStorage().put(metadata);

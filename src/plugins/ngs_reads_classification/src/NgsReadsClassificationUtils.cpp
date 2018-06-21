@@ -27,21 +27,8 @@
 
 namespace U2 {
 
-QString NgsReadsClassificationUtils::getClassificationFileName(const QString &sourceFileUrl, const QString &toolName, const QString &extension, bool trunkate) {
-    static const QStringList pairedSuffixes = QStringList() << "-R1" << "-R2"
-                                                            << "_1" << "_2"
-                                                            << "_R1_001" << "_R2_001"
-                                                            << "_R1" << "_R2";
-
-    QString baseName = QFileInfo(sourceFileUrl).completeBaseName();
-    if (trunkate) {
-        foreach (const QString &suffix, pairedSuffixes) {
-            if (baseName.endsWith(suffix)) {
-                baseName.chop(suffix.length());
-                break;
-            }
-        }
-    }
+QString NgsReadsClassificationUtils::getClassificationFileName(const QString &sourceFileUrl, const QString &toolName, const QString &extension, bool truncate) {
+    QString baseName = GUrlUtils::getPairedFastqFilesBaseName(sourceFileUrl, truncate);
     return baseName + QString("_%1_classification.%2").arg(toolName).arg(extension);
 }
 

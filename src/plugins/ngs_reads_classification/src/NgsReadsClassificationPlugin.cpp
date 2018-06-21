@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,6 @@
 #include "ClassificationFilterWorker.h"
 #include "ClassificationReportWorker.h"
 #include "EnsembleClassificationWorker.h"
-#include "GetReadListWorker.h"
 
 namespace U2 {
 
@@ -99,11 +98,7 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
 
     LocalWorkflow::ClassificationFilterWorkerFactory::init();
     LocalWorkflow::ClassificationReportWorkerFactory::init();
-    LocalWorkflow::GetReadsListWorkerFactory::init();
     LocalWorkflow::EnsembleClassificationWorkerFactory::init();
-
-    CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::SeReadsListSplitter());
-    CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::PeReadsListSplitter());
 
     // Pre-load taxonomy data
     TaskScheduler *scheduler = AppContext::getTaskScheduler();
@@ -112,9 +107,6 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
 }
 
 NgsReadsClassificationPlugin::~NgsReadsClassificationPlugin() {
-    CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::SeReadsListSplitter::ID);
-    CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::PeReadsListSplitter::ID);
-
     foreach (const QString &dataId, registeredData) {
         unregisterData(dataId);
     }

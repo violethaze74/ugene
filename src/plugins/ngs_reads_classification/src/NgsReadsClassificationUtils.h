@@ -28,7 +28,7 @@ namespace U2 {
 
 class U2NGS_READS_CLASSIFICATION_EXPORT NgsReadsClassificationUtils {
 public:
-    static QString getClassificationFileName(const QString &sourceFileUrl, const QString &toolName, const QString &extension, bool trunkate);
+    static QString getClassificationFileName(const QString &sourceFileUrl, const QString &toolName, const QString &extension, bool truncate);
 };
 
 }   // namespace U2

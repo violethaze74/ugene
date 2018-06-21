@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,8 +35,6 @@
 #include <U2Gui/GUIUtils.h>
 
 #include "GetReadListWorker.h"
-#include "NgsReadsClassificationPlugin.h"
-//#include "util/DatasetValidator.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -130,7 +128,7 @@ void GetReadsListWorkerFactory::init() {
 
             portDescs << new PortDescriptor(Descriptor(OUT_PORT_ID,
                                                        GetReadsListWorker::tr("Output File"),
-                                                       GetReadsListWorker::tr("The port outputs one or several URLs of files with NGS single-end reads or scaffolds.")), outTypeSet, false, true);
+                                                       GetReadsListWorker::tr("The port outputs one or several URLs.")), outTypeSet, false, true);
         }
 
         QList<Attribute*> attrs;
@@ -140,13 +138,12 @@ void GetReadsListWorkerFactory::init() {
             attrs << new URLAttribute(seUrl, BaseTypes::URL_DATASETS_TYPE(), true);
         }
         Descriptor protoDesc(GetReadsListWorkerFactory::SE_ACTOR_ID,
-            GetReadsListWorker::tr("Read NGS SE Reads or Scaffolds"),
-            GetReadsListWorker::tr("Input one or several files with NGS single-end reads or scaffolds. The data can be, for example, in FASTQ or FASTA formats. The element outputs the file(s) URL(s)."));
+            GetReadsListWorker::tr("Read FASTQ File with SE Reads"),
+            GetReadsListWorker::tr("Input one or several files with NGS single-end reads in FASTQ format. The element outputs the file(s) URL(s)."));
 
         ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
         proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
         proto->setPrompter(new GetReadsListPrompter());
-    //    proto->setValidator(new DatasetValidator());
         if(AppContext::isGUIMode()) {
             proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
         }
@@ -164,7 +161,7 @@ void GetReadsListWorkerFactory::init() {
 
             portDescs << new PortDescriptor(Descriptor(OUT_PORT_ID,
                                                        GetReadsListWorker::tr("Output File"),
-                                                       GetReadsListWorker::tr("The port outputs one or several pairs of URLs of files with NGS paired-end reads.")), outTypeSet, false, true);
+                                                       GetReadsListWorker::tr("The port outputs one or several pairs of URL(s).")), outTypeSet, false, true);
         }
 
         QList<Attribute*> attrs;
@@ -176,13 +173,12 @@ void GetReadsListWorkerFactory::init() {
             attrs << new URLAttribute(peUrl, BaseTypes::URL_DATASETS_TYPE(), true);
         }
         Descriptor protoDesc(GetReadsListWorkerFactory::PE_ACTOR_ID,
-            GetReadsListWorker::tr("Read NGS PE Reads"),
-            GetReadsListWorker::tr("Input one or several pairs of files with NGS paired-end reads. The data can be, for example, in FASTQ format. The element outputs the corresponding pairs of URLs."));
+            GetReadsListWorker::tr("Read FASTQ Files with PE Reads"),
+            GetReadsListWorker::tr("Input one or several pairs of files with NGS paired-end reads in FASTQ format. The element outputs the corresponding pairs of URLs."));
 
         ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
         proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
         proto->setPrompter(new GetReadsListPrompter());
-    //    proto->setValidator(new DatasetValidator());
         if(AppContext::isGUIMode()) {
             proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
         }
