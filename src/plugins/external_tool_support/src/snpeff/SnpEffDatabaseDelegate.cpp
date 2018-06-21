@@ -34,6 +34,7 @@
 #include "SnpEffDatabaseDelegate.h"
 #include "SnpEffDatabaseListModel.h"
 #include "SnpEffSupport.h"
+#include "java/JavaSupport.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -112,11 +113,26 @@ void SnpEffDatabasePropertyWidget::setValue(const QVariant &value) {
 
 void SnpEffDatabasePropertyWidget::sl_showDialog() {
     // snpEff database list is available only if there is a valid tool!
-    if (!AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF)->isValid()) {
+    ExternalTool *java = AppContext::getExternalToolRegistry()->getByName(ET_JAVA);
+    ExternalTool *snpEff = AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF);
+    CHECK(java != NULL, );
+    CHECK(snpEff != NULL, );
+    if (!(java->isValid() && snpEff->isValid())) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle(QString(ET_SNPEFF));
-        msgBox->setText(tr("The list of %1 genomes is not available.\r\nPath for %1 tool is not selected.").arg(ET_SNPEFF));
-        msgBox->setInformativeText(tr("Do you want to select it now?"));
+        if (!java->isValid() && !snpEff->isValid()) {
+            msgBox->setWindowTitle(SnpEffDatabasePropertyWidget::tr("%1 and %2").arg(java->getName()).arg(snpEff->getName()));
+            msgBox->setText(tr("The list of %1 genomes is not available.\r\nPath for %1 and %2 tools are not selected.").arg(snpEff->getName()).arg(java->getName()));
+            msgBox->setInformativeText(tr("Do you want to select them now?"));
+        } else {
+            if (!java->isValid()) {
+                msgBox->setWindowTitle(java->getName());
+                msgBox->setText(tr("The list of %1 genomes is not available.\r\nPath for %1 tool is not selected.").arg(java->getName()));
+            } else {
+                msgBox->setWindowTitle(snpEff->getName());
+                msgBox->setText(tr("The list of %1 genomes is not available.\r\nPath for %1 tool is not selected.").arg(snpEff->getName()));
+            }
+            msgBox->setInformativeText(tr("Do you want to select it now?"));
+        }
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
         const int ret = msgBox->exec();
