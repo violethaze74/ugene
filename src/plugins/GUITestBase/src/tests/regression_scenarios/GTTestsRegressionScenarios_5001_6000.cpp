@@ -4199,7 +4199,7 @@ GUI_TEST_CLASS_DEFINITION(test_5837) {
         GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
         GTGlobals::sleep();
         GTUtilsTaskTreeView::waitTaskFinished(os);
-        
+
         GTUtilsProjectTreeView::click(os, "Phaneroptera_falcata.ugenedb");
         GTKeyboardDriver::keyClick( Qt::Key_Delete);
         GTGlobals::sleep();
