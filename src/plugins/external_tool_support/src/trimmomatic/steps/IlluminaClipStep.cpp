@@ -73,7 +73,7 @@ TrimmomaticStepSettingsWidget *IlluminaClipStep::createWidget() const {
 
 QString IlluminaClipStep::serializeState(const QVariantMap &widgetState) const {
     QString serializedState;
-    serializedState += "\"" + widgetState.value(IlluminaClipSettingsWidget::FASTA_WITH_ADAPTERS_ETC, "").toString() + "\"";
+    serializedState += "\'" + widgetState.value(IlluminaClipSettingsWidget::FASTA_WITH_ADAPTERS_ETC, "").toString() + "\'";
 
     serializedState += ":";
 
@@ -112,7 +112,7 @@ QString IlluminaClipStep::serializeState(const QVariantMap &widgetState) const {
 
 QVariantMap IlluminaClipStep::parseState(const QString &command) const {
     QVariantMap state;
-    QRegExp regExp(id + ":" + "\\\"([^\\\"]*)\\\"" + ":" + "(\\d*)" + ":" + "(\\d*)" + ":" + "(\\d*)" +
+    QRegExp regExp(id + ":" + "\\\'([^\\\']*)\\'" + ":" + "(\\d*)" + ":" + "(\\d*)" + ":" + "(\\d*)" +
                    "(:" + "(\\d*)" + ":" + "((true|false){0,1})" + ")?", Qt::CaseInsensitive);
 
     const bool matched = regExp.exactMatch(command);

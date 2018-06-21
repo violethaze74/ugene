@@ -93,8 +93,9 @@ QBitArray StrPackUtils::initCharactersToEscape() {
 }
 
 QString StrPackUtils::escapeCharacters(QString string) {
+    string.replace('\\', QString("\\\\"));      // escape '\' first
     for (int i = 0; i < charactersToEscape.size(); i++) {
-        if (charactersToEscape[i]) {
+        if (charactersToEscape[i] && (char)i != '\\') {
             const char c = (char)i;
             string.replace(c, QString("\\") + c);
         }
