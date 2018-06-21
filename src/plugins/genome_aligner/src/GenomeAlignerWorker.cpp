@@ -333,8 +333,8 @@ void GenomeAlignerWorkerFactory::init() {
         }
 
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
-		attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(BASE_GENOME_ALIGNER_OUTFILE));
-        attrs << new Attribute(refGenome, BaseTypes::STRING_TYPE(), true, QVariant(""));
+        attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(BASE_GENOME_ALIGNER_OUTFILE));
+        attrs << new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrs << new Attribute(absMismatches, BaseTypes::BOOL_TYPE(), true/*required*/, true);
         Attribute* mismatchesAttr = new Attribute(mismatches, BaseTypes::NUM_TYPE(), false, 0);
         mismatchesAttr->addRelation(new VisibilityRelation(ABS_OR_PERC_MISMATCHES_ATTR, QVariant(true)));

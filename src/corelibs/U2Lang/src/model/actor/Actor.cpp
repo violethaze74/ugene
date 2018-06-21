@@ -470,11 +470,11 @@ static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, Prob
 }
 
 static bool validateCodePage(const QString &url) {
-	QString url2 = QString::fromLocal8Bit(url.toLocal8Bit());
-	if (url.compare(url2, Qt::CaseSensitive) != 0) {
-		return false;
-	}
-	return true;
+    QString url2 = QString::fromLocal8Bit(url.toLocal8Bit());
+    if (url.compare(url2, Qt::CaseSensitive) != 0) {
+        return false;
+    }
+    return true;
 }
 
 /**
@@ -485,22 +485,22 @@ static bool validateCodePage(const QString &url) {
  *   - both QString must be equal
  */
 static bool validateCodePage(Attribute *attr, ProblemList &infoList) {
-	SAFE_POINT(NULL != attr, "NULL attribute!", false);
+    SAFE_POINT(NULL != attr, "NULL attribute!", false);
 
-	QStringList urlsList = WorkflowUtils::getAttributeUrls(attr);
-	if (urlsList.isEmpty()) {
-		return true;
-	}
+    QStringList urlsList = WorkflowUtils::getAttributeUrls(attr);
+    if (urlsList.isEmpty()) {
+        return true;
+    }
 
-	// Verify each URL
-	bool res = true;
-	foreach(const QString &url, urlsList) {
-		if (!validateCodePage(url)) {
-			res = false;
-			infoList << Problem(L10N::warningCharactersCodePage(attr->getDisplayName()), "", Problem::U2_WARNING);
-		}
-	}
-	return res;
+    // Verify each URL
+    bool res = true;
+    foreach(const QString &url, urlsList) {
+        if (!validateCodePage(url)) {
+            res = false;
+            infoList << Problem(L10N::warningCharactersCodePage(attr->getDisplayName()), "", Problem::U2_WARNING);
+        }
+    }
+    return res;
 }
 
 bool Actor::validate(ProblemList &problemList) const {
@@ -526,12 +526,12 @@ bool Actor::validate(ProblemList &problemList) const {
             urlsRes = urlsRes && urlAttrValid;
 		}
 
-		if (urlType != NotAnUrl || attr->getFlags().testFlag(Attribute::NeedValidateEncoding)) {
-			// UGENE-5595
-			bool urlAttrValid = validateCodePage(attr, problemList);
-			// we think that this is a warning, so I commented the following line
-			//urlsRes = urlsRes && urlAttrValid;
-		}
+        if (urlType != NotAnUrl || attr->getFlags().testFlag(Attribute::NeedValidateEncoding)) {
+            // UGENE-5595
+            bool urlAttrValid = validateCodePage(attr, problemList);
+            // we think that this is a warning, so I commented the following line
+            //urlsRes = urlsRes && urlAttrValid;
+        }
 
         if (attr->getAttributeType() == BaseTypes::NUM_TYPE() && !attr->getAttributePureValue().toString().isEmpty()) {
             bool ok;

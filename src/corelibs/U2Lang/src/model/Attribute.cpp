@@ -109,7 +109,7 @@ bool Attribute::canBeEmpty() const {
 }
 
 bool Attribute::needValidateEncoding() const {
-	return flags.testFlag(NeedValidateEncoding);
+    return flags.testFlag(NeedValidateEncoding);
 }
 
 Attribute::Flags Attribute::getFlags() const {

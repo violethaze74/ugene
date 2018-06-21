@@ -152,7 +152,7 @@ void DiamondClassifyWorkerFactory::init() {
         attributes << new Attribute(bsize, BaseTypes::NUM_TYPE(), Attribute::None, 2.0); //NB: unless --very-sensitive supported
         attributes << new Attribute(chunks, BaseTypes::NUM_TYPE(), Attribute::None, 4); //NB: unless --very-sensitive supported
         attributes << new Attribute(threads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
-		attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
+        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
     }
 
     QMap<QString, PropertyDelegate *> delegates;
