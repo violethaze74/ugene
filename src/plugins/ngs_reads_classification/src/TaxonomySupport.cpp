@@ -140,6 +140,10 @@ QList<TaxID> TaxonomyTree::getChildren(TaxID id) const
     return childs.values(id);
 }
 
+int TaxonomyTree::getElementsCount() const {
+    return names.size();
+}
+
 TaxID TaxonomyTree::match(TaxID id, QSet<TaxID> filter)
 {
     // first try fastpath
