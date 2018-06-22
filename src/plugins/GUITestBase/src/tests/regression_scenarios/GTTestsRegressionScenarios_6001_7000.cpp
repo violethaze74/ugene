@@ -359,6 +359,84 @@ GUI_TEST_CLASS_DEFINITION(test_6047) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 231, "Unexpected quantaty of sequences");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6062) {
+    class InnerOs : public GUITestOpStatus {
+    public:
+        void setError(const QString & err) {
+            innerError = err;
+        }
+
+        QString getError() const {
+            return innerError;
+        }
+
+        bool hasError() const {
+            return !innerError.isEmpty();
+        }
+
+        void reset() {
+            innerError.clear();
+        }
+
+    private:
+        QString innerError;
+    };
+
+//    1. Open WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Add 'Map Reads with BWA' element to the scene.
+    WorkflowProcessItem *bwaElement = GTUtilsWorkflowDesigner::addElement(os, "Map Reads with BWA", true);
+
+//    3. Click to the element.
+    GTUtilsWorkflowDesigner::click(os, bwaElement);
+
+//    Expected state: 'Library' attribute has value 'Single-end'; there is one table in 'Input data' widget, which contains information about input ports.
+    const QString actualAttributeValue = GTUtilsWorkflowDesigner::getParameter(os, "Library");
+    const QString expectedAttributeValue = "Single-end";
+    CHECK_SET_ERR(expectedAttributeValue == actualAttributeValue,
+                  QString("An unexpected default value of 'Library' attribute: expected '%1', got '%2'")
+                  .arg(expectedAttributeValue).arg(actualAttributeValue));
+
+    InnerOs innerOs;
+
+    QTableWidget *inputPortTable1 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 0);
+    CHECK_OP_SET_ERR(innerOs, "Table for the first input port not found");
+    CHECK_SET_ERR(NULL != inputPortTable1, "inputPortTable1 is NULL");
+
+    QTableWidget *inputPortTable2 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 1);
+    CHECK_SET_ERR(innerOs.hasError(), "Table for the second input port unexpectedly found");
+    CHECK_SET_ERR(NULL == inputPortTable2, "Table for the second input port unexpectedly found");
+
+    innerOs.reset();
+
+//    4. Set 'Library' attribute value to 'Paired-end'.
+    GTUtilsWorkflowDesigner::setParameter(os, "Library", "Paired-end", GTUtilsWorkflowDesigner::comboValue);
+
+//    Expected state: there are two tables in 'Input data' widget.
+    inputPortTable1 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 0);
+    CHECK_OP_SET_ERR(innerOs, "Table for the first input port not found");
+    CHECK_SET_ERR(NULL != inputPortTable1, "inputPortTable1 is NULL");
+
+    inputPortTable2 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 1);
+    CHECK_OP_SET_ERR(innerOs, "Table for the second input port not found");
+    CHECK_SET_ERR(NULL != inputPortTable2, "Table for the second input port not found");
+
+//    4. Set 'Library' attribute value to 'Single-end'.
+    GTUtilsWorkflowDesigner::clickParameter(os, "Output folder");
+    GTUtilsWorkflowDesigner::setParameter(os, "Library", "Single-end", GTUtilsWorkflowDesigner::comboValue);
+
+//    Expected state: there is one table in 'Input data' widget.
+    inputPortTable1 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 0);
+    CHECK_OP_SET_ERR(innerOs, "Table for the first input port not found");
+    CHECK_SET_ERR(NULL != inputPortTable1, "inputPortTable1 is NULL");
+
+    inputPortTable2 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 1);
+    CHECK_SET_ERR(innerOs.hasError(), "Table for the second input port unexpectedly found");
+    CHECK_SET_ERR(NULL == inputPortTable2, "Table for the second input port unexpectedly found");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6066) {
 //    1. Open "data/samples/Genbank/murine.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
