@@ -253,7 +253,7 @@ void ClarkClassifyWorkerFactory::init() {
                 clarkDatabasePath = clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID);
             }
         }
-        a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required, clarkDatabasePath);
+        a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, clarkDatabasePath);
 
 //        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
 //        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
@@ -281,7 +281,7 @@ void ClarkClassifyWorkerFactory::init() {
 
         a << new Attribute(db2ram, BaseTypes::BOOL_TYPE(), Attribute::None, false);
         a << new Attribute(numThreads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
-        a << new Attribute(outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        a << new Attribute(outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
     }
 
     QMap<QString, PropertyDelegate*> delegates;

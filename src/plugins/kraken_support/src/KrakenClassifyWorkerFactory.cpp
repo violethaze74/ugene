@@ -149,7 +149,7 @@ void KrakenClassifyWorkerFactory::init() {
         if (NULL != minikrakenDataPath && minikrakenDataPath->isValid()) {
             minikrakenPath = minikrakenDataPath->getPathByName(NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ITEM_ID);
         }
-        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required, minikrakenPath);
+        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, minikrakenPath);
         attributes << databaseAttribute;
 
         attributes << new Attribute(quickOperationDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
@@ -159,7 +159,7 @@ void KrakenClassifyWorkerFactory::init() {
 
         attributes << new Attribute(preloadDatabaseDesc, BaseTypes::BOOL_TYPE(), Attribute::None, true);
         attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
-        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
         minHitsAttribute->addRelation(new VisibilityRelation(QUICK_OPERATION_ATTR_ID, "true"));
         databaseAttribute->addRelation(new DatabaseSizeRelation(PRELOAD_DATABASE_ATTR_ID));

@@ -102,7 +102,7 @@ void ClassificationReportWorkerFactory::init() {
     {
         Descriptor outputDesc(OUT_FILE, ClassificationReportWorker::tr("Output file"),
             ClassificationReportWorker::tr("Specify the output text file name."));
-        a << new Attribute(outputDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        a << new Attribute(outputDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
     }
 
     QMap<QString, PropertyDelegate*> delegates;

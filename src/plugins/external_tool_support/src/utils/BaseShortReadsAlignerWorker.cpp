@@ -311,9 +311,9 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
             BaseShortReadsAlignerWorker::tr("Output file name"),
             BaseShortReadsAlignerWorker::tr("Base name of the output file. 'out.sam' by default"));
 
-        attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
-        attrs << new Attribute(refGenome, BaseTypes::STRING_TYPE(), true, QVariant(""));
-        attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), true, QVariant(BASE_OUTFILE));
+        attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        attrs << new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(BASE_OUTFILE));
 
         Attribute* libraryAttr = new Attribute(library, BaseTypes::STRING_TYPE(), false, QVariant("Single-end"));
         QVariantList visibilityValues;

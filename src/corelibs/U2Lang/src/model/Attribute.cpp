@@ -108,6 +108,10 @@ bool Attribute::canBeEmpty() const {
     return flags.testFlag(CanBeEmpty);
 }
 
+bool Attribute::needValidateEncoding() const {
+    return flags.testFlag(NeedValidateEncoding);
+}
+
 Attribute::Flags Attribute::getFlags() const {
     return flags;
 }
