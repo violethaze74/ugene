@@ -196,7 +196,7 @@ qint64 TextUtils::cutByteOrderMarks(char* data, qint64 buffLen) {
     QByteArray byteArrayData = buffLen != -1 ? QByteArray(data, buffLen) : QByteArray(data);
     QByteArray resByteArrayData = cutByteOrderMarks(byteArrayData);
     qint64 result = resByteArrayData.size();
-    strncpy(data, resByteArrayData.data(), result);
+    memcpy(data, resByteArrayData.data(), result);
 
     return result;
 }
