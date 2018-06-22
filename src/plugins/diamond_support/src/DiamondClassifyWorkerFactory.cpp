@@ -141,7 +141,7 @@ void DiamondClassifyWorkerFactory::init() {
             }
         }
 
-        attributes << new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required, diamondDatabasePath);
+        attributes << new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, diamondDatabasePath);
         attributes << new Attribute(code, BaseTypes::NUM_TYPE(), Attribute::None, 1);
         attributes << new Attribute(sense, BaseTypes::STRING_TYPE(), Attribute::None, DiamondClassifyTaskSettings::SENSITIVE_DEFAULT);
         attributes << new Attribute(fshift, BaseTypes::NUM_TYPE(), Attribute::None, 0);

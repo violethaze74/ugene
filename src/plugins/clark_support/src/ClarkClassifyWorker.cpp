@@ -271,7 +271,7 @@ void ClarkClassifyWorkerFactory::init() {
                 clarkDatabasePath = clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID);
             }
         }
-        a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required, clarkDatabasePath);
+        a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, clarkDatabasePath);
 
 //        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
 //        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);

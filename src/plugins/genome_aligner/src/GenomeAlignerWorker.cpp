@@ -332,7 +332,7 @@ void GenomeAlignerWorkerFactory::init() {
             attrs << new Attribute(gpu, BaseTypes::BOOL_TYPE(), false/*required*/, false);
         }
 
-        attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
+        attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(BASE_GENOME_ALIGNER_OUTFILE));
         attrs << new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrs << new Attribute(absMismatches, BaseTypes::BOOL_TYPE(), true/*required*/, true);
