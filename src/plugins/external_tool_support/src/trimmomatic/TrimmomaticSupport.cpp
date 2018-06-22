@@ -23,8 +23,20 @@
 
 #include <U2Core/AppContext.h>
 
+#include "TrimmomaticStep.h"
 #include "TrimmomaticSupport.h"
 #include "java/JavaSupport.h"
+#include "steps/AvgQualStep.h"
+#include "steps/CropStep.h"
+#include "steps/HeadCropStep.h"
+#include "steps/IlluminaClipStep.h"
+#include "steps/LeadingStep.h"
+#include "steps/MaxInfoStep.h"
+#include "steps/MinLenStep.h"
+#include "steps/SlidingWindowStep.h"
+#include "steps/ToPhred33Step.h"
+#include "steps/ToPhred64Step.h"
+#include "steps/TrailingStep.h"
 
 namespace U2 {
 
@@ -40,6 +52,27 @@ TrimmomaticSupport::TrimmomaticSupport(const QString &name, const QString &path)
 
     toolRunnerProgramm = ET_JAVA;
     dependencies << ET_JAVA;
+
+    initTrimmomaticSteps();
+}
+
+TrimmomaticSupport::~TrimmomaticSupport() {
+    LocalWorkflow::TrimmomaticStepsRegistry::releaseInstance();
+}
+
+void TrimmomaticSupport::initTrimmomaticSteps() {
+    LocalWorkflow::TrimmomaticStepsRegistry *registry = LocalWorkflow::TrimmomaticStepsRegistry::getInstance();
+    registry->registerEntry(new LocalWorkflow::AvgQualStepFactory());
+    registry->registerEntry(new LocalWorkflow::CropStepFactory());
+    registry->registerEntry(new LocalWorkflow::HeadCropStepFactory());
+    registry->registerEntry(new LocalWorkflow::IlluminaClipStepFactory());
+    registry->registerEntry(new LocalWorkflow::LeadingStepFactory());
+    registry->registerEntry(new LocalWorkflow::MaxInfoStepFactory());
+    registry->registerEntry(new LocalWorkflow::MinLenStepFactory());
+    registry->registerEntry(new LocalWorkflow::SlidingWindowStepFactory());
+    registry->registerEntry(new LocalWorkflow::ToPhred33StepFactory());
+    registry->registerEntry(new LocalWorkflow::ToPhred64StepFactory());
+    registry->registerEntry(new LocalWorkflow::TrailingStepFactory());
 }
 
 } // namespace U2

@@ -57,7 +57,7 @@ public:
 class U2CORE_EXPORT IOAdapter : public QObject {
     Q_OBJECT
 public:
-    IOAdapter(IOAdapterFactory* f, QObject* o = NULL) : QObject(o), factory(f), formatMode(BinaryMode) {}
+    IOAdapter(IOAdapterFactory* f, QObject* o = NULL) : QObject(o), formatMode(BinaryMode), factory(f) {}
 
     virtual ~IOAdapter(){}
 

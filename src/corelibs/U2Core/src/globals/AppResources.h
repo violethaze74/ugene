@@ -273,7 +273,7 @@ public:
     static bool isSSE2Enabled();
 
     void registerResource(AppResource* r);
-    void unRegisterResource(int id);
+    void unregisterResource(int id);
 
     AppResource* getResource(int id) const;
 

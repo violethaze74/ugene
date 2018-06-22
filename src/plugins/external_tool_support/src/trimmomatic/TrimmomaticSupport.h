@@ -32,6 +32,10 @@ class TrimmomaticSupport : public ExternalTool {
     Q_OBJECT
 public:
     TrimmomaticSupport(const QString &name, const QString& path = "");
+    ~TrimmomaticSupport();
+
+private:
+    void initTrimmomaticSteps();
 };
 
 } // namespace U2

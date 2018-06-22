@@ -1133,19 +1133,19 @@ void TreeViewerUI::sl_exportTriggered() {
     if (fileName.isEmpty()) {
         return;
     }
-    
+
     QFileInfo dir(QFileInfo(fileName).absolutePath());
     if (!dir.exists() || !dir.isWritable()) {
         QMessageBox::critical(this, tr("Error"), tr("Selected dir is read only: %1").arg(dir.absoluteFilePath()));
         return;
     }
-    
+
     QRect rect = scene()->sceneRect().toRect();
     rect.moveTo(0, 0);
-    
+
     QBuffer qbuffer;
     qbuffer.open(QBuffer::ReadWrite);
-    
+
     QSvgGenerator generator;
     generator.setOutputDevice(&qbuffer);
     generator.setSize(rect.size());
@@ -1158,7 +1158,7 @@ void TreeViewerUI::sl_exportTriggered() {
 
     qbuffer.seek(0); // move pointer to the buffer's start
     QString svgText(qbuffer.readAll());
-    
+
     if (svgText.isEmpty()) {
         QMessageBox::critical(this, tr("Error"), tr("Failed to generate SVG image."));
         return;

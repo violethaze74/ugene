@@ -96,7 +96,10 @@ QStringList TrimmomaticTask::getArguments() {
         GUrlUtils::prepareFileLocation(settings.unpairedOutputUrl2, stateInfo);
     }
 
-    arguments << settings.trimmingSteps;
+    foreach (QString step, settings.trimmingSteps) {
+        step.remove('\'');
+        arguments << step;
+    }
 
     return arguments;
 }

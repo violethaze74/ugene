@@ -52,6 +52,7 @@ public:
     void setNewType(const DataTypePtr &newType);
     QMap<Descriptor, DataTypePtr> getOwnTypeMap() const;
     virtual void setVisibleSlot(const QString& slotId, const bool isVisible);
+    QString getSlotNameById(const QString& id) const;
 
 protected:
     // type of data that this port contains

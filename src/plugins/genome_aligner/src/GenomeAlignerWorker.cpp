@@ -347,8 +347,13 @@ void GenomeAlignerWorkerFactory::init() {
         attrs << new Attribute(qual, BaseTypes::NUM_TYPE(), false/*required*/, 0);
     }
 
-    Descriptor desc(ACTOR_ID, GenomeAlignerWorker::tr("Align Reads with UGENE Genome Aligner"),
-        GenomeAlignerWorker::tr("Unique UGENE algorithm for aligning short reads to reference genome"));
+    Descriptor desc(ACTOR_ID, GenomeAlignerWorker::tr("Map Reads with UGENE Genome Aligner"),
+        GenomeAlignerWorker::tr("Genome Aligner is a program for mapping short DNA sequence reads"
+                                " to a long reference sequence, developed by the UGENE team."
+                                "<br/><br/>Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input"
+                                " port of the element, set up the reference sequence in the parameters."
+                                " The result is saved to the specified SAM file, URL to the file is passed"
+                                " to the output port."));
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, attrs);
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -377,7 +382,7 @@ void GenomeAlignerWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new GenomeAlignerPrompter());
     proto->setPortValidator(IN_PORT_DESCR, new GenomeAlignerInputSlotsValidator());
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_ALIGN_SHORT_READS(), proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new GenomeAlignerWorkerFactory());

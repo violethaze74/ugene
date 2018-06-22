@@ -1501,8 +1501,8 @@ GUI_TEST_CLASS_DEFINITION(test_3226) {
 GUI_TEST_CLASS_DEFINITION(test_3229){
 //    1. Create the "read sequence -> write sequence" workflow.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
-    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    2. Set input a single file human_T1
     GTUtilsWorkflowDesigner::click(os, read);
@@ -4557,7 +4557,7 @@ GUI_TEST_CLASS_DEFINITION(test_3697){
     GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, "Ok"));
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addElement(os, "Read Alignment");
-    GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     GTUtilsWorkflowDesigner::click(os, "Read Alignment");
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
 
@@ -4624,7 +4624,7 @@ GUI_TEST_CLASS_DEFINITION(test_3715) {
     GTKeyboardDriver::keyClick( 'r', Qt::ControlModifier);
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Read NGS Reads Assembly") != 0, "Workflow errors list cant be empty");
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Read Assembly") != 0, "Workflow errors list cant be empty");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3717){
@@ -5964,7 +5964,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click(os, "File List");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/nrsf-chr21.fastq");
     GTUtilsWorkflowDesigner::createDataset(os);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/control-chr21.fastq");

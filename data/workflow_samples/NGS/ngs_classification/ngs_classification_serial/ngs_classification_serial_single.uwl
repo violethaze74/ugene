@@ -15,19 +15,6 @@ workflow "Serial classification for SE reads"{
         type:fastqc;
         name:"FastQC Before";
     }
-    casava-filter {
-        type:CASAVAFilter;
-        name:"CASAVA Filter";
-    }
-    cut-adapt {
-        type:CutAdaptFastq;
-        name:"Cut Adapter";
-        adapters-url:"";
-    }
-    quality-trim {
-        type:QualityTrim;
-        name:"Trim by Quality";
-    }
     fastqc-after {
         type:fastqc;
         name:"FastQC After";
@@ -64,30 +51,28 @@ workflow "Serial classification for SE reads"{
         type:classification-report;
         name:"Report 3";
     }
+    trimmomatic {
+        type:trimmomatic;
+        name:Trimmomatic;
+    }
 
     .actor-bindings {
+        diamond-classify.out->classification-report-3.in
+        classification-filter-1.out->clark-classify.in
         kraken-classify.out->classification-filter-1.in
         kraken-classify.out->classification-report-1.in
-        casava-filter.out-file->cut-adapt.in-file
-        cut-adapt.out-file->quality-trim.in-file
-        quality-trim.out-file->kraken-classify.in
-        quality-trim.out-file->fastqc-after.in-file
+        trimmomatic.out->fastqc-after.in-file
+        trimmomatic.out->kraken-classify.in
         clark-classify.out->classification-filter-2.in
         clark-classify.out->classification-report-2.in
-        classification-filter-1.out->clark-classify.in
         classification-filter-2.out->diamond-classify.in
-        diamond-classify.out->classification-report-3.in
         get-se-reads-list.out->fastqc-before.in-file
-        get-se-reads-list.out->casava-filter.in-file
+        get-se-reads-list.out->trimmomatic.in
     }
 
     get-se-reads-list.reads-url1->fastqc-before.in-file.url
-    get-se-reads-list.reads-url1->casava-filter.in-file.url
-    casava-filter.url->cut-adapt.in-file.url
-    cut-adapt.url->quality-trim.in-file.url
-    quality-trim.url->fastqc-after.in-file.url
-    quality-trim.url->kraken-classify.in.reads-url1
-    quality-trim.url->classification-filter-1.in.reads-url1
+    get-se-reads-list.reads-url1->fastqc-after.in-file.url
+    trimmomatic.reads-url1->kraken-classify.in.reads-url1
     kraken-classify.tax-data->classification-filter-1.in.tax-data
     classification-filter-1.reads-url1->clark-classify.in.reads-url1
     classification-filter-1.reads-url1->classification-filter-2.in.reads-url1
@@ -96,139 +81,120 @@ workflow "Serial classification for SE reads"{
     kraken-classify.tax-data->classification-report-1.in.tax-data
     clark-classify.tax-data->classification-report-2.in.tax-data
     diamond-classify.tax-data->classification-report-3.in.tax-data
+    get-se-reads-list.reads-url1->trimmomatic.in.reads-url1
 
     .meta {
         visual {
-            casava-filter {
-                pos:"-570 -630";
-                style:simple;
-                bg-color-simple:"127 127 127 255";
-                in-file.angle:180;
-                out-file.angle:360;
-            }
             clark-classify {
-                pos:"-375 -300";
+                pos:"-165 -210";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
-                in.angle:0;
+                in.angle:91.9749;
                 out.angle:181.591;
             }
             classification-filter-1 {
-                pos:"-180 -300";
+                pos:"-165 -375";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in.angle:88.8309;
-                out.angle:183.576;
+                out.angle:270;
             }
             classification-filter-2 {
-                pos:"-585 -300";
+                pos:"-465 -210";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in.angle:358.264;
                 out.angle:183.366;
             }
             classification-report-1 {
-                pos:"-30 -375";
+                pos:"-15 -450";
                 style:simple;
                 bg-color-simple:"141 126 194 255";
-                in.angle:156.615;
+                in.angle:144.689;
             }
             classification-report-2 {
-                pos:"-495 -195";
+                pos:"-195 -30";
                 style:simple;
                 bg-color-simple:"141 126 194 255";
-                in.angle:58.3925;
+                in.angle:91.5911;
             }
             classification-report-3 {
-                pos:"-870 -195";
+                pos:"-735 -45";
                 style:simple;
                 bg-color-simple:"141 126 194 255";
-                in.angle:58.7363;
-            }
-            cut-adapt {
-                pos:"-375 -630";
-                style:simple;
-                bg-color-simple:"127 127 127 255";
-                in-file.angle:180;
-                out-file.angle:360;
+                in.angle:91.8476;
             }
             diamond-classify {
-                pos:"-750 -300";
+                pos:"-735 -210";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:358.452;
-                out.angle:181.591;
+                out.angle:274.667;
             }
             fastqc-after {
-                pos:"-60 -525";
+                pos:"-315 -645";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
-                in-file.angle:150.803;
+                in-file.angle:237.653;
             }
             fastqc-before {
-                pos:"-660 -525";
+                pos:"-585 -645";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
-                in-file.angle:138.366;
+                in-file.angle:216.529;
             }
             get-se-reads-list {
-                pos:"-750 -630";
+                pos:"-735 -540";
                 style:simple;
                 bg-color-simple:"23 106 239 255";
                 out.angle:360;
             }
             kraken-classify {
-                pos:"-180 -450";
+                pos:"-165 -540";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
-                in.angle:90;
+                in.angle:184.086;
                 out.angle:268.977;
             }
-            quality-trim {
-                pos:"-180 -630";
+            trimmomatic {
+                pos:"-465 -540";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
-                in-file.angle:180;
-                out-file.angle:272.437;
-            }
-            casava-filter.out-file->cut-adapt.in-file {
-                text-pos:"-37.3359 -27";
+                in.angle:180;
+                out.angle:360;
             }
             clark-classify.out->classification-filter-2.in {
-                text-pos:"-45 -47";
+                text-pos:"-39 4";
             }
             clark-classify.out->classification-report-2.in {
-                text-pos:"-61 -18";
+                text-pos:"-34 -5";
             }
             classification-filter-1.out->clark-classify.in {
-                text-pos:"-42 -47";
+                text-pos:"-59 -22";
             }
             classification-filter-2.out->diamond-classify.in {
-                text-pos:"-44 -48";
-            }
-            cut-adapt.out-file->quality-trim.in-file {
-                text-pos:"-37.3359 -27";
+                text-pos:"-46 4";
             }
             diamond-classify.out->classification-report-3.in {
-                text-pos:"-71 -21";
-            }
-            get-se-reads-list.out->casava-filter.in-file {
-                text-pos:"-43 -27";
+                text-pos:"-25 -23";
             }
             get-se-reads-list.out->fastqc-before.in-file {
-                text-pos:"-29.3359 -10";
+                text-pos:"-50.3359 -30";
+            }
+            get-se-reads-list.out->trimmomatic.in {
+                text-pos:"-34.3359 -28";
             }
             kraken-classify.out->classification-filter-1.in {
-                text-pos:"-65 -22";
+                text-pos:"-58 -16";
             }
             kraken-classify.out->classification-report-1.in {
-                text-pos:"-21 -40";
+                text-pos:"-24 -36";
             }
-            quality-trim.out-file->fastqc-after.in-file {
-                text-pos:"-22.3359 -17";
+            trimmomatic.out->fastqc-after.in-file {
+                text-pos:"-72 -45";
             }
-            quality-trim.out-file->kraken-classify.in {
-                text-pos:"-55.3359 -9";
+            trimmomatic.out->kraken-classify.in {
+                text-pos:"-32 -43";
             }
         }
         wizard {
@@ -250,27 +216,21 @@ workflow "Serial classification for SE reads"{
             page {
                 id:2;
                 next:3;
-                title:Pre-proccessing;
+                title:"Trimmomatic settings";
                 parameters-area {
                     group {
-                        title:"Reads filtration";
+                        title:"Improve reads quality";
                         label-size:120;
-                        quality-trim.qual-id {
+                        trimmomatic.trimming-steps {
                         }
-                        quality-trim.len-id {
-                            label:"Min length";
+                        trimmomatic.generate-log {
                         }
-                        quality-trim.both-ends {
-                            label:"Trim both ends";
-                        }
-                        cut-adapt.front-url {
-                            label:"5’ adapters";
-                        }
-                        cut-adapt.adapters-url {
-                            label:"3’ adapters";
-                        }
-                        cut-adapt.anywhere-url {
-                            label:"5’ and 3’ adapters";
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        trimmomatic.threads {
                         }
                     }
                 }
@@ -386,7 +346,6 @@ workflow "Serial classification for SE reads"{
                         clark-classify.output-url {
                             label:"CLARK output file";
                         }
-                       
                         diamond-classify.output-url {
                             label:"DIAMOND output file";
                         }
@@ -395,13 +354,13 @@ workflow "Serial classification for SE reads"{
                         title:"Classification reports";
                         label-size:180;
                         classification-report-1.output-url {
-                            label:"Report for Kraken classification"
+                            label:"Report for Kraken classification";
                         }
                         classification-report-2.output-url {
-                            label:"Report for CLARK classification"
-                        } 
+                            label:"Report for CLARK classification";
+                        }
                         classification-report-3.output-url {
-                            label:"Report for DIAMOND classification"
+                            label:"Report for DIAMOND classification";
                         }
                     }
                 }
@@ -409,3 +368,4 @@ workflow "Serial classification for SE reads"{
         }
     }
 }
+

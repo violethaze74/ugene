@@ -55,6 +55,7 @@
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/IntegralBusModel.h>
+#include <U2Lang/PairedReadsPortValidator.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
@@ -66,26 +67,6 @@ namespace LocalWorkflow {
 
 ///////////////////////////////////////////////////////////////
 //ClassificationFilter
-const QString ClassificationFilterWorkerFactory::ACTOR_ID("classification-filter");
-
-static const QString INPUT_PORT("in");
-static const QString OUTPUT_PORT("out");
-
-// Slots should be the same as in GetReadsListWorkerFactory
-static const QString INPUT_SLOT = "reads-url1";
-static const QString PAIRED_INPUT_SLOT = "reads-url2";
-
-static const QString OUTPUT_SLOT = "reads-url1";
-static const QString PAIRED_OUTPUT_SLOT = "reads-url2";
-
-
-static const QString SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID("save-unspecific-sequences");
-static const QString TAXONOMY_RANK("taxonomy-rank");
-static const QString SEQUENCING_READS("sequencing-reads");
-static const QString TAXONS("tax-ids");
-
-static const QString SINGLE_END("single-end");
-static const QString PAIRED_END("paired-end");
 
 //const QString ClassificationFilterSettings::SPECIES("species");
 //const QString ClassificationFilterSettings::GENUS("genus");
@@ -100,75 +81,16 @@ QString ClassificationFilterPrompter::composeRichDoc() {
     return tr("Put input sequences that belong to the specified taxonomic group(s) to separate file(s).");
 }
 
-class ClassificationFilterValidator : public ActorValidator {
-public:
-    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const;
-
-private:
-    bool validateSlots(const Actor *actor, ProblemList &problemList) const;
-    bool validateParameters(const Actor *actor, ProblemList &problemList) const;
-};
+/************************************************************************/
+/* ClassificationFilterValidator */
+/************************************************************************/
 
 bool ClassificationFilterValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    bool result = validateSlots(actor, problemList);
-    result &= validateParameters(actor, problemList);
-    return result;
-}
+    const bool saveUnspecificSequences = actor->getParameter(ClassificationFilterWorkerFactory::SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getAttributeValueWithoutScript<bool>();
 
-bool ClassificationFilterValidator::validateSlots(const Actor *actor, ProblemList &problemList) const {
-/*    const QString databaseUrl = actor->getParameter(DB_URL)->getAttributeValueWithoutScript<QString>();
-    const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
-    CHECK_EXT(doesDatabaseDirExist,
-              problemList.append(Problem(ClassificationFilterPrompter::tr("The database folder doesn't exist: %1").arg(databaseUrl), actor->getId())),
-              false);
-
-    const QStringList files = QStringList() << "targets.txt" << ".custom.fileToAccssnTaxID" << ".custom.fileToTaxIDs";
-
-    QStringList missedFiles;
-    foreach (const QString &file, files) {
-        QString f = databaseUrl + "/" + file;
-        if (!QFileInfo(f).exists()) {
-            missedFiles << f;
-        }
-    }
-
-    foreach (const QString &missedFile, missedFiles) {
-        problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory database file doesn't exist: %1").arg(missedFile), actor->getId()));
-    }
-    CHECK(missedFiles.isEmpty(), false);
-*/
-    bool res = true;
-
-    Attribute *attr = actor->getParameter(SEQUENCING_READS);
-    QString attrName = attr->getAttributeValueWithoutScript<QString>();
-    const bool paired = attrName == PAIRED_END;
-    Port* inputPort = actor->getPort(INPUT_PORT);
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(inputPort);
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), false);
-
-    QList<Actor*> producers = input->getProducers(INPUT_SLOT);
-    if (producers.isEmpty()) {
-        res = false;
-        problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory \"Input URL 1\" slot is not connected."), actor->getId()));
-    }
-
-    if (paired) {
-        QList<Actor*> producers = input->getProducers(PAIRED_INPUT_SLOT);
-        if (producers.isEmpty()) {
-            res = false;
-            problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory \"Input URL 2\" slot is not connected."), actor->getId()));
-        }
-    }
-
-    return res;
-}
-
-bool ClassificationFilterValidator::validateParameters(const Actor *actor, ProblemList &problemList) const {
-    const bool saveUnspecificSequences = actor->getParameter(SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getAttributeValueWithoutScript<bool>();
-
-    const QStringList taxonsTokens = actor->getParameter(TAXONS)->getAttributeValueWithoutScript<QString>().split(";", QString::SkipEmptyParts);
+    const QStringList taxonsTokens = actor->getParameter(ClassificationFilterWorkerFactory::TAXONS)->getAttributeValueWithoutScript<QString>().split(";", QString::SkipEmptyParts);
     QSet<TaxID> taxons;
-    foreach (const QString &idStr, taxonsTokens) {
+    foreach(const QString &idStr, taxonsTokens) {
         bool OK = true;
         TaxID id = idStr.toInt(&OK);
         if (OK) {
@@ -181,8 +103,8 @@ bool ClassificationFilterValidator::validateParameters(const Actor *actor, Probl
 
     if (!saveUnspecificSequences && taxons.isEmpty()) {
         problemList << Problem(ClassificationFilterPrompter::tr("Set \"%1\" to \"True\" or select a taxon in \"%2\".")
-                               .arg(actor->getParameter(SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getDisplayName())
-                               .arg(actor->getParameter(TAXONS)->getDisplayName()), actor->getId());
+            .arg(actor->getParameter(ClassificationFilterWorkerFactory::SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getDisplayName())
+            .arg(actor->getParameter(ClassificationFilterWorkerFactory::TAXONS)->getDisplayName()), actor->getId());
         return false;
     }
 
@@ -192,6 +114,27 @@ bool ClassificationFilterValidator::validateParameters(const Actor *actor, Probl
 /************************************************************************/
 /* ClassificationFilterWorkerFactory */
 /************************************************************************/
+
+const QString ClassificationFilterWorkerFactory::ACTOR_ID = "classification-filter";
+
+const QString ClassificationFilterWorkerFactory::INPUT_PORT = "in";
+const QString ClassificationFilterWorkerFactory::OUTPUT_PORT = "out";
+
+// Slots should be the same as in GetReadsListWorkerFactory
+const QString ClassificationFilterWorkerFactory::INPUT_SLOT = "reads-url1";
+const QString ClassificationFilterWorkerFactory::PAIRED_INPUT_SLOT = "reads-url2";
+
+const QString ClassificationFilterWorkerFactory::OUTPUT_SLOT = "reads-url1";
+const QString ClassificationFilterWorkerFactory::PAIRED_OUTPUT_SLOT = "reads-url2";
+
+const QString ClassificationFilterWorkerFactory::SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID = "save-unspecific-sequences";
+const QString ClassificationFilterWorkerFactory::TAXONOMY_RANK = "taxonomy-rank";
+const QString ClassificationFilterWorkerFactory::SEQUENCING_READS = "sequencing-reads";
+const QString ClassificationFilterWorkerFactory::TAXONS = "tax-ids";
+
+const QString ClassificationFilterWorkerFactory::SINGLE_END = "single-end";
+const QString ClassificationFilterWorkerFactory::PAIRED_END = "paired-end";
+
 void ClassificationFilterWorkerFactory::init() {
 
     Descriptor desc( ACTOR_ID, ClassificationFilterWorker::tr("Filter by Classification"),
@@ -282,6 +225,7 @@ void ClassificationFilterWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ClassificationFilterPrompter());
     proto->setValidator(new ClassificationFilterValidator());
+    proto->setPortValidator(INPUT_PORT, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
 
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -304,24 +248,24 @@ ClassificationFilterWorker::ClassificationFilterWorker(Actor *a)
 }
 
 void ClassificationFilterWorker::init() {
-    input = ports.value(INPUT_PORT);
+    input = ports.value(ClassificationFilterWorkerFactory::INPUT_PORT);
 //    pairedOutput = ports.value(OUTPUT_PORT2);
-    output = ports.value(OUTPUT_PORT);
+    output = ports.value(ClassificationFilterWorkerFactory::OUTPUT_PORT);
 
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), );
+    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(ClassificationFilterWorkerFactory::INPUT_PORT), );
 //    SAFE_POINT(NULL != pairedOutput, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT2), );
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
+    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(ClassificationFilterWorkerFactory::OUTPUT_PORT), );
 
     output->addComplement(input);
     input->addComplement(output);
     //FIXME pairedOutput looses complement context
 
-    cfg.paired = (getValue<QString>(SEQUENCING_READS) == PAIRED_END);
+    cfg.paired = (getValue<QString>(ClassificationFilterWorkerFactory::SEQUENCING_READS) == ClassificationFilterWorkerFactory::PAIRED_END);
 //    cfg.rank = getValue<QString>(TAXONOMY_RANK);
 
-    cfg.saveUnspecificSequences = getValue<bool>(SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID);
+    cfg.saveUnspecificSequences = getValue<bool>(ClassificationFilterWorkerFactory::SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID);
 
-    QStringList taxons = getValue<QString>(TAXONS).split(";", QString::SkipEmptyParts);
+    QStringList taxons = getValue<QString>(ClassificationFilterWorkerFactory::TAXONS).split(";", QString::SkipEmptyParts);
     foreach (const QString &idStr, taxons) {
         bool OK = true;
         TaxID id = idStr.toInt(&OK);
@@ -334,8 +278,8 @@ void ClassificationFilterWorker::init() {
     }
     if (!cfg.saveUnspecificSequences && cfg.taxons.isEmpty()) {
         reportError(tr("Set \"%1\" to \"True\" or select a taxon in \"%2\".")
-                    .arg(getActor()->getParameter(SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getDisplayName())
-                    .arg(getActor()->getParameter(TAXONS)->getDisplayName()));
+            .arg(getActor()->getParameter(ClassificationFilterWorkerFactory::SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getDisplayName())
+            .arg(getActor()->getParameter(ClassificationFilterWorkerFactory::TAXONS)->getDisplayName()));
         return;
     }
     algoLog.trace(QString("Filter taxa num: %1").arg(cfg.taxons.size()));
@@ -349,8 +293,8 @@ Task * ClassificationFilterWorker::tick() {
         const Message message = getMessageAndSetupScriptValues(input);
 
         QVariantMap data = message.getData().toMap();
-        QString readsUrl = data[INPUT_SLOT].toString();
-        QString pairedReadsUrl = data[PAIRED_INPUT_SLOT].toString();
+        QString readsUrl = data[ClassificationFilterWorkerFactory::INPUT_SLOT].toString();
+        QString pairedReadsUrl = data[ClassificationFilterWorkerFactory::PAIRED_INPUT_SLOT].toString();
         TaxonomyClassificationResult tax = data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT().getId()/*INPUT_SLOT_CLASSIFICATION*/].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
 
         if (cfg.paired && pairedReadsUrl.isEmpty()) {
@@ -389,7 +333,7 @@ void ClassificationFilterWorker::sl_taskFinished(Task *t) {
             QVariantMap m;
             const QString url = it1.next();
             algoLog.trace(QString("Classification filter produced SE: %1").arg(url));
-            m[INPUT_SLOT] = url;
+            m[ClassificationFilterWorkerFactory::INPUT_SLOT] = url;
 //            QString datasetName = "Dataset 1"; //TODO use input url or dataset name???
 //            m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
 //            MessageMetadata metadata(url, datasetName);
@@ -399,7 +343,7 @@ void ClassificationFilterWorker::sl_taskFinished(Task *t) {
 //                QVariantMap m;
                 const QString url = it2.next();
                 QString datasetName = "Dataset 1"; //TODO use input url or dataset name???
-                m[PAIRED_INPUT_SLOT] = url;
+                m[ClassificationFilterWorkerFactory::PAIRED_INPUT_SLOT] = url;
 //                m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
 //                MessageMetadata metadata(url, datasetName);
 //                context->getMetadataStorage().put(metadata);

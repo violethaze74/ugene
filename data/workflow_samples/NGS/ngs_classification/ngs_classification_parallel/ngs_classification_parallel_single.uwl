@@ -15,19 +15,6 @@ workflow "Parallel classification for SE reads"{
         type:fastqc;
         name:"FastQC Before";
     }
-    casava-filter {
-        type:CASAVAFilter;
-        name:"CASAVA Filter";
-    }
-    cut-adapt {
-        type:CutAdaptFastq;
-        name:"Cut Adapter";
-        adapters-url:"";
-    }
-    quality-trim {
-        type:QualityTrim;
-        name:"Trim by Quality";
-    }
     fastqc-after {
         type:fastqc;
         name:"FastQC After";
@@ -57,75 +44,61 @@ workflow "Parallel classification for SE reads"{
         type:classification-report;
         name:Report;
     }
+    trimmomatic {
+        type:trimmomatic;
+        name:Trimmomatic;
+    }
 
     .actor-bindings {
-        get-se-reads-list.out->fastqc-before.in-file
-        get-se-reads-list.out->casava-filter.in-file
-        casava-filter.out-file->cut-adapt.in-file
-        cut-adapt.out-file->quality-trim.in-file
-        quality-trim.out-file->kraken-classify.in
-        quality-trim.out-file->fastqc-after.in-file
-        quality-trim.out-file->clark-classify.in
-        quality-trim.out-file->diamond-classify.in
-        kraken-classify.out->ensemble-classification.tax-data1
         clark-classify.out->ensemble-classification.tax-data2
+        kraken-classify.out->ensemble-classification.tax-data1
+        get-se-reads-list.out->fastqc-before.in-file
+        get-se-reads-list.out->trimmomatic.in
         diamond-classify.out->ensemble-classification.tax-data3
         ensemble-classification.out->wevote-classify.in
         wevote-classify.out->classification-report.in
+        trimmomatic.out->fastqc-after.in-file
+        trimmomatic.out->diamond-classify.in
+        trimmomatic.out->clark-classify.in
+        trimmomatic.out->kraken-classify.in
     }
 
     get-se-reads-list.reads-url1->fastqc-before.in-file.url
-    get-se-reads-list.reads-url1->casava-filter.in-file.url
-    casava-filter.url->cut-adapt.in-file.url
-    cut-adapt.url->quality-trim.in-file.url
-    quality-trim.url->fastqc-after.in-file.url
-    quality-trim.url->kraken-classify.in.reads-url1
-    quality-trim.url->clark-classify.in.reads-url1
-    quality-trim.url->diamond-classify.in.reads-url1
+    trimmomatic.reads-url1->fastqc-after.in-file.url
+    trimmomatic.reads-url1->kraken-classify.in.reads-url1
+    trimmomatic.reads-url1->clark-classify.in.reads-url1
+    trimmomatic.reads-url1->diamond-classify.in.reads-url1
     kraken-classify.tax-data->ensemble-classification.tax-data1.in
     clark-classify.tax-data->ensemble-classification.tax-data2.in
     diamond-classify.tax-data->ensemble-classification.tax-data3.in
     ensemble-classification.url->wevote-classify.in.url
     wevote-classify.tax-data->classification-report.in.tax-data
+    get-se-reads-list.reads-url1->trimmomatic.in.reads-url1
 
     .meta {
         visual {
-            casava-filter {
-                pos:"-570 -630";
-                style:simple;
-                bg-color-simple:"127 127 127 255";
-                in-file.angle:180;
-                out-file.angle:360;
-            }
             clark-classify {
-                pos:"-390 -435";
+                pos:"-360 -405";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
-                in.angle:62.6501;
+                in.angle:95.5275;
                 out.angle:272.862;
             }
             classification-report {
-                pos:"45 -255";
+                pos:"45 -225";
                 style:simple;
                 bg-color-simple:"141 126 194 255";
                 in.angle:180;
             }
-            cut-adapt {
-                pos:"-375 -630";
-                style:simple;
-                bg-color-simple:"127 127 127 255";
-                in-file.angle:180;
-                out-file.angle:360;
-            }
             diamond-classify {
-                pos:"-525 -435";
+                pos:"-495 -405";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:57.0948;
                 out.angle:288.925;
             }
             ensemble-classification {
-                pos:"-360 -255";
+                pos:"-330 -225";
                 style:simple;
                 bg-color-simple:"102 102 102 255";
                 out.angle:356.1;
@@ -134,52 +107,46 @@ workflow "Parallel classification for SE reads"{
                 tax-data3.angle:153.435;
             }
             fastqc-after {
-                pos:"-75 -540";
+                pos:"-255 -705";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
-                in-file.angle:150.803;
+                in-file.angle:225;
             }
             fastqc-before {
-                pos:"-645 -555";
+                pos:"-585 -705";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
-                in-file.angle:138.366;
+                in-file.angle:216.87;
             }
             get-se-reads-list {
-                pos:"-750 -630";
+                pos:"-720 -600";
                 style:simple;
                 bg-color-simple:"23 106 239 255";
                 out.angle:360;
             }
             kraken-classify {
-                pos:"-270 -435";
+                pos:"-240 -405";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:90;
                 out.angle:247.964;
             }
-            quality-trim {
-                pos:"-180 -630";
+            trimmomatic {
+                pos:"-435 -600";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
-                in-file.angle:180;
-                out-file.angle:272.437;
+                in.angle:180;
+                out.angle:320.464;
             }
             wevote-classify {
-                pos:"-150 -255";
+                pos:"-120 -225";
                 style:simple;
                 bg-color-simple:"0 106 0 255";
                 in.angle:180;
                 out.angle:360;
             }
-            casava-filter.out-file->cut-adapt.in-file {
-                text-pos:"-37.3359 -27";
-            }
             clark-classify.out->ensemble-classification.tax-data2 {
                 text-pos:"-44 -28";
-            }
-            cut-adapt.out-file->quality-trim.in-file {
-                text-pos:"-37.3359 -27";
             }
             diamond-classify.out->ensemble-classification.tax-data3 {
                 text-pos:"-81 -28";
@@ -187,26 +154,26 @@ workflow "Parallel classification for SE reads"{
             ensemble-classification.out->wevote-classify.in {
                 text-pos:"-45 -43";
             }
-            get-se-reads-list.out->casava-filter.in-file {
-                text-pos:"-43 -27";
-            }
             get-se-reads-list.out->fastqc-before.in-file {
-                text-pos:"-29.3359 -10";
+                text-pos:"-47.3359 -20";
+            }
+            get-se-reads-list.out->trimmomatic.in {
+                text-pos:"-37.3359 -27";
             }
             kraken-classify.out->ensemble-classification.tax-data1 {
                 text-pos:"-2 -33";
             }
-            quality-trim.out-file->clark-classify.in {
-                text-pos:"-60.3359 10";
+            trimmomatic.out->clark-classify.in {
+                text-pos:"-46 11";
             }
-            quality-trim.out-file->diamond-classify.in {
-                text-pos:"-102.336 6";
+            trimmomatic.out->diamond-classify.in {
+                text-pos:"-87 10";
             }
-            quality-trim.out-file->fastqc-after.in-file {
-                text-pos:"-22.3359 -17";
+            trimmomatic.out->fastqc-after.in-file {
+                text-pos:"-45 -43";
             }
-            quality-trim.out-file->kraken-classify.in {
-                text-pos:"-10.3359 9";
+            trimmomatic.out->kraken-classify.in {
+                text-pos:"20 2";
             }
             wevote-classify.out->classification-report.in {
                 text-pos:"-45 -43";
@@ -231,27 +198,21 @@ workflow "Parallel classification for SE reads"{
             page {
                 id:2;
                 next:3;
-                title:Pre-proccessing;
+                title:"Trimmomatic settings";
                 parameters-area {
                     group {
-                        title:"Reads filtration";
+                        title:"Improve reads quality";
                         label-size:120;
-                        quality-trim.qual-id {
+                        trimmomatic.trimming-steps {
                         }
-                        quality-trim.len-id {
-                            label:"Min length";
+                        trimmomatic.generate-log {
                         }
-                        quality-trim.both-ends {
-                            label:"Trim both ends";
-                        }
-                        cut-adapt.front-url {
-                            label:"5’ adapters";
-                        }
-                        cut-adapt.adapters-url {
-                            label:"3’ adapters";
-                        }
-                        cut-adapt.anywhere-url {
-                            label:"5’ and 3’ adapters";
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        trimmomatic.threads {
                         }
                     }
                 }
@@ -402,7 +363,7 @@ workflow "Parallel classification for SE reads"{
                         title:"Classification reports";
                         label-size:180;
                         classification-report.output-url {
-                            label:"Report for WEVOTE classification"
+                            label:"Report for WEVOTE classification";
                         }
                     }
                 }
