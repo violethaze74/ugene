@@ -474,16 +474,19 @@ void StringTieWorkerFactory::init() {
     {
         QVariantMap map;
         map["minimum"] = 30;
+        map["maximum"] = std::numeric_limits<int>::max();
         delegates[MIN_TRANSCRIPT_LEN] = new SpinBoxDelegate(map);
     }
     {
         QVariantMap map;
         map["minimum"] = 0;
+        map["maximum"] = std::numeric_limits<int>::max();
         delegates[MIN_ANCHOR_LEN] = new SpinBoxDelegate(map);
     }
     {
         QVariantMap map;
         map["minimum"] = 0.0;
+        map["maximum"] = std::numeric_limits<double>::max();
         map["singleStep"] = 0.1;
         map["decimals"] = 2;
         delegates[MIN_JUNCTION_COVERAGE] = new DoubleSpinBoxDelegate(map);
@@ -492,6 +495,7 @@ void StringTieWorkerFactory::init() {
     {
         QVariantMap map;
         map["minimum"] = 0.001;
+        map["maximum"] = std::numeric_limits<double>::max();
         map["singleStep"] = 0.1;
         map["decimals"] = 3;
         delegates[MIN_COVERAGE] = new DoubleSpinBoxDelegate(map);
@@ -499,12 +503,15 @@ void StringTieWorkerFactory::init() {
     {
         QVariantMap map;
         map["minimum"] = 0;
+        map["maximum"] = std::numeric_limits<int>::max();
+        map["suffix"] = " bp";
         delegates[MIN_LOCUS_SEPARATION] = new SpinBoxDelegate(map);
     }
 
     {
         QVariantMap map;
         map["minimum"] = 0.00;
+        map["maximum"] = std::numeric_limits<double>::max();
         map["singleStep"] = 0.01;
         map["decimals"] = 2;
         delegates[MULTI_HIT_FRACTION] = new DoubleSpinBoxDelegate(map);
