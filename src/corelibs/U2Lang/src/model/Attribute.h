@@ -91,11 +91,11 @@ class U2LANG_EXPORT Attribute : public Descriptor {
 public:
 	enum Flag {
         None = 0,
-        CanBeEmpty = 1,				// it has meaning only for required attributes, allows the required attribute to be empty
-        NeedValidateEncoding = 2,	// it has meaning that the attribute is some string which must be validated against Unicode -> Byte convertion
+        CanBeEmpty = 1,             // it has meaning only for required attributes, allows the required attribute to be empty
+        NeedValidateEncoding = 2,   // it has meaning that the attribute is some string which must be validated against Unicode -> Byte convertion
                                     // for example many plugins/external tools accept filenames as char*, but QString -> char* convertion may
                                     // produce invalid values if QString's encoding is not the same as system Locale Code Page
-        Required = 4				// values of required attributes cannot be empty, if the appropriate flag is not set
+        Required = 4                // values of required attributes cannot be empty, if the appropriate flag is not set
 	};
     Q_DECLARE_FLAGS(Flags, Flag)
 
