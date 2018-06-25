@@ -3083,6 +3083,34 @@ GUI_TEST_CLASS_DEFINITION(test_5747) {
     GTGlobals::sleep(500);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5750) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Rename the first sequence to '1'.
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "Phaneroptera_falcata", "1");
+
+//    3. Export the alignment object to MSF format.
+    GTLogTracer logTracer;
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export object..."));
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "test_5750.msf", ExportDocumentDialogFiller::MSF, false, true));
+    GTUtilsProjectTreeView::callContextMenu(os, "COI", "COI.aln");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the exported file is opened in UGENE. The first sequence is named "1".
+    GTUtilsLog::check(os, logTracer);
+
+    const QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(!names.isEmpty(), "Names list is empty");
+
+    const QString expectedName = "1";
+    CHECK_SET_ERR(expectedName == names[0], QString("The first sequecne name is incorrect: expected '%1', got '%2'")
+            .arg(expectedName).arg(names[0]));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5751) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
