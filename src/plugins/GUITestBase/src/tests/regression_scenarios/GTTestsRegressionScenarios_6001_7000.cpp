@@ -27,6 +27,7 @@
 #include <primitives/GTTableView.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 
 #include <U2View/DetView.h>
 
@@ -495,6 +496,29 @@ GUI_TEST_CLASS_DEFINITION(test_6071) {
     //Expected: visible range was not changed
     const U2Region secondVisibleRange = dw->getVisibleRange();
     CHECK_SET_ERR(firstVisibleRange == secondVisibleRange, "Visible range was changed after clicking on the annotation");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6078) {
+    //1. Open human_T1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select 1 - 10 chars
+    GTUtilsSequenceView::selectSequenceRegion(os, 1, 10);
+
+    //3. Enable edit mode
+    GTUtilsSequenceView::enableEditingMode(os);
+
+    //4. Set the cursor to the 5-th pos
+    GTUtilsSequenceView::setCursor(os, 5);
+
+    //5. Press paste
+    GTKeyboardUtils::paste(os);
+    GTGlobals::sleep();
+
+    //Expected: cursor on the 14-th pos
+    const qint64 pos = GTUtilsSequenceView::getCursor(os);
+    CHECK_SET_ERR(pos == 14, QString("Incorrect cursor position, expected: 14, current: %1").arg(pos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6087) {
