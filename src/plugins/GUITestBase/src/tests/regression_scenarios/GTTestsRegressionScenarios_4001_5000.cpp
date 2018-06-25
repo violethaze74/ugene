@@ -3660,8 +3660,8 @@ GUI_TEST_CLASS_DEFINITION(test_4589) {
     GTUtilsProjectTreeView::callContextMenu(os, "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     
-    QModelIndex oldIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << "sars.gb" << "NC_001363 features");
-    QModelIndex addedIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << "sars.gb" << "NC_004718 features");
+    GTUtilsProjectTreeView::findIndex(os, QStringList() << "sars.gb" << "NC_001363 features");
+    GTUtilsProjectTreeView::findIndex(os, QStringList() << "sars.gb" << "NC_004718 features");
 
 }
 
