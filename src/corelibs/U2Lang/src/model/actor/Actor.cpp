@@ -529,6 +529,7 @@ bool Actor::validate(ProblemList &problemList) const {
         if (urlType != NotAnUrl || attr->getFlags().testFlag(Attribute::NeedValidateEncoding)) {
             // UGENE-5595
             bool urlAttrValid = validateCodePage(attr, problemList);
+            Q_UNUSED(urlAttrValid)
             // we think that this is a warning, so I commented the following line
             //urlsRes = urlsRes && urlAttrValid;
         }
