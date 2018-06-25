@@ -4362,7 +4362,7 @@ GUI_TEST_CLASS_DEFINITION(test_2638){
     QString initTitle = GTUtilsMdi::activeWindowTitle(os);
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::Input);
     GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboard(os));
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "Find Splice Junctions with TopHat", "LI"));
+    GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "Map RNA-Seq Reads with TopHat", "LI"));
     GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "index", "BUTTON"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: "Bowtie index folder" parameter's value is folder, it is not tried to be opened bu UGENE when clicking
@@ -4711,7 +4711,7 @@ GUI_TEST_CLASS_DEFINITION(test_2709) {
     GTUtilsWorkflowDesigner::addSample(os, "tuxedo");
     GTGlobals::sleep();
 //    Expected state: "No novel junctions" tophat parameter set to true by default
-    GTUtilsWorkflowDesigner::click(os, "Find Splice Junctions with TopHat");
+    GTUtilsWorkflowDesigner::click(os, "Map RNA-Seq Reads with TopHat");
     QString result = GTUtilsWorkflowDesigner::getParameter(os, "No novel junctions");
     CHECK_SET_ERR(result == "True", "No novel junctions parameter is " + result);
 
