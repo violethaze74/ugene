@@ -2884,9 +2884,16 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
     QTableWidget* tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");
 
+    QRect visibleArea = tw->visualItemRect(tw->item(0, 1));
+    const QPoint globalVisibleArea = tw->viewport()->mapToGlobal(visibleArea.center());
+    GTMouseDriver::moveTo(globalVisibleArea);
+    GTMouseDriver::scroll(-5);
+    GTGlobals::sleep();
+
     QRect rect = tw->visualItemRect(tw->item(2, 1));
-    QPoint globalP = tw->viewport()->mapToGlobal(rect.center() - QPoint(0, 3));
+    QPoint globalP = tw->viewport()->mapToGlobal(rect.center()/* - QPoint(0, 3)*/);
     GTMouseDriver::moveTo(globalP);
+    GTGlobals::sleep();
     GTMouseDriver::click();
     GTGlobals::sleep(500);
     QComboBox* box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
