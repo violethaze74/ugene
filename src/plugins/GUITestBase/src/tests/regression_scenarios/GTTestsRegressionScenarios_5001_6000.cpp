@@ -789,26 +789,32 @@ GUI_TEST_CLASS_DEFINITION(test_5227) {
 
 GUI_TEST_CLASS_DEFINITION(test_5231) {
 
-    // 1. Open "data/samples/Genbank/murine.gb".
+    //1. Open "data/samples/Genbank/murine.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2) Run Smith-waterman search using:
+    //2. Run Smith-waterman search using:
         class Scenario : public CustomScenario {
             void run(HI::GUITestOpStatus &os) {
                 QWidget *dialog = QApplication::activeModalWidget();
                 CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-    //    pattern: "ATCGAT"; note that pattern length is 6.
+    //pattern: "ATCGAT"; note that pattern length is 6.
                 GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teditPattern", dialog), "K*KTPPVGGKLA*VTP");
     
                 GTRadioButton::click(os, "radioTranslation", dialog);
 
+                //2.1 Choose Classic algorithm
+                QComboBox * comboRealization = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboRealization", dialog));
+                const int swRealizationIndex = comboRealization->findText("Classic 2");
+                GTComboBox::setCurrentIndex(os, comboRealization, swRealizationIndex);
+
                 GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
-                //    3. Open tab "Input and output"
-                            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
-                
-                //    4. Chose in the combobox "Multiple alignment"
-                            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
+                //3. Open tab "Input and output"
+                GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
+
+                //4. Chose in the combobox "Multiple alignment"
+                GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
+
                 GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             }
         };
