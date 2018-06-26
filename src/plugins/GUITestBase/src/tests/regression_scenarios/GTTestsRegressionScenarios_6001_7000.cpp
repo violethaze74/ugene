@@ -19,12 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include <QApplication>
 #include <QTableWidget>
+#include <QRadioButton>
 
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTMenu.h>
 #include <primitives/GTTableView.h>
+#include <primitives/GTTextEdit.h>
+#include <primitives/GTTabWidget.h>
+#include <primitives/GTRadioButton.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
@@ -66,6 +73,7 @@
 
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 
 namespace U2 {
@@ -532,6 +540,43 @@ GUI_TEST_CLASS_DEFINITION(test_6087) {
     //Expected: ugene was not crashed
     QVector<U2Region> regions = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(regions.size() == 1, "Unexpected selection");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6102) {
+    // 1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //    2) Run Smith-waterman search using:
+        class Scenario : public CustomScenario {
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+                GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teditPattern", dialog), "RPHP*VAS*LK*RHFARHGKIHN*E*KSSDQGQ");
+    
+                GTRadioButton::click(os, "radioTranslation", dialog);
+
+                GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
+                //    3. Open tab "Input and output"
+                            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
+                
+                //    4. Chose in the combobox "Multiple alignment"
+                            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
+                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            }
+        };
+    
+        GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario));
+        GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find pattern [Smith-Waterman]...", GTGlobals::UseMouse);
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        
+        GTUtilsProjectTreeView::doubleClickItem(os, "P1_NC_1.aln");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        
+        const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
+        CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino");
+
+
 }
 
 } // namespace GUITest_regression_scenarios
