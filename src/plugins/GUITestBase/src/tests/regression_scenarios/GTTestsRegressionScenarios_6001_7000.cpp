@@ -368,6 +368,50 @@ GUI_TEST_CLASS_DEFINITION(test_6047) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 231, "Unexpected quantaty of sequences");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6058_1) {
+    //1. Open file human_t1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Check following items in sequence view translations menu
+    //"31. Blastocrithidia Nuclear"
+    //"28. Condylostoma Nuclear"
+    //"30. Peritrich Nuclear"
+    //"27. Karyorelict Nuclear"
+    //"25. Candidate Division SR1 and Gracilibacteria Code"
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTWidget::click(os, GTWidget::findWidget(os, "AminoToolbarButton", GTWidget::findWidget(os, "ADV_single_sequence_widget_0")));
+    QMenu *menu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
+    QStringList actionText;
+    foreach(QAction *a, menu->actions()) {
+        actionText.append(a->text());
+    }
+    CHECK_SET_ERR(actionText.contains("31. Blastocrithidia Nuclear"), "expected translation not found");
+    CHECK_SET_ERR(actionText.contains("28. Condylostoma Nuclear"), "expected translation not found");
+    CHECK_SET_ERR(actionText.contains("30. Peritrich Nuclear"), "expected translation not found");
+    CHECK_SET_ERR(actionText.contains("27. Karyorelict Nuclear"), "expected translation not found");
+    CHECK_SET_ERR(actionText.contains("25. Candidate Division SR1 and Gracilibacteria Code"), "expected translation not found");
+
+    //just for closing popup menu
+    GTMenu::clickMenuItemByName(os, menu, QStringList() << "14. The Alternative Flatworm Mitochondrial Code");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6058_2) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    //2. Check "30. Peritrich Nuclear" "Genetic code" parameter option in "Classify Sequences with DIAMOND" WD element
+    WorkflowProcessItem *diamondElement = GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with DIAMOND", true);
+    GTUtilsWorkflowDesigner::click(os, diamondElement);
+    GTUtilsWorkflowDesigner::setParameter(os, "Genetic code", "30. Peritrich Nuclear", GTUtilsWorkflowDesigner::comboValue);
+
+    //3. Check "27. Karyorelict Nuclear" "Genetic code" parameter option in "ORF Marker" WD element
+    WorkflowProcessItem *orfmarkerElement = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker", true);
+    GTUtilsWorkflowDesigner::click(os, orfmarkerElement);
+    GTUtilsWorkflowDesigner::setParameter(os, "Genetic code", "27. Karyorelict Nuclear", GTUtilsWorkflowDesigner::comboValue);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6062) {
     class InnerOs : public GUITestOpStatus {
     public:
