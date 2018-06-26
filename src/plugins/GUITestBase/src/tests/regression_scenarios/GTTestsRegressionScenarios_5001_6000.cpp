@@ -3807,6 +3807,31 @@ GUI_TEST_CLASS_DEFINITION(test_5773) {
 
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5775) {
+    
+    // 1. Open "data/samples/FASTQ/eas.fastq".
+    // Expected state: the "Sequence Reading Options" dialog has appeared.
+    // Select the "Merge sequences into a single sequence to show in sequence viewer" option. Accept the dialog.
+    GTUtilsProject::openMultiSequenceFileAsMergedSequence(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    // 2. Open the "Search in Sequence" options panel tab.
+    // Check the "Load patterns from file" option, select "data/samples/FASTQ/eas.fastq" as the file with patterns.
+    // Expected state: the search task is launched automatically. After it is finished, there are 3 results. 
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+
+    GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os, true);
+    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames"), true);
+
+    GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
+
+    GTUtilsOptionPanelSequenceView::enterPatternFromFile(os, dataDir + "samples/FASTQ/", "eas.fastq");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/3"), "Results string not match");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
