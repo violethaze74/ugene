@@ -3645,21 +3645,21 @@ GUI_TEST_CLASS_DEFINITION(test_4588_2) {
 
 
 GUI_TEST_CLASS_DEFINITION(test_4589) {
-    
+
     // 1. Open "data/samples/Genbank/murine.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-        
+
     // 2. Open "data/samples/Genbank/sars.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     // 3. Call context menu on the "sars.gb" document and select {Add -> Add object to document} menu item.
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "murine.gb", "NC_001363 features"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__ADD_MENU << ACTION_PROJECT__ADD_OBJECT));
     GTUtilsProjectTreeView::callContextMenu(os, "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     GTUtilsProjectTreeView::findIndex(os, QStringList() << "sars.gb" << "NC_001363 features");
     GTUtilsProjectTreeView::findIndex(os, QStringList() << "sars.gb" << "NC_004718 features");
 

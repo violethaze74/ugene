@@ -114,7 +114,7 @@ void ClassificationReportWorkerFactory::init() {
             <ul><li>by the number of reads, covered by the clade rooted at the taxon(i.e. \"clade_num\" for this taxID)</li> \
             <li>by taxIDs</li></ul> \
             The second option may be useful when output from different samples is compared."));
-        
+
         a << new Attribute(outputDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
         a << new Attribute(allTaxa, BaseTypes::BOOL_TYPE(), false, QVariant(false));
         a << new Attribute(sortBy, BaseTypes::STRING_TYPE(), false, QVariant(ClassificationReportTask::TAX_ID));

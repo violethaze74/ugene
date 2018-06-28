@@ -800,7 +800,7 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
                 CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
     //pattern: "ATCGAT"; note that pattern length is 6.
                 GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teditPattern", dialog), "K*KTPPVGGKLA*VTP");
-    
+
                 GTRadioButton::click(os, "radioTranslation", dialog);
 
                 //2.1 Choose Classic algorithm
@@ -818,17 +818,17 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
                 GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             }
         };
-    
+
         GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario));
         GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find pattern [Smith-Waterman]...", GTGlobals::UseMouse);
         GTUtilsTaskTreeView::waitTaskFinished(os);
-        
+
         GTUtilsProjectTreeView::doubleClickItem(os, "P1_NC_1.aln");
         GTUtilsTaskTreeView::waitTaskFinished(os);
-        
+
         const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
         CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino");
-        
+
 }
 
 
@@ -3814,16 +3814,16 @@ GUI_TEST_CLASS_DEFINITION(test_5773) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5775) {
-    
+
     // 1. Open "data/samples/FASTQ/eas.fastq".
     // Expected state: the "Sequence Reading Options" dialog has appeared.
     // Select the "Merge sequences into a single sequence to show in sequence viewer" option. Accept the dialog.
     GTUtilsProject::openMultiSequenceFileAsMergedSequence(os, dataDir + "samples/FASTQ/eas.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     // 2. Open the "Search in Sequence" options panel tab.
     // Check the "Load patterns from file" option, select "data/samples/FASTQ/eas.fastq" as the file with patterns.
-    // Expected state: the search task is launched automatically. After it is finished, there are 3 results. 
+    // Expected state: the search task is launched automatically. After it is finished, there are 3 results.
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
 
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os, true);

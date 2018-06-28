@@ -400,7 +400,7 @@ GUI_TEST_CLASS_DEFINITION(test_6058_2) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     //2. Check "30. Peritrich Nuclear" "Genetic code" parameter option in "Classify Sequences with DIAMOND" WD element
     WorkflowProcessItem *diamondElement = GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with DIAMOND", true);
     GTUtilsWorkflowDesigner::click(os, diamondElement);
@@ -597,26 +597,26 @@ GUI_TEST_CLASS_DEFINITION(test_6102) {
                 QWidget *dialog = QApplication::activeModalWidget();
                 CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
                 GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teditPattern", dialog), "RPHP*VAS*LK*RHFARHGKIHN*E*KSSDQGQ");
-    
+
                 GTRadioButton::click(os, "radioTranslation", dialog);
 
                 GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
                 //    3. Open tab "Input and output"
                             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
-                
+
                 //    4. Chose in the combobox "Multiple alignment"
                             GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
                 GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             }
         };
-    
+
         GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario));
         GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find pattern [Smith-Waterman]...", GTGlobals::UseMouse);
         GTUtilsTaskTreeView::waitTaskFinished(os);
-        
+
         GTUtilsProjectTreeView::doubleClickItem(os, "P1_NC_1.aln");
         GTUtilsTaskTreeView::waitTaskFinished(os);
-        
+
         const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
         CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino");
 
