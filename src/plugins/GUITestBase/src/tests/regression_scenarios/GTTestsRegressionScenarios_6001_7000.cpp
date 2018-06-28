@@ -566,11 +566,11 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
 
     //5. Press paste
     GTKeyboardUtils::paste(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected: cursor on the 14-th pos
     const qint64 pos = GTUtilsSequenceView::getCursor(os);
-    CHECK_SET_ERR(pos == 14, QString("Incorrect cursor position, expected: 14, current: %1").arg(pos));
+    CHECK_SET_ERR(pos == 15, QString("Incorrect cursor position, expected: 15, current: %1").arg(pos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6087) {
