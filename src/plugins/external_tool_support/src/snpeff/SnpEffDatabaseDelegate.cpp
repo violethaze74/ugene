@@ -118,18 +118,22 @@ void SnpEffDatabasePropertyWidget::sl_showDialog() {
     CHECK(java != NULL, );
     CHECK(snpEff != NULL, );
     if (!(java->isValid() && snpEff->isValid())) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        if (!java->isValid() && !snpEff->isValid()) {
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
+        if (!java->isValid() && (!snpEff->isValid() && !snpEff->getPath().isEmpty() )) {
+            msgBox->setWindowTitle(snpEff->getName());
+            msgBox->setText(tr("The list of genomes is not available.\r\nThe %1 tool requires %2 that is not set.").arg(snpEff->getName()).arg(java->getName()));
+            msgBox->setInformativeText(tr("Do you want to select it now?"));
+        } else if (!java->isValid() && !snpEff->isValid()) {
             msgBox->setWindowTitle(SnpEffDatabasePropertyWidget::tr("%1 and %2").arg(java->getName()).arg(snpEff->getName()));
-            msgBox->setText(tr("The list of %1 genomes is not available.\r\nPath for %1 and %2 tools are not selected.").arg(snpEff->getName()).arg(java->getName()));
+            msgBox->setText(tr("The list of genomes is not available.\r\nPaths for %1 and %2 tools are not selected.").arg(snpEff->getName()).arg(java->getName()));
             msgBox->setInformativeText(tr("Do you want to select them now?"));
         } else {
             if (!java->isValid()) {
                 msgBox->setWindowTitle(java->getName());
-                msgBox->setText(tr("The list of %1 genomes is not available.\r\nPath for %1 tool is not selected.").arg(java->getName()));
+                msgBox->setText(tr("The list of genomes is not available.\r\nPath for %1 tool is not selected.").arg(java->getName()));
             } else {
                 msgBox->setWindowTitle(snpEff->getName());
-                msgBox->setText(tr("The list of %1 genomes is not available.\r\nPath for %1 tool is not selected.").arg(snpEff->getName()));
+                msgBox->setText(tr("The list of genomes is not available.\r\nPath for %1 tool is not selected.").arg(snpEff->getName()));
             }
             msgBox->setInformativeText(tr("Do you want to select it now?"));
         }
