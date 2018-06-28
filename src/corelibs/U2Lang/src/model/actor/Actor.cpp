@@ -524,7 +524,7 @@ bool Actor::validate(ProblemList &problemList) const {
         if (urlType != NotAnUrl) {
             bool urlAttrValid = validateUrlAttribute(attr, urlType, problemList);
             urlsRes = urlsRes && urlAttrValid;
-		}
+        }
 
         if (urlType != NotAnUrl || attr->getFlags().testFlag(Attribute::NeedValidateEncoding)) {
             // UGENE-5595
