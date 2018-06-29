@@ -40,6 +40,10 @@ DnaAssemblyToReferenceTask::DnaAssemblyToReferenceTask(const DnaAssemblyToRefTas
 }
 
 void DnaAssemblyToReferenceTask::setUpIndexBuilding(const QStringList &indexSuffixes) {
+    if (settings.prebuiltIndex) {
+        return;
+    }
+
     if (isIndexUrl(settings.refSeqUrl.getURLString(), indexSuffixes)) {
         settings.prebuiltIndex = true;
         settings.refSeqUrl = getBaseUrl(settings.refSeqUrl.getURLString(), indexSuffixes);

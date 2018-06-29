@@ -60,8 +60,10 @@ public:
     QList<GUrl> getShortReadUrls() const;
 
 public:
+    QString indexDir;		// if prebuiltIndex is true
+    QString indexBasename;	// if prebuiltIndex is true
     QList<ShortReadSet> shortReadSets;
-    GUrl refSeqUrl;
+    GUrl refSeqUrl;			// if prebuiltIndex is false
     GUrl resultFileName;
     QString indexFileName;
     QString algName;

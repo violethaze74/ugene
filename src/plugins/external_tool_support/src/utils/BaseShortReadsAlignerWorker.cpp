@@ -289,30 +289,77 @@ int BaseShortReadsAlignerWorkerFactory::getThreadsCount(){
     return threads;
 }
 
-void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates) {
+void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates, WorkerType mainWorkerType) {
     {
-        Descriptor outDir(OUTPUT_DIR,
-            BaseShortReadsAlignerWorker::tr("Output folder"),
-            BaseShortReadsAlignerWorker::tr("Folder to save output files."));
+        const char *descrIndexFolder = "", *descrIndexBasename = "", *descrIndexAlgorithm = "";
+
+        switch (mainWorkerType) {
+        case Bowtie:
+            descrIndexFolder = "Bowtie index folder";
+            descrIndexBasename = "Bowtie index basename";
+            break;
+        case Bowtie2:
+            descrIndexFolder = "Bowtie index folder";
+            descrIndexBasename = "Bowtie index basename";
+            break;
+        case BWA:
+            descrIndexFolder = "BWA index folder";
+            descrIndexBasename = "BWA index basename";
+            descrIndexAlgorithm = "Index algorithm";
+            break;
+        case BWA_MEM:
+            descrIndexFolder = "BWA index folder";
+            descrIndexBasename = "BWA index basename";
+            descrIndexAlgorithm = "Index algorithm";
+            break;
+        }
+
+        Descriptor referenceInputType(REFERENCE_INPUT_TYPE,
+            BaseShortReadsAlignerWorker::tr("Reference input type"),
+            BaseShortReadsAlignerWorker::tr("Select \"Sequence\" to input a reference genome as a sequence file. "
+            "\nNote that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). "
+            "\nThe index will be generated automatically in this case. "
+            "\nSelect \"Index\" to input already generated index files, specific for the tool."));
 
         Descriptor refGenome(REFERENCE_GENOME,
             BaseShortReadsAlignerWorker::tr("Reference genome"),
             BaseShortReadsAlignerWorker::tr("Path to indexed reference genome."));
+
+        Descriptor indexDir(INDEX_DIR,
+            BaseShortReadsAlignerWorker::tr(descrIndexFolder),
+            BaseShortReadsAlignerWorker::tr("The folder with the index for the reference sequence."));
+
+        Descriptor indexBasename(INDEX_BASENAME,
+            BaseShortReadsAlignerWorker::tr(descrIndexBasename),
+            BaseShortReadsAlignerWorker::tr("The basename of the index for the reference sequence."));
+
+        Descriptor outName(OUTPUT_NAME,
+            BaseShortReadsAlignerWorker::tr("Output file name"),
+            BaseShortReadsAlignerWorker::tr("Base name of the output file. 'out.sam' by default"));
+
+        Descriptor outDir(OUTPUT_DIR,
+            BaseShortReadsAlignerWorker::tr("Output folder"),
+            BaseShortReadsAlignerWorker::tr("Folder to save output files."));
 
         Descriptor library(LIBRARY,
             BaseShortReadsAlignerWorker::tr("Library"),
             BaseShortReadsAlignerWorker::tr("Is this library mate-paired?"));
 
         Descriptor filter(FILTER_UNPAIRED,
-                          BaseShortReadsAlignerWorker::tr("Filter unpaired reads"),
-                          BaseShortReadsAlignerWorker::tr("Should the reads be checked for incomplete pairs?"));
+            BaseShortReadsAlignerWorker::tr("Filter unpaired reads"),
+            BaseShortReadsAlignerWorker::tr("Should the reads be checked for incomplete pairs?"));
 
-        Descriptor outName(OUTPUT_NAME,
-            BaseShortReadsAlignerWorker::tr("Output file name"),
-            BaseShortReadsAlignerWorker::tr("Base name of the output file. 'out.sam' by default"));
-
+        attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant("sequence"));
+        Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), true, QVariant(""));
+        attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "sequence"));
+        attrs << attrRefGenom;
+        Attribute* attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
+        attrIndexDir->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "index"));
+        attrs << attrIndexDir;
+        Attribute* attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), true, QVariant(""));
+        attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "index"));
+        attrs << attrIndexBasename;
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
-        attrs << new Attribute(refGenome, BaseTypes::STRING_TYPE(), true, QVariant(""));
         attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), true, QVariant(BASE_OUTFILE));
 
         Attribute* libraryAttr = new Attribute(library, BaseTypes::STRING_TYPE(), false, QVariant("Single-end"));
@@ -327,8 +374,15 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
     }
 
     {
-        delegates[OUTPUT_DIR] = new URLDelegate("", "", false, true);
+        QVariantMap rip;
+        rip["sequence"] = "sequence";
+        rip["index"] = "index";
+        delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
+
         delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);
+        delegates[INDEX_DIR] = new URLDelegate("", "", false, true, false, NULL, "", true);
+
+        delegates[OUTPUT_DIR] = new URLDelegate("", "", false, true);
 
         QVariantMap libMap;
         libMap["Single-end"] = "Single-end";
@@ -395,6 +449,7 @@ QString ShortReadsAlignerPrompter::composeRichDoc() {
     Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
     Port* pairedPort = target->getPort(IN_PORT_DESCR_PAIRED);
 
+    QVariant inputType = getParameter(REFERENCE_INPUT_TYPE);
     QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
     if(pairedPort->isEnabled()) {

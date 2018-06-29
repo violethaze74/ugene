@@ -37,6 +37,10 @@ namespace LocalWorkflow {
 
 const QString IN_PORT_DESCR("in-data");
 const QString REFERENCE_GENOME("reference");
+// UGENE-6110
+const QString REFERENCE_INPUT_TYPE = "reference-input-type";
+const QString INDEX_DIR("index-dir");
+const QString INDEX_BASENAME("index-basename");
 
 class BaseShortReadsAlignerWorker: public BaseWorker {
     Q_OBJECT
@@ -80,12 +84,20 @@ public:
 };
 
 class BaseShortReadsAlignerWorkerFactory : public DomainFactory {
+public:
+    enum WorkerType {
+        Bowtie,
+        Bowtie2,
+        BWA,
+        BWA_MEM
+    };
+
 protected:
     BaseShortReadsAlignerWorkerFactory(const QString& actorId) : DomainFactory(actorId) {}
 
     static QList<PortDescriptor*> getPortDescriptors();
 
-    static void addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates);
+    static void addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates, WorkerType mainWorkerType);
 
     static int getThreadsCount();
 };
