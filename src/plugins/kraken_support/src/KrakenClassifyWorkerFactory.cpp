@@ -35,13 +35,14 @@
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
+#include <U2Lang/PairedReadsPortValidator.h>
 #include <U2Lang/WorkflowEnv.h>
 
 #include "DatabaseSizeRelation.h"
 #include "DatabaseValidator.h"
+#include "KrakenClassifyPrompter.h"
 #include "KrakenClassifyWorker.h"
 #include "KrakenClassifyWorkerFactory.h"
-#include "KrakenClassifyPrompter.h"
 #include "KrakenSupport.h"
 #include "../../ngs_reads_classification/src/DatabaseDelegate.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
@@ -148,7 +149,7 @@ void KrakenClassifyWorkerFactory::init() {
         if (NULL != minikrakenDataPath && minikrakenDataPath->isValid()) {
             minikrakenPath = minikrakenDataPath->getPathByName(NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ITEM_ID);
         }
-        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required, minikrakenPath);
+        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, minikrakenPath);
         attributes << databaseAttribute;
 
         attributes << new Attribute(quickOperationDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
@@ -158,7 +159,7 @@ void KrakenClassifyWorkerFactory::init() {
 
         attributes << new Attribute(preloadDatabaseDesc, BaseTypes::BOOL_TYPE(), Attribute::None, true);
         attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
-        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
         minHitsAttribute->addRelation(new VisibilityRelation(QUICK_OPERATION_ATTR_ID, "true"));
         databaseAttribute->addRelation(new DatabaseSizeRelation(PRELOAD_DATABASE_ATTR_ID));
@@ -202,6 +203,7 @@ void KrakenClassifyWorkerFactory::init() {
     proto->setPrompter(new KrakenClassifyPrompter(NULL));
     proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL);
     proto->setValidator(new DatabaseValidator());
+    proto->setPortValidator(INPUT_PORT_ID,  new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

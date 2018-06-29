@@ -73,7 +73,7 @@ protected slots:
     void sl_loadSequenceButton();
 
     void sl_loadTaskStateChanged(Task* t);
-    
+
     void sl_documentAddedOrRemoved();
     void sl_objectAddedOrRemoved();
     void sl_loadedStateChanged();
@@ -81,7 +81,7 @@ protected slots:
 private:
     void reconnectAllProjectDocuments();
     void updateSequenceSelectors();
-    
+
     QList<U2SequenceObject*>   sequences;
     ADVSequenceObjectContext    *xSeq, *ySeq;
     AnnotatedDNAView*           adv;

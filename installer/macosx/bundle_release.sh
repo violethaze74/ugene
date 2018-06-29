@@ -73,7 +73,7 @@ add-library ugenedb
 add-library breakpad
 if [ "$1" == "-test" ]
    then
-      add-library humimit
+      add-library QSpec
 fi
 
 echo Copying plugins

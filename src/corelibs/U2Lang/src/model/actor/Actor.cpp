@@ -469,6 +469,40 @@ static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, Prob
     return res;
 }
 
+static bool validateCodePage(const QString &url) {
+    QString url2 = QString::fromLocal8Bit(url.toLocal8Bit());
+    if (url.compare(url2, Qt::CaseSensitive) != 0) {
+        return false;
+    }
+    return true;
+}
+
+/**
+ * UGENE-5595
+ * The following validation is very simple:
+ *   - convert attr's value from QString to 8Bite byte array
+ *   - then, convert back 8Bit to QString
+ *   - both QString must be equal
+ */
+static bool validateCodePage(Attribute *attr, ProblemList &infoList) {
+    SAFE_POINT(NULL != attr, "NULL attribute!", false);
+
+    QStringList urlsList = WorkflowUtils::getAttributeUrls(attr);
+    if (urlsList.isEmpty()) {
+        return true;
+    }
+
+    // Verify each URL
+    bool res = true;
+    foreach(const QString &url, urlsList) {
+        if (!validateCodePage(url)) {
+            res = false;
+            infoList << Problem(L10N::warningCharactersCodePage(attr->getDisplayName()), "", Problem::U2_WARNING);
+        }
+    }
+    return res;
+}
+
 bool Actor::validate(ProblemList &problemList) const {
     bool result = Configuration::validate(problemList);
     foreach (const ValidatorDesc &desc, customValidators) {
@@ -490,6 +524,14 @@ bool Actor::validate(ProblemList &problemList) const {
         if (urlType != NotAnUrl) {
             bool urlAttrValid = validateUrlAttribute(attr, urlType, problemList);
             urlsRes = urlsRes && urlAttrValid;
+        }
+
+        if (urlType != NotAnUrl || attr->getFlags().testFlag(Attribute::NeedValidateEncoding)) {
+            // UGENE-5595
+            bool urlAttrValid = validateCodePage(attr, problemList);
+            Q_UNUSED(urlAttrValid)
+            // we think that this is a warning, so I commented the following line
+            //urlsRes = urlsRes && urlAttrValid;
         }
 
         if (attr->getAttributeType() == BaseTypes::NUM_TYPE() && !attr->getAttributePureValue().toString().isEmpty()) {

@@ -180,12 +180,15 @@ void TopHatWorkerFactory::init()
 
     // Description of the element
     Descriptor topHatDescriptor(ACTOR_ID,
-        TopHatWorker::tr("Find Splice Junctions with TopHat"),
-        TopHatWorker::tr("TopHat is a fast splice junction mapper for RNA-Seq"
-            " reads. It aligns RNA-Seq reads to mammalian-sized genomes"
-            " using the ultra high-throughput short read aligner Bowtie,"
-            " and then analyzes the mapping results to identify splice"
-            " junctions between exons."));
+        TopHatWorker::tr("Map RNA-Seq Reads with TopHat"),
+        TopHatWorker::tr("TopHat is a program for mapping RNA-Seq reads to a long reference sequence."
+                         " It uses Bowtie or Bowtie2 to map the reads and then analyzes the mapping"
+                         " results to identify splice junctions between exons."
+                         "<br/><br/>Provide URL(s) to FASTA or FASTQ file(s) with NGS RNA-Seq reads to the input"
+                         " port of the element, set up the reference sequence in the parameters."
+                         " The result is saved to the specified SAM file, URL to the file is passed"
+                         " to the output port. Several UCSC BED tracks are also produced: junctions,"
+                         " insertions, and deletions."));
 
     // Define parameters of the element
     Descriptor outDir(OUT_DIR,
@@ -490,7 +493,7 @@ void TopHatWorkerFactory::init()
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(
-        BaseActorCategories::CATEGORY_RNA_SEQ(),
+        BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(),
         proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -510,7 +513,7 @@ TopHatPrompter::TopHatPrompter(Actor* parent)
 QString TopHatPrompter::composeRichDoc()
 {
     QString result = TopHatWorker::tr(
-        "Aligns RNA-seq reads to a reference and finds splice junctions.");
+        "Maps RNA-seq reads to a reference and finds splice junctions.");
 
     return result;
 }

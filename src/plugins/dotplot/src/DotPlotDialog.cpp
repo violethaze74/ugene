@@ -70,7 +70,7 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
     algoCombo->addItem(tr("Auto"), RFAlgorithm_Auto);
     algoCombo->addItem(tr("Suffix index"), RFAlgorithm_Suffix);
     algoCombo->addItem(tr("Diagonals"), RFAlgorithm_Diagonal);
-    
+
     minLenBox->setValue(minLen);
     identityBox->setValue(identity);
 
@@ -87,14 +87,14 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
     connect(invertedDefaultColorButton, SIGNAL(clicked()), SLOT(sl_invertedDefaultColorButton()));
 
     connect(loadSequenceButton, SIGNAL(clicked()), SLOT(sl_loadSequenceButton()));
-    
+
     // listen to project modification to update list of available sequence objects.
     Project* project = AppContext::getProject();
     connect(project, SIGNAL(si_documentAdded(Document*)), SLOT(sl_documentAddedOrRemoved()));
     connect(project, SIGNAL(si_documentRemoved(Document*)), SLOT(sl_documentAddedOrRemoved()));
     reconnectAllProjectDocuments();
     updateSequenceSelectors();
-    
+
     if(hideLoadSequences){
         loadSequenceButton->hide();
     }
@@ -113,7 +113,7 @@ void DotPlotDialog::reconnectAllProjectDocuments() {
 void DotPlotDialog::updateSequenceSelectors() {
     xAxisCombo->clear();
     yAxisCombo->clear();
-    
+
     int xSeqIndex = -1, ySeqIndex = -1, curIndex = 0;
 
     //sequences in the project

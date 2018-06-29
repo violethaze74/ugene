@@ -165,7 +165,6 @@ void WorkflowEditor::removeInputPortTable() {
         w->hide();
         inputLayout->removeWidget(w);
         w->disconnect();
-        w->deleteLater();
     }
     inputPortWidget.clear();
 }
@@ -175,7 +174,6 @@ void WorkflowEditor::removeOutputPortTable() {
         w->hide();
         outputLayout->removeWidget(w);
         w->disconnect();
-        w->deleteLater();
     }
     outputPortWidget.clear();
 }

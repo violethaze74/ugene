@@ -22,18 +22,21 @@
 #ifndef _U2_TAXONOMY_SUPPORT_H_
 #define _U2_TAXONOMY_SUPPORT_H_
 
-#include <QSet>
 #include <QMap>
 #include <QMultiMap>
+#include <QSet>
+#include <QTreeView>
+
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QVBoxLayout>
 
 #include <U2Core/U2Type.h>
 
 #include <U2Designer/DelegateEditors.h>
 #include <U2Designer/PropertyWidget.h>
 
-#include <U2Lang/Descriptor.h>
 #include <U2Lang/Datatype.h>
-
+#include <U2Lang/Descriptor.h>
 
 #include "NgsReadsClassificationPlugin.h"
 
@@ -59,6 +62,7 @@ public:
     QString getRank(TaxID id) const;
     TaxID getParent(TaxID id) const;
     QList<TaxID> getChildren(TaxID id) const;
+    int getElementsCount() const;
     /**
      * @param id
      * @param filter
@@ -89,6 +93,37 @@ private:
      * Keeps parent-children relation for top-down traversal.
      */
     QMultiMap<TaxID, TaxID> childs;
+};
+
+class TaxonomyTreeModel : public QAbstractItemModel {
+public:
+    TaxonomyTreeModel(const QString &data, QObject *parent = 0);
+
+    QVariant data(const QModelIndex &index, int role) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QVariant headerData(int section, Qt::Orientation orientation,
+        int role = Qt::DisplayRole) const;
+    QModelIndex index(int row, int column,
+        const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex &index) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    QString getSelected() const;
+
+private:
+    QList<TaxID> getChildrenSorted(TaxID id) const;
+
+    TaxonomyTree *tree;
+    /**
+    * Set of actually selected items
+    */
+    QSet<TaxID> selected;
+    /**
+    * Keeps all (grand) parents of actually selected items.
+    * Used to compute partially checked state.
+    */
+    QMultiMap<TaxID, TaxID> tristate;
 };
 
 class U2NGS_READS_CLASSIFICATION_EXPORT TaxonomySupport : public QObject {
@@ -137,6 +172,18 @@ private:
     QString text;
 };
 
+class TaxonSelectionDialog : public QDialog {
+public:
+    TaxonSelectionDialog(const QString &value, QWidget *parent);
+
+    QString getValue() const;
+
+private:
+    QVBoxLayout *mainLayout;
+    QDialogButtonBox *buttonBox;
+    QTreeView *treeView;
+    TaxonomyTreeModel *treeModel;
+};
 
 }   // namespace LocalWorkflow
 }   // namespace U2

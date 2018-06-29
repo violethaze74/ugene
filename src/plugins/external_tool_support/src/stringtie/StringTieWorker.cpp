@@ -29,6 +29,8 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileAndDirectoryUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -54,6 +56,8 @@ namespace U2 {
 namespace LocalWorkflow {
 
 namespace {
+    const QString STRINGTIE_DIR = "stringtie";
+
     // input
     const QString IN_PORT_ID("in");
     const QString IN_URL_SLOT_ID("url");
@@ -115,7 +119,12 @@ Task* StringTieWorker::tick() {
         const Message message = getMessageAndSetupScriptValues(inputPort);
         QVariantMap data = message.getData().toMap();
 
-        StringTieTaskSettings settings = getSettings(data[IN_URL_SLOT_ID].toString());
+        U2OpStatus2Log os;
+        StringTieTaskSettings settings = getSettings(os, data[IN_URL_SLOT_ID].toString());
+        if (os.hasError()) {
+            return new FailTask(os.getError());
+        }
+
         StringTieTask* task = new StringTieTask(settings);
         task->addListeners(createLogListeners());
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -151,7 +160,7 @@ void StringTieWorker::sl_taskFinished() {
     outputPort->put(Message(outputPort->getBusType(), data));
 }
 
-StringTieTaskSettings StringTieWorker::getSettings(const QString& inputFile) {
+StringTieTaskSettings StringTieWorker::getSettings(U2OpStatus &os, const QString& inputFile) {
     StringTieTaskSettings settings;
     settings.inputBam = inputFile;
 
@@ -175,25 +184,38 @@ StringTieTaskSettings StringTieWorker::getSettings(const QString& inputFile) {
 
     settings.threadNum = getValue<int>(THREAD_NUM);
 
+    QString workingDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+    workingDir = GUrlUtils::createDirectory(workingDir + STRINGTIE_DIR, "_", os);
+
     settings.primaryOutputFile = getValue<QString>(PRIMARY_OUTPUT);
     if (settings.primaryOutputFile.isEmpty()) {
         QFileInfo src(inputFile);
-        settings.primaryOutputFile = src.absoluteDir().absolutePath() + QDir::separator() + src.baseName() + "_transcripts.gtf";
+        settings.primaryOutputFile = workingDir + "/" + src.baseName() + "_transcripts.gtf";
     }
+    settings.primaryOutputFile = GUrlUtils::rollFileName(settings.primaryOutputFile, "_");
+
     settings.geneAbundanceOutput = getValue<bool>(GENE_ABUDANCE_OUTPUT);
     settings.geneAbundanceOutputFile = getValue<QString>(GENE_ABUDANCE_OUTPUT_FILE);
     if (settings.geneAbundanceOutput && settings.geneAbundanceOutputFile.isEmpty()) {
         QFileInfo src(inputFile);
-        settings.geneAbundanceOutputFile = src.absoluteDir().absolutePath() + QDir::separator() + src.baseName() + "_gene_abund.tab";
+        settings.geneAbundanceOutputFile = workingDir + "/" + src.baseName() + "_gene_abund.tab";
     }
+    settings.geneAbundanceOutputFile = GUrlUtils::rollFileName(settings.geneAbundanceOutputFile, "_");
+
     settings.coveredRefOutput = getValue<bool>(COVERAGE_REF_OUTPUT);
     settings.coveredRefOutputFile = getValue<QString>(COVERAGE_REF_OUTPUT_FILE);
     if (settings.coveredRefOutput && settings.coveredRefOutputFile.isEmpty()) {
         QFileInfo src(inputFile);
-        settings.coveredRefOutputFile = src.absoluteDir().absolutePath() + QDir::separator() + src.baseName() + "_cov_refs.gtf";
+        settings.coveredRefOutputFile = workingDir + "/" + src.baseName() + "_cov_refs.gtf";
     }
+    settings.coveredRefOutputFile = GUrlUtils::rollFileName(settings.coveredRefOutputFile, "_");
+
     settings.ballgownOutput = getValue<bool>(BALLGOWN_OUTPUT);
     settings.ballgowmOutputFolder = getValue<QString>(BALLGOWN_OUTPUT_FOLDER);
+    if (settings.ballgownOutput && settings.ballgowmOutputFolder.isEmpty()) {
+        settings.ballgowmOutputFolder = workingDir + "/" + "ballgown_input";
+    }
+    settings.ballgowmOutputFolder = GUrlUtils::rollFileName(settings.ballgowmOutputFolder, "_");
 
     return settings;
 }
@@ -425,8 +447,7 @@ void StringTieWorkerFactory::init() {
         Attribute* ballgawnOutputAttr = new Attribute(ballgownOutput, BaseTypes::BOOL_TYPE(), false, false);
         ballgawnOutputAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << ballgawnOutputAttr;
-        Attribute* ballgownOutputFolderAttr = new Attribute(ballgownOutputFolder, BaseTypes::STRING_TYPE(), false,
-                                                            WorkflowSettings::getWorkflowOutputDirectory() + "ballgown_input" );
+        Attribute* ballgownOutputFolderAttr = new Attribute(ballgownOutputFolder, BaseTypes::STRING_TYPE(), false, "");
         ballgownOutputFolderAttr->addRelation(new VisibilityRelation(BALLGOWN_OUTPUT, true));
         ballgownOutputFolderAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << ballgownOutputFolderAttr;
@@ -434,7 +455,7 @@ void StringTieWorkerFactory::init() {
 
     QMap<QString, PropertyDelegate*> delegates;
 
-    delegates[REFERENCE_ANNOTATIONS] = new URLDelegate("", "", false, false);
+    delegates[REFERENCE_ANNOTATIONS] = new URLDelegate("", "", false, false, false);
     {
         QVariantMap map;
         map[StringTieWorker::tr("Unstranded")] = "";
@@ -453,16 +474,19 @@ void StringTieWorkerFactory::init() {
     {
         QVariantMap map;
         map["minimum"] = 30;
+        map["maximum"] = std::numeric_limits<int>::max();
         delegates[MIN_TRANSCRIPT_LEN] = new SpinBoxDelegate(map);
     }
     {
         QVariantMap map;
         map["minimum"] = 0;
+        map["maximum"] = std::numeric_limits<int>::max();
         delegates[MIN_ANCHOR_LEN] = new SpinBoxDelegate(map);
     }
     {
         QVariantMap map;
         map["minimum"] = 0.0;
+        map["maximum"] = std::numeric_limits<double>::max();
         map["singleStep"] = 0.1;
         map["decimals"] = 2;
         delegates[MIN_JUNCTION_COVERAGE] = new DoubleSpinBoxDelegate(map);
@@ -471,6 +495,7 @@ void StringTieWorkerFactory::init() {
     {
         QVariantMap map;
         map["minimum"] = 0.001;
+        map["maximum"] = std::numeric_limits<double>::max();
         map["singleStep"] = 0.1;
         map["decimals"] = 3;
         delegates[MIN_COVERAGE] = new DoubleSpinBoxDelegate(map);
@@ -478,12 +503,15 @@ void StringTieWorkerFactory::init() {
     {
         QVariantMap map;
         map["minimum"] = 0;
+        map["maximum"] = std::numeric_limits<int>::max();
+        map["suffix"] = " bp";
         delegates[MIN_LOCUS_SEPARATION] = new SpinBoxDelegate(map);
     }
 
     {
         QVariantMap map;
         map["minimum"] = 0.00;
+        map["maximum"] = std::numeric_limits<double>::max();
         map["singleStep"] = 0.01;
         map["decimals"] = 2;
         delegates[MULTI_HIT_FRACTION] = new DoubleSpinBoxDelegate(map);
@@ -515,8 +543,10 @@ void StringTieWorkerFactory::init() {
     delegates[COVERAGE_REF_OUTPUT] = new ComboBoxWithBoolsDelegate();
     delegates[COVERAGE_REF_OUTPUT_FILE] = new URLDelegate(outputUrlTags, "stringtie/coverage-output");
 
+    DelegateTags ballgownUrlTags;
+    ballgownUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
     delegates[BALLGOWN_OUTPUT] = new ComboBoxWithBoolsDelegate();
-    delegates[BALLGOWN_OUTPUT_FOLDER] = new URLDelegate("", "", false, true); // set default aoutput
+    delegates[BALLGOWN_OUTPUT_FOLDER] = new URLDelegate(ballgownUrlTags, "", false, true);
 
 
     // Description of the element

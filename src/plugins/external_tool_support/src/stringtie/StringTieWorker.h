@@ -48,7 +48,7 @@ private:
     IntegralBus *outputPort;
 
 private:
-    StringTieTaskSettings getSettings(const QString& inputFile);
+    StringTieTaskSettings getSettings(U2OpStatus &os, const QString& inputFile);
 };
 
 class StringTiePrompter : public PrompterBase<StringTiePrompter> {

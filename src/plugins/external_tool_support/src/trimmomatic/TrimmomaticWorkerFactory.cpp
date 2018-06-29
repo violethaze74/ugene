@@ -33,12 +33,15 @@
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseTypes.h>
+#include <U2Lang/PairedReadsPortValidator.h>
 #include <U2Lang/WorkflowEnv.h>
 
+#include "TrimmomaticDelegate.h"
 #include "TrimmomaticPrompter.h"
 #include "TrimmomaticSupport.h"
 #include "TrimmomaticWorker.h"
 #include "TrimmomaticWorkerFactory.h"
+
 #include "java/JavaSupport.h"
 
 namespace U2 {
@@ -186,9 +189,8 @@ void TrimmomaticWorkerFactory::init() {
                              TrimmomaticPrompter::tr("Number of threads"),
                              TrimmomaticPrompter::tr("Use multiple threads (-threads)."));
 
-
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, TrimmomaticTaskSettings::SINGLE_END);
-        Attribute *trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_TYPE(), Attribute::Required, TrimmomaticPrompter::tr("Configure steps"));
+        Attribute *trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_LIST_TYPE(), Attribute::Required);
         Attribute *seOutputUrlAttribute = new Attribute(seOutputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
         Attribute *pairedOutputUrl1Attribute = new Attribute(pairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
         Attribute *pairedOutputUrl2Attribute = new Attribute(pairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
@@ -227,10 +229,6 @@ void TrimmomaticWorkerFactory::init() {
         inputDataMap[PAIRED_END_TEXT] = TrimmomaticTaskSettings::PAIRED_END;
         delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);
 
-        // TODO (UGENE-6095):
-        // Add a custom delegate for TRIMMING_STEPS_ATTR_ID.
-        // The default value in the Property Editor should be "Configure steps".
-
         {
             DelegateTags outputUrlTags;
             outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
@@ -241,6 +239,7 @@ void TrimmomaticWorkerFactory::init() {
             delegates[PAIRED_URL_2_ATTR_ID] = new URLDelegate(outputUrlTags, "trimmomatic/output");
             delegates[UNPAIRED_URL_1_ATTR_ID] = new URLDelegate(outputUrlTags, "trimmomatic/output");
             delegates[UNPAIRED_URL_2_ATTR_ID] = new URLDelegate(outputUrlTags, "trimmomatic/output");
+            delegates[TRIMMING_STEPS_ATTR_ID] = new TrimmomaticDelegate();
         }
 
         delegates[GENERATE_LOG_ATTR_ID] = new ComboBoxWithBoolsDelegate();
@@ -269,6 +268,7 @@ void TrimmomaticWorkerFactory::init() {
     proto->setPrompter(new TrimmomaticPrompter(NULL));
     proto->addExternalTool(ET_JAVA);
     proto->addExternalTool(ET_TRIMMOMATIC);
+    proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

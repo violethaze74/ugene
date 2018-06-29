@@ -199,8 +199,8 @@ QString GenomeAlignerPrompter::composeRichDoc() {
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
     QString genome = getHyperlink(REFERENCE_GENOME, getURL(REFERENCE_GENOME));
 
-    res.append(tr("Aligns reads from <u>%1</u> ").arg(readsUrl));
-    res.append(tr(" to reference genome <u>%1</u>.").arg(genome));
+    res.append(tr("Maps reads from <u>%1</u> ").arg(readsUrl));
+    res.append(tr(" to reference sequence <u>%1</u>.").arg(genome));
 
     return res;
 }
@@ -332,9 +332,9 @@ void GenomeAlignerWorkerFactory::init() {
             attrs << new Attribute(gpu, BaseTypes::BOOL_TYPE(), false/*required*/, false);
         }
 
-        attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
-        attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), true, QVariant(BASE_GENOME_ALIGNER_OUTFILE));
-        attrs << new Attribute(refGenome, BaseTypes::STRING_TYPE(), true, QVariant(""));
+        attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(BASE_GENOME_ALIGNER_OUTFILE));
+        attrs << new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrs << new Attribute(absMismatches, BaseTypes::BOOL_TYPE(), true/*required*/, true);
         Attribute* mismatchesAttr = new Attribute(mismatches, BaseTypes::NUM_TYPE(), false, 0);
         mismatchesAttr->addRelation(new VisibilityRelation(ABS_OR_PERC_MISMATCHES_ATTR, QVariant(true)));
@@ -347,8 +347,13 @@ void GenomeAlignerWorkerFactory::init() {
         attrs << new Attribute(qual, BaseTypes::NUM_TYPE(), false/*required*/, 0);
     }
 
-    Descriptor desc(ACTOR_ID, GenomeAlignerWorker::tr("Align Reads with UGENE Genome Aligner"),
-        GenomeAlignerWorker::tr("Unique UGENE algorithm for aligning short reads to reference genome"));
+    Descriptor desc(ACTOR_ID, GenomeAlignerWorker::tr("Map Reads with UGENE Genome Aligner"),
+        GenomeAlignerWorker::tr("Genome Aligner is a program for mapping short DNA sequence reads"
+                                " to a long reference sequence, developed by the UGENE team."
+                                "<br/><br/>Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input"
+                                " port of the element, set up the reference sequence in the parameters."
+                                " The result is saved to the specified SAM file, URL to the file is passed"
+                                " to the output port."));
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, attrs);
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -377,7 +382,7 @@ void GenomeAlignerWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new GenomeAlignerPrompter());
     proto->setPortValidator(IN_PORT_DESCR, new GenomeAlignerInputSlotsValidator());
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_ALIGN_SHORT_READS(), proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new GenomeAlignerWorkerFactory());

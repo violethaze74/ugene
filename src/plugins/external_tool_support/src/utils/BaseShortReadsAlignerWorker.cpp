@@ -313,6 +313,10 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
             descrIndexAlgorithm = "Index algorithm";
             break;
         }
+        
+        Descriptor outDir(OUTPUT_DIR,
+            BaseShortReadsAlignerWorker::tr("Output folder"),
+            BaseShortReadsAlignerWorker::tr("Folder to save output files."));
 
         Descriptor referenceInputType(REFERENCE_INPUT_TYPE,
             BaseShortReadsAlignerWorker::tr("Reference input type"),
@@ -348,6 +352,10 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
         Descriptor filter(FILTER_UNPAIRED,
             BaseShortReadsAlignerWorker::tr("Filter unpaired reads"),
             BaseShortReadsAlignerWorker::tr("Should the reads be checked for incomplete pairs?"));
+
+        Descriptor outName(OUTPUT_NAME,
+            BaseShortReadsAlignerWorker::tr("Output file name"),
+            BaseShortReadsAlignerWorker::tr("Base name of the output file. 'out.sam' by default"));
 
         attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant("sequence"));
         Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), true, QVariant(""));
@@ -458,11 +466,11 @@ QString ShortReadsAlignerPrompter::composeRichDoc() {
         QString pairedReadsUrl = pairedReadsProducer ? pairedReadsProducer->getLabel() : unsetStr;
         res.append(tr("Aligns upstream oriented reads from <u>%1</u> and downstream oriented reads from <u>%2</u> ").arg(readsUrl).arg(pairedReadsUrl));
     } else {
-        res.append(tr("Aligns reads from <u>%1</u> ").arg(readsUrl));
+        res.append(tr("Maps reads from <u>%1</u> ").arg(readsUrl));
     }
 
     QString genome = getHyperlink(REFERENCE_GENOME, getURL(REFERENCE_GENOME));
-    res.append(tr(" to reference genome <u>%1</u>.").arg(genome));
+    res.append(tr(" to reference sequence <u>%1</u>.").arg(genome));
 
     return res;
 }

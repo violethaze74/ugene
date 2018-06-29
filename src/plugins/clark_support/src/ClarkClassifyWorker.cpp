@@ -53,6 +53,7 @@
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/IntegralBusModel.h>
+#include <U2Lang/PairedReadsPortValidator.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
@@ -66,56 +67,26 @@ namespace LocalWorkflow {
 
 ///////////////////////////////////////////////////////////////
 //ClarkClassify
-const QString ClarkClassifyWorkerFactory::ACTOR_ID("clark-classify");
-
-static const QString INPUT_PORT("in");
-static const QString PAIRED_INPUT_PORT = "in2";
-
-// Slots should be the same as in GetReadsListWorkerFactory
-static const QString INPUT_SLOT = "reads-url1";
-static const QString PAIRED_INPUT_SLOT = "reads-url2";
-
-static const QString OUTPUT_PORT("out");
-
-static const QString TOOL_VARIANT("tool-variant");
-static const QString DB_URL("database");
-static const QString OUTPUT_URL("output-url");
-static const QString TAXONOMY("taxonomy");
-static const QString TAXONOMY_RANK("taxonomy-rank");
-static const QString K_LENGTH("k-length");
-static const QString K_MIN_FREQ("k-min-freq");
-static const QString MODE("mode");
-static const QString FACTOR("factor");
-static const QString GAP("gap");
-static const QString EXTEND_OUT("extend-out");
-static const QString DB_TO_RAM("preload");
-static const QString NUM_THREADS("threads");
-static const QString SEQUENCING_READS = "sequencing-reads";
-
-static const QString SINGLE_END = "single-end";
-static const QString PAIRED_END = "paired-end";
-
 
 QString ClarkClassifyPrompter::composeRichDoc() {
-    const QString databaseUrl = getHyperlink(DB_URL, getURL(DB_URL));
+    const QString databaseUrl = getHyperlink(ClarkClassifyWorkerFactory::DB_URL, getURL(ClarkClassifyWorkerFactory::DB_URL));
 
-    if (getParameter(SEQUENCING_READS).toString() == SINGLE_END) {
-        const QString readsProducerName = getProducersOrUnset(INPUT_PORT, INPUT_SLOT);
+    if (getParameter(ClarkClassifyWorkerFactory::SEQUENCING_READS).toString() == ClarkClassifyWorkerFactory::SINGLE_END) {
+        const QString readsProducerName = getProducersOrUnset(ClarkClassifyWorkerFactory::INPUT_PORT, ClarkClassifyWorkerFactory::INPUT_SLOT);
         return tr("Classify sequences from <u>%1</u> with CLARK, use %2 database.").arg(readsProducerName).arg(databaseUrl);
     } else {
-        const QString pairedReadsProducerName = getProducersOrUnset(INPUT_PORT, PAIRED_INPUT_SLOT);
+        const QString pairedReadsProducerName = getProducersOrUnset(ClarkClassifyWorkerFactory::INPUT_PORT, ClarkClassifyWorkerFactory::PAIRED_INPUT_SLOT);
         return tr("Classify paired-end reads from <u>%1</u> with CLARK, use %2 database.")
                 .arg(pairedReadsProducerName).arg(databaseUrl);
     }
 }
 
-class DatabaseValidator : public ActorValidator {
-public:
-    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const;
-};
+/************************************************************************/
+/* DatabaseValidator */
+/************************************************************************/
 
 bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    const QString databaseUrl = actor->getParameter(DB_URL)->getAttributeValueWithoutScript<QString>();
+    const QString databaseUrl = actor->getParameter(ClarkClassifyWorkerFactory::DB_URL)->getAttributeValueWithoutScript<QString>();
     if (!databaseUrl.isEmpty()) {
         const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
         CHECK_EXT(doesDatabaseDirExist,
@@ -137,32 +108,43 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
         }
         CHECK(missedFiles.isEmpty(), false);
     }
-    // FIXME port validation
-    bool res = true;
-    Port *p = actor->getPort(INPUT_PORT);
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(p);
-    CHECK(NULL != input, "");
-    const bool paired = actor->getParameter(SEQUENCING_READS)->getAttributeValueWithoutScript<QString>() == PAIRED_END;
-    QList<Actor*> producers = input->getProducers(INPUT_SLOT);
-    if (producers.isEmpty()) {
-        res = false;
-        problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory \"Input URL 1\" slot is not connected."), actor->getId()));
-    }
 
-    if (paired) {
-        QList<Actor*> producers = input->getProducers(PAIRED_INPUT_SLOT);
-        if (producers.isEmpty()) {
-            res = false;
-            problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory \"Input URL 2\" slot is not connected."), actor->getId()));
-        }
-    }
-
-    return res;
+    return true;
 }
 
 /************************************************************************/
 /* ClarkClassifyWorkerFactory */
 /************************************************************************/
+
+const QString ClarkClassifyWorkerFactory::ACTOR_ID = "clark-classify";
+
+const QString ClarkClassifyWorkerFactory::INPUT_PORT = "in";
+const QString ClarkClassifyWorkerFactory::PAIRED_INPUT_PORT = "in2";
+
+// Slots should be the same as in GetReadsListWorkerFactory
+const QString ClarkClassifyWorkerFactory::INPUT_SLOT = "reads-url1";
+const QString ClarkClassifyWorkerFactory::PAIRED_INPUT_SLOT = "reads-url2";
+
+const QString ClarkClassifyWorkerFactory::OUTPUT_PORT = "out";
+
+const QString ClarkClassifyWorkerFactory::TOOL_VARIANT = "tool-variant";
+const QString ClarkClassifyWorkerFactory::DB_URL = "database";
+const QString ClarkClassifyWorkerFactory::OUTPUT_URL = "output-url";
+const QString ClarkClassifyWorkerFactory::TAXONOMY = "taxonomy";
+const QString ClarkClassifyWorkerFactory::TAXONOMY_RANK = "taxonomy-rank";
+const QString ClarkClassifyWorkerFactory::K_LENGTH = "k-length";
+const QString ClarkClassifyWorkerFactory::K_MIN_FREQ = "k-min-freq";
+const QString ClarkClassifyWorkerFactory::MODE = "mode";
+const QString ClarkClassifyWorkerFactory::FACTOR = "factor";
+const QString ClarkClassifyWorkerFactory::GAP = "gap";
+const QString ClarkClassifyWorkerFactory::EXTEND_OUT = "extend-out";
+const QString ClarkClassifyWorkerFactory::DB_TO_RAM = "preload";
+const QString ClarkClassifyWorkerFactory::NUM_THREADS = "threads";
+const QString ClarkClassifyWorkerFactory::SEQUENCING_READS = "sequencing-reads";
+
+const QString ClarkClassifyWorkerFactory::SINGLE_END = "single-end";
+const QString ClarkClassifyWorkerFactory::PAIRED_END = "paired-end";
+
 void ClarkClassifyWorkerFactory::init() {
 
     Descriptor desc( ACTOR_ID, ClarkClassifyWorker::tr("Classify Sequences with CLARK"),
@@ -271,7 +253,7 @@ void ClarkClassifyWorkerFactory::init() {
                 clarkDatabasePath = clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID);
             }
         }
-        a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required, clarkDatabasePath);
+        a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, clarkDatabasePath);
 
 //        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
 //        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
@@ -299,7 +281,7 @@ void ClarkClassifyWorkerFactory::init() {
 
         a << new Attribute(db2ram, BaseTypes::BOOL_TYPE(), Attribute::None, false);
         a << new Attribute(numThreads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
-        a << new Attribute(outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        a << new Attribute(outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -360,6 +342,7 @@ void ClarkClassifyWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ClarkClassifyPrompter());
     proto->setValidator(new DatabaseValidator());
+    proto->setPortValidator(ClarkClassifyWorkerFactory::INPUT_PORT, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     proto->addExternalTool(ET_CLARK);
     proto->addExternalTool(ET_CLARK_L);
 
@@ -383,28 +366,28 @@ ClarkClassifyWorker::ClarkClassifyWorker(Actor *a)
 }
 
 void ClarkClassifyWorker::init() {
-    paired = (getValue<QString>(SEQUENCING_READS) == PAIRED_END);
+    paired = (getValue<QString>(ClarkClassifyWorkerFactory::SEQUENCING_READS) == ClarkClassifyWorkerFactory::PAIRED_END);
 
-    input = ports.value(/*paired ? PAIRED_INPUT_PORT :*/ INPUT_PORT);
-    output = ports.value(OUTPUT_PORT);
+    input = ports.value(/*paired ? PAIRED_INPUT_PORT :*/ ClarkClassifyWorkerFactory::INPUT_PORT);
+    output = ports.value(ClarkClassifyWorkerFactory::OUTPUT_PORT);
 
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), );
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
+    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(ClarkClassifyWorkerFactory::INPUT_PORT), );
+    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(ClarkClassifyWorkerFactory::OUTPUT_PORT), );
 
     output->addComplement(input);
     input->addComplement(output);
 
-    cfg.databaseUrl = getValue<QString>(DB_URL);
-    cfg.numberOfThreads = getValue<int>(NUM_THREADS);
-    cfg.preloadDatabase = getValue<bool>(DB_TO_RAM);
-    cfg.gap = getValue<int>(GAP);
-    cfg.factor = getValue<int>(FACTOR);
-    cfg.minFreqTarget = getValue<int>(K_MIN_FREQ);
-    cfg.kmerSize = getValue<int>(K_LENGTH);
-    cfg.extOut = getValue<bool>(EXTEND_OUT);
-    cfg.tool = getValue<QString>(TOOL_VARIANT).toLower();
+    cfg.databaseUrl = getValue<QString>(ClarkClassifyWorkerFactory::DB_URL);
+    cfg.numberOfThreads = getValue<int>(ClarkClassifyWorkerFactory::NUM_THREADS);
+    cfg.preloadDatabase = getValue<bool>(ClarkClassifyWorkerFactory::DB_TO_RAM);
+    cfg.gap = getValue<int>(ClarkClassifyWorkerFactory::GAP);
+    cfg.factor = getValue<int>(ClarkClassifyWorkerFactory::FACTOR);
+    cfg.minFreqTarget = getValue<int>(ClarkClassifyWorkerFactory::K_MIN_FREQ);
+    cfg.kmerSize = getValue<int>(ClarkClassifyWorkerFactory::K_LENGTH);
+    cfg.extOut = getValue<bool>(ClarkClassifyWorkerFactory::EXTEND_OUT);
+    cfg.tool = getValue<QString>(ClarkClassifyWorkerFactory::TOOL_VARIANT).toLower();
 
-    cfg.mode = (U2::LocalWorkflow::ClarkClassifySettings::Mode)getValue<int>(MODE);
+    cfg.mode = (U2::LocalWorkflow::ClarkClassifySettings::Mode)getValue<int>(ClarkClassifyWorkerFactory::MODE);
     if (!(cfg.mode >=ClarkClassifySettings::Full && cfg.mode <= ClarkClassifySettings::Spectrum)) {
         reportError(tr("Unrecognized mode of execution, expected any of: 0 (full), 1 (default), 2 (express) or 3 (spectrum)"));
     }
@@ -439,7 +422,7 @@ Task * ClarkClassifyWorker::tick() {
     if (input->hasMessage() /*&& (!paired || pairedInput->hasMessage())*/) {
         const Message message = getMessageAndSetupScriptValues(input);
 
-        QString readsUrl = message.getData().toMap()[INPUT_SLOT].toString();
+        QString readsUrl = message.getData().toMap()[ClarkClassifyWorkerFactory::INPUT_SLOT].toString();
         QString pairedReadsUrl;
 
         U2OpStatusImpl os;
@@ -447,7 +430,7 @@ Task * ClarkClassifyWorker::tick() {
         tmpDir = GUrlUtils::createDirectory(tmpDir + "clark", "_", os);
         CHECK_OP(os, new FailTask(os.getError()));
 
-        QString reportUrl = getValue<QString>(OUTPUT_URL);
+        QString reportUrl = getValue<QString>(ClarkClassifyWorkerFactory::OUTPUT_URL);
         if (reportUrl.isEmpty()) {
             const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
             reportUrl = tmpDir + "/" + NgsReadsClassificationUtils::getClassificationFileName(metadata.getFileUrl(), "CLARK", "csv", paired);
@@ -457,7 +440,7 @@ Task * ClarkClassifyWorker::tick() {
 
         if (paired) {
 //            const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
-            pairedReadsUrl = message.getData().toMap()[PAIRED_INPUT_SLOT].toString();
+            pairedReadsUrl = message.getData().toMap()[ClarkClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
         }
         //TODO uncompress input files if needed
 

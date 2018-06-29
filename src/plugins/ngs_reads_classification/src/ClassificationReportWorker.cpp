@@ -73,6 +73,8 @@ const QString ClassificationReportWorkerFactory::ACTOR_ID("classification-report
 static const QString INPUT_PORT("in");
 
 static const QString OUT_FILE("output-url");
+static const QString ALL_TAXA("all-taxa");
+static const QString SORT_BY("sort-by");
 
 
 QString ClassificationReportPrompter::composeRichDoc() {
@@ -102,7 +104,20 @@ void ClassificationReportWorkerFactory::init() {
     {
         Descriptor outputDesc(OUT_FILE, ClassificationReportWorker::tr("Output file"),
             ClassificationReportWorker::tr("Specify the output text file name."));
-        a << new Attribute(outputDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+
+        Descriptor allTaxa(ALL_TAXA, ClassificationReportWorker::tr("All taxa"),
+            ClassificationReportWorker::tr("By default, taxa with no sequences (reads or scaffolds) assigned are not included into the output. This option specifies to include all taxa.\
+                                           <br><br>This may be useful when output from several samples is compared.Set \"Sort by\" to \"Tax ID\" in this case."));
+
+        Descriptor sortBy(SORT_BY, ClassificationReportWorker::tr("Sort by"),
+            ClassificationReportWorker::tr("It is possible to sort rows in the output file in two ways: \
+            <ul><li>by the number of reads, covered by the clade rooted at the taxon(i.e. \"clade_num\" for this taxID)</li> \
+            <li>by taxIDs</li></ul> \
+            The second option may be useful when output from different samples is compared."));
+
+        a << new Attribute(outputDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
+        a << new Attribute(allTaxa, BaseTypes::BOOL_TYPE(), false, QVariant(false));
+        a << new Attribute(sortBy, BaseTypes::STRING_TYPE(), false, QVariant(ClassificationReportTask::TAX_ID));
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -112,6 +127,13 @@ void ClassificationReportWorkerFactory::init() {
         tags.set(DelegateTags::PLACEHOLDER_TEXT, ClassificationReportPrompter::tr("Auto"));
         tags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true));
         delegates[OUT_FILE] = new URLDelegate(tags, "classify/report", options);
+
+        delegates[ALL_TAXA] = new ComboBoxWithBoolsDelegate();
+
+        QVariantMap sortByMap;
+        sortByMap[ClassificationReportWorkerFactory::tr("Number of reads")] = ClassificationReportTask::NUMBER_OF_READS;
+        sortByMap[ClassificationReportWorkerFactory::tr("Tax ID")] = ClassificationReportTask::TAX_ID;
+        delegates[SORT_BY] = new ComboBoxDelegate(sortByMap);
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
@@ -167,7 +189,10 @@ Task * ClassificationReportWorker::tick() {
         tmpDir = GUrlUtils::createDirectory(tmpDir, "_", os);
         CHECK_OP(os, NULL);
 
-        ClassificationReportTask *task = new ClassificationReportTask(data, tax.size(), outputFileUrl, tmpDir);
+        bool allTaxa = getValue<bool>(ALL_TAXA);
+        ClassificationReportTask::SortBy sortBy = (ClassificationReportTask::SortBy)getValue<int>(SORT_BY);
+
+        ClassificationReportTask *task = new ClassificationReportTask(data, tax.size(), outputFileUrl, tmpDir, allTaxa, sortBy);
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
         return task;
     }
@@ -190,9 +215,9 @@ void ClassificationReportWorker::sl_taskFinished(Task *t) {
     context->getMonitor()->addOutputFile(task->getUrl(), getActor()->getId());
 }
 
-ClassificationReportTask::ClassificationReportTask(const QMap<TaxID,uint> &data, uint totalCount, const QString &reportUrl, const QString &workingDir)
+ClassificationReportTask::ClassificationReportTask(const QMap<TaxID,uint> &data, uint totalCount, const QString &reportUrl, const QString &workingDir, bool _allTaxa, SortBy _sortBy)
     : Task(tr("Compose classification report"), TaskFlag_None),
-      data(data), totalCount(totalCount), workingDir(workingDir), url(reportUrl)
+      data(data), totalCount(totalCount), workingDir(workingDir), url(reportUrl), allTaxa(_allTaxa), sortBy(_sortBy)
 {
     GCOUNTER(cvar, tvar, "ClassificationReportTask");
 
@@ -262,7 +287,7 @@ struct ClassificationReportLine {
     }
 };
 
-static QString write(QString path, QHash<TaxID, ClassificationReportLine> report);
+static QString write(QString path, QHash<TaxID, ClassificationReportLine> report, ClassificationReportTask::SortBy);
 
 static const QString SPECIES("species");
 static const QString GENUS("genus");
@@ -274,10 +299,14 @@ static const QString SUPERKINGDOM("superkingdom");
 static const QString header("tax_id\ttax_name\trank\tlineage\tsuperkingdom_tax_id\tsuperkingdom_name\tphylum_tax_id\tphylum_name\tclass_tax_id\tclass_name\torder_tax_id\torder_name\tfamily_tax_id\tfamily_name\tgenus_tax_id\tgenus_name\tspecies_tax_id\tspecies_name\tdirectly_num\tdirectly_proportion_all(%)\tdirectly_proportion_classified(%)\tclade_num\tclade_proportion_all(%)\tclade_proportion_classified(%)");
 
 
-static void fill(ClassificationReportLine &line, QHash<TaxID, uint> &claded) {
-    TaxonomyTree *tree = TaxonomyTree::getInstance();
+static void fill(QHash<TaxID, uint> &claded, QHash<TaxID, ClassificationReportLine> &report, int count, TaxID id, int totalCount, int classifiedCount) {
+    ClassificationReportLine &line = report[id];
+    line.tax_id = id;
+    line.directly_num = count;
+    line.directly_proportion_all = double(count) / totalCount;
+    line.directly_proportion_classified = double(count) / classifiedCount;
 
-    TaxID id = line.tax_id;
+    TaxonomyTree *tree = TaxonomyTree::getInstance();
     QString rank = line.rank = tree->getRank(id);
     QString name = line.tax_name = tree->getName(id);
 
@@ -327,20 +356,32 @@ void ClassificationReportTask::run()
     uint classifiedCount = totalCount - data.remove(TaxonomyTree::UNCLASSIFIED_ID);
     QHash<TaxID, ClassificationReportLine> report;
     QHash<TaxID, uint> claded;
-    report.reserve(data.size());
-    claded.reserve(data.size() * 8);
 
-    QMapIterator<TaxID, uint> i(data);
-    while (i.hasNext()) {
-        i.next();
-        TaxID id = i.key();
-        uint count = i.value();
-        ClassificationReportLine &line = report[id];
-        line.tax_id = id;
-        line.directly_num = count;
-        line.directly_proportion_all = double(count) / totalCount;
-        line.directly_proportion_classified = double(count) / classifiedCount;
-        fill(line, claded);
+    if (!allTaxa) {
+        report.reserve(data.size());
+        claded.reserve(data.size() * 8);
+
+        QMapIterator<TaxID, uint> i(data);
+        while (i.hasNext()) {
+            i.next();
+            TaxID id = i.key();
+            int count = i.value();
+            fill(claded, report, count, id, totalCount, classifiedCount);
+        }
+    } else {
+        TaxonomyTree *tree = TaxonomyTree::getInstance();
+        int elementsCount = tree->getElementsCount();
+        report.reserve(elementsCount);
+        claded.reserve(elementsCount * 8);
+        //0 index is empty, 1 is root element
+        for (int index = 2; index < elementsCount; index++) {
+            if (tree->getName(index).isEmpty()) {
+                continue;
+            }
+            TaxID id = index;
+            int count = data.value(index, 0);
+            fill(claded, report, count, id, totalCount, classifiedCount);
+        }
     }
 
     QHashIterator<TaxID, uint> i2(claded);
@@ -363,21 +404,33 @@ void ClassificationReportTask::run()
         url = tmpDir + '/' + url;
     }
 
-    setError(write(url, report));
+    setError(write(url, report, sortBy));
 }
 
-static bool compare(const ClassificationReportLine* first, const ClassificationReportLine* second)
-{
+static bool compareByCladeNum(const ClassificationReportLine* first, const ClassificationReportLine* second) {
     return first->clade_num > second->clade_num;
 }
 
-QString write(QString fileName, QHash<TaxID, ClassificationReportLine> report)
-{
+static bool compareByTaxId(const ClassificationReportLine* first, const ClassificationReportLine* second) {
+    return first->tax_id < second->tax_id;
+}
+
+QString write(QString fileName, QHash<TaxID, ClassificationReportLine> report, ClassificationReportTask::SortBy sortBy) {
     QList<ClassificationReportLine*> sorted;
     for (QHash<TaxID, ClassificationReportLine>::iterator i = report.begin(); i != report.end(); ++i) {
         sorted << &*i;
     }
-    std::sort(sorted.begin(), sorted.end(), compare);
+
+    switch (sortBy) {
+    case ClassificationReportTask::NUMBER_OF_READS:
+        std::sort(sorted.begin(), sorted.end(), compareByCladeNum);
+        break;
+    case ClassificationReportTask::TAX_ID:
+        std::sort(sorted.begin(), sorted.end(), compareByTaxId);
+    break;
+    default:
+        break;
+    }
 
     QFile file(fileName);
     if (file.open(QIODevice::WriteOnly) ) {

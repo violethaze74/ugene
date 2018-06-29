@@ -32,7 +32,7 @@ struct TrimmomaticTaskSettings {
     QString inputUrl1;
     QString inputUrl2;
     bool readsArePaired;
-    QString trimmingSteps;
+    QStringList trimmingSteps;
     QString seOutputUrl;
     QString pairedOutputUrl1;
     QString pairedOutputUrl2;

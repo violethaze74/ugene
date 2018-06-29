@@ -61,6 +61,16 @@ public:
 }; // StringTypeValueFactory
 
 /**
+* DatatypeValueFactory realization for string type
+*/
+class StringListTypeValueFactory : public DataTypeValueFactory {
+public:
+    virtual QVariant getValueFromString( const QString & str, bool * ok = NULL  ) const;
+    virtual QString getId() const { return BaseTypes::STRING_LIST_TYPE()->getId(); }
+
+}; // StringListTypeValueFactory
+
+/**
 * DatatypeValueFactory realization for bool type
 */
 class BoolTypeValueFactory : public DataTypeValueFactory {

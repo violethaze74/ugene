@@ -97,6 +97,18 @@ void PortDescriptor::setVisibleSlot(const QString& slotId, const bool isVisible)
     type = DataTypePtr(new MapDataType(id, newMap));
 }
 
+QString PortDescriptor::getSlotNameById(const QString& id) const {
+    QMap<Descriptor, DataTypePtr> map = getOwnTypeMap();
+    QString result;
+    foreach(const Descriptor& descriptor, map.keys()) {
+        CHECK_CONTINUE(descriptor.getId() == id);
+
+        result = descriptor.getDisplayName();
+        break;
+    }
+    return result;
+}
+
 /**************************
 * Port
 **************************/

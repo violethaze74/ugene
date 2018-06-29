@@ -228,7 +228,7 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
     CHECK_SET_ERR(string == "-TTG", QString("Unexpected string, expected: -TTG, current: %1").arg(string));
 
     //6. Print "---" symbols at the beggining and put cursor before gap
-    GTUtilsSequenceView::clickOnDetView(os);    
+    GTUtilsSequenceView::clickOnDetView(os);
     GTUtilsSequenceView::setCursor(os, 0);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTGlobals::sleep(100);

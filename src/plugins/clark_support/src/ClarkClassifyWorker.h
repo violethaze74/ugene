@@ -99,13 +99,45 @@ protected:
     bool paired;
 };
 
+class DatabaseValidator : public ActorValidator {
+public:
+    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString>& options) const;
+};
+
 class ClarkClassifyWorkerFactory : public DomainFactory {
-    static const QString ACTOR_ID;
 public:
     static void init();
     static void cleanup();
     ClarkClassifyWorkerFactory() : DomainFactory(ACTOR_ID) {}
     Worker* createWorker(Actor* a) { return new ClarkClassifyWorker(a); }
+
+    static const QString ACTOR_ID;
+
+    static const QString INPUT_PORT;
+    static const QString PAIRED_INPUT_PORT;
+
+    static const QString INPUT_SLOT;
+    static const QString PAIRED_INPUT_SLOT;
+
+    static const QString OUTPUT_PORT;
+
+    static const QString TOOL_VARIANT;
+    static const QString DB_URL;
+    static const QString OUTPUT_URL;
+    static const QString TAXONOMY;
+    static const QString TAXONOMY_RANK;
+    static const QString K_LENGTH;
+    static const QString K_MIN_FREQ;
+    static const QString MODE;
+    static const QString FACTOR;
+    static const QString GAP;
+    static const QString EXTEND_OUT;
+    static const QString DB_TO_RAM;
+    static const QString NUM_THREADS;
+    static const QString SEQUENCING_READS;
+
+    static const QString SINGLE_END;
+    static const QString PAIRED_END;
 };
 
 class ClarkClassifyTask : public ExternalToolSupportTask {

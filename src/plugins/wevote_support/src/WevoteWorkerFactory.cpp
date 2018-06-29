@@ -113,7 +113,7 @@ void WevoteWorkerFactory::init() {
         Attribute *numberOfAgreedToolsAttribute = new Attribute(numberOfAgreedToolsDesc, BaseTypes::NUM_TYPE(), Attribute::None, 0);
         Attribute *scoreThresholdAttribute = new Attribute(scoreThresholdDesc, BaseTypes::NUM_TYPE(), Attribute::None, 0);
         Attribute *numberOfThreadsAttribute = new Attribute(numberOfThreadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
-        Attribute *outputFileAttribute = new Attribute(outputFileDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        Attribute *outputFileAttribute = new Attribute(outputFileDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
         attributes << penaltyAttribute;
         attributes << numberOfAgreedToolsAttribute;

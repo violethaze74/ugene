@@ -525,7 +525,7 @@ GUI_TEST_CLASS_DEFINITION( test_2021_6 )
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(44, 0), QPoint(44, 0));
 
     //3. Press BACKSPACE
-    GTKeyboardDriver::keyClick(Qt::Key_Backspace);    
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTGlobals::sleep(200);
 
     // 4. Expected state: the gap was deleted, selection moves to the previous symbol.
@@ -535,7 +535,7 @@ GUI_TEST_CLASS_DEFINITION( test_2021_6 )
 
     const QString finalMsaContent = GTClipboard::text(os);
     CHECK_SET_ERR("TAAGACTTCTAATTCGAGCCGAATTAGGTCAACCAGGATAC--C" == finalMsaContent,
-        QString("Unexpected MSA content has occurred: got %1").arg(finalMsaContent)); 
+        QString("Unexpected MSA content has occurred: got %1").arg(finalMsaContent));
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2021_7 )
@@ -1827,7 +1827,7 @@ GUI_TEST_CLASS_DEFINITION( test_2316 ) {
 }
 GUI_TEST_CLASS_DEFINITION( test_2269 ){
     //1. Use main menu: {tools->Align short reeds}
-    //2. Select Bowtie2 as alignment method
+    //2. Select Bowtie2 as a mapping tool
     //3. Try to set incorrect value in "Seed lingth" spinbox(Correct boundaries are: >3, <32)
     AlignShortReadsFiller::Bowtie2Parameters parameters(testDir + "_common_data/scenarios/_regression/1093/",
                                                         "refrence.fa",
@@ -4362,7 +4362,7 @@ GUI_TEST_CLASS_DEFINITION(test_2638){
     QString initTitle = GTUtilsMdi::activeWindowTitle(os);
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::Input);
     GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboard(os));
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "Find Splice Junctions with TopHat", "LI"));
+    GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "Map RNA-Seq Reads with TopHat", "LI"));
     GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "index", "BUTTON"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: "Bowtie index folder" parameter's value is folder, it is not tried to be opened bu UGENE when clicking
@@ -4711,7 +4711,7 @@ GUI_TEST_CLASS_DEFINITION(test_2709) {
     GTUtilsWorkflowDesigner::addSample(os, "tuxedo");
     GTGlobals::sleep();
 //    Expected state: "No novel junctions" tophat parameter set to true by default
-    GTUtilsWorkflowDesigner::click(os, "Find Splice Junctions with TopHat");
+    GTUtilsWorkflowDesigner::click(os, "Map RNA-Seq Reads with TopHat");
     QString result = GTUtilsWorkflowDesigner::getParameter(os, "No novel junctions");
     CHECK_SET_ERR(result == "True", "No novel junctions parameter is " + result);
 
@@ -5495,7 +5495,7 @@ GUI_TEST_CLASS_DEFINITION(test_2863){
 GUI_TEST_CLASS_DEFINITION(test_2866) {
 //    1. Use main menu { Tools -> Align to reference -> Align short reads }
 //    Expected state: the "Align Sequencing Reads" dialog has appeared
-//    2. Fill dialog: alignment method: Bowtie
+//    2. Fill dialog: mapping tool: Bowtie
 //                    reference sequence: _common_data/e_coli/NC_008253.gff
 //                    short reads: "_common_data/e_coli/e_coli_1000.fastq"
 //       Click start button
@@ -5537,10 +5537,10 @@ GUI_TEST_CLASS_DEFINITION(test_2887) {
     //1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //2. Place Tophat element on the scene
-    GTUtilsWorkflowDesigner::addAlgorithm( os, "Find Splice Junctions with TopHat");
+    GTUtilsWorkflowDesigner::addAlgorithm( os, "Map RNA-Seq Reads with TopHat");
     CHECK_OP(os, );
     //3. check "Mate inner distance" parameter is 50
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Find Splice Junctions with TopHat"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Map RNA-Seq Reads with TopHat"));
     GTMouseDriver::click();
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getParameter(os, "Mate inner distance") == "50", "'Mate inner distance', Parameter value doesn't amtch");
 }
