@@ -557,6 +557,7 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
 
     //2. Select 1 - 10 chars
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 10);
+    GTKeyboardUtils::copy(os);
 
     //3. Enable edit mode
     GTUtilsSequenceView::enableEditingMode(os);
@@ -566,9 +567,9 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
 
     //5. Press paste
     GTKeyboardUtils::paste(os);
-    GTGlobals::sleep(100);
+    GTGlobals::sleep();
 
-    //Expected: cursor on the 14-th pos
+    //Expected: cursor on the 15-th pos
     const qint64 pos = GTUtilsSequenceView::getCursor(os);
     CHECK_SET_ERR(pos == 15, QString("Incorrect cursor position, expected: 15, current: %1").arg(pos));
 }
