@@ -313,10 +313,6 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
             descrIndexAlgorithm = "Index algorithm";
             break;
         }
-        
-        Descriptor outDir(OUTPUT_DIR,
-            BaseShortReadsAlignerWorker::tr("Output folder"),
-            BaseShortReadsAlignerWorker::tr("Folder to save output files."));
 
         Descriptor referenceInputType(REFERENCE_INPUT_TYPE,
             BaseShortReadsAlignerWorker::tr("Reference input type"),
@@ -353,18 +349,14 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
             BaseShortReadsAlignerWorker::tr("Filter unpaired reads"),
             BaseShortReadsAlignerWorker::tr("Should the reads be checked for incomplete pairs?"));
 
-        Descriptor outName(OUTPUT_NAME,
-            BaseShortReadsAlignerWorker::tr("Output file name"),
-            BaseShortReadsAlignerWorker::tr("Base name of the output file. 'out.sam' by default"));
-
         attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant("sequence"));
-        Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), true, QVariant(""));
+        Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "sequence"));
         attrs << attrRefGenom;
-        Attribute* attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
+        Attribute* attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrIndexDir->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "index"));
         attrs << attrIndexDir;
-        Attribute* attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), true, QVariant(""));
+        Attribute* attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "index"));
         attrs << attrIndexBasename;
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
@@ -457,7 +449,6 @@ QString ShortReadsAlignerPrompter::composeRichDoc() {
     Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
     Port* pairedPort = target->getPort(IN_PORT_DESCR_PAIRED);
 
-    QVariant inputType = getParameter(REFERENCE_INPUT_TYPE);
     QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
     if(pairedPort->isEnabled()) {
@@ -466,11 +457,30 @@ QString ShortReadsAlignerPrompter::composeRichDoc() {
         QString pairedReadsUrl = pairedReadsProducer ? pairedReadsProducer->getLabel() : unsetStr;
         res.append(tr("Aligns upstream oriented reads from <u>%1</u> and downstream oriented reads from <u>%2</u> ").arg(readsUrl).arg(pairedReadsUrl));
     } else {
-        res.append(tr("Maps reads from <u>%1</u> ").arg(readsUrl));
+        res.append(tr("Maps input reads from <u>%1</u> ").arg(readsUrl));
     }
 
-    QString genome = getHyperlink(REFERENCE_GENOME, getURL(REFERENCE_GENOME));
-    res.append(tr(" to reference sequence <u>%1</u>.").arg(genome));
+    /*
+        UGENE-6110
+        Descriptions on the workflow elements should be the following:
+
+        1. In case of reference sequence:
+            --> "Map input reads to reference sequence unset."
+        Use the name of the file with sequence for "unset", for example "chr6.fa".
+
+        2. In case of index:
+            --> "Map input reads to reference sequence with index unset."
+        Use the index base name with suffix ".*" for "unset", for example, "chr6.*".
+    */
+    QVariant inputType = getParameter(REFERENCE_INPUT_TYPE);
+    if (inputType == "index") {
+        QString baseName = getHyperlink(INDEX_BASENAME, getURL(INDEX_BASENAME));
+        res.append(tr(" to reference sequence with index <u>%1</u>.").arg(baseName));
+    }
+    else {
+        QString genome = getHyperlink(REFERENCE_GENOME, getURL(REFERENCE_GENOME));
+        res.append(tr(" to reference sequence <u>%1</u>.").arg(genome));
+    }
 
     return res;
 }

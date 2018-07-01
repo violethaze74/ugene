@@ -90,7 +90,7 @@ OpenCLSupportPlugin::~OpenCLSupportPlugin() {
     OpenCLGpuRegistry* registry = AppContext::getOpenCLGpuRegistry();
     CHECK(NULL != registry, );
     unregisterAvailableGpus();
-    AppResourcePool::instance()->unRegisterResource(RESOURCE_OPENCL_GPU);
+    AppResourcePool::instance()->unregisterResource(RESOURCE_OPENCL_GPU);
     registry->setOpenCLHelper(NULL);
 }
 
