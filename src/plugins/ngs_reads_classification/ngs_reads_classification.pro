@@ -25,4 +25,4 @@ SOURCES += src/ClassificationFilterWorker.cpp \
 
 FORMS += src/GenomicLibraryDialog.ui
 
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts
