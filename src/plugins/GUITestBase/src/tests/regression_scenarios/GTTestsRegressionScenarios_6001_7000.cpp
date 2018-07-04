@@ -75,6 +75,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 
 namespace U2 {
@@ -574,6 +575,25 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
     const qint64 pos = GTUtilsSequenceView::getCursor(os);
     CHECK_SET_ERR(pos == 15, QString("Incorrect cursor position, expected: 15, current: %1").arg(pos));
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6083) {
+    //    1. open document samples/CLUSTALW/COI.aln
+        GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    //    2. Select first sequence
+        GTUtilsMSAEditorSequenceArea::click(os,QPoint(0,0));
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<MSAE_MENU_EXPORT<<"Save sequence",GTGlobals::UseKey));
+        Runnable* r = new ExportSelectedSequenceFromAlignment(os,testDir + "_common_data/scenarios/sandbox/",ExportSelectedSequenceFromAlignment::Ugene_db,true);
+        GTUtilsDialog::waitForDialog(os, r);
+
+        GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
+        GTGlobals::sleep();
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        GTUtilsProjectTreeView::click(os, "Phaneroptera_falcata.ugenedb");
+        GTKeyboardDriver::keyClick( Qt::Key_Delete);
+        GTGlobals::sleep(); 
+}
+
 
 GUI_TEST_CLASS_DEFINITION(test_6087) {
     //1. Open  samples/MMDB/1CRN.prt
