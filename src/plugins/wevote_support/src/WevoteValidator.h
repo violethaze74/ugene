@@ -22,17 +22,20 @@
 #ifndef _U2_WEVOTE_VALIDATOR_H_
 #define _U2_WEVOTE_VALIDATOR_H_
 
+#include <QCoreApplication>
+
 #include <U2Lang/ActorValidator.h>
 
 namespace U2 {
 namespace Workflow {
 
 class WevoteValidator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(WevoteValidator)
 public:
     bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
 
 private:
-    bool validateTaxonomyData(const Actor *actor, ProblemList &problemList) const;
+    bool validateTaxonomy(const Actor *actor, ProblemList &problemList) const;
 };
 
 }   // namespace Workflow

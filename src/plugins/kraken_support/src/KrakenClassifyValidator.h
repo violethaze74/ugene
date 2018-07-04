@@ -19,23 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include "KrakenBuildPrompter.h"
-#include "KrakenBuildWorkerFactory.h"
-#include "MinimizerLengthValidator.h"
+#ifndef _U2_KRAKEN_CLASSIFY_VALIDATOR_H_
+#define _U2_KRAKEN_CLASSIFY_VALIDATOR_H_
+
+#include <QCoreApplication>
+
+#include <U2Lang/ActorValidator.h>
 
 namespace U2 {
 namespace Workflow {
 
-bool MinimizerLengthValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    const int minimizerLength = actor->getParameter(LocalWorkflow::KrakenBuildWorkerFactory::MINIMIZER_LENGTH_ATTR_ID)->getAttributeValueWithoutScript<int>();
-    const int kMerLength = actor->getParameter(LocalWorkflow::KrakenBuildWorkerFactory::K_MER_LENGTH_ATTR_ID)->getAttributeValueWithoutScript<int>();
-    if (minimizerLength >= kMerLength) {
-        problemList << Problem(LocalWorkflow::KrakenBuildPrompter::tr("Minimizer length has to be less than K-mer length"), actor->getId());
-        return false;
-    }
+class KrakenClassifyValidator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(KrakenClassifyValidator)
+public:
+    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
 
-    return true;
-}
+private:
+    bool validateDatabase(const Actor *actor, ProblemList &problemList) const;
+};
 
 }   // namespace Workflow
 }   // namespace U2
+
+#endif // _U2_KRAKEN_CLASSIFY_VALIDATOR_H_

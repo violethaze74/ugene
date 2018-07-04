@@ -22,6 +22,8 @@
 #ifndef _U2_CLARK_BUILD_WORKER_H_
 #define _U2_CLARK_BUILD_WORKER_H_
 
+#include <QCoreApplication>
+
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 #include <U2Lang/BaseNGSWorker.h>
@@ -29,6 +31,18 @@
 
 namespace U2 {
 namespace LocalWorkflow {
+
+//////////////////////////////////////////////////
+//ClarkBuildValidator
+
+class ClarkBuildValidator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(ClarkBuildValidator)
+public:
+    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+
+private:
+    bool validateTaxonomy(const Actor *actor, ProblemList &problemList) const;
+};
 
 //////////////////////////////////////////////////
 //ClarkBuild

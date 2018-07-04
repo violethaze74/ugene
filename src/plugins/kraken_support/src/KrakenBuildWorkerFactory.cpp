@@ -36,10 +36,10 @@
 #include <U2Lang/WorkflowEnv.h>
 
 #include "KrakenBuildPrompter.h"
+#include "KrakenBuildValidator.h"
 #include "KrakenBuildWorker.h"
 #include "KrakenBuildWorkerFactory.h"
 #include "KrakenSupport.h"
-#include "MinimizerLengthValidator.h"
 #include "../../ngs_reads_classification/src/GenomicLibraryDelegate.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
@@ -242,7 +242,7 @@ void KrakenBuildWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new KrakenBuildPrompter(NULL));
     proto->addExternalTool(KrakenSupport::BUILD_TOOL);
-    proto->setValidator(new MinimizerLengthValidator());
+    proto->setValidator(new KrakenBuildValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

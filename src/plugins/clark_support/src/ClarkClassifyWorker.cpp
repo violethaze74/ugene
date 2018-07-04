@@ -85,7 +85,11 @@ QString ClarkClassifyPrompter::composeRichDoc() {
 /* DatabaseValidator */
 /************************************************************************/
 
-bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+bool ClarkClassifyValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+    return validateDatabase(actor, problemList);
+}
+
+bool ClarkClassifyValidator::validateDatabase(const Actor *actor, ProblemList &problemList) const {
     const QString databaseUrl = actor->getParameter(ClarkClassifyWorkerFactory::DB_URL)->getAttributeValueWithoutScript<QString>();
     if (!databaseUrl.isEmpty()) {
         const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
@@ -341,7 +345,7 @@ void ClarkClassifyWorkerFactory::init() {
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ClarkClassifyPrompter());
-    proto->setValidator(new DatabaseValidator());
+    proto->setValidator(new ClarkClassifyValidator());
     proto->setPortValidator(ClarkClassifyWorkerFactory::INPUT_PORT, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     proto->addExternalTool(ET_CLARK);
     proto->addExternalTool(ET_CLARK_L);

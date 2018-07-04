@@ -70,8 +70,59 @@ const QString ClarkBuildWorkerFactory::ACTOR_ID("clark-build");
 static const QString OUTPUT_PORT("out");
 
 static const QString DB_URL("database");
-static const QString TAXONOMY("taxonomy");
+static const QString GENOMIC_LIBRARY("genomic-library");
 static const QString TAXONOMY_RANK("taxonomy-rank");
+
+/************************************************************************/
+/* ClarkBuildValidator */
+/************************************************************************/
+bool ClarkBuildValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+    return validateTaxonomy(actor, problemList);
+}
+
+bool ClarkBuildValidator::validateTaxonomy(const Actor *actor, ProblemList &problemList) const {
+    U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
+    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
+              problemList << Problem(tr("Taxonomy classification data are not available."), actor->getId()), false);
+
+    bool isValid = true;
+
+    const QString nuclGbAccession2Taxid = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NUCL_GB_ACCESSION_2_TAXID_ITEM_ID);
+    const QString nuclWgsAccession2Taxid = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NUCL_WGS_ACCESSION_2_TAXID_ITEM_ID);
+    const QString mergedDmp = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_MERGED_ITEM_ID);
+    const QString namesDmp = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID);
+    const QString nodesDmp = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID);
+    const QString taxDump = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_TAXDUMP_ITEM_ID);
+
+    const QString missingFileMessage = tr("Taxonomy classification data are not full: file '%1' is missing.");
+
+    if (nuclGbAccession2Taxid.isEmpty()) {
+        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NUCL_GB_ACCESSION_2_TAXID_ITEM_ID), actor->getId());
+        isValid = false;
+    }
+
+    if (nuclWgsAccession2Taxid.isEmpty()) {
+        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NUCL_WGS_ACCESSION_2_TAXID_ITEM_ID), actor->getId());
+        isValid = false;
+    }
+
+    if (mergedDmp.isEmpty() && taxDump.isEmpty()) {
+        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_MERGED_ITEM_ID), actor->getId());
+        isValid = false;
+    }
+
+    if (namesDmp.isEmpty() && taxDump.isEmpty()) {
+        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID), actor->getId());
+        isValid = false;
+    }
+
+    if (nodesDmp.isEmpty() && taxDump.isEmpty()) {
+        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID), actor->getId());
+        isValid = false;
+    }
+
+    return isValid;
+}
 
 /************************************************************************/
 /* ClarkBuildPrompter */
@@ -106,7 +157,7 @@ void ClarkBuildWorkerFactory::init() {
         Descriptor dbUrl(DB_URL, ClarkBuildWorker::tr("Database"),
             ClarkBuildWorker::tr("A folder that should be used to store the database files."));
 
-        Descriptor taxonomy(TAXONOMY, ClarkBuildWorker::tr("Genomic library"),
+        Descriptor taxonomy(GENOMIC_LIBRARY, ClarkBuildWorker::tr("Genomic library"),
             ClarkBuildWorker::tr("Genomes that should be used to build the database (\"targets\").<br><br>"
                                  "The genomes should be specified in FASTA format. There should be one FASTA file per reference sequence. A sequence header must contain an accession number (i.e., &gt;accession.number ... or &gt;gi|number|ref|accession.number| ...)."));
 
@@ -140,7 +191,7 @@ void ClarkBuildWorkerFactory::init() {
         tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::required());
         delegates[DB_URL] = new URLDelegate(tags, "clark/database", options);
 
-        delegates[TAXONOMY] = new GenomicLibraryDelegate();//new URLDelegate(tags, "clark/taxonomy", true/*multi*/);
+        delegates[GENOMIC_LIBRARY] = new GenomicLibraryDelegate();
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
@@ -150,6 +201,7 @@ void ClarkBuildWorkerFactory::init() {
     proto->addExternalTool(ET_CLARK_getfilesToTaxNodes);
     proto->addExternalTool(ET_CLARK_getTargetsDef);
     proto->addExternalTool(ET_CLARK_buildScript);
+    proto->setValidator(new ClarkBuildValidator());
 
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -180,13 +232,13 @@ Task * ClarkBuildWorker::tick() {
     if (!isDone()) {
         QString databaseUrl = getValue<QString>(DB_URL);
         int rank = getValue<int>(TAXONOMY_RANK);
-        QStringList genUrls;// = getValue<QString>(TAXONOMY).split(';');
+        QStringList genUrls;
 
         U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-        CHECK(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), new FailTask(tr("Taxonomy data is not found.")));
+        CHECK(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), new FailTask(tr("Taxonomy classification data are not available.")));
         QString taxdataUrl = taxonomyDataPath->getPath();
 
-        const QList<Dataset> datasets = getValue<QList<Dataset> >(TAXONOMY);
+        const QList<Dataset> datasets = getValue<QList<Dataset> >(GENOMIC_LIBRARY);
         DatasetFilesIterator it(datasets);
         while(it.hasNext()) {
             genUrls << it.getNextFile();

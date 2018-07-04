@@ -127,12 +127,20 @@ QString TaxonomyTree::getName(TaxID id) const
 
 QString TaxonomyTree::getRank(TaxID id) const
 {
-    return ranks.at((nodes.at(id) & RANK_MASK) >> RANK_SHIFT);
+    if (unsigned(nodes.size()) > id) {
+        return ranks.at((nodes.at(id) & RANK_MASK) >> RANK_SHIFT);
+    }
+    algoLog.info(QString("Unknown taxon ID requested: %1").arg(id));
+    return QString("Unknown taxon ID");
 }
 
 TaxID TaxonomyTree::getParent(TaxID id) const
 {
-    return nodes.at(id) & ~RANK_MASK;
+    if (unsigned(nodes.size()) > id) {
+        return nodes.at(id) & ~RANK_MASK;
+    }
+    algoLog.info(QString("Unknown taxon ID requested: %1").arg(id));
+    return UNDEFINED_ID;
 }
 
 QList<TaxID> TaxonomyTree::getChildren(TaxID id) const
@@ -140,8 +148,16 @@ QList<TaxID> TaxonomyTree::getChildren(TaxID id) const
     return childs.values(id);
 }
 
-int TaxonomyTree::getElementsCount() const {
+int TaxonomyTree::getNamesListSize() const {
     return names.size();
+}
+
+bool TaxonomyTree::contains(TaxID id) const {
+    return unsigned(nodes.size()) > id;
+}
+
+bool TaxonomyTree::isValid() const {
+    return valid;
 }
 
 TaxID TaxonomyTree::match(TaxID id, QSet<TaxID> filter)
@@ -173,6 +189,12 @@ TaxID TaxonomyTree::match(TaxID id, QSet<TaxID> filter)
     return UNDEFINED_ID;
 }
 
+TaxonomyTree::TaxonomyTree()
+    : valid(false)
+{
+
+}
+
 class TaxonNameComparator
 {
 public:
@@ -188,21 +210,15 @@ TaxonomyTree *tree;
 TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
 {
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
-//    SAFE_POINT_EXT(NULL != dataPathRegistry, os.setError("U2DataPathRegistry is NULL"), settings);
+    SAFE_POINT(NULL != dataPathRegistry, "U2DataPathRegistry is NULL", tree);
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-//    SAFE_POINT_EXT(NULL != taxonomyDataPath, os.setError("Taxonomy data path is not registered"), settings);
-//    CHECK_EXT(taxonomyDataPath->isValid(), os.setError(tr("Taxonomy data is missed")), settings);
-    if (!taxonomyDataPath || !taxonomyDataPath->isValid()) {
-        algoLog.error(QString("Taxonomy data is not configured"));
-        return tree;
-    }
+    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), algoLog.error(QString("Taxonomy data is not configured")), tree);
 
     QString nodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID);
     QFile nodesFile(nodesUrl);
     if (!nodesFile.open(QIODevice::ReadOnly)) {
         algoLog.error(QString("Cannot open taxonomy classification data: %1").arg(nodesUrl));
-//        reportError(tr("Cannot open classification report: %1").arg(nodesUrl));
     } else {
         GTIMER(cvar, tvar, "TaxonomyTree::nodes");
         QList<TaxID> &nodes = tree->nodes;
@@ -255,7 +271,6 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
                 }
             }
             algoLog.error(QString("Broken nodes.dmp file : %1").arg(nodesUrl));
-//            reportError(tr("Broken nodes.dmp file : %1").arg(nodesUrl));
             break;
         }
         nodesFile.close();
@@ -265,7 +280,6 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
     QFile namesFile(namesUrl);
     if (!namesFile.open(QIODevice::ReadOnly)) {
         algoLog.error(QString("Cannot open taxonomy classification data: %1").arg(namesUrl));
-//        reportError(tr("Cannot open classification report: %1").arg(namesUrl));
     } else {
         GTIMER(cvar, tvar, "TaxonomyTree::names");
         QStringList &names = tree->names;
@@ -297,27 +311,12 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
             }
             if (!ok) {
                 algoLog.error(QString("Broken names.dmp file : %1").arg(namesUrl));
-//            reportError(tr("Broken names.dmp file : %1").arg(namesUrl));
                 break;
             }
         }
         namesFile.close();
     }
-    {
-//        GTIMER(cvar, tvar, "TaxonomyTree::sort");
-//        // sort children alphabetically for nicer GUI
-//        QList<TaxID> keys; keys << 1;// = tree->childs.uniqueKeys();
-//        foreach (TaxID id, keys) {
-//            QList<TaxID> values = tree->childs.values(id);
-//            if (values.size() > 1) {
-//                qSort(values.begin(), values.end(), TaxIDComparator(tree));
-//                tree->childs.remove(id);
-//                foreach (TaxID child, values) {
-//                    tree->childs.insert(id, child);
-//                }
-//            }
-//        }
-    }
+    tree->valid = true;
     return tree;
 }
 

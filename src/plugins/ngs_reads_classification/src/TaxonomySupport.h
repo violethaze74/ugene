@@ -62,7 +62,12 @@ public:
     QString getRank(TaxID id) const;
     TaxID getParent(TaxID id) const;
     QList<TaxID> getChildren(TaxID id) const;
-    int getElementsCount() const;
+    int getNamesListSize() const;
+
+    bool contains(TaxID id) const;
+
+    bool isValid() const;
+
     /**
      * @param id
      * @param filter
@@ -70,6 +75,8 @@ public:
      */
     TaxID match(TaxID id, QSet<TaxID> filter);
 private:
+    TaxonomyTree();
+
     static TaxonomyTree *the_tree;
     static TaxonomyTree *load(TaxonomyTree *);
 
@@ -93,6 +100,8 @@ private:
      * Keeps parent-children relation for top-down traversal.
      */
     QMultiMap<TaxID, TaxID> childs;
+
+    bool valid;
 };
 
 class TaxonomyTreeModel : public QAbstractItemModel {
