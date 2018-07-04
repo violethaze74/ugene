@@ -110,6 +110,7 @@ TrimmomaticPropertyWidget::TrimmomaticPropertyWidget(QWidget* parent,
     lineEdit->setPlaceholderText(PLACEHOLDER);
     lineEdit->setObjectName("trimmomaticPropertyLineEdit");
     lineEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    lineEdit->setReadOnly(true);
     connect(lineEdit, SIGNAL(textEdited(QString)), SLOT(sl_textEdited()));
 
     addMainWidget(lineEdit);
@@ -183,10 +184,12 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
 
     menu = new QMenu(this);
+    menu->setObjectName("stepsMenu");
     new MultiClickMenu(menu);
 
     foreach (TrimmomaticStepFactory *factory, TrimmomaticStepsRegistry::getInstance()->getAllEntries()) {
         QAction* step = new QAction(factory->getId(), menu->menuAction());
+        step->setObjectName(factory->getId());
         menu->addAction(step);
     }
 
