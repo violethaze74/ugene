@@ -229,7 +229,8 @@ void IlluminaClipSettingsWidget::setState(const QVariantMap &state) {
 }
 
 void IlluminaClipSettingsWidget::sl_browseButtonClicked() {
-    LastUsedDirHelper dirHelper("trimmomatic/adapters", QDir(":data").path() + "/adapters/illumina");
+    QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/adapters/illumina";
+    LastUsedDirHelper dirHelper("trimmomatic/adapters", defaultDir);
 
     const QString filter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, true, QStringList());
     QString defaultFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
