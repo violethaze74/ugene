@@ -408,7 +408,11 @@ void ClassificationReportTask::run()
 }
 
 static bool compareByCladeNum(const ClassificationReportLine* first, const ClassificationReportLine* second) {
-    return first->clade_num > second->clade_num;
+    if (first->clade_num == second->clade_num) {
+        return first->tax_id < second->tax_id;
+    } else {
+        return first->clade_num > second->clade_num;
+    }
 }
 
 static bool compareByTaxId(const ClassificationReportLine* first, const ClassificationReportLine* second) {
