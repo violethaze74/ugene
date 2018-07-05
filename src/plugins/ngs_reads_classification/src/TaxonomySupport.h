@@ -62,6 +62,9 @@ public:
     QString getRank(TaxID id) const;
     TaxID getParent(TaxID id) const;
     QList<TaxID> getChildren(TaxID id) const;
+    /*
+     * Result counter also counts empty invalid entries.
+     */
     int getElementsCount() const;
     /**
      * @param id
@@ -81,6 +84,7 @@ private:
 
     /**
      * Index array of scientific taxon names.
+     * List contains empty invalid entries, for performance purposes.
      */
     QStringList  names;
 
