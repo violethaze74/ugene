@@ -11,4 +11,4 @@ SOURCES += src/ClarkBuildWorker.cpp \
            src/ClarkSupport.cpp \
            src/ClarkSupportPlugin.cpp
 
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

@@ -33,5 +33,5 @@ SOURCES += src/DatabaseSizeRelation.cpp \
            src/KrakenTranslateLogParser.cpp \
            src/MinimizerLengthValidator.cpp
 
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts
 

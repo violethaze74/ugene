@@ -27,4 +27,4 @@ SOURCES += src/DiamondBuildPrompter.cpp \
            src/DiamondTaxonomyDataValidator.cpp \
            src/GenomesPreparationTask.cpp
 
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts
