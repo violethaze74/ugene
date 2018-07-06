@@ -140,11 +140,11 @@ void SpadesPropertyWidget::sl_showDialog() {
 static const QString MESSAGE_BOX_ERROR = QApplication::tr("At least one of the required input ports should be set in the \"Input data\" parameter.", "SpadesPropertyDialog");
 
 SpadesPropertyDialog::SpadesPropertyDialog(const QMap<QString, QVariant> &value,
-    QWidget *parent) {
+    QWidget *parent) : QDialog(parent) {
     setupUi(this);
 
     new HelpButton(this, buttonBox, HelpButton::INVALID_VALUE);
-    parseValue(value);
+    setValue(value);
 }
 
 QMap<QString, QVariant> SpadesPropertyDialog::getValue() const {
@@ -204,7 +204,7 @@ QMap<QString, QVariant> SpadesPropertyDialog::getValue() const {
     return result;
 }
 
-void SpadesPropertyDialog::parseValue(const QMap<QString, QVariant> &value) {
+void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
     //requaired
     if (value.contains(SpadesWorkerFactory::REQUIRED_SEQUENCING_PLATFORM_ID)) {
         const QString platform = value.value(SpadesWorkerFactory::REQUIRED_SEQUENCING_PLATFORM_ID).toString();
@@ -249,7 +249,7 @@ void SpadesPropertyDialog::parseValue(const QMap<QString, QVariant> &value) {
     untrustedContigsCheckBox->setChecked(value.contains(SpadesWorkerFactory::IN_PORT_ID_LIST[6]));
 }
 
-bool SpadesPropertyDialog::someRequaredParemetrChecked() const {
+bool SpadesPropertyDialog::someRequaredParemetrWasChecked() const {
     return pairEndCheckBox->isChecked() ||
            higntQualityCheckBox->isChecked() ||
            unpairedReadsCheckBox->isChecked() ||
@@ -267,7 +267,7 @@ bool SpadesPropertyDialog::needAdditionalSequencingPlatform() const {
 }
 
 void SpadesPropertyDialog::accept() {
-    CHECK_EXT(someRequaredParemetrChecked(),
+    CHECK_EXT(someRequaredParemetrWasChecked(),
               QMessageBox::critical(this, windowTitle(), MESSAGE_BOX_ERROR), );
 
     QDialog::accept();

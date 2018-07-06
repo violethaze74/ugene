@@ -83,8 +83,8 @@ public slots:
     void accept();
 
 private:
-    void parseValue(const QMap<QString, QVariant> &value);
-    bool someRequaredParemetrChecked() const;
+    void setValue(const QMap<QString, QVariant> &value);
+    bool someRequaredParemetrWasChecked() const;
     bool needRequiredSequencingPlatform() const;
     bool needAdditionalSequencingPlatform() const;
 };

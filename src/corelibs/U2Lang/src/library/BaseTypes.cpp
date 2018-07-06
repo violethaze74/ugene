@@ -261,7 +261,12 @@ QVariant StringListTypeValueFactory::getValueFromString(const QString &str, bool
 ****************************************/
 QVariant MapTypeValueFactory::getValueFromString(const QString &str, bool *ok) const {
     setIfNotNull(ok, true);
-    return qVariantFromValue(str);
+    StrStrMap map = StrPackUtils::unpackMap(str, StrPackUtils::SingleQuotes);
+    QVariantMap variantMap;
+    foreach (const QString& key, map.keys()) {
+        variantMap.insert(key, map.value(key));
+    }
+    return variantMap;
 }
 
 /****************************************

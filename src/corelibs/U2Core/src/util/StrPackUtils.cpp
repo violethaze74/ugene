@@ -60,6 +60,14 @@ QStringList StrPackUtils::unpackStringList(const QString &string, Options option
     return unpackedList;
 }
 
+QString StrPackUtils::packMap(const QMap<QString, QVariant> &map, Options options) {
+    StrStrMap newMap;
+    foreach(const QString& key, map.keys()) {
+        newMap.insert(key, map.value(key).toString());
+    }
+    return packMap(newMap, options);
+}
+
 QString StrPackUtils::packMap(const StrStrMap &map, Options options) {
     QString string;
     foreach (const QString &key, map.keys()) {
