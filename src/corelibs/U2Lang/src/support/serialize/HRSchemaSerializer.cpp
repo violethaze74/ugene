@@ -86,7 +86,9 @@ namespace {
             throw ReadFailed(HRSchemaSerializer::tr("Parameter '%1' undefined for element '%2'").
                 arg(attrId).arg(proc->getLabel()));
         }
-        DataTypeValueFactory * valueFactory = WorkflowEnv::getDataTypeValueFactoryRegistry()->getById(attr->getAttributeType()->getId());
+        QString id = attr->getAttributeType()->getId();
+        DataTypeValueFactoryRegistry* registry = WorkflowEnv::getDataTypeValueFactoryRegistry();
+        DataTypeValueFactory * valueFactory = registry->getById(id);
         if( valueFactory == NULL ) {
             throw ReadFailed(HRSchemaSerializer::tr("Cannot parse value from '%1': no value factory").arg(valueStr));
         }
@@ -1287,13 +1289,13 @@ void HRSchemaSerializer::postProcessing(Schema *schema) {
         CHECK(proto != NULL, );
         foreach (Attribute* attr, proto->getAttributes()) {
             CHECK(attr != NULL, );
-            foreach (const PortRelationDescriptor& pd, attr->getPortRelations()) {
-                Port* p = a->getPort(pd.portId);
+            foreach (PortRelationDescriptor* pd, attr->getPortRelations()) {
+                Port* p = a->getPort(pd->portId);
                 CHECK(p != NULL, );
                 CHECK(a->hasParameter(attr->getId()), );
                 QVariant value = a->getParameter(attr->getId())->getAttributePureValue();
-                if (!p->getLinks().isEmpty() && !pd.valuesWithEnabledPort.contains(value)) {
-                    a->setParameter(attr->getId(), pd.valuesWithEnabledPort.first());
+                if (!p->getLinks().isEmpty() && !pd->valuesWithEnabledPort.contains(value)) {
+                    a->setParameter(attr->getId(), pd->valuesWithEnabledPort.first());
                 }
             }
         }

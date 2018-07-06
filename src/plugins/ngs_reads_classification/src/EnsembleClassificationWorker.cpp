@@ -145,7 +145,7 @@ void EnsembleClassificationWorkerFactory::init() {
         a << numberOfTools;
         a << outFileAttribute;
 
-        numberOfTools->addPortRelation(PortRelationDescriptor(INPUT_PORT3, QVariantList() << 3));
+        numberOfTools->addPortRelation(new PortRelationDescriptor(INPUT_PORT3, QVariantList() << 3));
     }
 
     QMap<QString, PropertyDelegate*> delegates;

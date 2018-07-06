@@ -19,27 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PORT_RELATION_H_
-#define _U2_PORT_RELATION_H_
-
-#include <U2Core/global.h>
+#include "SpadesPortRelationDescriptor.h"
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-class U2LANG_EXPORT PortRelationDescriptor{
-public:
-    PortRelationDescriptor(const QString& portId, const QVariantList& valuesWithEnabledPort)
-        : portId(portId), valuesWithEnabledPort(valuesWithEnabledPort) {}
-    virtual ~PortRelationDescriptor() {}
+SpadesPortRelationDescriptor::SpadesPortRelationDescriptor(const QString& portId,
+                                                           const QVariantList& valuesWithEnabledPort)
+    : PortRelationDescriptor(portId, valuesWithEnabledPort) {}
 
-    virtual bool isPortEnabled(const QVariant& attrValue) const {return valuesWithEnabledPort.contains(attrValue);}
+bool SpadesPortRelationDescriptor::isPortEnabled(const QVariant& attrValue) const {
+    QMap<QString, QVariant> attrValueMap = attrValue.toMap();
+    bool isEnabled = false;
+    foreach (const QString& key, attrValueMap.keys()) {
+       isEnabled = PortRelationDescriptor::isPortEnabled(key);
+       if (isEnabled) {
+           break;
+       }
+       //CHECK_BREAK(!isEnabled);
+    }
+    return isEnabled;
+}
 
-    virtual PortRelationDescriptor* clone() const { return new PortRelationDescriptor(*this); }
-
-    QString      portId;
-    QVariantList valuesWithEnabledPort;
-};
-
-} // U2 namespace
-
-#endif // _U2_ATTRIBUTE_RELATION_H_
+}

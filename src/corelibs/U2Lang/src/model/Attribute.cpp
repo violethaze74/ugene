@@ -52,6 +52,7 @@ Attribute::Attribute(const Descriptor& d, const DataTypePtr t, bool req, const Q
 
 Attribute::~Attribute() {
     qDeleteAll(relations);
+    qDeleteAll(portRelations);
 }
 
 void Attribute::debugCheckAttributeId() const {
@@ -77,8 +78,12 @@ void Attribute::copy(const Attribute &other) {
         relations << relation->clone();
     }
 
+    qDeleteAll(portRelations);
     portRelations.clear();
-    portRelations = other.portRelations;
+    foreach(const PortRelationDescriptor* portRelation, other.portRelations) {
+        portRelations << portRelation->clone();
+    }
+    //portRelations = other.portRelations;
 
     slotRelations.clear();
     slotRelations = other.slotRelations;
@@ -198,11 +203,11 @@ QVector<const AttributeRelation*> &Attribute::getRelations() {
     return relations;
 }
 
-void Attribute::addPortRelation(const PortRelationDescriptor& relationDesc) {
+void Attribute::addPortRelation(PortRelationDescriptor* relationDesc) {
     portRelations << relationDesc;
 }
 
-const QList<PortRelationDescriptor>& Attribute::getPortRelations() const {
+const QList<PortRelationDescriptor*>& Attribute::getPortRelations() const {
     return portRelations;
 }
 

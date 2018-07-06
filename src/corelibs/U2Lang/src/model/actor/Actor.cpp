@@ -404,11 +404,11 @@ void Actor::updateItemsAvailability() {
 }
 
 void Actor::updateItemsAvailability(const Attribute* influencingAttribute) {
-    foreach(const PortRelationDescriptor& rel, influencingAttribute->getPortRelations()) {
-        Port* dependentPort = getPort(rel.portId);
+    foreach(PortRelationDescriptor* rel, influencingAttribute->getPortRelations()) {
+        Port* dependentPort = getPort(rel->portId);
         CHECK_CONTINUE(dependentPort != NULL);
 
-        dependentPort->setEnabled(rel.isPortEnabled(influencingAttribute->getAttributePureValue()));
+        dependentPort->setEnabled(rel->isPortEnabled(influencingAttribute->getAttributePureValue()));
     }
 
     foreach(const SlotRelationDescriptor& rel, influencingAttribute->getSlotRelations()) {

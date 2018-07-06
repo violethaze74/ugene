@@ -54,11 +54,38 @@ private slots:
 
 class SpadesWorkerFactory : public DomainFactory {
 public:
-    static const QString ACTOR_ID;
-
     SpadesWorkerFactory() : DomainFactory(ACTOR_ID) {}
     static void init();
     virtual Worker *createWorker(Actor *a);
+
+    static const QString ACTOR_ID;
+
+    static const QString READS_URL_SLOT_ID;
+    static const QString READS_PAIRED_URL_SLOT_ID;
+
+    static const QString IN_TYPE_ID;
+    static const QString IN_PAIRED_TYPE_ID;
+
+    static const QString OUT_TYPE_ID;
+
+    static const QString SCAFFOLD_OUT_SLOT_ID;
+
+    static const QString REQUIRED_SEQUENCING_PLATFORM_ID;
+    static const QString ADDITIONAL_SEQUENCING_PLATFORM_ID;
+
+    static const QStringList IN_PORT_ID_LIST;
+    static const QStringList IN_PORT_PAIRED_ID_LIST;
+
+    static const QString MAP_TYPE_ID;
+
+    static const QString IN_PORT_DESCR;
+
+    static const QString OUT_PORT_DESCR;
+
+    static const QString OUTPUT_DIR;
+
+    static const QString BASE_SPADES_SUBDIR;
+
 }; // SpadesWorkerFactory
 
 class SpadesPrompter : public PrompterBase<SpadesPrompter> {
