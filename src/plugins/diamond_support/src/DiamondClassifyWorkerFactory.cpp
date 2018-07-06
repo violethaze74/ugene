@@ -40,10 +40,10 @@
 
 #include "DiamondClassifyPrompter.h"
 #include "DiamondClassifyTask.h"
+#include "DiamondClassifyValidator.h"
 #include "DiamondClassifyWorker.h"
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
-#include "DiamondTaxonomyDataValidator.h"
 #include "../../ngs_reads_classification/src/DatabaseDelegate.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
@@ -265,7 +265,7 @@ void DiamondClassifyWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new DiamondClassifyPrompter(NULL));
     proto->addExternalTool(DiamondSupport::TOOL_NAME);
-    proto->setValidator(new DiamondTaxonomyDataValidator());
+    proto->setValidator(new DiamondClassifyValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

@@ -86,6 +86,10 @@ QString ClassificationFilterPrompter::composeRichDoc() {
 /************************************************************************/
 
 bool ClassificationFilterValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+    return validateTaxaListAttribute(actor, problemList);
+}
+
+bool ClassificationFilterValidator::validateTaxaListAttribute(const Actor *actor, ProblemList &problemList) const {
     const bool saveUnspecificSequences = actor->getParameter(ClassificationFilterWorkerFactory::SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getAttributeValueWithoutScript<bool>();
 
     const QStringList taxonsTokens = actor->getParameter(ClassificationFilterWorkerFactory::TAXONS)->getAttributeValueWithoutScript<QString>().split(";", QString::SkipEmptyParts);

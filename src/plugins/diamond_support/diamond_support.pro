@@ -7,11 +7,11 @@ HEADERS += src/DiamondBuildPrompter.h \
            src/DiamondBuildWorkerFactory.h \
            src/DiamondClassifyPrompter.h \
            src/DiamondClassifyTask.h \
+           src/DiamondClassifyValidator.h \
            src/DiamondClassifyWorker.h \
            src/DiamondClassifyWorkerFactory.h \
            src/DiamondSupport.h \
            src/DiamondSupportPlugin.h \
-           src/DiamondTaxonomyDataValidator.h \
            src/GenomesPreparationTask.h
 
 SOURCES += src/DiamondBuildPrompter.cpp \
@@ -20,11 +20,11 @@ SOURCES += src/DiamondBuildPrompter.cpp \
            src/DiamondBuildWorkerFactory.cpp \
            src/DiamondClassifyPrompter.cpp \
            src/DiamondClassifyTask.cpp \
+           src/DiamondClassifyValidator.cpp \
            src/DiamondClassifyWorker.cpp \
            src/DiamondClassifyWorkerFactory.cpp \
            src/DiamondSupport.cpp \
            src/DiamondSupportPlugin.cpp \
-           src/DiamondTaxonomyDataValidator.cpp \
            src/GenomesPreparationTask.cpp
 
 TRANSLATIONS += transl/russian.ts

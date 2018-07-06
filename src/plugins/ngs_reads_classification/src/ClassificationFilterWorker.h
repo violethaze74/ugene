@@ -92,6 +92,9 @@ protected:
 class ClassificationFilterValidator : public ActorValidator {
 public:
     bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString>& options) const;
+
+private:
+    bool validateTaxaListAttribute(const Actor *actor, ProblemList &problemList) const;
 };
 
 class ClassificationFilterWorkerFactory : public DomainFactory {

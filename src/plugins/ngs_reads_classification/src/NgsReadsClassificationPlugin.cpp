@@ -35,9 +35,15 @@ const QString NgsReadsClassificationPlugin::PLUGIN_DESCRIPRION = QObject::tr("Th
 
 const QString NgsReadsClassificationPlugin::TAXONOMY_PATH = "ngs_classification/taxonomy";
 const QString NgsReadsClassificationPlugin::TAXONOMY_DATA_ID = "taxonomy_data";
-const QString NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP_ITEM_ID = "prot.accession2taxid.gz";
 const QString NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID = "nodes.dmp";
 const QString NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID = "names.dmp";
+const QString NgsReadsClassificationPlugin::TAXON_MERGED_ITEM_ID = "merged.dmp";
+const QString NgsReadsClassificationPlugin::TAXON_NUCL_EST_ACCESSION_2_TAXID_ITEM_ID = "nucl_est.accession2taxid";
+const QString NgsReadsClassificationPlugin::TAXON_NUCL_GB_ACCESSION_2_TAXID_ITEM_ID = "nucl_gb.accession2taxid";
+const QString NgsReadsClassificationPlugin::TAXON_NUCL_GSS_ACCESSION_2_TAXID_ITEM_ID = "nucl_gss.accession2taxid";
+const QString NgsReadsClassificationPlugin::TAXON_NUCL_WGS_ACCESSION_2_TAXID_ITEM_ID = "nucl_wgs.accession2taxid";
+const QString NgsReadsClassificationPlugin::TAXON_PROT_ACCESSION_2_TAXID_ITEM_ID = "prot.accession2taxid.gz";
+const QString NgsReadsClassificationPlugin::TAXON_TAXDUMP_ITEM_ID = "taxdump.tar.gz";
 
 const QString NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_PATH = "ngs_classification/clark/viral_database";
 const QString NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID = "clark_viral_database";

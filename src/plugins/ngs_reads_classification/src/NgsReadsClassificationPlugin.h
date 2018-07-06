@@ -43,9 +43,15 @@ public:
 
     static const QString TAXONOMY_PATH;
     static const QString TAXONOMY_DATA_ID;
-    static const QString TAXON_PROTEIN_MAP_ITEM_ID;
     static const QString TAXON_NODES_ITEM_ID;
     static const QString TAXON_NAMES_ITEM_ID;
+    static const QString TAXON_MERGED_ITEM_ID;
+    static const QString TAXON_NUCL_EST_ACCESSION_2_TAXID_ITEM_ID;
+    static const QString TAXON_NUCL_GB_ACCESSION_2_TAXID_ITEM_ID;
+    static const QString TAXON_NUCL_GSS_ACCESSION_2_TAXID_ITEM_ID;
+    static const QString TAXON_NUCL_WGS_ACCESSION_2_TAXID_ITEM_ID;
+    static const QString TAXON_PROT_ACCESSION_2_TAXID_ITEM_ID;
+    static const QString TAXON_TAXDUMP_ITEM_ID;
 
     static const QString CLARK_VIRAL_DATABASE_PATH;
     static const QString CLARK_VIRAL_DATABASE_DATA_ID;
