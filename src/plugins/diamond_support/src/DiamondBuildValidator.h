@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DIAMOND_CLASSIFY_VALIDATOR_H_
-#define _U2_DIAMOND_CLASSIFY_VALIDATOR_H_
+#ifndef _U2_DIAMOND_BUILD_VALIDATOR_H_
+#define _U2_DIAMOND_BUILD_VALIDATOR_H_
 
 #include <QCoreApplication>
 
@@ -29,8 +29,8 @@
 namespace U2 {
 namespace Workflow {
 
-class DiamondClassifyValidator : public ActorValidator {
-    Q_DECLARE_TR_FUNCTIONS(DiamondClassifyValidator)
+class DiamondBuildValidator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(DiamondBuildValidator)
 public:
     bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
 
@@ -41,4 +41,4 @@ private:
 }   // namespace Workflow
 }   // namespace U2
 
-#endif // _U2_DIAMOND_CLASSIFY_VALIDATOR_H_
+#endif // _U2_DIAMOND_BUILD_VALIDATOR_H_
