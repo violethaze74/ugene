@@ -19,20 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DIAMOND_TAXONOMY_DATA_VALIDATOR_H_
-#define _U2_DIAMOND_TAXONOMY_DATA_VALIDATOR_H_
+#ifndef _U2_KRAKEN_BUILD_VALIDATOR_H_
+#define _U2_KRAKEN_BUILD_VALIDATOR_H_
+
+#include <QCoreApplication>
 
 #include <U2Lang/ActorValidator.h>
 
 namespace U2 {
 namespace Workflow {
 
-class DiamondTaxonomyDataValidator : public ActorValidator {
+class KrakenBuildValidator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(MinimizerLengthValidator)
 public:
     bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+
+private:
+    bool validateMinimizerLength(const Actor *actor, ProblemList &problemList) const;
+    bool validateTaxonomy(const Actor *actor, ProblemList &problemList) const;
 };
 
 }   // namespace Workflow
 }   // namespace U2
 
-#endif // _U2_DIAMOND_TAXONOMY_DATA_VALIDATOR_H_
+#endif // _U2_KRAKEN_BUILD_VALIDATOR_H_

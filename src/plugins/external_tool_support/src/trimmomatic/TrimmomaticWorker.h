@@ -40,6 +40,7 @@ public:
 
 private slots:
     void sl_taskFinished(Task *task);
+    void sl_taskPrepareFinished(Task *task);
 
 private:
     TrimmomaticTaskSettings getSettings(U2OpStatus &os);
@@ -50,12 +51,15 @@ private:
     // working_dir/input_file_name+suffix.input_file_extension
     // Roll the file name, if required.
     QString setAutoUrl(const QString &paramId, const QString &inputFile, const QString &workingDir, const QString &fileNameSuffix);
+    QPair<QString, QString> getAbsoluteAndCopiedPathFromStep(const QString& trimmingStep) const;
+    QStringList copiedAdapters;
 
     IntegralBus *input;
     IntegralBus *output;
 
     bool pairedReadsInput;
     bool generateLog;
+    bool prepared;
 
     static const QString TRIMMOMATIC_DIR;
     static const QString SE_OUTPUT_FILE_NAME_SUFFIX;

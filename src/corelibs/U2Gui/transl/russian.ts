@@ -26,22 +26,22 @@
     <message>
         <location filename="../src/util/project/ProjectFilterNames.cpp" line="36"/>
         <source>Sanger read name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя рида</translation>
     </message>
     <message>
         <location filename="../src/util/project/ProjectFilterNames.cpp" line="37"/>
         <source>Sanger reference name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя референсной последовательности</translation>
     </message>
     <message>
         <location filename="../src/util/project/ProjectFilterNames.cpp" line="38"/>
         <source>Sanger read content</source>
-        <translation type="unfinished"></translation>
+        <translation>Содержание рида</translation>
     </message>
     <message>
         <location filename="../src/util/project/ProjectFilterNames.cpp" line="39"/>
         <source>Sanger reference content</source>
-        <translation type="unfinished"></translation>
+        <translation>Содержание референсной последовательности</translation>
     </message>
     <message>
         <location filename="../src/util/project/ProjectFilterNames.cpp" line="41"/>
@@ -1025,7 +1025,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="158"/>
         <source> bases</source>
-        <translation>символов</translation>
+        <translation> символов</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="132"/>
@@ -1272,7 +1272,7 @@ The items cannot be recovered once deleted.</source>
     <message>
         <location filename="../src/util/RangeSelectionDialog.ui" line="31"/>
         <source>    Region:</source>
-        <translation>Регион:</translation>
+        <translation>    Регион:</translation>
     </message>
     <message>
         <location filename="../src/util/RangeSelectionDialog.ui" line="41"/>
@@ -1292,7 +1292,7 @@ The items cannot be recovered once deleted.</source>
     <message>
         <location filename="../src/util/RangeSelectionDialog.ui" line="86"/>
         <source>    Multi Region:</source>
-        <translation>Составной регион:</translation>
+        <translation>    Составной регион:</translation>
     </message>
     <message>
         <location filename="../src/util/RangeSelectionDialog.ui" line="96"/>
@@ -2558,6 +2558,7 @@ Are you sure you want to open all of them?</source>
 
 </source>
         <translation>Эта папка будет импортирована с ее собственными настройками.
+
 </translation>
     </message>
     <message>
@@ -2585,7 +2586,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="635"/>
         <source> from document </source>
-        <translation> из документа</translation>
+        <translation> из документа </translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="654"/>
@@ -2986,7 +2987,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/project/ProjectViewModel.cpp" line="1108"/>
         <source>[unloaded] </source>
-        <translation>[выгружен]</translation>
+        <translation>[выгружен] </translation>
     </message>
     <message>
         <location filename="../src/util/project/ProjectViewModel.cpp" line="1111"/>
@@ -3295,7 +3296,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/SeqPasterWidgetController.cpp" line="146"/>
         <source>Symbols that don&apos;t match the alphabet have been </source>
-        <translation>Некоторые из символов, которые не соответствали алфавиту были</translation>
+        <translation>Некоторые из символов, которые не соответствали алфавиту были </translation>
     </message>
     <message>
         <location filename="../src/util/SeqPasterWidgetController.cpp" line="148"/>

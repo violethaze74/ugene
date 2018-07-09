@@ -19,20 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MINIMIZER_LENGTH_VALIDATOR_H_
-#define _U2_MINIMIZER_LENGTH_VALIDATOR_H_
+#ifndef _U2_DIAMOND_CLASSIFY_VALIDATOR_H_
+#define _U2_DIAMOND_CLASSIFY_VALIDATOR_H_
+
+#include <QCoreApplication>
 
 #include <U2Lang/ActorValidator.h>
 
 namespace U2 {
 namespace Workflow {
 
-class MinimizerLengthValidator : public ActorValidator {
+class DiamondClassifyValidator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(DiamondClassifyValidator)
 public:
     bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+
+private:
+    bool validateTaxonomy(const Actor *actor, ProblemList &problemList) const;
 };
 
 }   // namespace Workflow
 }   // namespace U2
 
-#endif // _U2_MINIMIZER_LENGTH_VALIDATOR_H_
+#endif // _U2_DIAMOND_CLASSIFY_VALIDATOR_H_

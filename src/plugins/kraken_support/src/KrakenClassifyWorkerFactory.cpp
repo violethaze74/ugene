@@ -39,8 +39,8 @@
 #include <U2Lang/WorkflowEnv.h>
 
 #include "DatabaseSizeRelation.h"
-#include "DatabaseValidator.h"
 #include "KrakenClassifyPrompter.h"
+#include "KrakenClassifyValidator.h"
 #include "KrakenClassifyWorker.h"
 #include "KrakenClassifyWorkerFactory.h"
 #include "KrakenSupport.h"
@@ -202,8 +202,8 @@ void KrakenClassifyWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new KrakenClassifyPrompter(NULL));
     proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL);
-    proto->setValidator(new DatabaseValidator());
-    proto->setPortValidator(INPUT_PORT_ID,  new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
+    proto->setValidator(new KrakenClassifyValidator());
+    proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

@@ -22,13 +22,15 @@
         <location filename="../src/CredentialsAskerCli.cpp" line="91"/>
         <source>Connect to the &apos;%1&apos; ...
 </source>
-        <translation>Подключение к &apos;%1&apos; ...</translation>
+        <translation>Подключение к &apos;%1&apos; ...
+</translation>
     </message>
     <message>
         <location filename="../src/CredentialsAskerCli.cpp" line="92"/>
         <source>You are going to log in as &apos;%1&apos;.
 </source>
-        <translation>Вы собираетесь войти как &apos;%1&apos;.</translation>
+        <translation>Вы собираетесь войти как &apos;%1&apos;.
+</translation>
     </message>
     <message>
         <location filename="../src/CredentialsAskerCli.cpp" line="93"/>

@@ -10878,12 +10878,6 @@ Path for %1 tool is not selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The list of %1 genomes is not available.
-Path for %1 tool is not selected.</source>
-        <translation type="vanished">Список %1 геномов недоступен.
-Путь для %1 инструмента не указан.</translation>
-    </message>
-    <message>
         <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="134"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
@@ -13330,13 +13324,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <location filename="../src/samtools/TabixSupportTask.cpp" line="61"/>
         <source>Saving data to file &apos;%1&apos;</source>
         <translation>Saving data to file &apos;%1&apos;</translation>
-    </message>
-</context>
-<context>
-    <name>U2::TabulatedFormatReader</name>
-    <message>
-        <source>IO adapter is not opened</source>
-        <translation type="vanished">IO adapter is not opened</translation>
     </message>
 </context>
 <context>

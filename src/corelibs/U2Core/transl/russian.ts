@@ -1026,8 +1026,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="388"/>
         <source>4. The Mold, Protozoan, and Coelenterate Mitochondria and the Mycoplasma Code</source>
-        <translation>4. Код Mold, протозойных, и кишечнополостных митохондрий и Mycoplasma
-</translation>
+        <translation>4. Код Mold, протозойных, и кишечнополостных митохондрий и Mycoplasma</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="398"/>
@@ -1057,8 +1056,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="448"/>
         <source>12. The Alternative Yeast Nuclear Code</source>
-        <translation>12. Альтернативный ядерный код дрожжей
-</translation>
+        <translation>12. Альтернативный ядерный код дрожжей</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="458"/>
@@ -1098,42 +1096,42 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="530"/>
         <source>24. Pterobranchia Mitochondrial Code</source>
-        <translation type="unfinished"></translation>
+        <translation>24. Митохондриальный код перистожаберных</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="540"/>
         <source>25. Candidate Division SR1 and Gracilibacteria Code</source>
-        <translation type="unfinished"></translation>
+        <translation>25. Candidate Division SR1 and Gracilibacteria Code</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="550"/>
         <source>26. Pachysolen tannophilus Nuclear Code</source>
-        <translation type="unfinished"></translation>
+        <translation>26. Pachysolen tannophilus Nuclear Code</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="560"/>
         <source>27. Karyorelict Nuclear</source>
-        <translation type="unfinished"></translation>
+        <translation>27. Karyorelict Nuclear</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="570"/>
         <source>28. Condylostoma Nuclear</source>
-        <translation type="unfinished"></translation>
+        <translation>28. Condylostoma Nuclear</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="580"/>
         <source>29. Mesodinium Nuclear</source>
-        <translation type="unfinished"></translation>
+        <translation>29. Mesodinium Nuclear</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="590"/>
         <source>30. Peritrich Nuclear</source>
-        <translation type="unfinished"></translation>
+        <translation>30. Peritrich Nuclear</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="600"/>
         <source>31. Blastocrithidia Nuclear</source>
-        <translation type="unfinished"></translation>
+        <translation>31. Blastocrithidia Nuclear</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="651"/>
@@ -1766,7 +1764,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/shared_db/ImportFileToDatabaseTask.cpp" line="74"/>
         <source>Unrecognized url: </source>
-        <translation>Ссылка не распознается:</translation>
+        <translation>Ссылка не распознается: </translation>
     </message>
 </context>
 <context>
@@ -1947,7 +1945,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/globals/L10n.h" line="56"/>
         <source>Avoid characters in the &apos;%1&apos; parameter that do not correspond to the operating system locale settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Избегайте символов в параметре &apos;%1&apos; которые не соответствуют настройкам локадизации операционной системы.</translation>
     </message>
     <message>
         <location filename="../src/globals/L10n.h" line="59"/>
@@ -2442,7 +2440,8 @@ The session database file is removed after closing of UGENE.</source>
         <location filename="../src/tasks/SaveDocumentTask.cpp" line="100"/>
         <source>Saving document %1
 </source>
-        <translation>Сохранение документа: %1</translation>
+        <translation>Сохранение документа: %1
+</translation>
     </message>
     <message>
         <location filename="../src/tasks/SaveDocumentTask.cpp" line="126"/>

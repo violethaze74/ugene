@@ -24,6 +24,7 @@
 #include <QRadioButton>
 
 #include <base_dialogs/MessageBoxFiller.h>
+#include <base_dialogs/DefaultDialogFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTComboBox.h>
@@ -74,6 +75,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 
 namespace U2 {
@@ -574,6 +576,25 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
     CHECK_SET_ERR(pos == 15, QString("Incorrect cursor position, expected: 15, current: %1").arg(pos));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6083) {
+    //    1. open document samples/CLUSTALW/COI.aln
+        GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    //    2. Select first sequence
+        GTUtilsMSAEditorSequenceArea::click(os,QPoint(0,0));
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<MSAE_MENU_EXPORT<<"Save sequence",GTGlobals::UseKey));
+        Runnable* r = new ExportSelectedSequenceFromAlignment(os,testDir + "_common_data/scenarios/sandbox/",ExportSelectedSequenceFromAlignment::Ugene_db,true);
+        GTUtilsDialog::waitForDialog(os, r);
+
+        GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
+        GTGlobals::sleep();
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        GTUtilsProjectTreeView::click(os, "Phaneroptera_falcata.ugenedb");
+        GTKeyboardDriver::keyClick( Qt::Key_Delete);
+        GTGlobals::sleep(); 
+}
+
+
 GUI_TEST_CLASS_DEFINITION(test_6087) {
     //1. Open  samples/MMDB/1CRN.prt
     GTFileDialog::openFile(os, dataDir + "samples/MMDB/1CRN.prt");
@@ -620,8 +641,67 @@ GUI_TEST_CLASS_DEFINITION(test_6102) {
 
         const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
         CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino");
+}
 
+GUI_TEST_CLASS_DEFINITION(test_6118) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
+    //2. Make scheme "Read FASTQ File with SE Reads" -> "Improve Reads with Trimmomatic"
+    const QString readSEName = "Read FASTQ File with SE Reads";
+    const QString trimmomaticName = "Improve Reads with Trimmomatic";
+
+    WorkflowProcessItem *readSEElement = GTUtilsWorkflowDesigner::addElement(os, readSEName);
+    WorkflowProcessItem *trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+    GTUtilsWorkflowDesigner::connect(os, readSEElement, trimmomaticElement);
+    
+
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            
+            //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu*>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTGlobals::sleep(500);
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse"));
+
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            menu = qobject_cast<QMenu*>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTGlobals::sleep(500);
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse"));
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::click(os, readSEElement);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
+    
+    GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
+    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new Scenario()));
+    QTableView* table = GTWidget::findExactWidget<QTableView*>(os, "table");
+    GTMouseDriver::moveTo(GTTableView::getCellPoint(os, table, 1, 1));
+    GTMouseDriver::click();
+    GTGlobals::sleep(500);
+    GTWidget::click(os, GTWidget::findButtonByText(os, "...", table));
+    GTGlobals::sleep(500);
+
+    //4. Run this workflow.
+    //Expected state : there are no errors during execution.
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!l.hasError(), "Errors in the log");
 }
 
 } // namespace GUITest_regression_scenarios

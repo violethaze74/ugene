@@ -821,7 +821,7 @@ bowtie index file</source>
     <message>
         <location filename="../src/DatasetsController.cpp" line="170"/>
         <source>Dataset name can not contain &apos;:&apos; and &apos;;&apos; symbols</source>
-        <translation>Имя набора данных не может содержать &apos;:&apos; и &apos;;&apos; символы </translation>
+        <translation>Имя набора данных не может содержать &apos;:&apos; и &apos;;&apos; символы</translation>
     </message>
     <message>
         <location filename="../src/DatasetsController.cpp" line="175"/>
@@ -1009,7 +1009,7 @@ bowtie index file</source>
     <message>
         <location filename="../src/wizard/WizardController.cpp" line="935"/>
         <source> settings</source>
-        <translation type="unfinished"></translation>
+        <translation> настройки</translation>
     </message>
     <message>
         <source> parameters</source>
@@ -1464,8 +1464,7 @@ bowtie index file</source>
     <message>
         <location filename="../src/wizard/TophatSamplesWidgetController.cpp" line="66"/>
         <source>Sample name can consist only of Latin letters, numbers and the &apos;_&apos; symbol</source>
-        <translation>Имя образца может состоять только из латинских букв, цифр и &apos;_&apos; символов
-</translation>
+        <translation>Имя образца может состоять только из латинских букв, цифр и &apos;_&apos; символов</translation>
     </message>
     <message>
         <location filename="../src/wizard/TophatSamplesWidgetController.cpp" line="74"/>

@@ -45,12 +45,12 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="20"/>
         <source>Map NGS Reads to Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание NGS ридов на референс</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="34"/>
         <source>Mapping tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Инструмент выравнивания</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="41"/>
@@ -187,7 +187,7 @@ Probably the data is too big.</source>
         <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="76"/>
         <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="86"/>
         <source>Select a DNA sequence that would be used to align short reads to. This parameter is &lt;b&gt;required&lt;/b&gt;.</source>
-        <translation>Выберите последовательность на которую будут выравнены ваш риды. </translation>
+        <translation>Выберите последовательность на которую будут выравнены ваш риды.</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="79"/>
@@ -217,7 +217,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/ov_msa/ColorSchemaDialog.ui" line="17"/>
         <source>Color Scheme </source>
-        <translation>Цветовая схема</translation>
+        <translation>Цветовая схема </translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ColorSchemaDialog.ui" line="43"/>
@@ -590,7 +590,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="20"/>
         <source>Export Highlighting to File</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт подсвеченного в файл</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="31"/>
@@ -1230,13 +1230,15 @@ Do you want to replace it?</source>
         <location filename="../src/ov_sequence/AnnotatedDNAViewTasks.cpp" line="167"/>
         <source>The following sequences contain unrecognizable symbols:
 </source>
-        <translation>Следующие последовательности содержат символы, которые невозможно распознать:</translation>
+        <translation>Следующие последовательности содержат символы, которые невозможно распознать:
+</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAViewTasks.cpp" line="177"/>
         <source>and others...
 </source>
-        <translation>и другие...</translation>
+        <translation>и другие...
+</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAViewTasks.cpp" line="180"/>
@@ -1850,7 +1852,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="368"/>
         <source>Gap  extension </source>
-        <translation>Продление пробела</translation>
+        <translation>Продление пробела </translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="401"/>
@@ -2060,7 +2062,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_msa/TreeOptions/TreeOptionsWidget.ui" line="229"/>
         <source>Color  </source>
-        <translation>Цвет </translation>
+        <translation>Цвет  </translation>
     </message>
     <message>
         <location filename="../src/ov_msa/TreeOptions/TreeOptionsWidget.ui" line="262"/>
@@ -2229,12 +2231,12 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="943"/>
         <source> Sequence size: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Размер последовательности: &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation> Размер последовательности: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="944"/>
         <source> File:&amp;nbsp;&lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Файл:&amp;nbsp;&lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation> Файл:&amp;nbsp;&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1027"/>
@@ -2684,7 +2686,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="139"/>
         <source>Annotations settings on sequence editing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка аннотаций при редактировании последовательности...</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="790"/>
@@ -4050,7 +4052,7 @@ You don&apos;t have enough rights to change file</source>
     <message>
         <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="376"/>
         <source>The sequence &amp; clipboard content have different alphabet</source>
-        <translation type="unfinished"></translation>
+        <translation>The sequence &amp; clipboard content have different alphabet</translation>
     </message>
 </context>
 <context>
@@ -4068,7 +4070,7 @@ You don&apos;t have enough rights to change file</source>
     <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyGUIExtension.cpp" line="97"/>
         <source>Path for </source>
-        <translation>Путь для</translation>
+        <translation>Путь для </translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyGUIExtension.cpp" line="100"/>
@@ -4078,7 +4080,7 @@ You don&apos;t have enough rights to change file</source>
     <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyGUIExtension.cpp" line="103"/>
         <source> is not set.</source>
-        <translation>не указан.</translation>
+        <translation> не указан.</translation>
     </message>
 </context>
 <context>
@@ -4565,7 +4567,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_msa/ExportSequencesTask.cpp" line="67"/>
         <source>Export selected sequences from alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Export selected sequences from alignment</translation>
     </message>
 </context>
 <context>
@@ -4837,13 +4839,12 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="730"/>
         <source>Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.</source>
-        <translation>Информация: добавьте как минимум одну подстроку для поиска. Используйте %1, чтобы ввести несколько подстрок. Также вы можете загрузить подстроки из FASTA файла.
-        </translation>
+        <translation>Информация: добавьте как минимум одну подстроку для поиска. Используйте %1, чтобы ввести несколько подстрок. Также вы можете загрузить подстроки из FASTA файла.</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="743"/>
         <source> Please input valid annotation names. </source>
-        <translation>Введите корректные имена аннотаций. </translation>
+        <translation> Введите корректные имена аннотаций. </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="749"/>
@@ -4865,7 +4866,7 @@ Please, check external tools in the settings.</source>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="764"/>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="772"/>
         <source> Please input a valid pattern or choose a file with patterns </source>
-        <translation>Введите паттерн или выберите файл с паттернами </translation>
+        <translation> Введите паттерн или выберите файл с паттернами </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="778"/>
@@ -5054,7 +5055,8 @@ Please, check external tools in the settings.</source>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="267"/>
         <source>Unable to create output folder for result assembly.
 Directory Path: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно создать выходную папку.
+Путь до папки: %1</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="332"/>
@@ -5348,7 +5350,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="697"/>
         <source>No new rows were inserted: selection contains no valid sequences.</source>
-        <translation type="unfinished"></translation>
+        <translation>Новые ряды не добавлены: выделение не содержит корректных последовательностей.</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="219"/>
@@ -6710,12 +6712,12 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/MsaEditorStatusBar.cpp" line="40"/>
         <source>Seq %1 / %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Пос %1 / %2</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MsaEditorStatusBar.cpp" line="40"/>
         <source>Sequence %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательность %1 из %2</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MsaEditorStatusBar.cpp" line="46"/>
@@ -6959,12 +6961,12 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_sequence/Overview.cpp" line="350"/>
         <source>Position </source>
-        <translation>Позиция</translation>
+        <translation>Позиция </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/Overview.cpp" line="360"/>
         <source>Annotation density </source>
-        <translation>Плотность аннотаций</translation>
+        <translation>Плотность аннотаций </translation>
     </message>
 </context>
 <context>
@@ -7102,7 +7104,7 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/ExportSequencesTask.cpp" line="46"/>
         <source>Prepare sequences</source>
-        <translation type="unfinished"></translation>
+        <translation>Подготовка последовательностей</translation>
     </message>
 </context>
 <context>
@@ -7188,12 +7190,12 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="62"/>
         <source>Sequence name</source>
-        <translation type="unfinished">Имя последовательности</translation>
+        <translation>Имя последовательности</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="85"/>
         <source>Custom name</source>
-        <translation type="unfinished"></translation>
+        <translation>Другое имя</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="117"/>
@@ -7455,7 +7457,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="214"/>
         <source>Sequence alphabet is NULL</source>
-        <translation type="unfinished"></translation>
+        <translation>Sequence alphabet is NULL</translation>
     </message>
     <message>
         <source>Sequence alphbet is NULL</source>
@@ -7943,22 +7945,22 @@ Please, load the corresponding plugins.</source>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1163"/>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1169"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1139"/>
         <source>Selected dir is read only: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Указанная директория доступна только для чтения: %1</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1163"/>
         <source>Failed to generate SVG image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно создать SVG изображение.</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1169"/>
         <source>Failed to open file for writing: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно открыть файл для записи: %1</translation>
     </message>
 </context>
 <context>
