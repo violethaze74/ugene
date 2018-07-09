@@ -405,7 +405,7 @@ void Actor::updateItemsAvailability() {
 
 void Actor::updateItemsAvailability(const Attribute* influencingAttribute) {
     foreach(PortRelationDescriptor* rel, influencingAttribute->getPortRelations()) {
-        Port* dependentPort = getPort(rel->portId);
+        Port* dependentPort = getPort(rel->getPortId());
         CHECK_CONTINUE(dependentPort != NULL);
 
         dependentPort->setEnabled(rel->isPortEnabled(influencingAttribute->getAttributePureValue()));

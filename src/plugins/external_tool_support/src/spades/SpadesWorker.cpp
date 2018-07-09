@@ -377,7 +377,7 @@ void SpadesWorkerFactory::init() {
         QMap<QString, QVariant> defaultValue;
         defaultValue.insert(IN_PORT_PAIRED_ID_LIST[0], "fr:Separate reads");
         defaultValue.insert(REQUIRED_SEQUENCING_PLATFORM_ID, "Illumina");
-        Attribute* inputAttr = new Attribute(inputData, mapDataType, false, QVariant::fromValue<QMap<QString, QVariant>>(defaultValue));
+        Attribute* inputAttr = new Attribute(inputData, BaseTypes::MAP_TYPE(), false, QVariant::fromValue<QMap<QString, QVariant>>(defaultValue));
         QString attrId = inputAttr->getId();
         foreach (const QString& read, IN_PORT_ID_LIST) {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(read, QVariantList() << read));

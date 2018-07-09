@@ -19,25 +19,34 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef SPADES_PORT_RELATION_DESCRIPTOR_H
-#define SPADES_PORT_RELATION_DESCRIPTOR_H
-
-#include <U2Lang/PortRelation.h>
+#include "PortRelation.h"
 
 namespace U2 {
 
-class SpadesPortRelationDescriptor : public PortRelationDescriptor {
-public:
-    SpadesPortRelationDescriptor(const QString& portId, const QVariantList& valuesWithEnabledPort);
+PortRelationDescriptor::PortRelationDescriptor(const QString& portId, const QVariantList& valuesWithEnabledPort)
+    : portId(portId), valuesWithEnabledPort(valuesWithEnabledPort) {}
 
-    bool isPortEnabled(const QVariant& attrValue) const;
+PortRelationDescriptor::~PortRelationDescriptor() {}
 
-    SpadesPortRelationDescriptor* clone() const;
-
-    bool isValidValue(const QVariant& value) const;
-};
-
+bool PortRelationDescriptor::isPortEnabled(const QVariant& attrValue) const {
+    return valuesWithEnabledPort.contains(attrValue);
 }
 
-#endif // SPADES_PORT_RELATION_DESCRIPTOR_H
+PortRelationDescriptor* PortRelationDescriptor::clone() const {
+    return new PortRelationDescriptor(*this);
+}
 
+bool PortRelationDescriptor::isValidValue(const QVariant& value) const{
+    return !valuesWithEnabledPort.contains(value);
+}
+
+QVariantList PortRelationDescriptor::getValuesWithEnabledPort() const {
+    return valuesWithEnabledPort;
+}
+
+QString PortRelationDescriptor::getPortId() const {
+    return portId;
+}
+
+
+} // U2 namespace

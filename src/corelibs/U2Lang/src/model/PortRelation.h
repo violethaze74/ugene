@@ -28,14 +28,20 @@ namespace U2 {
 
 class U2LANG_EXPORT PortRelationDescriptor{
 public:
-    PortRelationDescriptor(const QString& portId, const QVariantList& valuesWithEnabledPort)
-        : portId(portId), valuesWithEnabledPort(valuesWithEnabledPort) {}
-    virtual ~PortRelationDescriptor() {}
+    PortRelationDescriptor(const QString& portId, const QVariantList& valuesWithEnabledPort);
+    virtual ~PortRelationDescriptor();
 
-    virtual bool isPortEnabled(const QVariant& attrValue) const {return valuesWithEnabledPort.contains(attrValue);}
+    virtual bool isPortEnabled(const QVariant& attrValue) const;
 
-    virtual PortRelationDescriptor* clone() const { return new PortRelationDescriptor(*this); }
+    virtual PortRelationDescriptor* clone() const;
 
+    virtual bool isValidValue(const QVariant& value) const;
+
+    QVariantList getValuesWithEnabledPort() const;
+
+    QString getPortId() const;
+
+private:
     QString      portId;
     QVariantList valuesWithEnabledPort;
 };

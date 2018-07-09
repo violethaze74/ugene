@@ -33,10 +33,21 @@ bool SpadesPortRelationDescriptor::isPortEnabled(const QVariant& attrValue) cons
     bool isEnabled = false;
     foreach (const QString& key, attrValueMap.keys()) {
        isEnabled = PortRelationDescriptor::isPortEnabled(key);
-       if (isEnabled) {
-           break;
-       }
-       //CHECK_BREAK(!isEnabled);
+       CHECK_BREAK(!isEnabled);
+    }
+    return isEnabled;
+}
+
+SpadesPortRelationDescriptor* SpadesPortRelationDescriptor::clone() const {
+    return new SpadesPortRelationDescriptor(*this);
+}
+
+bool SpadesPortRelationDescriptor::isValidValue(const QVariant& value) const {
+    QMap<QString, QVariant> valueMap = value.toMap();
+    bool isEnabled = false;
+    foreach(const QString& key, valueMap.keys()) {
+        isEnabled = PortRelationDescriptor::isValidValue(key);
+        CHECK_BREAK(isEnabled);
     }
     return isEnabled;
 }

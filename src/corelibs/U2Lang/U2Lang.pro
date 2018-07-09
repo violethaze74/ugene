@@ -152,6 +152,7 @@ SOURCES += src/library/BaseActorCategories.cpp \
            src/model/MessageMetadata.cpp \
            src/model/PairedReadsPortValidator.cpp \
            src/model/Port.cpp \
+           src/model/PortRelation.cpp \
            src/model/QDConstraint.cpp \
            src/model/QDScheme.cpp \
            src/model/QueryDesignerRegistry.cpp \

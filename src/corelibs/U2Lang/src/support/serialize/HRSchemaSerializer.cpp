@@ -1290,12 +1290,12 @@ void HRSchemaSerializer::postProcessing(Schema *schema) {
         foreach (Attribute* attr, proto->getAttributes()) {
             CHECK(attr != NULL, );
             foreach (PortRelationDescriptor* pd, attr->getPortRelations()) {
-                Port* p = a->getPort(pd->portId);
+                Port* p = a->getPort(pd->getPortId());
                 CHECK(p != NULL, );
                 CHECK(a->hasParameter(attr->getId()), );
                 QVariant value = a->getParameter(attr->getId())->getAttributePureValue();
-                if (!p->getLinks().isEmpty() && !pd->valuesWithEnabledPort.contains(value)) {
-                    a->setParameter(attr->getId(), pd->valuesWithEnabledPort.first());
+                if (!p->getLinks().isEmpty() && pd->isValidValue(value)) {
+                    a->setParameter(attr->getId(), pd->getValuesWithEnabledPort().first());
                 }
             }
         }
@@ -1632,12 +1632,21 @@ static QString elementsDefinitionBlock(Actor * actor, bool copyMode) {
                 continue;
             }
             QVariant value = attribute->getAttributePureValue();
-            assert(value.isNull() || value.canConvert<QString>() || value.canConvert<QStringList>());
+            const bool valueIsNull = value.isNull();
+            const bool valueCanConvertToString = value.canConvert<QString>();
+            const bool valueCanConvertToStringList = value.canConvert<QStringList>();
+            const bool valueCanConvertToMap = value.canConvert<QMap<QString, QVariant>>();
+            assert(valueIsNull ||
+                   valueCanConvertToString ||
+                   valueCanConvertToStringList ||
+                   valueCanConvertToMap);
             QString valueString;
             if (attribute->getAttributeType() == BaseTypes::STRING_LIST_TYPE()) {
                 valueString = StrPackUtils::packStringList(value.toStringList(), StrPackUtils::SingleQuotes);
-            } else {
+            } else if (attribute->getAttributeType() == BaseTypes::STRING_TYPE()) {
                 valueString = value.toString();
+            } else {
+                valueString = StrPackUtils::packMap(value.toMap(), StrPackUtils::SingleQuotes);
             }
             res += HRSchemaSerializer::makeEqualsPair(attributeId, valueString, 2, true);
         }
