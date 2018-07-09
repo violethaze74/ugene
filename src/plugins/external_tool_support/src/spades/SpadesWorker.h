@@ -40,6 +40,7 @@ public:
     virtual void init();
     virtual Task *tick();
     virtual void cleanup();
+    virtual bool isReady() const;
 
 private:
     IntegralBus *inChannel;

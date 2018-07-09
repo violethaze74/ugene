@@ -116,16 +116,46 @@ Task *SpadesWorker::tick() {
         if (os.hasError()) {
             return new FailTask(os.getError());
         }
-        //getActor()->getParameter("")->value();
-        QString readsUrl = data[SpadesWorkerFactory::READS_URL_SLOT_ID].toString();
 
+        QVariant inputData = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariant());
+        SAFE_POINT(inputData != QVariant(), "Incorrect input data", NULL);
+
+        QVariantMap mapData = inputData.toMap();
+
+        QString readsUrl = data[SpadesWorkerFactory::READS_URL_SLOT_ID].toString();
+        QString readsPairedUrl = data[SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID].toString();
+
+        QStringList dataKeys = mapData.keys();
+        foreach (const QString& read, SpadesWorkerFactory::IN_PORT_ID_LIST) {
+            CHECK_CONTINUE(dataKeys.contains(read));
+
+            AssemblyReads assemblyRead;
+            assemblyRead.left = readsUrl;
+            assemblyRead.libNumber = "1";
+            assemblyRead.libName = read;
+
+            settings.reads << assemblyRead;
+        }
+        foreach (const QString& pairedRead, SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST) {
+            CHECK_CONTINUE(dataKeys.contains(pairedRead));
+
+            AssemblyReads assemblyRead;
+            assemblyRead.left = readsUrl;
+            assemblyRead.right = readsPairedUrl;
+            assemblyRead.libNumber = "1";
+            assemblyRead.libName = pairedRead;
+            QStringList values = mapData[pairedRead].toString().split(":");
+            assemblyRead.orientation = values.first();
+            assemblyRead.readType = values.last();
+
+            settings.reads << assemblyRead;
+        }
 
         AssemblyReads read;
         read.left = readsUrl;
         read.libNumber = "1";
         read.orientation = ORIENTATION_FR;
         read.libType = PAIR_TYPE_DEFAULT;
-
 
         if (data.contains(SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID)){
             QString readsPairedUrl = data[SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID].toString();
@@ -136,7 +166,7 @@ Task *SpadesWorker::tick() {
             read.libName = LIBRARY_SINGLE;
         }
 
-        settings.reads /*= QList<AssemblyReads>()*/ << read;
+        //settings.reads /*= QList<AssemblyReads>()*/ << read;
 
         settings.listeners = createLogListeners();
         GenomeAssemblyMultiTask* t = new GenomeAssemblyMultiTask(settings);
@@ -151,6 +181,25 @@ Task *SpadesWorker::tick() {
 
 void SpadesWorker::cleanup() {
 
+}
+
+bool SpadesWorker::isReady() const {
+    if (isDone()) {
+        return false;
+    }
+
+    bool res = true;
+    QList<Port*> inPorts = actor->getInputPorts();
+    foreach (Port* port, inPorts) {
+        CHECK_CONTINUE(port->isEnabled());
+
+        IntegralBus *inChannel = ports.value(port->getId());
+        int hasMsg = inChannel->hasMessage();
+        bool ended = inChannel->isEnded();
+        res = res && (hasMsg || ended);
+    }
+
+    return res;
 }
 
 void SpadesWorker::sl_taskFinished() {
@@ -195,8 +244,7 @@ GenomeAssemblyTaskSettings SpadesWorker::getSettings( U2OpStatus &os ){
     customSettings.insert(SpadesTask::OPTION_THREADS, getValue<int>(SpadesTask::OPTION_THREADS));
     customSettings.insert(SpadesTask::OPTION_MEMLIMIT, getValue<int>(SpadesTask::OPTION_MEMLIMIT));
     customSettings.insert(SpadesTask::OPTION_K_MER, getValue<QString>(SpadesTask::OPTION_K_MER));
-    QStringList ff = getValue<QStringList>(SpadesTask::OPTION_INPUT_DATA);
-    customSettings.insert(SpadesTask::OPTION_INPUT_DATA, ff);
+    customSettings.insert(SpadesTask::OPTION_INPUT_DATA, getValue<QVariantMap>(SpadesTask::OPTION_INPUT_DATA));
     customSettings.insert(SpadesTask::OPTION_DATASET_TYPE, getValue<QString>(SpadesTask::OPTION_DATASET_TYPE));
     customSettings.insert(SpadesTask::OPTION_RUNNING_MODE, getValue<QString>(SpadesTask::OPTION_RUNNING_MODE));
 
@@ -375,10 +423,9 @@ void SpadesWorkerFactory::init() {
         registry->registerEntry(mapDataType);
 
         QMap<QString, QVariant> defaultValue;
-        defaultValue.insert(IN_PORT_PAIRED_ID_LIST[0], "fr:Separate reads");
+        defaultValue.insert(IN_PORT_PAIRED_ID_LIST[0], QString("%1:%2").arg(ORIENTATION_FR).arg(TYPE_SINGLE));
         defaultValue.insert(REQUIRED_SEQUENCING_PLATFORM_ID, "Illumina");
         Attribute* inputAttr = new Attribute(inputData, BaseTypes::MAP_TYPE(), false, QVariant::fromValue<QMap<QString, QVariant>>(defaultValue));
-        QString attrId = inputAttr->getId();
         foreach (const QString& read, IN_PORT_ID_LIST) {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(read, QVariantList() << read));
         }

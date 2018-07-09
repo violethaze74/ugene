@@ -143,11 +143,12 @@ void SpadesTask::writeYamlReads(){
         res.append(QString("orientation: \"%1\",\n").arg(r.orientation));
         res.append(QString("type: \"%1\",\n").arg(GenomeAssemblyUtils::getYamlLibraryName(r.libName, r.libType)));
         if(!GenomeAssemblyUtils::hasRightReads(r.libName)){
-            if(r.libName == LIBRARY_PAIRED_UNPAIRED || r.libName == LIBRARY_PAIRED_INTERLACED){
-                res.append("interlaced reads: [\n");
-            }else{
-                res.append("single reads: [\n");
-            }
+            res.append(QString("%1: [\n").arg(r.readType));
+//            if(r.libName == LIBRARY_PAIRED_UNPAIRED || r.libName == LIBRARY_PAIRED_INTERLACED){
+//                res.append("interlaced reads: [\n");
+//            }else{
+//                res.append("single reads: [\n");
+//            }
             res.append(QString("\"%1\",\n").arg(r.left.getURLString()));
             res.append("]\n");
         }else{

@@ -52,6 +52,9 @@ namespace U2 {
 #define ORIENTATION_RF                 "rf"
 #define ORIENTATION_FF                 "ff"
 
+#define TYPE_SINGLE                    "single reads"
+#define TYPE_INTERLACED                "interlaced reads"
+
 class GenomeAssemblyAlgorithmMainWidget;
 
 class U2ALGORITHM_EXPORT GenomeAssemblyGUIExtensionsFactory {
@@ -78,14 +81,20 @@ public:
 
 class U2ALGORITHM_EXPORT AssemblyReads {
 public:
-    AssemblyReads(const GUrl& left = GUrl(), const GUrl& right = GUrl(), const QString& libNumber = QString("1"), const QString& libType = PAIR_TYPE_DEFAULT, const QString& orientation = ORIENTATION_FR, const QString& libName = LIBRARY_SINGLE)
-        :
-         left(left)
+    AssemblyReads(const GUrl& left = GUrl(),
+                  const GUrl& right = GUrl(),
+                  const QString& libNumber = QString("1"),
+                  const QString& libType = PAIR_TYPE_DEFAULT,
+                  const QString& orientation = ORIENTATION_FR,
+                  const QString& libName = LIBRARY_SINGLE,
+                  const QString& readType = TYPE_SINGLE)
+        :left(left)
         ,right(right)
         ,libNumber(libNumber)
         ,libType(libType)
         ,orientation(orientation)
         ,libName(libName)
+        ,readType(readType)
         {}
 
         GUrl left;
@@ -94,6 +103,7 @@ public:
         QString libType;
         QString orientation;
         QString libName;
+        QString readType;
 };
 
 class U2ALGORITHM_EXPORT GenomeAssemblyTaskSettings {
