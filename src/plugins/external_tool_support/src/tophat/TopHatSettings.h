@@ -85,6 +85,10 @@ public:
 
     TopHatInputData     data;
 
+    QString             referenceInputType;
+    QString             referenceGenome;
+    QString             buildIndexPathAndBasename;
+
 public:
     void cleanupReads();
     Workflow::WorkflowContext * workflowContext() const;

@@ -188,7 +188,7 @@ void TopHatWorkerFactory::init()
                          " results to identify splice junctions between exons."
                          "<br/><br/>Provide URL(s) to FASTA or FASTQ file(s) with NGS RNA-Seq reads to the input"
                          " port of the element, set up the reference sequence in the parameters."
-                         " The result is saved to the specified SAM file, URL to the file is passed"
+                         " The result is saved to the specified BAM file, URL to the file is passed"
                          " to the output port. Several UCSC BED tracks are also produced: junctions,"
                          " insertions, and deletions."));
 
@@ -605,6 +605,9 @@ void TopHatWorker::initDatasetData() {
 }
 
 void TopHatWorker::initSettings() {
+    settings.referenceInputType = getValue<QString>(TopHatWorkerFactory::REFERENCE_INPUT_TYPE);
+    settings.referenceGenome = getValue<QString>(TopHatWorkerFactory::REFERENCE_GENOME);
+
     settingsAreCorrect = true;
     settings.data.workflowContext = context;
 

@@ -56,7 +56,9 @@ TopHatSupportTask::TopHatSupportTask(const TopHatSettings& _settings)
       tmpDocPaired(NULL),
       topHatExtToolTask(NULL),
       tmpDocSaved(false),
-      tmpDocPairedSaved(false)
+      tmpDocPairedSaved(false),
+      bowtieIndexTask(NULL),
+      bowtie2IndexTask(NULL)
 {
     GCOUNTER(cvar, tvar, "NGS:TopHatTask");
 }
@@ -98,6 +100,44 @@ QString TopHatSupportTask::setupTmpDir() {
     return tmpDir.absolutePath();
 }
 
+bool TopHatSupportTask::createIndexTask() {
+    if (settings.referenceInputType == "sequence") {
+        QFileInfo ref_file(settings.referenceGenome);
+        QFileInfo out_dir(settings.outDir);
+
+        QDir indexDir(out_dir.absolutePath() + "/");
+        if (settings.useBowtie1) {
+            indexDir = out_dir.absolutePath() + "/bowtie1_index/";
+        }
+        else {
+            indexDir = out_dir.absolutePath() + "/bowtie2_index/";
+        }
+        if (!indexDir.exists()) {
+            if (!indexDir.mkpath(indexDir.absolutePath())) {
+                return false;
+            }
+        }
+        settings.buildIndexPathAndBasename = indexDir.absolutePath()  + "/" + ref_file.baseName();
+        if (settings.useBowtie1) {
+            bowtie2IndexTask = NULL;
+            bowtieIndexTask = new BowtieBuildIndexTask(ref_file.absoluteFilePath(),
+                                                       settings.buildIndexPathAndBasename,
+                                                       false);
+            addSubTask(bowtieIndexTask);
+        }
+        else {
+            bowtieIndexTask = NULL;
+            bowtie2IndexTask = new Bowtie2BuildIndexTask(ref_file.absoluteFilePath(),
+                                                         settings.buildIndexPathAndBasename);
+            addSubTask(bowtie2IndexTask);
+        }
+        settings.bowtieIndexPathAndBasename = settings.buildIndexPathAndBasename;
+
+        return true;
+    }
+    return false;
+}
+
 void TopHatSupportTask::prepare() {
     settings.outDir = GUrlUtils::createDirectory(
         settings.outDir + "/" + outSubDirBaseName,
@@ -106,6 +146,8 @@ void TopHatSupportTask::prepare() {
 
     workingDirectory = setupTmpDir();
     CHECK_OP(stateInfo, );
+
+    createIndexTask();
 
     if (settings.data.fromFiles) {
         topHatExtToolTask = runTophat();
@@ -250,10 +292,27 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task *subTask) {
         }
 
         if (tmpDocSaved && (tmpDocPairedSaved || settings.data.pairedSeqIds.isEmpty())) {
-            topHatExtToolTask = runTophat();
-            result.append(topHatExtToolTask);
+            if (bowtieIndexTask != NULL || bowtie2IndexTask != NULL) {
+                createIndexTask();
+                if (bowtieIndexTask != NULL) {
+                    result.append(bowtieIndexTask);
+                }
+                else {
+                    result.append(bowtie2IndexTask);
+                }
+            }
+            else {
+                topHatExtToolTask = runTophat();
+                result.append(topHatExtToolTask);
+            }
         }
-    } else if (subTask == topHatExtToolTask) {
+    }
+    else if (subTask == bowtieIndexTask || subTask == bowtie2IndexTask) {
+        settings.bowtieIndexPathAndBasename = settings.buildIndexPathAndBasename;
+        topHatExtToolTask = runTophat();
+        result.append(topHatExtToolTask);
+    }
+    else if (subTask == topHatExtToolTask) {
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/accepted_hits.bam", outputFiles);
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/junctions.bed", outputFiles);
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/insertions.bed", outputFiles);
@@ -273,7 +332,8 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task *subTask) {
 
         readAssemblyOutputTask = factory->createTask(settings.outDir + "/accepted_hits.bam", QVariantMap(), settings.workflowContext());
         result.append(readAssemblyOutputTask);
-    } else if (subTask == readAssemblyOutputTask) {
+    }
+    else if (subTask == readAssemblyOutputTask) {
         Workflow::ReadDocumentTask* readDocTask = qobject_cast<Workflow::ReadDocumentTask*>(subTask);
         SAFE_POINT(NULL != readDocTask, "Internal error during parsing TopHat output: NULL read document task!", result);
 

@@ -24,6 +24,8 @@
 
 #include "TopHatSettings.h"
 #include "TopHatSupport.h"
+#include "bowtie/BowtieTask.h"
+#include "bowtie2/Bowtie2Task.h"
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRunTask.h>
@@ -71,12 +73,17 @@ private:
     Workflow::SharedDbiDataHandler          acceptedHits;
     QStringList                             outputFiles;
 
+    BowtieBuildIndexTask *bowtieIndexTask;
+    Bowtie2BuildIndexTask *bowtie2IndexTask;
+
     static const QString outSubDirBaseName;
 
 private:
     QString setupTmpDir();
     SaveDocumentTask * createSaveTask(const QString &url, QPointer<Document> &doc, const QList<Workflow::SharedDbiDataHandler> &seqs);
     ExternalToolRunTask * runTophat();
+
+    bool createIndexTask();
 };
 
 
