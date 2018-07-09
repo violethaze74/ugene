@@ -110,6 +110,7 @@ Task *TrimmomaticWorker::tick() {
         if (os.hasError()) {
             return new FailTask(os.getError());
         }
+        settings.workingDirectory = context->workingDir();
         TrimmomaticTask *task = new TrimmomaticTask(settings);
         task->addListeners(createLogListeners());
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
