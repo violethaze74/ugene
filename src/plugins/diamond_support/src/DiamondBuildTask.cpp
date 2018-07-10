@@ -62,6 +62,8 @@ QList<Task *> DiamondBuildTask::onSubTaskFinished(Task *subTask) {
 void DiamondBuildTask::checkSettings() {
     SAFE_POINT_EXT(!settings.databaseUrl.isEmpty(), setError("Result database URL is empty"), );
     CHECK_EXT(!settings.genomesUrls.isEmpty(), setError(tr("There is no input files to build the database from")), );
+    SAFE_POINT_EXT(!settings.taxonMapUrl.isEmpty(), setError(tr("Taxon map URL is empty")), );
+    SAFE_POINT_EXT(!settings.taxonNodesUrl.isEmpty(), setError(tr("Taxon nodes URL is empty")), );
 }
 
 QStringList DiamondBuildTask::getArguments(const QString &preparedGenomesFileUrl) const {
@@ -69,6 +71,8 @@ QStringList DiamondBuildTask::getArguments(const QString &preparedGenomesFileUrl
     arguments << "makedb";
     arguments << "--in" << preparedGenomesFileUrl;
     arguments << "-d" << settings.databaseUrl;
+    arguments << "--taxonmap" << settings.taxonMapUrl;
+    arguments << "--taxonnodes" << settings.taxonNodesUrl;
     return arguments;
 }
 

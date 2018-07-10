@@ -22,18 +22,17 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DataPathRegistry.h>
 
-#include "DiamondClassifyPrompter.h"
-#include "DiamondClassifyValidator.h"
+#include "DiamondBuildValidator.h"
 #include "../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 namespace Workflow {
 
-bool DiamondClassifyValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+bool DiamondBuildValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
     return validateTaxonomy(actor, problemList);
 }
 
-bool DiamondClassifyValidator::validateTaxonomy(const Actor *actor, ProblemList &problemList) const {
+bool DiamondBuildValidator::validateTaxonomy(const Actor *actor, ProblemList &problemList) const {
     bool isValid = true;
 
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();

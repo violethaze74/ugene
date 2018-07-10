@@ -29,8 +29,6 @@
 
 namespace U2 {
 
-const QString DiamondClassifyTaskSettings::SINGLE_END = "single-end";
-const QString DiamondClassifyTaskSettings::PAIRED_END = "paired-end";
 const QString DiamondClassifyTaskSettings::SENSITIVE_DEFAULT("default");
 const QString DiamondClassifyTaskSettings::SENSITIVE_ULTRA("ultra");
 const QString DiamondClassifyTaskSettings::SENSITIVE_HIGH("high");
@@ -44,10 +42,18 @@ const QString DiamondClassifyTaskSettings::PAM70("PAM70");
 const QString DiamondClassifyTaskSettings::PAM30("PAM30");
 
 DiamondClassifyTaskSettings::DiamondClassifyTaskSettings()
-    : pairedReads(false), sensitive(SENSITIVE_DEFAULT), matrix(BLOSUM62), max_evalue(0.001), block_size(2.0),
-      gencode(1), frame_shift(0), gap_open(-1), gap_extend(-1), index_chunks(4), num_threads(1)
+    : sensitive(SENSITIVE_DEFAULT),
+      topAlignmentsPercentage(10),
+      matrix(BLOSUM62),
+      max_evalue(0.001),
+      block_size(2.0),
+      gencode(1),
+      frame_shift(0),
+      gap_open(-1),
+      gap_extend(-1),
+      index_chunks(4),
+      num_threads(1)
 {
-
 
 }
 
@@ -74,12 +80,8 @@ void DiamondClassifyTask::prepare() {
 
 void DiamondClassifyTask::checkSettings() {
     SAFE_POINT_EXT(!settings.readsUrl.isEmpty(), setError(tr("Reads URL is empty")), );
-    SAFE_POINT_EXT(!settings.pairedReads || !settings.readsUrl.isEmpty(), setError(tr("Paired reads URL is empty, but the 'paired reads' option is set")), );
     SAFE_POINT_EXT(!settings.databaseUrl.isEmpty(), setError(tr("DIAMOND database URL is empty")), );
     SAFE_POINT_EXT(!settings.classificationUrl.isEmpty(), setError(tr("DIAMOND classification URL is empty")), );
-    SAFE_POINT_EXT(!settings.pairedReads || !settings.pairedClassificationUrl.isEmpty(), setError(tr("URL to paired DIAMOND classification is empty")), );
-    SAFE_POINT_EXT(!settings.taxonMapUrl.isEmpty(), setError(tr("Taxon map URL is empty")), );
-    SAFE_POINT_EXT(!settings.taxonNodesUrl.isEmpty(), setError(tr("Taxon nodes URL is empty")), );
     QString id = DNATranslationID(%1);
     SAFE_POINT_EXT(AppContext::getDNATranslationRegistry()->lookupTranslation(id.arg(settings.gencode)) != NULL,
                    setError(tr("Invalid genetic code: %1").arg(settings.gencode)), );
@@ -91,8 +93,6 @@ QStringList DiamondClassifyTask::getArguments() const {
     arguments << "blastx";
     arguments << "-d" << settings.databaseUrl;
     arguments << "-f" << TAXONOMIC_CLASSIFICATION_OUTPUT_FORMAT;
-    arguments << "--taxonmap" << settings.taxonMapUrl;
-    arguments << "--taxonnodes" << settings.taxonNodesUrl;
     arguments << "-q" << settings.readsUrl;
     arguments << "-o" << settings.classificationUrl;
 
@@ -103,6 +103,7 @@ QStringList DiamondClassifyTask::getArguments() const {
     } else if (DiamondClassifyTaskSettings::SENSITIVE_DEFAULT.compare(settings.sensitive, Qt::CaseInsensitive) != 0) {
         algoLog.error(tr("Unknown sensitivity value: %1, ignored.").arg(settings.sensitive));
     }
+    arguments << "--top" << QString::number(settings.topAlignmentsPercentage);
     arguments << "--matrix" << settings.matrix;
     arguments << "-e" << QString::number(settings.max_evalue);
     arguments << "-b" << QString::number(settings.block_size);

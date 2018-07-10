@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/AppContext.h>
+#include <U2Core/DataPathRegistry.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
@@ -32,6 +34,7 @@
 
 #include "DiamondBuildWorker.h"
 #include "DiamondBuildWorkerFactory.h"
+#include "../ngs_reads_classification/src/NgsReadsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -104,6 +107,14 @@ DiamondBuildTaskSettings DiamondBuildWorker::getSettings(U2OpStatus &os) {
     settings.workingDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
     settings.workingDir = GUrlUtils::createDirectory(settings.workingDir + DIAMOND_BUILD_DIR , "_", os);
     CHECK_OP(os, settings);
+
+    U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
+    SAFE_POINT_EXT(NULL != dataPathRegistry, os.setError("U2DataPathRegistry is NULL"), settings);
+
+    U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
+    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), os.setError(tr("Taxonomy classification data are not available.")), settings);
+    settings.taxonMapUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_PROT_ACCESSION_2_TAXID_ITEM_ID);
+    settings.taxonNodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID);
 
     return settings;
 }

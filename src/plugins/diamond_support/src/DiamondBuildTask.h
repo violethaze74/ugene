@@ -31,6 +31,8 @@ class GenomesPreparationTask;
 struct DiamondBuildTaskSettings {
     QString databaseUrl;
     QStringList genomesUrls;
+    QString taxonMapUrl;
+    QString taxonNodesUrl;
     QString workingDir;
 };
 
