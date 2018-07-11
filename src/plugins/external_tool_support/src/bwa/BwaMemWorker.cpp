@@ -115,7 +115,7 @@ QString BwaMemWorker::getBaseSubdir() const {
 
 void BwaMemWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings) {
     QString referenceInputType = getValue<QString>(REFERENCE_INPUT_TYPE);
-    if (referenceInputType == "index") {
+    if (referenceInputType == DnaAssemblyToRefTaskSettings::INDEX) {
         settings.prebuiltIndex = true;
         settings.indexDir = getValue<QString>(INDEX_DIR);
         settings.indexBasename = getValue<QString>(INDEX_BASENAME);
@@ -123,15 +123,13 @@ void BwaMemWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings) {
         QString baseUrl = QDir(settings.indexDir).filePath(settings.indexBasename);
         settings.refSeqUrl = baseUrl;
         settings.indexFileName = baseUrl;
-    }
-    else {
+    } else {
         settings.refSeqUrl = getValue<QString>(REFERENCE_GENOME);
         settings.prebuiltIndex = DnaAssemblyToReferenceTask::isIndexUrl(settings.refSeqUrl.getURLString(), BwaTask::indexSuffixes);
         if (settings.prebuiltIndex) {
             settings.indexDir = settings.refSeqUrl.dirPath();
             settings.indexBasename = settings.refSeqUrl.baseFileName();
-        }
-        else {
+        } else {
             settings.indexDir = "";
             settings.indexBasename = "";
             settings.indexFileName = QDir(settings.refSeqUrl.dirPath()).filePath(settings.refSeqUrl.baseFileName());
@@ -150,7 +148,7 @@ void BwaMemWorkerFactory::init() {
     QList<Attribute*> attrs;
     QMap<QString, PropertyDelegate*> delegates;
 
-    addCommonAttributes(attrs, delegates, BWA_MEM);
+    addCommonAttributes(attrs, delegates, "BWA_MEM");
     {
         Descriptor threads(THREADS,
             BwaMemWorker::tr("Number of threads"),
@@ -293,7 +291,5 @@ void BwaMemWorkerFactory::init() {
 Worker *BwaMemWorkerFactory::createWorker(Actor *a) {
     return new BwaMemWorker(a);
 }
-
 } // LocalWorkflow
 } // U2
-

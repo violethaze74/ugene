@@ -184,7 +184,6 @@ Task *BaseShortReadsAlignerWorker::tick() {
 }
 
 void BaseShortReadsAlignerWorker::cleanup() {
-
 }
 
 bool BaseShortReadsAlignerWorker::isReady() const {
@@ -289,48 +288,43 @@ int BaseShortReadsAlignerWorkerFactory::getThreadsCount(){
     return threads;
 }
 
-void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates, WorkerType mainWorkerType) {
+void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates, QString mainWorkerType) {
     {
-        const char *descrIndexFolder = "", *descrIndexBasename = "", *descrIndexAlgorithm = "";
+       QString descrIndexFolder = "", descrIndexBasename = "", descrIndexAlgorithm = "";
 
-        switch (mainWorkerType) {
-        case Bowtie:
-            descrIndexFolder = "Bowtie index folder";
-            descrIndexBasename = "Bowtie index basename";
-            break;
-        case Bowtie2:
-            descrIndexFolder = "Bowtie index folder";
-            descrIndexBasename = "Bowtie index basename";
-            break;
-        case BWA:
-            descrIndexFolder = "BWA index folder";
-            descrIndexBasename = "BWA index basename";
-            descrIndexAlgorithm = "Index algorithm";
-            break;
-        case BWA_MEM:
-            descrIndexFolder = "BWA index folder";
-            descrIndexBasename = "BWA index basename";
-            descrIndexAlgorithm = "Index algorithm";
-            break;
+        if (mainWorkerType == "Bowtie") {
+            descrIndexFolder = BaseShortReadsAlignerWorker::tr("Bowtie index folder");
+            descrIndexBasename = BaseShortReadsAlignerWorker::tr("Bowtie index basename");
+        } else if (mainWorkerType == "Bowtie2") {
+            descrIndexFolder = BaseShortReadsAlignerWorker::tr("Bowtie index folder");
+            descrIndexBasename = BaseShortReadsAlignerWorker::tr("Bowtie index basename");
+        } else if (mainWorkerType == "BWA") {
+            descrIndexFolder = BaseShortReadsAlignerWorker::tr("BWA index folder");
+            descrIndexBasename = BaseShortReadsAlignerWorker::tr("BWA index basename");
+            descrIndexAlgorithm = BaseShortReadsAlignerWorker::tr("Index algorithm");
+        } else if (mainWorkerType == "BWA_MEM") {
+            descrIndexFolder = BaseShortReadsAlignerWorker::tr("BWA index folder");
+            descrIndexBasename = BaseShortReadsAlignerWorker::tr("BWA index basename");
+            descrIndexAlgorithm = BaseShortReadsAlignerWorker::tr("Index algorithm");
         }
 
         Descriptor referenceInputType(REFERENCE_INPUT_TYPE,
             BaseShortReadsAlignerWorker::tr("Reference input type"),
             BaseShortReadsAlignerWorker::tr("Select \"Sequence\" to input a reference genome as a sequence file. "
-            "\nNote that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). "
-            "\nThe index will be generated automatically in this case. "
-            "\nSelect \"Index\" to input already generated index files, specific for the tool."));
+            "<br/>Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). "
+            "<br/>The index will be generated automatically in this case. "
+            "<br/>Select \"Index\" to input already generated index files, specific for the tool."));
 
         Descriptor refGenome(REFERENCE_GENOME,
             BaseShortReadsAlignerWorker::tr("Reference genome"),
             BaseShortReadsAlignerWorker::tr("Path to indexed reference genome."));
 
         Descriptor indexDir(INDEX_DIR,
-            BaseShortReadsAlignerWorker::tr(descrIndexFolder),
+            descrIndexFolder,
             BaseShortReadsAlignerWorker::tr("The folder with the index for the reference sequence."));
 
         Descriptor indexBasename(INDEX_BASENAME,
-            BaseShortReadsAlignerWorker::tr(descrIndexBasename),
+            descrIndexBasename,
             BaseShortReadsAlignerWorker::tr("The basename of the index for the reference sequence."));
 
         Descriptor outName(OUTPUT_NAME,
@@ -349,15 +343,15 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
             BaseShortReadsAlignerWorker::tr("Filter unpaired reads"),
             BaseShortReadsAlignerWorker::tr("Should the reads be checked for incomplete pairs?"));
 
-        attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant("sequence"));
+        attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant(DnaAssemblyToRefTaskSettings::SEQUENCE));
         Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
-        attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "sequence"));
+        attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::SEQUENCE));
         attrs << attrRefGenom;
         Attribute* attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
-        attrIndexDir->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "index"));
+        attrIndexDir->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
         attrs << attrIndexDir;
         Attribute* attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
-        attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "index"));
+        attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
         attrs << attrIndexBasename;
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
         attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), true, QVariant(BASE_OUTFILE));
@@ -375,8 +369,8 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
 
     {
         QVariantMap rip;
-        rip["sequence"] = "sequence";
-        rip["index"] = "index";
+        rip[DnaAssemblyToRefTaskSettings::SEQUENCE] = DnaAssemblyToRefTaskSettings::SEQUENCE;
+        rip[DnaAssemblyToRefTaskSettings::INDEX] = DnaAssemblyToRefTaskSettings::INDEX;
         delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
 
         delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);
@@ -460,30 +454,16 @@ QString ShortReadsAlignerPrompter::composeRichDoc() {
         res.append(tr("Maps input reads from <u>%1</u> ").arg(readsUrl));
     }
 
-    /*
-        UGENE-6110
-        Descriptions on the workflow elements should be the following:
-
-        1. In case of reference sequence:
-            --> "Map input reads to reference sequence unset."
-        Use the name of the file with sequence for "unset", for example "chr6.fa".
-
-        2. In case of index:
-            --> "Map input reads to reference sequence with index unset."
-        Use the index base name with suffix ".*" for "unset", for example, "chr6.*".
-    */
     QVariant inputType = getParameter(REFERENCE_INPUT_TYPE);
-    if (inputType == "index") {
+    if (inputType == DnaAssemblyToRefTaskSettings::INDEX) {
         QString baseName = getHyperlink(INDEX_BASENAME, getURL(INDEX_BASENAME));
         res.append(tr(" to reference sequence with index <u>%1</u>.").arg(baseName));
-    }
-    else {
+    } else {
         QString genome = getHyperlink(REFERENCE_GENOME, getURL(REFERENCE_GENOME));
         res.append(tr(" to reference sequence <u>%1</u>.").arg(genome));
     }
 
     return res;
 }
-
 } //LocalWorkflow
 } //U2

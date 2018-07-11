@@ -95,8 +95,10 @@ public:
     Workflow::DbiDataStorage * storage() const;
 
     static uint getThreadsCount();
-};
 
+    static const QString INDEX;
+    static const QString SEQUENCE;
+};
 }
 
 #endif

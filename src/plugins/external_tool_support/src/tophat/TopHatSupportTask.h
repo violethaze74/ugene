@@ -73,8 +73,7 @@ private:
     Workflow::SharedDbiDataHandler          acceptedHits;
     QStringList                             outputFiles;
 
-    BowtieBuildIndexTask *bowtieIndexTask;
-    Bowtie2BuildIndexTask *bowtie2IndexTask;
+    ExternalToolSupportTask *bowtieIndexTask;
 
     static const QString outSubDirBaseName;
 
@@ -83,10 +82,8 @@ private:
     SaveDocumentTask * createSaveTask(const QString &url, QPointer<Document> &doc, const QList<Workflow::SharedDbiDataHandler> &seqs);
     ExternalToolRunTask * runTophat();
 
-    bool createIndexTask();
+    ExternalToolSupportTask *createIndexTask();
 };
-
-
 } // namespace
 
 #endif

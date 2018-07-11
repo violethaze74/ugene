@@ -106,7 +106,7 @@ void Bowtie2Worker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings){
 void Bowtie2WorkerFactory::init() {
     QList<Attribute*> attrs;
     QMap<QString, PropertyDelegate*> delegates;
-    addCommonAttributes(attrs, delegates, Bowtie2);
+    addCommonAttributes(attrs, delegates, "Bowtie2");
      {
          Descriptor mode(MODE ,
              Bowtie2Worker::tr("Mode"),

@@ -73,10 +73,9 @@ static const QString BEST_ATTR("best");
 static const QString GPU_ATTR("gpu");
 static const QString QUAL_ATTR("quality-threshold");
 static const QString REFERENCE_GENOME("reference");
-// UGENE-6110
-const QString REFERENCE_INPUT_TYPE = "reference-input-type";
-const QString INDEX_DIR("index-dir");
-const QString INDEX_BASENAME("index-basename");
+static const QString REFERENCE_INPUT_TYPE = "reference-input-type";
+static const QString INDEX_DIR("index-dir");
+static const QString INDEX_BASENAME("index-basename");
 
 /************************************************************************/
 /* Genome aligner worker                                                */
@@ -158,7 +157,7 @@ DnaAssemblyToRefTaskSettings GenomeAlignerWorker::getSettings(U2OpStatus &os) {
     DnaAssemblyToRefTaskSettings settings;
 
     QString referenceInputType = getValue<QString>(REFERENCE_INPUT_TYPE);
-    if (referenceInputType == "index") {
+    if (referenceInputType == DnaAssemblyToRefTaskSettings::INDEX) {
         settings.prebuiltIndex = true;
         settings.indexDir = getValue<QString>(INDEX_DIR);
         settings.indexBasename = getValue<QString>(INDEX_BASENAME);
@@ -166,8 +165,7 @@ DnaAssemblyToRefTaskSettings GenomeAlignerWorker::getSettings(U2OpStatus &os) {
         QString baseUrl = QDir(settings.indexDir).filePath(settings.indexBasename);
         settings.refSeqUrl = baseUrl;
         settings.indexFileName = baseUrl;
-    }
-    else {
+    } else {
         settings.refSeqUrl = getValue<QString>(REFERENCE_GENOME);
         settings.prebuiltIndex = false;
 
@@ -220,13 +218,11 @@ QString GenomeAlignerPrompter::composeRichDoc() {
 
     res.append(tr("Maps input reads from <u>%1</u> ").arg(readsUrl));
 
-    // UGENE-6110
     QVariant inputType = getParameter(REFERENCE_INPUT_TYPE);
-    if (inputType == "index") {
+    if (inputType == DnaAssemblyToRefTaskSettings::INDEX) {
         QString baseName = getHyperlink(INDEX_BASENAME, getURL(INDEX_BASENAME));
         res.append(tr(" to reference sequence with index <u>%1</u>.").arg(baseName));
-    }
-    else {
+    } else {
         QString genome = getHyperlink(REFERENCE_GENOME, getURL(REFERENCE_GENOME));
         res.append(tr(" to reference sequence <u>%1</u>.").arg(genome));
     }
@@ -330,9 +326,9 @@ void GenomeAlignerWorkerFactory::init() {
         Descriptor referenceInputType(REFERENCE_INPUT_TYPE,
             GenomeAlignerWorker::tr("Reference input type"),
             GenomeAlignerWorker::tr("Select \"Sequence\" to input a reference genome as a sequence file. "
-            "\nNote that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). "
-            "\nThe index will be generated automatically in this case. "
-            "\nSelect \"Index\" to input already generated index files, specific for the tool."));
+            "<br/>Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). "
+            "<br/>The index will be generated automatically in this case. "
+            "<br/>Select \"Index\" to input already generated index files, specific for the tool."));
 
         Descriptor refGenome(REFERENCE_GENOME,
             GenomeAlignerWorker::tr("Reference genome"),
@@ -345,7 +341,7 @@ void GenomeAlignerWorkerFactory::init() {
         Descriptor indexBasename(INDEX_BASENAME,
             GenomeAlignerWorker::tr("Genome Aligner index basename"),
             GenomeAlignerWorker::tr("The basename of the index for the reference sequence."));
-        
+
         Descriptor absMismatches(ABS_OR_PERC_MISMATCHES_ATTR,
             GenomeAlignerWorker::tr("Is absolute mismatches values?"),
             GenomeAlignerWorker::tr("<html><body><p><b>true</b> - absolute mismatches mode is used</p><p><b>false</b> - percentage mismatches mode is used</p>\
@@ -377,15 +373,15 @@ void GenomeAlignerWorkerFactory::init() {
             attrs << new Attribute(gpu, BaseTypes::BOOL_TYPE(), false/*required*/, false);
         }
 
-        attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant("sequence"));
+        attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant(DnaAssemblyToRefTaskSettings::SEQUENCE));
         Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
-        attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "sequence"));
+        attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::SEQUENCE));
         attrs << attrRefGenom;
         Attribute* attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
-        attrIndexDir->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "index"));
+        attrIndexDir->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
         attrs << attrIndexDir;
         Attribute* attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
-        attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, "index"));
+        attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
         attrs << attrIndexBasename;
 
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
@@ -415,8 +411,8 @@ void GenomeAlignerWorkerFactory::init() {
 
     {
         QVariantMap rip;
-        rip["sequence"] = "sequence";
-        rip["index"] = "index";
+        rip[DnaAssemblyToRefTaskSettings::SEQUENCE] = DnaAssemblyToRefTaskSettings::SEQUENCE;
+        rip[DnaAssemblyToRefTaskSettings::INDEX] = DnaAssemblyToRefTaskSettings::INDEX;
         delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
 
         delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);
@@ -449,6 +445,5 @@ void GenomeAlignerWorkerFactory::init() {
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new GenomeAlignerWorkerFactory());
 }
-
 } //namespace LocalWorkflow
 } //namespace U2

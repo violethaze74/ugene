@@ -57,8 +57,7 @@ TopHatSupportTask::TopHatSupportTask(const TopHatSettings& _settings)
       topHatExtToolTask(NULL),
       tmpDocSaved(false),
       tmpDocPairedSaved(false),
-      bowtieIndexTask(NULL),
-      bowtie2IndexTask(NULL)
+      bowtieIndexTask(NULL)
 {
     GCOUNTER(cvar, tvar, "NGS:TopHatTask");
 }
@@ -100,42 +99,38 @@ QString TopHatSupportTask::setupTmpDir() {
     return tmpDir.absolutePath();
 }
 
-bool TopHatSupportTask::createIndexTask() {
-    if (settings.referenceInputType == "sequence") {
-        QFileInfo ref_file(settings.referenceGenome);
-        QFileInfo out_dir(settings.outDir);
+ExternalToolSupportTask *TopHatSupportTask::createIndexTask() {
+    if (settings.referenceInputType == TopHatSettings::SEQUENCE) {
+        QFileInfo referenceGenome(settings.referenceGenome);
+        QFileInfo outDir(settings.outDir);
 
-        QDir indexDir(out_dir.absolutePath() + "/");
+        QDir indexDir(outDir.absolutePath() + "/");
         if (settings.useBowtie1) {
-            indexDir = out_dir.absolutePath() + "/bowtie1_index/";
-        }
-        else {
-            indexDir = out_dir.absolutePath() + "/bowtie2_index/";
+            indexDir = outDir.absolutePath() + "/bowtie1_index/";
+        } else {
+            indexDir = outDir.absolutePath() + "/bowtie2_index/";
         }
         if (!indexDir.exists()) {
             if (!indexDir.mkpath(indexDir.absolutePath())) {
-                return false;
+                stateInfo.setError(tr("Can't create directory for index files "));
+                bowtieIndexTask = NULL;
+                return NULL;
             }
         }
-        settings.buildIndexPathAndBasename = indexDir.absolutePath()  + "/" + ref_file.baseName();
+        settings.buildIndexPathAndBasename = indexDir.absolutePath() + "/" + referenceGenome.baseName();
         if (settings.useBowtie1) {
-            bowtie2IndexTask = NULL;
-            bowtieIndexTask = new BowtieBuildIndexTask(ref_file.absoluteFilePath(),
+            bowtieIndexTask = new BowtieBuildIndexTask(referenceGenome.absoluteFilePath(),
                                                        settings.buildIndexPathAndBasename,
                                                        false);
-            addSubTask(bowtieIndexTask);
-        }
-        else {
-            bowtieIndexTask = NULL;
-            bowtie2IndexTask = new Bowtie2BuildIndexTask(ref_file.absoluteFilePath(),
+        } else {
+            bowtieIndexTask = new Bowtie2BuildIndexTask(referenceGenome.absoluteFilePath(),
                                                          settings.buildIndexPathAndBasename);
-            addSubTask(bowtie2IndexTask);
         }
         settings.bowtieIndexPathAndBasename = settings.buildIndexPathAndBasename;
 
-        return true;
+        return bowtieIndexTask;
     }
-    return false;
+    return NULL;
 }
 
 void TopHatSupportTask::prepare() {
@@ -147,7 +142,12 @@ void TopHatSupportTask::prepare() {
     workingDirectory = setupTmpDir();
     CHECK_OP(stateInfo, );
 
-    createIndexTask();
+    ExternalToolSupportTask *indexTask = createIndexTask();
+    CHECK_OP(stateInfo, );
+    if (indexTask != NULL) {
+        addSubTask(indexTask);
+        return;
+    }
 
     if (settings.data.fromFiles) {
         topHatExtToolTask = runTophat();
@@ -292,27 +292,22 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task *subTask) {
         }
 
         if (tmpDocSaved && (tmpDocPairedSaved || settings.data.pairedSeqIds.isEmpty())) {
-            if (bowtieIndexTask != NULL || bowtie2IndexTask != NULL) {
-                createIndexTask();
-                if (bowtieIndexTask != NULL) {
-                    result.append(bowtieIndexTask);
+            if (settings.referenceInputType == TopHatSettings::SEQUENCE) {
+                ExternalToolSupportTask *indexTask = createIndexTask();
+                CHECK_OP(stateInfo, result);
+                if (indexTask != NULL) {
+                    result.append(indexTask);
                 }
-                else {
-                    result.append(bowtie2IndexTask);
-                }
-            }
-            else {
+            } else {
                 topHatExtToolTask = runTophat();
                 result.append(topHatExtToolTask);
             }
         }
-    }
-    else if (subTask == bowtieIndexTask || subTask == bowtie2IndexTask) {
+    } else if (subTask == bowtieIndexTask) {
         settings.bowtieIndexPathAndBasename = settings.buildIndexPathAndBasename;
         topHatExtToolTask = runTophat();
         result.append(topHatExtToolTask);
-    }
-    else if (subTask == topHatExtToolTask) {
+    } else if (subTask == topHatExtToolTask) {
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/accepted_hits.bam", outputFiles);
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/junctions.bed", outputFiles);
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/insertions.bed", outputFiles);
@@ -332,8 +327,7 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task *subTask) {
 
         readAssemblyOutputTask = factory->createTask(settings.outDir + "/accepted_hits.bam", QVariantMap(), settings.workflowContext());
         result.append(readAssemblyOutputTask);
-    }
-    else if (subTask == readAssemblyOutputTask) {
+    } else if (subTask == readAssemblyOutputTask) {
         Workflow::ReadDocumentTask* readDocTask = qobject_cast<Workflow::ReadDocumentTask*>(subTask);
         SAFE_POINT(NULL != readDocTask, "Internal error during parsing TopHat output: NULL read document task!", result);
 
@@ -360,8 +354,7 @@ bool removeTmpDir(QString dirName)
         {
             if (info.isDir()) {
                 result = removeTmpDir(info.absoluteFilePath());
-            }
-            else {
+            } else {
                 result = QFile::remove(info.absoluteFilePath());
             }
 
@@ -398,5 +391,4 @@ QString TopHatSupportTask::getOutBamUrl() const {
 QString TopHatSupportTask::getSampleName() const {
     return settings.sample;
 }
-
 }
