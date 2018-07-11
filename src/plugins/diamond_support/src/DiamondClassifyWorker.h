@@ -38,24 +38,16 @@ public:
     void init();
     Task *tick();
     void cleanup();
-    bool isReady() const;
 
 private slots:
     void sl_taskFinished(Task *task);
 
 private:
-    bool isReadyToRun() const;
-    bool dataFinished() const;
-    QString checkPairedReads() const;
-
     DiamondClassifyTaskSettings getSettings(U2OpStatus &os);
     TaxonomyClassificationResult parseReport(const QString &url);
 
     IntegralBus *input;
-    IntegralBus *pairedInput;
     IntegralBus *output;
-
-    bool pairedReadsInput;
 
     static const QString DIAMOND_DIR;
 };

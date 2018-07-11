@@ -29,7 +29,6 @@ namespace U2 {
 struct DiamondClassifyTaskSettings {
     DiamondClassifyTaskSettings();
 
-    bool pairedReads;
     QString databaseUrl;
     QString readsUrl;
     QString pairedReadsUrl;
@@ -37,9 +36,9 @@ struct DiamondClassifyTaskSettings {
     QString taxonNodesUrl;
 
     QString classificationUrl;
-    QString pairedClassificationUrl;
 
     QString sensitive;
+    int topAlignmentsPercentage;
     QString matrix;
     double max_evalue;
     double block_size;
@@ -49,9 +48,6 @@ struct DiamondClassifyTaskSettings {
     int gap_extend;
     int index_chunks;
     int num_threads;
-
-    static const QString SINGLE_END;
-    static const QString PAIRED_END;
 
     static const QString SENSITIVE_DEFAULT;
     static const QString SENSITIVE_ULTRA;

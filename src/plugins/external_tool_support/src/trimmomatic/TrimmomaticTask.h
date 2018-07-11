@@ -41,6 +41,7 @@ struct TrimmomaticTaskSettings {
     bool generateLog;
     QString logUrl;
     int numberOfThreads;
+    QString workingDirectory;
 
     static const QString SINGLE_END;
     static const QString PAIRED_END;
