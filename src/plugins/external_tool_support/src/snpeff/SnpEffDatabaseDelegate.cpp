@@ -119,23 +119,38 @@ void SnpEffDatabasePropertyWidget::sl_showDialog() {
     CHECK(snpEff != NULL, );
     if (!(java->isValid() && snpEff->isValid())) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
-        if (!java->isValid() && (!snpEff->isValid() && !snpEff->getPath().isEmpty() )) {
-            msgBox->setWindowTitle(snpEff->getName());
-            msgBox->setText(tr("The list of genomes is not available.\r\nThe %1 tool requires %2 that is not set.").arg(snpEff->getName()).arg(java->getName()));
-            msgBox->setInformativeText(tr("Do you want to select it now?"));
-        } else if (!java->isValid() && !snpEff->isValid()) {
-            msgBox->setWindowTitle(SnpEffDatabasePropertyWidget::tr("%1 and %2").arg(java->getName()).arg(snpEff->getName()));
+        if (!java->getPath().isEmpty() && !snpEff->getPath().isEmpty()) {
+            msgBox->setWindowTitle(tr("%1 and %2").arg(java->getName()).arg(snpEff->getName()));
             msgBox->setText(tr("The list of genomes is not available.\r\nPaths for %1 and %2 tools are not selected.").arg(snpEff->getName()).arg(java->getName()));
             msgBox->setInformativeText(tr("Do you want to select them now?"));
+        } else if (!java->isValid() && !snpEff->isValid()) {
+            msgBox->setWindowTitle(tr("%1 and %2").arg(java->getName()).arg(snpEff->getName()));
+            if (!java->getPath().isEmpty()) {
+                msgBox->setText(tr("The list of genomes is not available.\r\nThe %1 tool requires %2 that is set, but can't be validated by UGENE. %1 should be also selected.").arg(snpEff->getName()).arg(java->getName()));
+            } else if (!snpEff->getPath().isEmpty()) {
+                msgBox->setText(tr("The list of genomes is not available.\r\nThe %1 is set, but can't be validated by UGENE. %2 should be also selected.").arg(snpEff->getName()).arg(java->getName()));
+            }
+            msgBox->setInformativeText(tr("Do you want to set them now?"));
         } else {
             if (!java->isValid()) {
                 msgBox->setWindowTitle(java->getName());
-                msgBox->setText(tr("The list of genomes is not available.\r\nPath for %1 tool is not selected.").arg(java->getName()));
+                if (!java->getPath().isEmpty()) {
+                    msgBox->setText(tr("The list of genomes is not available.\r\nThe %1 tool requires %2 that is set, but can't be validated by UGENE.").arg(snpEff->getName()).arg(java->getName()));
+                    msgBox->setInformativeText(tr("Do you want to select another %1 executable now?").arg(java->getName()));
+                } else {
+                    msgBox->setText(tr("The list of genomes is not available.\r\nThe %1 tool requires %2 that is not selected.").arg(snpEff->getName()).arg(java->getName()));
+                    msgBox->setInformativeText(tr("Do you want to select it now?"));
+                }
             } else {
                 msgBox->setWindowTitle(snpEff->getName());
-                msgBox->setText(tr("The list of genomes is not available.\r\nPath for %1 tool is not selected.").arg(snpEff->getName()));
+                if (!snpEff->getPath().isEmpty() && !snpEff->isValid()) {
+                    msgBox->setText(tr("The list of genomes is not available.\r\nPath for %1 tool is set, but can't be validated by UGENE.").arg(snpEff->getName()));
+                    msgBox->setInformativeText(tr("Do you want to select another %1 executable now?"));
+                } else {
+                    msgBox->setText(tr("The list of genomes is not available.\r\nPath for %1 tool is not selected.").arg(snpEff->getName()));
+                    msgBox->setInformativeText(tr("Do you want to select it now?"));
+                }
             }
-            msgBox->setInformativeText(tr("Do you want to select it now?"));
         }
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
