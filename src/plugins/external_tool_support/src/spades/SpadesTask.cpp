@@ -31,11 +31,9 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 
-
-
 #include "SpadesSupport.h"
 #include "SpadesTask.h"
-
+#include "SpadesWorker.h"
 
 namespace U2 {
 // SpadesTask
@@ -140,23 +138,30 @@ void SpadesTask::writeYamlReads(){
     res.append("[\n");
     foreach (const AssemblyReads& r , settings.reads){
         res.append("{\n");
-        res.append(QString("orientation: \"%1\",\n").arg(r.orientation));
-        res.append(QString("type: \"%1\",\n").arg(GenomeAssemblyUtils::getYamlLibraryName(r.libName, r.libType)));
-        if(!GenomeAssemblyUtils::hasRightReads(r.libName)){
-            res.append(QString("%1: [\n").arg(r.readType));
-//            if(r.libName == LIBRARY_PAIRED_UNPAIRED || r.libName == LIBRARY_PAIRED_INTERLACED){
-//                res.append("interlaced reads: [\n");
-//            }else{
-//                res.append("single reads: [\n");
-//            }
-            res.append(QString("\"%1\",\n").arg(r.left.getURLString()));
+        if (LocalWorkflow::SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.contains(r.libName)) {
+            res.append(QString("orientation: \"%1\",\n").arg(r.orientation));
+        }
+        res.append(QString("type: \"%1\",\n").arg(GenomeAssemblyUtils::getYamlLibraryName(r.libName/*, r.libType*/)));
+        if(!GenomeAssemblyUtils::hasRightReads(r.libName)) {  //old version support
+            //if(r.libName == LIBRARY_PAIRED_UNPAIRED || r.libName == LIBRARY_PAIRED_INTERLACED){
+            //    res.append("interlaced reads: [\n");
+            //}else{
+            res.append(QString("%1: [\n").arg(GenomeAssemblyUtils::convertReadType(r.readType)));
+            //}
+            foreach(const GUrl& url, r.left) {
+                res.append(QString("\"%1\",\n").arg(url.getURLString()));
+            }
             res.append("]\n");
         }else{
             res.append("left reads: [\n");
-            res.append(QString("\"%1\",\n").arg(r.left.getURLString()));
+            foreach(const GUrl& url, r.left) {
+                res.append(QString("\"%1\",\n").arg(url.getURLString()));
+            }
             res.append("],\n");
             res.append("right reads: [\n");
-            res.append(QString("\"%1\",\n").arg(r.right.getURLString()));
+            foreach(const GUrl& url, r.right) {
+                res.append(QString("\"%1\",\n").arg(url.getURLString()));
+            }
             res.append("],\n");
         }
         res.append("},\n");

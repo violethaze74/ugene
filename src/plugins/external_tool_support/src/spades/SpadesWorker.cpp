@@ -22,12 +22,14 @@
 #include <QScopedPointer>
 
 #include <U2Algorithm/GenomeAssemblyMultiTask.h>
+#include <U2Algorithm/GenomeAssemblyRegistry.h>
 
 #include <U2Core/FailTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/QVariantUtils.h>
 #include <U2Core/GUrlUtils.h>
+
 #include <U2Formats/GenbankLocationParser.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -54,8 +56,37 @@ const QString SpadesWorkerFactory::ACTOR_ID = "spades-id";
 const QString SpadesWorkerFactory::READS_URL_SLOT_ID = "readsurl";
 const QString SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID = "readspairedurl";
 
+const QStringList SpadesWorkerFactory::READS_URL_SLOT_ID_LIST = QStringList() <<
+                                                                 "readsurl" <<
+                                                                 "readsurl-2" <<
+                                                                 "readsurl-3" <<
+                                                                 "readsurl-4" <<
+                                                                 "readsurl-5" <<
+                                                                 "readsurl-6" <<
+                                                                 "readsurl-7" <<
+                                                                 "readsurl-8" <<
+                                                                 "readsurl-9" <<
+                                                                 "readsurl-10";
+const QStringList SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID_LIST = QStringList() <<
+                                                                  "readspairedurl" <<
+                                                                  "readspairedurl-2" <<
+                                                                  "readspairedurl-3";
+
 const QString SpadesWorkerFactory::IN_TYPE_ID = "spades-data";
 const QString SpadesWorkerFactory::IN_PAIRED_TYPE_ID = "spades-paired-data";
+
+const QStringList SpadesWorkerFactory::IN_TYPE_ID_LIST = QStringList() <<
+                                                       "spades-data" <<
+                                                       "spades-data-2" <<
+                                                       "spades-data-3" <<
+                                                       "spades-data-4" <<
+                                                       "spades-data-5" <<
+                                                       "spades-data-6" <<
+                                                       "spades-data-7";
+const QStringList SpadesWorkerFactory::IN_PAIRED_TYPE_ID_LIST = QStringList() <<
+                                                       "spades-paired-data" <<
+                                                       "spades-paired-data-2" <<
+                                                       "spades-paired-data-3";
 
 const QString SpadesWorkerFactory::OUT_TYPE_ID = "spades-data-out";
 
@@ -65,18 +96,18 @@ const QString SpadesWorkerFactory::REQUIRED_SEQUENCING_PLATFORM_ID = "required-p
 const QString SpadesWorkerFactory::ADDITIONAL_SEQUENCING_PLATFORM_ID = "additional-platform-id";
 
 const QStringList SpadesWorkerFactory::IN_PORT_ID_LIST = QStringList() <<
-                                                   "in-unpaired-reads" <<
-                                                "in-pac-bio-ccs-reads" <<
-                                                "in-pac-bio-clr-reads" <<
-                                            "in-oxford-nanopore-reads" <<
-                                                     "in-sanger-reads" <<
-                                                  "in-trusted-contigs" <<
-                                                  "in-untrusted-contigs";
+                                                       SINGLE_UNPAIRED <<
+                                                            SINGLE_CSS <<
+                                                            SINGLE_CLR <<
+                                                       SINGLE_NANOPORE <<
+                                                         SINGLE_SANGER <<
+                                                        SINGLE_TRUSTED <<
+                                                        SINGLE_UNTRUSTED;
 
 const QStringList SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST = QStringList() <<
-                                                                    "in-data" <<
-                                                              "in-mate-pairs" <<
-                                                   "in-high-quality-mate-pairs";
+                                                                 PAIR_DEFAULT <<
+                                                                    PAIR_MATE <<
+                                                                   PAIR_HQ_MATE;
 
 const QString SpadesWorkerFactory::MAP_TYPE_ID = "map";
 
@@ -101,86 +132,75 @@ SpadesWorker::SpadesWorker(Actor *p)
 }
 
 void SpadesWorker::init() {
+    const QStringList portIds = QStringList() <<
+        SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST <<
+        SpadesWorkerFactory::IN_PORT_ID_LIST;
+    foreach(const QString& portId, portIds) {
+        IntegralBus* channel = ports.value(portId);
+        inChannels << channel;
+        readsFetchers << DatasetFetcher(this, channel, context);
+    }
+    //foreach(const QString& portDesc, SpadesWorkerFactory::IN_PORT_ID_LIST) {
+    //    inChannels << ports.value(portDesc);
+    //}
     inChannel = ports.value(SpadesWorkerFactory::IN_PORT_DESCR);
     output = ports.value(SpadesWorkerFactory::OUT_PORT_DESCR);
 }
 
 Task *SpadesWorker::tick() {
-    if (inChannel->hasMessage()) {
-        U2OpStatus2Log os;
+    CHECK(processInputMessagesAndCheckReady(), NULL);
 
-        Message m = getMessageAndSetupScriptValues(inChannel);
-        QVariantMap data = m.getData().toMap();
-
-        GenomeAssemblyTaskSettings settings = getSettings(os);
-        if (os.hasError()) {
-            return new FailTask(os.getError());
-        }
-
-        QVariant inputData = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariant());
-        SAFE_POINT(inputData != QVariant(), "Incorrect input data", NULL);
-
-        QVariantMap mapData = inputData.toMap();
-
-        QString readsUrl = data[SpadesWorkerFactory::READS_URL_SLOT_ID].toString();
-        QString readsPairedUrl = data[SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID].toString();
-
-        QStringList dataKeys = mapData.keys();
-        foreach (const QString& read, SpadesWorkerFactory::IN_PORT_ID_LIST) {
-            CHECK_CONTINUE(dataKeys.contains(read));
-
-            AssemblyReads assemblyRead;
-            assemblyRead.left = readsUrl;
-            assemblyRead.libNumber = "1";
-            assemblyRead.libName = read;
-
-            settings.reads << assemblyRead;
-        }
-        foreach (const QString& pairedRead, SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST) {
-            CHECK_CONTINUE(dataKeys.contains(pairedRead));
-
-            AssemblyReads assemblyRead;
-            assemblyRead.left = readsUrl;
-            assemblyRead.right = readsPairedUrl;
-            assemblyRead.libNumber = "1";
-            assemblyRead.libName = pairedRead;
-            QStringList values = mapData[pairedRead].toString().split(":");
-            assemblyRead.orientation = values.first();
-            assemblyRead.readType = values.last();
-
-            settings.reads << assemblyRead;
-        }
+    U2OpStatus2Log os;
+    GenomeAssemblyTaskSettings settings = getSettings(os);
+    for (int i = 0; i < readsFetchers.size(); i++) {
+        CHECK_CONTINUE(readsFetchers[i].hasFullDataset());
 
         AssemblyReads read;
-        read.left = readsUrl;
-        read.libNumber = "1";
-        read.orientation = ORIENTATION_FR;
-        read.libType = PAIR_TYPE_DEFAULT;
+        const QString portId = ports.key(inChannels[i]);
+        read.libName = portId;
 
-        if (data.contains(SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID)){
-            QString readsPairedUrl = data[SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID].toString();
-            read.libType = PAIR_TYPE_DEFAULT;
-            read.libName = LIBRARY_PAIRED;
-            read.right = readsPairedUrl;
-        }else {
-            read.libName = LIBRARY_SINGLE;
+        bool isPaired = false;
+        const int index = getReadsUrlSlotIdIndex(portId, isPaired);
+
+        QList<Message> fullDataset = readsFetchers[i].takeFullDataset();
+        foreach(const Message& m, fullDataset) {
+            QVariantMap data = m.getData().toMap();
+            CHECK(!os.hasError(), new FailTask(os.getError()));
+
+            const QString urlSlotId = SpadesWorkerFactory::READS_URL_SLOT_ID_LIST[index];
+            const QString readsUrl = data[urlSlotId].toString();
+            read.left << readsUrl;
+
+            if (isPaired) {
+                const QString urlPairedSlotId = SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID_LIST[index];
+                const QString readsPairedUrl = data[urlPairedSlotId].toString();
+                read.right << readsPairedUrl;
+            }
         }
 
-        //settings.reads /*= QList<AssemblyReads>()*/ << read;
+        if (isPaired) {
+            QVariant inputData = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariant());
+            SAFE_POINT(inputData != QVariant(), "Incorrect input data", NULL);
 
-        settings.listeners = createLogListeners();
-        GenomeAssemblyMultiTask* t = new GenomeAssemblyMultiTask(settings);
-        connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
-        return t;
-    }else if (inChannel->isEnded()) {
-        setDone();
-        output->setEnded();
+            QVariantMap mapData = inputData.toMap();
+            QStringList values = mapData[portId].toString().split(":");
+            SAFE_POINT(values.size() == 2, "Incorrect port values", NULL);
+
+            read.orientation = values.first();
+            read.readType = values.last();
+        }
+
+        settings.reads << read;
     }
-    return NULL;
+    CHECK(!settings.reads.isEmpty(), NULL);
+
+    settings.listeners = createLogListeners();
+    GenomeAssemblyMultiTask* t = new GenomeAssemblyMultiTask(settings);
+    connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
+    return t;
 }
 
 void SpadesWorker::cleanup() {
-
 }
 
 bool SpadesWorker::isReady() const {
@@ -199,7 +219,46 @@ bool SpadesWorker::isReady() const {
         res = res && (hasMsg || ended);
     }
 
+    //if (res) {
+    //    foreach(Port* port, inPorts) {
+    //        CHECK_CONTINUE(port->isEnabled());
+    //        IntegralBus *inChannel = ports.value(port->getId());
+    //        int hasMsg = inChannel->hasMessage();
+    //        bool ended = inChannel->isEnded();
+    //        res = res && (hasMsg || ended);
+    //    }
+    //}
+
     return res;
+}
+
+bool SpadesWorker::processInputMessagesAndCheckReady() {
+    bool result = true;
+    QList<Port*> inPorts = actor->getInputPorts();
+    for (int i = 0; i < readsFetchers.size(); i++){
+        const QString portId = readsFetchers[i].getPortId();
+        Port* port = actor->getPort(portId);
+        SAFE_POINT(port != NULL, QString("Port with id %1 not found").arg(portId), false);
+        CHECK_CONTINUE(port->isEnabled());
+
+        readsFetchers[i].processInputMessage();
+        result = result && readsFetchers[i].hasFullDataset();
+        CHECK(result, false);
+    }
+
+    return result;
+}
+
+int SpadesWorker::getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) const {
+    int index = -1;
+    isPaired = SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.contains(portId);
+    if (isPaired) {
+        index = SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.indexOf(portId);
+    } else {
+        index = SpadesWorkerFactory::IN_PORT_ID_LIST.indexOf(portId) + SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.size();
+    }
+
+    return index;
 }
 
 void SpadesWorker::sl_taskFinished() {
@@ -320,43 +379,111 @@ void SpadesWorkerFactory::init() {
     QList<PortDescriptor*> portDescs;
 
     //in port
-    Descriptor readsDesc(READS_URL_SLOT_ID,
-        SpadesWorker::tr("URL of a file with reads"),
-        SpadesWorker::tr("Input reads to be assembled."));
-    Descriptor readsPairedDesc(READS_PAIRED_URL_SLOT_ID,
-        SpadesWorker::tr("URL of a file with right pair reads"),
-        SpadesWorker::tr("Input right pair reads to be assembled."));
 
-    QMap<Descriptor, DataTypePtr> inTypeMap;
-    inTypeMap[readsDesc] = BaseTypes::STRING_TYPE();
+/*    QList<Descriptor> readsDescriptors;
+    foreach(const QString& readsUrlSlotId, READS_URL_SLOT_ID_LIST) {
+        readsDescriptors << Descriptor(readsUrlSlotId,
+                SpadesWorker::tr("URL of a file with reads"),
+                SpadesWorker::tr("Input reads to be assembled."));
+    }
+    QList<Descriptor> readsPairedDescriptors;
+    foreach(const QString& readsPairedUrlSlotId, READS_PAIRED_URL_SLOT_ID_LIST) {
+        readsPairedDescriptors << Descriptor(readsPairedUrlSlotId,
+            SpadesWorker::tr("URL of a file with right pair reads"),
+            SpadesWorker::tr("Input right pair reads to be assembled."));
+    }
 
-    QMap<Descriptor, DataTypePtr> inTypeMapPaired;
-    inTypeMapPaired[readsDesc] = BaseTypes::STRING_TYPE();
-    inTypeMapPaired[readsPairedDesc] = BaseTypes::STRING_TYPE();
+    QList<DataTypePtr> inTypeSetList;
+    foreach(const QString& inTypeId, IN_TYPE_ID_LIST) {
+        QMap<Descriptor, DataTypePtr> inTypeMap;
+        const int index = IN_TYPE_ID_LIST.indexOf(inTypeId);
+        Descriptor readDesc = readsDescriptors[index];
+        inTypeMap[readDesc] = BaseTypes::STRING_TYPE();
+        inTypeSetList << DataTypePtr(new MapDataType(inTypeId, inTypeMap));
+    }
+    QList<DataTypePtr> inTypeSetPairedList;
+    foreach(const QString& inPairedTypeId, IN_PAIRED_TYPE_ID_LIST) {
+        QMap<Descriptor, DataTypePtr> inPairedTypeMap;
+        const int indexPaired = IN_PAIRED_TYPE_ID_LIST.indexOf(inPairedTypeId);
+        Descriptor readDescPared = readsPairedDescriptors[indexPaired];
+        inPairedTypeMap[readDescPared] = BaseTypes::STRING_TYPE();
+        inTypeSetList << DataTypePtr(new MapDataType(inPairedTypeId, inPairedTypeMap));
+    }*/
+
 
     QList<Descriptor> readDescriptors;
-    foreach (const QString& readId, IN_PORT_ID_LIST) {
+    foreach(const QString& readId, IN_PORT_ID_LIST) {
         readDescriptors << Descriptor(readId,
             SpadesWorker::tr("Input %1 reads").arg(readId),
             SpadesWorker::tr("Input %1 reads to be assembled with Spades.").arg(readId));
     }
 
     QList<Descriptor> readPairedDescriptors;
-    foreach (const QString& readId, IN_PORT_PAIRED_ID_LIST) {
-        readPairedDescriptors << Descriptor(readId,
-            SpadesWorker::tr("Input %1 reads").arg(readId),
-            SpadesWorker::tr("Input %1 reads to be assembled with Spades.").arg(readId));
+    foreach(const QString& readPairedId, IN_PORT_PAIRED_ID_LIST) {
+        readPairedDescriptors << Descriptor(readPairedId,
+            SpadesWorker::tr("Input %1 reads").arg(readPairedId),
+            SpadesWorker::tr("Input %1 reads to be assembled with Spades.").arg(readPairedId));
     }
 
-    DataTypePtr inTypeSet(new MapDataType(IN_TYPE_ID, inTypeMap));
-    DataTypePtr inTypeSetPaired(new MapDataType(IN_PAIRED_TYPE_ID, inTypeMapPaired));
+    QList<QMap<Descriptor, DataTypePtr>> inTypeMapList;
+    foreach(const QString& id, READS_URL_SLOT_ID_LIST) {
+        /*readsDescriptors << */
+        Descriptor desc(id,
+                        SpadesWorker::tr("URL of a file with reads"),
+                        SpadesWorker::tr("Input reads to be assembled."));
 
-    foreach (const Descriptor& readDesc, readDescriptors) {
-        portDescs << new PortDescriptor(readDesc, inTypeSet, true);
+        bool isSingleEnd = true;
+        const QString idEnd = id.right(1);
+        foreach(const QString& pairedId, READS_PAIRED_URL_SLOT_ID_LIST) {
+            CHECK_CONTINUE(pairedId.endsWith(idEnd));
+
+            /*readsPairedDescriptors << */
+            Descriptor descPaired(pairedId,
+                                  SpadesWorker::tr("URL of a file with right pair reads"),
+                                  SpadesWorker::tr("Input right pair reads to be assembled."));
+
+            QMap<Descriptor, DataTypePtr> inTypeMapPaired;
+            inTypeMapPaired[desc] = BaseTypes::STRING_TYPE();
+            inTypeMapPaired[descPaired] = BaseTypes::STRING_TYPE();
+
+            const int pairedIndex = READS_PAIRED_URL_SLOT_ID_LIST.indexOf(pairedId);
+            DataTypePtr inTypePairedSet(new MapDataType(IN_PAIRED_TYPE_ID_LIST[pairedIndex], inTypeMapPaired));
+            portDescs << new PortDescriptor(readPairedDescriptors[pairedIndex], inTypePairedSet, true);
+
+            isSingleEnd = false;
+            break;
+        }
+        CHECK_CONTINUE(isSingleEnd);
+
+        QMap<Descriptor, DataTypePtr> inTypeMap;
+        inTypeMap[desc] = BaseTypes::STRING_TYPE();
+        const int index = READS_URL_SLOT_ID_LIST.indexOf(id) - READS_PAIRED_URL_SLOT_ID_LIST.size();
+        DataTypePtr inTypeSet(new MapDataType(IN_TYPE_ID_LIST[index], inTypeMap));
+        portDescs << new PortDescriptor(readDescriptors[index], inTypeSet, true);
     }
-    foreach (const Descriptor& readPairedDesc, readPairedDescriptors) {
-        portDescs << new PortDescriptor(readPairedDesc, inTypeSetPaired, true);
-    }
+
+    //Descriptor readsDesc(READS_URL_SLOT_ID,
+    //    SpadesWorker::tr("URL of a file with reads"),
+    //    SpadesWorker::tr("Input reads to be assembled."));
+    //Descriptor readsPairedDesc(READS_PAIRED_URL_SLOT_ID,
+    //    SpadesWorker::tr("URL of a file with right pair reads"),
+    //    SpadesWorker::tr("Input right pair reads to be assembled."));
+
+    //QMap<Descriptor, DataTypePtr> inTypeMap;
+    //inTypeMap[readsDesc] = BaseTypes::STRING_TYPE();
+    //DataTypePtr inTypeSet(new MapDataType(IN_TYPE_ID, inTypeMap));
+
+    //QMap<Descriptor, DataTypePtr> inTypeMapPaired;
+    //inTypeMapPaired[readsDesc] = BaseTypes::STRING_TYPE();
+    //inTypeMapPaired[readsPairedDesc] = BaseTypes::STRING_TYPE();
+    //DataTypePtr inTypeSetPaired(new MapDataType(IN_PAIRED_TYPE_ID, inTypeMapPaired));
+
+    //foreach (const Descriptor& readDesc, readDescriptors) {
+    //    portDescs << new PortDescriptor(readDesc, inTypeSet, true);
+    //}
+    //foreach (const Descriptor& readPairedDesc, readPairedDescriptors) {
+    //    portDescs << new PortDescriptor(readPairedDesc, inTypeSetPaired, true);
+    //}
 
     //out port
     QMap<Descriptor, DataTypePtr> outTypeMap;

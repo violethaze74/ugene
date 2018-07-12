@@ -48,6 +48,18 @@ namespace U2 {
 #define PAIR_TYPE_MATE                 "mate"
 #define PAIR_TYPE_MATE_HQ              "high-quality mate"
 
+#define SINGLE_UNPAIRED                "in-unpaired-reads"
+#define SINGLE_CSS                     "in-pac-bio-ccs-reads"
+#define SINGLE_CLR                     "in-pac-bio-clr-reads"
+#define SINGLE_NANOPORE                "in-oxford-nanopore-reads"
+#define SINGLE_SANGER                  "in-sanger-reads"
+#define SINGLE_TRUSTED                 "in-trusted-contigs"
+#define SINGLE_UNTRUSTED               "in-untrusted-contigs"
+
+#define PAIR_DEFAULT                   "in-data"
+#define PAIR_MATE                      "in-mate-pairs"
+#define PAIR_HQ_MATE                   "in-high-quality-mate-pairs"
+
 #define ORIENTATION_FR                 "fr"
 #define ORIENTATION_RF                 "rf"
 #define ORIENTATION_FF                 "ff"
@@ -74,6 +86,8 @@ public:
     static bool isLibraryPaired(const QString& libName);
     static bool hasRightReads(const QString& libName);
     static QString getYamlLibraryName(const QString& libName, const QString& pairType);
+    static QString getYamlLibraryName(const QString& libName);
+    static QString convertReadType(const QString& type);
 };
 
 /////////////////////////////////////////////////////////////
@@ -81,8 +95,8 @@ public:
 
 class U2ALGORITHM_EXPORT AssemblyReads {
 public:
-    AssemblyReads(const GUrl& left = GUrl(),
-                  const GUrl& right = GUrl(),
+    AssemblyReads(const QList<GUrl>& left = QList<GUrl>(),
+                  const QList<GUrl>& right = QList<GUrl>(),
                   const QString& libNumber = QString("1"),
                   const QString& libType = PAIR_TYPE_DEFAULT,
                   const QString& orientation = ORIENTATION_FR,
@@ -97,13 +111,13 @@ public:
         ,readType(readType)
         {}
 
-        GUrl left;
-        GUrl right;
-        QString libNumber;
-        QString libType;
-        QString orientation;
-        QString libName;
-        QString readType;
+        QList<GUrl> left;
+        QList<GUrl> right;
+        QString     libNumber;
+        QString     libType;
+        QString     orientation;
+        QString     libName;
+        QString     readType;
 };
 
 class U2ALGORITHM_EXPORT GenomeAssemblyTaskSettings {

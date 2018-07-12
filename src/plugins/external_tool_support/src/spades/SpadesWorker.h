@@ -24,6 +24,7 @@
 
 #include <U2Core/U2OpStatus.h>
 
+#include <U2Lang/DatasetFetcher.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
@@ -43,6 +44,12 @@ public:
     virtual bool isReady() const;
 
 private:
+    bool processInputMessagesAndCheckReady();
+    int getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) const;
+
+    QList<DatasetFetcher> readsFetchers;
+    //QList<DatasetFetcher> readsPairedFetchers;
+    QList<IntegralBus*> inChannels;
     IntegralBus *inChannel;
     IntegralBus *output;
 
@@ -64,8 +71,14 @@ public:
     static const QString READS_URL_SLOT_ID;
     static const QString READS_PAIRED_URL_SLOT_ID;
 
+    static const QStringList READS_URL_SLOT_ID_LIST;
+    static const QStringList READS_PAIRED_URL_SLOT_ID_LIST;
+
     static const QString IN_TYPE_ID;
     static const QString IN_PAIRED_TYPE_ID;
+
+    static const QStringList IN_TYPE_ID_LIST;
+    static const QStringList IN_PAIRED_TYPE_ID_LIST;
 
     static const QString OUT_TYPE_ID;
 
