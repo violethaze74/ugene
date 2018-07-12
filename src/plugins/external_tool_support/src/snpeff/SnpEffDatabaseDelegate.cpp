@@ -129,6 +129,7 @@ void SnpEffDatabasePropertyWidget::sl_showDialog() {
             } else {
                 msgBox->setWindowTitle(snpEff->getName());
                 msgBox->setText(tr("The list of genomes is not available.\r\nMake sure %1 is set in the UGENE Application Settings and can be validated.").arg(snpEff->getName()));
+            }
         }
         msgBox->setInformativeText(tr("Do you want to do it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);

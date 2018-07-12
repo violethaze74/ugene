@@ -25,6 +25,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/QVariantUtils.h>
@@ -160,15 +161,10 @@ GenomeAssemblyTaskSettings SpadesWorker::getSettings( U2OpStatus &os ){
     settings.openView = false;
     QString outDir = getValue<QString>(OUTPUT_DIR);
     if (outDir.isEmpty()) {
-        outDir = context->workingDir();
-    } else {
-        outDir = GUrlUtils::rollFileName(outDir, "_");
-        outDir = GUrlUtils::createDirectory(
-             outDir + "/" + BASE_SPADES_SUBDIR,
-            "_", os);
-        CHECK_OP(os, settings);
+        outDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
     }
-
+    outDir = GUrlUtils::createDirectory(outDir + "/" + BASE_SPADES_SUBDIR, "_", os);
+    CHECK_OP(os, settings);
     if (outDir.endsWith("/")){
         outDir.chop(1);
     }
