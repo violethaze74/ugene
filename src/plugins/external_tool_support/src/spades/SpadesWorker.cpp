@@ -192,6 +192,7 @@ Task *SpadesWorker::tick() {
 
         settings.reads << read;
     }
+    trySetDone();
     CHECK(!settings.reads.isEmpty(), NULL);
 
     settings.listeners = createLogListeners();
@@ -259,6 +260,24 @@ int SpadesWorker::getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) 
     }
 
     return index;
+}
+
+void SpadesWorker::trySetDone() {
+    bool isDone = true;
+    for (int i = 0; i < readsFetchers.size(); i++){
+        const QString portId = readsFetchers[i].getPortId();
+        Port* port = actor->getPort(portId);
+        SAFE_POINT(port != NULL, QString("Port with id %1 not found").arg(portId), );
+        CHECK_CONTINUE(port->isEnabled());
+
+        isDone = isDone && readsFetchers[i].isDone();
+        CHECK(isDone, );
+    }
+
+    if (isDone) {
+        setDone();
+        output->setEnded();
+    }
 }
 
 void SpadesWorker::sl_taskFinished() {

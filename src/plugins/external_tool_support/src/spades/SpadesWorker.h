@@ -46,6 +46,7 @@ public:
 private:
     bool processInputMessagesAndCheckReady();
     int getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) const;
+    void trySetDone();
 
     QList<DatasetFetcher> readsFetchers;
     //QList<DatasetFetcher> readsPairedFetchers;
