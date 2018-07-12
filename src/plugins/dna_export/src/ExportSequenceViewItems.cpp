@@ -422,9 +422,11 @@ void ADVExportContext::sl_saveSelectedSequences() {
 void ADVExportContext::sl_saveSelectedAnnotations() {
     // find annotations: selected annotations, selected groups
     QList<Annotation *> annotationSet;
+    QSet<QString> annotationNamesForConstraints;
     AnnotationSelection* as = view->getAnnotationsSelection();
     foreach (const AnnotationSelectionData &data, as->getSelection()) {
         annotationSet << data.annotation;
+        annotationNamesForConstraints << data.annotation->getName();
     }
     foreach (AnnotationGroup *group, view->getAnnotationsGroupSelection()->getSelection()) {
         group->findAllAnnotationsInGroupSubTree(annotationSet);
@@ -449,7 +451,9 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
     }
 
     QString fileName = GUrlUtils::getNewLocalUrlByExtention(url, "newfile", ".csv", "_annotations");
-    QObjectScopedPointer<ExportAnnotationsDialog> d = new ExportAnnotationsDialog(fileName, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportAnnotationsDialog> d = new ExportAnnotationsDialog(fileName, 
+                                                                                  annotationNamesForConstraints,
+                                                                                  AppContext::getMainWindow()->getQMainWindow());
     d->exec();
     CHECK(!d.isNull(), );
 

@@ -649,4 +649,22 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
     }
 }
 
+bool GTFFormat::checkConstraints(const DocumentFormatConstraints& c) const {
+    bool baseConstrainsOk = DocumentFormat::checkConstraints(c);
+    if (!baseConstrainsOk) {
+        return false;
+    }
+    // check that all annotation names are valid. We do not want to create a file that breaks the spec.
+    if (c.annotationNames.size() > GTF_FEATURE_FIELD_VALUES.size()) {
+        return false;
+    }
+    for (const QString& name : c.annotationNames) {
+        if (!GTF_FEATURE_FIELD_VALUES.contains(name)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 } // namespace U2

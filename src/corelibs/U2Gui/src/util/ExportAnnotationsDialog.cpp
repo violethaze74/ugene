@@ -27,6 +27,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/global.h>
 
 #include <U2Gui/HelpButton.h>
@@ -39,7 +40,9 @@ namespace U2 {
 
 const QString ExportAnnotationsDialog::CSV_FORMAT_ID( "csv" );
 
-ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidget *parent )
+ExportAnnotationsDialog::ExportAnnotationsDialog(const QString &filename, 
+                                                 const QSet<QString> annotationNamesForConstraint, 
+                                                 QWidget *parent )
     : QDialog( parent ), ui( new Ui_ExportAnnotationsDialog( ) )
 {
     ui->setupUi( this );
@@ -48,7 +51,7 @@ ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidg
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    initSaveController(filename);
+    initSaveController(annotationNamesForConstraint, filename);
     sl_formatChanged(saveController->getFormatIdToSave());
     window()->resize(window()->width(), 0);
     
@@ -58,7 +61,7 @@ ExportAnnotationsDialog::~ExportAnnotationsDialog( ) {
     delete ui;
 }
 
-void ExportAnnotationsDialog::initSaveController(const QString &filename) {
+void ExportAnnotationsDialog::initSaveController(const QSet<QString> annotationNamesForConstraint, const QString &filename) {
     SaveDocumentControllerConfig config;
     config.defaultDomain = "ExportAnnotationsDialogHelperDomain";
     config.defaultFileName = filename;
@@ -75,6 +78,9 @@ void ExportAnnotationsDialog::initSaveController(const QString &filename) {
     formatConstraints.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     formatConstraints.addFlagToExclude(DocumentFormatFlag_Hidden);
     formatConstraints.formatsToExclude << BaseDocumentFormats::VECTOR_NTI_SEQUENCE;
+    for (const QString& name : annotationNamesForConstraint) {
+        formatConstraints.annotationNames << name;
+    }
 
     saveController = new SaveDocumentController(config, formatConstraints, this);
     saveController->addFormat(CSV_FORMAT_ID, QString(CSV_FORMAT_ID).toUpper(), QStringList() << CSV_FORMAT_ID);

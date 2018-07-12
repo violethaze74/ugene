@@ -845,15 +845,15 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300",
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "CDS", "200..300",
                                                                       sandBoxDir + "ann_test_0011_1.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
     GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
-    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "ann");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "CDS");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "CDS");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann");
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf",
                                                                  ExportAnnotationsFiller::gtf, false, false, false));

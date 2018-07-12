@@ -26,6 +26,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/AnnotationTableObject.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
@@ -93,6 +94,12 @@ DocumentFormatConstraints ExportDocumentDialogController::getAcceptableConstrain
             objPerTypeMap[objectType] += 1;
         } else {
             objPerTypeMap.insert(objectType, 1);
+        }
+        AnnotationTableObject* aObj = qobject_cast<AnnotationTableObject*>(obj);
+        if (aObj != NULL) {
+            for (Annotation* a : aObj->getAnnotations()) {
+                formatConstraints.annotationNames << a->getName();
+            }
         }
     }
 
