@@ -126,7 +126,7 @@ QString HRSchemaSerializer::valueString(const QString & s, bool quoteEmpty) {
     if( str.contains(QRegExp("\\s") ) || str.contains(Constants::SEMICOLON) ||
         str.contains(Constants::EQUALS_SIGN) || str.contains(Constants::DATAFLOW_SIGN) ||
         str.contains(Constants::BLOCK_START) || str.contains(Constants::BLOCK_END) ||
-        str.contains(OldConstants::MARKER_START) ||
+        str.contains(OldConstants::MARKER_START) || str.contains("'") ||
         (str.isEmpty() && quoteEmpty)) {
         return quotedString(str);
     } else {
