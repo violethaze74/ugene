@@ -25,6 +25,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
 
@@ -95,6 +96,7 @@ QString GenomeAssemblyMultiTask::generateReport() const {
     if (hasError()) {
         return QString("Assembly task finished with error: %1").arg(getError());
     }
+    CHECK(assemblyTask != NULL, QString("Assembly task wasn't set"));
 
     if (assemblyTask->hasResult()) {
         res = QString("Assembly was finished successfully");
