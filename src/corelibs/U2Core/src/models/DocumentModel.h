@@ -278,9 +278,6 @@ public:
     FormatDetectionScore    minDataCheckResult;
     bool                    allowPartialTypeMapping;
     QSet<DocumentFormatId>  formatsToExclude;
-    
-    /* Set of annotations names a document format must support. If empty -> not specified */
-    QSet<QString>           annotationNames;
 };
 
 class DocumentImportersRegistry;

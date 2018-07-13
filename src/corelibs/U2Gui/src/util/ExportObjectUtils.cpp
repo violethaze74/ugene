@@ -45,14 +45,6 @@
 
 namespace U2 {
 
-static QSet<QString> getSetOfAnnotationNames(const QList<Annotation*> annotations) {
-    QSet<QString> result;
-    for (const Annotation* a : annotations) {
-        result << a->getName();
-    }
-    return result;
-}
-
 void ExportObjectUtils::exportAnnotations(const AnnotationTableObject *aObj, const GUrl &dstUrl) {
     QList<Annotation *> annotations = aObj->getAnnotations(); // copy for further modification
     if (annotations.isEmpty()) {
@@ -64,8 +56,7 @@ void ExportObjectUtils::exportAnnotations(const AnnotationTableObject *aObj, con
     QString fileName = GUrlUtils::rollFileName(dstUrl.dirPath() + "/" + dstUrl.baseFileName()
         + "_annotations.csv", DocumentUtils::getNewDocFileNameExcludesHint());
 
-    QSet<QString> annotationNamesForConstraint = getSetOfAnnotationNames(aObj->getAnnotations());
-    QObjectScopedPointer<ExportAnnotationsDialog> d = new ExportAnnotationsDialog(fileName, annotationNamesForConstraint, QApplication::activeWindow());
+    QObjectScopedPointer<ExportAnnotationsDialog> d = new ExportAnnotationsDialog(fileName, QApplication::activeWindow());
 
     const int dialogResult = d->exec();
     CHECK(!d.isNull(), );

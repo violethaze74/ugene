@@ -127,8 +127,6 @@ public:
 
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
-    virtual bool checkConstraints(const DocumentFormatConstraints& c) const;
-    
 protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
@@ -164,7 +162,7 @@ private:
      * Values "transcript" and "missing_data" were added because they are
      * used in the Cufflinks output. Other values are from the GTF spec.
      */
-    QSet<QString> GTF_FEATURE_FIELD_VALUES;
+    QList<QString> GTF_FEATURE_FIELD_VALUES;
 };
 
 
