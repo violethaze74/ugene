@@ -67,10 +67,10 @@ private:
     static const QString DEFAULT_PE_ADAPTERS;
 };
 
-class IlluminaClipAdditionalSettingsDialog : public QDialog, private Ui_IlluminaClipAdditionalSettingsDialog {
+class IlluminaClipAdditionalSettingsDialog : public QDialog, public Ui_IlluminaClipAdditionalSettingsDialog {
     Q_OBJECT
 public:
-    IlluminaClipAdditionalSettingsDialog(const QVariantMap &widgetState);
+    IlluminaClipAdditionalSettingsDialog(const QVariantMap &widgetState, QWidget* parent = NULL);
 
     static QVariantMap extractState(const QVariantMap &fromState);
     QVariantMap getState() const;
