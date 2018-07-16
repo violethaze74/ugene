@@ -86,9 +86,7 @@ namespace {
             throw ReadFailed(HRSchemaSerializer::tr("Parameter '%1' undefined for element '%2'").
                 arg(attrId).arg(proc->getLabel()));
         }
-        QString id = attr->getAttributeType()->getId();
-        DataTypeValueFactoryRegistry* registry = WorkflowEnv::getDataTypeValueFactoryRegistry();
-        DataTypeValueFactory * valueFactory = registry->getById(id);
+        DataTypeValueFactory * valueFactory = WorkflowEnv::getDataTypeValueFactoryRegistry()->getById(attr->getAttributeType()->getId());
         if( valueFactory == NULL ) {
             throw ReadFailed(HRSchemaSerializer::tr("Cannot parse value from '%1': no value factory").arg(valueStr));
         }
@@ -1294,7 +1292,7 @@ void HRSchemaSerializer::postProcessing(Schema *schema) {
                 CHECK(p != NULL, );
                 CHECK(a->hasParameter(attr->getId()), );
                 QVariant value = a->getParameter(attr->getId())->getAttributePureValue();
-                if (!p->getLinks().isEmpty() && pd->isValidValue(value)) {
+                if (!p->getLinks().isEmpty() && pd->valuesWithEnabledPortIsNotContains(value)) {
                     a->setParameter(attr->getId(), pd->getValuesWithEnabledPort().first());
                 }
             }

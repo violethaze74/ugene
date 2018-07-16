@@ -53,9 +53,6 @@ namespace LocalWorkflow {
 
 const QString SpadesWorkerFactory::ACTOR_ID = "spades-id";
 
-const QString SpadesWorkerFactory::READS_URL_SLOT_ID = "readsurl";
-const QString SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID = "readspairedurl";
-
 const QStringList SpadesWorkerFactory::READS_URL_SLOT_ID_LIST = QStringList() <<
                                                                  "readsurl" <<
                                                                  "readsurl-2" <<
@@ -71,9 +68,6 @@ const QStringList SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID_LIST = QStringLi
                                                                   "readspairedurl" <<
                                                                   "readspairedurl-2" <<
                                                                   "readspairedurl-3";
-
-const QString SpadesWorkerFactory::IN_TYPE_ID = "spades-data";
-const QString SpadesWorkerFactory::IN_PAIRED_TYPE_ID = "spades-paired-data";
 
 const QStringList SpadesWorkerFactory::IN_TYPE_ID_LIST = QStringList() <<
                                                        "spades-data" <<
@@ -110,21 +104,60 @@ const QStringList SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST = QStringList() <<
 
 const QString SpadesWorkerFactory::MAP_TYPE_ID = "map";
 
-const QString SpadesWorkerFactory::IN_PORT_DESCR = "in-data";
-
 const QString SpadesWorkerFactory::OUT_PORT_DESCR = "out-data";
 
 const QString SpadesWorkerFactory::OUTPUT_DIR = "output-dir";
 
 const QString SpadesWorkerFactory::BASE_SPADES_SUBDIR = "spades";
 
+/************************************************************************/
+/* SpadesInputSlotsValidator */
+/************************************************************************/
+SpadesInputSlotsValidator::SpadesInputSlotsValidator(const QString& _urlSlotId, const QString& _pairedUrlSlotId)
+    : urlSlotId(_urlSlotId), pairedUrlSlotId(_pairedUrlSlotId) {}
+
+bool SpadesInputSlotsValidator::validate(const IntegralBusPort *port, ProblemList &problemList) const {
+    QVariant busMap = port->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
+    bool data = isBinded(busMap.value<StrStrMap>(), urlSlotId);
+    if (!data){
+        QString dataName = slotName(port, urlSlotId);
+        problemList.append(Problem(IntegralBusPort::tr("The slot must be not empty: '%1'").arg(dataName)));
+        return false;
+    }
+
+    QString slot1Val = busMap.value<StrStrMap>().value(urlSlotId);
+    QString slot2Val = busMap.value<StrStrMap>().value(pairedUrlSlotId);
+    U2OpStatusImpl os;
+    const QList<IntegralBusSlot>& slots1 = IntegralBusSlot::listFromString(slot1Val, os);
+    const QList<IntegralBusSlot>& slots2 = IntegralBusSlot::listFromString(slot2Val, os);
+
+    bool hasCommonElements = false;
+
+    foreach(const IntegralBusSlot& ibsl1, slots1){
+        if (hasCommonElements){
+            break;
+        }
+        foreach(const IntegralBusSlot& ibsl2, slots2){
+            if (ibsl1 == ibsl2){
+                hasCommonElements = true;
+                break;
+            }
+        }
+    }
+
+    if (hasCommonElements){
+        problemList.append(Problem(SpadesWorker::tr("SPAdes cannot recognize read pairs from the same file. Please, perform demultiplexing first.")));
+        return false;
+    }
+
+    return true;
+}
 
 /************************************************************************/
 /* Worker */
 /************************************************************************/
 SpadesWorker::SpadesWorker(Actor *p)
 : BaseWorker(p, false)
-, inChannel(NULL)
 , output(NULL)
 {
 
@@ -139,10 +172,6 @@ void SpadesWorker::init() {
         inChannels << channel;
         readsFetchers << DatasetFetcher(this, channel, context);
     }
-    //foreach(const QString& portDesc, SpadesWorkerFactory::IN_PORT_ID_LIST) {
-    //    inChannels << ports.value(portDesc);
-    //}
-    inChannel = ports.value(SpadesWorkerFactory::IN_PORT_DESCR);
     output = ports.value(SpadesWorkerFactory::OUT_PORT_DESCR);
 }
 
@@ -219,16 +248,6 @@ bool SpadesWorker::isReady() const {
         res = res && (hasMsg || ended);
     }
 
-    //if (res) {
-    //    foreach(Port* port, inPorts) {
-    //        CHECK_CONTINUE(port->isEnabled());
-    //        IntegralBus *inChannel = ports.value(port->getId());
-    //        int hasMsg = inChannel->hasMessage();
-    //        bool ended = inChannel->isEnded();
-    //        res = res && (hasMsg || ended);
-    //    }
-    //}
-
     return res;
 }
 
@@ -285,7 +304,6 @@ void SpadesWorker::sl_taskFinished() {
         return;
     }
 
-
      QString url = t->getResultUrl();
 
      QVariantMap data;
@@ -294,10 +312,7 @@ void SpadesWorker::sl_taskFinished() {
 
     context->getMonitor()->addOutputFile(url, getActor()->getId());
 
-    if (inChannel->isEnded() && !inChannel->hasMessage()) {
-        setDone();
-        output->setEnded();
-    }
+    trySetDone();
 }
 
 GenomeAssemblyTaskSettings SpadesWorker::getSettings( U2OpStatus &os ){
@@ -351,84 +366,10 @@ static const QString INPUT_DATA_DESCRIPTION = QObject::tr("<html><head></head><b
     "Sanger, Oxford Nanopore and PacBio CLR reads can be provided in both formats since SPAdes does not run error correction for these types of data.</p>"
     "</body></html>");
 
-class SpadesInputSlotsValidator : public PortValidator {
-    public:
-
-    bool validate(const IntegralBusPort *port, ProblemList &problemList) const {
-        QVariant busMap = port->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
-        bool data = isBinded(busMap.value<StrStrMap>(), SpadesWorkerFactory::READS_URL_SLOT_ID);
-        if (!data){
-            QString dataName = slotName(port, SpadesWorkerFactory::READS_URL_SLOT_ID);
-            problemList.append(Problem(IntegralBusPort::tr("The slot must be not empty: '%1'").arg(dataName)));
-            return false;
-        }
-
-
-        QString slot1Val = busMap.value<StrStrMap>().value(SpadesWorkerFactory::READS_URL_SLOT_ID);
-        QString slot2Val = busMap.value<StrStrMap>().value(SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID);
-        U2OpStatusImpl os;
-        const QList<IntegralBusSlot>& slots1 = IntegralBusSlot::listFromString(slot1Val, os);
-        const QList<IntegralBusSlot>& slots2 = IntegralBusSlot::listFromString(slot2Val, os);
-
-        bool hasCommonElements = false;
-
-        foreach(const IntegralBusSlot& ibsl1, slots1){
-            if (hasCommonElements){
-                break;
-            }
-            foreach(const IntegralBusSlot& ibsl2, slots2){
-                if (ibsl1 == ibsl2){
-                    hasCommonElements = true;
-                    break;
-                }
-            }
-        }
-
-        if (hasCommonElements){
-            problemList.append(Problem(SpadesWorker::tr("SPAdes cannot recognize read pairs from the same file. Please, perform demultiplexing first.")));
-            return false;
-        }
-
-        return true;
-    }
-    };
-
 void SpadesWorkerFactory::init() {
     QList<PortDescriptor*> portDescs;
 
     //in port
-
-/*    QList<Descriptor> readsDescriptors;
-    foreach(const QString& readsUrlSlotId, READS_URL_SLOT_ID_LIST) {
-        readsDescriptors << Descriptor(readsUrlSlotId,
-                SpadesWorker::tr("URL of a file with reads"),
-                SpadesWorker::tr("Input reads to be assembled."));
-    }
-    QList<Descriptor> readsPairedDescriptors;
-    foreach(const QString& readsPairedUrlSlotId, READS_PAIRED_URL_SLOT_ID_LIST) {
-        readsPairedDescriptors << Descriptor(readsPairedUrlSlotId,
-            SpadesWorker::tr("URL of a file with right pair reads"),
-            SpadesWorker::tr("Input right pair reads to be assembled."));
-    }
-
-    QList<DataTypePtr> inTypeSetList;
-    foreach(const QString& inTypeId, IN_TYPE_ID_LIST) {
-        QMap<Descriptor, DataTypePtr> inTypeMap;
-        const int index = IN_TYPE_ID_LIST.indexOf(inTypeId);
-        Descriptor readDesc = readsDescriptors[index];
-        inTypeMap[readDesc] = BaseTypes::STRING_TYPE();
-        inTypeSetList << DataTypePtr(new MapDataType(inTypeId, inTypeMap));
-    }
-    QList<DataTypePtr> inTypeSetPairedList;
-    foreach(const QString& inPairedTypeId, IN_PAIRED_TYPE_ID_LIST) {
-        QMap<Descriptor, DataTypePtr> inPairedTypeMap;
-        const int indexPaired = IN_PAIRED_TYPE_ID_LIST.indexOf(inPairedTypeId);
-        Descriptor readDescPared = readsPairedDescriptors[indexPaired];
-        inPairedTypeMap[readDescPared] = BaseTypes::STRING_TYPE();
-        inTypeSetList << DataTypePtr(new MapDataType(inPairedTypeId, inPairedTypeMap));
-    }*/
-
-
     QList<Descriptor> readDescriptors;
     foreach(const QString& readId, IN_PORT_ID_LIST) {
         readDescriptors << Descriptor(readId,
@@ -479,29 +420,6 @@ void SpadesWorkerFactory::init() {
         DataTypePtr inTypeSet(new MapDataType(IN_TYPE_ID_LIST[index], inTypeMap));
         portDescs << new PortDescriptor(readDescriptors[index], inTypeSet, true);
     }
-
-    //Descriptor readsDesc(READS_URL_SLOT_ID,
-    //    SpadesWorker::tr("URL of a file with reads"),
-    //    SpadesWorker::tr("Input reads to be assembled."));
-    //Descriptor readsPairedDesc(READS_PAIRED_URL_SLOT_ID,
-    //    SpadesWorker::tr("URL of a file with right pair reads"),
-    //    SpadesWorker::tr("Input right pair reads to be assembled."));
-
-    //QMap<Descriptor, DataTypePtr> inTypeMap;
-    //inTypeMap[readsDesc] = BaseTypes::STRING_TYPE();
-    //DataTypePtr inTypeSet(new MapDataType(IN_TYPE_ID, inTypeMap));
-
-    //QMap<Descriptor, DataTypePtr> inTypeMapPaired;
-    //inTypeMapPaired[readsDesc] = BaseTypes::STRING_TYPE();
-    //inTypeMapPaired[readsPairedDesc] = BaseTypes::STRING_TYPE();
-    //DataTypePtr inTypeSetPaired(new MapDataType(IN_PAIRED_TYPE_ID, inTypeMapPaired));
-
-    //foreach (const Descriptor& readDesc, readDescriptors) {
-    //    portDescs << new PortDescriptor(readDesc, inTypeSet, true);
-    //}
-    //foreach (const Descriptor& readPairedDesc, readPairedDescriptors) {
-    //    portDescs << new PortDescriptor(readPairedDesc, inTypeSetPaired, true);
-    //}
 
     //out port
     QMap<Descriptor, DataTypePtr> outTypeMap;
@@ -612,8 +530,15 @@ void SpadesWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
     proto->setPrompter(new SpadesPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPortValidator(IN_PORT_DESCR, new SpadesInputSlotsValidator());
-    //proto->addExternalTool(ET_SPADES);
+    for (int i = 0; i < IN_PORT_PAIRED_ID_LIST.size(); i++) {
+        proto->setPortValidator(IN_PORT_PAIRED_ID_LIST[i], new SpadesInputSlotsValidator(READS_URL_SLOT_ID_LIST[i], READS_PAIRED_URL_SLOT_ID_LIST[i]));
+    }
+    for (int i = 0; i < IN_PORT_ID_LIST.size(); i++) {
+        const int index = READS_PAIRED_URL_SLOT_ID_LIST.size() + i;
+        proto->setPortValidator(IN_PORT_ID_LIST[i], new SpadesInputSlotsValidator(READS_URL_SLOT_ID_LIST[index], QString()));
+
+    }
+    proto->addExternalTool(ET_SPADES);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new SpadesWorkerFactory());
 }
@@ -625,7 +550,9 @@ Worker *SpadesWorkerFactory::createWorker(Actor *a) {
 QString SpadesPrompter::composeRichDoc() {
     QString res = "";
 
-    Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(SpadesWorkerFactory::IN_PORT_DESCR))->getProducer(SpadesWorkerFactory::READS_URL_SLOT_ID);
+    Actor* readsProducer =
+        qobject_cast<IntegralBusPort*>(target->getPort(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.first()))
+                                                ->getProducer(SpadesWorkerFactory::READS_URL_SLOT_ID_LIST.first());
 
     QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;

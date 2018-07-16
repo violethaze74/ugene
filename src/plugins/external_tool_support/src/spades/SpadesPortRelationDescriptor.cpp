@@ -42,11 +42,11 @@ SpadesPortRelationDescriptor* SpadesPortRelationDescriptor::clone() const {
     return new SpadesPortRelationDescriptor(*this);
 }
 
-bool SpadesPortRelationDescriptor::isValidValue(const QVariant& value) const {
+bool SpadesPortRelationDescriptor::valuesWithEnabledPortIsNotContains(const QVariant& value) const {
     QMap<QString, QVariant> valueMap = value.toMap();
     bool isEnabled = false;
     foreach(const QString& key, valueMap.keys()) {
-        isEnabled = PortRelationDescriptor::isValidValue(key);
+        isEnabled = PortRelationDescriptor::valuesWithEnabledPortIsNotContains(key);
         CHECK_BREAK(isEnabled);
     }
     return isEnabled;

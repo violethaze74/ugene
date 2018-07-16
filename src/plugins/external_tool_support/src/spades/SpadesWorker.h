@@ -33,6 +33,17 @@ class GenomeAssemblyTaskSettings;
 namespace U2 {
 namespace LocalWorkflow {
 
+
+class SpadesInputSlotsValidator : public PortValidator {
+public:
+    SpadesInputSlotsValidator(const QString& urlSlotId, const QString& pairedUrlSlotId);
+    bool validate(const IntegralBusPort *port, ProblemList &problemList) const;
+
+private:
+    QString urlSlotId;
+    QString pairedUrlSlotId;
+};
+
 class SpadesWorker : public BaseWorker {
     Q_OBJECT
 public:
@@ -49,9 +60,7 @@ private:
     void trySetDone();
 
     QList<DatasetFetcher> readsFetchers;
-    //QList<DatasetFetcher> readsPairedFetchers;
     QList<IntegralBus*> inChannels;
-    IntegralBus *inChannel;
     IntegralBus *output;
 
 private:
@@ -69,14 +78,8 @@ public:
 
     static const QString ACTOR_ID;
 
-    static const QString READS_URL_SLOT_ID;
-    static const QString READS_PAIRED_URL_SLOT_ID;
-
     static const QStringList READS_URL_SLOT_ID_LIST;
     static const QStringList READS_PAIRED_URL_SLOT_ID_LIST;
-
-    static const QString IN_TYPE_ID;
-    static const QString IN_PAIRED_TYPE_ID;
 
     static const QStringList IN_TYPE_ID_LIST;
     static const QStringList IN_PAIRED_TYPE_ID_LIST;
@@ -91,8 +94,6 @@ public:
     static const QStringList IN_PORT_PAIRED_ID_LIST;
 
     static const QString MAP_TYPE_ID;
-
-    static const QString IN_PORT_DESCR;
 
     static const QString OUT_PORT_DESCR;
 

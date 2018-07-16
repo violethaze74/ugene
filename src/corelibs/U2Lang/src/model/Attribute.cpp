@@ -83,7 +83,6 @@ void Attribute::copy(const Attribute &other) {
     foreach(const PortRelationDescriptor* portRelation, other.portRelations) {
         portRelations << portRelation->clone();
     }
-    //portRelations = other.portRelations;
 
     slotRelations.clear();
     slotRelations = other.slotRelations;

@@ -34,7 +34,7 @@ public:
 
     SpadesPortRelationDescriptor* clone() const;
 
-    bool isValidValue(const QVariant& value) const;
+    bool valuesWithEnabledPortIsNotContains(const QVariant& value) const;
 };
 
 }
