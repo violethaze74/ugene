@@ -86,7 +86,9 @@ QString ClassificationFilterPrompter::composeRichDoc() {
 /************************************************************************/
 
 bool ClassificationFilterValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    return validateTaxaListAttribute(actor, problemList);
+    const bool taxaListAttributeValid = validateTaxaListAttribute(actor, problemList);
+    const bool taxonomyTreeValid = validateTaxonomyTree(actor, problemList);
+    return taxaListAttributeValid && taxonomyTreeValid;
 }
 
 bool ClassificationFilterValidator::validateTaxaListAttribute(const Actor *actor, ProblemList &problemList) const {
@@ -100,19 +102,28 @@ bool ClassificationFilterValidator::validateTaxaListAttribute(const Actor *actor
         if (OK) {
             taxons.insert(id);
         } else {
-            problemList << Problem(ClassificationFilterPrompter::tr("Invalid taxon ID: %1").arg(idStr), actor->getId());
+            problemList << Problem(tr("Invalid taxon ID: %1").arg(idStr), actor->getId());
             return false;
         }
     }
 
     if (!saveUnspecificSequences && taxons.isEmpty()) {
-        problemList << Problem(ClassificationFilterPrompter::tr("Set \"%1\" to \"True\" or select a taxon in \"%2\".")
+        problemList << Problem(tr("Set \"%1\" to \"True\" or select a taxon in \"%2\".")
             .arg(actor->getParameter(ClassificationFilterWorkerFactory::SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getDisplayName())
             .arg(actor->getParameter(ClassificationFilterWorkerFactory::TAXONS)->getDisplayName()), actor->getId());
         return false;
     }
 
     return true;
+}
+
+bool ClassificationFilterValidator::validateTaxonomyTree(const Actor *actor, ProblemList &problemList) const {
+    bool valid = true;
+    if (!TaxonomyTree::getInstance()->isValid()) {
+        problemList << Problem(tr("Taxonomy classification data are not available."), actor->getId());
+        valid = false;
+    }
+    return valid;
 }
 
 /************************************************************************/

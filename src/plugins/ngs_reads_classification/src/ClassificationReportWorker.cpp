@@ -300,7 +300,7 @@ struct ClassificationReportLine {
                 .append(QByteArray::number(superkingdom_tax_id)).append('\t').append(fmt(superkingdom_name)).append('\t').append(QByteArray::number(phylum_tax_id)).append('\t').append(fmt(phylum_name)).append('\t')
                 .append(QByteArray::number(class_tax_id)).append('\t').append(fmt(class_name)).append('\t').append(QByteArray::number(order_tax_id)).append('\t').append(fmt(order_name)).append('\t')
                 .append(QByteArray::number(family_tax_id)).append('\t').append(fmt(family_name)).append('\t').append(QByteArray::number(genus_tax_id)).append('\t').append(fmt(genus_name)).append('\t')
-                .append(QByteArray::number(species_tax_id)).append('\t').append(species_name).append('\t').append(QByteArray::number(directly_num)).append('\t')
+                .append(QByteArray::number(species_tax_id)).append('\t').append(fmt(species_name)).append('\t').append(QByteArray::number(directly_num)).append('\t')
                 .append(QByteArray::number(directly_proportion_all * 100, 'f', 3)).append('\t').append(QByteArray::number(directly_proportion_classified * 100, 'f', 3)).append('\t')
                 .append(QByteArray::number(clade_num)).append('\t').append(QByteArray::number(clade_proportion_all * 100, 'f', 3)).append('\t').append(QByteArray::number(clade_proportion_classified * 100, 'f', 3));
     }
@@ -330,7 +330,6 @@ static void fill(QHash<TaxID, uint> &claded, QHash<TaxID, ClassificationReportLi
 
     QString rank = line.rank = tree->getRank(id);
     QString name = line.tax_name = tree->getName(id);
-
     do {
         claded[id] += line.directly_num;
 

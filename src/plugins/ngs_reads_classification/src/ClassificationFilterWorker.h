@@ -90,11 +90,13 @@ protected:
 };
 
 class ClassificationFilterValidator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(ClassificationFilterValidator)
 public:
     bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString>& options) const;
 
 private:
     bool validateTaxaListAttribute(const Actor *actor, ProblemList &problemList) const;
+    bool validateTaxonomyTree(const Actor *actor, ProblemList &problemList) const;
 };
 
 class ClassificationFilterWorkerFactory : public DomainFactory {

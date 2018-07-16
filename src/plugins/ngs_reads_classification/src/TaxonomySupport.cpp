@@ -215,10 +215,13 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), algoLog.error(QString("Taxonomy data is not configured")), tree);
 
+    bool hasError = false;
+
     QString nodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID);
     QFile nodesFile(nodesUrl);
     if (!nodesFile.open(QIODevice::ReadOnly)) {
-        algoLog.error(QString("Cannot open taxonomy classification data: %1").arg(nodesUrl));
+        algoLog.error(QString("Cannot open taxonomy classification data: %1").arg(nodesUrl.isEmpty() ? NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID : nodesUrl));
+        hasError = true;
     } else {
         GTIMER(cvar, tvar, "TaxonomyTree::nodes");
         QList<TaxID> &nodes = tree->nodes;
@@ -271,6 +274,7 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
                 }
             }
             algoLog.error(QString("Broken nodes.dmp file : %1").arg(nodesUrl));
+            hasError = true;
             break;
         }
         nodesFile.close();
@@ -279,7 +283,8 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
     QString namesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID);
     QFile namesFile(namesUrl);
     if (!namesFile.open(QIODevice::ReadOnly)) {
-        algoLog.error(QString("Cannot open taxonomy classification data: %1").arg(namesUrl));
+        algoLog.error(QString("Cannot open taxonomy classification data: %1").arg(namesUrl.isEmpty() ? NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID : namesUrl));
+        hasError = true;
     } else {
         GTIMER(cvar, tvar, "TaxonomyTree::names");
         QStringList &names = tree->names;
@@ -311,12 +316,13 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
             }
             if (!ok) {
                 algoLog.error(QString("Broken names.dmp file : %1").arg(namesUrl));
+                hasError = true;
                 break;
             }
         }
         namesFile.close();
     }
-    tree->valid = true;
+    tree->valid = !hasError;
     return tree;
 }
 
