@@ -115,7 +115,9 @@ void BowtieWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings){
 void BowtieWorkerFactory::init() {
     QList<Attribute*> attrs;
     QMap<QString, PropertyDelegate*> delegates;
-    addCommonAttributes(attrs, delegates, "Bowtie");
+    addCommonAttributes(attrs, delegates,
+                        BowtieWorker::tr("Bowtie index folder"),
+                        BowtieWorker::tr("Bowtie index basename"));
     {
          static const QString MISMATCHES_TYPE = "mismatches_type";
          static const QString N_MISMATCHES = "n-mismatches";

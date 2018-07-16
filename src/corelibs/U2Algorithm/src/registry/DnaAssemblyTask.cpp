@@ -30,8 +30,8 @@
 
 namespace U2 {
 
-const QString DnaAssemblyToRefTaskSettings::INDEX = "Index";
-const QString DnaAssemblyToRefTaskSettings::SEQUENCE = "Sequence";
+const QString DnaAssemblyToRefTaskSettings::INDEX = QObject::tr("Index");
+const QString DnaAssemblyToRefTaskSettings::SEQUENCE = QObject::tr("Sequence");
 
 DnaAssemblyToReferenceTask::DnaAssemblyToReferenceTask(const DnaAssemblyToRefTaskSettings &settings, TaskFlags flags, bool justBuildIndex)
     : ExternalToolSupportTask(tr("Align short reads"), flags),

@@ -148,7 +148,9 @@ void BwaMemWorkerFactory::init() {
     QList<Attribute*> attrs;
     QMap<QString, PropertyDelegate*> delegates;
 
-    addCommonAttributes(attrs, delegates, "BWA_MEM");
+    addCommonAttributes(attrs, delegates,
+                        BwaMemWorker::tr("BWA index folder"),
+                        BwaMemWorker::tr("BWA index basename"));
     {
         Descriptor threads(THREADS,
             BwaMemWorker::tr("Number of threads"),

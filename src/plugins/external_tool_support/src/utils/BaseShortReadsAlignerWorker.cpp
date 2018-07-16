@@ -288,26 +288,9 @@ int BaseShortReadsAlignerWorkerFactory::getThreadsCount(){
     return threads;
 }
 
-void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates, QString mainWorkerType) {
+void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates,
+                                                             QString descrIndexFolder, QString descrIndexBasename) {
     {
-       QString descrIndexFolder = "", descrIndexBasename = "", descrIndexAlgorithm = "";
-
-        if (mainWorkerType == "Bowtie") {
-            descrIndexFolder = BaseShortReadsAlignerWorker::tr("Bowtie index folder");
-            descrIndexBasename = BaseShortReadsAlignerWorker::tr("Bowtie index basename");
-        } else if (mainWorkerType == "Bowtie2") {
-            descrIndexFolder = BaseShortReadsAlignerWorker::tr("Bowtie index folder");
-            descrIndexBasename = BaseShortReadsAlignerWorker::tr("Bowtie index basename");
-        } else if (mainWorkerType == "BWA") {
-            descrIndexFolder = BaseShortReadsAlignerWorker::tr("BWA index folder");
-            descrIndexBasename = BaseShortReadsAlignerWorker::tr("BWA index basename");
-            descrIndexAlgorithm = BaseShortReadsAlignerWorker::tr("Index algorithm");
-        } else if (mainWorkerType == "BWA_MEM") {
-            descrIndexFolder = BaseShortReadsAlignerWorker::tr("BWA index folder");
-            descrIndexBasename = BaseShortReadsAlignerWorker::tr("BWA index basename");
-            descrIndexAlgorithm = BaseShortReadsAlignerWorker::tr("Index algorithm");
-        }
-
         Descriptor referenceInputType(REFERENCE_INPUT_TYPE,
             BaseShortReadsAlignerWorker::tr("Reference input type"),
             BaseShortReadsAlignerWorker::tr("Select \"Sequence\" to input a reference genome as a sequence file. "
