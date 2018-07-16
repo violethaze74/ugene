@@ -152,7 +152,7 @@ QMap<QString, QVariant> SpadesPropertyDialog::getValue() const {
 
     //requaired
     if (needRequiredSequencingPlatform()) {
-        result.insert(SpadesWorkerFactory::REQUIRED_SEQUENCING_PLATFORM_ID,
+        result.insert(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID,
                       sequencingPlatformComboBox->currentText());
 
         if (pairEndCheckBox->isChecked()) {
@@ -175,8 +175,9 @@ QMap<QString, QVariant> SpadesPropertyDialog::getValue() const {
 
     //additional
     if (needAdditionalSequencingPlatform()) {
-        result.insert(SpadesWorkerFactory::ADDITIONAL_SEQUENCING_PLATFORM_ID,
-                      sequencingPlatformAdditionalComboBox->currentText());
+        if (!result.contains(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID))
+            result.insert(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID,
+                          sequencingPlatformComboBox->currentText());
 
         if (matePairsCheckBox->isChecked()) {
             result.insert(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1],
@@ -206,8 +207,8 @@ QMap<QString, QVariant> SpadesPropertyDialog::getValue() const {
 
 void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
     //requaired
-    if (value.contains(SpadesWorkerFactory::REQUIRED_SEQUENCING_PLATFORM_ID)) {
-        const QString platform = value.value(SpadesWorkerFactory::REQUIRED_SEQUENCING_PLATFORM_ID).toString();
+    if (value.contains(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID)) {
+        const QString platform = value.value(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID).toString();
         sequencingPlatformComboBox->setCurrentText(platform);
 
         if (value.contains(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[0])) {
@@ -230,17 +231,12 @@ void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
     pacBioCcsCheckBox->setChecked(value.contains(SpadesWorkerFactory::IN_PORT_ID_LIST[1]));
 
     //additional
-    if (value.contains(SpadesWorkerFactory::ADDITIONAL_SEQUENCING_PLATFORM_ID)) {
-        const QString additionalPlatform = value.value(SpadesWorkerFactory::ADDITIONAL_SEQUENCING_PLATFORM_ID).toString();
-        sequencingPlatformAdditionalComboBox->setCurrentText(additionalPlatform);
-
-        if (value.contains(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1])) {
-            matePairsCheckBox->setChecked(true);
-            const QString matePairsValue = value.value(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1]).toString();
-            const QStringList matePairsSplittedValues = matePairsValue.split(":");
-            matePairsReadsDirectionComboBox->setCurrentText(matePairsSplittedValues.first());
-            matePairsTypeComboBox->setCurrentText(matePairsSplittedValues.last());
-        }
+    if (value.contains(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1])) {
+        matePairsCheckBox->setChecked(true);
+        const QString matePairsValue = value.value(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1]).toString();
+        const QStringList matePairsSplittedValues = matePairsValue.split(":");
+        matePairsReadsDirectionComboBox->setCurrentText(matePairsSplittedValues.first());
+        matePairsTypeComboBox->setCurrentText(matePairsSplittedValues.last());
     }
     pacBioClrCheckBox->setChecked(value.contains(SpadesWorkerFactory::IN_PORT_ID_LIST[2]));
     oxfordNanoporeCheckBox->setChecked(value.contains(SpadesWorkerFactory::IN_PORT_ID_LIST[3]));

@@ -78,6 +78,12 @@ void SpadesTask::prepare() {
         arguments.append("--only-error-correction");
     }
 
+    QVariantMap inputDataDialogSettings = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariantMap()).toMap();
+    QString sequencingPlatform = inputDataDialogSettings.value(LocalWorkflow::SpadesWorkerFactory::SEQUENCING_PLATFORM_ID, QString()).toString();
+    if (sequencingPlatform == "Ion Torrent") {
+        arguments.append("--iontorrent");
+    }
+
     arguments.append("--dataset");
     arguments.append(settings.outDir.getURLString() + QDir::separator() + SpadesTask::YAML_FILE_NAME);
 

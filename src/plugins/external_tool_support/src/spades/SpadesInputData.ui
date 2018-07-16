@@ -74,19 +74,64 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetMinAndMaxSize</enum>
          </property>
-         <item row="2" column="3">
-          <widget class="QComboBox" name="hightQualityReadsTypeComboBox">
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="pairEndCheckBox">
+           <property name="text">
+            <string>Paired-end reads</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="3">
+          <widget class="QComboBox" name="sequencingPlatformComboBox">
+           <item>
+            <property name="text">
+             <string>Illumina</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Ion Torrent</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Sequencing platform</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QComboBox" name="pairEndReadsDirectionComboBox">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <item>
             <property name="text">
-             <string>Separate reads</string>
+             <string>fr</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Interlaced reads</string>
+             <string>rf</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ff</string>
             </property>
            </item>
           </widget>
@@ -113,53 +158,17 @@
            </item>
           </widget>
          </item>
-         <item row="1" column="2">
-          <widget class="QComboBox" name="pairEndReadsDirectionComboBox">
-           <property name="enabled">
-            <bool>false</bool>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="higntQualityCheckBox">
+           <property name="text">
+            <string>High-quality mate-pairs</string>
            </property>
-           <item>
-            <property name="text">
-             <string>fr</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>rf</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>ff</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="0" column="1" colspan="3">
-          <widget class="QComboBox" name="sequencingPlatformComboBox">
-           <item>
-            <property name="text">
-             <string>Illumina</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Ion Torrent</string>
-            </property>
-           </item>
           </widget>
          </item>
          <item row="3" column="0" colspan="2">
           <widget class="QCheckBox" name="unpairedReadsCheckBox">
            <property name="text">
             <string>Unpaired reads</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QCheckBox" name="higntQualityCheckBox">
-           <property name="text">
-            <string>High-quality mate-pairs</string>
            </property>
           </widget>
          </item>
@@ -180,30 +189,21 @@
            </item>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QCheckBox" name="pairEndCheckBox">
-           <property name="text">
-            <string>Paired-end reads</string>
+         <item row="2" column="3">
+          <widget class="QComboBox" name="hightQualityReadsTypeComboBox">
+           <property name="enabled">
+            <bool>false</bool>
            </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>150</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Sequencing platform</string>
-           </property>
+           <item>
+            <property name="text">
+             <string>Separate reads</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Interlaced reads</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>
@@ -380,37 +380,20 @@
          <property name="sizeConstraint">
           <enum>QLayout::SetMinAndMaxSize</enum>
          </property>
-         <item row="1" column="0">
+         <item row="0" column="0">
           <widget class="QCheckBox" name="matePairsCheckBox">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Mate-pairs</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1" colspan="3">
-          <widget class="QComboBox" name="sequencingPlatformAdditionalComboBox">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="sizeAdjustPolicy">
-            <enum>QComboBox::AdjustToContents</enum>
-           </property>
-           <item>
-            <property name="text">
-             <string>Illumina</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Ion Torrent</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="1" column="2">
+         <item row="0" column="1">
           <widget class="QComboBox" name="matePairsReadsDirectionComboBox">
            <property name="enabled">
             <bool>false</bool>
@@ -432,26 +415,7 @@
            </item>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>150</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Sequencing platform</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3">
+         <item row="0" column="2">
           <widget class="QComboBox" name="matePairsTypeComboBox">
            <property name="enabled">
             <bool>false</bool>

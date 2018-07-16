@@ -92,8 +92,7 @@ const QString SpadesWorkerFactory::OUT_TYPE_ID = "spades-data-out";
 
 const QString SpadesWorkerFactory::SCAFFOLD_OUT_SLOT_ID = "scaffolds-out";
 
-const QString SpadesWorkerFactory::REQUIRED_SEQUENCING_PLATFORM_ID = "required-platform-id";
-const QString SpadesWorkerFactory::ADDITIONAL_SEQUENCING_PLATFORM_ID = "additional-platform-id";
+const QString SpadesWorkerFactory::SEQUENCING_PLATFORM_ID = "platform-id";
 
 const QStringList SpadesWorkerFactory::IN_PORT_ID_LIST = QStringList() <<
                                                        SINGLE_UNPAIRED <<
@@ -570,7 +569,7 @@ void SpadesWorkerFactory::init() {
 
         QMap<QString, QVariant> defaultValue;
         defaultValue.insert(IN_PORT_PAIRED_ID_LIST[0], QString("%1:%2").arg(ORIENTATION_FR).arg(TYPE_SINGLE));
-        defaultValue.insert(REQUIRED_SEQUENCING_PLATFORM_ID, "Illumina");
+        defaultValue.insert(SEQUENCING_PLATFORM_ID, "Illumina");
         Attribute* inputAttr = new Attribute(inputData, BaseTypes::MAP_TYPE(), false, QVariant::fromValue<QMap<QString, QVariant>>(defaultValue));
         foreach (const QString& read, IN_PORT_ID_LIST) {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(read, QVariantList() << read));
@@ -614,7 +613,7 @@ void SpadesWorkerFactory::init() {
     proto->setPrompter(new SpadesPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new SpadesInputSlotsValidator());
-    proto->addExternalTool(ET_SPADES);
+    //proto->addExternalTool(ET_SPADES);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new SpadesWorkerFactory());
 }

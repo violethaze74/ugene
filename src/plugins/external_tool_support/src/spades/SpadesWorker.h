@@ -85,8 +85,7 @@ public:
 
     static const QString SCAFFOLD_OUT_SLOT_ID;
 
-    static const QString REQUIRED_SEQUENCING_PLATFORM_ID;
-    static const QString ADDITIONAL_SEQUENCING_PLATFORM_ID;
+    static const QString SEQUENCING_PLATFORM_ID;
 
     static const QStringList IN_PORT_ID_LIST;
     static const QStringList IN_PORT_PAIRED_ID_LIST;
