@@ -37,7 +37,7 @@ PortRelationDescriptor* PortRelationDescriptor::clone() const {
 }
 
 bool PortRelationDescriptor::valuesWithEnabledPortIsNotContains(const QVariant& value) const{
-    return !isPortEnabled(value);
+    return !valuesWithEnabledPort.contains(value);
 }
 
 QVariantList PortRelationDescriptor::getValuesWithEnabledPort() const {
