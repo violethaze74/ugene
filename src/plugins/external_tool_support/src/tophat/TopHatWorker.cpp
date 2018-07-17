@@ -416,8 +416,8 @@ void TopHatWorkerFactory::init()
 
     {
         QVariantMap rip;
-        rip[TopHatSettings::SEQUENCE] = TopHatSettings::SEQUENCE;
-        rip[TopHatSettings::INDEX] = TopHatSettings::INDEX;
+        rip[TopHatWorker::tr("sequence")] = TopHatSettings::SEQUENCE;
+        rip[TopHatWorker::tr("index")] = TopHatSettings::INDEX;
         delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
 
         delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);

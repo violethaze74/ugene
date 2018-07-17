@@ -28,8 +28,8 @@
 
 namespace U2 {
 
-const QString TopHatSettings::INDEX = QObject::tr("Index");
-const QString TopHatSettings::SEQUENCE = QObject::tr("Sequence");
+const QString TopHatSettings::INDEX = "Index";
+const QString TopHatSettings::SEQUENCE = "Sequence";
 
 TopHatInputData::TopHatInputData()
 : paired(false), fromFiles(false), workflowContext(NULL)

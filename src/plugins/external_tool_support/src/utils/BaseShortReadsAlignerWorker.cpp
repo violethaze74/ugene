@@ -289,7 +289,7 @@ int BaseShortReadsAlignerWorkerFactory::getThreadsCount(){
 }
 
 void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates,
-                                                             QString descrIndexFolder, QString descrIndexBasename) {
+                                                             const QString &descrIndexFolder, const QString &descrIndexBasename) {
     {
         Descriptor referenceInputType(REFERENCE_INPUT_TYPE,
             BaseShortReadsAlignerWorker::tr("Reference input type"),
@@ -352,8 +352,8 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
 
     {
         QVariantMap rip;
-        rip[DnaAssemblyToRefTaskSettings::SEQUENCE] = DnaAssemblyToRefTaskSettings::SEQUENCE;
-        rip[DnaAssemblyToRefTaskSettings::INDEX] = DnaAssemblyToRefTaskSettings::INDEX;
+        rip[BaseShortReadsAlignerWorker::tr("sequence")] = DnaAssemblyToRefTaskSettings::SEQUENCE;
+        rip[BaseShortReadsAlignerWorker::tr("index")] = DnaAssemblyToRefTaskSettings::INDEX;
         delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
 
         delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);

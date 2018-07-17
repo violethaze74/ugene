@@ -89,7 +89,7 @@ protected:
     static QList<PortDescriptor*> getPortDescriptors();
 
     static void addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates,
-                                    QString descrIndexFolder = NULL, QString descrIndexBasename = NULL);
+                                    const QString& descrIndexFolder, const QString& descrIndexBasename);
 
     static int getThreadsCount();
 };

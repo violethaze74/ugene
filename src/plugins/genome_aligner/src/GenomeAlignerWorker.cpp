@@ -411,8 +411,8 @@ void GenomeAlignerWorkerFactory::init() {
 
     {
         QVariantMap rip;
-        rip[DnaAssemblyToRefTaskSettings::SEQUENCE] = DnaAssemblyToRefTaskSettings::SEQUENCE;
-        rip[DnaAssemblyToRefTaskSettings::INDEX] = DnaAssemblyToRefTaskSettings::INDEX;
+        rip[GenomeAlignerWorker::tr("sequence")] = DnaAssemblyToRefTaskSettings::SEQUENCE;
+        rip[GenomeAlignerWorker::tr("index")] = DnaAssemblyToRefTaskSettings::INDEX;
         delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
 
         delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);
