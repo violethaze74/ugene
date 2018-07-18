@@ -56,6 +56,8 @@ const QString TopHatWorkerFactory::ACTOR_ID("tophat");
 
 const QString TopHatWorkerFactory::OUT_DIR("out-dir");
 const QString TopHatWorkerFactory::SAMPLES_MAP("samples");
+const QString TopHatWorkerFactory::REFERENCE_INPUT_TYPE("reference-input-type");
+const QString TopHatWorkerFactory::REFERENCE_GENOME("reference");
 const QString TopHatWorkerFactory::BOWTIE_INDEX_DIR("bowtie-index-dir");
 const QString TopHatWorkerFactory::BOWTIE_INDEX_BASENAME("bowtie-index-basename");
 const QString TopHatWorkerFactory::REF_SEQ("ref-seq");
@@ -186,7 +188,7 @@ void TopHatWorkerFactory::init()
                          " results to identify splice junctions between exons."
                          "<br/><br/>Provide URL(s) to FASTA or FASTQ file(s) with NGS RNA-Seq reads to the input"
                          " port of the element, set up the reference sequence in the parameters."
-                         " The result is saved to the specified SAM file, URL to the file is passed"
+                         " The result is saved to the specified BAM file, URL to the file is passed"
                          " to the output port. Several UCSC BED tracks are also produced: junctions,"
                          " insertions, and deletions."));
 
@@ -198,6 +200,17 @@ void TopHatWorkerFactory::init()
     Descriptor samplesMap(SAMPLES_MAP,
         TopHatWorker::tr("Samples map"),
         TopHatWorker::tr("The map which divide all input datasets into samples. Every sample has the unique name."));
+
+    Descriptor referenceInputType(REFERENCE_INPUT_TYPE,
+        TopHatWorker::tr("Reference input type"),
+        TopHatWorker::tr("Select \"Sequence\" to input a reference genome as a sequence file. "
+        "<br/>Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). "
+        "<br/>The index will be generated automatically in this case. "
+        "<br/>Select \"Index\" to input already generated index files, specific for the tool."));
+
+    Descriptor refGenome(REFERENCE_GENOME,
+        TopHatWorker::tr("Reference genome"),
+        TopHatWorker::tr("Path to indexed reference genome."));
 
     Descriptor bowtieIndexDir(BOWTIE_INDEX_DIR,
         TopHatWorker::tr("Bowtie index folder"),
@@ -351,15 +364,22 @@ void TopHatWorkerFactory::init()
         TopHatWorker::tr("Temporary folder"),
         TopHatWorker::tr("The folder for temporary files."));
 
-    attributes << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, "");
+    attributes << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant(TopHatSettings::INDEX));
+    Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+    attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, TopHatSettings::SEQUENCE));
+    attributes << attrRefGenom;
     {
-        Attribute *dirAttr = new Attribute(bowtieIndexDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
+        Attribute *dirAttr = new Attribute(bowtieIndexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        dirAttr->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, TopHatSettings::INDEX));
         dirAttr->addRelation(new BowtieFilesRelation(BOWTIE_INDEX_BASENAME));
         dirAttr->addRelation(new BowtieVersionRelation(BOWTIE_VERSION));
         attributes << dirAttr;
     }
-    attributes << new Attribute(bowtieIndexBasename, BaseTypes::STRING_TYPE(), true, QVariant(""));
-    // attributes << new Attribute(refSeq, BaseTypes::STRING_TYPE(), true, QVariant(""));
+    Attribute *attrIndexBasename = new Attribute(bowtieIndexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+    attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, TopHatSettings::INDEX));
+    attributes << attrIndexBasename;
+
+    attributes << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, "");
     attributes << new Attribute(mateInnerDistance, BaseTypes::NUM_TYPE(), false, QVariant(50));
     attributes << new Attribute(mateStandardDeviation, BaseTypes::NUM_TYPE(), false, QVariant(20));
     attributes << new Attribute(libraryType, BaseTypes::NUM_TYPE(), false, QVariant(0));
@@ -394,6 +414,14 @@ void TopHatWorkerFactory::init()
     // Values range of some parameters
     QMap<QString, PropertyDelegate*> delegates;
 
+    {
+        QVariantMap rip;
+        rip[TopHatWorker::tr("sequence")] = TopHatSettings::SEQUENCE;
+        rip[TopHatWorker::tr("index")] = TopHatSettings::INDEX;
+        delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
+
+        delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);
+    }
     {
         QVariantMap vm;
         vm[TopHatWorker::tr("Use -n mode")] = 1;
@@ -512,8 +540,18 @@ TopHatPrompter::TopHatPrompter(Actor* parent)
 
 QString TopHatPrompter::composeRichDoc()
 {
-    QString result = TopHatWorker::tr(
-        "Maps RNA-seq reads to a reference and finds splice junctions.");
+    QString result = TopHatWorker::tr("Maps RNA-seq reads");
+
+    QVariant inputType = getParameter(TopHatWorkerFactory::REFERENCE_INPUT_TYPE);
+    if (inputType == TopHatSettings::INDEX) {
+        QString baseName = getHyperlink(TopHatWorkerFactory::BOWTIE_INDEX_BASENAME, getURL(TopHatWorkerFactory::BOWTIE_INDEX_BASENAME));
+        result.append(tr(" to reference sequence with index <u>%1</u>.").arg(baseName));
+    } else {
+        QString genome = getHyperlink(TopHatWorkerFactory::REFERENCE_GENOME, getURL(TopHatWorkerFactory::REFERENCE_GENOME));
+        result.append(tr(" to reference sequence <u>%1</u>.").arg(genome));
+    }
+
+    result.append(TopHatWorker::tr(" and finds splice junctions."));
 
     return result;
 }
@@ -528,7 +566,6 @@ TopHatWorker::TopHatWorker(Actor* actor)
       output(NULL),
       datasetsData(false, "")
 {
-
 }
 
 QList<Actor*> TopHatWorker::getProducers(const QString &slotId) const {
@@ -564,6 +601,9 @@ void TopHatWorker::initDatasetData() {
 }
 
 void TopHatWorker::initSettings() {
+    settings.referenceInputType = getValue<QString>(TopHatWorkerFactory::REFERENCE_INPUT_TYPE);
+    settings.referenceGenome = getValue<QString>(TopHatWorkerFactory::REFERENCE_GENOME);
+
     settingsAreCorrect = true;
     settings.data.workflowContext = context;
 
@@ -615,8 +655,7 @@ void TopHatWorker::initSettings() {
     if (0 != bowtieVersionVal) {
         settings.useBowtie1 = true;
         settings.bowtiePath = WorkflowUtils::updateExternalToolPath(ET_BOWTIE, bowtieExtToolPath);
-    }
-    else {
+    } else {
         settings.bowtiePath = WorkflowUtils::updateExternalToolPath(ET_BOWTIE2_ALIGN, bowtieExtToolPath);
     }
 
@@ -888,7 +927,6 @@ bool BowtieToolsValidator::validate( const Actor *actor, ProblemList &problemLis
 BowtieFilesRelation::BowtieFilesRelation(const QString &indexNameAttrId)
 : AttributeRelation(indexNameAttrId)
 {
-
 }
 
 QVariant BowtieFilesRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags, DelegateTags *) const {
@@ -944,7 +982,6 @@ QString BowtieFilesRelation::getBowtie2IndexName(const QString &dir, const QStri
 BowtieVersionRelation::BowtieVersionRelation(const QString &bwtVersionAttrId)
 : AttributeRelation(bwtVersionAttrId)
 {
-
 }
 
 QVariant BowtieVersionRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags, DelegateTags *) const {
@@ -970,6 +1007,5 @@ RelationType BowtieVersionRelation::getType() const {
 BowtieVersionRelation *BowtieVersionRelation::clone() const {
     return new BowtieVersionRelation(*this);
 }
-
 } // namespace LocalWorkflow
 } // namespace U2
