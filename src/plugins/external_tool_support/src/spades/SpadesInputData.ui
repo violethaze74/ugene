@@ -143,7 +143,7 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QCheckBox" name="higntQualityCheckBox">
+          <widget class="QCheckBox" name="hightQualityCheckBox">
            <property name="text">
             <string>High-quality mate-pairs</string>
            </property>
@@ -565,7 +565,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>higntQualityCheckBox</sender>
+   <sender>hightQualityCheckBox</sender>
    <signal>toggled(bool)</signal>
    <receiver>hightQualityReadsDirectionComboBox</receiver>
    <slot>setEnabled(bool)</slot>
@@ -581,7 +581,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>higntQualityCheckBox</sender>
+   <sender>hightQualityCheckBox</sender>
    <signal>toggled(bool)</signal>
    <receiver>hightQualityReadsTypeComboBox</receiver>
    <slot>setEnabled(bool)</slot>

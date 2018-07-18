@@ -23,6 +23,7 @@
 #define _U2_STR_PACK_UTILS_H_
 
 #include <QBitArray>
+#include <QCoreApplication>
 #include <QMap>
 #include <QRegExp>
 #include <QStringList>
@@ -36,6 +37,7 @@ typedef QPair<QString, QString> StrStrPair;
 namespace U2 {
 
 class U2CORE_EXPORT StrPackUtils {
+    Q_DECLARE_TR_FUNCTIONS(StrPackUtils)
 public:
     enum Options {
         SingleQuotes,
@@ -45,7 +47,7 @@ public:
     static QString packStringList(const QStringList &list, Options options = DoubleQuotes);
     static QStringList unpackStringList(const QString &string, Options options = DoubleQuotes);
 
-    static QString packMap(const QMap<QString, QVariant> &map, Options options = DoubleQuotes);
+    static QString packMap(const QVariantMap &map, Options options = DoubleQuotes);
     static QString packMap(const StrStrMap &map, Options options = DoubleQuotes);
     static StrStrMap unpackMap(const QString &string, Options options = DoubleQuotes);
 

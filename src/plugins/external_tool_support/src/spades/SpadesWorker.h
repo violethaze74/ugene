@@ -33,17 +33,6 @@ class GenomeAssemblyTaskSettings;
 namespace U2 {
 namespace LocalWorkflow {
 
-
-class SpadesInputSlotsValidator : public PortValidator {
-public:
-    SpadesInputSlotsValidator(const QString& urlSlotId, const QString& pairedUrlSlotId);
-    bool validate(const IntegralBusPort *port, ProblemList &problemList) const;
-
-private:
-    QString urlSlotId;
-    QString pairedUrlSlotId;
-};
-
 class SpadesWorker : public BaseWorker {
     Q_OBJECT
 public:
@@ -82,7 +71,6 @@ public:
     static const QStringList READS_PAIRED_URL_SLOT_ID_LIST;
 
     static const QStringList IN_TYPE_ID_LIST;
-    static const QStringList IN_PAIRED_TYPE_ID_LIST;
 
     static const QString OUT_TYPE_ID;
 
@@ -100,6 +88,8 @@ public:
     static const QString OUTPUT_DIR;
 
     static const QString BASE_SPADES_SUBDIR;
+
+    static const QString getPortNameById(const QString& portId);
 
 }; // SpadesWorkerFactory
 

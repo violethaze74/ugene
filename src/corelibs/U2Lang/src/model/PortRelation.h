@@ -35,11 +35,9 @@ public:
 
     virtual PortRelationDescriptor* clone() const;
 
-    virtual bool valuesWithEnabledPortIsNotContains(const QVariant& value) const;
+    const QVariantList& getValuesWithEnabledPort() const;
 
-    QVariantList getValuesWithEnabledPort() const;
-
-    QString getPortId() const;
+    const QString& getPortId() const;
 
 private:
     QString      portId;

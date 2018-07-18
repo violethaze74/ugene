@@ -169,27 +169,27 @@ QString GenomeAssemblyUtils::getYamlLibraryName(const QString &libName, const QS
     return result;
 }
 
-QString GenomeAssemblyUtils::getYamlLibraryName(const QString& libName) {
+QString GenomeAssemblyUtils::getYamlLibraryNameByPortId(const QString& libName) {
     QString res;
     if (libName == SINGLE_UNPAIRED) {
         res = "single";
-    } else  if (libName == SINGLE_CSS) {
+    } else if (libName == SINGLE_CSS) {
         res = "single";
-    } else  if (libName == SINGLE_CLR) {
+    } else if (libName == SINGLE_CLR) {
         res = "pacbio";
-    } else  if (libName == SINGLE_NANOPORE) {
+    } else if (libName == SINGLE_NANOPORE) {
         res = "nanopore";
-    } else  if (libName == SINGLE_SANGER) {
+    } else if (libName == SINGLE_SANGER) {
         res = "sanger";
-    } else  if (libName == SINGLE_TRUSTED) {
+    } else if (libName == SINGLE_TRUSTED) {
         res = "trusted-contigs";
-    } else  if (libName == SINGLE_UNTRUSTED) {
+    } else if (libName == SINGLE_UNTRUSTED) {
         res = "untrusted-contigs";
-    } else  if (libName == PAIR_DEFAULT) {
+    } else if (libName == PAIR_DEFAULT) {
         res = "paired-end";
-    } else  if (libName == PAIR_MATE) {
+    } else if (libName == PAIR_MATE) {
         res = "mate-pairs";
-    } else  if (libName == PAIR_HQ_MATE) {
+    } else if (libName == PAIR_HQ_MATE) {
         res = "hq-mate-pairs";
     } else {
         FAIL("Incorrect port id", QString());
@@ -197,20 +197,6 @@ QString GenomeAssemblyUtils::getYamlLibraryName(const QString& libName) {
 
     return res;
 }
-
-QString GenomeAssemblyUtils::convertReadType(const QString& type) {
-    QString res;
-    if (type == "Separate reads") {
-        res = TYPE_SINGLE;
-    } else if (type == "Interlaced reads") {
-        res = TYPE_INTERLACED;
-    } else {
-        res = type;
-    }
-
-    return res;
-}
-
 
 
 } //namespace

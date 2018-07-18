@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef SPADES_PORT_RELATION_DESCRIPTOR_H
-#define SPADES_PORT_RELATION_DESCRIPTOR_H
+#ifndef _U2_SPADES_PORT_RELATION_DESCRIPTOR_H
+#define _U2_SPADES_PORT_RELATION_DESCRIPTOR_H
 
 #include <U2Lang/PortRelation.h>
 
@@ -33,11 +33,9 @@ public:
     bool isPortEnabled(const QVariant& attrValue) const;
 
     SpadesPortRelationDescriptor* clone() const;
-
-    bool valuesWithEnabledPortIsNotContains(const QVariant& value) const;
 };
 
 }
 
-#endif // SPADES_PORT_RELATION_DESCRIPTOR_H
+#endif // _U2_SPADES_PORT_RELATION_DESCRIPTOR_H
 

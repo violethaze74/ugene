@@ -124,7 +124,7 @@ QString HRSchemaSerializer::valueString(const QString & s, bool quoteEmpty) {
     if( str.contains(QRegExp("\\s") ) || str.contains(Constants::SEMICOLON) ||
         str.contains(Constants::EQUALS_SIGN) || str.contains(Constants::DATAFLOW_SIGN) ||
         str.contains(Constants::BLOCK_START) || str.contains(Constants::BLOCK_END) ||
-        str.contains(OldConstants::MARKER_START) || str.contains("'") ||
+        str.contains(Constants::SINGLE_QUOTE) || str.contains(OldConstants::MARKER_START) ||
         (str.isEmpty() && quoteEmpty)) {
         return quotedString(str);
     } else {
@@ -1292,7 +1292,7 @@ void HRSchemaSerializer::postProcessing(Schema *schema) {
                 CHECK(p != NULL, );
                 CHECK(a->hasParameter(attr->getId()), );
                 QVariant value = a->getParameter(attr->getId())->getAttributePureValue();
-                if (!p->getLinks().isEmpty() && pd->valuesWithEnabledPortIsNotContains(value)) {
+                if (!p->getLinks().isEmpty() && !pd->isPortEnabled(value)) {
                     a->setParameter(attr->getId(), pd->getValuesWithEnabledPort().first());
                 }
             }
@@ -1630,6 +1630,8 @@ static QString elementsDefinitionBlock(Actor * actor, bool copyMode) {
                 continue;
             }
             QVariant value = attribute->getAttributePureValue();
+
+#ifdef _DEBUG
             const bool valueIsNull = value.isNull();
             const bool valueCanConvertToString = value.canConvert<QString>();
             const bool valueCanConvertToStringList = value.canConvert<QStringList>();
@@ -1638,13 +1640,15 @@ static QString elementsDefinitionBlock(Actor * actor, bool copyMode) {
                    valueCanConvertToString ||
                    valueCanConvertToStringList ||
                    valueCanConvertToMap);
+#endif
+
             QString valueString;
             if (attribute->getAttributeType() == BaseTypes::STRING_LIST_TYPE()) {
                 valueString = StrPackUtils::packStringList(value.toStringList(), StrPackUtils::SingleQuotes);
-            } else if (attribute->getAttributeType() == BaseTypes::STRING_TYPE()) {
-                valueString = value.toString();
-            } else {
+            } else if (attribute->getAttributeType() == BaseTypes::MAP_TYPE()) {
                 valueString = StrPackUtils::packMap(value.toMap(), StrPackUtils::SingleQuotes);
+            } else {
+                valueString = value.toString();
             }
             res += HRSchemaSerializer::makeEqualsPair(attributeId, valueString, 2, true);
         }

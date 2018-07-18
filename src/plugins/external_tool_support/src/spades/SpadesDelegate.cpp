@@ -37,7 +37,7 @@ namespace LocalWorkflow {
 /*SpadesDelegate*/
 /********************************************************************/
 
-static const QString PLACEHOLDER("Configure input type");
+const QString SpadesDelegate::PLACEHOLDER = QApplication::translate("SpadesDelegate", "Configure input type");
 
 SpadesDelegate::SpadesDelegate(QObject *parent)
     : PropertyDelegate(parent)
@@ -96,7 +96,7 @@ void SpadesDelegate::sl_commit() {
 SpadesPropertyWidget::SpadesPropertyWidget(QWidget* parent, DelegateTags* tags)
                 : PropertyWidget(parent, tags) {
     lineEdit = new QLineEdit(this);
-    lineEdit->setPlaceholderText(PLACEHOLDER);
+    lineEdit->setPlaceholderText(SpadesDelegate::PLACEHOLDER);
     lineEdit->setObjectName("spadesPropertyLineEdit");
     lineEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     lineEdit->setReadOnly(true);
@@ -137,33 +137,48 @@ void SpadesPropertyWidget::sl_showDialog() {
 /*SpadesPropertyDialog*/
 /********************************************************************/
 
-static const QString MESSAGE_BOX_ERROR = QApplication::tr("At least one of the required input ports should be set in the \"Input data\" parameter.", "SpadesPropertyDialog");
+static const QString MESSAGE_BOX_ERROR = QApplication::translate("SpadesPropertyDialog", "At least one of the required input ports should be set in the \"Input data\" parameter.");
+static const QString INCORRECT_PARAMETRS_ERROR = QApplication::translate("SpadesPropertyDialog", "Incorrect parametrs, can't parse");
 
 SpadesPropertyDialog::SpadesPropertyDialog(const QMap<QString, QVariant> &value,
     QWidget *parent) : QDialog(parent) {
     setupUi(this);
 
     new HelpButton(this, buttonBox, HelpButton::INVALID_VALUE);
+    setItemsData();
     setValue(value);
 }
 
-QMap<QString, QVariant> SpadesPropertyDialog::getValue() const {
+void SpadesPropertyDialog::accept() {
+    CHECK_EXT(isSomeRequiredParemeterChecked(),
+        QMessageBox::critical(this, windowTitle(), MESSAGE_BOX_ERROR), );
+
+    QDialog::accept();
+}
+
+QVariantMap SpadesPropertyDialog::getValue() const {
     QMap<QString, QVariant> result;
 
-    //requaired
+    //required
     if (needRequiredSequencingPlatform()) {
         result.insert(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID,
-                      sequencingPlatformComboBox->currentText());
+                      sequencingPlatformComboBox->currentData());
 
         if (pairEndCheckBox->isChecked()) {
+            QStringList params = getDataFromComboBoxes(pairEndReadsDirectionComboBox,
+                                                       pairEndReadsTypeComboBox);
+            SAFE_POINT(params.size() == 2, INCORRECT_PARAMETRS_ERROR, QVariantMap());
+
             result.insert(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[0],
-                          QString("%1:%2").arg(pairEndReadsDirectionComboBox->currentText())
-                                          .arg(pairEndReadsTypeComboBox->currentText()));
+                          QString("%1:%2").arg(params.first()).arg(params.last()));
         }
-        if (higntQualityCheckBox->isChecked()) {
+        if (hightQualityCheckBox->isChecked()) {
+            QStringList params = getDataFromComboBoxes(hightQualityReadsDirectionComboBox,
+                                                       hightQualityReadsTypeComboBox);
+            SAFE_POINT(params.size() == 2, INCORRECT_PARAMETRS_ERROR, QVariantMap());
+
             result.insert(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[2],
-                          QString("%1:%2").arg(hightQualityReadsDirectionComboBox->currentText())
-                                          .arg(hightQualityReadsTypeComboBox->currentText()));
+                          QString("%1:%2").arg(params.first()).arg(params.last()));
         }
         if (unpairedReadsCheckBox->isChecked()) {
             result.insert(SpadesWorkerFactory::IN_PORT_ID_LIST[0], "");
@@ -177,12 +192,15 @@ QMap<QString, QVariant> SpadesPropertyDialog::getValue() const {
     if (needAdditionalSequencingPlatform()) {
         if (!result.contains(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID))
             result.insert(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID,
-                          sequencingPlatformComboBox->currentText());
+                          sequencingPlatformComboBox->currentData());
 
         if (matePairsCheckBox->isChecked()) {
+            QStringList params = getDataFromComboBoxes(matePairsReadsDirectionComboBox,
+                                                       matePairsTypeComboBox);
+            SAFE_POINT(params.size() == 2, INCORRECT_PARAMETRS_ERROR, QVariantMap());
+
             result.insert(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1],
-                          QString("%1:%2").arg(matePairsReadsDirectionComboBox->currentText())
-                                          .arg(matePairsTypeComboBox->currentText()));
+                          QString("%1:%2").arg(params.first()).arg(params.last()));
         }
     }
 
@@ -206,24 +224,22 @@ QMap<QString, QVariant> SpadesPropertyDialog::getValue() const {
 }
 
 void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
-    //requaired
+    //required
     if (value.contains(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID)) {
-        const QString platform = value.value(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID).toString();
-        sequencingPlatformComboBox->setCurrentText(platform);
+        const QVariant platformVariant = value.value(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID);
+        SAFE_POINT(platformVariant.canConvert<QString>(), INCORRECT_PARAMETRS_ERROR, );
+
+        setDataForComboBox(sequencingPlatformComboBox, platformVariant.toString(), 2);
 
         if (value.contains(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[0])) {
             pairEndCheckBox->setChecked(true);
-            const QString pairEndValue = value.value(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[0]).toString();
-            const QStringList pairEndSplittedValues = pairEndValue.split(":");
-            pairEndReadsDirectionComboBox->setCurrentText(pairEndSplittedValues.first());
-            pairEndReadsTypeComboBox->setCurrentText(pairEndSplittedValues.last());
+            const QVariant dataValue = value.value(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[0]);
+            setDataForComboBoxes(pairEndReadsDirectionComboBox, pairEndReadsTypeComboBox, dataValue);
         }
         if (value.contains(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[2])) {
-            higntQualityCheckBox->setChecked(true);
-            const QString higntQualityValue = value.value(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[0]).toString();
-            const QStringList higntQualitySplittedValues = higntQualityValue.split(":");
-            hightQualityReadsDirectionComboBox->setCurrentText(higntQualitySplittedValues.first());
-            hightQualityReadsTypeComboBox->setCurrentText(higntQualitySplittedValues.last());
+            hightQualityCheckBox->setChecked(true);
+            const QVariant dataValue = value.value(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[2]);
+            setDataForComboBoxes(hightQualityReadsDirectionComboBox, hightQualityReadsTypeComboBox, dataValue);
         }
 
         unpairedReadsCheckBox->setChecked(value.contains(SpadesWorkerFactory::IN_PORT_ID_LIST[0]));
@@ -233,10 +249,8 @@ void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
     //additional
     if (value.contains(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1])) {
         matePairsCheckBox->setChecked(true);
-        const QString matePairsValue = value.value(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1]).toString();
-        const QStringList matePairsSplittedValues = matePairsValue.split(":");
-        matePairsReadsDirectionComboBox->setCurrentText(matePairsSplittedValues.first());
-        matePairsTypeComboBox->setCurrentText(matePairsSplittedValues.last());
+        const QVariant dataValue = value.value(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1]);
+        setDataForComboBoxes(matePairsReadsDirectionComboBox, matePairsTypeComboBox, dataValue);
     }
     pacBioClrCheckBox->setChecked(value.contains(SpadesWorkerFactory::IN_PORT_ID_LIST[2]));
     oxfordNanoporeCheckBox->setChecked(value.contains(SpadesWorkerFactory::IN_PORT_ID_LIST[3]));
@@ -245,16 +259,40 @@ void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
     untrustedContigsCheckBox->setChecked(value.contains(SpadesWorkerFactory::IN_PORT_ID_LIST[6]));
 }
 
-bool SpadesPropertyDialog::someRequaredParemetrWasChecked() const {
+void SpadesPropertyDialog::setItemsData() {
+    sequencingPlatformComboBox->setItemData(0, QString(""));
+    sequencingPlatformComboBox->setItemData(1, QString("--iontorrent"));
+
+    QList<QComboBox*> directionComboBoxes = QList<QComboBox*>() <<
+                                            pairEndReadsDirectionComboBox <<
+                                            hightQualityReadsDirectionComboBox <<
+                                            matePairsReadsDirectionComboBox;
+    foreach(QComboBox* dirCombo, directionComboBoxes) {
+        dirCombo->setItemData(0, QString("fr"));
+        dirCombo->setItemData(1, QString("rf"));
+        dirCombo->setItemData(2, QString("ff"));
+    }
+    QList<QComboBox*> typeComboBoxes = QList<QComboBox*>() <<
+                                       pairEndReadsTypeComboBox <<
+                                       hightQualityReadsTypeComboBox <<
+                                       matePairsTypeComboBox;
+    foreach(QComboBox* typeCombo, typeComboBoxes) {
+        typeCombo->setItemData(0, QString("single reads"));
+        typeCombo->setItemData(1, QString("interlaced reads"));
+    }
+
+}
+
+bool SpadesPropertyDialog::isSomeRequiredParemeterChecked() const {
     return pairEndCheckBox->isChecked() ||
-           higntQualityCheckBox->isChecked() ||
+           hightQualityCheckBox->isChecked() ||
            unpairedReadsCheckBox->isChecked() ||
            pacBioCcsCheckBox->isChecked();
 }
 
 bool SpadesPropertyDialog::needRequiredSequencingPlatform() const {
     return pairEndCheckBox->isChecked() ||
-           higntQualityCheckBox->isChecked() ||
+           hightQualityCheckBox->isChecked() ||
            unpairedReadsCheckBox->isChecked();
 }
 
@@ -262,13 +300,43 @@ bool SpadesPropertyDialog::needAdditionalSequencingPlatform() const {
     return matePairsCheckBox->isChecked();
 }
 
-void SpadesPropertyDialog::accept() {
-    CHECK_EXT(someRequaredParemetrWasChecked(),
-              QMessageBox::critical(this, windowTitle(), MESSAGE_BOX_ERROR), );
+QStringList SpadesPropertyDialog::getDataFromComboBoxes(QComboBox* directionComboBox, QComboBox* typeComboBox) {
+    QStringList res;
 
-    QDialog::accept();
+    foreach(QComboBox* comboBox, QList<QComboBox*>() << directionComboBox << typeComboBox) {
+        const QVariant dirDataVariant = comboBox->currentData();
+        SAFE_POINT(dirDataVariant.canConvert<QString>(), INCORRECT_PARAMETRS_ERROR, QStringList());
+
+        const QString dirData = dirDataVariant.toString();
+        res << dirData;
+    }
+
+    return res;
 }
 
+void SpadesPropertyDialog::setDataForComboBoxes(QComboBox* directionComboBox, QComboBox* typeComboBox, const QVariant& value) {
+    SAFE_POINT(value.canConvert<QString>(), INCORRECT_PARAMETRS_ERROR, );
+
+    const QString stringValue = value.toString();
+    const QStringList valueList = stringValue.split(":");
+    SAFE_POINT(valueList.size() == 2, INCORRECT_PARAMETRS_ERROR, );
+
+    setDataForComboBox(directionComboBox, valueList.first(), 3);
+    setDataForComboBox(typeComboBox, valueList.last(), 2);
+}
+
+void SpadesPropertyDialog::setDataForComboBox(QComboBox* comboBox, const QString& value, const int& size) {
+    for (int i = 0; i < size; i++) {
+        const QVariant dataVariant = comboBox->itemData(i);
+        SAFE_POINT(dataVariant.canConvert<QString>(), INCORRECT_PARAMETRS_ERROR, );
+
+        const QString dataStr = dataVariant.toString();
+        CHECK_CONTINUE(dataStr == value);
+
+        comboBox->setCurrentIndex(i);
+        break;
+    }
+}
 
 } // namespace LocalWorkflow
 } // namespace U2

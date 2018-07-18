@@ -154,7 +154,7 @@ DataTypePtr BaseTypes::MAP_TYPE() {
     static bool startup = true;
     if (startup) {
         QMap<Descriptor, DataTypePtr> map;
-        map.insert(tr("A map of datatypes"), BaseTypes::STRING_TYPE());
+        map.insert(Descriptor("A map of datatypes"), BaseTypes::STRING_TYPE());
         dtr->registerEntry(DataTypePtr(new MapDataType(MAP_TYPE_ID, map)));
         startup = false;
     }

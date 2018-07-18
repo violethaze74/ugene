@@ -49,6 +49,7 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model,
                                        const QModelIndex &index) const;
 
+    static const QString PLACEHOLDER;
 private slots:
     void sl_commit();
 };
@@ -69,7 +70,7 @@ private slots:
 private:
     QLineEdit *lineEdit;
     QToolButton *toolButton;
-    QMap<QString, QVariant> dialogValue;
+    QVariantMap dialogValue;
 };
 
 class SpadesPropertyDialog : public QDialog, private Ui_SpadesInputData {
@@ -84,9 +85,14 @@ public slots:
 
 private:
     void setValue(const QMap<QString, QVariant> &value);
-    bool someRequaredParemetrWasChecked() const;
+    void setItemsData();
+    bool isSomeRequiredParemeterChecked() const;
     bool needRequiredSequencingPlatform() const;
     bool needAdditionalSequencingPlatform() const;
+
+    static QStringList getDataFromComboBoxes(QComboBox* directionComboBox, QComboBox* typeComboBox);
+    static void setDataForComboBoxes(QComboBox* directionComboBox, QComboBox* typeComboBox, const QVariant& value);
+    static void setDataForComboBox(QComboBox* comboBox, const QString& value, const int& size);
 };
 
 }// namespace LocalWorkflow

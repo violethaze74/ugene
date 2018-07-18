@@ -80,8 +80,8 @@ void SpadesTask::prepare() {
 
     QVariantMap inputDataDialogSettings = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariantMap()).toMap();
     QString sequencingPlatform = inputDataDialogSettings.value(LocalWorkflow::SpadesWorkerFactory::SEQUENCING_PLATFORM_ID, QString()).toString();
-    if (sequencingPlatform == "Ion Torrent") {
-        arguments.append("--iontorrent");
+    if (!sequencingPlatform.isEmpty()) {
+        arguments.append(sequencingPlatform);
     }
 
     arguments.append("--dataset");
@@ -147,9 +147,9 @@ void SpadesTask::writeYamlReads(){
         if (LocalWorkflow::SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.contains(r.libName)) {
             res.append(QString("orientation: \"%1\",\n").arg(r.orientation));
         }
-        res.append(QString("type: \"%1\",\n").arg(GenomeAssemblyUtils::getYamlLibraryName(r.libName)));
+        res.append(QString("type: \"%1\",\n").arg(r.libName));
         if(!GenomeAssemblyUtils::hasRightReads(r.libName)) {
-            res.append(QString("%1: [\n").arg(GenomeAssemblyUtils::convertReadType(r.readType)));
+            res.append(QString("%1: [\n").arg(r.readType));
 
             foreach(const GUrl& url, r.left) {
                 res.append(QString("\"%1\",\n").arg(url.getURLString()));

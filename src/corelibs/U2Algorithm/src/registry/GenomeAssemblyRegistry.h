@@ -64,8 +64,13 @@ namespace U2 {
 #define ORIENTATION_RF                 "rf"
 #define ORIENTATION_FF                 "ff"
 
+#define ALIAS_SINGLE                   "Separate reads"
+#define ALIAS_INTERLACED               "Interlaced reads"
+
 #define TYPE_SINGLE                    "single reads"
 #define TYPE_INTERLACED                "interlaced reads"
+
+#define PLATFORM_ION_TORRENT           "Ion Torrent"
 
 class GenomeAssemblyAlgorithmMainWidget;
 
@@ -86,8 +91,7 @@ public:
     static bool isLibraryPaired(const QString& libName);
     static bool hasRightReads(const QString& libName);
     static QString getYamlLibraryName(const QString& libName, const QString& pairType);
-    static QString getYamlLibraryName(const QString& libName);
-    static QString convertReadType(const QString& type);
+    static QString getYamlLibraryNameByPortId(const QString& libName);
 };
 
 /////////////////////////////////////////////////////////////

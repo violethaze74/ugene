@@ -94,14 +94,14 @@ QList<Task*> GenomeAssemblyMultiTask::onSubTaskFinished( Task* subTask ) {
 QString GenomeAssemblyMultiTask::generateReport() const {
     QString res;
     if (hasError()) {
-        return QString("Assembly task finished with error: %1").arg(getError());
+        return tr("Assembly task finished with error: %1").arg(getError());
     }
-    CHECK(assemblyTask != NULL, QString("Assembly task wasn't set"));
+    CHECK(assemblyTask != NULL, tr("Assembly task wasn't set"));
 
     if (assemblyTask->hasResult()) {
-        res = QString("Assembly was finished successfully");
+        res = tr("Assembly was finished successfully");
     } else {
-        res = QString("Assembly failed.");
+        res = tr("Assembly failed.");
     }
     return res;
 }
