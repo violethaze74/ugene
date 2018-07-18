@@ -161,10 +161,12 @@ void SpadesWorker::init() {
 }
 
 Task *SpadesWorker::tick() {
-    trySetDone();
+    U2OpStatus2Log os;
+    trySetDone(os);
+    CHECK(!os.hasError(), new FailTask(os.getError()));
+
     CHECK(processInputMessagesAndCheckReady(), NULL);
 
-    U2OpStatus2Log os;
     GenomeAssemblyTaskSettings settings = getSettings(os);
     CHECK(!os.hasError(), new FailTask(os.getError()));
 
@@ -247,7 +249,6 @@ bool SpadesWorker::processInputMessagesAndCheckReady() {
         SAFE_POINT(port != NULL, QString("Port with id %1 not found").arg(portId), false);
         CHECK_CONTINUE(port->isEnabled());
 
-        bool fetcherIsDone = readsFetchers[i].isDone();
         readsFetchers[i].processInputMessage();
         result = result && readsFetchers[i].hasFullDataset();
         CHECK(result, false);
@@ -268,19 +269,30 @@ int SpadesWorker::getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) 
     return index;
 }
 
-void SpadesWorker::trySetDone() {
+void SpadesWorker::trySetDone(U2OpStatus &os) {
+    CHECK(!isDone(), );
+
     bool isDone = true;
+    bool hasReadyFetcher = false;
+    bool hasDoneFetcher = false;
     for (int i = 0; i < readsFetchers.size(); i++){
         const QString portId = readsFetchers[i].getPortId();
         Port* port = actor->getPort(portId);
         SAFE_POINT(port != NULL, QString("Port with id %1 not found").arg(portId), );
         CHECK_CONTINUE(port->isEnabled());
 
-        isDone = isDone && readsFetchers[i].isDone();
-        CHECK(isDone, );
+        const bool fetcherHasFullDataset = readsFetchers[i].hasFullDataset();
+        const bool fetcherIsDone = readsFetchers[i].isDone();
+        hasReadyFetcher = hasReadyFetcher || fetcherHasFullDataset;
+        hasDoneFetcher = hasDoneFetcher || fetcherIsDone;
+        isDone = isDone && fetcherIsDone;
     }
 
-    if (isDone) {
+    if (hasReadyFetcher && hasDoneFetcher) {
+        os.setError(tr("Some input data elements sent data while some elements already finished their work. Check that all input data elements have the same datasets quantity."));
+    }
+
+    if (isDone ) {
         setDone();
         output->setEnded();
     }
@@ -299,8 +311,6 @@ void SpadesWorker::sl_taskFinished() {
      output->put(Message(output->getBusType(), data));
 
     context->getMonitor()->addOutputFile(url, getActor()->getId());
-
-    trySetDone();
 }
 
 GenomeAssemblyTaskSettings SpadesWorker::getSettings( U2OpStatus &os ){

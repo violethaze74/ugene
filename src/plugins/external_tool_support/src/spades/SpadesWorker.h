@@ -46,7 +46,7 @@ public:
 private:
     bool processInputMessagesAndCheckReady();
     int getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) const;
-    void trySetDone();
+    void trySetDone(U2OpStatus &os);
 
     QList<DatasetFetcher> readsFetchers;
     QList<IntegralBus*> inChannels;
