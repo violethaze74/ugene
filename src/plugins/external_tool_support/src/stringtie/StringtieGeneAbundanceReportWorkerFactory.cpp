@@ -42,7 +42,7 @@ const QString StringtieGeneAbundanceReportWorkerFactory::ACTOR_ID = "stringtie-g
 
 const QString StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID = "in";
 
-const QString StringtieGeneAbundanceReportWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-file";
+const QString StringtieGeneAbundanceReportWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-url";
 
 StringtieGeneAbundanceReportWorkerFactory::StringtieGeneAbundanceReportWorkerFactory()
     : DomainFactory(ACTOR_ID)

@@ -125,6 +125,7 @@ DoubleSpinBoxWidget::DoubleSpinBoxWidget(const QVariantMap &spinProperties, QWid
 : PropertyWidget(parent)
 {
     spinBox = new QDoubleSpinBox(this);
+    spinBox->setMinimumWidth(1);
     WorkflowUtils::setQObjectProperties(*spinBox, spinProperties);
     addMainWidget(spinBox);
 

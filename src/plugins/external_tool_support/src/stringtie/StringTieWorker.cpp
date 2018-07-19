@@ -64,17 +64,17 @@ namespace {
 
     // output
     const QString OUT_PORT_ID("out");
-    const QString TRANSCRIPT_OUT_SLOT_ID("url-transcripts");
-    const QString GENE_ABUND_OUT_SLOT_ID("url-gene-abund");
+    const QString TRANSCRIPT_OUT_SLOT_ID("out-transcripts");
+    const QString GENE_ABUND_OUT_SLOT_ID("out-gene-abundance");
 
     // parameters
     const QString REFERENCE_ANNOTATIONS("reference-annotations");
     const QString READS_ORIENTATION("reads-orientation");
     const QString LABEL("label");
     const QString MIN_ISOFORM_FRACTION("min-isoform-fraction");
-    const QString MIN_TRANSCRIPT_LEN("min-transcipr-len");
+    const QString MIN_TRANSCRIPT_LEN("min-transcript-length");
 
-    const QString MIN_ANCHOR_LEN("min-anchor-len");
+    const QString MIN_ANCHOR_LEN("min-anchor-length");
     const QString MIN_JUNCTION_COVERAGE("min-junction-coverage");
     const QString TRIM_TRANSCRIPT("trim-transcripts");
     const QString MIN_COVERAGE("min-coverage");
@@ -82,22 +82,22 @@ namespace {
 
     const QString MULTI_HIT_FRACTION("multi-hit-fraction");
     const QString SKIP_SEQUENCES("skip-sequences");
-    const QString REF_ONLY_ABUDANCE("ref-only-abudance");
+    const QString REF_ONLY_ABUNDANCE("ref-only-abundance");
     const QString MULTI_MAPPING_CORRECTION("multi-mapping-correction");
     const QString VERBOSE_LOG("verbose-log");
 
-    const QString THREAD_NUM("thread-num");
+    const QString THREAD_NUM("threads");
 
-    const QString PRIMARY_OUTPUT("primary-output");
-    const QString GENE_ABUDANCE_OUTPUT("gene-abudance-output");
-    const QString GENE_ABUDANCE_OUTPUT_FILE("gene-abudance-output-file");
-    const QString COVERAGE_REF_OUTPUT("coverage-ref-output");
-    const QString COVERAGE_REF_OUTPUT_FILE("coverage-ref-output-file");
+    const QString PRIMARY_OUTPUT("transcripts-output-url");
+    const QString GENE_ABUDANCE_OUTPUT("gene-abundance-output");
+    const QString GENE_ABUDANCE_OUTPUT_FILE("gene-abundance-output-url");
+    const QString COVERAGE_REF_OUTPUT("covered-transcripts-output");
+    const QString COVERAGE_REF_OUTPUT_FILE("covered-transcripts-output-url");
     const QString BALLGOWN_OUTPUT("ballgown-output");
-    const QString BALLGOWN_OUTPUT_FOLDER("ballgown-output-folder");
+    const QString BALLGOWN_OUTPUT_FOLDER("ballgown-output-url");
 }
 
-const QString StringTieWorkerFactory::ACTOR_ID("stringtie-id");
+const QString StringTieWorkerFactory::ACTOR_ID("stringtie");
 
 /************************************************************************/
 /* Worker */
@@ -178,7 +178,7 @@ StringTieTaskSettings StringTieWorker::getSettings(U2OpStatus &os, const QString
 
     settings.multiHitFraction = getValue<double>(MULTI_HIT_FRACTION);
     settings.skipSequences = getValue<QString>(SKIP_SEQUENCES);
-    settings.refOnlyAbudance = getValue<bool>(REF_ONLY_ABUDANCE);
+    settings.refOnlyAbudance = getValue<bool>(REF_ONLY_ABUNDANCE);
     settings.multiMappingCorrection = getValue<bool>(MULTI_MAPPING_CORRECTION);
     settings.verboseLog = getValue<bool>(VERBOSE_LOG);
 
@@ -345,7 +345,7 @@ void StringTieWorkerFactory::init() {
                                                      "The reference sequence names are case sensitive, they must match identically the names of chromosomes/contigs "
                                                      "of the target genome against which the RNA-Seq reads were aligned in the first place."));
 
-        Descriptor refOnlyAbudance(REF_ONLY_ABUDANCE,
+        Descriptor refOnlyAbudance(REF_ONLY_ABUNDANCE,
                                    StringTieWorker::tr("Abundance for reference transcripts only"),
                                    StringTieWorker::tr("Limits the processing of read alignments to only estimate and output the assembled transcripts matching the reference transcripts (-e). "
                                                        "With this option, read bundles with no reference transcripts will be entirely skipped, "
@@ -516,7 +516,7 @@ void StringTieWorkerFactory::init() {
         map["decimals"] = 2;
         delegates[MULTI_HIT_FRACTION] = new DoubleSpinBoxDelegate(map);
     }
-    delegates[REF_ONLY_ABUDANCE] = new ComboBoxWithBoolsDelegate();
+    delegates[REF_ONLY_ABUNDANCE] = new ComboBoxWithBoolsDelegate();
 
     {
         QVariantMap map;
