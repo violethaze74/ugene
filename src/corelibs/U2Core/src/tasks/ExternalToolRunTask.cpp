@@ -267,7 +267,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog(){
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseOutput(line);
         if(NULL != listener) {
-            listener->addNewLogMessage(line, OUTPUT_LOG);
+            listener->addNewLogMessage(line, ExternalToolListener::OUTPUT_LOG);
         }
         numberReadChars = process->read(logData.data(), logData.size());
     }
@@ -287,7 +287,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog(){
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseErrOutput(line);
         if(NULL != listener) {
-            listener->addNewLogMessage(line, ERROR_LOG);
+            listener->addNewLogMessage(line, ExternalToolListener::ERROR_LOG);
         }
         numberReadChars = process->read(logData.data(), logData.size());
     }
@@ -479,11 +479,11 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
 
     if(NULL != listener) {
         listener->setToolName(toolName);
-        listener->addNewLogMessage(listenerProgramMessage, PROGRAM_PATH);
+        listener->addNewLogMessage(listenerProgramMessage, ExternalToolListener::PROGRAM_PATH);
         QString argumentsLine = ExternalToolSupportUtils::prepareArgumentsForCmdLine(arguments);
         argumentsLine.replace(" -", "\n-");
 
-        listener->addNewLogMessage(argumentsLine, ARGUMENTS);
+        listener->addNewLogMessage(argumentsLine, ExternalToolListener::ARGUMENTS);
     }
     return result;
 }
