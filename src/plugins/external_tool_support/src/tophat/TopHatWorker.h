@@ -109,6 +109,8 @@ public:
 
     static const QString OUT_DIR;
     static const QString SAMPLES_MAP;
+    static const QString REFERENCE_INPUT_TYPE;
+    static const QString REFERENCE_GENOME;
     static const QString BOWTIE_INDEX_DIR;
     static const QString BOWTIE_INDEX_BASENAME;
     static const QString REF_SEQ;
