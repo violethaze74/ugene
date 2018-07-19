@@ -352,8 +352,8 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
 
     {
         QVariantMap rip;
-        rip[BaseShortReadsAlignerWorker::tr("sequence")] = DnaAssemblyToRefTaskSettings::SEQUENCE;
-        rip[BaseShortReadsAlignerWorker::tr("index")] = DnaAssemblyToRefTaskSettings::INDEX;
+        rip[BaseShortReadsAlignerWorker::tr("Sequence")] = DnaAssemblyToRefTaskSettings::SEQUENCE;
+        rip[BaseShortReadsAlignerWorker::tr("Index")] = DnaAssemblyToRefTaskSettings::INDEX;
         delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
 
         delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);
