@@ -318,7 +318,7 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
         Attribute* libraryAttr = new Attribute(library, BaseTypes::STRING_TYPE(), false, QVariant("Single-end"));
         QVariantList visibilityValues;
         visibilityValues << QVariant("Paired-end");
-        libraryAttr->addPortRelation(PortRelationDescriptor(IN_PORT_DESCR_PAIRED, visibilityValues));
+        libraryAttr->addPortRelation(new PortRelationDescriptor(IN_PORT_DESCR_PAIRED, visibilityValues));
         attrs << libraryAttr;
 
         Attribute* filterAttr = new Attribute(filter, BaseTypes::BOOL_TYPE(), false, true);

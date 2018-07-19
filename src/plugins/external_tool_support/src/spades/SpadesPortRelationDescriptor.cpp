@@ -19,31 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PORT_RELATION_H_
-#define _U2_PORT_RELATION_H_
-
-#include <U2Core/global.h>
+#include "SpadesPortRelationDescriptor.h"
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-class U2LANG_EXPORT PortRelationDescriptor{
-public:
-    PortRelationDescriptor(const QString& portId, const QVariantList& valuesWithEnabledPort);
-    virtual ~PortRelationDescriptor();
+SpadesPortRelationDescriptor::SpadesPortRelationDescriptor(const QString& portId,
+                                                           const QVariantList& valuesWithEnabledPort)
+    : PortRelationDescriptor(portId, valuesWithEnabledPort) {}
 
-    virtual bool isPortEnabled(const QVariant& attrValue) const;
+bool SpadesPortRelationDescriptor::isPortEnabled(const QVariant& attrValue) const {
+    QMap<QString, QVariant> attrValueMap = attrValue.toMap();
+    bool isEnabled = false;
+    foreach (const QString& key, attrValueMap.keys()) {
+       isEnabled = PortRelationDescriptor::isPortEnabled(key);
+       CHECK_BREAK(!isEnabled);
+    }
+    return isEnabled;
+}
 
-    virtual PortRelationDescriptor* clone() const;
+SpadesPortRelationDescriptor* SpadesPortRelationDescriptor::clone() const {
+    return new SpadesPortRelationDescriptor(*this);
+}
 
-    const QVariantList& getValuesWithEnabledPort() const;
-
-    const QString& getPortId() const;
-
-private:
-    QString      portId;
-    QVariantList valuesWithEnabledPort;
-};
-
-} // U2 namespace
-
-#endif // _U2_ATTRIBUTE_RELATION_H_
+}
