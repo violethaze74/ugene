@@ -248,9 +248,9 @@ void ClarkClassifyWorkerFactory::init() {
         a << new Attribute(tool, BaseTypes::STRING_TYPE(), Attribute::None, ClarkClassifySettings::TOOL_LIGHT);
 
         QString clarkDatabasePath;
-        U2DataPath *clarkBacteriaViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_DATA_ID);
+        U2DataPath *clarkBacteriaViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID);
         if (NULL != clarkBacteriaViralDataPath && clarkBacteriaViralDataPath->isValid()) {
-            clarkDatabasePath = clarkBacteriaViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_ITEM_ID);
+            clarkDatabasePath = clarkBacteriaViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID);
         } else {
             U2DataPath *clarkViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID);
             if (NULL != clarkViralDataPath && clarkViralDataPath->isValid()) {
@@ -337,7 +337,7 @@ void ClarkClassifyWorkerFactory::init() {
         delegates[NUM_THREADS] = new SpinBoxDelegate(thrMap);
 
         QList<StrStrPair> dataPathItems;
-        dataPathItems << StrStrPair(NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_DATA_ID, NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_ITEM_ID);
+        dataPathItems << StrStrPair(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID, NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID);
         dataPathItems << StrStrPair(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID, NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID);
         delegates[DB_URL] = new DatabaseDelegate(ACTOR_ID, DB_URL, dataPathItems, "clark/database", true);
     }
