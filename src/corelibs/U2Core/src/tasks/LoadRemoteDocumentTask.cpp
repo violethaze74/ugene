@@ -524,7 +524,7 @@ void EntrezQueryTask::sl_replyFinished( QNetworkReply* reply )
         loop->exit();
         return;
     }
-    QString locationHeaderValue = reply->header(QNetworkRequest::KnownHeaders::LocationHeader).toString();
+    QString locationHeaderValue = reply->header(QNetworkRequest::LocationHeader).toString();
     if (!locationHeaderValue.isEmpty()) {
         QUrl redirectedUrl(reply->url());
         redirectedUrl.setUrl(reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toString());
