@@ -28,8 +28,9 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Core/Log.h>
 #include <U2Core/NetworkConfiguration.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "HttpFileAdapter.h"
 #include "ZlibAdapter.h"
@@ -123,6 +124,7 @@ bool HttpFileAdapter::open( const QUrl& url, const QNetworkProxy & p)
         QNetworkRequest netRequest(urlString);
         reply = netManager->get(netRequest);
     }
+    coreLog.details(tr("Downloading from %1").arg(reply->url().toString()));
     connect( reply, SIGNAL(readyRead()), this, SLOT(add_data()), Qt::DirectConnection );
     connect( reply, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(progress(qint64,qint64)), Qt::DirectConnection );//+
     connect( reply, SIGNAL(finished()), this, SLOT(done()), Qt::DirectConnection );
@@ -317,8 +319,18 @@ qint64 HttpFileAdapter::waitData( qint64 until )
 
 void HttpFileAdapter::done()
 {
+    QString locationHeaderValue = reply->header(QNetworkRequest::LocationHeader).toString();
+    if (!locationHeaderValue.isEmpty()) {
+        QUrl redirectedUrl(locationHeaderValue);
+        chunk_list.clear();
+        close();
+        coreLog.details(tr("Redirecting to %1").arg(locationHeaderValue));
+        open(redirectedUrl, netManager->proxy());
+        return;
+    }
     is_downloaded = true;
     badstate = (reply->error() != QNetworkReply::NoError);
+
     loop.exit();
 }
 
