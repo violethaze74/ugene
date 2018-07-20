@@ -46,6 +46,18 @@ class DashboardJsAgent;
 class DashboardPageController;
 class ExternalToolsWidgetController;
 
+class DashboardWriter : public QObject {
+    Q_OBJECT
+public:
+    DashboardWriter(const QString &dir);
+
+    void setDir(const QString &dir);
+    void write(const QString &content);
+
+private:
+    QString dir;
+};
+
 class U2DESIGNER_EXPORT Dashboard : public QWebEngineView {
     Q_OBJECT
     Q_DISABLE_COPY(Dashboard)
@@ -89,7 +101,6 @@ private slots:
     void sl_serialize();
     void sl_setDirectory(const QString &dir);
     void sl_workflowStateChanged(U2::Workflow::Monitor::TaskState state);
-    void sl_serializeContent(const QString& content);
 
 private:
     bool loaded;
@@ -117,6 +128,7 @@ private:
 #else
     QWebChannel *channel;
 #endif
+    DashboardWriter *writer;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,6 +226,11 @@ private:
     bool isDataReady;
     DashboardJsAgent* agent;
     const QPointer<const WorkflowMonitor> monitor;
+
+    int logEntriesQuantity;
+    bool isUserWarned;
+
+    static const int LOG_LIMIT;    // UGENE-6160: dashboard hangs if there are too many messages, limit them.
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////

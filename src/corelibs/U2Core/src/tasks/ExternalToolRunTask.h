@@ -37,8 +37,6 @@ class ExternalToolListener;
 
 //using namespace Workflow;
 
-enum LogType {ERROR_LOG = 0, OUTPUT_LOG = 1, PROGRAM_PATH = 2, ARGUMENTS = 3};
-
 class U2CORE_EXPORT ProcessRun {
 public:
     QProcess *process;
@@ -186,6 +184,13 @@ public:
 
 class U2CORE_EXPORT ExternalToolListener {
 public:
+    enum LogType {
+        ERROR_LOG = 0,
+        OUTPUT_LOG = 1,
+        PROGRAM_PATH = 2,
+        ARGUMENTS = 3
+    };
+
     ExternalToolListener(ExternalToolLogProcessor *logProcessor = NULL);
     virtual ~ExternalToolListener();
 

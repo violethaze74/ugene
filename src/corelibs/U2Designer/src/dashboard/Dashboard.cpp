@@ -69,6 +69,34 @@ const QString STATE_FAILED = "FAILED";
 const QString STATE_SUCCESS = "SUCCESS";
 const QString STATE_CANCELED = "CANCELED";
 
+DashboardWriter::DashboardWriter(const QString &dir)
+    : QObject(NULL),
+      dir(dir)
+{
+
+}
+
+void DashboardWriter::setDir(const QString &newDir) {
+    dir = newDir;
+}
+
+void DashboardWriter::write(const QString &content) {
+    CHECK(!content.isEmpty(), );
+
+    QString fileName = dir + REPORT_SUB_DIR + DB_FILE_NAME;
+    QFile file(fileName);
+    bool opened = file.open(QIODevice::WriteOnly);
+    if (!opened) {
+        coreLog.error(tr("Can not open a file for writing: ") + fileName);
+        return;
+    }
+
+    QTextStream stream(&file);
+    stream.setCodec("UTF-8");
+    stream << content;
+    stream.flush();
+    file.close();
+}
 
 /************************************************************************/
 /* Dashboard */
@@ -79,7 +107,8 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidge
       name(name),
       opened(true),
       monitor(monitor),
-      workflowInProgress(true)
+      workflowInProgress(true),
+      writer(new DashboardWriter(dir))
 {
     connect(this, SIGNAL(loadFinished(bool)), SLOT(sl_loaded(bool)));
     connect(this, SIGNAL(loadFinished(bool)), SLOT(sl_serialize()));
@@ -110,7 +139,8 @@ Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
       dir(dirPath),
       opened(true),
       monitor(NULL),
-      workflowInProgress(false)
+      workflowInProgress(false),
+      writer(new DashboardWriter(dir))
 {
     dashboardPageController = new DashboardPageController(this);
     connect(this, SIGNAL(loadFinished(bool)), SLOT(sl_loaded(bool)));
@@ -121,7 +151,7 @@ Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
 }
 
 Dashboard::~Dashboard() {
-
+    writer->deleteLater();
 }
 
 void Dashboard::onShow() {
@@ -131,7 +161,7 @@ void Dashboard::onShow() {
 
 void Dashboard::sl_setDirectory(const QString &value) {
     dir = value;
-    U2OpStatus2Log os;
+    writer->setDir(dir);
     saveSettings();
 }
 
@@ -144,7 +174,6 @@ void Dashboard::sl_workflowStateChanged(Monitor::TaskState state) {
 
 void Dashboard::setClosed() {
     opened = false;
-    U2OpStatus2Log os;
     saveSettings();
 }
 
@@ -251,8 +280,7 @@ void Dashboard::sl_serialize() {
 }
 
 void Dashboard::serialize() {
-    connect(this, SIGNAL(si_serializeContent(const QString&)), this, SLOT(sl_serializeContent(const QString&)));
-    page()->toHtml([this](const QString& result) mutable {emit si_serializeContent(result);});
+    page()->toHtml([this](const QString& result) mutable {writer->write(result);});
 }
 
 void Dashboard::saveSettings() {
@@ -295,22 +323,6 @@ void Dashboard::sl_hideLoadBtnHint() {
     page()->runJavaScript("hideLoadBtnHint()");
 }
 
-void Dashboard::sl_serializeContent(const QString& content) {
-    QString fileName = dir + REPORT_SUB_DIR + DB_FILE_NAME;
-    QFile file(fileName);
-    bool opened = file.open(QIODevice::WriteOnly);
-    if (!opened) {
-        coreLog.error(tr("Can not open a file for writing: ") + fileName);
-        return;
-    }
-
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-    stream << content;
-    stream.flush();
-    file.close();
-}
-
 DashboardPageController* Dashboard::getController(){
     return dashboardPageController;
 }
@@ -318,6 +330,8 @@ DashboardPageController* Dashboard::getController(){
 /************************************************************************/
 /* DashboardPageController */
 /************************************************************************/
+const int DashboardPageController::LOG_LIMIT = 1000;
+
 DashboardPageController::DashboardPageController(Dashboard *parent)
     : QObject(parent),
       progress(0),
@@ -326,7 +340,9 @@ DashboardPageController::DashboardPageController(Dashboard *parent)
       isWebChannelInitialized(false),
       isDataReady(false),
       agent(new DashboardJsAgent(parent)),
-      monitor(parent->getMonitor())
+      monitor(parent->getMonitor()),
+      logEntriesQuantity(0),
+      isUserWarned(false)
 {
 
 }
@@ -437,7 +453,37 @@ void DashboardPageController::sl_newOutputFile(const U2::Workflow::Monitor::File
     }
 }
 
-void DashboardPageController::sl_onLogChanged(U2::Workflow::Monitor::LogEntry entry){
+
+namespace {
+
+bool logFileContainsMessages(const QString &fileUrl) {
+    return QFileInfo(fileUrl).exists() && QFile(fileUrl).size() != 0;
+}
+
+}
+
+void DashboardPageController::sl_onLogChanged(U2::Workflow::Monitor::LogEntry entry) {
+    SAFE_POINT(NULL != monitor, "WorkflowMonitor is NULL", );
+    CHECK(!isUserWarned, );
+    if (logEntriesQuantity >= LOG_LIMIT) {
+        const QString logDirUrl = monitor->outputDir() + "logs";
+        QString logFileUrl = logDirUrl + "/" + WDListener::getStandardErrorLogFileUrl(entry.actorName, entry.runNumber);
+        if (!logFileContainsMessages(logFileUrl)) {
+            logFileUrl = logDirUrl + "/" + WDListener::getStandardOutputLogFileUrl(entry.actorName, entry.runNumber);
+            if (!logFileContainsMessages(logFileUrl)) {
+                logFileUrl = "";
+            }
+        }
+
+        if (!logFileUrl.isEmpty()) {
+            entry.lastLine = tr("\n\nThe external tools output is too large and can't be visualized on the dashboard. Find full output in file \"%1\".").arg(logFileUrl);
+        } else {
+            entry.lastLine = tr("\n\nThe external tools output is too large and can't be visualized on the dashboard.");
+        }
+
+        isUserWarned = true;
+    }
+
     QJsonObject entryJS;
     entryJS["toolName"] = entry.toolName;
     entryJS["actorName"] = entry.actorName;
@@ -448,6 +494,7 @@ void DashboardPageController::sl_onLogChanged(U2::Workflow::Monitor::LogEntry en
     QString strJson(doc.toJson(QJsonDocument::Compact));
     if (isPageLoaded) {
         emit agent->si_onLogChanged(strJson);
+        logEntriesQuantity++;
     } else {
         logEntries.append(strJson);
     }
