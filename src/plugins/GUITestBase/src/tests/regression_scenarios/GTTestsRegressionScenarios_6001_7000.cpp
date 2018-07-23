@@ -591,7 +591,7 @@ GUI_TEST_CLASS_DEFINITION(test_6083) {
 
         GTUtilsProjectTreeView::click(os, "Phaneroptera_falcata.ugenedb");
         GTKeyboardDriver::keyClick( Qt::Key_Delete);
-        GTGlobals::sleep(); 
+        GTGlobals::sleep();
 }
 
 
@@ -654,13 +654,13 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     WorkflowProcessItem *readSEElement = GTUtilsWorkflowDesigner::addElement(os, readSEName);
     WorkflowProcessItem *trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
     GTUtilsWorkflowDesigner::connect(os, readSEElement, trimmomaticElement);
-    
+
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-            
+
             //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
             QMenu *menu = qobject_cast<QMenu*>(GTWidget::findWidget(os, "stepsMenu"));
@@ -686,7 +686,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
 
     GTUtilsWorkflowDesigner::click(os, readSEElement);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
-    
+
     GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
     GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new Scenario()));
     QTableView* table = GTWidget::findExactWidget<QTableView*>(os, "table");

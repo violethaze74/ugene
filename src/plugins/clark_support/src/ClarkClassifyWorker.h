@@ -36,7 +36,6 @@ class ClarkClassifySettings {
 public:
     static const QString TOOL_DEFAULT;
     static const QString TOOL_LIGHT;
-    static const QString TOOL_SPACED;
 
     enum Rank {
         // NB: values follow Clark definitions!

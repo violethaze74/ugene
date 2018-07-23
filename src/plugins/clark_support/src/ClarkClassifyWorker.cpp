@@ -252,9 +252,9 @@ void ClarkClassifyWorkerFactory::init() {
         a << new Attribute(tool, BaseTypes::STRING_TYPE(), Attribute::None, ClarkClassifySettings::TOOL_LIGHT);
 
         QString clarkDatabasePath;
-        U2DataPath *clarkBacteriaViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_DATA_ID);
+        U2DataPath *clarkBacteriaViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID);
         if (NULL != clarkBacteriaViralDataPath && clarkBacteriaViralDataPath->isValid()) {
-            clarkDatabasePath = clarkBacteriaViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_ITEM_ID);
+            clarkDatabasePath = clarkBacteriaViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID);
         } else {
             U2DataPath *clarkViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID);
             if (NULL != clarkViralDataPath && clarkViralDataPath->isValid()) {
@@ -343,7 +343,7 @@ void ClarkClassifyWorkerFactory::init() {
         delegates[NUM_THREADS] = new SpinBoxDelegate(thrMap);
 
         QList<StrStrPair> dataPathItems;
-        dataPathItems << StrStrPair(NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_DATA_ID, NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_ITEM_ID);
+        dataPathItems << StrStrPair(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID, NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID);
         dataPathItems << StrStrPair(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID, NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID);
         delegates[DB_URL] = new DatabaseDelegate(ACTOR_ID, DB_URL, dataPathItems, "clark/database", true);
     }
@@ -387,15 +387,18 @@ void ClarkClassifyWorker::init() {
     output->addComplement(input);
     input->addComplement(output);
 
+    cfg.tool = getValue<QString>(ClarkClassifyWorkerFactory::TOOL_VARIANT).toLower();
     cfg.databaseUrl = getValue<QString>(ClarkClassifyWorkerFactory::DB_URL);
     cfg.numberOfThreads = getValue<int>(ClarkClassifyWorkerFactory::NUM_THREADS);
     cfg.preloadDatabase = getValue<bool>(ClarkClassifyWorkerFactory::DB_TO_RAM);
-    cfg.gap = getValue<int>(ClarkClassifyWorkerFactory::GAP);
-    cfg.factor = getValue<int>(ClarkClassifyWorkerFactory::FACTOR);
     cfg.minFreqTarget = getValue<int>(ClarkClassifyWorkerFactory::K_MIN_FREQ);
-    cfg.kmerSize = getValue<int>(ClarkClassifyWorkerFactory::K_LENGTH);
+    if (cfg.tool == ClarkClassifySettings::TOOL_DEFAULT.toLower()) {
+        cfg.kmerSize = getValue<int>(ClarkClassifyWorkerFactory::K_LENGTH);
+        cfg.factor = getValue<int>(ClarkClassifyWorkerFactory::FACTOR);
+    } else {
+        cfg.gap = getValue<int>(ClarkClassifyWorkerFactory::GAP);
+    }
     cfg.extOut = getValue<bool>(ClarkClassifyWorkerFactory::EXTEND_OUT);
-    cfg.tool = getValue<QString>(ClarkClassifyWorkerFactory::TOOL_VARIANT).toLower();
 
     cfg.mode = (U2::LocalWorkflow::ClarkClassifySettings::Mode)getValue<int>(ClarkClassifyWorkerFactory::MODE);
     if (!(cfg.mode >=ClarkClassifySettings::Full && cfg.mode <= ClarkClassifySettings::Spectrum)) {
@@ -617,12 +620,13 @@ QStringList ClarkClassifyTask::getArguments() {
         arguments << "-O" << readsUrl;
     }
 
-    if (QString::compare(cfg.tool, ClarkClassifySettings::TOOL_LIGHT, Qt::CaseInsensitive) == 0) {
-        arguments << "-g" << QString::number(cfg.gap);
-    } else {
+    if (QString::compare(cfg.tool, ClarkClassifySettings::TOOL_DEFAULT, Qt::CaseInsensitive) == 0) {
         arguments << "-s" << QString::number(cfg.factor);
+        arguments << "-k" << QString::number(cfg.kmerSize);
+    } else if (QString::compare(cfg.tool, ClarkClassifySettings::TOOL_LIGHT, Qt::CaseInsensitive) == 0) {
+        arguments << "-g" << QString::number(cfg.gap);
     }
-    arguments << "-k" << QString::number(cfg.kmerSize);
+
     arguments << "-t" << QString::number(cfg.minFreqTarget);
     arguments << "-m" << QString::number(cfg.mode);
     arguments << "-n" << QString::number(cfg.numberOfThreads);
@@ -645,7 +649,6 @@ ClarkClassifySettings::ClarkClassifySettings()
 
 const QString ClarkClassifySettings::TOOL_DEFAULT("default");
 const QString ClarkClassifySettings::TOOL_LIGHT("light");
-const QString ClarkClassifySettings::TOOL_SPACED("spaced");
 
 } //LocalWorkflow
 } //U2

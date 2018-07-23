@@ -28,6 +28,9 @@
 
 namespace U2 {
 
+const QString TopHatSettings::INDEX = "Index";
+const QString TopHatSettings::SEQUENCE = "Sequence";
+
 TopHatInputData::TopHatInputData()
 : paired(false), fromFiles(false), workflowContext(NULL)
 {
@@ -81,5 +84,4 @@ uint TopHatSettings::getThreadsCount() {
     CHECK(0 != threads, 1);
     return threads;
 }
-
 }

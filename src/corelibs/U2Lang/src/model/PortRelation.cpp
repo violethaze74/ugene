@@ -19,31 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PORT_RELATION_H_
-#define _U2_PORT_RELATION_H_
-
-#include <U2Core/global.h>
+#include "PortRelation.h"
 
 namespace U2 {
 
-class U2LANG_EXPORT PortRelationDescriptor{
-public:
-    PortRelationDescriptor(const QString& portId, const QVariantList& valuesWithEnabledPort);
-    virtual ~PortRelationDescriptor();
+PortRelationDescriptor::PortRelationDescriptor(const QString& portId, const QVariantList& valuesWithEnabledPort)
+    : portId(portId), valuesWithEnabledPort(valuesWithEnabledPort) {}
 
-    virtual bool isPortEnabled(const QVariant& attrValue) const;
+PortRelationDescriptor::~PortRelationDescriptor() {}
 
-    virtual PortRelationDescriptor* clone() const;
+bool PortRelationDescriptor::isPortEnabled(const QVariant& attrValue) const {
+    return valuesWithEnabledPort.contains(attrValue);
+}
 
-    const QVariantList& getValuesWithEnabledPort() const;
+PortRelationDescriptor* PortRelationDescriptor::clone() const {
+    return new PortRelationDescriptor(*this);
+}
 
-    const QString& getPortId() const;
+const QVariantList& PortRelationDescriptor::getValuesWithEnabledPort() const {
+    return valuesWithEnabledPort;
+}
 
-private:
-    QString      portId;
-    QVariantList valuesWithEnabledPort;
-};
+const QString& PortRelationDescriptor::getPortId() const {
+    return portId;
+}
+
 
 } // U2 namespace
-
-#endif // _U2_ATTRIBUTE_RELATION_H_

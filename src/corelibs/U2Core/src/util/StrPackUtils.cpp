@@ -23,6 +23,8 @@
 
 #include "StrPackUtils.h"
 
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
 const QBitArray StrPackUtils::charactersToEscape = StrPackUtils::initCharactersToEscape();
@@ -58,6 +60,17 @@ QStringList StrPackUtils::unpackStringList(const QString &string, Options option
         unpackedList << unescapeCharacters(escapedString);
     }
     return unpackedList;
+}
+
+QString StrPackUtils::packMap(const QVariantMap &map, Options options) {
+    StrStrMap newMap;
+    foreach(const QString& key, map.keys()) {
+        QVariant mapValue = map.value(key);
+        SAFE_POINT(mapValue.canConvert<QString>(), tr("QVariant value can't be converted to string"), QString());
+
+        newMap.insert(key, map.value(key).toString());
+    }
+    return packMap(newMap, options);
 }
 
 QString StrPackUtils::packMap(const StrStrMap &map, Options options) {
