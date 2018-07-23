@@ -38,6 +38,15 @@ class SpadesWorker : public BaseWorker {
 public:
     SpadesWorker(Actor *p);
 
+    static const QString DATASET_TYPE_STANDARD_ISOLATE;
+    static const QString DATASET_TYPE_MDA_SINGLE_CELL;
+
+    static const QString RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY;
+    static const QString RUNNING_MODE_ASSEMBLY_ONLY;
+    static const QString RUNNING_MODE_ERROR_CORRECTION_ONLY;
+
+    static const QString K_MER_AUTO;
+
     virtual void init();
     virtual Task *tick();
     virtual void cleanup();
