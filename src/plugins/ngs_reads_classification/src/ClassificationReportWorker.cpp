@@ -179,9 +179,37 @@ ClassificationReportWorker::ClassificationReportWorker(Actor *a)
 {
 }
 
+QString ClassificationReportWorker::getProducerClassifyToolName() {
+    Port* port = actor->getPort(input->getPortId());
+    IntegralBusPort * inPort = qobject_cast<IntegralBusPort*>(port);
+    Actor* ac = inPort->getProducer(TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT().getId());
+
+    if(ac != NULL) {
+        foreach(Attribute* a,  ac->getAttributes()) {
+            if (a->getDisplayName() == "ClassifyToolName") {
+                return a->getId();
+            }
+        }
+    }
+
+    return ac->getId();
+}
+
 void ClassificationReportWorker::init() {
     input = ports.value(INPUT_PORT);
     SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), );
+
+    producerClassifyToolName = getProducerClassifyToolName();
+}
+
+QString ClassificationReportWorker::getReportFilePrefix(const Message& message) {
+    QString prefix;
+
+    const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
+    QString metadataFileUrl = metadata.getFileUrl();
+    prefix = QFileInfo(metadataFileUrl).completeBaseName();
+
+    return prefix;
 }
 
 Task * ClassificationReportWorker::tick() {
@@ -190,8 +218,23 @@ Task * ClassificationReportWorker::tick() {
 
         QString outputFileUrl = getValue<QString>(OUT_FILE);
         if (outputFileUrl.isEmpty()) {
-            const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
-            outputFileUrl = context->workingDir() + "/" + QFileInfo(metadata.getFileUrl()).completeBaseName() + "_report.txt";
+            QString reportFilePrefix = getReportFilePrefix(message);
+            QString classifyTool = "";
+            if (producerClassifyToolName.contains("kraken", Qt::CaseInsensitive)) {
+                classifyTool = "Kraken";
+            } else if (producerClassifyToolName.contains("clark", Qt::CaseInsensitive)) {
+                classifyTool = "CLARK";
+            } else if (producerClassifyToolName.contains("diamond", Qt::CaseInsensitive)) {
+                classifyTool = "DIAMOND";
+            } else if (producerClassifyToolName.contains("wevote", Qt::CaseInsensitive)) {
+                classifyTool = "Wevote";
+            }
+            outputFileUrl = context->workingDir() +
+                    "/classification_report/" +
+                    reportFilePrefix +
+                    "_" + classifyTool +
+                    "_report.txt";
+            FileAndDirectoryUtils::createWorkingDir(outputFileUrl, FileAndDirectoryUtils::FILE_DIRECTORY, "", "");
         }
         outputFileUrl = GUrlUtils::rollFileName(QFileInfo(outputFileUrl).absoluteFilePath(), "_");
 

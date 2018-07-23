@@ -109,6 +109,10 @@ void WevoteWorkerFactory::init() {
         const Descriptor outputFileDesc(OUTPUT_FILE_ATTR_ID, WevotePrompter::tr("Output file"),
                                         WevotePrompter::tr("Specify the output text file name."));
 
+        const Descriptor classifyToolDesc(WevoteSupport::CLASSIFY_TOOL,
+                                          "ClassifyToolName",
+                                          WevotePrompter::tr("Classify tool. Hidden attribute"));
+
         Attribute *penaltyAttribute = new Attribute(penaltyDesc, BaseTypes::NUM_TYPE(), Attribute::None, 2);
         Attribute *numberOfAgreedToolsAttribute = new Attribute(numberOfAgreedToolsDesc, BaseTypes::NUM_TYPE(), Attribute::None, 0);
         Attribute *scoreThresholdAttribute = new Attribute(scoreThresholdDesc, BaseTypes::NUM_TYPE(), Attribute::None, 0);
@@ -120,6 +124,8 @@ void WevoteWorkerFactory::init() {
         attributes << scoreThresholdAttribute;
         attributes << numberOfThreadsAttribute;
         attributes << outputFileAttribute;
+
+        attributes << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden);
     }
 
     QMap<QString, PropertyDelegate *> delegates;

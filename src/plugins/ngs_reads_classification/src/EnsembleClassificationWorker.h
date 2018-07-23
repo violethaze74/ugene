@@ -75,6 +75,7 @@ public:
     static void cleanup();
     EnsembleClassificationWorkerFactory() : DomainFactory(ACTOR_ID) {}
     Worker* createWorker(Actor* a) { return new EnsembleClassificationWorker(a); }
+    static QString getClassificationFileName(const QString &sourceFileUrl, const QString &toolName, const QString &extension, bool truncate);
 };
 
 class EnsembleClassificationTask : public Task {

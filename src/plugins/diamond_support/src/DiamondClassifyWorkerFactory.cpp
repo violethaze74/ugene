@@ -138,6 +138,10 @@ void DiamondClassifyWorkerFactory::init() {
                                                                    "<li>E-value of the best alignment with a known taxonomy ID found for the query (0 if unclassified)</li>"
                                                                    "</ul>"));
 
+        const Descriptor classifyToolDesc(DiamondSupport::CLASSIFY_TOOL,
+                                          "ClassifyToolName",
+                                          DiamondClassifyPrompter::tr("Classify tool. Hidden attribute"));
+
         QString diamondDatabasePath;
         U2DataPath *uniref50DataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID);
         if (NULL != uniref50DataPath && uniref50DataPath->isValid()) {
@@ -162,6 +166,8 @@ void DiamondClassifyWorkerFactory::init() {
         attributes << new Attribute(chunks, BaseTypes::NUM_TYPE(), Attribute::None, 4); //NB: unless --very-sensitive supported
         attributes << new Attribute(threads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
+
+        attributes << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden);
     }
 
     QMap<QString, PropertyDelegate *> delegates;

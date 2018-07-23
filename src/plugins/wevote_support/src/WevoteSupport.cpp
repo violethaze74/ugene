@@ -24,6 +24,7 @@
 namespace U2 {
 
 const QString WevoteSupport::TOOL_NAME = "WEVOTE";
+const QString WevoteSupport::CLASSIFY_TOOL = "WEVOTE";
 
 WevoteSupport::WevoteSupport()
     : ExternalTool(TOOL_NAME)

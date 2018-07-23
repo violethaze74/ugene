@@ -33,6 +33,7 @@ public:
     WevoteSupport();
 
     static const QString TOOL_NAME;
+    static const QString CLASSIFY_TOOL;
 };
 
 }   // namespace U2

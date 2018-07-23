@@ -42,6 +42,8 @@ public:
     static void registerTools(ExternalToolRegistry *etRegistry);
     static void unregisterTools(ExternalToolRegistry *etRegistry);
 
+    static const QString CLASSIFY_TOOL;
+
 private slots:
     void sl_toolValidationStatusChanged(bool isValid);
 };

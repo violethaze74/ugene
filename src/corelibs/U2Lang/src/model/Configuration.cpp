@@ -123,6 +123,9 @@ QList<Attribute*> Configuration::getAttributes() const {
 
 bool Configuration::isAttributeVisible(Attribute *attribute) const {
     bool isVisible = true;
+    if (attribute->getFlags().testFlag(Attribute::Hidden)) {
+        return false;
+    }
     SAFE_POINT(NULL != attribute, "NULL attribute", false);
     foreach (const AttributeRelation *relation, attribute->getRelations()) {
         if (VISIBILITY != relation->getType()) {
