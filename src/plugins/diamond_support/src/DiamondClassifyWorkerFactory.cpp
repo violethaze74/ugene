@@ -138,9 +138,9 @@ void DiamondClassifyWorkerFactory::init() {
                                                                    "<li>E-value of the best alignment with a known taxonomy ID found for the query (0 if unclassified)</li>"
                                                                    "</ul>"));
 
-        const Descriptor classifyToolDesc(DiamondSupport::CLASSIFY_TOOL,
-                                          "ClassifyToolName",
-                                          DiamondClassifyPrompter::tr("Classify tool. Hidden attribute"));
+        const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
+                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DIAMOND,
+                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DOC);
 
         QString diamondDatabasePath;
         U2DataPath *uniref50DataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID);
@@ -167,7 +167,9 @@ void DiamondClassifyWorkerFactory::init() {
         attributes << new Attribute(threads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
-        attributes << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden);
+        attributes << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(),
+                                    Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden,
+                                    NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DIAMOND);
     }
 
     QMap<QString, PropertyDelegate *> delegates;

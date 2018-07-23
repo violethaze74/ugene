@@ -242,9 +242,9 @@ void ClarkClassifyWorkerFactory::init() {
                                                                      "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                      "The input files should be in FASTA or FASTQ formats."));
 
-        const Descriptor classifyToolDesc(ClarkSupport::CLASSIFY_TOOL,
-                                          "ClassifyToolName",
-                                          ClarkClassifyWorker::tr("Classify tool. Hidden attribute"));
+        const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
+                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_CLARK,
+                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DOC);
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), Attribute::None, SINGLE_END);
         sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, PAIRED_INPUT_SLOT, QVariantList() << PAIRED_END));
@@ -291,7 +291,9 @@ void ClarkClassifyWorkerFactory::init() {
         a << new Attribute(numThreads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         a << new Attribute(outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
-        a << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden);
+        a << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(),
+                           Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden,
+                           NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_CLARK);
     }
 
     QMap<QString, PropertyDelegate*> delegates;

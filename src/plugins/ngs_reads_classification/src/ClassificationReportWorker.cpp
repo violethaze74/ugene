@@ -183,16 +183,12 @@ QString ClassificationReportWorker::getProducerClassifyToolName() {
     Port* port = actor->getPort(input->getPortId());
     IntegralBusPort * inPort = qobject_cast<IntegralBusPort*>(port);
     Actor* ac = inPort->getProducer(TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT().getId());
+    CHECK(ac != NULL, "UNKNOWN_CLASSIFY_TOOL");
 
-    if(ac != NULL) {
-        foreach(Attribute* a,  ac->getAttributes()) {
-            if (a->getDisplayName() == "ClassifyToolName") {
-                return a->getId();
-            }
-        }
-    }
+    Attribute* a = ac->getParameter(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID);
+    CHECK(a != NULL, ac->getId());
 
-    return ac->getId();
+    return a->getAttributeValueWithoutScript<QString>();
 }
 
 void ClassificationReportWorker::init() {
@@ -207,7 +203,7 @@ QString ClassificationReportWorker::getReportFilePrefix(const Message& message) 
 
     const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
     QString metadataFileUrl = metadata.getFileUrl();
-    prefix = QFileInfo(metadataFileUrl).completeBaseName();
+    prefix = GUrlUtils::getPairedFastqFilesBaseName(metadataFileUrl, true);
 
     return prefix;
 }
@@ -219,20 +215,10 @@ Task * ClassificationReportWorker::tick() {
         QString outputFileUrl = getValue<QString>(OUT_FILE);
         if (outputFileUrl.isEmpty()) {
             QString reportFilePrefix = getReportFilePrefix(message);
-            QString classifyTool = "";
-            if (producerClassifyToolName.contains("kraken", Qt::CaseInsensitive)) {
-                classifyTool = "Kraken";
-            } else if (producerClassifyToolName.contains("clark", Qt::CaseInsensitive)) {
-                classifyTool = "CLARK";
-            } else if (producerClassifyToolName.contains("diamond", Qt::CaseInsensitive)) {
-                classifyTool = "DIAMOND";
-            } else if (producerClassifyToolName.contains("wevote", Qt::CaseInsensitive)) {
-                classifyTool = "Wevote";
-            }
             outputFileUrl = context->workingDir() +
                     "/classification_report/" +
                     reportFilePrefix +
-                    "_" + classifyTool +
+                    "_" + producerClassifyToolName +
                     "_report.txt";
             FileAndDirectoryUtils::createWorkingDir(outputFileUrl, FileAndDirectoryUtils::FILE_DIRECTORY, "", "");
         }

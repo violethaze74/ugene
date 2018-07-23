@@ -24,7 +24,6 @@
 namespace U2 {
 
 const QString DiamondSupport::TOOL_NAME = "DIAMOND";
-const QString DiamondSupport::CLASSIFY_TOOL = "DIAMOND";
 
 DiamondSupport::DiamondSupport(const QString &name)
     : ExternalTool(name)

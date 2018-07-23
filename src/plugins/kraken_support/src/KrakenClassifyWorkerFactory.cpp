@@ -140,9 +140,9 @@ void KrakenClassifyWorkerFactory::init() {
                                                                         "This can be useful to improve the speed. The database size should be less than the RAM size.<br><br>"
                                                                         "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
 
-        const Descriptor classifyToolDesc(KrakenSupport::CLASSIFY_TOOL,
-                                          "ClassifyToolName",
-                                          KrakenClassifyPrompter::tr("Classify tool. Hidden attribute"));
+        const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
+                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_KRAKEN,
+                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DOC);
 
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, KrakenClassifyTaskSettings::SINGLE_END);
         inputDataAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT_ID, PAIRED_INPUT_SLOT, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
@@ -165,7 +165,9 @@ void KrakenClassifyWorkerFactory::init() {
         attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
-        attributes << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden);
+        attributes << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(),
+                                    Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden,
+                                    NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_KRAKEN);
 
         minHitsAttribute->addRelation(new VisibilityRelation(QUICK_OPERATION_ATTR_ID, "true"));
         databaseAttribute->addRelation(new DatabaseSizeRelation(PRELOAD_DATABASE_ATTR_ID));

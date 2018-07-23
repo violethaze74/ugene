@@ -76,6 +76,13 @@ const QString NgsReadsClassificationPlugin::REFSEQ_VIRAL_DATA_ID = "refseq_viral
 
 const QString NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP = QObject::tr("NGS: Reads Classification");
 
+const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID = "ClassifyToolName";
+const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DOC = QObject::tr("Classify tool. Hidden attribute");
+const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_KRAKEN = "Kraken";
+const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_CLARK = "CLARK";
+const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DIAMOND = "DIAMOND";
+const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_WEVOTE = "Wevote";
+
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     NgsReadsClassificationPlugin *plugin = new NgsReadsClassificationPlugin();
     return plugin;

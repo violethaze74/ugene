@@ -84,6 +84,13 @@ public:
 
     static const QString WORKFLOW_ELEMENTS_GROUP;
 
+    static const QString WORKFLOW_CLASSIFY_TOOL_ID;
+    static const QString WORKFLOW_CLASSIFY_TOOL_DOC;
+    static const QString WORKFLOW_CLASSIFY_TOOL_KRAKEN;
+    static const QString WORKFLOW_CLASSIFY_TOOL_CLARK;
+    static const QString WORKFLOW_CLASSIFY_TOOL_DIAMOND;
+    static const QString WORKFLOW_CLASSIFY_TOOL_WEVOTE;
+
 private:
     void registerData(const QString &dataId, const QString &relativePath, const QString &description, bool addAsFolder = false, bool verbose = false);
     void unregisterData(const QString &dataId);

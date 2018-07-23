@@ -31,8 +31,6 @@
 
 namespace U2 {
 
-const QString ClarkSupport::CLASSIFY_TOOL = "clark";
-
 ClarkSupport::ClarkSupport(const QString& name, const QString& path) : ExternalTool(name, path)
 {
     if (AppContext::getMainWindow()) {
