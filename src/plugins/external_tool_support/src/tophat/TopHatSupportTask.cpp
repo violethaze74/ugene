@@ -56,7 +56,8 @@ TopHatSupportTask::TopHatSupportTask(const TopHatSettings& _settings)
       tmpDocPaired(NULL),
       topHatExtToolTask(NULL),
       tmpDocSaved(false),
-      tmpDocPairedSaved(false)
+      tmpDocPairedSaved(false),
+      bowtieIndexTask(NULL)
 {
     GCOUNTER(cvar, tvar, "NGS:TopHatTask");
 }
@@ -98,6 +99,40 @@ QString TopHatSupportTask::setupTmpDir() {
     return tmpDir.absolutePath();
 }
 
+ExternalToolSupportTask *TopHatSupportTask::createIndexTask() {
+    if (settings.referenceInputType == TopHatSettings::SEQUENCE) {
+        QFileInfo referenceGenome(settings.referenceGenome);
+        QFileInfo outDir(settings.outDir);
+
+        QDir indexDir(outDir.absolutePath() + "/");
+        if (settings.useBowtie1) {
+            indexDir = outDir.absolutePath() + "/bowtie1_index/";
+        } else {
+            indexDir = outDir.absolutePath() + "/bowtie2_index/";
+        }
+        if (!indexDir.exists()) {
+            if (!indexDir.mkpath(indexDir.absolutePath())) {
+                stateInfo.setError(tr("Can't create directory for index files "));
+                bowtieIndexTask = NULL;
+                return NULL;
+            }
+        }
+        settings.buildIndexPathAndBasename = indexDir.absolutePath() + "/" + referenceGenome.baseName();
+        if (settings.useBowtie1) {
+            bowtieIndexTask = new BowtieBuildIndexTask(referenceGenome.absoluteFilePath(),
+                                                       settings.buildIndexPathAndBasename,
+                                                       false);
+        } else {
+            bowtieIndexTask = new Bowtie2BuildIndexTask(referenceGenome.absoluteFilePath(),
+                                                         settings.buildIndexPathAndBasename);
+        }
+        settings.bowtieIndexPathAndBasename = settings.buildIndexPathAndBasename;
+
+        return bowtieIndexTask;
+    }
+    return NULL;
+}
+
 void TopHatSupportTask::prepare() {
     settings.outDir = GUrlUtils::createDirectory(
         settings.outDir + "/" + outSubDirBaseName,
@@ -106,6 +141,13 @@ void TopHatSupportTask::prepare() {
 
     workingDirectory = setupTmpDir();
     CHECK_OP(stateInfo, );
+
+    ExternalToolSupportTask *indexTask = createIndexTask();
+    CHECK_OP(stateInfo, );
+    if (indexTask != NULL) {
+        addSubTask(indexTask);
+        return;
+    }
 
     if (settings.data.fromFiles) {
         topHatExtToolTask = runTophat();
@@ -250,9 +292,21 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task *subTask) {
         }
 
         if (tmpDocSaved && (tmpDocPairedSaved || settings.data.pairedSeqIds.isEmpty())) {
-            topHatExtToolTask = runTophat();
-            result.append(topHatExtToolTask);
+            if (settings.referenceInputType == TopHatSettings::SEQUENCE) {
+                ExternalToolSupportTask *indexTask = createIndexTask();
+                CHECK_OP(stateInfo, result);
+                if (indexTask != NULL) {
+                    result.append(indexTask);
+                }
+            } else {
+                topHatExtToolTask = runTophat();
+                result.append(topHatExtToolTask);
+            }
         }
+    } else if (subTask == bowtieIndexTask) {
+        settings.bowtieIndexPathAndBasename = settings.buildIndexPathAndBasename;
+        topHatExtToolTask = runTophat();
+        result.append(topHatExtToolTask);
     } else if (subTask == topHatExtToolTask) {
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/accepted_hits.bam", outputFiles);
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/junctions.bed", outputFiles);
@@ -300,8 +354,7 @@ bool removeTmpDir(QString dirName)
         {
             if (info.isDir()) {
                 result = removeTmpDir(info.absoluteFilePath());
-            }
-            else {
+            } else {
                 result = QFile::remove(info.absoluteFilePath());
             }
 
@@ -338,5 +391,4 @@ QString TopHatSupportTask::getOutBamUrl() const {
 QString TopHatSupportTask::getSampleName() const {
     return settings.sample;
 }
-
 }

@@ -22,14 +22,17 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DataPathRegistry.h>
 
-#include "DiamondClassifyPrompter.h"
-#include "DiamondTaxonomyDataValidator.h"
-#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
+#include "DiamondBuildValidator.h"
+#include "../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 namespace Workflow {
 
-bool DiamondTaxonomyDataValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+bool DiamondBuildValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+    return validateTaxonomy(actor, problemList);
+}
+
+bool DiamondBuildValidator::validateTaxonomy(const Actor *actor, ProblemList &problemList) const {
     bool isValid = true;
 
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
@@ -37,15 +40,17 @@ bool DiamondTaxonomyDataValidator::validate(const Actor *actor, ProblemList &pro
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
-              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy data is not set."), actor->getId()), false);
+              problemList << Problem(tr("Taxonomy classification data are not available."), actor->getId()), false);
 
-    if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP_ITEM_ID).isEmpty()) {
-        problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP_ITEM_ID), actor->getId());
+    const QString missingFileMessage = tr("Taxonomy classification data are not full: file '%1' is missing.");
+
+    if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_PROT_ACCESSION_2_TAXID_ITEM_ID).isEmpty()) {
+        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_PROT_ACCESSION_2_TAXID_ITEM_ID), actor->getId());
         isValid = false;
     }
 
     if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID).isEmpty()) {
-        problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID), actor->getId());
+        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID), actor->getId());
         isValid = false;
     }
 

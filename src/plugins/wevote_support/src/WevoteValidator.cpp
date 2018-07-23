@@ -30,26 +30,27 @@ namespace U2 {
 namespace Workflow {
 
 bool WevoteValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    return validateTaxonomyData(actor, problemList);
+    return validateTaxonomy(actor, problemList);
 }
 
-bool WevoteValidator::validateTaxonomyData(const Actor *actor, ProblemList &problemList) const {
+bool WevoteValidator::validateTaxonomy(const Actor *actor, ProblemList &problemList) const {
     bool isValid = true;
 
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
     SAFE_POINT_EXT(NULL != dataPathRegistry, problemList.append(Problem("U2DataPathRegistry is NULL", actor->getId())), false);
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    SAFE_POINT_EXT(NULL != taxonomyDataPath, problemList.append(Problem("Taxonomy data path is not registered", actor->getId())), false);
-    CHECK_EXT(taxonomyDataPath->isValid(), problemList.append(Problem(LocalWorkflow::WevotePrompter::tr("Taxonomy data are missed"), actor->getId())), false);
+    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
+              problemList << Problem(tr("Taxonomy classification data are not available."), actor->getId()), false);
 
+    const QString missingFileMessage = tr("Taxonomy classification data are not full: file '%1' is missing.");
     if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID).isEmpty()) {
-        problemList << Problem(LocalWorkflow::WevotePrompter::tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID), actor->getId());
+        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID), actor->getId());
         isValid = false;
     }
 
     if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID).isEmpty()) {
-        problemList << Problem(LocalWorkflow::WevotePrompter::tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID), actor->getId());
+        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID), actor->getId());
         isValid = false;
     }
 

@@ -37,8 +37,6 @@ class ExternalToolListener;
 
 //using namespace Workflow;
 
-enum LogType {ERROR_LOG, OUTPUT_LOG, PROGRAM_PATH, ARGUMENTS};
-
 class U2CORE_EXPORT ProcessRun {
 public:
     QProcess *process;
@@ -68,7 +66,6 @@ public:
     void setAdditionalEnvVariables(const  QMap<QString, QString> &envVariable) {additionalEnvVariables = envVariable; }
 
     static void killProcess(QProcess *process, QString childProcesses = "");
-
 private:
     static QList<long> getChildPidsRecursive(long parentPid);
     void parseStandartOutputFile(QString &filepath);
@@ -190,6 +187,13 @@ public:
 
 class U2CORE_EXPORT ExternalToolListener {
 public:
+    enum LogType {
+        ERROR_LOG,
+        OUTPUT_LOG,
+        PROGRAM_PATH,
+        ARGUMENTS
+    };
+
     ExternalToolListener(ExternalToolLogProcessor *logProcessor = NULL);
     virtual ~ExternalToolListener();
 

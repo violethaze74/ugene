@@ -35,6 +35,16 @@
 namespace U2 {
 namespace LocalWorkflow {
 
+//////////////////////////////////////////////////
+//ClassificationReportValidator
+class ClassificationReportValidator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(ClassificationReportValidator)
+public:
+    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+
+private:
+    bool validateTaxonomyTree(const Actor *actor, ProblemList &problemList) const;
+};
 
 //////////////////////////////////////////////////
 //ClassificationReport

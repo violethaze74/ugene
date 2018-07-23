@@ -19,13 +19,20 @@
  * MA 02110-1301, USA.
  */
 
+#include <QFileInfo>
+
+#include <U2Core/CopyFileTask.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/MultiTask.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Lang/WorkflowMonitor.h>
+
+#include "trimmomatic/steps/IlluminaClipStep.h"
 
 #include "TrimmomaticWorker.h"
 #include "TrimmomaticWorkerFactory.h"
@@ -44,7 +51,8 @@ TrimmomaticWorker::TrimmomaticWorker(Actor *actor)
       input(NULL),
       output(NULL),
       pairedReadsInput(false),
-      generateLog(false)
+      generateLog(false),
+      prepared(false)
 {
 
 }
@@ -60,14 +68,49 @@ void TrimmomaticWorker::init() {
     generateLog = getValue<bool>(TrimmomaticWorkerFactory::GENERATE_LOG_ATTR_ID);
 }
 
+QPair<QString, QString> TrimmomaticWorker::getAbsoluteAndCopiedPathFromStep(const QString& trimmingStep) const {
+    int indexOfFirstQuote = trimmingStep.indexOf("'");
+    int indexOfSecondQuote = trimmingStep.indexOf("'", indexOfFirstQuote + 1);
+    QString absoluteFilePath = trimmingStep.mid(indexOfFirstQuote + 1, (indexOfSecondQuote - 1) - indexOfFirstQuote);
+
+    QFileInfo fi(absoluteFilePath);
+    return QPair<QString, QString>(absoluteFilePath, QString(context->workingDir() + "/" + fi.fileName()));
+}
+
 Task *TrimmomaticWorker::tick() {
+    if (!prepared) {
+        QList<Task*> tasks;
+        QStringList trimmingSteps = getValue<QStringList>(TrimmomaticWorkerFactory::TRIMMING_STEPS_ATTR_ID);
+        QSet<QString> takenNames;
+        foreach(const QString& trimmingStep, trimmingSteps) {
+            if (!trimmingStep.startsWith(IlluminaClipStepFactory::ID)) {
+                continue;
+            }
+            QPair<QString, QString> paths = getAbsoluteAndCopiedPathFromStep(trimmingStep);
+            QFile destFile(paths.second);
+            paths.second = GUrlUtils::rollFileName(paths.second, "_", takenNames);
+            takenNames.insert(paths.second);
+            tasks.append(new CopyFileTask(paths.first, paths.second));
+            QFileInfo copy(paths.second);
+            copiedAdapters.append(copy.fileName());
+        }
+        if (!tasks.isEmpty()) {
+            Task *copyFiles = new MultiTask(tr("Copy adapters to working folder"), tasks);
+            connect(new TaskSignalMapper(copyFiles), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskPrepareFinished(Task *)));
+            return copyFiles;
+        }
+        prepared = true;
+    }
+    if (isDone()) {
+        return NULL;
+    }
     if (input->hasMessage()) {
         U2OpStatus2Log os;
         TrimmomaticTaskSettings settings = getSettings(os);
         if (os.hasError()) {
             return new FailTask(os.getError());
         }
-
+        settings.workingDirectory = context->workingDir();
         TrimmomaticTask *task = new TrimmomaticTask(settings);
         task->addListeners(createLogListeners());
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
@@ -124,6 +167,16 @@ void TrimmomaticWorker::sl_taskFinished(Task *task) {
     }
 }
 
+void TrimmomaticWorker::sl_taskPrepareFinished(Task *task) {
+    MultiTask *copyFilesTask = qobject_cast<MultiTask *>(task);
+    if (!copyFilesTask->isFinished() || copyFilesTask->hasError() || copyFilesTask->isCanceled()) {
+        setDone();
+        output->setEnded();
+        return;
+    }
+    prepared = true;
+}
+
 QString TrimmomaticWorker::setAutoUrl(const QString &paramId, const QString &inputFileUrl, const QString &workingDir, const QString &fileNameSuffix) {
     QString value = getValue<QString>(paramId);
     if (value.isEmpty()) {
@@ -157,6 +210,16 @@ TrimmomaticTaskSettings TrimmomaticWorker::getSettings(U2OpStatus &os) {
     }
 
     settings.trimmingSteps = getValue<QStringList>(TrimmomaticWorkerFactory::TRIMMING_STEPS_ATTR_ID);
+    for (int i = 0, adaptersCounter = 0; i < settings.trimmingSteps.size(); i++) {
+        QString &step = settings.trimmingSteps[i];
+        if (step.startsWith(IlluminaClipStepFactory::ID)) {
+            int indexOfFirstQuote = step.indexOf("'");
+            int indexOfSecondQuote = step.indexOf("'", indexOfFirstQuote + 1);
+            QString firstPart = step.left(indexOfFirstQuote);
+            QString secondPart = step.right(step.size() - (indexOfSecondQuote + 1));
+            step = firstPart + copiedAdapters[adaptersCounter++] + secondPart;
+        }
+    }
 
     if (generateLog) {
         settings.generateLog = true;

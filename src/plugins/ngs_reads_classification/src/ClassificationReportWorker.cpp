@@ -76,7 +76,25 @@ static const QString OUT_FILE("output-url");
 static const QString ALL_TAXA("all-taxa");
 static const QString SORT_BY("sort-by");
 
+/************************************************************************/
+/* ClassificationReportValidator */
+/************************************************************************/
+bool ClassificationReportValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+    return validateTaxonomyTree(actor, problemList);
+}
 
+bool ClassificationReportValidator::validateTaxonomyTree(const Actor *actor, ProblemList &problemList) const {
+    bool valid = true;
+    if (!TaxonomyTree::getInstance()->isValid()) {
+        problemList << Problem(tr("Taxonomy classification data are not available."), actor->getId());
+        valid = false;
+    }
+    return valid;
+}
+
+/************************************************************************/
+/* ClassificationReportPrompter */
+/************************************************************************/
 QString ClassificationReportPrompter::composeRichDoc() {
     return tr("Generate a detailed classification report.");
 }
@@ -139,6 +157,7 @@ void ClassificationReportWorkerFactory::init() {
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ClassificationReportPrompter());
+    proto->setValidator(new ClassificationReportValidator());
 
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -281,7 +300,7 @@ struct ClassificationReportLine {
                 .append(QByteArray::number(superkingdom_tax_id)).append('\t').append(fmt(superkingdom_name)).append('\t').append(QByteArray::number(phylum_tax_id)).append('\t').append(fmt(phylum_name)).append('\t')
                 .append(QByteArray::number(class_tax_id)).append('\t').append(fmt(class_name)).append('\t').append(QByteArray::number(order_tax_id)).append('\t').append(fmt(order_name)).append('\t')
                 .append(QByteArray::number(family_tax_id)).append('\t').append(fmt(family_name)).append('\t').append(QByteArray::number(genus_tax_id)).append('\t').append(fmt(genus_name)).append('\t')
-                .append(QByteArray::number(species_tax_id)).append('\t').append(species_name).append('\t').append(QByteArray::number(directly_num)).append('\t')
+                .append(QByteArray::number(species_tax_id)).append('\t').append(fmt(species_name)).append('\t').append(QByteArray::number(directly_num)).append('\t')
                 .append(QByteArray::number(directly_proportion_all * 100, 'f', 3)).append('\t').append(QByteArray::number(directly_proportion_classified * 100, 'f', 3)).append('\t')
                 .append(QByteArray::number(clade_num)).append('\t').append(QByteArray::number(clade_proportion_all * 100, 'f', 3)).append('\t').append(QByteArray::number(clade_proportion_classified * 100, 'f', 3));
     }
@@ -300,16 +319,17 @@ static const QString header("tax_id\ttax_name\trank\tlineage\tsuperkingdom_tax_i
 
 
 static void fill(QHash<TaxID, uint> &claded, QHash<TaxID, ClassificationReportLine> &report, int count, TaxID id, int totalCount, int classifiedCount) {
+    TaxonomyTree *tree = TaxonomyTree::getInstance();
+    CHECK(tree->contains(id), );
+
     ClassificationReportLine &line = report[id];
     line.tax_id = id;
     line.directly_num = count;
     line.directly_proportion_all = double(count) / totalCount;
     line.directly_proportion_classified = double(count) / classifiedCount;
 
-    TaxonomyTree *tree = TaxonomyTree::getInstance();
     QString rank = line.rank = tree->getRank(id);
     QString name = line.tax_name = tree->getName(id);
-
     do {
         claded[id] += line.directly_num;
 
@@ -370,7 +390,7 @@ void ClassificationReportTask::run()
         }
     } else {
         TaxonomyTree *tree = TaxonomyTree::getInstance();
-        int elementsCount = tree->getElementsCount();
+        int elementsCount = tree->getNamesListSize();
         report.reserve(elementsCount);
         claded.reserve(elementsCount * 8);
         //0 index is empty, 1 is root element
@@ -408,7 +428,11 @@ void ClassificationReportTask::run()
 }
 
 static bool compareByCladeNum(const ClassificationReportLine* first, const ClassificationReportLine* second) {
-    return first->clade_num > second->clade_num;
+    if (first->clade_num == second->clade_num) {
+        return first->tax_id < second->tax_id;
+    } else {
+        return first->clade_num > second->clade_num;
+    }
 }
 
 static bool compareByTaxId(const ClassificationReportLine* first, const ClassificationReportLine* second) {

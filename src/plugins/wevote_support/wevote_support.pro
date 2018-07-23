@@ -19,4 +19,4 @@ SOURCES += src/PrepareWevoteTaxonomyDataTask.cpp \
            src/WevoteWorker.cpp \
            src/WevoteWorkerFactory.cpp
 
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

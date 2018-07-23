@@ -76,6 +76,7 @@ public:
     static const QString OUT_TYPE_ID;
 
     static const QString SCAFFOLD_OUT_SLOT_ID;
+    static const QString CONTIGS_URL_OUT_SLOT_ID;
 
     static const QString SEQUENCING_PLATFORM_ID;
 

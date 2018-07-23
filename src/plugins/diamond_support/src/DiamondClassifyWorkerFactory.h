@@ -39,7 +39,6 @@ public:
     static const QString ACTOR_ID;
 
     static const QString INPUT_PORT_ID;
-    static const QString INPUT_PAIRED_PORT_ID;
     static const QString OUTPUT_PORT_ID;
 
     static const QString INPUT_SLOT;
@@ -48,6 +47,7 @@ public:
     static const QString DATABASE_ATTR_ID;
     static const QString GENCODE_ATTR_ID;
     static const QString SENSITIVE_ATTR_ID;
+    static const QString TOP_ALIGNMENTS_PERCENTAGE_ATTR_ID;
     static const QString FSHIFT_ATTR_ID;
     static const QString EVALUE_ATTR_ID;
     static const QString MATRIX_ATTR_ID;
@@ -57,10 +57,6 @@ public:
     static const QString BSIZE_ATTR_ID;
     static const QString CHUNKS_ATTR_ID;
     static const QString OUTPUT_URL_ATTR_ID;
-
-
-    static const QString SINGLE_END_TEXT;
-    static const QString PAIRED_END_TEXT;
 };
 
 }   // namespace LocalWorkflow

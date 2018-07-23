@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <QMainWindow>
+
+#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
@@ -26,6 +29,7 @@
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include "IlluminaClipStep.h"
@@ -229,7 +233,8 @@ void IlluminaClipSettingsWidget::setState(const QVariantMap &state) {
 }
 
 void IlluminaClipSettingsWidget::sl_browseButtonClicked() {
-    LastUsedDirHelper dirHelper("trimmomatic/adapters", QDir(":data").path() + "/adapters/illumina");
+    QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/adapters/illumina";
+    LastUsedDirHelper dirHelper("trimmomatic/adapters", defaultDir);
 
     const QString filter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, true, QStringList());
     QString defaultFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
@@ -241,7 +246,7 @@ void IlluminaClipSettingsWidget::sl_browseButtonClicked() {
 }
 
 void IlluminaClipSettingsWidget::sl_optionalButtonClicked() {
-    QObjectScopedPointer<IlluminaClipAdditionalSettingsDialog> additionalOptionsDialog(new IlluminaClipAdditionalSettingsDialog(additionalOptions));
+    QObjectScopedPointer<IlluminaClipAdditionalSettingsDialog> additionalOptionsDialog(new IlluminaClipAdditionalSettingsDialog(additionalOptions, AppContext::getMainWindow()->getQMainWindow()));
     const int executionResult = additionalOptionsDialog->exec();
     if (static_cast<QDialog::DialogCode>(executionResult) == QDialog::Accepted) {
         CHECK(!additionalOptionsDialog.isNull(), );
@@ -253,10 +258,10 @@ const QString IlluminaClipAdditionalSettingsDialog::ADDITIONAL_SETTINGS_ENABLED 
 const QString IlluminaClipAdditionalSettingsDialog::MIN_ADAPTER_LENGTH = "minAdapterLength";
 const QString IlluminaClipAdditionalSettingsDialog::KEEP_BOTH_READS = "keepBothReads";
 
-IlluminaClipAdditionalSettingsDialog::IlluminaClipAdditionalSettingsDialog(const QVariantMap &widgetState) {
+IlluminaClipAdditionalSettingsDialog::IlluminaClipAdditionalSettingsDialog(const QVariantMap &widgetState, QWidget* parent) : QDialog(parent) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, HelpButton::INVALID_VALUE);
+    new HelpButton(this, buttonBox, "22059547");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
 

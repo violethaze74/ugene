@@ -24,7 +24,9 @@
 #include <U2Algorithm/GenomeAssemblyMultiTask.h>
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
 
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/QVariantUtils.h>
@@ -85,6 +87,7 @@ const QStringList SpadesWorkerFactory::IN_TYPE_ID_LIST = QStringList() <<
 const QString SpadesWorkerFactory::OUT_TYPE_ID = "spades-data-out";
 
 const QString SpadesWorkerFactory::SCAFFOLD_OUT_SLOT_ID = "scaffolds-out";
+const QString SpadesWorkerFactory::CONTIGS_URL_OUT_SLOT_ID = "contigs-out";
 
 const QString SpadesWorkerFactory::SEQUENCING_PLATFORM_ID = "platform-id";
 
@@ -335,13 +338,19 @@ void SpadesWorker::sl_taskFinished() {
         return;
     }
 
-     QString url = t->getResultUrl();
+    QString scaffoldUrl = t->getResultUrl();
+     SpadesTask *spadesTask = qobject_cast<SpadesTask*>(t->getAssemblyTask());
+     CHECK(spadesTask != NULL, );
+     QString contigsUrl = spadesTask->getContigsUrl();
 
      QVariantMap data;
-     data[SpadesWorkerFactory::SCAFFOLD_OUT_SLOT_ID] = qVariantFromValue<QString>(url);
+     data[SpadesWorkerFactory::SCAFFOLD_OUT_SLOT_ID] = qVariantFromValue<QString>(scaffoldUrl);
+     data[SpadesWorkerFactory::CONTIGS_URL_OUT_SLOT_ID] = qVariantFromValue<QString>(contigsUrl);
      output->put(Message(output->getBusType(), data));
 
-    context->getMonitor()->addOutputFile(url, getActor()->getId());
+     context->getMonitor()->addOutputFile(scaffoldUrl, getActor()->getId());
+     context->getMonitor()->addOutputFile(contigsUrl, getActor()->getId());
+
 }
 
 GenomeAssemblyTaskSettings SpadesWorker::getSettings( U2OpStatus &os ){
@@ -349,12 +358,12 @@ GenomeAssemblyTaskSettings SpadesWorker::getSettings( U2OpStatus &os ){
 
     settings.algName = ET_SPADES;
     settings.openView = false;
-
-    QString outDir = GUrlUtils::createDirectory(
-        getValue<QString>(SpadesWorkerFactory::OUTPUT_DIR) + "/" + SpadesWorkerFactory::BASE_SPADES_SUBDIR,
-        "_", os);
+    QString outDir = getValue<QString>(SpadesWorkerFactory::OUTPUT_DIR);
+    if (outDir.isEmpty()) {
+        outDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+    }
+    outDir = GUrlUtils::createDirectory(outDir + "/" + SpadesWorkerFactory::BASE_SPADES_SUBDIR, "_", os);
     CHECK_OP(os, settings);
-
     if (outDir.endsWith("/")){
         outDir.chop(1);
     }
@@ -446,11 +455,16 @@ void SpadesWorkerFactory::init() {
         SpadesWorker::tr("Scaffolds URL"),
         SpadesWorker::tr("Output scaffolds URL."));
 
+    Descriptor contigsOutDesc(CONTIGS_URL_OUT_SLOT_ID,
+        SpadesWorker::tr("Contigs URL"),
+        SpadesWorker::tr("Output contigs URL."));
+
     Descriptor outPortDesc(OUT_PORT_DESCR,
         SpadesWorker::tr("Output File"),
         SpadesWorker::tr("Output assembly files."));
 
     outTypeMap[scaffoldOutDesc] = BaseTypes::STRING_TYPE();
+    outTypeMap[contigsOutDesc] = BaseTypes::STRING_TYPE();
 
     DataTypePtr outTypeSet(new MapDataType(OUT_TYPE_ID, outTypeMap));
     portDescs << new PortDescriptor(outPortDesc, outTypeSet, false, true);
@@ -485,8 +499,6 @@ void SpadesWorkerFactory::init() {
          Descriptor inputData(SpadesTask::OPTION_INPUT_DATA,
              SpadesWorker::tr("Input data"),
              INPUT_DATA_DESCRIPTION);
-
-        attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
         attrs << new Attribute(datasetType, BaseTypes::STRING_TYPE(), true, QVariant("Multi Cell"));
         attrs << new Attribute(rMode, BaseTypes::STRING_TYPE(), true, QVariant("Error Correction and Assembly"));
         attrs << new Attribute(kMer, BaseTypes::STRING_TYPE(), true, QVariant("auto"));
@@ -505,11 +517,14 @@ void SpadesWorkerFactory::init() {
 
         attrs << new Attribute(threads, BaseTypes::NUM_TYPE(), false, QVariant(16));
         attrs << new Attribute(memLim, BaseTypes::NUM_TYPE(), false, QVariant(250));
+        attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), Attribute::CanBeEmpty | Attribute::Required);
      }
 
      QMap<QString, PropertyDelegate*> delegates;
      {
-         delegates[OUTPUT_DIR] = new URLDelegate("", "", false, true);
+         DelegateTags outputUrlTags;
+         outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
+         delegates[OUTPUT_DIR] = new URLDelegate(outputUrlTags, "spades/output", false, true);
 
          QVariantMap spinMap; spinMap["minimum"] = QVariant(1); spinMap["maximum"] = QVariant(INT_MAX);
          delegates[SpadesTask::OPTION_THREADS]  = new SpinBoxDelegate(spinMap);

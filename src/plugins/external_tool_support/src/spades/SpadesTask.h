@@ -36,6 +36,8 @@ public:
 
     void prepare();
     ReportResult report();
+    QString getScaffoldsUrl() const;
+    QString getContigsUrl() const;
 protected slots:
     QList<Task *> onSubTaskFinished(Task *subTask);
 public:
@@ -52,6 +54,7 @@ public:
 
 private:
     ExternalToolRunTask *assemblyTask;
+    QString contigsUrl;
 
 private:
     void writeYamlReads();

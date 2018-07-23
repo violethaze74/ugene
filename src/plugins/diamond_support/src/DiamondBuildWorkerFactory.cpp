@@ -30,11 +30,12 @@
 #include <U2Lang/WorkflowEnv.h>
 
 #include "DiamondBuildPrompter.h"
+#include "DiamondBuildValidator.h"
 #include "DiamondBuildWorker.h"
 #include "DiamondBuildWorkerFactory.h"
 #include "DiamondSupport.h"
-#include "../../ngs_reads_classification/src/GenomicLibraryDelegate.h"
-#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
+#include "../ngs_reads_classification/src/GenomicLibraryDelegate.h"
+#include "../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -100,6 +101,7 @@ void DiamondBuildWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new DiamondBuildPrompter(NULL));
     proto->addExternalTool(DiamondSupport::TOOL_NAME);
+    proto->setValidator(new DiamondBuildValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

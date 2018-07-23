@@ -23,18 +23,22 @@
 
 #include <U2Lang/Configuration.h>
 
-#include "DatabaseValidator.h"
 #include "KrakenClassifyPrompter.h"
+#include "KrakenClassifyValidator.h"
 #include "KrakenClassifyWorkerFactory.h"
 
 namespace U2 {
 namespace Workflow {
 
-bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+bool KrakenClassifyValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+    return validateDatabase(actor, problemList);
+}
+
+bool KrakenClassifyValidator::validateDatabase(const Actor *actor, ProblemList &problemList) const {
     const QString databaseUrl = actor->getParameter(LocalWorkflow::KrakenClassifyWorkerFactory::DATABASE_ATTR_ID)->getAttributeValueWithoutScript<QString>();
     const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
     CHECK_EXT(doesDatabaseDirExist,
-              problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The database folder \"%1\" doesn't exist.").arg(databaseUrl), actor->getId())),
+              problemList.append(Problem(tr("The database folder \"%1\" doesn't exist.").arg(databaseUrl), actor->getId())),
               false);
 
     const QStringList files = QStringList() << "database.kdb"
@@ -49,31 +53,11 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     }
 
     foreach (const QString &missedFile, missedFiles) {
-        problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory database file \"%1\" doesn't exist.").arg(databaseUrl + "/" + missedFile), actor->getId()));
+        problemList.append(Problem(tr("The mandatory database file \"%1\" doesn't exist.").arg(databaseUrl + "/" + missedFile), actor->getId()));
     }
     CHECK(missedFiles.isEmpty(), false);
 
-    // FIXME port validation
-    bool res = true;
-    Port *p = actor->getPort(LocalWorkflow::KrakenClassifyWorkerFactory::INPUT_PORT_ID);
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(p);
-    CHECK(NULL != input, "");
-    const bool paired = actor->getParameter(LocalWorkflow::KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID)->getAttributeValueWithoutScript<QString>() == LocalWorkflow::KrakenClassifyWorkerFactory::PAIRED_END_TEXT;
-    QList<Actor*> producers = input->getProducers(LocalWorkflow::KrakenClassifyWorkerFactory::INPUT_SLOT);
-    if (producers.isEmpty()) {
-        res = false;
-        problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory \"Input URL 1\" slot is not connected."), actor->getId()));
-    }
-
-    if (paired) {
-        QList<Actor*> producers = input->getProducers(LocalWorkflow::KrakenClassifyWorkerFactory::PAIRED_INPUT_SLOT);
-        if (producers.isEmpty()) {
-            res = false;
-            problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory \"Input URL 2\" slot is not connected."), actor->getId()));
-        }
-    }
-
-    return res;
+    return true;
 }
 
 }   // namesapce Workflow

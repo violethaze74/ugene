@@ -36,7 +36,6 @@ class ClarkClassifySettings {
 public:
     static const QString TOOL_DEFAULT;
     static const QString TOOL_LIGHT;
-    static const QString TOOL_SPACED;
 
     enum Rank {
         // NB: values follow Clark definitions!
@@ -93,15 +92,17 @@ private slots:
 
 protected:
     IntegralBus *input;
-//    IntegralBus *pairedInput;
     IntegralBus *output;
     ClarkClassifySettings cfg;
     bool paired;
 };
 
-class DatabaseValidator : public ActorValidator {
+class ClarkClassifyValidator : public ActorValidator {
 public:
     bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString>& options) const;
+
+private:
+    bool validateDatabase(const Actor *actor, ProblemList &problemList) const;
 };
 
 class ClarkClassifyWorkerFactory : public DomainFactory {
