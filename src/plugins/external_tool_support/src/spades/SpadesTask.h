@@ -42,6 +42,7 @@ public:
     static const QString OPTION_DATASET_TYPE;
     static const QString OPTION_RUNNING_MODE;
     static const QString OPTION_K_MER;
+    static const QString OPTION_INPUT_DATA;
     static const QString OPTION_THREADS;
     static const QString OPTION_MEMLIMIT;
 

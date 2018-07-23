@@ -31,11 +31,9 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 
-
-
 #include "SpadesSupport.h"
 #include "SpadesTask.h"
-
+#include "SpadesWorker.h"
 
 namespace U2 {
 // SpadesTask
@@ -43,6 +41,7 @@ namespace U2 {
 const QString SpadesTask::OPTION_DATASET_TYPE = "dataset-type";
 const QString SpadesTask::OPTION_RUNNING_MODE = "running-mode";
 const QString SpadesTask::OPTION_K_MER = "k-mer";
+const QString SpadesTask::OPTION_INPUT_DATA = "input-data-dialog";
 const QString SpadesTask::OPTION_THREADS = "threads";
 const QString SpadesTask::OPTION_MEMLIMIT = "memlimit";
 const QString SpadesTask::YAML_FILE_NAME = "datasets.yaml";
@@ -77,6 +76,12 @@ void SpadesTask::prepare() {
         arguments.append("--only-assembler");
     }else if(runningMode == "Error correction only"){
         arguments.append("--only-error-correction");
+    }
+
+    QVariantMap inputDataDialogSettings = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariantMap()).toMap();
+    QString sequencingPlatform = inputDataDialogSettings.value(LocalWorkflow::SpadesWorkerFactory::SEQUENCING_PLATFORM_ID, QString()).toString();
+    if (!sequencingPlatform.isEmpty()) {
+        arguments.append(sequencingPlatform);
     }
 
     arguments.append("--dataset");
@@ -139,22 +144,27 @@ void SpadesTask::writeYamlReads(){
     res.append("[\n");
     foreach (const AssemblyReads& r , settings.reads){
         res.append("{\n");
-        res.append(QString("orientation: \"%1\",\n").arg(r.orientation));
-        res.append(QString("type: \"%1\",\n").arg(GenomeAssemblyUtils::getYamlLibraryName(r.libName, r.libType)));
-        if(!GenomeAssemblyUtils::hasRightReads(r.libName)){
-            if(r.libName == LIBRARY_PAIRED_UNPAIRED || r.libName == LIBRARY_PAIRED_INTERLACED){
-                res.append("interlaced reads: [\n");
-            }else{
-                res.append("single reads: [\n");
+        if (LocalWorkflow::SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.contains(r.libName)) {
+            res.append(QString("orientation: \"%1\",\n").arg(r.orientation));
+        }
+        res.append(QString("type: \"%1\",\n").arg(r.libName));
+        if(!GenomeAssemblyUtils::hasRightReads(r.libName)) {
+            res.append(QString("%1: [\n").arg(r.readType));
+
+            foreach(const GUrl& url, r.left) {
+                res.append(QString("\"%1\",\n").arg(url.getURLString()));
             }
-            res.append(QString("\"%1\",\n").arg(r.left.getURLString()));
             res.append("]\n");
         }else{
             res.append("left reads: [\n");
-            res.append(QString("\"%1\",\n").arg(r.left.getURLString()));
+            foreach(const GUrl& url, r.left) {
+                res.append(QString("\"%1\",\n").arg(url.getURLString()));
+            }
             res.append("],\n");
             res.append("right reads: [\n");
-            res.append(QString("\"%1\",\n").arg(r.right.getURLString()));
+            foreach(const GUrl& url, r.right) {
+                res.append(QString("\"%1\",\n").arg(url.getURLString()));
+            }
             res.append("],\n");
         }
         res.append("},\n");
