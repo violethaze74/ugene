@@ -145,25 +145,25 @@ const QString SpadesWorkerFactory::getPortNameById(const QString& portId) {
 const QString SpadesWorkerFactory::getYamlLibraryNameByPortId(const QString& portId) {
     QString res;
     if (portId == IN_PORT_ID_LIST[0]) {
-        res = "single";
+        res = LIB_SINGLE_UNPAIRED;
     } else if (portId == IN_PORT_ID_LIST[1]) {
-        res = "single";
+        res = LIB_SINGLE_CSS;
     } else if (portId == IN_PORT_ID_LIST[2]) {
-        res = "pacbio";
+        res = LIB_SINGLE_CLR;
     } else if (portId == IN_PORT_ID_LIST[3]) {
-        res = "nanopore";
+        res = LIB_SINGLE_NANOPORE;
     } else if (portId == IN_PORT_ID_LIST[4]) {
-        res = "sanger";
+        res = LIB_SINGLE_SANGER;
     } else if (portId == IN_PORT_ID_LIST[5]) {
-        res = "trusted-contigs";
+        res = LIB_SINGLE_TRUSTED;
     } else if (portId == IN_PORT_ID_LIST[6]) {
-        res = "untrusted-contigs";
+        res = LIB_SINGLE_UNTRUSTED;
     } else if (portId == IN_PORT_PAIRED_ID_LIST[0]) {
-        res = "paired-end";
+        res = LIB_PAIR_TYPE_DEFAULT;
     } else if (portId == IN_PORT_PAIRED_ID_LIST[1]) {
-        res = "mate-pairs";
+        res = LIB_PAIR_TYPE_MATE;
     } else if (portId == IN_PORT_PAIRED_ID_LIST[2]) {
-        res = "hq-mate-pairs";
+        res = LIB_PAIR_TYPE_MATE_HQ;
     } else {
         FAIL("Incorrect port id", QString());
     }
@@ -553,10 +553,6 @@ void SpadesWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     for (int i = 0; i < IN_PORT_PAIRED_ID_LIST.size(); i++) {
         proto->setPortValidator(IN_PORT_PAIRED_ID_LIST[i], new PairedReadsPortValidator(READS_URL_SLOT_ID_LIST[i], READS_PAIRED_URL_SLOT_ID_LIST[i]));
-    }
-    for (int i = 0; i < IN_PORT_ID_LIST.size(); i++) {
-        const int index = READS_PAIRED_URL_SLOT_ID_LIST.size() + i;
-        proto->setPortValidator(IN_PORT_ID_LIST[i], new PairedReadsPortValidator(READS_URL_SLOT_ID_LIST[index], QString()));
     }
     proto->addExternalTool(ET_SPADES);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);

@@ -56,6 +56,18 @@ namespace U2 {
 #define SINGLE_TRUSTED                 "in-trusted-contigs"
 #define SINGLE_UNTRUSTED               "in-untrusted-contigs"
 
+#define LIB_PAIR_TYPE_DEFAULT          "paired-end"
+#define LIB_PAIR_TYPE_MATE             "mate-pairs"
+#define LIB_PAIR_TYPE_MATE_HQ          "hq-mate-pairs"
+
+#define LIB_SINGLE_UNPAIRED            "single"
+#define LIB_SINGLE_CSS                 "single"
+#define LIB_SINGLE_CLR                 "pacbio"
+#define LIB_SINGLE_NANOPORE            "nanopore"
+#define LIB_SINGLE_SANGER              "sanger"
+#define LIB_SINGLE_TRUSTED             "trusted-contigs"
+#define LIB_SINGLE_UNTRUSTED           "untrusted-contigs"
+
 #define PAIR_DEFAULT                   "in-data"
 #define PAIR_MATE                      "in-mate-pairs"
 #define PAIR_HQ_MATE                   "in-high-quality-mate-pairs"
