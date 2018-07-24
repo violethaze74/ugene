@@ -53,7 +53,7 @@ const QString NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_PATH 
 const QString NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID = "clark_bacterial_viral_database";
 const QString NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID = "bacterial_viral_database";
 
-const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_PATH = "ngs_classification/kraken/minikraken";
+const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_PATH = "ngs_classification/kraken/minikraken_4gb";
 const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_DATA_ID = "minikraken_4gb";
 const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ITEM_ID = "minikraken_4gb";
 

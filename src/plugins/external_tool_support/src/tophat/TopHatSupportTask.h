@@ -54,7 +54,20 @@ public:
     QString getSampleName() const;
 
     Workflow::SharedDbiDataHandler getAcceptedHits() const { return acceptedHits; }
+
 private:
+    enum FileRole {
+        ACCEPTED_HITS,
+        JUNCTIONS,
+        INSERTIONS,
+        DELETIONS
+    };
+
+    void registerOutputFile(FileRole role, const QString &url);
+    void registerOutputFiles();
+    void renameOutputFile(FileRole role, const QString &newUrl);
+    void renameOutputFiles();
+
     TopHatSettings      settings;
 
     QPointer<Document>                  tmpDoc;
@@ -70,8 +83,8 @@ private:
     bool                                tmpDocSaved;
     bool                                tmpDocPairedSaved;
 
-    Workflow::SharedDbiDataHandler          acceptedHits;
-    QStringList                             outputFiles;
+    Workflow::SharedDbiDataHandler      acceptedHits;
+    QMap<FileRole, QString>             outputFiles;
 
     ExternalToolSupportTask *bowtieIndexTask;
 

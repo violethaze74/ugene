@@ -28,6 +28,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -687,7 +688,11 @@ void TopHatWorker::init() {
 }
 
 Task * TopHatWorker::runTophat() {
-    settings.sample = datasetsData.getCurrentSample();
+    if (settings.data.fromFiles && settings.data.size() == 1) {
+        settings.sample = GUrlUtils::getPairedFastqFilesBaseName(settings.data.urls.first(), settings.data.paired);
+    } else {
+        settings.sample = datasetsData.getCurrentSample();
+    }
     TopHatSupportTask * topHatSupportTask = new TopHatSupportTask(settings);
     topHatSupportTask->addListeners(createLogListeners());
     connect(topHatSupportTask, SIGNAL(si_stateChanged()), SLOT(sl_topHatTaskFinished()));

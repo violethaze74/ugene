@@ -37,6 +37,8 @@ class TopHatInputData {
 public:
     TopHatInputData();
 
+    int size() const;
+
     bool paired;
     bool fromFiles;
     QStringList urls;
