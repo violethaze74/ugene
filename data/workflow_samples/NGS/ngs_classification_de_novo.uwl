@@ -9,13 +9,13 @@
 # * Provide general classification report
 
 
-workflow "Scaffolds assembly and classification" {
+workflow "De novo assembly and contigs classification" {
     .meta {
         wizard {
             auto-run: true;
             has-run-button: false;
             has-defaults-button: false;
-            name: "Configure Scaffolds Assembly and Classification";
+            name: "Configure De Novo Assembly and Classification";
             finish-label: "Setup";
             result {
                 NGS/ngs_classification/ngs_classification_de_novo/ngs_classification_de_novo_single.uwl: pipeline.single;

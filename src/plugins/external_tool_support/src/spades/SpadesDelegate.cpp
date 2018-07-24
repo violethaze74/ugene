@@ -114,7 +114,7 @@ SpadesPropertyWidget::SpadesPropertyWidget(QWidget* parent, DelegateTags* tags)
 }
 
 QVariant SpadesPropertyWidget::value() {
-    return QVariant::fromValue<QMap<QString, QVariant>>(dialogValue);
+    return QVariant::fromValue<QMap<QString, QVariant> >(dialogValue);
 }
 
 void SpadesPropertyWidget::setValue(const QVariant& value) {
