@@ -174,7 +174,7 @@ const QString SpadesWorkerFactory::getYamlLibraryNameByPortId(const QString& por
 const QString SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE = "Standard isolate";
 const QString SpadesWorker::DATASET_TYPE_MDA_SINGLE_CELL = "MDA single-cell";
 
-const QString SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY = "Error correction and Assembly";
+const QString SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY = "Error correction and assembly";
 const QString SpadesWorker::RUNNING_MODE_ASSEMBLY_ONLY = "Assembly only";
 const QString SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_ONLY = "Error correction only";
 
@@ -551,7 +551,7 @@ void SpadesWorkerFactory::init() {
         delegates[SpadesTask::OPTION_DATASET_TYPE] = new ComboBoxDelegate(contentMap);
 
         QVariantMap contentMap2;
-        contentMap2[SpadesWorker::tr("Error correction and Assembly")] = SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY;
+        contentMap2[SpadesWorker::tr("Error correction and assembly")] = SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY;
         contentMap2[SpadesWorker::tr("Assembly only")] = SpadesWorker::RUNNING_MODE_ASSEMBLY_ONLY;
         contentMap2[SpadesWorker::tr("Error correction only")] = SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_ONLY;
         delegates[SpadesTask::OPTION_RUNNING_MODE] = new ComboBoxDelegate(contentMap2);
