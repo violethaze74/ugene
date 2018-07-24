@@ -2755,7 +2755,6 @@ GUI_TEST_CLASS_DEFINITION(test_4356) {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
-            //GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank", "murine.gb"));
             GTWidget::click(os, dialog->findChild<QPushButton*>("loadSequenceButton"));
             GTGlobals::sleep();
