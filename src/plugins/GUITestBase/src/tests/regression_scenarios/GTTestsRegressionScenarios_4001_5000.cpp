@@ -2745,6 +2745,47 @@ GUI_TEST_CLASS_DEFINITION(test_4352) {
     //Expected state: UGENE does not crash.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4356) {
+    
+    class Test_4356 : public Filler {
+    public:
+        Test_4356(HI::GUITestOpStatus& os)
+            : Filler(os, "DotPlotDialog") {}
+        virtual void run() {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            //GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank", "murine.gb"));
+            GTWidget::click(os, dialog->findChild<QPushButton*>("loadSequenceButton"));
+            GTGlobals::sleep();
+
+            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
+            QPushButton* button =  box->button(QDialogButtonBox::Ok);
+            CHECK_SET_ERR(button !=NULL, "Ok button is NULL");
+            GTWidget::click(os, button);
+
+        }
+    };
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    GTUtilsDocument::unloadDocument(os, "murine.gb", true);
+    
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new Test_4356(os));
+    GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
+    GTGlobals::sleep(1000);
+    
+    Document *doc = GTUtilsDocument::getDocument(os, "murine.gb");
+    CHECK_SET_ERR(NULL != doc, "Document is NULL");
+    CHECK_SET_ERR(doc->isLoaded(), "Document is unexpectedly unloaded");
+}
+
+
 GUI_TEST_CLASS_DEFINITION(test_4359) {
 /* 1. Open human_T1
  * 2. Open Primer3 dialog
