@@ -138,6 +138,7 @@
 #include "spades/SpadesWorker.h"
 #include "spidey/SpideySupport.h"
 #include "spidey/SpideySupportTask.h"
+#include "stringtie/StringtieGeneAbundanceReportWorkerFactory.h"
 #include "stringtie/StringTieSupport.h"
 #include "stringtie/StringTieWorker.h"
 #include "tcoffee/TCoffeeSupport.h"
@@ -717,6 +718,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::HmmerBuildWorkerFactory::init();
     LocalWorkflow::HmmerSearchWorkerFactory::init();
     LocalWorkflow::StringTieWorkerFactory::init();
+    LocalWorkflow::StringtieGeneAbundanceReportWorkerFactory::init();
 }
 
 //////////////////////////////////////////////////////////////////////////

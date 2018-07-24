@@ -57,22 +57,23 @@ workflow "Serial classification for SE reads"{
     }
 
     .actor-bindings {
+        get-se-reads-list.out->fastqc-before.in-file
+        get-se-reads-list.out->trimmomatic.in
         diamond-classify.out->classification-report-3.in
-        classification-filter-1.out->clark-classify.in
-        kraken-classify.out->classification-filter-1.in
-        kraken-classify.out->classification-report-1.in
-        trimmomatic.out->fastqc-after.in-file
-        trimmomatic.out->kraken-classify.in
         clark-classify.out->classification-filter-2.in
         clark-classify.out->classification-report-2.in
         classification-filter-2.out->diamond-classify.in
-        get-se-reads-list.out->fastqc-before.in-file
-        get-se-reads-list.out->trimmomatic.in
+        trimmomatic.out->fastqc-after.in-file
+        trimmomatic.out->kraken-classify.in
+        classification-filter-1.out->clark-classify.in
+        kraken-classify.out->classification-filter-1.in
+        kraken-classify.out->classification-report-1.in
     }
 
     get-se-reads-list.reads-url1->fastqc-before.in-file.url
     get-se-reads-list.reads-url1->fastqc-after.in-file.url
     trimmomatic.reads-url1->kraken-classify.in.reads-url1
+    trimmomatic.reads-url1->classification-filter-1.in.reads-url1
     kraken-classify.tax-data->classification-filter-1.in.tax-data
     classification-filter-1.reads-url1->clark-classify.in.reads-url1
     classification-filter-1.reads-url1->classification-filter-2.in.reads-url1

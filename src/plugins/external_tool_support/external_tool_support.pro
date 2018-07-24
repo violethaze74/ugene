@@ -167,6 +167,10 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/spades/SpadesWorker.h \
            src/spidey/SpideySupport.h \
            src/spidey/SpideySupportTask.h \
+           src/stringtie/StringtieGeneAbundanceReportPrompter.h \
+           src/stringtie/StringtieGeneAbundanceReportTask.h \
+           src/stringtie/StringtieGeneAbundanceReportWorker.h \
+           src/stringtie/StringtieGeneAbundanceReportWorkerFactory.h \
            src/stringtie/StringTieSupport.h \
            src/stringtie/StringTieTask.h \
            src/stringtie/StringTieWorker.h \
@@ -416,6 +420,10 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/spades/SpadesWorker.cpp \
            src/spidey/SpideySupport.cpp \
            src/spidey/SpideySupportTask.cpp \
+           src/stringtie/StringtieGeneAbundanceReportPrompter.cpp \
+           src/stringtie/StringtieGeneAbundanceReportTask.cpp \
+           src/stringtie/StringtieGeneAbundanceReportWorker.cpp \
+           src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp \
            src/stringtie/StringTieSupport.cpp \
            src/stringtie/StringTieTask.cpp \
            src/stringtie/StringTieWorker.cpp \

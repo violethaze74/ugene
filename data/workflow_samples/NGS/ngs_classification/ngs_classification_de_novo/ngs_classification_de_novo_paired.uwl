@@ -50,19 +50,19 @@ workflow "PE reads assembly and classification"{
     }
 
     .actor-bindings {
-        trimmomatic.out->fastqc-after-1.in-file
-        trimmomatic.out->fastqc-after-2.in-file
-        trimmomatic.out->spades.in-data
         kraken-classify.out->classification-report.in
+        spades.out-data->kraken-classify.in
         get-pe-reads-list.out->fastqc-before-1.in-file
         get-pe-reads-list.out->fastqc-before-2.in-file
         get-pe-reads-list.out->trimmomatic.in
-        spades.out-data->kraken-classify.in
+        trimmomatic.out->fastqc-after-1.in-file
+        trimmomatic.out->fastqc-after-2.in-file
+        trimmomatic.out->spades.in-data
     }
 
     get-pe-reads-list.reads-url1->fastqc-before-1.in-file.url
     trimmomatic.reads-url1->fastqc-after-1.in-file.url
-    spades.scaffolds-out->kraken-classify.in.reads-url1
+    spades.contigs-out->kraken-classify.in.reads-url1
     trimmomatic.reads-url2->spades.in-data.readspairedurl
     trimmomatic.reads-url1->spades.in-data.readsurl
     get-pe-reads-list.reads-url2->fastqc-before-2.in-file.url
@@ -121,6 +121,15 @@ workflow "PE reads assembly and classification"{
                 style:simple;
                 bg-color-simple:"168 50 117 255";
                 in-data.angle:152.021;
+                in-high-quality-mate-pairs.angle:122;
+                in-mate-pairs.angle:138;
+                in-oxford-nanopore-reads.angle:154;
+                in-pac-bio-ccs-reads.angle:170;
+                in-pac-bio-clr-reads.angle:186;
+                in-sanger-reads.angle:202;
+                in-trusted-contigs.angle:218;
+                in-unpaired-reads.angle:234;
+                in-untrusted-contigs.angle:250;
                 out-data.angle:272.49;
             }
             trimmomatic {
