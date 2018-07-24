@@ -555,6 +555,8 @@ void SpadesWorkerFactory::init() {
         contentMap2[SpadesWorker::tr("Assembly only")] = SpadesWorker::RUNNING_MODE_ASSEMBLY_ONLY;
         contentMap2[SpadesWorker::tr("Error correction only")] = SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_ONLY;
         delegates[SpadesTask::OPTION_RUNNING_MODE] = new ComboBoxDelegate(contentMap2);
+
+        delegates[SpadesTask::OPTION_INPUT_DATA] = new SpadesDelegate();
     }
 
     Descriptor protoDesc(SpadesWorkerFactory::ACTOR_ID,
