@@ -159,9 +159,11 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/snpeff/SnpEffSupport.h \
            src/snpeff/SnpEffTask.h \
            src/snpeff/SnpEffWorker.h \
+           src/spades/SpadesDelegate.h \
+           src/spades/SpadesPortRelationDescriptor.h \
+           src/spades/SpadesSettingsWidget.h \
            src/spades/SpadesSupport.h \
            src/spades/SpadesTask.h \
-           src/spades/SpadesSettingsWidget.h \
            src/spades/SpadesWorker.h \
            src/spidey/SpideySupport.h \
            src/spidey/SpideySupportTask.h \
@@ -240,6 +242,9 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/mafft/MAFFTSupportRunDialog.ui \
          src/mrbayes/MrBayesDialog.ui \
          src/phyml/PhyMLDialog.ui \
+         src/snpeff/SnpEffDatabaseDialog.ui \
+         src/spades/SpadesInputData.ui \
+         src/spades/SpadesSettings.ui \
          src/tcoffee/TCoffeeSupportRunDialog.ui \
          src/trimmomatic/TrimmomaticPropertyDialog.ui \
          src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui \
@@ -248,8 +253,6 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/trimmomatic/steps/SlidingWindowSettingsWidget.ui \
          src/trimmomatic/util/LengthSettingsWidget.ui \
          src/trimmomatic/util/QualitySettingsWidget.ui \
-         src/snpeff/SnpEffDatabaseDialog.ui \
-         src/spades/SpadesSettings.ui \
          src/utils/BlastAllSupportDialog.ui \
          src/utils/BlastDBSelectorWidget.ui
 
@@ -409,9 +412,11 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/snpeff/SnpEffSupport.cpp \
            src/snpeff/SnpEffTask.cpp \
            src/snpeff/SnpEffWorker.cpp \
+           src/spades/SpadesDelegate.cpp \
+           src/spades/SpadesPortRelationDescriptor.cpp \
+           src/spades/SpadesSettingsWidget.cpp \
            src/spades/SpadesSupport.cpp \
            src/spades/SpadesTask.cpp \
-           src/spades/SpadesSettingsWidget.cpp \
            src/spades/SpadesWorker.cpp \
            src/spidey/SpideySupport.cpp \
            src/spidey/SpideySupportTask.cpp \

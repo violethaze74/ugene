@@ -45,7 +45,6 @@ namespace U2 {
 GTFLineValidateFlags::GTFLineValidateFlags()
     : incorrectNumberOfFields(false),
       emptyField(false),
-      incorrectFeatureField(false),
       incorrectCoordinates(false),
       incorrectScore(false),
       incorrectStrand(false),
@@ -70,7 +69,7 @@ FormatDetectionScore GTFLineValidateFlags::getFormatDetectionScore()
         return FormatDetection_LowSimilarity;
     }
 
-    if (incorrectFeatureField || incorrectFormatOfAttributes) {
+    if (incorrectFormatOfAttributes) {
         return FormatDetection_HighSimilarity;
     }
 
@@ -103,10 +102,6 @@ GTFFormat::GTFFormat(QObject* parent)
         " information about gene structure.");
 
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
-
-    GTF_FEATURE_FIELD_VALUES << "CDS" << "start_codon" << "stop_codon"
-        << "5UTR" << "3UTR" << "inter" << "inter_CNS" << "intron_CNS"
-        << "exon" << "transcript" << "missing_data";
 }
 
 Document* GTFFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os)
@@ -173,11 +168,6 @@ QMap<QString, QList<SharedAnnotationData> > GTFFormat::parseDocument(IOAdapter *
         // all details are written to the trace log.
         if (validationStatus.isFileInvalid()) {
             fileIsValid = false;
-        }
-
-        // Verify the feature field
-        if (validationStatus.isIncorrectFeatureField()) {
-            ioLog.trace(tr("GTF parsing error: unexpected value of the \"feature\" value \"%1\" at line %2!").arg(gtfLineData.feature).arg(lineNumber));
         }
 
         // Create the annotation
@@ -503,12 +493,6 @@ GTFLineData GTFFormat::parseAndValidateLine(QString line, GTFLineValidateFlags& 
     parsedData.attributes = parsedAttrValues;
 
 
-    // Feature
-    if (!GTF_FEATURE_FIELD_VALUES.contains(parsedData.feature)) {
-        status.setFlagIncorrectFeatureField();
-    }
-
-
     // Score: can be either an integer, a float number, or a dot (".")
     bool scoreIsInt;
     parsedData.score.toInt(&scoreIsInt);
@@ -648,23 +632,5 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
         }
     }
 }
-
-bool GTFFormat::checkConstraints(const DocumentFormatConstraints& c) const {
-    bool baseConstrainsOk = DocumentFormat::checkConstraints(c);
-    if (!baseConstrainsOk) {
-        return false;
-    }
-    // check that all annotation names are valid. We do not want to create a file that breaks the spec.
-    if (c.annotationNames.size() > GTF_FEATURE_FIELD_VALUES.size()) {
-        return false;
-    }
-    for (const QString& name : c.annotationNames) {
-        if (!GTF_FEATURE_FIELD_VALUES.contains(name)) {
-            return false;
-        }
-    }
-    return true;
-}
-
 
 } // namespace U2

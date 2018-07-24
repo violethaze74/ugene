@@ -37,9 +37,8 @@ class U2GUI_EXPORT ExportAnnotationsDialog : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY( ExportAnnotationsDialog )
 public:
-                                    ExportAnnotationsDialog(const QString &filename,
-                                                            const QSet<QString> annotationNamesForConstraint,
-                                                            QWidget *parent );
+                                    ExportAnnotationsDialog( const QString &filename,
+                                            QWidget *parent );
                                     ~ExportAnnotationsDialog( );
 
     QString                         fileFormat( ) const;
@@ -55,13 +54,13 @@ private slots:
     void sl_addToProjectStateChanged(bool state);
 
 private:
-    void                            initSaveController(const QSet<QString> annotationNamesForConstraint, const QString &filename);
+    void                            initSaveController(const QString &filename);
 
     QList<QString>                  supportedFormatsExts;
     SaveDocumentController *        saveController;
     Ui_ExportAnnotationsDialog *    ui;
     bool                            lastAddToProjectState;
-    
+
 };
 
 } // namespace U2

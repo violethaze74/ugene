@@ -129,7 +129,9 @@ void BwaWorkerFactory::init() {
 
     QList<Attribute*> attrs;
     QMap<QString, PropertyDelegate*> delegates;
-    addCommonAttributes(attrs, delegates);
+    addCommonAttributes(attrs, delegates,
+                        BwaWorker::tr("BWA index folder"),
+                        BwaWorker::tr("BWA index basename"));
     {
          Descriptor useMissProb(USE_MISS_PROB ,
              BwaWorker::tr("Use missing prob"),

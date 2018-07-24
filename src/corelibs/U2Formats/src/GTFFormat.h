@@ -39,7 +39,6 @@ public:
 
     void setFlagIncorrectNumberOfFields() { incorrectNumberOfFields = true; }
     void setFlagEmptyField() { emptyField = true; }
-    void setFlagIncorrectFeatureField() { incorrectFeatureField = true; }
     void setFlagIncorrectCoordinates() { incorrectCoordinates = true; }
     void setFlagIncorrectScore() { incorrectScore = true; }
     void setFlagIncorrectStrand() { incorrectStrand = true; }
@@ -53,7 +52,6 @@ public:
     bool isFileInvalid() {
         return incorrectNumberOfFields ||
             emptyField ||
-            incorrectFeatureField ||
             incorrectCoordinates ||
             incorrectScore ||
             incorrectStrand ||
@@ -65,7 +63,6 @@ public:
 
     bool isIncorrectNumberOfFields() { return incorrectNumberOfFields; }
     bool isEmptyField() { return emptyField; }
-    bool isIncorrectFeatureField() { return incorrectFeatureField; }
     bool isIncorrectCoordinates() { return incorrectCoordinates; }
     bool isIncorrectScore() { return incorrectScore; }
     bool isIncorrectStrand() { return incorrectStrand; }
@@ -77,7 +74,6 @@ public:
 private:
     bool incorrectNumberOfFields; // There should be 9 fields
     bool emptyField; // Each field shouldn't be empty or shouldn't consist of white spaces
-    bool incorrectFeatureField; // The list of possible values is limited according to the spec
     bool incorrectCoordinates; // Start and end should be integer, start should be <= end
     bool incorrectScore; // Should be float, or integer, or a dot('.'), i.e. empty
     bool incorrectStrand; // Should be '+', '-', or '.'
@@ -127,8 +123,6 @@ public:
 
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
-    virtual bool checkConstraints(const DocumentFormatConstraints& c) const;
-    
 protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
@@ -158,13 +152,6 @@ private:
     static const QString FRAME_QUALIFIER_NAME;
     static const QString GENE_ID_QUALIFIER_NAME;
     static const QString TRANSCRIPT_ID_QUALIFIER_NAME;
-
-    /**
-     * The list of possible values for the "feature" field in a GTF file
-     * Values "transcript" and "missing_data" were added because they are
-     * used in the Cufflinks output. Other values are from the GTF spec.
-     */
-    QSet<QString> GTF_FEATURE_FIELD_VALUES;
 };
 
 

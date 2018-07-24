@@ -57,9 +57,9 @@ public:
     static const QString CLARK_VIRAL_DATABASE_DATA_ID;
     static const QString CLARK_VIRAL_DATABASE_ITEM_ID;
 
-    static const QString CLARK_BACTERIA_VIRAL_DATABASE_PATH;
-    static const QString CLARK_BACTERIA_VIRAL_DATABASE_DATA_ID;
-    static const QString CLARK_BACTERIA_VIRAL_DATABASE_ITEM_ID;
+    static const QString CLARK_BACTERIAL_VIRAL_DATABASE_PATH;
+    static const QString CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID;
+    static const QString CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID;
 
     static const QString MINIKRAKEN_4_GB_PATH;
     static const QString MINIKRAKEN_4_GB_DATA_ID;
@@ -76,8 +76,8 @@ public:
     static const QString REFSEQ_HUMAN_PATH;
     static const QString REFSEQ_HUMAN_DATA_ID;
 
-    static const QString REFSEQ_BACTERIA_PATH;
-    static const QString REFSEQ_BACTERIA_DATA_ID;
+    static const QString REFSEQ_BACTERIAL_PATH;
+    static const QString REFSEQ_BACTERIAL_DATA_ID;
 
     static const QString REFSEQ_VIRAL_PATH;
     static const QString REFSEQ_VIRAL_DATA_ID;

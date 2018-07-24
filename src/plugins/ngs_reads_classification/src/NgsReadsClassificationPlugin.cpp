@@ -49,13 +49,13 @@ const QString NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_PATH = "ngs_cla
 const QString NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID = "clark_viral_database";
 const QString NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID = "viral_database";
 
-const QString NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_PATH = "ngs_classification/clark/bacteria_viral_database";
-const QString NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_DATA_ID = "clark_bacteria_viral_database";
-const QString NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_ITEM_ID = "bacteria_viral_database";
+const QString NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_PATH = "ngs_classification/clark/bacterial_viral_database";
+const QString NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID = "clark_bacterial_viral_database";
+const QString NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID = "bacterial_viral_database";
 
-const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_PATH = "ngs_classification/kraken/minikraken";
+const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_PATH = "ngs_classification/kraken/minikraken_4gb";
 const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_DATA_ID = "minikraken_4gb";
-const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ITEM_ID = "minikraken";
+const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ITEM_ID = "minikraken_4gb";
 
 const QString NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_PATH = "ngs_classification/diamond/uniref/uniref50.dmnd";
 const QString NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID = "diamond_uniprot_50";
@@ -68,8 +68,8 @@ const QString NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_ITEM_ID 
 const QString NgsReadsClassificationPlugin::REFSEQ_HUMAN_PATH = "ngs_classification/refseq/human";
 const QString NgsReadsClassificationPlugin::REFSEQ_HUMAN_DATA_ID = "refseq_human";
 
-const QString NgsReadsClassificationPlugin::REFSEQ_BACTERIA_PATH = "ngs_classification/refseq/bacteria";
-const QString NgsReadsClassificationPlugin::REFSEQ_BACTERIA_DATA_ID = "refseq_bacteria";
+const QString NgsReadsClassificationPlugin::REFSEQ_BACTERIAL_PATH = "ngs_classification/refseq/bacterial";
+const QString NgsReadsClassificationPlugin::REFSEQ_BACTERIAL_DATA_ID = "refseq_bacterial";
 
 const QString NgsReadsClassificationPlugin::REFSEQ_VIRAL_PATH = "ngs_classification/refseq/viral";
 const QString NgsReadsClassificationPlugin::REFSEQ_VIRAL_DATA_ID = "refseq_viral";
@@ -94,12 +94,12 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
 {
     registerData(TAXONOMY_DATA_ID, TAXONOMY_PATH, tr("NCBI taxonomy classification data"), false, true);
     registerData(CLARK_VIRAL_DATABASE_DATA_ID, CLARK_VIRAL_DATABASE_PATH, tr("CLARK viral database"), true);
-    registerData(CLARK_BACTERIA_VIRAL_DATABASE_DATA_ID, CLARK_BACTERIA_VIRAL_DATABASE_PATH, tr("CLARK bacteria and viral database"), true);
+    registerData(CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID, CLARK_BACTERIAL_VIRAL_DATABASE_PATH, tr("CLARK bacterial and viral database"), true);
     registerData(MINIKRAKEN_4_GB_DATA_ID, MINIKRAKEN_4_GB_PATH, tr("Minikraken 4Gb database"), true);
     registerData(DIAMOND_UNIPROT_50_DATABASE_DATA_ID, DIAMOND_UNIPROT_50_DATABASE_PATH, tr("DIAMOND database built from UniProt50"));
     registerData(DIAMOND_UNIPROT_90_DATABASE_DATA_ID, DIAMOND_UNIPROT_90_DATABASE_PATH, tr("DIAMOND database built from UniProt90"));
     registerData(REFSEQ_HUMAN_DATA_ID, REFSEQ_HUMAN_PATH, tr("RefSeq release human data from NCBI"));
-    registerData(REFSEQ_BACTERIA_DATA_ID, REFSEQ_BACTERIA_PATH, tr("RefSeq release bacteria data from NCBI"));
+    registerData(REFSEQ_BACTERIAL_DATA_ID, REFSEQ_BACTERIAL_PATH, tr("RefSeq release bacterial data from NCBI"));
     registerData(REFSEQ_VIRAL_DATA_ID, REFSEQ_VIRAL_PATH, tr("RefSeq release viral data from NCBI"));
 
     LocalWorkflow::ClassificationFilterWorkerFactory::init();

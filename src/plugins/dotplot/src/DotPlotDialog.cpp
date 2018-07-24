@@ -117,8 +117,8 @@ void DotPlotDialog::updateSequenceSelectors() {
     int xSeqIndex = -1, ySeqIndex = -1, curIndex = 0;
 
     //sequences in the project
-    QList<GObject*> allSequences  = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
-    foreach (GObject* obj, allSequences) {
+    QList<GObject*> sequenceObjects  = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    foreach (GObject* obj, sequenceObjects) {
         U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
         QString name = seqObj->getGObjectName();
 
@@ -132,7 +132,6 @@ void DotPlotDialog::updateSequenceSelectors() {
             ySeqIndex = curIndex;
         }
         curIndex++;
-        sequences << seqObj;
     }
 
     if (xSeqIndex >= 0) {
@@ -140,7 +139,7 @@ void DotPlotDialog::updateSequenceSelectors() {
     }
     if (ySeqIndex >= 0) {
         yAxisCombo->setCurrentIndex(ySeqIndex);
-    } else if (sequences.size() > 1) {    // choose the second sequence for Y axis by default
+    } else if (sequenceObjects.size() > 1) {    // choose the second sequence for Y axis by default
         yAxisCombo->setCurrentIndex(1);
     }
 }
@@ -161,11 +160,13 @@ void DotPlotDialog::sl_loadedStateChanged() {
 void DotPlotDialog::accept() {
     int xIdx = xAxisCombo->currentIndex();
     int yIdx = yAxisCombo->currentIndex();
-    SAFE_POINT(xIdx >= 0 && xIdx < sequences.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx),);
-    SAFE_POINT(yIdx >= 0 && yIdx < sequences.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx),);
 
-    U2SequenceObject* objX = sequences[xIdx];
-    U2SequenceObject* objY = sequences[yIdx];
+    QList<GObject*> sequenceObjects  = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx),);
+    SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx),);
+
+    U2SequenceObject* objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
+    U2SequenceObject* objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
 
     if (!isObjectInADV(objX)) {
         adv->addObject(objX);
@@ -192,8 +193,12 @@ void DotPlotDialog::sl_minLenHeuristics() {
     int xIdx = xAxisCombo->currentIndex();
     int yIdx = yAxisCombo->currentIndex();
 
-    U2SequenceObject *objX = sequences.at(xIdx);
-    U2SequenceObject *objY = sequences.at(yIdx);
+    QList<GObject*> sequenceObjects  = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx),);
+    SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx),);
+
+    U2SequenceObject* objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
+    U2SequenceObject* objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
 
     qint64 xSeqLen = objX->getSequenceLength();
     qint64 ySeqLen = objY->getSequenceLength();

@@ -72,6 +72,10 @@ void DatasetFetcher::processInputMessage() {
     }
 }
 
+QString DatasetFetcher::getPortId() const {
+    return port->getPortId();
+}
+
 QString DatasetFetcher::getDatasetName(const Message &message) const {
     const int metadataId = message.getMetadataId();
     const MessageMetadata metadata = context->getMetadataStorage().get(metadataId);

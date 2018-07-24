@@ -762,7 +762,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     GTUtilsDocument::removeDocument(os, "ann_test_0010_3_19.gb");
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
+    // GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0010_3.gtf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141619 features"), "No GXL_141619 features object!");
@@ -845,15 +845,15 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "CDS", "200..300",
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300",
                                                                       sandBoxDir + "ann_test_0011_1.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
     GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "CDS");
-    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "CDS");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "ann");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann");
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf",
                                                                  ExportAnnotationsFiller::gtf, false, false, false));
@@ -1015,7 +1015,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsDocument::removeDocument(os, "scaffold_90.gff");
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
+    // GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_3.gtf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 features"), "Object not found");

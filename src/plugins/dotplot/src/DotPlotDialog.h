@@ -82,7 +82,6 @@ private:
     void reconnectAllProjectDocuments();
     void updateSequenceSelectors();
 
-    QList<U2SequenceObject*>   sequences;
     ADVSequenceObjectContext    *xSeq, *ySeq;
     AnnotatedDNAView*           adv;
 

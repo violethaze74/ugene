@@ -119,7 +119,7 @@ void SnpEffDatabasePropertyWidget::sl_showDialog() {
     CHECK(snpEff != NULL, );
     if (!(java->isValid() && snpEff->isValid())) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
-        if (!java->getPath().isEmpty() && !snpEff->getPath().isEmpty()) {
+        if (!java->isValid() && !snpEff->isValid()) {
             msgBox->setWindowTitle(tr("%1 and %2").arg(java->getName()).arg(snpEff->getName()));
             msgBox->setText(tr("The list of genomes is not available.\r\nMake sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.").arg(snpEff->getName()).arg(java->getName()));
         } else {
