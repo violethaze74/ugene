@@ -1932,7 +1932,6 @@ GUI_TEST_CLASS_DEFINITION(test_3287) {
     CHECK_OP(os, );
 
     ImageExportFormFiller::Parameters params;
-    params.graphOverviewChecked = false;
     params.fileName = testDir + "_common_data/scenarios/sandbox/test_3287.bmp";
     params.format = "BMP";
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export as image"));
