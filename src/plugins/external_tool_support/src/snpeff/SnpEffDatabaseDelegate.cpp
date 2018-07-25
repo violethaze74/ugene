@@ -119,18 +119,8 @@ void SnpEffDatabasePropertyWidget::sl_showDialog() {
     CHECK(snpEff != NULL, );
     if (!(java->isValid() && snpEff->isValid())) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
-        if (!java->isValid() && !snpEff->isValid()) {
-            msgBox->setWindowTitle(tr("%1 and %2").arg(java->getName()).arg(snpEff->getName()));
-            msgBox->setText(tr("The list of genomes is not available.\r\nMake sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.").arg(snpEff->getName()).arg(java->getName()));
-        } else {
-            if (!java->isValid()) {
-                msgBox->setWindowTitle(java->getName());
-                msgBox->setText(tr("The list of genomes is not available.\r\nThe %1 tool requires %2, Make sure %2 is set in the UGENE Application Settings and can be validated.").arg(snpEff->getName()).arg(java->getName()));
-            } else {
-                msgBox->setWindowTitle(snpEff->getName());
-                msgBox->setText(tr("The list of genomes is not available.\r\nMake sure %1 is set in the UGENE Application Settings and can be validated.").arg(snpEff->getName()));
-            }
-        }
+        msgBox->setWindowTitle(tr("%1 and %2").arg(snpEff->getName()).arg(java->getName()));
+        msgBox->setText(tr("The list of genomes is not available.\r\nMake sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.").arg(snpEff->getName()).arg(java->getName()));
         msgBox->setInformativeText(tr("Do you want to do it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
