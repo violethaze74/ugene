@@ -91,6 +91,7 @@ ConfigurationEditor * Configuration::getEditor() const {
 
 void Configuration::setEditor(ConfigurationEditor* ed) {
     assert(ed != NULL);
+    delete editor;
     editor = ed;
 }
 
