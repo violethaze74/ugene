@@ -116,21 +116,21 @@ const QString SpadesWorkerFactory::BASE_SPADES_SUBDIR = "spades";
 const QString SpadesWorkerFactory::getPortNameById(const QString& portId) {
     QString res;
     if (portId == IN_PORT_ID_LIST[0]) {
-        res = tr("unpaired");
+        res = tr("unpaired reads");
     } else if (portId == IN_PORT_ID_LIST[1]) {
-        res = tr("PacBio CCS");
+        res = tr("PacBio CCS reads");
     } else if (portId == IN_PORT_ID_LIST[2]) {
-        res = tr("PacBio CLR");
+        res = tr("PacBio CLR reads");
     } else if (portId == IN_PORT_ID_LIST[3]) {
-        res = tr("Oxford Nanopore");
+        res = tr("Oxford Nanopore reads");
     } else if (portId == IN_PORT_ID_LIST[4]) {
-        res = tr("Sanger");
+        res = tr("Sanger reads");
     } else if (portId == IN_PORT_ID_LIST[5]) {
-        res = tr("trusted");
+        res = tr("trusted contigs");
     } else if (portId == IN_PORT_ID_LIST[6]) {
-        res = tr("untrusted");
+        res = tr("untrusted contigs");
     } else if (portId == IN_PORT_PAIRED_ID_LIST[0]) {
-        res = tr("paired-end");
+        res = tr("paired-end reads");
     } else if (portId == IN_PORT_PAIRED_ID_LIST[1]) {
         res = tr("mate-pairs");
     } else if (portId == IN_PORT_PAIRED_ID_LIST[2]) {
@@ -416,17 +416,17 @@ void SpadesWorkerFactory::init() {
     //in port
     QList<Descriptor> readDescriptors;
     foreach(const QString& readId, QStringList() << IN_PORT_PAIRED_ID_LIST << IN_PORT_ID_LIST) {
-        const QString readName = SpadesWorkerFactory::getPortNameById(readId);
+        const QString dataName = SpadesWorkerFactory::getPortNameById(readId);
         readDescriptors << Descriptor(readId,
-            SpadesWorker::tr("Input %1 reads").arg(readName),
-            SpadesWorker::tr("Input %1 reads to be assembled with Spades.").arg(readName));
+            SpadesWorker::tr("Input %1").arg(dataName),
+            SpadesWorker::tr("Input %1 to be assembled with SPAdes.").arg(dataName));
     }
 
     QList<Descriptor> inputDescriptors;
     foreach(const QString& id, READS_URL_SLOT_ID_LIST) {
         inputDescriptors << Descriptor(id,
-            SpadesWorker::tr("URL of a file with reads"),
-            SpadesWorker::tr("Input reads to be assembled."));
+            SpadesWorker::tr("File URL 1"),
+            SpadesWorker::tr("File URL 1."));
     }
     SAFE_POINT(READS_URL_SLOT_ID_LIST.size() == inputDescriptors.size(),
                "Incorrect descriptors quantity", );
@@ -434,13 +434,12 @@ void SpadesWorkerFactory::init() {
     QList<Descriptor> inputPairedDescriptors;
     foreach(const QString& pairedId, READS_PAIRED_URL_SLOT_ID_LIST) {
         inputPairedDescriptors << Descriptor(pairedId,
-            SpadesWorker::tr("URL of a file with right pair reads"),
-            SpadesWorker::tr("Input right pair reads to be assembled."));
+            SpadesWorker::tr("File URL 2"),
+            SpadesWorker::tr("File URL 2."));
     }
     SAFE_POINT(READS_PAIRED_URL_SLOT_ID_LIST.size() == inputPairedDescriptors.size(),
                "Incorrect paired descriptors quantity", );
 
-    QList<QMap<Descriptor, DataTypePtr> > inTypeMapList;
     for (int i = 0; i < inputDescriptors.size(); i++) {
         const Descriptor& desc = inputDescriptors[i];
 
