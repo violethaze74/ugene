@@ -26,7 +26,7 @@
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "StringTieGeneAbundanceReportTask.h"
+#include "StringtieGeneAbundanceReportTask.h"
 #include "StringtieGeneAbundanceReportWorker.h"
 #include "StringtieGeneAbundanceReportWorkerFactory.h"
 
