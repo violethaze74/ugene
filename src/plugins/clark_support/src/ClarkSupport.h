@@ -24,7 +24,7 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define CLARK_GROUP "CLARK package"
+#define CLARK_GROUP "CLARK"
 #define ET_CLARK "CLARK"
 #define ET_CLARK_L "CLARK-l"
 #define ET_CLARK_getAccssnTaxID "getAccssnTaxID"
