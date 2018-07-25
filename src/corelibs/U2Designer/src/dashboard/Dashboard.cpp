@@ -330,7 +330,7 @@ DashboardPageController* Dashboard::getController(){
 /************************************************************************/
 /* DashboardPageController */
 /************************************************************************/
-const int DashboardPageController::LOG_LIMIT = 1000;
+const int DashboardPageController::LOG_LIMIT = 100;
 
 DashboardPageController::DashboardPageController(Dashboard *parent)
     : QObject(parent),
