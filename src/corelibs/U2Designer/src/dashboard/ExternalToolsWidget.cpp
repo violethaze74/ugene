@@ -62,7 +62,7 @@ void ExternalToolsWidgetController::sl_timerShouts() {
     emit si_update();
 }
 
-const int ExternalToolsWidget::LOG_LIMIT = 1000;
+const int ExternalToolsWidget::LOG_LIMIT = 100;
 
 const QString ExternalToolsWidget::ID = "external tools";
 const QString ExternalToolsWidget::LINE_BREAK("break_line");
