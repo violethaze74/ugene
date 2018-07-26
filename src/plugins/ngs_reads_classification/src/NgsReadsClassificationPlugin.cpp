@@ -81,7 +81,7 @@ const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DOC = QObject
 const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_KRAKEN = "Kraken";
 const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_CLARK = "CLARK";
 const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DIAMOND = "DIAMOND";
-const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_WEVOTE = "Wevote";
+const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_WEVOTE = "WEVOTE";
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     NgsReadsClassificationPlugin *plugin = new NgsReadsClassificationPlugin();
