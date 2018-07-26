@@ -1635,7 +1635,7 @@ static QString elementsDefinitionBlock(Actor * actor, bool copyMode) {
             const bool valueIsNull = value.isNull();
             const bool valueCanConvertToString = value.canConvert<QString>();
             const bool valueCanConvertToStringList = value.canConvert<QStringList>();
-            const bool valueCanConvertToMap = value.canConvert<QMap<QString, QVariant>>();
+            const bool valueCanConvertToMap = value.canConvert<QMap<QString, QVariant> >();
             assert(valueIsNull ||
                    valueCanConvertToString ||
                    valueCanConvertToStringList ||

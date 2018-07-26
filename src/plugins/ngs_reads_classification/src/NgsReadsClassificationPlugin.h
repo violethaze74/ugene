@@ -92,7 +92,7 @@ public:
     static const QString WORKFLOW_CLASSIFY_TOOL_WEVOTE;
 
 private:
-    void registerData(const QString &dataId, const QString &relativePath, const QString &description, bool addAsFolder = false, bool verbose = false);
+    void registerData(const QString &dataId, const QString &relativePath, const QString &description, bool addAsFolder = false);
     void unregisterData(const QString &dataId);
 
     QStringList registeredData;

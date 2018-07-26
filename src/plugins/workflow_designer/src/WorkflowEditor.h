@@ -82,12 +82,10 @@ private slots:
 
 private:
     void changeSizes(QWidget *w, int h);
-    void removeInputPortTable();
-    void removeOutputPortTable();
+    static void removePortTable(QList<QWidget *> &portWidgets);
     void createInputPortTable(Actor* a);
     void createOutputPortTable(Actor* a);
 
-private:
     SpecialParametersPanel *specialParameters;
     WorkflowView* owner;
     ConfigurationEditor* custom;

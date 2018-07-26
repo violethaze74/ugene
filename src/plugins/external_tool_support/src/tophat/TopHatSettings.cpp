@@ -36,6 +36,10 @@ TopHatInputData::TopHatInputData()
 {
 }
 
+int TopHatInputData::size() const {
+    return fromFiles ? urls.size() : seqIds.size();
+}
+
 void TopHatInputData::cleanupReads() {
     urls.clear();
     pairedUrls.clear();

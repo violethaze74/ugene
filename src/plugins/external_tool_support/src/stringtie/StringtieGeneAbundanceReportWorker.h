@@ -19,32 +19,34 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CLARK_SUPPORT_H_
-#define _U2_CLARK_SUPPORT_H_
+#ifndef _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_H_
+#define _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_H_
 
-#include <U2Core/ExternalToolRegistry.h>
-
-#define CLARK_GROUP "CLARK"
-#define ET_CLARK "CLARK"
-#define ET_CLARK_L "CLARK-l"
-#define ET_CLARK_getAccssnTaxID "getAccssnTaxID"
-#define ET_CLARK_getfilesToTaxNodes "getfilesToTaxNodes"
-#define ET_CLARK_getTargetsDef "getTargetsDef"
-#define ET_CLARK_buildScript "builddb.sh"
+#include <U2Lang/LocalDomain.h>
 
 namespace U2 {
+namespace LocalWorkflow {
 
-class ClarkSupport : public ExternalTool {
+class StringtieGeneAbundanceReportWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ClarkSupport(const QString& name, const QString& path = "");
+    StringtieGeneAbundanceReportWorker(Actor* actor);
 
-    static void registerTools(ExternalToolRegistry *etRegistry);
-    static void unregisterTools(ExternalToolRegistry *etRegistry);
+    void init();
+    Task *tick();
+    void cleanup();
+    bool isReady() const;
 
 private slots:
-    void sl_toolValidationStatusChanged(bool isValid);
+    void sl_taskSucceeded(Task *task);
+
+private:
+    IntegralBus *input;
+
+    static const QString OUTPUT_DIR;
 };
 
-}//namespace
-#endif // _U2_CLARK_SUPPORT_H_
+}   // namespace LocalWorkflow
+}   // namespace U2
+
+#endif // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_H_

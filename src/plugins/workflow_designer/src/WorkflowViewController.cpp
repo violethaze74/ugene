@@ -299,29 +299,6 @@ WorkflowView * WorkflowView::openWD(WorkflowGObject *go) {
     return NULL;
 }
 
-void WorkflowView::openSample(const SampleAction &action) {
-    WorkflowView *wd = openWD(NULL);
-    CHECK(NULL != wd, );
-    int slashPos = action.samplePath.indexOf("/");
-    CHECK(-1 != slashPos, );
-    const QString category = action.samplePath.left(slashPos);
-    const QString id = action.samplePath.mid(slashPos + 1);
-
-    switch (action.mode) {
-        case SampleAction::Select:
-            wd->tabs->setCurrentIndex(SamplesTab);
-            wd->samples->activateSample(category, id);
-            break;
-        case SampleAction::Load:
-            wd->samples->loadSample(category, id);
-            break;
-        case SampleAction::OpenWizard:
-            wd->samples->loadSample(category, id);
-            wd->sl_showWizard();
-            break;
-    }
-}
-
 WorkflowView::WorkflowView(WorkflowGObject* go)
 : MWMDIWindow(tr("Workflow Designer")), running(false), sceneRecreation(false), go(go), currentProto(NULL), currentActor(NULL),
 pasteCount(0), debugInfo(new WorkflowDebugStatus(this)), debugActions()
@@ -2154,7 +2131,7 @@ void WorkflowView::loadWizardResult(const QString &result) {
     WorkflowUtils::schemaFromFile(url, schema, &meta, os);
     recreateScene();
     sl_onSceneLoaded();
-    if (!schema->getWizards().isEmpty()) {
+    if (!schema->getWizards().isEmpty() && !schema->getWizards().first()->isAutoRun()) {
         runWizard(schema->getWizards().first());
     }
 }

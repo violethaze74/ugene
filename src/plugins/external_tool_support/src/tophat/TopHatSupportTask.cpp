@@ -308,11 +308,9 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task *subTask) {
         topHatExtToolTask = runTophat();
         result.append(topHatExtToolTask);
     } else if (subTask == topHatExtToolTask) {
-        ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/accepted_hits.bam", outputFiles);
-        ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/junctions.bed", outputFiles);
-        ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/insertions.bed", outputFiles);
-        ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/deletions.bed", outputFiles);
-        if (!QFile::exists(getOutBamUrl())) {
+        registerOutputFiles();
+        renameOutputFiles();
+        if (!QFile::exists(outputFiles.value(ACCEPTED_HITS))) {
             setError(tr("TopHat was not able to map reads to the reference."));
             return result;
         }
@@ -325,7 +323,7 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task *subTask) {
                                             " NULL WorkflowTasksRegistry: %1").arg(Workflow::ReadFactories::READ_ASSEMBLY), result);
         SAFE_POINT(NULL != settings.workflowContext(), "Internal error during parsing TopHat output: NULL workflow context!", result);
 
-        readAssemblyOutputTask = factory->createTask(settings.outDir + "/accepted_hits.bam", QVariantMap(), settings.workflowContext());
+        readAssemblyOutputTask = factory->createTask(outputFiles.value(ACCEPTED_HITS), QVariantMap(), settings.workflowContext());
         result.append(readAssemblyOutputTask);
     } else if (subTask == readAssemblyOutputTask) {
         Workflow::ReadDocumentTask* readDocTask = qobject_cast<Workflow::ReadDocumentTask*>(subTask);
@@ -381,14 +379,42 @@ Task::ReportResult TopHatSupportTask::report()
 }
 
 QStringList TopHatSupportTask::getOutputFiles() const {
-    return outputFiles;
+    return outputFiles.values();
 }
 
 QString TopHatSupportTask::getOutBamUrl() const {
-    return settings.outDir + "/accepted_hits.bam";
+    return outputFiles.value(ACCEPTED_HITS, "");
 }
 
 QString TopHatSupportTask::getSampleName() const {
     return settings.sample;
 }
+
+void TopHatSupportTask::registerOutputFile(FileRole role, const QString &url) {
+    outputFiles.insert(role, QFile::exists(url) ? url : "");
+}
+
+void TopHatSupportTask::registerOutputFiles() {
+    registerOutputFile(ACCEPTED_HITS, settings.outDir + "/accepted_hits.bam");
+    registerOutputFile(JUNCTIONS, settings.outDir + "/junctions.bed");
+    registerOutputFile(INSERTIONS, settings.outDir + "/insertions.bed");
+    registerOutputFile(DELETIONS, settings.outDir + "/deletions.bed");
+}
+
+void TopHatSupportTask::renameOutputFile(TopHatSupportTask::FileRole role, const QString &newUrl) {
+    const QString oldUrl = outputFiles.value(role, "");
+    CHECK(!oldUrl.isEmpty(), );
+    const bool copied = QFile::copy(oldUrl, newUrl);
+    CHECK(copied, );
+    outputFiles[role] = newUrl;
+}
+
+void TopHatSupportTask::renameOutputFiles() {
+    CHECK(!settings.sample.isEmpty(), );
+    renameOutputFile(ACCEPTED_HITS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.sample + ".bam"), "_"));
+    renameOutputFile(JUNCTIONS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.sample + "_junctions.bed"), "_"));
+    renameOutputFile(INSERTIONS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.sample + "_insertions.bed"), "_"));
+    renameOutputFile(DELETIONS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.sample + "_deletions.bed"), "_"));
+}
+
 }

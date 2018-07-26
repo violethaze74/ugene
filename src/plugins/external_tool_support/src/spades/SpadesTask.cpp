@@ -41,7 +41,7 @@ namespace U2 {
 const QString SpadesTask::OPTION_DATASET_TYPE = "dataset-type";
 const QString SpadesTask::OPTION_RUNNING_MODE = "running-mode";
 const QString SpadesTask::OPTION_K_MER = "k-mer";
-const QString SpadesTask::OPTION_INPUT_DATA = "input-data-dialog";
+const QString SpadesTask::OPTION_INPUT_DATA = "input-data";
 const QString SpadesTask::OPTION_THREADS = "threads";
 const QString SpadesTask::OPTION_MEMLIMIT = "memlimit";
 const QString SpadesTask::YAML_FILE_NAME = "datasets.yaml";
@@ -67,20 +67,20 @@ void SpadesTask::prepare() {
 
     QStringList arguments;
 
-    if(settings.getCustomValue(SpadesTask::OPTION_DATASET_TYPE, "Multi Cell").toString() == "Single Cell"){
+    if (settings.getCustomValue(SpadesTask::OPTION_DATASET_TYPE, LocalWorkflow::SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE).toString() == LocalWorkflow::SpadesWorker::DATASET_TYPE_MDA_SINGLE_CELL) {
         arguments.append("--sc");
     }
 
-    QString runningMode = settings.getCustomValue(SpadesTask::OPTION_RUNNING_MODE, "Error Correction and Assembly").toString();
-    if(runningMode == "Assembly only"){
+    QString runningMode = settings.getCustomValue(SpadesTask::OPTION_RUNNING_MODE, LocalWorkflow::SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY).toString();
+    if (runningMode == LocalWorkflow::SpadesWorker::RUNNING_MODE_ASSEMBLY_ONLY) {
         arguments.append("--only-assembler");
-    }else if(runningMode == "Error correction only"){
+    } else if (runningMode == LocalWorkflow::SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_ONLY) {
         arguments.append("--only-error-correction");
     }
 
     QVariantMap inputDataDialogSettings = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariantMap()).toMap();
     QString sequencingPlatform = inputDataDialogSettings.value(LocalWorkflow::SpadesWorkerFactory::SEQUENCING_PLATFORM_ID, QString()).toString();
-    if (!sequencingPlatform.isEmpty()) {
+    if (sequencingPlatform == PLATFORM_IONTORRENT) {
         arguments.append(sequencingPlatform);
     }
 
@@ -93,8 +93,8 @@ void SpadesTask::prepare() {
     arguments.append("-m");
     arguments.append(settings.getCustomValue(SpadesTask::OPTION_MEMLIMIT, "250").toString());
 
-    QString k = settings.getCustomValue(SpadesTask::OPTION_K_MER, "auto").toString();
-    if(k != "auto"){
+    QString k = settings.getCustomValue(SpadesTask::OPTION_K_MER, LocalWorkflow::SpadesWorker::K_MER_AUTO).toString();
+    if (k != LocalWorkflow::SpadesWorker::K_MER_AUTO) {
         arguments.append("-k");
         arguments.append(k);
     }
