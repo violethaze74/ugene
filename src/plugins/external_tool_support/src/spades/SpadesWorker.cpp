@@ -477,6 +477,10 @@ void SpadesWorkerFactory::init() {
 
     QList<Attribute*> attrs;
     {
+        Descriptor inputData(SpadesTask::OPTION_INPUT_DATA,
+            SpadesWorker::tr("Input data"),
+            INPUT_DATA_DESCRIPTION);
+
         Descriptor outDir(OUTPUT_DIR,
             SpadesWorker::tr("Output folder"),
             SpadesWorker::tr("Folder to save Spades output files."));
@@ -503,14 +507,6 @@ void SpadesWorkerFactory::init() {
              SpadesWorker::tr("K-mers"),
              SpadesWorker::tr("k-mer sizes (-k)."));
 
-         Descriptor inputData(SpadesTask::OPTION_INPUT_DATA,
-             SpadesWorker::tr("Input data"),
-             INPUT_DATA_DESCRIPTION);
-
-        attrs << new Attribute(datasetType, BaseTypes::STRING_TYPE(), true, SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE);
-        attrs << new Attribute(rMode, BaseTypes::STRING_TYPE(), true, SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY);
-        attrs << new Attribute(kMer, BaseTypes::STRING_TYPE(), true, SpadesWorker::K_MER_AUTO);
-
         QVariantMap defaultValue;
         defaultValue.insert(IN_PORT_PAIRED_ID_LIST[0], QString("%1:%2").arg(ORIENTATION_FR).arg(TYPE_SINGLE));
         defaultValue.insert(SEQUENCING_PLATFORM_ID, "Illumina");
@@ -522,7 +518,9 @@ void SpadesWorkerFactory::init() {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(pairedRead, QVariantList() << pairedRead));
         }
         attrs << inputAttr;
-
+        attrs << new Attribute(datasetType, BaseTypes::STRING_TYPE(), true, SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE);
+        attrs << new Attribute(rMode, BaseTypes::STRING_TYPE(), true, SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY);
+        attrs << new Attribute(kMer, BaseTypes::STRING_TYPE(), true, SpadesWorker::K_MER_AUTO);
         attrs << new Attribute(threads, BaseTypes::NUM_TYPE(), false, QVariant(16));
         attrs << new Attribute(memLim, BaseTypes::NUM_TYPE(), false, QVariant(250));
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), Attribute::CanBeEmpty | Attribute::Required);

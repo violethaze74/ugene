@@ -24,6 +24,8 @@
 #include <QToolButton>
 #include <QMessageBox>
 
+#include "U2Algorithm/GenomeAssemblyRegistry.h"
+
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/HelpButton.h>
 
@@ -260,8 +262,8 @@ void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
 }
 
 void SpadesPropertyDialog::setItemsData() {
-    sequencingPlatformComboBox->setItemData(0, QString("Illumina"));
-    sequencingPlatformComboBox->setItemData(1, QString("--iontorrent"));
+    sequencingPlatformComboBox->setItemData(0, PLATFORM_ILLUMINA);
+    sequencingPlatformComboBox->setItemData(1, PLATFORM_IONTORRENT);
 
     QList<QComboBox*> directionComboBoxes = QList<QComboBox*>() <<
                                             pairEndReadsDirectionComboBox <<
