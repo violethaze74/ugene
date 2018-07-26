@@ -30,8 +30,11 @@
 
 namespace U2 {
 
-const QString NgsReadsClassificationPlugin::PLUGIN_NAME = QObject::tr("NGS reads classification");
-const QString NgsReadsClassificationPlugin::PLUGIN_DESCRIPRION = QObject::tr("The plugin supports data and utility for the NGS reads classifiers");
+#define TR_CONTEXT "NgsReadsClassificationPlugin"
+#define TR(str) (QCoreApplication::translate((TR_CONTEXT), (str)))
+
+const QString NgsReadsClassificationPlugin::PLUGIN_NAME = TR("NGS reads classification");
+const QString NgsReadsClassificationPlugin::PLUGIN_DESCRIPRION = TR("The plugin supports data and utility for the NGS reads classifiers");
 
 const QString NgsReadsClassificationPlugin::TAXONOMY_PATH = "ngs_classification/taxonomy";
 const QString NgsReadsClassificationPlugin::TAXONOMY_DATA_ID = "taxonomy_data";
@@ -74,14 +77,9 @@ const QString NgsReadsClassificationPlugin::REFSEQ_BACTERIAL_DATA_ID = "refseq_b
 const QString NgsReadsClassificationPlugin::REFSEQ_VIRAL_PATH = "ngs_classification/refseq/viral";
 const QString NgsReadsClassificationPlugin::REFSEQ_VIRAL_DATA_ID = "refseq_viral";
 
-const QString NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP = QObject::tr("NGS: Reads Classification");
+const QString NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP = TR("NGS: Reads Classification");
 
 const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID = "ClassifyToolName";
-const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DOC = QObject::tr("Classify tool. Hidden attribute");
-const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_KRAKEN = "Kraken";
-const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_CLARK = "CLARK";
-const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DIAMOND = "DIAMOND";
-const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_WEVOTE = "WEVOTE";
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     NgsReadsClassificationPlugin *plugin = new NgsReadsClassificationPlugin();

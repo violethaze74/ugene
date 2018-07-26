@@ -269,7 +269,7 @@ Task * EnsembleClassificationWorker::tick() {
                 (!tripleInput || (tripleInput && sourceFileUrl1 == sourceFileUrl3))) {
             sourceFileUrl = sourceFileUrl1;
         } else {
-            sourceFileUrl = (tripleInput ? "Ensemble_of_3" : "Ensemble_of_2");
+            //sourceFileUrl = (tripleInput ? "Ensemble_of_3" : "Ensemble_of_2");
         }
         QVariantMap m;
         m[BaseSlots::URL_SLOT().getId()] = sourceFileUrl;

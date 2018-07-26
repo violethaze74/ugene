@@ -139,6 +139,8 @@ public:
 
     static const QString SINGLE_END;
     static const QString PAIRED_END;
+
+    static const QString WORKFLOW_CLASSIFY_TOOL_CLARK;
 };
 
 class ClarkClassifyTask : public ExternalToolSupportTask {

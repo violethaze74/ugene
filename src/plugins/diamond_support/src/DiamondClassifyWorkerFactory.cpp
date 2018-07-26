@@ -72,6 +72,8 @@ const QString DiamondClassifyWorkerFactory::BSIZE_ATTR_ID("block-size");
 const QString DiamondClassifyWorkerFactory::CHUNKS_ATTR_ID("index-chunks");
 const QString DiamondClassifyWorkerFactory::OUTPUT_URL_ATTR_ID("output-url");
 
+const QString DiamondClassifyWorkerFactory::WORKFLOW_CLASSIFY_TOOL_DIAMOND = "DIAMOND";
+
 DiamondClassifyWorkerFactory::DiamondClassifyWorkerFactory()
     : DomainFactory(ACTOR_ID)
 {
@@ -139,8 +141,8 @@ void DiamondClassifyWorkerFactory::init() {
                                                                    "</ul>"));
 
         const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
-                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DIAMOND,
-                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DOC);
+                                          WORKFLOW_CLASSIFY_TOOL_DIAMOND,
+                                          "Classify tool. Hidden attribute");
 
         QString diamondDatabasePath;
         U2DataPath *uniref50DataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID);
@@ -168,8 +170,8 @@ void DiamondClassifyWorkerFactory::init() {
         attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
         attributes << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(),
-                                    Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden,
-                                    NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DIAMOND);
+                                    static_cast<Attribute::Flags>(Attribute::Hidden),
+                                    WORKFLOW_CLASSIFY_TOOL_DIAMOND);
     }
 
     QMap<QString, PropertyDelegate *> delegates;

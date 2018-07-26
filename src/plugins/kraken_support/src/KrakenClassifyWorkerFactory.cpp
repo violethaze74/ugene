@@ -70,6 +70,8 @@ const QString KrakenClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID = "preload";
 const QString KrakenClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or contigs");
 const QString KrakenClassifyWorkerFactory::PAIRED_END_TEXT = QObject::tr("PE reads");
 
+const QString KrakenClassifyWorkerFactory::WORKFLOW_CLASSIFY_TOOL_KRAKEN = "Kraken";
+
 KrakenClassifyWorkerFactory::KrakenClassifyWorkerFactory()
     : DomainFactory(ACTOR_ID)
 {
@@ -141,8 +143,8 @@ void KrakenClassifyWorkerFactory::init() {
                                                                         "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
 
         const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
-                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_KRAKEN,
-                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DOC);
+                                          WORKFLOW_CLASSIFY_TOOL_KRAKEN,
+                                          "Classify tool. Hidden attribute");
 
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, KrakenClassifyTaskSettings::SINGLE_END);
         inputDataAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT_ID, PAIRED_INPUT_SLOT, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
@@ -166,8 +168,8 @@ void KrakenClassifyWorkerFactory::init() {
         attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
         attributes << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(),
-                                    Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden,
-                                    NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_KRAKEN);
+                                    static_cast<Attribute::Flags>(Attribute::Hidden),
+                                    WORKFLOW_CLASSIFY_TOOL_KRAKEN);
 
         minHitsAttribute->addRelation(new VisibilityRelation(QUICK_OPERATION_ATTR_ID, "true"));
         databaseAttribute->addRelation(new DatabaseSizeRelation(PRELOAD_DATABASE_ATTR_ID));

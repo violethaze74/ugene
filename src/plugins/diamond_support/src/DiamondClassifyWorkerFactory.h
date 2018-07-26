@@ -57,6 +57,8 @@ public:
     static const QString BSIZE_ATTR_ID;
     static const QString CHUNKS_ATTR_ID;
     static const QString OUTPUT_URL_ATTR_ID;
+
+    static const QString WORKFLOW_CLASSIFY_TOOL_DIAMOND;
 };
 
 }   // namespace LocalWorkflow

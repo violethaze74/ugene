@@ -149,6 +149,8 @@ const QString ClarkClassifyWorkerFactory::SEQUENCING_READS = "sequencing-reads";
 const QString ClarkClassifyWorkerFactory::SINGLE_END = "single-end";
 const QString ClarkClassifyWorkerFactory::PAIRED_END = "paired-end";
 
+const QString ClarkClassifyWorkerFactory::WORKFLOW_CLASSIFY_TOOL_CLARK = "CLARK";
+
 void ClarkClassifyWorkerFactory::init() {
 
     Descriptor desc( ACTOR_ID, ClarkClassifyWorker::tr("Classify Sequences with CLARK"),
@@ -243,8 +245,8 @@ void ClarkClassifyWorkerFactory::init() {
                                                                      "The input files should be in FASTA or FASTQ formats."));
 
         const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
-                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_CLARK,
-                                          NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_DOC);
+                                          WORKFLOW_CLASSIFY_TOOL_CLARK,
+                                          "Classify tool. Hidden attribute");
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), Attribute::None, SINGLE_END);
         sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, PAIRED_INPUT_SLOT, QVariantList() << PAIRED_END));
@@ -292,8 +294,8 @@ void ClarkClassifyWorkerFactory::init() {
         a << new Attribute(outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
         a << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(),
-                           Attribute::Required | Attribute::NeedValidateEncoding | Attribute::Hidden,
-                           NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_CLARK);
+                           static_cast<Attribute::Flags>(Attribute::Hidden),
+                           WORKFLOW_CLASSIFY_TOOL_CLARK);
     }
 
     QMap<QString, PropertyDelegate*> delegates;
