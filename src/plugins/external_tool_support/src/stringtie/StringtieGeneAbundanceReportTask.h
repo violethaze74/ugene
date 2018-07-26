@@ -30,13 +30,25 @@ namespace LocalWorkflow {
 class StringtieGeneAbundanceReportTask : public Task {
     Q_OBJECT
 public:
-    StringtieGeneAbundanceReportTask(const QStringList &stringtieReports, const QString &geneAbudanceReportUrl);
+    StringtieGeneAbundanceReportTask(const QStringList &_stringtieReports,
+                                     const QString &_reportUrl,
+                                     const QString &_workingDir);
 
     const QString &getReportUrl() const;
+    static const int BUFF_SIZE;
+    static const QString inputDelimiter;
+    static const QString outputDelimiter;
 
 private:
+    void run();
+
     const QStringList stringtieReports;
-    const QString reportUrl;
+    const QString workingDir;
+    QString reportUrl;
+
+    QString sortAndShrinkToTemp(QString tsvFile, QString runDir);
+    bool mergeFpkmToReportUrl(QStringList tempFiles, QString reportUrl);
+    static QList<QStringList> parseLinesIntoTokens(const QString& text, int& maxColumns);
 };
 
 }   // namespace LocalWorkflow

@@ -26,7 +26,7 @@
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "StringTieGeneAbundanceReportTask.h"
+#include "StringtieGeneAbundanceReportTask.h"
 #include "StringtieGeneAbundanceReportWorker.h"
 #include "StringtieGeneAbundanceReportWorkerFactory.h"
 
@@ -34,49 +34,98 @@ namespace U2 {
 namespace LocalWorkflow {
 
 StringtieGeneAbundanceReportWorker::StringtieGeneAbundanceReportWorker(Actor *actor)
-    : BaseWorker(actor, false),
-      input(NULL)
+    : BaseWorker(actor, false)
 {
 
 }
 
 void StringtieGeneAbundanceReportWorker::init() {
-    input = ports.value(StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID);
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID), );
+    foreach (QString portId, StringtieGeneAbundanceReportWorkerFactory::inputPortId) {
+        IntegralBus *input = ports.value(portId);
+        SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(portId), );
+        inputs << input;
+    }
 }
 
 Task *StringtieGeneAbundanceReportWorker::tick() {
-    if (input->hasMessage()) {
-        const QString geneAbudanceReportUrl = getValue<QString>(StringtieGeneAbundanceReportWorkerFactory::OUTPUT_FILE_ATTR_ID);
-        FileAndDirectoryUtils::createWorkingDir(geneAbudanceReportUrl, FileAndDirectoryUtils::FILE_DIRECTORY, "", "");
+    if (isDone()) {
+        return NULL;
+    }
 
-        QStringList stringtieReports;
-        while (input->hasMessage()) {
-            Message message = getMessageAndSetupScriptValues(input);
-            const QString stringtieReport = message.getData().toMap()[BaseSlots::URL_SLOT().getId()].toString();
-            if (stringtieReport.isEmpty()) {
-                setDone();
-                return new FailTask(tr("An empty URL to StringTie report passed to the '%1'").arg(getActor()->getLabel()));
+    bool nobodyHasMessage = true;
+    bool allPortsAreEnded = true;
+
+    foreach (IntegralBus *input, inputs) {
+        if (input->hasMessage()) {
+            nobodyHasMessage = false;
+            while (input->hasMessage()) {
+                Message message = getMessageAndSetupScriptValues(input);
+                const QString stringtieReport = message.getData()
+                        .toMap()[BaseSlots::URL_SLOT().getId()].toString();
+                if (stringtieReport.isEmpty()) {
+                    setDone();
+                    return new FailTask(tr("An empty URL to StringTie report passed to the '%1'")
+                                        .arg(getActor()->getLabel()));
+                }
+                stringtieReports << stringtieReport;
             }
-            stringtieReports << stringtieReport;
+        }
+        if (!input->isEnded()) {
+            allPortsAreEnded = false;
+        }
+    }
+
+    if (nobodyHasMessage && allPortsAreEnded) {
+        if (stringtieReports.size() > 0) {
+            const QString geneAbudanceReportUrl = getValue<QString>(StringtieGeneAbundanceReportWorkerFactory::OUTPUT_FILE_ATTR_ID);
+            FileAndDirectoryUtils::createWorkingDir(geneAbudanceReportUrl,
+                                                    FileAndDirectoryUtils::FILE_DIRECTORY,
+                                                    "",
+                                                    "");
+            stringtieReports.removeDuplicates();
+            StringtieGeneAbundanceReportTask *task = new StringtieGeneAbundanceReportTask(stringtieReports,
+                                                                                          geneAbudanceReportUrl,
+                                                                                          context->workingDir());
+            stringtieReports.clear();
+            connect(new TaskSignalMapper(task),
+                    SIGNAL(si_taskSucceeded(Task *)),
+                    SLOT(sl_taskSucceeded(Task *)));
+            return task;
         }
 
-        StringtieGeneAbundanceReportTask *task = new StringtieGeneAbundanceReportTask(stringtieReports, geneAbudanceReportUrl);
-        connect(new TaskSignalMapper(task), SIGNAL(si_taskSucceeded(Task *)), SLOT(sl_taskSucceeded(Task *)));
-        return task;
-    } else {
-        setDone();
+        if (allPortsAreEnded) {
+            setDone();
+            algoLog.info(QString("Filter worker is done as all input were ended"));
+        }
     }
 
     return NULL;
 }
 
 void StringtieGeneAbundanceReportWorker::cleanup() {
-
 }
 
 bool StringtieGeneAbundanceReportWorker::isReady() const {
-    return input->isEnded();
+    if (isDone()) {
+        return false;
+    }
+
+    bool allPortsHaveMessage = true;
+    bool nobodyHasMessage = true;
+    bool somebodyHasMessage = false;
+    bool somebodyIsEnded = false;
+
+    foreach (IntegralBus *input, inputs) {
+        const int hasMessage = input->hasMessage();
+        const bool isEnded = input->isEnded();
+
+        allPortsHaveMessage = allPortsHaveMessage && hasMessage;
+        nobodyHasMessage = nobodyHasMessage && isEnded;
+        somebodyHasMessage = somebodyHasMessage || hasMessage;
+        somebodyIsEnded = somebodyIsEnded || isEnded;
+    }
+
+    return nobodyHasMessage || allPortsHaveMessage || (somebodyHasMessage && somebodyIsEnded);
 }
 
 void StringtieGeneAbundanceReportWorker::sl_taskSucceeded(Task *task) {

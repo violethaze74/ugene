@@ -40,8 +40,10 @@ public:
     static void cleanup();
 
     static const QString ACTOR_ID;
+    static const QString INPUT_PORT_ID_TEMPLATE;
 
-    static const QString INPUT_PORT_ID;
+    static int inputCount;
+    static QList<QString> inputPortId;
 
     static const QString OUTPUT_FILE_ATTR_ID;
 };
