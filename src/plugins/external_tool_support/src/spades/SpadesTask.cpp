@@ -41,7 +41,7 @@ namespace U2 {
 const QString SpadesTask::OPTION_DATASET_TYPE = "dataset-type";
 const QString SpadesTask::OPTION_RUNNING_MODE = "running-mode";
 const QString SpadesTask::OPTION_K_MER = "k-mer";
-const QString SpadesTask::OPTION_INPUT_DATA = "input-data-dialog";
+const QString SpadesTask::OPTION_INPUT_DATA = "input-data";
 const QString SpadesTask::OPTION_THREADS = "threads";
 const QString SpadesTask::OPTION_MEMLIMIT = "memlimit";
 const QString SpadesTask::YAML_FILE_NAME = "datasets.yaml";
@@ -80,7 +80,7 @@ void SpadesTask::prepare() {
 
     QVariantMap inputDataDialogSettings = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariantMap()).toMap();
     QString sequencingPlatform = inputDataDialogSettings.value(LocalWorkflow::SpadesWorkerFactory::SEQUENCING_PLATFORM_ID, QString()).toString();
-    if (!sequencingPlatform.isEmpty()) {
+    if (sequencingPlatform == PLATFORM_IONTORRENT) {
         arguments.append(sequencingPlatform);
     }
 

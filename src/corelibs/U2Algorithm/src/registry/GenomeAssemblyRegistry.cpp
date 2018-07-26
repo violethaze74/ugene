@@ -169,8 +169,6 @@ QString GenomeAssemblyUtils::getYamlLibraryName(const QString &libName, const QS
     return result;
 }
 
-
-
 } //namespace
 
 

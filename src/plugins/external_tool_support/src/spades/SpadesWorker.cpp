@@ -116,21 +116,21 @@ const QString SpadesWorkerFactory::BASE_SPADES_SUBDIR = "spades";
 const QString SpadesWorkerFactory::getPortNameById(const QString& portId) {
     QString res;
     if (portId == IN_PORT_ID_LIST[0]) {
-        res = tr("unpaired");
+        res = tr("unpaired reads");
     } else if (portId == IN_PORT_ID_LIST[1]) {
-        res = tr("PacBio CCS");
+        res = tr("PacBio CCS reads");
     } else if (portId == IN_PORT_ID_LIST[2]) {
-        res = tr("PacBio CLR");
+        res = tr("PacBio CLR reads");
     } else if (portId == IN_PORT_ID_LIST[3]) {
-        res = tr("Oxford Nanopore");
+        res = tr("Oxford Nanopore reads");
     } else if (portId == IN_PORT_ID_LIST[4]) {
-        res = tr("Sanger");
+        res = tr("Sanger reads");
     } else if (portId == IN_PORT_ID_LIST[5]) {
-        res = tr("trusted");
+        res = tr("trusted contigs");
     } else if (portId == IN_PORT_ID_LIST[6]) {
-        res = tr("untrusted");
+        res = tr("untrusted contigs");
     } else if (portId == IN_PORT_PAIRED_ID_LIST[0]) {
-        res = tr("paired-end");
+        res = tr("paired-end reads");
     } else if (portId == IN_PORT_PAIRED_ID_LIST[1]) {
         res = tr("mate-pairs");
     } else if (portId == IN_PORT_PAIRED_ID_LIST[2]) {
@@ -174,7 +174,7 @@ const QString SpadesWorkerFactory::getYamlLibraryNameByPortId(const QString& por
 const QString SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE = "Standard isolate";
 const QString SpadesWorker::DATASET_TYPE_MDA_SINGLE_CELL = "MDA single-cell";
 
-const QString SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY = "Error correction and Assembly";
+const QString SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY = "Error correction and assembly";
 const QString SpadesWorker::RUNNING_MODE_ASSEMBLY_ONLY = "Assembly only";
 const QString SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_ONLY = "Error correction only";
 
@@ -416,17 +416,17 @@ void SpadesWorkerFactory::init() {
     //in port
     QList<Descriptor> readDescriptors;
     foreach(const QString& readId, QStringList() << IN_PORT_PAIRED_ID_LIST << IN_PORT_ID_LIST) {
-        const QString readName = SpadesWorkerFactory::getPortNameById(readId);
+        const QString dataName = SpadesWorkerFactory::getPortNameById(readId);
         readDescriptors << Descriptor(readId,
-            SpadesWorker::tr("Input %1 reads").arg(readName),
-            SpadesWorker::tr("Input %1 reads to be assembled with Spades.").arg(readName));
+            SpadesWorker::tr("Input %1").arg(dataName),
+            SpadesWorker::tr("Input %1 to be assembled with SPAdes.").arg(dataName));
     }
 
     QList<Descriptor> inputDescriptors;
     foreach(const QString& id, READS_URL_SLOT_ID_LIST) {
         inputDescriptors << Descriptor(id,
-            SpadesWorker::tr("URL of a file with reads"),
-            SpadesWorker::tr("Input reads to be assembled."));
+            SpadesWorker::tr("File URL 1"),
+            SpadesWorker::tr("File URL 1."));
     }
     SAFE_POINT(READS_URL_SLOT_ID_LIST.size() == inputDescriptors.size(),
                "Incorrect descriptors quantity", );
@@ -434,13 +434,12 @@ void SpadesWorkerFactory::init() {
     QList<Descriptor> inputPairedDescriptors;
     foreach(const QString& pairedId, READS_PAIRED_URL_SLOT_ID_LIST) {
         inputPairedDescriptors << Descriptor(pairedId,
-            SpadesWorker::tr("URL of a file with right pair reads"),
-            SpadesWorker::tr("Input right pair reads to be assembled."));
+            SpadesWorker::tr("File URL 2"),
+            SpadesWorker::tr("File URL 2."));
     }
     SAFE_POINT(READS_PAIRED_URL_SLOT_ID_LIST.size() == inputPairedDescriptors.size(),
                "Incorrect paired descriptors quantity", );
 
-    QList<QMap<Descriptor, DataTypePtr> > inTypeMapList;
     for (int i = 0; i < inputDescriptors.size(); i++) {
         const Descriptor& desc = inputDescriptors[i];
 
@@ -478,6 +477,10 @@ void SpadesWorkerFactory::init() {
 
     QList<Attribute*> attrs;
     {
+        Descriptor inputData(SpadesTask::OPTION_INPUT_DATA,
+            SpadesWorker::tr("Input data"),
+            INPUT_DATA_DESCRIPTION);
+
         Descriptor outDir(OUTPUT_DIR,
             SpadesWorker::tr("Output folder"),
             SpadesWorker::tr("Folder to save Spades output files."));
@@ -504,14 +507,6 @@ void SpadesWorkerFactory::init() {
              SpadesWorker::tr("K-mers"),
              SpadesWorker::tr("k-mer sizes (-k)."));
 
-         Descriptor inputData(SpadesTask::OPTION_INPUT_DATA,
-             SpadesWorker::tr("Input data"),
-             INPUT_DATA_DESCRIPTION);
-
-        attrs << new Attribute(datasetType, BaseTypes::STRING_TYPE(), true, SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE);
-        attrs << new Attribute(rMode, BaseTypes::STRING_TYPE(), true, SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY);
-        attrs << new Attribute(kMer, BaseTypes::STRING_TYPE(), true, SpadesWorker::K_MER_AUTO);
-
         QVariantMap defaultValue;
         defaultValue.insert(IN_PORT_PAIRED_ID_LIST[0], QString("%1:%2").arg(ORIENTATION_FR).arg(TYPE_SINGLE));
         defaultValue.insert(SEQUENCING_PLATFORM_ID, "Illumina");
@@ -523,7 +518,9 @@ void SpadesWorkerFactory::init() {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(pairedRead, QVariantList() << pairedRead));
         }
         attrs << inputAttr;
-
+        attrs << new Attribute(datasetType, BaseTypes::STRING_TYPE(), true, SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE);
+        attrs << new Attribute(rMode, BaseTypes::STRING_TYPE(), true, SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY);
+        attrs << new Attribute(kMer, BaseTypes::STRING_TYPE(), true, SpadesWorker::K_MER_AUTO);
         attrs << new Attribute(threads, BaseTypes::NUM_TYPE(), false, QVariant(16));
         attrs << new Attribute(memLim, BaseTypes::NUM_TYPE(), false, QVariant(250));
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), Attribute::CanBeEmpty | Attribute::Required);
@@ -551,7 +548,7 @@ void SpadesWorkerFactory::init() {
         delegates[SpadesTask::OPTION_DATASET_TYPE] = new ComboBoxDelegate(contentMap);
 
         QVariantMap contentMap2;
-        contentMap2[SpadesWorker::tr("Error correction and Assembly")] = SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY;
+        contentMap2[SpadesWorker::tr("Error correction and assembly")] = SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY;
         contentMap2[SpadesWorker::tr("Assembly only")] = SpadesWorker::RUNNING_MODE_ASSEMBLY_ONLY;
         contentMap2[SpadesWorker::tr("Error correction only")] = SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_ONLY;
         delegates[SpadesTask::OPTION_RUNNING_MODE] = new ComboBoxDelegate(contentMap2);

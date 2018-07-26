@@ -76,6 +76,9 @@ namespace U2 {
 #define ORIENTATION_RF                 "rf"
 #define ORIENTATION_FF                 "ff"
 
+#define PLATFORM_ILLUMINA              "Illumina"
+#define PLATFORM_IONTORRENT            "--iontorrent"
+
 #define ALIAS_SINGLE                   "Separate reads"
 #define ALIAS_INTERLACED               "Interlaced reads"
 

@@ -117,6 +117,7 @@ workflow "Variation annotation with SnpEff"{
             }
         }
         wizard {
+            auto-run: true;
             name:"Variation Annotation with SnpEff Wizard";
             page {
                 id:1;

@@ -40,7 +40,7 @@ namespace LocalWorkflow {
 
 const QString StringtieGeneAbundanceReportWorkerFactory::ACTOR_ID = "stringtie-gene-abundance-report";
 const QString StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID_TEMPLATE = "url";
-const QString StringtieGeneAbundanceReportWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-file";
+const QString StringtieGeneAbundanceReportWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-url";
 
 int StringtieGeneAbundanceReportWorkerFactory::inputCount = 1; // it's 1 now, can be more than 1
 QList<QString> StringtieGeneAbundanceReportWorkerFactory::inputPortId;

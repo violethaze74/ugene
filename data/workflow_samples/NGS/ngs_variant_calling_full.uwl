@@ -1,9 +1,10 @@
 #@UGENE_WORKFLOW
 #Call variants for an input assembly and a reference sequence using SAMtools mpileup and bcftool.
+#Predict effects of the found variants using SnpEff.
 
 
 
-workflow "Call variants with SAMtools"{
+workflow "Variant calling and effects prediction"{
 
     read-assembly {
         type:get-file-list;
@@ -23,7 +24,8 @@ workflow "Call variants with SAMtools"{
         type:call_variants;
         name:"Call Variants";
         max-dep:100;
-        variants-url:variations.vcf;
+        reference-source:port;
+        variants-url:variants.vcf;
     }
     files-conversion-1 {
         type:files-conversion;
@@ -35,12 +37,29 @@ workflow "Call variants with SAMtools"{
         name:"To BAM";
         document-format:bam;
     }
+    rename-chromosome-in-variation {
+        type:rename-chromosome-in-variation;
+        name:"Chr Notation";
+        prefix-replace-with:chr;
+        prefixes-to-replace:"NC_00000;NC_0000";
+    }
+    seff {
+        type:seff;
+        name:"Annotate and Predict Effects with SnpEff";
+    }
+    convert-snpeff-variations-to-annotations {
+        type:convert-snpeff-variations-to-annotations;
+        name:"To Annotations";
+    }
 
     .actor-bindings {
+        call_variants.out-variations->rename-chromosome-in-variation.in-file
         files-conversion-2.out-file->call_variants.in-assembly
         read-sequence.out-url->files-conversion-1.in-file
         files-conversion-1.out-file->call_variants.in-sequence
+        seff.out-file->convert-snpeff-variations-to-annotations.in-variations-url
         read-assembly.out-url->files-conversion-2.in-file
+        rename-chromosome-in-variation.out-file->seff.in-file
     }
 
     read-assembly.dataset->call_variants.in-assembly.dataset
@@ -48,6 +67,9 @@ workflow "Call variants with SAMtools"{
     files-conversion-1.url->call_variants.in-sequence.url
     read-sequence.url->files-conversion-1.in-file.url
     read-assembly.url->files-conversion-2.in-file.url
+    call_variants.url->rename-chromosome-in-variation.in-file.url
+    rename-chromosome-in-variation.url->seff.in-file.url
+    seff.url->convert-snpeff-variations-to-annotations.in-variations-url.url
 
     .meta {
         parameter-aliases {
@@ -90,7 +112,7 @@ workflow "Call variants with SAMtools"{
         }
         visual {
             call_variants {
-                pos:"-391 -468";
+                pos:"-465 -510";
                 style:ext;
                 bg-color-ext:"0 129 94 64";
                 bounds:"-30 -30 123.125 72";
@@ -98,33 +120,56 @@ workflow "Call variants with SAMtools"{
                 in-sequence.angle:235.098;
                 out-variations.angle:351.674;
             }
+            convert-snpeff-variations-to-annotations {
+                pos:"-450 -285";
+                style:simple;
+                bg-color-simple:"234 223 240 255";
+                in-variations-url.angle:3.25195;
+            }
             files-conversion-1 {
-                pos:"-542 -406";
+                pos:"-615 -450";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:196.858;
                 out-file.angle:6.5198;
             }
             files-conversion-2 {
-                pos:"-539 -511";
+                pos:"-615 -555";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:170.538;
                 out-file.angle:334.799;
             }
             read-assembly {
-                pos:"-801 -554";
+                pos:"-870 -600";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 111.375 66";
                 out-url.angle:360;
             }
             read-sequence {
-                pos:"-802 -392";
+                pos:"-885 -435";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 110.25 62";
                 out-url.angle:349.061;
+            }
+            rename-chromosome-in-variation {
+                pos:"-210 -495";
+                style:simple;
+                bg-color-simple:"232 227 230 255";
+                in-file.angle:180;
+                out-file.angle:270.785;
+            }
+            seff {
+                pos:"-270 -285";
+                style:ext;
+                bg-color-ext:"0 129 94 64";
+                in-file.angle:28.6105;
+                out-file.angle:181.848;
+            }
+            call_variants.out-variations->rename-chromosome-in-variation.in-file {
+                text-pos:"-45 -43";
             }
             files-conversion-1.out-file->call_variants.in-sequence {
                 text-pos:"-19 -31";
@@ -138,35 +183,16 @@ workflow "Call variants with SAMtools"{
             read-sequence.out-url->files-conversion-1.in-file {
                 text-pos:"-31 -21";
             }
-        }
-        estimations {
-function samtoolsTime(bam, ref) {
-                return (ref/236) * (25*bam + 4);
+            rename-chromosome-in-variation.out-file->seff.in-file {
+                text-pos:"-45 -43";
             }
-			function samtoolsRAM(bam, ref) {
-                return (ref + 50);
+            seff.out-file->convert-snpeff-variations-to-annotations.in-variations-url {
+                text-pos:"-45 -43";
             }
-            var bamSets = utils.attributeValue("read-assembly.url-in");
-			var refSets = utils.attributeValue("read-sequence.url-in");
-            var time = 0;
-            var ram = 0;
-            for (var i=0; i<bamSets.length; i++) {
-                var bamSet = bamSets[i];
-                var bam = 0; // size of bams in Mb
-                for (var j=0; j<bamSet.length; j++) {
-                    var url = bamSet[j];
-                    bam += utils.fileSize(url) / (1024*1024);
-                }
-				var refUrl = refSets[i][0];
-				var ref = utils.fileSize(refUrl) / (1024*1024);  // size of ref in Mb
-                time += samtoolsTime(bam, ref);
-                ram += samtoolsRAM(bam, ref);
-            }
-            [time, ram];
         }
         wizard {
+            auto-run: true;
             name:"Call Variants Wizard";
-            help-page-id:16122718;
             page {
                 id:1;
                 next:2;
@@ -325,12 +351,59 @@ function samtoolsTime(bam, ref) {
             }
             page {
                 id:5;
-                title:"Output variations";
+                next:6;
+                title:"Change chromosome notation for variations";
                 parameters-area {
                     group {
-                        title:"Output file";
-                        label-size:100;
+                        title:Parameters;
+                        label-size:150;
+                        rename-chromosome-in-variation.prefixes-to-replace {
+                        }
+                        rename-chromosome-in-variation.prefix-replace-with {
+                        }
+                    }
+                }
+            }
+            page {
+                id:6;
+                next:7;
+                title:"SnpEff parameters";
+                parameters-area {
+                    group {
+                        title:Parameters;
+                        label-size:200;
+                        seff.genome {
+                        }
+                    }
+                    group {
+                        title:Additional;
+                        label-size:200;
+                        type:hideable;
+                        seff.canon {
+                        }
+                        seff.hgvs {
+                        }
+                        seff.lof {
+                        }
+                        seff.motif {
+                        }
+                        seff.updown-length {
+                        }
+                    }
+                }
+            }
+            page {
+                id:7;
+                title:"Output files";
+                parameters-area {
+                    group {
+                        title:"Output variants";
+                        label-size:110;
                         call_variants.variants-url {
+                            label:"Output VCF file"
+                        }
+                        convert-snpeff-variations-to-annotations.url-out {
+                            label:"Output GenBank file"
                         }
                     }
                 }

@@ -711,13 +711,14 @@ void WidgetCreator::visit(LabelWidget *lw) {
     text.replace("\\n", "\n");
     QLabel *label = new QLabel(text);
     QString style = "\
-                    border-width: 1px;\
+                    border-width: 0px;\
                     border-style: solid;\
                     border-radius: 4px;\
                     ";
     style += "color: " + lw->textColor + ";";
     style += "background-color: " + lw->backgroundColor + ";";
-    style += "padding: 8px;";
+    style += "padding: 6px;";
+    style += "margin-bottom: 12px;";
     label->setStyleSheet(style);
     label->setAlignment(Qt::AlignJustify);
     label->setWordWrap(true);
