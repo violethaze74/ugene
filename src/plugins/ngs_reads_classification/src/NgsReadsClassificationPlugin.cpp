@@ -92,7 +92,7 @@ public:
 NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
     : Plugin(PLUGIN_NAME, PLUGIN_DESCRIPRION)
 {
-    registerData(TAXONOMY_DATA_ID, TAXONOMY_PATH, tr("NCBI taxonomy classification data"), false, true);
+    registerData(TAXONOMY_DATA_ID, TAXONOMY_PATH, tr("NCBI taxonomy classification data"), false);
     registerData(CLARK_VIRAL_DATABASE_DATA_ID, CLARK_VIRAL_DATABASE_PATH, tr("CLARK viral database"), true);
     registerData(CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID, CLARK_BACTERIAL_VIRAL_DATABASE_PATH, tr("CLARK bacterial and viral database"), true);
     registerData(MINIKRAKEN_4_GB_DATA_ID, MINIKRAKEN_4_GB_PATH, tr("Minikraken 4Gb database"), true);
@@ -118,21 +118,16 @@ NgsReadsClassificationPlugin::~NgsReadsClassificationPlugin() {
     }
 }
 
-void NgsReadsClassificationPlugin::registerData(const QString &dataId, const QString &relativePath, const QString &description, bool addAsFolder, bool verbose) {
+void NgsReadsClassificationPlugin::registerData(const QString &dataId, const QString &relativePath, const QString &description, bool addAsFolder) {
     U2DataPathRegistry* dataPathRegistry = AppContext::getDataPathRegistry();
     const QString path = QFileInfo(QString(PATH_PREFIX_DATA) + ":" + relativePath).absoluteFilePath();
     const U2DataPath::Options options = addAsFolder ? U2DataPath::AddOnlyFolders | U2DataPath::AddTopLevelFolder : U2DataPath::None;
     U2DataPath *dataPath = new U2DataPath(dataId, path, description, options);
     bool ok = dataPathRegistry->registerEntry(dataPath);
     if (!ok) {
-        if (verbose) {
-            coreLog.error(tr("Failed to find the %1").arg(description));
-        }
         delete dataPath;
     } else {
-        if (verbose) {
-            coreLog.trace(tr("Found the %1 at %2").arg(description).arg(path));
-        }
+        coreLog.details(tr("Found the %1 at %2").arg(description).arg(path));
         registeredData << dataId;
     }
 }

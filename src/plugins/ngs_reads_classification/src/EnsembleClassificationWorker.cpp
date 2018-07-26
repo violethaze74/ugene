@@ -51,7 +51,6 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "EnsembleClassificationWorker.h"
-#include "../ngs_reads_classification/src/NgsReadsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -243,38 +242,11 @@ Task * EnsembleClassificationWorker::tick() {
     if (isReadyToRun()) {
         QList<TaxonomyClassificationResult> taxData;
 
-        QString sourceFileUrl = NULL;
-        QString sourceFileUrl1 = NULL;
-        QString sourceFileUrl2 = NULL;
-        QString sourceFileUrl3 = NULL;
-
-        const Message message1 = getMessageAndSetupScriptValues(input1);
-        taxData << message1.getData().toMap()[INPUT_SLOT1].value<TaxonomyClassificationResult>();
-        const MessageMetadata metadata1 = context->getMetadataStorage().get(message1.getMetadataId());
-        sourceFileUrl1 = metadata1.getFileUrl();
-
-        const Message message2 = getMessageAndSetupScriptValues(input2);
-        taxData << message2.getData().toMap()[INPUT_SLOT2].value<TaxonomyClassificationResult>();
-        const MessageMetadata metadata2 = context->getMetadataStorage().get(message2.getMetadataId());
-        sourceFileUrl2 = metadata2.getFileUrl();
-
+        taxData << getMessageAndSetupScriptValues(input1).getData().toMap()[INPUT_SLOT1].value<TaxonomyClassificationResult>();
+        taxData << getMessageAndSetupScriptValues(input2).getData().toMap()[INPUT_SLOT2].value<TaxonomyClassificationResult>();
         if (tripleInput) {
-            const Message message3 = getMessageAndSetupScriptValues(input3);
-            taxData << message3.getData().toMap()[INPUT_SLOT3].value<TaxonomyClassificationResult>();
-            const MessageMetadata metadata3 = context->getMetadataStorage().get(message3.getMetadataId());
-            sourceFileUrl3 = metadata3.getFileUrl();
+            taxData << getMessageAndSetupScriptValues(input3).getData().toMap()[INPUT_SLOT3].value<TaxonomyClassificationResult>();
         }
-
-        if (sourceFileUrl1 == sourceFileUrl2 &&
-                (!tripleInput || (tripleInput && sourceFileUrl1 == sourceFileUrl3))) {
-            sourceFileUrl = sourceFileUrl1;
-        } else {
-            sourceFileUrl = (tripleInput ? "Ensemble_of_3" : "Ensemble_of_2");
-        }
-        QVariantMap m;
-        m[BaseSlots::URL_SLOT().getId()] = sourceFileUrl;
-        m[BaseSlots::DATASET_SLOT().getId()] = metadata1.getDatasetName();
-        output->setContext(m, metadata1.getId());
 
         Task* t = new EnsembleClassificationTask(taxData, tripleInput, outputFile, context->workingDir());
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
