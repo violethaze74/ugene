@@ -2131,7 +2131,7 @@ void WorkflowView::loadWizardResult(const QString &result) {
     WorkflowUtils::schemaFromFile(url, schema, &meta, os);
     recreateScene();
     sl_onSceneLoaded();
-    if (!schema->getWizards().isEmpty()) {
+    if (!schema->getWizards().isEmpty() && !schema->getWizards().first()->isAutoRun()) {
         runWizard(schema->getWizards().first());
     }
 }
