@@ -85,7 +85,7 @@ public:
     static const QString WORKFLOW_ELEMENTS_GROUP;
 
 private:
-    void registerData(const QString &dataId, const QString &relativePath, const QString &description, bool addAsFolder = false, bool verbose = false);
+    void registerData(const QString &dataId, const QString &relativePath, const QString &description, bool addAsFolder = false);
     void unregisterData(const QString &dataId);
 
     QStringList registeredData;

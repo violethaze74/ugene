@@ -213,7 +213,7 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
     SAFE_POINT(NULL != dataPathRegistry, "U2DataPathRegistry is NULL", tree);
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), algoLog.error(QString("Taxonomy data is not configured")), tree);
+    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), algoLog.details(QString("Taxonomy data is not configured")), tree);
 
     bool hasError = false;
 
