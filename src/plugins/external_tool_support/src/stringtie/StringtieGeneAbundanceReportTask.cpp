@@ -23,10 +23,10 @@
 #include <QTextStream>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/IOAdapterUtils.h>
+#include <U2Core/Counter.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/Counter.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -70,9 +70,9 @@ void StringtieGeneAbundanceReportTask::run()
                                                                  FileAndDirectoryUtils::WORKFLOW_INTERNAL,
                                                                  "",
                                                                  workingDir);
-        CHECK_OP(stateInfo, );
-        reportUrl = tmpDir;
+        reportUrl = tmpDir + reportUrl;
     }
+    reportUrl = GUrlUtils::rollFileName(reportUrl, "_");
 
     QFile reportFile(reportUrl);
     if ((reportFile.exists() && reportFile.open(QIODevice::Truncate))
@@ -95,6 +95,7 @@ void StringtieGeneAbundanceReportTask::run()
         QString tempFile = sortAndShrinkToTemp(tsvFile, runDir);
         tempFiles << tempFile;
     }
+    CHECK_OP(stateInfo, );
 
     // 2nd - merge files to reportUrl
     mergeFpkmToReportUrl(tempFiles, reportUrl);

@@ -30,9 +30,9 @@ namespace LocalWorkflow {
 class StringtieGeneAbundanceReportTask : public Task {
     Q_OBJECT
 public:
-    StringtieGeneAbundanceReportTask(const QStringList &_stringtieReports,
-                                     const QString &_reportUrl,
-                                     const QString &_workingDir);
+    StringtieGeneAbundanceReportTask(const QStringList &stringtieReports,
+                                     const QString &reportUrl,
+                                     const QString &workingDir);
 
     const QString &getReportUrl() const;
     static const int BUFF_SIZE;

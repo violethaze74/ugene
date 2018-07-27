@@ -41,7 +41,7 @@ private slots:
     void sl_taskSucceeded(Task *task);
 
 private:
-    QList<IntegralBus *> inputs;
+    IntegralBus * input;
     QStringList stringtieReports;
 
     static const QString OUTPUT_DIR;

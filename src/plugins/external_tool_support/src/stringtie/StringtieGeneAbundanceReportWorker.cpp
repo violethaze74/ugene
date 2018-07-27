@@ -40,49 +40,40 @@ StringtieGeneAbundanceReportWorker::StringtieGeneAbundanceReportWorker(Actor *ac
 }
 
 void StringtieGeneAbundanceReportWorker::init() {
-    foreach (QString portId, StringtieGeneAbundanceReportWorkerFactory::inputPortId) {
-        IntegralBus *input = ports.value(portId);
-        SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(portId), );
-        inputs << input;
-    }
+    input = ports.value(StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID);
+    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL")
+               .arg(StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID), );
 }
 
 Task *StringtieGeneAbundanceReportWorker::tick() {
-    if (isDone()) {
-        return NULL;
-    }
+    bool noMessage = true;
+    bool portIsEnded = true;
 
-    bool nobodyHasMessage = true;
-    bool allPortsAreEnded = true;
-
-    foreach (IntegralBus *input, inputs) {
-        if (input->hasMessage()) {
-            nobodyHasMessage = false;
-            while (input->hasMessage()) {
-                Message message = getMessageAndSetupScriptValues(input);
-                const QString stringtieReport = message.getData()
-                        .toMap()[BaseSlots::URL_SLOT().getId()].toString();
-                if (stringtieReport.isEmpty()) {
-                    setDone();
-                    return new FailTask(tr("An empty URL to StringTie report passed to the '%1'")
-                                        .arg(getActor()->getLabel()));
-                }
-                stringtieReports << stringtieReport;
+    if (input->hasMessage()) {
+        noMessage = false;
+        while (input->hasMessage()) {
+            Message message = getMessageAndSetupScriptValues(input);
+            const QString stringtieReport = message.getData()
+                    .toMap()[BaseSlots::URL_SLOT().getId()].toString();
+            if (stringtieReport.isEmpty()) {
+                setDone();
+                return new FailTask(tr("An empty URL to StringTie report passed to the '%1'")
+                                    .arg(getActor()->getLabel()));
             }
-        }
-        if (!input->isEnded()) {
-            allPortsAreEnded = false;
+            stringtieReports << stringtieReport;
         }
     }
+    if (!input->isEnded()) {
+        portIsEnded = false;
+    }
 
-    if (nobodyHasMessage && allPortsAreEnded) {
+    if (noMessage && portIsEnded) {
         if (stringtieReports.size() > 0) {
             const QString geneAbudanceReportUrl = getValue<QString>(StringtieGeneAbundanceReportWorkerFactory::OUTPUT_FILE_ATTR_ID);
             FileAndDirectoryUtils::createWorkingDir(geneAbudanceReportUrl,
                                                     FileAndDirectoryUtils::FILE_DIRECTORY,
                                                     "",
                                                     "");
-            stringtieReports.removeDuplicates();
             StringtieGeneAbundanceReportTask *task = new StringtieGeneAbundanceReportTask(stringtieReports,
                                                                                           geneAbudanceReportUrl,
                                                                                           context->workingDir());
@@ -93,9 +84,9 @@ Task *StringtieGeneAbundanceReportWorker::tick() {
             return task;
         }
 
-        if (allPortsAreEnded) {
+        if (portIsEnded) {
             setDone();
-            algoLog.info(QString("Filter worker is done as all input were ended"));
+            algoLog.info(QString("Filter worker is done as input was ended"));
         }
     }
 
@@ -110,22 +101,7 @@ bool StringtieGeneAbundanceReportWorker::isReady() const {
         return false;
     }
 
-    bool allPortsHaveMessage = true;
-    bool nobodyHasMessage = true;
-    bool somebodyHasMessage = false;
-    bool somebodyIsEnded = false;
-
-    foreach (IntegralBus *input, inputs) {
-        const int hasMessage = input->hasMessage();
-        const bool isEnded = input->isEnded();
-
-        allPortsHaveMessage = allPortsHaveMessage && hasMessage;
-        nobodyHasMessage = nobodyHasMessage && isEnded;
-        somebodyHasMessage = somebodyHasMessage || hasMessage;
-        somebodyIsEnded = somebodyIsEnded || isEnded;
-    }
-
-    return nobodyHasMessage || allPortsHaveMessage || (somebodyHasMessage && somebodyIsEnded);
+    return input->isEnded() || input->hasMessage();
 }
 
 void StringtieGeneAbundanceReportWorker::sl_taskSucceeded(Task *task) {
