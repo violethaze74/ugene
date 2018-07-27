@@ -76,13 +76,13 @@ QWidget* MapDatatypeEditor::getWidget() {
 namespace {
 
 int getMinimumHeight(QTableWidget *table) {
-    int totalHeight = 0;
+    int totalHeight = 2;        // a magic number to make vertical scrollbar not visible on Linux
 
     // Rows height
     int count = table->verticalHeader()->count();
     for (int i = 0; i < count; ++i) {
         if (!table->verticalHeader()->isSectionHidden(i)) {
-            totalHeight += table->verticalHeader()->minimumSectionSize();
+            totalHeight += table->verticalHeader()->sectionSize(i);
         }
     }
 
@@ -188,7 +188,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     const QString title = getTitle();
     if (!title.isEmpty()) {
         QLabel *titleLabel = new QLabel(title);
-        titleLabel->setContentsMargins(0, 5, 0, 0);
+        titleLabel->setContentsMargins(0, 4, 0, 0);
         titleLabel->setAlignment(Qt::AlignHCenter);
         verticalLayout->addWidget(titleLabel);
     }

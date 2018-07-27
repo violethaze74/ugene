@@ -188,6 +188,9 @@ QGroupBox::indicator:checked {
           <property name="spacing">
            <number>0</number>
           </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
+          </property>
           <property name="leftMargin">
            <number>0</number>
           </property>
