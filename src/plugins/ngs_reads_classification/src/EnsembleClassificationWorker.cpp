@@ -204,7 +204,7 @@ bool EnsembleClassificationWorker::isReady() const {
     const bool isEnded3 = input3->isEnded();
 
     const bool allPortsHaveMessage = hasMessage1 && hasMessage2 && (!tripleInput || hasMessage3);
-    const bool nobodyHasMessage = isEnded1 && isEnded2 && isEnded3;
+    const bool nobodyHasMessage = isEnded1 && isEnded2 && (!tripleInput || isEnded3);
 
     const bool firstPortHasExtraMessage = hasMessage1 && isEnded2 && (!tripleInput || isEnded3);
     const bool secondPortHasExtraMessage = isEnded1 && hasMessage2 && (!tripleInput || isEnded3);
