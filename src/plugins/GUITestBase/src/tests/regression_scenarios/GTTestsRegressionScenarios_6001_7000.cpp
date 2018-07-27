@@ -20,8 +20,9 @@
  */
 
 #include <QApplication>
-#include <QTableWidget>
 #include <QRadioButton>
+#include <QSpinBox>
+#include <QTableWidget>
 
 #include <base_dialogs/MessageBoxFiller.h>
 #include <base_dialogs/DefaultDialogFiller.h>
@@ -702,6 +703,52 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!l.hasError(), "Errors in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6136) {
+    // 1. Open "test/scenarios/_common_data/genbank/target_gene_new.gb".
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/target_gene_new.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open "In Silico PCR" tab
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    //3. Fill values:
+    //Forward: primer - TTTGGATCCAGCATCACCATCACCATCACGATCAAATAGAAGCAATG, mismathches - 27
+    //Reverse: primer - AAACCTAGGTACGTAGTGGTAGTGGTAGTGCTAGTTTATCTTCGTTAC, mismathches - 27
+    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "TTTGGATCCAGCATCACCATCACCATCACGATCAAATAGAAGCAATG");
+    GTUtilsOptionPanelSequenceView::setForwardPrimerMismatches(os, 27);
+    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "AAACCTAGGTACGTAGTGGTAGTGGTAGTGCTAGTTTATCTTCGTTAC");
+    GTUtilsOptionPanelSequenceView::setReversePrimerMismatches(os, 27);
+
+    //4. Press "find product(s)"
+    GTUtilsOptionPanelSequenceView::pressFindProducts(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: there is one product was found
+    const int count = GTUtilsOptionPanelSequenceView::productsCount(os);
+    CHECK_SET_ERR(count == 1, QString("Unexpected products quantity, expected: 1, current: %1").arg(count));
+
+    //5. Press "Extract product"
+    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: Sequence length = 423
+    const int length = GTUtilsSequenceView::getLengthOfSequence(os);
+    CHECK_SET_ERR(length == 423, QString("Unexpected sequence length, expected: 423, current: %1").arg(length));
+
+    //Check annotaions
+    foreach(const int i, QList<int>() << 30 << 376) {
+        GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", i, 0, true);
+        QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
+        CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection annotation regions, expected: 1, current: %1").arg(sel.size()));
+    }
+
+    foreach(const int i, QList<int>() << 1 << 376) {
+        GTUtilsSequenceView::clickAnnotationPan(os, "misc_feature", i, 0, true);
+        QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
+        CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection primer annotation regions, expected: 1, current: %1").arg(sel.size()));
+    }
 }
 
 } // namespace GUITest_regression_scenarios
