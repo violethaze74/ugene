@@ -179,7 +179,7 @@ ClassificationReportWorker::ClassificationReportWorker(Actor *a)
 {
 }
 
-const QString ClassificationReportWorker::getProducerClassifyToolName() {
+const QString ClassificationReportWorker::getProducerClassifyToolName() const {
     Port* port = actor->getPort(input->getPortId());
     IntegralBusPort * inPort = qobject_cast<IntegralBusPort*>(port);
     Actor* ac = inPort->getProducer(TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT().getId());
@@ -198,7 +198,7 @@ void ClassificationReportWorker::init() {
     producerClassifyToolName = getProducerClassifyToolName();
 }
 
-const QString ClassificationReportWorker::getReportFilePrefix(const Message& message) {
+const QString ClassificationReportWorker::getReportFilePrefix(const Message& message) const {
     QString prefix;
 
     const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
