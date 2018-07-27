@@ -691,7 +691,7 @@ Task * TopHatWorker::runTophat() {
     if (settings.data.fromFiles && settings.data.size() == 1) {
         settings.sample = GUrlUtils::getPairedFastqFilesBaseName(settings.data.urls.first(), settings.data.paired);
     } else {
-        settings.sample = datasetsData.getCurrentSample();
+        settings.sample = datasetsData.getCurrentDataset();
     }
     TopHatSupportTask * topHatSupportTask = new TopHatSupportTask(settings);
     topHatSupportTask->addListeners(createLogListeners());
@@ -810,6 +810,10 @@ QString DatasetData::getCurrentSample() const {
         }
     }
     return "";
+}
+
+const QString &DatasetData::getCurrentDataset() const {
+    return currentDataset;
 }
 
 /************************************************************************/

@@ -51,6 +51,7 @@ public:
     bool isCurrent(const QString &dataset);
     void replaceCurrent(const QString &dataset);
     QString getCurrentSample() const;
+    const QString &getCurrentDataset() const;
 
 private:
     bool groupByDatasets;
