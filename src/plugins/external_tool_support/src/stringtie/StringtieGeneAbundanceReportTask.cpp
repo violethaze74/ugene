@@ -209,7 +209,6 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
         if (text.length() != sizeBefore + line.length()) {
             setError(L10N::errorReadingFile(url));
         }
-        stateInfo.progress = io->getProgress();
     }
     io->close();
 
