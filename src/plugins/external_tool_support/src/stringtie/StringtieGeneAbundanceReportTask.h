@@ -48,7 +48,7 @@ private:
 
     QString sortAndShrinkToTemp(QString tsvFile, QString runDir);
     bool mergeFpkmToReportUrl(QStringList tempFiles, QString reportUrl);
-    static QList<QStringList> parseLinesIntoTokens(const QString& text, int& maxColumns);
+    static QList<QStringList> parseLinesIntoTokens(const QString& text);
 };
 
 }   // namespace LocalWorkflow

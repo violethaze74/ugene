@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDir>
 #include <QFileInfo>
 #include <QTextStream>
 
@@ -70,6 +71,7 @@ void StringtieGeneAbundanceReportTask::run()
                                                                  FileAndDirectoryUtils::WORKFLOW_INTERNAL,
                                                                  "",
                                                                  workingDir);
+        CHECK_EXT(QDir(tmpDir).exists(), setError(tr("The directory \"%1\" did not created").arg(tmpDir)), );
         reportUrl = tmpDir + reportUrl;
     }
     reportUrl = GUrlUtils::rollFileName(reportUrl, "_");
@@ -87,7 +89,7 @@ void StringtieGeneAbundanceReportTask::run()
                                                              FileAndDirectoryUtils::WORKFLOW_INTERNAL,
                                                              "",
                                                              workingDir);
-    CHECK_OP(stateInfo, );
+    CHECK_EXT(QDir(runDir).exists(), setError(tr("The directory \"%1\" did not created").arg(runDir)), );
 
     // 1st - sort&shrink every input file to temp file
     QStringList tempFiles;
@@ -105,7 +107,7 @@ void StringtieGeneAbundanceReportTask::run()
 bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFiles, QString reportUrl)
 {
     int valueCount = tempFiles.size();
-    QMap<QString, QVector<QString>> map;
+    QMap<QString, QVector<QString> > map;
     int fileIndex = 0;
 
     foreach (QString temp, tempFiles) {
@@ -120,24 +122,27 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFile
         }
         bool notEmpty = true;
         QByteArray block(BUFF_SIZE, '\0');
-        bool terminatorFound;
+        bool terminatorFound = false;
         // skip header
         int blockLen = io->readLine(block.data(), BUFF_SIZE, &terminatorFound);
-        if (blockLen > 0 && !terminatorFound) {
-            setError(QString("Too long line while reading a file: %1").arg(temp));
-            return false;
-        }
+        CHECK_EXT(blockLen <= 0 || terminatorFound,
+            setError(tr("Too long line while reading a file: %1").arg(temp)),
+            false);
+
         while (notEmpty) {
             blockLen = io->readLine(block.data(), BUFF_SIZE, &terminatorFound);
-            if (blockLen > 0 && !terminatorFound) {
-                setError(QString("Too long line while reading a file: %1").arg(temp));
-                return false;
-            } else if (blockLen > 0) {
+            if (blockLen > 0) {
+                CHECK_EXT(terminatorFound,
+                          setError(tr("Too long line while reading a file: %1").arg(temp)),
+                          false);
                 QString line = QString::fromLocal8Bit(block.data(), blockLen);
                 QStringList buf = line.split(inputDelimiter, QString::KeepEmptyParts);
+                CHECK_EXT(buf.size() == 3,
+                          setError(tr("Bad line format of input: \"%1\"").arg(line)),
+                          false);
                 QString key = buf[0] + outputDelimiter + buf[1];
-                auto & values = map[key];
-                if (values.size() == 0) {
+                QVector<QString>& values = map[key];
+                if (values.size() != valueCount) {
                     values.resize(valueCount);
                 }
                 values[fileIndex] = buf[2];
@@ -152,7 +157,7 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFile
     // save merged file
     QFile file(reportUrl);
     if (!file.open(QIODevice::Append)) {
-        setError(QString("Cannot open a file: %1").arg(reportUrl));
+        setError(tr("Cannot open a file: %1").arg(reportUrl));
         return false;
     }
     QTextStream out(&file);
@@ -170,11 +175,10 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFile
     out << "\n";
 
     //values
-    for (QMap<QString, QVector<QString>>::iterator it = map.begin(); it != map.end(); ++it) {
-        QString key = it.key();
-        QVector<QString> values = it.value();
+    foreach(const QString& key, map.keys()) {
+        QVector<QString> values = map[key];
         out << key;
-        foreach (QString val,values) {
+        foreach (QString val, values) {
             out << outputDelimiter << val;
         }
         out << "\n";
@@ -210,12 +214,17 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
     io->close();
 
     // parse text to list of lists
-    int maxColumns = 0;
-    QList<QStringList> parsedLines = parseLinesIntoTokens(text, maxColumns);
+    QList<QStringList> parsedLines = parseLinesIntoTokens(text);
+    CHECK_EXT(parsedLines.size() > 0,
+              setError(tr("Unexpected error while parsing input data")),
+              NULL);
 
     // header
     QStringList header = parsedLines[0];
     int indexFpkm = header.indexOf("FPKM");
+    CHECK_EXT(indexFpkm != -1,
+              setError(tr("Bad file format, there is no FPKM column: \"%1\"").arg(tsvFile)),
+              NULL);
     QString fileFpkm = runDir + "/FPKM/" + url.baseFileName() + ".fpkm";
     FileAndDirectoryUtils::createWorkingDir(fileFpkm,
                                             FileAndDirectoryUtils::FILE_DIRECTORY,
@@ -231,7 +240,7 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
     // save sorted file
     QFile file(fileFpkm);
     if (!file.open(QIODevice::Append)) {
-        setError(QString("Cannot open a file: %1").arg(fileFpkm));
+        setError(tr("Cannot open a file: %1\nError is :").arg(fileFpkm).arg(L10N::errorOpeningFileWrite(fileFpkm)));
         return NULL;
     }
     QTextStream out(&file);
@@ -244,15 +253,12 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
     return fileFpkm;
 }
 
-QList<QStringList> StringtieGeneAbundanceReportTask::parseLinesIntoTokens(const QString& text,
-                                                                          int& maxColumns) {
+QList<QStringList> StringtieGeneAbundanceReportTask::parseLinesIntoTokens(const QString& text) {
     QList<QStringList> result;
-    maxColumns = 0;
     QStringList lines = text.split('\n', QString::SkipEmptyParts);
     for (int l = 0; l < lines.size(); l++) {
         QString line = lines.at(l).trimmed();
         QStringList tokens = line.split(inputDelimiter, QString::KeepEmptyParts);
-        maxColumns = qMax(maxColumns, tokens.size());
         result.append(tokens);
     }
     return result;
