@@ -56,6 +56,8 @@ const QString WevoteWorkerFactory::SCORE_THRESHOLD_ATTR_ID = "score-threshold";
 const QString WevoteWorkerFactory::NUMBER_OF_THREADS_ATTR_ID = "threads";
 const QString WevoteWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-url";
 
+const QString WevoteWorkerFactory::WORKFLOW_CLASSIFY_TOOL_WEVOTE = "WEVOTE";
+
 WevoteWorkerFactory::WevoteWorkerFactory()
     : DomainFactory(ACTOR_ID)
 {
@@ -109,6 +111,10 @@ void WevoteWorkerFactory::init() {
         const Descriptor outputFileDesc(OUTPUT_FILE_ATTR_ID, WevotePrompter::tr("Output file"),
                                         WevotePrompter::tr("Specify the output text file name."));
 
+        const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
+                                          WORKFLOW_CLASSIFY_TOOL_WEVOTE,
+                                          "Classify tool. Hidden attribute");
+
         Attribute *penaltyAttribute = new Attribute(penaltyDesc, BaseTypes::NUM_TYPE(), Attribute::None, 2);
         Attribute *numberOfAgreedToolsAttribute = new Attribute(numberOfAgreedToolsDesc, BaseTypes::NUM_TYPE(), Attribute::None, 0);
         Attribute *scoreThresholdAttribute = new Attribute(scoreThresholdDesc, BaseTypes::NUM_TYPE(), Attribute::None, 0);
@@ -120,6 +126,10 @@ void WevoteWorkerFactory::init() {
         attributes << scoreThresholdAttribute;
         attributes << numberOfThreadsAttribute;
         attributes << outputFileAttribute;
+
+        attributes << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(),
+                                    static_cast<Attribute::Flags>(Attribute::Hidden),
+                                    WORKFLOW_CLASSIFY_TOOL_WEVOTE);
     }
 
     QMap<QString, PropertyDelegate *> delegates;

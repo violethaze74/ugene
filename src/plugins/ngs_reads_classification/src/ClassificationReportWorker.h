@@ -70,6 +70,9 @@ protected:
 
 private:
     IntegralBus *input;
+    QString producerClassifyToolName;
+    const QString getProducerClassifyToolName() const;
+    const QString getReportFilePrefix(const Message &message) const;
 
 private slots:
     void sl_taskFinished(Task *task);

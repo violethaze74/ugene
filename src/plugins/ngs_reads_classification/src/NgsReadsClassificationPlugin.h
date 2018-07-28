@@ -84,6 +84,8 @@ public:
 
     static const QString WORKFLOW_ELEMENTS_GROUP;
 
+    static const QString WORKFLOW_CLASSIFY_TOOL_ID;
+
 private:
     void registerData(const QString &dataId, const QString &relativePath, const QString &description, bool addAsFolder = false);
     void unregisterData(const QString &dataId);

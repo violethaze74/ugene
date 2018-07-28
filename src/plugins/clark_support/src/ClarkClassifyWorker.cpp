@@ -149,6 +149,8 @@ const QString ClarkClassifyWorkerFactory::SEQUENCING_READS = "sequencing-reads";
 const QString ClarkClassifyWorkerFactory::SINGLE_END = "single-end";
 const QString ClarkClassifyWorkerFactory::PAIRED_END = "paired-end";
 
+const QString ClarkClassifyWorkerFactory::WORKFLOW_CLASSIFY_TOOL_CLARK = "CLARK";
+
 void ClarkClassifyWorkerFactory::init() {
 
     Descriptor desc( ACTOR_ID, ClarkClassifyWorker::tr("Classify Sequences with CLARK"),
@@ -242,6 +244,10 @@ void ClarkClassifyWorkerFactory::init() {
                                                                      "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                      "The input files should be in FASTA or FASTQ formats."));
 
+        const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
+                                          WORKFLOW_CLASSIFY_TOOL_CLARK,
+                                          "Classify tool. Hidden attribute");
+
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), Attribute::None, SINGLE_END);
         sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, PAIRED_INPUT_SLOT, QVariantList() << PAIRED_END));
         a << sequencingReadsAttribute;
@@ -286,6 +292,10 @@ void ClarkClassifyWorkerFactory::init() {
         a << new Attribute(db2ram, BaseTypes::BOOL_TYPE(), Attribute::None, false);
         a << new Attribute(numThreads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         a << new Attribute(outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
+
+        a << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(),
+                           static_cast<Attribute::Flags>(Attribute::Hidden),
+                           WORKFLOW_CLASSIFY_TOOL_CLARK);
     }
 
     QMap<QString, PropertyDelegate*> delegates;

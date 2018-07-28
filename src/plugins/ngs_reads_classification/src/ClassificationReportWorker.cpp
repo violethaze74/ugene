@@ -179,9 +179,33 @@ ClassificationReportWorker::ClassificationReportWorker(Actor *a)
 {
 }
 
+const QString ClassificationReportWorker::getProducerClassifyToolName() const {
+    Port* port = actor->getPort(input->getPortId());
+    IntegralBusPort * inPort = qobject_cast<IntegralBusPort*>(port);
+    Actor* ac = inPort->getProducer(TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT().getId());
+    CHECK(ac != NULL, "UNKNOWN_CLASSIFY_TOOL");
+
+    Attribute* a = ac->getParameter(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID);
+    CHECK(a != NULL, ac->getId());
+
+    return a->getAttributeValueWithoutScript<QString>();
+}
+
 void ClassificationReportWorker::init() {
     input = ports.value(INPUT_PORT);
     SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), );
+
+    producerClassifyToolName = getProducerClassifyToolName();
+}
+
+const QString ClassificationReportWorker::getReportFilePrefix(const Message& message) const {
+    QString prefix;
+
+    const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
+    QString metadataFileUrl = metadata.getFileUrl();
+    prefix = GUrlUtils::getPairedFastqFilesBaseName(metadataFileUrl, true);
+
+    return prefix;
 }
 
 Task * ClassificationReportWorker::tick() {
@@ -190,8 +214,13 @@ Task * ClassificationReportWorker::tick() {
 
         QString outputFileUrl = getValue<QString>(OUT_FILE);
         if (outputFileUrl.isEmpty()) {
-            const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
-            outputFileUrl = context->workingDir() + "/" + QFileInfo(metadata.getFileUrl()).completeBaseName() + "_report.txt";
+            QString reportFilePrefix = getReportFilePrefix(message);
+            outputFileUrl = context->workingDir() +
+                    "/classification_report/" +
+                    reportFilePrefix +
+                    "_" + producerClassifyToolName +
+                    "_report.txt";
+            FileAndDirectoryUtils::createWorkingDir(outputFileUrl, FileAndDirectoryUtils::FILE_DIRECTORY, "", "");
         }
         outputFileUrl = GUrlUtils::rollFileName(QFileInfo(outputFileUrl).absoluteFilePath(), "_");
 

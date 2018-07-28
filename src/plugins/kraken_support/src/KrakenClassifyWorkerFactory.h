@@ -28,6 +28,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 class KrakenClassifyWorkerFactory : public DomainFactory {
+
 public:
     KrakenClassifyWorkerFactory();
 
@@ -54,6 +55,8 @@ public:
 
     static const QString SINGLE_END_TEXT;
     static const QString PAIRED_END_TEXT;
+
+    static const QString WORKFLOW_CLASSIFY_TOOL_KRAKEN;
 };
 
 }   // namespace LocalWorkflow

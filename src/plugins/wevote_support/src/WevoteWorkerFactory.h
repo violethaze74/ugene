@@ -46,6 +46,8 @@ public:
     static const QString SCORE_THRESHOLD_ATTR_ID;
     static const QString NUMBER_OF_THREADS_ATTR_ID;
     static const QString OUTPUT_FILE_ATTR_ID;
+
+    static const QString WORKFLOW_CLASSIFY_TOOL_WEVOTE;
 };
 
 }   // namespace LocalWorkflow

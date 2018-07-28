@@ -72,6 +72,8 @@ const QString DiamondClassifyWorkerFactory::BSIZE_ATTR_ID("block-size");
 const QString DiamondClassifyWorkerFactory::CHUNKS_ATTR_ID("index-chunks");
 const QString DiamondClassifyWorkerFactory::OUTPUT_URL_ATTR_ID("output-url");
 
+const QString DiamondClassifyWorkerFactory::WORKFLOW_CLASSIFY_TOOL_DIAMOND = "DIAMOND";
+
 DiamondClassifyWorkerFactory::DiamondClassifyWorkerFactory()
     : DomainFactory(ACTOR_ID)
 {
@@ -138,6 +140,10 @@ void DiamondClassifyWorkerFactory::init() {
                                                                    "<li>E-value of the best alignment with a known taxonomy ID found for the query (0 if unclassified)</li>"
                                                                    "</ul>"));
 
+        const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
+                                          WORKFLOW_CLASSIFY_TOOL_DIAMOND,
+                                          "Classify tool. Hidden attribute");
+
         QString diamondDatabasePath;
         U2DataPath *uniref50DataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID);
         if (NULL != uniref50DataPath && uniref50DataPath->isValid()) {
@@ -162,6 +168,10 @@ void DiamondClassifyWorkerFactory::init() {
         attributes << new Attribute(chunks, BaseTypes::NUM_TYPE(), Attribute::None, 4); //NB: unless --very-sensitive supported
         attributes << new Attribute(threads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
+
+        attributes << new Attribute(classifyToolDesc, BaseTypes::STRING_TYPE(),
+                                    static_cast<Attribute::Flags>(Attribute::Hidden),
+                                    WORKFLOW_CLASSIFY_TOOL_DIAMOND);
     }
 
     QMap<QString, PropertyDelegate *> delegates;
