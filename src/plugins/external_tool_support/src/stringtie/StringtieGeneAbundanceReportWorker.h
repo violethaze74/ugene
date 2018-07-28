@@ -35,7 +35,6 @@ public:
     void init();
     Task *tick();
     void cleanup();
-    bool isReady() const;
 
 private slots:
     void sl_taskSucceeded(Task *task);

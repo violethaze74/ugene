@@ -96,14 +96,6 @@ Task *StringtieGeneAbundanceReportWorker::tick() {
 void StringtieGeneAbundanceReportWorker::cleanup() {
 }
 
-bool StringtieGeneAbundanceReportWorker::isReady() const {
-    if (isDone()) {
-        return false;
-    }
-
-    return input->isEnded() || input->hasMessage();
-}
-
 void StringtieGeneAbundanceReportWorker::sl_taskSucceeded(Task *task) {
     StringtieGeneAbundanceReportTask *geneAbudanceReportTask = qobject_cast<StringtieGeneAbundanceReportTask *>(task);
     SAFE_POINT(NULL != geneAbudanceReportTask, "StringTieGeneAbundanceReportTask is NULL", );
