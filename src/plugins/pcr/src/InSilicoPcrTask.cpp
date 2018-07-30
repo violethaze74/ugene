@@ -165,11 +165,12 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
     } else {
         result.primer = settings.forwardPrimer;
         result.mismatches = settings.forwardMismatches;
-        if (forward.region.startPos < result.mismatches) {
+        const int ledge = result.primer.size() - settings.perfectMatch;
+        if (forward.region.startPos < ledge) {
             result.region = U2Region(0, forward.region.length - forward.region.startPos);
             result.ledge = forward.region.startPos;
         } else {
-            result.region = forward.region;
+            result.region = U2Region(forward.region.startPos - ledge, forward.region.length);
             result.ledge = 0;
         }
     }
