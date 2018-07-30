@@ -68,7 +68,7 @@ void StringtieGeneAbundanceReportWorkerFactory::init() {
                                     tr("URL(s) to sorted gene abundance file(s), produced by StringTie."));
         ports << new PortDescriptor(inPortDesc,
                                     DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)),
-                                    true /*input*/,
+                                    true,
                                     false,
                                     Attribute::CanBeEmpty);
     }

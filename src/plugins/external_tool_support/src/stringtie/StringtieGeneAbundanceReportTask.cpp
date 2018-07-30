@@ -38,7 +38,7 @@ namespace LocalWorkflow {
 
 const int StringtieGeneAbundanceReportTask::BUFF_SIZE = (4 * 1024 * 1024);
 const QString StringtieGeneAbundanceReportTask::inputDelimiter = "\t";
-const QString StringtieGeneAbundanceReportTask::outputDelimiter = ",";
+const QString StringtieGeneAbundanceReportTask::outputDelimiter = "\t";
 
 // The comparator must be a static function,
 // Otherwise it will not be possible to pass it as an argument
@@ -62,8 +62,7 @@ const QString &StringtieGeneAbundanceReportTask::getReportUrl() const {
     return reportUrl;
 }
 
-void StringtieGeneAbundanceReportTask::run()
-{
+void StringtieGeneAbundanceReportTask::run() {
     CHECK((stringtieReports.size() > 0), );
 
     if (!QFileInfo(reportUrl).isAbsolute()) {
@@ -104,8 +103,7 @@ void StringtieGeneAbundanceReportTask::run()
     CHECK_OP(stateInfo, );
 }
 
-bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFiles, QString reportUrl)
-{
+bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFiles, QString reportUrl) {
     int valueCount = tempFiles.size();
     QMap<QString, QVector<QString> > map;
     int fileIndex = 0;
@@ -178,7 +176,7 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFile
     foreach(const QString& key, map.keys()) {
         QVector<QString> values = map[key];
         out << key;
-        foreach (QString val, values) {
+        foreach (const QString val, values) {
             out << outputDelimiter << val;
         }
         out << "\n";
@@ -243,9 +241,11 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
         return NULL;
     }
     QTextStream out(&file);
-    for (QList<QStringList>::iterator it = parsedLines.begin(); it != parsedLines.end(); ++it) {
-        QStringList& list = *it;
-        out << list[0] << inputDelimiter << list[1] << inputDelimiter << list[indexFpkm] << "\n";
+    foreach (const QStringList line, parsedLines) {
+        CHECK_EXT(line.size() >= indexFpkm,
+                  setError(tr("Bad line format of input: \"%1\"").arg(line.join("\t"))),
+                  NULL);
+        out << line[0] << inputDelimiter << line[1] << inputDelimiter << line[indexFpkm] << "\n";
     }
     file.close();
 
