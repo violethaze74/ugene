@@ -46,7 +46,7 @@ JavaSupport::JavaSupport(const QString &name, const QString &path)
     executableFileName = "java";
 #endif
 
-    validMessage = "java version \"\\d+.\\d+.\\d+(_\\d+)?";
+    validMessage = "version \"\\d+.\\d+.\\d+(_\\d+)?";
     validationArguments << "-version";
 
     description += tr("Java Platform lets you develop and deploy Java applications on desktops and servers.<br><i>(Requires Java 1.7 or higher)</i>.<br>"
