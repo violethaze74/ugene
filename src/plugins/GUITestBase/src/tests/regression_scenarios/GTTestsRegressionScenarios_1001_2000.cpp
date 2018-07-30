@@ -2046,6 +2046,7 @@ GUI_TEST_CLASS_DEFINITION(test_1175){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "Gene-by-gene approach");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsExternalTools::removeTool(os, "BlastAll");
 
@@ -2407,7 +2408,7 @@ GUI_TEST_CLASS_DEFINITION(test_1209) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Call variants");
-
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
     GTGlobals::sleep(500);
@@ -3211,6 +3212,7 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
  */
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Find substrings in sequences");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsWorkflowDesigner::click(os, "Find Substrings");
 
@@ -4978,6 +4980,7 @@ GUI_TEST_CLASS_DEFINITION(test_1497) {
     // 1. Create or open some scheme in WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Select a few items(elements, links) in the scheme.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
@@ -7273,6 +7276,7 @@ GUI_TEST_CLASS_DEFINITION(test_1693) {
 //    Expected state: UGENE doesn't crash.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence(s)");
@@ -7454,6 +7458,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_1){
 
     //2. Add the "Find Patterns" sample.
     GTUtilsWorkflowDesigner::addSample(os, "Find patterns");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //3. Setup inputs and outputs.
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/FASTA/human_T1.fa");
@@ -7476,6 +7481,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_2){
 
     //4. Add the "Gene-by-gene approach" sample.
     GTUtilsWorkflowDesigner::addSample(os, "Gene-by-gene approach");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //5. Setup inputs and outputs.
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/FASTA/human_T1.fa");
@@ -7635,6 +7641,7 @@ GUI_TEST_CLASS_DEFINITION(test_1733){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
@@ -7733,6 +7740,7 @@ GUI_TEST_CLASS_DEFINITION(test_1738){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
@@ -8076,7 +8084,8 @@ GUI_TEST_CLASS_DEFINITION( test_1821 ) {
 
     //2. Select "Align sequences with MUSCLE"
     GTUtilsWorkflowDesigner::addSample( os, "Align sequences with MUSCLE" );
-    GTGlobals::sleep( 500 );
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //3. Change the value of the scale spinbox. E.g. set it to 75%
     QComboBox *scaleCombo = dynamic_cast<QComboBox *>( GTWidget::findWidget( os, "wdScaleCombo" ) );
@@ -8107,6 +8116,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     // 1) Create a schema with shrunk elements state.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Align with MUSCLE"));
     GTMouseDriver::doubleClick();
@@ -8406,6 +8416,8 @@ GUI_TEST_CLASS_DEFINITION(test_1908){
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
