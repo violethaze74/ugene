@@ -39,15 +39,12 @@ namespace U2 {
 namespace LocalWorkflow {
 
 const QString StringtieGeneAbundanceReportWorkerFactory::ACTOR_ID = "stringtie-gene-abundance-report";
-
-const QString StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID = "in";
-
+const QString StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID = "url";
 const QString StringtieGeneAbundanceReportWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-url";
 
 StringtieGeneAbundanceReportWorkerFactory::StringtieGeneAbundanceReportWorkerFactory()
     : DomainFactory(ACTOR_ID)
 {
-
 }
 
 Worker *StringtieGeneAbundanceReportWorkerFactory::createWorker(Actor *actor) {
@@ -55,42 +52,57 @@ Worker *StringtieGeneAbundanceReportWorkerFactory::createWorker(Actor *actor) {
 }
 
 void StringtieGeneAbundanceReportWorkerFactory::init() {
+    const QString portId = StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID;
+
     QList<PortDescriptor *> ports;
     {
-        const Descriptor inSlotDesc(BaseSlots::URL_SLOT().getId(), tr("Input URL"), tr("Input URL."));
+        const Descriptor inSlotDesc(BaseSlots::URL_SLOT().getId(),
+                                    tr("Input URL ") + portId,
+                                    tr("Input URL."));
 
         QMap<Descriptor, DataTypePtr> inType;
         inType[inSlotDesc] = BaseTypes::STRING_TYPE();
 
-        const Descriptor inPortDesc(INPUT_PORT_ID,
-                                    tr("Input StringTie gene abundance file(s)"),
+        const Descriptor inPortDesc(portId,
+                                    tr("Input StringTie gene abundance file(s) ") + portId,
                                     tr("URL(s) to sorted gene abundance file(s), produced by StringTie."));
-
-        ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
+        ports << new PortDescriptor(inPortDesc,
+                                    DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)),
+                                    true,
+                                    false,
+                                    Attribute::CanBeEmpty);
     }
 
     QList<Attribute *> attributes;
     {
-        const Descriptor outputFileDesc(OUTPUT_FILE_ATTR_ID, tr("Output file"),
-                                             tr("Specify the name of the output tab-delimited text file."));
-
-        attributes << new Attribute(outputFileDesc, BaseTypes::STRING_TYPE(), Attribute::Required, "StringTie_report.txt");
+        const Descriptor outputFileDesc(OUTPUT_FILE_ATTR_ID,
+                                        tr("Output file"),
+                                        tr("Specify the name of the output tab-delimited text file."));
+        attributes << new Attribute(outputFileDesc,
+                                    BaseTypes::STRING_TYPE(),
+                                    true,
+                                    "StringTie_report.txt");
     }
 
     QMap<QString, PropertyDelegate *> delegates;
     {
         DelegateTags outputFileTags;
-        outputFileTags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true, QStringList()));
+        outputFileTags.set(DelegateTags::FILTER,
+                           DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT,
+                                                                   true,
+                                                                   QStringList()));
         outputFileTags.set(DelegateTags::FORMAT, BaseDocumentFormats::PLAIN_TEXT);
         delegates[OUTPUT_FILE_ATTR_ID] = new URLDelegate(outputFileTags, "stringtie/gene_abudance_report");
     }
 
-    const Descriptor desc(ACTOR_ID, tr("StringTie Gene Abundance Report"),
-                          tr("The element summarizes gene abundance output of StringTie and saves the result into a common tab-delimited "
-                             "text file. The first two columns of the file are \"Gene ID\" and \"Gene name\". Each other column contains "
-                             "\"FPKM\" values for the genes from an input gene abundance file."
-                             "<br><br>"
-                             "Provide URL(s) to the StringTie gene abundance file(s) to the input port of the element."));
+    const Descriptor desc(ACTOR_ID,
+                          tr("StringTie Gene Abundance Report"),
+                          tr("The element summarizes gene abundance output of StringTie and saves the result "
+                             "into a common tab-delimited text file. The first two columns of the file are "
+                             "\"Gene ID\" and \"Gene name\". Each other column contains \"FPKM\" values for "
+                             "the genes from an input gene abundance file."
+                             "<br><br>Provide URL(s) to the StringTie gene abundance file(s) to the input "
+                             "port of the element."));
 
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));

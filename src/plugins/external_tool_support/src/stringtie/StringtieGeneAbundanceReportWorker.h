@@ -35,13 +35,13 @@ public:
     void init();
     Task *tick();
     void cleanup();
-    bool isReady() const;
 
 private slots:
     void sl_taskSucceeded(Task *task);
 
 private:
-    IntegralBus *input;
+    IntegralBus * input;
+    QStringList stringtieReports;
 
     static const QString OUTPUT_DIR;
 };
