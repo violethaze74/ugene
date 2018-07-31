@@ -47,17 +47,24 @@ ClarkSupport::ClarkSupport(const QString& name, const QString& path) : ExternalT
 #endif
     toolKitName = CLARK_GROUP;
     muted = true;
-    validMessage = name;
+    validMessage = "UGENE-customized" + name;
 
     if (name == ET_CLARK) {
-        description += tr("One of the classifiers from the CLARK framework. This tool is created for powerful workstations and can require a significant amount of RAM.");
+        description += tr("One of the classifiers from the CLARK framework. This tool is created for powerful workstations and can require a significant amount of RAM.<br><br>"
+                          "Note that a UGENE-customized version of the tool is required.");
         versionRegExp = QRegExp("Version: (\\d+\\.\\d+\\.?\\d*\\.?\\d*)");
     } else if (name == ET_CLARK_L) {
-        description += tr("One of the classifiers from the CLARK framework. This tool is created for workstations with limited memory (i.e., “l” for light), it provides precise classification on small metagenomes.");
+        description += tr("One of the classifiers from the CLARK framework. This tool is created for workstations with limited memory (i.e., “l” for light), it provides precise classification on small metagenomes.<br><br>"
+                          "Note that a UGENE-customized version of the tool is required.");
         versionRegExp = QRegExp("Version: (\\d+\\.\\d+\\.?\\d*\\.?\\d*)");
-        validMessage = "CLARK";
+        validMessage = "UGENE-customized CLARK";
     } else {
-        description += tr("Used to set up metagenomic database for CLARK. ");
+        description += tr("Used to set up metagenomic database for CLARK.<br><br>"
+                          "Note that a UGENE-customized version of the tool is required.");
+    }
+
+    if (name == ET_CLARK_buildScript) {
+        validMessage = name;
     }
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
