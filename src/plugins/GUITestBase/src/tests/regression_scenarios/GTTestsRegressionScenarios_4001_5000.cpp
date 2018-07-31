@@ -281,6 +281,7 @@ GUI_TEST_CLASS_DEFINITION(test_4011){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Open sample "Align sequences with MUSCLE"
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 //    3. Align attached file
     GTUtilsWorkflowDesigner::click(os, "Read alignment");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/regression/4011/human_T1.aln");
@@ -2659,6 +2660,7 @@ GUI_TEST_CLASS_DEFINITION(test_4325) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "In Silico PCR");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Genbank/CVU55762.gb");
@@ -4436,6 +4438,7 @@ GUI_TEST_CLASS_DEFINITION(test_4710){
 //    2) Run a workflow, e.g. I ran "Variation annotation with SnpEff" with the tutorial data.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
@@ -4491,6 +4494,8 @@ GUI_TEST_CLASS_DEFINITION(test_4710_1){
 //    1) Run "Align with MUSCLE" with "_common_data\fasta\PF07724_full_family.fa".
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
     GTUtilsWorkflowDesigner::click(os, "Read alignment");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/PF07724_full_family.fa");
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -5992,6 +5997,8 @@ GUI_TEST_CLASS_DEFINITION(test_4966) {
     //    2. Open sample "Align sequences with MUSCLE"
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
     //    3. Align "_common_data\clustal\big.aln"
     GTUtilsWorkflowDesigner::click(os, "Read alignment");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/big.aln");

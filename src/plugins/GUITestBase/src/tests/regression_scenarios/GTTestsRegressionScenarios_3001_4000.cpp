@@ -2729,7 +2729,7 @@ GUI_TEST_CLASS_DEFINITION(test_3414){
  * */
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
-    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence(s)");
     GTUtilsWorkflowDesigner::setDatasetInputFile( os, dataDir + "samples/FASTA/human_T1.fa" );
@@ -4617,7 +4617,7 @@ GUI_TEST_CLASS_DEFINITION(test_3715) {
 
     //3. Choose a sample
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
-    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTKeyboardDriver::keyClick( 'r', Qt::ControlModifier);
