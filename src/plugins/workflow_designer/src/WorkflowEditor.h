@@ -88,7 +88,7 @@ private:
 
     SpecialParametersPanel *specialParameters;
     WorkflowView* owner;
-    ConfigurationEditor* custom;
+    QPointer<ConfigurationEditor> custom;
     QWidget* customWidget;
     Configuration* subject;
     Actor* actor;

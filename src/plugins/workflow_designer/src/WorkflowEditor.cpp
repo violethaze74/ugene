@@ -185,6 +185,7 @@ void WorkflowEditor::createInputPortTable(Actor* a) {
     if (!enabledPorts.isEmpty()) {
         inputPortBox->setEnabled(true);
         inputPortBox->setVisible(true);
+        inputScrollArea->setVisible(true);
         inputHeight = 0;
         foreach (Port *p, enabledPorts) {
             BusPortEditor* ed = new BusPortEditor(qobject_cast<IntegralBusPort *>(p));
@@ -216,6 +217,7 @@ void WorkflowEditor::createOutputPortTable(Actor* a) {
     if (!enabledPorts.isEmpty()) {
         outputPortBox->setEnabled(true);
         outputPortBox->setVisible(true);
+        outputScrollArea->setVisible(true);
         outputHeight = 0;
         foreach (Port *p, enabledPorts) {
             BusPortEditor* ed = new BusPortEditor(qobject_cast<IntegralBusPort *>(p));
@@ -302,12 +304,20 @@ void WorkflowEditor::reset() {
     actor = NULL;
     actorModel->setActor(NULL);
     propDoc->setText("");
+
     inputPortBox->setEnabled(false);
-    outputPortBox->setEnabled(false);
-    paramBox->setEnabled(false);
     inputPortBox->setVisible(true);
+    inputScrollArea->setVisible(false);
+    inputPortBox->adjustSize();
+
+    outputPortBox->setEnabled(false);
     outputPortBox->setVisible(true);
+    outputScrollArea->setVisible(false);
+    outputPortBox->adjustSize();
+
+    paramBox->setEnabled(false);
     paramBox->setVisible(true);
+    paramBox->adjustSize();
 
     QList<int> sizes = splitter->sizes();
     int splitterHeight = splitter->height();
@@ -361,8 +371,9 @@ void WorkflowEditor::commit() {
 void WorkflowEditor::editActor(Actor* a) {
     reset();
     actor = a;
-    connect(actor, SIGNAL(si_modified()), SLOT(sl_updatePortTable()));
     if (a) {
+        connect(actor, SIGNAL(si_modified()), SLOT(sl_updatePortTable()));
+
         caption->setText(tr("Element name:"));
         nameEdit->setText(a->getLabel());
         nameEdit->show();
@@ -462,13 +473,11 @@ void WorkflowEditor::edit(Configuration* cfg) {
     }
     disconnect(paramBox, SIGNAL(toggled(bool)), tableSplitter, SLOT(setVisible(bool)));
 
-    if (customWidget) {
+    if (NULL != custom) {
         custom->commit();
-        customWidget->hide();
-        paramBox->layout()->removeWidget(customWidget);
-        customWidget->disconnect();
-        delete customWidget;
     }
+    delete customWidget;
+
     removePortTable(inputPortWidget);
     removePortTable(outputPortWidget);
 
@@ -481,32 +490,18 @@ void WorkflowEditor::edit(Configuration* cfg) {
         connect(paramBox, SIGNAL(toggled(bool)), SLOT(sl_resizeSplitter(bool)));
     }
 
-    //int h = 0;
     if (subject && !customWidget) {
         assert(actor);
         actorModel->setActor(actor);
         updateEditingData();
         tableSplitter->setVisible(paramBox->isChecked());
-        /*if(paramBox->isChecked()) {
-            h = table->sizeHint().height();
-
-        }*/
         connect(paramBox, SIGNAL(toggled(bool)), tableSplitter, SLOT(setVisible(bool)));
         connect(paramBox, SIGNAL(toggled(bool)), SLOT(sl_resizeSplitter(bool)));
     } else {
         tableSplitter->hide();
         if (customWidget) {
-            if (custom->isEmpty()) {
-                paramBox->setVisible(false);
-                customWidget->setVisible(false);
-            }
             paramBox->layout()->addWidget(customWidget);
-            if (!custom->isEmpty()) {
-                customWidget->setVisible(paramBox->isChecked());
-            }
-            /*if(paramBox->isChecked()) {
-                h = customWidget->minimumSizeHint().height();
-            }*/
+            paramBox->setVisible(!custom->isEmpty());
         }
     }
 }
