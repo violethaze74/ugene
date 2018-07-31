@@ -1232,6 +1232,7 @@ GUI_TEST_CLASS_DEFINITION( test_2144 )
 
 //    2. Open the NGS sample scheme "Call variants with SAM tools".
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
 //    3. Fill input data, e.g.:
 //        "data/samples/Assembly/chrM.sam" as input to "Read Assembly SAM/BAM" element;
@@ -1259,6 +1260,7 @@ GUI_TEST_CLASS_DEFINITION( test_2150 ){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     // 2. Open the "Align sequences with MUSCLE" sample scheme.
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 3. Set "data/samples/CLUSTALW/ty3.aln.gz" as the input file.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Read alignment"));
@@ -1644,7 +1646,7 @@ GUI_TEST_CLASS_DEFINITION( test_2266_1 ){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
-    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
@@ -3899,8 +3901,8 @@ GUI_TEST_CLASS_DEFINITION( test_2569 ){
 //    1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add the Call Variants sample.
-    GTUtilsWorkflowDesigner::addSample(os, "call variants");
-    GTGlobals::sleep();
+    GTUtilsWorkflowDesigner::addSample(os, "Call variants");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 //    3. Set valid input data.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
@@ -4530,8 +4532,8 @@ GUI_TEST_CLASS_DEFINITION( test_2662 ){
 //    1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Open Call Variants sample.
-    GTUtilsWorkflowDesigner::addSample(os, "call variants");
-    GTGlobals::sleep(1000);
+    GTUtilsWorkflowDesigner::addSample(os, "Call variants");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);   
 //    3. Set valid input data.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
@@ -5421,11 +5423,13 @@ GUI_TEST_CLASS_DEFINITION(test_2811) {
 
 //    2. Open any workflow, create a breakpoint for any element.
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTUtilsWorkflowDesigner::setBreakpoint(os, "Align with MUSCLE");
 
 //    3. Open another workflow.
 //    Expected state: breakpoints list is cleared.
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     QStringList breakpointList = GTUtilsWorkflowDesigner::getBreakpointList(os);
     CHECK_SET_ERR(breakpointList.isEmpty(), "There are unexpected breakpoints");
 }
