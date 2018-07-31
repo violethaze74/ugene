@@ -208,7 +208,7 @@ SRPDB|||Signal Recognition Particle Database
 
 SubtiList|||Bacillus subtilis genome sequencing project
 
-SWISS-PROT|https://www.uniprot.org/uniprot/%1|https://www.uniprot.org/uniprot/%1.txt||The Universal Protein Resource (UniProt) is a comprehensive resource for protein sequence and annotation data.
+SWISS-PROT|https://www.uniprot.org/uniprot/%1|https://www.uniprot.org/uniprot/%1.txt|The Universal Protein Resource (UniProt) is a comprehensive resource for protein sequence and annotation data.
 
 TAIR|||Arabidopsis IR
 
