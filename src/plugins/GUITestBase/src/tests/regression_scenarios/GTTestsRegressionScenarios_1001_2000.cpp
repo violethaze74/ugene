@@ -5133,7 +5133,9 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
     GTLogTracer l;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addSample(os, "Call variants");
+    GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsWorkflowDesigner::removeItem(os, "Read Assembly (BAM/SAM)");
     GTGlobals::sleep(500);
@@ -6231,14 +6233,14 @@ GUI_TEST_CLASS_DEFINITION(test_1607) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     //2. Create schema read variations->write variations
-    WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::addElement(os, "Read Variations");
-    WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::addElement(os, "Write Variations");
+    WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::addElement(os, "Read Variants");
+    WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::addElement(os, "Write Variants");
     GTUtilsWorkflowDesigner::connect(os, reader, writer);
 
     //3. Use input file "_common_data/vcf/correct_chr_name.vcf"
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read Variations", testDir + "_common_data/vcf/correct_chr_name.vcf");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Variants", testDir + "_common_data/vcf/correct_chr_name.vcf");
 
-    GTUtilsWorkflowDesigner::click(os, "Write Variations");
+    GTUtilsWorkflowDesigner::click(os, "Write Variants");
     QFile outputFile(sandBoxDir + "out.vcf");
     const QString outputFilePath = QFileInfo(outputFile).absoluteFilePath();
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", outputFilePath, GTUtilsWorkflowDesigner::textValue);
