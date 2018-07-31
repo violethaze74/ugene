@@ -57,7 +57,7 @@ WriteVariationWorker::WriteVariationWorker(Actor *p, const DocumentFormatId& fid
 void WriteVariationWorker::data2doc(Document *doc, const QVariantMap &data) {
     Q_UNUSED(doc);
     Q_UNUSED(data);
-    SAFE_POINT(false, tr("Write variations: internal error"), );
+    SAFE_POINT(false, tr("Write variants: internal error"), );
 }
 
 void WriteVariationWorker::storeEntry(IOAdapter *io, const QVariantMap &data, int entryNum) {
@@ -113,7 +113,7 @@ void WriteVariationWorkerFactory::init() {
             WriteVariationWorker::tr("Variation track"),
             WriteVariationWorker::tr("Variation track"));
         Descriptor protoDesc(WriteVariationWorkerFactory::ACTOR_ID,
-            WriteVariationWorker::tr("Write Variations"),
+            WriteVariationWorker::tr("Write Variants"),
             WriteVariationWorker::tr("The element gets message(s) with variations data and saves the data"
                                      " to the specified file(s) in one of the appropriate formats"
                                      " (e.g. VCF)."));

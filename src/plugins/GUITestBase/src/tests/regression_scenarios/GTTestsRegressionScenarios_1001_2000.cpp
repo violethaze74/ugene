@@ -6232,7 +6232,7 @@ GUI_TEST_CLASS_DEFINITION(test_1607) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //2. Create schema read variations->write variations
+    //2. Create schema read variations->write variants
     WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::addElement(os, "Read Variants");
     WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::addElement(os, "Write Variants");
     GTUtilsWorkflowDesigner::connect(os, reader, writer);
