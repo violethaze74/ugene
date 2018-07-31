@@ -30,27 +30,27 @@
 namespace U2 {
 namespace Workflow {
 
-bool KrakenBuildValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    const bool isMinimizerLengthValid = validateMinimizerLength(actor, problemList);
-    const bool isTaxonomyValid = validateTaxonomy(actor, problemList);
+bool KrakenBuildValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &) const {
+    const bool isMinimizerLengthValid = validateMinimizerLength(actor, notificationList);
+    const bool isTaxonomyValid = validateTaxonomy(actor, notificationList);
     return isMinimizerLengthValid && isTaxonomyValid;
 }
 
-bool KrakenBuildValidator::validateMinimizerLength(const Actor *actor, ProblemList &problemList) const {
+bool KrakenBuildValidator::validateMinimizerLength(const Actor *actor, NotificationsList &notificationList) const {
     const int minimizerLength = actor->getParameter(LocalWorkflow::KrakenBuildWorkerFactory::MINIMIZER_LENGTH_ATTR_ID)->getAttributeValueWithoutScript<int>();
     const int kMerLength = actor->getParameter(LocalWorkflow::KrakenBuildWorkerFactory::K_MER_LENGTH_ATTR_ID)->getAttributeValueWithoutScript<int>();
     if (minimizerLength >= kMerLength) {
-        problemList << Problem(tr("Minimizer length has to be less than K-mer length"), actor->getId());
+        notificationList << WorkflowNotification(tr("Minimizer length has to be less than K-mer length"), actor->getId());
         return false;
     }
 
     return true;
 }
 
-bool KrakenBuildValidator::validateTaxonomy(const Actor *actor, ProblemList &problemList) const {
+bool KrakenBuildValidator::validateTaxonomy(const Actor *actor, NotificationsList &notificationList) const {
     U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
-              problemList << Problem(tr("Taxonomy classification data are not available."), actor->getId()), false);
+              notificationList << WorkflowNotification(tr("Taxonomy classification data are not available."), actor->getId()), false);
 
     bool isValid = true;
     const QString missingFileMessage = tr("Taxonomy classification data are not full: file '%1' is missing.");
@@ -64,7 +64,7 @@ bool KrakenBuildValidator::validateTaxonomy(const Actor *actor, ProblemList &pro
 
     foreach (const QString &neccessaryItem, neccessaryItems) {
         if (taxonomyDataPath->getPathByName(neccessaryItem).isEmpty()) {
-            problemList << Problem(missingFileMessage.arg(neccessaryItem), actor->getId());
+            notificationList << WorkflowNotification(missingFileMessage.arg(neccessaryItem), actor->getId());
             isValid = false;
         }
     }

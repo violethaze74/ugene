@@ -79,14 +79,14 @@ static const QString SORT_BY("sort-by");
 /************************************************************************/
 /* ClassificationReportValidator */
 /************************************************************************/
-bool ClassificationReportValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    return validateTaxonomyTree(actor, problemList);
+bool ClassificationReportValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &) const {
+    return validateTaxonomyTree(actor, notificationList);
 }
 
-bool ClassificationReportValidator::validateTaxonomyTree(const Actor *actor, ProblemList &problemList) const {
+bool ClassificationReportValidator::validateTaxonomyTree(const Actor *actor, NotificationsList &notificationList) const {
     bool valid = true;
     if (!TaxonomyTree::getInstance()->isValid()) {
-        problemList << Problem(tr("Taxonomy classification data are not available."), actor->getId());
+        notificationList << WorkflowNotification(tr("Taxonomy classification data are not available."), actor->getId());
         valid = false;
     }
     return valid;

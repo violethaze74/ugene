@@ -143,16 +143,16 @@ public:
 
 class InputSlotsValidator : public PortValidator {
 public:
-    virtual bool validate(const IntegralBusPort *port, ProblemList &problemList) const;
+    virtual bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const;
 };
 
 class BowtieToolsValidator : public ActorValidator {
 public:
-    virtual bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+    virtual bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
 
 private:
-    bool validateBowtie(const Actor *actor, ProblemList &problemList) const;
-    bool validateSamples(const Actor *actor, ProblemList &problemList) const;
+    bool validateBowtie(const Actor *actor, NotificationsList &notificationList) const;
+    bool validateSamples(const Actor *actor, NotificationsList &notificationList) const;
 };
 
 class BowtieFilesRelation : public AttributeRelation {

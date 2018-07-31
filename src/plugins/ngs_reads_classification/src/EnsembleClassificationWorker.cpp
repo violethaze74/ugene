@@ -309,7 +309,7 @@ void EnsembleClassificationWorker::sl_taskFinished(Task *t) {
     if (task->foundMismatches()) {
         QString msg = tr("Different taxonomy data do not match. Some sequence names were skipped.");
         algoLog.info(msg);
-        monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
+        monitor()->addInfo(msg, getActorId(), WorkflowNotification::U2_WARNING);
     }
 }
 

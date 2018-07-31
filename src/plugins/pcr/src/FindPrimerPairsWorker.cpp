@@ -99,7 +99,7 @@ void FindPrimerPairsWorker::sl_onTaskFinished(Task* t) {
         if(!findTask->getReport().isEmpty()) {
             context->getMonitor()->addOutputFile(reportFileUrl, getActor()->getId(), true);
         } else {
-            context->getMonitor()->addError(tr("No correct primers pairs found"), getActor()->getId(), Problem::U2_WARNING);
+            context->getMonitor()->addError(tr("No correct primers pairs found"), getActor()->getId(), WorkflowNotification::U2_WARNING);
         }
     }
 

@@ -263,12 +263,12 @@ QString BaseShortReadsAlignerWorker::getAlignerSubdir() const {
 
 //////////////////////////////////////////////////////////////////////////
 //ShortReadsAlignerSlotsValidator
-bool ShortReadsAlignerSlotsValidator::validate(const IntegralBusPort *port, ProblemList &problemList) const {
+bool ShortReadsAlignerSlotsValidator::validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
     QVariant busMap = port->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
     bool data = isBinded(busMap.value<StrStrMap>(), READS_URL_SLOT_ID);
     if (!data){
         QString dataName = slotName(port, READS_URL_SLOT_ID);
-        problemList.append(Problem(IntegralBusPort::tr("The slot must be not empty: '%1'").arg(dataName)));
+        notificationList.append(WorkflowNotification(IntegralBusPort::tr("The slot must be not empty: '%1'").arg(dataName)));
         return false;
     }
 

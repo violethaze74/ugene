@@ -88,8 +88,8 @@ void FileUrlContainer::accept(URLContainerVisitor *visitor) {
     visitor->visit(this);
 }
 
-bool FileUrlContainer::validateUrl(ProblemList &problemList) {
-    return WorkflowUtils::validateInputFiles(url, problemList);
+bool FileUrlContainer::validateUrl(NotificationsList &notificationList) {
+    return WorkflowUtils::validateInputFiles(url, notificationList);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -112,8 +112,8 @@ void DbObjUrlContainer::accept(URLContainerVisitor *visitor) {
     visitor->visit(this);
 }
 
-bool DbObjUrlContainer::validateUrl(ProblemList &problemList) {
-    return WorkflowUtils::validateInputDbObject(url, problemList);
+bool DbObjUrlContainer::validateUrl(NotificationsList &notificationList) {
+    return WorkflowUtils::validateInputDbObject(url, notificationList);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -146,8 +146,8 @@ void DirUrlContainer::accept(URLContainerVisitor *visitor) {
     visitor->visit(this);
 }
 
-bool DirUrlContainer::validateUrl(ProblemList &problemList) {
-    bool res = WorkflowUtils::validateInputDirs(url, problemList);
+bool DirUrlContainer::validateUrl(NotificationsList &notificationList) {
+    bool res = WorkflowUtils::validateInputDirs(url, notificationList);
     if (!res) {
         return false;
     }
@@ -156,7 +156,7 @@ bool DirUrlContainer::validateUrl(ProblemList &problemList) {
     SAFE_POINT(NULL != it, "NULL fileIterator!", false);
     while (it->hasNext()) {
         QString fileUrl = it->getNextFile();
-        bool urlIsValid = WorkflowUtils::validateInputFiles(fileUrl, problemList);
+        bool urlIsValid = WorkflowUtils::validateInputFiles(fileUrl, notificationList);
         res = res && urlIsValid;
     }
     return res;
@@ -212,8 +212,8 @@ void DbFolderUrlContainer::accept(URLContainerVisitor *visitor) {
     visitor->visit(this);
 }
 
-bool DbFolderUrlContainer::validateUrl(ProblemList &problemList) {
-    bool res = WorkflowUtils::validateInputDbFolders(url, problemList);
+bool DbFolderUrlContainer::validateUrl(NotificationsList &notificationList) {
+    bool res = WorkflowUtils::validateInputDbFolders(url, notificationList);
     if (!res) {
         return false;
     }
@@ -222,7 +222,7 @@ bool DbFolderUrlContainer::validateUrl(ProblemList &problemList) {
     SAFE_POINT(NULL != it, "Invalid DB object iterator", false);
     while (it->hasNext()) {
         QString fileUrl = it->getNextFile();
-        bool urlIsValid = WorkflowUtils::validateInputDbObject(fileUrl, problemList);
+        bool urlIsValid = WorkflowUtils::validateInputDbObject(fileUrl, notificationList);
         res = res && urlIsValid;
     }
     return res;

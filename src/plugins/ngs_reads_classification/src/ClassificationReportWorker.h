@@ -40,10 +40,10 @@ namespace LocalWorkflow {
 class ClassificationReportValidator : public ActorValidator {
     Q_DECLARE_TR_FUNCTIONS(ClassificationReportValidator)
 public:
-    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+    bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
 
 private:
-    bool validateTaxonomyTree(const Actor *actor, ProblemList &problemList) const;
+    bool validateTaxonomyTree(const Actor *actor, NotificationsList &notificationList) const;
 };
 
 //////////////////////////////////////////////////

@@ -104,16 +104,16 @@ void Configuration::setValidator(ConfigurationValidator* v) {
     validator = v;
 }
 
-bool Configuration::validate(ProblemList &problemList) const {
+bool Configuration::validate(NotificationsList &notificationList) const {
     bool good = true;
     foreach(Attribute* a, getParameters()) {
         if (!isAttributeVisible(a)) {
             continue;
         }
-        good &= a->validate(problemList);
+        good &= a->validate(notificationList);
     }
     if (validator) {
-        good &= validator->validate(this, problemList);
+        good &= validator->validate(this, notificationList);
     }
     return good;
 }

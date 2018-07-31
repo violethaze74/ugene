@@ -32,11 +32,11 @@ namespace Workflow {
 class KrakenBuildValidator : public ActorValidator {
     Q_DECLARE_TR_FUNCTIONS(MinimizerLengthValidator)
 public:
-    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+    bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
 
 private:
-    bool validateMinimizerLength(const Actor *actor, ProblemList &problemList) const;
-    bool validateTaxonomy(const Actor *actor, ProblemList &problemList) const;
+    bool validateMinimizerLength(const Actor *actor, NotificationsList &notificationList) const;
+    bool validateTaxonomy(const Actor *actor, NotificationsList &notificationList) const;
 };
 
 }   // namespace Workflow

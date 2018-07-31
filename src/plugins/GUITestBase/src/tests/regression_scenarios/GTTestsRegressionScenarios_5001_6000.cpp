@@ -453,7 +453,7 @@ GUI_TEST_CLASS_DEFINITION(test_5069) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const bool areThereProblems = GTUtilsDashboard::areThereProblems(os);
+    const bool areThereProblems = GTUtilsDashboard::areThereNotifications(os);
     CHECK_SET_ERR(!areThereProblems, "Workflow has finished with problems");
 }
 

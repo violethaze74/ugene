@@ -123,24 +123,24 @@ void URLAttribute::copy(const URLAttribute &other) {
     compatibleObjectTypes = other.compatibleObjectTypes;
 }
 
-bool URLAttribute::validate(ProblemList &problemList) {
+bool URLAttribute::validate(NotificationsList &notificationList) {
     if (!isRequiredAttribute() || canBeEmpty()) {
         return true;
     }
     if (sets.isEmpty()) {
-        problemList << Problem(WorkflowUtils::tr("Required parameter has no datasets specified: %1").arg(getDisplayName()));
+        notificationList << WorkflowNotification(WorkflowUtils::tr("Required parameter has no datasets specified: %1").arg(getDisplayName()));
         return false;
     }
     bool hasUrl = false;
     QStringList emptySets = emptyDatasetNames(hasUrl);
 
     if (!hasUrl) {
-        problemList << Problem(WorkflowUtils::tr("Required parameter has no input urls specified: %1").arg(getDisplayName()));
+        notificationList << WorkflowNotification(WorkflowUtils::tr("Required parameter has no input urls specified: %1").arg(getDisplayName()));
         return false;
     }
     if (!emptySets.isEmpty()) {
         foreach (const QString &name, emptySets) {
-            problemList << Problem(WorkflowUtils::tr("Required parameter %1 has empty dataset: %2").arg(getDisplayName()).arg(name));
+            notificationList << WorkflowNotification(WorkflowUtils::tr("Required parameter %1 has empty dataset: %2").arg(getDisplayName()).arg(name));
         }
         return false;
     }

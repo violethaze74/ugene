@@ -21,24 +21,24 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include "ProblemsWidget.h"
+#include "NotificationsWidget.h"
 
 namespace U2 {
 
-const QString ProblemsWidget::ID = "problems";
+const QString NotificationsWidget::ID = "problems";
 
-ProblemsWidget::ProblemsWidget(const QWebElement &content, Dashboard *parent)
+NotificationsWidget::NotificationsWidget(const QWebElement &content, Dashboard *parent)
     : TableWidget(content, ID, parent)
 {
     createTable();
-    foreach (const Problem &info, dashboard->monitor()->getProblems()) {
-        sl_newProblem(info);
+    foreach (const WorkflowNotification &info, dashboard->monitor()->getNotifications()) {
+        sl_newNotification(info);
     }
-    connect(dashboard->monitor(), SIGNAL(si_newProblem(const Problem &)),
-        SLOT(sl_newProblem(const Problem &)));
+    connect(dashboard->monitor(), SIGNAL(si_newNotification(const WorkflowNotification &)),
+        SLOT(sl_newNotification(const WorkflowNotification &)));
 }
 
-void ProblemsWidget::sl_newProblem(const Problem &info) {
+void NotificationsWidget::sl_newNotification(const WorkflowNotification &info) {
     const WorkflowMonitor *m = dashboard->monitor();
     CHECK(NULL != m, );
     if (rows.contains(id(info))) {
@@ -48,18 +48,18 @@ void ProblemsWidget::sl_newProblem(const Problem &info) {
     }
 }
 
-QString ProblemsWidget::problemImage(const Problem &info) {
+QString NotificationsWidget::notificationImage(const WorkflowNotification &info) {
     CHECK(!info.type.isEmpty(), "");
 
     QString image = "qrc:U2Lang/images/";
     QString tooltip;
-    if (Problem::U2_ERROR == info.type) {
+    if (WorkflowNotification::U2_ERROR == info.type) {
         image += "error.png";
         tooltip = tr("Error");
-    } else if (Problem::U2_WARNING == info.type) {
+    } else if (WorkflowNotification::U2_WARNING == info.type) {
         image += "warning.png";
         tooltip = tr("Warning");
-    } else if (Problem::U2_INFO == info.type) {
+    } else if (WorkflowNotification::U2_INFO == info.type) {
         image = "qrc:core/images/info.png";
         tooltip = tr("Information");
     } else {
@@ -68,7 +68,7 @@ QString ProblemsWidget::problemImage(const Problem &info) {
     return "<img src=\"" + image + "\" title=\"" + tooltip + "\" class=\"problem-icon\"/>";
 }
 
-QString ProblemsWidget::createRow(const QStringList &ds) {
+QString NotificationsWidget::createRow(const QStringList &ds) {
     QString row;
     foreach (const QString &d, ds) {
         row += "<td style=\"word-wrap: break-word\">" + d + "</td>";
@@ -76,7 +76,7 @@ QString ProblemsWidget::createRow(const QStringList &ds) {
     return row;
 }
 
-QStringList ProblemsWidget::createRow(const Problem &info, bool multi) const {
+QStringList NotificationsWidget::createRow(const WorkflowNotification &info, bool multi) const {
     QStringList result;
     const WorkflowMonitor *m = dashboard->monitor();
     CHECK(NULL != m, result);
@@ -84,7 +84,7 @@ QStringList ProblemsWidget::createRow(const Problem &info, bool multi) const {
     QString prefix;
     if (multi) {
         int count = 0;
-        foreach (const Problem &p, m->getProblems()) {
+        foreach (const WorkflowNotification &p, m->getNotifications()) {
             if (p == info) {
                 count++;
             }
@@ -92,39 +92,39 @@ QStringList ProblemsWidget::createRow(const Problem &info, bool multi) const {
         prefix = QString("(%1) ").arg(count);
     }
 
-    result << problemImage(info);
+    result << notificationImage(info);
     result << wrapLongText(m->actorName(info.actor));
     result << getTextWithWordBreaks(prefix + info.message);
     return result;
 }
 
-QString ProblemsWidget::getTextWithWordBreaks(const QString& text) const {
+QString NotificationsWidget::getTextWithWordBreaks(const QString& text) const {
     QString textWithBreaks = text;
     textWithBreaks = textWithBreaks.replace("\\", "\\<wbr>").replace("/", "/<wbr>");
     return textWithBreaks;
 }
 
-QStringList ProblemsWidget::createMultiRow(const Problem &info) const {
+QStringList NotificationsWidget::createMultiRow(const WorkflowNotification &info) const {
     return createRow(info, true);
 }
 
-QStringList ProblemsWidget::createRow(const Problem &info) const {
+QStringList NotificationsWidget::createRow(const WorkflowNotification &info) const {
     return createRow(info, false);
 }
 
-QList<int> ProblemsWidget::widths() {
+QList<int> NotificationsWidget::widths() {
     return QList<int>() << 10 << 30 << 60;
 }
 
-QStringList ProblemsWidget::header() {
+QStringList NotificationsWidget::header() {
     return QStringList() << tr("Type") << tr("Element") << tr("Message");
 }
 
-QList<QStringList> ProblemsWidget::data() {
+QList<QStringList> NotificationsWidget::data() {
     QList<QStringList> result;
     const WorkflowMonitor *m = dashboard->monitor();
     CHECK(NULL != m, result);
-    foreach (const Problem &info, m->getProblems()) {
+    foreach (const WorkflowNotification &info, m->getNotifications()) {
         QStringList row;
         row << id(info);
         row << createRow(info);
@@ -133,7 +133,7 @@ QList<QStringList> ProblemsWidget::data() {
     return result;
 }
 
-QString ProblemsWidget::id(const Problem &info) const {
+QString NotificationsWidget::id(const WorkflowNotification &info) const {
     return info.actor + info.message;
 }
 

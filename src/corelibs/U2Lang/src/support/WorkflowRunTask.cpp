@@ -142,9 +142,9 @@ QString WorkflowRunTask::getTaskError() const {
     }
 
     foreach(WorkflowMonitor *monitor, monitors) {
-        foreach(const Problem &problem, monitor->getProblems()) {
-            if (Problem::U2_ERROR == problem.type) {
-                return problem.message;
+        foreach(const WorkflowNotification &notification, monitor->getNotifications()) {
+            if (WorkflowNotification::U2_ERROR == notification.type) {
+                return notification.message;
             }
         }
     }

@@ -31,7 +31,7 @@ namespace Workflow {
 class WriteAnnotationsValidator : public ActorValidator {
     Q_DECLARE_TR_FUNCTIONS(WriteAnnotationsValidator)
 public:
-    virtual bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+    virtual bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
 };
 
 } // Workflow

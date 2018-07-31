@@ -30,15 +30,15 @@
 namespace U2 {
 namespace Workflow {
 
-bool KrakenClassifyValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    return validateDatabase(actor, problemList);
+bool KrakenClassifyValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &) const {
+    return validateDatabase(actor, notificationList);
 }
 
-bool KrakenClassifyValidator::validateDatabase(const Actor *actor, ProblemList &problemList) const {
+bool KrakenClassifyValidator::validateDatabase(const Actor *actor, NotificationsList &notificationList) const {
     const QString databaseUrl = actor->getParameter(LocalWorkflow::KrakenClassifyWorkerFactory::DATABASE_ATTR_ID)->getAttributeValueWithoutScript<QString>();
     const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
     CHECK_EXT(doesDatabaseDirExist,
-              problemList.append(Problem(tr("The database folder \"%1\" doesn't exist.").arg(databaseUrl), actor->getId())),
+              notificationList.append(WorkflowNotification(tr("The database folder \"%1\" doesn't exist.").arg(databaseUrl), actor->getId())),
               false);
 
     const QStringList files = QStringList() << "database.kdb"
@@ -53,7 +53,7 @@ bool KrakenClassifyValidator::validateDatabase(const Actor *actor, ProblemList &
     }
 
     foreach (const QString &missedFile, missedFiles) {
-        problemList.append(Problem(tr("The mandatory database file \"%1\" doesn't exist.").arg(databaseUrl + "/" + missedFile), actor->getId()));
+        notificationList.append(WorkflowNotification(tr("The mandatory database file \"%1\" doesn't exist.").arg(databaseUrl + "/" + missedFile), actor->getId()));
     }
     CHECK(missedFiles.isEmpty(), false);
 

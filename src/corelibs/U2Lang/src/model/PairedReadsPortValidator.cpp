@@ -27,7 +27,7 @@ namespace Workflow {
 PairedReadsPortValidator::PairedReadsPortValidator(const QString& inputId, const QString& inputPairedId)
     : PortValidator(), inputSlotId(inputId), pairedInputSlotId(inputPairedId) {}
 
-bool PairedReadsPortValidator::validate(const IntegralBusPort *port, ProblemList &problemList) const {
+bool PairedReadsPortValidator::validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
     bool res = true;
 
     StrStrMap bm = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
@@ -36,13 +36,13 @@ bool PairedReadsPortValidator::validate(const IntegralBusPort *port, ProblemList
 
     if (!isBinded(bm, inputSlotId)) {
         res = false;
-        problemList.append(Problem(tr("The mandatory \"%1\" slot is not connected.").arg(port->getSlotNameById(inputSlotId)), port->getId()));
+        notificationList.append(WorkflowNotification(tr("The mandatory \"%1\" slot is not connected.").arg(port->getSlotNameById(inputSlotId)), port->getId()));
     }
 
     if (paired) {
         if (!isBinded(bm, pairedInputSlotId)) {
             res = false;
-            problemList.append(Problem(tr("The mandatory \"%1\" slot is not connected.").arg(port->getSlotNameById(pairedInputSlotId)), port->getId()));
+            notificationList.append(WorkflowNotification(tr("The mandatory \"%1\" slot is not connected.").arg(port->getSlotNameById(pairedInputSlotId)), port->getId()));
         }
     }
 

@@ -260,7 +260,7 @@ void WriteAnnotationsWorker::mergeAnnTablesIfNecessary(QList<AnnotationTableObje
 
 Task * WriteAnnotationsWorker::createWriteMultitask(const QList<Task *> &taskList) const {
     if (taskList.isEmpty()) {
-        monitor()->addError(tr("Nothing to write"), getActorId(), Problem::U2_WARNING);
+        monitor()->addError(tr("Nothing to write"), getActorId(), WorkflowNotification::U2_WARNING);
         return NULL;
     } else if (1 == taskList.size()) {
         return taskList.first();

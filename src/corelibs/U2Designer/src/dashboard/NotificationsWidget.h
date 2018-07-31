@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROBLEMSWIDGET_H_
-#define _U2_PROBLEMSWIDGET_H_
+#ifndef _U2_NOTIFICATIONS_WIDGET_H_
+#define _U2_NOTIFICATIONS_WIDGET_H_
 
 #include "TableWidget.h"
 
@@ -28,33 +28,33 @@ namespace U2 {
 
 using namespace Workflow::Monitor;
 
-class ProblemsWidget : public TableWidget {
+class NotificationsWidget : public TableWidget {
     Q_OBJECT
 public:
-    ProblemsWidget(const QWebElement &content, Dashboard *parent);
+    NotificationsWidget(const QWebElement &content, Dashboard *parent);
 
     virtual QList<int> widths();
     virtual QStringList header();
     virtual QList<QStringList> data();
 
-    static QString problemImage(const Problem &info);
+    static QString notificationImage(const WorkflowNotification &info);
 
     static const QString ID;
 
 private slots:
-    void sl_newProblem(const Problem &info);
+    void sl_newNotification(const WorkflowNotification &info);
 
 protected:
     QString createRow(const QStringList &d);
 
 private:
-    QStringList createRow(const Problem &info, bool multi) const;
-    QStringList createRow(const Problem &info) const;
-    QStringList createMultiRow(const Problem &info) const;
-    QString id(const Problem &info) const;
+    QStringList createRow(const WorkflowNotification &info, bool multi) const;
+    QStringList createRow(const WorkflowNotification &info) const;
+    QStringList createMultiRow(const WorkflowNotification &info) const;
+    QString id(const WorkflowNotification &info) const;
     QString getTextWithWordBreaks(const QString &text) const;
 };
 
 } // U2
 
-#endif // _U2_PROBLEMSWIDGET_H_
+#endif // _U2_NOTIFICATIONS_WIDGET_H_

@@ -85,13 +85,13 @@ QString ClassificationFilterPrompter::composeRichDoc() {
 /* ClassificationFilterValidator */
 /************************************************************************/
 
-bool ClassificationFilterValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    const bool taxaListAttributeValid = validateTaxaListAttribute(actor, problemList);
-    const bool taxonomyTreeValid = validateTaxonomyTree(actor, problemList);
+bool ClassificationFilterValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &) const {
+    const bool taxaListAttributeValid = validateTaxaListAttribute(actor, notificationList);
+    const bool taxonomyTreeValid = validateTaxonomyTree(actor, notificationList);
     return taxaListAttributeValid && taxonomyTreeValid;
 }
 
-bool ClassificationFilterValidator::validateTaxaListAttribute(const Actor *actor, ProblemList &problemList) const {
+bool ClassificationFilterValidator::validateTaxaListAttribute(const Actor *actor, NotificationsList &notificationList) const {
     const bool saveUnspecificSequences = actor->getParameter(ClassificationFilterWorkerFactory::SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getAttributeValueWithoutScript<bool>();
 
     const QStringList taxonsTokens = actor->getParameter(ClassificationFilterWorkerFactory::TAXONS)->getAttributeValueWithoutScript<QString>().split(";", QString::SkipEmptyParts);
@@ -102,13 +102,13 @@ bool ClassificationFilterValidator::validateTaxaListAttribute(const Actor *actor
         if (OK) {
             taxons.insert(id);
         } else {
-            problemList << Problem(tr("Invalid taxon ID: %1").arg(idStr), actor->getId());
+            notificationList << WorkflowNotification(tr("Invalid taxon ID: %1").arg(idStr), actor->getId());
             return false;
         }
     }
 
     if (!saveUnspecificSequences && taxons.isEmpty()) {
-        problemList << Problem(tr("Set \"%1\" to \"True\" or select a taxon in \"%2\".")
+        notificationList << WorkflowNotification(tr("Set \"%1\" to \"True\" or select a taxon in \"%2\".")
             .arg(actor->getParameter(ClassificationFilterWorkerFactory::SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getDisplayName())
             .arg(actor->getParameter(ClassificationFilterWorkerFactory::TAXONS)->getDisplayName()), actor->getId());
         return false;
@@ -117,10 +117,10 @@ bool ClassificationFilterValidator::validateTaxaListAttribute(const Actor *actor
     return true;
 }
 
-bool ClassificationFilterValidator::validateTaxonomyTree(const Actor *actor, ProblemList &problemList) const {
+bool ClassificationFilterValidator::validateTaxonomyTree(const Actor *actor, NotificationsList &notificationList) const {
     bool valid = true;
     if (!TaxonomyTree::getInstance()->isValid()) {
-        problemList << Problem(tr("Taxonomy classification data are not available."), actor->getId());
+        notificationList << WorkflowNotification(tr("Taxonomy classification data are not available."), actor->getId());
         valid = false;
     }
     return valid;
@@ -387,7 +387,7 @@ void ClassificationFilterWorker::sl_taskFinished(Task *t) {
                                  "in the input ‘%3’ file.").arg(taxName).arg(id).arg(inputFile);
                     }
                     algoLog.info(msg);
-                    monitor()->addInfo(msg, getActorId(), Problem::U2_INFO);
+                    monitor()->addInfo(msg, getActorId(), WorkflowNotification::U2_INFO);
                 }
             }
         }
@@ -395,7 +395,7 @@ void ClassificationFilterWorker::sl_taskFinished(Task *t) {
 
     if (task->hasMissed()) {
         QString dashboardMsg = tr("Some input sequences have been skipped, as there was no classification data for them. See log for details.");
-        monitor()->addInfo(dashboardMsg, getActorId(), Problem::U2_WARNING);
+        monitor()->addInfo(dashboardMsg, getActorId(), WorkflowNotification::U2_WARNING);
     }
 }
 

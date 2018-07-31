@@ -29,28 +29,28 @@
 namespace U2 {
 namespace Workflow {
 
-bool WevoteValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    return validateTaxonomy(actor, problemList);
+bool WevoteValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &) const {
+    return validateTaxonomy(actor, notificationList);
 }
 
-bool WevoteValidator::validateTaxonomy(const Actor *actor, ProblemList &problemList) const {
+bool WevoteValidator::validateTaxonomy(const Actor *actor, NotificationsList &notificationList) const {
     bool isValid = true;
 
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
-    SAFE_POINT_EXT(NULL != dataPathRegistry, problemList.append(Problem("U2DataPathRegistry is NULL", actor->getId())), false);
+    SAFE_POINT_EXT(NULL != dataPathRegistry, notificationList.append(WorkflowNotification("U2DataPathRegistry is NULL", actor->getId())), false);
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
-              problemList << Problem(tr("Taxonomy classification data are not available."), actor->getId()), false);
+              notificationList << WorkflowNotification(tr("Taxonomy classification data are not available."), actor->getId()), false);
 
     const QString missingFileMessage = tr("Taxonomy classification data are not full: file '%1' is missing.");
     if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID).isEmpty()) {
-        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID), actor->getId());
+        notificationList << WorkflowNotification(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID), actor->getId());
         isValid = false;
     }
 
     if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID).isEmpty()) {
-        problemList << Problem(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID), actor->getId());
+        notificationList << WorkflowNotification(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID), actor->getId());
         isValid = false;
     }
 

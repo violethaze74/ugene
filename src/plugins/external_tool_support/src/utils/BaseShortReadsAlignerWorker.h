@@ -79,7 +79,7 @@ public slots:
 
 class ShortReadsAlignerSlotsValidator : public PortValidator {
 public:
-    bool validate(const IntegralBusPort *port, ProblemList &problemList) const;
+    bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const;
 };
 
 class BaseShortReadsAlignerWorkerFactory : public DomainFactory {

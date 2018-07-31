@@ -32,10 +32,10 @@ namespace Workflow {
 class DiamondBuildValidator : public ActorValidator {
     Q_DECLARE_TR_FUNCTIONS(DiamondBuildValidator)
 public:
-    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+    bool validate(const Actor *actor, NotificationsList &problemList, const QMap<QString, QString> &options) const;
 
 private:
-    bool validateTaxonomy(const Actor *actor, ProblemList &problemList) const;
+    bool validateTaxonomy(const Actor *actor, NotificationsList &problemList) const;
 };
 
 }   // namespace Workflow

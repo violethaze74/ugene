@@ -37,7 +37,7 @@ public:
     virtual bool isDefaultValue() const;
     virtual bool isEmpty() const;
     virtual URLAttribute *clone();
-    virtual bool validate(ProblemList &problemList);
+    virtual bool validate(NotificationsList &notificationList);
 
     virtual const QSet<GObjectType> & getCompatibleObjectTypes() const;
     virtual void setCompatibleObjectTypes(const QSet<GObjectType> &types);

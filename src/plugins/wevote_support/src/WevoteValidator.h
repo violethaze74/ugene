@@ -32,10 +32,10 @@ namespace Workflow {
 class WevoteValidator : public ActorValidator {
     Q_DECLARE_TR_FUNCTIONS(WevoteValidator)
 public:
-    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+    bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
 
 private:
-    bool validateTaxonomy(const Actor *actor, ProblemList &problemList) const;
+    bool validateTaxonomy(const Actor *actor, NotificationsList &notificationList) const;
 };
 
 }   // namespace Workflow

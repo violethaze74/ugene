@@ -162,19 +162,19 @@ QStringList WorkflowUtils::expandToUrls(const QString& s) {
 
 namespace {
 
-bool validateParameters(const Schema &schema, ProblemList &infoList) {
+bool validateParameters(const Schema &schema, NotificationsList &infoList) {
     bool good = true;
     foreach (Actor* a, schema.getProcesses()) {
-        const int problemCountBefore = infoList.size();
+        const int notificationCountBefore = infoList.size();
         good &= a->validate(infoList);
-        for (int i = problemCountBefore; i < infoList.size(); ++i) {
+        for (int i = notificationCountBefore; i < infoList.size(); ++i) {
             infoList[i].actor = a->getId();
         }
     }
     return good;
 }
 
-bool validateExternalTools(Actor *a, ProblemList &infoList) {
+bool validateExternalTools(Actor *a, NotificationsList &infoList) {
     bool good = true;
     StrStrMap tools = a->getProto()->getExternalTools();
     foreach (const QString &toolId, tools.keys()) {
@@ -186,30 +186,30 @@ bool validateExternalTools(Actor *a, ProblemList &infoList) {
         bool valid = fromAttr ? !attr->isEmpty() : !tool->getPath().isEmpty();
         if (!valid) {
             good = false;
-            infoList << Problem(WorkflowUtils::externalToolError(tool->getName()),
+            infoList << WorkflowNotification(WorkflowUtils::externalToolError(tool->getName()),
                                 a->getId(),
-                                Problem::U2_ERROR);
+                                WorkflowNotification::U2_ERROR);
         } else if (!fromAttr && !tool->isValid()) {
-            infoList << Problem(WorkflowUtils::externalToolInvalidError(tool->getName()),
+            infoList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
                                 a->getId(),
-                                Problem::U2_WARNING);
+                                WorkflowNotification::U2_WARNING);
         }
     }
     return good;
 }
 
-bool validatePorts(Actor *a, ProblemList &infoList) {
+bool validatePorts(Actor *a, NotificationsList &infoList) {
     bool good = true;
     foreach(Port *p, a->getEnabledPorts()) {
-        ProblemList problemList;
-        good &= p->validate(problemList);
-        if (!problemList.isEmpty()) {
-            foreach(Problem problem, problemList) {
-                Problem item;
-                item.message = QString("%1 : %2").arg(a->getLabel()).arg(problem.message);
+        NotificationsList notificationList;
+        good &= p->validate(notificationList);
+        if (!notificationList.isEmpty()) {
+            foreach(WorkflowNotification notification, notificationList) {
+                WorkflowNotification item;
+                item.message = QString("%1 : %2").arg(a->getLabel()).arg(notification.message);
                 item.port = p->getId();
                 item.actor = a->getId();
-                item.type = problem.type;
+                item.type = notification.type;
                 infoList << item;
             }
         }
@@ -247,25 +247,25 @@ bool hasSchemeCycles(const Schema &scheme) {
     return true;
 }
 
-bool validateScript(Actor *a, ProblemList &infoList) {
+bool validateScript(Actor *a, NotificationsList &infoList) {
     SAFE_POINT(NULL != a, "NULL actor", false);
     SAFE_POINT(NULL != a->getScript(), "NULL script", false);
     const QString scriptText = a->getScript()->getScriptText();
     if (scriptText.simplified().isEmpty()) {
-        infoList << Problem(QObject::tr("Empty script text"), a->getId());
+        infoList << WorkflowNotification(QObject::tr("Empty script text"), a->getId());
         return false;
     }
     QScopedPointer<WorkflowScriptEngine> engine(new WorkflowScriptEngine(NULL));
     QScriptSyntaxCheckResult syntaxResult = engine->checkSyntax(scriptText);
 
     if (syntaxResult.state() != QScriptSyntaxCheckResult::Valid) {
-        Problem problem;
-        problem.message = QObject::tr("Script syntax check failed! Line: %1, error: %2")
+        WorkflowNotification notification;
+        notification.message = QObject::tr("Script syntax check failed! Line: %1, error: %2")
             .arg(syntaxResult.errorLineNumber())
             .arg(syntaxResult.errorMessage());
-        problem.actor = a->getId();
-        problem.type = Problem::U2_ERROR;
-        infoList << problem;
+        notification.actor = a->getId();
+        notification.type = WorkflowNotification::U2_ERROR;
+        infoList << notification;
         return false;
     }
     return true;
@@ -273,51 +273,51 @@ bool validateScript(Actor *a, ProblemList &infoList) {
 
 }
 
-bool WorkflowUtils::validate(const Schema &schema, ProblemList &problemList) {
+bool WorkflowUtils::validate(const Schema &schema, NotificationsList &notificationList) {
     bool good = true;
     foreach (Actor *a, schema.getProcesses()) {
-        good &= validatePorts(a, problemList);
+        good &= validatePorts(a, notificationList);
         if (a->getProto()->isScriptFlagSet()) {
-            good &= validateScript(a, problemList);
+            good &= validateScript(a, notificationList);
         }
-        good &= validateExternalTools(a, problemList);
+        good &= validateExternalTools(a, notificationList);
     }
     if (!hasSchemeCycles(schema)) {
         good = false;
-        problemList << Problem(QObject::tr("The workflow contains a cycle"));
+        notificationList << WorkflowNotification(QObject::tr("The workflow contains a cycle"));
     }
 
-    good &= validateParameters(schema, problemList);
+    good &= validateParameters(schema, notificationList);
 
     return good;
 }
 
 // used in GUI schema validating
 bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &infoList) {
-    ProblemList problems;
-    bool good = validate(schema, problems);
+    NotificationsList notifications;
+    bool good = validate(schema, notifications);
 
-    foreach (const Problem &problem, problems) {
+    foreach (const WorkflowNotification &notification, notifications) {
         QListWidgetItem *item = NULL;
-        if (problem.actor.isEmpty()) {
-            item = new QListWidgetItem(problem.type + ": " + problem.message);
+        if (notification.actor.isEmpty()) {
+            item = new QListWidgetItem(notification.type + ": " + notification.message);
         } else {
-            Actor *a = schema.actorById(problem.actor);
-            item = new QListWidgetItem(QString("%1: %2").arg(a->getLabel()).arg(problem.message));
+            Actor *a = schema.actorById(notification.actor);
+            item = new QListWidgetItem(QString("%1: %2").arg(a->getLabel()).arg(notification.message));
 
-            if (problem.type == Problem::U2_ERROR) {
+            if (notification.type == WorkflowNotification::U2_ERROR) {
                 item->setIcon(QIcon(":U2Lang/images/error.png"));
-            } else if (problem.type == Problem::U2_WARNING) {
+            } else if (notification.type == WorkflowNotification::U2_WARNING) {
                 item->setIcon(QIcon(":U2Lang/images/warning.png"));
             } else {
                 item->setIcon(a->getProto()->getIcon());
             }
         }
 
-        item->setData(ACTOR_REF, problem.actor);
-        item->setData(PORT_REF, problem.port);
-        item->setData(TEXT_REF, problem.message);
-        item->setData(TYPE_REF, problem.type);
+        item->setData(ACTOR_REF, notification.actor);
+        item->setData(PORT_REF, notification.port);
+        item->setData(TEXT_REF, notification.message);
+        item->setData(TYPE_REF, notification.type);
 
         infoList << item;
     }
@@ -327,16 +327,16 @@ bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &info
 
 // used in cmdline schema validating
 bool WorkflowUtils::validate(const Workflow::Schema &schema, QStringList &errs) {
-    ProblemList problems;
-    bool good = validate(schema, problems);
+    NotificationsList notifications;
+    bool good = validate(schema, notifications);
 
-    foreach (const Problem &problem, problems) {
+    foreach (const WorkflowNotification &notification, notifications) {
         QString res = QString();
-        if (problem.actor.isEmpty()) {
-            res = problem.message;
+        if (notification.actor.isEmpty()) {
+            res = notification.message;
         } else {
-            Actor *a = schema.actorById(problem.actor);
-            QString message = problem.message;
+            Actor *a = schema.actorById(notification.actor);
+            QString message = notification.message;
             res = QString("%1: %2").arg(a->getLabel()).arg(message);
 
             QString option;
@@ -944,7 +944,7 @@ static void normalizeUrls(QString &urls) {
     }
 }
 
-bool WorkflowUtils::validateInputFiles(QString urls, ProblemList &problemList) {
+bool WorkflowUtils::validateInputFiles(QString urls, NotificationsList &notificationList) {
     normalizeUrls(urls);
     if (urls.isEmpty()) {
         return true;
@@ -956,11 +956,11 @@ bool WorkflowUtils::validateInputFiles(QString urls, ProblemList &problemList) {
     foreach (const QString &url, urlsList) {
         QFileInfo fi(url);
         if (!fi.exists()) {
-            problemList << Problem(L10N::errorFileNotFound(url));
+            notificationList << WorkflowNotification(L10N::errorFileNotFound(url));
             res = false;
         }
         else if (!fi.isFile()) {
-            problemList << Problem(L10N::errorIsNotAFile(url));
+            notificationList << WorkflowNotification(L10N::errorIsNotAFile(url));
             res = false;
         }
         else {
@@ -969,7 +969,7 @@ bool WorkflowUtils::validateInputFiles(QString urls, ProblemList &problemList) {
                 testReadAccess.close();
             }
             else {
-                problemList << Problem(L10N::errorOpeningFileRead(url));
+                notificationList << WorkflowNotification(L10N::errorOpeningFileRead(url));
                 res = false;
             }
         }
@@ -977,7 +977,7 @@ bool WorkflowUtils::validateInputFiles(QString urls, ProblemList &problemList) {
     return res;
 }
 
-bool WorkflowUtils::validateInputDirs(QString urls, ProblemList &problemList) {
+bool WorkflowUtils::validateInputDirs(QString urls, NotificationsList &notificationList) {
     normalizeUrls(urls);
     if (urls.isEmpty()) {
         return true;
@@ -988,11 +988,11 @@ bool WorkflowUtils::validateInputDirs(QString urls, ProblemList &problemList) {
     foreach (const QString &url, urlsList) {
         QFileInfo fi(url);
         if (!fi.exists()) {
-            problemList << Problem(L10N::errorDirNotFound(url));
+            notificationList << WorkflowNotification(L10N::errorDirNotFound(url));
             res = false;
         }
         else if (!fi.isDir()) {
-            problemList << Problem(L10N::errorIsNotADir(url));
+            notificationList << WorkflowNotification(L10N::errorIsNotADir(url));
             res = false;
         }
     }
@@ -1075,15 +1075,15 @@ bool checkWritePermissionsForDb(const QString &fullDbUrl) {
 }
 
 // If a database was unavailable for some reasons during previous validation procedures
-// and now has become available, it is needed to remove previous error messages regarding this from a problem list.
-bool checkDbConnectionAndFixProblems(const QString &dbUrl, ProblemList &problemList, const Problem &problemMsg) {
+// and now has become available, it is needed to remove previous error messages regarding this from a notification list.
+bool checkDbConnectionAndFixProblems(const QString &dbUrl, NotificationsList &notificationList, const WorkflowNotification &notificationMsg) {
     if (!WorkflowUtils::checkSharedDbConnection(dbUrl)) {
-        problemList << problemMsg;
+        notificationList << notificationMsg;
         return false;
     } else {
-        foreach(Problem problem, problemList) {
-            if (problem.message == problemMsg.message && problem.type == problemMsg.type) {
-                problemList.removeAll(problem);
+        foreach(WorkflowNotification notification, notificationList) {
+            if (notification.message == notificationMsg.message && notification.type == notificationMsg.type) {
+                notificationList.removeAll(notification);
             }
         }
         return true;
@@ -1103,24 +1103,24 @@ bool WorkflowUtils::checkSharedDbConnection(const QString &fullDbUrl) {
     return connection.isOpen();
 }
 
-bool WorkflowUtils::validateInputDbObject(const QString &url, ProblemList &problemList) {
+bool WorkflowUtils::validateInputDbObject(const QString &url, NotificationsList &notificationList) {
     const QString dbUrl = SharedDbUrlUtils::getDbUrlFromEntityUrl(url);
     const U2DataId objId = SharedDbUrlUtils::getObjectIdByUrl(url);
     const QString objName = SharedDbUrlUtils::getDbObjectNameByUrl(url);
     const QString shortDbName = SharedDbUrlUtils::getDbShortNameFromEntityUrl(url);
     if (dbUrl.isEmpty() || objId.isEmpty() || objName.isEmpty()) {
-        problemList << Problem(L10N::errorWrongDbObjUrlFormat(url));
+        notificationList << WorkflowNotification(L10N::errorWrongDbObjUrlFormat(url));
         return false;
-    } else if (!checkDbConnectionAndFixProblems(dbUrl, problemList, Problem(L10N::errorDbInacsessible(shortDbName)))) {
+    } else if (!checkDbConnectionAndFixProblems(dbUrl, notificationList, WorkflowNotification(L10N::errorDbInacsessible(shortDbName)))) {
         return false;
     } else if (!checkObjectInDb(url)) {
-        problemList << Problem(L10N::errorDbObjectInaccessible(shortDbName, objName));
+        notificationList << WorkflowNotification(L10N::errorDbObjectInaccessible(shortDbName, objName));
         return false;
     }
     return true;
 }
 
-bool WorkflowUtils::validateInputDbFolders(QString urls, ProblemList &problemList) {
+bool WorkflowUtils::validateInputDbFolders(QString urls, NotificationsList &notificationList) {
     normalizeUrls(urls);
     if (urls.isEmpty()) {
         return true;
@@ -1134,12 +1134,12 @@ bool WorkflowUtils::validateInputDbFolders(QString urls, ProblemList &problemLis
         const U2DataType dataType = SharedDbUrlUtils::getDbFolderDataTypeByUrl(url);
         const QString shortDbName = SharedDbUrlUtils::getDbShortNameFromEntityUrl(url);
         if (dbUrl.isEmpty() || folderPath.isEmpty() || U2Type::Unknown == dataType) {
-            problemList << Problem(L10N::errorWrongDbFolderUrlFormat(url));
+            notificationList << WorkflowNotification(L10N::errorWrongDbFolderUrlFormat(url));
             res = false;
-        } else if (!checkDbConnectionAndFixProblems(dbUrl, problemList, Problem(L10N::errorDbInacsessible(shortDbName)))) {
+        } else if (!checkDbConnectionAndFixProblems(dbUrl, notificationList, WorkflowNotification(L10N::errorDbInacsessible(shortDbName)))) {
             res = false;
         } else if (!checkFolderInDb(dbUrl, folderPath)) {
-            problemList << Problem(L10N::errorDbFolderInacsessible(shortDbName, folderPath));
+            notificationList << WorkflowNotification(L10N::errorDbFolderInacsessible(shortDbName, folderPath));
             res = false;
         }
     }
@@ -1184,7 +1184,7 @@ static bool canWriteToPath(QString dirAbsPath) {
     return true;
 }
 
-bool WorkflowUtils::validateOutputFile(const QString &url, ProblemList &problemList) {
+bool WorkflowUtils::validateOutputFile(const QString &url, NotificationsList &notificationList) {
     if (url.isEmpty()) {
         return true;
     }
@@ -1198,12 +1198,12 @@ bool WorkflowUtils::validateOutputFile(const QString &url, ProblemList &problemL
         return true;
     }
     else {
-        problemList << Problem(tr("Can't access output file path: '%1'").arg(fi.absoluteFilePath()));
+        notificationList << WorkflowNotification(tr("Can't access output file path: '%1'").arg(fi.absoluteFilePath()));
         return false;
     }
 }
 
-bool WorkflowUtils::validateOutputDir(const QString &url, ProblemList &problemList) {
+bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &notificationList) {
     if (url.isEmpty()) {
         return true;
     }
@@ -1217,7 +1217,7 @@ bool WorkflowUtils::validateOutputDir(const QString &url, ProblemList &problemLi
         return true;
     }
     else {
-        problemList << Problem(tr("Can't output folder path: '%1', check permissions").arg(url));
+        notificationList << WorkflowNotification(tr("Can't output folder path: '%1', check permissions").arg(url));
         return false;
     }
 }
@@ -1234,33 +1234,33 @@ bool WorkflowUtils::isSharedDbUrlAttribute(const Attribute *attr, const Actor *a
     return PropertyDelegate::SHARED_DB_URL == delegate->type();
 }
 
-bool WorkflowUtils::validateSharedDbUrl(const QString &url, ProblemList &problemList) {
+bool WorkflowUtils::validateSharedDbUrl(const QString &url, NotificationsList &notificationList) {
     if (url.isEmpty()) {
-        problemList << Problem(tr("Empty shared database URL specified"));
+        notificationList << WorkflowNotification(tr("Empty shared database URL specified"));
         return false;
     }
 
     const U2DbiRef dbRef = SharedDbUrlUtils::getDbRefFromEntityUrl(url);
     const QString shortDbName = SharedDbUrlUtils::getDbShortNameFromEntityUrl(url);
     if (!dbRef.isValid()) {
-        problemList << Problem(L10N::errorWrongDbFolderUrlFormat(url));
+        notificationList << WorkflowNotification(L10N::errorWrongDbFolderUrlFormat(url));
         return false;
-    } else if (!checkDbConnectionAndFixProblems(url, problemList, Problem(L10N::errorDbInacsessible(shortDbName)))) {
+    } else if (!checkDbConnectionAndFixProblems(url, notificationList, WorkflowNotification(L10N::errorDbInacsessible(shortDbName)))) {
         return false;
     } else if (!checkWritePermissionsForDb(url)) {
-        problemList << Problem(L10N::errorDbWritePermissons(shortDbName));
+        notificationList << WorkflowNotification(L10N::errorDbWritePermissons(shortDbName));
         return false;
     }
 
     return true;
 }
 
-bool WorkflowUtils::validateDatasets(const QList<Dataset> &sets, ProblemList &problemList) {
+bool WorkflowUtils::validateDatasets(const QList<Dataset> &sets, NotificationsList &notificationList) {
     bool res = true;
     foreach (const Dataset &set, sets) {
         foreach (URLContainer* urlContainer, set.getUrls()) {
             SAFE_POINT(NULL != urlContainer, "NULL URLContainer!", false);
-            bool urlIsValid = urlContainer->validateUrl(problemList);
+            bool urlIsValid = urlContainer->validateUrl(notificationList);
             res = res && urlIsValid;
         }
     }

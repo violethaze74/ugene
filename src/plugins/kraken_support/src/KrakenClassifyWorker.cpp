@@ -133,9 +133,15 @@ void KrakenClassifyWorker::sl_taskFinished(Task *task) {
     const QString rawClassificationUrl = krakenTask->getClassificationUrl();
 
     QVariantMap data;
-    data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID] = QVariant::fromValue<U2::LocalWorkflow::TaxonomyClassificationResult>(parseReport(rawClassificationUrl));
+    TaxonomyClassificationResult classificationResult = parseReport(rawClassificationUrl);
+    data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID] = QVariant::fromValue<U2::LocalWorkflow::TaxonomyClassificationResult>(classificationResult);
     output->put(Message(output->getBusType(), data));
     context->getMonitor()->addOutputFile(rawClassificationUrl, getActor()->getId());
+
+    LocalWorkflow::TaxonomyClassificationResult::const_iterator it;
+    int classifiedCount = NgsReadsClassificationUtils::countClassified(classificationResult);
+    context->getMonitor()->addInfo(tr("There were %1 input reads, %2 reads were classified.").arg(QString::number(classificationResult.size())).arg(QString::number(classifiedCount))
+                                    , getActor()->getId(), WorkflowNotification::U2_INFO);
 }
 
 bool KrakenClassifyWorker::isReadyToRun() const {
@@ -209,7 +215,7 @@ TaxonomyClassificationResult KrakenClassifyWorker::parseReport(const QString &ur
                     if (ok) {
                         if (result.contains(objID)) {
                             QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
-                            monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
+                            monitor()->addInfo(msg, getActorId(), WorkflowNotification::U2_WARNING);
                             algoLog.info(msg);
                         } else {
                             result[objID] = assID;

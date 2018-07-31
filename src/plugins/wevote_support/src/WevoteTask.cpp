@@ -131,9 +131,13 @@ void WevoteTask::parseClassification() {
     CHECK_OP(stateInfo, );
 
     TabulatedFormatReader reader(stateInfo, ioAdapter.data());
+    if (settings.inputFileUrl.endsWith(".csv")) {
+        //skip header
+        reader.getNextLine();
+    }
     while (reader.hasNextLine()) {
         const QStringList columns = reader.getNextLine();
-        CHECK_EXT(columns.size() >= 2, setError(tr("Too few columns in the result file.")), );
+        CHECK_EXT(columns.size() >= 2, setError(tr("Too few columns in the result file.")), );        
         bool ok = false;
         classification.insert(columns.first(), columns.last().toUInt(&ok));
         CHECK_EXT(ok, setError(tr("Can't parse the taxID: \"%1\"").arg(columns.last())), );

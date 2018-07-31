@@ -103,7 +103,7 @@ void PrimersGrouperWorker::sl_onTaskFinished(Task* t) {
         if(!grouperTask->getReport().isEmpty()) {
             context->getMonitor()->addOutputFile(reportFileUrl, getActor()->getId(), true);
         } else {
-            context->getMonitor()->addError(tr("No valid groups found"), getActor()->getId(), Problem::U2_WARNING);
+            context->getMonitor()->addError(tr("No valid groups found"), getActor()->getId(), WorkflowNotification::U2_WARNING);
         }
     }
 

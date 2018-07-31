@@ -32,10 +32,10 @@ namespace Workflow {
 class KrakenClassifyValidator : public ActorValidator {
     Q_DECLARE_TR_FUNCTIONS(KrakenClassifyValidator)
 public:
-    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+    bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
 
 private:
-    bool validateDatabase(const Actor *actor, ProblemList &problemList) const;
+    bool validateDatabase(const Actor *actor, NotificationsList &notificationList) const;
 };
 
 }   // namespace Workflow

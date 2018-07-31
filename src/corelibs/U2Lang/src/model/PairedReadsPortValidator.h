@@ -33,7 +33,7 @@ class U2LANG_EXPORT PairedReadsPortValidator : public PortValidator {
     Q_DECLARE_TR_FUNCTIONS(PairedReadsPortValidator)
 public:
     PairedReadsPortValidator(const QString& inputId, const QString& inputPairedId);
-    bool validate(const IntegralBusPort *port, ProblemList &problemList) const;
+    bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const;
 
 private:
     QString inputSlotId;

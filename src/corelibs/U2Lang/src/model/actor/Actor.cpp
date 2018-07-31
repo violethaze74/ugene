@@ -433,7 +433,7 @@ const QList<ValidatorDesc> & Actor::getCustomValidators() const {
  * Attributes with scripts are ignored (the method returns "true").
  * Attributes with value "Default" (case-insensitive) are ignored.
  */
-static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, ProblemList &infoList) {
+static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, NotificationsList &infoList) {
     SAFE_POINT(NULL != attr, "NULL attribute!", false);
     SAFE_POINT(NotAnUrl != urlType, "Can't pass not an URL to the method!", false);
 
@@ -484,7 +484,7 @@ static bool validateCodePage(const QString &url) {
  *   - then, convert back 8Bit to QString
  *   - both QString must be equal
  */
-static bool validateCodePage(Attribute *attr, ProblemList &infoList) {
+static bool validateCodePage(Attribute *attr, NotificationsList &infoList) {
     SAFE_POINT(NULL != attr, "NULL attribute!", false);
 
     QStringList urlsList = WorkflowUtils::getAttributeUrls(attr);
@@ -497,18 +497,18 @@ static bool validateCodePage(Attribute *attr, ProblemList &infoList) {
     foreach(const QString &url, urlsList) {
         if (!validateCodePage(url)) {
             res = false;
-            infoList << Problem(L10N::warningCharactersCodePage(attr->getDisplayName()), "", Problem::U2_WARNING);
+            infoList << WorkflowNotification(L10N::warningCharactersCodePage(attr->getDisplayName()), "", WorkflowNotification::U2_WARNING);
         }
     }
     return res;
 }
 
-bool Actor::validate(ProblemList &problemList) const {
-    bool result = Configuration::validate(problemList);
+bool Actor::validate(NotificationsList &notificationList) const {
+    bool result = Configuration::validate(notificationList);
     foreach (const ValidatorDesc &desc, customValidators) {
         ActorValidator *v = WorkflowEnv::getActorValidatorRegistry()->findValidator(desc.type);
         if (NULL != v) {
-            result &= v->validate(this, problemList, desc.options);
+            result &= v->validate(this, notificationList, desc.options);
         }
     }
 
@@ -522,13 +522,13 @@ bool Actor::validate(ProblemList &problemList) const {
         UrlAttributeType urlType = WorkflowUtils::isUrlAttribute(attr, this);
 
         if (urlType != NotAnUrl) {
-            bool urlAttrValid = validateUrlAttribute(attr, urlType, problemList);
+            bool urlAttrValid = validateUrlAttribute(attr, urlType, notificationList);
             urlsRes = urlsRes && urlAttrValid;
         }
 
         if (urlType != NotAnUrl || attr->getFlags().testFlag(Attribute::NeedValidateEncoding)) {
             // UGENE-5595
-            bool urlAttrValid = validateCodePage(attr, problemList);
+            bool urlAttrValid = validateCodePage(attr, notificationList);
             Q_UNUSED(urlAttrValid)
             // we think that this is a warning, so I commented the following line
             //urlsRes = urlsRes && urlAttrValid;
@@ -539,12 +539,12 @@ bool Actor::validate(ProblemList &problemList) const {
             attr->getAttributePureValue().toString().toDouble((&ok));
             result &= ok;
             if (!ok) {
-                problemList << Problem(L10N::badArgument(attr->getAttributePureValue().toString()));
+                notificationList << WorkflowNotification(L10N::badArgument(attr->getAttributePureValue().toString()));
             }
         }
 
         if (WorkflowUtils::isSharedDbUrlAttribute(attr, this)) {
-            result &= WorkflowUtils::validateSharedDbUrl(attr->getAttributePureValue().toString(), problemList);
+            result &= WorkflowUtils::validateSharedDbUrl(attr->getAttributePureValue().toString(), notificationList);
         }
     }
     result = result && urlsRes;

@@ -680,11 +680,11 @@ bool QDScheme::isValid() const {
     bool res = true;
     foreach(QDActor* actor, getActors()) {
         QDActorParameters* cfg = actor->getParameters();
-        ProblemList problemList;
-        if (!cfg->validate(problemList)) {
+        NotificationsList notificationList;
+        if (!cfg->validate(notificationList)) {
             res = false;
-            foreach(const Problem& problem, problemList) {
-                coreLog.error(QObject::tr("%1. %2").arg(cfg->getLabel()).arg(problem.message));
+            foreach(const WorkflowNotification& notification, notificationList) {
+                coreLog.error(QObject::tr("%1. %2").arg(cfg->getLabel()).arg(notification.message));
             }
         }
     }

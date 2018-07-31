@@ -126,7 +126,7 @@ Task *MultiplexerWorker::tick() {
         bool bothData = inChannel1->hasMessage() && inChannel2->hasMessage();
         if (!bothData) {
             if (inChannel1->hasMessage() || inChannel2->hasMessage()) {
-                monitor()->addError(getMessagesMismatchError(), getActorId(), Problem::U2_INFO);
+                monitor()->addError(getMessagesMismatchError(), getActorId(), WorkflowNotification::U2_INFO);
             }
             shutDown();
             return NULL;

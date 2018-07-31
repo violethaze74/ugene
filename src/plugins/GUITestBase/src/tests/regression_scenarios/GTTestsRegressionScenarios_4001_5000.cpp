@@ -3011,7 +3011,7 @@ GUI_TEST_CLASS_DEFINITION(test_4391) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    Expected state: there are no errors neither in log nor in dashboard.
-    const bool prolemsExist = GTUtilsDashboard::areThereProblems(os);
+    const bool prolemsExist = GTUtilsDashboard::areThereNotifications(os);
     CHECK_SET_ERR(!prolemsExist, "There are problems on the dashboard");
     GTUtilsLog::check(os, logTracer);
 }

@@ -433,10 +433,10 @@ void IntegralBusPort::setupBusMap() {
     setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
 }
 
-bool IntegralBusPort::validate(ProblemList &problemList) const {
-    bool good = Configuration::validate(problemList);
+bool IntegralBusPort::validate(NotificationsList &notificationList) const {
+    bool good = Configuration::validate(notificationList);
     if (isInput() && !validator) {
-        good &= ScreenedSlotValidator::validate(QStringList(), this, problemList);
+        good &= ScreenedSlotValidator::validate(QStringList(), this, notificationList);
     }
     return good;
 }
@@ -444,12 +444,12 @@ bool IntegralBusPort::validate(ProblemList &problemList) const {
 /*******************************
 * ScreenedSlotValidator
 *******************************/
-bool ScreenedSlotValidator::validate( const QStringList& screenedSlots, const IntegralBusPort* vport, ProblemList& problemList)
+bool ScreenedSlotValidator::validate( const QStringList& screenedSlots, const IntegralBusPort* vport, NotificationsList& notificationList)
 {
     bool good = true;
     {
         if (vport->getWidth() == 0) {
-            problemList.append(Problem(IntegralBusPort::tr("No input data supplied")));
+            notificationList.append(WorkflowNotification(IntegralBusPort::tr("No input data supplied")));
             return false;
         }
         StrStrMap bm = vport->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
@@ -483,7 +483,7 @@ bool ScreenedSlotValidator::validate( const QStringList& screenedSlots, const In
         if (busWidth == bm.size()) {
             ActorPrototype *proto = vport->owner()->getProto();
             if (!(0 == busWidth && proto->isAllowsEmptyPorts())) {
-                problemList.append(Problem(IntegralBusPort::tr("No input data supplied")));
+                notificationList.append(WorkflowNotification(IntegralBusPort::tr("No input data supplied")));
                 good = false;
             }
         }
@@ -497,10 +497,10 @@ bool ScreenedSlotValidator::validate( const QStringList& screenedSlots, const In
                 //assert(!slotName.isEmpty());
                 if (it.value().isEmpty()) {
                     if (!screenedSlots.contains(slot)) {
-                        problemList.append(Problem(IntegralBusPort::tr("Empty input slot: %1").arg(slotName), "", Problem::U2_WARNING));
+                        notificationList.append(WorkflowNotification(IntegralBusPort::tr("Empty input slot: %1").arg(slotName), "", WorkflowNotification::U2_WARNING));
                     }
                 } else {
-                    problemList.append(Problem(IntegralBusPort::tr("Bad slot binding: %1 to %2").arg(slotName).arg(it.value())));
+                    notificationList.append(WorkflowNotification(IntegralBusPort::tr("Bad slot binding: %1 to %2").arg(slotName).arg(it.value())));
                     good = false;
                 }
             }
@@ -514,7 +514,7 @@ bool ScreenedSlotValidator::validate( const QStringList& screenedSlots, const In
                 QString slotName = vport->getType()->getDatatypeDescriptor(slot).getDisplayName();
                 assert(!slotName.isEmpty());
                 assert(!it.value().isEmpty());
-                problemList.append(Problem(IntegralBusPort::tr("Bad slot binding: %1 to %2").arg(slotName).arg(it.value().join(","))));
+                notificationList.append(WorkflowNotification(IntegralBusPort::tr("Bad slot binding: %1 to %2").arg(slotName).arg(it.value().join(","))));
                 good = false;
             }
         }
@@ -522,8 +522,8 @@ bool ScreenedSlotValidator::validate( const QStringList& screenedSlots, const In
     return good;
 }
 
-bool ScreenedSlotValidator::validate(const Configuration* cfg, ProblemList &problemList ) const {
-    return validate(screenedSlots, static_cast<const IntegralBusPort*>(cfg), problemList);
+bool ScreenedSlotValidator::validate(const Configuration* cfg, NotificationsList &notificationList ) const {
+    return validate(screenedSlots, static_cast<const IntegralBusPort*>(cfg), notificationList);
 }
 
 
@@ -533,10 +533,10 @@ bool ScreenedSlotValidator::validate(const Configuration* cfg, ProblemList &prob
 ScreenedParamValidator::ScreenedParamValidator(const QString& id, const QString& port, const QString& slot)
 : id(id), port(port), slot(slot) {}
 
-bool ScreenedParamValidator::validate(const Configuration* cfg, ProblemList &problemList) const {
+bool ScreenedParamValidator::validate(const Configuration* cfg, NotificationsList &notificationList) const {
     QString err = validate(cfg);
     if( !err.isEmpty() ) {
-        problemList.append(Problem(err));
+        notificationList.append(WorkflowNotification(err));
         return false;
     }
     return true;
@@ -655,10 +655,10 @@ bool IntegralBusSlot::operator==( const IntegralBusSlot& ibs) const{
 /************************************************************************/
 /* PortValidator */
 /************************************************************************/
-bool PortValidator::validate(const Configuration *cfg, ProblemList &problemList) const {
+bool PortValidator::validate(const Configuration *cfg, NotificationsList &notificationList) const {
     const IntegralBusPort *port = static_cast<const IntegralBusPort*>(cfg);
     SAFE_POINT(NULL != port, "NULL port", false);
-    return validate(port, problemList);
+    return validate(port, notificationList);
 }
 
 StrStrMap PortValidator::getBusMap(const IntegralBusPort *port) {

@@ -30,6 +30,7 @@
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "../ngs_reads_classification/src/NgsReadsClassificationUtils.h"
 #include "WevoteWorker.h"
 #include "WevoteWorkerFactory.h"
 
@@ -93,6 +94,10 @@ void WevoteWorker::sl_taskFinished(Task *task) {
     output->put(Message(output->getBusType(), data));
 
     context->getMonitor()->addOutputFile(classificationUrl, getActor()->getId());
+
+    int classifiedCount = NgsReadsClassificationUtils::countClassified(classification);
+    context->getMonitor()->addInfo(tr("There were %1 input reads, %2 reads were classified.").arg(QString::number(classification.size())).arg(QString::number(classifiedCount))
+                                    , getActor()->getId(), WorkflowNotification::U2_INFO);
 }
 
 bool WevoteWorker::isReadyToRun() const {

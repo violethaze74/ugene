@@ -22,6 +22,8 @@
 #ifndef _U2_NGS_READS_CLASSIFICATION_UTILS_H_
 #define _U2_NGS_READS_CLASSIFICATION_UTILS_H_
 
+#include "TaxonomySupport.h"
+
 #include "NgsReadsClassificationPlugin.h"
 
 namespace U2 {
@@ -29,6 +31,7 @@ namespace U2 {
 class U2NGS_READS_CLASSIFICATION_EXPORT NgsReadsClassificationUtils {
 public:
     static QString getClassificationFileName(const QString &sourceFileUrl, const QString &toolName, const QString &extension, bool truncate);
+    static int countClassified(const LocalWorkflow::TaxonomyClassificationResult &classification);
 };
 
 }   // namespace U2

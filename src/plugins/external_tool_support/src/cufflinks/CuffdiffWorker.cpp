@@ -49,11 +49,11 @@ namespace LocalWorkflow {
 /************************************************************************/
 class InputSlotValidator : public PortValidator {
 public:
-    virtual bool validate(const IntegralBusPort *port, ProblemList &problemList) const {
+    virtual bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
         bool binded = isBinded(port, BaseSlots::URL_SLOT().getId());
         if (!binded) {
             QString name = slotName(port, BaseSlots::URL_SLOT().getId());
-            problemList.append(Problem(IntegralBusPort::tr("'%1' slot must be not binded").arg(name)));
+            notificationList.append(WorkflowNotification(IntegralBusPort::tr("'%1' slot must be not binded").arg(name)));
             return false;
         }
 

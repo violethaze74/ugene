@@ -163,14 +163,14 @@ namespace {
     }
 }
 
-bool FilterAnnotationsValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &/*options*/) const {
+bool FilterAnnotationsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &/*options*/) const {
     Attribute *namesAttr = actor->getParameter(FILTER_NAMES_ATTR);
     Attribute *namesFileAttr = actor->getParameter(FILTER_NAMES_FILE_ATTR);
 
     if (hasValue(namesAttr) || hasValue(namesFileAttr)) {
         return true;
     }
-    problemList << Problem(FilterAnnotationsWorker::tr("At least one of these parameters must be set: \"Annotation names\", \"Annotation names file\"."));
+    notificationList << WorkflowNotification(FilterAnnotationsWorker::tr("At least one of these parameters must be set: \"Annotation names\", \"Annotation names file\"."));
     return false;
 }
 

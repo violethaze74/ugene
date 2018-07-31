@@ -230,12 +230,12 @@ void Attribute::updateActorIds(const QMap<ActorId, ActorId> &actorIdsMap) {
     Q_UNUSED(actorIdsMap);
 }
 
-bool Attribute::validate(ProblemList &problemList) {
+bool Attribute::validate(NotificationsList &notificationList) {
     if(!isRequiredAttribute() || canBeEmpty()) {
         return true;
     }
     if( (isEmpty() || isEmptyString()) && getAttributeScript().isEmpty()) {
-        problemList.append(Problem(U2::WorkflowUtils::tr("Required parameter is not set: %1").arg(getDisplayName())));
+        notificationList.append(WorkflowNotification(U2::WorkflowUtils::tr("Required parameter is not set: %1").arg(getDisplayName())));
         return false;
     }
     return true;

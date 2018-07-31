@@ -819,7 +819,7 @@ const QString &DatasetData::getCurrentDataset() const {
 /************************************************************************/
 /* Validators */
 /************************************************************************/
-bool InputSlotsValidator::validate(const IntegralBusPort *port, ProblemList &problemList) const {
+bool InputSlotsValidator::validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
     StrStrMap bm = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
     bool data = isBinded(bm, IN_DATA_SLOT_ID);
     bool pairedData = isBinded(bm, PAIRED_IN_DATA_SLOT_ID);
@@ -829,13 +829,13 @@ bool InputSlotsValidator::validate(const IntegralBusPort *port, ProblemList &pro
     if (!data && !url) {
         QString dataName = slotName(port, IN_DATA_SLOT_ID);
         QString urlName = slotName(port, IN_URL_SLOT_ID);
-        problemList.append(IntegralBusPort::tr("Error! One of these slots must be not empty: '%1', '%2'").arg(dataName).arg(urlName));
+        notificationList.append(IntegralBusPort::tr("Error! One of these slots must be not empty: '%1', '%2'").arg(dataName).arg(urlName));
         return false;
     }
 
     if ((data && pairedUrl) || (url && pairedData)) {
         if (pairedUrl) {
-            problemList.append(IntegralBusPort::tr("Error! You can not bind one of sequences slots and one of url slots simultaneously"));
+            notificationList.append(IntegralBusPort::tr("Error! You can not bind one of sequences slots and one of url slots simultaneously"));
             return false;
         }
     }
@@ -843,7 +843,7 @@ bool InputSlotsValidator::validate(const IntegralBusPort *port, ProblemList &pro
     return true;
 }
 
-bool BowtieToolsValidator::validateBowtie(const Actor *actor, ProblemList &problemList) const {
+bool BowtieToolsValidator::validateBowtie(const Actor *actor, NotificationsList &notificationList) const {
     Attribute *attr = actor->getParameter( TopHatWorkerFactory::BOWTIE_TOOL_PATH );
     SAFE_POINT( NULL != attr, "NULL attribute", false );
 
@@ -864,8 +864,8 @@ bool BowtieToolsValidator::validateBowtie(const Actor *actor, ProblemList &probl
                 const QString message = QObject::tr( "%1 tool's version is undefined, "
                     "this may cause some compatibility issues" ).arg( toolName );
 
-                Problem warning( message, actor->getLabel( ), Problem::U2_WARNING );
-                problemList << warning;
+                WorkflowNotification warning( message, actor->getLabel( ), WorkflowNotification::U2_WARNING );
+                notificationList << warning;
                 return true;
             } else if ( !( Version::parseVersion("0.12.9") > bowtieVersion && Version::parseVersion("2.0.8") >= topHatVersion )
                  && !( Version::parseVersion("0.12.9") <= bowtieVersion && Version::parseVersion("2.0.8b") <= topHatVersion ) )
@@ -876,8 +876,8 @@ bool BowtieToolsValidator::validateBowtie(const Actor *actor, ProblemList &probl
                     "Bowtie >= \"0.12.9\" and TopHat >= \"2.0.8.b\"" ).arg( topHatVersion.text,
                      bowtieVersion.text);
 
-                Problem error( message, actor->getLabel( ) );
-                problemList << error;
+                WorkflowNotification error( message, actor->getLabel( ) );
+                notificationList << error;
                 return false;
             }
         } else {
@@ -888,46 +888,46 @@ bool BowtieToolsValidator::validateBowtie(const Actor *actor, ProblemList &probl
 
     bool valid = attr->isDefaultValue( ) ? !bowTieTool->getPath( ).isEmpty( ) : !attr->isEmpty( );
     if ( !valid ) {
-        problemList << WorkflowUtils::externalToolError( bowTieTool->getName( ) );
+        notificationList << WorkflowUtils::externalToolError( bowTieTool->getName( ) );
     }
     return valid;
 }
 
-bool BowtieToolsValidator::validateSamples(const Actor *actor, ProblemList &problemList) const {
+bool BowtieToolsValidator::validateSamples(const Actor *actor, NotificationsList &notificationList) const {
     bool valid = true;
     Attribute *samplesAttr = actor->getParameter(TopHatWorkerFactory::SAMPLES_MAP);
 
     U2OpStatusImpl os;
     QList<TophatSample> samples = WorkflowUtils::unpackSamples(samplesAttr->getAttributePureValue().toString(), os);
     if (os.hasError()) {
-        problemList << Problem(os.getError(), actor->getLabel());
+        notificationList << WorkflowNotification(os.getError(), actor->getLabel());
         valid = false;
     }
     CHECK(samples.size() > 0, valid);
 
     if (1 == samples.size()) {
-        problemList << Problem(QObject::tr("At least two samples are required"), actor->getLabel());
+        notificationList << WorkflowNotification(QObject::tr("At least two samples are required"), actor->getLabel());
         valid = false;
     }
 
     QStringList names;
     foreach (const TophatSample &sample, samples) {
         if (names.contains(sample.name)) {
-            problemList << Problem(QObject::tr("Duplicate sample name: ") + sample.name, actor->getLabel());
+            notificationList << WorkflowNotification(QObject::tr("Duplicate sample name: ") + sample.name, actor->getLabel());
             valid = false;
         }
         names << sample.name;
         if (sample.datasets.isEmpty()) {
-            problemList << Problem(QObject::tr("No datasets in the sample: ") + sample.name, actor->getLabel());
+            notificationList << WorkflowNotification(QObject::tr("No datasets in the sample: ") + sample.name, actor->getLabel());
             valid = false;
         }
     }
     return valid;
 }
 
-bool BowtieToolsValidator::validate( const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &/*options*/ ) const {
-    bool valid = validateBowtie(actor, problemList);
-    return valid && validateSamples(actor, problemList);
+bool BowtieToolsValidator::validate( const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &/*options*/ ) const {
+    bool valid = validateBowtie(actor, notificationList);
+    return valid && validateSamples(actor, notificationList);
 }
 
 /************************************************************************/
