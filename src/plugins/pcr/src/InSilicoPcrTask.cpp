@@ -25,6 +25,7 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2Msa.h>
 
 #include "Primer.h"
 #include "PrimerStatistics.h"
@@ -98,8 +99,10 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
     }
 
     result.maxErr = getMaxError(settings, direction);
-    QByteArray ledge(result.pattern.size() - settings.perfectMatch, 'N');
-    result.sequence.insert(pos, ledge);
+    if (!result.searchIsCircular) {
+        QByteArray ledge(result.pattern.size() - settings.perfectMatch - 1, U2Msa::GAP_CHAR);
+        result.sequence.insert(pos, ledge);
+    }
     result.searchRegion.length = result.sequence.length();
     result.complementTT = translator;
 
@@ -156,7 +159,10 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
         const qint64 reverseRegionEndPos = reverse.region.endPos();
         const qint64 sequenceSize = settings.sequence.size();
         if (reverseRegionEndPos > sequenceSize) {
-            result.region = U2Region(reverse.region.startPos, sequenceSize - reverse.region.startPos);
+            result.region = U2Region(reverse.region.startPos, sequenceSize);
+            if (!settings.isCircular) {
+                result.region.length -= reverse.region.startPos;
+            }
             result.ledge = reverseRegionEndPos - sequenceSize;
         } else {
             result.region = reverse.region;
@@ -170,7 +176,10 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
             result.region = U2Region(0, forward.region.length - forward.region.startPos);
             result.ledge = forward.region.startPos;
         } else {
-            result.region = U2Region(forward.region.startPos - ledge, forward.region.length);
+            result.region = U2Region(forward.region.startPos, forward.region.length);
+            if (!settings.isCircular) {
+                result.region.startPos -= (ledge - 1);
+            }
             result.ledge = 0;
         }
     }
