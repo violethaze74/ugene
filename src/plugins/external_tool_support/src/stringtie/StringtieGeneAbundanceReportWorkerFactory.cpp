@@ -39,7 +39,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 const QString StringtieGeneAbundanceReportWorkerFactory::ACTOR_ID = "stringtie-gene-abundance-report";
-const QString StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID = "url";
+const QString StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID = "in";
 const QString StringtieGeneAbundanceReportWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-url";
 
 StringtieGeneAbundanceReportWorkerFactory::StringtieGeneAbundanceReportWorkerFactory()
@@ -57,14 +57,14 @@ void StringtieGeneAbundanceReportWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
         const Descriptor inSlotDesc(BaseSlots::URL_SLOT().getId(),
-                                    tr("Input URL ") + portId,
+                                    tr("Input URL url"),
                                     tr("Input URL."));
 
         QMap<Descriptor, DataTypePtr> inType;
         inType[inSlotDesc] = BaseTypes::STRING_TYPE();
 
         const Descriptor inPortDesc(portId,
-                                    tr("Input StringTie gene abundance file(s) ") + portId,
+                                    tr("Input StringTie gene abundance file(s) url"),
                                     tr("URL(s) to sorted gene abundance file(s), produced by StringTie."));
         ports << new PortDescriptor(inPortDesc,
                                     DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)),
