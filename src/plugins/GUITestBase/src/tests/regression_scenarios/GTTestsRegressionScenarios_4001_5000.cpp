@@ -2748,7 +2748,7 @@ GUI_TEST_CLASS_DEFINITION(test_4352) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4356) {
-    
+
     class Test_4356 : public Filler {
     public:
         Test_4356(HI::GUITestOpStatus& os)
@@ -2771,16 +2771,16 @@ GUI_TEST_CLASS_DEFINITION(test_4356) {
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     GTUtilsDocument::unloadDocument(os, "murine.gb", true);
-    
+
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new Test_4356(os));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
     GTGlobals::sleep(1000);
-    
+
     Document *doc = GTUtilsDocument::getDocument(os, "murine.gb");
     CHECK_SET_ERR(NULL != doc, "Document is NULL");
     CHECK_SET_ERR(doc->isLoaded(), "Document is unexpectedly unloaded");
