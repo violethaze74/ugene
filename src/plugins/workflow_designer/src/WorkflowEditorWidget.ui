@@ -47,6 +47,9 @@ QGroupBox::indicator:checked {
    <property name="spacing">
     <number>1</number>
    </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinAndMaxSize</enum>
+   </property>
    <property name="leftMargin">
     <number>1</number>
    </property>
@@ -67,6 +70,9 @@ QGroupBox::indicator:checked {
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <property name="spacing">
        <number>3</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinAndMaxSize</enum>
       </property>
       <property name="leftMargin">
        <number>3</number>
