@@ -100,7 +100,7 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
 
     result.maxErr = getMaxError(settings, direction);
     if (!result.searchIsCircular) {
-        QByteArray ledge(result.pattern.size() - settings.perfectMatch - 1, U2Msa::GAP_CHAR);
+        QByteArray ledge(result.pattern.size() - settings.perfectMatch - 1, 'N');
         result.sequence.insert(pos, ledge);
     }
     result.searchRegion.length = result.sequence.length();
@@ -171,17 +171,18 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
     } else {
         result.primer = settings.forwardPrimer;
         result.mismatches = settings.forwardMismatches;
-        const int ledge = result.primer.size() - settings.perfectMatch;
+        const int ledge = result.primer.size() - settings.perfectMatch - 1;
         if (forward.region.startPos < ledge) {
             result.region = U2Region(0, forward.region.length - forward.region.startPos);
             result.ledge = forward.region.startPos;
         } else {
             result.region = U2Region(forward.region.startPos, forward.region.length);
             if (!settings.isCircular) {
-                result.region.startPos -= (ledge - 1);
+                result.region.startPos -= (ledge);
             }
             result.ledge = 0;
         }
+        result.mismatches += result.ledge;
     }
     return result;
 }
