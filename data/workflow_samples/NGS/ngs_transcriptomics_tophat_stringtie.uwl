@@ -255,7 +255,7 @@ workflow "RNA-Seq analysis with TopHat and StringTie"{
                         }
                     }
                     group {
-                        title:"Transcripts assembly settings";
+                        title:"Transcripts assembly";
                         label-size:230;
                         type:hideable;
                         stringtie.reads-orientation {

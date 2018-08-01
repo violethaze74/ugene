@@ -1222,6 +1222,7 @@ GUI_TEST_CLASS_DEFINITION(test_4117){
                  testDir + "_common_data/scenarios/sandbox/space containing dir/short_sample.fastq");
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Quality control by FastQC");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsWorkflowDesigner::click(os, "FASTQ File List");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/sandbox/space containing dir/short_sample.fastq" );

@@ -367,6 +367,8 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
     GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
