@@ -140,7 +140,7 @@ void HttpFileAdapter::close() {
     assert( reply );
     reply->abort();
     delete reply;
-    reply = 0;
+    reply = NULL;
     gurl = GUrl();
     init();
 }
@@ -215,6 +215,7 @@ void HttpFileAdapter::init() {
     badstate = false;
     is_downloaded = false;
     is_cached= false;
+    end_ptr = 0;
     chunk_list.clear();
     chunk_list.append( QByteArray(CHUNKSIZE, 0) );
     loop.exit();
