@@ -39,6 +39,7 @@ namespace LocalWorkflow {
 const int StringtieGeneAbundanceReportTask::BUFF_SIZE = (4 * 1024 * 1024);
 const QString StringtieGeneAbundanceReportTask::inputDelimiter = "\t";
 const QString StringtieGeneAbundanceReportTask::outputDelimiter = "\t";
+const QString StringtieGeneAbundanceReportTask::columnName = "FPKM";
 
 // The comparator must be a static function,
 // Otherwise it will not be possible to pass it as an argument
@@ -54,6 +55,9 @@ StringtieGeneAbundanceReportTask::StringtieGeneAbundanceReportTask(const QString
       workingDir(_workingDir),
       reportUrl(_reportUrl)
 {
+    if (reportUrl.isEmpty()) {
+        reportUrl = "StringTie_report.txt";
+    }
     GCOUNTER(cvar, tvar, "StringtieGeneAbundanceReportTask");
     SAFE_POINT_EXT(!reportUrl.isEmpty(), setError("Report URL is empty"), );
 }
@@ -91,25 +95,32 @@ void StringtieGeneAbundanceReportTask::run() {
     CHECK_EXT(QDir(runDir).exists(), setError(tr("The directory \"%1\" did not created").arg(runDir)), );
 
     // 1st - sort&shrink every input file to temp file
-    QStringList tempFiles;
+    QMap<QString,QString> mapFileReports;
     foreach (QString tsvFile, stringtieReports) {
         QString tempFile = sortAndShrinkToTemp(tsvFile, runDir);
-        tempFiles << tempFile;
+        mapFileReports[tempFile] = tsvFile;
     }
     CHECK_OP(stateInfo, );
 
     // 2nd - merge files to reportUrl
-    mergeFpkmToReportUrl(tempFiles, reportUrl);
+    mergeFpkmToReportUrl(mapFileReports, reportUrl);
     CHECK_OP(stateInfo, );
+
+    // Remove FPKM subdir
+    QDir fpkmDir(runDir + "/" + columnName + "/");
+    if (fpkmDir.exists()) {
+        fpkmDir.removeRecursively();
+    }
 }
 
-bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFiles, QString reportUrl) {
-    int valueCount = tempFiles.size();
+bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QMap<QString,QString> mapFiles, QString reportUrl) {
+    int valueCount = mapFiles.size();
     QMap<QString, QVector<QString> > map;
     int fileIndex = 0;
 
-    foreach (QString temp, tempFiles) {
-        GUrl url(temp);
+    foreach (QString tempFile, mapFiles.keys()) {
+        QString tsvFile = mapFiles[tempFile];
+        GUrl url(tempFile);
         IOAdapterId ioId = IOAdapterUtils::url2io(url);
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
         QScopedPointer<IOAdapter> io(iof->createIOAdapter());
@@ -124,14 +135,14 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFile
         // skip header
         int blockLen = io->readLine(block.data(), BUFF_SIZE, &terminatorFound);
         CHECK_EXT(blockLen <= 0 || terminatorFound,
-            setError(tr("Too long line while reading a file: %1").arg(temp)),
+            setError(tr("Too long line while reading a file: %1").arg(tempFile)),
             false);
 
         while (notEmpty) {
             blockLen = io->readLine(block.data(), BUFF_SIZE, &terminatorFound);
             if (blockLen > 0) {
                 CHECK_EXT(terminatorFound,
-                          setError(tr("Too long line while reading a file: %1").arg(temp)),
+                          setError(tr("Too long line while reading a file: %1").arg(tempFile)),
                           false);
                 QString line = QString::fromLocal8Bit(block.data(), blockLen);
                 QStringList buf = line.split(inputDelimiter, QString::KeepEmptyParts);
@@ -142,6 +153,9 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFile
                 QVector<QString>& values = map[key];
                 if (values.size() != valueCount) {
                     values.resize(valueCount);
+                }
+                if (buf[2].isEmpty()) {
+                    buf[2] = "n/a";
                 }
                 values[fileIndex] = buf[2];
             } else {
@@ -162,8 +176,9 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QStringList tempFile
 
     // header
     out << "Gene ID" << outputDelimiter << "Gene Name";
-    foreach (QString temp, tempFiles) {
-        GUrl url(temp);
+    foreach (QString tempFile, mapFiles.keys()) {
+        QString tsvFile = mapFiles[tempFile];
+        GUrl url(tsvFile);
         QString head = url.baseFileName();
         head = head.remove(QRegExp("\\.tab$", Qt::CaseInsensitive))
                 .remove(QRegExp("_gene_abund$", Qt::CaseInsensitive))
@@ -218,11 +233,12 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
 
     // header
     QStringList header = parsedLines[0];
-    int indexFpkm = header.indexOf("FPKM");
+    int indexFpkm = header.indexOf(columnName);
     CHECK_EXT(indexFpkm != -1,
-              setError(tr("Bad file format, there is no FPKM column: \"%1\"").arg(tsvFile)),
+              setError(tr("Bad file format, there is no %2 column: \"%1\"").arg(tsvFile).arg(columnName)),
               NULL);
-    QString fileFpkm = runDir + "/FPKM/" + url.baseFileName() + ".fpkm";
+    QString fileFpkm = runDir + "/" + columnName + "/" + url.baseFileName() + ".fpkm";
+    fileFpkm = GUrlUtils::rollFileName(fileFpkm, "_");
     FileAndDirectoryUtils::createWorkingDir(fileFpkm,
                                             FileAndDirectoryUtils::FILE_DIRECTORY,
                                             "",
@@ -245,6 +261,7 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
         CHECK_EXT(line.size() >= indexFpkm,
                   setError(tr("Bad line format of input: \"%1\"").arg(line.join("\t"))),
                   NULL);
+
         out << line[0] << inputDelimiter << line[1] << inputDelimiter << line[indexFpkm] << "\n";
     }
     file.close();
@@ -255,8 +272,7 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
 QList<QStringList> StringtieGeneAbundanceReportTask::parseLinesIntoTokens(const QString& text) {
     QList<QStringList> result;
     QStringList lines = text.split('\n', QString::SkipEmptyParts);
-    for (int l = 0; l < lines.size(); l++) {
-        QString line = lines.at(l).trimmed();
+    foreach (const QString line, lines) {
         QStringList tokens = line.split(inputDelimiter, QString::KeepEmptyParts);
         result.append(tokens);
     }

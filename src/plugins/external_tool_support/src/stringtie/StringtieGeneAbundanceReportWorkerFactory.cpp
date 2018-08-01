@@ -80,13 +80,13 @@ void StringtieGeneAbundanceReportWorkerFactory::init() {
                                         tr("Specify the name of the output tab-delimited text file."));
         attributes << new Attribute(outputFileDesc,
                                     BaseTypes::STRING_TYPE(),
-                                    true,
-                                    "StringTie_report.txt");
+                                    (Attribute::Flags) Attribute::CanBeEmpty);
     }
 
     QMap<QString, PropertyDelegate *> delegates;
     {
         DelegateTags outputFileTags;
+        outputFileTags.set(DelegateTags::PLACEHOLDER_TEXT, tr("Auto"));
         outputFileTags.set(DelegateTags::FILTER,
                            DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT,
                                                                    true,

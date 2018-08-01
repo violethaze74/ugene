@@ -38,6 +38,7 @@ public:
     static const int BUFF_SIZE;
     static const QString inputDelimiter;
     static const QString outputDelimiter;
+    static const QString columnName;
 
 private:
     void run();
@@ -47,7 +48,7 @@ private:
     QString reportUrl;
 
     QString sortAndShrinkToTemp(QString tsvFile, QString runDir);
-    bool mergeFpkmToReportUrl(QStringList tempFiles, QString reportUrl);
+    bool mergeFpkmToReportUrl(QMap<QString,QString> mapFiles, QString reportUrl);
     static QList<QStringList> parseLinesIntoTokens(const QString& text);
 };
 
