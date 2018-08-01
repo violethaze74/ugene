@@ -29,7 +29,7 @@ macx {
     QMAKE_CXXFLAGS += -Wall -Wno-ignored-attributes
 }
 
-unix {
+defined(__GNUC__) : !defined(__clang__) {
     # We have a lot of such warning from QT -> disable them.
     QMAKE_CXXFLAGS += -Wno-expansion-to-defined
 }
