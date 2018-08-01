@@ -408,6 +408,7 @@ GUI_TEST_CLASS_DEFINITION(test_0073_1) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "Find substrings in sequences");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsWorkflowDesigner::click(os, "Find Substrings");
 
@@ -423,6 +424,7 @@ GUI_TEST_CLASS_DEFINITION(test_0073_2) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "Find patterns");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsWorkflowDesigner::click(os, "Find Pattern");
 
@@ -2584,6 +2586,7 @@ GUI_TEST_CLASS_DEFINITION(test_0888) {
 //    1. Open WD sampel scheme "Convert seq/qual pair to Fastq"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Convert seq/qual pair to FASTQ");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
 //    2. Press "save as" and save it to the valid location
     GTUtilsWorkflowDesigner::saveWorkflowAs(os, sandBoxDir + "test_0888.uwl", "test_0888");
@@ -3243,6 +3246,7 @@ GUI_TEST_CLASS_DEFINITION(test_0969) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTWidget::click(os, GTAction::button(os, "New workflow action"));
     GTGlobals::sleep();
 
