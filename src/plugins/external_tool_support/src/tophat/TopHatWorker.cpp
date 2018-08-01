@@ -451,9 +451,9 @@ void TopHatWorkerFactory::init()
     }
     {
         QVariantMap vm;
-        vm["Standard Illumina"] = 0;
-        vm["dUTP, NSR, NNSR"] = 1;
-        vm["Ligation, Standard SOLiD"] = 2;
+        vm["fr-unstranded"] = 0;
+        vm["fr-firststrand"] = 1;
+        vm["fr-secondstrand"] = 2;
         delegates[LIBRARY_TYPE] = new ComboBoxDelegate(vm);
     }
     {
