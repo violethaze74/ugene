@@ -29,6 +29,11 @@ macx {
     QMAKE_CXXFLAGS += -Wall -Wno-ignored-attributes
 }
 
+unix {
+    # We have a lot of such warning from QT -> disable them.
+    QMAKE_CXXFLAGS += -Wno-expansion-to-defined
+}
+
 isEmpty( INSTALL_PREFIX )  : INSTALL_PREFIX  = /usr
 
 isEmpty( INSTALL_BINDIR )  : INSTALL_BINDIR  = $$INSTALL_PREFIX/bin
