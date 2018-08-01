@@ -1,4 +1,4 @@
-/**
+/**009
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -257,6 +257,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009){
 //    1. Open schema from examples
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 //    2. Clear dashboard (select all + del button)
     GTGlobals::sleep(500);
     QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
@@ -274,6 +275,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009){
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //    3. Open this schema from examples
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 //    Expected state: items and links between them painted correctly
     GTGlobals::sleep(500);
     QList<QGraphicsItem *> items1 = sceneView->items();
@@ -318,6 +320,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013){
 //    1. Load any sample in WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 //    2. Select output port.
     WorkflowProcessItem* gr = GTUtilsWorkflowDesigner::getWorker(os,"Call Variants");
     QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
@@ -355,12 +358,13 @@ GUI_TEST_CLASS_DEFINITION(test_0015){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Select any worker on palette.
     GTUtilsWorkflowDesigner::addSample(os,"call variants");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Call Variants"));
     GTMouseDriver::click();
     GTGlobals::sleep(500);
     CHECK_SET_ERR(GTWidget::findWidget(os,"table"),"parameters table not found");
     CHECK_SET_ERR(GTWidget::findWidget(os,"doc"),"element documentation widget not found");
-    CHECK_SET_ERR(GTWidget::findWidget(os,"table2"),"input data table not found");
+    CHECK_SET_ERR(GTWidget::findWidget(os,"inputScrollArea"),"input data table not found");
     CHECK_SET_ERR(GTWidget::findWidget(os,"propDoc"),"property documentation widget not found");
 
 //    Expected state: Actor info (parameters, input data ...) will be displayed at the right part of window
@@ -546,6 +550,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterVisible(os, "Reference"), "Reference parameter is not visible");
 
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isParameterVisible(os, "Reference"), "Reference parameter is unexpectedly visible");
     item = GTUtilsWorkflowDesigner::getWorker(os, "Call Variants");
