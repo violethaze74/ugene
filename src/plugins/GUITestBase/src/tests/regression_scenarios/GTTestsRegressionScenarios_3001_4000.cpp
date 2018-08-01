@@ -5930,6 +5930,7 @@ GUI_TEST_CLASS_DEFINITION(test_3938) {
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Variation annotation with SnpEff");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTUtilsWorkflowDesigner::addInputFile(os, "Input Variations File", testDir + "_common_data/vcf/valid.vcf");
 
     GTUtilsWorkflowDesigner::click(os, "Annotate and Predict Effects with SnpEff");
