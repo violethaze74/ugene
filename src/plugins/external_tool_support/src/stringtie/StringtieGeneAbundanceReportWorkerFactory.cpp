@@ -80,7 +80,7 @@ void StringtieGeneAbundanceReportWorkerFactory::init() {
                                         tr("Specify the name of the output tab-delimited text file."));
         attributes << new Attribute(outputFileDesc,
                                     BaseTypes::STRING_TYPE(),
-                                    (Attribute::Flags) Attribute::CanBeEmpty);
+                                    Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
     }
 
     QMap<QString, PropertyDelegate *> delegates;
