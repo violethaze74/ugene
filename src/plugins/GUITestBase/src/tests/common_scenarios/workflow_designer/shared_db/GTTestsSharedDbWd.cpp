@@ -187,7 +187,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0005) {
 
 GUI_TEST_CLASS_DEFINITION(read_gui_test_0006) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Variations");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Variants");
 
     createTestConnection(os);
 
@@ -500,7 +500,7 @@ GUI_TEST_CLASS_DEFINITION(save_uwl_gui_test_0001) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Connect to UGENE shared database...");
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Variants");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Variations");
 
     GTUtilsWorkflowDesigner::setParameter(os, "Data storage", 1, GTUtilsWorkflowDesigner::comboValue);
 
@@ -581,7 +581,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0002) {
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "read_from_inaccessible_shared_db.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsWorkflowDesigner::click(os, "Write Variants");
+    GTUtilsWorkflowDesigner::click(os, "Write Variations");
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "output.snp", GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsDialog::waitForDialog(os, new AuthenticationDialogFiller(os, GTDatabaseConfig::login(), GTDatabaseConfig::password()));
