@@ -51,6 +51,7 @@ Document* TextDocumentFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef
 }
 
 DNASequence* TextDocumentFormat::loadTextSequence(IOAdapter* io, U2OpStatus& ti) {
+    Q_UNUSED(io);
     ti.setError("This document format does not support streaming reading mode");
     return NULL;
 }

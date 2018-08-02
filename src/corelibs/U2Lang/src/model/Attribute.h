@@ -101,7 +101,7 @@ public:
     Q_DECLARE_FLAGS(Flags, Flag)
 
     Attribute(const Descriptor& descriptor, const DataTypePtr type, const Flags flags = None, const QVariant & defaultValue = QVariant());
-    Attribute(const Descriptor& d, const DataTypePtr type, bool required, const QVariant & defaultValue = QVariant());
+    Attribute(const Descriptor& descriptor, const DataTypePtr type, bool required, const QVariant & defaultValue = QVariant());
     ~Attribute();
 
     // getters/setters

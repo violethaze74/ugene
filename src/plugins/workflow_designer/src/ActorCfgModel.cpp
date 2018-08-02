@@ -265,6 +265,7 @@ QVariant ActorCfgModel::data(const QModelIndex & index, int role ) const {
                     fnt.setBold(true);
                     return QVariant(fnt);
                 }
+                return QVariant();
             default:
                 return QVariant();
             }

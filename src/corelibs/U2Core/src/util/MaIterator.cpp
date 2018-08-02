@@ -37,7 +37,7 @@ MaIterator::MaIterator(const MultipleAlignment &ma, NavigationDirection directio
       maSquare(static_cast<qint64>(ma->getLength()) * rowsIndexes.size())
 {
     if (rowsIndexes.isEmpty()) {
-        for (int index = 0; index << ma->getNumRows(); index++) {
+        for (int index = 0; index < ma->getNumRows(); index++) {
             rowsIndexes << index;
         }
         maSquare = static_cast<qint64>(ma->getLength()) * rowsIndexes.size();

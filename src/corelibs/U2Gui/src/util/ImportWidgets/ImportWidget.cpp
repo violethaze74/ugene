@@ -30,10 +30,7 @@
 
 namespace U2 {
 
-    ImportWidget::ImportWidget(const GUrl& url, const QVariantMap& settings) :
-    QWidget(),
-    saveController(NULL)
-{
+ImportWidget::ImportWidget() : QWidget(), saveController(NULL) {
 }
 
 ImportWidget::~ImportWidget() {

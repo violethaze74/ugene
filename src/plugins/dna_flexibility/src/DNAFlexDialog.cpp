@@ -166,6 +166,8 @@ void DNAFlexDialog::updateHighFlexValues()
 }
 
 void DNAFlexDialog::sl_updateSizes(int index) {
+    Q_UNUSED(index);
+    
     for (int i=0; i < tabWidget->count(); i++) {
         tabWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     }
