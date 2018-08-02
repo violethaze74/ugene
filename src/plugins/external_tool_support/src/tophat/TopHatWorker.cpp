@@ -564,8 +564,7 @@ QString TopHatPrompter::composeRichDoc()
 TopHatWorker::TopHatWorker(Actor* actor)
     : BaseWorker(actor, false /*autoTransit*/),
       input(NULL),
-      output(NULL),
-      datasetsData(false, "")
+      output(NULL)
 {
 }
 
@@ -579,6 +578,15 @@ QList<Actor*> TopHatWorker::getProducers(const QString &slotId) const {
         QList<Actor*>());
 
     return bus->getProducers(slotId);
+}
+
+QString TopHatWorker::getSampleName(const QString &datasetName) const {
+    foreach (const TophatSample &sample, samples) {
+        if (sample.datasets.contains(datasetName)) {
+            return sample.name;
+        }
+    }
+    return "";
 }
 
 void TopHatWorker::initInputData() {
@@ -596,9 +604,8 @@ void TopHatWorker::initPairedReads() {
     settings.data.paired = (!pairedProducers.isEmpty());
 }
 
-void TopHatWorker::initDatasetData() {
-    QList<Actor*> producers = getProducers(DATASET_SLOT_ID);
-    datasetsData = DatasetData(!producers.isEmpty(), getValue<QString>(TopHatWorkerFactory::SAMPLES_MAP));
+void TopHatWorker::initDatasetFetcher() {
+    readsFetcher = DatasetFetcher(this, input, context);
 }
 
 void TopHatWorker::initSettings() {
@@ -676,40 +683,35 @@ void TopHatWorker::initPathes() {
     }
 }
 
+void TopHatWorker::initSamples() {
+    U2OpStatus2Log os;
+    samples = WorkflowUtils::unpackSamples(getValue<QString>(TopHatWorkerFactory::SAMPLES_MAP), os);
+}
+
 void TopHatWorker::init() {
     input = ports.value(BasePorts::IN_SEQ_PORT_ID());
     output = ports.value(BasePorts::OUT_ASSEMBLY_PORT_ID());
 
     initInputData();
     initPairedReads();
-    initDatasetData();
+    initDatasetFetcher();
     initSettings();
     initPathes();
+    initSamples();
 }
 
 Task * TopHatWorker::runTophat() {
     if (settings.data.fromFiles && settings.data.size() == 1) {
-        settings.sample = GUrlUtils::getPairedFastqFilesBaseName(settings.data.urls.first(), settings.data.paired);
+        settings.resultPrefix = GUrlUtils::getPairedFastqFilesBaseName(settings.data.urls.first(), settings.data.paired);
     } else {
-        settings.sample = datasetsData.getCurrentDataset();
+        settings.resultPrefix = settings.datasetName;
     }
-    TopHatSupportTask * topHatSupportTask = new TopHatSupportTask(settings);
+
+    TopHatSupportTask *topHatSupportTask = new TopHatSupportTask(settings);
     topHatSupportTask->addListeners(createLogListeners());
     connect(topHatSupportTask, SIGNAL(si_stateChanged()), SLOT(sl_topHatTaskFinished()));
     settings.cleanupReads();
     return topHatSupportTask;
-}
-
-Task * TopHatWorker::checkDatasets(const QVariantMap &data) {
-    if (datasetsData.isGroup()) {
-        QString dataset = data[DATASET_SLOT_ID].toString();
-        if (!datasetsData.isCurrent(dataset)) {
-            Task *t = runTophat();
-            datasetsData.replaceCurrent(dataset);
-            return t;
-        }
-    }
-    return NULL;
 }
 
 Task * TopHatWorker::tick() {
@@ -717,103 +719,58 @@ Task * TopHatWorker::tick() {
         return NULL;
     }
 
-    if (input->hasMessage()) {
-        Message inputMessage = input->get();
-        SAFE_POINT(!inputMessage.isEmpty(), "Internal error: message can't be NULL!", NULL);
-        QVariantMap data = inputMessage.getData().toMap();
+    readsFetcher.processInputMessage();
 
-        Task *result = checkDatasets(data);
-        if (settings.data.fromFiles) {
-            settings.data.urls << data[IN_URL_SLOT_ID].toString();
-            if (settings.data.paired) {
-                settings.data.pairedUrls << data[PAIRED_IN_URL_SLOT_ID].toString();
-            }
-        } else {
-            settings.data.seqIds << data[IN_DATA_SLOT_ID].value<SharedDbiDataHandler>();
-            // If the second slot is connected, expect the sequence of the paired read
-            if (settings.data.paired) {
-                settings.data.pairedSeqIds << data[PAIRED_IN_DATA_SLOT_ID].value<SharedDbiDataHandler>();
+    if (readsFetcher.hasFullDataset()) {
+        settings.datasetName = readsFetcher.getDatasetName();
+        const QList<Message> dataset = readsFetcher.takeFullDataset();
+        foreach (const Message &message, dataset) {
+            const QVariantMap messageData = message.getData().toMap();
+            if (settings.data.fromFiles) {
+                settings.data.urls << messageData[IN_URL_SLOT_ID].toString();
+                if (settings.data.paired) {
+                    settings.data.pairedUrls << messageData[PAIRED_IN_URL_SLOT_ID].toString();
+                }
+            } else {
+                settings.data.seqIds << messageData[IN_DATA_SLOT_ID].value<SharedDbiDataHandler>();
+                if (settings.data.paired) {
+                    settings.data.pairedSeqIds << messageData[PAIRED_IN_DATA_SLOT_ID].value<SharedDbiDataHandler>();
+                }
             }
         }
-        return result;
-    } else if (input->isEnded()) {
-        if (!settings.data.urls.isEmpty() || !settings.data.seqIds.isEmpty()) {
-            return runTophat();
-        } else {
-            setDone();
-            output->setEnded();
-        }
+
+        return runTophat();
+    }
+
+    if (readsFetcher.isDone()) {
+        setDone();
+        output->setEnded();
     }
     return NULL;
 }
 
-void TopHatWorker::sl_topHatTaskFinished()
-{
-    TopHatSupportTask *t = qobject_cast<TopHatSupportTask*>(sender());
-    if (!t->isFinished()) {
+void TopHatWorker::sl_topHatTaskFinished() {
+    TopHatSupportTask *task = qobject_cast<TopHatSupportTask*>(sender());
+    if (!task->isFinished()) {
         return;
     }
 
     if (output) {
         QVariantMap m;
-        m[ACCEPTED_HITS_SLOT_ID] = qVariantFromValue<SharedDbiDataHandler>(t->getAcceptedHits());
-        m[SAMPLE_SLOT_ID] = t->getSampleName();
-        m[OUT_BAM_URL_SLOT_ID] = t->getOutBamUrl();
+        m[ACCEPTED_HITS_SLOT_ID] = qVariantFromValue<SharedDbiDataHandler>(task->getAcceptedHits());
+        m[SAMPLE_SLOT_ID] = getSampleName(task->getDatasetName());
+        m[OUT_BAM_URL_SLOT_ID] = task->getOutBamUrl();
         output->put(Message(output->getBusType(), m));
-        foreach (const QString &url, t->getOutputFiles()) {
-            context->getMonitor()->addOutputFile(url, getActor()->getId());
+        foreach (const QString &url, task->getOutputFiles()) {
+            if (QFile::exists(url)) {
+                context->getMonitor()->addOutputFile(url, getActor()->getId());
+            }
         }
     }
 }
 
 void TopHatWorker::cleanup()
 {
-}
-
-/************************************************************************/
-/* DatasetData */
-/************************************************************************/
-DatasetData::DatasetData(bool groupByDatasets, const QString &samplesMapStr)
-: groupByDatasets(groupByDatasets), samplesMapStr(samplesMapStr)
-{
-    inited = false;
-}
-
-bool DatasetData::isGroup() const {
-    return groupByDatasets;
-}
-
-void DatasetData::init(const QString &dataset) {
-    SAFE_POINT(!inited, "DatasetData has already been initialized", );
-    replaceCurrent(dataset);
-}
-
-bool DatasetData::isCurrent(const QString &dataset) {
-    if (!inited) {
-        init(dataset);
-    }
-    return (currentDataset == dataset);
-}
-
-void DatasetData::replaceCurrent(const QString &dataset) {
-    currentDataset = dataset;
-    inited = true;
-}
-
-QString DatasetData::getCurrentSample() const {
-    U2OpStatus2Log os;
-    QList<TophatSample> samples = WorkflowUtils::unpackSamples(samplesMapStr, os);
-    CHECK_OP(os, "");
-    foreach (const TophatSample &sample, samples) {
-        if (sample.datasets.contains(currentDataset)) {
-            return sample.name;
-        }
-    }
-    return "";
-}
-
-const QString &DatasetData::getCurrentDataset() const {
-    return currentDataset;
 }
 
 /************************************************************************/
