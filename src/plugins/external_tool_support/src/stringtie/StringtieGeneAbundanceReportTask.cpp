@@ -272,7 +272,7 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
 QList<QStringList> StringtieGeneAbundanceReportTask::parseLinesIntoTokens(const QString& text) {
     QList<QStringList> result;
     QStringList lines = text.split('\n', QString::SkipEmptyParts);
-    foreach (const QString line, lines) {
+    foreach (const QString& line, lines) {
         QStringList tokens = line.split(inputDelimiter, QString::KeepEmptyParts);
         result.append(tokens);
     }
