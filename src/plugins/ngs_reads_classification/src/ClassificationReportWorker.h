@@ -95,7 +95,7 @@ public:
         NUMBER_OF_READS,
         TAX_ID
     };
-    ClassificationReportTask(const QMap<TaxID,uint> &data, uint totalCount, const QString &reportUrl, const QString &workingDir, bool allTaxa, SortBy sortBy);
+    ClassificationReportTask(const QMap<TaxID,uint> &data, uint totalCount, const QString &reportUrl, bool allTaxa, SortBy sortBy);
     QString getUrl() const {return url;}
 
 private:
@@ -103,7 +103,6 @@ private:
 
     QMap<TaxID,uint> data;
     const uint totalCount;
-    const QString workingDir;
     QString url;
     bool allTaxa;
     SortBy sortBy;

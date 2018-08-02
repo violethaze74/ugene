@@ -233,14 +233,11 @@ Task * ClassificationReportWorker::tick() {
         }
 
         U2OpStatusImpl os;
-        QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
-        tmpDir = GUrlUtils::createDirectory(tmpDir, "_", os);
-        CHECK_OP(os, NULL);
 
         bool allTaxa = getValue<bool>(ALL_TAXA);
         ClassificationReportTask::SortBy sortBy = (ClassificationReportTask::SortBy)getValue<int>(SORT_BY);
 
-        ClassificationReportTask *task = new ClassificationReportTask(data, tax.size(), outputFileUrl, tmpDir, allTaxa, sortBy);
+        ClassificationReportTask *task = new ClassificationReportTask(data, tax.size(), outputFileUrl, allTaxa, sortBy);
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
         return task;
     }
@@ -263,9 +260,13 @@ void ClassificationReportWorker::sl_taskFinished(Task *t) {
     context->getMonitor()->addOutputFile(task->getUrl(), getActor()->getId());
 }
 
-ClassificationReportTask::ClassificationReportTask(const QMap<TaxID,uint> &data, uint totalCount, const QString &reportUrl, const QString &workingDir, bool _allTaxa, SortBy _sortBy)
+ClassificationReportTask::ClassificationReportTask(const QMap<TaxID,uint> &data,
+                                                   uint totalCount,
+                                                   const QString &reportUrl,
+                                                   bool _allTaxa,
+                                                   SortBy _sortBy)
     : Task(tr("Compose classification report"), TaskFlag_None),
-      data(data), totalCount(totalCount), workingDir(workingDir), url(reportUrl), allTaxa(_allTaxa), sortBy(_sortBy)
+      data(data), totalCount(totalCount), url(reportUrl), allTaxa(_allTaxa), sortBy(_sortBy)
 {
     GCOUNTER(cvar, tvar, "ClassificationReportTask");
 
@@ -444,13 +445,6 @@ void ClassificationReportTask::run()
             line.value().clade_proportion_all = double(count) / totalCount;
             line.value().clade_proportion_classified = double(count) / classifiedCount;
         }
-    }
-
-    if (!QFileInfo(url).isAbsolute()) {
-        QString tmpDir = FileAndDirectoryUtils::createWorkingDir(workingDir, FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", workingDir);
-        tmpDir = GUrlUtils::createDirectory(tmpDir, "_", stateInfo);
-        CHECK_OP(stateInfo, );
-        url = tmpDir + '/' + url;
     }
 
     setError(write(url, report, sortBy));

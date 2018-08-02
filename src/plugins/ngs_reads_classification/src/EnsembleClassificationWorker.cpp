@@ -268,11 +268,8 @@ Task * EnsembleClassificationWorker::tick() {
         if (sourceFileUrl1 == sourceFileUrl2 &&
                 (!tripleInput || (tripleInput && sourceFileUrl1 == sourceFileUrl3))) {
             sourceFileUrl = sourceFileUrl1;
+            output->setContext(output->getContext(), metadata1.getId());
         }
-        QVariantMap m;
-        m[BaseSlots::URL_SLOT().getId()] = sourceFileUrl;
-        m[BaseSlots::DATASET_SLOT().getId()] = metadata1.getDatasetName();
-        output->setContext(m, metadata1.getId());
 
         Task* t = new EnsembleClassificationTask(taxData, tripleInput, outputFile, context->workingDir());
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
