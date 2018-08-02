@@ -32,7 +32,7 @@
 namespace U2 {
 
 AprImportWidget::AprImportWidget(const GUrl& url, const QVariantMap& settings) :
-    ImportWidget(url, settings)
+    ImportWidget()
 {
     setupUi(this);
 

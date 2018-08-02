@@ -111,14 +111,15 @@ void CircularViewSettingsWidget::initLayout() {
     switch (settings->labelMode) {
     case CircularViewSettings::Inside:
         labelPositionComboBox->setCurrentText(tr("Inside"));
+        break;
     case CircularViewSettings::Outside:
         labelPositionComboBox->setCurrentText(tr("Outside"));
+        break;
     case CircularViewSettings::None:
         labelPositionComboBox->setCurrentText(tr("None"));
         break;
     default:
         labelPositionComboBox->setCurrentText(tr("Inside/Outside"));
-
     }
 
     settingsWidget = new QWidget(this);
