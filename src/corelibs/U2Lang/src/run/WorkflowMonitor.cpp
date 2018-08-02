@@ -47,7 +47,7 @@ WorkerLogInfo::~WorkerLogInfo() {
 const QString WorkflowMonitor::WORKFLOW_FILE_NAME("workflow.uwl");
 
 WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner *_task, Schema *_schema)
-: QObject(_task), schema(_schema), task(_task), saveSchema(false), started(false)
+: QObject(), schema(_schema), task(_task), saveSchema(false), started(false)
 {
     foreach (Actor *p, schema->getProcesses()) {
         procMap[p->getId()] = p;
@@ -213,6 +213,12 @@ void WorkflowMonitor::sl_taskStateChanged() {
                 state = SUCCESS;
             }
         }
+
+        for (QMap<QString, Monitor::WorkerLogInfo>::iterator i = workersLog.begin(); i != workersLog.end(); ++i) {
+            qDeleteAll(i.value().logs);
+            i.value().logs.clear();
+        }
+
         emit si_taskStateChanged(state);
         emit si_report();
     }
