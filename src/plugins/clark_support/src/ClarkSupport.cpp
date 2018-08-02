@@ -47,7 +47,7 @@ ClarkSupport::ClarkSupport(const QString& name, const QString& path) : ExternalT
 #endif
     toolKitName = CLARK_GROUP;
     muted = true;
-    validMessage = "UGENE-customized" + name;
+    validMessage = "UGENE-customized .*" + name;
 
     if (name == ET_CLARK) {
         description += tr("One of the classifiers from the CLARK framework. This tool is created for powerful workstations and can require a significant amount of RAM.<br><br>"
