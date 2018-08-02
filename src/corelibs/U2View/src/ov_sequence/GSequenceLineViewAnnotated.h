@@ -85,8 +85,8 @@ protected:
 
 class U2VIEW_EXPORT GSequenceLineViewAnnotatedRenderArea : public GSequenceLineViewRenderArea {
 public:
-                                    GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated *d, bool annotationsCanOverlap);
-                                    ~GSequenceLineViewAnnotatedRenderArea();
+    GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated *d);
+    ~GSequenceLineViewAnnotatedRenderArea();
 
     //! VIEW_RENDERER_REFACTORING: only the second method should be available, because it is more common
     virtual U2Region                getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as) const = 0;

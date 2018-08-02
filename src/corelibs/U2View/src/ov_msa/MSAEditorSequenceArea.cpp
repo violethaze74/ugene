@@ -282,6 +282,8 @@ void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modI
 }
 
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
+    Q_UNUSED(v);
+    
     t->addAction(ui->getUndoAction());
     t->addAction(ui->getRedoAction());
     t->addAction(gotoAction);

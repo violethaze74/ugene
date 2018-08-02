@@ -472,7 +472,7 @@ const int CircularViewRenderArea::NOTCH_SIZE = 5;
 
 
 CircularViewRenderArea::CircularViewRenderArea(CircularView* d)
-    : GSequenceLineViewAnnotatedRenderArea(d, true),
+    : GSequenceLineViewAnnotatedRenderArea(d),
       outerEllipseSize(OUTER_ELLIPSE_SIZE),
       ellipseDelta(ELLIPSE_DELTA),
       innerEllipseSize(INNER_ELLIPSE_SIZE),
