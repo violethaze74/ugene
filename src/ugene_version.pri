@@ -1,7 +1,7 @@
 # This file contains UGENE version info
 
 # product version
-UGENE_VERSION=1.31.0-dev
+UGENE_VERSION=1.32.0-dev
 
 # minimum UGENE version whose SQLite databases are compatible with this version
 UGENE_MIN_VERSION_SQLITE=1.25.0
