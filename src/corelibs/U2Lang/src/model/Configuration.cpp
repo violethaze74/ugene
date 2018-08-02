@@ -91,6 +91,7 @@ ConfigurationEditor * Configuration::getEditor() const {
 
 void Configuration::setEditor(ConfigurationEditor* ed) {
     assert(ed != NULL);
+    delete editor;
     editor = ed;
 }
 
@@ -103,16 +104,16 @@ void Configuration::setValidator(ConfigurationValidator* v) {
     validator = v;
 }
 
-bool Configuration::validate(ProblemList &problemList) const {
+bool Configuration::validate(NotificationsList &notificationList) const {
     bool good = true;
     foreach(Attribute* a, getParameters()) {
         if (!isAttributeVisible(a)) {
             continue;
         }
-        good &= a->validate(problemList);
+        good &= a->validate(notificationList);
     }
     if (validator) {
-        good &= validator->validate(this, problemList);
+        good &= validator->validate(this, notificationList);
     }
     return good;
 }
@@ -123,6 +124,9 @@ QList<Attribute*> Configuration::getAttributes() const {
 
 bool Configuration::isAttributeVisible(Attribute *attribute) const {
     bool isVisible = true;
+    if (attribute->getFlags().testFlag(Attribute::Hidden)) {
+        return false;
+    }
     SAFE_POINT(NULL != attribute, "NULL attribute", false);
     foreach (const AttributeRelation *relation, attribute->getRelations()) {
         if (VISIBILITY != relation->getType()) {

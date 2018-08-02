@@ -315,7 +315,7 @@ QList<Annotation *> GSequenceLineViewAnnotated::findAnnotationsInRange(const U2R
 //////////////////////////////////////////////////////////////////////////
 /// Renderer
 
-GSequenceLineViewAnnotatedRenderArea::GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated* d, bool overlap)
+GSequenceLineViewAnnotatedRenderArea::GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated* d)
     : GSequenceLineViewRenderArea(d)
 {
     afNormal = new QFont("Courier", 10);

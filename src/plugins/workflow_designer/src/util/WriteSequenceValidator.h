@@ -30,7 +30,7 @@ namespace Workflow {
 class WriteSequenceValidator : public ScreenedParamValidator {
 public:
     WriteSequenceValidator(const QString &attr, const QString &port, const QString &slot);
-    virtual bool validate(const Configuration *cfg, ProblemList &problemList) const;
+    virtual bool validate(const Configuration *cfg, NotificationsList &notificationList) const;
 
     static DocumentFormat * getFormatSafe(const Actor *actor);
     static bool isAnnotationsSupported(const DocumentFormat *format);
@@ -41,7 +41,7 @@ private:
 
 class WriteSequencePortValidator : public PortValidator {
 public:
-    bool validate(const IntegralBusPort *port, ProblemList &problemList) const;
+    bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const;
 };
 
 } // Workflow

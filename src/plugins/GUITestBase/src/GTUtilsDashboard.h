@@ -44,7 +44,7 @@ public:
     static HI::HIWebElement findTreeElement(HI::GUITestOpStatus &os, QString text);
     static HI::HIWebElement findContextMenuElement(HI::GUITestOpStatus &os, QString text);
     static void click(HI::GUITestOpStatus &os, HI::HIWebElement el, Qt::MouseButton button = Qt::LeftButton);
-    static bool areThereProblems(HI::GUITestOpStatus &os);
+    static bool areThereNotifications(HI::GUITestOpStatus &os);
     static void openTab(HI::GUITestOpStatus &os, Tabs tab);
 
 private:

@@ -424,7 +424,7 @@ void BlastPlusWorker::cleanup() {
 /************************************************************************/
 /* Validator */
 /************************************************************************/
-bool ToolsValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &/*options*/) const {
+bool ToolsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &/*options*/) const {
     ExternalTool *tool = getTool(getValue<QString>(actor, BLASTPLUS_PROGRAM_NAME));
     SAFE_POINT(NULL != tool, "NULL blast plus tool", false);
 
@@ -433,7 +433,7 @@ bool ToolsValidator::validate(const Actor *actor, ProblemList &problemList, cons
 
     bool valid = attr->isDefaultValue() ? !tool->getPath().isEmpty() : !attr->isEmpty();
     if (!valid) {
-        problemList << Problem(WorkflowUtils::externalToolError(tool->getName()));
+        notificationList << WorkflowNotification(WorkflowUtils::externalToolError(tool->getName()));
     }
     return valid;
 }

@@ -64,7 +64,7 @@ public:
 
 class FilterAnnotationsValidator : public ActorValidator {
 public:
-    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
+    bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
 };
 
 class FilterAnnotationsTask : public Task {

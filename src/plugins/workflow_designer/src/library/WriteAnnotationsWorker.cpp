@@ -260,7 +260,7 @@ void WriteAnnotationsWorker::mergeAnnTablesIfNecessary(QList<AnnotationTableObje
 
 Task * WriteAnnotationsWorker::createWriteMultitask(const QList<Task *> &taskList) const {
     if (taskList.isEmpty()) {
-        monitor()->addError(tr("Nothing to write"), getActorId(), Problem::U2_WARNING);
+        monitor()->addError(tr("Nothing to write"), getActorId(), WorkflowNotification::U2_WARNING);
         return NULL;
     } else if (1 == taskList.size()) {
         return taskList.first();
@@ -481,7 +481,9 @@ void WriteAnnotationsWorkerFactory::init() {
 
     Descriptor protoDesc(WriteAnnotationsWorkerFactory::ACTOR_ID,
         WriteAnnotationsWorker::tr("Write Annotations"),
-        WriteAnnotationsWorker::tr("Writes all supplied annotations to file(s) in selected format."));
+        WriteAnnotationsWorker::tr("The element gets message(s) with annotations data and saves the data"
+                                   " to the specified file(s) in one of the appropriate formats"
+                                   " (GenBank, GTF, etc.)."));
     ActorPrototype * proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
 
     // proto delegates

@@ -227,7 +227,7 @@ QList<Port*> Actor::getEnabledOutputPorts() const {
 
 void Actor::setParameter(const QString& name, const QVariant& val) {
     Configuration::setParameter(name, val);
-    updatePortsAvailability(getParameter(name));
+    updateItemsAvailability(getParameter(name));
     emit si_modified();
 }
 
@@ -397,19 +397,26 @@ void Actor::updateDelegateTags() {
     }
 }
 
-void Actor::updatePortsAvailability() {
+void Actor::updateItemsAvailability() {
     foreach (Attribute *influencing, getAttributes()) {
-        updatePortsAvailability(influencing);
+        updateItemsAvailability(influencing);
     }
 }
 
-void Actor::updatePortsAvailability(const Attribute* influencingAttribute) {
-    foreach (const PortRelationDescriptor& rel, influencingAttribute->getPortRelations()) {
+void Actor::updateItemsAvailability(const Attribute* influencingAttribute) {
+    foreach(PortRelationDescriptor* rel, influencingAttribute->getPortRelations()) {
+        Port* dependentPort = getPort(rel->getPortId());
+        CHECK_CONTINUE(dependentPort != NULL);
+
+        dependentPort->setEnabled(rel->isPortEnabled(influencingAttribute->getAttributePureValue()));
+    }
+
+    foreach(const SlotRelationDescriptor& rel, influencingAttribute->getSlotRelations()) {
         Port* dependentPort = getPort(rel.portId);
-        if(NULL == dependentPort) {
-            continue;
-        }
-        dependentPort->setEnabled(rel.isPortEnabled(influencingAttribute->getAttributePureValue()));
+        CHECK_CONTINUE(dependentPort != NULL);
+
+        const bool isEnabled = rel.isSlotEnabled(influencingAttribute->getAttributePureValue().toString());
+        dependentPort->setVisibleSlot(rel.slotId, isEnabled);
     }
 }
 
@@ -426,7 +433,7 @@ const QList<ValidatorDesc> & Actor::getCustomValidators() const {
  * Attributes with scripts are ignored (the method returns "true").
  * Attributes with value "Default" (case-insensitive) are ignored.
  */
-static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, ProblemList &infoList) {
+static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, NotificationsList &infoList) {
     SAFE_POINT(NULL != attr, "NULL attribute!", false);
     SAFE_POINT(NotAnUrl != urlType, "Can't pass not an URL to the method!", false);
 
@@ -462,12 +469,46 @@ static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, Prob
     return res;
 }
 
-bool Actor::validate(ProblemList &problemList) const {
-    bool result = Configuration::validate(problemList);
+static bool validateCodePage(const QString &url) {
+    QString url2 = QString::fromLocal8Bit(url.toLocal8Bit());
+    if (url.compare(url2, Qt::CaseSensitive) != 0) {
+        return false;
+    }
+    return true;
+}
+
+/**
+ * UGENE-5595
+ * The following validation is very simple:
+ *   - convert attr's value from QString to 8Bite byte array
+ *   - then, convert back 8Bit to QString
+ *   - both QString must be equal
+ */
+static bool validateCodePage(Attribute *attr, NotificationsList &infoList) {
+    SAFE_POINT(NULL != attr, "NULL attribute!", false);
+
+    QStringList urlsList = WorkflowUtils::getAttributeUrls(attr);
+    if (urlsList.isEmpty()) {
+        return true;
+    }
+
+    // Verify each URL
+    bool res = true;
+    foreach(const QString &url, urlsList) {
+        if (!validateCodePage(url)) {
+            res = false;
+            infoList << WorkflowNotification(L10N::warningCharactersCodePage(attr->getDisplayName()), "", WorkflowNotification::U2_WARNING);
+        }
+    }
+    return res;
+}
+
+bool Actor::validate(NotificationsList &notificationList) const {
+    bool result = Configuration::validate(notificationList);
     foreach (const ValidatorDesc &desc, customValidators) {
         ActorValidator *v = WorkflowEnv::getActorValidatorRegistry()->findValidator(desc.type);
         if (NULL != v) {
-            result &= v->validate(this, problemList, desc.options);
+            result &= v->validate(this, notificationList, desc.options);
         }
     }
 
@@ -481,8 +522,16 @@ bool Actor::validate(ProblemList &problemList) const {
         UrlAttributeType urlType = WorkflowUtils::isUrlAttribute(attr, this);
 
         if (urlType != NotAnUrl) {
-            bool urlAttrValid = validateUrlAttribute(attr, urlType, problemList);
+            bool urlAttrValid = validateUrlAttribute(attr, urlType, notificationList);
             urlsRes = urlsRes && urlAttrValid;
+        }
+
+        if (urlType != NotAnUrl || attr->getFlags().testFlag(Attribute::NeedValidateEncoding)) {
+            // UGENE-5595
+            bool urlAttrValid = validateCodePage(attr, notificationList);
+            Q_UNUSED(urlAttrValid)
+            // we think that this is a warning, so I commented the following line
+            //urlsRes = urlsRes && urlAttrValid;
         }
 
         if (attr->getAttributeType() == BaseTypes::NUM_TYPE() && !attr->getAttributePureValue().toString().isEmpty()) {
@@ -490,12 +539,12 @@ bool Actor::validate(ProblemList &problemList) const {
             attr->getAttributePureValue().toString().toDouble((&ok));
             result &= ok;
             if (!ok) {
-                problemList << Problem(L10N::badArgument(attr->getAttributePureValue().toString()));
+                notificationList << WorkflowNotification(L10N::badArgument(attr->getAttributePureValue().toString()));
             }
         }
 
         if (WorkflowUtils::isSharedDbUrlAttribute(attr, this)) {
-            result &= WorkflowUtils::validateSharedDbUrl(attr->getAttributePureValue().toString(), problemList);
+            result &= WorkflowUtils::validateSharedDbUrl(attr->getAttributePureValue().toString(), notificationList);
         }
     }
     result = result && urlsRes;

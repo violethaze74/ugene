@@ -126,7 +126,7 @@ Task *MultiplexerWorker::tick() {
         bool bothData = inChannel1->hasMessage() && inChannel2->hasMessage();
         if (!bothData) {
             if (inChannel1->hasMessage() || inChannel2->hasMessage()) {
-                monitor()->addError(getMessagesMismatchError(), getActorId(), Problem::U2_INFO);
+                monitor()->addError(getMessagesMismatchError(), getActorId(), WorkflowNotification::U2_INFO);
             }
             shutDown();
             return NULL;
@@ -269,7 +269,7 @@ void MultiplexerWorkerFactory::init() {
         portDescs << new PortDescriptor(inputDesc2, emptyTypeSet, true);
 
         // output port
-        Descriptor outputDesc(OUTPUT_PORT, MultiplexerWorker::tr("Multiplexed output"),
+        Descriptor outputDesc(OUTPUT_PORT, MultiplexerWorker::tr("Multiplexed Output"),
             MultiplexerWorker::tr("The port outputs multiplexed messages."));
         portDescs << new PortDescriptor(outputDesc, emptyTypeSet, false, true);
     }

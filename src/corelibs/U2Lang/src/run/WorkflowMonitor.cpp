@@ -83,8 +83,8 @@ const QList<FileInfo> & WorkflowMonitor::getOutputFiles() const {
     return outputFiles;
 }
 
-const QList<Problem> & WorkflowMonitor::getProblems() const {
-    return problems;
+const QList<WorkflowNotification> & WorkflowMonitor::getNotifications() const {
+    return notifications;
 }
 
 const QMap<QString, WorkerInfo> & WorkflowMonitor::getWorkersInfo() const {
@@ -118,16 +118,12 @@ void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer,
     emit si_newOutputFile(info);
 }
 
-void WorkflowMonitor::addInfo(const QString &message, const QString &actor) {
-    addProblem(Problem(message, actor, Problem::U2_INFO));
-}
-
-void WorkflowMonitor::addWarning(const QString &message, const QString &actor) {
-    addProblem(Problem(message, actor, Problem::U2_WARNING));
+void WorkflowMonitor::addInfo(const QString &message, const QString &actor, const QString &type) {
+    addNotification(WorkflowNotification(message, actor, type));
 }
 
 void WorkflowMonitor::addError(const QString &message, const QString &actor, const QString &type) {
-    addProblem(Problem(message, actor, type));
+    addNotification(WorkflowNotification(message, actor, type));
     coreLog.error(message);
 }
 
@@ -143,10 +139,10 @@ void WorkflowMonitor::addTaskWarning(Task *task, const QString &message) {
     SAFE_POINT(taskMap.contains(task), "Unregistered task", );
     ActorId id = taskMap[task]->getId();
     if (!message.isEmpty()) {
-        addError(message, id, Problem::U2_WARNING);
+        addError(message, id, WorkflowNotification::U2_WARNING);
     } else {
         foreach (const QString& warning, task->getWarnings()) {
-            addError(warning, id, Problem::U2_WARNING);
+            addError(warning, id, WorkflowNotification::U2_WARNING);
         }
     }
 }
@@ -216,7 +212,7 @@ void WorkflowMonitor::sl_taskStateChanged() {
             state = CANCELLED;
         } else if (task->hasError()) {
             state = FAILED;
-        } else if (!problems.isEmpty()) {
+        } else if (!notifications.isEmpty()) {
             if (hasErrors()) {
                 state = FAILED;
             } else if (hasWarnings()) {
@@ -225,10 +221,12 @@ void WorkflowMonitor::sl_taskStateChanged() {
                 state = SUCCESS;
             }
         }
+
         for (QMap<QString, Monitor::WorkerLogInfo>::iterator i = workersLog.begin(); i != workersLog.end(); ++i) {
             qDeleteAll(i.value().logs);
             i.value().logs.clear();
         }
+
         emit si_taskStateChanged(state);
         emit si_report();
     }
@@ -264,33 +262,33 @@ bool WorkflowMonitor::containsOutputFile(const QString &url) const {
     return false;
 }
 
-void WorkflowMonitor::addProblem(const Problem &problem) {
-    const bool firstProblem = problems.isEmpty();
-    problems << problem;
+void WorkflowMonitor::addNotification(const WorkflowNotification &notification) {
+    const bool firstProblem = notifications.isEmpty();
+    notifications << notification;
 
     if (firstProblem) {
-        emit si_firstProblem();
+        emit si_firstNotification();
         emit si_taskStateChanged(RUNNING_WITH_PROBLEMS);
     }
     int count = 0;
-    foreach (const Problem &info, problems) {
-        if (problem == info) {
+    foreach (const WorkflowNotification &info, notifications) {
+        if (notification == info) {
             count++;
         }
     }
-    emit si_newProblem(problem, count);
+    emit si_newNotification(notification, count);
 }
 
 bool WorkflowMonitor::hasWarnings() const {
-    foreach (Problem problem, problems) {
-        CHECK(problem.type != Problem::U2_WARNING, true);
+    foreach (WorkflowNotification notification, notifications) {
+        CHECK(notification.type != WorkflowNotification::U2_WARNING, true);
     }
     return false;
 }
 
 bool WorkflowMonitor::hasErrors() const {
-    foreach (Problem problem, problems) {
-        CHECK(problem.type != Problem::U2_ERROR, true);
+    foreach (WorkflowNotification notification, notifications) {
+        CHECK(notification.type != WorkflowNotification::U2_ERROR, true);
     }
     return false;
 }

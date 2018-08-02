@@ -1214,7 +1214,7 @@ void WorkflowBusItem::sl_update() {
 }
 
 bool WorkflowBusItem::validate() {
-    ProblemList lst;
+    NotificationsList lst;
     return dst->getPort()->validate(lst);
 }
 

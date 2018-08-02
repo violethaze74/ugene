@@ -372,7 +372,7 @@ void GUITestService::sl_taskStateChanged(Task* t) {
     AppContext::getTaskScheduler()->disconnect(this);
 
     LaunchOptions launchedFor = getLaunchOptions(AppContext::getCMDLineRegistry());
-    if (launchedFor == RUN_ALL_TESTS || RUN_TEST_SUITE) {
+    if (launchedFor == RUN_ALL_TESTS || launchedFor == RUN_TEST_SUITE) {
         AppContext::getTaskScheduler()->cancelAllTasks();
         AppContext::getMainWindow()->getQMainWindow()->close();
     }

@@ -604,7 +604,7 @@ const U2Region PanView::getRegionToZoom() const {
 //////////////////////////////////////////////////////////////////////////
 /// render
 PanViewRenderArea::PanViewRenderArea(PanView* d, PanViewRenderer *renderer)
-    : GSequenceLineViewAnnotatedRenderArea(d, false),
+    : GSequenceLineViewAnnotatedRenderArea(d),
       panView(d),
       renderer(renderer)
 {
