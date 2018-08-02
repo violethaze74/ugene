@@ -131,10 +131,6 @@ void WevoteTask::parseClassification() {
     CHECK_OP(stateInfo, );
 
     TabulatedFormatReader reader(stateInfo, ioAdapter.data());
-    if (settings.inputFileUrl.endsWith(".csv")) {
-        //skip header
-        reader.getNextLine();
-    }
     while (reader.hasNextLine()) {
         const QStringList columns = reader.getNextLine();
         CHECK_EXT(columns.size() >= 2, setError(tr("Too few columns in the result file.")), );
