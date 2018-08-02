@@ -81,7 +81,8 @@ public:
     bool                useBowtie1;
     QString             bowtiePath;
     QString             samtoolsPath;
-    QString             sample;
+    QString             resultPrefix;
+    QString             datasetName;
     /** Working folder for the TopHat tool */
     QString             outDir;
 

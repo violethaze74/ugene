@@ -386,8 +386,8 @@ QString TopHatSupportTask::getOutBamUrl() const {
     return outputFiles.value(ACCEPTED_HITS, "");
 }
 
-QString TopHatSupportTask::getSampleName() const {
-    return settings.sample;
+QString TopHatSupportTask::getDatasetName() const {
+    return settings.datasetName;
 }
 
 void TopHatSupportTask::registerOutputFile(FileRole role, const QString &url) {
@@ -404,17 +404,17 @@ void TopHatSupportTask::registerOutputFiles() {
 void TopHatSupportTask::renameOutputFile(TopHatSupportTask::FileRole role, const QString &newUrl) {
     const QString oldUrl = outputFiles.value(role, "");
     CHECK(!oldUrl.isEmpty(), );
-    const bool copied = QFile::copy(oldUrl, newUrl);
-    CHECK(copied, );
+    const bool renamed = QFile::rename(oldUrl, newUrl);
+    CHECK(renamed, );
     outputFiles[role] = newUrl;
 }
 
 void TopHatSupportTask::renameOutputFiles() {
-    CHECK(!settings.sample.isEmpty(), );
-    renameOutputFile(ACCEPTED_HITS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.sample + ".bam"), "_"));
-    renameOutputFile(JUNCTIONS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.sample + "_junctions.bed"), "_"));
-    renameOutputFile(INSERTIONS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.sample + "_insertions.bed"), "_"));
-    renameOutputFile(DELETIONS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.sample + "_deletions.bed"), "_"));
+    CHECK(!settings.resultPrefix.isEmpty(), );
+    renameOutputFile(ACCEPTED_HITS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.resultPrefix + ".bam"), "_"));
+    renameOutputFile(JUNCTIONS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.resultPrefix + "_junctions.bed"), "_"));
+    renameOutputFile(INSERTIONS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.resultPrefix + "_insertions.bed"), "_"));
+    renameOutputFile(DELETIONS, settings.outDir + "/" + GUrlUtils::rollFileName(GUrlUtils::fixFileName(settings.resultPrefix + "_deletions.bed"), "_"));
 }
 
 }

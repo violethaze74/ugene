@@ -22,11 +22,11 @@
 #ifndef _U2_TOPHAT_WORKER_H
 #define _U2_TOPHAT_WORKER_H
 
-#include "TopHatSettings.h"
-
+#include <U2Lang/DatasetFetcher.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
+#include "TopHatSettings.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -41,28 +41,6 @@ public:
 protected:
     QString composeRichDoc();
 };
-
-class DatasetData {
-public:
-    DatasetData(bool groupByDatasets, const QString &samplesMapStr);
-    bool isGroup() const;
-
-    /** Initialize the data by dataset on first check */
-    bool isCurrent(const QString &dataset);
-    void replaceCurrent(const QString &dataset);
-    QString getCurrentSample() const;
-    const QString &getCurrentDataset() const;
-
-private:
-    bool groupByDatasets;
-    QString samplesMapStr;
-    QString currentDataset;
-    bool inited;
-
-private:
-    void init(const QString &dataset);
-};
-
 
 class TopHatWorker : public BaseWorker
 {
@@ -85,18 +63,20 @@ protected:
     TopHatSettings settings;
 
     bool settingsAreCorrect;
-    DatasetData datasetsData;
+    DatasetFetcher readsFetcher;
+    QList<TophatSample> samples;
 
 private:
     void initInputData();
     void initPairedReads();
-    void initDatasetData();
+    void initDatasetFetcher();
     void initSettings();
     void initPathes();
+    void initSamples();
+
     QList<Actor*> getProducers(const QString &slotId) const;
+    QString getSampleName(const QString &datasetName) const;
     Task * runTophat();
-    /** Returns Tophat task is the dataset is changed */
-    Task * checkDatasets(const QVariantMap &data);
 };
 
 
