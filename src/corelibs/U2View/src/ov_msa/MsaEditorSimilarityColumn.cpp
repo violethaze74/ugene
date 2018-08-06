@@ -39,9 +39,9 @@
 namespace U2
 {
 
-const QString MsaEditorAlignmentDependentWidget::DataIsOutdatedMessage(QString("<FONT COLOR=#FF0000>%1</FONT>").arg(QObject::tr("Data is outdated")));
-const QString MsaEditorAlignmentDependentWidget::DataIsValidMessage(QString("<FONT COLOR=#00FF00>%1</FONT>").arg(QObject::tr("Data is valid")));
-const QString MsaEditorAlignmentDependentWidget::DataIsBeingUpdatedMessage(QString("<FONT COLOR=#0000FF>%1</FONT>").arg(QObject::tr("Data is being updated")));
+const QString MsaEditorAlignmentDependentWidget::DataIsOutdatedMessage(QString("<FONT COLOR=#FF0000>%1</FONT>").arg(QObject::tr("Data are outdated")));
+const QString MsaEditorAlignmentDependentWidget::DataIsValidMessage(QString("<FONT COLOR=#00FF00>%1</FONT>").arg(QObject::tr("Data are valid")));
+const QString MsaEditorAlignmentDependentWidget::DataIsBeingUpdatedMessage(QString("<FONT COLOR=#0000FF>%1</FONT>").arg(QObject::tr("Data are being updated")));
 
 MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MsaEditorWgt* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings)
     : MaEditorNameList(ui, nhBar),

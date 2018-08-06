@@ -127,7 +127,7 @@ void KrakenBuildTask::checkSettings() {
 
 void KrakenBuildTask::checkTaxonomy() {
     U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Taxonomy data is not set")), );
+    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Taxonomy data are not set")), );
 }
 
 QList<Task *> KrakenBuildTask::prepareTaxonomyData() {

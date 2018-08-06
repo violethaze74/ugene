@@ -40,7 +40,7 @@ const QString FMatrixSerializer::ID = "fm_1.14";
 
 #define CHECK_SIZE(size, result) \
     if (offset + size > length) { \
-        os.setError("The data is too short"); \
+        os.setError("The data are too short"); \
         return result; \
     }
 
