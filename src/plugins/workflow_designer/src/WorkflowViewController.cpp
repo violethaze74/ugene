@@ -2229,7 +2229,7 @@ void WorkflowView::sl_loadScene(const QString &url, bool fromDashboard) {
     if (fromDashboard && !confirmModified()) {
         return;
     }
-    Task* t = new LoadWorkflowSceneTask(schema, &meta, scene, url, fromDashboard); //FIXME unsynchronized meta usage
+    Task* t = new LoadWorkflowSceneTask(schema, &meta, scene, url, fromDashboard, fromDashboard); //FIXME unsynchronized meta usage
     TaskSignalMapper* m = new TaskSignalMapper(t);
     connect(m, SIGNAL(si_taskFinished(Task*)), SLOT(sl_onSceneLoaded()));
     if(LoadWorkflowTask::detectFormat(IOAdapterUtils::readFileHeader(url)) == LoadWorkflowTask::XML) {
