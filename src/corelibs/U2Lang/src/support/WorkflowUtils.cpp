@@ -206,7 +206,7 @@ bool validatePorts(Actor *a, NotificationsList &infoList) {
         if (!notificationList.isEmpty()) {
             foreach(WorkflowNotification notification, notificationList) {
                 WorkflowNotification item;
-                item.message = QString("%1 : %2").arg(a->getLabel()).arg(notification.message);
+                item.message = notification.message;
                 item.port = p->getId();
                 item.actorId = a->getId();
                 item.type = notification.type;

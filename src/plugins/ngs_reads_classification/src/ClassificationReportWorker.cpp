@@ -135,7 +135,7 @@ void ClassificationReportWorkerFactory::init() {
 
         a << new Attribute(outputDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
         a << new Attribute(allTaxa, BaseTypes::BOOL_TYPE(), false, QVariant(false));
-        a << new Attribute(sortBy, BaseTypes::STRING_TYPE(), false, QVariant(ClassificationReportTask::TAX_ID));
+        a << new Attribute(sortBy, BaseTypes::STRING_TYPE(), false, QVariant(ClassificationReportTask::NUMBER_OF_READS));
     }
 
     QMap<QString, PropertyDelegate*> delegates;

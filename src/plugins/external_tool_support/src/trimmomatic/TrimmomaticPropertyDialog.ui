@@ -20,26 +20,14 @@
    <string>Configure Trimmomatic Steps</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,2">
-   <property name="sizeConstraint">
-    <enum>QLayout::SetMinAndMaxSize</enum>
-   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMinAndMaxSize</enum>
-     </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="3,5">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetMinAndMaxSize</enum>
-       </property>
        <item>
         <layout class="QVBoxLayout" name="verticalLayoutSteps">
          <property name="spacing">
           <number>5</number>
-         </property>
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMinAndMaxSize</enum>
          </property>
          <item>
           <widget class="QLabel" name="labelSteps">
@@ -50,27 +38,30 @@
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout">
-           <property name="sizeConstraint">
-            <enum>QLayout::SetMaximumSize</enum>
-           </property>
            <item>
             <widget class="QListWidget" name="listSteps"/>
            </item>
            <item>
             <layout class="QVBoxLayout" name="verticalLayoutButtons">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <property name="sizeConstraint">
-              <enum>QLayout::SetMinAndMaxSize</enum>
-             </property>
              <item>
-              <widget class="QToolButton" name="buttonAdd">
+              <widget class="QPushButton" name="buttonAdd">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>25</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>25</width>
+                 <height>25</height>
+                </size>
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add new step&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -98,12 +89,24 @@
               </spacer>
              </item>
              <item>
-              <widget class="QToolButton" name="buttonUp">
+              <widget class="QPushButton" name="buttonUp">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>25</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>25</width>
+                 <height>25</height>
+                </size>
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move selected step above&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -134,12 +137,24 @@
               </spacer>
              </item>
              <item>
-              <widget class="QToolButton" name="buttonDown">
+              <widget class="QPushButton" name="buttonDown">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>25</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>25</width>
+                 <height>25</height>
+                </size>
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move selected step below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -167,12 +182,24 @@
               </spacer>
              </item>
              <item>
-              <widget class="QToolButton" name="buttonRemove">
+              <widget class="QPushButton" name="buttonRemove">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>25</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>25</width>
+                 <height>25</height>
+                </size>
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected step&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>

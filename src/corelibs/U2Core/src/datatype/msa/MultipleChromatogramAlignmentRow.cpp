@@ -129,7 +129,7 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
       chromatogram(chromatogram),
       initialRowInDb(rowInDb)
 {
-    SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData is NULL", );
+    SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData are NULL", );
     removeTrailingGaps();
 }
 
@@ -157,7 +157,7 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
       initialRowInDb(row->initialRowInDb),
       additionalInfo(row->additionalInfo)
 {
-    SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData is NULL", );
+    SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData are NULL", );
 }
 
 QString MultipleChromatogramAlignmentRowData::getName() const {
