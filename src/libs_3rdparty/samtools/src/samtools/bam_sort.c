@@ -458,7 +458,8 @@ void bam_sort_core(int is_by_qname, const char *fn, const char *prefix, size_t m
 int bam_sort(int argc, char *argv[])
 {
 	size_t max_mem = 500000000;
-	int c, is_by_qname = 0, is_stdout = 0;
+    int is_by_qname = 0, is_stdout = 0;
+	//int c;
     //while ((c = getopt(argc, argv, "nom:")) >= 0) {
 	//	switch (c) {
 	//	case 'o': is_stdout = 1; break;
