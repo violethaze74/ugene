@@ -53,6 +53,7 @@ public:
     void updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows);
 
     void crop(const U2Region &window, const QSet<QString> &rowNames);
+    void crop(const U2Region &window, const QList<qint64> &rowIds);
     void crop(const U2Region &window);
 
     /** Methods to work with rows */

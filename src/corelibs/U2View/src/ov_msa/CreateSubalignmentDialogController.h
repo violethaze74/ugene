@@ -43,7 +43,7 @@ public:
     QString getSavePath();
     DocumentFormatId getFormatId();
     U2Region getRegion();
-    QStringList getSelectedSeqNames();
+    const QList<qint64>& getSelectedRowIds() const { return selectedRowIds;}
 
 
 private slots:
@@ -54,11 +54,11 @@ private slots:
 
 private:
     void initSaveController();
-    void selectSeqNames();
+    void updateSelectedRowIds();
 
     MultipleSequenceAlignmentObject *mobj;
     U2Region window;
-    QStringList selectedNames;
+    QList<qint64> selectedRowIds;
     SaveDocumentController* saveController;
 };
 

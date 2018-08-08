@@ -570,9 +570,9 @@ void MSAEditorSequenceArea::sl_createSubaligniment(){
         U2Region window = dialog->getRegion();
         bool addToProject = dialog->getAddToProjFlag();
         QString path = dialog->getSavePath();
-        QStringList seqNames = dialog->getSelectedSeqNames();
+        QList<qint64> rowIds = dialog->getSelectedRowIds();
         Task* csTask = new CreateSubalignmentAndOpenViewTask(getEditor()->getMaObject(),
-            CreateSubalignmentSettings(window, seqNames, path, true, addToProject, dialog->getFormatId()));
+            CreateSubalignmentSettings(window, rowIds, path, true, addToProject, dialog->getFormatId()));
         AppContext::getTaskScheduler()->registerTopLevelTask(csTask);
     }
 }

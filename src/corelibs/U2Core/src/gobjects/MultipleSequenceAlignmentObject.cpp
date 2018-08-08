@@ -143,6 +143,15 @@ void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QS
     updateCachedMultipleAlignment();
 }
 
+void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QList<qint64> &rowIds) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    U2OpStatus2Log os;
+    MsaDbiUtils::crop(entityRef, rowIds, window.startPos, window.length, os);
+    SAFE_POINT_OP(os, );
+
+    updateCachedMultipleAlignment();
+}
+
 void MultipleSequenceAlignmentObject::crop(const U2Region &window) {
     crop(window, QSet<QString>());
 }
