@@ -352,7 +352,7 @@ void WorkflowDesignerService::initSampleActions() {
     ngsRawChip.requiredPlugins << externalToolsPlugin;
     SampleAction ngsChip(ToolsMenu::NGS_CHIP, ToolsMenu::NGS_MENU, "NGS/cistrome.uwl", tr("ChIP-Seq data analysis..."));
     ngsChip.requiredPlugins << externalToolsPlugin;
-    SampleAction ngsClassification(ToolsMenu::NGS_CLASSIFICATION, ToolsMenu::NGS_MENU, "NGS/from_tools_menu_only/ngs_classification.uwl", tr("Taxonomy classification..."));
+    SampleAction ngsClassification(ToolsMenu::NGS_CLASSIFICATION, ToolsMenu::NGS_MENU, "NGS/from_tools_menu_only/ngs_classification.uwl", tr("Metagenomics classification..."));
     ngsChip.requiredPlugins << externalToolsPlugin << "kraken_support" << "clark_support" << "diamond_support" << "wevote_support" << "ngs_reads_classification";
     SampleAction ngsCoverage(ToolsMenu::NGS_COVERAGE, ToolsMenu::NGS_MENU, "NGS/extract_coverage.uwl", tr("Extract coverage from assemblies..."));
     ngsCoverage.requiredPlugins << externalToolsPlugin;
