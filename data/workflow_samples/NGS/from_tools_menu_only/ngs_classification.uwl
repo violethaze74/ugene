@@ -18,7 +18,7 @@ workflow "NGS reads classification" {
             }
             page {
                 id: 1;
-                title: "NGS reads classification"
+                title: "Metagenomics classification"
                 parameters-area {
                     group {
                         title:"Workflow type"

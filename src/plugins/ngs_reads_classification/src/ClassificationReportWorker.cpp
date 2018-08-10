@@ -86,7 +86,7 @@ bool ClassificationReportValidator::validate(const Actor *actor, NotificationsLi
 bool ClassificationReportValidator::validateTaxonomyTree(const Actor *actor, NotificationsList &notificationList) const {
     bool valid = true;
     if (!TaxonomyTree::getInstance()->isValid()) {
-        notificationList << WorkflowNotification(tr("Taxonomy classification data are not available."), actor->getId());
+        notificationList << WorkflowNotification(tr("Taxonomy classification data from NCBI are not available."), actor->getId());
         valid = false;
     }
     return valid;

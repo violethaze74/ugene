@@ -83,7 +83,7 @@ bool ClarkBuildValidator::validate(const Actor *actor, NotificationsList &notifi
 bool ClarkBuildValidator::validateTaxonomy(const Actor *actor, NotificationsList &notificationList) const {
     U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
-              notificationList << WorkflowNotification(tr("Taxonomy classification data are not available."), actor->getId()), false);
+              notificationList << WorkflowNotification(tr("Taxonomy classification data from NCBI data are not available."), actor->getId()), false);
 
     bool isValid = true;
 
@@ -94,7 +94,7 @@ bool ClarkBuildValidator::validateTaxonomy(const Actor *actor, NotificationsList
     const QString nodesDmp = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID);
     const QString taxDump = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_TAXDUMP_ITEM_ID);
 
-    const QString missingFileMessage = tr("Taxonomy classification data are not full: file '%1' is missing.");
+    const QString missingFileMessage = tr("Taxonomy classification data from NCBI are not full: file '%1' is missing.");
 
     if (nuclGbAccession2Taxid.isEmpty()) {
         notificationList << WorkflowNotification(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_NUCL_GB_ACCESSION_2_TAXID_ITEM_ID), actor->getId());
@@ -235,7 +235,7 @@ Task * ClarkBuildWorker::tick() {
         QStringList genUrls;
 
         U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-        CHECK(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), new FailTask(tr("Taxonomy classification data are not available.")));
+        CHECK(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), new FailTask(tr("Taxonomy classification data from NCBI are not available.")));
         QString taxdataUrl = taxonomyDataPath->getPath();
 
         const QList<Dataset> datasets = getValue<QList<Dataset> >(GENOMIC_LIBRARY);
