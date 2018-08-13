@@ -516,7 +516,7 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile()
 FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* sctx)
 : QDialog(sctx->getAnnotatedDNAView()->getWidget()), seqCtx(sctx) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "21433361");
+    new HelpButton(this, buttonBox, "22056025");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

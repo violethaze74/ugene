@@ -47,7 +47,7 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
     fragments(fragmentList),
     saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "21433371");
+    new HelpButton(this, buttonBox, "22056035");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

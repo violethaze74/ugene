@@ -86,7 +86,7 @@ public:
 
 SiteconSearchDialogController::SiteconSearchDialogController(ADVSequenceObjectContext* _ctx, QWidget *p):QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "21433383");
+    new HelpButton(this, buttonBox, "22056047");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
