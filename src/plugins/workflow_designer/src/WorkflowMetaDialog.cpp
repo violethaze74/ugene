@@ -42,7 +42,7 @@ WorkflowMetaDialog::WorkflowMetaDialog(QWidget * p, const Metadata& meta)
       meta(meta),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "21433553");
+    new HelpButton(this, buttonBox, "22056222");
 
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));

@@ -46,7 +46,7 @@ CreateAnnotationDialog::CreateAnnotationDialog(QWidget* p, CreateAnnotationModel
     ui->setupUi(this);
     annWidgetController = new CreateAnnotationWidgetController(m, this, CreateAnnotationWidgetController::Full);
 
-    helpButton = new HelpButton(this, ui->buttonBox, "21433190");
+    helpButton = new HelpButton(this, ui->buttonBox, "22055854");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
 
     ui->mainLayout->insertWidget(0, annWidgetController->getWidget());
