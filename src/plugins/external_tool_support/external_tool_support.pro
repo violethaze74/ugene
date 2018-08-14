@@ -162,6 +162,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/spades/SpadesDelegate.h \
            src/spades/SpadesPortRelationDescriptor.h \
            src/spades/SpadesSettingsWidget.h \
+           src/spades/SpadesSlotRelationDescriptor.h \
            src/spades/SpadesSupport.h \
            src/spades/SpadesTask.h \
            src/spades/SpadesWorker.h \
@@ -415,6 +416,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/spades/SpadesDelegate.cpp \
            src/spades/SpadesPortRelationDescriptor.cpp \
            src/spades/SpadesSettingsWidget.cpp \
+           src/spades/SpadesSlotRelationDescriptor.cpp \
            src/spades/SpadesSupport.cpp \
            src/spades/SpadesTask.cpp \
            src/spades/SpadesWorker.cpp \

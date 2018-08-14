@@ -46,6 +46,7 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "SpadesPortRelationDescriptor.h"
+#include "SpadesSlotRelationDescriptor.h"
 #include "SpadesSupport.h"
 #include "SpadesWorker.h"
 #include "SpadesTask.h"
@@ -91,19 +92,28 @@ const QString SpadesWorkerFactory::CONTIGS_URL_OUT_SLOT_ID = "contigs-out";
 
 const QString SpadesWorkerFactory::SEQUENCING_PLATFORM_ID = "platform-id";
 
-const QStringList SpadesWorkerFactory::IN_PORT_ID_LIST = QStringList() <<
-                                                       SINGLE_UNPAIRED <<
-                                                            SINGLE_CSS <<
-                                                            SINGLE_CLR <<
-                                                       SINGLE_NANOPORE <<
-                                                         SINGLE_SANGER <<
-                                                        SINGLE_TRUSTED <<
-                                                        SINGLE_UNTRUSTED;
+const QString SpadesWorkerFactory::IN_PORT_ID_SINGLE_UNPAIRED = "in-unpaired-reads";
+const QString SpadesWorkerFactory::IN_PORT_ID_SINGLE_CSS = "in-pac-bio-ccs-reads";
+const QString SpadesWorkerFactory::IN_PORT_ID_SINGLE_CLR = "in-pac-bio-clr-reads";
+const QString SpadesWorkerFactory::IN_PORT_ID_SINGLE_NANOPORE = "in-oxford-nanopore-reads";
+const QString SpadesWorkerFactory::IN_PORT_ID_SINGLE_SANGER = "in-sanger-reads";
+const QString SpadesWorkerFactory::IN_PORT_ID_SINGLE_TRUSTED = "in-trusted-contigs";
+const QString SpadesWorkerFactory::IN_PORT_ID_SINGLE_UNTRUSTED = "in-untrusted-contigs";
+const QString SpadesWorkerFactory::IN_PORT_ID_PAIR_DEFAULT = "in-data";
+const QString SpadesWorkerFactory::IN_PORT_ID_PAIR_MATE = "in-mate-pairs";
+const QString SpadesWorkerFactory::IN_PORT_ID_PAIR_HQ_MATE = "in-high-quality-mate-pairs";
 
-const QStringList SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST = QStringList() <<
-                                                                 PAIR_DEFAULT <<
-                                                                    PAIR_MATE <<
-                                                                   PAIR_HQ_MATE;
+const QStringList SpadesWorkerFactory::IN_PORT_ID_LIST = QStringList() << SpadesWorkerFactory::IN_PORT_ID_SINGLE_UNPAIRED
+                                                                       << SpadesWorkerFactory::IN_PORT_ID_SINGLE_CSS
+                                                                       << SpadesWorkerFactory::IN_PORT_ID_SINGLE_CLR
+                                                                       << SpadesWorkerFactory::IN_PORT_ID_SINGLE_NANOPORE
+                                                                       << SpadesWorkerFactory::IN_PORT_ID_SINGLE_SANGER
+                                                                       << SpadesWorkerFactory::IN_PORT_ID_SINGLE_TRUSTED
+                                                                       << SpadesWorkerFactory::IN_PORT_ID_SINGLE_UNTRUSTED;
+
+const QStringList SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST = QStringList() << SpadesWorkerFactory::IN_PORT_ID_PAIR_DEFAULT
+                                                                              << SpadesWorkerFactory::IN_PORT_ID_PAIR_MATE
+                                                                              << SpadesWorkerFactory::IN_PORT_ID_PAIR_HQ_MATE;
 
 const QString SpadesWorkerFactory::MAP_TYPE_ID = "map";
 
@@ -112,6 +122,8 @@ const QString SpadesWorkerFactory::OUT_PORT_DESCR = "out-data";
 const QString SpadesWorkerFactory::OUTPUT_DIR = "output-dir";
 
 const QString SpadesWorkerFactory::BASE_SPADES_SUBDIR = "spades";
+
+const StrStrMap SpadesWorkerFactory::PORT_ID_2_YAML_LIBRARY_NAME = SpadesWorkerFactory::getPortId2YamlLibraryName();
 
 const QString SpadesWorkerFactory::getPortNameById(const QString& portId) {
     QString res;
@@ -142,33 +154,19 @@ const QString SpadesWorkerFactory::getPortNameById(const QString& portId) {
     return res;
 }
 
-const QString SpadesWorkerFactory::getYamlLibraryNameByPortId(const QString& portId) {
-    QString res;
-    if (portId == IN_PORT_ID_LIST[0]) {
-        res = LIB_SINGLE_UNPAIRED;
-    } else if (portId == IN_PORT_ID_LIST[1]) {
-        res = LIB_SINGLE_CSS;
-    } else if (portId == IN_PORT_ID_LIST[2]) {
-        res = LIB_SINGLE_CLR;
-    } else if (portId == IN_PORT_ID_LIST[3]) {
-        res = LIB_SINGLE_NANOPORE;
-    } else if (portId == IN_PORT_ID_LIST[4]) {
-        res = LIB_SINGLE_SANGER;
-    } else if (portId == IN_PORT_ID_LIST[5]) {
-        res = LIB_SINGLE_TRUSTED;
-    } else if (portId == IN_PORT_ID_LIST[6]) {
-        res = LIB_SINGLE_UNTRUSTED;
-    } else if (portId == IN_PORT_PAIRED_ID_LIST[0]) {
-        res = LIB_PAIR_TYPE_DEFAULT;
-    } else if (portId == IN_PORT_PAIRED_ID_LIST[1]) {
-        res = LIB_PAIR_TYPE_MATE;
-    } else if (portId == IN_PORT_PAIRED_ID_LIST[2]) {
-        res = LIB_PAIR_TYPE_MATE_HQ;
-    } else {
-        FAIL("Incorrect port id", QString());
-    }
-
-    return res;
+StrStrMap SpadesWorkerFactory::getPortId2YamlLibraryName() {
+    StrStrMap map;
+    map.insert(IN_PORT_ID_LIST[0], LIB_SINGLE_UNPAIRED);
+    map.insert(IN_PORT_ID_LIST[1], LIB_SINGLE_CSS);
+    map.insert(IN_PORT_ID_LIST[2], LIB_SINGLE_CLR);
+    map.insert(IN_PORT_ID_LIST[3], LIB_SINGLE_NANOPORE);
+    map.insert(IN_PORT_ID_LIST[4], LIB_SINGLE_SANGER);
+    map.insert(IN_PORT_ID_LIST[5], LIB_SINGLE_TRUSTED);
+    map.insert(IN_PORT_ID_LIST[6], LIB_SINGLE_UNTRUSTED);
+    map.insert(IN_PORT_PAIRED_ID_LIST[0], LIB_PAIR_DEFAULT);
+    map.insert(IN_PORT_PAIRED_ID_LIST[1], LIB_PAIR_MATE);
+    map.insert(IN_PORT_PAIRED_ID_LIST[2], LIB_PAIR_MATE_HQ);
+    return map;
 }
 
 const QString SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE = "Standard isolate";
@@ -234,12 +232,12 @@ Task *SpadesWorker::tick() {
 
         AssemblyReads read;
         const QString portId = ports.key(inChannels[i]);
-        read.libName = SpadesWorkerFactory::getYamlLibraryNameByPortId(portId);
+        read.libName = SpadesWorkerFactory::PORT_ID_2_YAML_LIBRARY_NAME.value(portId, "");
 
         unitedPortContext = uniteUniquely(unitedPortContext, inChannels[i]->getLastMessageContext());
 
         bool isPaired = false;
-        const int index = getReadsUrlSlotIdIndex(portId, isPaired);
+        const int index = SpadesWorkerFactory::getReadsUrlSlotIdIndex(portId, isPaired);
 
         QList<Message> fullDataset = readsFetchers[i].takeFullDataset();
         foreach(const Message& m, fullDataset) {
@@ -317,18 +315,6 @@ bool SpadesWorker::processInputMessagesAndCheckReady() {
     }
 
     return result;
-}
-
-int SpadesWorker::getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) const {
-    int index = -1;
-    isPaired = SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.contains(portId);
-    if (isPaired) {
-        index = SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.indexOf(portId);
-    } else {
-        index = SpadesWorkerFactory::IN_PORT_ID_LIST.indexOf(portId) + SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.size();
-    }
-
-    return index;
 }
 
 void SpadesWorker::trySetDone(U2OpStatus &os) {
@@ -531,14 +517,22 @@ void SpadesWorkerFactory::init() {
 
         QVariantMap defaultValue;
         defaultValue.insert(IN_PORT_PAIRED_ID_LIST[0], QString("%1:%2").arg(ORIENTATION_FR).arg(TYPE_SINGLE));
-        defaultValue.insert(SEQUENCING_PLATFORM_ID, "Illumina");
+        defaultValue.insert(SEQUENCING_PLATFORM_ID, PLATFORM_ILLUMINA);
         Attribute* inputAttr = new Attribute(inputData, BaseTypes::MAP_TYPE(), false, QVariant::fromValue<QVariantMap>(defaultValue));
+
         foreach (const QString& read, IN_PORT_ID_LIST) {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(read, QVariantList() << read));
         }
+
         foreach (const QString& pairedRead, IN_PORT_PAIRED_ID_LIST) {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(pairedRead, QVariantList() << pairedRead));
+            bool unused = false;
+            const int index = getReadsUrlSlotIdIndex(pairedRead, unused);
+            assert(unused);
+            const QString slotId = SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID_LIST[index];
+            inputAttr->addSlotRelation(new SpadesSlotRelationDescriptor(pairedRead, slotId));
         }
+
         attrs << inputAttr;
         attrs << new Attribute(datasetType, BaseTypes::STRING_TYPE(), true, SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE);
         attrs << new Attribute(rMode, BaseTypes::STRING_TYPE(), true, SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY);
@@ -599,6 +593,18 @@ void SpadesWorkerFactory::init() {
 
 Worker *SpadesWorkerFactory::createWorker(Actor *a) {
     return new SpadesWorker(a);
+}
+
+int SpadesWorkerFactory::getReadsUrlSlotIdIndex(const QString &portId, bool &isPaired) {
+    int index = -1;
+    isPaired = IN_PORT_PAIRED_ID_LIST.contains(portId);
+    if (isPaired) {
+        index = IN_PORT_PAIRED_ID_LIST.indexOf(portId);
+    } else {
+        index = IN_PORT_ID_LIST.indexOf(portId) + IN_PORT_PAIRED_ID_LIST.size();
+    }
+
+    return index;
 }
 
 QString SpadesPrompter::composeRichDoc() {
