@@ -200,6 +200,22 @@ void SpadesWorker::init() {
     output = ports.value(SpadesWorkerFactory::OUT_PORT_DESCR);
 }
 
+namespace {
+
+QVariantMap uniteUniquely(const QVariantMap &first, const QVariantMap &second) {
+    QVariantMap result;
+    foreach (const QString &key, first.keys()) {
+        result[key] = first.value(key);
+    }
+
+    foreach (const QString &key, second.keys()) {
+        result[key] = second.value(key);
+    }
+    return result;
+}
+
+}
+
 Task *SpadesWorker::tick() {
     U2OpStatus2Log os;
     trySetDone(os);
@@ -210,6 +226,8 @@ Task *SpadesWorker::tick() {
     GenomeAssemblyTaskSettings settings = getSettings(os);
     CHECK(!os.hasError(), new FailTask(os.getError()));
 
+    QVariantMap unitedPortContext;
+
     for (int i = 0; i < readsFetchers.size(); i++) {
         const bool isPortEnabled = readsFetchers[i].hasFullDataset();
         CHECK_CONTINUE(isPortEnabled);
@@ -217,6 +235,8 @@ Task *SpadesWorker::tick() {
         AssemblyReads read;
         const QString portId = ports.key(inChannels[i]);
         read.libName = SpadesWorkerFactory::getYamlLibraryNameByPortId(portId);
+
+        unitedPortContext = uniteUniquely(unitedPortContext, inChannels[i]->getLastMessageContext());
 
         bool isPaired = false;
         const int index = getReadsUrlSlotIdIndex(portId, isPaired);
@@ -251,6 +271,8 @@ Task *SpadesWorker::tick() {
         settings.reads << read;
     }
     CHECK(!settings.reads.isEmpty(), NULL);
+
+    output->setContext(unitedPortContext, MessageMetadata::INVALID_ID);
 
     settings.listeners = createLogListeners();
     GenomeAssemblyMultiTask* t = new GenomeAssemblyMultiTask(settings);
