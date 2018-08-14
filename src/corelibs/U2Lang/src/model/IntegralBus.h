@@ -96,6 +96,7 @@ public:
     virtual QQueue<Message> getMessages(int startIndex, int endIndex) const;
 
     QVariantMap getContext() const {return context;}
+    QVariantMap getLastMessageContext() const {return lastMessageContext;}
     void setContext(const QVariantMap& m, int metadataId);
     int getContextMetadataId() const;
 
@@ -120,6 +121,7 @@ protected:
     BusMap *busMap;
     // context of an output message. See put() for details
     QVariantMap context;
+    QVariantMap lastMessageContext;
     int contextMetadataId;
     //
     IntegralBus* complement;

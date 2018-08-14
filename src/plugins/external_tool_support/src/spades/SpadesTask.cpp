@@ -80,8 +80,8 @@ void SpadesTask::prepare() {
 
     QVariantMap inputDataDialogSettings = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariantMap()).toMap();
     QString sequencingPlatform = inputDataDialogSettings.value(LocalWorkflow::SpadesWorkerFactory::SEQUENCING_PLATFORM_ID, QString()).toString();
-    if (sequencingPlatform == PLATFORM_IONTORRENT) {
-        arguments.append(sequencingPlatform);
+    if (sequencingPlatform == PLATFORM_ION_TORRENT) {
+        arguments.append("--iontorrent");
     }
 
     arguments.append("--dataset");
@@ -157,18 +157,22 @@ void SpadesTask::writeYamlReads(){
     res.append("[\n");
     foreach (const AssemblyReads& r , settings.reads){
         res.append("{\n");
-        if (LocalWorkflow::SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.contains(r.libName)) {
+
+        const bool isLibraryPaired = GenomeAssemblyUtils::isLibraryPaired(r.libName);
+
+        if (isLibraryPaired) {
             res.append(QString("orientation: \"%1\",\n").arg(r.orientation));
         }
+
         res.append(QString("type: \"%1\",\n").arg(r.libName));
-        if(!GenomeAssemblyUtils::hasRightReads(r.libName)) {
+        if (!isLibraryPaired || r.readType == TYPE_INTERLACED) {
             res.append(QString("%1: [\n").arg(r.readType));
 
             foreach(const GUrl& url, r.left) {
                 res.append(QString("\"%1\",\n").arg(url.getURLString()));
             }
             res.append("]\n");
-        }else{
+        } else {
             res.append("left reads: [\n");
             foreach(const GUrl& url, r.left) {
                 res.append(QString("\"%1\",\n").arg(url.getURLString()));
@@ -195,7 +199,7 @@ GenomeAssemblyTask *SpadesTaskFactory::createTaskInstance(const GenomeAssemblyTa
     return new SpadesTask(settings);
 }
 
-SpadesLogParser::SpadesLogParser():ExternalToolLogParser(){
+SpadesLogParser::SpadesLogParser():ExternalToolLogParser() {
 
 }
 

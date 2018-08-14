@@ -38,8 +38,10 @@ public:
     ReportResult report();
     QString getScaffoldsUrl() const;
     QString getContigsUrl() const;
+
 protected slots:
     QList<Task *> onSubTaskFinished(Task *subTask);
+
 public:
     static const QString OPTION_DATASET_TYPE;
     static const QString OPTION_RUNNING_MODE;
@@ -58,7 +60,6 @@ private:
 
 private:
     void writeYamlReads();
-
 };
 
 class SpadesTaskFactory : public GenomeAssemblyTaskFactory {

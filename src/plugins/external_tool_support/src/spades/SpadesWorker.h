@@ -54,7 +54,6 @@ public:
 
 private:
     bool processInputMessagesAndCheckReady();
-    int getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) const;
     void trySetDone(U2OpStatus &os);
 
     QList<DatasetFetcher> readsFetchers;
@@ -75,6 +74,8 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
+    static int getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired);
+
     static const QString ACTOR_ID;
 
     static const QStringList READS_URL_SLOT_ID_LIST;
@@ -89,6 +90,17 @@ public:
 
     static const QString SEQUENCING_PLATFORM_ID;
 
+    static const QString IN_PORT_ID_SINGLE_UNPAIRED;
+    static const QString IN_PORT_ID_SINGLE_CSS;
+    static const QString IN_PORT_ID_SINGLE_CLR;
+    static const QString IN_PORT_ID_SINGLE_NANOPORE;
+    static const QString IN_PORT_ID_SINGLE_SANGER;
+    static const QString IN_PORT_ID_SINGLE_TRUSTED;
+    static const QString IN_PORT_ID_SINGLE_UNTRUSTED;
+    static const QString IN_PORT_ID_PAIR_DEFAULT;
+    static const QString IN_PORT_ID_PAIR_MATE;
+    static const QString IN_PORT_ID_PAIR_HQ_MATE;
+
     static const QStringList IN_PORT_ID_LIST;
     static const QStringList IN_PORT_PAIRED_ID_LIST;
 
@@ -102,7 +114,8 @@ public:
 
     static const QString getPortNameById(const QString& portId);
 
-    static const QString getYamlLibraryNameByPortId(const QString& portId);
+    static const StrStrMap PORT_ID_2_YAML_LIBRARY_NAME;
+    static StrStrMap getPortId2YamlLibraryName();
 
 }; // SpadesWorkerFactory
 

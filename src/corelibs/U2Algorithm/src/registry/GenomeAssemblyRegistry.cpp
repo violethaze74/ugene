@@ -110,65 +110,14 @@ QStringList GenomeAssemblyAlgRegistry::getRegisteredAlgorithmIds() const {
     return algorithms.keys();
 }
 
-QStringList GenomeAssemblyUtils::getPairTypes(){
-    return QStringList() << PAIR_TYPE_DEFAULT << PAIR_TYPE_MATE << PAIR_TYPE_MATE_HQ;
-}
-
 QStringList GenomeAssemblyUtils::getOrientationTypes(){
     return QStringList() << ORIENTATION_FR << ORIENTATION_RF << ORIENTATION_FF;
 }
 
-QString GenomeAssemblyUtils::getDefaultOrientation(const QString &pairType){
-    if(pairType == PAIR_TYPE_MATE || pairType == PAIR_TYPE_MATE_HQ){
-        return ORIENTATION_RF;
-    }
-    return ORIENTATION_FR;
-}
-
-QStringList GenomeAssemblyUtils::getLibraryTypes(){
-    QStringList res;
-    res << LIBRARY_SINGLE << LIBRARY_PAIRED << LIBRARY_PAIRED_INTERLACED << LIBRARY_PAIRED_UNPAIRED << LIBRARY_SANGER << LIBRARY_PACBIO;
-    return res;
-}
-
 bool GenomeAssemblyUtils::isLibraryPaired(const QString& libName){
-    if (libName == LIBRARY_PAIRED || libName == LIBRARY_PAIRED_INTERLACED || libName == LIBRARY_PAIRED_UNPAIRED){
-        return true;
-    }
-    return false;
-}
-
-bool GenomeAssemblyUtils::hasRightReads(const QString& libName){
-    if (libName == PAIR_DEFAULT ||
-        libName == PAIR_MATE ||
-        libName == PAIR_HQ_MATE) {
-        return true;
-    }
-    return false;
-}
-
-
-QString GenomeAssemblyUtils::getYamlLibraryName(const QString &libName, const QString& paiType){
-    QString result = "";
-    if(libName == LIBRARY_SINGLE){
-        result = "single";
-    }else if (libName == LIBRARY_SANGER){
-        result = "sanger";
-    }else if (libName == LIBRARY_PACBIO){
-        result = "pacbio";
-    }else{
-        if(paiType == PAIR_TYPE_DEFAULT){
-            result = "paired-end";
-        }else if (paiType == PAIR_TYPE_MATE){
-            result = "mate-pairs";
-        }else if (paiType == PAIR_TYPE_MATE_HQ){
-            result = "hq-mate-pairs";
-        }
-    }
-
-    return result;
+    return (libName == LIB_PAIR_DEFAULT ||
+            libName == LIB_PAIR_MATE ||
+            libName == LIB_PAIR_MATE_HQ);
 }
 
 } //namespace
-
-

@@ -145,8 +145,8 @@ public:
     void addPortRelation(PortRelationDescriptor* relationDesc);
     const QList<PortRelationDescriptor*>& getPortRelations() const;
 
-    void addSlotRelation(const SlotRelationDescriptor& relationDesc);
-    const QList<SlotRelationDescriptor>& getSlotRelations() const;
+    void addSlotRelation(SlotRelationDescriptor *relationDesc);
+    const QList<SlotRelationDescriptor *>& getSlotRelations() const;
 
     virtual bool isEmpty() const;
     virtual Attribute *clone();
@@ -181,7 +181,7 @@ protected:
 
     QVector<const AttributeRelation*> relations;
     QList<PortRelationDescriptor*>    portRelations;
-    QList<SlotRelationDescriptor>     slotRelations;
+    QList<SlotRelationDescriptor*>    slotRelations;
 
 }; // Attribute
 

@@ -207,8 +207,8 @@ void TrimmomaticWorkerFactory::init() {
         unpairedOutputUrl2Attribute->addRelation(new VisibilityRelation(INPUT_DATA_ATTR_ID, TrimmomaticTaskSettings::PAIRED_END));
         logUrlAttribute->addRelation(new VisibilityRelation(GENERATE_LOG_ATTR_ID, true));
 
-        inputDataAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT_ID, PAIRED_INPUT_SLOT, QVariantList() << TrimmomaticTaskSettings::PAIRED_END));
-        inputDataAttribute->addSlotRelation(SlotRelationDescriptor(OUTPUT_PORT_ID, PAIRED_OUT_SLOT, QVariantList() << TrimmomaticTaskSettings::PAIRED_END));
+        inputDataAttribute->addSlotRelation(new SlotRelationDescriptor(INPUT_PORT_ID, PAIRED_INPUT_SLOT, QVariantList() << TrimmomaticTaskSettings::PAIRED_END));
+        inputDataAttribute->addSlotRelation(new SlotRelationDescriptor(OUTPUT_PORT_ID, PAIRED_OUT_SLOT, QVariantList() << TrimmomaticTaskSettings::PAIRED_END));
 
         attributes << inputDataAttribute;
         attributes << trimmingStepsAttribute;
