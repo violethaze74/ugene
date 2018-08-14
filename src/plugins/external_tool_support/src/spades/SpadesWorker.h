@@ -54,7 +54,6 @@ public:
 
 private:
     bool processInputMessagesAndCheckReady();
-    int getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) const;
     void trySetDone(U2OpStatus &os);
 
     QList<DatasetFetcher> readsFetchers;
@@ -74,6 +73,8 @@ public:
     SpadesWorkerFactory() : DomainFactory(ACTOR_ID) {}
     static void init();
     virtual Worker *createWorker(Actor *a);
+
+    static int getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired);
 
     static const QString ACTOR_ID;
 

@@ -147,7 +147,7 @@ void KrakenClassifyWorkerFactory::init() {
                                           "Classify tool. Hidden attribute");
 
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, KrakenClassifyTaskSettings::SINGLE_END);
-        inputDataAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT_ID, PAIRED_INPUT_SLOT, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
+        inputDataAttribute->addSlotRelation(new SlotRelationDescriptor(INPUT_PORT_ID, PAIRED_INPUT_SLOT, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
         attributes << inputDataAttribute;
 
         QString minikrakenPath;

@@ -411,12 +411,12 @@ void Actor::updateItemsAvailability(const Attribute* influencingAttribute) {
         dependentPort->setEnabled(rel->isPortEnabled(influencingAttribute->getAttributePureValue()));
     }
 
-    foreach(const SlotRelationDescriptor& rel, influencingAttribute->getSlotRelations()) {
-        Port* dependentPort = getPort(rel.portId);
+    foreach(SlotRelationDescriptor *rel, influencingAttribute->getSlotRelations()) {
+        Port* dependentPort = getPort(rel->portId);
         CHECK_CONTINUE(dependentPort != NULL);
 
-        const bool isEnabled = rel.isSlotEnabled(influencingAttribute->getAttributePureValue().toString());
-        dependentPort->setVisibleSlot(rel.slotId, isEnabled);
+        const bool isEnabled = rel->isSlotEnabled(influencingAttribute->getAttributePureValue());
+        dependentPort->setVisibleSlot(rel->slotId, isEnabled);
     }
 }
 

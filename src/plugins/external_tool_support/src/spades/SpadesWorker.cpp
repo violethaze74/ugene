@@ -46,6 +46,7 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "SpadesPortRelationDescriptor.h"
+#include "SpadesSlotRelationDescriptor.h"
 #include "SpadesSupport.h"
 #include "SpadesWorker.h"
 #include "SpadesTask.h"
@@ -216,7 +217,7 @@ Task *SpadesWorker::tick() {
         read.libName = SpadesWorkerFactory::PORT_ID_2_YAML_LIBRARY_NAME.value(portId, "");
 
         bool isPaired = false;
-        const int index = getReadsUrlSlotIdIndex(portId, isPaired);
+        const int index = SpadesWorkerFactory::getReadsUrlSlotIdIndex(portId, isPaired);
 
         QList<Message> fullDataset = readsFetchers[i].takeFullDataset();
         foreach(const Message& m, fullDataset) {
@@ -292,18 +293,6 @@ bool SpadesWorker::processInputMessagesAndCheckReady() {
     }
 
     return result;
-}
-
-int SpadesWorker::getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) const {
-    int index = -1;
-    isPaired = SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.contains(portId);
-    if (isPaired) {
-        index = SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.indexOf(portId);
-    } else {
-        index = SpadesWorkerFactory::IN_PORT_ID_LIST.indexOf(portId) + SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.size();
-    }
-
-    return index;
 }
 
 void SpadesWorker::trySetDone(U2OpStatus &os) {
@@ -508,12 +497,20 @@ void SpadesWorkerFactory::init() {
         defaultValue.insert(IN_PORT_PAIRED_ID_LIST[0], QString("%1:%2").arg(ORIENTATION_FR).arg(TYPE_SINGLE));
         defaultValue.insert(SEQUENCING_PLATFORM_ID, PLATFORM_ILLUMINA);
         Attribute* inputAttr = new Attribute(inputData, BaseTypes::MAP_TYPE(), false, QVariant::fromValue<QVariantMap>(defaultValue));
+
         foreach (const QString& read, IN_PORT_ID_LIST) {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(read, QVariantList() << read));
         }
+
         foreach (const QString& pairedRead, IN_PORT_PAIRED_ID_LIST) {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(pairedRead, QVariantList() << pairedRead));
+            bool unused = false;
+            const int index = getReadsUrlSlotIdIndex(pairedRead, unused);
+            assert(unused);
+            const QString slotId = SpadesWorkerFactory::READS_PAIRED_URL_SLOT_ID_LIST[index];
+            inputAttr->addSlotRelation(new SpadesSlotRelationDescriptor(pairedRead, slotId));
         }
+
         attrs << inputAttr;
         attrs << new Attribute(datasetType, BaseTypes::STRING_TYPE(), true, SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE);
         attrs << new Attribute(rMode, BaseTypes::STRING_TYPE(), true, SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY);
@@ -574,6 +571,18 @@ void SpadesWorkerFactory::init() {
 
 Worker *SpadesWorkerFactory::createWorker(Actor *a) {
     return new SpadesWorker(a);
+}
+
+int SpadesWorkerFactory::getReadsUrlSlotIdIndex(const QString &portId, bool &isPaired) {
+    int index = -1;
+    isPaired = IN_PORT_PAIRED_ID_LIST.contains(portId);
+    if (isPaired) {
+        index = IN_PORT_PAIRED_ID_LIST.indexOf(portId);
+    } else {
+        index = IN_PORT_ID_LIST.indexOf(portId) + IN_PORT_PAIRED_ID_LIST.size();
+    }
+
+    return index;
 }
 
 QString SpadesPrompter::composeRichDoc() {

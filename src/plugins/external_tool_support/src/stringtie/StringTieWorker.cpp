@@ -429,7 +429,7 @@ void StringTieWorkerFactory::init() {
         attributes << new Attribute(primaryOutput, BaseTypes::STRING_TYPE(), false);
 
         Attribute* geneAbudanceOutputAttr = new Attribute(geneAbudanceOutput, BaseTypes::BOOL_TYPE(), false, false);
-        geneAbudanceOutputAttr->addSlotRelation(SlotRelationDescriptor(OUT_PORT_ID, GENE_ABUND_OUT_SLOT_ID,
+        geneAbudanceOutputAttr->addSlotRelation(new SlotRelationDescriptor(OUT_PORT_ID, GENE_ABUND_OUT_SLOT_ID,
                                                                        QVariantList() << true));
         attributes << geneAbudanceOutputAttr;
         Attribute* geneAbudanceOutputFileAttr = new Attribute(geneAbudanceOutputFile, BaseTypes::STRING_TYPE(), false);

@@ -19,28 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SLOT_RELATION_H_
-#define _U2_SLOT_RELATION_H_
+#ifndef _U2_SPADES_SLOT_RELATION_DESCRIPTOR_H_
+#define _U2_SPADES_SLOT_RELATION_DESCRIPTOR_H_
 
-#include <U2Core/global.h>
+#include <U2Lang/SlotRelation.h>
 
 namespace U2 {
 
-class U2LANG_EXPORT SlotRelationDescriptor{
+class SpadesSlotRelationDescriptor : public SlotRelationDescriptor {
 public:
-    SlotRelationDescriptor(const QString& portId, const QString& slotId, const QVariantList& valuesWithEnabledSlot)
-        : portId(portId), slotId(slotId), valuesWithEnabledSlot(valuesWithEnabledSlot) {}
-    virtual ~SlotRelationDescriptor() {}
+    SpadesSlotRelationDescriptor(const QString& portId, const QString& slotId);
 
-    virtual SlotRelationDescriptor *clone() const { return new SlotRelationDescriptor(*this); }
+    SpadesSlotRelationDescriptor *clone() const;
 
-    virtual bool isSlotEnabled(const QVariant& attrValue) const { return valuesWithEnabledSlot.contains(attrValue); }
-
-    QString       portId;
-    QString       slotId;
-    QVariantList  valuesWithEnabledSlot;
+    bool isSlotEnabled(const QVariant& attrValue) const;
 };
 
-} // U2 namespace
+}   // namespace U2
 
-#endif // _U2_SLOT_RELATION_H_
+#endif // _U2_SPADES_SLOT_RELATION_DESCRIPTOR_H_
