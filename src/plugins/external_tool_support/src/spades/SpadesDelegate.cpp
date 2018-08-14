@@ -263,7 +263,7 @@ void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
 
 void SpadesPropertyDialog::setItemsData() {
     sequencingPlatformComboBox->setItemData(0, PLATFORM_ILLUMINA);
-    sequencingPlatformComboBox->setItemData(1, PLATFORM_IONTORRENT);
+    sequencingPlatformComboBox->setItemData(1, PLATFORM_ION_TORRENT);
 
     QList<QComboBox*> directionComboBoxes = QList<QComboBox*>() <<
                                             pairEndReadsDirectionComboBox <<
