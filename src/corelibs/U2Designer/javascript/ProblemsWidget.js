@@ -13,7 +13,7 @@
   }
 */
 function ProblemsWidget(containerId){ // may be add first problem as second argument function ProblemsWidget(containerId, firstProblemInfo)
-  addWidget("<span lang=\"en\" class=\"translatable\">Problems</span>" + "<span lang=\"ru\" class=\"translatable\">Проблемы</span>", "overview_tab", 0, containerId);
+  addWidget("<span lang=\"en\" class=\"translatable\">Notifications</span>" + "<span lang=\"ru\" class=\"translatable\">Уведомления</span>", "overview_tab", 0, containerId);
   TableWidget.apply(this, arguments); //inheritance 
   //private
   var self = this;

@@ -43,7 +43,7 @@ LIBS += -lugenedb
 
 # Special compiler flags for windows configuration
 win32 {
-    LIBS += zlib.lib Psapi.lib User32.lib
+    LIBS += User32.lib
 }
 
 unix {
