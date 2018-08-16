@@ -32,7 +32,7 @@ ItemToImportEditDialog::ItemToImportEditDialog(const QString &item, const QStrin
     ui(new Ui_ItemToImportEditDialog)
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "21433495");
+    new HelpButton(this, ui->buttonBox, "22056159");
     init(item, folder, options);
 }
 

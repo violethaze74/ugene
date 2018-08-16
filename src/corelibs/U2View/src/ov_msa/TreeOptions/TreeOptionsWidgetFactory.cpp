@@ -33,7 +33,7 @@ namespace U2 {
 
 const QString MSATreeOptionsWidgetFactory::GROUP_ID = "OP_MSA_TREES_WIDGET";
 const QString MSATreeOptionsWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-const QString MSATreeOptionsWidgetFactory::GROUP_DOC_PAGE = "21433329";
+const QString MSATreeOptionsWidgetFactory::GROUP_DOC_PAGE = "22055993";
 
 
 MSATreeOptionsWidgetFactory::MSATreeOptionsWidgetFactory()
@@ -73,7 +73,7 @@ void MSATreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSet
 
 const QString TreeOptionsWidgetFactory::GROUP_ID = "OP_TREES_WIDGET";
 const QString TreeOptionsWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-const QString TreeOptionsWidgetFactory::GROUP_DOC_PAGE = "21433329";
+const QString TreeOptionsWidgetFactory::GROUP_DOC_PAGE = "22055993";
 
 TreeOptionsWidgetFactory::TreeOptionsWidgetFactory()
     : viewSettings(new TreeOpWidgetViewSettings)
@@ -114,7 +114,7 @@ void TreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSettin
 
 const QString AddTreeWidgetFactory::GROUP_ID = "OP_MSA_ADD_TREE_WIDGET";
 const QString AddTreeWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-const QString AddTreeWidgetFactory::GROUP_DOC_PAGE = "21433329";
+const QString AddTreeWidgetFactory::GROUP_DOC_PAGE = "22055993";
 
 AddTreeWidgetFactory::AddTreeWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;

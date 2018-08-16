@@ -59,7 +59,7 @@ DigestSequenceDialog::DigestSequenceDialog(ADVSequenceObjectContext* ctx, QWidge
     : QDialog(p),seqCtx(ctx), timer(NULL), animationCounter(0)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "21433369");
+    new HelpButton(this, buttonBox, "22056033");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
