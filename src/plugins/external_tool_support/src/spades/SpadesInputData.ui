@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>422</height>
+    <width>451</width>
+    <height>504</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,169 +23,18 @@
    <bool>false</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="sizeConstraint">
-    <enum>QLayout::SetMinAndMaxSize</enum>
-   </property>
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Required input (at least one)</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetMinAndMaxSize</enum>
-      </property>
-      <property name="topMargin">
-       <number>4</number>
-      </property>
-      <property name="bottomMargin">
-       <number>1</number>
-      </property>
-      <property name="verticalSpacing">
-       <number>5</number>
-      </property>
-      <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetMinAndMaxSize</enum>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>2</number>
-        </property>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>10</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="pacBioCcsCheckBox">
-          <property name="text">
-           <string>PacBio CCS reads</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
        <widget class="QGroupBox" name="groupBox_3">
         <property name="title">
          <string>Illumina/Ion Torrent reads</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMinAndMaxSize</enum>
-         </property>
-         <property name="topMargin">
-          <number>3</number>
-         </property>
-         <property name="bottomMargin">
-          <number>4</number>
-         </property>
-         <property name="horizontalSpacing">
-          <number>6</number>
-         </property>
-         <property name="verticalSpacing">
-          <number>2</number>
-         </property>
-         <item row="2" column="2">
-          <widget class="QComboBox" name="hightQualityReadsDirectionComboBox">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>fr</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>rf</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>ff</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="3" column="0" colspan="2">
-          <widget class="QCheckBox" name="unpairedReadsCheckBox">
-           <property name="text">
-            <string>Unpaired reads</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="3">
-          <widget class="QComboBox" name="hightQualityReadsTypeComboBox">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>Separate reads</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Interlaced reads</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QComboBox" name="pairEndReadsDirectionComboBox">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>fr</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>rf</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>ff</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QCheckBox" name="hightQualityCheckBox">
-           <property name="text">
-            <string>High-quality mate-pairs</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QCheckBox" name="pairEndCheckBox">
-           <property name="text">
-            <string>Paired-end reads</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label">
            <property name="sizePolicy">
@@ -205,7 +54,101 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1" colspan="3">
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="hightQualityCheckBox">
+           <property name="text">
+            <string>High-quality mate-pairs</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="hightQualityReadsDirectionComboBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <item>
+            <property name="text">
+             <string>fr</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>rf</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ff</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QCheckBox" name="unpairedReadsCheckBox">
+           <property name="text">
+            <string>Unpaired reads</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="pairEndReadsDirectionComboBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <item>
+            <property name="text">
+             <string>fr</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>rf</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ff</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="2">
           <widget class="QComboBox" name="sequencingPlatformComboBox">
            <item>
             <property name="text">
@@ -219,7 +162,7 @@
            </item>
           </widget>
          </item>
-         <item row="1" column="3">
+         <item row="1" column="2">
           <widget class="QComboBox" name="pairEndReadsTypeComboBox">
            <property name="enabled">
             <bool>false</bool>
@@ -236,7 +179,38 @@
            </item>
           </widget>
          </item>
+         <item row="2" column="2">
+          <widget class="QComboBox" name="hightQualityReadsTypeComboBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>Separate reads</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Interlaced reads</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="pairEndCheckBox">
+           <property name="text">
+            <string>Paired-end reads</string>
+           </property>
+          </widget>
+         </item>
         </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="pacBioCcsCheckBox">
+        <property name="text">
+         <string>PacBio CCS reads</string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -263,36 +237,59 @@
      <property name="title">
       <string>Additional input</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="spacing">
-       <number>2</number>
-      </property>
-      <property name="sizeConstraint">
-       <enum>QLayout::SetMinAndMaxSize</enum>
-      </property>
-      <item>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="sangerReadsCheckBox">
+        <property name="text">
+         <string>Sanger reads</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="oxfordNanoporeCheckBox">
+        <property name="text">
+         <string>Oxford Nanopore reads</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="untrustedContigsCheckBox">
+        <property name="text">
+         <string>Untrusted contigs</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="trustedContigsCheckBox">
+        <property name="text">
+         <string>Trusted contigs</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="pacBioClrCheckBox">
+        <property name="text">
+         <string>PacBio CLR reads</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
        <widget class="QGroupBox" name="groupBox_4">
         <property name="title">
          <string>Illumina/Ion Torrent reads</string>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMinAndMaxSize</enum>
-         </property>
-         <property name="topMargin">
-          <number>3</number>
-         </property>
-         <property name="rightMargin">
-          <number>9</number>
-         </property>
-         <property name="bottomMargin">
-          <number>2</number>
-         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QCheckBox" name="matePairsCheckBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -305,25 +302,27 @@
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_7">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Preferred</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>148</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
           <widget class="QComboBox" name="matePairsReadsDirectionComboBox">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
            </property>
            <item>
             <property name="text">
@@ -361,163 +360,6 @@
          </item>
         </layout>
        </widget>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetMinAndMaxSize</enum>
-        </property>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMinAndMaxSize</enum>
-          </property>
-          <item>
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="pacBioClrCheckBox">
-            <property name="text">
-             <string>PacBio CLR reads</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMinAndMaxSize</enum>
-          </property>
-          <item>
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="oxfordNanoporeCheckBox">
-            <property name="text">
-             <string>Oxford Nanopore reads</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMinAndMaxSize</enum>
-          </property>
-          <item>
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="sangerReadsCheckBox">
-            <property name="text">
-             <string>Sanger reads</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMinAndMaxSize</enum>
-          </property>
-          <item>
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="trustedContigsCheckBox">
-            <property name="text">
-             <string>Trusted contigs</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMinAndMaxSize</enum>
-          </property>
-          <item>
-           <spacer name="horizontalSpacer_6">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="untrustedContigsCheckBox">
-            <property name="text">
-             <string>Untrusted contigs</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
       </item>
      </layout>
     </widget>
@@ -565,38 +407,6 @@
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>matePairsCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>matePairsReadsDirectionComboBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>107</x>
-     <y>357</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>275</x>
-     <y>357</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>matePairsCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>matePairsTypeComboBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>107</x>
-     <y>357</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>377</x>
-     <y>357</y>
     </hint>
    </hints>
   </connection>
@@ -661,6 +471,38 @@
     <hint type="destinationlabel">
      <x>377</x>
      <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>matePairsCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>matePairsReadsDirectionComboBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>107</x>
+     <y>357</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>275</x>
+     <y>357</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>matePairsCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>matePairsTypeComboBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>107</x>
+     <y>357</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>357</y>
     </hint>
    </hints>
   </connection>
