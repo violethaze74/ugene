@@ -40,9 +40,9 @@ bool DiamondBuildValidator::validateTaxonomy(const Actor *actor, NotificationsLi
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
-              problemList << WorkflowNotification(tr("Taxonomy classification data are not available."), actor->getId()), false);
+              problemList << WorkflowNotification(tr("Taxonomy classification data from NCBI are not available."), actor->getId()), false);
 
-    const QString missingFileMessage = tr("Taxonomy classification data are not full: file '%1' is missing.");
+    const QString missingFileMessage = tr("Taxonomy classification data from NCBI are not full: file '%1' is missing.");
 
     if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_PROT_ACCESSION_2_TAXID_ITEM_ID).isEmpty()) {
         problemList << WorkflowNotification(missingFileMessage.arg(NgsReadsClassificationPlugin::TAXON_PROT_ACCESSION_2_TAXID_ITEM_ID), actor->getId());

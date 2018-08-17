@@ -86,7 +86,9 @@ QString ClarkClassifyPrompter::composeRichDoc() {
 /************************************************************************/
 
 bool ClarkClassifyValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &) const {
-    return validateDatabase(actor, notificationList);
+    const bool databaseIsValid = validateDatabase(actor, notificationList);
+    const bool refseqIsValid = validateRefseqAvailability(actor, notificationList);
+    return databaseIsValid && refseqIsValid;
 }
 
 bool ClarkClassifyValidator::validateDatabase(const Actor *actor, NotificationsList &notificationList) const {
@@ -94,7 +96,7 @@ bool ClarkClassifyValidator::validateDatabase(const Actor *actor, NotificationsL
     if (!databaseUrl.isEmpty()) {
         const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
         CHECK_EXT(doesDatabaseDirExist,
-                  notificationList.append(WorkflowNotification(ClarkClassifyPrompter::tr("The database folder doesn't exist: %1.").arg(databaseUrl), actor->getId())),
+                  notificationList.append(WorkflowNotification(tr("The database folder doesn't exist: %1.").arg(databaseUrl), actor->getId())),
                   false);
 
         const QStringList files = QStringList() << "targets.txt" << ".custom.fileToAccssnTaxID" << ".custom.fileToTaxIDs";
@@ -108,12 +110,70 @@ bool ClarkClassifyValidator::validateDatabase(const Actor *actor, NotificationsL
         }
 
         foreach (const QString &missedFile, missedFiles) {
-            notificationList.append(WorkflowNotification(ClarkClassifyPrompter::tr("The mandatory database file doesn't exist: %1.").arg(missedFile), actor->getId()));
+            notificationList.append(WorkflowNotification(tr("The mandatory database file doesn't exist: %1.").arg(missedFile), actor->getId()));
         }
         CHECK(missedFiles.isEmpty(), false);
     }
 
     return true;
+}
+
+bool ClarkClassifyValidator::validateRefseqAvailability(const Actor *actor, NotificationsList &notificationList) const {
+    bool isValid = true;
+    bool isDefaultBacterialViralDatabase = false;
+    bool isDefaultViralDatabase = false;
+    const QString databaseUrl = actor->getParameter(ClarkClassifyWorkerFactory::DB_URL)->getAttributeValueWithoutScript<QString>();
+
+    U2DataPath *clarkBacteriaViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID);
+    if (NULL != clarkBacteriaViralDataPath && clarkBacteriaViralDataPath->isValid()) {
+        isDefaultBacterialViralDatabase = (databaseUrl == clarkBacteriaViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID));
+    }
+
+    U2DataPath *clarkViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID);
+    if (NULL != clarkViralDataPath && clarkViralDataPath->isValid()) {
+        isDefaultViralDatabase = (databaseUrl == clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID));
+    }
+
+    if (isDefaultBacterialViralDatabase && !isDatabaseAlreadyBuilt(actor)) {
+        isValid = isValid && checkRefseqAvailability(actor, notificationList, NgsReadsClassificationPlugin::REFSEQ_BACTERIAL_DATA_ID);
+        isValid = isValid && checkRefseqAvailability(actor, notificationList, NgsReadsClassificationPlugin::REFSEQ_VIRAL_DATA_ID);
+    }
+
+    if (isDefaultViralDatabase && !isDatabaseAlreadyBuilt(actor)) {
+        isValid = isValid && checkRefseqAvailability(actor, notificationList, NgsReadsClassificationPlugin::REFSEQ_VIRAL_DATA_ID);
+    }
+
+    return isValid;
+}
+
+bool ClarkClassifyValidator::checkRefseqAvailability(const Actor *actor, NotificationsList &notificationList, const QString &dataPathId) const {
+    U2DataPath *refseqDataPath = AppContext::getDataPathRegistry()->getDataPathByName(dataPathId);
+    const bool isValid = (NULL != refseqDataPath && refseqDataPath->isValid());
+    if (!isValid) {
+        notificationList << WorkflowNotification(tr("Reference database for these CLARK settings is not available. RefSeq data are required to build it."), actor->getId());
+    }
+    return isValid;
+}
+
+bool ClarkClassifyValidator::isDatabaseAlreadyBuilt(const Actor *actor) const {
+    const QString databaseUrl = actor->getParameter(ClarkClassifyWorkerFactory::DB_URL)->getAttributeValueWithoutScript<QString>();
+
+    // file names patterns are taken from "CLARK<HKMERr>::getdbName" method in CLARK source code
+    QStringList nameFilters;
+    if (ClarkClassifySettings::TOOL_LIGHT == actor->getParameter(ClarkClassifyWorkerFactory::TOOL_VARIANT)->getAttributeValueWithoutScript<QString>().toLower()) {
+        nameFilters << QString("*_m%1_light_%2.tsk.*")
+                       .arg(actor->getParameter(ClarkClassifyWorkerFactory::K_MIN_FREQ)->getAttributeValueWithoutScript<int>())
+                       .arg(actor->getParameter(ClarkClassifyWorkerFactory::GAP)->getAttributeValueWithoutScript<int>());
+    } else  {
+        nameFilters << QString("*_k%1_t*_s*_m%2.tsk.*")
+                       .arg(actor->getParameter(ClarkClassifyWorkerFactory::K_LENGTH)->getAttributeValueWithoutScript<int>())
+                       .arg(actor->getParameter(ClarkClassifyWorkerFactory::K_MIN_FREQ)->getAttributeValueWithoutScript<int>());
+    }
+
+    QFileInfoList files = QDir(databaseUrl).entryInfoList(nameFilters);
+
+    const int BUILT_DATABASE_FILES_COUNT = 3;
+    return BUILT_DATABASE_FILES_COUNT == files.size();
 }
 
 /************************************************************************/
@@ -249,7 +309,7 @@ void ClarkClassifyWorkerFactory::init() {
                                           "Classify tool. Hidden attribute");
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), Attribute::None, SINGLE_END);
-        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, PAIRED_INPUT_SLOT, QVariantList() << PAIRED_END));
+        sequencingReadsAttribute->addSlotRelation(new SlotRelationDescriptor(INPUT_PORT, PAIRED_INPUT_SLOT, QVariantList() << PAIRED_END));
         a << sequencingReadsAttribute;
         a << new Attribute(tool, BaseTypes::STRING_TYPE(), Attribute::None, ClarkClassifySettings::TOOL_LIGHT);
 

@@ -69,7 +69,7 @@ workflow "PE reads assembly and classification"{
     trimmomatic.reads-url2->fastqc-after-2.in-file.url
     kraken-classify.tax-data->classification-report.in.tax-data
     get-pe-reads-list.reads-url1->trimmomatic.in.reads-url1
-    get-pe-reads-list.reads-url1->trimmomatic.in.reads-url2
+    get-pe-reads-list.reads-url2->trimmomatic.in.reads-url2
 
     .meta {
         visual {

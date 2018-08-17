@@ -89,8 +89,7 @@ Message BusMap::takeMessageMap(CommunicationChannel *ch, QVariantMap &context) {
 
     Message m = ch->get();
     assert(m.getData().type() == QVariant::Map);
-    QVariantMap imap = m.getData().toMap();
-    context.unite(imap);
+    context.unite(m.getData().toMap());
 
     return Message(m.getType(), getMessageData(m), m.getMetadataId());
 }
@@ -268,10 +267,10 @@ CommunicationChannel * IntegralBus::getCommunication(const QString& id) {
 
 Message IntegralBus::get() {
     QVariantMap result;
-    QVariantMap messageContext;
-    int metadataId = -1;
+    int metadataId = MessageMetadata::INVALID_ID;
+    lastMessageContext.clear();
     foreach (CommunicationChannel *ch, outerChannels) {
-        Message message = busMap->takeMessageMap(ch, messageContext);
+        Message message = busMap->takeMessageMap(ch, lastMessageContext);
         QVariantMap data = message.getData().toMap();
         result.unite(data);
 
@@ -304,7 +303,7 @@ Message IntegralBus::get() {
         data = result.values().at(0);
     }
     if (complement) {
-        complement->setContext(messageContext, metadataId);
+        complement->setContext(lastMessageContext, metadataId);
     }
 
     takenMsgs++;

@@ -19,28 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SLOT_RELATION_H_
-#define _U2_SLOT_RELATION_H_
-
-#include <U2Core/global.h>
+#include <U2Algorithm/GenomeAssemblyRegistry.h>
+#include "SpadesSlotRelationDescriptor.h"
+#include "SpadesWorker.h"
 
 namespace U2 {
 
-class U2LANG_EXPORT SlotRelationDescriptor{
-public:
-    SlotRelationDescriptor(const QString& portId, const QString& slotId, const QVariantList& valuesWithEnabledSlot)
-        : portId(portId), slotId(slotId), valuesWithEnabledSlot(valuesWithEnabledSlot) {}
-    virtual ~SlotRelationDescriptor() {}
+SpadesSlotRelationDescriptor::SpadesSlotRelationDescriptor(const QString &portId, const QString &slotId)
+    : SlotRelationDescriptor(portId, slotId, QVariantList())
+{
 
-    virtual SlotRelationDescriptor *clone() const { return new SlotRelationDescriptor(*this); }
+}
 
-    virtual bool isSlotEnabled(const QVariant& attrValue) const { return valuesWithEnabledSlot.contains(attrValue); }
+SpadesSlotRelationDescriptor *SpadesSlotRelationDescriptor::clone() const {
+    return new SpadesSlotRelationDescriptor(*this);
+}
 
-    QString       portId;
-    QString       slotId;
-    QVariantList  valuesWithEnabledSlot;
-};
+bool SpadesSlotRelationDescriptor::isSlotEnabled(const QVariant &attrValue) const {
+    return !attrValue.toMap().value(portId).toString().contains(TYPE_INTERLACED);
+}
 
-} // U2 namespace
-
-#endif // _U2_SLOT_RELATION_H_
+}   // namespace U2

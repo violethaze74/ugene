@@ -77,7 +77,7 @@ const QString NgsReadsClassificationPlugin::REFSEQ_BACTERIAL_DATA_ID = "refseq_b
 const QString NgsReadsClassificationPlugin::REFSEQ_VIRAL_PATH = "ngs_classification/refseq/viral";
 const QString NgsReadsClassificationPlugin::REFSEQ_VIRAL_DATA_ID = "refseq_viral";
 
-const QString NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP = TR("NGS: Reads Classification");
+const QString NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP = TR("NGS: Metagenomics Classification");
 
 const QString NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID = "ClassifyToolName";
 

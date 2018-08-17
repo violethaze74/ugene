@@ -37,55 +37,27 @@ class QWidget;
 
 namespace U2 {
 
-#define LIBRARY_SINGLE                "Single-end"
-#define LIBRARY_PAIRED                "Paired-end"
-#define LIBRARY_PAIRED_INTERLACED     "Paired-end (Interlaced)"
-#define LIBRARY_PAIRED_UNPAIRED       "Paired-end (Unpaired files)"
-#define LIBRARY_SANGER                "Sanger"
-#define LIBRARY_PACBIO                "PacBio"
+#define LIB_PAIR_DEFAULT                "paired-end"
+#define LIB_PAIR_MATE                   "mate-pairs"
+#define LIB_PAIR_MATE_HQ                "hq-mate-pairs"
 
-#define PAIR_TYPE_DEFAULT              "default"
-#define PAIR_TYPE_MATE                 "mate"
-#define PAIR_TYPE_MATE_HQ              "high-quality mate"
+#define LIB_SINGLE_UNPAIRED             "single"
+#define LIB_SINGLE_CSS                  "single"
+#define LIB_SINGLE_CLR                  "pacbio"
+#define LIB_SINGLE_NANOPORE             "nanopore"
+#define LIB_SINGLE_SANGER               "sanger"
+#define LIB_SINGLE_TRUSTED              "trusted-contigs"
+#define LIB_SINGLE_UNTRUSTED            "untrusted-contigs"
 
-#define SINGLE_UNPAIRED                "in-unpaired-reads"
-#define SINGLE_CSS                     "in-pac-bio-ccs-reads"
-#define SINGLE_CLR                     "in-pac-bio-clr-reads"
-#define SINGLE_NANOPORE                "in-oxford-nanopore-reads"
-#define SINGLE_SANGER                  "in-sanger-reads"
-#define SINGLE_TRUSTED                 "in-trusted-contigs"
-#define SINGLE_UNTRUSTED               "in-untrusted-contigs"
+#define ORIENTATION_FR                  "fr"
+#define ORIENTATION_RF                  "rf"
+#define ORIENTATION_FF                  "ff"
 
-#define LIB_PAIR_TYPE_DEFAULT          "paired-end"
-#define LIB_PAIR_TYPE_MATE             "mate-pairs"
-#define LIB_PAIR_TYPE_MATE_HQ          "hq-mate-pairs"
+#define PLATFORM_ILLUMINA               "illumina"
+#define PLATFORM_ION_TORRENT            "ion torrent"
 
-#define LIB_SINGLE_UNPAIRED            "single"
-#define LIB_SINGLE_CSS                 "single"
-#define LIB_SINGLE_CLR                 "pacbio"
-#define LIB_SINGLE_NANOPORE            "nanopore"
-#define LIB_SINGLE_SANGER              "sanger"
-#define LIB_SINGLE_TRUSTED             "trusted-contigs"
-#define LIB_SINGLE_UNTRUSTED           "untrusted-contigs"
-
-#define PAIR_DEFAULT                   "in-data"
-#define PAIR_MATE                      "in-mate-pairs"
-#define PAIR_HQ_MATE                   "in-high-quality-mate-pairs"
-
-#define ORIENTATION_FR                 "fr"
-#define ORIENTATION_RF                 "rf"
-#define ORIENTATION_FF                 "ff"
-
-#define PLATFORM_ILLUMINA              "Illumina"
-#define PLATFORM_IONTORRENT            "--iontorrent"
-
-#define ALIAS_SINGLE                   "Separate reads"
-#define ALIAS_INTERLACED               "Interlaced reads"
-
-#define TYPE_SINGLE                    "single reads"
-#define TYPE_INTERLACED                "interlaced reads"
-
-#define PLATFORM_ION_TORRENT           "Ion Torrent"
+#define TYPE_SINGLE                     "single reads"
+#define TYPE_INTERLACED                 "interlaced reads"
 
 class GenomeAssemblyAlgorithmMainWidget;
 
@@ -98,14 +70,8 @@ public:
 
 class U2ALGORITHM_EXPORT GenomeAssemblyUtils {
 public:
-
-    static QStringList getPairTypes();
     static QStringList getOrientationTypes();
-    static QString getDefaultOrientation(const QString& pairType);
-    static QStringList getLibraryTypes();
     static bool isLibraryPaired(const QString& libName);
-    static bool hasRightReads(const QString& libName);
-    static QString getYamlLibraryName(const QString& libName, const QString& pairType);
 };
 
 /////////////////////////////////////////////////////////////
@@ -115,15 +81,11 @@ class U2ALGORITHM_EXPORT AssemblyReads {
 public:
     AssemblyReads(const QList<GUrl>& left = QList<GUrl>(),
                   const QList<GUrl>& right = QList<GUrl>(),
-                  const QString& libNumber = QString("1"),
-                  const QString& libType = PAIR_TYPE_DEFAULT,
                   const QString& orientation = ORIENTATION_FR,
-                  const QString& libName = LIBRARY_SINGLE,
+                  const QString& libName = LIB_SINGLE_UNPAIRED,
                   const QString& readType = TYPE_SINGLE)
         :left(left)
         ,right(right)
-        ,libNumber(libNumber)
-        ,libType(libType)
         ,orientation(orientation)
         ,libName(libName)
         ,readType(readType)
@@ -131,8 +93,6 @@ public:
 
         QList<GUrl> left;
         QList<GUrl> right;
-        QString     libNumber;
-        QString     libType;
         QString     orientation;
         QString     libName;
         QString     readType;
@@ -206,7 +166,7 @@ public:
     GenomeAssemblyGUIExtensionsFactory* getGUIExtFactory() const {return guiExtFactory;}
 
 private:
-    Q_DISABLE_COPY(GenomeAssemblyAlgorithmEnv);
+    Q_DISABLE_COPY(GenomeAssemblyAlgorithmEnv)
 
 protected:
     QString id;
@@ -229,7 +189,7 @@ private:
     mutable QMutex mutex;
     QMap<QString, GenomeAssemblyAlgorithmEnv*> algorithms;
 
-    Q_DISABLE_COPY(GenomeAssemblyAlgRegistry);
+    Q_DISABLE_COPY(GenomeAssemblyAlgRegistry)
 };
 
 } // namespace

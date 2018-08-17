@@ -86,7 +86,7 @@ bool ClassificationReportValidator::validate(const Actor *actor, NotificationsLi
 bool ClassificationReportValidator::validateTaxonomyTree(const Actor *actor, NotificationsList &notificationList) const {
     bool valid = true;
     if (!TaxonomyTree::getInstance()->isValid()) {
-        notificationList << WorkflowNotification(tr("Taxonomy classification data are not available."), actor->getId());
+        notificationList << WorkflowNotification(tr("Taxonomy classification data from NCBI are not available."), actor->getId());
         valid = false;
     }
     return valid;
@@ -135,7 +135,7 @@ void ClassificationReportWorkerFactory::init() {
 
         a << new Attribute(outputDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
         a << new Attribute(allTaxa, BaseTypes::BOOL_TYPE(), false, QVariant(false));
-        a << new Attribute(sortBy, BaseTypes::STRING_TYPE(), false, QVariant(ClassificationReportTask::TAX_ID));
+        a << new Attribute(sortBy, BaseTypes::STRING_TYPE(), false, QVariant(ClassificationReportTask::NUMBER_OF_READS));
     }
 
     QMap<QString, PropertyDelegate*> delegates;

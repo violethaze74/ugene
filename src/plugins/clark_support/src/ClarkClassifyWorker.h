@@ -98,11 +98,16 @@ protected:
 };
 
 class ClarkClassifyValidator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(ClarkClassifyValidator)
 public:
     bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString>& options) const;
 
 private:
     bool validateDatabase(const Actor *actor, NotificationsList &notificationList) const;
+    bool validateRefseqAvailability(const Actor *actor, NotificationsList &notificationList) const;
+
+    bool checkRefseqAvailability(const Actor *actor, NotificationsList &notificationList, const QString &dataPathId) const;
+    bool isDatabaseAlreadyBuilt(const Actor *actor) const;
 };
 
 class ClarkClassifyWorkerFactory : public DomainFactory {

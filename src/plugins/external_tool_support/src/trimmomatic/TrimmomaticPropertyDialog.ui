@@ -7,39 +7,30 @@
     <x>0</x>
     <y>0</y>
     <width>777</width>
-    <height>480</height>
+    <height>501</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>640</width>
-    <height>480</height>
+    <height>501</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Configure Trimmomatic Steps</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,2">
-   <property name="sizeConstraint">
-    <enum>QLayout::SetMinAndMaxSize</enum>
-   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="sizeConstraint">
-      <enum>QLayout::SetMinAndMaxSize</enum>
+      <enum>QLayout::SetDefaultConstraint</enum>
      </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="3,5">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetMinAndMaxSize</enum>
-       </property>
        <item>
         <layout class="QVBoxLayout" name="verticalLayoutSteps">
          <property name="spacing">
           <number>5</number>
-         </property>
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMinAndMaxSize</enum>
          </property>
          <item>
           <widget class="QLabel" name="labelSteps">
@@ -50,30 +41,61 @@
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout">
-           <property name="sizeConstraint">
-            <enum>QLayout::SetMaximumSize</enum>
-           </property>
            <item>
-            <widget class="QListWidget" name="listSteps"/>
+            <widget class="QListWidget" name="listSteps">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>119</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <layout class="QVBoxLayout" name="verticalLayoutButtons">
              <property name="spacing">
-              <number>0</number>
+              <number>3</number>
              </property>
              <property name="sizeConstraint">
-              <enum>QLayout::SetMinAndMaxSize</enum>
+              <enum>QLayout::SetFixedSize</enum>
              </property>
              <item>
-              <widget class="QToolButton" name="buttonAdd">
+              <widget class="QPushButton" name="buttonAdd">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimumSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add new step&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">text-align: center center;</string>
                </property>
                <property name="text">
                 <string/>
@@ -89,24 +111,48 @@
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Expanding</enum>
+               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>13</height>
+                 <height>24</height>
                 </size>
                </property>
               </spacer>
              </item>
              <item>
-              <widget class="QToolButton" name="buttonUp">
+              <widget class="QPushButton" name="buttonUp">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimumSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move selected step above&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">text-align: center top;</string>
                </property>
                <property name="text">
                 <string/>
@@ -114,6 +160,9 @@
                <property name="icon">
                 <iconset resource="../../external_tool_support.qrc">
                  <normaloff>:/external_tool_support/images/up.png</normaloff>:/external_tool_support/images/up.png</iconset>
+               </property>
+               <property name="autoRepeat">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -123,26 +172,47 @@
                 <enum>Qt::Vertical</enum>
                </property>
                <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
+                <enum>QSizePolicy::Preferred</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>6</height>
+                 <height>9</height>
                 </size>
                </property>
               </spacer>
              </item>
              <item>
-              <widget class="QToolButton" name="buttonDown">
+              <widget class="QPushButton" name="buttonDown">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimumSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move selected step below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">text-align: center bottom;</string>
                </property>
                <property name="text">
                 <string/>
@@ -158,24 +228,48 @@
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Expanding</enum>
+               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>18</height>
+                 <height>24</height>
                 </size>
                </property>
               </spacer>
              </item>
              <item>
-              <widget class="QToolButton" name="buttonRemove">
+              <widget class="QPushButton" name="buttonRemove">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimumSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>25</width>
+                 <height>30</height>
+                </size>
+               </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected step&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">text-align: center center;</string>
                </property>
                <property name="text">
                 <string/>
@@ -213,7 +307,7 @@
          <item>
           <widget class="QGroupBox" name="widgetStepSettingsContainer">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>

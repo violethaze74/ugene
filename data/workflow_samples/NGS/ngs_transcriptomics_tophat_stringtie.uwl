@@ -71,7 +71,7 @@ workflow "RNA-Seq analysis with TopHat and StringTie"{
     trimmomatic.reads-url1->tophat.in-sequence.in-url
     trimmomatic.reads-url2->tophat.in-sequence.paired-url
     get-pe-reads-list.reads-url1->trimmomatic.in.reads-url1
-    get-pe-reads-list.reads-url1->trimmomatic.in.reads-url2
+    get-pe-reads-list.reads-url2->trimmomatic.in.reads-url2
     tophat.hits-url->stringtie.in.url
     get-pe-reads-list.reads-url1->fastqc-before1.in-file.url
     get-pe-reads-list.reads-url2->fastqc-before2.in-file.url
@@ -165,6 +165,7 @@ workflow "RNA-Seq analysis with TopHat and StringTie"{
         }
         wizard {
             name:"RNA-Seq Analysis with TopHat and StringTie";
+            auto-run: true;
             page {
                 id:1;
                 next:2;

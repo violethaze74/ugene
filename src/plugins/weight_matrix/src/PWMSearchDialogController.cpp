@@ -331,7 +331,7 @@ void PWMSearchDialogController::sl_onAlgoChanged(QString newAlgo){
     PWMConversionAlgorithm* algo = factory->createAlgorithm();
     PWMatrix m = algo->convert(intermediate);
     if (m.getLength() == 0) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("Zero length or corrupted model\nMaybe model data is not enough for selected algorithm"));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Zero length or corrupted model\nMaybe model data are not enough for selected algorithm"));
         return;
     }
     updateModel(m);
@@ -563,7 +563,7 @@ void PWMSearchDialogController::loadFile(QString filename) {
         PWMConversionAlgorithm* algo = factory->createAlgorithm();
         m = algo->convert(intermediate);
         if (m.getLength() == 0) {
-            QMessageBox::critical(this, L10N::errorTitle(), tr("Zero length or corrupted model\nMaybe model data is not enough for selected algorithm"));
+            QMessageBox::critical(this, L10N::errorTitle(), tr("Zero length or corrupted model\nMaybe model data are not enough for selected algorithm"));
         }
     }
     updateModel(m);

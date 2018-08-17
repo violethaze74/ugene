@@ -239,6 +239,22 @@ void EnsembleClassificationWorker::init() {
     tripleInput = getValue<int>(NUMBER_OF_TOOLS) == 3;
 }
 
+namespace {
+
+QVariantMap uniteUniquely(const QVariantMap &first, const QVariantMap &second) {
+    QVariantMap result;
+    foreach (const QString &key, first.keys()) {
+        result[key] = first.value(key);
+    }
+
+    foreach (const QString &key, second.keys()) {
+        result[key] = second.value(key);
+    }
+    return result;
+}
+
+}
+
 Task * EnsembleClassificationWorker::tick() {
     if (isReadyToRun()) {
         QList<TaxonomyClassificationResult> taxData;
@@ -265,11 +281,21 @@ Task * EnsembleClassificationWorker::tick() {
             sourceFileUrl3 = metadata3.getFileUrl();
         }
 
+
+        QVariantMap unitedContext;
+        unitedContext = uniteUniquely(unitedContext, input1->getLastMessageContext());
+        unitedContext = uniteUniquely(unitedContext, input2->getLastMessageContext());
+        if (tripleInput) {
+            unitedContext = uniteUniquely(unitedContext, input3->getLastMessageContext());
+        }
+
+        int metadataId = MessageMetadata::INVALID_ID;
         if (sourceFileUrl1 == sourceFileUrl2 &&
                 (!tripleInput || (tripleInput && sourceFileUrl1 == sourceFileUrl3))) {
             sourceFileUrl = sourceFileUrl1;
-            output->setContext(output->getContext(), metadata1.getId());
+            metadataId = metadata1.getId();
         }
+        output->setContext(unitedContext, metadataId);
 
         Task* t = new EnsembleClassificationTask(taxData, tripleInput, outputFile, context->workingDir());
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));

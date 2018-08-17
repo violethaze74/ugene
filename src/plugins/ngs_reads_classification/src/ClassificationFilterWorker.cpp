@@ -120,7 +120,7 @@ bool ClassificationFilterValidator::validateTaxaListAttribute(const Actor *actor
 bool ClassificationFilterValidator::validateTaxonomyTree(const Actor *actor, NotificationsList &notificationList) const {
     bool valid = true;
     if (!TaxonomyTree::getInstance()->isValid()) {
-        notificationList << WorkflowNotification(tr("Taxonomy classification data are not available."), actor->getId());
+        notificationList << WorkflowNotification(tr("Taxonomy classification data from NCBI are not available."), actor->getId());
         valid = false;
     }
     return valid;
@@ -217,8 +217,8 @@ void ClassificationFilterWorkerFactory::init() {
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), false, SINGLE_END);
 
-        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, PAIRED_INPUT_SLOT, QVariantList() << PAIRED_END));
-        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(OUTPUT_PORT, PAIRED_OUTPUT_SLOT, QVariantList() << PAIRED_END));
+        sequencingReadsAttribute->addSlotRelation(new SlotRelationDescriptor(INPUT_PORT, PAIRED_INPUT_SLOT, QVariantList() << PAIRED_END));
+        sequencingReadsAttribute->addSlotRelation(new SlotRelationDescriptor(OUTPUT_PORT, PAIRED_OUTPUT_SLOT, QVariantList() << PAIRED_END));
 
         a << sequencingReadsAttribute;
         a << new Attribute(saveUnspecificSequencesDescription, BaseTypes::BOOL_TYPE(), false, true);

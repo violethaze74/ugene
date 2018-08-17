@@ -50,10 +50,10 @@ bool KrakenBuildValidator::validateMinimizerLength(const Actor *actor, Notificat
 bool KrakenBuildValidator::validateTaxonomy(const Actor *actor, NotificationsList &notificationList) const {
     U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
-              notificationList << WorkflowNotification(tr("Taxonomy classification data are not available."), actor->getId()), false);
+              notificationList << WorkflowNotification(tr("Taxonomy classification data from NCBI are not available."), actor->getId()), false);
 
     bool isValid = true;
-    const QString missingFileMessage = tr("Taxonomy classification data are not full: file '%1' is missing.");
+    const QString missingFileMessage = tr("Taxonomy classification data from NCBI are not full: file '%1' is missing.");
 
     const QStringList neccessaryItems = QStringList() << NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID
                                                       << NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID

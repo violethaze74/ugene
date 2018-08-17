@@ -84,7 +84,7 @@ Wizard * HRWizardParser::takeResult() {
 }
 
 Wizard * HRWizardParser::parseWizard(U2OpStatus &os) {
-    bool autoRun = true;
+    bool autoRun = false;
     bool hasRunButton = true;
     bool hasDefaultsButton = true;
     while (tokenizer.look() != Constants::BLOCK_END) {
