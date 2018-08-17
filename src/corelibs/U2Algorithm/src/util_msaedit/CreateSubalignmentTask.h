@@ -34,22 +34,22 @@ namespace U2{
 class U2ALGORITHM_EXPORT CreateSubalignmentSettings {
 public:
     CreateSubalignmentSettings(){}
-    
+
     CreateSubalignmentSettings(const U2Region& w, const QStringList& sNames, const GUrl& path, bool save, bool add, DocumentFormatId formatId)
         : window(w), sequenceNames(sNames), url(path), saveImmediately(save), addToProject(add), formatIdToSave(formatId) {}
-    
+
     CreateSubalignmentSettings(const U2Region& w, const QList<qint64>& rIds, const GUrl& path, bool save, bool add, DocumentFormatId formatId)
         : window(w), rowIds(rIds), url(path), saveImmediately(save), addToProject(add), formatIdToSave(formatId) {}
 
     U2Region         window;
-    
+
     // Row ids to export
     QList<qint64>    rowIds;
-    
+
     // Sequence names to export. Ignored if rowIds is not empty!
     // This field may be removed after all code is migrated to row ids.
     QStringList      sequenceNames;
-    
+
     GUrl             url;
     bool             saveImmediately;
     bool             addToProject;

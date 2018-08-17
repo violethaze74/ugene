@@ -105,7 +105,7 @@ public:
             case Qt::ToolTipRole: return item->getDocumentation();
             case Qt::FontRole:
                 if (item->isRequiredAttribute()) {
-                    QFont fnt; 
+                    QFont fnt;
                     fnt.setBold(true);
                     return QVariant(fnt);
                 }

@@ -29,7 +29,7 @@ namespace Workflow {
 
 bool WriteAnnotationsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const {
     Q_UNUSED(options);
-    
+
     Port* port = actor->getPort(BasePorts::IN_ANNOTATIONS_PORT_ID());
     if (port == NULL) {
         notificationList << WorkflowNotification(tr("Input port is NULL"), actor->getId(), WorkflowNotification::U2_ERROR);
