@@ -119,7 +119,7 @@ class EmptySlotValidator : public ConfigurationValidator {
 public:
     EmptySlotValidator(const QString& slot): screenedSlot(slot) {}
 
-    virtual bool validate(const Configuration* cfg, ProblemList &problemList) const {
+    virtual bool validate(const Configuration* cfg, NotificationsList &notificationList) const {
         const IntegralBusPort* vport = static_cast<const IntegralBusPort*>(cfg);
         assert(vport);
 
@@ -132,7 +132,7 @@ public:
             //assert(!slotName.isEmpty());
             if (it.value().isEmpty()) {
                 if (screenedSlot == slot) {
-                    problemList.append(Problem(CallVariantsWorker::tr("Empty input slot: %1").arg(slotName)));
+                    notificationList.append(WorkflowNotification(CallVariantsWorker::tr("Empty input slot: %1").arg(slotName)));
                     return false;
                 }
             }
@@ -396,7 +396,7 @@ void CallVariantsWorkerFactory::init() {
     Attribute* refLocationAttr = new Attribute(refLocation, BaseTypes::STRING_TYPE(), false, QVariant(REF_SOURCE_FILE));
     QVariantList refPortVisibilityValues;
     refPortVisibilityValues << QVariant(REF_SOURCE_PORT);
-    refLocationAttr->addPortRelation(PortRelationDescriptor( BasePorts::IN_SEQ_PORT_ID(), refPortVisibilityValues));
+    refLocationAttr->addPortRelation(new PortRelationDescriptor( BasePorts::IN_SEQ_PORT_ID(), refPortVisibilityValues));
     attributes << refLocationAttr;
 
     attributes << new Attribute(illumina13Encoding, BaseTypes::BOOL_TYPE(), false, QVariant(false));

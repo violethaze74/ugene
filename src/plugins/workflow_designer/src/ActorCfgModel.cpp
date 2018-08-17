@@ -160,11 +160,10 @@ int ActorCfgModel::rowCount( const QModelIndex & parent ) const {
 }
 
 bool ActorCfgModel::isVisible(Attribute *a) const {
+    CHECK(NULL != subject, true);
     if (NULL != dynamic_cast<URLAttribute*>(a)) {
         return false;
     }
-
-    CHECK(NULL != subject, true);
     return subject->isAttributeVisible(a);
 }
 
@@ -266,6 +265,7 @@ QVariant ActorCfgModel::data(const QModelIndex & index, int role ) const {
                     fnt.setBold(true);
                     return QVariant(fnt);
                 }
+                return QVariant();
             default:
                 return QVariant();
             }
@@ -426,7 +426,7 @@ bool ActorCfgModel::setData( const QModelIndex & index, const QVariant & value, 
                         }
                     }
                     checkIfAttributeVisibilityChanged(relatedAttributesVisibility);
-                    subject->updatePortsAvailability(editingAttribute);
+                    subject->updateItemsAvailability(editingAttribute);
 
                     return true;
                 }

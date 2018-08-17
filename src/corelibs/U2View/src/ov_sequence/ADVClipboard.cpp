@@ -52,7 +52,7 @@
 namespace U2 {
 
 const QString ADVClipboard::COPY_FAILED_MESSAGE = QApplication::translate("ADVClipboard", "Cannot put sequence data into the clipboard buffer.\n"
-                                                                        "Probably the data is too big.");
+                                                                        "Probably, the data are too big.");
 const qint64 ADVClipboard::MAX_COPY_SIZE_FOR_X86 = 100 * 1024 * 1024;
 
 ADVClipboard::ADVClipboard(AnnotatedDNAView* c) : QObject(c) {

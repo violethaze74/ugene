@@ -115,7 +115,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
       alignment(msaData),
       initialRowInDb(rowInDb)
 {
-    SAFE_POINT(alignment != NULL, "Parent MultipleSequenceAlignmentData is NULL", );
+    SAFE_POINT(alignment != NULL, "Parent MultipleSequenceAlignmentData are NULL", );
     removeTrailingGaps();
 }
 
@@ -136,7 +136,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const Multipl
       alignment(msaData),
       initialRowInDb(row->initialRowInDb)
 {
-    SAFE_POINT(alignment != NULL, "Parent MultipleSequenceAlignmentData is NULL", );
+    SAFE_POINT(alignment != NULL, "Parent MultipleSequenceAlignmentData are NULL", );
 }
 
 MultipleSequenceAlignmentRowData::~MultipleSequenceAlignmentRowData() {

@@ -123,7 +123,14 @@ void UserAppsSettings::setResetSettings(bool b){
 }
 
 QString UserAppsSettings::getVisualStyle() const {
-    QString defaultStyle = QApplication::style()->objectName();
+#ifdef Q_OS_LINUX
+    // Use a nice looking 'Fusion' style by default (used by QtCreator's UI Designer on Linux). 
+    // GTK2 style which is selected by default on Linux looks ugly (groupboxes, etc...)
+    QString defaultStyle = "Fusion";
+#else
+    QString defaultStyle = QApplication::style()->objectName();    
+#endif    
+
 #ifdef Q_OS_WIN
 #define DEFAULT_STYLE_NAME ".NET"
     const char* version = qVersion();

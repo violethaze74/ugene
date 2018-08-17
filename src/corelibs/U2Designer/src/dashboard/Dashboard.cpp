@@ -45,7 +45,7 @@
 #include "ExternalToolsWidget.h"
 #include "OutputFilesWidget.h"
 #include "ParametersWidget.h"
-#include "ProblemsWidget.h"
+#include "NotificationsWidget.h"
 #include "ResourcesWidget.h"
 #include "StatisticsWidget.h"
 
@@ -167,8 +167,8 @@ void Dashboard::sl_loaded(bool ok) {
         new StatisticsWidget(addWidget(tr("Common Statistics"), OverviewDashTab, 1), this);
 
         sl_runStateChanged(false);
-        if (!monitor()->getProblems().isEmpty()) {
-            sl_addProblemsWidget();
+        if (!monitor()->getNotifications().isEmpty()) {
+            sl_addNotificationsWidget();
         }
 
         new ParametersWidget(addWidget(tr("Parameters"), InputDashTab, 0), this);
@@ -178,7 +178,7 @@ void Dashboard::sl_loaded(bool ok) {
         createExternalToolTab();
 
         connect(monitor(), SIGNAL(si_runStateChanged(bool)), SLOT(sl_runStateChanged(bool)));
-        connect(monitor(), SIGNAL(si_firstProblem()), SLOT(sl_addProblemsWidget()));
+        connect(monitor(), SIGNAL(si_firstNotification()), SLOT(sl_addNotificationsWidget()));
     }
 
     if (!WorkflowSettings::isShowLoadButtonHint()) {
@@ -186,9 +186,9 @@ void Dashboard::sl_loaded(bool ok) {
     }
 }
 
-void Dashboard::sl_addProblemsWidget() {
+void Dashboard::sl_addNotificationsWidget() {
     // Will be removed by parent
-    new ProblemsWidget(addWidget(tr("Problems"), OverviewDashTab), this);
+    new NotificationsWidget(addWidget(tr("Notifications"), OverviewDashTab), this);
 }
 
 void Dashboard::sl_serialize() {

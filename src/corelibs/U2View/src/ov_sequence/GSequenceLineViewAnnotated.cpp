@@ -134,7 +134,7 @@ void GSequenceLineViewAnnotated::sl_onAnnotationSelectionChanged(AnnotationSelec
         Annotation *a = added.first();
         if (aos.contains(a->getGObject())) {
             const AnnotationSelectionData *asd = as->getAnnotationData(a);
-            SAFE_POINT(asd != NULL, "AnnotationSelectionData is NULL",);
+            SAFE_POINT(asd != NULL, "AnnotationSelectionData are NULL",);
             foreach (int loc, asd->locationIdxList) {
                 ensureVisible(a, loc);
             }
@@ -315,7 +315,7 @@ QList<Annotation *> GSequenceLineViewAnnotated::findAnnotationsInRange(const U2R
 //////////////////////////////////////////////////////////////////////////
 /// Renderer
 
-GSequenceLineViewAnnotatedRenderArea::GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated* d, bool overlap)
+GSequenceLineViewAnnotatedRenderArea::GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated* d)
     : GSequenceLineViewRenderArea(d)
 {
     afNormal = new QFont("Courier", 10);

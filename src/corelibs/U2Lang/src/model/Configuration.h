@@ -61,7 +61,7 @@ public:
 
     // returns 'false' if validations fails, otherwise 'true'
     // if validation fails, new errors appended to errorList
-    virtual bool validate(ProblemList& problemList) const;
+    virtual bool validate(NotificationsList& notificationList) const;
 
     // when schema copied, actors in new schema get new id's
     // in this case, we need to remap all links between actors

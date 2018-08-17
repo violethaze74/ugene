@@ -29,23 +29,23 @@
 
 namespace U2 {
 
-class Problem;
-typedef QList<Problem> ProblemList;
+class WorkflowNotification;
+typedef QList<WorkflowNotification> NotificationsList;
 
 #define ACTOR_REF (Qt::UserRole)
 #define PORT_REF (Qt::UserRole + 1)
 #define TEXT_REF (Qt::UserRole + 3)
 #define TYPE_REF (Qt::UserRole + 4)
 
-class U2LANG_EXPORT Problem {
+class U2LANG_EXPORT WorkflowNotification {
 public:
-    Problem(const QString &message = "", const QString &actor = "", const QString &_type = U2_ERROR);
+    WorkflowNotification(const QString &message = "", const QString &actor = "", const QString &_type = U2_ERROR);
     QString message;
     QString actor;
     QString type;
     QString port;
 
-    bool operator== (const Problem &other) const;
+    bool operator== (const WorkflowNotification &other) const;
 
     static const QString U2_ERROR;
     static const QString U2_WARNING;
@@ -54,6 +54,6 @@ public:
 
 }   // namespace U2
 
-Q_DECLARE_METATYPE(U2::Problem)
+Q_DECLARE_METATYPE(U2::WorkflowNotification)
 
 #endif // _U2_SUPPORT_CLASS_H_

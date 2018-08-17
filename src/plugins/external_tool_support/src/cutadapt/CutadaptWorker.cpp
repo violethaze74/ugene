@@ -347,7 +347,7 @@ actor(actor) {
 void CutAdaptLogProcessor::processLogMessage(const QString &message) {
     QString error = CutAdaptParser::parseTextForErrors(QStringList() << message);
     if (!error.isEmpty()) {
-        monitor->addError(error, actor, Problem::U2_ERROR);
+        monitor->addError(error, actor, WorkflowNotification::U2_ERROR);
     }
 }
 

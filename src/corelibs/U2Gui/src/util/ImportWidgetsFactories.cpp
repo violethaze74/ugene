@@ -48,7 +48,8 @@ void ImportWidgetsFactories::registerFactories() {
 }
 
 ImportWidget* AceImportWidgetFactory::getWidget(const GUrl& url, const QVariantMap& settings) const {
-    return new AceImportWidget(url, settings);
+    Q_UNUSED(settings);
+    return new AceImportWidget(url);
 }
 
 ImportWidget* AprImportWidgetFactory::getWidget(const GUrl& url, const QVariantMap& settings) const {

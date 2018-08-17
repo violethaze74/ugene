@@ -30,11 +30,11 @@ namespace U2 {
 using namespace WorkflowSerialize;
 namespace Workflow {
 
-bool ActorValidator::validate(const Configuration *cfg, ProblemList &problemList) const {
+bool ActorValidator::validate(const Configuration *cfg, NotificationsList &notificationList) const {
     const Actor *actor = static_cast<const Actor*>(cfg);
     SAFE_POINT(NULL != actor, "NULL actor", false);
     QMap<QString, QString> options;
-    return validate(actor, problemList, options);
+    return validate(actor, notificationList, options);
 }
 
 ActorValidatorRegistry::~ActorValidatorRegistry() {

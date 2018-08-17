@@ -106,12 +106,12 @@ public:
 
     void updateDelegateTags();
 
-    void updatePortsAvailability();
-    void updatePortsAvailability(const Attribute* influencingAttribute);
+    void updateItemsAvailability();
+    void updateItemsAvailability(const Attribute* influencingAttribute);
 
     void addCustomValidator(const ValidatorDesc &desc);
     const QList<ValidatorDesc> & getCustomValidators() const;
-    virtual bool validate(ProblemList &problemList) const;
+    virtual bool validate(NotificationsList &notificationList) const;
 
 signals:
     void si_labelChanged();

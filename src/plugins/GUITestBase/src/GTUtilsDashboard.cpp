@@ -103,9 +103,9 @@ void GTUtilsDashboard::click(HI::GUITestOpStatus &os, HIWebElement el, Qt::Mouse
     GTWebView::click(os, getDashboard(os), el, button);
 }
 
-bool GTUtilsDashboard::areThereProblems(HI::GUITestOpStatus &os) {
+bool GTUtilsDashboard::areThereNotifications(HI::GUITestOpStatus &os) {
     openTab(os, Overview);
-    return GTWebView::doesElementExist(os, getDashboard(os), "Problems", "DIV", true);
+    return GTWebView::doesElementExist(os, getDashboard(os), "Notifications", "DIV", true);
 }
 
 #define GT_METHOD_NAME "openTab"

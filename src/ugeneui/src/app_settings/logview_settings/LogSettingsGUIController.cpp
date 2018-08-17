@@ -62,7 +62,7 @@ AppSettingsGUIPageWidget* LogSettingsPageController::createWidget(AppSettingsGUI
     return w;
 }
 
-const QString LogSettingsPageController::helpPageId = QString("21433146");
+const QString LogSettingsPageController::helpPageId = QString("22055810");
 
 //////////////////////////////////////////////////////////////////////////
 // widget

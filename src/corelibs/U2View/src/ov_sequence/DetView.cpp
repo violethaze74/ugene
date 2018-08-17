@@ -827,7 +827,7 @@ void DetView::setBorderCursor(const QPoint& p) {
 /* DetViewRenderArea */
 /************************************************************************/
 DetViewRenderArea::DetViewRenderArea(DetView* v)
-    : GSequenceLineViewAnnotatedRenderArea(v, true) {
+    : GSequenceLineViewAnnotatedRenderArea(v) {
     renderer = DetViewRendererFactory::createRenderer(getDetView(), view->getSequenceContext(), v->isWrapMode());
     setMouseTracking(true);
     updateSize();

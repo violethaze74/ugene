@@ -50,6 +50,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
     // 1. Open WD sample "Align Sequences with MUSCLE
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Set some name for an output file
     QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
@@ -106,6 +107,7 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
 //    1. Open WD sample "Align Sequences with MUSCLE"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
 //    2. Set some name for an output file
     QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
@@ -209,9 +211,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005){
     QDir d(testDir + "_common_data/scenarios/sandbox/permDir");
     bool sucsess = d.mkpath(d.absolutePath());
     CHECK_SET_ERR(sucsess,QString("Can't create a new folder: '%1'").arg(d.absolutePath()));
+
     // 1. Open WD sample "Align Sequences with MUSCLE
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Set some name for an output file
     QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));

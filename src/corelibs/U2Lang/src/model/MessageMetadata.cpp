@@ -23,8 +23,10 @@
 
 namespace U2 {
 
+const int MessageMetadata::INVALID_ID = -1;
+
 MessageMetadata::MessageMetadata()
-: id(-1)
+: id(INVALID_ID)
 {
 
 }

@@ -34,7 +34,7 @@ class SaveDocumentController;
 class AceImportWidget : public ImportWidget, public Ui_AceImportWidget {
     Q_OBJECT
 public:
-    AceImportWidget(const GUrl& url, const QVariantMap& settings);
+    AceImportWidget(const GUrl& url);
 
     virtual QVariantMap getSettings() const;
 

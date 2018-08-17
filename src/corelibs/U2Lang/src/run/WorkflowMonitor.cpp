@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/FileAndDirectoryUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -77,8 +79,8 @@ const QList<FileInfo> & WorkflowMonitor::getOutputFiles() const {
     return outputFiles;
 }
 
-const QList<Problem> & WorkflowMonitor::getProblems() const {
-    return problems;
+const QList<WorkflowNotification> & WorkflowMonitor::getNotifications() const {
+    return notifications;
 }
 
 const QMap<QString, WorkerInfo> & WorkflowMonitor::getWorkersInfo() const {
@@ -113,11 +115,11 @@ void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer,
 }
 
 void WorkflowMonitor::addInfo(const QString &message, const QString &actor, const QString &type) {
-    addProblem(Problem(message, actor, type));
+    addNotification(WorkflowNotification(message, actor, type));
 }
 
 void WorkflowMonitor::addError(const QString &message, const QString &actor, const QString &type) {
-    addProblem(Problem(message, actor, type));
+    addNotification(WorkflowNotification(message, actor, type));
     coreLog.error(message);
 }
 
@@ -133,10 +135,10 @@ void WorkflowMonitor::addTaskWarning(Task *task, const QString &message) {
     SAFE_POINT(taskMap.contains(task), "Unregistered task", );
     ActorId id = taskMap[task]->getId();
     if (!message.isEmpty()) {
-        addError(message, id, Problem::U2_WARNING);
+        addError(message, id, WorkflowNotification::U2_WARNING);
     } else {
         foreach (const QString& warning, task->getWarnings()) {
-            addError(warning, id, Problem::U2_WARNING);
+            addError(warning, id, WorkflowNotification::U2_WARNING);
         }
     }
 }
@@ -202,7 +204,7 @@ void WorkflowMonitor::sl_taskStateChanged() {
             state = CANCELLED;
         } else if (task->hasError()) {
             state = FAILED;
-        } else if (!problems.isEmpty()) {
+        } else if (!notifications.isEmpty()) {
             if (hasErrors()) {
                 state = FAILED;
             } else if (hasWarnings()) {
@@ -211,6 +213,12 @@ void WorkflowMonitor::sl_taskStateChanged() {
                 state = SUCCESS;
             }
         }
+
+        for (QMap<QString, Monitor::WorkerLogInfo>::iterator i = workersLog.begin(); i != workersLog.end(); ++i) {
+            qDeleteAll(i.value().logs);
+            i.value().logs.clear();
+        }
+
         emit si_taskStateChanged(state);
         emit si_report();
     }
@@ -246,27 +254,27 @@ bool WorkflowMonitor::containsOutputFile(const QString &url) const {
     return false;
 }
 
-void WorkflowMonitor::addProblem(const Problem &problem) {
-    const bool firstProblem = problems.isEmpty();
-    problems << problem;
+void WorkflowMonitor::addNotification(const WorkflowNotification &notification) {
+    const bool firstProblem = notifications.isEmpty();
+    notifications << notification;
 
     if (firstProblem) {
-        emit si_firstProblem();
+        emit si_firstNotification();
         emit si_taskStateChanged(RUNNING_WITH_PROBLEMS);
     }
-    emit si_newProblem(problem);
+    emit si_newNotification(notification);
 }
 
 bool WorkflowMonitor::hasWarnings() const {
-    foreach (Problem problem, problems) {
-        CHECK(problem.type != Problem::U2_WARNING, true);
+    foreach (WorkflowNotification notification, notifications) {
+        CHECK(notification.type != WorkflowNotification::U2_WARNING, true);
     }
     return false;
 }
 
 bool WorkflowMonitor::hasErrors() const {
-    foreach (Problem problem, problems) {
-        CHECK(problem.type != Problem::U2_ERROR, true);
+    foreach (WorkflowNotification notification, notifications) {
+        CHECK(notification.type != WorkflowNotification::U2_ERROR, true);
     }
     return false;
 }
@@ -379,11 +387,65 @@ const bool Registrator::isMetaRegistered = registerMeta();
 /************************************************************************/
 /* WDListener */
 /************************************************************************/
+WDListener::WDListener(WorkflowMonitor *_monitor, const QString &_actorName, int _runNumber)
+    : monitor(_monitor),
+      actorName(_actorName),
+      runNumber(_runNumber),
+      outputHasMessages(false),
+      errorHasMessages(false)
+{
+    const QString logsDir = monitor->outputDir() + "logs";
+    FileAndDirectoryUtils::createWorkingDir("", FileAndDirectoryUtils::CUSTOM, logsDir, "");
+
+    outputLogFile.setFileName(GUrlUtils::rollFileName(logsDir + "/" + getStandardOutputLogFileUrl(actorName, runNumber), "_"));
+    outputLogFile.open(QIODevice::WriteOnly);
+    outputLogStream.setDevice(&outputLogFile);
+
+    errorLogFile.setFileName(GUrlUtils::rollFileName(logsDir + "/" + getStandardErrorLogFileUrl(actorName, runNumber), "_"));
+    errorLogFile.open(QIODevice::WriteOnly);
+    errorLogStream.setDevice(&errorLogFile);
+}
+
 void WDListener::addNewLogMessage(const QString& message, int messageType) {
     if (NULL != logProcessor) {
         logProcessor->processLogMessage(message);
     }
+    writeToFile(messageType, message);
     monitor->onLogChanged(this, messageType, message);
+}
+
+QString WDListener::getStandardOutputLogFileUrl(const QString &actorName, int runNumber) {
+    return actorName + "_" + QString::number(runNumber) + "_standard_output_log.txt";
+}
+
+QString WDListener::getStandardErrorLogFileUrl(const QString &actorName, int runNumber) {
+    return actorName + "_" + QString::number(runNumber) + "_error_output_log.txt";
+}
+
+void WDListener::writeToFile(int messageType, const QString &message) {
+    switch (messageType) {
+    case OUTPUT_LOG:
+        writeToFile(outputLogStream, message);
+        if (!outputHasMessages) {
+            outputLogStream.flush();
+            outputHasMessages = true;
+        }
+        break;
+    case ERROR_LOG:
+        writeToFile(errorLogStream, message);
+        if (!errorHasMessages) {
+            errorLogStream.flush();
+            errorHasMessages = true;
+        }
+        break;
+    default:
+        ; // Do not write to file
+    }
+}
+
+void WDListener::writeToFile(QTextStream &logStream, const QString& message) {
+    CHECK(logStream.device()->isOpen(), );
+    logStream << message;
 }
 
 } // Workflow

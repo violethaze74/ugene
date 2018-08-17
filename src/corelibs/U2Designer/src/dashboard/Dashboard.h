@@ -71,7 +71,7 @@ public slots:
 private slots:
     void sl_runStateChanged(bool paused);
     void sl_loaded(bool ok);
-    void sl_addProblemsWidget();
+    void sl_addNotificationsWidget();
     void sl_serialize();
     void sl_setDirectory(const QString &dir);
     void sl_workflowStateChanged(Monitor::TaskState state);
