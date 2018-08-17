@@ -44,14 +44,14 @@ ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidg
 {
     ui->setupUi( this );
     lastAddToProjectState = ui->addToProjectCheck->isChecked();
-    new HelpButton(this, ui->buttonBox, "21433202");
+    new HelpButton(this, ui->buttonBox, "22055866");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     initSaveController(filename);
     sl_formatChanged(saveController->getFormatIdToSave());
     window()->resize(window()->width(), 0);
-    
+
 }
 
 ExportAnnotationsDialog::~ExportAnnotationsDialog( ) {
@@ -81,7 +81,7 @@ void ExportAnnotationsDialog::initSaveController(const QString &filename) {
 
     connect(saveController, SIGNAL(si_formatChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
     connect(ui->addToProjectCheck, SIGNAL(clicked(bool)), SLOT(sl_addToProjectStateChanged(bool)));
-    
+
 }
 
 QString ExportAnnotationsDialog::filePath() const {

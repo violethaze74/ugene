@@ -348,7 +348,7 @@ void SnpEffLogProcessor::processLogMessage(const QString &message) {
 void SnpEffLogProcessor::addNotification(const QString &key, int count) {
     SAFE_POINT(wellKnownMessages.contains(key), "An unknown snpEff internal error: " + key, );
     const QString warningMessage = key + ": " + wellKnownMessages[key] + " (count: " + QString::number(count) + ")";
-    monitor->addError(warningMessage, actor, Problem::U2_WARNING);
+    monitor->addError(warningMessage, actor, WorkflowNotification::U2_WARNING);
 }
 
 StrStrMap SnpEffLogProcessor::initWellKnownMessages() {

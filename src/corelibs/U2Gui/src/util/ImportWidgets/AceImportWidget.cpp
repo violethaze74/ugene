@@ -33,9 +33,7 @@ namespace U2 {
 
 const QString AceImportWidget::EXTENSION = ".ugenedb";
 
-AceImportWidget::AceImportWidget(const GUrl& url, const QVariantMap& settings) :
-    ImportWidget(url, settings)
-{
+AceImportWidget::AceImportWidget(const GUrl& url) : ImportWidget() {
     setupUi(this);
 
     initSaveController(url);

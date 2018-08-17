@@ -584,7 +584,8 @@ bool BreakpointManagerView::eventFilter(QObject * /*object*/, QEvent *event) {
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
         CHECK(NULL != keyEvent, false);
 
-        if ((keyEvent->modifiers() && Qt::ShiftModifier) && (keyEvent->key() == Qt::Key_Delete)) {
+        bool shiftPressed =  (keyEvent->modifiers() && Qt::ShiftModifier) != 0;
+        if (shiftPressed && keyEvent->key() == Qt::Key_Delete) {
             sl_deleteAllBreakpoints();
         }
         if (keyEvent->matches(QKeySequence::Delete)) {

@@ -246,10 +246,10 @@ void Dashboard::sl_loaded(bool ok) {
 #endif
 
     if (NULL != getMonitor()) {
-        connect(getMonitor(), SIGNAL(si_newProblem(Problem,int)), dashboardPageController, SLOT(sl_newProblem(Problem,int)));
-        if (!getMonitor()->getProblems().isEmpty()) {
-            foreach (Problem problem, getMonitor()->getProblems()) {
-                dashboardPageController->sl_newProblem(problem, 0); // TODO: fix count of problems
+        connect(getMonitor(), SIGNAL(si_newNotification(WorkflowNotification, int)), dashboardPageController, SLOT(sl_newNotification(WorkflowNotification, int)));
+        if (!getMonitor()->getNotifications().isEmpty()) {
+            foreach (const WorkflowNotification &notification, getMonitor()->getNotifications()) {
+                dashboardPageController->sl_newNotification(notification, 0); // TODO: fix count of problems
             }
         }
 
@@ -382,7 +382,7 @@ void DashboardPageController::sl_taskStateChanged(U2::Workflow::Monitor::TaskSta
     }
 }
 
-void DashboardPageController::sl_newProblem(const Problem &info, int count){
+void DashboardPageController::sl_newNotification(const WorkflowNotification &info, int count){
     SAFE_POINT(NULL != monitor, "WorkflowMonitor is NULL", );
     QJsonObject infoJS;
     infoJS["actorId"] = info.actorId;

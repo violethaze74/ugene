@@ -43,22 +43,10 @@ LIBS += -lugenedb
 
 # Special compiler flags for windows configuration
 win32 {
-    LIBS += zlib.lib Psapi.lib User32.lib
+    LIBS += User32.lib
 }
 
 unix {
     target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
     INSTALLS += target
-}
-
-unix_not_mac(){
-    exists( /usr/lib/libproc.so* ) {
-      LIBS += -lproc
-    }else{
-        exists( /usr/local/lib/libproc.so* ){
-          LIBS += -lproc
-        }else{
-          LIBS += -lprocps
-        }
-    }
 }

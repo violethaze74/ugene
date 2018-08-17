@@ -166,17 +166,17 @@ void GffreadWorker::sendResult(const QString &outUrl) {
 /************************************************************************/
 class GffreadInputSlotsValidator : public PortValidator {
 public:
-    virtual bool validate(const IntegralBusPort *port, ProblemList &problemList) const {
+    virtual bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
         bool genome = isBinded(port, GENOME_URL_SLOT_ID);
         bool transc = isBinded(port, TRANSCRIPTS_URL_SLOT_ID);
 
         QString genomeName = slotName(port, GENOME_URL_SLOT_ID);
         QString trancsName = slotName(port, TRANSCRIPTS_URL_SLOT_ID);
         if (!genome) {
-            problemList.append(Problem(QObject::tr("Genome sequence slot is not binded : '%1'").arg(genomeName)));
+            notificationList.append(WorkflowNotification(QObject::tr("Genome sequence slot is not binded : '%1'").arg(genomeName)));
         }
         if (!transc) {
-            problemList.append(Problem(QObject::tr("Transcripts slot is not binded : '%1'").arg(trancsName)));
+            notificationList.append(WorkflowNotification(QObject::tr("Transcripts slot is not binded : '%1'").arg(trancsName)));
         }
 
         return genome && transc;

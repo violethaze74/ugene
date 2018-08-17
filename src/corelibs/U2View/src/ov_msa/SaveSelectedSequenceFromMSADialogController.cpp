@@ -55,7 +55,7 @@ SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogCo
       ui(new Ui_SaveSelectedSequenceFromMSADialog())
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "21433280");
+    new HelpButton(this, ui->buttonBox, "22055944");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -193,7 +193,7 @@ void SaveDocumentInFolderController::initFormatComboBox() {
         QString formatId = formatsInfo.getIdByName(formatName);
         conf.formatCombo->addItem(formatName, formatId);
     }
-    
+
     if (currentFormat.isEmpty()) {
         currentFormat = conf.formatCombo->itemText(0);
     }

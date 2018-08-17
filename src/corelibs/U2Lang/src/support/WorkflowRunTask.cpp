@@ -142,9 +142,9 @@ QString WorkflowRunTask::getTaskError() const {
     }
 
     foreach(WorkflowMonitor *monitor, monitors) {
-        foreach(const Problem &problem, monitor->getProblems()) {
-            if (Problem::U2_ERROR == problem.type) {
-                return problem.message;
+        foreach(const WorkflowNotification &notification, monitor->getNotifications()) {
+            if (WorkflowNotification::U2_ERROR == notification.type) {
+                return notification.message;
             }
         }
     }
@@ -317,6 +317,7 @@ Task::ReportResult WorkflowIterationRunTask::report() {
         if (!scheduler->isDone()) {
             if(!hasError() && !isCanceled()) {
                 setError(tr("No workers are ready, while not all workers are done. Workflow is broken?"));
+                algoLog.error(stateInfo.getError());
             }
         }
     }

@@ -137,11 +137,11 @@ public:
      * For each object from a database: DB URL must be available, object must exist
      * For each folder from a database: DB URL must be available, folder must exist
      */
-    static bool validateInputFiles(QString urls, ProblemList &problemList);
-    static bool validateInputDirs(QString urls, ProblemList &problemList);
+    static bool validateInputFiles(QString urls, NotificationsList &notificationList);
+    static bool validateInputDirs(QString urls, NotificationsList &notificationList);
 
-    static bool validateInputDbObject(const QString &url, ProblemList &problemList);
-    static bool validateInputDbFolders(QString urls, ProblemList &problemList);
+    static bool validateInputDbObject(const QString &url, NotificationsList &notificationList);
+    static bool validateInputDbFolders(QString urls, NotificationsList &notificationList);
 
     /**
      * Validation of output file/folder.
@@ -149,17 +149,17 @@ public:
      * For output URL it is verified that it is accessible for
      * writing (the path can be absolute or relative to the Workflow Output Folder).
      */
-    static bool validateOutputFile(const QString &url, ProblemList &problemList);
-    static bool validateOutputDir(const QString &url, ProblemList &problemList);
+    static bool validateOutputFile(const QString &url, NotificationsList &notificationList);
+    static bool validateOutputDir(const QString &url, NotificationsList &notificationList);
 
     static bool isSharedDbUrlAttribute(const Attribute *attr, const Actor *actor);
-    static bool validateSharedDbUrl(const QString &url, ProblemList &problemList);
+    static bool validateSharedDbUrl(const QString &url, NotificationsList &notificationList);
 
     /**
      * Validates input files in datasets are present and readable (i.e.
      * filtered files in input folders are verified).
      */
-    static bool validateDatasets(const QList<Dataset> &sets, ProblemList &problemList);
+    static bool validateDatasets(const QList<Dataset> &sets, NotificationsList &notificationList);
 
     static QScriptValue datasetsToScript(const QList<Dataset> &sets, QScriptEngine &engine);
 
@@ -170,7 +170,7 @@ public:
 
 private:
     static QStringList initExtensions();
-    static bool validate(const Workflow::Schema &s, ProblemList &problemList);
+    static bool validate(const Workflow::Schema &s, NotificationsList &notificationList);
 
 }; // WorkflowUtils
 

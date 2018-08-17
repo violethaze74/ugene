@@ -30,11 +30,11 @@ RequiredSlotsValidator::RequiredSlotsValidator(const QList<Descriptor> &_require
 
 }
 
-bool RequiredSlotsValidator::validate(const IntegralBusPort *port, ProblemList &problemList) const {
+bool RequiredSlotsValidator::validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
     bool noErrors = true;
     foreach (const Descriptor &d, requiredSlots) {
         if (!isBinded(port, d.getId())) {
-            problemList << Problem(QObject::tr("Input '%1' slot is not supplied").arg(d.getDisplayName()));
+            notificationList << WorkflowNotification(QObject::tr("Input '%1' slot is not supplied").arg(d.getDisplayName()));
             noErrors = false;
         }
     }

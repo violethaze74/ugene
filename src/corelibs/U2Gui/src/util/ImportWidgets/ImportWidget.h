@@ -33,7 +33,7 @@ class SaveDocumentController;
 
 class ImportWidget : public QWidget {
 public:
-    ImportWidget(const GUrl& url, const QVariantMap& settings);
+    ImportWidget();
     ~ImportWidget();
 
     virtual QVariantMap getSettings() const = 0;

@@ -831,7 +831,7 @@ void SaveProjectDialogController::sl_clicked(QAbstractButton *button) {
 //////////////////////////////////////////////////////////////////////////
 ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m, QWidget *p):QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "21433118");
+    new HelpButton(this, buttonBox, "22055782");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

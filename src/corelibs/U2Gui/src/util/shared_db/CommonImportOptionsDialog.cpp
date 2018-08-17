@@ -30,7 +30,7 @@ CommonImportOptionsDialog::CommonImportOptionsDialog(const QString& baseFolder, 
     QDialog(parent)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "21433495");
+    new HelpButton(this, buttonBox, "22056159");
     init(baseFolder, options);
 }
 

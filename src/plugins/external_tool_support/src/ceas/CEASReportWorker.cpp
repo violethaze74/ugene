@@ -240,7 +240,7 @@ void CEASReportWorkerFactory::init() {
         Descriptor annsDesc(OUT_ANNS_ATTR_ID,
             CEASReportWorker::tr("Output annotations file"),
             CEASReportWorker::tr("Name of tab-delimited output text file,"
-            " containing a row of annotations for every RefSeq gene. (file is not generated if no peak location data is supplied)."));
+            " containing a row of annotations for every RefSeq gene. (file is not generated if no peak location data are supplied)."));
         Descriptor gdbDesc(ANNS_TABLE_ATTR_ID,
             CEASReportWorker::tr("Gene annotations table"),
             CEASReportWorker::tr("Path to gene annotation table (e.g. a"

@@ -41,6 +41,8 @@ public:
     const QString & getDatabaseUrl() const;
     const QString & getDatabaseId() const;
 
+    static const int INVALID_ID;
+
 private:
     static int nextId();
 
