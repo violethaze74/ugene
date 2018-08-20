@@ -500,7 +500,7 @@ GUI_TEST_CLASS_DEFINITION(save_uwl_gui_test_0001) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Connect to UGENE shared database...");
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Variations");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Variants");
 
     GTUtilsWorkflowDesigner::setParameter(os, "Data storage", 1, GTUtilsWorkflowDesigner::comboValue);
 
