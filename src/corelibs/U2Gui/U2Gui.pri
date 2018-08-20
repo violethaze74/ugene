@@ -9,7 +9,7 @@ QT += network xml svg sql widgets printsupport
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2GUI_DLL
 INCLUDEPATH += ../U2Private/src
 
-minQtVersion(5, 4, 0){
+!useWebKit() {
     QT += websockets webchannel
 }
 

@@ -4,11 +4,14 @@ include (ugene_lib_common.pri)
 # This file is common for all UGENE plugins
 
 UGENE_RELATIVE_DESTDIR = 'plugins'
-QT += network xml webkit svg
-minQtVersion(5, 4, 0){
-    QT -= webkit
+QT += network xml svg
+
+useWebKit() {
+    QT += webkit
+} else {
     QT += webengine
 }
+
 LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2View -lU2Test -lU2Lang -lU2Designer
 
 !debug_and_release|build_pass {

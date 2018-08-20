@@ -6,10 +6,10 @@ PLUGIN_VENDOR=Unipro
 
 include( ../../ugene_plugin_common.pri )
 
-QT += scripttools printsupport
-equals(QT_MAJOR_VERSION, 5): QT += widgets webkitwidgets
+QT += scripttools printsupport widgets
 
-minQtVersion(5, 4, 0){
-    QT -= webkit webkitwidgets
-    QT += webengine webenginewidgets
+useWebKit() {
+    QT += webkitwidgets
+} else {
+    QT += webenginewidgets
 }

@@ -4,10 +4,11 @@ UGENE_RELATIVE_DESTDIR = ''
 MODULE_ID=U2View
 include( ../../ugene_lib_common.pri )
 
-QT += xml svg widgets webkitwidgets printsupport
+QT += xml svg widgets printsupport
 
-minQtVersion(5, 4, 0){
-    QT -= webkitwidgets
+useWebKit() {
+    QT += webkitwidgets
+} else {
     QT += webengine webenginewidgets
 }
 
