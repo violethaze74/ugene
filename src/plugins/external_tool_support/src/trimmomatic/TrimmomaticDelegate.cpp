@@ -209,6 +209,7 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
     connect(buttonRemove, SIGNAL(pressed()), SLOT(sl_removeStep()));
 
     parseCommand(value);
+    sl_valuesChanged();
 }
 
 QString TrimmomaticPropertyDialog::getValue() const {
