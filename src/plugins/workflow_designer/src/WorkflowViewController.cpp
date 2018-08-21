@@ -47,15 +47,16 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectService.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/GUrlUtils.h>
 
 #include <U2Designer/Dashboard.h>
 #include <U2Designer/DelegateEditors.h>
@@ -63,6 +64,8 @@
 #include <U2Designer/EstimationReporter.h>
 #include <U2Designer/GrouperEditor.h>
 #include <U2Designer/MarkerEditor.h>
+#include <U2Designer/RemoveDashboardsTask.h>
+#include <U2Designer/ScanDashboardsDirTask.h>
 #include <U2Designer/WizardController.h>
 
 #include <U2Gui/DialogUtils.h>
@@ -70,7 +73,6 @@
 #include <U2Gui/GlassView.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Lang/ActorModel.h>

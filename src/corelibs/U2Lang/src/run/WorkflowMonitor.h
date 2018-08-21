@@ -140,16 +140,16 @@ public slots:
 
 signals:
     void si_firstNotification();
-    void si_newOutputFile(const U2::Workflow::Monitor::FileInfo &info);
+    void si_newOutputFile(const Monitor::FileInfo &info);
     void si_newNotification(const WorkflowNotification &info, int count);
-    void si_workerInfoChanged(const QString &actor, const U2::Workflow::Monitor::WorkerInfo &info);
+    void si_workerInfoChanged(const QString &actor, const Monitor::WorkerInfo &info);
     void si_progressChanged(int progress);
     void si_runStateChanged(bool paused);
     void si_taskStateChanged(Monitor::TaskState state);
     void si_updateProducers();
     void si_report();
     void si_dirSet(const QString &dir);
-    void si_logChanged(U2::Workflow::Monitor::LogEntry entry);
+    void si_logChanged(Monitor::LogEntry entry);
 
 private:
     Schema                                      *schema;

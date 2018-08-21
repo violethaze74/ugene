@@ -28,79 +28,28 @@
 #include <U2Core/Counter.h>
 #include <U2Core/IdRegistry.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Settings.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/WelcomePageAction.h>
 
-#include "WelcomePageMdi.h"
-#include "WelcomePageController.h"
-#include "project_support/ProjectLoaderImpl.h"
+#include "WelcomePageJsAgent.h"
 
 namespace U2 {
 
-WelcomePageController::WelcomePageController()
-: QObject(NULL), welcomePage(NULL)
+WelcomePageJsAgent::WelcomePageJsAgent(QObject *parent)
+    : JavaScriptAgent(parent)
 {
-    MWMDIManager *mdiManager = getMdiManager();
-    CHECK(NULL != mdiManager, );
 
-    connect(mdiManager, SIGNAL(si_windowClosing(MWMDIWindow*)), SLOT(sl_onMdiClose(MWMDIWindow*)));
 }
 
-MWMDIManager * WelcomePageController::getMdiManager() {
-    MainWindow *mainWindow = AppContext::getMainWindow();
-    SAFE_POINT(NULL != mainWindow, L10N::nullPointerError("Main Window"), NULL);
-
-    MWMDIManager *result = mainWindow->getMDIManager();
-    SAFE_POINT(NULL != result, L10N::nullPointerError("MDI Manager"), NULL);
-    return result;
+void WelcomePageJsAgent::message(const QString &message) {
+    coreLog.error(message);
 }
 
-void WelcomePageController::onPageLoaded() {
-    CHECK(NULL != welcomePage, );
-
-    MWMDIManager *mdiManager = getMdiManager();
-    CHECK(NULL != mdiManager, );
-
-    if (!mdiManager->getWindows().contains(welcomePage)) {
-        sl_onRecentChanged();
-        mdiManager->addMDIWindow(welcomePage);
-    }
-}
-
-void WelcomePageController::sl_showPage() {
-    disconnect(AppContext::getTaskScheduler(), SIGNAL(si_noTasksInScheduler()), this, SLOT(sl_showPage()));
-    MWMDIManager *mdiManager = getMdiManager();
-    CHECK(NULL != mdiManager, );
-
-    if (NULL != welcomePage) {
-        if (mdiManager->getWindows().contains(welcomePage)) {
-            mdiManager->activateWindow(welcomePage);
-        } // else: it means that the page has already been called but it is loading now
-        return;
-    }
-
-    welcomePage = new WelcomePageMdi(tr("Start Page"), this);
-    if (welcomePage->isLoaded()) { // it is for the case of synchronous page loading
-        onPageLoaded();
-    }
-}
-
-void WelcomePageController::sl_onMdiClose(MWMDIWindow *mdi) {
-    CHECK(mdi == welcomePage, );
-    welcomePage = NULL;
-}
-
-void WelcomePageController::sl_onRecentChanged() {
-    CHECK(NULL != welcomePage, );
-    QStringList recentProjects = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, QStringList(), true).toStringList();
-    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME, QStringList(), true).toStringList();
-    welcomePage->updateRecent(recentProjects, recentFiles);
-}
-
-void WelcomePageController::performAction(const QString &actionId) {
+void WelcomePageJsAgent::performAction(const QString &actionId) {
     GRUNTIME_NAMED_COUNTER(cvar, tvar, "Welcome Page: " + actionId, "");
     IdRegistry<WelcomePageAction> *welcomePageActions = AppContext::getWelcomePageActionRegistry();
     SAFE_POINT(NULL != welcomePageActions, L10N::nullPointerError("Welcome Page Actions"), );
@@ -116,14 +65,14 @@ void WelcomePageController::performAction(const QString &actionId) {
     }
 }
 
-void WelcomePageController::openUrl(const QString &urlId) {
+void WelcomePageJsAgent::openUrl(const QString &urlId) {
     GRUNTIME_NAMED_COUNTER(cvar, tvar, "Welcome Page: " + urlId, "");
     QString url = getUrlById(urlId);
     SAFE_POINT(!url.isEmpty(), "Unknown URL ID: " + urlId, );
     QDesktopServices::openUrl(QUrl(url));
 }
 
-void WelcomePageController::openFile(const QString &url) {
+void WelcomePageJsAgent::openFile(const QString &url) {
     GCOUNTER(cvar, tvar, "Welcome Page: recent files");
     QList<GUrl> urls;
     urls << url;
@@ -132,7 +81,7 @@ void WelcomePageController::openFile(const QString &url) {
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
-QString WelcomePageController::getUrlById(const QString &urlId) {
+QString WelcomePageJsAgent::getUrlById(const QString &urlId) {
     if ("facebook" == urlId) {
         return "https://www.facebook.com/groups/ugene";
     }
@@ -163,4 +112,4 @@ QString WelcomePageController::getUrlById(const QString &urlId) {
     return "";
 }
 
-} // U2
+}   // namespace U2

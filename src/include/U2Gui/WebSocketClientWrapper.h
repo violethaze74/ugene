@@ -1,1 +1,1 @@
-#include "../../corelibs/U2Gui/src/util/webchannel/WebSocketClientWrapper.h"
+#include "../../corelibs/U2Gui/src/util/webview/qtwebengine/webchannel/WebSocketClientWrapper.h"

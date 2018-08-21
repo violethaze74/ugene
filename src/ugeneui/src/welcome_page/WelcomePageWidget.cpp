@@ -26,24 +26,16 @@
 #include <QFileInfo>
 #include <QTextStream>
 
-#include <QtWebChannel/QWebChannel>
-
-#include <QDesktopServices>
-#if (QT_VERSION < 0x050500) //Qt 5.7
-#include <QtWebSockets/QWebSocketServer>
-#include <U2Gui/WebSocketClientWrapper.h>
-#include <U2Gui/WebSocketTransport.h>
-#endif
-
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "WelcomePageController.h"
-#include "main_window/MainWindowImpl.h"
+#include <U2Gui/SimpleWebViewBasedWidgetController.h>
 
+#include "WelcomePageJsAgent.h"
 #include "WelcomePageWidget.h"
+#include "main_window/MainWindowImpl.h"
 
 namespace U2 {
 
@@ -51,83 +43,57 @@ namespace {
     const int MAX_RECENT = 7;
 }
 
-WelcomePageWidget::WelcomePageWidget(QWidget *parent, WelcomePageController *controller)
-#if (QT_VERSION < 0x50500)
-    : MultilingualHtmlView("qrc:///ugene/html/welcome_page_webengine_qt542.html", parent),
-#else
-    : MultilingualHtmlView("qrc:///ugene/html/welcome_page_webengine.html", parent),
-#endif
-      controller(controller)
+WelcomePageWidget::WelcomePageWidget(QWidget *parent)
+    : U2WebView(parent)
 {
     installEventFilter(this);
     setObjectName("webView");
-#if (QT_VERSION < 0x050500) //Qt 5.7
-    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
-    if (!server->listen(QHostAddress::LocalHost, 12345)) {
-        return;
-    }
 
-    clientWrapper = new WebSocketClientWrapper(server);//TODO delete in dtor
-
-    channel = new QWebChannel(this);
-
-    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
-        channel, &QWebChannel::connectTo);
-    channel->registerObject(QString("ugene"), controller);
-#else
-    channel->registerObject(QString("ugene"), controller);
-#endif
-}
-
-void WelcomePageWidget::sl_loaded(bool ok) {
-    MultilingualHtmlView::sl_loaded(ok);
-    addController();
+    controller = new SimpleWebViewBasedWidgetController(this, new WelcomePageJsAgent(this));
+    connect(controller, SIGNAL(si_pageReady()), SLOT(sl_loaded()));
+    controller->loadPage("qrc:///ugene/html/welcome_page.html");
 }
 
 void WelcomePageWidget::updateRecent(const QStringList &recentProjects, const QStringList &recentFiles) {
     updateRecentFilesContainer("recent_projects", recentProjects, tr("No opened projects yet"));
     updateRecentFilesContainer("recent_files", recentFiles, tr("No opened files yet"));
-    page()->runJavaScript("updateLinksVisibility()");
-}
-
-void addRecentItem(const QString &id, const QString & file, QWebEnginePage *page) {
-    if (id.contains("recent_files")) {
-            page->runJavaScript(QString("addRecentItem(\"recent_files\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
-    } else if (id.contains("recent_projects")) {
-            page->runJavaScript(QString("addRecentItem(\"recent_projects\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
-    } else {
-        SAFE_POINT(false, "Unknown containerId", );
-    }
-}
-
-void addNoItems(const QString &id, const QString & message, QWebEnginePage *page) {
-    if (id.contains("recent_files")) {
-        page->runJavaScript(QString("addRecentItem(\"recent_files\", \"%1\", \"\")").arg(message));
-    } else if (id.contains("recent_projects")) {
-        page->runJavaScript(QString("addRecentItem(\"recent_projects\", \"%1\", \"\")").arg(message));
-    } else {
-        SAFE_POINT(false, "Unknown containerId", );
-    }
+    controller->runJavaScript("updateLinksVisibility()");
 }
 
 void WelcomePageWidget::updateRecentFilesContainer(const QString &id, const QStringList &files, const QString &message) {
-    page()->runJavaScript(QString("clearRecent(\"%1\")").arg(id));
+    controller->runJavaScript(QString("clearRecent(\"%1\")").arg(id));
     bool emptyList = true;
-    foreach(const QString &file, files.mid(0, MAX_RECENT)) {
+    foreach (const QString &file, files.mid(0, MAX_RECENT)) {
         if (file.isEmpty()) {
             continue;
         }
         emptyList = false;
-        addRecentItem(id, file, page());
+        addRecentItem(id, file);
     }
 
     if (emptyList) {
-        addNoItems(id, message, page());
+        addNoItems(id, message);
     }
 }
 
-void WelcomePageWidget::addController() {
-    controller->onPageLoaded();
+void WelcomePageWidget::addRecentItem(const QString &id, const QString &file) {
+    if (id.contains("recent_files")) {
+        controller->runJavaScript(QString("addRecentItem(\"recent_files\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
+    } else if (id.contains("recent_projects")) {
+        controller->runJavaScript(QString("addRecentItem(\"recent_projects\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
+    } else {
+        SAFE_POINT(false, "Unknown containerId", );
+    }
+}
+
+void WelcomePageWidget::addNoItems(const QString &id, const QString &message) {
+    if (id.contains("recent_files")) {
+        controller->runJavaScript(QString("addRecentItem(\"recent_files\", \"%1\", \"\")").arg(message));
+    } else if (id.contains("recent_projects")) {
+        controller->runJavaScript(QString("addRecentItem(\"recent_projects\", \"%1\", \"\")").arg(message));
+    } else {
+        SAFE_POINT(false, "Unknown containerId", );
+    }
 }
 
 void WelcomePageWidget::dragEnterEvent(QDragEnterEvent *event) {
@@ -140,6 +106,11 @@ void WelcomePageWidget::dropEvent(QDropEvent *event) {
 
 void WelcomePageWidget::dragMoveEvent(QDragMoveEvent *event) {
     MainWindowDragNDrop::dragMoveEvent(event);
+}
+
+void WelcomePageWidget::sl_loaded() {
+    controller->runJavaScript("document.activeElement.blur();");
+    emit si_loaded();
 }
 
 bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
@@ -160,6 +131,10 @@ bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
         default:
             return false;
     }
+}
+
+bool WelcomePageWidget::isLoaded() const {
+    return controller->isPageReady();
 }
 
 } // U2

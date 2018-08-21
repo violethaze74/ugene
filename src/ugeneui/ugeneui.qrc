@@ -60,10 +60,7 @@
         <file>images/welcome_page/welcome_btn_workflow.png</file>
         <file>html/welcome_page.css</file>
         <file>html/welcome_page.html</file>
-        <file>html/welcome_page_webengine.html</file>
         <file>html/version_news.html</file>
-        <file>javascript/Common.js</file>
-        <file>javascript/WellcomePage.js</file>
-        <file>html/welcome_page_webengine_qt542.html</file>
+        <file>javascript/WelcomePage.js</file>
     </qresource>
 </RCC>

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,16 +31,19 @@ function addRecentItem(containerId, item, link) {
     container.insertAdjacentHTML('beforeend', stringToAdd);
     updateLinksVisibility();
 }
+
 function clearRecent(containerId) {
     var container = document.getElementById(containerId);
     container.innerHTML = '';
     updateLinksVisibility();
 }
+
 function isVisible(el, p) {
     var elRect = el.getBoundingClientRect();
     var pRect = p.getBoundingClientRect();
     return elRect.bottom <= pRect.bottom;
 }
+
 function updateVisibility(containerId) {
     var container = document.getElementById(containerId)
     var children = document.querySelectorAll("#" + containerId + " .recentLink");
@@ -55,6 +58,7 @@ function updateVisibility(containerId) {
         }
     }
 }
+
 function updateLinksVisibility() {
     updateVisibility("recentFilesBlock")
     updateVisibility("recentProjectsBlock")

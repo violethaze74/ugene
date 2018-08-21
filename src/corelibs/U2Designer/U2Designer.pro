@@ -26,6 +26,11 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/UrlItem.h \
            src/WorkflowGUIUtils.h \
            src/dashboard/Dashboard.h \
+           src/dashboard/DashboardInfo.h \
+           src/dashboard/DashboardJsAgent.h \
+           src/dashboard/DashboardPageController.h \
+           src/dashboard/RemoveDashboardsTask.h \
+           src/dashboard/ScanDashboardsDirTask.h \
            src/support/OutputDirectoryWidget.h \
            src/support/URLLineEdit.h \
            src/wizard/BowtieWidgetController.h \
@@ -41,6 +46,7 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/wizard/WidgetController.h \
            src/wizard/WizardController.h \
            src/wizard/WizardPageController.h
+
 FORMS += src/AnnsActionDialog.ui \
          src/BreakpointHitCountDialog.ui \
          src/CreateDirectoryDialog.ui \
@@ -61,6 +67,7 @@ FORMS += src/AnnsActionDialog.ui \
          src/OutputFileDialog.ui \
          src/SequenceActionDialog.ui \
          src/StringActionDialog.ui
+
 SOURCES += src/BreakpointHitCountDialog.cpp \
            src/DatasetsController.cpp \
            src/DatasetsListWidget.cpp \
@@ -86,6 +93,11 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/UrlItem.cpp \
            src/WorkflowGUIUtils.cpp \
            src/dashboard/Dashboard.cpp \
+           src/dashboard/DashboardInfo.cpp \
+           src/dashboard/DashboardJsAgent.cpp \
+           src/dashboard/DashboardPageController.cpp \
+           src/dashboard/RemoveDashboardsTask.cpp \
+           src/dashboard/ScanDashboardsDirTask.cpp \
            src/support/OutputDirectoryWidget.cpp \
            src/support/URLLineEdit.cpp \
            src/wizard/BowtieWidgetController.cpp \
@@ -101,5 +113,6 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/wizard/WidgetController.cpp \
            src/wizard/WizardController.cpp \
            src/wizard/WizardPageController.cpp
+
 RESOURCES += U2Designer.qrc
 TRANSLATIONS += transl/russian.ts

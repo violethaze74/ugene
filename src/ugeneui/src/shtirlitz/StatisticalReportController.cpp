@@ -27,9 +27,9 @@
 #include <U2Core/Version.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "StatisticalReportController.h"
+#include <U2Gui/SimpleWebViewBasedWidgetController.h>
 
-#include "utils/MultilingualHtmlView.h"
+#include "StatisticalReportController.h"
 
 namespace U2 {
 
@@ -40,23 +40,30 @@ StatisticalReportController::StatisticalReportController(const QString &newHtmlF
     Version v = Version::appVersion();
     setWindowTitle(tr("Welcome to UGENE %1.%2").arg(v.major).arg(v.minor));
 
-    htmlView = new MultilingualHtmlView(newHtmlFilepath, this);
-    frameLayout->addWidget(htmlView);
+    htmlView = new U2WebView(this);
     htmlView->setMinimumSize(400, 10);
-    connect(htmlView, SIGNAL(loadFinished(bool)), this, SLOT(sl_changeHeight()));
-    connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
+    frameLayout->addWidget(htmlView);
 
+    htmlViewController = new SimpleWebViewBasedWidgetController(htmlView);
+    connect(htmlViewController, SIGNAL(si_pageReady()), SLOT(sl_pageReady()));
+    htmlViewController->loadPage(newHtmlFilepath);
+
+    connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
 }
 
 bool StatisticalReportController::isInfoSharingAccepted() const {
     return chkStat->isChecked();
 }
 
-void StatisticalReportController::sl_changeHeight(){
-    htmlView->page()->runJavaScript("getBodyHeight();", [&](const QVariant &var){
+void StatisticalReportController::sl_pageReady() {
+#if (QT_VERSION < 0x050500)
+    htmlViewController->runJavaScript("bindLinks();");
+#endif
+
+    // Update the widget size
+    htmlViewController->runJavaScript("getBodyHeight();", [&](const QVariant &var) {
         int pageHeight = var.toInt();
         htmlView->setMinimumHeight(pageHeight);
-        disconnect(htmlView, SIGNAL(loadFinished(bool)), this, SLOT(sl_changeHeight()));
 #ifndef Q_OS_MAC //TODO recheck this code on OS X
         // UGENE crashes on the update event processing on mac
         // It has some connection with htmlView loading method

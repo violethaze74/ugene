@@ -19,46 +19,43 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WELCOME_PAGE_CONTROLLER_H_
-#define _U2_WELCOME_PAGE_CONTROLLER_H_
+#ifndef _U2_SIMPLE_WEB_VIEW_BASED_WIDGET_CONTROLLER_H_
+#define _U2_SIMPLE_WEB_VIEW_BASED_WIDGET_CONTROLLER_H_
 
-#include <QObject>
-
-#include <U2Core/U2OpStatus.h>
+#include "U2WebView.h"
 
 namespace U2 {
 
-class MWMDIManager;
-class MWMDIWindow;
-class WelcomePageMdi;
+class JavaScriptAgent;
+class WebViewController;
 
-class WelcomePageController : public QObject {
+class U2GUI_EXPORT SimpleWebViewBasedWidgetController : public QObject {
     Q_OBJECT
 public:
-    WelcomePageController();
+    SimpleWebViewBasedWidgetController(U2WebView *webView, JavaScriptAgent *agent = Q_NULLPTR);
 
-    void onPageLoaded();
+    void loadPage(const QString &pageUrl);
+    void savePage(const QString &pageUrl);
+    bool isPageReady() const;
 
-public slots:
-    void sl_showPage();
-    void sl_onRecentChanged();
+    void runJavaScript(const QString &script);
+    void runJavaScript(const QString &script, WebViewCallback callback);
 
-    // javascript
-    void performAction(const QString &actionId);
-    void openUrl(const QString &urlId);
-    void openFile(const QString &url);
+signals:
+    void si_pageReady();
 
-private slots:
-    void sl_onMdiClose(MWMDIWindow *mdi);
+protected slots:
+    virtual void sl_pageIsAboutToBeInitialized();
+    virtual void sl_pageInitialized();
+
+protected:
+    JavaScriptAgent *agent;
+    WebViewController *webViewController;
 
 private:
-    static QString getUrlById(const QString &urlId);
-    static MWMDIManager * getMdiManager();
-
-private:
-    WelcomePageMdi *welcomePage;
+    bool pageReady;
 };
 
-} // U2
+}   // namespace U2
 
-#endif // _U2_WELCOME_PAGE_CONTROLLER_H_
+#endif // _U2_SIMPLE_WEB_VIEW_BASED_WIDGET_CONTROLLER_H_

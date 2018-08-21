@@ -18,13 +18,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
- 
-function showOnlyLang(lang) {
-    var elements = document.getElementsByClassName("translatable");
-    for(i=0; i<elements.length; i++){
-        attr = elements[i].getAttribute("lang");
-        if(attr != lang){
-            elements[i].style.display = "none";
-        }
-    }
-}
+
+#ifndef _U2_WELCOME_PAGE_MDI_CONTROLLER_H_
+#define _U2_WELCOME_PAGE_MDI_CONTROLLER_H_
+
+#include <U2Core/U2OpStatus.h>
+
+namespace U2 {
+
+class MWMDIManager;
+class MWMDIWindow;
+class WelcomePageMdi;
+
+class WelcomePageMdiController : public QObject {
+    Q_OBJECT
+public:
+    WelcomePageMdiController();
+
+private slots:
+    void sl_onPageLoaded();
+    void sl_showPage();
+    void sl_onRecentChanged();
+    void sl_onMdiClose(MWMDIWindow *mdi);
+
+private:
+    static MWMDIManager * getMdiManager();
+
+private:
+    WelcomePageMdi *welcomePage;
+};
+
+} // U2
+
+#endif // _U2_WELCOME_PAGE_MDI_CONTROLLER_H_

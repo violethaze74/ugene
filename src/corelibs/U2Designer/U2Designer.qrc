@@ -2,7 +2,6 @@
     <qresource prefix="/U2Designer">
         <file>html/Dashboard.css</file>
         <file>html/Dashboard.html</file>
-        <file>html/Dashboard_webengine.html</file>
         <file>javascript/Common.js</file>
         <file>javascript/ParametersWidget.js</file>
         <file>javascript/ExternalToolsWidget.js</file>
@@ -42,7 +41,5 @@
         <file>javascript/bootstrap/js/bootstrap.js</file>
         <file>javascript/bootstrap/js/bootstrap.min.js</file>
         <file>javascript/jquery/jquery.js</file>
-        <file>javascript/qwebchannel/qwebchannel-qt542.js</file>
-        <file>javascript/qwebchannel/qwebchannel-qt570.js</file>
     </qresource>
 </RCC>

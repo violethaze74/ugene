@@ -6,8 +6,10 @@ include( ../../ugene_lib_common.pri )
 UGENE_RELATIVE_DESTDIR = ''
 
 QT += svg
-!useWebKit() {
-    QT += webengine webenginewidgets websockets
+useWebKit() {
+    QT += webkitwidgets
+} else {
+    QT += webengine webenginewidgets
 }
 
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2DESIGNER_DLL
