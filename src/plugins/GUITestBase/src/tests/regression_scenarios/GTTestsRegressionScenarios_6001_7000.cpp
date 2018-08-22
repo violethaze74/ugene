@@ -328,21 +328,22 @@ GUI_TEST_CLASS_DEFINITION(test_6038) {
     GTUtilsWorkflowDesigner::validateWorkflow(os);
 
 //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
-    QSet<QString> acceptableErrors = QSet<QString>() << QString("%1: %1 : The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)
-                                                     << QString("%1: External tool \"CLARK\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
-                                                     << QString("%1: External tool \"CLARK-l\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
-                                                     << QString("%1: %1 : The mandatory \"Input URL 1\" slot is not connected.").arg(krakenName)
-                                                     << QString("%1: External tool \"kraken\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(krakenName)
-                                                     << QString("%1: %1 : The mandatory \"Input URL 1\" slot is not connected.").arg(filterName)
-                                                     << QString("%1: %1 : The mandatory \"Input FASTQ URL 1\" slot is not connected.").arg(trimmomaticName)
-                                                     << QString("%1: External tool \"Trimmomatic\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(trimmomaticName)
-                                                     << QString("%1: Required parameter is not set: Database").arg(clarkName)
-                                                     << QString("%1: Required parameter is not set: Database").arg(krakenName)
-                                                     << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName)
-                                                     << QString("%1: Required parameter is not set: Trimming steps").arg(trimmomaticName);
-
+      QSet<QString> acceptableErrors = QSet<QString>() 
+          << QString("%1: The mandatory \"Input FASTQ URL 1\" slot is not connected.").arg(trimmomaticName)
+          << QString("%1: External tool \"Trimmomatic\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(trimmomaticName)
+          << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)
+          << QString("%1: External tool \"CLARK\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
+          << QString("%1: External tool \"CLARK-l\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
+          << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(krakenName)
+          << QString("%1: External tool \"kraken\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(krakenName)
+          << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(filterName)
+          << QString("%1: Required parameter is not set: Trimming steps").arg(trimmomaticName)
+          << QString("%1: Required parameter is not set: Database").arg(clarkName)
+          << QString("%1: Required parameter is not set: Database").arg(krakenName)
+          << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName)        
+          << QString("%1: Taxonomy classification data from NCBI are not available").arg(filterName);
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
-    CHECK_SET_ERR(acceptableErrors.contains(actualErrors), "There are unexpected errors after the workflow validation");
+    CHECK_SET_ERR(acceptableErrors.contains(actualErrors), "There are unexpected errors after the workflow validation ");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6043) {
