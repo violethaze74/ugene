@@ -135,6 +135,7 @@
 #include "spades/SpadesSettingsWidget.h"
 #include "spades/SpadesSupport.h"
 #include "spades/SpadesTask.h"
+#include "spades/SpadesTaskTest.h"
 #include "spades/SpadesWorker.h"
 #include "spidey/SpideySupport.h"
 #include "spidey/SpideySupportTask.h"
@@ -648,6 +649,21 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
 
         GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
         l->qlist = HmmerTests::createTestFactories();
+
+        foreach(XMLTestFactory* f, l->qlist) {
+            bool res = xmlTestFormat->registerTestFactory(f);
+            Q_UNUSED(res);
+            assert(res);
+        }
+    }
+    {
+
+        GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+        assert(xmlTestFormat != NULL);
+
+        GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
+        l->qlist = SpadesTaskTest::createTestFactories();
 
         foreach(XMLTestFactory* f, l->qlist) {
             bool res = xmlTestFormat->registerTestFactory(f);

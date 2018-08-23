@@ -165,6 +165,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/spades/SpadesSlotRelationDescriptor.h \
            src/spades/SpadesSupport.h \
            src/spades/SpadesTask.h \
+		   src/spades/SpadesTaskTest.h \
            src/spades/SpadesWorker.h \
            src/spidey/SpideySupport.h \
            src/spidey/SpideySupportTask.h \
@@ -419,6 +420,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/spades/SpadesSlotRelationDescriptor.cpp \
            src/spades/SpadesSupport.cpp \
            src/spades/SpadesTask.cpp \
+		   src/spades/SpadesTaskTest.cpp \
            src/spades/SpadesWorker.cpp \
            src/spidey/SpideySupport.cpp \
            src/spidey/SpideySupportTask.cpp \

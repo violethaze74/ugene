@@ -77,6 +77,7 @@ protected:
     GTest* getContextProvider() const {return contextProvider;}
 
     void failMissingValue(const QString&);
+    void wrongValue(const QString&);
 
     GTest* contextProvider;
     const GTestEnvironment* env;
