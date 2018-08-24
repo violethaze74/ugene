@@ -20,6 +20,7 @@
  */
 
 #include <U2Core/U2SafePoints.h>
+#include <QIntValidator>
 
 #include "LengthSettingsWidget.h"
 #include "LineEditHighlighter.h"
