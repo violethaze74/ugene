@@ -71,6 +71,10 @@ void GTest::failMissingValue( const QString& name) {
     stateInfo.setError(QString("Mandatory attribute not set: %1").arg(name));
 }
 
+void GTest::wrongValue(const QString& name) {
+    stateInfo.setError(QString("Wrong value for attribute: %1").arg(name));
+}
+
 //////////////////////////////////////////////////////////////////////////
 // GTestSuite
 
