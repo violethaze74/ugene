@@ -246,14 +246,14 @@ void GTest_SpadesTaskTest::init(XMLTestFormat *tf, const QDomElement& el) {
     QList<AssemblyReads>::iterator it(taskSettings.reads.begin());
     for (;it != taskSettings.reads.end(); it++) {
         AssemblyReads &reads = *it;
-        if (reads.libName.contains("single") || reads.readType == TYPE_INTERLACED) {
-            reads.left.append(GUrl(QString::number(counter++) + "_" + reads.libName + "_read"));
-        } else {
+        if ((reads.libName.contains("mate") || reads.libName.contains("pair")) && reads.readType != TYPE_INTERLACED) {
             reads.left.append(GUrl(QString::number(counter++) + "_left_" + reads.libName + "_read"));
             reads.right.append(GUrl(QString::number(counter++) + "_right_" + reads.libName + "_read"));
+        } else {
+            reads.left.append(GUrl(QString::number(counter++) + "_" + reads.libName + "_read"));
         }
     }
-    taskSettings.setCustomSettings(inputDataSettings);
+    taskSettings.setCustomValue(SpadesTask::OPTION_INPUT_DATA, inputDataSettings);
 }
 
 void GTest_SpadesTaskTest::prepare() {
@@ -317,12 +317,12 @@ void GTest_CheckYAMLFile::prepare() {
     foreach(const QString& el, desiredStrings) {
         foreach(const QString& fileLane, fileLines) {
             if (fileLane.contains(el.trimmed())) {
-                hitsCounter++;
+                desiredStrings.removeAll(el);
             }
         }
     }
-    if (hitsCounter != desiredStrings.size()) {
-        setError(QString("Only %1 lines found in yaml file instead of %2!").arg(QString::number(hitsCounter)).arg(QString::number(desiredStrings.size())));
+    if (desiredStrings.size() != 0) {
+        setError(QString("Line '%1' not found in yaml file!").arg(desiredStrings.first()));
     }
 }
 
