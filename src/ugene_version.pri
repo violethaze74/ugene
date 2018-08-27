@@ -1,8 +1,5 @@
 # This file contains UGENE version info
 
-# product version
-UGENE_VERSION=1.32.0-dev
-
 # minimum UGENE version whose SQLite databases are compatible with this version
 UGENE_MIN_VERSION_SQLITE=1.25.0
 
@@ -16,5 +13,8 @@ U2_DISTRIBUTION_INFO=sources
 
 # int version levels for executables
 UGENE_VER_MAJOR=1
-UGENE_VER_MINOR=31
+UGENE_VER_MINOR=32
 UGENE_VER_PATCH=0
+
+# product version
+UGENE_VERSION=$${UGENE_VER_MAJOR}.$${UGENE_VER_MINOR}.$${UGENE_VER_PATCH}-dev
