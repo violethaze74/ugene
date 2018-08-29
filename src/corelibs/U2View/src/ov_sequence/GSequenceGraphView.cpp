@@ -102,7 +102,7 @@ void GSequenceGraphView::setGraphDrawer(GSequenceGraphDrawer* gd) {
 void GSequenceGraphView::mousePressEvent(QMouseEvent *me) {
     setFocus();
 
-    if(Qt::ShiftModifier == me->modifiers()) {
+    if(me->modifiers() == Qt::ShiftModifier && me->button() == Qt::LeftButton) {
         float pos = toRenderAreaPoint(me->pos()).x() / renderArea->getCurrentScale() + getVisibleRange().startPos;
         addLabel(pos);
     }
