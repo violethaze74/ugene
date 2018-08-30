@@ -77,6 +77,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 
 namespace U2 {
@@ -705,6 +706,47 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!l.hasError(), "Errors in the log");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6135) {
+    
+    // Open "COI.aln".
+    // Rename the second sequence to "Phaneroptera_falcata".
+    // Current state: There are two sequences with name "Phaneroptera_falcata" (the first and the second one).
+    // Select "Export -> Save subalignment" in the context menu.
+    // Select only one "Phaneroptera_falcata" sequence and click "Extract".
+    // Expected state: one selected sequence was exported.
+     
+    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    
+    class custom: public CustomScenario{
+    public:
+        virtual void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "Phaneroptera_falcata");
+    
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<MSAE_MENU_EXPORT<<"Save subalignment"));
+    GTUtilsDialog::waitForDialog(os,new ExtractSelectedAsMSADialogFiller(os, new custom()));
+        
+    GTMenu::showContextMenu(os,GTWidget::findWidget(os,"msa_editor_sequence_area"));
+    
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));;
+    GTMouseDriver::click();
+    
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    
+    CHECK_SET_ERR(sequencesNameList.length() == 1, "Length of namelist is not 1! Length: " + QString::number(sequencesNameList.length()));
+}
+
+
 
 GUI_TEST_CLASS_DEFINITION(test_6136) {
     // 1. Open "test/scenarios/_common_data/genbank/target_gene_new.gb".
