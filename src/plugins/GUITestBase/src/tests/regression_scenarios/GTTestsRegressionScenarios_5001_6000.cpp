@@ -3848,6 +3848,37 @@ GUI_TEST_CLASS_DEFINITION(test_5775) {
 
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5783) {
+    // Open "samples/FASTA/human_T1.fa"
+    // Create an annotation, set e.g. "ann" annotation name and "200..300" region.
+    // Add "gene_id" and "transcript_id" qualifiers.
+    // Export the annotation to the GTF format. Make sure the "Add to project" option is checked in the export dialog.
+    // Expected state: The export has finished without errors. The document has been added to the project.
+
+    GTLogTracer l;
+
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300",
+                                                                      sandBoxDir + "ann_test_0011_1.gb"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
+    GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
+    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "ann");
+
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann");
+
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf",
+                                                                 ExportAnnotationsFiller::gtf, false, false, false));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
+    GTMouseDriver::click(Qt::RightButton);
+    GTGlobals::sleep();
+    GTUtilsLog::check(os, l);
+}
+
+
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
