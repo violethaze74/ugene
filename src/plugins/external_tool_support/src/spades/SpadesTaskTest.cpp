@@ -69,7 +69,7 @@ void GTest_SpadesTaskTest::init(XMLTestFormat *tf, const QDomElement& el) {
         return;
     }
     taskSettings.outDir = env->getVar("TEMP_DATA_DIR") + "/" + elementStr;
-    
+
     elementStr = el.attribute(PAIRED_END_READS);
     if (elementStr == "true") {
         AssemblyReads reads;
@@ -79,7 +79,7 @@ void GTest_SpadesTaskTest::init(XMLTestFormat *tf, const QDomElement& el) {
             failMissingValue(PAIRED_END_READS_ORIENTATION);
             return;
         }
-        
+
         if (elementStr == "fr") {
             reads.orientation = ORIENTATION_FR;
         } else if (elementStr == "rf") {

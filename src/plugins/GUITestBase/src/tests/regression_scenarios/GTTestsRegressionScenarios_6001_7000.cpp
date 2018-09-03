@@ -329,7 +329,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038) {
     GTUtilsWorkflowDesigner::validateWorkflow(os);
 
 //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
-      QSet<QString> acceptableErrors = QSet<QString>() 
+      QSet<QString> acceptableErrors = QSet<QString>()
           << QString("%1: The mandatory \"Input FASTQ URL 1\" slot is not connected.").arg(trimmomaticName)
           << QString("%1: External tool \"Trimmomatic\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(trimmomaticName)
           << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)
@@ -341,7 +341,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038) {
           << QString("%1: Required parameter is not set: Trimming steps").arg(trimmomaticName)
           << QString("%1: Required parameter is not set: Database").arg(clarkName)
           << QString("%1: Required parameter is not set: Database").arg(krakenName)
-          << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName)        
+          << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName)
           << QString("%1: Taxonomy classification data from NCBI are not available").arg(filterName);
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
     CHECK_SET_ERR(acceptableErrors.contains(actualErrors), "There are unexpected errors after the workflow validation ");
@@ -708,16 +708,16 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6135) {
-    
+
     // Open "COI.aln".
     // Rename the second sequence to "Phaneroptera_falcata".
     // Current state: There are two sequences with name "Phaneroptera_falcata" (the first and the second one).
     // Select "Export -> Save subalignment" in the context menu.
     // Select only one "Phaneroptera_falcata" sequence and click "Extract".
     // Expected state: one selected sequence was exported.
-     
+
     GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
-    
+
     class custom: public CustomScenario{
     public:
         virtual void run(HI::GUITestOpStatus &os){
@@ -726,23 +726,23 @@ GUI_TEST_CLASS_DEFINITION(test_6135) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
-    
+
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "Phaneroptera_falcata");
-    
+
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<MSAE_MENU_EXPORT<<"Save subalignment"));
     GTUtilsDialog::waitForDialog(os,new ExtractSelectedAsMSADialogFiller(os, new custom()));
-        
+
     GTMenu::showContextMenu(os,GTWidget::findWidget(os,"msa_editor_sequence_area"));
-    
+
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));;
     GTMouseDriver::click();
-    
+
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    
+
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    
+
     CHECK_SET_ERR(sequencesNameList.length() == 1, "Length of namelist is not 1! Length: " + QString::number(sequencesNameList.length()));
 }
 
