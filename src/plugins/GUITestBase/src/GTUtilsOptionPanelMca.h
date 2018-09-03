@@ -32,6 +32,12 @@ public:
         Consensus,
     };
 
+    enum FileFormat {
+        FASTA,
+        GenBank,
+        PlainText
+    };
+
     static const QMap<Tabs, QString> tabsNames;
     static const QMap<Tabs, QString> innerWidgetNames;
 
@@ -50,7 +56,10 @@ public:
     static void setThreshold(HI::GUITestOpStatus &os, int threshold);
     static int getThreshold(HI::GUITestOpStatus &os);
 
+    static void setFileFormat(HI::GUITestOpStatus &os, FileFormat fileFormat);
+
     static void pushResetButton(HI::GUITestOpStatus &os);
+    static void pushExportButton(HI::GUITestOpStatus &os);
 
 private:
     static QMap<Tabs, QString> initNames();
