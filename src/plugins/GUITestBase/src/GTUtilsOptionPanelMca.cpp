@@ -144,10 +144,28 @@ int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "setFileFormat"
+void GTUtilsOptionPanelMca::setFileFormat(HI::GUITestOpStatus &os, FileFormat fileFormat) {
+    openTab(os, Consensus);
+    QComboBox* formatCb = GTWidget::findExactWidget<QComboBox *>(os, "formatCb");
+    GTComboBox::setCurrentIndex(os, formatCb, fileFormat);
+    GTGlobals::sleep(1000);
+
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "pushResetButton"
 void GTUtilsOptionPanelMca::pushResetButton(HI::GUITestOpStatus &os) {
     openTab(os, Consensus);
     QToolButton* result = GTWidget::findExactWidget<QToolButton *>(os, "thresholdResetButton");
+    result->click();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "pushExportButton"
+void GTUtilsOptionPanelMca::pushExportButton(HI::GUITestOpStatus &os) {
+    openTab(os, Consensus);
+    QToolButton* result = GTWidget::findExactWidget<QToolButton *>(os, "exportBtn");
     result->click();
 }
 #undef GT_METHOD_NAME
