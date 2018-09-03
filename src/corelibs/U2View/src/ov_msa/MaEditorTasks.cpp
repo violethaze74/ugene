@@ -323,7 +323,7 @@ Document *ExportMaConsensusTask::createDocument(){
         obj = TextObject::createInstance(filteredConsensus, settings.name, doc->getDbiRef(), stateInfo);
     }else{
         DNASequence dna(settings.name, filteredConsensus);
-        U2EntityRef ref = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, dna, dna.alphabet->getId());
+        U2EntityRef ref = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, dna);
         obj = new U2SequenceObject(dna.getName(), ref);
     }
     CHECK_OP(stateInfo, NULL);
