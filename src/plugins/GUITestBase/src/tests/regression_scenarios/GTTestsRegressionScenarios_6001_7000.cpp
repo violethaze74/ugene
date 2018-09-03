@@ -751,6 +751,29 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6225) {
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment_short.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //2. Open Consensus tab
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::Consensus);
+
+    //3. Choose FASTA as file format
+    GTUtilsOptionPanelMca::setFileFormat(os, GTUtilsOptionPanelMca::FASTA);
+
+    //4. Click Export
+    GTUtilsOptionPanelMca::pushExportButton(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const int size = GTUtilsProjectTreeView::getDocuments(os).size();
+    CHECK_SET_ERR(size == 2, QString("Unexpected documents number; expected: 2, current: %1").arg(size));
+}
+
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
