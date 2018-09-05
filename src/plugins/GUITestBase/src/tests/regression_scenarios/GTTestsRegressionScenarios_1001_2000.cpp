@@ -7658,7 +7658,7 @@ GUI_TEST_CLASS_DEFINITION(test_1733){
 GUI_TEST_CLASS_DEFINITION(test_1734){
 //    1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2. Select "Call variants sample"
+//    2. Select "Call variants sample", wizard opens automatically
 
     class custom : public CustomScenario {
     public:
@@ -7680,11 +7680,8 @@ GUI_TEST_CLASS_DEFINITION(test_1734){
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
         }
     };
-
-    GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
-//    3. Open wizard. Try to add several bams on the first page
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new custom()));
-    GTWidget::click(os, GTAction::button(os, "Show wizard"));
+    GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
 //    Expected state: adding several bams is allowed
 }
 
