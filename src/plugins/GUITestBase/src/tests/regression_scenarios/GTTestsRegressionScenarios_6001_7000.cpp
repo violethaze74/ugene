@@ -344,7 +344,9 @@ GUI_TEST_CLASS_DEFINITION(test_6038) {
           << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName)
           << QString("%1: Taxonomy classification data from NCBI are not available").arg(filterName);
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
-    CHECK_SET_ERR(acceptableErrors.contains(actualErrors), "There are unexpected errors after the workflow validation ");
+    CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
+        arg(acceptableErrors.size()).
+        arg(actualErrors.size()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6043) {
