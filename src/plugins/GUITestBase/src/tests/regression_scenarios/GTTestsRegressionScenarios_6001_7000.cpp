@@ -543,12 +543,14 @@ GUI_TEST_CLASS_DEFINITION(test_6071) {
 
     //3. Scroll to the 3874 coordinate.
     GTUtilsSequenceView::goToPosition(os, 3874);
+    GTGlobals::sleep();
 
     DetView* dw = GTUtilsSequenceView::getDetViewByNumber(os);
     const U2Region firstVisibleRange = dw->getVisibleRange();
 
     //4. Click on 2-th CDS join annotation
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 3412);
+    GTGlobals::sleep();
 
     //Expected: visible range was not changed
     const U2Region secondVisibleRange = dw->getVisibleRange();
