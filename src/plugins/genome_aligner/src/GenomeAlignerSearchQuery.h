@@ -64,7 +64,7 @@ public:
     SAType firstResult() const;
     quint32 firstMCount() const;
     bool contains(SAType result) const;
-    QVector<SAType> &getResults();
+    const QVector<SAType>& getResults() const;
     bool isWroteResult() const {return wroteResult;}
     void writeResult() {wroteResult = true;}
     SearchQuery *getRevCompl() {return revCompl;}

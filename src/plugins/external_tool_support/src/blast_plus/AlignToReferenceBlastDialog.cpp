@@ -323,8 +323,7 @@ void AlignToReferenceBlastDialog::accept() {
     settings.rowNaming = static_cast<AlignToReferenceBlastCmdlineTask::Settings::RowNaming>(cbRowNaming->currentData().toInt());
 
     if (outputLineEdit->text().isEmpty()) {
-        QMessageBox::warning(this, tr("Error"),
-                             tr("Output file is not set."));
+        QMessageBox::warning(this, tr("Error"), tr("Output file is not set."));
         return;
     }
     settings.resultAlignmentFile = outputLineEdit->text();

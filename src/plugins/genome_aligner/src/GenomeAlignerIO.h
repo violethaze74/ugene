@@ -181,6 +181,7 @@ private:
     U2AssemblyDbi *wDbi;
     U2Assembly assembly;
     QList<U2AssemblyRead> reads;
+    QMutex writeLock;
 
     static const qint64 readBunchSize;
 };
