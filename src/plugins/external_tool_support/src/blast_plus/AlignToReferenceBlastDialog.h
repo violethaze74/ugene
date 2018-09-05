@@ -57,7 +57,7 @@ public:
         int minLength;
         int qualityThreshold;
         RowNaming rowNaming;
-        QString outAlignment;
+        QString resultAlignmentFile;
         bool addResultToProject;
     };
 

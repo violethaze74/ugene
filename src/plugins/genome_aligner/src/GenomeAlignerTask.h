@@ -24,6 +24,7 @@
 
 #include <QSharedPointer>
 #include <QTemporaryFile>
+#include <QMutex>
 
 #include <U2Algorithm/DnaAssemblyTask.h>
 #include <U2Formats/StreamSequenceReader.h>
@@ -107,6 +108,8 @@ private:
     qint64 indexLoadTime;
     qint64 shortreadIOTime;
     float currentProgress;
+    
+    QMutex writeLock;
 
     void setupCreateIndexTask();
     void createGenomeAlignerWriteTask();

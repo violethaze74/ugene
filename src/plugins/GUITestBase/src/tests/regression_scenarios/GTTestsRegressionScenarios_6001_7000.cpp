@@ -344,7 +344,9 @@ GUI_TEST_CLASS_DEFINITION(test_6038) {
           << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName)
           << QString("%1: Taxonomy classification data from NCBI are not available").arg(filterName);
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
-    CHECK_SET_ERR(acceptableErrors.contains(actualErrors), "There are unexpected errors after the workflow validation ");
+    CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
+        arg(acceptableErrors.size()).
+        arg(actualErrors.size()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6043) {
@@ -408,13 +410,19 @@ GUI_TEST_CLASS_DEFINITION(test_6058_2) {
 
     //2. Check "30. Peritrich Nuclear" "Genetic code" parameter option in "Classify Sequences with DIAMOND" WD element
     WorkflowProcessItem *diamondElement = GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with DIAMOND", true);
+    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::click(os, diamondElement);
+    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setParameter(os, "Genetic code", "30. Peritrich Nuclear", GTUtilsWorkflowDesigner::comboValue);
+    GTGlobals::sleep();
 
     //3. Check "27. Karyorelict Nuclear" "Genetic code" parameter option in "ORF Marker" WD element
     WorkflowProcessItem *orfmarkerElement = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker", true);
+    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::click(os, orfmarkerElement);
+    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setParameter(os, "Genetic code", "27. Karyorelict Nuclear", GTUtilsWorkflowDesigner::comboValue);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6062) {
@@ -543,12 +551,14 @@ GUI_TEST_CLASS_DEFINITION(test_6071) {
 
     //3. Scroll to the 3874 coordinate.
     GTUtilsSequenceView::goToPosition(os, 3874);
+    GTGlobals::sleep();
 
     DetView* dw = GTUtilsSequenceView::getDetViewByNumber(os);
     const U2Region firstVisibleRange = dw->getVisibleRange();
 
     //4. Click on 2-th CDS join annotation
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 3412);
+    GTGlobals::sleep();
 
     //Expected: visible range was not changed
     const U2Region secondVisibleRange = dw->getVisibleRange();

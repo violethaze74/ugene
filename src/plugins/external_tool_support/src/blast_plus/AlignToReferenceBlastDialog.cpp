@@ -193,6 +193,15 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
     CHECK(subTask != NULL, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
     if (loadRef == subTask) {
+        QFileInfo resultFile(settings.resultAlignmentFile);
+        QDir resultDir = resultFile.dir();
+        if (!resultDir.exists()) {
+            bool mkDirResult = QDir().mkpath(resultDir.absolutePath());
+            if (!mkDirResult) {
+                setError(tr("Failed to create output directory: %1").arg(resultDir.absolutePath()));
+                return result;
+            }
+        }
         CmdlineInOutTaskConfig config;
 
         config.command = "--task=" + ALIGN_TO_REF_CMDLINE;
@@ -204,7 +213,7 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
         config.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);
         config.arguments << argString.arg(THRESHOLD_ARG).arg(settings.qualityThreshold);
         config.arguments << argString.arg(TRIM_ARG).arg(true);
-        config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(QFileInfo(settings.outAlignment).absoluteFilePath());
+        config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(QFileInfo(settings.resultAlignmentFile).absoluteFilePath());
 
         config.reportFile = reportFile.fileName();
         config.emptyOutputPossible = true;
@@ -214,13 +223,13 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
     } else if (subTask == cmdlineTask && settings.addResultToProject) {
         // add load document task
         FormatDetectionConfig config;
-        QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.outAlignment, config);
+        QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.resultAlignmentFile, config);
         CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong output format")), result);
 
         DocumentFormat *format = formats.first().format;
         CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
 
-        Task *loadTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outAlignment);
+        Task *loadTask = AppContext::getProjectLoader()->openWithProjectTask(settings.resultAlignmentFile);
         AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
     }
 
@@ -314,11 +323,10 @@ void AlignToReferenceBlastDialog::accept() {
     settings.rowNaming = static_cast<AlignToReferenceBlastCmdlineTask::Settings::RowNaming>(cbRowNaming->currentData().toInt());
 
     if (outputLineEdit->text().isEmpty()) {
-        QMessageBox::warning(this, tr("Error"),
-                             tr("Output file is not set."));
+        QMessageBox::warning(this, tr("Error"), tr("Output file is not set."));
         return;
     }
-    settings.outAlignment = outputLineEdit->text();
+    settings.resultAlignmentFile = outputLineEdit->text();
     settings.addResultToProject = addToProjectCheckbox->isChecked();
 
     QString outUrl = saveController->getSaveFileName();

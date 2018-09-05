@@ -237,7 +237,7 @@ QList<Task*> GenomeAlignerTask::onSubTaskFinished( Task* subTask ) {
 
         if (alignContext.bestMode) {
             // ReadShortReadsSubTask can add new data what can lead to realloc. Noone can touch these vectors without sync
-            writeTask  = new WriteAlignedReadsSubTask(alignContext.listM, seqWriter, alignContext.data, readsAligned);
+            writeTask  = new WriteAlignedReadsSubTask(alignContext.listM, writeLock, seqWriter, alignContext.data, readsAligned);
             writeTask->setSubtaskProgressWeight(0.0f);
             subTasks.append(writeTask);
             return subTasks;
