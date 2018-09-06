@@ -5398,16 +5398,16 @@ GUI_TEST_CLASS_DEFINITION(test_1531) {
 
 GUI_TEST_CLASS_DEFINITION(test_1533){
 //    1. Open an alignment in ClustalW format (e.g. "test.aln")
-    GTFile::copy(os, dataDir+"samples/CLUSTALW/COI.aln", testDir + "_common_data/scenarios/sandbox/COI.aln");
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/COI.aln");
+    GTFile::copy(os, testDir + "_common_data/clustal/test_alignment.aln", sandBoxDir + "test_alignment.aln");
+    GTFileDialog::openFile(os, sandBoxDir + "test_alignment.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Outside UGENE create a FASTA file with the same name as the alignment file (e.g. "test.aln", even if it is FASTA)
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesAll));
 //    3. Copy the second file to replace the first one outside UGENE
-    QFile f(testDir + "_common_data/scenarios/sandbox/COI.aln");
+    QFile f(sandBoxDir + "test_alignment.aln");
     f.remove();
     //CHECK_SET_ERR(f.remove(), "file not removed");
-    GTFile::copy(os, dataDir+"samples/FASTA/human_T1.fa", testDir + "_common_data/scenarios/sandbox/COI.aln");
+    GTFile::copy(os, testDir + "_common_data/fasta/test.fa", sandBoxDir + "test_alignment.aln");
     GTGlobals::sleep(10000);
 //    4. Confirm to reload the file in UGENE
 //    => Unloaded file is shown, "Alignment is empty" error occurs when it is opened. This error doesn't appear if the file is just opened in UGENE.
