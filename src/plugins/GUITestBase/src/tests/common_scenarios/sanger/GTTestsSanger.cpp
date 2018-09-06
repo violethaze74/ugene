@@ -25,6 +25,8 @@
 #include <QLineEdit>
 #include <QSpinBox>
 
+#include <drivers/GTKeyboardDriver.h>
+
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <primitives/GTCheckBox.h>
@@ -373,9 +375,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
         void run(HI::GUITestOpStatus &os) {
 
 //    Expected state: wizard has appeared.
-            QWidget *wizard = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != wizard, "active modal widget is NULL");
-            GTWidget::clickWindowTitle(os, wizard);
+             QWidget *wizard = QApplication::activeModalWidget();
+             CHECK_SET_ERR(NULL != wizard, "active modal widget is NULL");
+             GTWidget::clickWindowTitle(os, wizard);
 
 //    2. Fill it with any valid data until the 'Mapping settings' page.
             GTUtilsWizard::setParameter(os, "Reference", QFileInfo(testDir + "_common_data/sanger/reference.gb").absoluteFilePath());
@@ -402,6 +404,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
 //    4. Fill the wizard till the end. Run the workflow.
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_4.ugenedb").absoluteFilePath());
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
