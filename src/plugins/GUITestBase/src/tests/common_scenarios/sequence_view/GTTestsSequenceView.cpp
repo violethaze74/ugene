@@ -713,12 +713,20 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     ADVSingleSequenceWidget* wgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
     CHECK_SET_ERR(wgt != NULL, "ADVSequenceWidget is NULL");
 
+    GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
+    
+    QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleZoomView"));
+    GTWidget::click(os, toggleViewButton);
+    GTGlobals::sleep();
+
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "560..743,1..180"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "primer3_action"));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
-    GTWidget::click(os, wgt, Qt::RightButton);
+    GTWidget::click(os, wgt, Qt::RightButton, QPoint(10,10));
 
     GTGlobals::sleep();
 
