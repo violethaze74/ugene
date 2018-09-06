@@ -518,6 +518,9 @@ GUI_TEST_CLASS_DEFINITION( test_2021_6 )
     // 1. Open "data/samples/CLUSTAL/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    if (GTUtilsProjectTreeView::isVisible(os)) {
+        GTUtilsProjectTreeView::toggleView(os);
+    }
 
     //2. Set cursor to the position 45 of the first line (after gaps).
     //const QPoint initialSelectionPos(44, 0);
@@ -565,6 +568,9 @@ GUI_TEST_CLASS_DEFINITION( test_2021_8 )
     // 1. Open "data/samples/CLUSTAL/COI.aln".
     GTFileDialog::openFile( os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    if (GTUtilsProjectTreeView::isVisible(os)) {
+        GTUtilsProjectTreeView::toggleView(os);
+    }
 
     //2. Select the 45 and 46 of the second line (two symbols after gaps).
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint( 44,1), QPoint( 45, 1));
