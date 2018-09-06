@@ -4592,7 +4592,7 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
     GTGlobals::sleep();
     //3. Close WD
     GTUtilsMdi::click( os, GTGlobals::Close );
-    GTMouseDriver::click();
+    //GTMouseDriver::click();
     GTGlobals::sleep();
     //4. Reopen the scheme's file
     //   Expected result: scheme is loaded completely without any error messages in log
