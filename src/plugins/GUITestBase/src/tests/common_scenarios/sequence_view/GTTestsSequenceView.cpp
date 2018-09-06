@@ -1343,6 +1343,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040){
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
     GTWidget::click(os, wrapButton);
+    GTUtilsProjectTreeView::toggleView(os, GTGlobals::UseKey);
 
     DetView* det = GTWidget::findExactWidget<DetView*>(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     QScrollBar* scroll = GTScrollBar::getScrollBar(os, "singleline_scrollbar");
