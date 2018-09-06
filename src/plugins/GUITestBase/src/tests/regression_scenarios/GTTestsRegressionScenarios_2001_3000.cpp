@@ -587,6 +587,9 @@ GUI_TEST_CLASS_DEFINITION( test_2021_9 )
     // 1. Open "data/samples/CLUSTAL/COI.aln".
     GTFileDialog::openFile( os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    if (GTUtilsProjectTreeView::isVisible(os)) {
+        GTUtilsProjectTreeView::toggleView(os);
+    }
 
     //2. Select the 45 and 46 of the second line (two symbols after gaps).
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(44, 2), QPoint( 46,2));
