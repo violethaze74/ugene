@@ -63,7 +63,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NC_001363", 0));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
     GTGlobals::sleep();
 
     GTGlobals::sleep(20000);
@@ -92,7 +92,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
 
     GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -122,7 +122,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
 
     GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -192,7 +192,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickClose, "");
 
     GTUtilsDialog::waitForDialog(os, new NcbiSearchDialogFiller(os, searchActions));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Search NCBI GenBank...", GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Search NCBI GenBank...");
     GTGlobals::sleep();
 }
 
@@ -230,7 +230,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickClose, "");
 
     GTUtilsDialog::waitForDialog(os, new NcbiSearchDialogFiller(os, searchActions));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Search NCBI GenBank...", GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Search NCBI GenBank...");
     GTGlobals::sleep();
 }
 

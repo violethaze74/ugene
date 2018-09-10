@@ -1874,7 +1874,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 //    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTUtilsDialog::waitForDialog(os,new PopupChooser(os,QStringList()<<MSAE_MENU_COPY<<"copy_selection"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
+    GTGlobals::sleep(4000);
 
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected");
@@ -1915,10 +1915,10 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 
     GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
-    GTGlobals::sleep();
+    GTGlobals::sleep(4000);
 // copy to clipboard
     GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTGlobals::sleep(4000);
 
     QString clipboardText = GTClipboard::text(os);
 

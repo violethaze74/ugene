@@ -138,6 +138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 // Expected state:
 //     1) Document is loaded,
+    GTGlobals::sleep();
     GTUtilsDocument::checkDocument(os, "1CF7.PDB", AnnotatedDNAViewFactory::ID);
 //     2) 4 sequences and 3D Viewer with molecule is appeared
 }
@@ -171,7 +172,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTGlobals::sleep(2000);
+    GTGlobals::sleep(4000);
     GTUtilsToolTip::checkExistingToolTip(os, "samples/PDB/1CF7.PDB");
 }
 
