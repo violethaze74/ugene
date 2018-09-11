@@ -3686,11 +3686,9 @@ public:
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
     };
+    GTUtilsDialog::waitForDialog(os, new CallVariantsWizardFiller(os));
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
-
-    GTUtilsDialog::waitForDialog(os, new CallVariantsWizardFiller(os));
-    GTWidget::click(os, GTAction::button(os, "Show wizard"));
 }
 
 GUI_TEST_CLASS_DEFINITION( test_1337 ) {
