@@ -3537,6 +3537,9 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     // 3. Open the "Align sequences with MUSCLE" sample scheme.
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTGlobals::sleep();
+    GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+    GTGlobals::sleep();
 
     // 4. Set "_common_data/scenarios/_regression/4563/test_ma.fa" as the input file.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
