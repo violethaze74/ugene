@@ -735,7 +735,7 @@ GUI_TEST_CLASS_DEFINITION(test_0598) {
     // 5. Set parameters: window = 1000, step = 4
     // 6. Press 'Ok'
     // Expected state: 'Calculate graph points' task is started
-    GTUtilsDialog::waitForDialog(os, new GraphSettingsDialogFiller(os, 100, 25));
+    GTUtilsDialog::waitForDialog(os, new GraphSettingsDialogFiller(os, 200, 100));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Graph"
         << "visual_properties_action"));
     QWidget* graphView = GTUtilsSequenceView::getGraphView(os);
