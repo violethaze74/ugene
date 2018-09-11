@@ -4618,6 +4618,7 @@ GUI_TEST_CLASS_DEFINITION(test_3715) {
     //3. Choose a sample
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTKeyboardDriver::keyClick( 'r', Qt::ControlModifier);
