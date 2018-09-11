@@ -846,7 +846,7 @@ void GTUtilsWorkflowDesigner::setParameter(HI::GUITestOpStatus &os, QString para
 
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os,table,1,row));
     GTMouseDriver::click();
-    GTGlobals::sleep(500);
+    GTGlobals::sleep();
 
     //SET VALUE
     setCellValue(os, table, value, type, method);
