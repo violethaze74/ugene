@@ -410,7 +410,8 @@ GUI_TEST_CLASS_DEFINITION(test_6058_2) {
 
     //2. Check "30. Peritrich Nuclear" "Genetic code" parameter option in "Classify Sequences with DIAMOND" WD element
     WorkflowProcessItem *diamondElement = GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with DIAMOND", true);
-    WorkflowProcessItem *orfmarkerElement = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker", true);
+    //WorkflowProcessItem *orfmarkerElement = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker", true);
+    WorkflowProcessItem *orfMarker = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker");
     GTGlobals::sleep();
     GTUtilsWorkflowDesigner::click(os, diamondElement);
     GTGlobals::sleep();
@@ -418,7 +419,7 @@ GUI_TEST_CLASS_DEFINITION(test_6058_2) {
     GTGlobals::sleep();
 
     //3. Check "27. Karyorelict Nuclear" "Genetic code" parameter option in "ORF Marker" WD element  
-    GTUtilsWorkflowDesigner::click(os, orfmarkerElement);
+    GTUtilsWorkflowDesigner::click(os, orfMarker);
     GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setParameter(os, "Genetic code", "27. Karyorelict Nuclear", GTUtilsWorkflowDesigner::comboValue);
     GTGlobals::sleep();
