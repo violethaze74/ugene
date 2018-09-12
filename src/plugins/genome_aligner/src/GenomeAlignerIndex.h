@@ -50,7 +50,8 @@ public:
 #ifdef OPENCL_SUPPORT
     BinarySearchResult *bitMaskBinarySearchOpenCL(const BMType *bitValues, int size, const int *windowSizes);
 #endif
-    QString getSeqName() const {return seqObjName;}
+    const QString& getFirstSequenceObjectName() const {return firstSequenceObjectName;}
+    int getNumberOfSequencesInIndex() const {return objCount;}
     int getPartCount() const {return indexPart.partCount;}
     SAType getSArraySize() const {return indexPart.saLengths[currentPart];}
     SAType getSeqLength() const {return seqLength;}
@@ -72,7 +73,8 @@ private:
     int             partsInMemCache;
     quint32         *objLens;
     int             objCount;
-    QString         seqObjName;
+    QString         firstSequenceObjectName;
+    QString         sequenceObjectName;
     int             currentPart;
     IndexPart       indexPart;
     bool            build;
