@@ -31,6 +31,7 @@
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2CrossDatabaseReferenceDbi.h>
 
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BasePorts.h>
@@ -208,7 +209,11 @@ inline void checkOperationStatus(const U2OpStatus &status) {
     }
 }
 
-GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath, const QString &refName, int refLength) :
+GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath, 
+                                               const QString &assemblyName, 
+                                               int refLength, 
+                                               const QString& referenceObjectName,
+                                               const QString& referenceUrlForCrossLink) :
     importer(status)
 {
     //TODO: support several assemblies.
@@ -216,9 +221,24 @@ GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath, const
     checkOperationStatus(status);
     sqliteDbi = dbiHandle->dbi;
     wDbi = sqliteDbi->getAssemblyDbi();
+    
+    const QString folder = U2ObjectDbi::ROOT_FOLDER;
+    if (!referenceObjectName.isEmpty() && !referenceUrlForCrossLink.isEmpty()) {
+        U2CrossDatabaseReference crossDbRef;
+        crossDbRef.dataRef.dbiRef.dbiId = referenceUrlForCrossLink;
+        crossDbRef.dataRef.dbiRef.dbiFactoryId = "document";
+        crossDbRef.dataRef.entityId = referenceObjectName.toUtf8();
+        crossDbRef.visualName = "cross_database_reference: " + referenceObjectName;
+        crossDbRef.dataRef.version = 1;
+        sqliteDbi->getCrossDatabaseReferenceDbi()->createCrossReference(crossDbRef, folder, status);
+        checkOperationStatus(status);
 
-    assembly.visualName = refName;
-    importer.createAssembly(sqliteDbi->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, assembly);
+        assembly.referenceId = crossDbRef.id;
+    }
+    
+    assembly.visualName = assemblyName;
+    
+    importer.createAssembly(sqliteDbi->getDbiRef(), folder, assembly);
     checkOperationStatus(status);
 
     U2IntegerAttribute lenAttr;
@@ -226,7 +246,7 @@ GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath, const
     lenAttr.name = U2BaseAttributeName::reference_length;
     lenAttr.version = 1;
     lenAttr.value = refLength;
-    dbiHandle->dbi->getAttributeDbi()->createIntegerAttribute(lenAttr, status);
+    sqliteDbi->getAttributeDbi()->createIntegerAttribute(lenAttr, status);
 }
 
 void GenomeAlignerDbiWriter::write(SearchQuery *seq, SAType offset) {

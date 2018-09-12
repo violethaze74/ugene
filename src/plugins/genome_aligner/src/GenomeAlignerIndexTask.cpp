@@ -207,7 +207,7 @@ void GenomeAlignerIndexTask::reformatSequence() {
         seqLens.append(seq->length());
         newRefFile.write(seq->constData());
         if (firstSeq) {
-            index->seqObjName = seq->getName() + QString("_and_others");
+            index->firstSequenceObjectName = seq->getName();// + QString("_and_others");
             firstSeq = false;
         }
         CHECK_OP_EXT(stateInfo, newRefFile.close(), );

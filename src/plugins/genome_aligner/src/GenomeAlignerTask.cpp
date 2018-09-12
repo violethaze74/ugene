@@ -211,11 +211,19 @@ QList<Task*> GenomeAlignerTask::onSubTaskFinished( Task* subTask ) {
             return subTasks;
         }
 
+        QString assemblyObjectName = settings.resultFileName.baseFileName();
+        bool nonMergedReference = index->getNumberOfSequencesInIndex();
+        QString referenceSequenceName = nonMergedReference ? index->getFirstSequenceObjectName() : QString();
         if (settings.samOutput) {
-            seqWriter = new GenomeAlignerUrlWriter(settings.resultFileName, index->getSeqName(), index->getSeqLength());
+            seqWriter = new GenomeAlignerUrlWriter(settings.resultFileName, assemblyObjectName, index->getSeqLength());
         } else {
+            QString referenceSequenceUrl = nonMergedReference ? settings.refSeqUrl.getURLString() : QString();
             try {
-                seqWriter = new GenomeAlignerDbiWriter(settings.resultFileName.getURLString(), index->getSeqName(), index->getSeqLength());
+                seqWriter = new GenomeAlignerDbiWriter(settings.resultFileName.getURLString(), 
+                                                       assemblyObjectName, 
+                                                       index->getSeqLength(), 
+                                                       referenceSequenceName,
+                                                       referenceSequenceUrl);
             } catch (const QString &exeptionMessage) {
                 setError(exeptionMessage);
                 if (NULL != pWriteTask) {
@@ -224,7 +232,9 @@ QList<Task*> GenomeAlignerTask::onSubTaskFinished( Task* subTask ) {
                 return subTasks;
             }
         }
-        seqWriter->setReferenceName(index->getSeqName());
+        if (!referenceSequenceName.isEmpty()) {
+            seqWriter->setReferenceName(index->getFirstSequenceObjectName());
+        }
         if (!alignContext.bestMode) {
             pWriteTask->setSeqWriter(seqWriter);
         }

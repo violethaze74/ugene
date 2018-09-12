@@ -5434,12 +5434,14 @@ GUI_TEST_CLASS_DEFINITION(test_2811) {
 //    2. Open any workflow, create a breakpoint for any element.
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setBreakpoint(os, "Align with MUSCLE");
 
 //    3. Open another workflow.
 //    Expected state: breakpoints list is cleared.
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep();
     QStringList breakpointList = GTUtilsWorkflowDesigner::getBreakpointList(os);
     CHECK_SET_ERR(breakpointList.isEmpty(), "There are unexpected breakpoints");
 }
