@@ -2570,6 +2570,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTUtilsProjectTreeView::click(os, "Gene.fa");
     GTGlobals::sleep();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTGlobals::sleep(1000);
 
     GTLogTracer l2;
     GTUtilsNotifications::waitForNotification(os, false);
