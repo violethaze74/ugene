@@ -5854,18 +5854,20 @@ GUI_TEST_CLASS_DEFINITION(test_4918_1) {
 GUI_TEST_CLASS_DEFINITION(test_4934) {
     //1. Open samples/CLUSTALW/ty3.aln.gz
     GTLogTracer l;
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
+    //GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "gap_column.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Align with Kalign
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseMouse));
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     //3. while aligning lock document for editing
-    GTUtilsDocument::lockDocument(os, "ty3.aln.gz");
+    //GTUtilsDocument::lockDocument(os, "ty3.aln.gz");
+    GTUtilsDocument::lockDocument(os, "gap_column.aln");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //4. Unlock document after alignment finished
-    GTUtilsDocument::unlockDocument(os, "ty3.aln.gz");
+    GTUtilsDocument::unlockDocument(os, "gap_column.aln");
 
     //5. Align with Kalign again
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseMouse));
@@ -5873,7 +5875,7 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::checkContainsError(os, l, "Object 'ty3.aln.gz' removed");
+    GTUtilsLog::checkContainsError(os, l, "Object 'gap_column.aln' removed");
     int errorNum = GTUtilsLog::getErrors(os, l).size();
     CHECK_SET_ERR(errorNum==1, QString("Too many errors in log: %1").arg(errorNum));
 }
