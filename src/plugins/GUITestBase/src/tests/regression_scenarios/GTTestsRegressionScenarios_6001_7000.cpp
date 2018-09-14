@@ -262,12 +262,20 @@ GUI_TEST_CLASS_DEFINITION(test_6038_2) {
     GTUtilsWorkflowDesigner::validateWorkflow(os);
 
     //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
-    QSet<QString> acceptableErrors = QSet<QString>()             
+    QSet<QString> acceptableErrors;
+   
+#ifdef Q_OS_WIN
+    acceptableErrors = QSet<QString>()             
         << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)
         << QString("%1: External tool \"CLARK\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
-        << QString("%1: External tool \"CLARK-l\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)       
+        << QString("%1: External tool \"CLARK-l\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
         << QString("%1: Required parameter is not set: Database").arg(clarkName);
-      
+#else
+    acceptableErrors = QSet<QString>()
+        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)           
+        << QString("%1: Required parameter is not set: Database").arg(clarkName);
+#endif  
+
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
     CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
         arg(acceptableErrors.size()).
@@ -287,7 +295,6 @@ GUI_TEST_CLASS_DEFINITION(test_6038_4) {
         //    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
         //    Expected state:  'Filter by Classification' element has three input slots (two of them are 'Input URL 1' and 'Input URL 2'), and two output slots ('Output URL 1' and 'Output URL 2').
         
-
     {
         GTUtilsWorkflowDesigner::click(os, filterElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
@@ -373,7 +380,6 @@ GUI_TEST_CLASS_DEFINITION(test_6038_3) {
         //    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
         //    Expected state: 'Classify Sequences with Kraken' element has two input slots ('Input URL 1' and 'Input URL 2') and some output slots;
         
-
     {
         GTUtilsWorkflowDesigner::click(os, krakenElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
@@ -390,12 +396,9 @@ GUI_TEST_CLASS_DEFINITION(test_6038_3) {
         CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(krakenName));
     }
 
-    //    4. Set 'Input data' parameter in each element to 'SE reads or contigs' ('SE reads' in 'Improve Reads with Trimmomatic' element).
-    //    Expected state: 'Classify Sequences with Kraken' and 'Classify Sequences with CLARK' elements have one input slot ('Input URL 1') and some output slots;
-    //                    'Improve Reads with Trimmomatic' element has one input slot ('Input FASTQ URL 1') and one output slot ('Output FASTQ URL 1');
-    //                    'Filter by Classification' element has two input slots (one of them is 'Input URL 1'), and one output slot ('Output URL 1').
-    
-
+    //    4. Set 'Input data' parameter in each element to 'SE reads or contigs
+    //    Expected state: 'Classify Sequences with Kraken' and some output slots;
+                           
     {   
         GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
         GTUtilsWorkflowDesigner::click(os, krakenElement);
@@ -413,244 +416,31 @@ GUI_TEST_CLASS_DEFINITION(test_6038_3) {
         CHECK_SET_ERR(!inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot unexpectedly found in element '%1'").arg(krakenName));
     }
 
-
     //    5. Click 'Validate workflow' button on the toolbar.
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsWorkflowDesigner::validateWorkflow(os);
 
-    //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
-    QSet<QString> acceptableErrors = QSet<QString>()
+    //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.    
+    QSet<QString> acceptableErrors;
+
+#ifdef Q_OS_WIN
+    acceptableErrors = QSet<QString>()
         << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(krakenName)
         << QString("%1: External tool \"kraken\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(krakenName)
         << QString("%1: Required parameter is not set: Database").arg(krakenName)
         << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName);
+#else
+    acceptableErrors = QSet<QString>()
+        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(krakenName)
+        << QString("%1: Required parameter is not set: Database").arg(krakenName)
+        << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName);
+#endif  
 
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
     CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
         arg(acceptableErrors.size()).
         arg(actualErrors.size()));  
 }
-/*
-GUI_TEST_CLASS_DEFINITION(test_6038) {
-//    1. Open WD.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-
-//    2. Add 'Improve Reads with Trimmomatic', 'Classify Sequences with CLARK', 'Classify Sequences with Kraken' and 'Filter by Classification' elements to the scene.
-    const QString trimmomaticName = "Improve Reads with Trimmomatic";
-    const QString clarkName = "Classify Sequences with CLARK";
-    const QString krakenName = "Classify Sequences with Kraken";
-    const QString filterName = "Filter by Classification";
-
-    WorkflowProcessItem *trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
-    WorkflowProcessItem *clarkElement = GTUtilsWorkflowDesigner::addElement(os, clarkName);
-    WorkflowProcessItem *krakenElement = GTUtilsWorkflowDesigner::addElement(os, krakenName);
-    WorkflowProcessItem *filterElement = GTUtilsWorkflowDesigner::addElement(os, filterName);
-
-//    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
-//    Expected state: 'Classify Sequences with Kraken' and 'Classify Sequences with CLARK' elements have two input slots ('Input URL 1' and 'Input URL 2') and some output slots;
-//                    'Improve Reads with Trimmomatic' element has two input slots ('Input FASTQ URL 1' and 'Input FASTQ URL 2') and two output slots ('Output FASTQ URL 1' and 'Output FASTQ URL 2');
-//                    'Filter by Classification' element has three input slots (two of them are 'Input URL 1' and 'Input URL 2'), and two output slots ('Output URL 1' and 'Output URL 2').
-    {
-        GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input FASTQ URL 1"), QString("'Input FASTQ URL 1' slot not found in element '%1'").arg(trimmomaticName));
-        CHECK_SET_ERR(inputSlotsNames.contains("Input FASTQ URL 2"), QString("'Input FASTQ URL 2' slot not found in element '%1'").arg(trimmomaticName));
-
-        QTableWidget *outputPortTable = GTUtilsWorkflowDesigner::getOutputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != outputPortTable, "outputPortTable is NULL");
-
-        QStringList outputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, outputPortTable); i++) {
-            outputSlotsNames << GTTableView::data(os, outputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(outputSlotsNames.contains("Output FASTQ URL 1 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 1 (by Improve Reads with Trimmomatic)' slot not found in element '%1'").arg(trimmomaticName));
-        CHECK_SET_ERR(outputSlotsNames.contains("Output FASTQ URL 2 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 2 (by Improve Reads with Trimmomatic)' slot not found in element '%1'").arg(trimmomaticName));
-    }
-
-    {
-        GTUtilsWorkflowDesigner::click(os, clarkElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(clarkName));
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(clarkName));
-    }
-
-    {
-        GTUtilsWorkflowDesigner::click(os, krakenElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(krakenName));
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(krakenName));
-    }
-
-    {
-        GTUtilsWorkflowDesigner::click(os, filterElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(filterName));
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(filterName));
-
-        QTableWidget *outputPortTable = GTUtilsWorkflowDesigner::getOutputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != outputPortTable, "outputPortTable is NULL");
-
-        QStringList outputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, outputPortTable); i++) {
-            outputSlotsNames << GTTableView::data(os, outputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(outputSlotsNames.contains("Output URL 1 (by Filter by Classification)"), QString("'Output URL 1 (by Filter by Classification)' slot not found in element '%1'").arg(filterName));
-        CHECK_SET_ERR(outputSlotsNames.contains("Output URL 2 (by Filter by Classification)"), QString("'Output URL 2 (by Filter by Classification)' slot not found in element '%1'").arg(filterName));
-    }
-
-//    4. Set 'Input data' parameter in each element to 'SE reads or contigs' ('SE reads' in 'Improve Reads with Trimmomatic' element).
-//    Expected state: 'Classify Sequences with Kraken' and 'Classify Sequences with CLARK' elements have one input slot ('Input URL 1') and some output slots;
-//                    'Improve Reads with Trimmomatic' element has one input slot ('Input FASTQ URL 1') and one output slot ('Output FASTQ URL 1');
-//                    'Filter by Classification' element has two input slots (one of them is 'Input URL 1'), and one output slot ('Output URL 1').
-    {
-        GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input FASTQ URL 1"), QString("'Input FASTQ URL 1' slot not found in element '%1'").arg(trimmomaticName));
-        CHECK_SET_ERR(!inputSlotsNames.contains("Input FASTQ URL 2"), QString("'Input FASTQ URL 2' slot unexpectedly found in element '%1'").arg(trimmomaticName));
-
-        QTableWidget *outputPortTable = GTUtilsWorkflowDesigner::getOutputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != outputPortTable, "outputPortTable is NULL");
-
-        QStringList outputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, outputPortTable); i++) {
-            outputSlotsNames << GTTableView::data(os, outputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(outputSlotsNames.contains("Output FASTQ URL 1 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 1 (by Improve Reads with Trimmomatic)' slot not found in element '%1'").arg(trimmomaticName));
-        CHECK_SET_ERR(!outputSlotsNames.contains("Output FASTQ URL 2 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 2 (by Improve Reads with Trimmomatic)' slot unexpectedly found in element '%1'").arg(trimmomaticName));
-    }
-
-    {
-        GTUtilsWorkflowDesigner::click(os, clarkElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(clarkName));
-        CHECK_SET_ERR(!inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot unexpectedly found in element '%1'").arg(clarkName));
-    }
-
-    {
-        GTUtilsWorkflowDesigner::click(os, krakenElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(krakenName));
-        CHECK_SET_ERR(!inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot unexpectedly found in element '%1'").arg(krakenName));
-    }
-
-    {
-        GTUtilsWorkflowDesigner::click(os, filterElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(filterName));
-        CHECK_SET_ERR(!inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot unexpectedly found in element '%1'").arg(filterName));
-
-        QTableWidget *outputPortTable = GTUtilsWorkflowDesigner::getOutputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != outputPortTable, "outputPortTable is NULL");
-
-        QStringList outputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, outputPortTable); i++) {
-            outputSlotsNames << GTTableView::data(os, outputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(outputSlotsNames.contains("Output URL 1 (by Filter by Classification)"), QString("'Output URL 1 (by Filter by Classification)' slot not found in element '%1'").arg(filterName));
-        CHECK_SET_ERR(!outputSlotsNames.contains("Output URL 2 (by Filter by Classification)"), QString("'Output URL 2 (by Filter by Classification)' slot unexpectedly found in element '%1'").arg(filterName));
-    }
-
-//    5. Click 'Validate workflow' button on the toolbar.
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    GTUtilsWorkflowDesigner::validateWorkflow(os);
-
-//    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
-      QSet<QString> acceptableErrors = QSet<QString>()
-          << QString("%1: The mandatory \"Input FASTQ URL 1\" slot is not connected.").arg(trimmomaticName)
-          << QString("%1: External tool \"Trimmomatic\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(trimmomaticName)
-          << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)
-          << QString("%1: External tool \"CLARK\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
-          << QString("%1: External tool \"CLARK-l\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
-          << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(krakenName)
-          << QString("%1: External tool \"kraken\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(krakenName)
-          << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(filterName)
-          << QString("%1: Required parameter is not set: Trimming steps").arg(trimmomaticName)
-          << QString("%1: Required parameter is not set: Database").arg(clarkName)
-          << QString("%1: Required parameter is not set: Database").arg(krakenName)
-          << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName)
-          << QString("%1: Taxonomy classification data from NCBI are not available").arg(filterName);
-    QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
-    CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
-        arg(acceptableErrors.size()).
-        arg(actualErrors.size()));
-}
-*/
 
 GUI_TEST_CLASS_DEFINITION(test_6043) {
 //    1. Open "_common_data/ugenedb/sec1_9_ugenedb.ugenedb".
