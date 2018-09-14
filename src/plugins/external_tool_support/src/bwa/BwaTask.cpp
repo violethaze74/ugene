@@ -609,15 +609,15 @@ BwaTask::BwaTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildInd
 }
 
 void BwaTask::prepare() {
+    if (!justBuildIndex) {
+        setUpIndexBuilding(indexSuffixes);
+    }
     QString indexFileName = settings.indexFileName;
+    if (indexFileName.isEmpty()) {
+        indexFileName = settings.refSeqUrl.getURLString();
+    }
 
     if (!settings.prebuiltIndex) {
-        if (!justBuildIndex) {
-            setUpIndexBuilding(indexSuffixes);
-        }
-        if (indexFileName.isEmpty()) {
-            indexFileName = settings.refSeqUrl.getURLString();
-        }
         buildIndexTask = new BwaBuildIndexTask(settings.refSeqUrl.getURLString(), indexFileName, settings);
         buildIndexTask->addListeners(QList <ExternalToolListener*>() << getListener(0));
     }
