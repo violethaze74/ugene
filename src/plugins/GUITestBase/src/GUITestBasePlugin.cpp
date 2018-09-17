@@ -2862,7 +2862,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0003);
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_database::import_test_0003,"drag&drop");
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0004);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0005);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0006);
