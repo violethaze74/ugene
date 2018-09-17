@@ -42,7 +42,7 @@ private:
 
     inline void setReadWritten(SearchQuery *read, SearchQuery *revCompl);
     QReadWriteLock &listM;
-    
+
     // lock to use when data is written to output.
     QMutex& writeLock;
 };

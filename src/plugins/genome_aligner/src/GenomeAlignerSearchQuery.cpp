@@ -162,9 +162,9 @@ void SearchQuery::onPartChanged() {
 }
 
 void SearchQuery::clear() {
-    results.clear(); 
+    results.clear();
     results.squeeze();
-    mismatchCounts.clear(); 
+    mismatchCounts.clear();
     mismatchCounts.squeeze();
 }
 

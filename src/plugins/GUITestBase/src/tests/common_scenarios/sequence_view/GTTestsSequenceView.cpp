@@ -714,7 +714,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     CHECK_SET_ERR(wgt != NULL, "ADVSequenceWidget is NULL");
 
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
-    
+
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleZoomView"));
     GTWidget::click(os, toggleViewButton);
