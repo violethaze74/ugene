@@ -108,7 +108,7 @@ private:
     qint64 indexLoadTime;
     qint64 shortreadIOTime;
     float currentProgress;
-    
+
     QMutex writeLock;
 
     void setupCreateIndexTask();

@@ -219,9 +219,9 @@ QList<Task*> GenomeAlignerTask::onSubTaskFinished( Task* subTask ) {
         } else {
             QString referenceSequenceUrl = nonMergedReference ? settings.refSeqUrl.getURLString() : QString();
             try {
-                seqWriter = new GenomeAlignerDbiWriter(settings.resultFileName.getURLString(), 
-                                                       assemblyObjectName, 
-                                                       index->getSeqLength(), 
+                seqWriter = new GenomeAlignerDbiWriter(settings.resultFileName.getURLString(),
+                                                       assemblyObjectName,
+                                                       index->getSeqLength(),
                                                        referenceSequenceName,
                                                        referenceSequenceUrl);
             } catch (const QString &exeptionMessage) {

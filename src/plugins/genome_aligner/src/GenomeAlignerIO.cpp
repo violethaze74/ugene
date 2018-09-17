@@ -209,9 +209,9 @@ inline void checkOperationStatus(const U2OpStatus &status) {
     }
 }
 
-GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath, 
-                                               const QString &assemblyName, 
-                                               int refLength, 
+GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath,
+                                               const QString &assemblyName,
+                                               int refLength,
                                                const QString& referenceObjectName,
                                                const QString& referenceUrlForCrossLink) :
     importer(status)
@@ -221,7 +221,7 @@ GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath,
     checkOperationStatus(status);
     sqliteDbi = dbiHandle->dbi;
     wDbi = sqliteDbi->getAssemblyDbi();
-    
+
     const QString folder = U2ObjectDbi::ROOT_FOLDER;
     if (!referenceObjectName.isEmpty() && !referenceUrlForCrossLink.isEmpty()) {
         U2CrossDatabaseReference crossDbRef;
@@ -235,9 +235,9 @@ GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath,
 
         assembly.referenceId = crossDbRef.id;
     }
-    
+
     assembly.visualName = assemblyName;
-    
+
     importer.createAssembly(sqliteDbi->getDbiRef(), folder, assembly);
     checkOperationStatus(status);
 

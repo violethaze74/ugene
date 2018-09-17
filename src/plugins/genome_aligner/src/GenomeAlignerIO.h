@@ -169,7 +169,7 @@ private:
 
 class GenomeAlignerDbiWriter : public GenomeAlignerWriter {
 public:
-    GenomeAlignerDbiWriter(const QString &dbiFilePath, const QString &assemblyName, int refLength, 
+    GenomeAlignerDbiWriter(const QString &dbiFilePath, const QString &assemblyName, int refLength,
                            const QString& referenceObjectName = QString(),
                            const QString& referenceUrlForCrossLink = QString());
     inline void write(SearchQuery *seq, SAType offset);

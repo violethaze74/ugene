@@ -166,12 +166,12 @@ GUI_TEST_CLASS_DEFINITION(test_6038_1) {
     }
     //    4. Set 'Input data' parameter in each element to 'SE reads' in 'Improve Reads with Trimmomatic' element.
     //    Expected state: 'Improve Reads with Trimmomatic' element has one input slot ('Input FASTQ URL 1') and one output slot ('Output FASTQ URL 1');
-    // 
-    {       
+    //
+    {
         GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
         GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads", GTUtilsWorkflowDesigner::comboValue);
-        
+
         QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
         CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
 
@@ -193,7 +193,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_1) {
 
         CHECK_SET_ERR(outputSlotsNames.contains("Output FASTQ URL 1 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 1 (by Improve Reads with Trimmomatic)' slot not found in element '%1'").arg(trimmomaticName));
         CHECK_SET_ERR(!outputSlotsNames.contains("Output FASTQ URL 2 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 2 (by Improve Reads with Trimmomatic)' slot unexpectedly found in element '%1'").arg(trimmomaticName));
-        
+
     }
 
     //    5. Click 'Validate workflow' button on the toolbar.
@@ -204,7 +204,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_1) {
     QSet<QString> acceptableErrors = QSet<QString>()
         << QString("%1: The mandatory \"Input FASTQ URL 1\" slot is not connected.").arg(trimmomaticName)
         << QString("%1: Required parameter is not set: Trimming steps").arg(trimmomaticName);
-        
+
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
     CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
         arg(acceptableErrors.size()).
@@ -217,12 +217,12 @@ GUI_TEST_CLASS_DEFINITION(test_6038_2) {
 
     //    2. Add 'Improve Reads with Trimmomatic', 'Classify Sequences with CLARK', 'Classify Sequences with Kraken' and 'Filter by Classification' elements to the scene.
     const QString clarkName = "Classify Sequences with CLARK";
-  
+
     WorkflowProcessItem *clarkElement = GTUtilsWorkflowDesigner::addElement(os, clarkName);
-  
+
     //    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
     //    Expected state: 'Classify Sequences with CLARK' elements have two input slots ('Input URL 1' and 'Input URL 2') and some output slots;
-                   
+
         GTUtilsWorkflowDesigner::click(os, clarkElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
 
@@ -263,18 +263,18 @@ GUI_TEST_CLASS_DEFINITION(test_6038_2) {
 
     //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
     QSet<QString> acceptableErrors;
-   
+
 #ifdef Q_OS_WIN
-    acceptableErrors = QSet<QString>()             
+    acceptableErrors = QSet<QString>()
         << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)
         << QString("%1: External tool \"CLARK\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
         << QString("%1: External tool \"CLARK-l\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
         << QString("%1: Required parameter is not set: Database").arg(clarkName);
 #else
     acceptableErrors = QSet<QString>()
-        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)           
+        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)
         << QString("%1: Required parameter is not set: Database").arg(clarkName);
-#endif  
+#endif
 
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
     CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
@@ -283,18 +283,18 @@ GUI_TEST_CLASS_DEFINITION(test_6038_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6038_4) {
-  
+
         //    1. Open WD.
         GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-        //    2. Add 'Filter by Classification' element to the scene.       
+        //    2. Add 'Filter by Classification' element to the scene.
         const QString filterName = "Filter by Classification";
-       
+
         WorkflowProcessItem *filterElement = GTUtilsWorkflowDesigner::addElement(os, filterName);
 
         //    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
         //    Expected state:  'Filter by Classification' element has three input slots (two of them are 'Input URL 1' and 'Input URL 2'), and two output slots ('Output URL 1' and 'Output URL 2').
-        
+
     {
         GTUtilsWorkflowDesigner::click(os, filterElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
@@ -324,8 +324,8 @@ GUI_TEST_CLASS_DEFINITION(test_6038_4) {
 
     //    4. Set 'Input data' parameter in each element to 'SE reads or contigs' ('SE reads' in 'Improve Reads with Trimmomatic' element).
     //    Expected state: 'Filter by Classification' element has two input slots (one of them is 'Input URL 1'), and one output slot ('Output URL 1').
-  
-    { 
+
+    {
         GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
         GTUtilsWorkflowDesigner::click(os, filterElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
@@ -358,28 +358,28 @@ GUI_TEST_CLASS_DEFINITION(test_6038_4) {
     GTUtilsWorkflowDesigner::validateWorkflow(os);
 
     //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
-    QSet<QString> acceptableErrors = QSet<QString>()       
-        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(filterName)       
+    QSet<QString> acceptableErrors = QSet<QString>()
+        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(filterName)
         << QString("%1: Taxonomy classification data from NCBI are not available").arg(filterName);
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
     CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
         arg(acceptableErrors.size()).
         arg(actualErrors.size()));
 }
-   
+
 GUI_TEST_CLASS_DEFINITION(test_6038_3) {
 
         //    1. Open WD.
         GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-        //    2. Add 'Classify Sequences with Kraken' element to the scene.     
-        const QString krakenName = "Classify Sequences with Kraken";            
+        //    2. Add 'Classify Sequences with Kraken' element to the scene.
+        const QString krakenName = "Classify Sequences with Kraken";
         WorkflowProcessItem *krakenElement = GTUtilsWorkflowDesigner::addElement(os, krakenName);
-     
+
 
         //    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
         //    Expected state: 'Classify Sequences with Kraken' element has two input slots ('Input URL 1' and 'Input URL 2') and some output slots;
-        
+
     {
         GTUtilsWorkflowDesigner::click(os, krakenElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
@@ -398,8 +398,8 @@ GUI_TEST_CLASS_DEFINITION(test_6038_3) {
 
     //    4. Set 'Input data' parameter in each element to 'SE reads or contigs
     //    Expected state: 'Classify Sequences with Kraken' and some output slots;
-                           
-    {   
+
+    {
         GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
         GTUtilsWorkflowDesigner::click(os, krakenElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
@@ -420,7 +420,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_3) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsWorkflowDesigner::validateWorkflow(os);
 
-    //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.    
+    //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
     QSet<QString> acceptableErrors;
 
 #ifdef Q_OS_WIN
@@ -434,12 +434,12 @@ GUI_TEST_CLASS_DEFINITION(test_6038_3) {
         << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(krakenName)
         << QString("%1: Required parameter is not set: Database").arg(krakenName)
         << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName);
-#endif  
+#endif
 
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
     CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
         arg(acceptableErrors.size()).
-        arg(actualErrors.size()));  
+        arg(actualErrors.size()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6043) {
@@ -511,7 +511,7 @@ GUI_TEST_CLASS_DEFINITION(test_6058_2) {
     GTUtilsWorkflowDesigner::setParameter(os, "Genetic code", "30. Peritrich Nuclear", GTUtilsWorkflowDesigner::comboValue);
     GTGlobals::sleep();
 
-    //3. Check "27. Karyorelict Nuclear" "Genetic code" parameter option in "ORF Marker" WD element  
+    //3. Check "27. Karyorelict Nuclear" "Genetic code" parameter option in "ORF Marker" WD element
     GTUtilsWorkflowDesigner::click(os, orfMarker);
     GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setParameter(os, "Genetic code", "27. Karyorelict Nuclear", GTUtilsWorkflowDesigner::comboValue);
