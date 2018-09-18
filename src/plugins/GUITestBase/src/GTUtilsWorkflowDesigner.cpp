@@ -317,6 +317,25 @@ void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os){
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "findByNameFilter"
+void GTUtilsWorkflowDesigner::findByNameFilter(HI::GUITestOpStatus& os, const QString& elementName) {
+    QLineEdit* nameFilterLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit"));
+    GT_CHECK(nameFilterLineEdit != NULL, "Filter name line edit is not found");
+
+    const QPoint mappedLineEditPos = nameFilterLineEdit->mapToGlobal(nameFilterLineEdit->pos());
+    const QPoint pos(mappedLineEditPos.x() + 75, mappedLineEditPos.y() + 10);
+    GTMouseDriver::moveTo(pos);
+    GTGlobals::sleep(500);
+    GTMouseDriver::click();
+    GTGlobals::sleep(500);
+    for (int i = 0; i < elementName.size(); i++) {
+        GTKeyboardDriver::keyClick(elementName[i].toLatin1());
+        GTGlobals::sleep(50);
+    }
+    GTGlobals::sleep(1000);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "clickOnPalette"
 void GTUtilsWorkflowDesigner::clickOnPalette(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton mouseButton) {
     selectAlgorithm(os, findTreeItem(os, itemName, algoriths, true));

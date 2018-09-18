@@ -504,6 +504,7 @@ GUI_TEST_CLASS_DEFINITION(test_6058_2) {
     //2. Check "30. Peritrich Nuclear" "Genetic code" parameter option in "Classify Sequences with DIAMOND" WD element
     WorkflowProcessItem *diamondElement = GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with DIAMOND", true);
     //WorkflowProcessItem *orfmarkerElement = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker", true);
+    GTUtilsWorkflowDesigner::findByNameFilter(os, "ORF Marker");
     WorkflowProcessItem *orfMarker = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker");
     GTGlobals::sleep();
     GTUtilsWorkflowDesigner::click(os, diamondElement);
