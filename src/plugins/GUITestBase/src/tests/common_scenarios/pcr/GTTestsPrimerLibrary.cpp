@@ -726,6 +726,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
     GTUtilsDialog::waitForDialog(os, new PrimerLibrarySelectorFiller(os, 1, true));
     GTWidget::click(os, GTUtilsPcr::browseButton(os, U2Strand::Complementary));
+    GTGlobals::sleep();
 
     // 4. Find the product
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
