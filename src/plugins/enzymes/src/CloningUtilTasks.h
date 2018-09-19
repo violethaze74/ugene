@@ -75,6 +75,7 @@ private:
     void saveResults();
     SharedAnnotationData createFragment(int pos1, const DNAFragmentTerm& leftTerm, int pos2, const DNAFragmentTerm& rightTerm);
     void checkForConservedAnnotations();
+    qint64 correctPos(const qint64 pos) const;
     bool isCircular;
     U2Region seqRange;
     AnnotationTableObject *sourceObj, *destObj;

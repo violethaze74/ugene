@@ -81,11 +81,23 @@ void DigestSequenceTask::prepare() {
 
 SharedAnnotationData DigestSequenceTask::createFragment(int pos1, const DNAFragmentTerm& leftTerm, int pos2, const DNAFragmentTerm& rightTerm) {
     SharedAnnotationData ad(new AnnotationData);
-    if (pos1  < pos2) {
-        ad->location->regions.append(U2Region(pos1, pos2 - pos1));
+    if (pos1 < pos2) {
+        U2Region reg(pos1, pos2 - pos1);
+        assert(reg.length > 0);
+
+        ad->location->regions.append(reg);
     } else {
-        ad->location->regions.append(U2Region(pos1, seqRange.endPos() - pos1));
-        ad->location->regions.append(U2Region(seqRange.startPos, pos2 - seqRange.startPos));
+        U2Region reg1(pos1, seqRange.endPos() - pos1);
+        U2Region reg2(seqRange.startPos, pos2 - seqRange.startPos);
+        assert(reg1.length >= 0 && reg2.length >= 0);
+        assert(!reg1.isEmpty() || !reg2.isEmpty());
+
+        if (!reg1.isEmpty()){
+            ad->location->regions.append(reg1);
+        }
+        if (!reg2.isEmpty()) {
+            ad->location->regions.append(reg2);
+        }
     }
 
     ad->qualifiers.append(U2Qualifier(QUALIFIER_LEFT_TERM, leftTerm.enzymeId));
@@ -222,8 +234,8 @@ void DigestSequenceTask::run()
         bool leftStrandDirect = prev.key().directStrand;
         int leftCutDirect = leftStrandDirect ? enzyme1->cutDirect : len1 - enzyme1->cutDirect;
         int leftCutCompl = leftStrandDirect ? len1 - enzyme1->cutComplement : enzyme1->cutComplement;
-        int leftCutPos = pos1 + qMax(leftCutDirect, leftCutCompl);
-        int leftOverhangStart = pos1 + qMin(leftCutDirect, leftCutCompl);
+        int leftCutPos = correctPos(pos1 + qMax(leftCutDirect, leftCutCompl));
+        int leftOverhangStart = correctPos(pos1 + qMin(leftCutDirect, leftCutCompl));
         leftTerm.overhang = dnaObj->getSequenceData(U2Region(leftOverhangStart, leftCutPos - leftOverhangStart));
         leftTerm.enzymeId = enzyme1->id.toLatin1();
         leftTerm.isDirect = leftStrandDirect ? leftCutDirect < leftCutCompl : leftCutDirect > leftCutCompl;
@@ -232,8 +244,8 @@ void DigestSequenceTask::run()
         bool rightStrandDirect = current.key().directStrand;
         int rightCutDirect = rightStrandDirect ? enzyme2->cutDirect : len2 - enzyme2->cutDirect;
         int rightCutCompl = rightStrandDirect ? len2 - enzyme2->cutComplement : enzyme2->cutComplement;
-        int rightCutPos = pos2 + qMin(rightCutDirect, rightCutCompl);
-        int rightOverhangStart = pos2 + qMax(rightCutDirect, rightCutCompl);
+        int rightCutPos = correctPos(pos2 + qMin(rightCutDirect, rightCutCompl));
+        int rightOverhangStart = correctPos(pos2 + qMax(rightCutDirect, rightCutCompl));
         rightTerm.overhang = dnaObj->getSequenceData(U2Region(rightCutPos, rightOverhangStart - rightCutPos));
         rightTerm.enzymeId = enzyme2->id.toLatin1();
         rightTerm.isDirect = rightStrandDirect ? rightCutDirect > rightCutCompl : rightCutDirect < rightCutCompl;
@@ -255,8 +267,8 @@ void DigestSequenceTask::run()
     bool fcStrandDirect = first.key().directStrand;
     int fcDirectStrandCut = fcStrandDirect ? firstCutter->cutDirect : fcLen - firstCutter->cutDirect;
     int fcComplementStrandCut = fcStrandDirect ? fcLen - firstCutter->cutComplement : firstCutter->cutComplement;
-    int firstCutPos = first.key().coord + qMin(fcDirectStrandCut, fcComplementStrandCut);
-    int rightOverhangStart = first.key().coord + qMax(fcDirectStrandCut, fcComplementStrandCut);
+    int firstCutPos = correctPos(first.key().coord + qMin(fcDirectStrandCut, fcComplementStrandCut));
+    int rightOverhangStart = correctPos(first.key().coord + qMax(fcDirectStrandCut, fcComplementStrandCut));
     bool rightOverhangIsDirect = fcStrandDirect ? fcDirectStrandCut > fcComplementStrandCut :
         fcDirectStrandCut < fcComplementStrandCut;
     QByteArray firstRightOverhang = dnaObj->getSequenceData(U2Region(firstCutPos, rightOverhangStart - firstCutPos));
@@ -266,8 +278,8 @@ void DigestSequenceTask::run()
     bool lcStrandDirect = prev.key().directStrand;
     int lcDirectStrandCut = lcStrandDirect ? lastCutter->cutDirect : lcLen - lastCutter->cutDirect;
     int lcComplementStrandCut = lcStrandDirect ? lcLen - lastCutter->cutComplement : lastCutter->cutComplement;
-    int lastCutPos = prev.key().coord + qMax(lcDirectStrandCut, lcComplementStrandCut);
-    int leftOverhangStart = prev.key().coord + qMin(lcDirectStrandCut, lcComplementStrandCut);
+    int lastCutPos = correctPos(prev.key().coord + qMax(lcDirectStrandCut, lcComplementStrandCut));
+    int leftOverhangStart = correctPos(prev.key().coord + qMin(lcDirectStrandCut, lcComplementStrandCut));
     bool leftOverhangIsDirect = lcStrandDirect ? lcDirectStrandCut < lcComplementStrandCut :
         lcDirectStrandCut > lcComplementStrandCut;
 
@@ -286,6 +298,7 @@ void DigestSequenceTask::run()
         if (isCircular) {
             SharedAnnotationData ad = createFragment(lastCutPos, DNAFragmentTerm(lastCutter->id, lastLeftOverhang, leftOverhangIsDirect),
                 firstCutPos, DNAFragmentTerm(firstCutter->id, firstRightOverhang,rightOverhangIsDirect));
+
             results.append(ad);
         } else {
             SharedAnnotationData ad1 = createFragment(seqRange.startPos, DNAFragmentTerm(),
@@ -358,6 +371,10 @@ void DigestSequenceTask::checkForConservedAnnotations()
             return;
         }
     }
+}
+
+qint64 DigestSequenceTask::correctPos(const qint64 pos) const {
+    return qBound<qint64>(0, pos, dnaObj->getSequenceLength());
 }
 
 //////////////////////////////////////////////////////////////////////////

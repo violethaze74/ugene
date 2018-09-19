@@ -24,16 +24,16 @@
 #include <QSpinBox>
 #include <QTableWidget>
 
-#include <base_dialogs/MessageBoxFiller.h>
 #include <base_dialogs/DefaultDialogFiller.h>
+#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTTableView.h>
-#include <primitives/GTTextEdit.h>
-#include <primitives/GTTabWidget.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTTableView.h>
+#include <primitives/GTTabWidget.h>
+#include <primitives/GTTextEdit.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
@@ -56,8 +56,8 @@
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsNotifications.h"
-#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelMca.h"
+#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPcr.h"
@@ -73,12 +73,14 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 
+#include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
-#include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 
 namespace U2 {
 
@@ -918,6 +920,26 @@ GUI_TEST_CLASS_DEFINITION(test_6225) {
 
     const int size = GTUtilsProjectTreeView::getDocuments(os).size();
     CHECK_SET_ERR(size == 2, QString("Unexpected documents number; expected: 2, current: %1").arg(size));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6232) {
+    //1. Open "STEP1_pFUS2_a2a_5.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state : the corresponding "Fragment" annotations have been created
+    QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
+    CHECK_SET_ERR(groupNames.contains("fragments  (0, 2)"), "The group \"fragments  (0, 2)\" is unexpectedly absent");
 }
 
 
