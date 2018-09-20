@@ -23,12 +23,14 @@
 #include <QDialogButtonBox>
 #include <QFileInfo>
 #include <QGraphicsView>
+#include <QGroupBox>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QSpinBox>
 #include <QTableView>
 #include <QTableWidget>
+#include <QTextEdit>
 #include <QToolButton>
 #include <QTreeWidget>
 
@@ -730,6 +732,25 @@ void GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(HI::GUITestOpStatus
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
         GTUtilsWorkflowDesigner::clickOnPalette(os, workerName, Qt::RightButton);
     }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "increaseOutputPortBoxHeight"
+void GTUtilsWorkflowDesigner::changeInputPortBoxHeight(HI::GUITestOpStatus &os, const int offset) {
+    QTextEdit* doc = GTWidget::findExactWidget<QTextEdit *>(os, "doc");
+    GT_CHECK(doc != NULL, "doc is not found");
+
+    QGroupBox* paramBox = GTWidget::findExactWidget<QGroupBox *>(os, "paramBox");
+    GT_CHECK(paramBox != NULL, "Param Box is not found");
+
+    QGroupBox* inputPortBox = GTWidget::findExactWidget<QGroupBox *>(os, "inputPortBox");
+    GT_CHECK(paramBox != NULL, "inputPortBox is not found");
+
+    QPoint docGlobal = doc->mapToGlobal(doc->pos());
+    QPoint bottomDevidePos(docGlobal.x() + (inputPortBox->width() / 2), docGlobal.y() + doc->height() + paramBox->height() + inputPortBox->height() + 10);
+    QPoint newBottomDevidePos(bottomDevidePos.x(), bottomDevidePos.y() + offset);
+    GTMouseDriver::dragAndDrop(bottomDevidePos, newBottomDevidePos);
+    GTGlobals::sleep();
 }
 #undef GT_METHOD_NAME
 

@@ -2881,6 +2881,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
 
     // Excepted state : Input "Annotations" slot of WS is not empty and contains annotations from ORF Finder
     GTUtilsWorkflowDesigner::click(os, "Write Sequence");
+    GTUtilsWorkflowDesigner::changeInputPortBoxHeight(os, 100);
 
     QTableWidget* tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");

@@ -179,6 +179,8 @@ public:
 
     static void removeCmdlineWorkerFromPalette(HI::GUITestOpStatus &os, const QString &workerName);
 
+    static void changeInputPortBoxHeight(HI::GUITestOpStatus &os, const int offset);
+
 private:
     static void selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem *algorithm);
     static void selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample);
