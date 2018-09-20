@@ -327,11 +327,37 @@ void GTUtilsWorkflowDesigner::findByNameFilter(HI::GUITestOpStatus& os, const QS
     GTMouseDriver::moveTo(pos);
     GTGlobals::sleep(500);
     GTMouseDriver::click();
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Home);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ShiftModifier);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTGlobals::sleep(500);
     for (int i = 0; i < elementName.size(); i++) {
         GTKeyboardDriver::keyClick(elementName[i].toLatin1());
         GTGlobals::sleep(50);
     }
+    GTGlobals::sleep(1000);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "cleanNameFilter"
+void GTUtilsWorkflowDesigner::cleanNameFilter(HI::GUITestOpStatus& os) {
+    QLineEdit* nameFilterLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit"));
+    GT_CHECK(nameFilterLineEdit != NULL, "Filter name line edit is not found");
+
+    const QPoint mappedLineEditPos = nameFilterLineEdit->mapToGlobal(nameFilterLineEdit->pos());
+    const QPoint pos(mappedLineEditPos.x() + 75, mappedLineEditPos.y() + 10);
+    GTMouseDriver::moveTo(pos);
+    GTGlobals::sleep(500);
+    GTMouseDriver::click();
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Home);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ShiftModifier);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME

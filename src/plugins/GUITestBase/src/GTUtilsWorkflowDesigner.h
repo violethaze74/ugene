@@ -81,6 +81,8 @@ public:
 
     static void findByNameFilter(HI::GUITestOpStatus& os, const QString& elementName);
 
+    static void cleanNameFilter(HI::GUITestOpStatus& os);
+
     static void clickOnPalette(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton mouseButton = Qt::LeftButton);
 
     static QTreeWidgetItem * getPaletteGroup(HI::GUITestOpStatus &os, const QString &groupName);
