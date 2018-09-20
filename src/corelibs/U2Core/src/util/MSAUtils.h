@@ -22,6 +22,8 @@
 #ifndef _U2_MSA_UTILS_H_
 #define _U2_MSA_UTILS_H_
 
+#include <QSet>
+
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
@@ -41,6 +43,8 @@ public:
     static MultipleSequenceAlignment seq2ma(const QList<DNASequence>& dnas, U2OpStatus& os);
 
     static QList<DNASequence> ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps);
+    
+    static QList<DNASequence> ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps, const QSet<qint64>& rowIds);
 
     // sets alphabet if no alignment alphabet was set; checks is the new alphabet equal old alphabet, otherwise sets error
     static void updateAlignmentAlphabet(MultipleSequenceAlignment& ma, const DNAAlphabet* a, U2OpStatus& os);

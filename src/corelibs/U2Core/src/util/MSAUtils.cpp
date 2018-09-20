@@ -212,6 +212,26 @@ QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool tr
     return lst;
 }
 
+QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps, const QSet<qint64>& rowIds) {
+    QBitArray gapCharMap = TextUtils::createBitMap(U2Msa::GAP_CHAR);
+    int len = ma->getLength();
+    const DNAAlphabet* al = ma->getAlphabet();
+    U2OpStatus2Log os;
+    QList<DNASequence> result;
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+        if (rowIds.contains(row->getRowId())) {
+           DNASequence s(row->getName(), row->toByteArray(os, len), al);
+            if (trimGaps) {
+                int newLen = TextUtils::remove(s.seq.data(), s.length(), gapCharMap);
+                s.seq.resize(newLen);
+            }
+            result << s;
+        }
+    }
+    return result;
+}
+
+
 
 bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2OpStatus& ti) {
     if (ali->getLength() == 0) {

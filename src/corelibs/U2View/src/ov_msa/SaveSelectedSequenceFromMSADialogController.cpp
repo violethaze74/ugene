@@ -47,10 +47,8 @@ const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "~/";
 const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "%UserProfile%/";
 #endif
 
-SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(const QString &defaultDir, QWidget* p, const QStringList& _seqNames, const QString& defaultCustomFilename)
+SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(QWidget* p, const QString& defaultCustomFilename)
     : QDialog(p),
-      defaultDir(defaultDir),
-      seqNames(_seqNames),
       saveController(NULL),
       ui(new Ui_SaveSelectedSequenceFromMSADialog())
 {
@@ -77,17 +75,7 @@ void SaveSelectedSequenceFromMSADialogController::accept() {
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     CHECK(df != NULL, )
     QString extension = df->getSupportedDocumentFileExtensions().first();
-    if (!ui->customFileNameEdit->isEnabled()) {
-        foreach(const QString& filename, seqNames) {
-            QString filePath = url + QDir::separator() + filename + "." + extension;
-            filePath = GUrlUtils::fixFileName(filePath);
-            QFile fileToSave(filePath);
-            if (fileToSave.exists()) {
-                QMessageBox::critical(this, L10N::errorTitle(), tr("File \"%1\" is already exists, choose custom filename or select another directory for save!").arg(filename + "." + extension));
-                return;
-            }
-        }
-    } else {
+    if (ui->customFileNameEdit->isEnabled()) {
         QString filePath = url + QDir::separator() + ui->customFileNameEdit->text() + "." + extension;
         filePath = GUrlUtils::fixFileName(filePath);
         QFile fileToSave(filePath);
@@ -133,7 +121,7 @@ void SaveSelectedSequenceFromMSADialogController::initSaveController() {
     config.folderLineEdit = ui->folderNameEdit;
     config.formatCombo = ui->formatCombo;
     config.parentWidget = this;
-    config.defaultFileName = defaultDir + "/";
+    config.defaultFileName = LastUsedDirHelper(config.defaultDomain).dir + "/";
 
     DocumentFormatConstraints formatConstraints;
     formatConstraints.supportedObjectTypes << GObjectTypes::SEQUENCE;
@@ -201,13 +189,13 @@ void SaveDocumentInFolderController::initFormatComboBox() {
 }
 
 void SaveDocumentInFolderController::sl_fileDialogButtonClicked() {
-    QString defaultUrl = getSaveDirName();
-    LastUsedDirHelper lod(conf.defaultDomain, defaultUrl);
-    if (defaultUrl.isEmpty()) {
-        defaultUrl = lod;
+    QString defaultDir = getSaveDirName();
+    LastUsedDirHelper lod(conf.defaultDomain, defaultDir);
+    if (defaultDir.isEmpty()) {
+        defaultDir = lod;
     }
 
-    lod.url = U2FileDialog::getExistingDirectory(conf.parentWidget, conf.saveTitle, defaultUrl);
+    lod.url = U2FileDialog::getExistingDirectory(conf.parentWidget, conf.saveTitle, defaultDir);
     if (lod.url.isEmpty()) {
         return;
     }

@@ -579,18 +579,10 @@ void MSAEditorSequenceArea::sl_createSubaligniment(){
 
 void MSAEditorSequenceArea::sl_saveSequence(){
     CHECK(getEditor() != NULL, );
-    QStringList seqNames;
-    MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
-    QRect selection = editor->getCurrentSelection();
-    int startSeq = selection.y();
-    int endSeq = selection.y() + selection.height() - 1;
-    MSACollapsibleItemModel *model = editor->getUI()->getCollapseModel();
-    for (int i = startSeq; i <= endSeq; i++) {
-        seqNames.append(ma->getRow(model->mapToRow(i))->getName());
-    }
-
-    QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(editor->getMaObject()->getDocument()->getURL().dirPath(),
-        (QWidget*)AppContext::getMainWindow()->getQMainWindow(), seqNames, editor->getMaObject()->getGObjectName() + "_sequence");
+    
+    QWidget* parentWidget = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
+    QString suggestedFileName = editor->getMaObject()->getGObjectName() + "_sequence";
+    QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(parentWidget, suggestedFileName);
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 
@@ -601,7 +593,19 @@ void MSAEditorSequenceArea::sl_saveSequence(){
     SAFE_POINT(df != NULL, "Unknown document format", );
     QString extension = df->getSupportedDocumentFileExtensions().first();
 
-    AppContext::getTaskScheduler()->registerTopLevelTask(new ExportSequencesTask(getEditor()->getMaObject()->getMsa(), seqNames, d->getTrimGapsFlag(), d->getAddToProjectFlag(), d->getUrl(), d->getFormat(), extension, d->getCustomFileName()));
+    const QRect& selection = editor->getCurrentSelection();
+    int startSeq = selection.y();
+    int endSeq = selection.y() + selection.height() - 1;
+    MSACollapsibleItemModel *model = editor->getUI()->getCollapseModel();
+    const MultipleAlignment& ma = editor->getMaObject()->getMultipleAlignment();
+    QSet<qint64> seqIds;
+    for (int i = startSeq; i <= endSeq; i++) {
+        seqIds.insert(ma->getRow(model->mapToRow(i))->getRowId());
+    }
+    ExportSequencesTask* exportTask = new ExportSequencesTask(getEditor()->getMaObject()->getMsa(), seqIds, d->getTrimGapsFlag(), 
+                                                              d->getAddToProjectFlag(), d->getUrl(), d->getFormat(), extension, 
+                                                              d->getCustomFileName());
+    AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
 }
 
 void MSAEditorSequenceArea::sl_modelChanged() {
