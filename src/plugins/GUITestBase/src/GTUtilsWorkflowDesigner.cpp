@@ -253,6 +253,15 @@ WorkflowProcessItem * GTUtilsWorkflowDesigner::addElement(HI::GUITestOpStatus &o
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "addElementByUsingNameFilter"
+WorkflowProcessItem* GTUtilsWorkflowDesigner::addElementByUsingNameFilter(HI::GUITestOpStatus &os, const QString &elementName, bool exactMatch) {
+    GTUtilsWorkflowDesigner::findByNameFilter(os, elementName);
+    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, elementName, exactMatch);
+    GTUtilsWorkflowDesigner::cleanNameFilter(os);
+    return item;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "selectAlgorithm"
 void GTUtilsWorkflowDesigner::selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem* algorithm){
     GT_CHECK(algorithm!=NULL, "algorithm is NULL");

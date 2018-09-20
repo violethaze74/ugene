@@ -96,6 +96,7 @@ public:
     static void addSample(HI::GUITestOpStatus &os, const QString &sampName);
     static void addAlgorithm(HI::GUITestOpStatus &os, QString algName, bool exactMatch = false, bool useDragAndDrop = false);
     static WorkflowProcessItem * addElement(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch = false);
+    static WorkflowProcessItem * addElementByUsingNameFilter(HI::GUITestOpStatus &os, const QString &elementName, bool exactMatch = false);
 
     //returns center of worker on workflow scene in global coordinates
     static QPoint getItemCenter(HI::GUITestOpStatus &os,QString itemName);
