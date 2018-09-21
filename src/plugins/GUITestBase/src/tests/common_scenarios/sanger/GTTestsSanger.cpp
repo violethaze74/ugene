@@ -332,6 +332,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
 //    3. Fill the wizard till the end. Run the workflow.
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_3.ugenedb").absoluteFilePath());
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
