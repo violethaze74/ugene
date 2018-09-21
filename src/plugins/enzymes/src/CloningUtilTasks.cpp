@@ -374,7 +374,7 @@ void DigestSequenceTask::checkForConservedAnnotations()
 }
 
 qint64 DigestSequenceTask::correctPos(const qint64 pos) const {
-    return qBound<qint64>(0, pos, dnaObj->getSequenceLength());
+    return qMax<qint64>(0, pos);
 }
 
 //////////////////////////////////////////////////////////////////////////
