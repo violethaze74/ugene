@@ -216,9 +216,11 @@ Task * ClassificationReportWorker::tick() {
         if (outputFileUrl.isEmpty()) {
             QString reportFilePrefix = getReportFilePrefix(message);
             outputFileUrl = context->workingDir() +
-                    "/classification_report/" +
-                    reportFilePrefix +
-                    "_" + producerClassifyToolName +
+                    "/classification_report/";
+            if (!reportFilePrefix.isEmpty()) {
+                outputFileUrl += reportFilePrefix + "_";
+            }
+            outputFileUrl += producerClassifyToolName +
                     "_report.txt";
             FileAndDirectoryUtils::createWorkingDir(outputFileUrl, FileAndDirectoryUtils::FILE_DIRECTORY, "", "");
         }
