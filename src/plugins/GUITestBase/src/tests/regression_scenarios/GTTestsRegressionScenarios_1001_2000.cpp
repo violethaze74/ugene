@@ -7482,7 +7482,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_2){
 
 GUI_TEST_CLASS_DEFINITION(test_1714){
 //    1. Open the "external tools" configuration window using Settings/Preferences menu
-//    2. Select path for external tools package (if not set). External tools package can be downloaded from http://ugene.net/external.html
+//    2. Select path for external tools package (if not set).
 //    3. Deselect all Cistrome tools
 //    4. Deselect python external tool
 //    Expected state: the python tool is deselected. UGENE doesn't hangs up (or crashes)

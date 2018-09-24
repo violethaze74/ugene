@@ -147,7 +147,7 @@ void ExternalToolSupportSettingsPageWidget::sl_linkActivated(const QString& url)
 void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
     ExternalToolSupportSettingsPageState* state = qobject_cast<ExternalToolSupportSettingsPageState*>(s);
     connect(selectToolPackButton, SIGNAL(clicked()), this, SLOT(sl_onBrowseToolPackPath()));
-    connect(linkLabel, SIGNAL(linkActivated(QString)), this, SLOT(sl_linkActivated(QString)));
+    connect(selectToolPackLabel, SIGNAL(linkActivated(QString)), this, SLOT(sl_linkActivated(QString)));
 
     foreach (ExternalTool* tool, state->externalTools) {
         ExternalToolInfo info;
