@@ -2634,7 +2634,7 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);     // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
-
+    //GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString sequence = "фыва...";
@@ -2642,6 +2642,7 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
     clipboard->setText(sequence);
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);     // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
