@@ -88,6 +88,10 @@ SharedAnnotationData DigestSequenceTask::createFragment(int pos1, const DNAFragm
         ad->location->regions.append(reg);
     } else {
         U2Region reg1(pos1, seqRange.endPos() - pos1);
+        if (pos2 < 0) {
+            reg1.length += pos2;
+            pos2 = 0;
+        }
         U2Region reg2(seqRange.startPos, pos2 - seqRange.startPos);
         assert(reg1.length >= 0 && reg2.length >= 0);
         assert(!reg1.isEmpty() || !reg2.isEmpty());
@@ -283,7 +287,7 @@ void DigestSequenceTask::run()
     bool leftOverhangIsDirect = lcStrandDirect ? lcDirectStrandCut < lcComplementStrandCut :
         lcDirectStrandCut > lcComplementStrandCut;
 
-    if (lastCutPos >= seqLen) {
+    if (lastCutPos > seqLen) {
         // last restriction site is situated between sequence start and end
         assert(isCircular);
         int leftCutPos = lastCutPos - seqLen;
@@ -301,12 +305,16 @@ void DigestSequenceTask::run()
 
             results.append(ad);
         } else {
-            SharedAnnotationData ad1 = createFragment(seqRange.startPos, DNAFragmentTerm(),
-                firstCutPos, DNAFragmentTerm(firstCutter->id, firstRightOverhang, rightOverhangIsDirect));
-            SharedAnnotationData ad2 = createFragment(lastCutPos, DNAFragmentTerm(lastCutter->id, lastLeftOverhang, leftOverhangIsDirect),
-                seqRange.endPos(), DNAFragmentTerm());
-            results.append(ad1);
-            results.append(ad2);
+            if (firstCutPos != 0) {
+                SharedAnnotationData ad1 = createFragment(seqRange.startPos, DNAFragmentTerm(),
+                    firstCutPos, DNAFragmentTerm(firstCutter->id, firstRightOverhang, rightOverhangIsDirect));
+                results.append(ad1);
+            }
+            if (lastCutPos != dnaObj->getSequenceLength()) {
+                SharedAnnotationData ad2 = createFragment(lastCutPos, DNAFragmentTerm(lastCutter->id, lastLeftOverhang, leftOverhangIsDirect),
+                    seqRange.endPos(), DNAFragmentTerm());
+                results.append(ad2);
+            }
         }
     }
     qSort(results.begin(), results.end(), compareAnnotationsbyLength);
@@ -374,7 +382,11 @@ void DigestSequenceTask::checkForConservedAnnotations()
 }
 
 qint64 DigestSequenceTask::correctPos(const qint64 pos) const {
-    return qMax<qint64>(0, pos);
+    qint64 res = pos;
+    if (!dnaObj->isCircular()) {
+        res = qBound<qint64>(0, pos, dnaObj->getSequenceLength());
+    }
+    return res;
 }
 
 //////////////////////////////////////////////////////////////////////////
