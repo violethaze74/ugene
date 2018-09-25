@@ -37,6 +37,7 @@ public:
     void init();
     Task *tick();
     void cleanup();
+    void setDone();
 
 private slots:
     void sl_taskFinished(Task *task);
