@@ -5056,7 +5056,8 @@ GUI_TEST_CLASS_DEFINITION(test_4784_1) {
     settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST search...");
-    GTGlobals::sleep(3000);
+    GTGlobals::sleep(1000);
+
     //5. Delete "chr6.fa" in file browser.
     //7. Click "No" in the appeared message box.
     //Expected result: An error notification appears - "A problem occurred during doing BLAST. The sequence is no more available".
@@ -5083,6 +5084,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
     settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST+...", GTGlobals::UseMouse);
+    GTGlobals::sleep(100);
 
     //5. Delete "chr6.fa" in file browser.
     //7. Click "No" in the appeared message box.
@@ -5138,7 +5140,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_4) {
     GTUtilsNotifications::waitForNotification(os, true, "The sequence is no more available");
     GTUtilsDocument::removeDocument(os, "regression_test_4784_4.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4785_1) {
