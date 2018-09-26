@@ -4795,7 +4795,13 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
 //    Expected state: dialog about detected file modification has appeared in UGENE window
 //    6. Press "Yes"
 //    Expected state: "human_T1" view has disappeared from the "Bookmarks" list, "murine.gb" has been reloaded.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+    const GUIDialogWaiter::WaitSettings waitSettings("");
+    GTUtilsDialog::waitForDialog(os,
+                                 new MessageBoxDialogFiller(os,
+                                                            QMessageBox::Yes,
+                                                            "Document 'test_2713.gb' was modified. Do you want to reload it?",
+                                                            ""),
+                                 waitSettings);
 
     QFile file(sandBoxDir + "/test_2713.gb");
     bool opened = file.open(QIODevice::ReadOnly | QIODevice::Text);
