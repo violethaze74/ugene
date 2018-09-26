@@ -20,6 +20,7 @@
  */
 
 #include <QApplication>
+#include <QDir>
 #include <QRadioButton>
 #include <QSpinBox>
 #include <QTableWidget>
@@ -29,6 +30,7 @@
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTTableView.h>
@@ -74,6 +76,7 @@
 #include "GTUtilsWorkflowDesigner.h"
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
@@ -897,6 +900,57 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
         QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
         CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection primer annotation regions, expected: 1, current: %1").arg(sel.size()));
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6167) {
+    //1. Change workflow designer output folder to sandbox
+    class Custom : public CustomScenario {
+    void run(HI::GUITestOpStatus &os){
+        QWidget *dialog = QApplication::activeModalWidget();
+
+        QTreeWidget* tree = GTWidget::findExactWidget<QTreeWidget*>(os, "tree", dialog);
+        CHECK_SET_ERR(tree != NULL, "QTreeWidget unexpectedly not found");
+
+        AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::WorkflowDesigner);
+
+        QLineEdit* workflowOutputEdit = GTWidget::findExactWidget<QLineEdit*>(os, "workflowOutputEdit", dialog);
+        CHECK_SET_ERR(workflowOutputEdit != NULL, "QLineEdit unexpectedly not found");
+
+        GTLineEdit::setText(os, workflowOutputEdit, sandBoxDir);
+
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open "test\_common_data\regression\6167\6167.uwl" and run
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/6167/6167.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: There are no adapter files in the output directory
+    QDir sandbox(sandBoxDir);
+    QStringList sandboxEntry = sandbox.entryList(QDir::AllEntries);
+    QRegExp rx("????.??.??_??-??");
+    rx.setPatternSyntax(QRegExp::Wildcard);
+    QString entry;
+    foreach(const QString folder, sandboxEntry) {
+        CHECK_CONTINUE(rx.exactMatch(folder));
+        entry = folder;
+        break;
+    }
+    CHECK_SET_ERR(!entry.isEmpty(), "The output folder is lost");
+
+    QString insideSandbox(sandBoxDir + entry);
+    QDir insideSandboxDir(insideSandbox);
+    QStringList resultDirs = insideSandboxDir.entryList();
+    CHECK_SET_ERR(resultDirs.size() == 5, QString("Unexpected number of result folders, expected: 5, current: %1").arg(resultDirs.size()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6225) {
