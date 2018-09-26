@@ -5781,7 +5781,15 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
     GTFileDialog::openFile( os, testDir + "_common_data/regression/2903", "unknown_virus.fa" );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new RemoteBLASTDialogFiller(os));
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new RemoteBLASTDialogFiller(os, new Scenario));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                       << "Query NCBI BLAST database"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "render_area_virus_X"));
