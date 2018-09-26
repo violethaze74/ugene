@@ -71,11 +71,13 @@ const QString ExternalToolSupportSettingsPageController::helpPageId = QString(""
 ////ExternalToolSupportSettingsPageWidget
 const QString ExternalToolSupportSettingsPageWidget::INSTALLED = QObject::tr("Installed");
 const QString ExternalToolSupportSettingsPageWidget::NOT_INSTALLED = QObject::tr("Not installed");
+const QString ExternalToolSupportSettingsPageWidget::ET_DOWNLOAD_INFO = QObject::tr("<html><head/><body><p>Download <a href=\"http://ugene.net/download-all_html#en_data_analysis_tools\"><span style=\" text-decoration: underline; color:#1866af;\">tools executables</span></a> and configure the tools paths. </p></body></html>");
 
 ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(ExternalToolSupportSettingsPageController* ctrl) {
     Q_UNUSED(ctrl);
 
     setupUi(this);
+    selectToolPackLabel->setText(ET_DOWNLOAD_INFO);
     versionLabel->hide();
     binaryPathLabel->hide();
 }
