@@ -43,7 +43,7 @@
 
 namespace U2 {
 
-PrepareSequenceObjectsTask::PrepareSequenceObjectsTask(const MultipleSequenceAlignment& msa, const QSet<qint64>& rowIds, bool trimGaps) 
+PrepareSequenceObjectsTask::PrepareSequenceObjectsTask(const MultipleSequenceAlignment& msa, const QSet<qint64>& rowIds, bool trimGaps)
     : Task(tr("Prepare sequences"), TaskFlag_None),
     msa(msa),
     rowIds(rowIds),

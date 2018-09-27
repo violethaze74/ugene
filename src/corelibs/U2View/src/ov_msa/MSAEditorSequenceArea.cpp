@@ -579,7 +579,7 @@ void MSAEditorSequenceArea::sl_createSubaligniment(){
 
 void MSAEditorSequenceArea::sl_saveSequence(){
     CHECK(getEditor() != NULL, );
-    
+
     QWidget* parentWidget = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QString suggestedFileName = editor->getMaObject()->getGObjectName() + "_sequence";
     QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(parentWidget, suggestedFileName);
@@ -602,8 +602,8 @@ void MSAEditorSequenceArea::sl_saveSequence(){
     for (int i = startSeq; i <= endSeq; i++) {
         seqIds.insert(ma->getRow(model->mapToRow(i))->getRowId());
     }
-    ExportSequencesTask* exportTask = new ExportSequencesTask(getEditor()->getMaObject()->getMsa(), seqIds, d->getTrimGapsFlag(), 
-                                                              d->getAddToProjectFlag(), d->getUrl(), d->getFormat(), extension, 
+    ExportSequencesTask* exportTask = new ExportSequencesTask(getEditor()->getMaObject()->getMsa(), seqIds, d->getTrimGapsFlag(),
+                                                              d->getAddToProjectFlag(), d->getUrl(), d->getFormat(), extension,
                                                               d->getCustomFileName());
     AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
 }

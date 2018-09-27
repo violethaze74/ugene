@@ -43,7 +43,7 @@ public:
     static MultipleSequenceAlignment seq2ma(const QList<DNASequence>& dnas, U2OpStatus& os);
 
     static QList<DNASequence> ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps);
-    
+
     static QList<DNASequence> ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps, const QSet<qint64>& rowIds);
 
     // sets alphabet if no alignment alphabet was set; checks is the new alphabet equal old alphabet, otherwise sets error
