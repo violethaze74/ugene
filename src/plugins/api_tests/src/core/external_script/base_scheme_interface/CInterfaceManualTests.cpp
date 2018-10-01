@@ -653,7 +653,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, call_variants ) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity( scheme,
-        PROPER_WD_SCHEMES_PATH + "/NGS/call_variants.uwl", stateInfo );
+        PROPER_WD_SCHEMES_PATH + "/NGS/ngs_variant_calling.uwl", stateInfo );
     CHECK_NO_ERROR( stateInfo );
 
     releaseScheme( scheme );
