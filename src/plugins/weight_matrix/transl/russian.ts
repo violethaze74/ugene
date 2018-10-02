@@ -956,11 +956,9 @@ Do you want to write over this file?</source>
         <translation>Модель с такими же параметрами уже находится в очереди</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="334"/>
-        <location filename="../src/PWMSearchDialogController.cpp" line="566"/>
         <source>Zero length or corrupted model
 Maybe model data is not enough for selected algorithm</source>
-        <translation>Zero length or corrupted model
+        <translation type="vanished">Zero length or corrupted model
 Maybe model data is not enough for selected algorithm</translation>
     </message>
     <message>
@@ -1014,6 +1012,14 @@ Maybe model data is not enough for selected algorithm</translation>
         <location filename="../src/PWMSearchDialogController.cpp" line="114"/>
         <source>Search</source>
         <translation>Поиск</translation>
+    </message>
+    <message>
+        <location filename="../src/PWMSearchDialogController.cpp" line="334"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="566"/>
+        <source>Zero length or corrupted model
+Maybe model data are not enough for selected algorithm</source>
+        <translation type="unfinished">Zero length or corrupted model
+Maybe model data are not enough for selected algorithm</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialogController.cpp" line="483"/>

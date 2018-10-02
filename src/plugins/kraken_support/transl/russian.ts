@@ -2,6 +2,32 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>KrakenClassifyValidator</name>
+    <message>
+        <source>The database folder &quot;%1&quot; doesn&apos;t exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The mandatory database file &quot;%1&quot; doesn&apos;t exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MinimizerLengthValidator</name>
+    <message>
+        <source>Minimizer length has to be less than K-mer length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Taxonomy classification data from NCBI are not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Taxonomy classification data from NCBI are not full: file &apos;%1&apos; is missing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <source>Build</source>
@@ -63,15 +89,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Taxonomy data is not set</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cannot find taxonomy data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Can&apos;t create a symbolic link to the taxonomy file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Taxonomy data are not set</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -250,29 +276,9 @@
         <source>Build a Kraken database from a genomic library or shrink a Kraken database.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Minimizer length has to be less than K-mer length</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::KrakenClassifyPrompter</name>
-    <message>
-        <source>The database folder &quot;%1&quot; doesn&apos;t exist.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The mandatory database file &quot;%1&quot; doesn&apos;t exist.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The mandatory &quot;Input URL 1&quot; slot is not connected.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The mandatory &quot;Input URL 2&quot; slot is not connected.</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Classify sequences from &lt;u&gt;%1&lt;/u&gt; with Kraken, use %2 database.</source>
         <translation type="unfinished"></translation>
@@ -396,6 +402,10 @@ See also the &quot;Input data&quot; parameter of the element.</source>
     </message>
     <message>
         <source>Broken Kraken report : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were %1 input reads, %2 reads were classified.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

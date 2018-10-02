@@ -4,52 +4,52 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="537"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="559"/>
         <source>This is not ESearch result!</source>
         <translation>Это не является результатом ESearch!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="582"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="604"/>
         <source>This is not a ESummary result!</source>
         <translation>Это не является результатом ESummary!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="665"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="687"/>
         <source>Use Ensembl ID. For example: %1 or %2</source>
         <translation>Используйте Ensembl ID. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="666"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="688"/>
         <source>Use Genbank DNA accession number. For example: %1 or %2</source>
         <translation>Используйте Genbank DNA Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="667"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="689"/>
         <source>Use Genbank protein accession number. For example: %1</source>
         <translation>Используйте Genbank Protein Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="668"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="690"/>
         <source>Use PDB molecule four-letter identifier. For example: %1 or %2</source>
         <translation>Используйте 4-х символьный идентификатор PDB. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="669"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="691"/>
         <source>Use SWISS-PROT accession number. For example: %1 or %2</source>
         <translation>Используйте SWISS-PROT Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="670"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="692"/>
         <source>Use UniProtKB/Swiss-Prot accession number. For example: %1</source>
         <translation>Используйте UniProtKB/Swiss-Prot Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="671"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="693"/>
         <source>Use UniProtKB/TrEMBL accession number. For example: %1</source>
         <translation>Используйте UniProtKB/TrEMBL Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="700"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="722"/>
         <source>Use %1 unique identifier.</source>
         <translation>Исплользуйте уникальный идентификатор %1.</translation>
     </message>
@@ -567,6 +567,14 @@
         <location filename="../src/util/MultipleChromatogramAlignmentImporter.cpp" line="72"/>
         <source>Unexpected error on MCA rows import</source>
         <translation>Unexpected error on MCA rows import</translation>
+    </message>
+</context>
+<context>
+    <name>StrPackUtils</name>
+    <message>
+        <location filename="../src/util/StrPackUtils.cpp" line="69"/>
+        <source>QVariant value can&apos;t be converted to string</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1391,6 +1399,14 @@ The session database file is removed after closing of UGENE.</source>
     </message>
 </context>
 <context>
+    <name>U2::EntrezQueryTask</name>
+    <message>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="531"/>
+        <source>Redirecting to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::ExternalToolRunTask</name>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="59"/>
@@ -1653,7 +1669,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::GzippedHttpFileAdapterFactory</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="51"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="52"/>
         <source>HTTP GZIP adaptor</source>
         <translation>HTTP GZIP адаптер</translation>
     </message>
@@ -1669,15 +1685,25 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::HttpFileAdapter</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="109"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="110"/>
         <source>Incorrect url string has been passed to HttpFileAdapter::open()</source>
         <translation>Неправильная строка адреса была передана в HttpFileAdapter::open()</translation>
+    </message>
+    <message>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="127"/>
+        <source>Downloading from %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="328"/>
+        <source>Redirecting to %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::HttpFileAdapterFactory</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="42"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="43"/>
         <source>HTTP file</source>
         <translation>HTTP адаптер</translation>
     </message>
@@ -2033,9 +2059,19 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadDataFromEntrezTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="433"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="416"/>
+        <source>Downloading file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="426"/>
         <source>Sequence with ID=%1 is not found.</source>
         <translation>Последовательность с идентификатором=%1 не найдена.</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="470"/>
+        <source>Redirecting to %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2174,18 +2210,18 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Алфавиты последовательностей не совпадают.</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="218"/>
-        <location filename="../src/util/MSAUtils.cpp" line="223"/>
+        <location filename="../src/util/MSAUtils.cpp" line="238"/>
+        <location filename="../src/util/MSAUtils.cpp" line="243"/>
         <source>Alignment is empty!</source>
         <translation>Выравнивание пусто!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="229"/>
+        <location filename="../src/util/MSAUtils.cpp" line="249"/>
         <source>Sequences in alignment have different sizes!</source>
         <translation>Последовательности в выравнивании имеют разный размер!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="337"/>
+        <location filename="../src/util/MSAUtils.cpp" line="357"/>
         <source>Can&apos;t find a row in an alignment!</source>
         <translation>Невозможно найти строку в выравнивании!</translation>
     </message>

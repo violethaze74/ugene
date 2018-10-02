@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>ClassificationFilterValidator</name>
+    <message>
+        <source>Invalid taxon ID: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set &quot;%1&quot; to &quot;True&quot; or select a taxon in &quot;%2&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Taxonomy classification data from NCBI are not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ClassificationReportPrompter</name>
     <message>
         <source>Generate a detailed classification report.</source>
@@ -9,6 +24,13 @@
     </message>
     <message>
         <source>Auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ClassificationReportValidator</name>
+    <message>
+        <source>Taxonomy classification data from NCBI are not available.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -40,18 +62,6 @@
         <source>Custom genomes</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>NGS reads classification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The plugin supports data and utility for the NGS reads classifiers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NGS: Reads Classification</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>TaxonSelectionDialog</name>
@@ -64,14 +74,6 @@
     <name>U2::LocalWorkflow::ClassificationFilterPrompter</name>
     <message>
         <source>Put input sequences that belong to the specified taxonomic group(s) to separate file(s).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid taxon ID: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set &quot;%1&quot; to &quot;True&quot; or select a taxon in &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -436,10 +438,6 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CLARK bacteria and viral database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Minikraken 4Gb database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -456,19 +454,19 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RefSeq release bacteria data from NCBI</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RefSeq release viral data from NCBI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Failed to find the %1</source>
+        <source>Found the %1 at %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Found the %1 at %2</source>
+        <source>CLARK bacterial and viral database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RefSeq release bacterial data from NCBI</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

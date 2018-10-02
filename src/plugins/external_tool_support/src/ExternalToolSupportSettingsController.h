@@ -96,6 +96,7 @@ private:
 
     static const QString INSTALLED;
     static const QString NOT_INSTALLED;
+    static const QString ET_DOWNLOAD_INFO;
 };
 
 class PathLineEdit : public QLineEdit {

@@ -2,6 +2,32 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>ClarkBuildValidator</name>
+    <message>
+        <source>Taxonomy classification data from NCBI data are not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Taxonomy classification data from NCBI are not full: file &apos;%1&apos; is missing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ClarkClassifyValidator</name>
+    <message>
+        <source>The database folder doesn&apos;t exist: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The mandatory database file doesn&apos;t exist: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reference database for these CLARK settings is not available. RefSeq data are required to build it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <source>CLARK external tool support</source>
@@ -15,19 +41,19 @@
 <context>
     <name>U2::ClarkSupport</name>
     <message>
-        <source>One of the classifiers from the CLARK framework. This tool is created for powerful workstations and can require a significant amount of RAM.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>One of the classifiers from the CLARK framework. This tool is created for workstations with limited memory (i.e., “l” for light), it provides precise classification on small metagenomes.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Used to set up metagenomic database for CLARK. </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>CLARK (CLAssifier based on Reduced K-mers) is a tool for supervised sequence classification based on discriminative k-mers. UGENE provides the GUI for CLARK and CLARK-l variants of the CLARK framework for solving the problem of the assignment of metagenomic reads to known genomes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One of the classifiers from the CLARK framework. This tool is created for powerful workstations and can require a significant amount of RAM.&lt;br&gt;&lt;br&gt;Note that a UGENE-customized version of the tool is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One of the classifiers from the CLARK framework. This tool is created for workstations with limited memory (i.e., “l” for light), it provides precise classification on small metagenomes.&lt;br&gt;&lt;br&gt;Note that a UGENE-customized version of the tool is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Used to set up metagenomic database for CLARK.&lt;br&gt;&lt;br&gt;Note that a UGENE-customized version of the tool is required.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -142,11 +168,11 @@ NCBI taxonomy data are used to map the accession number found in each reference 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Taxonomy data is not found.</source>
+        <source>Built Clark database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Built Clark database</source>
+        <source>Taxonomy classification data from NCBI are not available.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -158,14 +184,6 @@ NCBI taxonomy data are used to map the accession number found in each reference 
     </message>
     <message>
         <source>Classify paired-end reads from &lt;u&gt;%1&lt;/u&gt; with CLARK, use %2 database.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The database folder doesn&apos;t exist: %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The mandatory database file doesn&apos;t exist: %1.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -350,6 +368,10 @@ See also the &quot;Input data&quot; parameter of the element.</source>
     </message>
     <message>
         <source>Duplicate sequence name &apos;%1&apos; have been detected in the classification output.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were %1 input reads, %2 reads were classified.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
