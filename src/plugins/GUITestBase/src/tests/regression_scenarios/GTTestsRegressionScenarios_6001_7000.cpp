@@ -35,8 +35,11 @@
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
+
+#include <U2Core/HttpFileAdapter.h>
 
 #include <U2View/DetView.h>
 
@@ -939,6 +942,78 @@ GUI_TEST_CLASS_DEFINITION(test_6232) {
     //Expected state : the corresponding "Fragment" annotations have been created
     QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
     CHECK_SET_ERR(groupNames.contains("fragments  (0, 2)"), "The group \"fragments  (0, 2)\" is unexpectedly absent");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6233) {
+    //1. Find the link to the ET downloadp page in the application settings
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+            QLabel* selectToolPackLabel = GTWidget::findExactWidget<QLabel*>(os, "selectToolPackLabel");
+            CHECK_SET_ERR(selectToolPackLabel != NULL, "selectToolPackLabel unexpectedly not found");
+
+            QPoint pos(selectToolPackLabel->pos().x(), selectToolPackLabel->pos().y());
+            QPoint globalPos = selectToolPackLabel->mapToGlobal(pos);
+            GTMouseDriver::moveTo(globalPos);
+            const int xpos = globalPos.x();
+            GTClipboard::clear(os);
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 20; j++) {
+                    GTGlobals::sleep(100);
+                    QPoint mousePos(GTMouseDriver::getMousePosition());
+                    globalPos = QPoint(mousePos.x() + 11, mousePos.y() + 1);
+                    GTMouseDriver::moveTo(globalPos);
+                    Qt::CursorShape shape = selectToolPackLabel->cursor().shape();
+                    if (shape != Qt::ArrowCursor) {
+                        GTMouseDriver::click(Qt::RightButton);
+                        GTGlobals::sleep(200);
+                        GTKeyboardDriver::keyClick(Qt::Key_Down);
+                        GTGlobals::sleep(200);
+                        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+                        clip = GTClipboard::text(os);
+                        if (!clip.isEmpty()) {
+                            break;
+                        }
+                    }
+                }
+                if (!clip.isEmpty()) {
+                    break;
+                }
+                GTGlobals::sleep(25);
+                globalPos = QPoint(xpos, globalPos.y() + 5);
+                GTMouseDriver::moveTo(globalPos);
+            }
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+
+    public:
+        QString clip;
+    };
+
+    Custom* c = new Custom();
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, c));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+
+    //2. Pull html by the link
+    HttpFileAdapterFactory* factory = new HttpFileAdapterFactory;
+    IOAdapter* adapter = factory->createIOAdapter();
+    bool isOpened = adapter->open(GUrl(c->clip), IOAdapterMode_Read);
+    CHECK_SET_ERR(isOpened, "HttpFileAdapter unexpectedly wasn't opened");
+
+    char* data = new char[128];
+    bool isNotFound = false;
+    bool eof = false;
+
+    while (!isNotFound && !eof) {
+        int read = adapter->readLine(data, 128);
+        QString d(data);
+        isNotFound = d.contains("Page not found");
+        eof = read == 0;
+    }
+
+    CHECK_SET_ERR(!isNotFound, "The External Tools page is not found");
 }
 
 
