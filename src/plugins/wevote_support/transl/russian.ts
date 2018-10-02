@@ -19,14 +19,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Taxonomy data are missed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Taxonomy file &apos;%1&apos; is not found.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Input URL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -113,6 +105,10 @@
         <source>Empty input file URL in the message</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>There were %1 input reads, %2 reads were classified.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::PrepareWevoteTaxonomyDataTask</name>
@@ -180,6 +176,17 @@
     </message>
     <message>
         <source>Can&apos;t parse the taxID: &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WevoteValidator</name>
+    <message>
+        <source>Taxonomy classification data from NCBI are not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Taxonomy classification data from NCBI are not full: file &apos;%1&apos; is missing.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

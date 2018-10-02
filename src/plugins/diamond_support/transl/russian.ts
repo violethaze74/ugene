@@ -2,15 +2,18 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>DiamondBuildValidator</name>
+    <message>
+        <source>Taxonomy classification data from NCBI are not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Taxonomy classification data from NCBI are not full: file &apos;%1&apos; is missing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
-    <message>
-        <source>SE reads or contigs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PE reads</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>DIAMOND external tool support</source>
         <translation type="unfinished"></translation>
@@ -30,6 +33,14 @@
         <source>There is no input files to build the database from</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Taxon map URL is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Taxon nodes URL is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::DiamondClassifyTask</name>
@@ -42,27 +53,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Paired reads URL is empty, but the &apos;paired reads&apos; option is set</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DIAMOND database URL is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>DIAMOND classification URL is empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>URL to paired DIAMOND classification is empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Taxon map URL is empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Taxon nodes URL is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -144,6 +139,13 @@
     </message>
 </context>
 <context>
+    <name>U2::LocalWorkflow::DiamondBuildWorker</name>
+    <message>
+        <source>Taxonomy classification data from NCBI are not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::LocalWorkflow::DiamondClassifyPrompter</name>
     <message>
         <source>Classify sequences from &lt;u&gt;%1&lt;/u&gt; with DIAMOND, use %2 database.</source>
@@ -212,10 +214,6 @@ The input files may contain single-end reads, contigs, or &quot;left&quot; reads
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Maximum expected value to report an alignment.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Matrix</source>
         <translation type="unfinished"></translation>
     </message>
@@ -268,10 +266,6 @@ The input files may contain single-end reads, contigs, or &quot;left&quot; reads
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Specify the output file name.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -292,32 +286,28 @@ The input files may contain single-end reads, contigs, or &quot;left&quot; reads
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>In general, DIAMOND is a sequence aligner for protein and translated DNA searches similar to the NCBI BLAST software tools. However, it provides a speedup of BLAST ranging up to x20,000.&lt;br&gt;Using this workflow element one can use DIAMOND for taxonomic classification of short DNA reads and longer sequences such as contigs.</source>
+        <source>Top alignments percentage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Taxonomy data is not set.</source>
+        <source>DIAMOND uses the lowest common ancestor (LCA) algorithm for taxonomy classification of the input sequences. This parameter specifies what alignments should be taken into account during the calculations (--top).&lt;br&gt;&lt;br&gt;For example, the default value &quot;10&quot; means to take top 10% of the best hits (i.e. sort all query/subject-alignments by score, take top 10% of the alignments with the best score, calculate the lowest common ancestor for them).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Taxonomy file &apos;%1&apos; is not found.</source>
+        <source>Maximum expected value to report an alignment (--evalue/-e).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Specify the output file name.&lt;br&gt;&lt;br&gt;The output file is a tab-delimited file with the following fields:&lt;ul&gt;&lt;li&gt;Query ID&lt;/li&gt;&lt;li&gt;NCBI taxonomy ID (0 if unclassified)&lt;/li&gt;&lt;li&gt;E-value of the best alignment with a known taxonomy ID found for the query (0 if unclassified)&lt;/li&gt;&lt;/ul&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In general, DIAMOND is a sequence aligner for protein and translated DNA searches similar to the NCBI BLAST software tools. However, it provides a speedup of BLAST ranging up to x20,000.&lt;br&gt;&lt;br&gt;Using this workflow element one can use DIAMOND for taxonomic classification of short DNA reads and longer sequences such as contigs. The lowest common ancestor (LCA) algorithm is used for the classification.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::DiamondClassifyWorker</name>
-    <message>
-        <source>Not enough downstream reads datasets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Not enough upstream reads datasets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Taxonomy data is missed</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Cannot open classification report: %1</source>
         <translation type="unfinished"></translation>
@@ -328,6 +318,10 @@ The input files may contain single-end reads, contigs, or &quot;left&quot; reads
     </message>
     <message>
         <source>Broken Diamond report : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were %1 input reads, %2 reads were classified.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

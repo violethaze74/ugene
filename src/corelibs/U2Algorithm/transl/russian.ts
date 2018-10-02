@@ -210,7 +210,7 @@
 <context>
     <name>U2::DnaAssemblyToReferenceTask</name>
     <message>
-        <location filename="../src/registry/DnaAssemblyTask.cpp" line="34"/>
+        <location filename="../src/registry/DnaAssemblyTask.cpp" line="37"/>
         <source>Align short reads</source>
         <translation>Align short reads</translation>
     </message>
@@ -226,9 +226,29 @@
 <context>
     <name>U2::GenomeAssemblyMultiTask</name>
     <message>
-        <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="81"/>
+        <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="82"/>
         <source>Assembly cannot be performed.</source>
         <translation>Assembly cannot be performed.</translation>
+    </message>
+    <message>
+        <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="101"/>
+        <source>Assembly task finished with error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="103"/>
+        <source>Assembly task wasn&apos;t set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="106"/>
+        <source>Assembly was finished successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="108"/>
+        <source>Assembly failed.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

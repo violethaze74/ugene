@@ -1844,65 +1844,74 @@ p, li { white-space: pre-wrap; }
         <translation>Настройки ресурсов</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="40"/>
         <source>You can select path for</source>
-        <translation>Вы можете выбрать путь для</translation>
+        <translation type="vanished">Вы можете выбрать путь для</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="47"/>
         <source>Check lastest version of external tools package</source>
-        <translation>Проверить наличие новой версии пакета внешних инструментов</translation>
+        <translation type="vanished">Проверить наличие новой версии пакета внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="50"/>
         <source>&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;пакет внешних инструментов&lt;/a&gt;</translation>
+        <translation type="vanished">&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;пакет внешних инструментов&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="70"/>
         <source>Browse...</source>
-        <translation>Открыть...</translation>
+        <translation type="vanished">Открыть...</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="86"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="67"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
+    </message>
+    <message>
+        <location filename="../src/ETSSettingsWidget.ui" line="83"/>
         <source>Supported tools</source>
         <translation>Поддерживаемые программы</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="102"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="99"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="107"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="104"/>
         <source>Path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="142"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="139"/>
         <source>Additional information</source>
         <translation>Дополнительная информация</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="177"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="174"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Select an external tool to view more information about it.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Select an external tool to view more information about it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Выберите внешний инструмент, чтобы просмотреть дополнительную информацию о нем.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="197"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="194"/>
         <source>Binary path:</source>
         <translation>Путь:</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="207"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="204"/>
         <source>Version info</source>
         <translation>Информация о версии</translation>
     </message>
@@ -2316,22 +2325,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>IlluminaClipAdditionalSettingsDialog</name>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="14"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="32"/>
         <source>Configure ILLUMINACLIP Optional Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="23"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="44"/>
         <source>Provide optional settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="44"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="68"/>
         <source>Min adapter length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="57"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="81"/>
         <source>Keep both reads</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2886,6 +2895,14 @@ Uncheck to get the maximum likelihood estimate.</source>
     </message>
 </context>
 <context>
+    <name>QCoreApplication</name>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="404"/>
+        <source>&lt;html&gt;Select the type of input for SPAdes. URL(s) to the input files of the selected type(s) should be provided to the corresponding port(s) of the workflow element.&lt;p&gt;At least one library of the following types is required:&lt;ul&gt;&lt;li&gt;Illumina paired-end/high-quality mate-pairs/unpaired reads&lt;/li&gt;&lt;li&gt;IonTorrent paired-end/high-quality mate-pairs/unpaired reads&lt;/li&gt;&lt;li&gt;PacBio CCS reads (at least 5 reads coverage is recommended)&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;It is strongly suggested to provide multiple paired-end and mate-pair libraries according to their insert size (from smallest to longest).&lt;/p&gt;&lt;p&gt;Additionally, one may input Oxford Nanopore reads, Sanger reads, contigs generated by other assembler(s), etc.Note that Illumina and IonTorrent libraries should not be assembled together. All other types of input data are compatible.&lt;/p&gt;&lt;p&gt;It is also possible to set up reads orientation (forward-reverse (fr), reverse-forward (rf), forward-forward (ff)) and specify whether paired reads are separate or interlaced.&lt;/p&gt;&lt;p&gt;Illumina, IonTorrent or PacBio CCS reads should be provided in FASTQ format.&lt;br&gt;Illumina or PacBio read may also be provided in FASTA format. Error correction should be skipped in this case (see the &quot;Running mode&quot; parameter).&lt;br&gt;Sanger, Oxford Nanopore and PacBio CLR reads can be provided in both formats since SPAdes does not run error correction for these types of data.&lt;/p&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../src/ExternalToolSupportSettings.cpp" line="132"/>
@@ -2973,32 +2990,37 @@ Uncheck to get the maximum likelihood estimate.</source>
         <translation>Не установлено</translation>
     </message>
     <message>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="74"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download &lt;a href=&quot;http://ugene.net/download-all_html#en_data_analysis_tools&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#1866af;&quot;&gt;tools executables&lt;/span&gt;&lt;/a&gt; and configure the tools paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Скачать &lt;a href=&quot;http://ugene.net/ru/download-all_html#ru_data_analysis_tools&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#1866af;&quot;&gt;инструменты&lt;/span&gt;&lt;/a&gt; и сконфигурировать пути до файлов. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/RnaSeqCommon.cpp" line="62"/>
         <source>Unexpected value &apos;%1&apos; of the library type</source>
         <translation>Unexpected value &apos;%1&apos; of the library type</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="816"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="821"/>
         <source>%1 tool&apos;s version is undefined, this may cause some compatibility issues</source>
         <translation>%1 версия инструмента не определена, это может вызвать некоторые проблемы совместимости</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="825"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="830"/>
         <source>Bowtie and TopHat tools have incompatible versions. Your TopHat&apos;s version is %1, Bowtie&apos;s one is %2. The following are considered to be compatible: Bowtie &lt; &quot;0.12.9&quot; and TopHat &lt;= &quot;2.0.8&quot; or Bowtie &gt;= &quot;0.12.9&quot; and TopHat &gt;= &quot;2.0.8.b&quot;</source>
         <translation>Bowtie и TopHat инструменты имеют несовместимые версии. Версия TopHat %1, версия Bowtie %2. Для совместимости необходимо: Bowtie &lt; &quot;0.12.9&quot; and TopHat &lt;= &quot;2.0.8&quot; or Bowtie &gt;= &quot;0.12.9&quot; and TopHat &gt;= &quot;2.0.8.b&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="861"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="866"/>
         <source>At least two samples are required</source>
         <translation>Необходимо как минимум два примера</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="868"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="873"/>
         <source>Duplicate sample name: </source>
         <translation>Повторяющееся имя примера: </translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="873"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="878"/>
         <source>No datasets in the sample: </source>
         <translation>В примере нет данных: </translation>
     </message>
@@ -3028,12 +3050,12 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="161"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="162"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Click the &quot;Add new step&quot; button and select a step. The following options are available:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;ILLUMINACLIP: Cut adapter and other illumina-specific sequences from the read.&lt;/li&gt;&lt;li&gt;SLIDINGWINDOW: Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold.&lt;/li&gt;&lt;li&gt;LEADING: Cut bases off the start of a read, if below a threshold quality.&lt;/li&gt;&lt;li&gt;TRAILING: Cut bases off the end of a read, if below a threshold quality.&lt;/li&gt;&lt;li&gt;CROP: Cut the read to a specified length.&lt;/li&gt;&lt;li&gt;HEADCROP: Cut the specified number of bases from the start of the read.&lt;/li&gt;&lt;li&gt;MINLEN: Drop the read if it is below a specified length.&lt;/li&gt;&lt;li&gt;AVGQUAL: Drop the read if the average quality is below the specified level.&lt;/li&gt;&lt;li&gt;TOPHRED33: Convert quality scores to Phred-33.&lt;/li&gt;&lt;li&gt;TOPHRED64: Convert quality scores to Phred-64.&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="176"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="177"/>
         <source>Add a step.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3102,6 +3124,151 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <location filename="../src/snpeff/SnpEffDatabaseDialog.ui" line="23"/>
         <source>Search...</source>
         <translation>Поиск...</translation>
+    </message>
+</context>
+<context>
+    <name>SpadesDelegate</name>
+    <message>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="42"/>
+        <source>Configure input type</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SpadesInputData</name>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="14"/>
+        <source>Configure SPAdes Input Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="32"/>
+        <source>Required input (at least one)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="53"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="337"/>
+        <source>Illumina/Ion Torrent reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="97"/>
+        <source>Sequencing platform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="105"/>
+        <source>Illumina</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="110"/>
+        <source>Ion Torrent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="141"/>
+        <source>Paired-end reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="157"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="214"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="379"/>
+        <source>fr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="162"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="219"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="384"/>
+        <source>rf</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="167"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="224"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="389"/>
+        <source>ff</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="179"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="236"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="401"/>
+        <source>Separate reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="184"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="241"/>
+        <location filename="../src/spades/SpadesInputData.ui" line="406"/>
+        <source>Interlaced reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="198"/>
+        <source>High-quality mate-pairs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="263"/>
+        <source>Unpaired reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="288"/>
+        <source>PacBio CCS reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="316"/>
+        <source>Additional input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="363"/>
+        <source>Mate-pairs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="438"/>
+        <source>PacBio CLR reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="445"/>
+        <source>Oxford Nanopore reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="452"/>
+        <source>Sanger reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="459"/>
+        <source>Trusted contigs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesInputData.ui" line="466"/>
+        <source>Untrusted contigs</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SpadesPropertyDialog</name>
+    <message>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="142"/>
+        <source>At least one of the required input ports should be set in the &quot;Input data&quot; parameter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="143"/>
+        <source>Incorrect parameters, can&apos;t parse</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3175,6 +3342,107 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <location filename="../src/spades/SpadesSettings.ui" line="174"/>
         <source>Number of threads (-t)</source>
         <translation>число потоков (-t)</translation>
+    </message>
+</context>
+<context>
+    <name>SpadesWorkerFactory</name>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="131"/>
+        <source>unpaired reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="133"/>
+        <source>PacBio CCS reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="135"/>
+        <source>PacBio CLR reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="137"/>
+        <source>Oxford Nanopore reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="139"/>
+        <source>Sanger reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="141"/>
+        <source>trusted contigs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="143"/>
+        <source>untrusted contigs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="145"/>
+        <source>paired-end reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="147"/>
+        <source>mate-pairs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="149"/>
+        <source>high-quality mate-pairs</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StringtieGeneAbundanceReportWorkerFactory</name>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp" line="60"/>
+        <source>Input URL url</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp" line="61"/>
+        <source>Input URL.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp" line="67"/>
+        <source>Input StringTie gene abundance file(s) url</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp" line="68"/>
+        <source>URL(s) to sorted gene abundance file(s), produced by StringTie.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp" line="79"/>
+        <source>Output file</source>
+        <translation type="unfinished">Выходной файл</translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp" line="80"/>
+        <source>Specify the name of the output tab-delimited text file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp" line="89"/>
+        <source>Auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp" line="99"/>
+        <source>StringTie Gene Abundance Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp" line="100"/>
+        <source>The element summarizes gene abundance output of StringTie and saves the result into a common tab-delimited text file. The first two columns of the file are &quot;Gene ID&quot; and &quot;Gene name&quot;. Each other column contains &quot;FPKM&quot; values for the genes from an input gene abundance file.&lt;br&gt;&lt;br&gt;Provide URL(s) to the StringTie gene abundance file(s) to the input port of the element.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3412,37 +3680,37 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="35"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="38"/>
         <source>Steps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="67"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="95"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add new step&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="112"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="152"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move selected step above&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="160"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="212"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move selected step below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="205"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="269"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected step&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="236"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="303"/>
         <source>Step settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="306"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="387"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3471,8 +3739,13 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation>&lt;u&gt;Прочтения, отфильтрованные по качеству (%1):&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="218"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="221"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="201"/>
+        <source>Failed to create output directory: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="227"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="230"/>
         <source>wrong output format</source>
         <translation>wrong output format</translation>
     </message>
@@ -3484,75 +3757,75 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="obsolete">Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="252"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="261"/>
         <source>Map</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="253"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="262"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="259"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="268"/>
         <source>File name</source>
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="260"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="269"/>
         <source>Sequence name from file</source>
         <translation>Имя последовательности в файле</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="278"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="287"/>
         <source>Select Output File...</source>
         <translation>Укажите выходной файл...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="291"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="298"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="317"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="340"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="300"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="307"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="326"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="348"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="292"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="301"/>
         <source>Reference sequence is not set.</source>
         <translation>Референсная последовательность не задана.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="299"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="308"/>
         <source>No reads provided.</source>
         <translation>Риды не заданы.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="318"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="326"/>
         <source>Output file is not set.</source>
         <translation>Выходной файл не указан.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="329"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="337"/>
         <source>Overwrite the file?</source>
         <translation>Переписать этот файл?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="330"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="338"/>
         <source>The result file already exists. Would you like to overwrite it?</source>
         <translation>Такой файл уже существует. Переписать его?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="340"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="348"/>
         <source>Unable to delete the file.</source>
         <translation>Невозможно удалить этот файл.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="352"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="360"/>
         <source>Open Reference Sequence</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="363"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="371"/>
         <source>Select File(s) with Read(s)</source>
         <translation>Выбрать прочтения</translation>
     </message>
@@ -4407,12 +4680,12 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BwaTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="636"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="639"/>
         <source>Multiple read files are not supported by bwa-sw. Please combine your reads into single FASTA file.</source>
         <translation>Multiple read files are not supported by bwa-sw. Please combine your reads into single FASTA file.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="643"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="647"/>
         <source>Please, provide same number of files with downstream and upstream reads.</source>
         <translation>Укажите одинаковое количество файлов с парными ридами.</translation>
     </message>
@@ -5162,98 +5435,98 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportPlugin</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="171"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="173"/>
         <source>Search tools in PATH</source>
         <translation>Search tools in PATH</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="218"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="220"/>
         <source>External tool support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="218"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="220"/>
         <source>Runs other external tools</source>
         <translation>Модуль позволяет использовать внешние программы</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="284"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="286"/>
         <source>Align with ClustalW...</source>
         <translation>Выравнивание с помощью ClustalW...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="292"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="294"/>
         <source>Align with ClustalO...</source>
         <translation>Выравнивание с помощью ClustalO...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="300"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="302"/>
         <source>Align with MAFFT...</source>
         <translation>Выравнивание с помощью MAFFT...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="308"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="310"/>
         <source>Align with T-Coffee...</source>
         <translation>Выравнивание с помощью T-Coffee...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="466"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="468"/>
         <source>The &lt;i&gt;Basic Local Alignment Search Tool&lt;/i&gt; (BLAST) finds regions of local similarity between sequences. The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance of matches. BLAST can be used to infer functional and evolutionary relationships between sequences as well as help identify members of gene families.</source>
         <translation type="unfinished">The &lt;i&gt;Basic Local Alignment Search Tool&lt;/i&gt; (BLAST) ищет регионы локального сходства между последовательностями. Программа сравнивает нуклеотидные или белковые последовательности в базах данных последовательностей и вычисляет статистическую значимость совпадений. BLAST может использоваться для выявления функциональных и эволюционных взаимосвязей между последовательностями, а также для определения членов семейств гена.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="470"/>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="472"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="474"/>
         <source>&lt;i&gt;BLAST+&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
         <translation type="unfinished">&lt;i&gt;BLAST+&lt;/i&gt; это новая версия пакета BLAST от NCBI.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="474"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="476"/>
         <source>&lt;i&gt;Bowtie&lt;i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end). &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </source>
         <translation type="unfinished">&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="481"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="483"/>
         <source>&lt;i&gt;Cufflinks&lt;/i&gt; assembles transcripts, estimates their abundances, and tests for differential expression and regulation in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts. It also estimates the relative abundances of these transcripts based on how many reads support each one, taking into account biases in library preparation protocols. </source>
         <translation type="unfinished">&lt;i&gt;Cufflinks&lt;/i&gt; собирает транскрипции и оценивает их распространенность. </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="488"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="490"/>
         <source>&lt;i&gt;Bowtie 2&lt;/i&gt; is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s or 1000s of characters, and particularly good at aligning to relatively long (e.g. mammalian) genomes. &lt;br/&gt;&lt;br/&gt;It indexes the genome with an FM index to keep its memory footprint small: for the human genome, its memory footprint is typically around 3.2Gb. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;Bowtie 2&lt;/i&gt; supports gapped, local, and paired-end alignment modes.</source>
         <translation type="unfinished">&lt;i&gt;Bowtie 2&lt;/i&gt; один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на большие референсные последовательности. Особенно эффективно применение инструмента для выравнивания ридов начиная от 50 и до сотен и тысяч символов, и больших геномов (например млекопитающих).</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="496"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="498"/>
         <source>&lt;i&gt;Cistrome&lt;/i&gt; is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysisThis pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology.</source>
         <translation type="unfinished">&lt;i&gt;Cistrome&lt;/i&gt; это версия UGENE пайплайна Cistrome, который включает некоторые инструменты, используемые в ChIP-seq анализе.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="499"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="501"/>
         <source>BLAST make database...</source>
         <translation>Создание базы данных BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="503"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="505"/>
         <source>BLAST+ make database...</source>
         <translation>Создание базы данных BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="515"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="517"/>
         <source>Map reads to reference...</source>
         <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="540"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="542"/>
         <source>Reads de novo assembly (with %1)...</source>
         <translation>Сборка прочтений de novo (при помощи %1)...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="525"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="527"/>
         <source>BLAST+ search...</source>
         <translation>Поиск с помощью BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="529"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="531"/>
         <source>BLAST+ query database...</source>
         <translation>Запрос с помощью BLAST+...</translation>
     </message>
@@ -5262,7 +5535,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">Сборка контигов с помощью %1...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="511"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="513"/>
         <source>BLAST search...</source>
         <translation>Поиск с помощью BLAST...</translation>
     </message>
@@ -5280,12 +5553,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportService</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="725"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="743"/>
         <source>External tools support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="725"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="743"/>
         <source>Provides support to run external tools from UGENE</source>
         <translation>Позволяет запускать внешние инструменты из UGENE</translation>
     </message>
@@ -5301,7 +5574,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportSettingsPageWidget</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="464"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="466"/>
         <source>Select an external tool to view more information about it.</source>
         <translation>Выберите инструмент, чтобы увидеть дополнительную информацию о нем.</translation>
     </message>
@@ -5326,32 +5599,32 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">&lt;i&gt;Cistrome&lt;/i&gt; это версия UGENE пайплайна Cistrome, который включает некоторые инструменты, используемые в ChIP-seq анализе.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="360"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="362"/>
         <source>No description</source>
         <translation>Нет описания</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="323"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="325"/>
         <source>External tool &apos;%1&apos; cannot be validated as it depends on other tools, some of which are not valid. The list of tools is the following: </source>
         <translation>Инструмент &apos;%1&apos; не может быть проверен, т.к. он зависит от других инструментов, которые не проверены. Это следующие инструменты: </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="347"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="349"/>
         <source>&apos;%1&apos; is %2 module and it is not installed. Install it and restart UGENE or set another %2 with already installed &apos;%1&apos; module.</source>
         <translation>&apos;%1&apos; это %2 модуль и он не установлен. Установите его и перезапустите UGENE или выберите другой %2 с уже установленным модулем &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="370"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="372"/>
         <source>&lt;br&gt;&lt;br&gt;Version: </source>
         <translation>&lt;br&gt;&lt;br&gt;Версия: </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="374"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="376"/>
         <source>unknown</source>
         <translation>неизвестный</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="379"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="381"/>
         <source>&lt;br&gt;&lt;br&gt;Binary path: </source>
         <translation>&lt;br&gt;&lt;br&gt;Путь: </translation>
     </message>
@@ -5360,17 +5633,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="506"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="508"/>
         <source>Choose Folder With Executables</source>
         <translation>Выберите папку с исполняемыми файлами</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="560"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="562"/>
         <source>Choose Folder With External Tools Pack</source>
         <translation>Выберите папку пакетом внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="614"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="616"/>
         <source>Not a valid external tools folder</source>
         <translation>Нет подходящей папки внешних инструментов</translation>
     </message>
@@ -6223,118 +6496,148 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BaseShortReadsAlignerWorker</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="253"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="252"/>
         <source>Not enough upstream reads datasets</source>
         <translation>Недостаточно upstream ридов</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="256"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="255"/>
         <source>Not enough downstream reads datasets</source>
         <translation>Недостаточно downstream ридов</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="295"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="318"/>
         <source>Output folder</source>
         <translation>Выходная папка</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="296"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="319"/>
         <source>Folder to save output files.</source>
         <translation>Папка для сохранения выходных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="299"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="302"/>
         <source>Reference genome</source>
         <translation>Референсный геном</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="300"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="303"/>
         <source>Path to indexed reference genome.</source>
         <translation>Путь до индексированного референсного генома.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="303"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="322"/>
         <source>Library</source>
         <translation>Библиотека</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="304"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="323"/>
         <source>Is this library mate-paired?</source>
         <translation>Это парная библиотека?</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="307"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="326"/>
         <source>Filter unpaired reads</source>
         <translation>Фильтровать непарные риды</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="308"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="327"/>
         <source>Should the reads be checked for incomplete pairs?</source>
         <translation>Проверять риды для неполных пар?</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="311"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="314"/>
         <source>Output file name</source>
         <translation>Имя выходного файла</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="312"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="295"/>
+        <source>Reference input type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="296"/>
+        <source>Select &quot;Sequence&quot; to input a reference genome as a sequence file. &lt;br/&gt;Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). &lt;br/&gt;The index will be generated automatically in this case. &lt;br/&gt;Select &quot;Index&quot; to input already generated index files, specific for the tool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="307"/>
+        <source>The folder with the index for the reference sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="311"/>
+        <source>The basename of the index for the reference sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="315"/>
         <source>Base name of the output file. &apos;out.sam&apos; by default</source>
         <translation>Базовое имя для выходных файлов. По умолчанию &apos;out.sam&apos;</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="350"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="355"/>
+        <source>Sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="356"/>
+        <source>Index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="381"/>
         <source>URL of a file with reads</source>
         <translation>Путь до файла с ридами</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="351"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="361"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="382"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="392"/>
         <source>Input reads to be aligned.</source>
         <translation>Входные риды будут выровнены.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="353"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="384"/>
         <source>URL of a file with mate reads</source>
         <translation>Путь до файла с ридами</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="354"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="385"/>
         <source>Input mate reads to be aligned.</source>
         <translation>Входные риды будут выровнены.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="360"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="391"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="364"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="395"/>
         <source>Reverse FASTQ file</source>
         <translation>Обратный FASTQ файл</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="365"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="396"/>
         <source>Reverse paired reads to be aligned.</source>
         <translation>Обратные парные риды будут выровнены.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="377"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="408"/>
         <source>Assembly URL</source>
         <translation>Путь до сборки</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="378"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="409"/>
         <source>Output assembly URL.</source>
         <translation>Путь выходной сборки.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="381"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="412"/>
         <source>Output data</source>
         <translation>Выходные данные</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="382"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="413"/>
         <source>Output assembly files.</source>
         <translation>Выходные файлы сборки.</translation>
     </message>
@@ -6963,12 +7266,22 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::Bowtie2Worker</name>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="112"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="110"/>
+        <source>Bowtie index folder</source>
+        <translation type="unfinished">Папка для индекса Bowtie</translation>
+    </message>
+    <message>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="111"/>
+        <source>Bowtie index basename</source>
+        <translation type="unfinished">Базовое имя для индекса Bowtie</translation>
+    </message>
+    <message>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="114"/>
         <source>Mode</source>
         <translation>Режим</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="113"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="115"/>
         <source>When the -n option is specified (which is the default), bowtie determines which alignments                               
 are valid according to the following policy, which is similar to Maq&apos;s default policy.                               
 In -v mode, alignments may have no more than V mismatches, where V may be a number from 0                               
@@ -6978,139 +7291,139 @@ through 3 set using the -v option. Quality values are ignored. The -v option is 
 В -v режиме, выравнивание может иметь не больше чем V несоответствий, где V может быть число от 0. Опция -v является взаимоисключающим с опцией -n.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="119"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="121"/>
         <source>Number of mismatches</source>
         <translation>Число несоответствий</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="120"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="122"/>
         <source>Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1.                               
 Setting this higher makes alignment slower (often much slower) but increases sensitivity.</source>
         <translation>Задает количество несовпадений с разрешенным в выравнивании. Может быть 0 или 1. Повышение этого параметра делает выранивание более медленным (чаще всего очень медленным) но повышает точность.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="124"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="126"/>
         <source>Seed length (--L)</source>
         <translation>Длина затравки (--L)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="125"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="127"/>
         <source>Sets the length of the seed substrings to align. Smaller values make alignment slower but more senstive.</source>
         <translation>Задает длину затравок для выравнивания. Меньшие значения замедляют выравнивание, но повышают точность.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="128"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="130"/>
         <source>Add columns to allow gaps (--dpad)</source>
         <translation>Добавить столбцы, чтобы допустить пробелы (--dpad)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="129"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="131"/>
         <source>&quot;Pads&quot; dynamic programming problems by specified number of columns on either side to allow gaps.</source>
         <translation>Добавляет столбцы, чтобы допустить пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="132"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="134"/>
         <source>Disallow gaps (--gbar)</source>
         <translation>Запретить пробелы (--gbar)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="133"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="135"/>
         <source>Disallow gaps within specified number of positions of the beginning or end of the read.</source>
         <translation>Запрещает пробелы в указанных позициях в начале или в конце рида.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="136"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="138"/>
         <source>Seed (--seed)</source>
         <translation>Затравка (--seed)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="137"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="139"/>
         <source>Use specified value as the seed for pseudo-random number generator.</source>
         <translation>Использует указанное значение в качестве затравки для псевдо-случайного генератора.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="140"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="142"/>
         <source>Threads</source>
         <translation>Потоки</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="141"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="143"/>
         <source>Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize                               
 when parsing reads and outputting alignments. Searching for alignments is highly parallel, and speedup is close to linear.</source>
         <translation>Запуск определенного количество параллельных потоков поиска. Потоки будут работать на отдельных процессорах/ ядрах и синхронизоваться при разборе ридов и выводе выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="145"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="147"/>
         <source>No unpaired alignments (--no-mixed)</source>
         <translation>Только парное выравнивание (--no-mixed)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="146"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="148"/>
         <source>If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments                               
 for the constituent mates. This is called &quot;mixed mode.&quot; To disable mixed mode, set this option. Bowtie2 runs a little                               
 faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.</source>
         <translation>Если Bowtie2 не сможет найти пару для выполнения парного выравнивания по умолчанию будет сделано непарное выравнивание. Это называется &amp;quot;смешанным режимом.&amp;quot; Чтобы отключить смешанный режим, установите эту опцию. Bowtie2 запустится немного быстрее в смешанном режиме чем для парного выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="151"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="153"/>
         <source>No discordant alignments (--no-discordant)</source>
         <translation>Только согласованные выравнивания (--no-discordant)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="152"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="154"/>
         <source>By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment                               
 is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.</source>
         <translation>По умолчанию, Bowtie2 ищет несогласованные выравнивания, если он не может найти какие-либо согласованные выравнивания. Несогласованное выравнивание это выравнивание, в котором оба рида выровнены однозначно, но они не удовлетворяют условию парности. Это опция отключает это поведение.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="156"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="158"/>
         <source>No forward orientation (--nofw)</source>
         <translation>Не прямая ориентация (--nofw)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="157"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="159"/>
         <source>If --nofw is specified, bowtie will not attempt to align against the forward reference strand.</source>
         <translation>Если установлена опция --nofw, bowtie  не будет пытаться выровнять прямую цепь.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="160"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="162"/>
         <source>No reverse-complement orientation (--norc)</source>
         <translation>Не обратно-комплементарная ориентация (--norc)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="161"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="163"/>
         <source>If --norc is specified, bowtie will not attempt to align against the reverse-complement reference strand.</source>
         <translation>Если установлена опция --norc, bowtie не будет пытаться выровнять обратно-комплементарную цепь.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="164"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="166"/>
         <source>No overlapping mates (--no-overlap)</source>
         <translation>Без перекрытий (--no-overlap)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="165"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="167"/>
         <source>If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in                                 
 a concordant alignment.</source>
         <translation>Если один участник выравнивания перекрывается с другим, то это несогласованное выравнивание. По умолчанию: участники могут перекрываться в согласованном выравнивании.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="169"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="171"/>
         <source>No mates containing one another (--no-contain)</source>
         <translation>Без вложений (--no-contain)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="170"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="172"/>
         <source>If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the                                
 other in a concordant alignment.</source>
         <translation>Если один участник выравнивания содержит другой, то это несогласованное выравнивание. По умолчанию одна часть выравнивания может содержать другую в согласованном выравнивании.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="220"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="222"/>
         <source>Map Reads with Bowtie2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="221"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="223"/>
         <source>Bowtie2  is a program for mapping short DNA sequence reads to a long reference sequence. In addition to to the Burrows-Wheeler transform, Bowtie2 uses an FM-index (similar to a suffix array) to keep its memory footprint small.&lt;br/&gt;&lt;br/&gt;Bowtie2 is more suited to finding longer, gapped alignments than the first version Bowtie, it supports ambiguous characters in the reference (e.g. &apos;N&apos;), etc.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7130,73 +7443,83 @@ other in a concordant alignment.</source>
         <translation type="vanished">Режим:</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="138"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="119"/>
+        <source>Bowtie index folder</source>
+        <translation type="unfinished">Папка для индекса Bowtie</translation>
+    </message>
+    <message>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="120"/>
+        <source>Bowtie index basename</source>
+        <translation type="unfinished">Базовое имя для индекса Bowtie</translation>
+    </message>
+    <message>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="140"/>
         <source>Mode</source>
         <translation type="unfinished">Режим</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="139"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="141"/>
         <source>When the -n option is specified (which is the default), bowtie determines which alignments                               are valid according to the following policy, which is similar to Maq&apos;s default policy.                               In -v mode, alignments may have no more than V mismatches, where V may be a number from 0                               through 3 set using the -v option. Quality values are ignored. The -v option is mutually exclusive with the -n option.</source>
         <translation>Когда задана опция -n, bowtie определяет, какие выравнивания
 действительны в соответствии со следующей политикой, которая похожа на политику Maq по умолчанию.
 В -v режиме, выравнивание может иметь не больше чем V несоответствий, где V может быть число от 0. Опция -v является взаимоисключающим с опцией -n.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="145"/>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="149"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="147"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="151"/>
         <source>Mismatches number</source>
         <translation>Число несоответствий</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="146"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="148"/>
         <source>Mismatches number.</source>
         <translation>Число несоответствий.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="150"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="152"/>
         <source>Maximum permitted total of quality values at all mismatched read positions throughout the entire alignment,                              not just in the seed. The default is 70. Like Maq, bowtie rounds quality values to the nearest 10 and saturates at 30;                              rounding can be disabled with --nomaqround.</source>
         <translation>Максимальн допустимое общее значение качества всех несогласованных позиций ридов на протяжении всего выравнивания.
 По умолчанию 70.
 Подобно Maq, значения качества близки к 10 и максимальны к значению 30, округление может быть отключено при помощи --nomaqround.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="155"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="157"/>
         <source>Seed length</source>
         <translation>Длина затравки</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="156"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="158"/>
         <source>The seed length; i.e., the number of bases on the high-quality end of the read to which the                               -n ceiling applies. The lowest permitted setting is 5 and the default is 28. bowtie is faster for larger values of -l.</source>
         <translation>&amp;quot;Длина затравки&amp;quot; т.е., число оснований в высококачественном конце рида, для которого применяется -n.
 Наименьшее допустимое значение 5, по умолчанию 28. Большие значения -l увеличивают скорость.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="160"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="162"/>
         <source>No forward orientation</source>
         <translation>Не прямая ориентация</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="161"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="163"/>
         <source>If --nofw is specified, bowtie will not attempt to align against the forward reference strand.</source>
         <translation>Если установлена опция --nofw, bowtie  не будет пытаться выровнять прямую цепь.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="164"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="166"/>
         <source>No reverse-complement orientation</source>
         <translation>Не обратно-комплементарная ориентация</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="165"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="167"/>
         <source>If --norc is specified, bowtie will not attempt to align against the reverse-complement reference strand.</source>
         <translation>Если установлена опция --norc, bowtie не будет пытаться выровнять обратно-комплементарную цепь.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="168"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="170"/>
         <source>Maximum of backtracks</source>
         <translation>Максимальное число отступов</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="169"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="171"/>
         <source>The maximum insert size for valid paired-end alignments. E.g. if -X 100 is specified and a paired-end alignment                               consists of two 20-bp alignments in the proper orientation with a 60-bp gap between them, that alignment is                               considered valid (as long as -I is also satisfied). A 61-bp gap would not be valid in that case.                                If trimming options -3 or -5 are also used, the -X constraint is applied with respect to the untrimmed mates,                               not the trimmed mates. Default: 250.</source>
         <translation>Максимальный размер вставки для выравнивания paired-end.
 Если -X 100 и выравнивание состоит из участков по 20 нуклеотидов и расстоянием между ними в 60 нуклеотидов, 
@@ -7207,12 +7530,12 @@ other in a concordant alignment.</source>
 По умолчанию: 250.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="176"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="178"/>
         <source>Try as hard</source>
         <translation>Упорно пытаться</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="177"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="179"/>
         <source>Try as hard as possible to find valid alignments when they exist, including paired-end alignments.                                This is equivalent to specifying very high values for the --maxbts and --pairtries options. This mode is generally much                                slower than the default settings, but can be useful for certain problems. This mode is slower when (a) the reference is                                very repetitive, (b) the reads are low quality, or (c) not many reads have valid alignments.</source>
         <translation>Пытаться пока это возможно найти подходящее выравнивание, когда они есть, включая paired-end выравнивания.
 Это равносильно очень высоким значениям параметров --maxbts и --pairtries.
@@ -7223,12 +7546,12 @@ other in a concordant alignment.</source>
 или (c) не очень много ридов имеют подходящее выравнивание.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="183"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="185"/>
         <source>Best hits</source>
         <translation>Лучшие попытки</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="184"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="186"/>
         <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. Best-first                                search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost.                                Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases.                                If you receive an error message saying that chunk memory has been exhausted in --best mode,                                try adjusting this parameter up to dedicate more memory to the descriptors. Default: 64.</source>
         <translation>Количество мегабайт памяти для данного потока задается для хранения дескрипторов пути в --best режиме.
 Поиск по первому наилучшему совпадению должен отслеживать множество путей одновременно, убедитесь, что расширение пути происходит с наименьшей стоимостью.
@@ -7238,12 +7561,12 @@ Bowtie пытается свести к минимуму воздействие 
 Значение по умолчанию: 64.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="191"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="193"/>
         <source>No Maq rounding</source>
         <translation>Без округления Maq</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="192"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="194"/>
         <source>Maq accepts quality values in the Phred quality scale, but internally rounds values to the nearest 10,              with a maximum of 30. By default, bowtie also rounds this way. --nomaqround prevents this rounding in bowtie.</source>
         <translation>Maq принимает значения качества в масштабе качества Phred,
 но внутренние значения близки к 10,
@@ -7251,22 +7574,22 @@ Bowtie пытается свести к минимуму воздействие 
 По умолчанию, bowtie также вокруг этих значений. --nomaqround препятствует этому округлению в bowtie.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="196"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="198"/>
         <source>Seed</source>
         <translation>Затравка</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="197"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="199"/>
         <source>Use &lt;int&gt; as the seed for pseudo-random number generator.</source>
         <translation>Используйте &lt;int&gt; в качестве затравки для псевдо-случайного генератора.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="200"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="202"/>
         <source>Best alignments</source>
         <translation>Лучшие выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="201"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="203"/>
         <source>Make Bowtie guarantee that reported singleton alignments are best in terms of stratum                              (i.e. number of mismatches, or mismatches in the seed in the case of -n mode) and in terms of                              the quality values at the mismatched position(s). bowtie is somewhat slower when --best is specified.</source>
         <translation>Создать Bowtie гарантию того, что одиночные выравнивания являются &quot;лучшими&quot; в плане слоя
 (т.е. число несовпадений, или несоответствия в затравке в -n режиме)
@@ -7274,32 +7597,32 @@ Bowtie пытается свести к минимуму воздействие 
 bowtie медленнее, когда указан режим --best.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="206"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="208"/>
         <source>All alignments</source>
         <translation>Все выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="207"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="209"/>
         <source>Report all valid alignments per read or pair.</source>
         <translation>Сообщить о всех допустимых выравниваниях для рида или пары.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="210"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="212"/>
         <source>Colorspace</source>
         <translation>Цвета</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="211"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="213"/>
         <source>When -C is specified, read sequences are treated as colors. Colors may be encoded either as numbers                               (0=blue, 1=green, 2=orange, 3=red) or as characters A/C/G/T (A=blue, C=green, G=orange, T=red).</source>
         <translation>Когда -С указано, последовательности рассматриваются как цвета. Цвета могут быть закодированы либо как номера (0 = синий, 1 = зеленый, 2 = оранжевый, 3 = красный) или символов A / C / G / T (A = синий, С = зеленый, G = оранжевый, Т = красный).</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="248"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="250"/>
         <source>Map Reads with Bowtie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="249"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="251"/>
         <source>Bowtie is a program for mapping short DNA sequence reads to a long reference sequence. It uses Burrows-Wheeler techniques extended with quality-aware backtracking algorithm that permits mismatches.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7315,192 +7638,202 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>U2::LocalWorkflow::BwaMemWorker</name>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="139"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="156"/>
         <source>Number of threads</source>
         <translation>Число потоков</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="140"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="157"/>
         <source>Number of threads (-t).</source>
         <translation>число потоков (-t).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="143"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="160"/>
         <source>Min seed length</source>
         <translation>Минимальная длина затравки</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="144"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="161"/>
         <source>Path to indexed reference genome (-k).</source>
         <translation>Путь до индексированного референсного генома (-k).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="147"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="164"/>
         <source>Index algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="148"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="165"/>
         <source>Index algorithm (-a).</source>
         <translation>Алгоритм (-а).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="151"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="168"/>
         <source>Band width</source>
         <translation>Ширина полосы</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="152"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="169"/>
         <source>Band width for banded alignment (-w).</source>
         <translation>Ширина полосы для выравнивания (-w).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="155"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="172"/>
         <source>Dropoff</source>
         <translation>Снижение</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="156"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="173"/>
         <source>Off-diagonal X-dropoff (-d).</source>
         <translation>Снижение (-d).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="159"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="176"/>
         <source>Internal seed length</source>
         <translation>Внутренняя длина затравки</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="160"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="177"/>
         <source>Look for internal seeds inside a seed longer than {-k} (-r).</source>
         <translation>Поиск внутренние затравки внутри затравки длиннее чем {-k} * (-r).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="163"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="180"/>
         <source>Skip seed threshold</source>
         <translation>Порог затравки</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="164"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="181"/>
         <source>Skip seeds with more than INT occurrences (-c).</source>
         <translation>Пропускает затравки с более чем с указанным количеством вхождений (-c).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="167"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="184"/>
         <source>Drop chain threshold</source>
         <translation>Порог снижения цепи</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="168"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="185"/>
         <source>Drop chains shorter than FLOAT fraction of the longest overlapping chain (-D).</source>
         <translation>Снижение цепи короче FLOAT фракции самого длинного перекрытия цепи (-D).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="171"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="188"/>
         <source>Rounds of mate rescues</source>
         <translation>Округление за освобождение участника</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="172"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="189"/>
         <source>Perform at most INT rounds of mate rescues for each read (-m).</source>
         <translation>Выполняет для большинства INT округлений освобождений участников для каждого рида (-m).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="175"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="192"/>
         <source>Skip mate rescue</source>
         <translation>Пропустить освобождение участника</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="176"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="193"/>
         <source>Skip mate rescue (-S).</source>
         <translation>Пропустить освобождение участника (-S).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="179"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="196"/>
         <source>Skip pairing</source>
         <translation>Пропустить спаривание</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="180"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="197"/>
         <source>Skip pairing; mate rescue performed unless -S also in use (-P).</source>
         <translation>Пропустить спаривание; участник освобождается кроме случая когда -S также используется (-P).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="183"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="200"/>
         <source>Matching score</source>
         <translation>Веса совпадений</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="187"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="204"/>
         <source>Mismatch penalty</source>
         <translation>Штраф за несовпадение</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="258"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="275"/>
         <source>Map Reads with BWA-MEM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="259"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="276"/>
         <source>Burrows-Wheeler Alignment (BWA) is a program for mapping short DNA sequence reads to a long reference sequence. This element runs &quot;BWA-MEM&quot; algorithm of the program. The algorithm is designed for sequence reads from 70bp to 1Mbp.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="184"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="201"/>
         <source>Score for a sequence match (-A).</source>
         <translation>Вес совпадения (-A).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="188"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="152"/>
+        <source>BWA index folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="153"/>
+        <source>BWA index basename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="205"/>
         <source>Penalty for a mismatch (-B).</source>
         <translation>Штраф за несовпадение (-B).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="191"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="208"/>
         <source>Gap open penalty</source>
         <translation>Штраф за открытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="192"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="209"/>
         <source>Gap open penalty (-O).</source>
         <translation>Штраф за открытие пробела (-O).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="195"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="212"/>
         <source>Gap extension penalty</source>
         <translation>Штраф за промежуточный пробел</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="196"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="213"/>
         <source>Gap extension penalty; a gap of size k cost {-O} (-E).</source>
         <translation>Штраф за расширение пробела; пробел размера k стоит {-O} (-E).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="199"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="216"/>
         <source>Penalty for clipping</source>
         <translation>Штраф за отсечение</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="200"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="217"/>
         <source>Penalty for clipping (-L).</source>
         <translation>Штраф за отсечение (-L).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="203"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="220"/>
         <source>Penalty unpaired</source>
         <translation>Штраф за непарные риды</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="204"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="221"/>
         <source>Penalty for an unpaired read pair (-U).</source>
         <translation>Штраф за непарные риды (-U).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="207"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="224"/>
         <source>Score threshold</source>
         <translation>Порог оценки</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="208"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="225"/>
         <source>Minimum score to output (-T).</source>
         <translation>Минимальная оценка для вывода (-T).</translation>
     </message>
@@ -7516,218 +7849,228 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>U2::LocalWorkflow::BwaWorker</name>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="135"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="133"/>
+        <source>BWA index folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaWorker.cpp" line="134"/>
+        <source>BWA index basename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaWorker.cpp" line="137"/>
         <source>Use missing prob</source>
         <translation>Использовать долю потери</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="136"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="138"/>
         <source>Use missing prob instead maximum edit distance.</source>
         <translation>Использовать долю потери вместо максимального расстояния редактирования.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="139"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="141"/>
         <source>Max #diff</source>
         <translation>Максимальное расстояние редактирования</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="140"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="142"/>
         <source>Max #diff (-n)</source>
         <translation>Максимальное расстояние редактирования (-n)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="143"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="145"/>
         <source>Missing prob</source>
         <translation>Доля потери</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="144"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="146"/>
         <source>Missing prob (-n)</source>
         <translation>Доля потери (-n)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="147"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="149"/>
         <source>Seed length</source>
         <translation>Длина затравки</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="148"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="150"/>
         <source>Seed length (-l).</source>
         <translation>Длина затравки (-l).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="151"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="153"/>
         <source>Max gap opens</source>
         <translation>Максимальное число пробелов</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="152"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="154"/>
         <source>Max gap opens (-o).</source>
         <translation>Максимальное число пробелов (-o).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="155"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="157"/>
         <source>Index algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="156"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="158"/>
         <source>Index algorithm (-a).</source>
         <translation>Алгоритм (-а).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="159"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="161"/>
         <source>Best hits</source>
         <translation>Лучшие попытки</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="160"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="162"/>
         <source>Best hits (-R).</source>
         <translation>Лучшие попытки (-R).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="163"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="165"/>
         <source>Long-scaled gap penalty for long deletions</source>
         <translation>Долгосрочный штраф за длительный пробел</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="164"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="166"/>
         <source>Long-scaled gap penalty for long deletions (-L)</source>
         <translation>Долгосрочный штраф за длительный пробел (-L)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="167"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="169"/>
         <source>Non iterative mode</source>
         <translation>Неитеративный режим</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="168"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="170"/>
         <source>Non iterative mode (-N).</source>
         <translation>Неитеративный режим (-N).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="171"/>
-        <location filename="../src/bwa/BwaWorker.cpp" line="172"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="173"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="174"/>
         <source>Enable long gaps</source>
         <translation>Допустимы длинные пробелы</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="175"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="177"/>
         <source>Max gap extensions</source>
         <translation>Максимальное расширение пробела</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="176"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="178"/>
         <source>Max gap extensions (-e)</source>
         <translation>Максимальное расширение пробела (-e)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="179"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="181"/>
         <source>Indel offset</source>
         <translation>Смещение</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="180"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="182"/>
         <source>Indel offset (-i)</source>
         <translation>Смещение (-i)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="183"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="185"/>
         <source>Max long deletions extensions</source>
         <translation>Максимальная длина сокрашения пропуска</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="184"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="186"/>
         <source>Max long deletions extensions(-d)</source>
         <translation>Максимальная длина сокрашения пропуска (-d)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="187"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="189"/>
         <source>Max queue entries</source>
         <translation>Максимальное число записей в очереди</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="188"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="190"/>
         <source>Max queue entries (-m)</source>
         <translation>Максимальное число записей в очереди (-m)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="191"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="193"/>
         <source>Barcode length</source>
         <translation>Длина штрих-кода</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="192"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="194"/>
         <source>Barcode length (-B)</source>
         <translation>Длина штрих-кода (-B)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="195"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="197"/>
         <source>Threads</source>
         <translation>Потоки</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="196"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="198"/>
         <source>Threads (-t)</source>
         <translation>Потоки (-t)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="199"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="201"/>
         <source>Max seed differencies</source>
         <translation>Максимальное различие затравок</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="200"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="202"/>
         <source>Max seed differencies (-k)</source>
         <translation>Максимальное различие затравок (-k)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="203"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="205"/>
         <source>Mismatch penalty</source>
         <translation>Штраф за несовпадение</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="204"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="206"/>
         <source>Mismatch penalty (-M)</source>
         <translation>Штраф за несовпадение (-M)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="207"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="209"/>
         <source>Gap open penalty</source>
         <translation>Штраф за открытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="208"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="210"/>
         <source>Gap open penalty (-O).</source>
         <translation>Штраф за открытие пробела (-O).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="211"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="213"/>
         <source>Gap extension penalty</source>
         <translation>Штраф за промежуточный пробел</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="212"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="214"/>
         <source>Gap extension penalty; a gap of size k cost (-E).</source>
         <translation>Штраф за расширение пробела; пробел размера k стоит (-E).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="215"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="217"/>
         <source>Quolity threshold</source>
         <translation>Порог качества</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="216"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="218"/>
         <source>Quolity threshold (-q).</source>
         <translation>Порог качества (-q).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="282"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="284"/>
         <source>Map Reads with BWA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="283"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="285"/>
         <source>Burrows-Wheeler Alignment (BWA) is a program for mapping short DNA sequence reads to a long reference sequence. This element runs &quot;BWA-backtrack&quot; algorithm of the program. The algorithm is designed for Illumina sequence reads up to 100bp.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8007,9 +8350,13 @@ bowtie медленнее, когда указан режим --best.</translati
         <translation>Выходной файл с аннотациями</translation>
     </message>
     <message>
-        <location filename="../src/ceas/CEASReportWorker.cpp" line="242"/>
         <source>Name of tab-delimited output text file, containing a row of annotations for every RefSeq gene. (file is not generated if no peak location data is supplied).</source>
-        <translation>Название для выходного текстового файла, содержащего строки аннотации для каждого гена RefSeq. (файл не генерируется, если нет пиков).</translation>
+        <translation type="vanished">Название для выходного текстового файла, содержащего строки аннотации для каждого гена RefSeq. (файл не генерируется, если нет пиков).</translation>
+    </message>
+    <message>
+        <location filename="../src/ceas/CEASReportWorker.cpp" line="242"/>
+        <source>Name of tab-delimited output text file, containing a row of annotations for every RefSeq gene. (file is not generated if no peak location data are supplied).</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ceas/CEASReportWorker.cpp" line="245"/>
@@ -9777,17 +10124,17 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>U2::LocalWorkflow::IlluminaClipAdditionalSettingsDialog</name>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="261"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="266"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="263"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="268"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="264"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="269"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9795,7 +10142,7 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>U2::LocalWorkflow::IlluminaClipSettingsWidget</name>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="236"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="241"/>
         <source>Open FASTA with adapters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9803,7 +10150,7 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>U2::LocalWorkflow::IlluminaClipStep</name>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="43"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="47"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h4&gt;ILLUMINACLIP&lt;/h4&gt;&lt;p&gt;This step is used to find and remove Illumina adapters.&lt;/p&gt;&lt;p&gt;Trimmomatic first compares short sections of an adapter and a read. If they match enough, the entire alignment between the read and adapter is scored. For paired-end reads, the &quot;palindrome&quot; approach is also used to improve the result. See Trimmomatic manual for details.&lt;/p&gt;&lt;p&gt;Input the following values:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Adapter sequences&lt;/b&gt;: a FASTA file with the adapter sequences. Files for TruSeq2 (GAII machines), TruSeq3 (HiSeq and MiSeq machines) and Nextera kits for SE and PE reads are now available by default. The naming of the various sequences within the specified file determines how they are used.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Seed mismatches&lt;/b&gt;: the maximum mismatch count in short sections which will still allow a full match to be performed.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Simple clip threshold&lt;/b&gt;: a threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Palindrome clip threshold&lt;/b&gt;: a threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;There are also two optional parameters for palindrome mode: &lt;b&gt;Min adapter length&lt;/b&gt; and &lt;b&gt;Keep both reads&lt;/b&gt;.&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10618,22 +10965,27 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>U2::LocalWorkflow::ShortReadsAlignerPrompter</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="398"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="429"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="404"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="435"/>
         <source>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </source>
         <translation>Выравнивает верховые риды из &lt;u&gt;%1&lt;/u&gt; и низовые риды из &lt;u&gt;%2&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="406"/>
-        <source>Maps reads from &lt;u&gt;%1&lt;/u&gt; </source>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="437"/>
+        <source>Maps input reads from &lt;u&gt;%1&lt;/u&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="410"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="443"/>
+        <source> to reference sequence with index &lt;u&gt;%1&lt;/u&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="446"/>
         <source> to reference sequence &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10855,32 +11207,24 @@ bowtie медленнее, когда указан режим --best.</translati
         <translation>Выбрать геном</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="123"/>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="122"/>
         <source>%1 and %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="123"/>
+        <source>The list of genomes is not available.
+Make sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="124"/>
-        <source>The list of %1 genomes is not available.
-Path for %1 and %2 tools are not selected.</source>
+        <source>Do you want to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="125"/>
-        <source>Do you want to select them now?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="129"/>
-        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="132"/>
-        <source>The list of %1 genomes is not available.
-Path for %1 tool is not selected.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="134"/>
         <source>Do you want to select it now?</source>
-        <translation>Выбрать сейчас?</translation>
+        <translation type="vanished">Выбрать сейчас?</translation>
     </message>
 </context>
 <context>
@@ -11048,60 +11392,56 @@ Path for %1 tool is not selected.</source>
 <context>
     <name>U2::LocalWorkflow::SpadesPrompter</name>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="342"/>
         <source>unset</source>
-        <translation>не указан</translation>
+        <translation type="vanished">не указан</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="345"/>
         <source>Assemble reads from &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation>Собирает риды из &lt;u&gt;%1&lt;/u&gt;.</translation>
+        <translation type="vanished">Собирает риды из &lt;u&gt;%1&lt;/u&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="611"/>
+        <source>Assemble de novo the input data into contigs and scaffolds.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::SpadesWorker</name>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="216"/>
         <source>SPAdes cannot recognize read pairs from the same file. Please, perform demultiplexing first.</source>
-        <translation>SPAdes cannot recognize read pairs from the same file. Please, perform demultiplexing first.</translation>
+        <translation type="vanished">SPAdes cannot recognize read pairs from the same file. Please, perform demultiplexing first.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="230"/>
         <source>URL of a file with reads</source>
-        <translation>Путь до файла с ридами</translation>
+        <translation type="vanished">Путь до файла с ридами</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="231"/>
         <source>Input reads to be assembled.</source>
-        <translation>Входные риды будут собраны.</translation>
+        <translation type="vanished">Входные риды будут собраны.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="233"/>
         <source>URL of a file with right pair reads</source>
-        <translation>Путь до файла с ридами правой пары</translation>
+        <translation type="vanished">Путь до файла с ридами правой пары</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="234"/>
         <source>Input right pair reads to be assembled.</source>
-        <translation>Выходные риды правой пары будут собраны.</translation>
+        <translation type="vanished">Выходные риды правой пары будут собраны.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="240"/>
         <source>SPAdes data</source>
-        <translation>Данные SPAdes</translation>
+        <translation type="vanished">Данные SPAdes</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="241"/>
         <source>Input reads to be assembled with Spades.</source>
-        <translation>Входные риды будут собраны при помощи Spades.</translation>
+        <translation type="vanished">Входные риды будут собраны при помощи Spades.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="249"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="468"/>
         <source>Scaffolds URL</source>
         <translation>Путь до Scaffolds</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="250"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="469"/>
         <source>Output scaffolds URL.</source>
         <translation>Путь до выходногог scaffolds.</translation>
     </message>
@@ -11110,81 +11450,193 @@ Path for %1 tool is not selected.</source>
         <translation type="vanished">Выходные данные SPAdes</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="254"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="259"/>
+        <source>Incorrect input data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="263"/>
+        <source>Incorrect port values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="340"/>
+        <source>Some input data elements sent data while some elements already finished their work. Check that all input data elements have the same datasets quantity.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="429"/>
+        <source>Input %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="430"/>
+        <source>Input %1 to be assembled with SPAdes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="436"/>
+        <source>File URL 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="437"/>
+        <source>File URL 1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="445"/>
+        <source>File URL 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="446"/>
+        <source>File URL 2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="472"/>
+        <source>Contigs URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="473"/>
+        <source>Output contigs URL.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="477"/>
         <source>Output assembly files.</source>
         <translation>Выходные файлы сборки.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="265"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="489"/>
+        <source>Input data</source>
+        <translation type="unfinished">Входные данные</translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="493"/>
         <source>Output folder</source>
         <translation>Выходная папка</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="266"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="494"/>
         <source>Folder to save Spades output files.</source>
         <translation>Папка для сохранения выходных файлов Spades.</translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="501"/>
+        <source>Memory limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="506"/>
+        <source>Select the input dataset type: standard isolate (the default value) or multiple displacement amplification (corresponds to --sc).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="510"/>
+        <source>By default, SPAdes performs both read error correction and assembly. You can select leave one of only (corresponds to --only-assembler, --only-error-correction).&lt;br&gt;&lt;br&gt;                              Error correction is performed using BayesHammer module in case of Illumina input reads and IonHammer in case of IonTorrent data. Note that you should not use error correction                               in case input reads do not have quality information(e.g. FASTA input files are provided).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="577"/>
+        <source>In general, SPAdes (St. Petersburg genome assembler) is an assembly toolkit containing various assembly pipelines.                           This workflow element provides GUI for the main SPAdes executable script. One can specify Illumina, IonTorrent or                           PacBio reads as input. Hybrid assemblies are also possible, for example, with Oxford Nanopore or Sanger reads.&lt;br&gt;&lt;br&gt;                          To use the element, configure the type of input in the &quot;Input data&quot; parameter. The corresponding input ports will appear                           on the element. Provide URL(s) to the corresponding FASTA or FASTQ file(s) to these ports.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>folder to save Spades output files.</source>
         <translation type="vanished">Папка для сохранения выходных файлов Spades.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="253"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="476"/>
         <source>Output File</source>
         <translation type="unfinished">Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="269"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="497"/>
         <source>Number of threads</source>
         <translation>Число потоков</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="270"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="498"/>
         <source>Number of threads (-t).</source>
         <translation>число потоков (-t).</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="273"/>
         <source>Memory limit (GB)</source>
-        <translation>Предел памяти (GB)</translation>
+        <translation type="vanished">Предел памяти (GB)</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="274"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="502"/>
         <source>Memory limit (-m).</source>
         <translation>Предел памяти (-m).</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="277"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="505"/>
         <source>Dataset type</source>
         <translation>Тип набора данных</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="278"/>
         <source>Input dataset type.</source>
-        <translation>Тип входного набора данных.</translation>
+        <translation type="vanished">Тип входного набора данных.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="281"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="509"/>
         <source>Running mode</source>
         <translation>Режим запуска</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="282"/>
         <source>Running mode.</source>
-        <translation>режим запуска.</translation>
+        <translation type="vanished">режим запуска.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="285"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="515"/>
         <source>K-mers</source>
         <translation>K-mers</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="286"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="516"/>
         <source>k-mer sizes (-k).</source>
         <translation>Размеры k-mer (-k).</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="321"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="548"/>
+        <source>Auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="556"/>
+        <source> Gb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="562"/>
+        <source>Standard isolate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="563"/>
+        <source>MDA single-cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="567"/>
+        <source>Error correction and assembly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="568"/>
+        <source>Assembly only</source>
+        <translation type="unfinished">Только сборка</translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="569"/>
+        <source>Error correction only</source>
+        <translation type="unfinished">Только исправление ошибок</translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesWorker.cpp" line="576"/>
         <source>Assemble Reads with SPAdes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11193,9 +11645,8 @@ Path for %1 tool is not selected.</source>
         <translation type="vanished">Сборка геномов с помощью SPAdes</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="322"/>
         <source>Performes assembly of input short reads.</source>
-        <translation>Производит сборку входных коротких ридов.</translation>
+        <translation type="vanished">Производит сборку входных коротких ридов.</translation>
     </message>
 </context>
 <context>
@@ -11522,6 +11973,69 @@ Path for %1 tool is not selected.</source>
     </message>
 </context>
 <context>
+    <name>U2::LocalWorkflow::StringtieGeneAbundanceReportPrompter</name>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportPrompter.cpp" line="34"/>
+        <source>Create a general report for several StringTie gene abundance output files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::StringtieGeneAbundanceReportTask</name>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="53"/>
+        <source>StringTie Gene Abundance Report Task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="77"/>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="95"/>
+        <source>The directory &quot;%1&quot; did not created</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="138"/>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="145"/>
+        <source>Too long line while reading a file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="150"/>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="262"/>
+        <source>Bad line format of input: &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="172"/>
+        <source>Cannot open a file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="231"/>
+        <source>Unexpected error while parsing input data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="238"/>
+        <source>Bad file format, there is no %2 column: &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportTask.cpp" line="256"/>
+        <source>Cannot open a file: %1
+Error is :</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::StringtieGeneAbundanceReportWorker</name>
+    <message>
+        <location filename="../src/stringtie/StringtieGeneAbundanceReportWorker.cpp" line="60"/>
+        <source>An empty URL to StringTie report passed to the &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::LocalWorkflow::TCoffeePrompter</name>
     <message>
         <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="127"/>
@@ -11648,101 +12162,114 @@ Path for %1 tool is not selected.</source>
     </message>
 </context>
 <context>
+    <name>U2::LocalWorkflow::TopHatPrompter</name>
+    <message>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="549"/>
+        <source> to reference sequence with index &lt;u&gt;%1&lt;/u&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="552"/>
+        <source> to reference sequence &lt;u&gt;%1&lt;/u&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::LocalWorkflow::TopHatWorker</name>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="111"/>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="122"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="114"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="125"/>
         <source>Input reads</source>
         <translation>Входные риды</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="112"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="115"/>
         <source>Input RNA-Seq reads</source>
         <translation>Входные риды RNA-Seq</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="116"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="119"/>
         <source>TopHat output</source>
         <translation>Выходные данные TopHat</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="117"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="120"/>
         <source>Accepted hits, junctions, insertions and deletions</source>
         <translation>Допустимы хиты, переходы, вставки и удаления</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="123"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="126"/>
         <source>TopHat input reads. Set this slot empty if you want to align reads directly from a file and specify the &quot;Input reads url&quot; slot. When running TopHat with paired-end reads, this should be the *_1 (&quot;left&quot;) set of reads.</source>
         <translation>Входные риды TopHat. Оставьте этот слот пустым если вы хотите выровнять риды напрямую из файла и укажите слот &quot;Путь для входных ридов&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="128"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="131"/>
         <source>Input reads url</source>
         <translation>Путь для входных ридов</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="129"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="132"/>
         <source>TopHat input reads url. When running TopHat with paired-end reads, this should be the *_1 (&quot;left&quot;) set of reads.</source>
         <translation>Путь для входных ридов TopHat.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="133"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="136"/>
         <source>Input paired reads</source>
         <translation>Входные парные риды</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="134"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="137"/>
         <source> Set this slot empty if you want to align reads directly from a file and specify the &quot;Input reads url&quot; slot. Only used when running TopHat with paired end reads, and contains the *_2 (&quot;right&quot;) set of reads. Reads MUST appear in the same order as the *_1 reads.</source>
         <translation>Оставьте этот слот пустым если вы хотите выровнять риды напрямую из файла и укажите слот &quot;Путь для входных ридов&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="141"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="144"/>
         <source>Input paired reads url</source>
         <translation>Путь для входных парных ридов</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="142"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="145"/>
         <source>Only used when running TopHat with paired end reads, and contains the *_2 (&quot;right&quot;) set of reads.</source>
         <translation>Используется только когда TopHat запускается для парных ридов, и содержит набор ридов *_2 (&quot;right&quot;).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="147"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="150"/>
         <source>Dataset name</source>
         <translation>Имя набора данных</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="148"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="151"/>
         <source>Use it only when sequences slot(or slots) is specified. Group input reads into chunks for several Tophat runs.
 Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Используйте этот параметр только когда указан слот типа последовательность. Оставьте его пустым если хотите запустить задачу для всех входных ридов</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="165"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="168"/>
         <source>Accepted hits</source>
         <translation>Принимаемые хиты</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="166"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="169"/>
         <source>Accepted hits found by TopHat</source>
         <translation>Принимаемые хиты найденные TopHat</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="168"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="171"/>
         <source>Sample name</source>
         <translation>Пример имени</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="169"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="172"/>
         <source>Sample name for running Cuffdiff</source>
         <translation>Пример имени для запуска Cuffdiff</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="171"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="174"/>
         <source>Accepted hits url</source>
         <translation>Путь до принимаемых хитов</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="172"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="175"/>
         <source>The url to the assembly file with the accepted hits</source>
         <translation>Путь до файла сборки с принимаемыми хитами</translation>
     </message>
@@ -11755,298 +12282,333 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation type="vanished">TopHat является быстрым инструментом для определения сплайсинга по данным секвенирования РНК. TopHat выравнивает риды с помощью Bowtie и затем анализирует результаты выравнивания для определения границ экзонов.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="183"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="186"/>
         <source>Map RNA-Seq Reads with TopHat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="184"/>
-        <source>TopHat is a program for mapping RNA-Seq reads to a long reference sequence. It uses Bowtie or Bowtie2 to map the reads and then analyzes the mapping results to identify splice junctions between exons.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS RNA-Seq reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port. Several UCSC BED tracks are also produced: junctions, insertions, and deletions.</source>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="187"/>
+        <source>TopHat is a program for mapping RNA-Seq reads to a long reference sequence. It uses Bowtie or Bowtie2 to map the reads and then analyzes the mapping results to identify splice junctions between exons.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS RNA-Seq reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified BAM file, URL to the file is passed to the output port. Several UCSC BED tracks are also produced: junctions, insertions, and deletions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="195"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="198"/>
         <source>Output folder</source>
         <translation>Выходная папка</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="196"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="199"/>
         <source>The base name of output folder. It could be modified with a suffix.</source>
         <translation>Базовое имя для выходной папки.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="199"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="202"/>
         <source>Samples map</source>
         <translation>Карта образцов</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="200"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="203"/>
         <source>The map which divide all input datasets into samples. Every sample has the unique name.</source>
         <translation>карта, которая разделяет все входные наборы данных на образцы. Каждый образец имеет уникальное название.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="203"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="206"/>
+        <source>Reference input type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="207"/>
+        <source>Select &quot;Sequence&quot; to input a reference genome as a sequence file. &lt;br/&gt;Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). &lt;br/&gt;The index will be generated automatically in this case. &lt;br/&gt;Select &quot;Index&quot; to input already generated index files, specific for the tool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="213"/>
+        <source>Reference genome</source>
+        <translation type="unfinished">Референсный геном</translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="214"/>
+        <source>Path to indexed reference genome.</source>
+        <translation type="unfinished">Путь до индексированного референсного генома.</translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="217"/>
         <source>Bowtie index folder</source>
         <translation>Папка для индекса Bowtie</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="204"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="218"/>
         <source>The folder with the Bowtie index for the reference sequence.</source>
         <translation>папка, в которой расположен индекс Bowtie для референсной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="212"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="226"/>
         <source>Bowtie index basename</source>
         <translation>Базовое имя для индекса Bowtie</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="213"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="227"/>
         <source>The basename of the Bowtie index for the reference sequence.</source>
         <translation>базовое имя для индекса Bowtie для референсной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="226"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="240"/>
         <source>Mate inner distance</source>
         <translation>Внутренняя дистанция в паре</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="227"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="241"/>
         <source>The expected (mean) inner distance between mate pairs.</source>
         <translation>ожидаемая (средняя) внутренняя дистанция между ридами в паре (mate pair).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="230"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="244"/>
         <source>Mate standard deviation</source>
         <translation>Стандартное отклонение в паре</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="231"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="245"/>
         <source>The standard deviation for the distribution on inner distances between mate pairs.</source>
         <translation>стандартное отклонение для распределения в внутренних дистанций между ридами в паре (mate pair).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="234"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="248"/>
         <source>Library type</source>
         <translation>Тип библиотеки</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="235"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="249"/>
         <source>Specifies RNA-Seq protocol.</source>
         <translation>задает протокол секвенирования РНК.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="238"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="252"/>
         <source>No novel junctions</source>
         <translation>Не искать новые сайты сплайсинга</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="239"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="253"/>
         <source>Only look for reads across junctions indicated in the supplied GFF or junctions file. This parameter is ignored if &lt;i&gt;Raw junctions&lt;/i&gt; or &lt;i&gt;Known transcript file&lt;/i&gt; is not set.</source>
         <translation>Искать только такие сплайсированные риды, которые соответствуют информации в приложенном файле (GFF или файле с описанием сайтов сплайсинга). Если ни один из этих файлов не указан, параметр будет проигнорирован.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="244"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="258"/>
         <source>Raw junctions</source>
         <translation>Новые сайты сплайсинга</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="245"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="259"/>
         <source>The list of raw junctions.</source>
         <translation>список обнаруженных сайтов сплайсинга.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="248"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="262"/>
         <source>Known transcript file</source>
         <translation>Файл с известными транскриптами</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="249"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="263"/>
         <source>A set of gene model annotations and/or known transcripts.</source>
         <translation>файл с аннотацией моделей генов и/или известными транскриптами.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="252"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="266"/>
         <source>Max multihits</source>
         <translation>Максимальное количество множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="253"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="267"/>
         <source>Instructs TopHat to allow up to this many alignments to the reference for a given read, and suppresses all alignments for reads with more than this many alignments.</source>
         <translation>Tophat не будет анализировать все выравнивания для ридов с большим количеством выравниваний, чем указанный параметр.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="258"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="272"/>
         <source>Segment length</source>
         <translation>Длина сегмента</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="259"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="273"/>
         <source>Each read is cut up into segments, each at least this long. These segments are mapped independently.</source>
         <translation>каждый рид разрезается на сегменты указанной длины. Эти сегменты выравниваются независимо.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="271"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="285"/>
         <source>Fusion search</source>
         <translation>Поиск химер</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="272"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="286"/>
         <source>Turn on fusion mapping.</source>
         <translation>искать выравнивание для химерных ридов.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="275"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="289"/>
         <source>Transcriptome only</source>
         <translation>Только транскриптом</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="276"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="290"/>
         <source>Only align the reads to the transcriptome and report only those mappings as genomic mappings.</source>
         <translation>выравнивать риды только на транскриптом и выдавать только эти выравнивания при выравнивании на геном.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="280"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="294"/>
         <source>Transcriptome max hits</source>
         <translation>Максимальное число выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="281"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="295"/>
         <source>Maximum number of mappings allowed for a read, when aligned to the transcriptome (any reads found with more than this number of mappings will be discarded).</source>
         <translation>максимальное число выравниваний, разрешенных для рида при выравнивании на транскриптом (риды с большим числом выравниваний будут исключены из дальнейшего анализа).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="286"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="300"/>
         <source>Prefilter multihits</source>
         <translation>Предварительный фильтр множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="287"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="301"/>
         <source>When mapping reads on the transcriptome, some repetitive or low complexity reads that would be discarded in the context of the genome may appear to align to the transcript sequences and thus may end up reported as mapped to those genes only. This option directs TopHat to first align the reads to the whole genome in order to determine and exclude such multi-mapped reads (according to the value of the &lt;i&gt;Max multihits&lt;/i&gt; option).</source>
         <translation>при выравнивании ридов на транскриптом, некоторые повторяющиеся риды или риды, содержащие повторы, могут быть выявлены как выровненные, хотя при выравнивании на геном они были бы отброшены. При выборе этой опции TopHat сначала выравнивает риды на весь геном, чтобы определить и исключить риды, которые выравниваются несколько раз (число выравниваний определяется значением опции).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="296"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="310"/>
         <source>Min anchor length</source>
         <translation>Минимальная длина якоря</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="297"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="311"/>
         <source>The &lt;i&gt;anchor length&lt;/i&gt;. TopHat will report junctions spanned by reads with at least this many bases on each side of the junction. Note that individual spliced alignments may span a junction with fewer than this many bases on one side. However, every junction involved in spliced alignments is supported by at least one read with this many bases on each side.</source>
         <translation>&lt;i&gt;длина якоря&lt;/i&gt;. TopHat будет указывать в отчете сайты сплайсинга в том случае, если с каждой стороны от стыка прочитано не менее указанного числа нуклеотидов. В отдельных выравниваниях число нуклеотидов может быть меньше, однако для любого указанного в отчете сайта сплайсинга будет существовать хотя бы одно выравнивание с не менее чем указанным числом нуклеотидов с каждой стороны.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="305"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="319"/>
         <source>Splice mismatches</source>
         <translation>Замены около сайтов сплайсинга</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="306"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="320"/>
         <source>The maximum number of mismatches that may appear in the &lt;i&gt;anchor&lt;/i&gt; region of a spliced alignment.</source>
         <translation>максимально допустимое число несоответствий в нуклеотидах около сайтов сплайсинга..</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="310"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="324"/>
         <source>Read mismatches</source>
         <translation>Замены в ридах</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="311"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="325"/>
         <source>Final read alignments having more than these many mismatches are discarded.</source>
         <translation>финальные выравнивания, число несоответствий в которых больше указанного, будут отброшены.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="315"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="329"/>
         <source>Segment mismatches</source>
         <translation>Замены в сегментах</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="316"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="330"/>
         <source>Read segments are mapped independently, allowing up to this many mismatches in each segment alignment.</source>
         <translation>сегменты рида выравниваются независимо, и при этом при выравнивании каждого сегмента допускается указанное максимальное число несоответствий.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="321"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="335"/>
         <source>Solexa 1.3 quals</source>
         <translation>Качество в шкале Solexa 1.3</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="322"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="336"/>
         <source>As of the Illumina GA pipeline version 1.3, quality scores are encoded in Phred-scaled base-64. Use this option for FASTQ files from pipeline 1.3 or later.</source>
         <translation>в пайплайне Illumina GA версии 1.3 показатели качества кодируются в шкале Phred64. Используйте эту опцию для FASTQ файлов из пайплайна 1.3 или более поздних версии.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="327"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="341"/>
         <source>Bowtie version</source>
         <translation>Версия Bowtie</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="328"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="342"/>
         <source>Specifies which Bowtie version should be used.</source>
         <translation>указывает, какую версию Bowtie необходимо использовать.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="331"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="345"/>
         <source>Bowtie -n mode</source>
         <translation>Режим Bowtie -n</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="332"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="346"/>
         <source>TopHat uses &lt;i&gt;-v&lt;/i&gt; in Bowtie for initial read mapping (the default), but with this option, &lt;i&gt;-n&lt;/i&gt; is used instead. Read segments are always mapped using &lt;i&gt;-v&lt;/i&gt; option.</source>
         <translation>по умолчанию TopHat использует -v в Bowtie для выравнивания ридов, но при выборе этой опции будет использован параметр -n. Выравнивание сегментов ридов всегда осуществляется с параметром -v.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="338"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="352"/>
         <source>Bowtie tool path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="339"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="353"/>
         <source>The path to the Bowtie external tool.</source>
         <translation>Путь до внешнего инструмента Bowtie в UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="342"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="356"/>
         <source>SAMtools tool path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="343"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="357"/>
         <source>The path to the SAMtools tool. Note that the tool is available in the UGENE External Tool Package.</source>
         <translation>Путь до инструмента SAMtools. Обратите внимание, что этот доступен в пакете внешних инструментов UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="347"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="361"/>
         <source>TopHat tool path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="348"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="362"/>
         <source>The path to the TopHat external tool in UGENE.</source>
         <translation>Путь до внешнего инструмента TopHat в UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="351"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="365"/>
         <source>Temporary folder</source>
         <translation>Временная папка</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="352"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="366"/>
         <source>The folder for temporary files.</source>
         <translation>Папка для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="399"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="420"/>
+        <source>Sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="421"/>
+        <source>Index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="428"/>
         <source>Use -n mode</source>
         <translation>Использовать -n моду</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="400"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="429"/>
         <source>Use -v mode</source>
         <translation>Использовать -v моду</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="515"/>
-        <source>Maps RNA-seq reads to a reference and finds splice junctions.</source>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="544"/>
+        <source>Maps RNA-seq reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="555"/>
+        <source> and finds splice junctions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12054,12 +12616,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation type="vanished">Выравнивает риды RNA-seq на референсную последовательность и ищет регионы сплайсинга.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="579"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="627"/>
         <source>Incorrect value of the library type parameter for Cufflinks!</source>
         <translation>Incorrect value of the library type parameter for Cufflinks!</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="608"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="656"/>
         <source>Unrecognized value of the Bowtie mode option!</source>
         <translation>Unrecognized value of the Bowtie mode option!</translation>
     </message>
@@ -12080,8 +12642,16 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::LocalWorkflow::TrimmomaticPropertyDialog</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="183"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="184"/>
         <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::TrimmomaticWorker</name>
+    <message>
+        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="98"/>
+        <source>Copy adapters to working folder</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12441,8 +13011,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PathLineEdit</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="633"/>
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="635"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="637"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
@@ -13045,9 +13615,15 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpadesTask</name>
     <message>
-        <location filename="../src/spades/SpadesTask.cpp" line="61"/>
+        <location filename="../src/spades/SpadesTask.cpp" line="60"/>
         <source>Folder does not exist: </source>
         <translation>Folder does not exist: </translation>
+    </message>
+    <message>
+        <location filename="../src/spades/SpadesTask.cpp" line="123"/>
+        <location filename="../src/spades/SpadesTask.cpp" line="130"/>
+        <source>File %1 has not been found in output folder %2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13334,22 +13910,27 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Running TopHat task</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="143"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="115"/>
+        <source>Can&apos;t create directory for index files </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="185"/>
         <source>An unexpected error has occurred during preparing the TopHat task!</source>
         <translation>An unexpected error has occurred during preparing the TopHat task!</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="144"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="186"/>
         <source>Preparing TopHatSupportTask internal error: unable to get a sequence object!</source>
         <translation>Preparing TopHatSupportTask internal error: unable to get a sequence object!</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="262"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="314"/>
         <source>TopHat was not able to map reads to the reference.</source>
         <translation>TopHat was not able to map reads to the reference.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="284"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="336"/>
         <source>There are no accepted hits in the result</source>
         <translation>There are no accepted hits in the result</translation>
     </message>
@@ -13550,18 +14131,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="236"/>
-        <location filename="../src/spades/SpadesWorker.cpp" line="190"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="272"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="271"/>
         <source>The slot must be not empty: &apos;%1&apos;</source>
         <translation>Слот не должен быть пустым: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="784"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="789"/>
         <source>Error! One of these slots must be not empty: &apos;%1&apos;, &apos;%2&apos;</source>
         <translation>Ошибка! Один из этих слотов не должен быть пустым: &apos;%1&apos;, &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="790"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="795"/>
         <source>Error! You can not bind one of sequences slots and one of url slots simultaneously</source>
         <translation>Ошибка! Вы не можете связать слот последовательности и слот пути одновременно</translation>
     </message>

@@ -1038,27 +1038,27 @@ p, li { white-space: pre-wrap; }
         <translation>Число неизвестных символов (N - для нуклеотидных или X - для амино) между частями:</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="193"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="192"/>
         <source>Import ACE files as</source>
         <translation>Импортировать ACE файлы как</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="199"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="198"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="212"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="211"/>
         <source>Short reads assembly</source>
         <translation>Сборка коротких ридов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="228"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="227"/>
         <source>Documents and objects options</source>
         <translation>Настройки документов и объектов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="234"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="233"/>
         <source>Create a subfolder for each document</source>
         <translation>Создать подпапку для каждого документа</translation>
     </message>
@@ -1671,7 +1671,7 @@ To append data to existing file press &apos;Append&apos;.</source>
 <context>
     <name>U2::AceImportWidget</name>
     <message>
-        <location filename="../src/util/ImportWidgets/AceImportWidget.cpp" line="60"/>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.cpp" line="58"/>
         <source>Destination UGENEDB file</source>
         <translation>Место назначения UGENEDB файла</translation>
     </message>
@@ -2310,7 +2310,7 @@ Are you sure you want to open all of them?</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="229"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="231"/>
         <source>Save Image As</source>
         <translation>Сохранить изображение как</translation>
     </message>
@@ -3380,42 +3380,42 @@ check connection settings</translation>
 <context>
     <name>U2::ToolsMenu</name>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="109"/>
+        <location filename="../src/ToolsMenu.cpp" line="108"/>
         <source>Sanger data analysis</source>
         <translation>Анализ данных секвенирования по Сэнгеру</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="119"/>
+        <location filename="../src/ToolsMenu.cpp" line="118"/>
         <source>NGS data analysis</source>
         <translation>Анализ данных NGS</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="149"/>
+        <location filename="../src/ToolsMenu.cpp" line="148"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="163"/>
+        <location filename="../src/ToolsMenu.cpp" line="162"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="175"/>
+        <location filename="../src/ToolsMenu.cpp" line="174"/>
         <source>Cloning</source>
         <translation>Клонирование</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="183"/>
+        <location filename="../src/ToolsMenu.cpp" line="182"/>
         <source>Primer</source>
         <translation>Олигонуклеотиды</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="189"/>
+        <location filename="../src/ToolsMenu.cpp" line="188"/>
         <source>Search for TFBS</source>
         <translation>Поиск сайтов связывания транскрипционных факторов (TFBS)</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="198"/>
+        <location filename="../src/ToolsMenu.cpp" line="197"/>
         <source>HMMER tools</source>
         <translation>Инструменты HMMER</translation>
     </message>

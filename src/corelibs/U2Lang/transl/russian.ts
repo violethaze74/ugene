@@ -424,7 +424,7 @@
         <translation>Actor &apos;%1&apos; does not have this parameter: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="341"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="384"/>
         <source>Additional</source>
         <translation>Additional</translation>
     </message>
@@ -494,17 +494,17 @@
         <translation>Unknown actor ID: </translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Constants.cpp" line="34"/>
+        <location filename="../src/support/serialize/Constants.cpp" line="35"/>
         <source>Error: unknown exception caught</source>
         <translation>Error: unknown exception caught</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Constants.cpp" line="47"/>
+        <location filename="../src/support/serialize/Constants.cpp" line="48"/>
         <source>Undefined construct at &apos;%1 %2&apos;</source>
         <translation>Undefined construct at &apos;%1 %2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Constants.cpp" line="65"/>
+        <location filename="../src/support/serialize/Constants.cpp" line="66"/>
         <source>Undefined block in .meta: &apos;%1&apos;</source>
         <translation>Undefined block in .meta: &apos;%1&apos;</translation>
     </message>
@@ -579,107 +579,107 @@
 <context>
     <name>U2::BaseTypes</name>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="51"/>
+        <location filename="../src/library/BaseTypes.cpp" line="52"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="51"/>
+        <location filename="../src/library/BaseTypes.cpp" line="52"/>
         <source>A sequence</source>
         <translation>Биологически-значимая последовательность (ДНК, РНК, протеины)</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="62"/>
+        <location filename="../src/library/BaseTypes.cpp" line="63"/>
         <source>Set of annotations</source>
         <translation>Набор аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="62"/>
+        <location filename="../src/library/BaseTypes.cpp" line="63"/>
         <source>A set of annotated features in a sequence</source>
         <translation>Набор (список) аннотированных регионов последовательности</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="74"/>
+        <location filename="../src/library/BaseTypes.cpp" line="75"/>
         <source>List of annotations</source>
         <translation>Набор аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="74"/>
+        <location filename="../src/library/BaseTypes.cpp" line="75"/>
         <source>A list of sequence annotations</source>
         <translation>Набор аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="86"/>
+        <location filename="../src/library/BaseTypes.cpp" line="87"/>
         <source>Set of aligned sequences</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="86"/>
+        <location filename="../src/library/BaseTypes.cpp" line="87"/>
         <source>Multiple alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="97"/>
+        <location filename="../src/library/BaseTypes.cpp" line="98"/>
         <source>Variation track</source>
         <translation>Путь вариации</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="97"/>
+        <location filename="../src/library/BaseTypes.cpp" line="98"/>
         <source>Set of variations</source>
         <translation>Набор вариаций</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="108"/>
+        <location filename="../src/library/BaseTypes.cpp" line="109"/>
         <source>Assembly data</source>
         <translation>Данные сборки</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="120"/>
+        <location filename="../src/library/BaseTypes.cpp" line="121"/>
         <source>String</source>
         <translation>Строка</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="120"/>
+        <location filename="../src/library/BaseTypes.cpp" line="121"/>
         <source>A string of characters</source>
         <translation>Строка символов</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="144"/>
+        <location filename="../src/library/BaseTypes.cpp" line="145"/>
         <source>Boolean</source>
         <translation>Логический тип</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="144"/>
+        <location filename="../src/library/BaseTypes.cpp" line="145"/>
         <source>A boolean value (true/false)</source>
         <translation>Значение бинарной логики (истина/ложь)</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="156"/>
+        <location filename="../src/library/BaseTypes.cpp" line="170"/>
         <source>Number</source>
         <translation>Числовой тип</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="156"/>
+        <location filename="../src/library/BaseTypes.cpp" line="170"/>
         <source>A number</source>
         <translation>Число</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="168"/>
+        <location filename="../src/library/BaseTypes.cpp" line="182"/>
         <source>Undefined</source>
         <translation>Неопределённый тип</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="168"/>
+        <location filename="../src/library/BaseTypes.cpp" line="182"/>
         <source>A void type</source>
         <translation>Пустое значение</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="180"/>
+        <location filename="../src/library/BaseTypes.cpp" line="194"/>
         <source>Url datasets</source>
         <translation>Адрес наборов данных</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseTypes.cpp" line="180"/>
+        <location filename="../src/library/BaseTypes.cpp" line="194"/>
         <source>A list of urls grouped into datasets</source>
         <translation>Список адресов, сгруппированных в наборы данных</translation>
     </message>
@@ -687,22 +687,22 @@
 <context>
     <name>U2::DescriptorListEditorDelegate</name>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="400"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="443"/>
         <source>&lt;empty&gt;</source>
         <translation>&lt;пустой&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="400"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="443"/>
         <source>Default value</source>
         <translation>Значение по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="404"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="447"/>
         <source>&lt;List of values&gt;</source>
         <translation>&lt;Список значений&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="404"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="447"/>
         <source>List of values</source>
         <translation>Список значений</translation>
     </message>
@@ -876,27 +876,27 @@
         <translation>Grouper out slot: empty in-slot</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1687"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1700"/>
         <source>Error: element name in the workflow file contains spaces</source>
         <translation>Error: element name in the workflow file contains spaces</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2049"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2062"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 actor has not marker attribute</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2073"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2086"/>
         <source>Name attribute is not set for the marker</source>
         <translation>Name attribute is not set for the marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2076"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2089"/>
         <source>Type attribute is not set for %1 marker</source>
         <translation>Type attribute is not set for %1 marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2085"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2098"/>
         <source>Qualifier name attribute is not set for %1 marker</source>
         <translation>Qualifier name attribute is not set for %1 marker</translation>
     </message>
@@ -1205,17 +1205,17 @@
 <context>
     <name>U2::MapDatatypeEditor</name>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="87"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="116"/>
         <source>Slots</source>
         <translation>Слоты</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="87"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="116"/>
         <source>Data source</source>
         <translation>Источник данных</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="180"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="214"/>
         <source>The input slot &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;is bound to&lt;br&gt;the bus slot &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>Входной слот &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;привязан к&lt;br&gt;слоту шины &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
@@ -2045,7 +2045,7 @@
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/model/Attribute.cpp" line="234"/>
+        <location filename="../src/model/Attribute.cpp" line="242"/>
         <source>Required parameter is not set: %1</source>
         <translation>Не указан обязательный параметр &quot;%1&quot;</translation>
     </message>

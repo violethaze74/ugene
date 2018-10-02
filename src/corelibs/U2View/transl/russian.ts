@@ -4,11 +4,16 @@
 <context>
     <name>ADVClipboard</name>
     <message>
-        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="54"/>
         <source>Cannot put sequence data into the clipboard buffer.
 Probably the data is too big.</source>
-        <translation>Невозможно скопировать данные в буфер обмена.
+        <translation type="vanished">Невозможно скопировать данные в буфер обмена.
 Возможно данные слишком большие.</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="54"/>
+        <source>Cannot put sequence data into the clipboard buffer.
+Probably, the data are too big.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1472,19 +1477,16 @@ Double-click to collapse the branch</source>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="42"/>
         <source>Data is outdated</source>
-        <translation>Данные устарели</translation>
+        <translation type="vanished">Данные устарели</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="43"/>
         <source>Data is valid</source>
-        <translation>Данные корректны</translation>
+        <translation type="vanished">Данные корректны</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="44"/>
         <source>Data is being updated</source>
-        <translation>Данные обновляются</translation>
+        <translation type="vanished">Данные обновляются</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/PairAlign/PairAlignFactory.cpp" line="57"/>
@@ -1579,6 +1581,21 @@ Double-click to collapse the branch</source>
         <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="111"/>
         <source>none</source>
         <translation>нет</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="42"/>
+        <source>Data are outdated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="43"/>
+        <source>Data are valid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="44"/>
+        <source>Data are being updated</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2147,6 +2164,24 @@ Double-click to collapse the branch</source>
         <location filename="../src/phyltree/TreeSettingsDialog.ui" line="103"/>
         <source>Scale Range</source>
         <translation>Диапазон шкалы</translation>
+    </message>
+</context>
+<context>
+    <name>U2</name>
+    <message>
+        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="121"/>
+        <source>All alphabets</source>
+        <translation type="unfinished">Все алфавиты</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="122"/>
+        <source>Amino acid alphabet</source>
+        <translation type="unfinished">Аминокислотный алфавит</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="123"/>
+        <source>Nucleotide alphabet</source>
+        <translation type="unfinished">Нуклеотидный алфавит</translation>
     </message>
 </context>
 <context>
@@ -2906,122 +2941,127 @@ Double-click to collapse the branch</source>
         <translation>Internal error: empty document format</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="232"/>
         <source>The lengths of the sequence and assembly are different.</source>
-        <translation>Длины последовательноси и сборки не совпадают.</translation>
+        <translation type="vanished">Длины последовательноси и сборки не совпадают.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="235"/>
         <source>The sequence and assembly names are different.</source>
-        <translation>Имена последовательности и сборки не совпадают.</translation>
+        <translation type="vanished">Имена последовательности и сборки не совпадают.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="253"/>
         <source>It seems that sequence &quot;%1&quot;, set as reference to assembly &quot;%2&quot;, does not match it.</source>
-        <translation>Последовательность &quot;%1&quot;, установленная в качестве референсной для сборки &quot;%2&quot;, не соответствует ей.</translation>
+        <translation type="vanished">Последовательность &quot;%1&quot;, установленная в качестве референсной для сборки &quot;%2&quot;, не соответствует ей.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="259"/>
         <source>Internal error: database is busy</source>
-        <translation>Internal error: database is busy</translation>
+        <translation type="vanished">Internal error: database is busy</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="294"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="267"/>
         <source>Internal error: broken variant track object</source>
         <translation>Internal error: broken variant track object</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="300"/>
         <source>Only sequence or variant track  objects can be added to assembly browser</source>
-        <translation>Только последовательности или вариации могут быть добавлены в браузер сборок</translation>
+        <translation type="vanished">Только последовательности или вариации могут быть добавлены в браузер сборок</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="309"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="231"/>
+        <source>Internal error: database is locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="273"/>
+        <source>Only sequence or variant track objects can be added to assembly browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="282"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="310"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="283"/>
         <source>This action requires changing the assembly object that is locked for editing</source>
         <translation>Это действие требует изменения объекта сборки, который заблокирован для редактирования</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="657"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="630"/>
         <source>Zoom in</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="660"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="633"/>
         <source>Zoom out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="663"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="636"/>
         <source>Linear</source>
         <translation>Линейная</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="665"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="638"/>
         <source>Logarithmic</source>
         <translation>Логарифмическая</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="671"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="644"/>
         <source>Show coordinates on ruler</source>
         <translation>Показывать координаты на шкале</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="675"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="648"/>
         <source>Show coverage under ruler cursor</source>
         <translation>Показывать покрытие под шкалой курсора</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="679"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="652"/>
         <source>Show information about read under cursor in pop-up hint</source>
         <translation>Показывать информацию о риде в сплывающей подсказке под курсором</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="684"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="657"/>
         <source>Export as image</source>
         <translation>Экспорт изображения</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="687"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="660"/>
         <source>Export assembly to SAM format</source>
         <translation>Экспортировать сборку в формат SAM</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="690"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="663"/>
         <source>Set reference</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="694"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="667"/>
         <source>Export assembly region</source>
         <translation>Экспорт региона сборки</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1011"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="984"/>
         <source>Open file with a sequence</source>
         <translation>Открыть файл с последовательностью</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1022"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="995"/>
         <source>An error occurred while setting reference to &quot;%1&quot; assembly. The selected file &quot;%2&quot; does not contain sequences.</source>
         <translation>Возникла ошибка при попытке установить референсную последовтельность для сборки &quot;%1&quot;. Выбранный файл &quot;%2&quot; не содержит последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1024"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="997"/>
         <source>An error occurred while setting reference to &quot;%1&quot; assembly. There are more than one sequence in file &quot;%2&quot;. Please select the required sequence object in the Project View and click &quot;Set reference&quot; again.</source>
         <translation>Возникла ошибка при попытке установить референсную последовтельность для сборки &quot;%1&quot;. В файле &quot;%2&quot; содержится более одной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1085"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1058"/>
         <source>An error occurred while setting reference to &quot;%1&quot;. You have more than one sequence object selected in the Project View. Please select only one object and try again.</source>
         <translation>Возникла ошибка при попытке установить референсную последовтельность для сборки &quot;%1&quot;. В проекте выделено более одной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1084"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1057"/>
         <source>Choose Reference Sequence</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
@@ -3042,7 +3082,7 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AssemblyBrowserUi</name>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1205"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1178"/>
         <source>Assembly has no mapped reads. Nothing to visualize.</source>
         <translation>Сборка не имеет ридов.</translation>
     </message>
@@ -3631,7 +3671,7 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::CalculatePointsTask</name>
     <message>
-        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="898"/>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="857"/>
         <source>Calculate graph points</source>
         <translation>Calculate graph points</translation>
     </message>
@@ -3895,12 +3935,12 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::CreateSubalignmentDialogController</name>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="53"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="55"/>
         <source>Extract</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="54"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="56"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -4191,40 +4231,39 @@ Do you want to convert the files and run the aligner?</source>
         <translation type="vanished">Сборка генома de novo...</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="73"/>
         <source>Reads de novo assembly (with SPAdes)...</source>
-        <translation>Сборка ридов de novo (при помощи SPAdes)...</translation>
+        <translation type="vanished">Сборка ридов de novo (при помощи SPAdes)...</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="79"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="73"/>
         <source>Map reads to reference...</source>
         <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="85"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="79"/>
         <source>Build index for reads mapping...</source>
         <translation>Построение индекса для выравнивания коротких прочтений...</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="95"/>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="148"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="89"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="142"/>
         <source>DNA Assembly</source>
         <translation>Сборка контигов</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="96"/>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="149"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="90"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="143"/>
         <source>There are no algorithms for DNA assembly available.
 Please, check your plugin list.</source>
         <translation>Нет доступных алгоритмов для сборки контигов. Проверьте список подключенных модулей.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="123"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="117"/>
         <source>Genome Assembly</source>
         <translation>Геномная сборка</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="124"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="118"/>
         <source>There are no algorithms for genome assembly available.
 Please, check external tools in the settings.</source>
         <translation>Нет доступных алгоритмов для сборки контигов. Проверьте список подключенных модулей в настройках.</translation>
@@ -4233,7 +4272,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::DnaAssemblyTaskWithConversions</name>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="414"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="408"/>
         <source>Cannot remove temporary file %1</source>
         <translation>Cannot remove temporary file %1</translation>
     </message>
@@ -4504,17 +4543,17 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::ExportHighligtningTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="991"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="997"/>
         <source>Export highlighting</source>
         <translation>Экспорт подсвеченного</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1019"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1025"/>
         <source>Export highligtning finished successfully</source>
         <translation>Export highligtning finished successfully</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1019"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1025"/>
         <source>Result file:</source>
         <translation>Выходной файл:</translation>
     </message>
@@ -4565,7 +4604,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::ExportSequencesTask</name>
     <message>
-        <location filename="../src/ov_msa/ExportSequencesTask.cpp" line="67"/>
+        <location filename="../src/ov_msa/ExportSequencesTask.cpp" line="58"/>
         <source>Export selected sequences from alignment</source>
         <translation>Export selected sequences from alignment</translation>
     </message>
@@ -4645,22 +4684,22 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::FilterUnpairedReadsTask</name>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="272"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="266"/>
         <source>Filter unpaired reads task</source>
         <translation>Filter unpaired reads task</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="281"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="275"/>
         <source>Filtering unpaired reads is launched on not-paired data</source>
         <translation>Filtering unpaired reads is launched on not-paired data</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="292"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="286"/>
         <source>The count of upstream files is not equal to the count of downstream files</source>
         <translation>The count of upstream files is not equal to the count of downstream files</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="326"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="320"/>
         <source>%1 read pairs were mapped, %2 reads without a pair from files &quot;%3&quot; and &quot;%4&quot; were skipped.</source>
         <translation>%1 read pairs were mapped, %2 reads without a pair from files &quot;%3&quot; and &quot;%4&quot; were skipped.</translation>
     </message>
@@ -5016,9 +5055,6 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="196"/>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="203"/>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="209"/>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="215"/>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="222"/>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="251"/>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="257"/>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="266"/>
@@ -5031,15 +5067,18 @@ Please, check external tools in the settings.</source>
         <translation>Папка для сохранения не указана!</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="210"/>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="223"/>
-        <source>No reads. Please, add file(s) with short reads.</source>
-        <translation>Нет ридов. Добавьте файл(ы) с короткими ридами.</translation>
+        <source>Unable to create output folder for result assembly.
+Directory Path: %1</source>
+        <translation type="obsolete">Невозможно создать выходную папку.
+Путь до папки: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="216"/>
+        <source>No reads. Please, add file(s) with short reads.</source>
+        <translation type="vanished">Нет ридов. Добавьте файл(ы) с короткими ридами.</translation>
+    </message>
+    <message>
         <source>In the paired-end mode a number of lift and right reads must be equal.</source>
-        <translation>В paired-end моде число левых и правых ридов должно совпадать.</translation>
+        <translation type="vanished">В paired-end моде число левых и правых ридов должно совпадать.</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="252"/>
@@ -5055,8 +5094,7 @@ Please, check external tools in the settings.</source>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="267"/>
         <source>Unable to create output folder for result assembly.
 Directory Path: %1</source>
-        <translation>Невозможно создать выходную папку.
-Путь до папки: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="332"/>
@@ -5348,7 +5386,7 @@ Directory Path: %1</source>
         <translation>DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="697"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="703"/>
         <source>No new rows were inserted: selection contains no valid sequences.</source>
         <translation>Новые ряды не добавлены: выделение не содержит корректных последовательностей.</translation>
     </message>
@@ -5358,34 +5396,34 @@ Directory Path: %1</source>
         <translation>MultipleAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="378"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="380"/>
         <source>Custom schemes</source>
         <translation>Пользовательские схемы</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="389"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="391"/>
         <source>Create new color scheme</source>
         <translation>Создать новую цветовую схему</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="397"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="399"/>
         <source>Highlighting</source>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="420"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="422"/>
         <source>The alignment has been modified, so that its alphabet has been switched from &quot;%1&quot; to &quot;%2&quot;. Use &quot;Undo&quot;, if you&apos;d like to restore the original alignment.</source>
         <translation>Выравнивание было изменено. Алфавит переключен с &quot;%1&quot; на &quot;%2&quot;. Используйте опцию &quot;Назад&quot; если хотите вернуться к исходному выравниванию.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="468"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="532"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="796"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="470"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="534"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="802"/>
         <source>NULL collapsible model!</source>
         <translation>NULL collapsible model!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="528"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="530"/>
         <source>NULL msa object!</source>
         <translation>NULL msa object!</translation>
     </message>
@@ -5410,33 +5448,33 @@ Directory Path: %1</source>
         <translation type="vanished">Сохранить последовательности из выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="715"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="718"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="721"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="724"/>
         <source>Open file with sequences</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="724"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="730"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>A problem occurred during adding sequences. The multiple alignment is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="810"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="816"/>
         <source>NULL Msa Object!</source>
         <translation>NULL Msa Object!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="815"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="821"/>
         <source>NULL document!</source>
         <translation>NULL document!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="951"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="957"/>
         <source>Incorrect pointer to MSACollapsibleItemModel</source>
         <translation>Incorrect pointer to MSACollapsibleItemModel</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="510"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="512"/>
         <source>Go To</source>
         <translation>Выбор позиции</translation>
     </message>
@@ -5460,7 +5498,7 @@ Directory Path: %1</source>
         <translation>Обновить схлопнутые группы</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="370"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="372"/>
         <source>Colors</source>
         <translation>Раскраска</translation>
     </message>
@@ -7102,7 +7140,7 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::PrepareSequenceObjectsTask</name>
     <message>
-        <location filename="../src/ov_msa/ExportSequencesTask.cpp" line="46"/>
+        <location filename="../src/ov_msa/ExportSequencesTask.cpp" line="47"/>
         <source>Prepare sequences</source>
         <translation>Подготовка последовательностей</translation>
     </message>
@@ -7118,19 +7156,16 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::Registry</name>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="121"/>
         <source>All alphabets</source>
-        <translation>Все алфавиты</translation>
+        <translation type="vanished">Все алфавиты</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="122"/>
         <source>Amino acid alphabet</source>
-        <translation>Аминокислотный алфавит</translation>
+        <translation type="vanished">Аминокислотный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="123"/>
         <source>Nucleotide alphabet</source>
-        <translation>Нуклеотидный алфавит</translation>
+        <translation type="vanished">Нуклеотидный алфавит</translation>
     </message>
 </context>
 <context>
@@ -7231,12 +7266,12 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::SaveSelectedSequenceFromMSADialogController</name>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="59"/>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="57"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="60"/>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="58"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -7249,12 +7284,11 @@ Simple overview is unavailable.</source>
         <translation type="vanished">Другое</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="86"/>
         <source>File &quot;%1&quot; is already exists, choose custom filename or select another directory for save!</source>
-        <translation>File &quot;%1&quot; is already exists, choose custom filename or select another directory for save!</translation>
+        <translation type="vanished">File &quot;%1&quot; is already exists, choose custom filename or select another directory for save!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="95"/>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="83"/>
         <source>File &quot;%1&quot; is already exists, choose another filename or select another directory for save!</source>
         <translation>File &quot;%1&quot; is already exists, choose another filename or select another directory for save!</translation>
     </message>
