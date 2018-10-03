@@ -201,6 +201,20 @@ QList<Annotation *> AnnotationTableObject::getAnnotationsByRegion(const U2Region
     return result;
 }
 
+QList<Annotation *> AnnotationTableObject::getAnnotationsByType(const U2FeatureType featureType) const {
+    QList<Annotation *> result;
+
+    ensureDataLoaded();
+
+    foreach(Annotation *a, getAnnotations()) {
+        if (a->getType() == featureType) {
+            result.append(a);
+        }
+    }
+
+    return result;
+}
+
 bool AnnotationTableObject::checkConstraints(const GObjectConstraints *c) const {
     const AnnotationTableObjectConstraints *ac = qobject_cast<const AnnotationTableObjectConstraints *>(c);
     SAFE_POINT(NULL != ac, "Invalid feature constraints", false);
