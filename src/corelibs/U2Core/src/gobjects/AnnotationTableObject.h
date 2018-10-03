@@ -82,6 +82,10 @@ public:
      */
     QList<Annotation *>     getAnnotationsByRegion(const U2Region &region, bool contains = false) const;
     /**
+    * Return the list of annotations having @featureType
+    */
+    QList<Annotation *>     getAnnotationsByType(const U2FeatureType featureType) const;
+    /**
      * Reimplemented from GObject
      */
     bool                    checkConstraints(const GObjectConstraints *c) const;

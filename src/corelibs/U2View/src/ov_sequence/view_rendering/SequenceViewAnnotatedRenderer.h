@@ -111,6 +111,8 @@ protected:
 
     void addArrowPath(QPainterPath& path, const QRect& rect, bool leftArrow) const;
 
+    qint64 correctCutPos(const qint64 pos) const;
+
     AnnotationViewMetrics annMetrics;
 
     static const int MIN_ANNOTATION_WIDTH;
