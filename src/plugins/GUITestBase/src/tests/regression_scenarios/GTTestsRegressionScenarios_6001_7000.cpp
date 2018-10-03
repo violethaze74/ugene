@@ -1070,6 +1070,32 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
     CHECK_SET_ERR(!isNotFound, "The External Tools page is not found");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6236) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Compose schema read sequence -> Remote blase
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Remote BLAST", true);
+
+    GTUtilsWorkflowDesigner::connect(os,    GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"),
+                                            GTUtilsWorkflowDesigner::getWorker(os, "Remote BLAST"));
+
+    //3. Set the input sequence file: "data/samples/FASTA/human_T1.fa".
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
+    GTMouseDriver::click();
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
+
+    GTLogTracer l;
+    //4. run workflow
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. Check error about sequence lenght
+    CHECK_SET_ERR(l.checkMessage(QString("The query sequence is too long for NCBI BLAST API. Approximate maximum length is 8000 characters.")), 
+                  "No expected message in the log");
+}
 
 } // namespace GUITest_regression_scenarios
 
