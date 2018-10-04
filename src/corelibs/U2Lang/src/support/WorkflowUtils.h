@@ -186,7 +186,7 @@ public:
 
     virtual ActorDocument * createDescription(Actor*) = 0;
 
-    QString getURL(const QString& id, bool * empty = NULL, const QString &onEmpty = "");
+    QString getURL(const QString& id, bool * empty = NULL, const QString &onEmpty = "", const QString &defaultValue = "");
     QString getScreenedURL(IntegralBusPort* input, const QString& id, const QString& slot, const QString &onEmpty = "");
     QString getRequiredParam(const QString& id);
     QVariant getParameter(const QString& id);

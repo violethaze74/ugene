@@ -40,6 +40,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/DialogUtils.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/ActorValidator.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -73,8 +75,10 @@ static const QString OUTPUT_SLOT = BaseSlots::URL_SLOT().getId();
 static const QString NUMBER_OF_TOOLS("number-tools");
 static const QString OUT_FILE("out-file");
 
+static const QString DEFAULT_OUT_FILE_NAME("ensemble.csv");
+
 QString EnsembleClassificationPrompter::composeRichDoc() {
-    const QString outFile = getHyperlink(OUT_FILE, getURL(OUT_FILE));
+    const QString outFile = getHyperlink(OUT_FILE, getURL(OUT_FILE, (bool*)0, "", DEFAULT_OUT_FILE_NAME));
     return tr("Ensemble classification data from other elements into %1").arg(outFile);
 }
 
@@ -141,8 +145,7 @@ void EnsembleClassificationWorkerFactory::init() {
                                            ));
 
         Attribute *numberOfTools = new Attribute(numberOfToolsDescriptor, BaseTypes::NUM_TYPE(), Attribute::None, 2);
-        Attribute *outFileAttribute = new Attribute(outFileDesc, BaseTypes::STRING_TYPE(), true, "ensemble.csv");
-
+        Attribute *outFileAttribute = new Attribute(outFileDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
         a << numberOfTools;
         a << outFileAttribute;
 
@@ -156,7 +159,12 @@ void EnsembleClassificationWorkerFactory::init() {
         numberOfToolsMap["3"] = 3;
         delegates[NUMBER_OF_TOOLS] = new ComboBoxDelegate(numberOfToolsMap);
 
-        delegates[OUT_FILE] = new URLDelegate(".csv", "classification/ensemble");
+        const URLDelegate::Options options = URLDelegate::SelectFileToSave;
+        DelegateTags tags;
+        tags.set(DelegateTags::PLACEHOLDER_TEXT, EnsembleClassificationWorker::tr("Auto"));
+        tags.set(DelegateTags::FILTER, DialogUtils::prepareFileFilter("CSV", QStringList("csv"), false, QStringList()));
+
+        delegates[OUT_FILE] = new URLDelegate(tags, "classification/ensemble", options);
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
@@ -236,6 +244,9 @@ void EnsembleClassificationWorker::init() {
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
 
     outputFile = getValue<QString>(OUT_FILE);
+    if (outputFile.isEmpty()) {
+        outputFile = DEFAULT_OUT_FILE_NAME;
+    }
     tripleInput = getValue<int>(NUMBER_OF_TOOLS) == 3;
 }
 
@@ -427,10 +438,9 @@ void EnsembleClassificationTask::run() {
 
     if (!QFileInfo(outputFile).isAbsolute()) {
         QString tmpDir = FileAndDirectoryUtils::createWorkingDir(workingDir, FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", workingDir);
-        tmpDir = GUrlUtils::createDirectory(tmpDir, "_", stateInfo);
-        CHECK_OP(stateInfo, );
         outputFile = tmpDir + '/' + outputFile;
     }
+    outputFile = GUrlUtils::rollFileName(outputFile, "_");
 
     QFile csvFile(outputFile);
     if (csvFile.open(QIODevice::Append)) {
