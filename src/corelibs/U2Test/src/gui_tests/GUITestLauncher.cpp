@@ -52,6 +52,59 @@
 
 namespace U2 {
 
+static QList<int> getChildrenProcesses(qint64 processId, bool fullTree=true) {
+    QList<int> children;
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+    char *buff = NULL;
+    size_t len = 255;
+    char command[256] = {0};
+
+    sprintf(command,"ps -ef|awk '$3==%u {print $2}'", (unsigned)processId);
+    FILE *fp = (FILE*) popen(command, "r");
+    while (getline(&buff, &len, fp) >= 0) {
+        int child_process_id = QString(buff).toInt();
+        if (child_process_id != 0) {
+            children << child_process_id;
+        }
+    }
+    free(buff);
+    fclose(fp);
+
+    if (fullTree && children.length() > 0) {
+        foreach (int child, children) {
+            QList<int> children2 = getChildrenProcesses(child, fullTree);
+            foreach (int child2, children2) {
+                children << child2;
+            }
+        }
+    }
+#elif defined(Q_OS_WIN)
+#endif
+
+    return children;
+}
+
+static int killChildrenProcesses(qint64 processId, bool fullTree=true) {
+    int result = 0;
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+    QList<int> children = getChildrenProcesses(processId, fullTree);
+
+    while (!children.isEmpty()) {
+        int child = children.takeLast();
+#ifdef DEBUG
+        printf("******** kill process %d ********\n", child);
+#endif
+
+        result += QProcess::execute("kill " + QString::number(child));
+    }
+#elif defined(Q_OS_WIN)
+#endif
+
+    return result;
+}
+
 GUITestLauncher::GUITestLauncher(int _suiteNumber, bool _noIgnored)
     : Task("gui_test_launcher", TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled),
       suiteNumber(_suiteNumber), noIgnored(_noIgnored), pathToSuite("") {
@@ -232,11 +285,14 @@ QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
 QString GUITestLauncher::performTest(const QString& testName) {
 
     QString path = QCoreApplication::applicationFilePath();
+    QProcessEnvironment environment = getProcessEnvironment(testName);
+    QStringList arguments = getTestProcessArguments(testName);
 
     // ~QProcess is killing the process, will not return until the process is terminated.
     QProcess process;
-    process.setProcessEnvironment(getProcessEnvironment(testName));
-    process.start(path, getTestProcessArguments(testName));
+    process.setProcessEnvironment(environment);
+    process.start(path, arguments);
+    qint64 processId = process.processId();
 
     QProcess screenRecorder;
     if(qgetenv("UGENE_SKIP_TEST_RECORDING").toInt() != 1){
@@ -250,6 +306,10 @@ QString GUITestLauncher::performTest(const QString& testName) {
     bool finished;
     finished = process.waitForFinished(TIMEOUT);
     QProcess::ExitStatus exitStatus = process.exitStatus();
+
+    if (exitStatus != QProcess::NormalExit) {
+        killChildrenProcesses(processId);
+    }
 
 #ifdef Q_OS_WIN
     QProcess::execute("closeErrorReport.exe"); //this exe file, compiled Autoit script
