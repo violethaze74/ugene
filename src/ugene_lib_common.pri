@@ -41,6 +41,6 @@ win32 {
 }
 
 macx {
-    QMAKE_RPATHDIR += @executable_path
+    QMAKE_RPATHDIR += @executable_path/
     QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
 }

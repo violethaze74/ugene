@@ -37,5 +37,5 @@ unix {
 }
 
 macx {
-    QMAKE_RPATHDIR += @executable_path/$${UGENE_RELATIVE_DESTDIR}
+    QMAKE_RPATHDIR += @executable_path/$${UGENE_RELATIVE_DESTDIR}/
 }
