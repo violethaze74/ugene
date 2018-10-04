@@ -978,7 +978,7 @@ GUI_TEST_CLASS_DEFINITION(test_6225) {
     CHECK_SET_ERR(size == 2, QString("Unexpected documents number; expected: 2, current: %1").arg(size));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6232) {
+GUI_TEST_CLASS_DEFINITION(test_6232_1) {
     //1. Open "STEP1_pFUS2_a2a_5.gb" sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -996,6 +996,32 @@ GUI_TEST_CLASS_DEFINITION(test_6232) {
     //Expected state : the corresponding "Fragment" annotations have been created
     QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
     CHECK_SET_ERR(groupNames.contains("fragments  (0, 2)"), "The group \"fragments  (0, 2)\" is unexpectedly absent");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6232_2) {
+    //1. Open "STEP1_pFUS2_a2a_5_2.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5_2.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: "left_end_seq" qualifier of the first fragment and "right_end_seq" of the second fragment should have "TGAC" value
+    /*QTreeWidgetItem* fragment1 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 1");
+    CHECK_SET_ERR(fragment1 != NULL, "Fragment 1 is not found");
+*/
+    QString firstValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_seq", "Fragment 1");
+    CHECK_SET_ERR(firstValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(firstValue));
+
+    QString secondValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_seq", "Fragment 2");
+    CHECK_SET_ERR(secondValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(secondValue));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6233) {
