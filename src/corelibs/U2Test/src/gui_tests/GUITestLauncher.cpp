@@ -38,6 +38,8 @@
 #include "GUITestService.h"
 #include "GUITestTeamcityLogger.h"
 
+#include <tlhelp32.h>
+
 #define TIMEOUT 480000
 
 #ifdef Q_OS_MAC
@@ -70,17 +72,66 @@ static QList<int> getChildrenProcesses(qint64 processId, bool fullTree=true) {
     }
     free(buff);
     fclose(fp);
+#elif defined(Q_OS_WIN)
+    HANDLE hProcessSnap;
+    HANDLE hProcess;
+    PROCESSENTRY32 pe32;
+    DWORD dwPriorityClass;
+
+    // Take a snapshot of all processes in the system.
+    hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    CHECK(hProcessSnap != INVALID_HANDLE_VALUE, children);
+
+    // Set the size of the structure before using it.
+    pe32.dwSize = sizeof(PROCESSENTRY32);
+
+    // Retrieve information about the first process,
+    // and exit if unsuccessful
+    CHECK_EXT(Process32First(hProcessSnap, &pe32), CloseHandle(hProcessSnap), children);
+
+    // Now walk the snapshot of processes, and
+    // display information about each process in turn
+    do {
+        if (pe32.th32ParentProcessID == processId) {
+            printf("\n\n=====================================================");
+            printf("\nPROCESS NAME:  %s", pe32.szExeFile);
+            printf("\n-------------------------------------------------------");
+
+            // Retrieve the priority class.
+            dwPriorityClass = 0;
+            hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
+            if (hProcess == NULL) {
+                printf("OpenProcess");
+            } else {
+                dwPriorityClass = GetPriorityClass(hProcess);
+                if (!dwPriorityClass) {
+                    printf("GetPriorityClass");
+                }
+                CloseHandle(hProcess);
+            }
+
+            printf("\n  Process ID        = 0x%08X", pe32.th32ProcessID);
+            printf("\n  Thread count      = %d", pe32.cntThreads);
+            printf("\n  Parent process ID = 0x%08X", pe32.th32ParentProcessID);
+            printf("\n  Priority base     = %d", pe32.pcPriClassBase);
+            if (dwPriorityClass) {
+                printf("\n  Priority class    = %d", dwPriorityClass);
+            }
+            children << pe32.th32ProcessID;
+        }
+    } while (Process32Next(hProcessSnap, &pe32));
+
+    CloseHandle(hProcessSnap);
+#endif
 
     if (fullTree && children.length() > 0) {
-        foreach (int child, children) {
+        foreach(int child, children) {
             QList<int> children2 = getChildrenProcesses(child, fullTree);
-            foreach (int child2, children2) {
+            foreach(int child2, children2) {
                 children << child2;
             }
         }
     }
-#elif defined(Q_OS_WIN)
-#endif
 
     return children;
 }
@@ -88,7 +139,6 @@ static QList<int> getChildrenProcesses(qint64 processId, bool fullTree=true) {
 static int killChildrenProcesses(qint64 processId, bool fullTree=true) {
     int result = 0;
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
     QList<int> children = getChildrenProcesses(processId, fullTree);
 
     while (!children.isEmpty()) {
@@ -97,10 +147,23 @@ static int killChildrenProcesses(qint64 processId, bool fullTree=true) {
         printf("******** kill process %d ********\n", child);
 #endif
 
-        result += QProcess::execute("kill " + QString::number(child));
-    }
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+        int exist = QProcess::execute("kill -0 " + QString::number(child));
+        if (exist == 0) {
+            result += QProcess::execute("kill -9 " + QString::number(child));
+        }
+        nanosleep(1 * 1000000000);
 #elif defined(Q_OS_WIN)
+        DWORD dwDesiredAccess = PROCESS_TERMINATE;
+        BOOL  bInheritHandle = FALSE;
+        HANDLE hProcess = OpenProcess(dwDesiredAccess, bInheritHandle, child);
+        if (hProcess != NULL) {
+            result += TerminateProcess(hProcess, 1);
+            CloseHandle(hProcess);
+        }
+        Sleep(1000);
 #endif
+    }
 
     return result;
 }
@@ -291,7 +354,7 @@ QString GUITestLauncher::performTest(const QString& testName) {
     // ~QProcess is killing the process, will not return until the process is terminated.
     QProcess process;
     process.setProcessEnvironment(environment);
-    process.start(path, arguments);
+    process.start(path + "ZZZ.cmd", arguments);
     qint64 processId = process.processId();
 
     QProcess screenRecorder;
@@ -307,7 +370,7 @@ QString GUITestLauncher::performTest(const QString& testName) {
     finished = process.waitForFinished(TIMEOUT);
     QProcess::ExitStatus exitStatus = process.exitStatus();
 
-    if (exitStatus != QProcess::NormalExit) {
+    if (!finished || exitStatus != QProcess::NormalExit) {
         killChildrenProcesses(processId);
     }
 
@@ -403,5 +466,4 @@ QString GUITestLauncher::getVideoPath(const QString &testName){
     QString result = QDir::currentPath() + "/videos/" + testName + ".avi";
     return result;
 }
-
 }
