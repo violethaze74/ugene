@@ -38,7 +38,11 @@
 #include "GUITestService.h"
 #include "GUITestTeamcityLogger.h"
 
+#ifdef Q_OS_WIN
 #include <tlhelp32.h>
+#else
+#include <unistd.h>
+#endif
 
 #define TIMEOUT 480000
 
@@ -152,7 +156,7 @@ static int killChildrenProcesses(qint64 processId, bool fullTree=true) {
         if (exist == 0) {
             result += QProcess::execute("kill -9 " + QString::number(child));
         }
-        nanosleep(1 * 1000000000);
+        usleep(1000000);
 #elif defined(Q_OS_WIN)
         DWORD dwDesiredAccess = PROCESS_TERMINATE;
         BOOL  bInheritHandle = FALSE;
@@ -354,7 +358,7 @@ QString GUITestLauncher::performTest(const QString& testName) {
     // ~QProcess is killing the process, will not return until the process is terminated.
     QProcess process;
     process.setProcessEnvironment(environment);
-    process.start(path + "ZZZ.cmd", arguments);
+    process.start(path, arguments);
     qint64 processId = process.processId();
 
     QProcess screenRecorder;
