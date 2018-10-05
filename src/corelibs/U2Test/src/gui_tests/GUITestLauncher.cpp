@@ -97,31 +97,11 @@ static QList<int> getChildrenProcesses(qint64 processId, bool fullTree=true) {
     // display information about each process in turn
     do {
         if (pe32.th32ParentProcessID == processId) {
-            printf("\n\n=====================================================");
-            printf("\nPROCESS NAME:  %s", pe32.szExeFile);
-            printf("\n-------------------------------------------------------");
-
-            // Retrieve the priority class.
-            dwPriorityClass = 0;
             hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
-            if (hProcess == NULL) {
-                printf("OpenProcess");
-            } else {
-                dwPriorityClass = GetPriorityClass(hProcess);
-                if (!dwPriorityClass) {
-                    printf("GetPriorityClass");
-                }
+            if (hProcess != NULL) {
                 CloseHandle(hProcess);
+                children << pe32.th32ProcessID;
             }
-
-            printf("\n  Process ID        = 0x%08X", pe32.th32ProcessID);
-            printf("\n  Thread count      = %d", pe32.cntThreads);
-            printf("\n  Parent process ID = 0x%08X", pe32.th32ParentProcessID);
-            printf("\n  Priority base     = %d", pe32.pcPriClassBase);
-            if (dwPriorityClass) {
-                printf("\n  Priority class    = %d", dwPriorityClass);
-            }
-            children << pe32.th32ProcessID;
         }
     } while (Process32Next(hProcessSnap, &pe32));
 
