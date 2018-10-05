@@ -131,7 +131,7 @@ public:
     QString value() const;
     QString key () const;
     bool hasKey(const char*, int slen) const;
-    bool hasKey(const char* s) const {return hasKey(s, strlen(s));}
+    bool hasKey(const char* s) const {return hasKey(s, (int)strlen(s));}
     bool hasContinuation() const { return len > valOffset && hasKey(" ");}
     bool hasValue() const {return len > valOffset;}
     bool readNextLine(bool emptyOK = false);
