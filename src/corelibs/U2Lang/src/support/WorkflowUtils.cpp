@@ -1327,7 +1327,7 @@ QVariant PrompterBaseImpl::getParameter(const QString& id) {
     }
 }
 
-QString PrompterBaseImpl::getURL(const QString& id, bool * empty, const QString &onEmpty) {
+QString PrompterBaseImpl::getURL(const QString& id, bool * empty, const QString &onEmpty, const QString &defaultValue) {
     QVariant urlVar = getParameter(id);
     QString url;
     if (urlVar.canConvert< QList<Dataset> >()) {
@@ -1343,7 +1343,11 @@ QString PrompterBaseImpl::getURL(const QString& id, bool * empty, const QString 
         if (!onEmpty.isEmpty()) {
             return onEmpty;
         }
-        url = "<font color='red'>"+tr("unset")+"</font>";
+        if (!defaultValue.isEmpty()) {
+            url = defaultValue;
+        } else {
+            url = "<font color='red'>" + tr("unset") + "</font>";
+        }
         if(empty != NULL) { *empty = true; }
     } else if (url.indexOf(";") != -1) {
         url = tr("the list of files");

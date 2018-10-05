@@ -153,6 +153,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     expectedTitle = "proj1 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
+    GTGlobals::sleep(4000);
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir+"_common_data/scenarios/sandbox", "proj2"));
@@ -169,6 +170,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     expectedTitle = "proj2 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
+    GTGlobals::sleep(4000);
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));

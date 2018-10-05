@@ -978,7 +978,7 @@ GUI_TEST_CLASS_DEFINITION(test_6225) {
     CHECK_SET_ERR(size == 2, QString("Unexpected documents number; expected: 2, current: %1").arg(size));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6232) {
+GUI_TEST_CLASS_DEFINITION(test_6232_1) {
     //1. Open "STEP1_pFUS2_a2a_5.gb" sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -996,6 +996,32 @@ GUI_TEST_CLASS_DEFINITION(test_6232) {
     //Expected state : the corresponding "Fragment" annotations have been created
     QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
     CHECK_SET_ERR(groupNames.contains("fragments  (0, 2)"), "The group \"fragments  (0, 2)\" is unexpectedly absent");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6232_2) {
+    //1. Open "STEP1_pFUS2_a2a_5_2.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5_2.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: "left_end_seq" qualifier of the first fragment and "right_end_seq" of the second fragment should have "TGAC" value
+    /*QTreeWidgetItem* fragment1 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 1");
+    CHECK_SET_ERR(fragment1 != NULL, "Fragment 1 is not found");
+*/
+    QString firstValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_seq", "Fragment 1");
+    CHECK_SET_ERR(firstValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(firstValue));
+
+    QString secondValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_seq", "Fragment 2");
+    CHECK_SET_ERR(secondValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(secondValue));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6233) {
@@ -1070,6 +1096,119 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
     CHECK_SET_ERR(!isNotFound, "The External Tools page is not found");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6235_1) {
+    //1. Open "enzymes/6235_1.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 410)
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "fragments  (0, 2)");
+    CHECK_SET_ERR(regions.size() == 2, QString("Unexpected number of fragments, expected: 2, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first() == U2Region(2, 2467), QString("Unexpected fragment region, expected: start = 2, length = 2467; current: start = %1, length = %2").arg(regions.first().startPos).arg(regions.first().length));
+    CHECK_SET_ERR(regions.last() == U2Region(2473, 410), QString("Unexpected fragment region, expected: start = 2473, length = 410; current: start = %1, length = %2").arg(regions.last().startPos).arg(regions.last().length));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6235_2) {
+    //1. Open "enzymes/6235_2.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_2.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "fragments  (0, 2)");
+    CHECK_SET_ERR(regions.size() == 2, QString("Unexpected number of fragments, expected: 2, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first() == U2Region(2, 2467), QString("Unexpected fragment region, expected: start = 2, length = 2467; current: start = %1, length = %2").arg(regions.first().startPos).arg(regions.first().length));
+    CHECK_SET_ERR(regions.last() == U2Region(2473, 412), QString("Unexpected fragment region, expected: start = 2473, length = 412; current: start = %1, length = %2").arg(regions.last().startPos).arg(regions.last().length));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6235_3) {
+    //1. Open "enzymes/6235_3.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_3.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "fragments  (0, 2)");
+    CHECK_SET_ERR(regions.size() == 2, QString("Unexpected number of fragments, expected: 2, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first() == U2Region(416, 2467), QString("Unexpected fragment region, expected: start = 416, length = 2467; current: start = %1, length = %2").arg(regions.first().startPos).arg(regions.first().length));
+    CHECK_SET_ERR(regions.last() == U2Region(2, 410), QString("Unexpected fragment region, expected: start = 2, length = 410; current: start = %1, length = %2").arg(regions.last().startPos).arg(regions.last().length));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6235_4) {
+    //1. Open "enzymes/6235_4.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_4.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "fragments  (0, 2)");
+    CHECK_SET_ERR(regions.size() == 2, QString("Unexpected number of fragments, expected: 2, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first() == U2Region(416, 2467), QString("Unexpected fragment region, expected: start = 416, length = 2467; current: start = %1, length = %2").arg(regions.first().startPos).arg(regions.first().length));
+    CHECK_SET_ERR(regions.last() == U2Region(0, 412), QString("Unexpected fragment region, expected: start = 0, length = 412; current: start = %1, length = %2").arg(regions.last().startPos).arg(regions.last().length));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6236) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    //2. Compose schema read sequence -> Remote blase
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Remote BLAST", true);
+
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"),
+        GTUtilsWorkflowDesigner::getWorker(os, "Remote BLAST"));
+
+    //3. Set the input sequence file: "data/samples/FASTA/human_T1.fa".
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
+    GTMouseDriver::click();
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
+
+    GTLogTracer l;
+    //4. run workflow
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. Check error about sequence lenght
+    CHECK_SET_ERR(l.checkMessage(QString("The query sequence is too long for NCBI BLAST API. Approximate maximum length is 8000 characters.")),
+        "No expected message in the log");
+}
 
 } // namespace GUITest_regression_scenarios
 
