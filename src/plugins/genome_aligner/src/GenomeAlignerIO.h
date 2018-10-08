@@ -53,6 +53,10 @@ public:
     virtual SearchQuery *read() = 0;
     virtual bool isEnd() = 0;
     virtual int getProgress() = 0;
+    //It's better to make this function pure virtual,
+    //so if you need it in an inherited class, where it isn't overloaded yet,
+    //you need to overload the needed func
+    virtual QString getMemberError() { assert(false); return QString(); }
 };
 
 class GenomeAlignerWriter {
@@ -98,6 +102,8 @@ public:
     inline SearchQuery *read();
     inline bool isEnd();
     int getProgress();
+    QString getMemberError();
+
 private:
     bool initOk;
     StreamSequenceReader reader;

@@ -165,7 +165,8 @@ qint64 HttpFileAdapter::readBlock(char* data, qint64 size)
         qint64 howmuch = qMin( size - write_offs, (qint64)firstChunkContains() );
         readFromChunk(data + write_offs, howmuch);
         if (formatMode == TextMode) {
-            cutByteOrderMarks(data, howmuch);
+            cutByteOrderMarks(data, errorMessage, howmuch);
+            CHECK(errorMessage.isEmpty(), -1);
         }
         write_offs += howmuch;
     }

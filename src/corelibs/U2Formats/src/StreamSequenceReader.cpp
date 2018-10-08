@@ -40,7 +40,7 @@ DNASequence* StreamSequenceReader::getNextSequenceObject() {
 }
 
 StreamSequenceReader::StreamSequenceReader()
-: currentReaderIndex(-1), currentSeq(NULL), errorOccured(false), lookupPerformed(false)
+: currentReaderIndex(-1), currentSeq(NULL), lookupPerformed(false)
 {
 
 }
@@ -58,6 +58,9 @@ bool StreamSequenceReader::hasNext() {
         while (currentReaderIndex < readers.count()) {
             ReaderContext ctx = readers.at(currentReaderIndex);
             DNASequence *newSeq = ctx.format->loadSequence(ctx.io, taskInfo);
+            if (taskInfo.hasError()) {
+                errorMessage = taskInfo.getError();
+            }
             currentSeq.reset(newSeq);
             if (NULL == newSeq) {
                 ++currentReaderIndex;

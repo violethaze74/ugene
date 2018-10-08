@@ -203,7 +203,12 @@ QList<Task*> GenomeAlignerTask::onSubTaskFinished( Task* subTask ) {
 
         if (seqReader->isEnd()) {
             if (!hasError()){
-                setError(tr("Can not init short reads loader."));
+                QString error = seqReader->getMemberError();
+                if (error.isEmpty()) {
+                    setError(tr("Can not init short reads loader."));
+                } else {
+                    setError(error);
+                }
                 if (NULL != pWriteTask) {
                     pWriteTask->setFinished();
                 }

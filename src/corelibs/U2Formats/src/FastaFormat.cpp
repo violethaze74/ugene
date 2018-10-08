@@ -153,6 +153,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
     bool lineOk = true;
     static QBitArray nonWhites = ~TextUtils::WHITES;
     io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, nonWhites, IOAdapter::Term_Exclude, &lineOk);
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
 
     U2SequenceImporter seqImporter(fs, true);
     const QString folder = fs.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
@@ -170,12 +171,14 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
         if(!headerReaded){
             do{
                 len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE);
+                CHECK_EXT_BREAK(!io->hasError(), os.setError(io->errorString()));
             }while(buff[0] == fastaCommentStartChar && len > 0);
         }
 
         if (len == 0 && io->isEof()) { //end if stream
             break;
         }
+        CHECK_EXT_BREAK(!io->hasError(), os.setError(io->errorString()));
         CHECK_EXT_BREAK(lineOk, os.setError(FastaFormat::tr("Line is too long")));
 
         QString headerLine = QString(QByteArray(buff+1, len-1)).trimmed();
@@ -206,13 +209,17 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
         }
         int sequenceLen = 0;
         while (!os.isCoR()) {
-            do{
+            do {
                 len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE);
-            }while(len <= 0 && !io->isEof());
+                CHECK_EXT_BREAK(!io->hasError(), os.setError(io->errorString()));
+            } while (len <= 0 && !io->isEof());
+            CHECK_EXT_BREAK(!io->hasError(), os.setError(io->errorString()));
 
             if (len <= 0 && io->isEof()) {
                 break;
             }
+            CHECK_EXT_BREAK(!io->hasError(), os.setError(io->errorString()));
+
             buff[len] = 0;
 
             if(buff[0] != fastaCommentStartChar && buff[0] != FastaFormat::FASTA_HEADER_START_SYMBOL){
@@ -402,9 +409,11 @@ DNASequence *FastaFormat::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
         //skip leading whites if present
         bool lineOk = true;
         io->readUntil(buff, READ_BUFF_SIZE, nonWhites, IOAdapter::Term_Exclude, &lineOk);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
 
         //read header
         len = io->readUntil(buff, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
         CHECK(len > 0, NULL); //end of stream
         CHECK_EXT(lineOk, os.setError(FastaFormat::tr("Line is too long")), NULL);
         QByteArray headerLine = QByteArray(buff + 1, len-1).trimmed();
@@ -420,9 +429,9 @@ DNASequence *FastaFormat::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
 
         do {
             len = io->readUntil(buff, READ_BUFF_SIZE, fastaHeaderStart, IOAdapter::Term_Exclude);
-            if (len <= 0) {
-                break;
-            }
+            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
+            CHECK_BREAK(len > 0);
+
             len = TextUtils::remove(buff, len, TextUtils::WHITES);
             buff[len] = 0;
 

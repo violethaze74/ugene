@@ -56,7 +56,6 @@ class U2FORMATS_EXPORT StreamSequenceReader : public QObject {
     QList<ReaderContext> readers;
     int currentReaderIndex;
     QScopedPointer<DNASequence> currentSeq;
-    bool errorOccured;
     bool lookupPerformed;
     QString errorMessage;
     TaskStateInfo taskInfo;
@@ -72,7 +71,7 @@ public:
     DocumentFormat* getFormat() const;
 
     bool hasNext();
-    bool hasError() { return errorOccured; }
+    bool hasError() { return !errorMessage.isEmpty(); }
     int getProgress();
     QString getErrorMessage();
     DNASequence* getNextSequenceObject();

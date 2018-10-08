@@ -79,6 +79,8 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
 
     //1 skip first line
     int len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
+
     if (!lineOk || !readBuffer.startsWith( CLUSTAL_HEADER )) {
         os.setError( ClustalWAlnFormat::tr("Illegal header line"));
     }
@@ -87,6 +89,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
     while (!os.isCoR() && (len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk)) > 0) {
         if( QByteArray::fromRawData( buff, len ).startsWith( CLUSTAL_HEADER ) ) {
             io->skip( -len );
+            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
             break;
         }
         int numNs = 0;

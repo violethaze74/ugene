@@ -385,6 +385,10 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus& si
         }
         si.setProgress(io->getProgress());
     }
+    if (io->hasError()) {
+        si.setError(io->errorString());
+    }
+
     if (!si.isCoR()) {
         if (!branchStack.isEmpty() || nodeStack.size()!=1) {
             delete rd;

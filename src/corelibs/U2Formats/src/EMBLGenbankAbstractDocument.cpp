@@ -160,9 +160,12 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
         // tolerate blank lines between records
         char ch;
         bool b;
-        while ((b = st.io->getChar(&ch)) && (ch == '\n' || ch == '\r')){}
+        while ((b = st.io->getChar(&ch)) && (ch == '\n' || ch == '\r')) {}
+        CHECK_EXT(!st.io->hasError(), os.setError(st.io->errorString()), );
+
         if (b) {
             st.io->skip(-1);
+            CHECK_EXT(!st.io->hasError(), os.setError(st.io->errorString()), );
         }
 
         AnnotationTableObject *annotationsObject = NULL;
@@ -321,9 +324,12 @@ DNASequence* EMBLGenbankAbstractDocument::loadTextSequence(IOAdapter* io, U2OpSt
     // tolerate blank lines between records
     char ch;
     bool b;
-    while ((b = st.io->getChar(&ch)) && (ch == '\n' || ch == '\r')){}
+    while ((b = st.io->getChar(&ch)) && (ch == '\n' || ch == '\r')) {}
+    CHECK_EXT(!st.io->hasError(), os.setError(st.io->errorString()), NULL);
+
     if (b) {
         st.io->skip(-1);
+        CHECK_EXT(!st.io->hasError(), os.setError(st.io->errorString()), NULL);
     }
 
     if (os.isCoR()) {
@@ -425,15 +431,16 @@ int EMBLGenbankAbstractDocument::readMultilineQualifier(IOAdapter* io, char* cbu
             char* skipBuff = skip.data();
             do {
                 int readLen = io->readUntil(skipBuff, MAX_LINE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
-                if (!lineOk) {
-                    continue;//todo: report error!
-                }
+                CHECK_EXT(!io->hasError(), os.setError(io->errorString()), 0);
+                CHECK_CONTINUE(lineOk);//todo: report error!
+
                 int lineLen = readLen;
                 for (; A_COL < lineLen && LINE_BREAKS[(uchar)skipBuff[lineLen-1]]; lineLen--){}; //remove line breaks
                 if (lineLen == 0 || lineLen < A_COL || skip[0]!=fPrefix[0] || skip[1]!=fPrefix[1]
                     || skip[K_COL]!=' ' || (skip[A_COL]=='/' && isNewQStart(skip, lineLen) && (numQuotes%2) == 0))
                 {
                     io->skip(-readLen);
+                    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), 0);
                     break;
                 }
                 else{
@@ -444,12 +451,15 @@ int EMBLGenbankAbstractDocument::readMultilineQualifier(IOAdapter* io, char* cbu
         }
         char* lineBuf = cbuff + len;
         int readLen = io->readUntil(lineBuf, maxSize-len, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), 0);
+
         int lineLen = readLen;
         for (; A_COL < lineLen && LINE_BREAKS[(uchar)lineBuf[lineLen-1]]; lineLen--){}; //remove line breaks
         if (!lineOk || lineLen == 0 || lineLen < A_COL || lineBuf[0]!=fPrefix[0]
             || lineBuf[1]!=fPrefix[1] || lineBuf[K_COL]!=' ' || (lineBuf[A_COL]=='/' && isNewQStart(lineBuf, lineLen) && (numQuotes%2) == 0))
         {
             io->skip(-readLen);
+            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), 0);
             break;
         }
         else{
@@ -462,7 +472,7 @@ int EMBLGenbankAbstractDocument::readMultilineQualifier(IOAdapter* io, char* cbu
         }
 
         memmove(cbuff + len, lineBuf + A_COL, lineLen - A_COL);
-        len+=lineLen-A_COL;
+        len += lineLen-A_COL;
         breakWords = breakWords || lineLen < maxAnnotationLineLen;
     } while (true);
 
@@ -593,7 +603,7 @@ SharedAnnotationData EMBLGenbankAbstractDocument::readAnnotation(IOAdapter* io, 
     QStringList messages;
     Genbank::LocationParser::ParsingResult parsingResult = Genbank::LocationParser::parseLocation(cbuff + 21, qlen - 21, a->location, messages, seqLen);
     if (SkipAnnotation == processParsingResult(a->location, parsingResult, messages, si)) {
-        skipInvalidAnnotation(len, io, cbuff, READ_BUFF_SIZE);
+        skipInvalidAnnotation(si, len, io, cbuff, READ_BUFF_SIZE);
         return SharedAnnotationData();
     }
 
@@ -607,14 +617,15 @@ SharedAnnotationData EMBLGenbankAbstractDocument::readAnnotation(IOAdapter* io, 
     //reading qualifiers
     bool lineOk = true;
     while ((len = io->readUntil(cbuff, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk) ) > 0)  {
+        CHECK_EXT(!io->hasError(), si.setError(io->errorString()), SharedAnnotationData());
+
         if (len == 0 || len < QN_COL+1 || cbuff[K_COL]!=' ' || cbuff[A_COL]!='/' || cbuff[0]!=fPrefix[0] || cbuff[1]!=fPrefix[1]) {
             io->skip(-len);
+            CHECK_EXT(!io->hasError(), si.setError(io->errorString()), SharedAnnotationData());
             break;
         }
-        if (!lineOk) {
-            si.setError(EMBLGenbankAbstractDocument::tr("Unexpected line format"));
-            break;
-        }
+        CHECK_EXT_BREAK(lineOk, si.setError(EMBLGenbankAbstractDocument::tr("Unexpected line format")));
+
         for (; QN_COL < len && LINE_BREAKS[(uchar)cbuff[len-1]]; len--){}; //remove line breaks
 
         int flen = len + readMultilineQualifier(io, cbuff, READ_BUFF_SIZE-len, len >= maxAnnotationLineLen, len, si);
@@ -661,7 +672,7 @@ SharedAnnotationData EMBLGenbankAbstractDocument::readAnnotation(IOAdapter* io, 
     return f;
 }
 
-bool EMBLGenbankAbstractDocument::readSequence(ParserState* st, U2SequenceImporter& seqImporter, int& sequenceLen,int& fullSequenceLen,U2OpStatus& os) {
+bool EMBLGenbankAbstractDocument::readSequence(ParserState* st, U2SequenceImporter& seqImporter, int& sequenceLen, int& fullSequenceLen, U2OpStatus& os) {
     // FIXME use ParserState instead
     QByteArray res;
     IOAdapter* io = st->io;
@@ -675,26 +686,15 @@ bool EMBLGenbankAbstractDocument::readSequence(ParserState* st, U2SequenceImport
     sequenceLen = 0;
     fullSequenceLen = 0;
     while ((len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE)) > 0) {
-        if (si.isCoR()) {
-            res.clear();
-            break;
-        }
-
-        if (len <= 0)  {
-            si.setError(tr("Error parsing sequence: unexpected empty line"));
-            break;
-        }
-
-        if (buff[0] == '/') { //end of the sequence
-            break;
-        }
+        CHECK_EXT_BREAK(!io->hasError(), os.setError(io->errorString()));
+        CHECK_EXT_BREAK(!si.isCoR(), res.clear());
+        CHECK_EXT_BREAK(len > 0, si.setError(tr("Error parsing sequence: unexpected empty line")));
+        CHECK_BREAK(buff[0] != '/');
 
         len = TextUtils::remove(buff, len, TextUtils::WHITES | TextUtils::NUMS);
         seqImporter.addBlock(buff, len, os);
+        CHECK_OP_BREAK(os);
 
-        if(os.isCoR()){
-            break;
-        }
         sequenceLen += len;
         fullSequenceLen += len;
 
@@ -758,10 +758,12 @@ bool EMBLGenbankAbstractDocument::breakQualifierOnSpaceOnly(const QString & /*qu
     return true;
 }
 
-void EMBLGenbankAbstractDocument::skipInvalidAnnotation(int len, IOAdapter* io, char* cbuff, int READ_BUFF_SIZE) {
+void EMBLGenbankAbstractDocument::skipInvalidAnnotation(U2OpStatus& si, int len, IOAdapter* io, char* cbuff, int READ_BUFF_SIZE) {
     bool lineOk = true;
     bool isQuotesOpened = false;
     while ((len = io->readUntil(cbuff, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk)) > 0) {
+        CHECK_EXT(!io->hasError(), si.setError(io->errorString()), );
+
         QByteArray line(cbuff, len);
         bool isOpenedOnThisLine = line.count('"') % 2 == 1;
         if (isQuotesOpened || isOpenedOnThisLine) {
@@ -774,11 +776,16 @@ void EMBLGenbankAbstractDocument::skipInvalidAnnotation(int len, IOAdapter* io, 
         }
         if (len == 0 || len < QN_COL + 1 || cbuff[K_COL] != ' ' || cbuff[A_COL] != '/' || cbuff[0] != fPrefix[0] || cbuff[1] != fPrefix[1]) {
             io->skip(-len);
+            CHECK_EXT(!io->hasError(), si.setError(io->errorString()), );
             break;
         }
     }
     return;
 }
+
+//-------------------------------------------------------------------
+//  ParserState
+//-------------------------------------------------------------------
 
 bool ParserState::hasKey( const char* key, int slen ) const {
     assert(slen <= valOffset);
@@ -802,6 +809,8 @@ bool ParserState::readNextLine(bool emptyOK) {
 
     bool ok = false;
     len = io->readLine(buff, LOCAL_READ_BUFFER_SIZE, &ok);
+    CHECK_EXT(!io->hasError(), si.setError(io->errorString()), false);
+
     si.setProgress(io->getProgress());
 
     if (!ok && len == LOCAL_READ_BUFFER_SIZE) {

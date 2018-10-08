@@ -183,18 +183,24 @@ QString TextUtils::variate(const QString& prefix, const QString& sep, const QSet
     return res;
 }
 
-QByteArray TextUtils::cutByteOrderMarks(const QByteArray& data) {
+QByteArray TextUtils::cutByteOrderMarks(const QByteArray& data, QString& errorMessage) {
     QTextStream textStream(data);
     textStream.setGenerateByteOrderMark(false);
     QByteArray resultData = textStream.readAll().toLocal8Bit();
+    if (resultData.size() > data.size()) {
+        errorMessage = QObject::tr("The problem appeared during the data reading. Please, make sure that all input data are correct");
+        resultData = QByteArray();
+    }
     return resultData;
 }
 
-qint64 TextUtils::cutByteOrderMarks(char* data, qint64 buffLen) {
+qint64 TextUtils::cutByteOrderMarks(char* data, QString& errorMessage, qint64 buffLen) {
     CHECK(buffLen != 0, 0);
 
     QByteArray byteArrayData = buffLen != -1 ? QByteArray(data, buffLen) : QByteArray(data);
-    QByteArray resByteArrayData = cutByteOrderMarks(byteArrayData);
+    QByteArray resByteArrayData = cutByteOrderMarks(byteArrayData, errorMessage);
+    CHECK(errorMessage.isEmpty(), -1);
+
     qint64 result = resByteArrayData.size();
     memcpy(data, resByteArrayData.data(), result);
 
