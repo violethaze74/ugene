@@ -28,6 +28,7 @@
 #include <assert.h>
 
 #include <QBitArray>
+#include <QCoreApplication>
 #include <QSet>
 #include <QStringList>
 #include <QTextStream>
@@ -36,6 +37,7 @@
 namespace U2 {
 
 class U2CORE_EXPORT TextUtils {
+    Q_DECLARE_TR_FUNCTIONS(TextUtils)
 public:
     static const QBitArray ALPHAS;
     static const QBitArray ALPHA_NUMS;
@@ -97,9 +99,9 @@ public:
 
     inline static void charBounds(const char* data, int dataSize, char& minChar, char& maxChar);
 
-    static QByteArray cutByteOrderMarks(const QByteArray& data);
+    static QByteArray cutByteOrderMarks(const QByteArray& data, QString& errorMessage);
 
-    static qint64 cutByteOrderMarks(char* data, qint64 buffLen = -1);
+    static qint64 cutByteOrderMarks(char* data, QString& errorMessage, qint64 buffLen = -1);
 
     //todo: move this method to another class
     inline static QByteArray selectIdx256(const QBitArray& map, bool sign);

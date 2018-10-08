@@ -116,14 +116,17 @@ Document* GTFFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, con
     return doc;
 }
 
-int readGTFLine(QString &buffer, IOAdapter *io, QScopedArrayPointer<char> &charbuff) {
+int readGTFLine(QString &buffer, IOAdapter *io, QScopedArrayPointer<char> &charbuff, U2OpStatus& os) {
     int len;
     buffer.clear();
     do {
         len = io->readLine(charbuff.data(), DocumentFormat::READ_BUFF_SIZE - 1);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), -1);
+
         charbuff.data()[len] = '\0';
         buffer.append(QString(charbuff.data()));
     } while (DocumentFormat::READ_BUFF_SIZE - 1 == len);
+
     return buffer.length();
 }
 
@@ -135,7 +138,8 @@ QMap<QString, QList<SharedAnnotationData> > GTFFormat::parseDocument(IOAdapter *
 
     bool fileIsValid = true;
     int lineNumber = 1;
-    while (readGTFLine(qstrbuf, io, buff) > 0) {
+    while (readGTFLine(qstrbuf, io, buff, os) > 0) {
+
         if (qstrbuf.startsWith("track")) { //skip comments
             lineNumber++;
             continue;
@@ -247,6 +251,7 @@ QMap<QString, QList<SharedAnnotationData> > GTFFormat::parseDocument(IOAdapter *
         // Move to the next line
         lineNumber++;
     }
+    CHECK_OP(os, result);
 
     if (!fileIsValid) {
         ioLog.error("GTF parsing error: one or more errors occurred while parsing the input file, see TRACE log for details!");

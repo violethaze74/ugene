@@ -21,6 +21,8 @@
 
 #include "StringAdapter.h"
 
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
 StringAdapterFactory::StringAdapterFactory(QObject* o) : IOAdapterFactory(o) {
@@ -72,7 +74,8 @@ qint64 StringAdapter::readBlock(char * data, qint64 maxSize) {
     qint64 size = qMin<qint64>((buffer.length() - pos), maxSize);
     memcpy(data, buffer.constData() + pos, size);
     if (formatMode == TextMode) {
-        cutByteOrderMarks(data, size);
+        cutByteOrderMarks(data, errorMessage, size);
+        CHECK(errorMessage.isEmpty(), -1);
     }
     pos += size;
     return size;
@@ -113,7 +116,7 @@ qint64 StringAdapter::bytesRead() const {
 }
 
 QString StringAdapter::errorString() const {
-    return "";
+    return errorMessage;
 }
 
 GUrl StringAdapter::getURL() const {

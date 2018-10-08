@@ -1014,6 +1014,8 @@ int BedFormatParser::readLine() {
     curLine.clear();
     do {
         len = io->readLine(buff.data(), BufferSize - 1);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), -1);
+
         buff.data()[len] = '\0';
         curLine.append(QString(buff.data()));
     } while (len == BufferSize - 1);

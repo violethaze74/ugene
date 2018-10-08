@@ -165,7 +165,8 @@ qint64 HttpFileAdapter::readBlock(char* data, qint64 size)
         qint64 howmuch = qMin( size - write_offs, (qint64)firstChunkContains() );
         readFromChunk(data + write_offs, howmuch);
         if (formatMode == TextMode) {
-            cutByteOrderMarks(data, howmuch);
+            cutByteOrderMarks(data, errorMessage, howmuch);
+            CHECK(errorMessage.isEmpty(), -1);
         }
         write_offs += howmuch;
     }
@@ -347,10 +348,13 @@ void HttpFileAdapter::progress( qint64 done_, qint64 total_ )
 }
 
 QString HttpFileAdapter::errorString() const{
+    QString result;
     if (reply){
-        return reply->errorString();
+        result = reply->errorString();
+    } else {
+        result = errorMessage;
     }
-    return "";
+    return result;
 }
 
 void HttpFileAdapter::onProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth){

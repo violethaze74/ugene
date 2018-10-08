@@ -92,7 +92,7 @@ protected:
 private:
     SharedAnnotationData readAnnotation(IOAdapter* io, char* cbuff, int contentLen, int bufSize, U2OpStatus& si, int offset, int seqLen = -1);
     void load(const U2DbiRef& dbiRef, IOAdapter* io, QList<GObject*>& objects, QVariantMap& fs, U2OpStatus& si, QString& writeLockReason);
-    void skipInvalidAnnotation(int len, IOAdapter* io, char* cbuff, int READ_BUFF_SIZE);
+    void skipInvalidAnnotation(U2OpStatus& si, int len, IOAdapter* io, char* cbuff, int READ_BUFF_SIZE);
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -63,6 +63,10 @@ SearchQuery *GenomeAlignerUrlReader::read() {
     return new SearchQuery(reader.getNextSequenceObject());
 }
 
+QString GenomeAlignerUrlReader::getMemberError() {
+    return reader.getErrorMessage();
+}
+
 /************************************************************************/
 /* GenomeAlignerUrlWriter                                               */
 /************************************************************************/

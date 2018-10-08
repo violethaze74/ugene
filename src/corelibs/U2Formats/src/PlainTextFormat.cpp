@@ -57,13 +57,11 @@ Document* PlainTextFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRe
         int sizeBefore = text.length();
         QString line = QString::fromLocal8Bit(block.data(), blockLen);
         text.append(line);
-        if (text.length() != sizeBefore + blockLen) {
-            os.setError(L10N::errorReadingFile(io->getURL()));
-            break;
-        }
+        CHECK_EXT_BREAK(text.length() == (sizeBefore + blockLen), os.setError(L10N::errorReadingFile(io->getURL())));
+
         os.setProgress(io->getProgress());
     }
-
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
     CHECK_OP(os, NULL);
 
     //todo: check file-readonly status?
