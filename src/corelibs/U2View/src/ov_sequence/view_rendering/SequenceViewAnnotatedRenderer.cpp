@@ -125,7 +125,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize& can
     QPen borderPen(Qt::SolidLine);
     borderPen.setWidth(selected ? 2 : 1);
 
-    const bool isRestrictionSite = a->getType() == U2FeatureType::RestrictionSite;
+    const bool isRestrictionSite = a->getType() == U2FeatureTypes::RestrictionSite;
     QVector<U2Region> location = aData->getRegions();
     bool simple = location.size() == 1;
     for (int ri = 0, ln = location.size(); ri < ln; ri++) {
@@ -302,7 +302,6 @@ void SequenceViewAnnotatedRenderer::drawCutSite(QPainter &p, const SharedAnnotat
 
     CutSiteDrawData toInsert;
     toInsert.color = color;
-    const qint64 sequenceLength = ctx->getSequenceLength();
     if (hasD) {
         toInsert.direct = true;
         toInsert.pos = correctCutPos(isDirectStrand ? r.startPos + cutD : r.startPos + cutC);
