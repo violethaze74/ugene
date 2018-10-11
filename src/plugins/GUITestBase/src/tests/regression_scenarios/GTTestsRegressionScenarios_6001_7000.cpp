@@ -87,6 +87,7 @@
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 
 namespace U2 {
 
@@ -933,6 +934,45 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/6167/6167.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", dataDir + "samples/FASTQ/eas.fastq");
+
+    class TrimmomaticCustomScenario : public CustomScenario {
+    void run(HI::GUITestOpStatus& os) {
+        QWidget *dialog = QApplication::activeModalWidget();
+
+        QPushButton* addButton = GTWidget::findExactWidget<QPushButton*>(os, "buttonAdd", dialog);
+        CHECK_SET_ERR(addButton != NULL, "addButton unexpectedly not found");
+
+        GTWidget::click(os, addButton);
+        GTGlobals::sleep(200);
+        for (int i = 0; i < 4; i++) {
+            GTKeyboardDriver::keyClick(Qt::Key_Down);
+            GTGlobals::sleep(200);
+        }
+
+        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        GTGlobals::sleep(500);
+        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        GTGlobals::sleep(200);
+        GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        GTGlobals::sleep(200);
+
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, new TrimmomaticCustomScenario()));
+    GTUtilsWorkflowDesigner::click(os, "Trimmomatic 1");
+    GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, new TrimmomaticCustomScenario()));
+    GTUtilsWorkflowDesigner::click(os, "Trimmomatic 2");
+    GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
