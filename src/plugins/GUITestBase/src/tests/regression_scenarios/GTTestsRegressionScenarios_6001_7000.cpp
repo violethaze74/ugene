@@ -88,6 +88,7 @@
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 
 namespace U2 {
 
@@ -1248,6 +1249,31 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     //5. Check error about sequence lenght
     CHECK_SET_ERR(l.checkMessage(QString("The query sequence is too long for NCBI BLAST API. Approximate maximum length is 8000 characters.")),
         "No expected message in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6243) {
+    //1. Select "File" -> "Access remove database...".
+    //2 Select "ENSEMBL" database. Use any sample ID as "Resource ID". Accept the dialog.
+    //Do it twice, for two different ids
+    QList<QString> ensemblyIds = QList<QString>() << "ENSG00000205571" << "ENSG00000146463";
+    foreach(const QString& id, ensemblyIds) {
+        QList<DownloadRemoteFileDialogFiller::Action> actions;
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << id);
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+        GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+        GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseMouse);
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        GTGlobals::sleep();
+    }
+
+    //Expected state: the sequences are downloaded. The files names contain the sequence ID.
+    QString first = QString("%1.fa").arg(ensemblyIds.first());
+    QString second = QString("%1.fa").arg(ensemblyIds.last());
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, first), QString("The sequence %1 is absent in the project tree view").arg(first));
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, second), QString("The sequence %1 is absent in the project tree view").arg(second));
 }
 
 } // namespace GUITest_regression_scenarios
