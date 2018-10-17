@@ -434,11 +434,11 @@ QString GUITestLauncher::getScreenRecorderString(QString testName){
     int height = rec.height();
     int width = rec.width();
     QString display = qgetenv("DISPLAY");
-    result = QString("ffmpeg -video_size %1x%2 -framerate 15 -f x11grab -i %3.0 %4").arg(width).arg(height).arg(display).arg(getVideoPath(testName));
+    result = QString("ffmpeg -video_size %1x%2 -framerate 5 -f x11grab -i %3.0 %4").arg(width).arg(height).arg(display).arg(getVideoPath(testName));
 #elif defined Q_OS_MAC
-    result = QString("ffmpeg -f avfoundation -r 15 -i \"1:none\" \"%1\"").arg(getVideoPath(testName));
+    result = QString("ffmpeg -f avfoundation -r 5 -i \"1:none\" \"%1\"").arg(getVideoPath(testName));
 #elif defined Q_OS_WIN
-    result = QString("ffmpeg -f dshow -i video=\"UScreenCapture\" -r 15 %1").arg(getVideoPath(testName.replace(':', '_')));
+    result = QString("ffmpeg -f dshow -i video=\"UScreenCapture\" -r 5 %1").arg(getVideoPath(testName.replace(':', '_')));
 #endif
     uiLog.trace("going to record video: " + result);
     return result;
