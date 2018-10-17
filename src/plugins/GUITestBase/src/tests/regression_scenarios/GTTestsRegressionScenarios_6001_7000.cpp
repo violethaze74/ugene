@@ -1139,7 +1139,7 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
                     QPoint mousePos(GTMouseDriver::getMousePosition());
 #ifdef Q_OS_WIN
                     globalPos = QPoint(mousePos.x() + 11, mousePos.y() + 1);
-#elif
+#else
                     globalPos = QPoint(mousePos.x() + 11, mousePos.y() + 1);
 #endif
                     GTMouseDriver::moveTo(globalPos);
