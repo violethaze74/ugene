@@ -21,6 +21,7 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QPushButton>
 #include <QRadioButton>
 #include <QSpinBox>
 #include <QTableWidget>
@@ -995,6 +996,58 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     QDir insideSandboxDir(insideSandbox);
     QStringList resultDirs = insideSandboxDir.entryList();
     CHECK_SET_ERR(resultDirs.size() == 5, QString("Unexpected number of result folders, expected: 5, current: %1").arg(resultDirs.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6212) {
+    //1. Open the WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Read File URL data" and "Improve Reads with Trimmomatic" elements and connect them.
+    const QString readFileName = "Read File URL(s)";
+    const QString trimmomaticName = "Improve Reads with Trimmomatic";
+    WorkflowProcessItem* readFileNameElement = GTUtilsWorkflowDesigner::addElement(os, readFileName);
+    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+    GTUtilsWorkflowDesigner::addInputFile(os, readFileName, dataDir + "samples/FASTQ/eas.fastq");
+    GTUtilsWorkflowDesigner::connect(os, readFileNameElement, trimmomaticElement);
+    GTUtilsWorkflowDesigner::click(os, trimmomaticName);
+    QTableWidget* table1 = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+    CHECK_SET_ERR(table1 != NULL, "QTableWidget isn't found");
+
+    GTUtilsWorkflowDesigner::setTableValue(os, "Input FASTQ URL 1", "Dataset name (by Read File URL(s))", GTUtilsWorkflowDesigner::comboValue, table1);
+
+    //3. Click on the Trimmomatic element, then click on the "Configure steps" parameter in the Property Editor, click on the appeared browse button in the value field.
+    class TrimmomaticCustomScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+
+            QDialogButtonBox* buttonBox = GTWidget::findExactWidget<QDialogButtonBox*>(os, "buttonBox", dialog);
+            CHECK_SET_ERR(buttonBox != NULL, "QDialogButtonBox unexpectedly not found");
+
+            QPushButton* buttonOk =  buttonBox->button(QDialogButtonBox::Ok);
+            CHECK_SET_ERR(buttonOk != NULL, "buttonOk unexpectedly not found");
+            CHECK_SET_ERR(!buttonOk->isEnabled(), "buttonOk should be disabled");
+
+            //4. Close the dialog
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, new TrimmomaticCustomScenario()));
+    GTUtilsWorkflowDesigner::click(os, trimmomaticName);
+    GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    //5. Click "Validate workflow".
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+
+    //Expected state: Validation doesn't pass, there is an error about absent steps.
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 1, QString("Unexpected errors number, expected: 1, current: %1").arg(errors.size()));
+    CHECK_SET_ERR(errors.first() == "Improve Reads with Trimmomatic: Required parameter is not set: Trimming steps", "Unexpected error in the log. Is should be something about Trimming steps");
+
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6225) {
