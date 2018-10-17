@@ -57,7 +57,7 @@ win32 {
 
 macx {
     RC_FILE = images/ugenecl_mac.icns
-    QMAKE_RPATHDIR += @executable_path
+    QMAKE_RPATHDIR += @executable_path/
 }
 
 unix {
