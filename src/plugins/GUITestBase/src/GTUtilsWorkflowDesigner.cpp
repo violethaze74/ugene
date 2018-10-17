@@ -955,14 +955,14 @@ void GTUtilsWorkflowDesigner::setTableValue(HI::GUITestOpStatus &os,  QString pa
     QRect parentTableRect = scrollArea->rect();
     QPoint globalTopLeftParentTable = scrollArea->mapToGlobal(parentTableRect.topLeft());
     QPoint globalBottomRightParentTable = scrollArea->mapToGlobal(parentTableRect.bottomRight());
-    QRect globalParentRect(globalTopLeftParentTable, globalBottomRightParentTable);
+    QRect globalParentRect(globalTopLeftParentTable, globalBottomRightParentTable - QPoint (0, 1));
 
     QTableWidgetItem* item = table->item(row, 1);
     QRect rect = table->visualItemRect(item);
     QPoint globalP = table->viewport()->mapToGlobal(rect.center());
 
     while (!globalParentRect.contains(globalP)) {
-        GTScrollBar::lineDown(os, scrollBar, method);
+        GTScrollBar::lineDown(os, scrollBar, GTGlobals::UseKey);
         rect = table->visualItemRect(item);
         globalP = table->viewport()->mapToGlobal(rect.center());
     }
