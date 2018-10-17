@@ -1140,7 +1140,7 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
 #ifdef Q_OS_WIN
                     globalPos = QPoint(mousePos.x() + 11, mousePos.y() + 1);
 #else
-                    globalPos = QPoint(mousePos.x() + 11, mousePos.y() + 1);
+                    globalPos = QPoint(mousePos.x() + 10, mousePos.y());
 #endif
                     GTMouseDriver::moveTo(globalPos);
                     Qt::CursorShape shape = selectToolPackLabel->cursor().shape();
