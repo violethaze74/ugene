@@ -242,7 +242,7 @@ GUrl LoadRemoteDocumentTask::getSourceUrl(){
 QString LoadRemoteDocumentTask::getFileName(){
 
     if( sourceUrl.isHyperLink() ) {
-        return sourceUrl.fileName();
+        return dbName == RemoteDBRegistry::ENSEMBL ? QString("%1.fa").arg(accNumber) : sourceUrl.fileName();
     } else {
         if (format.isEmpty()) {
             format = getFileFormat(dbName);

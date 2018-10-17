@@ -51,7 +51,7 @@ win32 {
 
 macx {
     RC_FILE = images/plugins_checker_mac.icns
-    QMAKE_RPATHDIR += @executable_path
+    QMAKE_RPATHDIR += @executable_path/
 }
 
 unix {

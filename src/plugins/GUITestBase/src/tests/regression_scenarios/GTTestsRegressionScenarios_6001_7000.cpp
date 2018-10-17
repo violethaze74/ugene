@@ -78,6 +78,7 @@
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 
 namespace U2 {
 
@@ -749,6 +750,54 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
         QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
         CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection primer annotation regions, expected: 1, current: %1").arg(sel.size()));
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6225) {
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment_short.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //2. Open Consensus tab
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::Consensus);
+
+    //3. Choose FASTA as file format
+    GTUtilsOptionPanelMca::setFileFormat(os, GTUtilsOptionPanelMca::FASTA);
+
+    //4. Click Export
+    GTUtilsOptionPanelMca::pushExportButton(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const int size = GTUtilsProjectTreeView::getDocuments(os).size();
+    CHECK_SET_ERR(size == 2, QString("Unexpected documents number; expected: 2, current: %1").arg(size));
+}
+
+
+GUI_TEST_CLASS_DEFINITION(test_6243) {
+    //1. Select "File" -> "Access remove database...".
+    //2 Select "ENSEMBL" database. Use any sample ID as "Resource ID". Accept the dialog.
+    //Do it twice, for two different ids
+    QList<QString> ensemblyIds = QList<QString>() << "ENSG00000205571" << "ENSG00000146463";
+    foreach(const QString& id, ensemblyIds) {
+        QList<DownloadRemoteFileDialogFiller::Action> actions;
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << id);
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+        GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+        GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseMouse);
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        GTGlobals::sleep();
+    }
+
+    //Expected state: the sequences are downloaded. The files names contain the sequence ID.
+    QString first = QString("%1.fa").arg(ensemblyIds.first());
+    QString second = QString("%1.fa").arg(ensemblyIds.last());
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, first), QString("The sequence %1 is absent in the project tree view").arg(first));
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, second), QString("The sequence %1 is absent in the project tree view").arg(second));
 }
 
 } // namespace GUITest_regression_scenarios

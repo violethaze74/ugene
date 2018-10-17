@@ -66,7 +66,7 @@ win32 {
 macx {
     RC_FILE = images/ugeneui.icns
     QMAKE_INFO_PLIST = ../../installer/macosx/Info.plist
-    QMAKE_RPATHDIR += @executable_path
+    QMAKE_RPATHDIR += @executable_path/
 }
 
 unix {
