@@ -1130,10 +1130,13 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
 
             QPoint pos(selectToolPackLabel->pos().x(), selectToolPackLabel->pos().y());
             QPoint globalPos = selectToolPackLabel->mapToGlobal(pos);
+#ifdef Q_OS_LINUX
+            globalPos.setY(globalPos.y() - 10);
+#endif
             GTMouseDriver::moveTo(globalPos);
             const int xpos = globalPos.x();
             GTClipboard::clear(os);
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 20; j++) {
                     GTGlobals::sleep(100);
                     QPoint mousePos(GTMouseDriver::getMousePosition());
