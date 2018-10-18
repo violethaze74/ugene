@@ -1286,8 +1286,8 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //2. Compose schema read sequence -> Remote blase
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Remote BLAST", true);
+    GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    GTUtilsWorkflowDesigner::addElement(os, "Remote BLAST", true);
 
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"),
         GTUtilsWorkflowDesigner::getWorker(os, "Remote BLAST"));
