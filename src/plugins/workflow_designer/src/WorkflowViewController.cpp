@@ -2273,8 +2273,8 @@ void WorkflowView::sl_onSceneLoaded() {
     scene->setModified(false);
     rescale();
     sl_refreshActorDocs();
-    checkAutoRunWizard();
     hideDashboards();
+    checkAutoRunWizard();
     tabs->setCurrentIndex(ElementsTab);
 }
 

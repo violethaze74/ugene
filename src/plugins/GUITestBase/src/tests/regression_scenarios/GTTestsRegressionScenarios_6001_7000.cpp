@@ -81,6 +81,7 @@
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
@@ -89,7 +90,7 @@
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 
 namespace U2 {
 
@@ -1309,6 +1310,31 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     //5. Check error about sequence lenght
     CHECK_SET_ERR(l.checkMessage(QString("The query sequence is too long for NCBI BLAST API. Approximate maximum length is 8000 characters.")),
         "No expected message in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6240) {
+    //1. Open WD. This step allows us to prevent a bad case, when, at the first opening of WD, the dialog "Choose output directory" appears and the filler below is catching it
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            CHECK_SET_ERR(wizard != NULL, "Wizard isn't found");
+
+            GTUtilsWizard::setParameter(os, "Input file(s)", dataDir + "samples/Assembly/chrM.sam");
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    //2. Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
+    //3. Choose "samples/Assembly/chrM.sam" as input and click "Run"
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads quality control...");
+    GTGlobals::sleep();
+
+    //Expected: The dashboard appears
+    QWebView* dashboard = GTUtilsDashboard::getDashboard(os);
+    CHECK_SET_ERR(dashboard != NULL, "Dashboard isn't found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6243) {
