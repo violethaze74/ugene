@@ -1296,18 +1296,20 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"),
         GTUtilsWorkflowDesigner::getWorker(os, "Remote BLAST"));
 
-    //3. Set the input sequence file: "data/samples/FASTA/human_T1.fa".
+    //3. Set the input sequence file: "data/samples/Genbank/NC_014267.1.gb".
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
     GTGlobals::sleep(300);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
 
     GTLogTracer l;
     //4. run workflow
-    GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::runWorkflow(os);  
+    GTGlobals::sleep(60000);
+    GTUtilsWorkflowDesigner::stopWorkflow(os);
 
-    //5. Check error about sequence lenght
+    //5. Check id of the blast job in log
+    QString messageStartsWith = "Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID";
     CHECK_SET_ERR(l.checkMessage(QString("The query sequence is too long for NCBI BLAST API. Approximate maximum length is 8000 characters.")),
         "No expected message in the log");
 }

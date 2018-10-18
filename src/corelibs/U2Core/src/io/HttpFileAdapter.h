@@ -65,7 +65,7 @@ public:
     virtual IOAdapterId getAdapterId() const { return BaseIOAdapters::GZIPPED_HTTP_FILE; }
 };
 
-class HttpFileAdapter: public IOAdapter {
+class U2CORE_EXPORT HttpFileAdapter : public IOAdapter {
     Q_OBJECT
 public:
     HttpFileAdapter(HttpFileAdapterFactory* f, QObject* o = NULL);
@@ -124,6 +124,7 @@ private:
     QMutex rwmut;
     QEventLoop loop;
     GUrl gurl;
+    QByteArray postData;
 private slots:
     void add_data();
     void done();

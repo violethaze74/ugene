@@ -61,8 +61,6 @@ QNetworkProxy HttpFileAdapterFactory::getProxyByUrl( const QUrl & url ) const {
     return nc->getProxyByUrl(url);
 }
 
-
-
 HttpFileAdapter::HttpFileAdapter(HttpFileAdapterFactory* factory, QObject* o)
 : IOAdapter(factory, o), is_cached(false), begin_ptr(-1), end_ptr(0),
   reply(NULL), badstate(false), is_downloaded(false), downloaded(0), total(0)
@@ -104,14 +102,14 @@ bool HttpFileAdapter::open( const QUrl& url, const QNetworkProxy & p)
     }
     netManager->setProxy(p);
     connect(netManager, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)), this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
-    if(url.toString().length()>MAX_GET_LENGTH) {
+    if (url.toString().length() > MAX_GET_LENGTH) {
         QStringList splittedStrings = url.toString().split(RemoteRequestConfig::HTTP_BODY_SEPARATOR);
         if(splittedStrings.count() > 1) {
             SAFE_POINT(2 == splittedStrings.count(), tr("Incorrect url string has been passed to HttpFileAdapter::open()"), false);
             QString headerString = splittedStrings.at(0);
-            QString data = splittedStrings.at(1);
+            postData = splittedStrings.at(1).toLatin1();
             QNetworkRequest netRequest(headerString);
-            reply=netManager->post(netRequest, data.toLatin1());
+            reply=netManager->post(netRequest, postData);
         }
         else {
             QNetworkRequest netRequest(url);
@@ -322,11 +320,15 @@ void HttpFileAdapter::done()
 {
     QString locationHeaderValue = reply->header(QNetworkRequest::LocationHeader).toString();
     if (!locationHeaderValue.isEmpty()) {
-        QUrl redirectedUrl(locationHeaderValue);
+        QUrl redirectUrl(locationHeaderValue);
         chunk_list.clear();
         close();
         coreLog.details(tr("Redirecting to %1").arg(locationHeaderValue));
-        open(redirectedUrl, netManager->proxy());
+        QString fullRedirectUrl(redirectUrl.toString());
+        if (!postData.isEmpty()) {
+            fullRedirectUrl = redirectUrl.toString() + RemoteRequestConfig::HTTP_BODY_SEPARATOR + postData;
+        }
+        open(fullRedirectUrl, netManager->proxy());
         return;
     }
     is_downloaded = true;

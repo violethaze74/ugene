@@ -42,6 +42,7 @@ public:
     void onMessage(const LogMessage& msg);
     static QList<LogMessage*> getMessages();
     static bool checkMessage(QString s);
+    static bool checkMessageStartsWith(QString s);
 
 private:
     bool wasError;
