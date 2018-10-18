@@ -5168,7 +5168,7 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
     GTUtilsWorkflowDesigner::setTableValue(os, "Source URL", "Source URL (by Read Sequence 1)", GTUtilsWorkflowDesigner::comboValue, w);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(5000);
 
     CHECK_SET_ERR(l.hasError(), "No errors in the log");
 }

@@ -968,7 +968,7 @@ void GTUtilsWorkflowDesigner::setTableValue(HI::GUITestOpStatus &os,  QString pa
     QPoint globalP = table->viewport()->mapToGlobal(rect.center());
 
     while (!globalParentRect.contains(globalP)) {
-        GTScrollBar::lineDown(os, scrollBar, GTGlobals::UseKey);
+        GTScrollBar::lineDown(os, scrollBar, method);
         rect = table->visualItemRect(item);
         globalP = table->viewport()->mapToGlobal(rect.center());
     }
