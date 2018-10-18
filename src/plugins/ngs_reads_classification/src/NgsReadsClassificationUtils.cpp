@@ -29,7 +29,7 @@ namespace U2 {
 
 QString NgsReadsClassificationUtils::getClassificationFileName(const QString &sourceFileUrl, const QString &toolName, const QString &extension, bool truncate) {
     QString baseName = GUrlUtils::getPairedFastqFilesBaseName(sourceFileUrl, truncate);
-    return baseName + QString("%1_classification.%2").arg(toolName).arg(extension);
+    return baseName + QString("_%1_classification.%2").arg(toolName).arg(extension);
 }
 
 int NgsReadsClassificationUtils::countClassified(const LocalWorkflow::TaxonomyClassificationResult& classification) {
