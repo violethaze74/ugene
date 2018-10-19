@@ -9,6 +9,8 @@ include( ../../ugene_plugin_common.pri )
 
 INCLUDEPATH += ../../corelibs/U2View/_tmp
 
+win32-msvc2015 : DEFINES+=LAME_MSC
+
 #adding SSE2 gcc compiler flag if building on SSE2 capable CPU
 
 use_sse2() {

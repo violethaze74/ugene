@@ -26,19 +26,22 @@
 
 namespace U2 {
 
-class WelcomePageController;
+class WelcomePageMdiController;
 class WelcomePageWidget;
 
 class WelcomePageMdi : public MWMDIWindow {
     Q_OBJECT
 public:
-    WelcomePageMdi(const QString &title, WelcomePageController *controller);
+    WelcomePageMdi(const QString &title, WelcomePageMdiController *controller);
 
     void updateRecent(const QStringList &recentProjects, const QStringList &recentFiles);
     bool isLoaded() const;
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
 private:
-    WelcomePageController *controller;
+    WelcomePageMdiController *controller;
     WelcomePageWidget *widget;
 };
 

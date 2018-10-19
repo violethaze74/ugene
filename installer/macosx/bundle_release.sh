@@ -148,6 +148,9 @@ for PLUGIN in $PLUGIN_LIST
 do
     restorePluginsQtInstallNames $PLUGIN
 done
+# a temporary fix for qt5.7
+# it should be fixed without absolute paths using
+install_name_tool -change /opt/local/lib/mysql55/mysql/libmysqlclient.18.dylib @rpath/libmysqlclient.18.dylib "$TARGET_EXE_DIR"/../PlugIns/sqldrivers/libqsqlmysql.dylib
 
 mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 

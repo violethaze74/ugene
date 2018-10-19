@@ -22,8 +22,11 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include <U2Gui/HelpButton.h>
 #include <U2Core/QObjectScopedPointer.h>
+
+#include <U2Designer/ScanDashboardsDirTask.h>
+
+#include <U2Gui/HelpButton.h>
 
 #include "DashboardsManagerDialog.h"
 

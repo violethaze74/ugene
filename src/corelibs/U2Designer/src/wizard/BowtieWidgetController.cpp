@@ -21,8 +21,6 @@
 
 #include <QPushButton>
 
-#include <U2Core/U2SafePoints.h>
-
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
 

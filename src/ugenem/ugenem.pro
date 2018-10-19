@@ -1,9 +1,7 @@
 include(../ugene_globals.pri)
 UGENE_RELATIVE_DESTDIR = ''
 
-QT += xml network webkit
-equals(QT_MAJOR_VERSION, 5): QT -= webkit
-equals(QT_MAJOR_VERSION, 5): QT += widgets webkitwidgets
+QT += xml network widgets
 TEMPLATE = app
 CONFIG += qt thread debug_and_release
 DEFINES+= QT_DLL QT_FATAL_ASSERT

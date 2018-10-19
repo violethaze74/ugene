@@ -8,6 +8,8 @@ DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
 DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 DEFINES+=UGENE_VER_PATCH=$${UGENE_VER_PATCH}
 
+CONFIG += c++11
+
 # NGS package
 _UGENE_NGS = $$(UGENE_NGS)
 contains(_UGENE_NGS, 1) : DEFINES += UGENE_NGS
@@ -16,9 +18,19 @@ contains(_UGENE_NGS, 1) : DEFINES += UGENE_NGS
 win32 : QMAKE_CXXFLAGS += /MP # use parallel build with nmake
 win32 : DEFINES+= _WINDOWS
 win32-msvc2013 : DEFINES += _SCL_SECURE_NO_WARNINGS
+win32-msvc2015 {
+	DEFINES += _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS 
+	DEFINES += _XKEYCHECK_H
+	QMAKE_CXXFLAGS-=-Zc:strictStrings
+	QMAKE_CXXFLAGS-=Zc:strictStrings
+	QMAKE_CFLAGS-=-Zc:strictStrings
+	QMAKE_CFLAGS-=Zc:strictStrings
+	QMAKE_CXXFLAGS-=-g
+	QMAKE_CFLAGS-=-g
+}
 
-win32 : QMAKE_CFLAGS_RELEASE = -O2 -Oy- -MD -Zi
-win32 : QMAKE_CXXFLAGS_RELEASE = -O2 -Oy- -MD -Zi
+win32 : QMAKE_CFLAGS_RELEASE += -O2 -Oy- -MD -Zi
+win32 : QMAKE_CXXFLAGS_RELEASE += -O2 -Oy- -MD -Zi
 win32 : QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /MAP /MAPINFO:EXPORTS /DEBUG
 win32 : LIBS += psapi.lib
 win32 : DEFINES += "PSAPI_VERSION=1"
@@ -152,9 +164,6 @@ defineTest( exclude_list_enabled ) {
     contains( UGENE_EXCLUDE_LIST_ENABLED, 1 ) : return (true)
     return (false)
 }
-if(exclude_list_enabled()|!exists( ./libs_3rdparty/QSpec/QSpec.pro )) {
-    DEFINES += HI_EXCLUDED
-}
 
 #Variable enabling exclude list for ugene non-free modules
 defineTest( without_non_free ) {
@@ -185,4 +194,77 @@ defineTest(minQtVersion) {
         return(true)
     }
     return(false)
+}
+
+# Define which web engine should be used
+_UGENE_WEB_ENGINE__AUTO = "auto"
+_UGENE_WEB_ENGINE__WEBKIT = "webkit"
+_UGENE_WEB_ENGINE__QT = "qt"
+
+_UGENE_WEB_ENGINE = $$(UGENE_WEB_ENGINE)
+isEmpty(_UGENE_WEB_ENGINE): _UGENE_WEB_ENGINE = $$_UGENE_WEB_ENGINE__AUTO
+
+defineReplace(tryUseWebkit) {
+    !qtHaveModule(webkit) | !qtHaveModule(webkitwidgets) {
+        error("WebKit is not available. It is not included to Qt framework since Qt5.6. Qt WebEngine should be used instead")
+        return()
+    } else {
+#        message("Qt version is $${QT_VERSION}, WebKit is selected")
+        DEFINES += UGENE_WEB_KIT
+        DEFINES -= UGENE_QT_WEB_ENGINE
+        return($$DEFINES)
+    }
+}
+
+defineReplace(tryUseQtWebengine) {
+    !minQtVersion(5, 4, 0) {
+        message("Cannot build Unipro UGENE with Qt version $${QT_VERSION} and Qt WebEngine")
+        error("Use at least Qt 5.4.0 or build with WebKit")
+        return()
+    } else: !qtHaveModule(webengine) | !qtHaveModule(webenginewidgets) {
+        error("Qt WebEngine is not available. Ensure that it is installed.")
+        return()
+    } else {
+#        message("Qt version is $${QT_VERSION}, Qt WebEngine is selected")
+        DEFINES -= UGENE_WEB_KIT
+        DEFINES += UGENE_QT_WEB_ENGINE
+        return($$DEFINES)
+    }
+}
+
+equals(_UGENE_WEB_ENGINE, $$_UGENE_WEB_ENGINE__WEBKIT) {
+    DEFINES = $$tryUseWebkit()
+} else: equals(_UGENE_WEB_ENGINE, $$_UGENE_WEB_ENGINE__QT) {
+    DEFINES = $$tryUseQtWebengine()
+} else {
+    !equals(_UGENE_WEB_ENGINE, $$_UGENE_WEB_ENGINE__AUTO) {
+        warning("An unknown UGENE_WEB_ENGINE value: $${_UGENE_WEB_ENGINE}. The web engine will be selected automatically.")
+    }
+#    message("Selecting web engine automatically...")
+
+    macx {
+        # A Qt WebEngine is preferred for macOS because there are high definition displays on macs
+        minQtVersion(5, 4, 0) {
+            DEFINES = $$tryUseQtWebengine()
+        } else {
+            DEFINES = $$tryUseWebkit()
+        }
+    } else {
+        # We don't try to search WebKit on the Qt5.6 and more modern versions.
+        minQtVersion(5, 6, 0) {
+            DEFINES = $$tryUseQtWebengine()
+        } else {
+            DEFINES = $$tryUseWebkit()
+        }
+    }
+}
+
+defineTest(useWebKit) {
+    contains(DEFINES, UGENE_WEB_KIT): return(true)
+    contains(DEFINES, UGENE_QT_WEB_ENGINE): return(false)
+    return(false)
+}
+
+if (exclude_list_enabled() | !exists( ./libs_3rdparty/QSpec/QSpec.pro ) | !useWebKit()) {
+    DEFINES += HI_EXCLUDED
 }

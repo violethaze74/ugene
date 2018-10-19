@@ -23,14 +23,13 @@
 #include <QDesktopWidget>
 #include <QFile>
 #include <QScrollBar>
-#include <QWebFrame>
 
 #include <U2Core/Version.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "StatisticalReportController.h"
+#include <U2Gui/SimpleWebViewBasedWidgetController.h>
 
-#include "utils/MultilingualHtmlView.h"
+#include "StatisticalReportController.h"
 
 namespace U2 {
 
@@ -41,9 +40,14 @@ StatisticalReportController::StatisticalReportController(const QString &newHtmlF
     Version v = Version::appVersion();
     setWindowTitle(tr("Welcome to UGENE %1.%2").arg(v.major).arg(v.minor));
 
-    htmlView = new MultilingualHtmlView(newHtmlFilepath, this);
-    frameLayout->addWidget(htmlView);
+    htmlView = new U2WebView(this);
     htmlView->setMinimumSize(400, 10);
+    frameLayout->addWidget(htmlView);
+
+    htmlViewController = new SimpleWebViewBasedWidgetController(htmlView);
+    connect(htmlViewController, SIGNAL(si_pageReady()), SLOT(sl_pageReady()));
+    htmlViewController->loadPage(newHtmlFilepath);
+
     connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
 }
 
@@ -51,22 +55,24 @@ bool StatisticalReportController::isInfoSharingAccepted() const {
     return chkStat->isChecked();
 }
 
-void StatisticalReportController::paintEvent(QPaintEvent *event) {
-    QWidget::paintEvent(event);
-    CHECK(!htmlView->page()->mainFrame()->scrollBarGeometry(Qt::Vertical).isEmpty(), );
-
-    // adjust size to avoid scroll bars
-    while (!htmlView->page()->mainFrame()->scrollBarGeometry(Qt::Vertical).isEmpty()) {
-        htmlView->setMinimumHeight(htmlView->size().height() + 1);
-    }
-    htmlView->setMinimumHeight(htmlView->size().height() + 10);
-#ifndef Q_OS_MAC
-    // UGENE crashes on the update event processing on mac
-    // It has some connection with htmlView loading method
-    // There was no crash before f3a45ef1cd53fe28faf90a763d195e964bc6c752 commit
-    // Find a solution and fix it, if you have some free time
-    move(x(), (qApp->desktop()->screenGeometry().height() / 2) - htmlView->minimumHeight());
+void StatisticalReportController::sl_pageReady() {
+#if (QT_VERSION < 0x050500)
+    htmlViewController->runJavaScript("bindLinks();");
 #endif
+
+    // Update the widget size
+    htmlViewController->runJavaScript("getBodyHeight();", [&](const QVariant &var) {
+        int pageHeight = var.toInt();
+        htmlView->setMinimumHeight(pageHeight);
+#ifndef Q_OS_MAC //TODO recheck this code on OS X
+        // UGENE crashes on the update event processing on mac
+        // It has some connection with htmlView loading method
+        // There was no crash before f3a45ef1cd53fe28faf90a763d195e964bc6c752 commit
+        // Find a solution and fix it, if you have some free time
+        move((qApp->activeWindow()->x() + qApp->activeWindow()->width() / 2) - width() / 2,
+             (qApp->activeWindow()->y() + qApp->activeWindow()->height() / 2) - pageHeight / 2);
+#endif
+    });
 }
 
 void StatisticalReportController::accept() {
