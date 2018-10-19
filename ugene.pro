@@ -102,7 +102,7 @@ exclude_list_enabled() {
     SUBDIRS -= src/libs_3rdparty/QSpec
 }
 
-GUI_TESTING_ENABLED = 0;
+GUI_TESTING_ENABLED = 0
 if (exists(./src/libs_3rdparty/QSpec/QSpec.pro): !exclude_list_enabled()) {
     if (!useWebKit()) {
         message ("QSpec exists, but QT WebEngine is used, GUI testing is disabled")
@@ -112,7 +112,7 @@ if (exists(./src/libs_3rdparty/QSpec/QSpec.pro): !exclude_list_enabled()) {
             unix: system( cp ./installer/_common_data/QSpec_custom.pri ./src/libs_3rdparty/QSpec/custom.pri )
             win32: system (copy /B installer\_common_data\QSpec_custom.pri src\libs_3rdparty\QSpec\custom.pri)
         }
-        GUI_TESTING_ENABLED = 1;
+        GUI_TESTING_ENABLED = 1
     }
 }
 
