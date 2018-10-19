@@ -313,7 +313,7 @@ static inline void parseRDandQATag(U2::IOAdapter *io, U2OpStatus &ti, char* buff
     do {
         len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, aceQStart, IOAdapter::Term_Exclude, &ok);
         CHECK_EXT(!io->hasError(), ti.setError(io->errorString()), );
-        CHECK(len > 0, ti.setError(ACEFormat::tr("No sequence")), );
+        CHECK_EXT(len > 0, ti.setError(ACEFormat::tr("No sequence")), );
 
         len = TextUtils::remove(buff, len, TextUtils::WHITES);
         buff[len] = 0;
