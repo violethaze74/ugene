@@ -56,6 +56,7 @@ static QString getLine(IOAdapter* io, char* buff, const QString& pattern, U2OpSt
     QString line;
     while (!finishedReading) {
         io->readLine(buff, AprFormat::READ_BUFF_SIZE, &lineOk);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), QString());
         if (!lineOk) {
             os.setError(AprFormat::tr("Unexpected end of file"));
             line = QString();
@@ -194,6 +195,8 @@ void AprFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     bool lineOk = false;
 
     io->readLine(buff, READ_BUFF_SIZE, &lineOk);
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
+
     QString bufferString(buff);
     QTextStream bufferStream(&bufferString);
     QString header = bufferStream.readLine();
@@ -214,10 +217,7 @@ void AprFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
     int sequenceNum = getNumber(sequenceQuantityString, SIZE_BEFORE_NUMBER_SEQUENCE_QUANTITY, os);
     CHECK_OP(os, );
-    if (sequenceNum == 0) {
-        os.setError(AprFormat::tr("Sequences not found"));
-        return;
-    }
+    CHECK_EXT(sequenceNum != 0, os.setError(AprFormat::tr("Sequences not found")), );
 
     createRows(io, buff, sequenceNum, alignmentLength, al, os);
     CHECK_OP(os, );

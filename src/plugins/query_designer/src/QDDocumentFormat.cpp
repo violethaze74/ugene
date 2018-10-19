@@ -71,6 +71,7 @@ Document* QDDocFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& targetDb,
         rawData.append(block.data(), blockLen);
         os.setProgress(io->getProgress());
     }
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
 
     if (checkRawData(rawData).score != FormatDetection_Matched) {
         os.setError(tr("Invalid header. %1 expected").arg(QDDocument::HEADER_LINE));
