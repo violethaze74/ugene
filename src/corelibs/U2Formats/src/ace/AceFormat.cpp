@@ -220,7 +220,7 @@ static inline void parseConsensus(U2::IOAdapter *io, U2OpStatus &ti, char* buff,
     bool ok = true;
     QString line;
     consName = getName(headerLine);
-    CHECK_EXT(consName != QString(), ti.setError(ACEFormat::tr("There is no AF note")), );
+    CHECK_EXT(!consName.isEmpty(), ti.setError(ACEFormat::tr("There is no AF note")), );
     CHECK_EXT(!names.contains(consName), ti.setError(ACEFormat::tr("A name is duplicated")), );
 
     names.insert(consName);
