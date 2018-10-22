@@ -1363,6 +1363,14 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, first), QString("The sequence %1 is absent in the project tree view").arg(first));
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, second), QString("The sequence %1 is absent in the project tree view").arg(second));
 }
+GUI_TEST_CLASS_DEFINITION(test_6238) {
+    //1. Open _common_data/regression/6238/6238.fastq on macOS
+    //Expected: it wasn't opened, the notification "The problem appeared during the data reading. Please, make sure that all input data are correct" appeared
+    GTUtilsNotifications::waitForNotification(os, true, "The problem appeared during the data reading. Please, make sure that all input data are correct");
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/regression/6238/6238.fastq");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 
 } // namespace GUITest_regression_scenarios
 

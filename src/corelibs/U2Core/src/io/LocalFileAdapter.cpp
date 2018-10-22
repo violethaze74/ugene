@@ -112,16 +112,16 @@ qint64 LocalFileAdapter::readBlock(char* data, qint64 size) {
             if (currentPos == bufLen) {
                 bufLen = f->read(bufData, BUF_SIZE);
                 if (formatMode == TextMode) {
-                    bufLen = TextUtils::cutByteOrderMarks(bufData, bufLen);
+                    bufLen = TextUtils::cutByteOrderMarks(bufData, errorMessage, bufLen);
                 }
-                if (bufLen == -1){
+                if (bufLen == -1 || hasError()){
                     //error
                     return -1;
                 }
                 currentPos = 0;
             }
             copySize = qMin(bufLen - currentPos, size - l);
-            if (0 == copySize) {
+            if (0 == copySize || hasError()) {
                 break;
             }
             memcpy(data + l, bufData + currentPos, copySize);
@@ -131,8 +131,9 @@ qint64 LocalFileAdapter::readBlock(char* data, qint64 size) {
     } else {
         l = f->read(data, size);
         if (formatMode == TextMode) {
-            l = TextUtils::cutByteOrderMarks(bufData, l);
+            l = TextUtils::cutByteOrderMarks(bufData, errorMessage, l);
         }
+        CHECK(!hasError(), -1);
     }
     return l;
 }
@@ -191,8 +192,8 @@ GUrl LocalFileAdapter::getURL() const {
     return GUrl(f->fileName(), GUrl_File);
 }
 
-QString LocalFileAdapter::errorString() const{
-    return f->errorString();
+QString LocalFileAdapter::errorString() const {
+    return (f->error() == QFile::NoError) ? errorMessage : f->errorString();
 }
 
 };//namespace

@@ -111,11 +111,13 @@ Document* FpkmTrackingFormat::loadTextDocument(IOAdapter* io, const U2DbiRef&  d
 }
 
 
-int readFpkmTrLine(QString &buffer, IOAdapter* io, QScopedArrayPointer<char> &charbuff) {
+int readFpkmTrLine(QString &buffer, IOAdapter* io, QScopedArrayPointer<char> &charbuff, U2OpStatus& os) {
     int len;
     buffer.clear();
     do {
         len = io->readLine(charbuff.data(), DocumentFormat::READ_BUFF_SIZE - 1);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), -1);
+
         charbuff.data()[len] = '\0';
         buffer.append(QString(charbuff.data()));
     } while (DocumentFormat::READ_BUFF_SIZE - 1 == len);
@@ -138,10 +140,10 @@ QList<SharedAnnotationData> FpkmTrackingFormat::parseDocument(IOAdapter* io, QSt
     QString qstrbuf;
 
     // Validate the header
-    length = readFpkmTrLine(qstrbuf, io, buff);
-    if (0 == length) {
-        return result;
-    }
+    length = readFpkmTrLine(qstrbuf, io, buff, os);
+    CHECK_OP(os, result);
+    CHECK(length != 0, result);
+
     QStringList columnsNames;
     parseHeader(qstrbuf, columnsNames);
 
@@ -149,7 +151,7 @@ QList<SharedAnnotationData> FpkmTrackingFormat::parseDocument(IOAdapter* io, QSt
     bool fileIsValid = true;
     int lineNumber = 1;
 
-    while ((length = readFpkmTrLine(qstrbuf, io, buff)) > 0) {
+    while ((length = readFpkmTrLine(qstrbuf, io, buff, os)) > 0) {
         // Parse and validate the line
         FpkmTrackingLineValidateFlags validationStatus;
         FpkmTrackingLineData fpkmTrLineData = parseAndValidateLine(qstrbuf, columnsNames, validationStatus);
@@ -232,8 +234,9 @@ QList<SharedAnnotationData> FpkmTrackingFormat::parseDocument(IOAdapter* io, QSt
         // Move to the next line
         lineNumber++;
     }
+    CHECK_OP(os, result);
 
-    if (false == fileIsValid) {
+    if (!fileIsValid) {
         ioLog.error("FPKM Tracking Format parsing error: one or more errors occurred while parsing the input file,"
             " see TRACE log for details!");
     }

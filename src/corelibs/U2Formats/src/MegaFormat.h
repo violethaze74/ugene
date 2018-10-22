@@ -46,7 +46,7 @@ protected:
 private:
     QString formatName;
     void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& fs, U2OpStatus& ti);
-    static void skipWhites(IOAdapter *io, QByteArray &line);
+    static void skipWhites(IOAdapter *io, QByteArray &line, U2::U2OpStatus &ti);
     static void readHeader(IOAdapter* io, QByteArray &line, U2OpStatus &ti);
     static void readTitle(IOAdapter* io, QByteArray &line, U2OpStatus &ti);
     static bool readName(IOAdapter* io, QByteArray &line, QByteArray &name, U2OpStatus &ti);
@@ -54,7 +54,7 @@ private:
                              QByteArray &value, bool *lastIteration);
 
     static void workUpIndels(MultipleSequenceAlignment & al);
-    static bool getNextLine(IOAdapter* io, QByteArray& line);
+    static bool getNextLine(IOAdapter* io, QByteArray& line, U2OpStatus &ti);
     static bool skipComments(IOAdapter* io, QByteArray &line, U2OpStatus &ti);
     static bool checkName(QByteArray &name);
     static const QByteArray MEGA_HEADER;
