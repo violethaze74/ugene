@@ -766,7 +766,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //2. Make scheme "Read FASTQ File with SE Reads" -> "Improve Reads with Trimmomatic"
+    //2. Make workflow "Read FASTQ File with SE Reads" -> "Improve Reads with Trimmomatic"
     const QString readSEName = "Read FASTQ File with SE Reads";
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
 
@@ -1290,7 +1290,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
 GUI_TEST_CLASS_DEFINITION(test_6236) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    //2. Compose schema read sequence -> Remote blase
+    //2. Compose workflow read sequence -> Remote blase
     GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     GTUtilsWorkflowDesigner::addElement(os, "Remote BLAST", true);
 
@@ -1410,6 +1410,66 @@ GUI_TEST_CLASS_DEFINITION(test_6247) {
     CHECK_SET_ERR(docs.keys().contains("alignment.ugenedb"), "alignment.ugenedb in unexpectably absent");
     CHECK_SET_ERR(docs.keys().contains("Aligned reads_consensus.txt"), "alignment.ugenedb in unexpectably absent");
     CHECK_SET_ERR(docs.keys().contains("Aligned reads_consensus_1.txt"), "alignment.ugenedb in unexpectably absent");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6249_1) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    //2. Compose workflow read file urls -> Fastqc quality control
+    GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)", true);
+    GTUtilsWorkflowDesigner::addElement(os, "FastQC Quality Control", true);
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"),
+                                         GTUtilsWorkflowDesigner::getWorker(os, "FastQC Quality Control"));
+
+    //3. Set the input sequence files: "data\samples\FASTQ\eas.fastq" and "data\samples\Assembly\chrM.sam"
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read File URL(s)"));
+    GTMouseDriver::click();
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
+
+    //4. run workflow, and check result files on dashboard
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList outFiles = GTUtilsDashboard::getOutputFiles(os);
+
+    CHECK_SET_ERR(outFiles.contains("eas_fastqc.html"), QString("Output files not contains desired file eas_fastqc.html"));
+    CHECK_SET_ERR(outFiles.contains("chrM_fastqc.html"), QString("Output files not contains desired file chrM_fastqc.html"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6249_2) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    //2. Compose workflow read file urls -> Fastqc quality control
+    GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)", true);
+    GTUtilsWorkflowDesigner::addElement(os, "FastQC Quality Control", true);
+    GTUtilsWorkflowDesigner::connect(os,    GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"),
+                                            GTUtilsWorkflowDesigner::getWorker(os, "FastQC Quality Control"));
+
+    //3. Set the input sequence files: "data\samples\FASTQ\eas.fastq" and "data\samples\FASTQ\eas.fastq"
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read File URL(s)"));
+    GTMouseDriver::click();
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
+
+    //4. Set parameter "Output file" to any location
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "FastQC Quality Control"));
+    GTMouseDriver::click();
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_6249_2_zzzz.html", GTUtilsWorkflowDesigner::textValue);
+
+    //5. run workflow, and check result files on dashboard
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList outFiles = GTUtilsDashboard::getOutputFiles(os);
+
+    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz.html"), QString("Output files not contains desired file test_6249_2_zzzz.html"));
+    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz_1.html"), QString("Output files not contains desired file test_6249_2_zzzz_1.html"));
 }
 
 } // namespace GUITest_regression_scenarios
