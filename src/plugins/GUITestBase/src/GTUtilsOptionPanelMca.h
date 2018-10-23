@@ -56,6 +56,9 @@ public:
     static void setThreshold(HI::GUITestOpStatus &os, int threshold);
     static int getThreshold(HI::GUITestOpStatus &os);
 
+    static void setExportFileName(HI::GUITestOpStatus &os, QString exportFileName);
+    static QString getExportFileName(HI::GUITestOpStatus &os);
+
     static void setFileFormat(HI::GUITestOpStatus &os, FileFormat fileFormat);
 
     static void pushResetButton(HI::GUITestOpStatus &os);

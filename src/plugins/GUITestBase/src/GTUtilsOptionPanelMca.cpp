@@ -25,8 +25,9 @@
 #include <QToolButton>
 
 #include <primitives/GTComboBox.h>
-#include <primitives/GTWidget.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTSlider.h>
+#include <primitives/GTWidget.h>
 
 #include "GTUtilsOptionPanelMca.h"
 
@@ -141,6 +142,24 @@ int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus &os) {
     QSlider *thresholdSlider = GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider");
     GT_CHECK_RESULT(NULL != thresholdSlider, "thresholdSlider is NULL", -1);
     return thresholdSlider->value();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setExportFileName"
+void GTUtilsOptionPanelMca::setExportFileName(HI::GUITestOpStatus &os, QString exportFileName) {
+    openTab(os, Consensus);
+    QLineEdit *exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "pathLe");
+    GT_CHECK_RESULT(exportToFileLineEdit != NULL, "exportToFileLineEdit is NULL", );
+    GTLineEdit::setText(os, exportToFileLineEdit, exportFileName);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getExportFileName"
+QString GTUtilsOptionPanelMca::getExportFileName(HI::GUITestOpStatus &os) {
+    openTab(os, Consensus);
+    QLineEdit *exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "pathLe");
+    GT_CHECK_RESULT(exportToFileLineEdit != NULL, "exportToFileLineEdit is NULL", QString());
+    return GTLineEdit::getText(os, exportToFileLineEdit);
 }
 #undef GT_METHOD_NAME
 
