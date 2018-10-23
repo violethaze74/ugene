@@ -23,6 +23,7 @@
 #define _HTTP_REQUEST_H_
 
 #include <QBuffer>
+#include <QCoreApplication>
 #include <QDomDocument>
 #include <QDomNode>
 #include <QThread>
@@ -50,6 +51,7 @@ struct ResponseBuffer {
 
 
 class HttpRequestBLAST:public HttpRequest {
+    Q_DECLARE_TR_FUNCTIONS(HttpRequestBLAST)
 public:
     HttpRequestBLAST(Task *_task):HttpRequest(_task){}
     virtual void sendRequest(const QString &program,const QString &query);

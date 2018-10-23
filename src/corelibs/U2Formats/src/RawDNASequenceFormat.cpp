@@ -89,46 +89,43 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef,  QList<GObject*>& object
 
     while (ok && !io->isEof()) {
         int len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE, &terminatorFound);
-        if (len <= 0){
-            continue;
-        }
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
+        CHECK_CONTINUE(len > 0);
 
         seq.clear();
         bool isSeek = writer.seek(0);
-                assert(isSeek); Q_UNUSED(isSeek);
-        if (os.isCoR()) {
-            break;
-        }
+        assert(isSeek);
+        Q_UNUSED(isSeek);
+        CHECK_OP_BREAK(os);
 
-        for (int i=0; i<len && ok; i++) {
+        for (int i = 0; i < len && ok; i++) {
             char c = buff[i];
             if (ALPHAS[(uchar)c]) {
                 ok = writer.putChar(c);
             }
         }
-        if(seq.size()>0 && isStarted == false ){
+        if(seq.size() > 0 && isStarted == false ) {
             QString name = sequenceCounter == 0 ? seqName : seqName + QString("_%1").arg(sequenceCounter);
             isStarted = true;
             seqImporter.startSequence(os, dbiRef, folder, name, false);
         }
-        if(isStarted){
-            seqImporter.addBlock(seq.data(),seq.size(),os);
+        if(isStarted) {
+            seqImporter.addBlock(seq.data(), seq.size(), os);
         }
-        if (seq.size()>0 && isStarted && terminatorFound && isSplit){
+        if (seq.size()>0 && isStarted && terminatorFound && isSplit) {
             finishSequence(objects, io, os, dbiRef, fs, dbiObjects, seqImporter);
             sequenceCounter++;
             isStarted = false;
         }
-        if (os.isCoR()) {
-            break;
-        }
+        CHECK_OP_BREAK(os);
+
         os.setProgress(io->getProgress());
     }
     writer.close();
-
     CHECK_OP(os, );
+
     if (sequenceCounter == 0){
-        CHECK_EXT(isStarted == true, os.setError(RawDNASequenceFormat::tr("Sequence is empty")), );
+        CHECK_EXT(isStarted, os.setError(RawDNASequenceFormat::tr("Sequence is empty")), );
     }
     if (isStarted){
         finishSequence(objects, io, os, dbiRef, fs, dbiObjects, seqImporter);

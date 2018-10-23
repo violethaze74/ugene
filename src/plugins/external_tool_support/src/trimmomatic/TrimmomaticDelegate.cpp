@@ -134,6 +134,8 @@ QVariant TrimmomaticPropertyWidget::value() {
             steps << step;
         }
     }
+    CHECK(!steps.isEmpty(), QVariant::Invalid);
+
     return steps;
 }
 

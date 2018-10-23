@@ -71,6 +71,20 @@ bool GTLogTracer::checkMessage(QString s){
 }
 
 #define GT_CLASS_NAME "GTUtilsLog"
+#define GT_METHOD_NAME "checkMessageStartsWith"
+bool GTLogTracer::checkMessageStartsWith(QString s) {
+    QList<LogMessage*> messages = getMessages();
+    QList<QString> textMessages;
+    foreach(LogMessage* message, messages) {
+        if (message->text.startsWith(s, Qt::CaseInsensitive)) {
+            return true;
+        }
+    }
+    return false;
+}
+#undef GT_METHOD_NAME
+
+#define GT_CLASS_NAME "GTUtilsLog"
 #define GT_METHOD_NAME "check"
 void GTUtilsLog::check(HI::GUITestOpStatus &os, const GTLogTracer& logTracer) {
     Q_UNUSED(os);

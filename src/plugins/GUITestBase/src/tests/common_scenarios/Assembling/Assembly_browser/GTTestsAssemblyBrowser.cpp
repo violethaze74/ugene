@@ -593,9 +593,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //9. Right click on the reference area after loading.
     //Expected: "Unassociate" and "Set reference sequence" are enabled.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
-    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "setReferenceAction", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), QStringList() << "Set reference" << "Unassociate", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
 

@@ -128,10 +128,13 @@ public:
     /* Returns a human-readable description of the last device error that occurred */
     virtual QString errorString() const = 0;
 
+    bool hasError() const { return !errorString().isEmpty(); }
+
 protected:
-    static void cutByteOrderMarks(char* data, qint64& length);
+    static void cutByteOrderMarks(char* data, QString& errorString, qint64& length);
 
     FormatMode formatMode;
+    QString errorMessage;
 
 private:
     IOAdapterFactory* factory;

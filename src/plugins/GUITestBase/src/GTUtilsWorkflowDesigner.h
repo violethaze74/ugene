@@ -65,6 +65,7 @@ public:
 
     static void validateWorkflow(HI::GUITestOpStatus &os);
     static void runWorkflow(HI::GUITestOpStatus &os);
+    static void stopWorkflow(HI::GUITestOpStatus &os);
     static void returnToWorkflow(HI::GUITestOpStatus &os);
 
     //returns item from samples or algorithms tab

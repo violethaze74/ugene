@@ -5168,7 +5168,7 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
     GTUtilsWorkflowDesigner::setTableValue(os, "Source URL", "Source URL (by Read Sequence 1)", GTUtilsWorkflowDesigner::comboValue, w);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(5000);
 
     CHECK_SET_ERR(l.hasError(), "No errors in the log");
 }
@@ -8138,9 +8138,9 @@ GUI_TEST_CLASS_DEFINITION(test_1834) {
     //3. Set the input file for the "Read Alignment" element to "data/samples/COI.aln".
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment", dataDir + "samples/CLUSTALW/COI.aln");
 
-    //4. Set the "Document format" parameter of the "File Format Conversion" element to "mega".
+    //4. Set the "Document format" parameter of the "File Format Conversion" element to "Mega".
     GTUtilsWorkflowDesigner::click(os, "File Format Conversion");
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "mega", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "Mega", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
     GTUtilsWorkflowDesigner::setParameter(os, "Output folder", 0, GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
     GTUtilsWorkflowDesigner::setParameter(os, "Custom folder", QDir().absoluteFilePath(sandBoxDir + "regression_1834"), GTUtilsWorkflowDesigner::textValue);
 
@@ -8426,11 +8426,11 @@ GUI_TEST_CLASS_DEFINITION(test_1918) {
     GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", testDir + "_common_data/mega/MegaTest_2.meg");
     GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", testDir + "_common_data/clustal/align.aln");
 
-    //5. Set the following parameters of the "File Conversion" element: { Document format : nexus },
-    //                                                                  { Excluded formats : clustal }
+    //5. Set the following parameters of the "File Conversion" element: { Document format : NEXUS },
+    //                                                                  { Excluded formats : CLUSTAL }
     GTUtilsWorkflowDesigner::click(os, "File Format Conversion");
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "nexus", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
-    GTUtilsWorkflowDesigner::setParameter(os, "Excluded formats", QStringList("clustal"), GTUtilsWorkflowDesigner::ComboChecks);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "NEXUS", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
+    GTUtilsWorkflowDesigner::setParameter(os, "Excluded formats", QStringList("CLUSTALW"), GTUtilsWorkflowDesigner::ComboChecks);
     GTUtilsWorkflowDesigner::setParameter(os, "Output folder", 0, GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Custom folder", QDir().absoluteFilePath(sandBoxDir + "regression_1918")
                                           , GTUtilsWorkflowDesigner::textValue);

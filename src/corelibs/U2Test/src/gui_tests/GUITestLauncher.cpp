@@ -80,7 +80,6 @@ static QList<int> getChildrenProcesses(qint64 processId, bool fullTree=true) {
     HANDLE hProcessSnap;
     HANDLE hProcess;
     PROCESSENTRY32 pe32;
-    DWORD dwPriorityClass;
 
     // Take a snapshot of all processes in the system.
     hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
@@ -127,9 +126,8 @@ static int killChildrenProcesses(qint64 processId, bool fullTree=true) {
 
     while (!children.isEmpty()) {
         int child = children.takeLast();
-#ifdef DEBUG
-        printf("******** kill process %d ********\n", child);
-#endif
+
+        uiLog.trace("kill process: " + QString::number(child));
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
         int exist = QProcess::execute("kill -0 " + QString::number(child));

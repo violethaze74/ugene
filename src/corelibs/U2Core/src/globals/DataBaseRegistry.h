@@ -40,9 +40,8 @@ public:
     virtual QString getError() { return error; }
     virtual QByteArray getOutputFile() {return NULL;}
     virtual ~HttpRequest() {};
-    bool connectionError;
 protected:
-    HttpRequest(Task *_task):connectionError(false),error(""),task(_task){};
+    HttpRequest(Task *_task):error(""),task(_task){};
     QString error;
     QList<SharedAnnotationData> result;
     Task *task;
@@ -57,7 +56,7 @@ public:
 class U2CORE_EXPORT DataBaseRegistry:public QObject{
     Q_OBJECT
 public:
-    DataBaseRegistry(QObject *o = 0);
+    DataBaseRegistry(QObject *o = NULL);
     ~DataBaseRegistry();
     bool registerDataBase(DataBaseFactory *f, const QString &id);
     DataBaseFactory *getFactoryById(const QString& id);

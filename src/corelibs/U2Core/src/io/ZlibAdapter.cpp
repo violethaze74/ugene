@@ -303,8 +303,9 @@ qint64 ZlibAdapter::readBlock(char* data, qint64 size)
         assert(rewinded > 0 && rewinded <= buf->length());
         cached = buf->read(data, size, buf->length() - rewinded);
         if (formatMode == TextMode) {
-            cutByteOrderMarks(data, cached);
+            cutByteOrderMarks(data, errorMessage, cached);
         }
+        CHECK(errorMessage.isEmpty(), -1);
         if (cached == size) {
             rewinded -= size;
             return size;
@@ -314,9 +315,9 @@ qint64 ZlibAdapter::readBlock(char* data, qint64 size)
     }
     size = z->uncompress(data + cached, size - cached);
     if (formatMode == TextMode) {
-        cutByteOrderMarks(data, size);
+        cutByteOrderMarks(data, errorMessage, size);
     }
-    if (size == -1) {
+    if (size == -1 || !errorMessage.isEmpty()) {
         return -1;
     }
     buf->append(data + cached, size);
@@ -482,7 +483,7 @@ GUrl ZlibAdapter::getURL() const {
 }
 
 QString ZlibAdapter::errorString() const{
-    return io->errorString();
+    return io->errorString().isEmpty() ? errorMessage : io->errorString();
 }
 
 };//namespace

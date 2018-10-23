@@ -117,11 +117,6 @@ RemoteBLASTTask::RemoteBLASTTask(const RemoteBLASTTaskSettings & cfg_)
       httpBlastTask(NULL),
       createAnnotTask(NULL)
 {
-    //length restriction for blast server (8198 symbols), in case of longer request you get 414 error
-    if (cfg.params.length() + cfg.query.length() > 8150) {
-        setError(tr("The query sequence is too long for NCBI BLAST API. Approximate maximum length is 8000 characters."));
-        return;
-    }
     httpBlastTask = new RemoteBlastHttpRequestTask(cfg);
     addSubTask(httpBlastTask);
 }
@@ -195,14 +190,12 @@ void RemoteBlastHttpRequestTask::run() {
         }
 
         httpRequest[i]->sendRequest(cfg.params,QString(queries[i].seq.data()));
-        error = httpRequest[i]->connectionError;
-        if(error) {
+        if (!httpRequest[i]->getError().isEmpty()) {
             stateInfo.setError(httpRequest[i]->getError());
             return;
         }
 
-        resultList << HttpBlastRequestTaskResult(httpRequest[i],
-                                                 queries[i]);
+        resultList << HttpBlastRequestTaskResult(httpRequest[i], queries[i]);
     }
 }
 

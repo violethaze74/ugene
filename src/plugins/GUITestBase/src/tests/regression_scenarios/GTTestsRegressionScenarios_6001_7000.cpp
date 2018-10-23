@@ -21,6 +21,7 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QPushButton>
 #include <QRadioButton>
 #include <QSpinBox>
 #include <QTableWidget>
@@ -80,6 +81,7 @@
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
@@ -87,6 +89,8 @@
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 
 namespace U2 {
 
@@ -934,6 +938,45 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/6167/6167.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", dataDir + "samples/FASTQ/eas.fastq");
+
+    class TrimmomaticCustomScenario : public CustomScenario {
+    void run(HI::GUITestOpStatus& os) {
+        QWidget *dialog = QApplication::activeModalWidget();
+
+        QPushButton* addButton = GTWidget::findExactWidget<QPushButton*>(os, "buttonAdd", dialog);
+        CHECK_SET_ERR(addButton != NULL, "addButton unexpectedly not found");
+
+        GTWidget::click(os, addButton);
+        GTGlobals::sleep(200);
+        for (int i = 0; i < 4; i++) {
+            GTKeyboardDriver::keyClick(Qt::Key_Down);
+            GTGlobals::sleep(200);
+        }
+
+        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        GTGlobals::sleep(500);
+        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        GTGlobals::sleep(200);
+        GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        GTGlobals::sleep(200);
+
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, new TrimmomaticCustomScenario()));
+    GTUtilsWorkflowDesigner::click(os, "Trimmomatic 1");
+    GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, new TrimmomaticCustomScenario()));
+    GTUtilsWorkflowDesigner::click(os, "Trimmomatic 2");
+    GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -954,6 +997,58 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     QDir insideSandboxDir(insideSandbox);
     QStringList resultDirs = insideSandboxDir.entryList();
     CHECK_SET_ERR(resultDirs.size() == 5, QString("Unexpected number of result folders, expected: 5, current: %1").arg(resultDirs.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6212) {
+    //1. Open the WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Read File URL data" and "Improve Reads with Trimmomatic" elements and connect them.
+    const QString readFileName = "Read File URL(s)";
+    const QString trimmomaticName = "Improve Reads with Trimmomatic";
+    WorkflowProcessItem* readFileNameElement = GTUtilsWorkflowDesigner::addElement(os, readFileName);
+    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+    GTUtilsWorkflowDesigner::addInputFile(os, readFileName, dataDir + "samples/FASTQ/eas.fastq");
+    GTUtilsWorkflowDesigner::connect(os, readFileNameElement, trimmomaticElement);
+    GTUtilsWorkflowDesigner::click(os, trimmomaticName);
+    QTableWidget* table1 = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+    CHECK_SET_ERR(table1 != NULL, "QTableWidget isn't found");
+
+    GTUtilsWorkflowDesigner::setTableValue(os, "Input FASTQ URL 1", "Dataset name (by Read File URL(s))", GTUtilsWorkflowDesigner::comboValue, table1);
+
+    //3. Click on the Trimmomatic element, then click on the "Configure steps" parameter in the Property Editor, click on the appeared browse button in the value field.
+    class TrimmomaticCustomScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+
+            QDialogButtonBox* buttonBox = GTWidget::findExactWidget<QDialogButtonBox*>(os, "buttonBox", dialog);
+            CHECK_SET_ERR(buttonBox != NULL, "QDialogButtonBox unexpectedly not found");
+
+            QPushButton* buttonOk =  buttonBox->button(QDialogButtonBox::Ok);
+            CHECK_SET_ERR(buttonOk != NULL, "buttonOk unexpectedly not found");
+            CHECK_SET_ERR(!buttonOk->isEnabled(), "buttonOk should be disabled");
+
+            //4. Close the dialog
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, new TrimmomaticCustomScenario()));
+    GTUtilsWorkflowDesigner::click(os, trimmomaticName);
+    GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    //5. Click "Validate workflow".
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+
+    //Expected state: Validation doesn't pass, there is an error about absent steps.
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 1, QString("Unexpected errors number, expected: 1, current: %1").arg(errors.size()));
+    CHECK_SET_ERR(errors.first() == "Improve Reads with Trimmomatic: Required parameter is not set: Trimming steps", "Unexpected error in the log. Is should be something about Trimming steps");
+
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6225) {
@@ -1036,14 +1131,21 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
 
             QPoint pos(selectToolPackLabel->pos().x(), selectToolPackLabel->pos().y());
             QPoint globalPos = selectToolPackLabel->mapToGlobal(pos);
+#ifdef Q_OS_LINUX
+            globalPos.setY(globalPos.y() - 20);
+#endif
             GTMouseDriver::moveTo(globalPos);
             const int xpos = globalPos.x();
             GTClipboard::clear(os);
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 7; i++) {
                 for (int j = 0; j < 20; j++) {
                     GTGlobals::sleep(100);
                     QPoint mousePos(GTMouseDriver::getMousePosition());
+#ifdef Q_OS_WIN
                     globalPos = QPoint(mousePos.x() + 11, mousePos.y() + 1);
+#else
+                    globalPos = QPoint(mousePos.x() + 10, mousePos.y());
+#endif
                     GTMouseDriver::moveTo(globalPos);
                     Qt::CursorShape shape = selectToolPackLabel->cursor().shape();
                     if (shape != Qt::ArrowCursor) {
@@ -1188,27 +1290,87 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //2. Compose schema read sequence -> Remote blase
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Remote BLAST", true);
+    GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    GTUtilsWorkflowDesigner::addElement(os, "Remote BLAST", true);
 
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"),
         GTUtilsWorkflowDesigner::getWorker(os, "Remote BLAST"));
 
-    //3. Set the input sequence file: "data/samples/FASTA/human_T1.fa".
+    //3. Set the input sequence file: "data/samples/Genbank/NC_014267.1.gb".
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
     GTGlobals::sleep(300);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
 
     GTLogTracer l;
     //4. run workflow
-    GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::runWorkflow(os);  
+    GTGlobals::sleep(60000);
+    GTUtilsWorkflowDesigner::stopWorkflow(os);
 
-    //5. Check error about sequence lenght
+    //5. Check id of the blast job in log
+    QString messageStartsWith = "Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID";
     CHECK_SET_ERR(l.checkMessage(QString("The query sequence is too long for NCBI BLAST API. Approximate maximum length is 8000 characters.")),
         "No expected message in the log");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6240) {
+    //1. Open WD. This step allows us to prevent a bad case, when, at the first opening of WD, the dialog "Choose output directory" appears and the filler below is catching it
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            CHECK_SET_ERR(wizard != NULL, "Wizard isn't found");
+
+            GTUtilsWizard::setParameter(os, "Input file(s)", dataDir + "samples/Assembly/chrM.sam");
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    //2. Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
+    //3. Choose "samples/Assembly/chrM.sam" as input and click "Run"
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads quality control...");
+    GTGlobals::sleep();
+
+    //Expected: The dashboard appears
+    QWebView* dashboard = GTUtilsDashboard::getDashboard(os);
+    CHECK_SET_ERR(dashboard != NULL, "Dashboard isn't found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6243) {
+    //1. Select "File" -> "Access remove database...".
+    //2 Select "ENSEMBL" database. Use any sample ID as "Resource ID". Accept the dialog.
+    //Do it twice, for two different ids
+    QList<QString> ensemblyIds = QList<QString>() << "ENSG00000205571" << "ENSG00000146463";
+    foreach(const QString& id, ensemblyIds) {
+        QList<DownloadRemoteFileDialogFiller::Action> actions;
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << id);
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+        GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+        GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseMouse);
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        GTGlobals::sleep();
+    }
+
+    //Expected state: the sequences are downloaded. The files names contain the sequence ID.
+    QString first = QString("%1.fa").arg(ensemblyIds.first());
+    QString second = QString("%1.fa").arg(ensemblyIds.last());
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, first), QString("The sequence %1 is absent in the project tree view").arg(first));
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, second), QString("The sequence %1 is absent in the project tree view").arg(second));
+}
+GUI_TEST_CLASS_DEFINITION(test_6238) {
+    //1. Open _common_data/regression/6238/6238.fastq on macOS
+    //Expected: it wasn't opened, the notification "The problem appeared during the data reading. Please, make sure that all input data are correct" appeared
+    GTUtilsNotifications::waitForNotification(os, true, "The problem appeared during the data reading. Please, make sure that all input data are correct");
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/regression/6238/6238.fastq");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 
 } // namespace GUITest_regression_scenarios
 

@@ -45,12 +45,13 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTSpinBox.h>
-#include <primitives/GTTabWidget.h>
 #include <primitives/GTTableView.h>
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
+#include <primitives/GTScrollBar.h>
 #include <utils/GTThread.h>
 
 #include <U2Core/AppContext.h>
@@ -131,6 +132,12 @@ void GTUtilsWorkflowDesigner::validateWorkflow(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "runWorkflow"
 void GTUtilsWorkflowDesigner::runWorkflow(HI::GUITestOpStatus &os) {
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "stopWorkflow"
+void GTUtilsWorkflowDesigner::stopWorkflow(HI::GUITestOpStatus &os) {
+    GTWidget::click(os, GTAction::button(os, "Stop workflow"));
 }
 #undef GT_METHOD_NAME
 
@@ -931,8 +938,9 @@ void GTUtilsWorkflowDesigner::setParameter(HI::GUITestOpStatus &os, QString para
 #define GT_METHOD_NAME "setTableValue"
 void GTUtilsWorkflowDesigner::setTableValue(HI::GUITestOpStatus &os,  QString parameter, QVariant value, valueType type, QTableWidget *table, GTGlobals::UseMethod method){
     int row = -1;
-    for(int i = 0; i<table->rowCount(); i++){
-        QString s = table->item(i,0)->text();
+    const int rows = table->rowCount();
+    for(int i = 0; i < rows; i++) {
+        QString s = table->item(i, 0)->text();
         if(s == parameter){
             row = i;
             break;
@@ -940,12 +948,34 @@ void GTUtilsWorkflowDesigner::setTableValue(HI::GUITestOpStatus &os,  QString pa
     }
     GT_CHECK(row != -1, QString("parameter not found: %1").arg(parameter));
 
-    QRect rect = table->visualItemRect(table->item(row, 1));
+    QScrollArea* scrollArea = qobject_cast<QScrollArea*>(GTWidget::findWidget(os, "inputScrollArea"));
+    GT_CHECK(scrollArea != NULL, "inputPortBox isn't found");
+    if (!scrollArea->findChildren<QTableWidget*>().contains(table)) {
+        scrollArea = qobject_cast<QScrollArea*>(GTWidget::findWidget(os, "outputScrollArea"));
+        GT_CHECK(scrollArea != NULL, "outputPortBox isn't found");
+        GT_CHECK(scrollArea->findChildren<QTableWidget*>().contains(table), "The owner of the table widget isn't found");
+    }
+    QScrollBar* scrollBar = scrollArea->verticalScrollBar();
+    GT_CHECK(scrollBar != NULL, "Horizontal scroll bar isn't found");
+
+    QRect parentTableRect = scrollArea->rect();
+    QPoint globalTopLeftParentTable = scrollArea->mapToGlobal(parentTableRect.topLeft());
+    QPoint globalBottomRightParentTable = scrollArea->mapToGlobal(parentTableRect.bottomRight());
+    QRect globalParentRect(globalTopLeftParentTable, globalBottomRightParentTable - QPoint (0, 1));
+
+    QTableWidgetItem* item = table->item(row, 1);
+    QRect rect = table->visualItemRect(item);
     QPoint globalP = table->viewport()->mapToGlobal(rect.center());
+
+    while (!globalParentRect.contains(globalP)) {
+        GTScrollBar::lineDown(os, scrollBar, method);
+        rect = table->visualItemRect(item);
+        globalP = table->viewport()->mapToGlobal(rect.center());
+    }
+
     GTMouseDriver::moveTo(globalP);
     GTMouseDriver::click();
     GTGlobals::sleep(500);
-
 
     //SET VALUE
     setCellValue(os, table, value, type, method);
