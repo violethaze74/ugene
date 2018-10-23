@@ -83,8 +83,6 @@ private:
     ExternalToolListener*   listener;
     QString                 additionalProcessToKill;
     bool                    parseOutputFile;
-
-    static const bool       useNewProcessKillAlgorithm = true;
 };
 
 class U2CORE_EXPORT ExternalToolSupportTask: public Task{
