@@ -22,6 +22,8 @@
 #ifndef _U2_FASTQC_TASK_H_
 #define _U2_FASTQC_TASK_H_
 
+#include <QTemporaryDir>
+
 #include <U2Core/Task.h>
 #include <U2Core/ExternalToolRunTask.h>
 
@@ -36,6 +38,7 @@ public:
     QString outDir;
     QString adapters;
     QString conts;
+    QString fileName;
 };
 
 class FastQCTask : public ExternalToolSupportTask {
@@ -55,6 +58,8 @@ protected:
 protected:
     FastQCSetting settings;
     QString resultUrl;
+private:
+    QTemporaryDir temporaryDir;
 };
 
 

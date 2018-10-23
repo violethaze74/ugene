@@ -54,6 +54,7 @@ public:
     static const QString INPUT_PORT;
     static const QString OUT_MODE_ID;
     static const QString CUSTOM_DIR_ID;
+    static const QString OUT_FILE;
 
     static const QString ADAPTERS;
     static const QString CONTAMINANTS;
