@@ -28,6 +28,12 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
+#ifdef Q_OS_WIN
+#include <tlhelp32.h>
+#else
+#include <unistd.h>
+#endif
+
 #if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
 #include <Windows.h>
 #endif
@@ -95,6 +101,98 @@ namespace {
 }
 
 const QString CmdlineTaskRunner::REPORT_FILE_ARG = "ugene-write-task-report-to-file";
+
+QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullTree) {
+    QList<long> children;
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+    char *buff = NULL;
+    size_t len = 255;
+    char command[256] = {0};
+
+    sprintf(command,"ps -ef|awk '$3==%u {print $2}'", (unsigned)processId);
+    FILE *fp = (FILE*) popen(command, "r");
+    while (getline(&buff, &len, fp) >= 0) {
+        int child_process_id = QString(buff).toInt();
+        if (child_process_id != 0) {
+            children << child_process_id;
+        }
+    }
+    free(buff);
+    fclose(fp);
+#elif defined(Q_OS_WIN)
+    HANDLE hProcessSnap;
+    HANDLE hProcess;
+    PROCESSENTRY32 pe32;
+
+    // Take a snapshot of all processes in the system.
+    hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    CHECK(hProcessSnap != INVALID_HANDLE_VALUE, children);
+
+    // Set the size of the structure before using it.
+    pe32.dwSize = sizeof(PROCESSENTRY32);
+
+    // Retrieve information about the first process,
+    // and exit if unsuccessful
+    CHECK_EXT(Process32First(hProcessSnap, &pe32), CloseHandle(hProcessSnap), children);
+
+    // Now walk the snapshot of processes, and
+    // display information about each process in turn
+    do {
+        if (pe32.th32ParentProcessID == processId) {
+            hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
+            if (hProcess != NULL) {
+                CloseHandle(hProcess);
+                children << pe32.th32ProcessID;
+            }
+        }
+    } while (Process32Next(hProcessSnap, &pe32));
+
+    CloseHandle(hProcessSnap);
+#endif
+
+    if (fullTree && children.length() > 0) {
+        foreach(long child, children) {
+            QList<long> children2 = getChildrenProcesses(child, fullTree);
+            foreach(long child2, children2) {
+                children << child2;
+            }
+        }
+    }
+
+    return children;
+}
+
+int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
+    int result = 0;
+
+    QList<long> children = getChildrenProcesses(processId, fullTree);
+
+    while (!children.isEmpty()) {
+        long child = children.takeLast();
+
+        uiLog.trace("kill process: " + QString::number(child));
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+        int exist = QProcess::execute("kill -0 " + QString::number(child));
+        if (exist == 0) {
+            result += QProcess::execute("kill -9 " + QString::number(child));
+        }
+        usleep(1000000);
+#elif defined(Q_OS_WIN)
+        DWORD dwDesiredAccess = PROCESS_TERMINATE;
+        BOOL  bInheritHandle = FALSE;
+        HANDLE hProcess = OpenProcess(dwDesiredAccess, bInheritHandle, child);
+        if (hProcess != NULL) {
+            result += TerminateProcess(hProcess, 1);
+            CloseHandle(hProcess);
+        }
+        Sleep(1000);
+#endif
+    }
+
+    return result;
+}
 
 CmdlineTaskRunner::CmdlineTaskRunner(const CmdlineTaskConfig &config)
 : Task(tr("Run UGENE command line: %1").arg(config.command), TaskFlag_NoRun), config(config), process(NULL)
