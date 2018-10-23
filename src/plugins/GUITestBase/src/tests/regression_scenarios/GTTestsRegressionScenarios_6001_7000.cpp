@@ -91,6 +91,7 @@
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -1314,6 +1315,14 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
         "No expected message in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6238) {
+    //1. Open _common_data/regression/6238/6238.fastq on macOS
+    //Expected: it wasn't opened, the notification "The problem appeared during the data reading. Please, make sure that all input data are correct" appeared
+    GTUtilsNotifications::waitForNotification(os, true, "The problem appeared during the data reading. Please, make sure that all input data are correct");
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/regression/6238/6238.fastq");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6240) {
     //1. Open WD. This step allows us to prevent a bad case, when, at the first opening of WD, the dialog "Choose output directory" appears and the filler below is catching it
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -1363,14 +1372,45 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, first), QString("The sequence %1 is absent in the project tree view").arg(first));
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, second), QString("The sequence %1 is absent in the project tree view").arg(second));
 }
-GUI_TEST_CLASS_DEFINITION(test_6238) {
-    //1. Open _common_data/regression/6238/6238.fastq on macOS
-    //Expected: it wasn't opened, the notification "The problem appeared during the data reading. Please, make sure that all input data are correct" appeared
-    GTUtilsNotifications::waitForNotification(os, true, "The problem appeared during the data reading. Please, make sure that all input data are correct");
-    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/regression/6238/6238.fastq");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-}
 
+GUI_TEST_CLASS_DEFINITION(test_6247) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            CHECK_SET_ERR(dialog != NULL, "Dialog isn't found");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    //1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + "alignment.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open "Export consensus" tab, set "../sandbox/Mapped reads_consensus.txt" to the "Export to file" field and click export
+    QString exportToFile = sandBoxDir + "Aligned reads_consensus.txt";
+    GTUtilsOptionPanelMca::setExportFileName(os, exportToFile);
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario));
+    GTUtilsOptionPanelMca::pushExportButton(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Open "alignment.ugenedb" again
+    GTUtilsProjectTreeView::doubleClickItem(os, "alignment.ugenedb");
+
+    //4. And again open "Export consensus" tab, set "../sandbox/Mapped reads_consensus.txt" to the "Export to file" field and click export
+    GTUtilsOptionPanelMca::setExportFileName(os, exportToFile);
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario));
+    GTUtilsOptionPanelMca::pushExportButton(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: there are 3 documents in the project tree: "alignment.ugenedb", "Aligned reads_consensus.txt" and "Aligned reads_consensus_1.txt"
+    QMap<QString, QStringList> docs = GTUtilsProjectTreeView::getDocuments(os);
+    CHECK_SET_ERR(docs.size() == 3, QString("Unexpected docs number, expected: 3, current: %1").arg(docs.size()));
+    CHECK_SET_ERR(docs.keys().contains("alignment.ugenedb"), "alignment.ugenedb in unexpectably absent");
+    CHECK_SET_ERR(docs.keys().contains("Aligned reads_consensus.txt"), "alignment.ugenedb in unexpectably absent");
+    CHECK_SET_ERR(docs.keys().contains("Aligned reads_consensus_1.txt"), "alignment.ugenedb in unexpectably absent");
+}
 
 } // namespace GUITest_regression_scenarios
 
