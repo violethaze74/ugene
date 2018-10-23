@@ -172,25 +172,45 @@ int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
         long child = children.takeLast();
 
         uiLog.trace("kill process: " + QString::number(child));
+        result += killProcess(child);
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-        int exist = QProcess::execute("kill -0 " + QString::number(child));
-        if (exist == 0) {
-            result += QProcess::execute("kill -9 " + QString::number(child));
-        }
         usleep(1000000);
 #elif defined(Q_OS_WIN)
-        DWORD dwDesiredAccess = PROCESS_TERMINATE;
-        BOOL  bInheritHandle = FALSE;
-        HANDLE hProcess = OpenProcess(dwDesiredAccess, bInheritHandle, child);
-        if (hProcess != NULL) {
-            result += TerminateProcess(hProcess, 1);
-            CloseHandle(hProcess);
-        }
         Sleep(1000);
 #endif
     }
 
+    return result;
+}
+
+int CmdlineTaskRunner::killProcessTree(QProcess *process) {
+    qint64 processId = process->processId();
+    killChildrenProcesses(processId);
+    process->kill();
+}
+
+int CmdlineTaskRunner::killProcessTree(qint64 processId) {
+    killChildrenProcesses(processId);
+    killProcess(processId);
+}
+
+int CmdlineTaskRunner::killProcess(qint64 processId) {
+    int result = 0;
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+    int exist = QProcess::execute("kill -0 " + QString::number(processId));
+    if (exist == 0) {
+        result = QProcess::execute("kill -9 " + QString::number(processId));
+    }
+#elif defined(Q_OS_WIN)
+    DWORD dwDesiredAccess = PROCESS_TERMINATE;
+    BOOL  bInheritHandle = FALSE;
+    HANDLE hProcess = OpenProcess(dwDesiredAccess, bInheritHandle, processId);
+    if (hProcess != NULL) {
+        result = TerminateProcess(hProcess, 1);
+        CloseHandle(hProcess);
+    }
+#endif
     return result;
 }
 

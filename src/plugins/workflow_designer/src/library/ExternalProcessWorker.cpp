@@ -37,6 +37,7 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceUtils.h>
+#include <U2Core/CmdlineTaskRunner.h>
 
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
@@ -601,7 +602,7 @@ void LaunchExternalToolTask::run() {
 
     while(!externalProcess->waitForFinished(1000)) {
         if(isCanceled()) {
-            externalProcess->kill();
+            CmdlineTaskRunner::killProcessTree(externalProcess);
         }
     }
 }

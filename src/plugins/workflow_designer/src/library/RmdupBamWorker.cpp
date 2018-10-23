@@ -322,7 +322,7 @@ void SamtoolsRmdupTask::run(){
 
     while(!samtools.process->waitForFinished(1000)){
         if (isCanceled()) {
-            samtools.process->kill();
+            CmdlineTaskRunner::killProcessTree(samtools.process);
             return;
         }
     }

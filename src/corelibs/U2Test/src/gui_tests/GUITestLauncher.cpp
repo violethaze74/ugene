@@ -277,7 +277,7 @@ QString GUITestLauncher::performTest(const QString& testName) {
         return testResult;
     }
 #ifdef Q_OS_WIN
-    process.kill();
+    CmdlineTaskRunner::killProcessTree(process);
 #endif
     if (finished) {
         return tr("An error occurred while finishing UGENE: ") + process.errorString() + '\n' + testResult;

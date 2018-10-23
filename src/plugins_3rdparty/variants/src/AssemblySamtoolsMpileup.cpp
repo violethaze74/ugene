@@ -34,6 +34,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/VariantTrackObject.h>
+#include <U2Core/CmdlineTaskRunner.h>
 
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
@@ -225,9 +226,9 @@ void SamtoolsMpileupTask::run() {
 
     while(!vcfutils.process->waitForFinished(1000)){
         if (isCanceled()) {
-            samtools.process->kill();
-            bcftools.process->kill();
-            vcfutils.process->kill();
+            CmdlineTaskRunner::killProcessTree(samtools.process);
+            CmdlineTaskRunner::killProcessTree(bcftools.process);
+            CmdlineTaskRunner::killProcessTree(vcfutils.process);
             return;
         }
     }
