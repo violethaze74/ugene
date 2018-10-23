@@ -30,6 +30,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
@@ -1199,7 +1200,7 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6235_1) {
-    //1. Open "enzymes/6235_1.gb" sequence.
+    //1. Open "_common_data/regression/6235/6235_1.gb" sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1208,8 +1209,22 @@ GUI_TEST_CLASS_DEFINITION(test_6235_1) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    //3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, check "Circular molecule", click "OK".
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+
+            GTCheckBox::setChecked(os, "circularBox", true, dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1221,8 +1236,8 @@ GUI_TEST_CLASS_DEFINITION(test_6235_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6235_2) {
-    //1. Open "enzymes/6235_2.gb" sequence.
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_2.gb");
+    //1. Open "_common_data/regression/6235/6235_1.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
@@ -1230,8 +1245,22 @@ GUI_TEST_CLASS_DEFINITION(test_6235_2) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    //3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, uncheck "Circular molecule", click "OK".
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+
+            GTCheckBox::setChecked(os, "circularBox", false, dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1243,8 +1272,8 @@ GUI_TEST_CLASS_DEFINITION(test_6235_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6235_3) {
-    //1. Open "enzymes/6235_3.gb" sequence.
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_3.gb");
+    //1. Open "_common_data/regression/6235/6235_2.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_2.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
@@ -1252,8 +1281,22 @@ GUI_TEST_CLASS_DEFINITION(test_6235_3) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    //3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, check "Circular molecule", click "OK".
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+
+            GTCheckBox::setChecked(os, "circularBox", true, dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1265,8 +1308,8 @@ GUI_TEST_CLASS_DEFINITION(test_6235_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6235_4) {
-    //1. Open "enzymes/6235_4.gb" sequence.
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_4.gb");
+    //1. Open "_common_data/regression/6235/6235_2.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_2.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
@@ -1274,8 +1317,22 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    //3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, uncheck "Circular molecule", click "OK".
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+
+            GTCheckBox::setChecked(os, "circularBox", false, dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
