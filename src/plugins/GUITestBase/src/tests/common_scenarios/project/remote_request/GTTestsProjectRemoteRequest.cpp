@@ -46,7 +46,8 @@
 #include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/ugeneui/NCBISearchDialogFiller.h"
-
+#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
+#include "runnables/ugene/ugeneui/SelectDocumentFormatDialogFiller.h"
 namespace U2{
 
 namespace GUITest_common_scenarios_project_remote_request {
@@ -73,7 +74,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
 //    1. Select {File -> Access remote database} menu item in the main menu.
-
 //    2. Fill the dialog:
 //        Resource ID: NC_017775
 //        Database: NCBI GenBank (DNA sequence)
@@ -103,7 +103,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
 //    1. Select {File -> Access remote database} menu item in the main menu.
-
 //    2. Fill the dialog:
 //        Resource ID: NC_017775
 //        Database: NCBI GenBank (DNA sequence)
@@ -130,9 +129,65 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDocument::checkDocument(os, "NC_017775.gb", AnnotatedDNAViewFactory::ID);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0005) {
+    //    1. Select {File -> Access remote database} menu item in the main menu.
+    //    2. Fill the dialog:
+    //        Resource ID: ENSG00000205571 ENSG00000146463: space between IDs 
+    //        Database: ENSEMBL
+    //        Save to folder: any valid path and accept it.
+    //    Expected state: after the downloading task finish a new documents appears in the project
+
+    QDir().mkpath(sandBoxDir + "remote_request/test_0005");
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "ENSG00000205571 ENSG00000146463");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0005");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDocument::isDocumentLoaded(os, "ENSG00000205571.fa");
+    GTUtilsDocument::checkDocument(os, "ENSG00000205571.fa", AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::isDocumentLoaded(os, "ENSG00000146463.fa");
+    GTUtilsDocument::checkDocument(os, "ENSG00000146463.fa", AnnotatedDNAViewFactory::ID);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0006) {
+    //    1. Select {File -> Access remote database} menu item in the main menu.
+    //    2. Fill the dialog:
+    //        Resource ID: Q9IGQ6;A0N8V2: semicolon between IDs 
+    //        Database: SWISS-PROT
+    //        Save to folder: any valid path and accept it.
+    //    Expected state: after the downloading task finish a new documents appears in the project
+   
+
+    QDir().mkpath(sandBoxDir + "remote_request/test_0006");
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+   
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
+
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "Q9IGQ6;A0N8V2");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "SWISS-PROT");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0006");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDocument::isDocumentLoaded(os, "Q9IGQ6.txt");
+    GTUtilsDocument::checkDocument(os, "Q9IGQ6.txt", AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::isDocumentLoaded(os, "A0N8V2.txt");
+    GTUtilsDocument::checkDocument(os, "A0N8V2.txt", AnnotatedDNAViewFactory::ID);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_0007) {
 //    1. Select {File -> Access remote database} menu item in the main menu.
-
 //    2. Check all databases.
 //    Expected state: "Force download the appropriate sequence" checkbox is visible only for NCBI databases.
     QList<DownloadRemoteFileDialogFiller::Action> actions;
@@ -160,13 +215,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
 //    1. Select {File -> Search NCBI Genbak} menu item in the main menu.
-
 //    2. Search "human" in the "nucleotide" database. Download the first result.
 //    Expected state: the "Fetch Data from Remote Database" appears. It is filled with:
 //        Database: "NCBI GenBank (DNA sequence)", it the only database in the combobox.
 //        Output format: "gb".
 //        "Force download the appropriate sequence" checkbox is visible and checked.
-
 //    3. Set "fasta" format.
 //    Expected state: "Force download the appropriate sequence" checkbox becomes invisible.
     QList<NcbiSearchDialogFiller::Action> searchActions;
@@ -198,13 +251,11 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
 //    1. Select {File -> Search NCBI Genbak} menu item in the main menu.
-
 //    2. Search "human" in the "protein" database. Download the first result.
 //    Expected state: the "Fetch Data from Remote Database" appears. It is filled with:
 //        Database: "NCBI protein sequence database", it the only database in the combobox.
 //        Output format: "gb".
 //        "Force download the appropriate sequence" checkbox is visible and checked.
-
 //    3. Set "fasta" format.
 //    Expected state: "Force download the appropriate sequence" checkbox becomes invisible.
     QList<NcbiSearchDialogFiller::Action> searchActions;
@@ -309,6 +360,63 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!GTUtilsProjectTreeView::checkItem(os, "1ezg.pdb"), "Object shound not be in the project");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0013) {
+    //    1. Select {File -> Access remote database} menu item in the main menu.
+    //    2. Fill the dialog:
+    //        Resource ID: P16152
+    //        Database: UniProtKB/Swiss-Prot
+    //        Save to folder: any valid path and accept it.
+    //    Expected state: after the downloading task finish a new documents appears in the project
+
+
+    QDir().mkpath(sandBoxDir + "remote_request/test_0013");
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
+
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "P16152");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "UniProtKB/Swiss-Prot");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0013");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDocument::isDocumentLoaded(os, "P16152.txt");
+    GTUtilsDocument::checkDocument(os, "P16152.txt", AnnotatedDNAViewFactory::ID);
+  
+}
+GUI_TEST_CLASS_DEFINITION(test_0014) {
+    //    1. Select {File -> Access remote database} menu item in the main menu.
+    //    2. Fill the dialog:
+    //        Resource ID: D0VTW9
+    //        Database: UniProtKB/TrEMBL
+    //        Save to folder: any valid path and accept it.
+    //    Expected state: after the downloading task finish a new documents appears in the project
+
+
+    QDir().mkpath(sandBoxDir + "remote_request/test_0014");
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
+
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "D0VTW9");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "UniProtKB/TrEMBL");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0014");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDocument::isDocumentLoaded(os, "D0VTW9.txt");
+    GTUtilsDocument::checkDocument(os, "D0VTW9.txt", AnnotatedDNAViewFactory::ID);
+   
 }
 
 } // namespace
