@@ -59,6 +59,7 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget *parent)
       saveController(NULL)
 {
     setupUi(this);
+    U2WidgetStateStorage::restoreWidgetState(savableWidget);
 
     hintLabel->setStyleSheet(L10N::infoHintStyleSheet());
 
@@ -70,7 +71,6 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget *parent)
     connect(exportBtn, SIGNAL(clicked()), SLOT(sl_exportClicked()));
     connect(consensusArea, SIGNAL(si_consensusAlgorithmChanged(const QString &)), SLOT(sl_consensusChanged(const QString &)));
 
-    U2WidgetStateStorage::restoreWidgetState(savableWidget);
     sl_consensusChanged(consensusArea->getConsensusAlgorithm()->getId());
 }
 
@@ -85,7 +85,7 @@ void MaExportConsensusWidget::sl_exportClicked(){
     settings.keepGaps = keepGapsChb->isChecked() || keepGapsChb->isHidden();
     settings.ma = ma;
     settings.name = ma->getMaObject()->getGObjectName() + "_consensus";
-    settings.url = saveController->getSaveFileName();
+    settings.url = GUrlUtils::rollFileName(saveController->getSaveFileName(), "_");
     settings.algorithm = ma->getUI()->getConsensusArea()->getConsensusAlgorithm()->clone();
 
     Task *t = new ExportMaConsensusTask(settings);
