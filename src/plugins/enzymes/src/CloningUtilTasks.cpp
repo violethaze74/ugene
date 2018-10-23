@@ -63,7 +63,7 @@ DigestSequenceTask::DigestSequenceTask(U2SequenceObject* so, AnnotationTableObje
     SAFE_POINT_EXT(sourceObj != NULL, setError(L10N::nullPointerError("source object")), );
     SAFE_POINT_EXT(destObj != NULL, setError(L10N::nullPointerError("destination object")), );
     SAFE_POINT_EXT(dnaObj != NULL, setError(L10N::nullPointerError("sequence object")), );
-    isCircular = dnaObj->isCircular() || cfg.forceCircular;
+    isCircular = cfg.forceCircular;
 }
 
 void DigestSequenceTask::prepare() {
@@ -383,7 +383,7 @@ void DigestSequenceTask::checkForConservedAnnotations()
 
 qint64 DigestSequenceTask::correctPos(const qint64 pos) const {
     qint64 res = pos;
-    if (!dnaObj->isCircular()) {
+    if (!isCircular) {
         res = qBound<qint64>(0, pos, dnaObj->getSequenceLength());
     }
     return res;
@@ -391,7 +391,7 @@ qint64 DigestSequenceTask::correctPos(const qint64 pos) const {
 
 QByteArray DigestSequenceTask::getOverhang(const U2Region& region) const {
     QByteArray result;
-    if (region.startPos < 0 && dnaObj->isCircular()) {
+    if (region.startPos < 0 && isCircular) {
         result = dnaObj->getSequenceData(U2Region(dnaObj->getSequenceLength() + region.startPos, qAbs(region.startPos)));
         result += dnaObj->getSequenceData(U2Region(0, region.length + region.startPos));
     } else {
@@ -461,6 +461,13 @@ void LigateFragmentsTask::prepare()
     DNAFragment prevFragment;
     assert(prevFragment.isEmpty());
 
+
+    if (!cfg.makeCircular && cfg.checkOverhangs) {
+        const DNAFragment& first = fragmentList.first();
+        QByteArray leftOverhangAddition = first.getLeftTerminus().overhang;
+        resultSeq.append(leftOverhangAddition);
+    }
+
     foreach (const DNAFragment& dnaFragment, fragmentList) {
 
         QVector<U2Region> location = dnaFragment.getFragmentRegions();
@@ -508,15 +515,21 @@ void LigateFragmentsTask::prepare()
         CHECK_OP(stateInfo, );
     }
 
-    if (cfg.makeCircular && cfg.checkOverhangs) {
-        const DNAFragment& first = fragmentList.first();
-        const DNAFragment& last = fragmentList.last();
-        QByteArray overhangAddition;
-        processOverhangs(last, first, overhangAddition);
-        if (stateInfo.hasError()) {
-            return;
+    if (cfg.checkOverhangs) {
+        if (cfg.makeCircular) {
+            const DNAFragment& first = fragmentList.first();
+            const DNAFragment& last = fragmentList.last();
+            QByteArray overhangAddition;
+            processOverhangs(last, first, overhangAddition);
+            if (stateInfo.hasError()) {
+                return;
+            }
+            resultSeq.append(overhangAddition);
+        } else {
+            const DNAFragment& last = fragmentList.last();
+            QByteArray rightOverhangAddition = last.getRightTerminus().overhang;
+            resultSeq.append(rightOverhangAddition);
         }
-        resultSeq.append(overhangAddition);
     }
 
     // create comment
