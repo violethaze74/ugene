@@ -790,6 +790,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse"));
+            GTGlobals::sleep(500);
 
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
             menu = qobject_cast<QMenu*>(GTWidget::findWidget(os, "stepsMenu"));
@@ -812,8 +813,8 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     QTableView* table = GTWidget::findExactWidget<QTableView*>(os, "table");
     GTMouseDriver::moveTo(GTTableView::getCellPoint(os, table, 1, 1));
     GTMouseDriver::click();
-    GTGlobals::sleep(500);
-    GTWidget::click(os, GTWidget::findButtonByText(os, "...", table));
+    GTGlobals::sleep();
+    GTWidget::click(os, GTWidget::findWidget(os, "trimmomaticPropertyToolButton", table));
     GTGlobals::sleep(500);
 
     //4. Run this workflow.
