@@ -1002,6 +1002,25 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     CHECK_SET_ERR(resultDirs.size() == 5, QString("Unexpected number of result folders, expected: 5, current: %1").arg(resultDirs.size()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6204) {
+    //1. Open the WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/scenarios/_regression/6204/6204.uwl");
+
+    //2. add 3 big alignments to "Read Alignment 1" worker ""_common_data/clustal/10000_sequences.aln", ""_common_data/clustal/10000_1_sequences.aln", ""_common_data/clustal/10000_2_sequences.aln"
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment 1", testDir + "_common_data/clustal/10000_sequences.aln");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment 1", testDir + "_common_data/clustal/10000_1_sequences.aln");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment 1", testDir + "_common_data/clustal/10000_2_sequences.aln");
+
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment", testDir + "_common_data/clustal/COI na.aln");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    
+    GTGlobals::sleep(50000);
+    HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task is in progress...");
+    CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
+    GTUtilsWorkflowDesigner::stopWorkflow(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6212) {
     //1. Open the WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
