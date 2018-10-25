@@ -84,6 +84,10 @@ QString SaveDocumentController::SimpleFormatsInfo::getIdByName(const QString &na
     return names.key(name);
 }
 
+void SaveDocumentController::forceRoll(const QSet<QString>& excludeList) {
+    setPath(getSaveFileName(), excludeList);
+}
+
 QStringList SaveDocumentController::SimpleFormatsInfo::getExtensionsByName(const QString &formatName) const {
     CHECK(names.values().contains(formatName), QStringList());
     return extensions.value(names.key(formatName));
@@ -328,13 +332,13 @@ QString SaveDocumentController::prepareFileFilter() const {
     return FormatUtils::prepareFileFilter(formatsWithExtensions, false, extraExtensions);
 }
 
-void SaveDocumentController::setPath(const QString &path) {
-    QSet<QString> excludeList;
+void SaveDocumentController::setPath(const QString &path, const QSet<QString>& excludeList) {
+    QSet<QString> currentExcludeList = excludeList;
     if (conf.rollOutProjectUrls) {
-        excludeList += DocumentUtils::getNewDocFileNameExcludesHint();
+        currentExcludeList += DocumentUtils::getNewDocFileNameExcludesHint();
     }
 
-    const QString newPath = (conf.rollFileName && !overwritingConfirmed) ? GUrlUtils::rollFileName(path, conf.rollSuffix, excludeList) : path;
+    const QString newPath = (conf.rollFileName && !overwritingConfirmed) ? GUrlUtils::rollFileName(path, conf.rollSuffix, currentExcludeList) : path;
     conf.fileNameEdit->setText(QDir::toNativeSeparators(newPath));
     overwritingConfirmed = false;
     emit si_pathChanged(newPath);

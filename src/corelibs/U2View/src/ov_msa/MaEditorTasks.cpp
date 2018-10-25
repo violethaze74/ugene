@@ -286,6 +286,10 @@ void ExportMaConsensusTask::prepare(){
     addSubTask(extractConsensus);
 }
 
+const QString& ExportMaConsensusTask::getConsensusUrl() const {
+    return settings.url;
+}
+
 QList<Task*> ExportMaConsensusTask::onSubTaskFinished( Task* subTask ){
     QList<Task*> result;
     if(subTask == extractConsensus && !isCanceled() && !hasError()) {

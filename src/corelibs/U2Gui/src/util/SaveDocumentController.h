@@ -87,11 +87,13 @@ public:
 
     void addFormat(const QString &id, const QString &name, const QStringList &extenstions);
 
-    void setPath(const QString &path);
+    void setPath(const QString &path, const QSet<QString>& excludeList = QSet<QString>());
     void setFormat(const QString &formatId);
 
     QString getSaveFileName() const;
     DocumentFormatId getFormatIdToSave() const;
+
+    void forceRoll(const QSet<QString>& excludeList = QSet<QString>());
 
 signals:
     void si_formatChanged(const QString &newFormatId);
