@@ -1456,8 +1456,7 @@ GUI_TEST_CLASS_DEFINITION(test_6247) {
     //3. Open "alignment.ugenedb" again
     GTUtilsProjectTreeView::doubleClickItem(os, "alignment.ugenedb");
 
-    //4. And again open "Export consensus" tab, set "../sandbox/Mapped reads_consensus.txt" to the "Export to file" field and click export
-    GTUtilsOptionPanelMca::setExportFileName(os, exportToFile);
+    //4. And again open "Export consensus" tab, and click export
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario));
     GTUtilsOptionPanelMca::pushExportButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

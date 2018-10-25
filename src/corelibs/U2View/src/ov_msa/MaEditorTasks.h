@@ -135,8 +135,11 @@ public:
     ExportMaConsensusTask(const ExportMaConsensusTaskSettings& s);
 
     void prepare();
+    const QString& getConsensusUrl() const;
+
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask);
+
 private:
     Document* createDocument();
 
