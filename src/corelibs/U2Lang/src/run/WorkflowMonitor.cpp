@@ -255,12 +255,18 @@ bool WorkflowMonitor::containsOutputFile(const QString &url) const {
 }
 
 void WorkflowMonitor::addNotification(const WorkflowNotification &notification) {
-    const bool firstProblem = notifications.isEmpty();
+    const bool firstNotification = notifications.isEmpty();
     notifications << notification;
 
-    if (firstProblem) {
+    if (firstNotification) {
         emit si_firstNotification();
         emit si_taskStateChanged(RUNNING_WITH_PROBLEMS);
+    }
+    foreach(const WorkflowNotification& notification, notifications) {
+        if (hasWarnings() || hasErrors()) {
+            emit si_taskStateChanged(RUNNING_WITH_PROBLEMS);
+            break;
+        }
     }
     emit si_newNotification(notification);
 }
