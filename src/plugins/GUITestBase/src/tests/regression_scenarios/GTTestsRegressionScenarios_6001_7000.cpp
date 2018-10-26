@@ -1368,11 +1368,9 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //2. Compose workflow read sequence -> Remote blase
-    GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
-    GTUtilsWorkflowDesigner::addElement(os, "Remote BLAST", true);
-
-    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"),
-        GTUtilsWorkflowDesigner::getWorker(os, "Remote BLAST"));
+    WorkflowProcessItem *readElement = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    WorkflowProcessItem *remoteBlast = GTUtilsWorkflowDesigner::addElementByUsingNameFilter(os, "Remote BLAST");
+    GTUtilsWorkflowDesigner::connect(os, readElement, remoteBlast);
 
     //3. Set the input sequence file: "data/samples/Genbank/NC_014267.1.gb".
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
