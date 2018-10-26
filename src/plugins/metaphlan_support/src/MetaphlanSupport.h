@@ -31,6 +31,8 @@ class MetaphlanSupport : public ExternalTool {
 public:
     MetaphlanSupport(const QString& name, const QString& path = "");
 
+    static const QString TOOL_NAME;
+
 };
 
 }//namespace

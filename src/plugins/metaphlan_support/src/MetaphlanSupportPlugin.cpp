@@ -29,7 +29,7 @@
 namespace U2 {
 
 const QString MetaphlanSupportPlugin::PLUGIN_NAME = QObject::tr("MetaPhlAn2 external tool support");
-const QString MetaphlanSupportPlugin::PLUGIN_DESCRIPRION = QObject::tr("MetaPhlAn2 (METAgenomic PHyLogenetic ANalysis) is a tool for profiling the composition of microbial communities (bacteria, archaea, eukaryotes, and viruses) from whole-metagenome shotgun sequencing data");
+const QString MetaphlanSupportPlugin::PLUGIN_DESCRIPRION = QObject::tr("");
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     MetaphlanSupportPlugin *plugin = new MetaphlanSupportPlugin();
@@ -41,10 +41,15 @@ MetaphlanSupportPlugin::MetaphlanSupportPlugin()
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
 
+    etRegistry->registerEntry(new MetaphlanSupport(MetaphlanSupport::TOOL_NAME));
+
 }
 
 MetaphlanSupportPlugin::~MetaphlanSupportPlugin() {
+    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+    CHECK(NULL != etRegistry, );
 
+    etRegistry->unregisterEntry(MetaphlanSupport::TOOL_NAME);
 }
 
 
