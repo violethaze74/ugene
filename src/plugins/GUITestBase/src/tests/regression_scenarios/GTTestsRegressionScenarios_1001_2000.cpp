@@ -1467,7 +1467,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
 
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
     GTWidget::click(os, editButton);
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/PBR322.gb");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
