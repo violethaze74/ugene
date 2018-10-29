@@ -1015,7 +1015,8 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment", testDir + "_common_data/clustal/COI na.aln");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     
-    GTGlobals::sleep(50000);
+    GTGlobals::sleep(55000);
+    //GTGlobals::sleep();
     HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task is in progress...");
     CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
     GTUtilsWorkflowDesigner::stopWorkflow(os);
