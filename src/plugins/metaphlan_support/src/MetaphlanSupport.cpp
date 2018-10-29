@@ -31,7 +31,7 @@ const QString MetaphlanSupport::TOOL_NAME = "MetaPhlAn2";
 const QString MetaphlanSupport::UTIL_SCRIPT = "utils/read_fastx.py";
 const QString MetaphlanSupport::ET_PYTHON = "python";
 const QString MetaphlanSupport::ET_PYTHON_NUMPY = "numpy";
-const QString MetaphlanSupport::ET_BOWTIE2_ALIGN = "bowtie2-align";
+const QString MetaphlanSupport::ET_BOWTIE_2_ALIGNER = "Bowtie 2 aligner";
 
 MetaphlanSupport::MetaphlanSupport(const QString& name, const QString& path) : ExternalTool(name, path) {
     validationArguments << "--version";
@@ -42,7 +42,7 @@ MetaphlanSupport::MetaphlanSupport(const QString& name, const QString& path) : E
     executableFileName = "metaphlan2.py";
 
     toolRunnerProgramm = "java";
-    dependencies << ET_PYTHON << ET_PYTHON_NUMPY << ET_BOWTIE2_ALIGN;
+    dependencies << ET_PYTHON << ET_PYTHON_NUMPY << ET_BOWTIE_2_ALIGNER;
 
     validMessage = "MetaPhlAn version ";//TODO
     versionRegExp = QRegExp("((\\-[a-zA-Z]*){,2})MetaPhlAn version (\\d+\\.\\d+\\.\\d+)");//Hmmm

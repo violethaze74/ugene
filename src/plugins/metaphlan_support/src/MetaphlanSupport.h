@@ -36,7 +36,7 @@ public:
     static const QString UTIL_SCRIPT;
     static const QString ET_PYTHON;
     static const QString ET_PYTHON_NUMPY;
-    static const QString ET_BOWTIE2_ALIGN;
+    static const QString ET_BOWTIE_2_ALIGNER;
 };
 
 }//namespace
