@@ -158,22 +158,18 @@ GUI_TEST_CLASS_DEFINITION(test_0006){
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 //    2. Resize main window.
     QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-    QImage imgSimple1 = pixmapSimple1.toImage();
+    QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
 
     QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    QPixmap pixmapGraph1 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-    QImage imgGraph1 = pixmapGraph1.toImage();
+    QImage imgGraph1 = GTWidget::getImage(os, overviewGraph);
 
     QMainWindow* window = AppContext::getMainWindow()->getQMainWindow();
     window->showNormal();
 
     GTGlobals::sleep(1000);
 
-    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-    QImage imgSimple2 = pixmapSimple2.toImage();
-    QPixmap pixmapGraph2 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-    QImage imgGraph2 = pixmapGraph2.toImage();
+    QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
+    QImage imgGraph2 = GTWidget::getImage(os, overviewGraph);
 
     CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
     CHECK_SET_ERR(imgGraph1 != imgGraph2, "graph overview not updated");
@@ -194,21 +190,16 @@ GUI_TEST_CLASS_DEFINITION(test_0007){
 
     for(int i=0; i<12; i++){
         //saving overviews' images
-        QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-        QImage imgSimple1 = pixmapSimple1.toImage();
-
-        QPixmap pixmapGraph1 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-        QImage imgGraph1 = pixmapGraph1.toImage();
+        QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
+        QImage imgGraph1 = GTWidget::getImage(os, overviewGraph);
 
         GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(40,17));
         GTKeyboardDriver::keyClick( Qt::Key_Delete);
         GTGlobals::sleep(500);
 
         //checking images changed
-        QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-        QImage imgSimple2 = pixmapSimple2.toImage();
-        QPixmap pixmapGraph2 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-        QImage imgGraph2 = pixmapGraph2.toImage();
+        QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
+        QImage imgGraph2 = GTWidget::getImage(os, overviewGraph);
 
         CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
         CHECK_SET_ERR(imgGraph1 != imgGraph2, "graph overview not updated")
@@ -226,8 +217,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     //saving overviews' images
-    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-    QImage imgSimple1 = pixmapSimple1.toImage();
+    QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
 
 //    2. Select some area in msa view and move it with mouse.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(10, 10));
@@ -238,8 +228,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 //    Expected state: while mouse button is pressed graph overview is blocked. On mouse release overview updating starts.
 //    Simple overview updates simultaneously.
     //checking simple overview image changed
-    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-    QImage imgSimple2 = pixmapSimple2.toImage();
+    QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
 
     CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
 
@@ -266,8 +255,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     //saving overviews' images
-    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-    QImage imgSimple1 = pixmapSimple1.toImage();
+    QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
 
 //    2. Select one symbol.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
@@ -280,8 +268,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 //    Expected state: while button is pressed graph overview is blocked. Overview updating starts on button release.
 //    Simple overview updates simultaneously.
     //checking simple overview image changed
-    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-    QImage imgSimple2 = pixmapSimple2.toImage();
+    QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
 
     CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
 
@@ -302,8 +289,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     //saving overviews' images
-    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-    QImage imgSimple1 = pixmapSimple1.toImage();
+    QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
 
 //    2. Select one symbol.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
@@ -316,8 +302,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 //    Expected state: while button is pressed graph overview is blocked. Overview updating starts on button release.
 //    Simple overview updates simultaneously.
     //checking simple overview image changed
-    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
-    QImage imgSimple2 = pixmapSimple2.toImage();
+    QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
 
     CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
 
