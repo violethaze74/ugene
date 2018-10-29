@@ -41,7 +41,7 @@ MetaphlanSupport::MetaphlanSupport(const QString& name, const QString& path) : E
 
     executableFileName = "metaphlan2.py";
 
-    toolRunnerProgramm = "java";
+    toolRunnerProgramm = ET_PYTHON;
     dependencies << ET_PYTHON << ET_PYTHON_NUMPY << ET_BOWTIE_2_ALIGNER;
 
     validMessage = "MetaPhlAn version ";//TODO

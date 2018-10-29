@@ -84,6 +84,11 @@ ExternalToolValidation ExternalTool::getToolValidation() {
     return result;
 }
 
+void ExternalTool::checkAdditionalScripts(const QString& toolPath, QStringList& unpresentedScripts) const {
+    Q_UNUSED(toolPath);
+    Q_UNUSED(unpresentedScripts)
+}
+
 bool ExternalTool::isMuted() const {
 #ifdef UGENE_NGS
     // Tool cannot be muted in the NGS pack
