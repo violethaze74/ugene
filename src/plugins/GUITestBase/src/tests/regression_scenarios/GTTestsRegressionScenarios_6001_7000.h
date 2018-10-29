@@ -68,14 +68,10 @@ GUI_TEST_CLASS_DECLARATION(test_6236)
 GUI_TEST_CLASS_DECLARATION(test_6238)
 GUI_TEST_CLASS_DECLARATION(test_6240)
 GUI_TEST_CLASS_DECLARATION(test_6243)
-<<<<<<< HEAD
 GUI_TEST_CLASS_DECLARATION(test_6247)
-
-
-=======
 GUI_TEST_CLASS_DECLARATION(test_6249_1)
 GUI_TEST_CLASS_DECLARATION(test_6249_2)
->>>>>>> UGENE-6249 Add "Output file" parameter to FastQC element, remove "Output folder"
+
 #undef GUI_TEST_SUITE
 
 }   // namespace GUITest_regression_scenarios
