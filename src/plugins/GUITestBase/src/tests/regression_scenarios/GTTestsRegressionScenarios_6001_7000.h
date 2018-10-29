@@ -72,6 +72,7 @@ GUI_TEST_CLASS_DECLARATION(test_6247)
 GUI_TEST_CLASS_DECLARATION(test_6249_1)
 GUI_TEST_CLASS_DECLARATION(test_6249_2)
 
+
 #undef GUI_TEST_SUITE
 
 }   // namespace GUITest_regression_scenarios
