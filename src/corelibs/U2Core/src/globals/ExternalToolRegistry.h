@@ -82,6 +82,7 @@ public:
     virtual QStringList getAdditionalPaths() const;
 
     virtual void        getAdditionalParameters(const QString& output) { Q_UNUSED(output) }
+    virtual void        checkAdditionalScripts(const QString& toolPath, QStringList& unpresentedScripts) const {}
 
     ExternalToolValidation getToolValidation();
     const QList<ExternalToolValidation>& getToolAdditionalValidations() const { return additionalValidators; }

@@ -23,27 +23,38 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include <QFileInfo>
+
 namespace U2 {
 
 const QString MetaphlanSupport::TOOL_NAME = "MetaPhlAn2";
+const QString MetaphlanSupport::UTIL_SCRIPT = "utils/read_fastx.py";
+const QString MetaphlanSupport::ET_PYTHON = "python";
+const QString MetaphlanSupport::ET_PYTHON_NUMPY = "numpy";
+const QString MetaphlanSupport::ET_BOWTIE2_ALIGN = "bowtie2-align";
 
 MetaphlanSupport::MetaphlanSupport(const QString& name, const QString& path) : ExternalTool(name, path) {
     validationArguments << "--version";
-    //validMessage = "MetaPhlAn version ";
-    versionRegExp = QRegExp("((\\-[a-zA-Z]*){,2})MetaPhlAn version (\\d+\\.\\d+\\.\\d+)");//Hmmm
-    executableFileName = "";//hmmm
+
+    toolKitName = TOOL_NAME;
     description = tr("<i>MetaPhlAn2 (METAgenomic PHyLogenetic ANalysis)</i> is a tool for profiling the composition of microbial communities (bacteria, archaea, eukaryotes, and viruses) from whole-metagenome shotgun sequencing data.");
+
+    executableFileName = "metaphlan2.py";
+
+    toolRunnerProgramm = "java";
+    dependencies << ET_PYTHON << ET_PYTHON_NUMPY << ET_BOWTIE2_ALIGN;
+
+    validMessage = "MetaPhlAn version ";//TODO
+    versionRegExp = QRegExp("((\\-[a-zA-Z]*){,2})MetaPhlAn version (\\d+\\.\\d+\\.\\d+)");//Hmmm
+
 }
 
-
-
-
-
-
-
-
-
-
-
+void MetaphlanSupport::checkAdditionalScripts(const QString& toolPath, QStringList& unpresentedScripts) const {
+    QFileInfo file(toolPath);
+    QString utilScriptFullPath = QString("%1/%2").arg(file.absolutePath()).arg(UTIL_SCRIPT);
+    if (!QFileInfo::exists(utilScriptFullPath)) {
+        unpresentedScripts << UTIL_SCRIPT;
+    }
+}
 
 }//namespace

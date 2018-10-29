@@ -103,6 +103,9 @@ void ExternalToolJustValidateTask::run() {
 
     CHECK(!hasError(), );
 
+    checkAdditionalScripts();
+    CHECK_OP(stateInfo, );
+
     foreach (const ExternalToolValidation& validation, validations) {
         if (externalToolProcess != NULL) {
             delete externalToolProcess;
@@ -143,13 +146,8 @@ void ExternalToolJustValidateTask::run() {
             }
         }
 
-        if (!parseLog(validation)) {
-            return;
-        }
-
-        if (!isValid) {
-            return;
-        }
+        CHECK(parseLog(validation), );
+        CHECK(isValid, );
     }
 }
 
@@ -287,6 +285,25 @@ void ExternalToolJustValidateTask::checkArchitecture(const QString &toolPath) {
         setError("This external tool has unsupported architecture");
     }
 #endif
+}
+
+void ExternalToolJustValidateTask::checkAdditionalScripts() {
+    QStringList unpresentedScripts;
+    tool->checkAdditionalScripts(toolPath, unpresentedScripts);
+    CHECK(!unpresentedScripts.isEmpty(), );
+
+    bool oneScriptUnpresented = unpresentedScripts.size() == 1;
+    QString error;
+    error += QString("%1").arg(tool->getToolKitName());
+    error += QString(" %1").arg(oneScriptUnpresented ? "script" : "scripts");
+    foreach(const QString& script, unpresentedScripts) {
+        error += QString(" \"%1\",").arg(script);
+    }
+    error = error.left(error.size() - 1);
+    error += QString(" %1").arg(oneScriptUnpresented ? "is" : "are");
+    error += QString(" not present!");
+    stateInfo.setError(error);
+
 }
 
 ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString& _toolName) :

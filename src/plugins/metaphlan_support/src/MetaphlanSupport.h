@@ -30,9 +30,13 @@ class MetaphlanSupport : public ExternalTool {
     Q_OBJECT
 public:
     MetaphlanSupport(const QString& name, const QString& path = "");
+    void checkAdditionalScripts(const QString& toolPath, QStringList& unpresentedScripts) const;
 
     static const QString TOOL_NAME;
-
+    static const QString UTIL_SCRIPT;
+    static const QString ET_PYTHON;
+    static const QString ET_PYTHON_NUMPY;
+    static const QString ET_BOWTIE2_ALIGN;
 };
 
 }//namespace
