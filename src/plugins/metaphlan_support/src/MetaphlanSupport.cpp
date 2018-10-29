@@ -29,10 +29,10 @@ const QString MetaphlanSupport::TOOL_NAME = "MetaPhlAn2";
 
 MetaphlanSupport::MetaphlanSupport(const QString& name, const QString& path) : ExternalTool(name, path) {
     validationArguments << "--version";
-    validMessage = "MetaPhlAn version ";
-    versionRegExp = QRegExp("diamond version (\\d+\\.\\d+\\.\\d+)");//Hmmm
+    //validMessage = "MetaPhlAn version ";
+    versionRegExp = QRegExp("((\\-[a-zA-Z]*){,2})MetaPhlAn version (\\d+\\.\\d+\\.\\d+)");//Hmmm
     executableFileName = "";//hmmm
-    description = tr("<i>MetaPhlAn2 (METAgenomic PHyLogenetic ANalysis)<i> is a tool for profiling the composition of microbial communities (bacteria, archaea, eukaryotes, and viruses) from whole-metagenome shotgun sequencing data.");
+    description = tr("<i>MetaPhlAn2 (METAgenomic PHyLogenetic ANalysis)</i> is a tool for profiling the composition of microbial communities (bacteria, archaea, eukaryotes, and viruses) from whole-metagenome shotgun sequencing data.");
 }
 
 
