@@ -47,6 +47,7 @@ public:
     static void clearToolPath(HI::GUITestOpStatus &os, const QString& toolName);
 
     static void setTemporaryDirPath(HI::GUITestOpStatus &os, const QString &path);
+    static void setDocumentsDirPath(HI::GUITestOpStatus &os, const QString &path);
 
 private:
     style itemStyle;

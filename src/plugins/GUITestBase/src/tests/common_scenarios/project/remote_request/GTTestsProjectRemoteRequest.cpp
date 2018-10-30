@@ -138,14 +138,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //    Expected state: after the downloading task finish a new documents appears in the project
 
     QDir().mkpath(sandBoxDir + "remote_request/test_0005");
-    QList<DownloadRemoteFileDialogFiller::Action> actions;
-
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "ENSG00000205571 ENSG00000146463");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0005");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
-
-    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+   
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "ENSG00000205571 ENSG00000146463", 2, true, true, false, sandBoxDir + "remote_request/test_0005"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -166,16 +160,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
    
 
     QDir().mkpath(sandBoxDir + "remote_request/test_0006");
-    QList<DownloadRemoteFileDialogFiller::Action> actions;
-   
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
 
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "Q9IGQ6;A0N8V2");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "SWISS-PROT");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0006");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
-
-    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "Q9IGQ6;A0N8V2", 4, true, true, false, sandBoxDir + "remote_request/test_0006"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -375,13 +362,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     QList<DownloadRemoteFileDialogFiller::Action> actions;
 
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
-
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "P16152");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "UniProtKB/Swiss-Prot");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0013");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
-
-    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "P16152", 5, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -400,16 +381,9 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
 
     QDir().mkpath(sandBoxDir + "remote_request/test_0014");
-    QList<DownloadRemoteFileDialogFiller::Action> actions;
-
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
 
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "D0VTW9");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "UniProtKB/TrEMBL");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0014");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
-
-    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "D0VTW9", 6, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
