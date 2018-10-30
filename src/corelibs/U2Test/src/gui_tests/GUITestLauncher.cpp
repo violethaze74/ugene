@@ -27,10 +27,10 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/CmdlineTaskRunner.h>
 
 #include <U2Gui/MainWindow.h>
 

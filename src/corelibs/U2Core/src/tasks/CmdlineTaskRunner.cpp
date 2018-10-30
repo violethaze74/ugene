@@ -154,9 +154,7 @@ QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullT
     if (fullTree && children.length() > 0) {
         foreach(long child, children) {
             QList<long> children2 = getChildrenProcesses(child, fullTree);
-            foreach(long child2, children2) {
-                children << child2;
-            }
+            children << children2;
         }
     }
 

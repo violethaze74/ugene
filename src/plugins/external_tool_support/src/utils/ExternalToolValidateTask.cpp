@@ -23,11 +23,11 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Lang/WorkflowUtils.h>
 
 #include "ExternalToolSearchTask.h"
