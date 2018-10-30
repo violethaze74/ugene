@@ -21,15 +21,14 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
-//#include <U2Core/ExternalToolRegistry.h>
 
 #include "MetaphlanSupport.h"
 #include "MetaphlanSupportPlugin.h"
 
 namespace U2 {
 
-const QString MetaphlanSupportPlugin::PLUGIN_NAME = QObject::tr("MetaPhlAn2 external tool support");
-const QString MetaphlanSupportPlugin::PLUGIN_DESCRIPRION = QObject::tr("");
+const QString MetaphlanSupportPlugin::PLUGIN_NAME = QCoreApplication::tr("MetaPhlAn2 external tool support");
+const QString MetaphlanSupportPlugin::PLUGIN_DESCRIPRION = QCoreApplication::tr("");
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     MetaphlanSupportPlugin *plugin = new MetaphlanSupportPlugin();
@@ -42,7 +41,6 @@ MetaphlanSupportPlugin::MetaphlanSupportPlugin()
     CHECK(NULL != etRegistry, );
 
     etRegistry->registerEntry(new MetaphlanSupport(MetaphlanSupport::TOOL_NAME));
-
 }
 
 MetaphlanSupportPlugin::~MetaphlanSupportPlugin() {

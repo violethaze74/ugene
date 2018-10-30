@@ -84,9 +84,9 @@ ExternalToolValidation ExternalTool::getToolValidation() {
     return result;
 }
 
-void ExternalTool::checkAdditionalScripts(const QString& toolPath, QStringList& unpresentedScripts) const {
+void ExternalTool::performAdditionalChecks(const QString& toolPath, QString& errorString) const {
     Q_UNUSED(toolPath);
-    Q_UNUSED(unpresentedScripts)
+    Q_UNUSED(errorString);
 }
 
 bool ExternalTool::isMuted() const {

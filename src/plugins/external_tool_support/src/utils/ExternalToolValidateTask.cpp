@@ -103,9 +103,6 @@ void ExternalToolJustValidateTask::run() {
 
     CHECK(!hasError(), );
 
-    checkAdditionalScripts();
-    CHECK_OP(stateInfo, );
-
     foreach (const ExternalToolValidation& validation, validations) {
         if (externalToolProcess != NULL) {
             delete externalToolProcess;
@@ -149,6 +146,9 @@ void ExternalToolJustValidateTask::run() {
         CHECK(parseLog(validation), );
         CHECK(isValid, );
     }
+
+    performAdditionalChecks();
+    CHECK_OP(stateInfo, );
 }
 
 Task::ReportResult ExternalToolJustValidateTask::report() {
@@ -287,23 +287,13 @@ void ExternalToolJustValidateTask::checkArchitecture(const QString &toolPath) {
 #endif
 }
 
-void ExternalToolJustValidateTask::checkAdditionalScripts() {
-    QStringList unpresentedScripts;
-    tool->checkAdditionalScripts(toolPath, unpresentedScripts);
-    CHECK(!unpresentedScripts.isEmpty(), );
+void ExternalToolJustValidateTask::performAdditionalChecks() {
+    QString errorString;
+    tool->performAdditionalChecks(toolPath, errorString);
+    CHECK(!errorString.isEmpty(), );
 
-    bool oneScriptUnpresented = unpresentedScripts.size() == 1;
-    QString error;
-    error += QString("%1").arg(tool->getToolKitName());
-    error += QString(" %1").arg(oneScriptUnpresented ? "script" : "scripts");
-    foreach(const QString& script, unpresentedScripts) {
-        error += QString(" \"%1\",").arg(script);
-    }
-    error = error.left(error.size() - 1);
-    error += QString(" %1").arg(oneScriptUnpresented ? "is" : "are");
-    error += QString(" not present!");
-    stateInfo.setError(error);
-
+    isValid = false;
+    stateInfo.setError(errorString);
 }
 
 ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString& _toolName) :

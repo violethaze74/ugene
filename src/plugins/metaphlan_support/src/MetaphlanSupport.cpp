@@ -29,6 +29,7 @@ namespace U2 {
 
 const QString MetaphlanSupport::TOOL_NAME = "MetaPhlAn2";
 const QString MetaphlanSupport::UTIL_SCRIPT = "utils/read_fastx.py";
+//These constants are taken from the 'external_tool_support' project
 const QString MetaphlanSupport::ET_PYTHON = "python";
 const QString MetaphlanSupport::ET_PYTHON_NUMPY = "numpy";
 const QString MetaphlanSupport::ET_BOWTIE_2_ALIGNER = "Bowtie 2 aligner";
@@ -46,14 +47,13 @@ MetaphlanSupport::MetaphlanSupport(const QString& name, const QString& path) : E
 
     validMessage = "MetaPhlAn version ";
     versionRegExp = QRegExp("MetaPhlAn version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");
-
 }
 
-void MetaphlanSupport::checkAdditionalScripts(const QString& toolPath, QStringList& unpresentedScripts) const {
+void MetaphlanSupport::performAdditionalChecks(const QString& toolPath, QString& errorString) const {
     QFileInfo file(toolPath);
     QString utilScriptFullPath = QString("%1/%2").arg(file.absolutePath()).arg(UTIL_SCRIPT);
     if (!QFileInfo::exists(utilScriptFullPath)) {
-        unpresentedScripts << UTIL_SCRIPT;
+        errorString = QString("%1 script %2 is not present!").arg(TOOL_NAME).arg(UTIL_SCRIPT);
     }
 }
 
