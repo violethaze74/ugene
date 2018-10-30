@@ -206,6 +206,17 @@ void AppSettingsDialogFiller::setTemporaryDirPath(GUITestOpStatus &os, const QSt
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "setDocumentsDirPath"
+void AppSettingsDialogFiller::setDocumentsDirPath(GUITestOpStatus &os, const QString &path) {
+    QWidget *dialog = QApplication::activeModalWidget();
+    GT_CHECK(NULL != dialog, "activeModalWidget is NULL");
+
+    openTab(os, Directories);
+
+    GTLineEdit::setText(os, "documentsDirectoryEdit", path, dialog);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "OpenTab"
 void AppSettingsDialogFiller::openTab(HI::GUITestOpStatus &os, Tabs tab){
     QWidget *dialog = QApplication::activeModalWidget();
