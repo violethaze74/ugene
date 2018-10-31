@@ -32,7 +32,7 @@ cp ../../src/ugeneui/images/ugene-doc.icns "$TARGET_APP_DIR/Contents/Resources"
 
 mkdir "${TARGET_EXE_DIR}/../Frameworks"
 mkdir "${TARGET_EXE_DIR}/plugins"
-mkdir "${TARGET_EXE_DIR}/data"
+#mkdir "${TARGET_EXE_DIR}/data"
 
 echo copying translations
 cp $RELEASE_DIR/transl_*.qm "$TARGET_EXE_DIR"
@@ -137,20 +137,7 @@ done
 
 echo
 echo macdeployqt running...
-macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
-
-# Do not use @loader_path that produced by macdeployqt with "-executable" argument,
-# it cause a crash with plugins loading (UGENE-2994)
-# Restore @executable_path:
-echo
-echo @executable_path restoring...
-for PLUGIN in $PLUGIN_LIST
-do
-    restorePluginsQtInstallNames $PLUGIN
-done
-# a temporary fix for qt5.7
-# it should be fixed without absolute paths using
-install_name_tool -change /opt/local/lib/mysql55/mysql/libmysqlclient.18.dylib @rpath/libmysqlclient.18.dylib "$TARGET_EXE_DIR"/../PlugIns/sqldrivers/libqsqlmysql.dylib
+macdeployqt "$TARGET_APP_DIR" -appstore-compliant -no-strip -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
 
 mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 
@@ -168,5 +155,5 @@ if [ ! "$1" ]; then
 
     echo
     echo pkg-dmg running...
-    ./pkg-dmg --source $BUILD_DIR --target ugene-${VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk} --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $VERSION" --symlink /Applications
+    ./pkg-dmg --source $BUILD_DIR --target ugene-${VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $VERSION" --symlink /Applications
 fi
