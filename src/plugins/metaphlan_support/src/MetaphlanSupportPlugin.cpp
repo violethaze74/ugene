@@ -28,7 +28,7 @@
 namespace U2 {
 
 const QString MetaphlanSupportPlugin::PLUGIN_NAME = QCoreApplication::tr("MetaPhlAn2 external tool support");
-const QString MetaphlanSupportPlugin::PLUGIN_DESCRIPRION = QCoreApplication::tr("");
+const QString MetaphlanSupportPlugin::PLUGIN_DESCRIPRION = QCoreApplication::tr("MetaPhlAn2 (METAgenomic PHyLogenetic ANalysis) is a tool for profiling the composition of microbial communities (bacteria, archaea, eukaryotes, and viruses) from whole-metagenome shotgun sequencing data.");
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     MetaphlanSupportPlugin *plugin = new MetaphlanSupportPlugin();

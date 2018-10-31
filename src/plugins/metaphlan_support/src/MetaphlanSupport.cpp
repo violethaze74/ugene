@@ -53,7 +53,7 @@ void MetaphlanSupport::performAdditionalChecks(const QString& toolPath, QString&
     QFileInfo file(toolPath);
     QString utilScriptFullPath = QString("%1/%2").arg(file.absolutePath()).arg(UTIL_SCRIPT);
     if (!QFileInfo::exists(utilScriptFullPath)) {
-        errorString = QString("%1 script %2 is not present!").arg(TOOL_NAME).arg(UTIL_SCRIPT);
+        errorString = tr("%1 script %2 is not present!").arg(TOOL_NAME).arg(UTIL_SCRIPT);
     }
 }
 
