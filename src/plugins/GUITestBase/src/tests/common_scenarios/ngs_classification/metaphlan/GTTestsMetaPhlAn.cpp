@@ -63,7 +63,9 @@ void checkUtilScript(GUITestOpStatus &os, const bool shouldBeValid) {
     QString pathToMetaphlanDir = QFileInfo(pathToMetaphlan).absolutePath();
     QString utilNativeSeparators = QDir::toNativeSeparators(UTIL_SCRIPT);
     if (QFileInfo::exists(pathToMetaphlanDir + utilNativeSeparators) != shouldBeValid) {
-        os.setError(QString("Unitl script %1 doesn't exist").arg(utilNativeSeparators));
+        os.setError(QString("Unitl script %1 %2 exist, but %3 be").arg(utilNativeSeparators)
+                                                                  .arg(shouldBeValid ? "doesn't" : "does")
+                                                                  .arg(shouldBeValid ? "should" : "shoudn't"));
     }
 }
 
