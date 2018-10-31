@@ -102,6 +102,13 @@ exclude_list_enabled() {
     SUBDIRS -= src/libs_3rdparty/QSpec
 }
 
+message("Qt version is $${QT_VERSION}")
+if (useWebKit()) {
+    message("WebKit is used as web engine")
+} else {
+    message("Qt WebEngine is used as web engine")
+}
+
 GUI_TESTING_ENABLED = 0
 if (exists(./src/libs_3rdparty/QSpec/QSpec.pro): !exclude_list_enabled()) {
     if (!useWebKit()) {
