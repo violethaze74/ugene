@@ -421,7 +421,6 @@ PropertyDelegate::Type ComboBoxWithDbUrlsDelegate::type() const {
 /********************************
 * ComboBoxWithChecksDelegate
 ********************************/
-
 PropertyWidget * ComboBoxWithChecksDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
     return new ComboBoxWithChecksWidget(items, parent);
 }
@@ -451,14 +450,22 @@ void ComboBoxWithChecksDelegate::setModelData(QWidget *editor, QAbstractItemMode
     model->setData(index, box->value(), ConfigurationEditor::ItemValueRole);
 }
 
-void ComboBoxWithChecksDelegate::getItems( QVariantMap &items ) const {
+void ComboBoxWithChecksDelegate::getItems(QList<ComboBoxWithChecksItem> &items) const {
     items = this->items;
 }
 
 QVariant ComboBoxWithChecksDelegate::getDisplayValue(const QVariant& val) const {
-    QString display = val.toString();
-    emit si_valueChanged( display );
-    return QVariant( display );
+    QStringList display;
+    foreach(const QString& id, val.toString().split(",")) {
+        foreach(const ComboBoxWithChecksItem& item, items) {
+            if (item.id == id) {
+                display.append(item.name);
+                break;
+            }
+        }
+    }
+    emit si_valueChanged(val.toString());
+    return QVariant(display.join(","));
 }
 
 /********************************

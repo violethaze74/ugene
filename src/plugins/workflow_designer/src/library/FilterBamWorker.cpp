@@ -200,13 +200,13 @@ void FilterBamWorkerFactory::init() {
         QVariantMap lenMap; lenMap["minimum"] = QVariant(0); lenMap["maximum"] = QVariant(INT_MAX);
         delegates[MAPQ_ID] = new SpinBoxDelegate(lenMap);
 
-        QVariantMap flags;
+        QList<ComboBoxWithChecksItem> formatsWithChecks;
         QMap<QString, QString> filterCodes = getFilterCodes();
-        foreach(const QString& key, filterCodes.keys()){
-            flags[key] = false;
+        for (QMap<QString, QString>::const_iterator iter = filterCodes.begin(); iter != filterCodes.end(); ++iter) {
+            formatsWithChecks.append(ComboBoxWithChecksItem(iter.key(), iter.value(), false));
         }
-        delegates[ACCEPT_FLAG_ID] = new ComboBoxWithChecksDelegate(flags);
-        delegates[FLAG_ID] = new ComboBoxWithChecksDelegate(flags);
+        delegates[ACCEPT_FLAG_ID] = new ComboBoxWithChecksDelegate(formatsWithChecks);
+        delegates[FLAG_ID] = new ComboBoxWithChecksDelegate(formatsWithChecks);
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);

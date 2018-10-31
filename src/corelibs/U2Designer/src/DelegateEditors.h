@@ -309,7 +309,7 @@ private:
 class U2DESIGNER_EXPORT ComboBoxWithChecksDelegate: public PropertyDelegate{
     Q_OBJECT
 public:
-    ComboBoxWithChecksDelegate(const QVariantMap& items, QObject *parent = 0) : PropertyDelegate(parent), items(items){}
+    ComboBoxWithChecksDelegate(const QList<ComboBoxWithChecksItem> &items, QObject *parent = 0) : PropertyDelegate(parent), items(items) {}
     virtual ~ComboBoxWithChecksDelegate() {}
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
@@ -325,13 +325,13 @@ public:
         return new ComboBoxWithChecksDelegate(items, parent());
     }
 
-    void getItems( QVariantMap &items ) const;
+    void getItems(QList<ComboBoxWithChecksItem> &items) const;
 
 signals:
     void si_valueChanged( const QString & newVal ) const;
 
 protected:
-    QVariantMap items;
+    QList<ComboBoxWithChecksItem> items;
 };
 
 class U2DESIGNER_EXPORT ComboBoxWithBoolsDelegate: public ComboBoxDelegate {
