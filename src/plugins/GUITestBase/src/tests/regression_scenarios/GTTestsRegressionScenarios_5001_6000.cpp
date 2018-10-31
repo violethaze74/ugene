@@ -4099,6 +4099,7 @@ GUI_TEST_CLASS_DEFINITION(test_5790) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
     //2. Click to position on read
@@ -4107,18 +4108,18 @@ GUI_TEST_CLASS_DEFINITION(test_5790) {
 
     //3. Enter edit mode
     GTKeyboardDriver::keyClick('i', Qt::ShiftModifier);
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep();
     //4. Click escape
     //Expected state: selection still present
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os) == 0, "MCA is not in view mode");
 
     //5. Click escape
     //Expected state: selection disappeared
     QRect emptyselection = QRect();
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::getSelectedRect(os) == emptyselection, "Selection isn't empty but should be");
 }
 
