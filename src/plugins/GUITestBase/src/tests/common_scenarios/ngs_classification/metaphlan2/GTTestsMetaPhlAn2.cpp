@@ -47,7 +47,8 @@ const QString ET_BOWTIE_2_ALIGNER = "Bowtie 2 aligner";
 const QString ET_BOWTIE_2_BUILD = "Bowtie 2 build indexer";
 const QString ET_METAPHLAN = "MetaPhlAn2";
 const QString UTIL_SCRIPT = "/utils/read_fastx.py";
-const QString PATH_PYTHON_WITHOUT_NUMPY = "/_common_data/regression/6253/python_without_numpy";
+const QString PATH_PYTHON_WITHOUT_NUMPY = "/_common_data/regression/6253/python_without_numpy/bin";
+const QString NAME_PYTHON_WITHOUT_NUMPY = "python2.7";
 
 void checkExternalToolValid(GUITestOpStatus &os, const QString& toolName, const bool shouldBeValid) {
     const bool isToolValid = AppSettingsDialogFiller::isExternalToolValid(os, toolName);
@@ -91,7 +92,7 @@ void checkDependedTools(GUITestOpStatus &os, const QString& tool, const QStringL
 }
 
 QString getPythonWithoutNumpyPath() {
-    return UGUITest::dataDir + QDir::toNativeSeparators(PATH_PYTHON_WITHOUT_NUMPY);
+    return UGUITest::testDir + QDir::toNativeSeparators(PATH_PYTHON_WITHOUT_NUMPY);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
@@ -180,7 +181,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is installed.
-            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath());
+            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath(), NAME_PYTHON_WITHOUT_NUMPY);
             checkExternalToolValid(os, ET_PYTHON, true);
 
             //"numpy" python module is not installed.
@@ -290,7 +291,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is installed.
-            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath());
+            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath(), NAME_PYTHON_WITHOUT_NUMPY);
             checkExternalToolValid(os, ET_PYTHON, true);
 
             //"numpy" python module is not installed.

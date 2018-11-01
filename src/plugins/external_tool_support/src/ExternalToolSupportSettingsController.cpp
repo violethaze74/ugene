@@ -98,6 +98,7 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
     connect(toolPathEdit, SIGNAL(editingFinished()), this, SLOT(sl_toolPathChanged()));
 
     QToolButton* selectToolPathButton = new QToolButton(widget);
+    selectToolPathButton->setObjectName("ResetExternalTool");
     selectToolPathButton->setVisible(true);
     selectToolPathButton->setText("...");
     selectToolPathButton->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));

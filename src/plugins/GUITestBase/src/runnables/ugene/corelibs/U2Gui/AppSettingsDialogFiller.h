@@ -42,6 +42,7 @@ public:
     static void openTab(HI::GUITestOpStatus &os, Tabs tab);
     static void clickOnTool(HI::GUITestOpStatus &os, const QString& toolName);
     static void setExternalToolPath(HI::GUITestOpStatus &os, const QString& toolName, const QString& toolPath);
+    static void setExternalToolPath(HI::GUITestOpStatus &os, const QString& toolName, const QString& path, const QString& name);
     static QString getExternalToolPath(HI::GUITestOpStatus &os, const QString& toolName);
     static bool isExternalToolValid(HI::GUITestOpStatus &os, const QString& toolName);
     static void clearToolPath(HI::GUITestOpStatus &os, const QString& toolName);
