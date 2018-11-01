@@ -150,7 +150,7 @@
 #include "shtirlitz/Shtirlitz.h"
 #include "task_view/TaskViewController.h"
 #include "update/UgeneUpdater.h"
-#include "welcome_page/WelcomePageController.h"
+#include "welcome_page/WelcomePageMdiController.h"
 
 using namespace U2;
 
@@ -747,7 +747,7 @@ int main(int argc, char **argv)
     QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), splashScreen, SLOT(sl_close()));
     QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), mw, SLOT(sl_show()));
 
-    WelcomePageController *wpc = new WelcomePageController();
+    WelcomePageMdiController *wpc = new WelcomePageMdiController();
     QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), wpc, SLOT(sl_showPage()));
     QObject::connect(mw, SIGNAL(si_showWelcomePage()), wpc, SLOT(sl_showPage()));
     QObject::connect(pli, SIGNAL(si_recentListChanged()), wpc, SLOT(sl_onRecentChanged()));

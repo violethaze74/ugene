@@ -148,16 +148,6 @@ echo
 echo macdeployqt running...
 macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
 
-# Do not use @loader_path that produced by macdeployqt with "-executable" argument,
-# it cause a crash with plugins loading (UGENE-2994)
-# Restore @executable_path:
-echo
-echo @executable_path restoring...
-for PLUGIN in $PLUGIN_LIST
-do
-    restorePluginsQtInstallNames $PLUGIN
-done
-
 mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 
 cd  $BUILD_DIR 

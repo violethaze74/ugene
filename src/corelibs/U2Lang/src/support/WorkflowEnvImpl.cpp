@@ -39,11 +39,11 @@ DataTypeRegistry * WorkflowEnvImpl::initDataRegistry() {
     qRegisterMetaTypeStreamOperators<StrStrMap>("StrStrMap");
     qRegisterMetaTypeStreamOperators<CfgMap>("CfgMap");
     qRegisterMetaTypeStreamOperators<IterationCfg>("IterationCfg");
-    qRegisterMetaType<U2::Workflow::Monitor::FileInfo>( "U2::Workflow::Monitor::FileInfo" );
-    qRegisterMetaType<WorkflowNotification>( "WorkflowNotification" );
-    qRegisterMetaType<U2::Workflow::Monitor::WorkerInfo>( "U2::Workflow::Monitor::WorkerInfo" );
-    qRegisterMetaType<U2::Workflow::Monitor::LogEntry>( "U2::Workflow::Monitor::LogEntry" );
-    qRegisterMetaType<U2::ActorId>( "U2::ActorId" );
+    qRegisterMetaType<Monitor::FileInfo>("Monitor::FileInfo");
+    qRegisterMetaType<WorkflowNotification>("WorkflowNotification");
+    qRegisterMetaType<Monitor::WorkerInfo>("Monitor::WorkerInfo");
+    qRegisterMetaType<Monitor::LogEntry>("Monitor::LogEntry");
+    qRegisterMetaType<ActorId>("ActorId");
 
     DataTypeRegistry *r = new DataTypeRegistry();
 

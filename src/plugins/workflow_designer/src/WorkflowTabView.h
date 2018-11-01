@@ -27,6 +27,7 @@
 #include <QToolButton>
 
 #include <U2Designer/Dashboard.h>
+#include <U2Designer/DashboardInfo.h>
 
 #include <U2Lang/WorkflowMonitor.h>
 

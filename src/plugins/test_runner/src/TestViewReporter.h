@@ -24,6 +24,7 @@
 
 #include "TestViewController.h"
 
+#include <U2Gui/U2WebView.h>
 #include <U2Gui/MainWindow.h>
 #include <ui_Reporter.h>
 
@@ -76,6 +77,7 @@ namespace U2 {
 
     QString curReportText;
     TestViewController* curParent;
+    U2WebView *reportText;
 
     QAction* save;
     private slots:
