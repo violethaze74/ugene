@@ -111,6 +111,7 @@ PLUGIN_LIST="annotator \
             kalign \
             kraken_support \
             linkdata_support \
+            metaphlan2_support \
             ngs_reads_classification \
             opencl_support \
             orf_marker \

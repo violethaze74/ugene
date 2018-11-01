@@ -84,7 +84,7 @@ if DEFINED UGENE_CISTROME_PATH (
     move %UGENE_CISTROME_PATH% %OUTPUT_DIR%\data\
 )
 
-REM copy libs 
+REM copy libs
 call %INSTALL_DIR%\copy_lib.cmd ugenedb
 call %INSTALL_DIR%\copy_lib.cmd humimit
 call %INSTALL_DIR%\copy_lib.cmd breakpad
@@ -123,6 +123,7 @@ call %INSTALL_DIR%\copy_plugin.cmd hmm2
 call %INSTALL_DIR%\copy_plugin.cmd kalign
 call %INSTALL_DIR%\copy_plugin.cmd kraken_support
 call %INSTALL_DIR%\copy_plugin.cmd linkdata_support
+call %INSTALL_DIR%\copy_plugin.cmd metaphlan2_support
 call %INSTALL_DIR%\copy_plugin.cmd ngs_reads_classification
 call %INSTALL_DIR%\copy_plugin.cmd opencl_support
 call %INSTALL_DIR%\copy_plugin.cmd orf_marker
