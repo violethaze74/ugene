@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "MetaphlanSupport.h"
+#include "Metaphlan2Support.h"
 
 #include <U2Core/U2SafePoints.h>
 
@@ -27,14 +27,14 @@
 
 namespace U2 {
 
-const QString MetaphlanSupport::TOOL_NAME = "MetaPhlAn2";
-const QString MetaphlanSupport::UTIL_SCRIPT = "utils/read_fastx.py";
+const QString Metaphlan2Support::TOOL_NAME = "MetaPhlAn2";
+const QString Metaphlan2Support::UTIL_SCRIPT = "utils/read_fastx.py";
 //These constants are taken from the 'external_tool_support' project
-const QString MetaphlanSupport::ET_PYTHON = "python";
-const QString MetaphlanSupport::ET_PYTHON_NUMPY = "numpy";
-const QString MetaphlanSupport::ET_BOWTIE_2_ALIGNER = "Bowtie 2 aligner";
+const QString Metaphlan2Support::ET_PYTHON = "python";
+const QString Metaphlan2Support::ET_PYTHON_NUMPY = "numpy";
+const QString Metaphlan2Support::ET_BOWTIE_2_ALIGNER = "Bowtie 2 aligner";
 
-MetaphlanSupport::MetaphlanSupport(const QString& name, const QString& path) : ExternalTool(name, path) {
+Metaphlan2Support::Metaphlan2Support(const QString& name, const QString& path) : ExternalTool(name, path) {
     validationArguments << "--version";
 
     toolKitName = TOOL_NAME;
@@ -49,7 +49,7 @@ MetaphlanSupport::MetaphlanSupport(const QString& name, const QString& path) : E
     versionRegExp = QRegExp("MetaPhlAn version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");
 }
 
-void MetaphlanSupport::performAdditionalChecks(const QString& toolPath, QString& errorString) const {
+void Metaphlan2Support::performAdditionalChecks(const QString& toolPath, QString& errorString) const {
     QFileInfo file(toolPath);
     QString utilScriptFullPath = QString("%1/%2").arg(file.absolutePath()).arg(UTIL_SCRIPT);
     if (!QFileInfo::exists(utilScriptFullPath)) {

@@ -72,7 +72,7 @@ SUBDIRS += \
           src/plugins/genome_aligner \
           src/plugins/kraken_support \
           src/plugins/linkdata_support \
-          src/plugins/metaphlan_support \
+          src/plugins/metaphlan2_support \
           src/plugins/orf_marker \
           src/plugins/pcr \
           src/plugins/perf_monitor \

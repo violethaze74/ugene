@@ -22,8 +22,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "MetaphlanSupport.h"
-#include "MetaphlanSupportPlugin.h"
+#include "Metaphlan2Support.h"
+#include "Metaphlan2SupportPlugin.h"
 
 namespace U2 {
 
@@ -40,14 +40,14 @@ MetaphlanSupportPlugin::MetaphlanSupportPlugin()
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
 
-    etRegistry->registerEntry(new MetaphlanSupport(MetaphlanSupport::TOOL_NAME));
+    etRegistry->registerEntry(new Metaphlan2Support(Metaphlan2Support::TOOL_NAME));
 }
 
 MetaphlanSupportPlugin::~MetaphlanSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
 
-    etRegistry->unregisterEntry(MetaphlanSupport::TOOL_NAME);
+    etRegistry->unregisterEntry(Metaphlan2Support::TOOL_NAME);
 }
 
 

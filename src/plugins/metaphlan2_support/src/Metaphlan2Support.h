@@ -26,10 +26,10 @@
 
 namespace U2 {
 
-class MetaphlanSupport : public ExternalTool {
+class Metaphlan2Support : public ExternalTool {
     Q_OBJECT
 public:
-    MetaphlanSupport(const QString& name, const QString& path = "");
+    Metaphlan2Support(const QString& name, const QString& path = "");
     void performAdditionalChecks(const QString& toolPath, QString& errorString) const;
 
     static const QString TOOL_NAME;
