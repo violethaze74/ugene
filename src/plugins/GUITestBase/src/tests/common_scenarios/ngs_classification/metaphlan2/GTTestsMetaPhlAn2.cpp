@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTTestsMetaPhlAn.h"
+#include "GTTestsMetaPhlAn2.h"
 
 #include <QApplication>
 #include <QDir>
@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_mg_metaphlan_external_tool {
+namespace GUITest_common_scenarios_mg_metaphlan2_external_tool {
 using namespace HI;
 
 const QString ET_PYTHON = "python";
@@ -317,5 +317,5 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 
-} // namespace GUITest_common_scenarios_mg_metaphlan_external_tool
+} // namespace GUITest_common_scenarios_mg_metaphlan2_external_tool
 } // namespace U2

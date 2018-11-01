@@ -26,9 +26,9 @@
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_mg_metaphlan_external_tool {
+namespace GUITest_common_scenarios_mg_metaphlan2_external_tool {
 #undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_common_scenarios_mg_metaphlan_external_tool"
+#define GUI_TEST_SUITE "GUITest_common_scenarios_mg_metaphlan2_external_tool"
 
 GUI_TEST_CLASS_DECLARATION(test_0001)
 GUI_TEST_CLASS_DECLARATION(test_0002)
@@ -38,7 +38,7 @@ GUI_TEST_CLASS_DECLARATION(test_0005)
 GUI_TEST_CLASS_DECLARATION(test_0006)
 
 #undef GUI_TEST_SUITE
-} // namespace GUITest_common_scenarios_mg_metaphlan_external_tool
+} // namespace GUITest_common_scenarios_mg_metaphlan2_external_tool
 
 } //namespace U2
 
