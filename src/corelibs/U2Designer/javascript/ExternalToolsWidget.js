@@ -61,10 +61,6 @@ function ExternalToolsWidget(containerId) {
 
     //constructor
     lwInitContainer(self._container, 'params_tab_id_0');
-    //  agent.extToolsLog.forEach(function(entry){
-    //    addInfoToWidget(entry);
-    //    });
-    //  lastEntryIndex = agent.extToolsLog.length - 1;
     showOnlyLang(agent.lang); //translate labels
 
     //private
@@ -165,8 +161,7 @@ function ExternalToolsWidget(containerId) {
             return;
         }
 
-        var infoNode;
-        infoNode = document.getElementById(launchNodeId + '_info_' + nodeNum);
+        var infoNode = document.getElementById(launchNodeId + '_info_' + nodeNum);
         var launchSpan = document.getElementById(launchNodeId + '_span');
         switch (contentType) {
         // see enum initialization in ExternalToolRunTask.h

@@ -41,7 +41,6 @@ cp ${SOURCE_DIR}/src/ugeneui/images/ugene-doc.icns "$TARGET_APP_DIR/Contents/Res
 
 mkdir "${TARGET_EXE_DIR}/../Frameworks"
 mkdir "${TARGET_EXE_DIR}/plugins"
-mkdir "${TARGET_EXE_DIR}/data"
 
 echo copying translations
 cp $RELEASE_DIR/transl_*.qm "$TARGET_EXE_DIR"
@@ -164,5 +163,5 @@ if [ ! "$1" ]; then
 
     echo
     echo pkg-dmg running...
-    ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk} --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
+    ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
 fi
