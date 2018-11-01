@@ -197,7 +197,7 @@ void FilterBamWorkerFactory::init() {
         formatMap[BaseDocumentFormats::BAM] = BaseDocumentFormats::BAM;
         formatMap[BaseDocumentFormats::SAM] = BaseDocumentFormats::SAM;
         delegates[OUT_FORMAT_ID] = new ComboBoxDelegate(formatMap);
-        QVariantMap lenMap; lenMap["minimum"] = QVariant(0); lenMap["maximum"] = QVariant(INT_MAX);
+        QVariantMap lenMap; lenMap["minimum"] = QVariant(0); lenMap["maximum"] = QVariant(255);
         delegates[MAPQ_ID] = new SpinBoxDelegate(lenMap);
 
         QList<ComboBoxWithChecksItem> formatsWithChecks;
