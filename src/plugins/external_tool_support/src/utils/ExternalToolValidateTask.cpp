@@ -143,14 +143,12 @@ void ExternalToolJustValidateTask::run() {
             }
         }
 
-        if (!parseLog(validation)) {
-            return;
-        }
-
-        if (!isValid) {
-            return;
-        }
+        CHECK(parseLog(validation), );
+        CHECK(isValid, );
     }
+
+    performAdditionalChecks();
+    CHECK_OP(stateInfo, );
 }
 
 Task::ReportResult ExternalToolJustValidateTask::report() {
@@ -287,6 +285,15 @@ void ExternalToolJustValidateTask::checkArchitecture(const QString &toolPath) {
         setError("This external tool has unsupported architecture");
     }
 #endif
+}
+
+void ExternalToolJustValidateTask::performAdditionalChecks() {
+    QString errorString;
+    tool->performAdditionalChecks(toolPath, errorString);
+    CHECK(!errorString.isEmpty(), );
+
+    isValid = false;
+    stateInfo.setError(errorString);
 }
 
 ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString& _toolName) :

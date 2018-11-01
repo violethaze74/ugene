@@ -198,6 +198,7 @@ add-plugin hmm2
 add-plugin kalign
 add-plugin kraken_support
 add-plugin linkdata_support
+add-plugin metaphlan2_support
 add-plugin ngs_reads_classification
 add-plugin orf_marker
 add-plugin opencl_support
