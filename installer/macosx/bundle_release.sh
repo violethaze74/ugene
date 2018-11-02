@@ -1,7 +1,9 @@
 PRODUCT_NAME="ugeneui"
 PRODUCT_DISPLAY_NAME="Unipro UGENE"
 
-if [ -z SOURCE_DIR ]; then SOURCE_DIR=../..; fi
+if [ -z "${SOURCE_DIR}" ]; then SOURCE_DIR=../..; fi
+
+echo Source: $SOURCE_DIR
 
 VERSION_MAJOR=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_MAJOR=' | awk -F'=' '{print $2}'`
 VERSION_MINOR=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_MINOR=' | awk -F'=' '{print $2}'`
