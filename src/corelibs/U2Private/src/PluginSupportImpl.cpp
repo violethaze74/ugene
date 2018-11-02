@@ -582,7 +582,7 @@ void VerifyPluginTask::run() {
     int elapsedTime = 0;
     while(!proc->waitForFinished(1000) && elapsedTime < timeOut) {
         if(isCanceled()) {
-            proc->kill();
+            CmdlineTaskRunner::killProcessTree(proc);
         }
         elapsedTime += 1000;
     }

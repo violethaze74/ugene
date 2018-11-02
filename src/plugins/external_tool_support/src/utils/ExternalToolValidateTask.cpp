@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
 #include <U2Core/ScriptingToolRegistry.h>
@@ -171,7 +172,7 @@ Task::ReportResult ExternalToolJustValidateTask::report() {
 }
 
 void ExternalToolJustValidateTask::cancelProcess() {
-    externalToolProcess->kill();
+    CmdlineTaskRunner::killProcessTree(externalToolProcess);
 }
 
 void ExternalToolJustValidateTask::setEnvironment(ExternalTool *tool) {

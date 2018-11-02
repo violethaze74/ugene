@@ -27,6 +27,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
@@ -37,12 +38,6 @@
 #include "GUITestLauncher.h"
 #include "GUITestService.h"
 #include "GUITestTeamcityLogger.h"
-
-#ifdef Q_OS_WIN
-#include <tlhelp32.h>
-#else
-#include <unistd.h>
-#endif
 
 #define TIMEOUT 480000
 
@@ -57,98 +52,6 @@
 #define GUITESTING_REPORT_PREFIX "GUITesting"
 
 namespace U2 {
-
-static QList<int> getChildrenProcesses(qint64 processId, bool fullTree=true) {
-    QList<int> children;
-
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-    char *buff = NULL;
-    size_t len = 255;
-    char command[256] = {0};
-
-    sprintf(command,"ps -ef|awk '$3==%u {print $2}'", (unsigned)processId);
-    FILE *fp = (FILE*) popen(command, "r");
-    while (getline(&buff, &len, fp) >= 0) {
-        int child_process_id = QString(buff).toInt();
-        if (child_process_id != 0) {
-            children << child_process_id;
-        }
-    }
-    free(buff);
-    fclose(fp);
-#elif defined(Q_OS_WIN)
-    HANDLE hProcessSnap;
-    HANDLE hProcess;
-    PROCESSENTRY32 pe32;
-
-    // Take a snapshot of all processes in the system.
-    hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    CHECK(hProcessSnap != INVALID_HANDLE_VALUE, children);
-
-    // Set the size of the structure before using it.
-    pe32.dwSize = sizeof(PROCESSENTRY32);
-
-    // Retrieve information about the first process,
-    // and exit if unsuccessful
-    CHECK_EXT(Process32First(hProcessSnap, &pe32), CloseHandle(hProcessSnap), children);
-
-    // Now walk the snapshot of processes, and
-    // display information about each process in turn
-    do {
-        if (pe32.th32ParentProcessID == processId) {
-            hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
-            if (hProcess != NULL) {
-                CloseHandle(hProcess);
-                children << pe32.th32ProcessID;
-            }
-        }
-    } while (Process32Next(hProcessSnap, &pe32));
-
-    CloseHandle(hProcessSnap);
-#endif
-
-    if (fullTree && children.length() > 0) {
-        foreach(int child, children) {
-            QList<int> children2 = getChildrenProcesses(child, fullTree);
-            foreach(int child2, children2) {
-                children << child2;
-            }
-        }
-    }
-
-    return children;
-}
-
-static int killChildrenProcesses(qint64 processId, bool fullTree=true) {
-    int result = 0;
-
-    QList<int> children = getChildrenProcesses(processId, fullTree);
-
-    while (!children.isEmpty()) {
-        int child = children.takeLast();
-
-        uiLog.trace("kill process: " + QString::number(child));
-
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-        int exist = QProcess::execute("kill -0 " + QString::number(child));
-        if (exist == 0) {
-            result += QProcess::execute("kill -9 " + QString::number(child));
-        }
-        usleep(1000000);
-#elif defined(Q_OS_WIN)
-        DWORD dwDesiredAccess = PROCESS_TERMINATE;
-        BOOL  bInheritHandle = FALSE;
-        HANDLE hProcess = OpenProcess(dwDesiredAccess, bInheritHandle, child);
-        if (hProcess != NULL) {
-            result += TerminateProcess(hProcess, 1);
-            CloseHandle(hProcess);
-        }
-        Sleep(1000);
-#endif
-    }
-
-    return result;
-}
 
 GUITestLauncher::GUITestLauncher(int _suiteNumber, bool _noIgnored)
     : Task("gui_test_launcher", TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled),
@@ -353,7 +256,7 @@ QString GUITestLauncher::performTest(const QString& testName) {
     QProcess::ExitStatus exitStatus = process.exitStatus();
 
     if (!finished || exitStatus != QProcess::NormalExit) {
-        killChildrenProcesses(processId);
+        CmdlineTaskRunner::killChildrenProcesses(processId);
     }
 
 #ifdef Q_OS_WIN
@@ -374,7 +277,7 @@ QString GUITestLauncher::performTest(const QString& testName) {
         return testResult;
     }
 #ifdef Q_OS_WIN
-    process.kill();
+    CmdlineTaskRunner::killProcessTree(process);
 #endif
     if (finished) {
         return tr("An error occurred while finishing UGENE: ") + process.errorString() + '\n' + testResult;

@@ -42,6 +42,12 @@ public:
 class U2CORE_EXPORT CmdlineTaskRunner : public Task {
     Q_OBJECT
 public:
+    static QList<long> getChildrenProcesses(qint64 processId, bool fullTree=true);
+    static int killChildrenProcesses(qint64 processId, bool fullTree=true);
+    static int killProcessTree(QProcess *process);
+    static int killProcessTree(qint64 processId);
+    static int killProcess(qint64 processId);
+
     CmdlineTaskRunner(const CmdlineTaskConfig &config);
 
     void prepare();
