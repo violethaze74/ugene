@@ -19,113 +19,160 @@
  * MA 02110-1301, USA.
  */
 
- /** Creates the ParametersWidget layout and the first active tab (without parameters). */
+/** Creates the ParametersWidget layout and the first active tab (without parameters). */
 
-function lwInitConteiner(container, activeTabId) {
-    var mainHtml =
-        '<div class="tree" id="treeRoot">' +
-           '<ul>'  +
-           '</ul>' +
-        '</div>';
+function ExternalToolsWidget(containerId) {
+    document.getElementById("ext_tools_tab_menu").style.display = ""; // set visible menu
+    DashboardWidget.apply(this, arguments); //inheritance
+    var LINE_BREAK = "break_line";
+    var BACK_SLASH = "s_quote";
+    var SINGLE_QUOTE = "b_slash";
 
-    container.innerHTML = mainHtml;
-    initializeCopyMenu();
-}
+    //private
+    var self = this;
+    var taskCount = {};
 
-function addChildrenElement(parentObject, elemTag, elemHTML) {
-    var newElem = document.createElement(elemTag);
-    newElem.innerHTML = elemHTML;
-    parentObject.appendChild(newElem);
-    return newElem;
-}
-function addChildrenNode(parentNode, nodeContent, spanId, nodeClass) {
+    //public
+    this.sl_onLogChanged = function(entry) {
+        addInfoToWidget(entry);
+    };
 
-    var newListElem = addChildrenElement(parentNode, 'LI', '');
-    newListElem.className = 'parent_li';
-    var span = addChildrenElement(newListElem, 'span', nodeContent);
-    span.setAttribute('title', 'Collapse this branch');
+    this.sl_onLogUpdate = function(extToolsLog) {
+        if (lastEntryIndex === extToolsLog.length - 1)
+            return;
+        var logEntries = extToolsLog;
+        for (var i = lastEntryIndex + 1; i < logEntries.length; i++) {
+            var entry = logEntries[i];
+            addInfoToWidget(entry);
+        }
+        lastEntryIndex = extToolsLog.length - 1;
+    };
 
-    span.setAttribute('onclick', 'collapseNode(this)');
-    span.setAttribute('onmouseover', 'highlightElement(this, event, true)');
-    span.setAttribute('onmouseout', 'highlightElement(this, event, false)');
-    span.setAttribute('onmouseup', 'return contextmenu(event, this);');
+    function lwInitContainer(container, activeTabId) {
+        var mainHtml =
+                '<div class="tree" id="treeRoot">' +
+                '<ul>'  +
+                '</ul>' +
+                '</div>';
 
-    span.id = spanId;
-    span.className = nodeClass;
-    var newList = addChildrenElement(newListElem, 'UL', '');
+        container.innerHTML = mainHtml;
+        initializeCopyMenu();
+    }
 
-    return newList;
-}
+    //constructor
+    lwInitContainer(self._container, 'params_tab_id_0');
+    showOnlyLang(agent.lang); //translate labels
 
-function collapseNode(element) {
-        var children = $(element).parent('li.parent_li').find(' > ul > li');
-        if (children.is(":visible") == $(element).is(":visible")) {
-            children.hide(0);
-            $(element).attr('title', 'Expand this branch');
+    //private
+    var lastEntryIndex = 0;
+
+    function addInfoToWidget(entry) {
+        var tabId = "log_tab_id_" + entry.actorName;
+        var runId = entry.toolName + " run " + entry.runNumber;
+
+        var mapId = tabId + "_" + runId;
+        if (!taskCount.hasOwnProperty(mapId)) {
+            taskCount[mapId] = 0;
+        }
+        if (entry.logType === 2) {
+            taskCount[mapId]++;
+        }
+        var taskNum = 0;
+        if (entry.logType > 1) {
+            taskNum = taskCount[mapId];
+        }
+
+        var lastPartOfLog = entry.lastLine;
+        lastPartOfLog = lastPartOfLog.replace(new RegExp("\n", 'g'), "break_line");
+        lastPartOfLog = lastPartOfLog.replace(new RegExp("\r", 'g'), "");
+        lastPartOfLog = lastPartOfLog.replace("'", "s_quote");
+        lwAddTreeNode(runId, entry.actorName, tabId, lastPartOfLog, taskNum, entry.logType);
+    }
+
+    function addChildrenElement(parentObject, elemTag, elemHTML) {
+        var newElem = document.createElement(elemTag);
+        newElem.innerHTML = elemHTML;
+        parentObject.appendChild(newElem);
+        return newElem;
+    }
+
+    function addChildrenNode(parentNode, nodeContent, spanId, nodeClass) {
+        var newListElem = addChildrenElement(parentNode, 'LI', '');
+        newListElem.className = 'parent_li';
+        var span = addChildrenElement(newListElem, 'span', nodeContent);
+        span.setAttribute('title', 'Collapse this branch');
+
+        span.setAttribute('onclick', 'collapseNode(this)');
+        span.setAttribute('onmouseover', 'highlightElement(this, event, true)');
+        span.setAttribute('onmouseout', 'highlightElement(this, event, false)');
+        span.setAttribute('onmouseup', 'return contextmenu(event, this);');
+
+        span.id = spanId;
+        span.className = nodeClass;
+        var newList = addChildrenElement(newListElem, 'UL', '');
+
+        return newList;
+    }
+
+    function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, nodeNum, contentType) {
+        var actorTab = document.getElementById(activeTabName);
+        if(actorTab === null) {
+            var root = document.getElementById("treeRoot");
+            var rootList = root.getElementsByTagName('ul')[0];
+            actorTab = addChildrenNode(rootList, activeTabName, activeTabName + '_span', 'badge tool-node');
+            actorTab.id = activeTabName;
+            var activeTabSpan = document.getElementById(activeTabName + '_span');
+        }
+
+        var launchNodeId = activeTabName + nodeName + "_l";
+        var launchNode = document.getElementById(launchNodeId);
+        var idBase = activeTabId + nodeName + "_" + nodeNum;
+        var isLaunchNodeCreated = false;
+        if (null === launchNode) {
+            isLaunchNodeCreated = true;
+            var activeTabSpan = document.getElementById(activeTabName + '_span');
+            launchNode = addChildrenNode(actorTab, nodeName, launchNodeId + '_span', 'badge badge-success');
+            launchNode.id = launchNodeId;
+            var launchSpan = document.getElementById(launchNodeId + '_span');
+
+            var copyRunInfoButton = document.createElement('button');
+            copyRunInfoButton.className = "copyRunInfo";
+            copyRunInfoButton.setAttribute("title", "Copy external tool run string");
+            copyRunInfoButton.setAttribute("onclick", "copyRunInfo(event, \'" + idBase + "\'); return false;");
+
+            copyRunInfoButton.setAttribute('onmousedown', 'return onButtonPressed(this, event);');
+            copyRunInfoButton.setAttribute('onmouseup',   'return onButtonReleased(this, event);');
+
+            copyRunInfoButton.setAttribute('onmouseover', 'highlightElement(this, event, true)');
+            copyRunInfoButton.setAttribute('onmouseout', 'highlightElement(this, event, false)');
+
+            launchSpan.appendChild(copyRunInfoButton);
+            if (activeTabSpan.getAttribute('title') === 'Expand this branch') {
+                collapseNode(activeTabSpan);
+            }
+        }
+
+        if(content) {
+            content = content.replace(/break_line/g, '<br>');
+            content = content.replace(/(<br>){3,}/g, '<br><br>');
+            content = content.replace(/s_quote/g, '\'');
+            content = content.replace(/b_slash/g, '\\');
         } else {
-            children.show(0);
-            $(element).attr('title', 'Collapse this branch');
+            return;
         }
-};
 
-function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, nodeNum, contentType) {
-    var actorTab = document.getElementById(activeTabName);
-    if(actorTab === null) {
-        var root = document.getElementById("treeRoot");
-        var rootList = root.getElementsByTagName('ul')[0];
-        actorTab = addChildrenNode(rootList, activeTabName, activeTabName + '_span', 'badge tool-node');
-        actorTab.id = activeTabName;
-        var activeTabSpan = document.getElementById(activeTabName + '_span');
-    }
-
-    var launchNodeId = activeTabName + nodeName + "_l";
-    var launchNode = document.getElementById(launchNodeId);
-    var idBase = activeTabId + nodeName + "_" + nodeNum;
-    var isLaunchNodeCreated = false;
-    if(null === launchNode) {
-        isLaunchNodeCreated = true;
-        var activeTabSpan = document.getElementById(activeTabName + '_span');
-        launchNode = addChildrenNode(actorTab, nodeName, launchNodeId + '_span', 'badge badge-success');
-        launchNode.id = launchNodeId;
+        var infoNode = document.getElementById(launchNodeId + '_info_' + nodeNum);
         var launchSpan = document.getElementById(launchNodeId + '_span');
-
-        var copyRunInfoButton = document.createElement('button');
-        copyRunInfoButton.className = "copyRunInfo";
-        copyRunInfoButton.setAttribute("title", "Copy external tool run string");
-        copyRunInfoButton.setAttribute("onclick", "copyRunInfo(event, \'" + idBase + "\'); return false;");
-
-        copyRunInfoButton.setAttribute('onmousedown', 'return onButtonPressed(this, event);');
-        copyRunInfoButton.setAttribute('onmouseup',   'return onButtonReleased(this, event);');
-
-        copyRunInfoButton.setAttribute('onmouseover', 'highlightElement(this, event, true)');
-        copyRunInfoButton.setAttribute('onmouseout', 'highlightElement(this, event, false)');
-
-        launchSpan.appendChild(copyRunInfoButton);
-        if(activeTabSpan.getAttribute('title') === 'Expand this branch') {
-            collapseNode(activeTabSpan);
-        }
-    }
-    if(content) {
-        content = content.replace(/break_line/g, '<br>');
-        content = content.replace(/(<br>){3,}/g, '<br><br>');
-        content = content.replace(/s_quote/g, '\'');
-        content = content.replace(/b_slash/g, '\\');
-    }
-    else {
-        return;
-    }
-
-    var infoNode = document.getElementById(launchNodeId + '_info_' + nodeNum);
-    var launchSpan = document.getElementById(launchNodeId + '_span');
-    switch(contentType) {
-        case "error":
+        switch (contentType) {
+        // see enum initialization in ExternalToolRunTask.h
+        case 0://"error"
             addContent(launchNode, 'Error log', idBase + '_er', 'badge badge-important', content);
             launchSpan.className = 'badge badge-important';
             break;
-        case "output":
+        case 1: // "output"
             addContent(launchNode, 'Output log', idBase + '_out', 'badge badge-info', content);
             break;
-        case "program":
+        case 2: // "program"
             if (null === infoNode) {
                 infoNode = addInfoNode(launchNode, nodeNum);
                 if (nodeNum > 1) {
@@ -137,8 +184,8 @@ function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, nodeNum, c
             }
             addContent(infoNode, 'Executable file', idBase + '_program', 'badge program-path', content);
             break;
-        case "arguments":
-            if(null === infoNode) {
+        case 3: // "arguments"
+            if (null === infoNode) {
                 infoNode = addInfoNode(launchNode, nodeNum);
                 var outNode = document.getElementById(activeTabId + nodeName + '_0_out_label');
                 if (outNode !== null) {
@@ -147,12 +194,57 @@ function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, nodeNum, c
             }
             addContent(infoNode, 'Arguments', idBase + '_args', 'badge tool-args', content);
             break;
+        }
+
+        if (isLaunchNodeCreated && launchSpan.getAttribute('title') !== 'Expand this branch') {
+            launchSpan = document.getElementById(launchNodeId + '_span');
+            collapseNode(launchSpan);
+        }
     }
-    if(isLaunchNodeCreated && launchSpan.getAttribute('title') !== 'Expand this branch'){
-        launchSpan = document.getElementById(launchNodeId + '_span');
-        collapseNode(launchSpan);
+
+    function addInfoNode(launchNode, nodeNum) {
+        if (null === launchNode) {
+            return null;
+        }
+        var launchNodeId = launchNode.id;
+        var nodeContent = 'Run info ' + nodeNum;
+        var infoNode = addChildrenNode(launchNode, nodeContent, launchNodeId + '_info_span', 'badge run-info');
+        infoNode.id = launchNodeId + '_info_' + nodeNum;
+
+        var launchSpan = document.getElementById(launchNodeId + '_span');
+        if (null === launchSpan) {
+            return infoNode;
+        }
+        if(launchSpan.getAttribute('title') === 'Expand this branch') {
+            collapseNode(launchSpan);
+        }
+        return infoNode;
+    }
+
+    function addContent(parentNode, contentHead, nodeId, contentType, content) {
+        var node = document.getElementById(nodeId);
+
+        if (node !== null) {
+            node.innerHTML += content;
+        } else if (content) {
+            node = addChildrenNode(parentNode, contentHead, nodeId + '_label', contentType);
+            content = content.replace(/^(<br>)+/, "");
+            addChildrenNode(node, content, nodeId, 'content');
+            var parentSpan = document.getElementById(parentNode.id + '_span');
+            if (null === parentSpan) {
+                return;
+            }
+            if (parentSpan.getAttribute('title') === 'Expand this branch') {
+                collapseNode(parentSpan);
+            }
+        }
+    }
+
+    function setElementBackground(element, backgroundColor) {
+        element.style.backgroundColor = backgroundColor;
     }
 }
+
 function onButtonPressed(element, event) {
     if(1 === event.which) {
         $(element).addClass('pressed');
@@ -160,48 +252,11 @@ function onButtonPressed(element, event) {
     event.stopPropagation();
     return false;
 }
+
 function onButtonReleased(element, event) {
     $(element).removeClass('pressed');
     event.stopPropagation();
     return false;
-}
-
-function addInfoNode(launchNode, nodeNum) {
-    if(null === launchNode) {
-        return null;
-    }
-    var launchNodeId = launchNode.id;
-    var nodeContent = 'Run info ' + nodeNum;
-    var infoNode = addChildrenNode(launchNode, nodeContent, launchNodeId + '_info_span', 'badge run-info');
-    infoNode.id = launchNodeId + '_info_' + nodeNum;
-
-    var launchSpan = document.getElementById(launchNodeId + '_span');
-    if(null === launchSpan) {
-        return infoNode;
-    }
-    if(launchSpan.getAttribute('title') === 'Expand this branch') {
-        collapseNode(launchSpan);
-    }
-    return infoNode;
-}
-
-function addContent(parentNode, contentHead, nodeId, contentType, content) {
-    var node = document.getElementById(nodeId);
-
-    if (node !== null) {
-        node.innerHTML += content;
-    } else if(content) {
-        node = addChildrenNode(parentNode, contentHead, nodeId + '_label', contentType);
-        content = content.replace(/^(<br>)+/, "");
-        addChildrenNode(node, content, nodeId, 'content');
-        var parentSpan = document.getElementById(parentNode.id + '_span');
-        if(null === parentSpan) {
-            return;
-        }
-        if(parentSpan.getAttribute('title') === 'Expand this branch') {
-            collapseNode(parentSpan);
-        }
-    }
 }
 
 function copyRunInfo(event, idBase) {
@@ -212,6 +267,7 @@ function copyRunInfo(event, idBase) {
     agent.setClipboardText(resultString);
     event.stopPropagation();
 }
+
 //Get text of the element without linebreak symbols
 function getElementText(elementId) {
     var pathNode = document.getElementById(elementId);
@@ -223,17 +279,24 @@ function getElementText(elementId) {
     return resultString;
 }
 
+function collapseNode(element) {
+    var children = $(element).parent('li.parent_li').find(' > ul > li');
+    if (children.is(":visible") == $(element).is(":visible")) {
+        children.hide(0);
+        $(element).attr('title', 'Expand this branch');
+    } else {
+        children.show(0);
+        $(element).attr('title', 'Collapse this branch');
+    }
+}
+
 function highlightElement(element, e, isHighlighted)  {
     if(true === isHighlighted) {
-        $('li span').removeClass('hoverIntent')
+        $('li span').removeClass('hoverIntent');
         $(element).addClass('hoverIntent');
         e.stopPropagation();
     }
     else {
         $(element).removeClass('hoverIntent');
     }
-}
-
-function setElementBackground(element, backgroundColor) {
-    element.style.backgroundColor = backgroundColor;
 }

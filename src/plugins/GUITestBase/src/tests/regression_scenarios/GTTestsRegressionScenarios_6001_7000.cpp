@@ -1386,9 +1386,8 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     GTUtilsWorkflowDesigner::stopWorkflow(os);
 
     //5. Check id of the blast job in log
-    QString messageStartsWith = "Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID";
-    CHECK_SET_ERR(l.checkMessage(QString("The query sequence is too long for NCBI BLAST API. Approximate maximum length is 8000 characters.")),
-        "No expected message in the log");
+    bool desiredMessage = l.checkMessage("Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID");
+    CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {

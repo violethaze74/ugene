@@ -5,7 +5,12 @@ include( ../../ugene_lib_common.pri )
 
 UGENE_RELATIVE_DESTDIR = ''
 
-QT += svg webkit widgets webkitwidgets
+QT += svg
+useWebKit() {
+    QT += webkitwidgets
+} else {
+    QT += webengine webenginewidgets
+}
 
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2DESIGNER_DLL
 
@@ -28,4 +33,3 @@ unix {
     target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
     INSTALLS += target
 }
-

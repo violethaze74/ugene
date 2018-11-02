@@ -188,10 +188,10 @@ public:
 class U2CORE_EXPORT ExternalToolListener {
 public:
     enum LogType {
-        ERROR_LOG,
-        OUTPUT_LOG,
-        PROGRAM_PATH,
-        ARGUMENTS
+        ERROR_LOG = 0,
+        OUTPUT_LOG = 1,
+        PROGRAM_PATH = 2,
+        ARGUMENTS = 3
     };
 
     ExternalToolListener(ExternalToolLogProcessor *logProcessor = NULL);

@@ -30,9 +30,9 @@
 #include <QWidget>
 #include <QVariant>
 
-#include <U2Lang/ConfigurationEditor.h>
-
 #include <U2Designer/URLLineEdit.h>
+
+#include <U2Lang/ConfigurationEditor.h>
 
 class QStandardItem;
 class QStandardItemModel;
@@ -40,6 +40,14 @@ class QStandardItemModel;
 namespace U2 {
 
 typedef QPair<QString, QVariant> ComboItem;
+
+struct U2DESIGNER_EXPORT ComboBoxWithChecksItem {
+    ComboBoxWithChecksItem(const QString &_name, const QString &_id, bool _check) : name(_name), id(_id), check(_check) {}
+
+    QString name;
+    QString id;
+    bool check;
+};
 
 /************************************************************************/
 /* DefaultPropertyWidget */
@@ -197,7 +205,7 @@ private:
 class U2DESIGNER_EXPORT ComboBoxWithChecksWidget: public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxWithChecksWidget( const QVariantMap &items, QWidget *parent = NULL);
+    ComboBoxWithChecksWidget(const QList<ComboBoxWithChecksItem> &items, QWidget *parent = NULL);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
@@ -207,7 +215,7 @@ signals:
 protected:
     QComboBox *comboBox;
     QStandardItemModel* cm;
-    QVariantMap items;
+    QList<ComboBoxWithChecksItem> items;
 
 protected slots:
     virtual void sl_valueChanged(int index);

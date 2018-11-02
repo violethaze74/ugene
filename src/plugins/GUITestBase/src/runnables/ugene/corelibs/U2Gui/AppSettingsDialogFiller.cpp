@@ -32,15 +32,16 @@
 
 #include <U2Core/Log.h>
 
+#include <QAbstractButton>
 #include <QApplication>
-#include <QListWidget>
-#include <QToolButton>
-#include <QTreeWidget>
 #include <QComboBox>
 #include <QDialogButtonBox>
-#include <QAbstractButton>
-
+#include <QListWidget>
 #include <QTextBrowser>
+#include <QToolButton>
+#include <QTreeWidget>
+
+#include <QFile>
 
 namespace U2{
 using namespace HI;
@@ -129,6 +130,40 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus &os, const
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "setExternalToolPath"
+void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus &os, const QString& toolName, const QString& path, const QString& name) {
+    QWidget *dialog = QApplication::activeModalWidget();
+    GT_CHECK(dialog, "activeModalWidget is NULL");
+
+    openTab(os, ExternalTools);
+
+    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "treeWidget", dialog);
+    QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
+    bool set = false;
+    foreach(QTreeWidgetItem* item, listOfItems) {
+        if (item->text(0) == toolName) {
+            treeWidget->scrollToItem(item);
+            GTThread::waitForMainThread();
+            GTFileDialogUtils *ob = new GTFileDialogUtils(os, path, name, (GTFileDialogUtils::Button)GTFileDialog::Open, GTGlobals::UseMouse);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            QWidget *itemWid = treeWidget->itemWidget(item, 1);
+            GT_CHECK(itemWid, "itemWid is NULL");
+
+            QLineEdit *lineEdit = itemWid->findChild<QLineEdit*>("PathLineEdit");
+            GT_CHECK(lineEdit, "lineEdit is NULL");
+
+            QToolButton* clearToolPathButton = lineEdit->parentWidget()->findChild<QToolButton*>("ResetExternalTool");
+            GT_CHECK(clearToolPathButton, "clearToolPathButton is NULL");
+
+            GTWidget::click(os, clearToolPathButton);
+            set = true;
+        }
+    }
+    GT_CHECK(set, "tool " + toolName + " not found in tree view");
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getExternalToolPath"
 QString AppSettingsDialogFiller::getExternalToolPath(HI::GUITestOpStatus &os, const QString &toolName){
     QWidget *dialog = QApplication::activeModalWidget();
@@ -195,6 +230,21 @@ void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus &os, const QStri
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "isToolDescriptionContainsString"
+bool AppSettingsDialogFiller::isToolDescriptionContainsString(HI::GUITestOpStatus &os, const QString& toolName, const QString& checkIfContains) {
+    QWidget *dialog = QApplication::activeModalWidget();
+    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", false);
+
+    clickOnTool(os, toolName);
+
+    QTextBrowser* textBrowser = GTWidget::findExactWidget<QTextBrowser*>(os, "descriptionTextBrowser", dialog);
+    GT_CHECK_RESULT(textBrowser, "textBrowser is NULL", false);
+
+    QString plainText = textBrowser->toPlainText();
+    return plainText.contains(checkIfContains);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "setTemporaryDirPath"
 void AppSettingsDialogFiller::setTemporaryDirPath(GUITestOpStatus &os, const QString &path) {
     QWidget *dialog = QApplication::activeModalWidget();
@@ -233,6 +283,25 @@ void AppSettingsDialogFiller::openTab(HI::GUITestOpStatus &os, Tabs tab){
     GTGlobals::sleep(300);
 }
 #undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickOnTool"
+void AppSettingsDialogFiller::clickOnTool(HI::GUITestOpStatus &os, const QString& toolName) {
+    QWidget *dialog = QApplication::activeModalWidget();
+    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", );
+
+    openTab(os, ExternalTools);
+
+    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "treeWidget", dialog);
+    QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
+    foreach(QTreeWidgetItem* item, listOfItems){
+        if (item->text(0) == toolName){
+            GTTreeWidget::click(os, item);
+            return;
+        }
+    }
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 NewColorSchemeCreator::NewColorSchemeCreator(HI::GUITestOpStatus &_os, QString _schemeName, alphabet _al, Action _act, bool cancel)

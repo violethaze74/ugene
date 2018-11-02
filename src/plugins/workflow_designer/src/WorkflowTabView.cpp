@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QMouseEvent>
 #include <QGraphicsView>
 #include <QInputDialog>
 #include <QMenu>
+#include <QMouseEvent>
 #include <QPushButton>
 #include <QTabBar>
 #include <QVBoxLayout>
@@ -30,9 +30,10 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "WorkflowViewController.h"
+#include <U2Designer/ScanDashboardsDirTask.h>
 
 #include "WorkflowTabView.h"
+#include "WorkflowViewController.h"
 
 namespace U2 {
 

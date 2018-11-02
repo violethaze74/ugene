@@ -118,6 +118,7 @@ public:
     void start();
     void pause();
     void resume();
+    bool isExternalToolScheme() const;
 
     void registerTask(Task *task, const QString &actor);
 
@@ -139,33 +140,35 @@ public slots:
 
 signals:
     void si_firstNotification();
-    void si_newOutputFile(const U2::Workflow::Monitor::FileInfo &info);
-    void si_newNotification(const WorkflowNotification &info);
-    void si_workerInfoChanged(const QString &actor, const U2::Workflow::Monitor::WorkerInfo &info);
+    void si_newOutputFile(const Monitor::FileInfo &info);
+    void si_newNotification(const WorkflowNotification &info, int count);
+    void si_workerInfoChanged(const QString &actor, const Monitor::WorkerInfo &info);
     void si_progressChanged(int progress);
     void si_runStateChanged(bool paused);
     void si_taskStateChanged(Monitor::TaskState state);
     void si_updateProducers();
     void si_report();
     void si_dirSet(const QString &dir);
-    void si_logChanged(U2::Workflow::Monitor::LogEntry entry);
+    void si_logChanged(Monitor::LogEntry entry);
 
 private:
-    Schema *schema;
-    QScopedPointer<Metadata> meta;
-    QPointer<WorkflowAbstractIterationRunner> task;
-    QMap<QString, Actor*> procMap;
-    QMap<Task*, Actor*> taskMap;
-    QList<Task*> errorTasks;
-    QList<Monitor::FileInfo> outputFiles;
-    NotificationsList notifications;
-    QMap<QString, Monitor::WorkerInfo> workers;
-    QList<Monitor::WorkerParamsInfo> workersParamsInfo;
-    QMap<QString, Monitor::WorkerLogInfo> workersLog;
+    Schema                                      *schema;
+    QScopedPointer<Metadata>                    meta;
+    QPointer<WorkflowAbstractIterationRunner>   task;
+    QMap<QString, QPointer<Actor> >             procMap;
+    StrStrMap                                   processNames;
+    QMap<Task*, Actor*>                         taskMap;
+    QList<Task*>                                errorTasks;
+    QList<Monitor::FileInfo>                    outputFiles;
+    NotificationsList                           notifications;
+    QMap<QString, Monitor::WorkerInfo>          workers;
+    QList<Monitor::WorkerParamsInfo>            workersParamsInfo;
+    QMap<QString, Monitor::WorkerLogInfo>       workersLog;
     QMap<QString, QMultiMap<QString, QString> > workersReports;  // workerId<taskName, taskReport> >
-    QString _outputDir;
+    QString                                     _outputDir;
     bool saveSchema;
     bool started;
+    bool externalTools;
 
 protected:
     void setWorkerInfo(const QString &actorId, const Monitor::WorkerInfo &info);
@@ -218,5 +221,6 @@ Q_DECLARE_METATYPE( U2::Workflow::Monitor::TaskState )
 Q_DECLARE_METATYPE( U2::Workflow::Monitor::FileInfo )
 Q_DECLARE_METATYPE( U2::Workflow::Monitor::WorkerInfo )
 Q_DECLARE_METATYPE( U2::Workflow::Monitor::LogEntry )
+Q_DECLARE_METATYPE( U2::Workflow::Monitor::WorkerParamsInfo )
 
 #endif // _U2_WORKFLOWMONITOR_H_

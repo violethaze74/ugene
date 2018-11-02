@@ -45,7 +45,9 @@ namespace U2 {
 TestViewReporter::TestViewReporter(TestViewController* parent,QTreeWidget* tree,int runTime) : MWMDIWindow("Report")
 {
     curParent=parent;
+    reportText = new U2WebView(this);
     setupUi(this);
+    splitter->addWidget(reportText);
 
     save = new QAction(tr("save"), this);
     save->setObjectName("action_save");

@@ -8,8 +8,14 @@ use_opencl(){
 
 UGENE_RELATIVE_DESTDIR = ''
 
-QT += xml network script webkit
-equals(QT_MAJOR_VERSION, 5): QT += widgets webkitwidgets
+QT += xml network script widgets
+
+useWebKit() {
+    QT += webkit webkitwidgets
+} else {
+    QT += webengine webenginewidgets webchannel websockets
+}
+
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release
 DEFINES+= QT_DLL QT_FATAL_ASSERT
@@ -18,7 +24,7 @@ macx : INCLUDEPATH += /System/Library/Frameworks/Security.framework/Headers
 
 LIBS += -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2View -lU2Test -lU2Lang -lU2Private -lugenedb -lbreakpad -lQSpec
 macx: LIBS += /System/Library/Frameworks/Security.framework/Security
-if(exclude_list_enabled()|!exists( ../libs_3rdparty/QSpec/QSpec.pro )) {
+if (contains(DEFINES, HI_EXCLUDED)) {
     LIBS -= -lQSpec
 }
 
@@ -33,7 +39,7 @@ if(exclude_list_enabled()|!exists( ../libs_3rdparty/QSpec/QSpec.pro )) {
         OBJECTS_DIR=_tmp/obj/debug
         LIBS -= -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2View -lU2Test -lU2Lang -lU2Private -lugenedb -lbreakpad -lQSpec
         LIBS += -L../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Guid -lU2Viewd -lU2Testd -lU2Langd -lU2Privated -lugenedbd -lbreakpadd -lQSpecd
-        if(exclude_list_enabled()|!exists( ../libs_3rdparty/QSpec/QSpec.pro )) {
+        if (contains(DEFINES, HI_EXCLUDED)) {
             LIBS -= -lQSpecd
         }
     }

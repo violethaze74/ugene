@@ -8,14 +8,14 @@ use_opencl(){
 
 UGENE_RELATIVE_DESTDIR = ''
 
-QT += xml network script webkit widgets
+QT += xml network script widgets
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release console
 DEFINES+= QT_DLL QT_FATAL_ASSERT
 INCLUDEPATH += src _tmp ../include ../corelibs/U2Private/src
 
 LIBS += -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Test -lU2Lang -lU2Private -lugenedb -lbreakpad -lQSpec
-if(exclude_list_enabled()|!exists( ../libs_3rdparty/QSpec/QSpec.pro )) {
+if (contains(DEFINES, HI_EXCLUDED)) {
     LIBS -= -lQSpec
 }
 !debug_and_release|build_pass {
@@ -28,7 +28,7 @@ if(exclude_list_enabled()|!exists( ../libs_3rdparty/QSpec/QSpec.pro )) {
         OBJECTS_DIR=_tmp/obj/debug
         LIBS -= -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Test -lU2Lang -lU2Private -lugenedb -lbreakpad -lQSpec
         LIBS += -L../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Guid -lU2Testd -lU2Langd -lU2Privated -lugenedbd -lbreakpadd -lQSpecd
-        if(exclude_list_enabled()|!exists( ../libs_3rdparty/QSpec/QSpec.pro )) {
+        if (contains(DEFINES, HI_EXCLUDED)) {
             LIBS -= -lQSpecd
         }
 

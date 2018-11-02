@@ -70,6 +70,7 @@ private:
     bool parseLog(const ExternalToolValidation& validation);
     void checkVersion(const QString& partOfLog);
     void checkArchitecture(const QString &toolPath);
+    void performAdditionalChecks();
 
     QString     errorMsg;
 
