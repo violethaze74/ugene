@@ -325,6 +325,7 @@ public:
         return new ComboBoxWithChecksDelegate(items, parent());
     }
 
+    void getItems(QVariantMap &items) const;
     void getItems(QList<ComboBoxWithChecksItem> &items) const;
 
 signals:
