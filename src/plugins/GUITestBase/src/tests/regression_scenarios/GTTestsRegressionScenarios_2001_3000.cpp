@@ -1605,7 +1605,7 @@ GUI_TEST_CLASS_DEFINITION( test_2204 ){
             QComboBox* combo = GTWidget::findExactWidget<QComboBox*>(os, "Motif database widget", dialog);
             GTComboBox::checkValues(os, combo, QStringList()/*<<"cistrome.xml"*/<<"hpdi.xml"<<"jaspar.xml");
             QString s = combo->currentText();
-            CHECK_SET_ERR(s=="hpdi.xml,jaspar.xml", "unexpected text: " + s);
+            CHECK_SET_ERR(s=="jaspar.xml,hpdi.xml", "unexpected text: " + s);
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
             dialog = QApplication::activeModalWidget();
