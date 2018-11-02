@@ -441,7 +441,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     CHECK_SET_ERR("assembly_coverage.txt" == outputFileValue, QString("An unexpected value of the 'Output file' parameter: expect '%1', got '%2'").arg("assembly_coverage.txt").arg(outputFileValue));
     CHECK_SET_ERR(isExportTypeVisible, "The 'Export' parameter is unexpectedly invisible");
     CHECK_SET_ERR(isExportTypeRequired, "The 'Export' parameter is unexpectedly not required");
-    CHECK_SET_ERR(exportTypeValue == "coverage", QString("An unexpected value of 'Export' parameter: expect '%1' got '%2'").arg("coverage").arg(exportTypeValue));
+    CHECK_SET_ERR(exportTypeValue == "Coverage", QString("An unexpected value of 'Export' parameter: expect '%1' got '%2'").arg("coverage").arg(exportTypeValue));
 
 //    7. Set format "Bedgraph".
 //    Expected state: output file is "assembly_coverage.bedgraph", "Export" parameter is invisible.
