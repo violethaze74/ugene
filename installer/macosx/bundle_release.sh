@@ -3,10 +3,10 @@ PRODUCT_DISPLAY_NAME="Unipro UGENE"
 
 if [ -z SOURCE_DIR ]; then SOURCE_DIR=../..; fi
 
-VERSION_MAJOR=`cat ${SOURCE_DIR}/../src/ugene_version.pri | grep 'UGENE_VER_MAJOR=' | awk -F'=' '{print $2}'`
-VERSION_MINOR=`cat ${SOURCE_DIR}/../src/ugene_version.pri | grep 'UGENE_VER_MINOR=' | awk -F'=' '{print $2}'`
-VERSION_PATCH=`cat ${SOURCE_DIR}/../src/ugene_version.pri | grep 'UGENE_VER_PATCH=' | awk -F'=' '{print $2}'`
-UGENE_VERSION=`cat ${SOURCE_DIR}/../src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}' | \
+VERSION_MAJOR=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_MAJOR=' | awk -F'=' '{print $2}'`
+VERSION_MINOR=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_MINOR=' | awk -F'=' '{print $2}'`
+VERSION_PATCH=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_PATCH=' | awk -F'=' '{print $2}'`
+UGENE_VERSION=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}' | \
                sed -e 's/$${UGENE_VER_MAJOR}/'"$VERSION_MAJOR"'/g' \
                    -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g' \
                    -e 's/$${UGENE_VER_PATCH}/'"$VERSION_PATCH"'/g'`
