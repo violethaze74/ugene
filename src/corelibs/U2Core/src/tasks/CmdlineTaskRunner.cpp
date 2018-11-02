@@ -28,14 +28,14 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
+#if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
+#include <Windows.h>
+#endif
+
 #ifdef Q_OS_WIN
 #include <tlhelp32.h>
 #else
 #include <unistd.h>
-#endif
-
-#if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
-#include <Windows.h>
 #endif
 
 #include "CmdlineTaskRunner.h"
