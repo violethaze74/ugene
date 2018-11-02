@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
- 
+
 #ifndef _U2_GROUPED_COMBOBOX_DELEGATE_H_
 #define _U2_GROUPED_COMBOBOX_DELEGATE_H_
 
@@ -42,7 +42,7 @@ protected:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
-    
+
 }
 
 #endif // _U2_GROUPED_COMBOBOX_DELEGATE_H_

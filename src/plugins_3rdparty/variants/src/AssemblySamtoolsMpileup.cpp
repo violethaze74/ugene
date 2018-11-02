@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
@@ -34,7 +35,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/VariantTrackObject.h>
-#include <U2Core/CmdlineTaskRunner.h>
 
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>

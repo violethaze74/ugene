@@ -37,6 +37,10 @@ win32 {
     QMAKE_CXXFLAGS+=/wd4996
     QMAKE_MSVC_PROJECT_NAME=lib_3rd_zlib
 }
+win32-msvc2015 {
+	DEFINES += _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
+	DEFINES += _XKEYCHECK_H
+}
 
 macx {
     QMAKE_RPATHDIR += @executable_path/

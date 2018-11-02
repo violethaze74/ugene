@@ -376,8 +376,7 @@ void Document::makeClean() {
 }
 
 void Document::setModificationTrack(bool track) {
-    DocumentFormatFlags ugenedbFlags( DocumentFormatFlag_DirectWriteOperations);
-    if (df != NULL && df->checkFlags(ugenedbFlags)) {
+    if (df != NULL && df->checkFlags(DocumentFormatFlag_DirectWriteOperations)) {
         StateLockableTreeItem::setModificationTrack(false);
     } else {
         StateLockableTreeItem::setModificationTrack(track);

@@ -47,10 +47,11 @@ WorkerLogInfo::~WorkerLogInfo() {
 const QString WorkflowMonitor::WORKFLOW_FILE_NAME("workflow.uwl");
 
 WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner *_task, Schema *_schema)
-: QObject(), schema(_schema), task(_task), saveSchema(false), started(false)
+    : QObject(), schema(_schema), task(_task), saveSchema(false), started(false), externalTools(false)
 {
     foreach (Actor *p, schema->getProcesses()) {
         procMap[p->getId()] = p;
+        processNames[p->getId()] = p->getLabel();
         addTime(0, p->getId());
     }
 
@@ -68,6 +69,9 @@ WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner *_task, Schema 
             info.parameters << attr;
         }
         workersParamsInfo << info;
+        if (p->getProto()->isExternalTool()) {
+            externalTools = true;
+        }
     }
 
     connect(task.data(), SIGNAL(si_updateProducers()), SIGNAL(si_updateProducers()));
@@ -100,8 +104,8 @@ const QMap<QString, QMultiMap<QString, QString> > &WorkflowMonitor::getWorkersRe
 }
 
 QString WorkflowMonitor::actorName(const QString &id) const {
-    SAFE_POINT(procMap.contains(id), QString("Unknown actor id %1").arg(id), "");
-    return procMap[id]->getLabel();
+    SAFE_POINT(processNames.contains(id), QString("Unknown actor id: '%1'").arg(id), "");
+    return processNames[id];
 }
 
 void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer, bool openBySystem) {
@@ -168,6 +172,10 @@ void WorkflowMonitor::pause() {
 void WorkflowMonitor::resume() {
     SAFE_POINT(started, "The workflow is not started yet", );
     setRunState(false);
+}
+
+bool WorkflowMonitor::isExternalToolScheme() const {
+    return externalTools;
 }
 
 void WorkflowMonitor::registerTask(Task *task, const QString &actor) {
@@ -267,7 +275,13 @@ void WorkflowMonitor::addNotification(const WorkflowNotification &notification) 
             break;
         }
     }
-    emit si_newNotification(notification);
+    int count = 0;
+    foreach (const WorkflowNotification &info, notifications) {
+        if (notification == info) {
+            count++;
+        }
+    }
+    emit si_newNotification(notification, count);
 }
 
 bool WorkflowMonitor::hasWarnings() const {
@@ -418,7 +432,6 @@ void WDListener::addNewLogMessage(const QString& message, int messageType) {
     writeToFile(messageType, message);
     monitor->onLogChanged(this, messageType, message);
 }
-
 QString WDListener::getStandardOutputLogFileUrl(const QString &actorName, int runNumber) {
     return actorName + "_" + QString::number(runNumber) + "_standard_output_log.txt";
 }

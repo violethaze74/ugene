@@ -143,6 +143,7 @@ void DesignerGUIUtils::setupSamplesDocument(const Descriptor& d, const QIcon& ic
     if (hasIcon) {
         doc->addResource(QTextDocument::ImageResource, QUrl(img), ico.pixmap(200));
     }
+
     QString body = d.getDocumentation().toHtmlEscaped().replace("\n", "<br>");
     int brk = body.indexOf("<br><br>");
     int shift = 8;

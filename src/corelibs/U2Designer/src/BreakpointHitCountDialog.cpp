@@ -20,14 +20,15 @@
  */
 
 #include <limits>
+
 #include <QIntValidator>
 #include <QMessageBox>
 #include <QPushButton>
 
-#include "ui_BreakpointHitCountDialog.h"
-#include "BreakpointHitCountDialog.h"
 #include <U2Gui/HelpButton.h>
 
+#include "BreakpointHitCountDialog.h"
+#include "ui_BreakpointHitCountDialog.h"
 
 const int LOWER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER = 1;
 const int UPPER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER = std::numeric_limits<int>::max();

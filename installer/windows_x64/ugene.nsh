@@ -229,6 +229,7 @@ SetRegView 64
     !insertmacro AddPlugin kalign
     !insertmacro AddPlugin kraken_support
     !insertmacro AddPlugin linkdata_support
+    !insertmacro AddPlugin metaphlan2_support
     !insertmacro AddPlugin ngs_reads_classification
     !insertmacro AddPlugin opencl_support
     !insertmacro AddPlugin orf_marker

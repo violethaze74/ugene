@@ -28,14 +28,14 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
+#if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
+#include <Windows.h>
+#endif
+
 #ifdef Q_OS_WIN
 #include <tlhelp32.h>
 #else
 #include <unistd.h>
-#endif
-
-#if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
-#include <Windows.h>
 #endif
 
 #include "CmdlineTaskRunner.h"
@@ -154,9 +154,7 @@ QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullT
     if (fullTree && children.length() > 0) {
         foreach(long child, children) {
             QList<long> children2 = getChildrenProcesses(child, fullTree);
-            foreach(long child2, children2) {
-                children << child2;
-            }
+            children << children2;
         }
     }
 
@@ -186,13 +184,14 @@ int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
 
 int CmdlineTaskRunner::killProcessTree(QProcess *process) {
     qint64 processId = process->processId();
-    killChildrenProcesses(processId);
+    int result = killChildrenProcesses(processId);
     process->kill();
+    return result;
 }
 
 int CmdlineTaskRunner::killProcessTree(qint64 processId) {
     killChildrenProcesses(processId);
-    killProcess(processId);
+    return killProcess(processId);
 }
 
 int CmdlineTaskRunner::killProcess(qint64 processId) {
@@ -432,5 +431,4 @@ QString CmdlineTask::getTaskError() const {
 void CmdlineTask::sl_outputProgressAndState() {
     coreLog.info(QString("%1%2").arg(OUTPUT_PROGRESS_TAG).arg(getProgress()));
 }
-
 } // U2

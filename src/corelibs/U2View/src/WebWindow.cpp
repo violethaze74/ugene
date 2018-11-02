@@ -19,10 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include "WebWindow.h"
-
 #include <QVBoxLayout>
-#include <QWebView>
+
+#include <U2Gui/U2WebView.h>
+
+#include "WebWindow.h"
 
 namespace U2 {
 
@@ -33,7 +34,7 @@ WebWindow::WebWindow(const QString& title, const QString& content)
     l->setMargin(0);
     setLayout(l);
 
-    QWebView* textEdit = new QWebView(this);
+    U2WebView *textEdit = new U2WebView(this);
     textEdit->setContextMenuPolicy(Qt::NoContextMenu);
     textEdit->setHtml(content);
 

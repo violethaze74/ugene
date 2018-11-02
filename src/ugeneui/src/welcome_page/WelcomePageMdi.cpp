@@ -19,21 +19,40 @@
  * MA 02110-1301, USA.
  */
 
-#include "WelcomePageWidget.h"
-#include "WelcomePageMdi.h"
-
 #include <QVBoxLayout>
+
+#include "WelcomePageMdi.h"
+#include "WelcomePageMdiController.h"
+#include "WelcomePageWidget.h"
 
 namespace U2 {
 
-WelcomePageMdi::WelcomePageMdi(const QString &title, WelcomePageController *controller)
+WelcomePageMdi::WelcomePageMdi(const QString &title, WelcomePageMdiController *controller)
 : MWMDIWindow(title), controller(controller)
 {
     QVBoxLayout *l = new QVBoxLayout(this);
     l->setMargin(0);
 
-    widget = new WelcomePageWidget(this, controller);
+    widget = new WelcomePageWidget(this);
+    connect(widget, SIGNAL(si_loaded()), controller, SLOT(sl_onPageLoaded()));
     l->addWidget(widget);
+
+    installEventFilter(this);
+}
+
+bool WelcomePageMdi::eventFilter(QObject *obj, QEvent *event) {
+    QEvent::Type t = event->type();
+#if (QT_VERSION < 0x50600)
+    if (t == QEvent::Show) {
+        widget->adjustSize();
+        widget->updateGeometry();
+    }
+#else
+    if (t == QEvent::Show) {
+        widget->adjustSize();
+    }
+#endif
+    return QWidget::eventFilter(obj, event);
 }
 
 void WelcomePageMdi::updateRecent(const QStringList &recentProjects, const QStringList &recentFiles) {

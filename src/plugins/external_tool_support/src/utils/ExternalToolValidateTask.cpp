@@ -23,11 +23,12 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/CmdlineTaskRunner.h>
+
 #include <U2Lang/WorkflowUtils.h>
 
 #include "ExternalToolSearchTask.h"
@@ -143,14 +144,12 @@ void ExternalToolJustValidateTask::run() {
             }
         }
 
-        if (!parseLog(validation)) {
-            return;
-        }
-
-        if (!isValid) {
-            return;
-        }
+        CHECK(parseLog(validation), );
+        CHECK(isValid, );
     }
+
+    performAdditionalChecks();
+    CHECK_OP(stateInfo, );
 }
 
 Task::ReportResult ExternalToolJustValidateTask::report() {
@@ -287,6 +286,15 @@ void ExternalToolJustValidateTask::checkArchitecture(const QString &toolPath) {
         setError("This external tool has unsupported architecture");
     }
 #endif
+}
+
+void ExternalToolJustValidateTask::performAdditionalChecks() {
+    QString errorString;
+    tool->performAdditionalChecks(toolPath, errorString);
+    CHECK(!errorString.isEmpty(), );
+
+    isValid = false;
+    stateInfo.setError(errorString);
 }
 
 ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString& _toolName) :

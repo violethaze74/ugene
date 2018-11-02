@@ -25,16 +25,16 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/CmdlineTaskRunner.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <QDir>
 #include <QCoreApplication>

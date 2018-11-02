@@ -168,7 +168,7 @@ bool validateParameters(const Schema &schema, NotificationsList &infoList) {
         const int notificationCountBefore = infoList.size();
         good &= a->validate(infoList);
         for (int i = notificationCountBefore; i < infoList.size(); ++i) {
-            infoList[i].actor = a->getId();
+            infoList[i].actorId = a->getId();
         }
     }
     return good;
@@ -208,7 +208,7 @@ bool validatePorts(Actor *a, NotificationsList &infoList) {
                 WorkflowNotification item;
                 item.message = notification.message;
                 item.port = p->getId();
-                item.actor = a->getId();
+                item.actorId = a->getId();
                 item.type = notification.type;
                 infoList << item;
             }
@@ -263,7 +263,7 @@ bool validateScript(Actor *a, NotificationsList &infoList) {
         notification.message = QObject::tr("Script syntax check failed! Line: %1, error: %2")
             .arg(syntaxResult.errorLineNumber())
             .arg(syntaxResult.errorMessage());
-        notification.actor = a->getId();
+        notification.actorId = a->getId();
         notification.type = WorkflowNotification::U2_ERROR;
         infoList << notification;
         return false;
@@ -299,10 +299,10 @@ bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &info
 
     foreach (const WorkflowNotification &notification, notifications) {
         QListWidgetItem *item = NULL;
-        if (notification.actor.isEmpty()) {
+        if (notification.actorId.isEmpty()) {
             item = new QListWidgetItem(notification.type + ": " + notification.message);
         } else {
-            Actor *a = schema.actorById(notification.actor);
+            Actor *a = schema.actorById(notification.actorId);
             item = new QListWidgetItem(QString("%1: %2").arg(a->getLabel()).arg(notification.message));
 
             if (notification.type == WorkflowNotification::U2_ERROR) {
@@ -314,7 +314,7 @@ bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &info
             }
         }
 
-        item->setData(ACTOR_REF, notification.actor);
+        item->setData(ACTOR_ID_REF, notification.actorId);
         item->setData(PORT_REF, notification.port);
         item->setData(TEXT_REF, notification.message);
         item->setData(TYPE_REF, notification.type);
@@ -332,10 +332,10 @@ bool WorkflowUtils::validate(const Workflow::Schema &schema, QStringList &errs) 
 
     foreach (const WorkflowNotification &notification, notifications) {
         QString res = QString();
-        if (notification.actor.isEmpty()) {
+        if (notification.actorId.isEmpty()) {
             res = notification.message;
         } else {
-            Actor *a = schema.actorById(notification.actor);
+            Actor *a = schema.actorById(notification.actorId);
             QString message = notification.message;
             res = QString("%1: %2").arg(a->getLabel()).arg(message);
 

@@ -130,7 +130,8 @@ private:
     QMap<QString, CommunicationChannel*> lmap;
 
     WorkflowDebugStatus *debugInfo;
-    bool isNextTickRestoring;
+    bool nextTickRestoring;
+    bool contextInitialized;
 };
 
 } //namespace U2
