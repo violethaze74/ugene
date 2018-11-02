@@ -184,13 +184,14 @@ int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
 
 int CmdlineTaskRunner::killProcessTree(QProcess *process) {
     qint64 processId = process->processId();
-    killChildrenProcesses(processId);
+    int result = killChildrenProcesses(processId);
     process->kill();
+    return result;
 }
 
 int CmdlineTaskRunner::killProcessTree(qint64 processId) {
     killChildrenProcesses(processId);
-    killProcess(processId);
+    return killProcess(processId);
 }
 
 int CmdlineTaskRunner::killProcess(qint64 processId) {
@@ -430,5 +431,4 @@ QString CmdlineTask::getTaskError() const {
 void CmdlineTask::sl_outputProgressAndState() {
     coreLog.info(QString("%1%2").arg(OUTPUT_PROGRESS_TAG).arg(getProgress()));
 }
-
 } // U2
