@@ -28,16 +28,17 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTDoubleSpinBox.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSlider.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
-#include <drivers/GTMouseDriver.h>
 #include <system/GTFile.h>
 
 #include <U2Core/AppContext.h>
@@ -2049,6 +2050,19 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003){
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004){
+    //0. Change Documents folder to sandbox
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+            AppSettingsDialogFiller::setDocumentsDirPath(os, sandBoxDir);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2073,7 +2087,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004){
 
     QLineEdit* pathLe = GTWidget::findExactWidget<QLineEdit*>(os, "pathLe");
     QString pathLeText = pathLe->text();
-    CHECK_SET_ERR(!pathLeText.isEmpty() && pathLeText.contains("COI_consensus.txt"), "wrong lineEdit text: " + pathLeText);
+    CHECK_SET_ERR(!pathLeText.isEmpty() && pathLeText.contains("COI_consensus_1.txt"), "wrong lineEdit text: " + pathLeText);
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0005){
