@@ -88,7 +88,6 @@ protected:
     QString getPluginFileURL(Plugin* p) const;
 
     void updateSavedState(PluginRef* ref);
-    static QSet<QString> getPluginPaths();
 
 private:
     QList<PluginRef*>    plugRefs;

@@ -47,7 +47,6 @@
 namespace U2 {
 
 /* TRANSLATOR U2::PluginSupportImpl */
-#define PLUGINS_LIST_SETTINGS QString("plugin_support/list/")
 #define SKIP_LIST_SETTINGS QString("plugin_support/skip_list/")
 #define PLUGINS_ACCEPTED_LICENSE_LIST QString("plugin_support/accepted_list/")
 #define PLUGIN_VERIFICATION QString("plugin_support/verification/")
@@ -63,7 +62,7 @@ PluginRef::PluginRef(Plugin* _plugin, QLibrary* _library, const PluginDesc& desc
 PluginSupportImpl::PluginSupportImpl(): allLoaded(false) {
     connect(this, SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_registerServices()));
 
-    Task* loadStartUpPlugins = new LoadAllPluginsTask(this, getPluginPaths().toList());
+    Task* loadStartUpPlugins = new LoadAllPluginsTask(this, findAllPluginsInDefaultPluginsDir());
     AppContext::getTaskScheduler()->registerTopLevelTask(loadStartUpPlugins);
 }
 
@@ -334,14 +333,11 @@ void PluginSupportImpl::updateSavedState(PluginRef* ref) {
         return;
     }
     Settings* settings = AppContext::getSettings();
-    QString pluginListSettingsDir = settings->toVersionKey(PLUGINS_LIST_SETTINGS);
     QString skipListSettingsDir = settings->toVersionKey(SKIP_LIST_SETTINGS);
     QString pluginAcceptedLicenseSettingsDir = settings->toVersionKey(PLUGINS_ACCEPTED_LICENSE_LIST);
     QString descUrl = ref->pluginDesc.descriptorUrl.getURLString();
     QString pluginId = ref->pluginDesc.id;
     if (ref->removeFlag) {
-        settings->remove(pluginListSettingsDir + pluginId);
-
         //add to skip-list if auto-loaded
         if (isDefaultPluginsDir(descUrl)) {
             QStringList skipFiles = settings->getValue(skipListSettingsDir, QStringList()).toStringList();
@@ -351,8 +347,6 @@ void PluginSupportImpl::updateSavedState(PluginRef* ref) {
             }
         }
     } else {
-        settings->setValue(pluginListSettingsDir + pluginId, descUrl);
-
         //remove from skip-list if present
         if (isDefaultPluginsDir(descUrl)) {
             QStringList skipFiles = settings->getValue(skipListSettingsDir, QStringList()).toStringList();
@@ -376,31 +370,6 @@ bool PluginSupportImpl::isDefaultPluginsDir(const QString& url) {
     QDir plugsDir = getDefaultPluginsDir();
     return  urlAbsDir == plugsDir;
 }
-
-QSet<QString> PluginSupportImpl::getPluginPaths(){
-    Settings* settings = AppContext::getSettings();
-    QString pluginListSettingsDir = settings->toVersionKey(PLUGINS_LIST_SETTINGS);
-
-    QStringList pluginsIds;
-    if (AppContext::getCMDLineRegistry()->hasParameter(CMDLineRegistry::PLUGINS_ARG)) {
-        pluginsIds = getCmdlinePlugins();
-    } else {
-        pluginsIds = settings->getAllKeys(pluginListSettingsDir);
-    }
-
-    QSet<QString> pluginFiles;
-    foreach (const QString& pluginId, pluginsIds) {
-        QString file = settings->getValue(pluginListSettingsDir + pluginId).toString();
-        if(!file.isEmpty()) {
-            pluginFiles.insert(file);
-        }
-    }
-    //read all plugins from the current folder and from ./plugins folder
-    pluginFiles.unite(findAllPluginsInDefaultPluginsDir().toSet());
-
-    return pluginFiles;
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 /// Tasks
