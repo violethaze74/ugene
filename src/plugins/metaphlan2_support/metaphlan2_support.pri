@@ -1,7 +1,7 @@
-# include (metaphlan_support.pri)
+# include (metaphlan2_support.pri)
 include (../../ugene_version.pri)
 
-PLUGIN_ID=metaphlan_support
+PLUGIN_ID=metaphlan2_support
 PLUGIN_NAME=MetaPhLan2 external tool support
 PLUGIN_VENDOR=Unipro
 PLUGIN_DEPENDS=ngs_reads_classification:$${UGENE_VERSION};external_tool_support:$${UGENE_VERSION}
