@@ -32,7 +32,6 @@
 
 namespace U2 {
 
-
 void WidgetScreenshotExportToSvgTask::run() {
     SAFE_POINT_EXT(settings.isSVGFormat(),
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("WidgetScreenshotExportToSVGTask")), );
@@ -40,6 +39,7 @@ void WidgetScreenshotExportToSvgTask::run() {
     bool result=false;
     QPainter painter;
     QSvgGenerator generator;
+    generator.setResolution(settings.imageDpi);
     generator.setFileName(settings.fileName);
 
     generator.setSize(widget->rect().size());
