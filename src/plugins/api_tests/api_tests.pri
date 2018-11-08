@@ -26,6 +26,11 @@ win32-msvc2013 {
     LIBS += -L../../_release -lzlib
 }
 
+win32-msvc2015 {
+    DEFINES += NOMINMAX _XKEYCHECK_H
+    LIBS += -L../../_release -lzlib
+}
+
 win32 {
     # not visual studio 2015
     !win32-msvc2015 {
@@ -42,6 +47,11 @@ win32 {
             LIBS -= -L../../_release -lzlib
             LIBS += -L../../_debug -lzlibd
         }
+		
+		win32-msvc2015 {
+			LIBS -= -L../../_release -lzlib
+            LIBS += -L../../_debug -lzlibd
+		}
 
         unix:POST_TARGETDEPS -= ../../_release/libsamtools.a
         unix:POST_TARGETDEPS += ../../_debug/libsamtoolsd.a
