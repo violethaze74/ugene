@@ -143,21 +143,15 @@ SeqPosSettings SeqPosWorker::createSeqPosSettings( U2OpStatus &/*os*/ ){
 /* SeqPosComboBoxWithChecksDelegate */
 /************************************************************************/
 PropertyWidget * SeqPosComboBoxWithChecksDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
-    QList<ComboBoxWithChecksItem> itemz;
-    getItems(itemz);
-    SeqPosComboBoxWithChecksWidget* widget = new SeqPosComboBoxWithChecksWidget(itemz, parent);
+    SeqPosComboBoxWithChecksWidget* widget = new SeqPosComboBoxWithChecksWidget(items, parent);
     widget->setHint("<div  align=\"justify\"><font color=\"green\"><b>" + tr("Hint:") + "</b> " + tr("Use 'cistrome.xml' to descrease the computation time. It is a comprehensive collection of motifs from the other databases with similar motifs deleted.") + "</font></div>");
     return widget;
-}
-
-U2::PropertyDelegate * SeqPosComboBoxWithChecksDelegate::clone() {
-    return new SeqPosComboBoxWithChecksDelegate(items, parent());
 }
 
 /************************************************************************/
 /* SeqPosComboBoxWithChecksWidget */
 /************************************************************************/
-SeqPosComboBoxWithChecksWidget::SeqPosComboBoxWithChecksWidget(const QList<ComboBoxWithChecksItem> &items, QWidget *parent) :
+SeqPosComboBoxWithChecksWidget::SeqPosComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent) :
     ComboBoxWithChecksWidget(items, parent),
     hintLabel(NULL) {
     QLayout* l = layout();
@@ -306,14 +300,14 @@ void SeqPosWorkerFactory::init() {
             delegates[REG_WIDTH] = new SpinBoxDelegate(vm);
          }
          {
-             QList<ComboBoxWithChecksItem> contentList;
-             contentList.append(ComboBoxWithChecksItem(SeqPosSettings::MOTIF_DB_CISTROME, SeqPosSettings::MOTIF_DB_CISTROME, true));
-             contentList.append(ComboBoxWithChecksItem(SeqPosSettings::MOTIF_DB_PDM, SeqPosSettings::MOTIF_DB_PDM, false));
-             contentList.append(ComboBoxWithChecksItem(SeqPosSettings::MOTIF_DB_Y1H, SeqPosSettings::MOTIF_DB_Y1H, false));
-             contentList.append(ComboBoxWithChecksItem(SeqPosSettings::MOTIF_DB_JASPAR, SeqPosSettings::MOTIF_DB_JASPAR, false));
-             contentList.append(ComboBoxWithChecksItem(SeqPosSettings::MOTIF_DB_TRANSFAC, SeqPosSettings::MOTIF_DB_TRANSFAC, false));
-             contentList.append(ComboBoxWithChecksItem(SeqPosSettings::MOTIF_DB_HDPI, SeqPosSettings::MOTIF_DB_HDPI, false));
-             delegates[MOTIF_DB] = new SeqPosComboBoxWithChecksDelegate(contentList);
+             QVariantMap contentMap;
+             contentMap[SeqPosSettings::MOTIF_DB_CISTROME] = true;
+             contentMap[SeqPosSettings::MOTIF_DB_PDM] = false;
+             contentMap[SeqPosSettings::MOTIF_DB_Y1H] = false;
+             contentMap[SeqPosSettings::MOTIF_DB_TRANSFAC] = false;
+             contentMap[SeqPosSettings::MOTIF_DB_HDPI] = false;
+             contentMap[SeqPosSettings::MOTIF_DB_JASPAR] = false;
+             delegates[MOTIF_DB] = new SeqPosComboBoxWithChecksDelegate(contentMap);
          }
          {
              QVariantMap vm;

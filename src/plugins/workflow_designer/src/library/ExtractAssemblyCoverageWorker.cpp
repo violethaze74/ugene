@@ -47,10 +47,8 @@ namespace U2 {
 namespace LocalWorkflow {
 
 const QString ExtractAssemblyCoverageWorkerFactory::ACTOR_ID("extract-assembly-coverage");
-const QString ExtractAssemblyCoverageWorkerFactory::EXPORT_COVERAGE("coverage");
-const QString ExtractAssemblyCoverageWorkerFactory::EXPORT_BASES_QUANTITY("bases count");
-const QString ExtractAssemblyCoverageWorkerFactory::EXPORT_COVERAGE_NAME = QCoreApplication::translate("ExtractAssemblyCoverageWorkerFactory","Coverage");
-const QString ExtractAssemblyCoverageWorkerFactory::EXPORT_BASES_QUANTITY_NAME = QCoreApplication::translate("ExtractAssemblyCoverageWorkerFactory", "Bases count");
+const QString ExtractAssemblyCoverageWorkerFactory::EXPORT_COVERAGE = QObject::tr("coverage");
+const QString ExtractAssemblyCoverageWorkerFactory::EXPORT_BASES_QUANTITY = QObject::tr("bases count");
 
 namespace {
 const QString FORMAT_ATTR_ID("format");
@@ -214,11 +212,10 @@ void ExtractAssemblyCoverageWorkerFactory::init() {
         formats.insert(ExportCoverageSettings::BEDGRAPH, ExportCoverageSettings::Bedgraph);
         delegates[FORMAT_ATTR_ID] = new ComboBoxDelegate(formats);
 
-        QList<ComboBoxWithChecksItem> exportTypes;
-        exportTypes.append(ComboBoxWithChecksItem(EXPORT_COVERAGE_NAME, EXPORT_COVERAGE, true));
-        exportTypes.append(ComboBoxWithChecksItem(EXPORT_BASES_QUANTITY_NAME, EXPORT_BASES_QUANTITY, false));
+        QVariantMap exportTypes;
+        exportTypes.insert(EXPORT_COVERAGE, true);
+        exportTypes.insert(EXPORT_BASES_QUANTITY, false);
         delegates[EXPORT_TYPE_ATTR_ID] = new ComboBoxWithChecksDelegate(exportTypes);
-        
 
         QVariantMap thresholdMap;
         thresholdMap["minimum"] = 0;

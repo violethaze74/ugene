@@ -63,8 +63,6 @@ public:
     static const QString ACTOR_ID;
     static const QString EXPORT_COVERAGE;
     static const QString EXPORT_BASES_QUANTITY;
-    static const QString EXPORT_COVERAGE_NAME;
-    static const QString EXPORT_BASES_QUANTITY_NAME;
 };
 
 class ExtractAssemblyCoverageWorkerPrompter : public PrompterBase<ExtractAssemblyCoverageWorkerPrompter>{

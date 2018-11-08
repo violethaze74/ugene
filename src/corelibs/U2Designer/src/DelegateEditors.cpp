@@ -421,6 +421,7 @@ PropertyDelegate::Type ComboBoxWithDbUrlsDelegate::type() const {
 /********************************
 * ComboBoxWithChecksDelegate
 ********************************/
+
 PropertyWidget * ComboBoxWithChecksDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
     return new ComboBoxWithChecksWidget(items, parent);
 }
@@ -450,29 +451,14 @@ void ComboBoxWithChecksDelegate::setModelData(QWidget *editor, QAbstractItemMode
     model->setData(index, box->value(), ConfigurationEditor::ItemValueRole);
 }
 
-void ComboBoxWithChecksDelegate::getItems(QVariantMap &resultItems) const {
-    resultItems.clear();
-    foreach (const ComboBoxWithChecksItem &item, items) {
-        resultItems.insert(item.id, item.check);
-    }
-}
-
-void ComboBoxWithChecksDelegate::getItems(QList<ComboBoxWithChecksItem> &items) const {
+void ComboBoxWithChecksDelegate::getItems( QVariantMap &items ) const {
     items = this->items;
 }
 
 QVariant ComboBoxWithChecksDelegate::getDisplayValue(const QVariant& val) const {
-    QStringList display;
-    foreach(const QString& id, val.toString().split(",")) {
-        foreach(const ComboBoxWithChecksItem& item, items) {
-            if (item.id == id) {
-                display.append(item.name);
-                break;
-            }
-        }
-    }
-    emit si_valueChanged(val.toString());
-    return QVariant(display.join(","));
+    QString display = val.toString();
+    emit si_valueChanged( display );
+    return QVariant( display );
 }
 
 /********************************

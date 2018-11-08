@@ -59,17 +59,17 @@ private slots:
 class SeqPosComboBoxWithChecksDelegate : public ComboBoxWithChecksDelegate {
     Q_OBJECT
 public:
-    SeqPosComboBoxWithChecksDelegate(const QList<ComboBoxWithChecksItem> &items, QObject *parent = 0) : ComboBoxWithChecksDelegate(items, parent) {}
+    SeqPosComboBoxWithChecksDelegate(const QVariantMap& items, QObject *parent = 0) : ComboBoxWithChecksDelegate(items, parent) {}
     virtual ~SeqPosComboBoxWithChecksDelegate() {}
 
     virtual PropertyWidget* createWizardWidget(U2OpStatus &os, QWidget *parent) const;
-    virtual PropertyDelegate *clone();
+    virtual PropertyDelegate *clone() { return new SeqPosComboBoxWithChecksDelegate(items, parent()); }
 };
 
 class SeqPosComboBoxWithChecksWidget : public ComboBoxWithChecksWidget {
     Q_OBJECT
 public:
-    SeqPosComboBoxWithChecksWidget(const QList<ComboBoxWithChecksItem> &items, QWidget *parent = NULL);
+    SeqPosComboBoxWithChecksWidget( const QVariantMap &items, QWidget *parent = NULL);
 
     void setValue(const QVariant &value);
     void setHint(const QString &hint) { hintLabel->setText(hint); }
