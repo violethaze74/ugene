@@ -74,7 +74,7 @@ Task *KrakenClassifyWorker::tick() {
         }
 
         KrakenClassifyTask *task = new KrakenClassifyTask(settings);
-        task->addListeners(createLogListeners(2));
+        task->addListeners(createLogListeners());
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
         return task;
     }
@@ -186,7 +186,7 @@ KrakenClassifyTaskSettings KrakenClassifyWorker::getSettings(U2OpStatus &os) {
     settings.classificationUrl = getValue<QString>(KrakenClassifyWorkerFactory::OUTPUT_URL_ATTR_ID);
     if (settings.classificationUrl.isEmpty()) {
         const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
-        settings.classificationUrl = tmpDir + "/" + NgsReadsClassificationUtils::getClassificationFileName(metadata.getFileUrl(), "Kraken", "txt", pairedReadsInput);
+        settings.classificationUrl = tmpDir + "/" + NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(metadata.getFileUrl(), QStringList() <<  "Kraken" << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX, "txt", pairedReadsInput);
     }
     settings.classificationUrl = GUrlUtils::rollFileName(settings.classificationUrl, "_");
 

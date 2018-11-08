@@ -878,6 +878,16 @@ QString WorkflowUtils::updateExternalToolPath(const QString &toolName, const QSt
     return tool->getPath();
 }
 
+QString WorkflowUtils::getExternalToolPath(const QString &toolName) {
+    ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
+    SAFE_POINT(NULL != registry, "NULL external tool registry", "");
+
+    ExternalTool *tool = registry->getByName(toolName);
+    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(toolName), "");
+
+    return tool->getPath();
+}
+
 QString WorkflowUtils::externalToolError(const QString &toolName) {
     return tr("External tool \"%1\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(toolName);
 }

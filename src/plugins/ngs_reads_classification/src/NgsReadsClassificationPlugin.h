@@ -61,6 +61,10 @@ public:
     static const QString CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID;
     static const QString CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID;
 
+    static const QString METAPHLAN2_DATABASE_PATH;
+    static const QString METAPHLAN2_DATABASE_DATA_ID;
+    static const QString METAPHLAN2_DATABASE_ITEM_ID;
+
     static const QString MINIKRAKEN_4_GB_PATH;
     static const QString MINIKRAKEN_4_GB_DATA_ID;
     static const QString MINIKRAKEN_4_GB_ITEM_ID;

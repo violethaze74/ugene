@@ -19,26 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_NGS_READS_CLASSIFICATION_UTILS_H_
-#define _U2_NGS_READS_CLASSIFICATION_UTILS_H_
+#ifndef _U2_METAPHLAN2_VALIDATOR_H_
+#define _U2_METAPHLAN2_VALIDATOR_H_
 
-#include "TaxonomySupport.h"
+#include <QCoreApplication>
 
-#include "NgsReadsClassificationPlugin.h"
+#include <U2Lang/ActorValidator.h>
 
 namespace U2 {
+namespace Workflow {
 
-class U2NGS_READS_CLASSIFICATION_EXPORT NgsReadsClassificationUtils {
+class Metaphlan2Validator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(Metaphlan2Validator)
 public:
-    static QString getBaseFileNameWithSuffixes(const QString &sourceFileUrl,
-                                           const QStringList &prefixes,
-                                           const QString &extension,
-                                           bool truncate);
-    static int countClassified(const LocalWorkflow::TaxonomyClassificationResult &classification);
+    bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
 
-    static const QString CLASSIFICATION_SUFFIX;
+private:
+    bool validateDatabase(const Actor *actor, NotificationsList &notificationList) const;
 };
 
+}   // namespace Workflow
 }   // namespace U2
 
-#endif // _U2_NGS_READS_CLASSIFICATION_UTILS_H_
+#endif //_U2_METAPHLAN2_VALIDATOR_H_

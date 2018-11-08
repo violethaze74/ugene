@@ -24,11 +24,12 @@
 
 #include "Metaphlan2Support.h"
 #include "Metaphlan2SupportPlugin.h"
+#include "Metaphlan2WorkerFactory.h"
 
 namespace U2 {
 
-const QString MetaphlanSupportPlugin::PLUGIN_NAME = QCoreApplication::tr("MetaPhlAn2 external tool support");
-const QString MetaphlanSupportPlugin::PLUGIN_DESCRIPRION = QCoreApplication::tr("MetaPhlAn2 (METAgenomic PHyLogenetic ANalysis) is a tool for profiling the composition of microbial communities (bacteria, archaea, eukaryotes, and viruses) from whole-metagenome shotgun sequencing data.");
+const QString MetaphlanSupportPlugin::PLUGIN_NAME = QCoreApplication::translate("MetaphlanSupportPlugin", "MetaPhlAn2 external tool support");
+const QString MetaphlanSupportPlugin::PLUGIN_DESCRIPRION = QCoreApplication::translate("MetaphlanSupportPlugin", "MetaPhlAn2 (METAgenomic PHyLogenetic ANalysis) is a tool for profiling the composition of microbial communities (bacteria, archaea, eukaryotes, and viruses) from whole-metagenome shotgun sequencing data.");
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     MetaphlanSupportPlugin *plugin = new MetaphlanSupportPlugin();
@@ -38,14 +39,16 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
 MetaphlanSupportPlugin::MetaphlanSupportPlugin()
     : Plugin(PLUGIN_NAME, PLUGIN_DESCRIPRION) {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
+    CHECK(nullptr != etRegistry, );
 
     etRegistry->registerEntry(new Metaphlan2Support(Metaphlan2Support::TOOL_NAME));
+
+    LocalWorkflow::Metaphlan2WorkerFactory::init();
 }
 
 MetaphlanSupportPlugin::~MetaphlanSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
+    CHECK(nullptr != etRegistry, );
 
     etRegistry->unregisterEntry(Metaphlan2Support::TOOL_NAME);
 }
