@@ -194,10 +194,14 @@ Task * FastQCWorker::tick() {
         QString outFile = getValue<QString>(OUT_FILE);
         FastQCSetting settings;
         if (outFile.isEmpty()) {
-             QString outputDir = FileAndDirectoryUtils::createWorkingDir(url, getValue<int>(OUT_MODE_ID), "", context->workingDir());
-             U2OpStatusImpl os;
-             settings.outDir = GUrlUtils::createDirectory(outputDir + FastQCWorker::BASE_FASTQC_SUBDIR, "_", os);
-             settings.fileName = "";
+            QString outputDir = FileAndDirectoryUtils::createWorkingDir(url, getValue<int>(OUT_MODE_ID), "", context->workingDir());
+            settings.outDir = outputDir + FastQCWorker::BASE_FASTQC_SUBDIR;
+            QDir outQDir(settings.outDir);
+            if (!outQDir.exists()) {
+                U2OpStatusImpl os;
+                GUrlUtils::createDirectory(settings.outDir, "_", os);
+            }
+            settings.fileName = "";
         } else {
             QFileInfo outFileFi(outFile);
             settings.outDir = outFileFi.absoluteDir().absolutePath();
