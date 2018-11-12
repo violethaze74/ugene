@@ -166,7 +166,6 @@ void RegisterServiceTask::prepare() {
     }
 
     sr->services.append(s);
-    emit sr->si_serviceRegistered(s);
     addSubTask(new EnableServiceTask(sr, s, false));
 }
 

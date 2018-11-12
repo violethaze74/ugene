@@ -126,7 +126,6 @@ protected:
 
 
 signals:
-    void si_serviceRegistered(Service* s);
     void si_serviceUnregistered(Service* s);
     void si_serviceStateChanged(Service* s, ServiceState oldState);
 };

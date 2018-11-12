@@ -101,18 +101,10 @@ class U2CORE_EXPORT PluginSupport : public QObject {
 
 public:
     virtual const QList<Plugin*>&   getPlugins() = 0;
-
-    virtual Task* addPluginTask(const QString& pathToPlugin) = 0;
-
-    //plugin will not be removed from the plugin list during the next app run
-    virtual void setRemoveFlag(Plugin* p, bool v) = 0;
-    virtual bool getRemoveFlag(Plugin* p) const = 0;
     virtual void setLicenseAccepted(Plugin* p) = 0;
     virtual bool isAllPluginsLoaded() const = 0;
 
 signals:
-    void si_pluginAdded(Plugin*);
-    void si_pluginRemoveFlagChanged(Plugin*);
     void si_allStartUpPluginsLoaded();
 
 };

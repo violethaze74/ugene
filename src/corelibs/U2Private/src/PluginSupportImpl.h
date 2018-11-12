@@ -61,12 +61,6 @@ public:
 
     virtual const QList<Plugin*>& getPlugins() {return plugins;}
 
-    virtual Task* addPluginTask(const QString& pathToPlugin);
-
-    //plugin will not be removed from the plugin list during the next app run
-    virtual void setRemoveFlag(Plugin* p, bool v);
-    virtual bool getRemoveFlag(Plugin* p) const;
-
     virtual void setLicenseAccepted(Plugin* p);
 
 

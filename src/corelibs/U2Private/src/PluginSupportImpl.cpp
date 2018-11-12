@@ -256,7 +256,6 @@ void PluginSupportImpl::registerPlugin(PluginRef* ref) {
     plugRefs.push_back(ref);
     plugins.push_back(ref->plugin);
     updateSavedState(ref);
-    emit si_pluginAdded(ref->plugin);
 }
 
 
@@ -273,17 +272,6 @@ QString PluginSupportImpl::getPluginFileURL(Plugin* p) const {
         }
     }
     return QString::null;
-}
-
-
-Task* PluginSupportImpl::addPluginTask(const QString& pathToPlugin) {
-    QString err;
-    PluginDesc desc = PluginDescriptorHelper::readPluginDescriptor(pathToPlugin, err);
-    Task* res = new AddPluginTask(this, desc, true);
-    if (!err.isEmpty()) {
-        res->setError(err);
-    }
-    return res;
 }
 
 PluginRef* PluginSupportImpl::findRef(Plugin* p) const {
@@ -304,23 +292,6 @@ PluginRef* PluginSupportImpl::findRefById(const QString& pluginId) const {
     return NULL;
 }
 
-
-//plugin will not be removed from the plugin list during the next app run
-void PluginSupportImpl::setRemoveFlag(Plugin* p, bool v) {
-    PluginRef* r = findRef(p);
-    assert(r!=NULL);
-    if (r->removeFlag == v) {
-        return;
-    }
-    r->removeFlag = v;
-    updateSavedState(r);
-    emit si_pluginRemoveFlagChanged(p);
-}
-
-bool PluginSupportImpl::getRemoveFlag(Plugin* p) const {
-    PluginRef* r = findRef(p);
-    return r->removeFlag;
-}
 void PluginSupportImpl::setLicenseAccepted(Plugin *p){
     p->acceptLicense();
     PluginRef* r = findRef(p);
