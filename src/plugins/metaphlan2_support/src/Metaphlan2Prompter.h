@@ -19,26 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_NGS_READS_CLASSIFICATION_UTILS_H_
-#define _U2_NGS_READS_CLASSIFICATION_UTILS_H_
+#ifndef _U2_METAPHLAN2_PROMPTER_H_
+#define _U2_METAPHLAN2_PROMPTER_H_
 
-#include "TaxonomySupport.h"
-
-#include "NgsReadsClassificationPlugin.h"
+#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
+namespace LocalWorkflow {
 
-class U2NGS_READS_CLASSIFICATION_EXPORT NgsReadsClassificationUtils {
+class Metaphlan2Prompter : public PrompterBase<Metaphlan2Prompter> {
+    Q_OBJECT
 public:
-    static QString getBaseFileNameWithSuffixes(const QString &sourceFileUrl,
-                                           const QStringList &prefixes,
-                                           const QString &extension,
-                                           bool truncate);
-    static int countClassified(const LocalWorkflow::TaxonomyClassificationResult &classification);
+    Metaphlan2Prompter(Actor *actor = nullptr);
 
-    static const QString CLASSIFICATION_SUFFIX;
+private:
+    QString composeRichDoc();
 };
 
+}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_NGS_READS_CLASSIFICATION_UTILS_H_
+#endif // _U2_METAPHLAN2_PROMPTER_H_

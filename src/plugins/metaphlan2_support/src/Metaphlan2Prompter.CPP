@@ -19,26 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_NGS_READS_CLASSIFICATION_UTILS_H_
-#define _U2_NGS_READS_CLASSIFICATION_UTILS_H_
-
-#include "TaxonomySupport.h"
-
-#include "NgsReadsClassificationPlugin.h"
+#include "Metaphlan2Prompter.h"
+#include "Metaphlan2WorkerFactory.h"
 
 namespace U2 {
+namespace LocalWorkflow {
 
-class U2NGS_READS_CLASSIFICATION_EXPORT NgsReadsClassificationUtils {
-public:
-    static QString getBaseFileNameWithSuffixes(const QString &sourceFileUrl,
-                                           const QStringList &prefixes,
-                                           const QString &extension,
-                                           bool truncate);
-    static int countClassified(const LocalWorkflow::TaxonomyClassificationResult &classification);
+Metaphlan2Prompter::Metaphlan2Prompter(Actor *actor)
+    : PrompterBase<Metaphlan2Prompter>(actor) {}
 
-    static const QString CLASSIFICATION_SUFFIX;
-};
+QString Metaphlan2Prompter::composeRichDoc() {
+    const QString readsProducerName = getProducersOrUnset(Metaphlan2WorkerFactory::INPUT_PORT_ID,
+                                                          Metaphlan2WorkerFactory::INPUT_SLOT);
+    const QString databaseUrl = getHyperlink(Metaphlan2WorkerFactory::DB_URL,
+                                             getURL(Metaphlan2WorkerFactory::DB_URL));
+    return tr("Classify sequences from <u>%1</u> with MetaPhlAn2, "
+              "use %2 database.").arg(readsProducerName).arg(databaseUrl);
+}
 
+}   // namespace LocalWorkflow
 }   // namespace U2
-
-#endif // _U2_NGS_READS_CLASSIFICATION_UTILS_H_
