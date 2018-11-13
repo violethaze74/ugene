@@ -354,6 +354,10 @@ QString ExternalToolSupportSettingsPageWidget::getToolStateDescription(ExternalT
 
             result = warn(text) + "<br><br>";
         }
+
+        if (tool->hasAdditionalErrorMessage()) {
+            result += warn(tool->getAdditionalErrorMessage()) + "<br><br>";
+        }
     }
 
     return result;
