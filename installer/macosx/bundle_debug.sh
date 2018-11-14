@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 PRODUCT_NAME="ugeneuid"
 
-if [ -z SOURCE_DIR ]; then SOURCE_DIR=../..; fi
+if [ -z ${SOURCE_DIR} ]; then SOURCE_DIR=../..; fi
 
 BUILD_DIR=./debug_bundle
 DEBUG_DIR=${SOURCE_DIR}/src/_debug
