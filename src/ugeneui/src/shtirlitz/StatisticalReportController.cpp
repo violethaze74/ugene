@@ -56,7 +56,7 @@ bool StatisticalReportController::isInfoSharingAccepted() const {
 }
 
 void StatisticalReportController::sl_pageReady() {
-#if (QT_VERSION < 0x050500)
+#if (QT_VERSION < 0x050500 && defined(UGENE_QT_WEB_ENGINE)) 
     htmlViewController->runJavaScript("bindLinks();");
 #endif
 
@@ -69,8 +69,9 @@ void StatisticalReportController::sl_pageReady() {
         // It has some connection with htmlView loading method
         // There was no crash before f3a45ef1cd53fe28faf90a763d195e964bc6c752 commit
         // Find a solution and fix it, if you have some free time
-        move((qApp->activeWindow()->x() + qApp->activeWindow()->width() / 2) - width() / 2,
-             (qApp->activeWindow()->y() + qApp->activeWindow()->height() / 2) - pageHeight / 2);
+        QWidget *mainWindowWidget = qApp->activeModalWidget()->parentWidget();
+        move((mainWindowWidget->x() + mainWindowWidget->width() / 2) - width() / 2,
+            (mainWindowWidget->y() + mainWindowWidget->height() / 2) - pageHeight / 2);
 #endif
     });
 }
