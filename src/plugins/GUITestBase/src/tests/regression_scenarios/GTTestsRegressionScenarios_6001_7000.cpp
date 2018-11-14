@@ -88,6 +88,7 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
@@ -1014,7 +1015,7 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment", testDir + "_common_data/clustal/COI na.aln");
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    
+
     GTGlobals::sleep(55000);
     //GTGlobals::sleep();
     HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task is in progress...");
@@ -1140,6 +1141,72 @@ GUI_TEST_CLASS_DEFINITION(test_6232_2) {
 
     QString secondValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_seq", "Fragment 2");
     CHECK_SET_ERR(secondValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(secondValue));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6232_3) {
+    //1. Open "STEP1_pFUS2_a2a_5.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes", disable "Circular Molecule" checkBox and click "OK".
+    class Scenario : public CustomScenario {
+        void run(GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTCheckBox::setChecked(os, "circularBox", false, dialog);
+            GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: despite the sequence is circular, fragments were found without the gap it the junction  point
+    //Expected: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "fragments  (0, 2)");
+    CHECK_SET_ERR(regions.size() == 2, QString("Unexpected number of fragments, expected: 2, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first() == U2Region(2, 2467), QString("Unexpected fragment region, expected: start = 2, length = 2467; current: start = %1, length = %2").arg(regions.first().startPos).arg(regions.first().length));
+    CHECK_SET_ERR(regions.last() == U2Region(2473, 412), QString("Unexpected fragment region, expected: start = 2473, length = 412; current: start = %1, length = %2").arg(regions.last().startPos).arg(regions.last().length));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6232_4) {
+    //1. Open "STEP1_pFUS2_a2a_5_not_circular.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5_not_circular.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" checkBox and click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //4. Select "Actions > Cloning > Construct molecule...". Click "Add all" button, click "OK".
+    QList<ConstructMoleculeDialogFiller::Action> actions;
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::AddAllFragments, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickOk, "");
+    GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Cloning" << "Construct molecule...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: the first fragment begins from 3 base, there are "AC" bases before it
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "STEP1_pFUS2_a2a_5 Fragment 1  (0, 1)");
+    CHECK_SET_ERR(regions.size() == 1, QString("Unexpected number of fragments, expected: 1, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first().startPos == 2, QString("Unexpected fragment startPos, expected: 2; current: %1").arg(regions.first().startPos));
+
+    QString beginning = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 2);
+    CHECK_SET_ERR(beginning == "AC", QString("Unexpected beginning, expected: AC, currecnt: %1").arg(beginning));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6233) {
@@ -1381,7 +1448,7 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
 
     GTLogTracer l;
     //4. run workflow
-    GTUtilsWorkflowDesigner::runWorkflow(os);  
+    GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(60000);
     GTUtilsWorkflowDesigner::stopWorkflow(os);
 
@@ -1569,7 +1636,7 @@ GUI_TEST_CLASS_DEFINITION(test_6249_3) {
     //4. Run workflow, and check result files on dashboard
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     QStringList outFiles = GTUtilsDashboard::getOutputFiles(os);
 
     CHECK_SET_ERR(outFiles.contains("eas_fastqc.html"), QString("Output files not contains desired file eas_fastqc.html"));
