@@ -270,7 +270,7 @@ void WorkflowMonitor::addNotification(const WorkflowNotification &notification) 
         emit si_firstNotification();
     }
     foreach(const WorkflowNotification& notification, notifications) {
-        if (hasWarnings() || hasErrors()) {
+        if (WorkflowNotification::U2_ERROR == notification.type || WorkflowNotification::U2_WARNING == notification.type) {
             emit si_taskStateChanged(RUNNING_WITH_PROBLEMS);
             break;
         }
