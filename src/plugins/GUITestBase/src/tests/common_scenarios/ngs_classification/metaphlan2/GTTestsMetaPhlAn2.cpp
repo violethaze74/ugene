@@ -47,6 +47,7 @@ const QString ET_BOWTIE_2_ALIGNER = "Bowtie 2 aligner";
 const QString ET_BOWTIE_2_BUILD = "Bowtie 2 build indexer";
 const QString ET_METAPHLAN = "MetaPhlAn2";
 const QString UTIL_SCRIPT = "/utils/read_fastx.py";
+const QString PATH_METAPHLAN2_WITHOUT_SCRIPT = "/_common_data/regression/6253/metaphlan2.py";
 const QString PATH_PYTHON_WITHOUT_NUMPY = "/_common_data/regression/6253/python_without_numpy/bin";
 const QString NAME_PYTHON_WITHOUT_NUMPY = "python2.7";
 
@@ -63,7 +64,8 @@ void checkUtilScript(GUITestOpStatus &os, const bool shouldBeValid) {
     QString pathToMetaphlan = QDir::toNativeSeparators(AppSettingsDialogFiller::getExternalToolPath(os, ET_METAPHLAN));
     QString pathToMetaphlanDir = QFileInfo(pathToMetaphlan).absolutePath();
     QString utilNativeSeparators = QDir::toNativeSeparators(UTIL_SCRIPT);
-    if (QFileInfo::exists(pathToMetaphlanDir + utilNativeSeparators) != shouldBeValid) {
+    bool isValid = !AppSettingsDialogFiller::isToolDescriptionContainsString(os, ET_METAPHLAN, "MetaPhlAn2 script \"utils/read_fastx.py\" is not present!");
+    if (isValid != shouldBeValid) {
         os.setError(QString("Unitl script %1 %2 exist, but %3 be").arg(utilNativeSeparators)
                                                                   .arg(shouldBeValid ? "doesn't" : "does")
                                                                   .arg(shouldBeValid ? "should" : "shoudn't"));
@@ -95,6 +97,10 @@ QString getPythonWithoutNumpyPath() {
     return UGUITest::testDir + QDir::toNativeSeparators(PATH_PYTHON_WITHOUT_NUMPY);
 }
 
+QString getMetaphlan2WithoutScriptPath() {
+    return UGUITest::testDir + QDir::toNativeSeparators(PATH_METAPHLAN2_WITHOUT_SCRIPT);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os){
@@ -105,6 +111,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
             //"python" is installed.
             checkExternalToolValid(os, ET_PYTHON, true);
+
+            //"Bio" python module is installed.
+
 
             //"numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, true);
@@ -146,6 +155,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, sandBoxDir);
             checkExternalToolValid(os, ET_PYTHON, false);
 
+            //"Bio" python module is installed.
+
+
             //"numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, false);
 
@@ -184,6 +196,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
             AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath(), NAME_PYTHON_WITHOUT_NUMPY);
             checkExternalToolValid(os, ET_PYTHON, true);
 
+            //"Bio" python module is installed.
+
+
             //"numpy" python module is not installed.
             checkExternalToolValid(os, ET_NUMPY, false);
 
@@ -221,6 +236,9 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
             //python" is installed.
             checkExternalToolValid(os, ET_PYTHON, true);
 
+            //"Bio" python module is installed.
+
+
             //"numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, true);
 
@@ -255,9 +273,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+            AppSettingsDialogFiller::setExternalToolPath(os, ET_METAPHLAN, getMetaphlan2WithoutScriptPath());
 
             //python" is installed.
             checkExternalToolValid(os, ET_PYTHON, true);
+
+            //"Bio" python module is installed.
+
 
             //"numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, true);
@@ -294,8 +316,48 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath(), NAME_PYTHON_WITHOUT_NUMPY);
             checkExternalToolValid(os, ET_PYTHON, true);
 
+            //"Bio" python module is installed.
+
             //"numpy" python module is not installed.
             checkExternalToolValid(os, ET_NUMPY, false);
+
+            //"bowtie-align" executable is specified in UGENE.
+            checkExternalToolValid(os, ET_BOWTIE_2_ALIGNER, true);
+
+            //"utils/read_fastq.py" is not present in the metaphlan tool folder.
+            checkUtilScript(os, false);
+
+            //Expected state: "MetaPhlAn2" tool is present, but invalid.
+            checkExternalToolValid(os, ET_METAPHLAN, false);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Open "UGENE Application Settings", select "External Tools" tab.
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+
+    CHECK_SET_ERR(!os.hasError(), os.getError());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0007) {
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            //python" is installed.
+            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath(), NAME_PYTHON_WITHOUT_NUMPY);
+            checkExternalToolValid(os, ET_PYTHON, true);
+
+            //"Bio" python module is not installed.
+
+
+            //"numpy" python module is installed.
+            checkExternalToolValid(os, ET_NUMPY, true);
 
             //"bowtie-align" executable is specified in UGENE.
             checkExternalToolValid(os, ET_BOWTIE_2_ALIGNER, true);
@@ -316,7 +378,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     CHECK_SET_ERR(!os.hasError(), os.getError());
 }
-
 
 } // namespace GUITest_common_scenarios_mg_metaphlan2_external_tool
 } // namespace U2
