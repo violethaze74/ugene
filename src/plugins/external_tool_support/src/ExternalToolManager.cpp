@@ -145,6 +145,7 @@ void ExternalToolManagerImpl::validate(const QStringList& toolNames, const StrSt
     SAFE_POINT(etRegistry, "The external tool registry is NULL", );
 
     foreach (const QString& toolName, toolNames) {
+        etRegistry->getByName(toolName)->setAdditionalErrorMessage(QString());
         if (dependenciesAreOk(toolName)) {
             validateList << toolName;
         } else {

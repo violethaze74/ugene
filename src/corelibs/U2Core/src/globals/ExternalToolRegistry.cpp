@@ -84,9 +84,20 @@ ExternalToolValidation ExternalTool::getToolValidation() {
     return result;
 }
 
-void ExternalTool::performAdditionalChecks(const QString& toolPath, QString& errorString) const {
+void ExternalTool::performAdditionalChecks(const QString& toolPath) {
     Q_UNUSED(toolPath);
-    Q_UNUSED(errorString);
+}
+
+const QString& ExternalTool::getAdditionalErrorMessage() const {
+    return additionalErrorMesage;
+}
+
+void ExternalTool::setAdditionalErrorMessage(const QString& message) {
+    additionalErrorMesage = message;
+}
+
+bool ExternalTool::hasAdditionalErrorMessage() const {
+    return !additionalErrorMesage.isEmpty();
 }
 
 bool ExternalTool::isMuted() const {

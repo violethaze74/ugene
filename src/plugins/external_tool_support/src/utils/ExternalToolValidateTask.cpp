@@ -289,12 +289,12 @@ void ExternalToolJustValidateTask::checkArchitecture(const QString &toolPath) {
 }
 
 void ExternalToolJustValidateTask::performAdditionalChecks() {
-    QString errorString;
-    tool->performAdditionalChecks(toolPath, errorString);
-    CHECK(!errorString.isEmpty(), );
+    tool->performAdditionalChecks(toolPath);
 
-    isValid = false;
-    stateInfo.setError(errorString);
+    if (tool->hasAdditionalErrorMessage()) {
+        isValid = false;
+        stateInfo.setError(tool->getAdditionalErrorMessage());
+    }
 }
 
 ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString& _toolName) :

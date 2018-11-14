@@ -82,11 +82,14 @@ public:
     virtual QStringList getAdditionalPaths() const;
 
     virtual void        getAdditionalParameters(const QString& output) { Q_UNUSED(output) }
-    virtual void        performAdditionalChecks(const QString& toolPath, QString& errorString) const;
+    virtual void        performAdditionalChecks(const QString& toolPath);
 
     ExternalToolValidation getToolValidation();
     const QList<ExternalToolValidation>& getToolAdditionalValidations() const { return additionalValidators; }
     const QStringList& getDependencies() const { return dependencies; }
+    const QString& getAdditionalErrorMessage() const;
+    void setAdditionalErrorMessage(const QString& message);
+    bool hasAdditionalErrorMessage() const;
 
     void setPath(const QString& _path);
     void setValid(bool _isValid);
@@ -120,6 +123,7 @@ protected:
     StrStrMap   additionalInfo;         // any additional info, it is specific for the extenal tool
     QList<ExternalToolValidation> additionalValidators;     // validators for the environment state (e.g. some external program should be installed)
     QStringList dependencies;           // a list of dependencies for the tool of another external tools (e.g. python for python scripts).
+    QString     additionalErrorMesage;  // a string, which contains an error message, specific for each tool
     bool        muted;                  // a muted tool doesn't write its validation error to the log
     bool        isModuleTool;           // a module tool is a part of another external tool
 

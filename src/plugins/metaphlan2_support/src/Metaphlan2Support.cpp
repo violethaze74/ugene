@@ -49,11 +49,11 @@ Metaphlan2Support::Metaphlan2Support(const QString& name, const QString& path) :
     versionRegExp = QRegExp("MetaPhlAn version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");
 }
 
-void Metaphlan2Support::performAdditionalChecks(const QString& toolPath, QString& errorString) const {
+void Metaphlan2Support::performAdditionalChecks(const QString& toolPath) {
     QFileInfo file(toolPath);
     QString utilScriptFullPath = QString("%1/%2").arg(file.absolutePath()).arg(UTIL_SCRIPT);
     if (!QFileInfo::exists(utilScriptFullPath)) {
-        errorString = tr("%1 script %2 is not present!").arg(TOOL_NAME).arg(UTIL_SCRIPT);
+        additionalErrorMesage = tr("%1 script \"%2\" is not present!").arg(TOOL_NAME).arg(UTIL_SCRIPT);
     }
 }
 
