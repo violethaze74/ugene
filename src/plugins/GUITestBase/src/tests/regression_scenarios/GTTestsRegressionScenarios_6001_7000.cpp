@@ -1019,8 +1019,12 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
     GTGlobals::sleep(55000);
     //GTGlobals::sleep();
     HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task is in progress...");
+    if (el.geometry() == QRect()) {
+        el = GTUtilsDashboard::findElement(os, "The workflow task has been finished");
+    } else {
+        GTUtilsWorkflowDesigner::stopWorkflow(os);
+    }
     CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
-    GTUtilsWorkflowDesigner::stopWorkflow(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6212) {
