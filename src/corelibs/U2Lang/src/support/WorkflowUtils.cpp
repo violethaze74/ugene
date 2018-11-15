@@ -274,7 +274,7 @@ bool validateScript(Actor *a, NotificationsList &infoList) {
 }
 
 bool WorkflowUtils::validate(const Schema &schema, NotificationsList &notificationList) {
-    bool good = true;
+    bool good = validateOutputDir(WorkflowSettings::getWorkflowOutputDirectory(), notificationList);
     foreach (Actor *a, schema.getProcesses()) {
         good &= validatePorts(a, notificationList);
         if (a->getProto()->isScriptFlagSet()) {
@@ -298,20 +298,20 @@ bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &info
     bool good = validate(schema, notifications);
 
     foreach (const WorkflowNotification &notification, notifications) {
-        QListWidgetItem *item = NULL;
+        QListWidgetItem *item = nullptr;
+        Actor *a = nullptr;
         if (notification.actorId.isEmpty()) {
-            item = new QListWidgetItem(notification.type + ": " + notification.message);
+            item = new QListWidgetItem(notification.message);
         } else {
-            Actor *a = schema.actorById(notification.actorId);
+            a = schema.actorById(notification.actorId);
             item = new QListWidgetItem(QString("%1: %2").arg(a->getLabel()).arg(notification.message));
-
-            if (notification.type == WorkflowNotification::U2_ERROR) {
-                item->setIcon(QIcon(":U2Lang/images/error.png"));
-            } else if (notification.type == WorkflowNotification::U2_WARNING) {
-                item->setIcon(QIcon(":U2Lang/images/warning.png"));
-            } else {
-                item->setIcon(a->getProto()->getIcon());
-            }
+        }
+        if (notification.type == WorkflowNotification::U2_ERROR) {
+            item->setIcon(QIcon(":U2Lang/images/error.png"));
+        } else if (notification.type == WorkflowNotification::U2_WARNING) {
+            item->setIcon(QIcon(":U2Lang/images/warning.png"));
+        } else if (a != nullptr){
+            item->setIcon(a->getProto()->getIcon());
         }
 
         item->setData(ACTOR_ID_REF, notification.actorId);
@@ -1227,7 +1227,7 @@ bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &not
         return true;
     }
     else {
-        notificationList << WorkflowNotification(tr("Can't output folder path: '%1', check permissions").arg(url));
+        notificationList << WorkflowNotification(tr("Can't use this output folder: \"%1\", check it path and/or permissions").arg(url), "", WorkflowNotification::U2_ERROR);
         return false;
     }
 }

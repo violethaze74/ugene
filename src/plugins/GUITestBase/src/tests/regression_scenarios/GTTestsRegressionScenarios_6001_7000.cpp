@@ -1649,6 +1649,33 @@ GUI_TEST_CLASS_DEFINITION(test_6249_3) {
     CHECK_SET_ERR(outFiles.contains("chrM_fastqc_1.html"), QString("Output files not contains desired file chrM_fastqc_1.html"));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6256) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::WorkflowDesigner);
+            QWidget *dialog = QApplication::activeModalWidget();
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "workflowOutputEdit", dialog), "S:\\blablabla\\");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    //2. Open application settings and change workflow output directory to nonexistent path
+    Custom* c = new Custom();
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, c));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+    //3. Add "Read File URL" element and validate workflow
+    //Expected state: there are 2 erorrs after validation
+    GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)", true);
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTGlobals::sleep(1000);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTGlobals::sleep(1000);
+
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::getErrors(os).size() == 2, "Unexpected number of errors");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
