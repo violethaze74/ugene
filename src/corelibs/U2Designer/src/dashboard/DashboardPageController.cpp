@@ -224,6 +224,7 @@ QString DashboardPageController::serializeWorkerStatistics(const QMap<QString, M
 QString DashboardPageController::serializeLogEntry(const Monitor::LogEntry &entry) const {
     QJsonObject entryJS;
     entryJS["toolName"] = entry.toolName;
+    entryJS["actorId"] = entry.actorId;
     entryJS["actorName"] = entry.actorName;
     entryJS["runNumber"] = entry.runNumber;
     entryJS["logType"] = entry.logType;

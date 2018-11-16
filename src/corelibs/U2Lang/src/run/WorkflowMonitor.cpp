@@ -303,12 +303,12 @@ void WorkflowMonitor::setSaveSchema(const Metadata &_meta) {
     saveSchema = true;
 }
 
-QList<ExternalToolListener*> WorkflowMonitor::createWorkflowListeners(const QString& workerName, int listenersNumber) {
+QList<ExternalToolListener*> WorkflowMonitor::createWorkflowListeners(const QString &workerId, const QString &workerName, int listenersNumber) {
     QList<ExternalToolListener*> listeners;
-    WorkerLogInfo& logInfo = workersLog[workerName];
+    WorkerLogInfo& logInfo = workersLog[workerId];
     logInfo.runNumber++;
     for(int i = 0; i < listenersNumber; i++) {
-        WDListener* newListener = new WDListener(this, workerName, logInfo.runNumber);
+        WDListener* newListener = new WDListener(this, workerId, workerName, logInfo.runNumber);
         listeners.append(newListener);
     }
     logInfo.logs.append(listeners);
@@ -317,6 +317,7 @@ QList<ExternalToolListener*> WorkflowMonitor::createWorkflowListeners(const QStr
 void WorkflowMonitor::onLogChanged(const WDListener* listener, int messageType, const QString& message) {
     U2::Workflow::Monitor::LogEntry entry;
     entry.toolName = listener->getToolName();
+    entry.actorId = listener->getActorId();
     entry.actorName = listener->getActorName();
     entry.runNumber = listener->getRunNumber();
     entry.logType = messageType;
@@ -406,8 +407,9 @@ const bool Registrator::isMetaRegistered = registerMeta();
 /************************************************************************/
 /* WDListener */
 /************************************************************************/
-WDListener::WDListener(WorkflowMonitor *_monitor, const QString &_actorName, int _runNumber)
+WDListener::WDListener(WorkflowMonitor *_monitor, const QString &_actorId, const QString &_actorName, int _runNumber)
     : monitor(_monitor),
+      actorId(_actorId),
       actorName(_actorName),
       runNumber(_runNumber),
       outputHasMessages(false),

@@ -75,6 +75,7 @@ namespace Monitor {
             runNumber(0),
             logType(0) {}
         QString toolName;
+        QString actorId;
         QString actorName;
         int runNumber;
         int logType;
@@ -127,7 +128,7 @@ public:
 
     void setSaveSchema(const Metadata &meta);
 
-    QList<ExternalToolListener*> createWorkflowListeners(const QString& workerName, int listenersNumber = 1);
+    QList<ExternalToolListener*> createWorkflowListeners(const QString &workerId, const QString& workerName, int listenersNumber = 1);
 
     void onLogChanged(const WDListener* listener, int messageType, const QString& message);
 
@@ -187,10 +188,11 @@ public:
 
 class U2LANG_EXPORT WDListener: public ExternalToolListener{
 public:
-    WDListener(WorkflowMonitor* _monitor, const QString& _actorName, int _runNumber);
+    WDListener(WorkflowMonitor *monitor, const QString& actorId, const QString &actorName, int runNumber);
 
     void addNewLogMessage(const QString& message, int messageType);
 
+    const QString& getActorId() const {return actorId;}
     const QString& getActorName() const {return actorName;}
 
     int getRunNumber() const {return runNumber;}
@@ -203,6 +205,7 @@ private:
     static void writeToFile(QTextStream &logStream, const QString& message);
 
     WorkflowMonitor* monitor;
+    QString actorId;
     QString actorName;
     int runNumber;
 
