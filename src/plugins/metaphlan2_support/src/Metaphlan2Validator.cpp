@@ -38,26 +38,25 @@ bool Metaphlan2Validator::validate(const Actor *actor, NotificationsList &notifi
 
 bool Metaphlan2Validator::validateDatabase(const Actor *actor, NotificationsList &notificationList) const {
     const QString dbUrl = actor->getParameter(LocalWorkflow::Metaphlan2WorkerFactory::DB_URL)->getAttributeValueWithoutScript<QString>();
+    CHECK(!dbUrl.isEmpty(), false);
+
+    bool result = true;
     QDir dbDir(dbUrl);
     QStringList filterPkl = QStringList() << "*.pkl";
     QStringList dbPklEntries = dbDir.entryList(filterPkl);
-    CHECK_EXT(!dbPklEntries.isEmpty(),
-              notificationList << WorkflowNotification(tr(".pkl file is absent in the database folder"),
-                                                       actor->getId()),
-              false);
-    CHECK_EXT(dbPklEntries.size() == 1,
-              notificationList << WorkflowNotification(tr("There is 1 .pkl file in the database folder expected"),
-                                                       actor->getId()),
-              false);
+    if (dbPklEntries.size() != 1) {
+        notificationList << WorkflowNotification(tr("The database folder should contain a single \"*.pkl\" file."), actor->getId());
+        result = false;
+    }
 
     QStringList filterBt2 = QStringList() << "*.bt2";
     QStringList dbBt2Entries = dbDir.entryList(filterBt2);
-    CHECK_EXT(dbBt2Entries.size() == 6,
-              notificationList << WorkflowNotification(tr("There are 6 .bt2 files in the database folder expected"),
-                                                       actor->getId()),
-              false);
+    if (dbBt2Entries.size() != 6) {
+        notificationList << WorkflowNotification(tr("The database folder should contain six Bowtie2 index files (\"*.bt2\")."), actor->getId());
+        result = false;
+    }
 
-    return true;
+    return result;
 }
 
 }

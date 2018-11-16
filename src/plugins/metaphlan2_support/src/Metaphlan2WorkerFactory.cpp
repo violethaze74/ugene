@@ -50,8 +50,9 @@ const QString Metaphlan2WorkerFactory::ACTOR_ID = "metaphlan2-classify";
 
 const QString Metaphlan2WorkerFactory::INPUT_PORT_ID = "in";
 
-const QString Metaphlan2WorkerFactory::INPUT_SLOT = "url1";
-const QString Metaphlan2WorkerFactory::PAIRED_INPUT_SLOT = "url2";
+// Slots should be the same as in GetReadsListWorkerFactory
+const QString Metaphlan2WorkerFactory::INPUT_SLOT = "reads-url1";
+const QString Metaphlan2WorkerFactory::PAIRED_INPUT_SLOT = "reads-url2";
 
 const QString Metaphlan2WorkerFactory::SEQUENCING_READS = "input-data";
 const QString Metaphlan2WorkerFactory::INPUT_FORMAT = "input-format";
