@@ -30,7 +30,6 @@ function ExternalToolsWidget(containerId) {
 
     //private
     var self = this;
-    var taskCount = {};
 
     //public
     this.sl_onLogChanged = function(entry) {
@@ -70,23 +69,11 @@ function ExternalToolsWidget(containerId) {
         var tabId = "log_tab_id_" + entry.actorName;
         var runId = entry.toolName + " run " + entry.runNumber;
 
-        var mapId = tabId + "_" + runId;
-        if (!taskCount.hasOwnProperty(mapId)) {
-            taskCount[mapId] = 0;
-        }
-        if (entry.logType === 2) {
-            taskCount[mapId]++;
-        }
-        var taskNum = 0;
-        if (entry.logType > 1) {
-            taskNum = taskCount[mapId];
-        }
-
         var lastPartOfLog = entry.lastLine;
         lastPartOfLog = lastPartOfLog.replace(new RegExp("\n", 'g'), "break_line");
         lastPartOfLog = lastPartOfLog.replace(new RegExp("\r", 'g'), "");
         lastPartOfLog = lastPartOfLog.replace("'", "s_quote");
-        lwAddTreeNode(runId, entry.actorName, tabId, lastPartOfLog, taskNum, entry.logType);
+        lwAddTreeNode(runId, entry.actorName, tabId, lastPartOfLog, entry.logType);
     }
 
     function addChildrenElement(parentObject, elemTag, elemHTML) {
@@ -114,7 +101,7 @@ function ExternalToolsWidget(containerId) {
         return newList;
     }
 
-    function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, nodeNum, contentType) {
+    function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, contentType) {
         var actorTab = document.getElementById(activeTabName);
         if(actorTab === null) {
             var root = document.getElementById("treeRoot");
@@ -126,7 +113,7 @@ function ExternalToolsWidget(containerId) {
 
         var launchNodeId = activeTabName + nodeName + "_l";
         var launchNode = document.getElementById(launchNodeId);
-        var idBase = activeTabId + nodeName + "_" + nodeNum;
+        var idBase = activeTabId + nodeName;
         var isLaunchNodeCreated = false;
         if (null === launchNode) {
             isLaunchNodeCreated = true;
@@ -161,7 +148,7 @@ function ExternalToolsWidget(containerId) {
             return;
         }
 
-        var infoNode = document.getElementById(launchNodeId + '_info_' + nodeNum);
+        var infoNode = document.getElementById(launchNodeId + '_info');
         var launchSpan = document.getElementById(launchNodeId + '_span');
         switch (contentType) {
         // see enum initialization in ExternalToolRunTask.h
@@ -174,13 +161,7 @@ function ExternalToolsWidget(containerId) {
             break;
         case 2: // "PROGRAM_WITH_ARGUMENTS"
             if (null === infoNode) {
-                infoNode = addInfoNode(launchNode, nodeNum);
-                if (nodeNum > 1) {
-                    var outNode = document.getElementById(activeTabId + nodeName + '_0_out_label');
-                    if (outNode !== null) {
-                        infoNode.parentNode.parentNode.insertBefore(infoNode.parentNode, outNode.parentNode);
-                    }
-                }
+                infoNode = addInfoNode(launchNode);
             }
             addContent(infoNode, 'Command', idBase + '_command', 'badge command', content);
             break;
@@ -192,14 +173,13 @@ function ExternalToolsWidget(containerId) {
         }
     }
 
-    function addInfoNode(launchNode, nodeNum) {
+    function addInfoNode(launchNode) {
         if (null === launchNode) {
             return null;
         }
         var launchNodeId = launchNode.id;
-        var nodeContent = 'Run info ' + nodeNum;
-        var infoNode = addChildrenNode(launchNode, nodeContent, launchNodeId + '_info_span', 'badge run-info');
-        infoNode.id = launchNodeId + '_info_' + nodeNum;
+        var infoNode = addChildrenNode(launchNode, 'Run info', launchNodeId + '_info_span', 'badge run-info');
+        infoNode.id = launchNodeId + '_info';
 
         var launchSpan = document.getElementById(launchNodeId + '_span');
         if (null === launchSpan) {
