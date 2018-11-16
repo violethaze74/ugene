@@ -190,8 +190,7 @@ public:
     enum LogType {
         ERROR_LOG = 0,
         OUTPUT_LOG = 1,
-        PROGRAM_PATH = 2,
-        ARGUMENTS = 3
+        PROGRAM_WITH_ARGUMENTS = 2
     };
 
     ExternalToolListener(ExternalToolLogProcessor *logProcessor = NULL);

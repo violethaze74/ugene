@@ -165,14 +165,14 @@ function ExternalToolsWidget(containerId) {
         var launchSpan = document.getElementById(launchNodeId + '_span');
         switch (contentType) {
         // see enum initialization in ExternalToolRunTask.h
-        case 0://"error"
+        case 0: // "ERROR_LOG"
             addContent(launchNode, 'Error log', idBase + '_er', 'badge badge-important', content);
             launchSpan.className = 'badge badge-important';
             break;
-        case 1: // "output"
+        case 1: // "OUTPUT_LOG"
             addContent(launchNode, 'Output log', idBase + '_out', 'badge badge-info', content);
             break;
-        case 2: // "program"
+        case 2: // "PROGRAM_WITH_ARGUMENTS"
             if (null === infoNode) {
                 infoNode = addInfoNode(launchNode, nodeNum);
                 if (nodeNum > 1) {
@@ -182,17 +182,7 @@ function ExternalToolsWidget(containerId) {
                     }
                 }
             }
-            addContent(infoNode, 'Executable file', idBase + '_program', 'badge program-path', content);
-            break;
-        case 3: // "arguments"
-            if (null === infoNode) {
-                infoNode = addInfoNode(launchNode, nodeNum);
-                var outNode = document.getElementById(activeTabId + nodeName + '_0_out_label');
-                if (outNode !== null) {
-                    infoNode.parentNode.parentNode.insertBefore(infoNode.parentNode, outNode.parentNode);
-                }
-            }
-            addContent(infoNode, 'Arguments', idBase + '_args', 'badge tool-args', content);
+            addContent(infoNode, 'Command', idBase + '_command', 'badge command', content);
             break;
         }
 
