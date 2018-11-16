@@ -188,7 +188,7 @@ QByteArray TextUtils::cutByteOrderMarks(const QByteArray& data, QString& errorMe
     textStream.setGenerateByteOrderMark(false);
     QByteArray resultData = textStream.readAll().toLocal8Bit();
     if (resultData.size() > data.size()) {
-        errorMessage = tr("The problem appeared during the data reading. Please, make sure that all input data are correct");
+        errorMessage = tr("The text file can't be read. Check the file encoding and make sure the file is not corrupted.");
         resultData = QByteArray();
     }
     return resultData;

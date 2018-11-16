@@ -158,7 +158,9 @@ enum TaskFlag {
 
     TaskFlag_OnlyNotificationReport = 1 << 26, // task is asked to generate report
 
-    TaskFlag_CollectChildrenWarnings = 1 << 27
+    TaskFlag_CollectChildrenWarnings = 1 << 27,
+
+    TaskFlag_ConcatenateChildrenErrors = 1 << 28 // task collects errors from all children and unites them into one report
 };
 
 #define TaskFlags_FOSCOE                (TaskFlags(TaskFlag_FailOnSubtaskError) | TaskFlag_FailOnSubtaskCancel)
@@ -314,6 +316,10 @@ public:
     bool isVerboseOnTaskCancel() const {return flags.testFlag(TaskFlag_VerboseOnTaskCancel); }
 
     void setVerboseOnTaskCancel(bool v) { setFlag(TaskFlag_VerboseOnTaskCancel, v); }
+
+    bool isConcatenateChildrenErrors() const { return flags.testFlag(TaskFlag_ConcatenateChildrenErrors); }
+
+    void setConcatenateChildrenErrors(bool v) { setFlag(TaskFlag_ConcatenateChildrenErrors, v); }
 
     const TaskResources& getTaskResources() {return taskResources;}
 

@@ -56,6 +56,13 @@ Task::ReportResult MultiTask::report() {
         delete l;
         l = NULL;
     }
+    foreach(Task* t, tasks) {
+        CHECK_CONTINUE(t->isConcatenateChildrenErrors());
+
+        setReportingSupported(true);
+        setReportingEnabled(true);
+        break;
+    }
     return Task::ReportResult_Finished;
 }
 
