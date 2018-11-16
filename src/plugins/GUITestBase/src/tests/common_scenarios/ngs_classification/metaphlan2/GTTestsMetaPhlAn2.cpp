@@ -350,7 +350,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is installed.
-            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath(), NAME_PYTHON_WITHOUT_NUMPY);
             checkExternalToolValid(os, ET_PYTHON, true);
 
             //"Bio" python module is not installed.
@@ -366,7 +365,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             checkUtilScript(os, true);
 
             //Expected state: "MetaPhlAn2" tool is present, but invalid.
-            checkExternalToolValid(os, ET_METAPHLAN, false);
+            checkExternalToolValid(os, ET_METAPHLAN, true);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
