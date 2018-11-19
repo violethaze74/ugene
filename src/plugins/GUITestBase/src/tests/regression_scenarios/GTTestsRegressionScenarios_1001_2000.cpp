@@ -1749,8 +1749,8 @@ GUI_TEST_CLASS_DEFINITION(test_1124){
             //    2. Hover the {Input files (long DNA reads to assembly)} field with mouse and wait the tooltip appeares.
             QListWidget* seqList = GTWidget::findExactWidget<QListWidget*>(os, "seqList", dialog);
             GTWidget::click(os, seqList);
-            GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(20,20));
-            GTGlobals::sleep(3000);
+            GTGlobals::sleep(300);
+            GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(10,10));                   
             //    Expected state: tooltip is presented.
             GTUtilsToolTip::checkExistingToolTip(os, "The quality scores for FASTA sequences can be provided in an additional file");
 
@@ -2498,7 +2498,7 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTGlobals::sleep(100);
 //    Excepted state: new *.aln documents (with specified names) should be created and contain founded subsequences for
 //    one pair in each [m]object. Few documents must be loaded to current project, others will stay unloaded
 //    7. Check that numeration of founded sequences starting from 1
@@ -3078,11 +3078,13 @@ GUI_TEST_CLASS_DEFINITION(test_1266) {
             CHECK_SET_ERR(s.contains("<html>Disable"), "unexpected tooltip: " + s);
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+            GTGlobals::sleep();
         }
     };
 //    2. Run its wizzard
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new custom()));
     GTWidget::click(os, GTAction::button(os, "Show wizard"));
+    GTGlobals::sleep();
 //    Expected state: all parameters of the wizzard have tooltips with their descriptions
 }
 
@@ -3234,7 +3236,7 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
     QPoint globalP = tw->viewport()->mapToGlobal(rect.center());
     GTMouseDriver::moveTo(globalP);
     GTMouseDriver::click();
-    GTGlobals::sleep(500);
+   
     QComboBox* box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
 
     CHECK_SET_ERR(box->itemText(3) != "Additional", "Additional item not found");
