@@ -986,18 +986,11 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
 
     //Expected: There are no adapter files in the output directory
     QDir sandbox(sandBoxDir);
-    QStringList sandboxEntry = sandbox.entryList(QDir::AllEntries);
-    QRegExp rx("????.??.??_??-??");
-    rx.setPatternSyntax(QRegExp::Wildcard);
-    QString entry;
-    foreach(const QString folder, sandboxEntry) {
-        CHECK_CONTINUE(rx.exactMatch(folder));
-        entry = folder;
-        break;
-    }
-    CHECK_SET_ERR(!entry.isEmpty(), "The output folder is lost");
+    QStringList filter = QStringList() << "????.??.??_??-??";
+    QStringList sandboxEntry = sandbox.entryList(filter, QDir::AllEntries);
+    CHECK_SET_ERR(sandboxEntry.size() == 1, QString("Unexpected nomber of folders, expected: 1, current: %1").arg(sandboxEntry.size()));
 
-    QString insideSandbox(sandBoxDir + entry);
+    QString insideSandbox(sandBoxDir + sandboxEntry.first());
     QDir insideSandboxDir(insideSandbox);
     QStringList resultDirs = insideSandboxDir.entryList();
     CHECK_SET_ERR(resultDirs.size() == 5, QString("Unexpected number of result folders, expected: 5, current: %1").arg(resultDirs.size()));
