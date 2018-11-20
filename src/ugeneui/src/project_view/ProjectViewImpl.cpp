@@ -70,6 +70,7 @@
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/ProjectUtils.h>
+#include <U2Gui/ReloadDocumentsTask.h>
 #include <U2Gui/UnloadDocumentTask.h>
 
 #include <U2View/ADVSequenceWidget.h>
@@ -386,7 +387,7 @@ void DocumentUpdater::excludeDocumentsInTasks(const QList<Task*>& tasks, QList<D
 }
 
 void DocumentUpdater::reloadDocuments( QList<Document*> docs2Reload ){
-    Task* reloadTask = new Task(tr("Reload documents task"), TaskFlag_NoRun);
+    ReloadDocumentsTask* reloadTask = new ReloadDocumentsTask(docs2Reload);
 
     QList<GObjectViewState*> states;
     QList<GObjectViewWindow*> viewWindows;
@@ -406,15 +407,6 @@ void DocumentUpdater::reloadDocuments( QList<Document*> docs2Reload ){
             vw->closeView();
         }
 
-        QString unloadErr = UnloadDocumentTask::checkSafeUnload(doc);
-        if (!unloadErr.isEmpty()) {
-            QMessageBox::warning(QApplication::activeWindow(),
-                U2_APP_TITLE,
-                tr("Unable to unload '%1'. Unload error: '%2'").arg(doc->getName(), unloadErr));
-            doc->setLastUpdateTime();
-            continue;
-        }
-        reloadTask->addSubTask(new ReloadDocumentTask(doc));
     }
 
     Task* updateViewTask = new Task(tr("Restore state task"), TaskFlag_NoRun);

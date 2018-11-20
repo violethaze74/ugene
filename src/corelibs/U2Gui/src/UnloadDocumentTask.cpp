@@ -168,7 +168,7 @@ QList<Task *> UnloadDocumentTask::runUnloadTaskHelper(const QList<Document*>& do
 QString UnloadDocumentTask::checkSafeUnload(Document* doc) {
     bool hasViews = !GObjectViewUtils::findViewsWithAnyOfObjects(doc->getObjects()).isEmpty();
     if (hasViews) {
-        return tr("There is an active view with document content");
+        return tr("There is an active view with the document content.");
     }
 
     QList<StateLock*> locks = doc->findLocks(StateLockableTreeFlags_ItemAndChildren, StateLockFlag_LiveLock);
@@ -177,7 +177,7 @@ QString UnloadDocumentTask::checkSafeUnload(Document* doc) {
         liveLocked = (locks.first()->getUserDesc() != Document::UNLOAD_LOCK_NAME);
     }
     if (liveLocked) {
-        return tr("Document is locked by some algorithm and cannot be unloaded");
+        return tr("The document is locked by some algorithm.");
     }
 
     return QString();
