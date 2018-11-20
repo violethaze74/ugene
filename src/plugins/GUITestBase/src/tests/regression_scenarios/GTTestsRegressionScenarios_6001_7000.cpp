@@ -1457,12 +1457,41 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6238) {
+GUI_TEST_CLASS_DEFINITION(test_6238_1) {
     //1. Open _common_data/regression/6238/6238.fastq on macOS
     //Expected: it wasn't opened, the notification "The problem appeared during the data reading. Please, make sure that all input data are correct" appeared
     GTUtilsNotifications::waitForNotification(os, true, "The problem appeared during the data reading. Please, make sure that all input data are correct");
     GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/regression/6238/6238.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6238_2) {
+    QString fastqFile = dataDir + "samples/FASTQ/eas.fastq";
+    QString sandboxFastqFile = sandBoxDir + "eas.fastq";
+    QString badFastqFile = testDir + "_common_data/regression/6238/6238.fastq";
+    //1. Open "data/samples/FASTQ/eas.fastq".
+    GTFile::copy(os, fastqFile, sandboxFastqFile);
+
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, sandboxFastqFile);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the file in some external text editor.
+    QFile file(sandboxFastqFile);
+    QFile badFile(badFastqFile);
+    file.open(QFile::ReadWrite);
+    badFile.open(QFile::ReadOnly);
+
+    //3. Replace the file content with the content if the file "_common_data/regression/6238/6238.fastq".
+    //Expected state : UGENE offers to reload the modified file.
+    //4. Accept the offering.
+    //Expected state: the file reloading failed, an error notification appeared, there are error messages in the log.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesAll));
+    GTUtilsNotifications::waitForNotification(os, false, "The problem appeared during the data reading. Please, make sure that all input data are correct");
+    QByteArray badData = badFile.readAll();
+    file.write(badData);
+    file.close();
+    badFile.close();
+    GTGlobals::sleep(10000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6240) {
