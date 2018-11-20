@@ -242,6 +242,9 @@ void GTest_DigestIntoFragments::init(XMLTestFormat *tf, const QDomElement& el) {
         return;
     }
 
+    QString isCircularBuf = el.attribute("circular");
+    isCircular = isCircularBuf == "true" ? true : false;
+
     aObjCtx = el.attribute("annotation-table");
     if (aObjCtx.isEmpty()) {
         stateInfo.setError( "Annotation object context not specified");
@@ -313,6 +316,7 @@ QList<Task*> GTest_DigestIntoFragments::onSubTaskFinished(Task* subTask) {
     DigestSequenceTaskConfig cfg;
     cfg.searchForRestrictionSites = searchForEnzymes;
     cfg.enzymeData = enzymesToSearch;
+    cfg.forceCircular = isCircular;
 
     DigestSequenceTask* t = new DigestSequenceTask(seqObj, aObj, aObj, cfg);
     res.append(t);

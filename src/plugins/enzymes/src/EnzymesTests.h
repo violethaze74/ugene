@@ -76,7 +76,8 @@ private:
     QString                 enzymesUrl;
     QStringList             enzymeNames;
     bool                    searchForEnzymes;
-    AnnotationTableObject*    aObj;
+    bool                    isCircular;
+    AnnotationTableObject*  aObj;
     U2SequenceObject*       seqObj;
     LoadEnzymeFileTask*     loadTask;
 };
