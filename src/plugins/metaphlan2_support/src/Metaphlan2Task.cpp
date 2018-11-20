@@ -36,7 +36,7 @@ Metaphlan2TaskSettings::Metaphlan2TaskSettings() : isPairedEnd(false),
 
 Metaphlan2ClassifyTask::Metaphlan2ClassifyTask(const Metaphlan2TaskSettings& _settings) :
                                     ExternalToolSupportTask(tr("Classify reads with Metaphlan2"),
-                                                            TaskFlags_NR_FOSE_COSC),
+                                    TaskFlags_NR_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText),
                                     settings(_settings),
                                     classifyTask(nullptr){
     GCOUNTER(cvar, tvar, "Metaphlan2ClassifyTask");
