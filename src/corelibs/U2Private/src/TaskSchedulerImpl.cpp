@@ -134,7 +134,7 @@ void TaskSchedulerImpl::propagateStateToParent(Task* task) {
         cancelTask(parentTask);
     } else if (task->hasError() && parentTask->getFlags().testFlag(TaskFlag_FailOnSubtaskError)) {
         TaskStateInfo& tsi = getTaskStateInfo(parentTask);
-        if (parentTask->getFlags().testFlag(TaskFlag_MinimizeSubtaskErrorText)) {
+        if (parentTask->isMinimizeSubtaskErrorText()) {
             tsi.setError(task->getError());
         } else {
             tsi.setError( tr("Subtask {%1} is failed: %2").arg(task->getTaskName()).arg(task->getError()));
