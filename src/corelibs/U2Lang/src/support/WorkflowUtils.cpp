@@ -1225,9 +1225,9 @@ bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &not
 
     if (canWriteToPath(fi.absoluteFilePath())) {
         return true;
-    }
-    else {
-        notificationList << WorkflowNotification(tr("Can't use this output folder: \"%1\", check it path and/or permissions").arg(url), "", WorkflowNotification::U2_ERROR);
+    } else {
+        notificationList << WorkflowNotification(tr("Workflow output folder '%1' can't be accessed. Check that the folder exists and you have" 
+            " enough permissions to write to it, or choose another folder in the UGENE Application Settings.").arg(url), "", WorkflowNotification::U2_ERROR);
         return false;
     }
 }
