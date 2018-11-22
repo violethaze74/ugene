@@ -387,8 +387,6 @@ void DocumentUpdater::excludeDocumentsInTasks(const QList<Task*>& tasks, QList<D
 }
 
 void DocumentUpdater::reloadDocuments( QList<Document*> docs2Reload ){
-    ReloadDocumentsTask* reloadTask = new ReloadDocumentsTask(docs2Reload);
-
     QList<GObjectViewState*> states;
     QList<GObjectViewWindow*> viewWindows;
 
@@ -409,6 +407,7 @@ void DocumentUpdater::reloadDocuments( QList<Document*> docs2Reload ){
 
     }
 
+    ReloadDocumentsTask* reloadTask = new ReloadDocumentsTask(docs2Reload);
     Task* updateViewTask = new Task(tr("Restore state task"), TaskFlag_NoRun);
 
     foreach(GObjectViewState* state, states) {

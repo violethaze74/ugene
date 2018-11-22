@@ -149,8 +149,9 @@ enum TaskFlag {
 
     TaskFlag_VerboseStateLog = 1 << 22, //tasks prepared/finished state is dumped to the 'info' log category. Effective for top-level tasks only
 
-    TaskFlag_MinimizeSubtaskErrorText = 1 << 23, //for TaskFlag_FailOnSubtaskError task minimizes the error text
-                                                // excluding task-names info from the text
+    TaskFlag_MinimizeSubtaskErrorText = 1 << 23, // for TaskFlag_FailOnSubtaskError task minimizes the error text
+                                                 // excluding task-names info from the text
+                                                 // applies this behaviour for the current task and all children of the current task
 
     TaskFlag_SuppressErrorNotification = 1 << 24, //for top level tasks only: if task fails, tells if notification is shown
 
@@ -343,6 +344,8 @@ public:
     int getTimeOut() const { return timeInfo.timeOut;}
 
     void addTaskResource(const TaskResourceUsage& r);
+
+    bool isMinimizeSubtaskErrorText() const;
 
 public slots:
     // Set's cancelFlag to true. Does not wait for task to be stopped

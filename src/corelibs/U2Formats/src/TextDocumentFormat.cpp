@@ -39,6 +39,8 @@ DNASequence* TextDocumentFormat::loadSequence(IOAdapter* io, U2OpStatus& ti) {
 FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray& rawData, const GUrl& url) const {
     QString error;
     QByteArray cuttedRawData = TextUtils::cutByteOrderMarks(rawData, error);
+    CHECK(error.isEmpty(), FormatDetection_NotMatched);
+
     FormatCheckResult checkResult = checkRawTextData(cuttedRawData, url);
 
     return checkResult;

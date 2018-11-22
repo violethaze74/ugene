@@ -152,6 +152,18 @@ void Task::addTaskResource(const TaskResourceUsage& r) {
     taskResources.append(r);
 }
 
+bool Task::isMinimizeSubtaskErrorText() const {
+    bool result = false;
+    Task* parentTask = getParentTask();
+    if (getFlags().testFlag(TaskFlag_MinimizeSubtaskErrorText)) {
+        result = true;
+    } else if (parentTask != nullptr) {
+        result = parentTask->isMinimizeSubtaskErrorText();
+    }
+
+    return result;
+}
+
 void Task::setCollectChildrensWarningsFlag(bool v) {
     setFlag(TaskFlag_CollectChildrenWarnings, v);
     if (v) {
