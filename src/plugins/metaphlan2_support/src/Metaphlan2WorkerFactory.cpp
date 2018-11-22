@@ -58,6 +58,10 @@ const QString Metaphlan2WorkerFactory::SEQUENCING_READS = "input-data";
 const QString Metaphlan2WorkerFactory::INPUT_FORMAT = "input-format";
 const QString Metaphlan2WorkerFactory::DB_URL = "database";
 const QString Metaphlan2WorkerFactory::NUM_THREADS = "threads";
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE = "analysis-type";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL = "tax-level";
+const QString Metaphlan2WorkerFactory::NORMALIZE = "normalize-by-size";
+const QString Metaphlan2WorkerFactory::PRESENCE_THRESHOLD = "presence-threshold";
 const QString Metaphlan2WorkerFactory::BOWTIE2_OUTPUT_URL = "bowtie2-output-url";
 const QString Metaphlan2WorkerFactory::OUTPUT_URL = "output-url";
 
@@ -66,6 +70,41 @@ const QString Metaphlan2WorkerFactory::PAIRED_END_TEXT = QCoreApplication::trans
 
 const QString Metaphlan2WorkerFactory::INPUT_TYPE_FASTA = "fasta";
 const QString Metaphlan2WorkerFactory::INPUT_TYPE_FASTQ = "fastq";
+
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_REL_AB_TEXT = QCoreApplication::translate("Metaphlan2WorkerFactory", "Relative abundance");
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_REL_AB_W_READ_STATS_TEXT = QCoreApplication::translate("Metaphlan2WorkerFactory", "Relative abundance with reads statistics");
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_READS_MAP_TEXT = QCoreApplication::translate("Metaphlan2WorkerFactory", "Reads mapping");
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_CLADE_PROFILES_TEXT = QCoreApplication::translate("Metaphlan2WorkerFactory", "Clade profiles");
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_MARKER_AB_TABLE_TEXT = QCoreApplication::translate("Metaphlan2WorkerFactory", "Marker abundance table");
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_MARKER_PRES_TABLE_TEXT = QCoreApplication::translate("Metaphlan2WorkerFactory", "Marker presence table");
+
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_REL_AB_VALUE = "rel-ab";
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_REL_AB_W_READ_STATS_VALUE = "rel-ab-w-read-stats";
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_READS_MAP_VALUE = "reads-map";
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_CLADE_PROFILES_VALUE = "clade-profiles";
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_MARKER_AB_TABLE_VALUE = "marker-ab-table";
+const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_MARKER_PRES_TABLE_VALUE = "marker-pres-table";
+
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_ALL_TEXT = "All";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_KINGDOMS_TEXT = "Kingdoms";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_PHYLA_TEXT = "Phyla";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_CLASSES_TEXT = "Classes";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_ORDERS_TEXT = "Orders";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_FAMILIES_TEXT = "Families";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_GENERA_TEXT = "Genera";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_SPECIES_TEXT = "Species";
+
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_ALL_VALUE = "a";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_KINGDOMS_VALUE = "k";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_PHYLA_VALUE = "p";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_CLASSES_VALUE = "c";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_ORDERS_VALUE = "o";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_FAMILIES_VALUE = "f";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_GENERA_VALUE = "g";
+const QString Metaphlan2WorkerFactory::TAX_LEVEL_SPECIES_VALUE = "s";
+
+const QString Metaphlan2WorkerFactory::SKIP_NORMILIZE_BY_SIZE = "skip";
+const QString Metaphlan2WorkerFactory::NOT_SKIP_NORMILIZE_BY_SIZE = "normalize";
 
 const QString Metaphlan2WorkerFactory::SINGLE_END = "single-end";
 const QString Metaphlan2WorkerFactory::PAIRED_END = "paired-end";
@@ -130,6 +169,41 @@ void Metaphlan2WorkerFactory::init() {
                                              tr("Number of threads"),
                                              tr("The number of CPUs to use for parallelizing the mapping (--nproc)."));
 
+        Descriptor analysisTypeDescriptor(ANALYSIS_TYPE,
+                                          tr("Analysis type"),
+                                          tr("Specify type of analysis to perform:"
+                                             "<ul>"
+                                             "<li>Relative abundance - profiling of metagenomes in terms of "
+                                             "relative abundances (corresponds to \"-t rel_ab\")</li>"
+                                             "<li>Relative abundance with reads statistics - "
+                                             "profiling of metagenomes in terms of relative abundances and "
+                                             "estimate the number of reads coming from each clade (\"-t rel_ab_w_read_stats\")</li>"
+                                             "<li>Reads mapping - mapping from reads to clades, "
+                                             "the output contains reads that hit a marker only (\"-t reads_map\")</li>"
+                                             "<li>Clade profiles - normalized marker counts for clades with at least a non - null marker(\"-t clade_profiles\")</li>"
+                                             "<li>Marker abundance table - normalized marker counts: "
+                                             "only when > 0.0 and optionally normalized by metagenome size "
+                                             "(\"-t marker_ab_table\"), see also \"Normalize by metagenome size\" parameter</li>"
+                                             "<li>Marker presence table - list of markers present in the sample "
+                                             "(\"-t marker_pres_table\"), see also \"Presence threshold\" parameter<li>"
+                                             "</ul>"));
+
+        Descriptor taxLevelDescriptor(TAX_LEVEL,
+                                      tr("Tax level"),
+                                      tr("The taxonomic level for the relative abundance output: "
+                                      "all, kingdoms (Bacteria and Archaea) only, phyla only, etc. (--tax_lev)."));
+
+        Descriptor normalizeBySizeDescriptor(NORMALIZE,
+                                             tr("Normalize by metagenome size"),
+                                             tr("If \"Normalize\" is selected, "
+                                                 "the total number of reads in the original metagenome is taken into account for normlization: "
+                                                 "UGENE calculates the number of reads in an input "
+                                                 "FASTA/FASTQ file and passes \"--nreads\" parameter to MetaPhlAn2."));
+
+        Descriptor precenceThresholdDescriptor(PRESENCE_THRESHOLD,
+                                               tr("Presence threshold"),
+                                               tr("Specify a threshold for calling a marker."));
+
         Descriptor bowtie2OutputDescriptor(BOWTIE2_OUTPUT_URL,
                                            tr("Bowtie2 output file"),
                                            tr("The file for saving the output of BowTie2 (--bowtie2out). "
@@ -137,7 +211,8 @@ void Metaphlan2WorkerFactory::init() {
 
         Descriptor outputUrlDescriptor(OUTPUT_URL,
                                        tr("Output file"),
-                                       tr("The tab-separated output file of the predicted taxon relative abundances."));
+                                       tr("MetaPhlAn2 output depends on the \"Analysis type\" parameter. "
+                                          "By default, it is a tab-delimited file with the predicted taxon relative abundances."));
 
         Attribute* sequencingReadsAttribute = new Attribute(sequencingReadsDescriptor,
                                                             BaseTypes::STRING_TYPE(),
@@ -163,9 +238,30 @@ void Metaphlan2WorkerFactory::init() {
                                                      databasePath);
 
         Attribute* numberOfThreadsAttribute = new Attribute(numberOfThreadsDescriptor,
-                                                     BaseTypes::NUM_TYPE(),
+                                                            BaseTypes::NUM_TYPE(),
+                                                            Attribute::None,
+                                                            AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+
+        Attribute* analysisTypeAttribute = new Attribute(analysisTypeDescriptor,
+                                                         BaseTypes::STRING_TYPE(),
+                                                         Attribute::None,
+                                                         ANALYSIS_TYPE_REL_AB_VALUE);
+
+        Attribute* taxLevelAttribute = new Attribute(taxLevelDescriptor,
+                                                     BaseTypes::STRING_TYPE(),
                                                      Attribute::None,
-                                                     AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+                                                     TAX_LEVEL_ALL_VALUE);
+
+        Attribute* normalizeBySizeAttribute = new Attribute(normalizeBySizeDescriptor,
+                                                            BaseTypes::STRING_TYPE(),
+                                                            Attribute::None,
+                                                            SKIP_NORMILIZE_BY_SIZE);
+
+        Attribute* precenceThresholdAttribute = new Attribute(precenceThresholdDescriptor,
+                                                              BaseTypes::NUM_TYPE(),
+                                                              Attribute::None,
+                                                              1);
+
 
         Attribute* bowtie2OutputAttribute = new Attribute(bowtie2OutputDescriptor,
                                                           BaseTypes::STRING_TYPE(),
@@ -175,10 +271,18 @@ void Metaphlan2WorkerFactory::init() {
                                                       BaseTypes::STRING_TYPE(),
                                                       Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
+        taxLevelAttribute->addRelation(new VisibilityRelation(ANALYSIS_TYPE, QVariantList() << ANALYSIS_TYPE_REL_AB_VALUE << ANALYSIS_TYPE_REL_AB_W_READ_STATS_VALUE));
+        normalizeBySizeAttribute->addRelation(new VisibilityRelation(ANALYSIS_TYPE, QVariantList() << ANALYSIS_TYPE_MARKER_AB_TABLE_VALUE));
+        precenceThresholdAttribute->addRelation(new VisibilityRelation(ANALYSIS_TYPE, QVariantList() << ANALYSIS_TYPE_MARKER_PRES_TABLE_VALUE));
+
         attributes << sequencingReadsAttribute;
         attributes << inputFormatAttribute;
         attributes << databaseAttribute;
         attributes << numberOfThreadsAttribute;
+        attributes << analysisTypeAttribute;
+        attributes << taxLevelAttribute;
+        attributes << normalizeBySizeAttribute;
+        attributes << precenceThresholdAttribute;
         attributes << bowtie2OutputAttribute;
         attributes << outputUrlAttribute;
         }
@@ -195,7 +299,7 @@ void Metaphlan2WorkerFactory::init() {
         inputFormatMap["FASTQ"] = INPUT_TYPE_FASTQ;
         delegates[INPUT_FORMAT] = new ComboBoxDelegate(inputFormatMap);
 
-        QList<StrStrPair> databaseMap;//3
+        QList<StrStrPair> databaseMap;
         databaseMap << StrStrPair(NgsReadsClassificationPlugin::METAPHLAN2_DATABASE_DATA_ID,
                                   NgsReadsClassificationPlugin::METAPHLAN2_DATABASE_ITEM_ID);
         delegates[DB_URL] = new DatabaseDelegate(ACTOR_ID, DB_URL, databaseMap, "metaphlan2/database", true);
@@ -204,6 +308,36 @@ void Metaphlan2WorkerFactory::init() {
         threadsProperties["minimum"] = 1;
         threadsProperties["maximum"] = QThread::idealThreadCount();
         delegates[NUM_THREADS] = new SpinBoxDelegate(threadsProperties);
+
+        QVariantMap analysisTypeMap;
+        analysisTypeMap[ANALYSIS_TYPE_REL_AB_TEXT] = ANALYSIS_TYPE_REL_AB_VALUE;
+        analysisTypeMap[ANALYSIS_TYPE_REL_AB_W_READ_STATS_TEXT] = ANALYSIS_TYPE_REL_AB_W_READ_STATS_VALUE;
+        analysisTypeMap[ANALYSIS_TYPE_READS_MAP_TEXT] = ANALYSIS_TYPE_READS_MAP_VALUE;
+        analysisTypeMap[ANALYSIS_TYPE_CLADE_PROFILES_TEXT] = ANALYSIS_TYPE_CLADE_PROFILES_VALUE;
+        analysisTypeMap[ANALYSIS_TYPE_MARKER_AB_TABLE_TEXT] = ANALYSIS_TYPE_MARKER_AB_TABLE_VALUE;
+        analysisTypeMap[ANALYSIS_TYPE_MARKER_PRES_TABLE_TEXT] = ANALYSIS_TYPE_MARKER_PRES_TABLE_VALUE;
+        delegates[ANALYSIS_TYPE] = new ComboBoxDelegate(analysisTypeMap);
+
+        QVariantMap taxLevelMap;
+        taxLevelMap[TAX_LEVEL_ALL_TEXT] = TAX_LEVEL_ALL_VALUE;
+        taxLevelMap[TAX_LEVEL_KINGDOMS_TEXT] = TAX_LEVEL_KINGDOMS_VALUE;
+        taxLevelMap[TAX_LEVEL_PHYLA_TEXT] = TAX_LEVEL_PHYLA_VALUE;
+        taxLevelMap[TAX_LEVEL_CLASSES_TEXT] = TAX_LEVEL_CLASSES_VALUE;
+        taxLevelMap[TAX_LEVEL_ORDERS_TEXT] = TAX_LEVEL_ORDERS_VALUE;
+        taxLevelMap[TAX_LEVEL_FAMILIES_TEXT] = TAX_LEVEL_FAMILIES_VALUE;
+        taxLevelMap[TAX_LEVEL_GENERA_TEXT] = TAX_LEVEL_GENERA_VALUE;
+        taxLevelMap[TAX_LEVEL_SPECIES_TEXT] = TAX_LEVEL_SPECIES_VALUE;
+        delegates[TAX_LEVEL] = new ComboBoxDelegate(taxLevelMap);
+
+        QVariantMap normalizeBySizeMap;
+        normalizeBySizeMap[tr("Skip")] = SKIP_NORMILIZE_BY_SIZE;
+        normalizeBySizeMap[tr("Normalize")] = NOT_SKIP_NORMILIZE_BY_SIZE;
+        delegates[NORMALIZE] = new ComboBoxDelegate(normalizeBySizeMap);
+
+        QVariantMap precenceThresholdMap;
+        precenceThresholdMap["minimum"] = 0;
+        precenceThresholdMap["maximum"] = std::numeric_limits<int>::max();
+        delegates[PRESENCE_THRESHOLD] = new SpinBoxDelegate(precenceThresholdMap);
 
         DelegateTags bowtie2OutputTags;
         bowtie2OutputTags.set(DelegateTags::PLACEHOLDER_TEXT,

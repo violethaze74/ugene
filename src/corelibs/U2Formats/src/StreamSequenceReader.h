@@ -75,6 +75,8 @@ public:
     int getProgress();
     QString getErrorMessage();
     DNASequence* getNextSequenceObject();
+
+    static int getNumberOfSequences(const QString& url, U2OpStatus& os);
 };
 
 

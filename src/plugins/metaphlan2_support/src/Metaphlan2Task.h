@@ -24,9 +24,9 @@
 
 #include <U2Core/ExternalToolRunTask.h>
 
-#include "../ngs_reads_classification/src/TaxonomySupport.h"
-
 namespace U2 {
+
+class CalculateSequencesNumberTask;
 
 struct  Metaphlan2TaskSettings {
     Metaphlan2TaskSettings();
@@ -35,6 +35,10 @@ struct  Metaphlan2TaskSettings {
     QString inputType;
     QString databaseUrl;
     int numberOfThreads;
+    QString analysisType;
+    QString taxLevel;
+    bool normalizeByMetagenomeSize;
+    int presenceThreshold;
     QString bowtie2OutputFile;
     QString outputFile;
 
@@ -53,11 +57,15 @@ public:
     const QString& getOutputUrl() const;
 
 private:
-    void prepare();
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     QStringList getArguments();
 
+    bool needToCountSequences;
+    int sequencesNumber;
     const Metaphlan2TaskSettings settings;
     ExternalToolRunTask* classifyTask;
+    CalculateSequencesNumberTask* calculateSequencesNumberTask;
 };
 
 }

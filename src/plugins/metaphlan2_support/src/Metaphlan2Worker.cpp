@@ -110,6 +110,10 @@ Metaphlan2TaskSettings Metaphlan2Worker::getSettings(U2OpStatus &os) {
     settings.inputType = getValue<QString>(Metaphlan2WorkerFactory::INPUT_FORMAT);
     settings.databaseUrl = getValue<QString>(Metaphlan2WorkerFactory::DB_URL);
     settings.numberOfThreads = getValue<int>(Metaphlan2WorkerFactory::NUM_THREADS);
+    settings.analysisType = getValue<QString>(Metaphlan2WorkerFactory::ANALYSIS_TYPE);
+    settings.taxLevel = getValue<QString>(Metaphlan2WorkerFactory::TAX_LEVEL);
+    settings.normalizeByMetagenomeSize = getValue<QString>(Metaphlan2WorkerFactory::NORMALIZE) == Metaphlan2WorkerFactory::NOT_SKIP_NORMILIZE_BY_SIZE;
+    settings.presenceThreshold = getValue<int>(Metaphlan2WorkerFactory::PRESENCE_THRESHOLD);
 
     QString outputDirectory = createOutputDirectory();
     settings.bowtie2OutputFile = getValue<QString>(Metaphlan2WorkerFactory::BOWTIE2_OUTPUT_URL);
