@@ -1457,7 +1457,7 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
 GUI_TEST_CLASS_DEFINITION(test_6238_1) {
     //1. Open _common_data/regression/6238/6238.fastq on macOS
     //Expected: it wasn't opened, the notification "The problem appeared during the data reading. Please, make sure that all input data are correct" appeared
-    GTUtilsNotifications::waitForNotification(os, true, "The problem appeared during the data reading. Please, make sure that all input data are correct");
+    GTUtilsNotifications::waitForNotification(os, true, "The text file can't be read. Check the file encoding and make sure the file is not corrupted");
     GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/regression/6238/6238.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1483,7 +1483,7 @@ GUI_TEST_CLASS_DEFINITION(test_6238_2) {
     //4. Accept the offering.
     //Expected state: the file reloading failed, an error notification appeared, there are error messages in the log.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesAll));
-    GTUtilsNotifications::waitForNotification(os, false, "The problem appeared during the data reading. Please, make sure that all input data are correct");
+    GTUtilsNotifications::waitForNotification(os, false, "The text file can't be read. Check the file encoding and make sure the file is not corrupted");
     QByteArray badData = badFile.readAll();
     file.write(badData);
     file.close();
