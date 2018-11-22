@@ -3216,6 +3216,7 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Find substrings in sequences");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::click(os, "Find Substrings");
 
