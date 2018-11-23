@@ -53,6 +53,7 @@ private:
     QPointer<Document>      doc;
     SaveDocumentTask*       saveTask;
     StateLock*              lock;
+    static const QString    ACTIVE_VIEW_ERROR;
 };
 
 class U2GUI_EXPORT ReloadDocumentTask : public Task{
