@@ -988,7 +988,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     QDir sandbox(sandBoxDir);
     QStringList filter = QStringList() << "????.??.??_??-??";
     QStringList sandboxEntry = sandbox.entryList(filter, QDir::AllEntries);
-    CHECK_SET_ERR(sandboxEntry.size() == 1, QString("Unexpected nomber of folders, expected: 1, current: %1").arg(sandboxEntry.size()));
+    CHECK_SET_ERR(sandboxEntry.size() == 1, QString("Unexpected nomber of folders, expected: 1, current62: %1").arg(sandboxEntry.size()));
 
     QString insideSandbox(sandBoxDir + sandboxEntry.first());
     QDir insideSandboxDir(insideSandbox);
@@ -1008,15 +1008,11 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment", testDir + "_common_data/clustal/COI na.aln");
     GTUtilsWorkflowDesigner::runWorkflow(os);
-
-    GTGlobals::sleep(55000);
-    //GTGlobals::sleep();
-    HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task is in progress...");
-    if (el.geometry() == QRect()) {
-        el = GTUtilsDashboard::findElement(os, "The workflow task has been finished");
-    } else {
-        GTUtilsWorkflowDesigner::stopWorkflow(os);
-    }
+    
+    // There is no message "Task is in progress.." after finished task where 2 notifications are present
+    GTUtilsTaskTreeView::waitTaskFinished(os); 
+    GTGlobals::sleep(100);
+    HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task has been finished");   
     CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
 }
 
