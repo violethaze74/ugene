@@ -28,6 +28,7 @@
 #define ET_PYTHON "python"
 #define ET_PYTHON_DJANGO "django"
 #define ET_PYTHON_NUMPY "numpy"
+#define ET_PYTHON_BIO "bio"
 
 namespace U2 {
 
@@ -56,6 +57,13 @@ class PythonModuleNumpySupport : public PythonModuleSupport {
 public:
     PythonModuleNumpySupport(const QString& name);
 };
+
+class PythonModuleBioSupport : public PythonModuleSupport {
+    Q_OBJECT
+public:
+    PythonModuleBioSupport(const QString& name);
+};
+
 
 }//namespace
 #endif // _U2_PYTHON_SUPPORT_H_
