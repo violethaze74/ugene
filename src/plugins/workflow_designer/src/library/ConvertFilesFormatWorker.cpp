@@ -214,6 +214,7 @@ Task * ConvertFilesFormatWorker::tick() {
 
         const QString detectedFormat = detectFormat(url);
         CHECK(!detectedFormat.isEmpty(), NULL);
+
         // without conversion
         if ((targetFormat == detectedFormat) || (excludedFormats.contains(detectedFormat))) {
             sendResult(url);
@@ -296,12 +297,12 @@ QString ConvertFilesFormatWorker::createWorkingDir( const QString& fileUrl ){
 }
 
 namespace {
-    QString getFormatName(const FormatDetectionResult &r) {
+    QString getFormatId(const FormatDetectionResult &r) {
         if (NULL != r.format) {
-            return r.format->getFormatName();
+            return r.format->getFormatId();
         }
         if (NULL != r.importer) {
-            return r.importer->getImporterName();
+            return r.importer->getId();
         }
         return "";
     }
@@ -330,7 +331,7 @@ QString ConvertFilesFormatWorker::detectFormat(const QString &url) {
         return "";
     }
 
-    return getFormatName(formats.first());
+    return getFormatId(formats.first());
 }
 
 void ConvertFilesFormatWorker::sendResult(const QString &url) {
