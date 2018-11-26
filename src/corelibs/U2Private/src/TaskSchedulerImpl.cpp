@@ -347,6 +347,7 @@ void TaskSchedulerImpl::runReady() {
         } else {
             runThread(ti);
         }
+        connect(ti->thread, SIGNAL(si_processMySubtasks()), SLOT(sl_processSubtasks()), Qt::BlockingQueuedConnection);
     }
 }
 
@@ -962,7 +963,18 @@ void TaskSchedulerImpl::sl_threadFinished() {
     timer.setInterval(0);
 }
 
-Task * TaskSchedulerImpl::getTopLevelTaskById( qint64 id ) const {
+void TaskSchedulerImpl::sl_processSubtasks() {
+    TaskThread *taskThread = qobject_cast<TaskThread*>(sender());
+    foreach(Task *subtask, taskThread->ti->task->getSubtasks()) {
+        if (subtask->isFinished() && !taskThread->getProcessedSubtasks().contains(subtask)) {
+            onSubTaskFinished(taskThread, subtask);
+            taskThread->appendProcessedSubtask(subtask);
+            break;
+        }
+    }
+}
+
+Task * TaskSchedulerImpl::getTopLevelTaskById(qint64 id) const {
     Task * ret = NULL;
     foreach( Task * task, topLevelTasks ) {
         assert( NULL != task );
@@ -1088,15 +1100,7 @@ bool TaskThread::event(QEvent *event) {
 
 void TaskThread::getNewSubtasks() {
     if(ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && !newSubtasksObtained) {
-        TaskSchedulerImpl *scheduler = dynamic_cast<TaskSchedulerImpl *>(AppContext::getTaskScheduler());
-        assert(NULL != scheduler);
-        foreach (Task *subtask, ti->task->getSubtasks()) {
-            if (subtask->isFinished() && !processedSubtasks.contains(subtask)) {
-                scheduler->onSubTaskFinished(this, subtask);
-                processedSubtasks << subtask;
-                break;
-            }
-        }
+        emit si_processMySubtasks();
     }
 }
 
@@ -1122,6 +1126,14 @@ void TaskThread::resume() {
         pauseLocker.unlock();
         pauser.wakeAll();
     }
+}
+
+QList<Task*> TaskThread::getProcessedSubtasks() const {
+    return processedSubtasks;
+}
+
+void TaskThread::appendProcessedSubtask(Task *subtask) {
+    processedSubtasks << subtask;
 }
 
 TaskInfo::~TaskInfo() {

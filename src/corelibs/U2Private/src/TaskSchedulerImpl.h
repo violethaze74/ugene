@@ -49,10 +49,13 @@ public:
 };
 
 class TaskThread : public QThread {
+    Q_OBJECT
 public:
     TaskThread(TaskInfo* _ti);
     void run();
     void resume();
+    QList<Task*> getProcessedSubtasks() const;
+    void appendProcessedSubtask(Task *);
 
     TaskInfo* ti;
     QObject*  finishEventListener;
@@ -63,6 +66,8 @@ public:
     QWaitCondition pauser;
     volatile bool isPaused;
     QMutex pauseLocker;
+signals:
+    void si_processMySubtasks();
 
 protected:
     bool event(QEvent *event);
@@ -148,6 +153,7 @@ public:
 private slots:
     void update();
     void sl_threadFinished();
+    void sl_processSubtasks();
 
 private:
     bool processFinishedTasks();
