@@ -48,7 +48,7 @@ QString HttpRequestBLAST::runHttpRequest(QString request){
         response.resize(offs + read);
     } while(read == CHUNK_SIZE);
     QString error = io->errorString();
-    io->close();    
+    io->close();
     if(read<0) {
         error = tr("Cannot load a page. %1").arg(error);
         return "";

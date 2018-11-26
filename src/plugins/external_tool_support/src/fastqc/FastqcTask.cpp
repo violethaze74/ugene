@@ -82,7 +82,7 @@ FastQCTask::FastQCTask(const FastQCSetting &settings)
 :ExternalToolSupportTask(QString("FastQC for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC)
 , settings(settings), temporaryDir(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + "/")
 {
-    
+
 }
 
 void FastQCTask::prepare(){

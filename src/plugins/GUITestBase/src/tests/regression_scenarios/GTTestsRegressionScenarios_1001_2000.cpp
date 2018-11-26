@@ -1750,7 +1750,7 @@ GUI_TEST_CLASS_DEFINITION(test_1124){
             QListWidget* seqList = GTWidget::findExactWidget<QListWidget*>(os, "seqList", dialog);
             GTWidget::click(os, seqList);
             GTGlobals::sleep(300);
-            GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(10,10));                   
+            GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(10,10));
             //    Expected state: tooltip is presented.
             GTUtilsToolTip::checkExistingToolTip(os, "The quality scores for FASTA sequences can be provided in an additional file");
 
@@ -3237,7 +3237,7 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
     QPoint globalP = tw->viewport()->mapToGlobal(rect.center());
     GTMouseDriver::moveTo(globalP);
     GTMouseDriver::click();
-   
+
     QComboBox* box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
 
     CHECK_SET_ERR(box->itemText(3) != "Additional", "Additional item not found");

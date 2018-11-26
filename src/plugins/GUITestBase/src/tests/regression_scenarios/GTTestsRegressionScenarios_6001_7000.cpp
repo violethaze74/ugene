@@ -1008,11 +1008,11 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment", testDir + "_common_data/clustal/COI na.aln");
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    
+
     // There is no message "Task is in progress.." after finished task where 2 notifications are present
-    GTUtilsTaskTreeView::waitTaskFinished(os); 
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(100);
-    HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task has been finished");   
+    HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task has been finished");
     CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
 }
 
@@ -1671,7 +1671,7 @@ GUI_TEST_CLASS_DEFINITION(test_6256) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     QString tempDir = QDir(sandBoxDir + "test_6256").absolutePath();
-    
+
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::WorkflowDesigner);

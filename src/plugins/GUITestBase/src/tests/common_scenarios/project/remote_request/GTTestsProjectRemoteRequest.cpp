@@ -132,13 +132,13 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     //    1. Select {File -> Access remote database} menu item in the main menu.
     //    2. Fill the dialog:
-    //        Resource ID: ENSG00000205571 ENSG00000146463: space between IDs 
+    //        Resource ID: ENSG00000205571 ENSG00000146463: space between IDs
     //        Database: ENSEMBL
     //        Save to folder: any valid path and accept it.
     //    Expected state: after the downloading task finish a new documents appears in the project
 
     QDir().mkpath(sandBoxDir + "remote_request/test_0005");
-   
+
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "ENSG00000205571 ENSG00000146463", 2, true, true, false, sandBoxDir + "remote_request/test_0005"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...");
     GTGlobals::sleep();
@@ -153,11 +153,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    1. Select {File -> Access remote database} menu item in the main menu.
     //    2. Fill the dialog:
-    //        Resource ID: Q9IGQ6;A0N8V2: semicolon between IDs 
+    //        Resource ID: Q9IGQ6;A0N8V2: semicolon between IDs
     //        Database: SWISS-PROT
     //        Save to folder: any valid path and accept it.
     //    Expected state: after the downloading task finish a new documents appears in the project
-   
+
 
     QDir().mkpath(sandBoxDir + "remote_request/test_0006");
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
@@ -369,7 +369,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     GTUtilsDocument::isDocumentLoaded(os, "P16152.txt");
     GTUtilsDocument::checkDocument(os, "P16152.txt", AnnotatedDNAViewFactory::ID);
-  
+
 }
 GUI_TEST_CLASS_DEFINITION(test_0014) {
     //    1. Select {File -> Access remote database} menu item in the main menu.
@@ -390,7 +390,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     GTUtilsDocument::isDocumentLoaded(os, "D0VTW9.txt");
     GTUtilsDocument::checkDocument(os, "D0VTW9.txt", AnnotatedDNAViewFactory::ID);
-   
+
 }
 
 } // namespace
