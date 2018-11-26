@@ -447,7 +447,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
 
     if(NULL != listener) {
         listener->setToolName(toolName);
-        listener->addNewLogMessage(listenerProgramMessage + " " + ExternalToolSupportUtils::prepareArgumentsForCmdLine(arguments),
+        listener->addNewLogMessage(GUrlUtils::getQuotedString(listenerProgramMessage) + " " + ExternalToolSupportUtils::prepareArgumentsForCmdLine(arguments),
                                    ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     }
     return result;

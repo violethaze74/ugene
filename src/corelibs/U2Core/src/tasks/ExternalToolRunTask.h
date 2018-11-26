@@ -198,7 +198,7 @@ public:
 
     virtual void addNewLogMessage(const QString& message, int messageType) = 0;
 
-    void setToolName(const QString& toolName);
+    virtual void setToolName(const QString& toolName);
     void setLogProcessor(ExternalToolLogProcessor *logProcessor);
     const QString &getToolName() const;
 

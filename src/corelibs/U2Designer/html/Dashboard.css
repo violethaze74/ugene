@@ -287,7 +287,7 @@ span.badge
 }
 span.badge.command
 {
-    background-color:#BCBC90;
+    background-color:#79ACAC;
 }
 span.badge.program-path     /* deprecated: new dashboards won't contain elements of this class, it was replaced with 'span.badge.command' */
 {
@@ -310,6 +310,14 @@ span.badge.badge-important
 {
     background-color:#CC6666;
 }
+span.badge.actor-node
+{
+    background-color:#92939E;
+}
+span.badge.actor-tick-node
+{
+    background-color:#bdb0a0;
+}
 span.badge.tool-node
 {
     background-color:#bdb0a0;
@@ -328,6 +336,20 @@ span.content
     word-break: break-all;
     -webkit-hyphens: auto;
     width: 830px;
+}
+span.badge.limitation-message
+{
+    background-color: #CC6666;
+}
+a.log-folder-link
+{
+    text-decoration: underline;
+    color: inherit;
+}
+a.log-file-link
+{
+    text-decoration: underline;
+    color: inherit;
 }
 .dropdown-menu.context
 {
