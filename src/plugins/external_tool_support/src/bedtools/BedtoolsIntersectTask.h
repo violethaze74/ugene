@@ -84,7 +84,7 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // BedToolsIntersectTask & BedtoolsIntersectLogParser
-class BedtoolsIntersectTask : public Task {
+class BedtoolsIntersectTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BedtoolsIntersectTask(const BedtoolsIntersectFilesSettings &settings);
@@ -112,7 +112,7 @@ private:
 class SaveMultipleDocuments;
 class LoadDocumentTask;
 
-class BedtoolsIntersectAnnotationsByEntityTask : public Task {
+class BedtoolsIntersectAnnotationsByEntityTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BedtoolsIntersectAnnotationsByEntityTask(const BedtoolsIntersectByEntityRefSettings& settings);

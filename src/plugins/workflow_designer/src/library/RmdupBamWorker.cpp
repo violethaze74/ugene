@@ -192,7 +192,8 @@ Task * RmdupBamWorker::tick() {
             setting.removeSingleEnd = getValue<bool>(REMOVE_SINGLE_END_ID);
             setting.treatReads = getValue<bool>(TREAT_READS_ID);
 
-            Task *t = new SamtoolsRmdupTask(setting);
+            SamtoolsRmdupTask *t = new SamtoolsRmdupTask(setting);
+            t->addListeners(createLogListeners());
             connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return t;
         }
