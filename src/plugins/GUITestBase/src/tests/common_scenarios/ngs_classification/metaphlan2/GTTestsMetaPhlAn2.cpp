@@ -43,13 +43,15 @@ using namespace HI;
 
 const QString ET_PYTHON = "python";
 const QString ET_NUMPY = "numpy";
+const QString ET_BIO = "bio";
 const QString ET_BOWTIE_2_ALIGNER = "Bowtie 2 aligner";
 const QString ET_BOWTIE_2_BUILD = "Bowtie 2 build indexer";
 const QString ET_METAPHLAN = "MetaPhlAn2";
 const QString UTIL_SCRIPT = "/utils/read_fastx.py";
 const QString PATH_METAPHLAN2_WITHOUT_SCRIPT = "/_common_data/regression/6253/metaphlan2.py";
 const QString PATH_PYTHON_WITHOUT_NUMPY = "/_common_data/regression/6253/python_without_numpy/bin";
-const QString NAME_PYTHON_WITHOUT_NUMPY = "python2.7";
+const QString PATH_PYTHON_WITHOUT_BIO = "/_common_data/regression/6253/python_without_bio/bin";
+const QString NAME_PYTHON = "python2.7";
 
 void checkExternalToolValid(GUITestOpStatus &os, const QString& toolName, const bool shouldBeValid) {
     const bool isToolValid = AppSettingsDialogFiller::isExternalToolValid(os, toolName);
@@ -97,6 +99,10 @@ QString getPythonWithoutNumpyPath() {
     return UGUITest::testDir + QDir::toNativeSeparators(PATH_PYTHON_WITHOUT_NUMPY);
 }
 
+QString getPythonWithoutBioPath() {
+    return UGUITest::testDir + QDir::toNativeSeparators(PATH_PYTHON_WITHOUT_BIO);
+}
+
 QString getMetaphlan2WithoutScriptPath() {
     return UGUITest::testDir + QDir::toNativeSeparators(PATH_METAPHLAN2_WITHOUT_SCRIPT);
 }
@@ -113,7 +119,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             checkExternalToolValid(os, ET_PYTHON, true);
 
             //"Bio" python module is installed.
-
+            checkExternalToolValid(os, ET_BIO, true);
 
             //"numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, true);
@@ -156,7 +162,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             checkExternalToolValid(os, ET_PYTHON, false);
 
             //"Bio" python module is installed.
-
+            checkExternalToolValid(os, ET_BIO, true);
 
             //"numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, false);
@@ -193,11 +199,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is installed.
-            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath(), NAME_PYTHON_WITHOUT_NUMPY);
+            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath(), NAME_PYTHON);
             checkExternalToolValid(os, ET_PYTHON, true);
 
             //"Bio" python module is installed.
-
+            checkExternalToolValid(os, ET_BIO, true);
 
             //"numpy" python module is not installed.
             checkExternalToolValid(os, ET_NUMPY, false);
@@ -237,7 +243,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
             checkExternalToolValid(os, ET_PYTHON, true);
 
             //"Bio" python module is installed.
-
+            checkExternalToolValid(os, ET_BIO, true);
 
             //"numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, true);
@@ -279,7 +285,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             checkExternalToolValid(os, ET_PYTHON, true);
 
             //"Bio" python module is installed.
-
+            checkExternalToolValid(os, ET_BIO, true);
 
             //"numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, true);
@@ -313,10 +319,11 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is installed.
-            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath(), NAME_PYTHON_WITHOUT_NUMPY);
+            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutNumpyPath(), NAME_PYTHON);
             checkExternalToolValid(os, ET_PYTHON, true);
 
             //"Bio" python module is installed.
+            checkExternalToolValid(os, ET_BIO, true);
 
             //"numpy" python module is not installed.
             checkExternalToolValid(os, ET_NUMPY, false);
@@ -350,10 +357,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is installed.
+            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, getPythonWithoutBioPath(), NAME_PYTHON);
             checkExternalToolValid(os, ET_PYTHON, true);
 
             //"Bio" python module is not installed.
-
+            checkExternalToolValid(os, ET_BIO, false);
 
             //"numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, true);
