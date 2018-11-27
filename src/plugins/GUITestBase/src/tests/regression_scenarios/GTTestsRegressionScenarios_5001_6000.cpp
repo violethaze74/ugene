@@ -1131,14 +1131,13 @@ GUI_TEST_CLASS_DEFINITION(test_5356) {
 //    Expected state: no errors in the log (empty sequences were skipped by CutAdapter)
 
     GTLogTracer l;
-
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5356/cutadapt_and_trim.uwl");
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/5356/cutadapt_and_trim.uwl");  
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ Files with Reads 1", testDir + "_common_data/regression/5356/reads.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Cut Adapter");
+    GTGlobals::sleep(200);
     GTUtilsWorkflowDesigner::setParameter(os, "FASTA file with 3' adapters", QDir(testDir + "_common_data/regression/5356/adapter.fa").absolutePath(), GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output folder", "Custom", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Custom folder", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
