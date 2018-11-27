@@ -103,6 +103,14 @@ void DashboardJsAgent::hideLoadButtonHint() {
     dashboard->initiateHideLoadButtonHint();
 }
 
+QString DashboardJsAgent::getLogsFolderUrl() const {
+    return monitor->getLogsDir();
+}
+
+QString DashboardJsAgent::getLogUrl(const QString &actorId, int actorRunNumber, const QString &toolName, int toolRunNumber, int contentType) const {
+    return monitor->getLogUrl(actorId, actorRunNumber, toolName, toolRunNumber, contentType);
+}
+
 QString DashboardJsAgent::getWorkersParamsInfo() {
     return workersParamsInfo;
 }

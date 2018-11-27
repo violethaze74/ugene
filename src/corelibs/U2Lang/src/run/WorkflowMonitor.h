@@ -63,21 +63,23 @@ namespace Monitor {
     };
     class U2LANG_EXPORT WorkerLogInfo {
     public:
-        WorkerLogInfo(): runNumber(0){}
-        ~WorkerLogInfo();
-        int runNumber;
+        WorkerLogInfo(): workerRunNumber(0){}
+        int workerRunNumber;
         QList<ExternalToolListener*> logs;
     };
 
     class U2LANG_EXPORT LogEntry {
     public:
         LogEntry() :
-            runNumber(0),
-            logType(0) {}
+            actorRunNumber(0),
+            toolRunNumber(0),
+            contentType(0) {}
         QString toolName;
+        QString actorId;
         QString actorName;
-        int runNumber;
-        int logType;
+        int actorRunNumber;
+        int toolRunNumber;
+        int contentType;
         QString lastLine;
     };
 
@@ -124,10 +126,14 @@ public:
 
     void setOutputDir(const QString &dir);
     QString outputDir() const;
+    QString getLogsDir() const;
+    QString getLogUrl(const QString &actorId, int actorRunNumber, const QString &toolName, int toolRunNumber, int contentType) const;
 
     void setSaveSchema(const Metadata &meta);
 
-    QList<ExternalToolListener*> createWorkflowListeners(const QString& workerName, int listenersNumber = 1);
+    QList<ExternalToolListener*> createWorkflowListeners(const QString &workerId, const QString& workerName, int listenersNumber = 1);
+    WDListener *getListener(const QString &actorId, int actorRunNumber, const QString &toolName, int toolRunNumber) const;
+    int getNewToolRunNumber(const QString &actorId, int actorRunNumber, const QString &toolName);
 
     void onLogChanged(const WDListener* listener, int messageType, const QString& message);
 
@@ -185,26 +191,37 @@ public:
     static QString toSlashedUrl(const QString &url);
 };
 
-class U2LANG_EXPORT WDListener: public ExternalToolListener{
+class U2LANG_EXPORT WDListener: public ExternalToolListener {
 public:
-    WDListener(WorkflowMonitor* _monitor, const QString& _actorName, int _runNumber);
+    WDListener(WorkflowMonitor *monitor, const QString& actorId, const QString &actorName, int actorRunNumber);
 
-    void addNewLogMessage(const QString& message, int messageType);
+    void addNewLogMessage(const QString& message, int messageType) override;
 
+    void setToolName(const QString& toolName) override;
+
+    const QString& getActorId() const {return actorId;}
     const QString& getActorName() const {return actorName;}
 
-    int getRunNumber() const {return runNumber;}
+    int getActorRunNumber() const {return actorRunNumber;}
+    int getToolRunNumber() const {return toolRunNumber;}
 
-    static QString getStandardOutputLogFileUrl(const QString &actorName, int runNumber);
-    static QString getStandardErrorLogFileUrl(const QString &actorName, int runNumber);
+    QString getStdoutLogFileUrl();
+    QString getStderrLogFileUrl();
 
 private:
+    static QString getStdoutLogFileUrl(const QString &actorName, int actorRunNumber, const QString &toolName, int toolRunNumber);
+    static QString getStderrLogFileUrl(const QString &actorName, int actorRunNumber, const QString &toolName, int toolRunNumber);
+
+    void initLogFile(int contentType);
+
     void writeToFile(int messageType, const QString& message);
     static void writeToFile(QTextStream &logStream, const QString& message);
 
     WorkflowMonitor* monitor;
+    QString actorId;
     QString actorName;
-    int runNumber;
+    int actorRunNumber;
+    int toolRunNumber;
 
     QFile outputLogFile;
     QFile errorLogFile;

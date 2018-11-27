@@ -447,11 +447,8 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
 
     if(NULL != listener) {
         listener->setToolName(toolName);
-        listener->addNewLogMessage(listenerProgramMessage, ExternalToolListener::PROGRAM_PATH);
-        QString argumentsLine = ExternalToolSupportUtils::prepareArgumentsForCmdLine(arguments);
-        argumentsLine.replace(" -", "\n-");
-
-        listener->addNewLogMessage(argumentsLine, ExternalToolListener::ARGUMENTS);
+        listener->addNewLogMessage(GUrlUtils::getQuotedString(listenerProgramMessage) + " " + ExternalToolSupportUtils::prepareArgumentsForCmdLine(arguments),
+                                   ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     }
     return result;
 }

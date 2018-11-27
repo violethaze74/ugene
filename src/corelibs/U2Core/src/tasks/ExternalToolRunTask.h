@@ -190,8 +190,7 @@ public:
     enum LogType {
         ERROR_LOG = 0,
         OUTPUT_LOG = 1,
-        PROGRAM_PATH = 2,
-        ARGUMENTS = 3
+        PROGRAM_WITH_ARGUMENTS = 2
     };
 
     ExternalToolListener(ExternalToolLogProcessor *logProcessor = NULL);
@@ -199,7 +198,7 @@ public:
 
     virtual void addNewLogMessage(const QString& message, int messageType) = 0;
 
-    void setToolName(const QString& toolName);
+    virtual void setToolName(const QString& toolName);
     void setLogProcessor(ExternalToolLogProcessor *logProcessor);
     const QString &getToolName() const;
 

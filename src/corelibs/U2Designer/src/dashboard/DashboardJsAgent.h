@@ -54,6 +54,8 @@ public slots:
     void loadSchema();
     void setClipboardText(const QString &text);
     void hideLoadButtonHint();
+    QString getLogsFolderUrl() const;
+    QString getLogUrl(const QString &actorId, int actorRunNumber, const QString &toolName, int toolRunNumber, int contentType) const;
 
 signals:
     void si_progressChanged(int progress);

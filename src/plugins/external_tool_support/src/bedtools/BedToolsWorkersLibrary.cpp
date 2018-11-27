@@ -862,7 +862,8 @@ Task* BedtoolsIntersectWorker::createTask() {
     settings.entitiesA = getAnnotationsEntityRefFromMessages(storeA, IN_PORT_A_ID);
     settings.entitiesB = getAnnotationsEntityRefFromMessages(storeB, IN_PORT_B_ID);
 
-    Task* t = new BedtoolsIntersectAnnotationsByEntityTask(settings);
+    BedtoolsIntersectAnnotationsByEntityTask* t = new BedtoolsIntersectAnnotationsByEntityTask(settings);
+    t->addListeners(createLogListeners());
     connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
     return t;
 }
