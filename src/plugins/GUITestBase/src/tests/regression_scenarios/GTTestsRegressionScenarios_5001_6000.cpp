@@ -3195,6 +3195,7 @@ GUI_TEST_CLASS_DEFINITION(test_5751) {
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Call a context menu in the Project view on the opened MCA document.
     //6. Select "Lock document for editing" menu item.
@@ -3208,6 +3209,7 @@ GUI_TEST_CLASS_DEFINITION(test_5751) {
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTKeyboardDriver::keyPress(Qt::Key_Escape);
+    GTGlobals::sleep(100);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5752) {
