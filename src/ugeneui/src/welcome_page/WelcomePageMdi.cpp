@@ -41,17 +41,10 @@ WelcomePageMdi::WelcomePageMdi(const QString &title, WelcomePageMdiController *c
 }
 
 bool WelcomePageMdi::eventFilter(QObject *obj, QEvent *event) {
-    QEvent::Type t = event->type();
-#if (QT_VERSION < 0x50600)
-    if (t == QEvent::Show) {
+    if (QEvent::Show == event->type()) {
         widget->adjustSize();
         widget->updateGeometry();
     }
-#else
-    if (t == QEvent::Show) {
-        widget->adjustSize();
-    }
-#endif
     return QWidget::eventFilter(obj, event);
 }
 
