@@ -1131,7 +1131,8 @@ GUI_TEST_CLASS_DEFINITION(test_5356) {
 //    Expected state: no errors in the log (empty sequences were skipped by CutAdapter)
 
     GTLogTracer l;
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/5356/cutadapt_and_trim.uwl");  
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5356/cutadapt_and_trim.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ Files with Reads 1", testDir + "_common_data/regression/5356/reads.fastq");
@@ -1144,7 +1145,7 @@ GUI_TEST_CLASS_DEFINITION(test_5356) {
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTGlobals::sleep(200);
     CHECK_SET_ERR(!l.hasError(), "There is an error in the log");
 }
 
