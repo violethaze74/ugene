@@ -212,6 +212,11 @@ QWidget* AnnotatedDNAView::createWidget() {
     scrolledWidget->installEventFilter(this);
     scrolledWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
+    clipb = new ADVClipboard(this);
+    QAction* pasteAction = clipb->getPasteSequenceAction();
+    pasteAction->setEnabled(false);
+    connect(pasteAction, SIGNAL(triggered()), this, SLOT(sl_paste()));
+
     annotationsView = new AnnotationsTreeView(this);
     annotationsView->setParent(mainSplitter);
     annotationsView->setObjectName("annotations_tree_view");
@@ -233,11 +238,6 @@ QWidget* AnnotatedDNAView::createWidget() {
 
     //TODO: scroll area does not restore focus for last active child widget after Alt-Tab...
     scrollArea->setWidget(scrolledWidget);
-
-    clipb = new ADVClipboard(this);
-    QAction* pasteAction = clipb->getPasteSequenceAction();
-    pasteAction->setEnabled(false);
-    connect(pasteAction, SIGNAL(triggered()), this, SLOT(sl_paste()));
 
     mainSplitter->installEventFilter(this);
     mainSplitter->setAcceptDrops(true);

@@ -83,6 +83,7 @@
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
@@ -1699,6 +1700,36 @@ GUI_TEST_CLASS_DEFINITION(test_6256) {
     GTFile::setReadWrite(os, tempDir);
 
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getErrors(os).size() == 2, "Unexpected number of errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6279) {
+    class Custom : public CustomScenario {
+    public:
+        virtual void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "dialog not found");
+
+            QLineEdit *lineEdit = dialog->findChild<QLineEdit*>("leAnnotationName");
+            CHECK_SET_ERR(lineEdit != NULL, "line edit leAnnotationName not found");
+
+            QRadioButton* gbFormatLocation = dialog->findChild<QRadioButton*>("rbGenbankFormat");
+            CHECK_SET_ERR(gbFormatLocation != NULL, "radio button rbGenbankFormat not found");
+
+            QLineEdit *lineEdit1 = dialog->findChild<QLineEdit*>("leLocation");
+            CHECK_SET_ERR(lineEdit != NULL, "line edit leLocation not found");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    //1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Click CDS annotation on pan view
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970, 0, true);
+    //3. Press F2 to open Edit annotation dialog
+    GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new Custom()));
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
+    GTGlobals::sleep(1000);
 }
 
 } // namespace GUITest_regression_scenarios

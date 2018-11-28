@@ -1711,10 +1711,6 @@ void AnnotationsTreeView::sl_annotationClicked(AnnotationSelectionData* asd) {
     }
 
     expandItemRecursevly(item->parent());
-    {
-        SignalBlocker blocker(tree);
-        item->setSelected(setSelected);
-    }
     SAFE_POINT(asd->locationIdxList.size() == 1, "Incorrect size", );
     annotationSelection->addToSelection(item->annotation, asd->locationIdxList.first());
     annotationClicked(item, sortedAnnotationSelections, selectedRegion);
