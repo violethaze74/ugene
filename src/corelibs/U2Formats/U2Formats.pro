@@ -99,6 +99,7 @@ HEADERS += src/ABIFormat.h \
            src/sqlite_dbi/util/SqliteUpgraderFrom_0_To_1_13.h \
            src/sqlite_dbi/util/SqliteUpgraderFrom_1_13_To_1_25.h \
            src/tasks/BgzipTask.h \
+           src/tasks/CalculateSequencesNumberTask.h \
            src/tasks/ConvertAssemblyToSamTask.h \
            src/tasks/ConvertFileTask.h \
            src/tasks/ConvertSnpeffVariationsToAnnotationsTask.h \
@@ -206,6 +207,7 @@ SOURCES += src/ABIFormat.cpp \
            src/sqlite_dbi/util/SqliteUpgraderFrom_0_To_1_13.cpp \
            src/sqlite_dbi/util/SqliteUpgraderFrom_1_13_To_1_25.cpp \
            src/tasks/BgzipTask.cpp \
+           src/tasks/CalculateSequencesNumberTask.cpp \
            src/tasks/ConvertAssemblyToSamTask.cpp \
            src/tasks/ConvertFileTask.cpp \
            src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp \

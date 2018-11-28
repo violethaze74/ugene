@@ -24,6 +24,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/Timer.h>
 
 #include "StreamSequenceReader.h"
@@ -160,6 +161,25 @@ StreamSequenceReader::~StreamSequenceReader() {
         delete readers[i].io;
         readers[i].io = NULL;
     }
+}
+
+int StreamSequenceReader::getNumberOfSequences(const QString& url, U2OpStatus& os) {
+    int result = 0;
+    StreamSequenceReader streamSequenceReader;
+    bool wasInitialized = streamSequenceReader.init(QStringList() << url);
+    CHECK_EXT(wasInitialized,
+              os.setError(streamSequenceReader.getErrorMessage()),
+              -1);
+
+    while (streamSequenceReader.hasNext()) {
+        streamSequenceReader.getNextSequenceObject();
+        result++;
+    }
+    CHECK_EXT(!streamSequenceReader.hasError(),
+              os.setError(streamSequenceReader.getErrorMessage()),
+              -1);
+
+    return result;
 }
 
 } //namespace

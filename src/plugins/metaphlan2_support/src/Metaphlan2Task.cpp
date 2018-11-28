@@ -25,21 +25,34 @@
 #include <U2Core/Counter.h>
 #include <U2Core/GUrlUtils.h>
 
+#include <U2Formats/CalculateSequencesNumberTask.h>
+#include <U2Formats/StreamSequenceReader.h>
+
 #include "Metaphlan2Support.h"
 #include "Metaphlan2Task.h"
+#include "Metaphlan2WorkerFactory.h"
+
 
 namespace U2 {
 
+using namespace LocalWorkflow;
 
 Metaphlan2TaskSettings::Metaphlan2TaskSettings() : isPairedEnd(false),
-                                                   numberOfThreads(1) {}
+                                                   numberOfThreads(1),
+                                                   normalizeByMetagenomeSize(false),
+                                                   presenceThreshold(1) {}
 
 Metaphlan2ClassifyTask::Metaphlan2ClassifyTask(const Metaphlan2TaskSettings& _settings) :
                                     ExternalToolSupportTask(tr("Classify reads with Metaphlan2"),
                                     TaskFlags_NR_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText),
                                     settings(_settings),
-                                    classifyTask(nullptr){
+                                    classifyTask(nullptr),
+                                    calculateSequencesNumberTask(nullptr) {
     GCOUNTER(cvar, tvar, "Metaphlan2ClassifyTask");
+
+    needToCountSequences = settings.analysisType == Metaphlan2WorkerFactory::ANALYSIS_TYPE_MARKER_AB_TABLE_VALUE &&
+                           settings.normalizeByMetagenomeSize;
+    sequencesNumber = 0;
 
     SAFE_POINT_EXT(!settings.databaseUrl.isEmpty(), setError(tr("Metaphlan2 database URL is empty")), );
     SAFE_POINT_EXT(!settings.bowtie2OutputFile.isEmpty(), setError(tr("Bowtie2 output file URL is empty")), );
@@ -61,13 +74,35 @@ const QString& Metaphlan2ClassifyTask::getOutputUrl() const {
 }
 
 void Metaphlan2ClassifyTask::prepare() {
+    if (needToCountSequences) {
+        calculateSequencesNumberTask = new CalculateSequencesNumberTask(settings.readsUrl);
+        addSubTask(calculateSequencesNumberTask);
+    } else {
+        classifyTask = new ExternalToolRunTask(Metaphlan2Support::TOOL_NAME,
+                                               getArguments(),
+                                               new ExternalToolLogParser(),
+                                               QString(),
+                                               QStringList() << settings.bowtie2ExternalToolPath);
+        setListenerForTask(classifyTask);
+        addSubTask(classifyTask);
+    }
+}
+
+QList<Task*> Metaphlan2ClassifyTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
+    CHECK(!hasError() && !isCanceled(), result);
+    CHECK(calculateSequencesNumberTask == subTask, result);
+
+    sequencesNumber = calculateSequencesNumberTask->getSequencesNumber();
     classifyTask = new ExternalToolRunTask(Metaphlan2Support::TOOL_NAME,
-                                           getArguments(),
-                                           new ExternalToolLogParser(),
-                                           QString(),
-                                           QStringList() << settings.bowtie2ExternalToolPath);
+                                          getArguments(),
+                                          new ExternalToolLogParser(),
+                                          QString(),
+                                          QStringList() << settings.bowtie2ExternalToolPath);
     setListenerForTask(classifyTask);
-    addSubTask(classifyTask);
+    result << classifyTask;
+
+    return result;
 }
 
 QStringList Metaphlan2ClassifyTask::getArguments() {
@@ -79,6 +114,19 @@ QStringList Metaphlan2ClassifyTask::getArguments() {
     }
 
     arguments << "--nproc" << QString::number(settings.numberOfThreads);
+    QString analysisType = settings.analysisType;
+    arguments << "-t" << analysisType.replace("-", "_");
+
+    if (settings.analysisType == Metaphlan2WorkerFactory::ANALYSIS_TYPE_REL_AB_VALUE ||
+        settings.analysisType == Metaphlan2WorkerFactory::ANALYSIS_TYPE_REL_AB_W_READ_STATS_VALUE) {
+        arguments << "--tax_lev" << settings.taxLevel;
+    } else if (needToCountSequences) {
+
+        arguments << "--nreads" << QString::number(sequencesNumber);
+    } else if (settings.analysisType == Metaphlan2WorkerFactory::ANALYSIS_TYPE_MARKER_PRES_TABLE_VALUE) {
+        arguments << "--pres_th" << QString::number(settings.presenceThreshold);
+    }
+
     arguments << "--tmp_dir" << QDir::toNativeSeparators(settings.tmpDir);
     arguments << "--input_type" << settings.inputType;
     arguments << "--bowtie2out" << QDir::toNativeSeparators(settings.bowtie2OutputFile);
