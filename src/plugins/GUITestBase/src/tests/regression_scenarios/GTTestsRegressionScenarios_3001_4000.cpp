@@ -3461,7 +3461,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList(), new AllEnzymesSearchScenario()));
     GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
     GTThread::waitForMainThread();
-    GTGlobals::sleep(40000);
+    GTGlobals::sleep(1000);
 
     GTUtilsTaskTreeView::openView(os);
     GTUtilsDialog::waitForDialog(os, new SiteconCustomFiller(os));
