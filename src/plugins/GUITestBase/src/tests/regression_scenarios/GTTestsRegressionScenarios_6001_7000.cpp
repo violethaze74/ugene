@@ -1732,6 +1732,22 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
     GTGlobals::sleep(1000);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6291) {
+    //1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Click CDS annotation on pan view
+    //GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970, 0, true);
+    //3. Select qualifier
+    QString qValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "product", GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
+    //QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "db_xref");
+    GTUtilsAnnotationsTreeView::clickItem(os, "product", 1, false);
+    //4. Click active action "Copy qualifier..." in menu actions
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Copy/Paste" << "Copy qualifier 'product' value", GTGlobals::UseMouse);
+    QString actualValue = GTClipboard::text(os);
+    CHECK_SET_ERR(actualValue == qValue, QString("Qualifier text %1 differs with expected %2.").arg(actualValue).arg(qValue));
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2

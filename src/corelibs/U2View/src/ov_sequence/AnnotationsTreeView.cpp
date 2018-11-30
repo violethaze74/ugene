@@ -968,14 +968,18 @@ void AnnotationsTreeView::sl_onBuildPopupMenu(GObjectView*, QMenu* m) {
 
 void AnnotationsTreeView::adjustMenu(QMenu* m) const {
     QMenu* addMenu = GUIUtils::findSubMenu(m, ADV_MENU_ADD);
-    SAFE_POINT(addMenu != NULL, "addMenu",);
+    SAFE_POINT(addMenu != NULL, "addMenu", );
     addMenu->addAction(addAnnotationObjectAction);
     addMenu->addAction(addQualifierAction);
 
     QMenu* removeMenu = GUIUtils::findSubMenu(m, ADV_MENU_REMOVE);
-    SAFE_POINT(removeMenu != NULL, "removeMenu",);
+    SAFE_POINT(removeMenu != NULL, "removeMenu", );
     removeMenu->addAction(removeObjectsFromViewAction);
     removeMenu->addAction(removeAnnsAndQsAction);
+
+    QMenu* copyMenu = GUIUtils::findSubMenu(m, ADV_MENU_COPY);
+    SAFE_POINT(removeMenu != NULL, "copyMenu", );
+    copyMenu->addAction(copyQualifierAction);
 }
 
 void AnnotationsTreeView::sl_paste(){
