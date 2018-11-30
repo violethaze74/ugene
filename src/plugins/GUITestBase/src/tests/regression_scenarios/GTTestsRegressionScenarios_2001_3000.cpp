@@ -1551,7 +1551,7 @@ GUI_TEST_CLASS_DEFINITION( test_2192 ){
 //    7. Choose "Copy element content" on any tree element and paste the data to any editor.
 //       Expected state: correct data was copied.
 //    8. Select some amount of text on a tree and click on "Copy selected text" which is now should be available.
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "SAMtools run 1"));
+    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "SAMtools run"));
     HIWebElement el = GTUtilsDashboard::findElement(os, samtoolsPath, "SPAN");
     GTWebView::selectElementText(os, GTUtilsDashboard::getDashboard(os), el);
     GTUtilsDashboard::click(os, el, Qt::RightButton);
