@@ -176,6 +176,9 @@ void TestRunnerService::serviceStateChangedCallback(ServiceState oldState, bool 
         readBuiltInVars();
 
         windowAction = new QAction(tr("Test runner"), this);
+#ifdef _DEBUG
+        windowAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_T));
+#endif
         windowAction->setObjectName("action__testrunner");
         connect(windowAction, SIGNAL(triggered()), SLOT(sl_showWindow()));
         AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS)->addAction(windowAction);
@@ -277,6 +280,9 @@ void TestRunnerService::readBuiltInVars() {
     }
     if (!vars.contains("TEMP_DATA_DIR") || vars.value("TEMP_DATA_DIR").isEmpty()) {
         env->setVar("TEMP_DATA_DIR", "/_tmp");
+    }
+    if (!vars.contains("WORKFLOW_OUTPUT_DIR") || vars.value("WORKFLOW_OUTPUT_DIR").isEmpty()) {
+        env->setVar("WORKFLOW_OUTPUT_DIR", "/_tmp");
     }
 }
 

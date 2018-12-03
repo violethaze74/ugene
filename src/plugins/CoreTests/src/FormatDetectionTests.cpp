@@ -35,7 +35,7 @@ static const QString LESS_THAN("less-than");    // score should be less than
 static const QString MORE_THAN("more-than");    // score should be more than
 
 
-/* class GTest_CheckScore : public GTest */
+/* class GTest_CheckScore : public XmlTest */
 
 static bool equal_to(int a, int b) { return a == b; }
 static bool less_than(int a, int b) { return a < b; }
@@ -127,7 +127,7 @@ Task::ReportResult GTest_CheckScore::report() {
 }
 
 
-/*class GTest_PerfectMatch : public GTest */
+/*class GTest_PerfectMatch : public XmlTest */
 
 void GTest_PerfectMatch::init(XMLTestFormat*, const QDomElement& el) {
     QString fileURLStr = el.attribute(URL);

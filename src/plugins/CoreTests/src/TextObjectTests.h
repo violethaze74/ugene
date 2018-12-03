@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-class GTest_CheckStringExists : public GTest {
+class GTest_CheckStringExists : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CheckStringExists, "check-string-exists")
 

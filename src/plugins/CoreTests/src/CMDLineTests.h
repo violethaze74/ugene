@@ -33,16 +33,8 @@ namespace U2 {
  * if value is existing file in _common_data we will resolve this
  * if you want to place file in _tmp you should write filename as "!tmp_out!filename"
  ***********************************/
-class GTest_RunCMDLine : public GTest {
+class GTest_RunCMDLine : public XmlTest {
     Q_OBJECT
-public:
-    static const QString UGENECL_PATH;
-    static const QString TMP_DATA_DIR_PREFIX;
-    static const QString COMMON_DATA_DIR_PREFIX;
-    static const QString LOCAL_DATA_DIR_PREFIX;
-    static const QString CONFIG_FILE_PATH;
-    static const QString WORKFLOW_SAMPLES_DIR_PREFIX;
-
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY( GTest_RunCMDLine, "run-cmdline" );
     virtual void prepare();
@@ -63,6 +55,7 @@ private:
     QString     ugeneclPath;
     QStringList tmpFiles;
 
+    static const QString UGENECL_PATH;
 }; // GTest_RunCMDLine
 
 class CMDLineTests {

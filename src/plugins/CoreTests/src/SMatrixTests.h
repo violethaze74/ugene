@@ -26,7 +26,7 @@
 
 namespace U2{
 
-class GTest_SubstMatrix : public GTest {
+class GTest_SubstMatrix : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_SubstMatrix, "check-subst-matrix", TaskFlags_NR_FOSCOE);

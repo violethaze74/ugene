@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-class GTest_CopyFile : public GTest {
+class GTest_CopyFile : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CopyFile, "copy-file");
@@ -42,7 +42,7 @@ private:
     static const QString TO_URL_ATTR;
 };
 
-class GTest_AddSharedDbUrl : public GTest {
+class GTest_AddSharedDbUrl : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_AddSharedDbUrl, "add-shared-db");

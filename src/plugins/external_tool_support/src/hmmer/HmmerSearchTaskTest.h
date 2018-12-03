@@ -32,7 +32,7 @@ namespace U2 {
 
 class HmmerSearchTask;
 
-class GTest_UHMM3Search : public GTest {
+class GTest_UHMM3Search : public XmlTest {
     Q_OBJECT
 public:
     static const QString SEQ_DOC_CTX_NAME_TAG; /* loaded sequence document */
@@ -122,7 +122,7 @@ public:
     QList< UHMM3SearchSeqDomainResult >    domainResList;
 }; // UHMM3SearchResult
 
-class GTest_UHMM3SearchCompare : public GTest {
+class GTest_UHMM3SearchCompare : public XmlTest {
     Q_OBJECT
 public:
     static const QString ACTUAL_OUT_FILE_TAG;

@@ -313,7 +313,6 @@ void GTest_CheckYAMLFile::prepare() {
     }
     f.close();
 
-    int hitsCounter = 0;
     foreach(const QString& el, desiredStrings) {
         foreach(const QString& fileLane, fileLines) {
             if (fileLane.contains(el.trimmed())) {

@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class GTest_DiPropertySiteconCheckAttribs : public GTest {
+class GTest_DiPropertySiteconCheckAttribs : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DiPropertySiteconCheckAttribs, "sitecon-check_diproperty_attrib");

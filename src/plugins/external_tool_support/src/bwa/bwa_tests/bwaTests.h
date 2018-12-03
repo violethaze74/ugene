@@ -37,7 +37,7 @@ class BwaGObjectTask;
 class DnaAssemblyMultiTask;
 class MultipleSequenceAlignmentObject;
 
-class GTest_Bwa : public GTest {
+class GTest_Bwa : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Bwa, "bwa", TaskFlag_FailOnSubtaskCancel);

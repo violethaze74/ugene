@@ -173,7 +173,7 @@ private:
 };
 
 //cppcheck-suppress noConstructor
-class GTest_LoadProject : public GTest {
+class GTest_LoadProject : public XmlTest {
 	Q_OBJECT
 public:
 	SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_LoadProject, "load-project", TaskFlags_NR_FOSCOE);
@@ -195,7 +195,7 @@ private:
 };
 
 //cppcheck-suppress noConstructor
-class GTest_ExportProject : public GTest {
+class GTest_ExportProject : public XmlTest {
 	Q_OBJECT
 public:
 	SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_ExportProject, "export-project", TaskFlags_NR_FOSCOE);
@@ -213,7 +213,7 @@ private:
 };
 
 //cppcheck-suppress noConstructor
-class GTest_UnloadProject : public GTest {
+class GTest_UnloadProject : public XmlTest {
 	Q_OBJECT
 public:
 	SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_UnloadProject, "unload-project", TaskFlags_NR_FOSCOE);
@@ -224,7 +224,7 @@ private:
 };
 
 //cppcheck-suppress noConstructor
-class GTest_LoadDocumentFromProject : public GTest {
+class GTest_LoadDocumentFromProject : public XmlTest {
 	Q_OBJECT
 public:
 	SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_LoadDocumentFromProject, "load-document-from-project", TaskFlags_NR_FOSCOE);

@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-class UnitTestSuite : public GTest {
+class UnitTestSuite : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(UnitTestSuite, "unittest", TaskFlags_NR_FOSCOE);

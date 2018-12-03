@@ -36,7 +36,7 @@ class QDScheduler;
 class QDScheme;
 
 //cppcheck-suppress noConstructor
-class GTest_QDSchedulerTest : public GTest {
+class GTest_QDSchedulerTest : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_QDSchedulerTest, "qd_search", TaskFlags_NR_FOSCOE);

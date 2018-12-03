@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class Gtest_PToolsAlignerTask : public GTest {
+class Gtest_PToolsAlignerTask : public XmlTest {
     Q_OBJECT
 
 public:

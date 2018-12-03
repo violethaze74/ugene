@@ -75,6 +75,10 @@ void GTest::wrongValue(const QString& name) {
     stateInfo.setError(QString("Wrong value for attribute: %1").arg(name));
 }
 
+void GTest::emptyValue(const QString &name) {
+    stateInfo.setError(QString("Empty value for attribute: %1").arg(name));
+}
+
 //////////////////////////////////////////////////////////////////////////
 // GTestSuite
 

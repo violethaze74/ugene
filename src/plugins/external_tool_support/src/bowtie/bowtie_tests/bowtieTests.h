@@ -37,7 +37,7 @@ class BowtieGObjectTask;
 class DnaAssemblyMultiTask;
 class MultipleSequenceAlignmentObject;
 
-class GTest_Bowtie : public GTest {
+class GTest_Bowtie : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Bowtie, "bowtie", TaskFlag_FailOnSubtaskCancel);

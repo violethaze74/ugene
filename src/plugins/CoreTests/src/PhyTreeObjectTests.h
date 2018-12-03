@@ -31,7 +31,7 @@ namespace U2 {
 class Document;
 class PhyTreeGeneratorLauncherTask;
 
-class GTest_CalculateTreeFromAligment : public GTest {
+class GTest_CalculateTreeFromAligment : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CalculateTreeFromAligment, "calc-tree-from-alignment");
 
@@ -44,7 +44,7 @@ class GTest_CalculateTreeFromAligment : public GTest {
     QString algName;
 };
 
-class GTest_CheckPhyNodeHasSibling : public GTest {
+class GTest_CheckPhyNodeHasSibling : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CheckPhyNodeHasSibling, "check-phynode-has-sibling");
 
@@ -56,7 +56,7 @@ class GTest_CheckPhyNodeHasSibling : public GTest {
 
 };
 
-class GTest_CheckPhyNodeBranchDistance : public GTest {
+class GTest_CheckPhyNodeBranchDistance : public XmlTest {
     Q_OBJECT
         SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CheckPhyNodeBranchDistance, "check-phynode-branch-distance");
 
@@ -68,7 +68,7 @@ class GTest_CheckPhyNodeBranchDistance : public GTest {
 
 };
 
-class GTest_CompareTreesInTwoObjects : public GTest {
+class GTest_CompareTreesInTwoObjects : public XmlTest {
     Q_OBJECT
         SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CompareTreesInTwoObjects, "compare-trees-in-two-objects");
 

@@ -32,7 +32,7 @@ namespace U2 {
 
 class AsnNode;
 
-class GTest_LoadAsnTree : public GTest {
+class GTest_LoadAsnTree : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_LoadAsnTree, "load-asn-tree");
@@ -47,7 +47,7 @@ private:
     AsnNode*        rootElem;
 };
 
-class GTest_FindFirstNodeByName : public GTest {
+class GTest_FindFirstNodeByName : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_FindFirstNodeByName, "find-first-node-by-name");
@@ -62,7 +62,7 @@ private:
 
 };
 
-class GTest_CheckNodeType : public GTest {
+class GTest_CheckNodeType : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CheckNodeType, "check-node-type");
@@ -74,7 +74,7 @@ private:
 };
 
 
-class GTest_CheckNodeValue : public GTest {
+class GTest_CheckNodeValue : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CheckNodeValue, "check-node-value");
@@ -86,7 +86,7 @@ private:
 };
 
 
-class GTest_CheckNodeChildrenCount : public GTest {
+class GTest_CheckNodeChildrenCount : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CheckNodeChildrenCount, "check-node-children-count");

@@ -41,7 +41,7 @@ struct SWresult{
     int score;
 };
 
-class GTest_SmithWatermnan : public GTest {
+class GTest_SmithWatermnan : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_SmithWatermnan, "plugin_sw-algorithm");
@@ -75,7 +75,7 @@ private:
     QString machinePath;
 };
 
-class GTest_SmithWatermnanPerf : public GTest {
+class GTest_SmithWatermnanPerf : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_SmithWatermnanPerf, "test-sw-performance");

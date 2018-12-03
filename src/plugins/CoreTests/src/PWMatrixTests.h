@@ -34,7 +34,7 @@ namespace U2 {
 class Document;
 
 //---------------------------------------------------------------------
-class GTest_PFMtoPWMConvertTest : public GTest {
+class GTest_PFMtoPWMConvertTest : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_PFMtoPWMConvertTest, "check-pfm2pwm-convert");
 private:
@@ -44,7 +44,7 @@ public:
     ReportResult        report();
 };
 
-class GTest_PFMCreateTest : public GTest {
+class GTest_PFMCreateTest : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_PFMCreateTest, "check-pfm-create");
 private:
@@ -58,7 +58,7 @@ public:
     ReportResult report();
 };
 
-class GTest_PWMCreateTest : public GTest {
+class GTest_PWMCreateTest : public XmlTest {
     Q_OBJECT
         SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_PWMCreateTest, "check-pwm-create");
 

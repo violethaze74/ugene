@@ -35,7 +35,7 @@ namespace U2{
 class PhyTreeObject;
 class MultipleSequenceAlignmentObject;
 
-class GTest_PhyML : public GTest {
+class GTest_PhyML : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_PhyML, "test-PHYML");

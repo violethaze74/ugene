@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-/* class Gtest_PToolsAlignerTask : public GTest */
+/* class Gtest_PToolsAlignerTask : public XmlTest */
 
 const QString Gtest_PToolsAlignerTask::REFO_ATTR("refo");
 const QString Gtest_PToolsAlignerTask::MOBO_ATTR("mobo");

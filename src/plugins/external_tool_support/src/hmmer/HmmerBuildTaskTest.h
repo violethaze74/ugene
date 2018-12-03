@@ -33,7 +33,7 @@ namespace U2 {
 /*****************************************
 * Builds hmm profile from input file
 *****************************************/
-class GTest_UHMMER3Build : public GTest {
+class GTest_UHMMER3Build : public XmlTest {
     Q_OBJECT
 public:
     static const QString INPUT_FILE_TAG;
@@ -77,7 +77,7 @@ private:
 /*****************************************
 * Totally compares two hmm files
 *****************************************/
-class GTest_CompareHmmFiles : public GTest {
+class GTest_CompareHmmFiles : public XmlTest {
     Q_OBJECT
 public:
     static const QString FILE1_NAME_TAG;
