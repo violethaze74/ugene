@@ -22,9 +22,12 @@
 #ifndef _U2_CLARK_SUPPORT_PLUGIN_H_
 #define _U2_CLARK_SUPPORT_PLUGIN_H_
 
+#include <U2Core/GAutoDeleteList.h>
 #include <U2Core/PluginModel.h>
 
 namespace U2 {
+
+class XMLTestFactory;
 
 class ClarkSupportPlugin : public Plugin {
     Q_OBJECT
@@ -34,6 +37,9 @@ public:
 
     static const QString PLUGIN_NAME;
     static const QString PLUGIN_DESCRIPRION;
+
+private:
+    GAutoDeleteList<XMLTestFactory> *testFactories;
 };
 
 }   // namespace U2
