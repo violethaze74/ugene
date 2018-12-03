@@ -588,7 +588,7 @@ bool TaskSchedulerImpl::addToPriorityQueue(Task* task, TaskInfo* pti) {
     for (int i = 0, n = subtasks.size(); i < n; i++) {
         Task* sub = subtasks[i];
         bool ok = i < nParallel && addToPriorityQueue(sub, ti);
-        if (!ok && !sub->hasError()) { //if task got err on resource allocation -> its not new now, but failed
+        if (!ok && (!sub->hasError() || sub->getTaskResources().count() == 0)) { //if task got err on resource allocation -> its not new now, but failed
             ti->newSubtasks.append(sub);
             if( !tasksWithNewSubtasks.contains(ti) ){
                 tasksWithNewSubtasks.append(ti);
@@ -715,7 +715,7 @@ void TaskSchedulerImpl::checkSerialPromotion(TaskInfo* pti, Task* subtask) {
             // the current task (that is not "locked"). In this case their
             // state would be "New"
             if (sub->getTaskResources().size() == 0) {
-                assert(subState!=Task::State_New);
+                assert(subState != Task::State_New || sub->hasError());
             }
         }
     }
