@@ -365,6 +365,9 @@ protected:
 
     void setTaskName(const QString& taskName);
 
+    void setFlag(TaskFlag f, bool v) {
+        flags = v ? (flags | f) : flags & (~f);
+    }
 
     TaskStateInfo       stateInfo;
     TaskTimeInfo        timeInfo;
@@ -374,10 +377,6 @@ protected:
     int                 maxParallelSubtasks;
 
 private:
-    void setFlag(TaskFlag f, bool v) {
-        flags = v ? (flags | f) : flags & (~f);
-    }
-
     TaskFlags           flags;
     QString             taskName;
     State               state;
