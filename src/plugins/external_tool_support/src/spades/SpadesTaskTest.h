@@ -34,7 +34,7 @@ namespace U2 {
 
 class OutputCollector;
 
-class GTest_SpadesTaskTest : public GTest {
+class GTest_SpadesTaskTest : public XmlTest {
     Q_OBJECT
 public:
     static const QString SEQUENCING_PLATFORM;
@@ -78,7 +78,7 @@ private:
     QStringList desiredParameters;
 };
 
-class GTest_CheckYAMLFile : public GTest {
+class GTest_CheckYAMLFile : public XmlTest {
     Q_OBJECT
 public:
     static const QString STRINGS_TO_CHECK;

@@ -30,7 +30,7 @@ namespace U2 {
 // NOTE: "fd" stays for Format Detection
 
 /** Check that given file will get specified score */
-class GTest_CheckScore : public GTest {
+class GTest_CheckScore : public XmlTest {
     Q_OBJECT
 
 public:
@@ -51,7 +51,7 @@ private:
 };
 
 /** Check that format detected exatly for specified file */
-class GTest_PerfectMatch : public GTest {
+class GTest_PerfectMatch : public XmlTest {
     Q_OBJECT
 
 public:

@@ -194,7 +194,7 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
     if (useOutputDir()) {
         root = WorkflowSettings::getWorkflowOutputDirectory();
     } else {
-        root = QDir::currentPath();
+        root = QProcess().workingDirectory();
     }
 
     // 2. Create folder if it does not exist

@@ -29,7 +29,7 @@
 namespace U2 {
 
 //cppcheck-suppress noConstructor
-class GTest_RemoteBLAST : public GTest {
+class GTest_RemoteBLAST : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_RemoteBLAST, "plugin_remote-query");

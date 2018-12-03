@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class GTest_FindAlgorithmTest : public GTest {
+class GTest_FindAlgorithmTest : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_FindAlgorithmTest, "find-algorithm");
 

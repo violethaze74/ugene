@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-class GTest_CompareTwoMsa : public GTest {
+class GTest_CompareTwoMsa : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CompareTwoMsa, "compare-two-msa")

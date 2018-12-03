@@ -35,7 +35,7 @@ namespace U2{
 class PhyTreeObject;
 class MultipleSequenceAlignmentObject;
 
-class GTest_MrBayes : public GTest {
+class GTest_MrBayes : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_MrBayes, "test-mrbayes");

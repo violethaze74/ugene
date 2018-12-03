@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-class GTest_Primer3 : GTest {
+class GTest_Primer3 : public XmlTest {
 Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Primer3, "plugin_primer_3", TaskFlags(TaskFlag_FailOnSubtaskCancel) | TaskFlag_NoRun);

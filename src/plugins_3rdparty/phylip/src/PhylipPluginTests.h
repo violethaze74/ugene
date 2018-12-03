@@ -34,7 +34,7 @@ namespace U2{
 class PhyTreeObject;
 class MultipleSequenceAlignmentObject;
 
-class GTest_NeighborJoin : public GTest {
+class GTest_NeighborJoin : public XmlTest {
 	Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_NeighborJoin, "test-neighbor-join");

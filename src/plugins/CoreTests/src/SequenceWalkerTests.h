@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class GTest_SW_CheckRegion : public GTest, public SequenceWalkerCallback {
+class GTest_SW_CheckRegion : public XmlTest, public SequenceWalkerCallback {
     Q_OBJECT
 public:
 

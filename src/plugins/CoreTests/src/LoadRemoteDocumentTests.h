@@ -29,7 +29,7 @@ namespace U2 {
 
     class LoadRemoteDocumentTask;
 
-    class GTest_LoadRemoteDocumentTask : public GTest {
+    class GTest_LoadRemoteDocumentTask : public XmlTest {
         Q_OBJECT
     public:
         SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_LoadRemoteDocumentTask, "load-remote-document", TaskFlags_NR_FOSCOE);

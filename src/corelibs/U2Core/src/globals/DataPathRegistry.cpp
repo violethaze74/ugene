@@ -182,6 +182,7 @@ bool U2DataPathRegistry::registerEntry(U2DataPath *dp) {
 }
 
 void U2DataPathRegistry::unregisterEntry(const QString &name) {
+    CHECK(registry.contains(name), );
     delete registry.take(name);
 }
 

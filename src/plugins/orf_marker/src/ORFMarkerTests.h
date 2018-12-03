@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-class GTest_ORFMarkerTask : public GTest {
+class GTest_ORFMarkerTask : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_ORFMarkerTask, "plugin_orf-marker-search");
