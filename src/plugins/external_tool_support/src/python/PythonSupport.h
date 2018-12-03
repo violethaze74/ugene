@@ -28,7 +28,7 @@
 #define ET_PYTHON "python"
 #define ET_PYTHON_DJANGO "django"
 #define ET_PYTHON_NUMPY "numpy"
-#define ET_PYTHON_BIO "bio"
+#define ET_PYTHON_BIO "Bio"
 
 namespace U2 {
 

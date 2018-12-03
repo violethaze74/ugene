@@ -122,8 +122,8 @@ PythonModuleBioSupport::PythonModuleBioSupport(const QString& name) :
     PythonModuleSupport(name) {
     description += ET_PYTHON_BIO + tr(": Python module for the %1 tool").arg(ET_METAPHLAN);
 
-    validationArguments << "import bio;print(\"bio version: \", bio.__version__);";
-    validMessage = "bio version:";
+    validationArguments << "import Bio;print(\"Bio version: \", Bio.__version__);";
+    validMessage = "Bio version:";
     versionRegExp = QRegExp("(\\d+.\\d+.\\d+)");
 }
 
