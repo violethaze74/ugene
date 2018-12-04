@@ -987,7 +987,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
 
     //Expected: There are no adapter files in the output directory
     QDir sandbox(sandBoxDir);
-    QStringList filter = QStringList() << "????.??.??_??-??";
+    QStringList filter = QStringList() << "????.??.??_?\?-??";
     QStringList sandboxEntry = sandbox.entryList(filter, QDir::AllEntries);
     CHECK_SET_ERR(sandboxEntry.size() == 1, QString("Unexpected nomber of folders, expected: 1, current62: %1").arg(sandboxEntry.size()));
 
@@ -1716,7 +1716,7 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
             CHECK_SET_ERR(gbFormatLocation != NULL, "radio button rbGenbankFormat not found");
 
             QLineEdit *lineEdit1 = dialog->findChild<QLineEdit*>("leLocation");
-            CHECK_SET_ERR(lineEdit != NULL, "line edit leLocation not found");
+            CHECK_SET_ERR(lineEdit1 != NULL, "line edit leLocation not found");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }

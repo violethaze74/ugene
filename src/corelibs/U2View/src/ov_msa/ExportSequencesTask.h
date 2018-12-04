@@ -53,7 +53,6 @@ protected:
 private:
     MultipleSequenceAlignment msa;
     QList<qint64> rowIds;
-    bool trimGaps;
     bool addToProjectFlag;
     QString dirUrl;
     DocumentFormatId format;

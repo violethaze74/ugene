@@ -61,7 +61,6 @@ Task::ReportResult ReloadDocumentsTask::report() {
     CHECK(!subTaskStateInfoErrors.isEmpty(), ReportResult_Finished);
 
     setConcatenateChildrenErrors(true);
-    bool oneSubTaskFailed = subTaskStateInfoErrors.size() == 1;
     setReportingSupported(true);
     stateInfo.setError(tr("Document(s) reloading failed."));
 
