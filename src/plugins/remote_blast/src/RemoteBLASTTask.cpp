@@ -184,7 +184,6 @@ void RemoteBlastHttpRequestTask::prepare() {
 
 void RemoteBlastHttpRequestTask::run() {
     for(int i = 0;i < queries.count();i++) {
-        bool error = true;
         if(isCanceled()) {
             return;
         }

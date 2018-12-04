@@ -118,7 +118,6 @@ void PluginViewerController::connectStaticActions() {
 
 void PluginViewerController::connectVisualActions() {
     //connect to plugin support signals
-    PluginSupport* ps = AppContext::getPluginSupport();
     if (showServices) {
         ServiceRegistry* sr = AppContext::getServiceRegistry();
         connect(sr, SIGNAL(si_serviceStateChanged(Service*, ServiceState)), SLOT(sl_onServiceStateChanged(Service*, ServiceState)));
@@ -139,8 +138,6 @@ void PluginViewerController::disconnectVisualActions() {
 
 void PluginViewerController::updateActions() {
     PlugViewTreeItem* item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
-    bool isPlugin = item!=NULL && item->isPluginItem();
-    Plugin* p = isPlugin ? (static_cast<PlugViewPluginItem*>(item))->plugin : NULL;
 
     bool isService = item!=NULL && item->isServiceItem();
     Service* s = isService ? (static_cast<PlugViewServiceItem*>(item))->service : NULL;
