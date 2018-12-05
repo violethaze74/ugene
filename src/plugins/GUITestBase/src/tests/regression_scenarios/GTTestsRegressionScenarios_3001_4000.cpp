@@ -2526,7 +2526,7 @@ GUI_TEST_CLASS_DEFINITION(test_3379) {
     //3.Add more files to the project and open a few more views
     GTFileDialog::openFile(os, testDir + "_common_data/cmdline/", "DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
+    GTGlobals::sleep(1000);
 
     //4. Return to 'abcd.fa' view
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "seq1"));
@@ -5653,6 +5653,7 @@ GUI_TEST_CLASS_DEFINITION(test_3886) {
 
     //2. Open 'Extract consensus as sequence' sample.
     GTUtilsWorkflowDesigner::addSample(os, "Extract consensus as sequence");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //3. Show wizard.
     class TestWizardFiller : public Filler {
