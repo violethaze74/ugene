@@ -39,6 +39,7 @@ public:
     void setColor(const QColor& _annotColor);
 
     static const int ROW_HEIGHT;
+    static const int COLOR_ICON_SIZE;
 
 private:
     void drawColorCell();
