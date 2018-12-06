@@ -198,7 +198,7 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
         if (!resultDir.exists()) {
             bool mkDirResult = QDir().mkpath(resultDir.absolutePath());
             if (!mkDirResult) {
-                setError(tr("Failed to create output directory: %1").arg(resultDir.absolutePath()));
+                setError(tr("Failed to create output folder: %1.").arg(resultDir.absolutePath()));
                 return result;
             }
         }
