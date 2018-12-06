@@ -6070,29 +6070,6 @@ GUI_TEST_CLASS_DEFINITION(test_3960) {
     CHECK_SET_ERR(logTracer.hasError() == false, QString("Error message found: %1, but not expected.").arg(logTracer.getError()));
 
 }
-GUI_TEST_CLASS_DEFINITION(test_3967){
-    GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new SpadesGenomeAssemblyDialogFiller(os, "Paired-end (Interlaced)", QStringList()<<testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq",
-                                                                          QStringList(), sandBoxDir));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads de novo assembly (with SPAdes)...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
-////  1. Open workflow designer
-///
-//    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    QMap<QString, QVariant> map;
-//    map.insert("Left Read URL(s)", testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq");
-//    map.insert("Right Read URL(s)", testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_2.fq");
-//    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Assembly Pipeline", QStringList()<<"Paired tags"));
-//    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Assemble Genomes Wizard", QStringList(), map));
-////  2. Add spades sampale. Use interlaced paired-read mode
-//    GTUtilsWorkflowDesigner::addSample(os, "Assembly with Spades");
-////  3. Run workflow
-//    GTUtilsWorkflowDesigner::runWorkflow(os);
-//    GTUtilsTaskTreeView::waitTaskFinished(os);
-////  4. Expected stat
-//    GTUtilsLog::check(os, l);
-}
 
 GUI_TEST_CLASS_DEFINITION(test_3975) {
     // 1. Open _common_data/gff/noheader.gff
