@@ -53,19 +53,27 @@ GraphAction::GraphAction(GSequenceGraphFactory* _factory)
     connect(this, SIGNAL(triggered()), SLOT(sl_handleGraphAction()));
 }
 
+// This is maximum sequence size we allow to create graphs: 300Mb.
+// To calculate graphs for larger sequences we must optimize graph algorithms first.
+// Otherwise UGENE may consume all RAM, make the whole system unstable and crash.
+#define MAX_SEQUENCE_LENGTH_TO_ALLOW_GRAPHS (300 * 1000 * 1000)
+
 /**
  * Shows/hides a graph depending on its state: checked/unchecked
  */
 void GraphAction::sl_handleGraphAction() {
     if (isChecked()) {
         SAFE_POINT(view == NULL, "Graph view is checked, but not available!",);
-
         // Getting the menu action
         GraphMenuAction* menuAction = qobject_cast<GraphMenuAction*>(parent());
         SAFE_POINT(menuAction!=NULL, "GraphMenuAction is not available (while handling an action)!",);
 
         // Creating graphs
         ADVSingleSequenceWidget* sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(menuAction->seqWidget);
+        if (sequenceWidget->getSequenceLength() > MAX_SEQUENCE_LENGTH_TO_ALLOW_GRAPHS) {
+            QMessageBox::warning(sequenceWidget->window(), L10N::warningTitle(),  tr("Sequence size is too large to calculate graphs!"));
+            return;
+        }
         view = new GSequenceGraphViewWithFactory(sequenceWidget, factory);
         GSequenceGraphDrawer *graphDrawer = factory->getDrawer(view);
         connect(graphDrawer, SIGNAL(si_graphRenderError()), SLOT(sl_renderError()));
