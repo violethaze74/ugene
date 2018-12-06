@@ -484,38 +484,27 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
 //    Expected state: sample works as it stated (the result of default run(format should be BED) on that data is "_common_data/bedtools/out17.bed"
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsWorkflowDesigner::addSample(os, "Intersect annotations");
-
-    class wd_test_0060 : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            QMap<QString, QVariant> parameters;
-            parameters["Output file"] = QDir(sandBoxDir).absolutePath() + "/wd_test_0060";
-            //! The following code will not work because of UGENE-4234
-//            parameters["Annotations A"] = QDir(testDir).absolutePath() + "/_common_data/bedtools/introns.bed";
-//            parameters["Annotations B"] = QDir(testDir).absolutePath() + "/_common_data/bedtools/mutation.gff";
-            GTUtilsWizard::setAllParameters(os, parameters);
-
-            GTKeyboardDriver::keyClick( Qt::Key_Enter);
-            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
-        }
-    };
-
-
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Intersect Annotations Wizard", new wd_test_0060()));
-    GTWidget::click(os, GTAction::button(os, "Show wizard"));
-    GTGlobals::sleep();
-
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+ 
     GTUtilsWorkflowDesigner::click(os, "Read Annotations A");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/introns.bed");
+    GTGlobals::sleep();
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/introns.bed"); 
 
     GTUtilsWorkflowDesigner::click(os, "Read Annotations B");
+    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/mutation.gff");
 
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
     GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setParameter(os, "Document format", "BED", GTUtilsWorkflowDesigner::comboValue);
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    QString s = QFileInfo(testDir + "_common_data/scenarios/sandbox").absoluteFilePath();
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", QVariant(s + "/wd_test_0060"), GTUtilsWorkflowDesigner::textValue);
+ 
+    GTUtilsWorkflowDesigner::runWorkflow(os);  
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::equals(os, QDir(sandBoxDir).absolutePath() + "/wd_test_0060", QDir(testDir).absolutePath() + "/_common_data/bedtools/out17.bed"), "Output is incorrect");
