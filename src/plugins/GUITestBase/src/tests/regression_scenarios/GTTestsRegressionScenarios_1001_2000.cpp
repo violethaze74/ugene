@@ -3063,7 +3063,11 @@ GUI_TEST_CLASS_DEFINITION(test_1263){
 GUI_TEST_CLASS_DEFINITION(test_1266) {
 //    1. Open "Call variants" sample pipleine from the "NGS" category
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     class custom : public CustomScenario {
     public:
