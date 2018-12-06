@@ -1451,15 +1451,7 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6238_1) {
-    //1. Open _common_data/regression/6238/6238.fastq on macOS
-    //Expected: it wasn't opened, the notification "The problem appeared during the data reading. Please, make sure that all input data are correct" appeared
-    GTUtilsNotifications::waitForNotification(os, true, "The text file can't be read. Check the file encoding and make sure the file is not corrupted");
-    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/regression/6238/6238.fastq");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_6238_2) {
+GUI_TEST_CLASS_DEFINITION(test_6238) {
     QString fastqFile = dataDir + "samples/FASTQ/eas.fastq";
     QString sandboxFastqFile = sandBoxDir + "eas.fastq";
     QString badFastqFile = testDir + "_common_data/regression/6238/6238.fastq";
