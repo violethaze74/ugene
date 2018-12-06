@@ -57,6 +57,7 @@ private:
     ExternalToolRunTask *hmmerTask;
     HmmerParseSearchResultsTask *parseTask;
     bool removeWorkingDir;
+    bool hmm2Mode;
 
     static const QString INPUT_SEQUENCE_FILENAME;
     static const QString PER_DOMAIN_HITS_FILENAME;
