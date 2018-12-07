@@ -1783,6 +1783,32 @@ GUI_TEST_CLASS_DEFINITION(test_6291) {
     CHECK_SET_ERR(actualValue == qValue, QString("Qualifier text %1 differs with expected %2.").arg(actualValue).arg(qValue));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6301) {
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            //Expected: SPAdes description contains the following string - "Version: 3.13.0"
+            const bool hasVersion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "SPAdes", "Version: 3.13.0");
+            if (!hasVersion) {
+                os.setError("Unexpected SPAdes version");
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Open "UGENE Application Settings", select "External Tools" tab.
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+
+    CHECK_SET_ERR(!os.hasError(), os.getError());
+
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
