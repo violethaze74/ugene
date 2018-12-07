@@ -43,7 +43,7 @@ using namespace HI;
 
 const QString ET_PYTHON = "python";
 const QString ET_NUMPY = "numpy";
-const QString ET_BIO = "bio";
+const QString ET_BIO = "Bio";
 const QString ET_BOWTIE_2_ALIGNER = "Bowtie 2 aligner";
 const QString ET_BOWTIE_2_BUILD = "Bowtie 2 build indexer";
 const QString ET_METAPHLAN = "MetaPhlAn2";
