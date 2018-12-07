@@ -3218,16 +3218,20 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
  *  Expected state: Popup menu should appear, contains bold "Additional" item menu
  */
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsWorkflowDesigner::addSample(os, "Find substrings in sequences");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::click(os, "Find Substrings");
+    GTGlobals::sleep();
 
     QTableWidget* tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");
 
     GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by Read Sequence)", GTUtilsWorkflowDesigner::comboValue, tw);
+    GTGlobals::sleep(1000);
 
     int row = -1;
     for(int i = 0; i<tw->rowCount(); i++){
@@ -3241,6 +3245,7 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
     QPoint globalP = tw->viewport()->mapToGlobal(rect.center());
     GTMouseDriver::moveTo(globalP);
     GTMouseDriver::click();
+    GTGlobals::sleep();
 
     QComboBox* box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
 
