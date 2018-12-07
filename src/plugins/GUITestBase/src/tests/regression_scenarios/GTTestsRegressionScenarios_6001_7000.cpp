@@ -1731,8 +1731,11 @@ GUI_TEST_CLASS_DEFINITION(test_6282) {
             CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            //2. Open a python tab
             AppSettingsDialogFiller::isExternalToolValid(os, "python");
 
+            //Expected:: Bio module is valid
             bool isToolValid = true;
 #ifndef Q_OS_WIN
             isToolValid = AppSettingsDialogFiller::isExternalToolValid(os, "Bio");
@@ -1741,6 +1744,7 @@ GUI_TEST_CLASS_DEFINITION(test_6282) {
                 os.setError("Bio is not valid");
             }
 
+            //Expected: Bio module version is 1.72
             bool hasVerion = true;
 #ifndef Q_OS_WIN
             hasVerion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "Bio", "Version: 1.72");
