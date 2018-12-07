@@ -2121,6 +2121,8 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
 //    2. Scroll with the mouse wheel to the end of the sequence and back to the beginning
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "seq4.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
 
@@ -2128,16 +2130,16 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     CHECK_SET_ERR(scrollBar != NULL, "Cannot find multiline_scrollbar");
 
     GTScrollBar::moveSliderWithMouseWheelDown(os, scrollBar, scrollBar->maximum());
-    GTGlobals::sleep();
+    GTGlobals::sleep(500);
 
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
-    CHECK_SET_ERR(visibleRange.contains(GTUtilsSequenceView::getSeqWidgetByNumber(os)->getSequenceLength() - 1), "The end position of the sequence is not visible. Failed to scroll to the end" );
+    CHECK_SET_ERR(visibleRange.contains(GTUtilsSequenceView::getSeqWidgetByNumber(os)->getSequenceLength() - 1), "The end position of the sequence is not visible. Failed to scroll to the end_1" );
 
     GTScrollBar::moveSliderWithMouseWheelUp(os, scrollBar, scrollBar->maximum());
-    GTGlobals::sleep();
+    GTGlobals::sleep(500);
 
     visibleRange = GTUtilsSequenceView::getVisibleRange(os);
-    CHECK_SET_ERR(visibleRange.contains(1), "The end position of the sequence is not visible. Failed to scroll to the end" );
+    CHECK_SET_ERR(visibleRange.contains(1), "The end position of the sequence is not visible. Failed to scroll to the end_2" );
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0065) {
