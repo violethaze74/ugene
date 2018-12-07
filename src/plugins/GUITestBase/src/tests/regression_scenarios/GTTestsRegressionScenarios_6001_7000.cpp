@@ -1724,7 +1724,7 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
     GTGlobals::sleep(1000);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6282) {
+GUI_TEST_CLASS_DEFINITION(test_6283) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os){
             QWidget *dialog = QApplication::activeModalWidget();
