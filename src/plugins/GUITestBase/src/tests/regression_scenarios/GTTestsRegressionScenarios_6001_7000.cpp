@@ -1732,6 +1732,43 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
     GTGlobals::sleep(1000);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6282) {
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+            AppSettingsDialogFiller::isExternalToolValid(os, "python");
+
+            bool isToolValid = true;
+#ifndef Q_OS_WIN
+            isToolValid = AppSettingsDialogFiller::isExternalToolValid(os, "Bio");
+#endif
+            if (!isToolValid) {
+                os.setError("Bio is not valid");
+            }
+
+            bool hasVerion = true;
+#ifndef Q_OS_WIN
+            hasVerion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "Bio", "Version: 1.72");
+#endif
+            if (!hasVerion) {
+                os.setError("Incorrect Bio version");
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Open "UGENE Application Settings", select "External Tools" tab.
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+
+    CHECK_SET_ERR(!os.hasError(), os.getError());
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6291) {
     //1. Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
