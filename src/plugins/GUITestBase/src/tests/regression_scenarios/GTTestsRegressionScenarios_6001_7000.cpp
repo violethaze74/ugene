@@ -95,6 +95,7 @@
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -1452,7 +1453,7 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {
-    QString fastqFile = dataDir + "samples/FASTQ/eas.fastq";
+    QString fastqFile = testDir + "_common_data/regression/6238/eas.fastq";
     QString sandboxFastqFile = sandBoxDir + "eas.fastq";
     QString badFastqFile = testDir + "_common_data/regression/6238/6238.fastq";
     //1. Open "data/samples/FASTQ/eas.fastq".
@@ -1472,6 +1473,7 @@ GUI_TEST_CLASS_DEFINITION(test_6238) {
     //4. Accept the offering.
     //Expected state: the file reloading failed, an error notification appeared, there are error messages in the log.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesAll));
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsNotifications::waitForNotification(os, false, "The text file can't be read. Check the file encoding and make sure the file is not corrupted");
     QByteArray badData = badFile.readAll();
     file.write(badData);
