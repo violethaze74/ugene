@@ -5121,7 +5121,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_4784_4) {
     QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_4.fa");
-
+    GTGlobals::sleep();
     //1. Click the menu Tools -> BLAST-> BLAST+ Search...
     //2. Select "_common_data/fasta/chr6" as input file.
     //3. Press "Select a database file".
@@ -5130,10 +5130,11 @@ GUI_TEST_CLASS_DEFINITION(test_4784_4) {
     BlastAllSupportDialogFiller::Parameters settings;
     settings.runBlast = true;
     settings.withInputFile = true;
-    settings.inputPath = sandBoxDir + "regression_test_4784_4.fa";
     settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
+    settings.inputPath = sandBoxDir + "regression_test_4784_4.fa";    
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST+ search...");
+    GTGlobals::sleep(5000);
 
     //6. Remove "chr6.fa" from project.
     //Expected result: An error notification appears - "A problem occurred during doing BLAST. The sequence is no more available".
