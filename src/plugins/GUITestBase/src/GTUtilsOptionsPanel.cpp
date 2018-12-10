@@ -64,9 +64,9 @@ void GTUtilsOptionsPanel::runFindPatternWithHotKey( const QString& pattern, HI::
 #define GT_METHOD_NAME "resizeToMaximum"
 void GTUtilsOptionsPanel::resizeToMaximum(GUITestOpStatus &os) {
     QSplitter *optionsPanelSplitter = GTWidget::findExactWidget<QSplitter *>(os, "OPTIONS_PANEL_SPLITTER");
-    CHECK_EXT(nullptr != optionsPanelSplitter, "Options panel splitter is nullptr", );
+    GT_CHECK(nullptr != optionsPanelSplitter, "Options panel splitter is nullptr");
     QSplitterHandle *handle = optionsPanelSplitter->handle(1);
-    CHECK_EXT(nullptr != handle, "Options panel splitter handle is nullptr", );
+    GT_CHECK(nullptr != handle, "Options panel splitter handle is nullptr");
 
     const QPoint handleCenter = optionsPanelSplitter->mapToGlobal(handle->geometry().center());
     const int delta = 500;
