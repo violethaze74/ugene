@@ -300,6 +300,7 @@ GObjectViewWindow::GObjectViewWindow(GObjectView* v, const QString& _viewName, b
     } else {
         OptionsPanelWidget *optionsPanelWidget = optionsPanel->getMainWidget();
         QSplitter *splitter = new QSplitter();
+        splitter->setObjectName("OPTIONS_PANEL_SPLITTER");
         splitter->setOrientation(Qt::Horizontal);
         splitter->setChildrenCollapsible(false);
         splitter->addWidget(objectWidget);

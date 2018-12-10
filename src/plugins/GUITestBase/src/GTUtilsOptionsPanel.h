@@ -30,6 +30,8 @@ class GTUtilsOptionsPanel {
 
 public:
     static void runFindPatternWithHotKey(const QString& pattern, HI::GUITestOpStatus& os);
+
+    static void resizeToMaximum(HI::GUITestOpStatus& os);
 };
 
 } // namespace
