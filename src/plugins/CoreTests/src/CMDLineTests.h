@@ -54,6 +54,7 @@ private:
     QProcess *  proc;
     QString     ugeneclPath;
     QStringList tmpFiles;
+    QString     workingDir;
 
     static const QString UGENECL_PATH;
 }; // GTest_RunCMDLine

@@ -58,9 +58,11 @@ void GTest_RunCMDLine::init(XMLTestFormat *tf, const QDomElement& el) {
     setArgs(el);
     proc = new QProcess(this);
     if (el.hasAttribute(WORKING_DIR_ATTR)) {
-        QString workingDir = el.attribute(WORKING_DIR_ATTR);
-        QDir().mkpath(env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + workingDir);
-        proc->setWorkingDirectory(env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + workingDir);
+        workingDir = el.attribute(WORKING_DIR_ATTR);
+        XMLTestUtils::replacePrefix(env, workingDir);
+        if (QUrl(workingDir).isRelative()) {
+            workingDir = env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + workingDir;
+        }
     }
     QString protosPath = env->getVar(COMMON_DATA_DIR_ENV_ID) + "/" +  env->getVar(CONFIG_PROTOTYPE);
     QDir protoDir(protosPath), userScriptsDir(WorkflowSettings::getUserDirectory());
@@ -168,6 +170,11 @@ void GTest_RunCMDLine::setUgeneclPath() {
 }
 
 void GTest_RunCMDLine::prepare() {
+    if (!workingDir.isEmpty()) {
+        QDir().mkpath(workingDir);
+        proc->setWorkingDirectory(workingDir);
+    }
+
     QString argsStr = args.join(" ");
     coreLog.trace( "Starting UGENE with arguments: " + argsStr );
     proc->start( ugeneclPath, args );
