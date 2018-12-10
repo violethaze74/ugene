@@ -3866,6 +3866,7 @@ GUI_TEST_CLASS_DEFINITION( test_2568 ){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add the "Call Variants" sample
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
+    GTGlobals::sleep(100);
 //    3. Run the wizard
 
     class customFileDialog : public CustomScenario {
@@ -3905,6 +3906,7 @@ GUI_TEST_CLASS_DEFINITION( test_2568 ){
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new customWizard()));
     GTWidget::click(os, GTAction::button(os, "Show wizard"));
+    GTGlobals::sleep(100);
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2569 ){
