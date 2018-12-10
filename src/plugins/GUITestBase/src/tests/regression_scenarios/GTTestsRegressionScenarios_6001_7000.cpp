@@ -1696,6 +1696,68 @@ GUI_TEST_CLASS_DEFINITION(test_6256) {
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getErrors(os).size() == 2, "Unexpected number of errors");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6277) {
+//    The test checks that the second column of a table with annotations colors on the "Annotations Highlighting" options panel tab in Sequence View is wide enough.
+//    UGENE behaviour differed if it was build with Qt5.4 and Qt5.7
+
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "Annotations Highlighting" options panel tab.
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
+
+//    Expected state: the second column's width is 60 pixels; it took at least 20% of the table width; the first column took all available space.
+    QTreeWidget *table = GTWidget::findExactWidget<QTreeWidget *>(os, "OP_ANNOT_HIGHLIGHT_TREE");
+    CHECK_SET_ERR(nullptr != table, "OP_ANNOT_HIGHLIGHT_TREE widget is NULL");
+
+    QScrollBar *scrollBar = table->verticalScrollBar();
+    const int scrollBarWidth = nullptr == scrollBar ? 0 : (scrollBar->isVisible() ? scrollBar->width() : 0);
+
+    // These numbers are defined in the widget stylesheet in AnnotHighlightTree.cpp
+    const int MARGIN_LEFT = 5;
+    const int MARGIN_RIGHT = 10;
+    const int BORDER_WIDTH = 1;
+    const int MAGIC_NUMBER = scrollBarWidth + MARGIN_LEFT + MARGIN_RIGHT + 2 * BORDER_WIDTH;
+
+    const int COLOR_COLUMN_NUMBER = 1;
+    int colorColumnWidth = table->columnWidth(COLOR_COLUMN_NUMBER);
+    int totalTableWidth = table->width();
+
+    const int EXPECTED_COLOR_COLUMN_WIDTH = 60;
+    CHECK_SET_ERR(EXPECTED_COLOR_COLUMN_WIDTH == colorColumnWidth,
+                  QString("Color column width is incorrect: expected %1, got %2")
+                  .arg(EXPECTED_COLOR_COLUMN_WIDTH).arg(colorColumnWidth));
+
+    CHECK_SET_ERR(static_cast<double>(colorColumnWidth) / totalTableWidth >= 0.2,
+                  QString("Color column is too narrow: it's width is %1, the table width is %2")
+                  .arg(colorColumnWidth).arg(totalTableWidth));
+
+    const int ANNOTATION_NAME_COLUMN_NUMBER = 0;
+    int annotationNameColumnWidth = table->columnWidth(ANNOTATION_NAME_COLUMN_NUMBER);
+    CHECK_SET_ERR(annotationNameColumnWidth == totalTableWidth - colorColumnWidth - MAGIC_NUMBER,
+                  QString("Annotation name column isn't stretched: it's width is %1, width of the color column is %2, "
+                          "the table width is %3")
+                  .arg(annotationNameColumnWidth).arg(colorColumnWidth).arg(totalTableWidth));
+
+//    3. Drag and drop the options panel tab's left border to enlarge it.
+    GTUtilsOptionsPanel::resizeToMaximum(os);
+
+//    Expected state: the second column's width is 60 pixels; the first column took all available space.
+    colorColumnWidth = table->columnWidth(COLOR_COLUMN_NUMBER);
+    totalTableWidth = table->width();
+    annotationNameColumnWidth = table->columnWidth(ANNOTATION_NAME_COLUMN_NUMBER);
+
+    CHECK_SET_ERR(EXPECTED_COLOR_COLUMN_WIDTH == colorColumnWidth,
+                  QString("Color column width is incorrect after resizing: expected %1, got %2")
+                  .arg(EXPECTED_COLOR_COLUMN_WIDTH).arg(colorColumnWidth));
+
+    CHECK_SET_ERR(annotationNameColumnWidth == totalTableWidth - colorColumnWidth - MAGIC_NUMBER,
+                  QString("Annotation name column isn't stretched after resizing: it's width is %1, width of the color column is %2, "
+                          "the table width is %3")
+                  .arg(annotationNameColumnWidth).arg(colorColumnWidth).arg(totalTableWidth));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6279) {
     class Custom : public CustomScenario {
     public:
