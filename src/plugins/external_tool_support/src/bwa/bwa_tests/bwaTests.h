@@ -40,8 +40,8 @@ class MultipleSequenceAlignmentObject;
 class GTest_Bwa : public XmlTest {
     Q_OBJECT
 public:
-    SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Bwa, "bwa", TaskFlag_FailOnSubtaskCancel);
-    ~GTest_Bwa();
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Bwa, "bwa", TaskFlag_FailOnSubtaskCancel)
+
     void prepare();
     void run();
     Task::ReportResult report();

@@ -303,10 +303,6 @@ void GTest_UHMMER3Build::cleanup() {
     XmlTest::cleanup();
 }
 
-GTest_UHMMER3Build::~GTest_UHMMER3Build() {
-    cleanup();
-}
-
 /**************************
 * GTest_CompareHmmFiles
 **************************/

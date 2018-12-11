@@ -231,8 +231,7 @@ Task::ReportResult GTest_RunCMDLine::report() {
         if (eofIdx > 0) {
             err = err.left(eofIdx - 1);
         }
-        err.replace("\n", "");
-        setError("Process finished with error: " + err);
+        setError("Process finished with error" + err);
     }
 
     if (proc->exitStatus() == QProcess::CrashExit) {

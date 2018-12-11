@@ -73,7 +73,7 @@ public:
 
     const GTestEnvironment* getEnv() const {return env;}
 
-    void cleanup();
+    void removeTempDir();
 
 protected:
     GTest* getContextProvider() const {return contextProvider;}

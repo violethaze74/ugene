@@ -292,11 +292,6 @@ void GTest_Bowtie::cleanup()
     XmlTest::cleanup();
 }
 
-GTest_Bowtie::~GTest_Bowtie()
-{
-    cleanup();
-}
-
 QString GTest_Bowtie::getTempDataDir()
 {
     QString dir(env->getVar("TEMP_DATA_DIR"));
