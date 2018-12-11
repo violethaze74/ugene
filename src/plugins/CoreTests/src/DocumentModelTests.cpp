@@ -415,7 +415,7 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat* tf, const QDomElement& el) 
     Q_UNUSED(tf);
 
     QString             urlAttr = el.attribute("url");
-    QString             outUrlAttr = el.attribute("outUrl");
+    QString             outUrlAttr = getTempDir(env) + "/" + el.attribute("outUrl");
     QString             dir = el.attribute("dir");
     DocumentFormatId    formatId = el.attribute("format");
 
