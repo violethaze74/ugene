@@ -129,6 +129,10 @@ Metaphlan2TaskSettings Metaphlan2Worker::getSettings(U2OpStatus &os) {
     CHECK_EXT(!bowtie2AlignerPath.isEmpty(), os.setError("Bowtie2 aligner isn't found"), settings);
 
     settings.bowtie2ExternalToolPath = QFileInfo(bowtie2AlignerPath).dir().path();
+    QString pythonPath = WorkflowUtils::getExternalToolPath(Metaphlan2Support::ET_PYTHON);
+    CHECK_EXT(!pythonPath.isEmpty(), os.setError("Python isn't found"), settings);
+
+    settings.pythonExternalToolPath = QFileInfo(pythonPath).dir().path();
     settings.tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->createCurrentProcessTemporarySubDir(os, METAPHLAN2_ROOT_DIR);
     CHECK_OP(os, settings);
 

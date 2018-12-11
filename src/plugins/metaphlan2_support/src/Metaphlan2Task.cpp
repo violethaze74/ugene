@@ -78,12 +78,7 @@ void Metaphlan2ClassifyTask::prepare() {
         calculateSequencesNumberTask = new CalculateSequencesNumberTask(settings.readsUrl);
         addSubTask(calculateSequencesNumberTask);
     } else {
-        classifyTask = new ExternalToolRunTask(Metaphlan2Support::TOOL_NAME,
-                                               getArguments(),
-                                               new ExternalToolLogParser(),
-                                               QString(),
-                                               QStringList() << settings.bowtie2ExternalToolPath);
-        setListenerForTask(classifyTask);
+        prepareClassifyTask();
         addSubTask(classifyTask);
     }
 }
@@ -94,12 +89,7 @@ QList<Task*> Metaphlan2ClassifyTask::onSubTaskFinished(Task* subTask) {
     CHECK(calculateSequencesNumberTask == subTask, result);
 
     sequencesNumber = calculateSequencesNumberTask->getSequencesNumber();
-    classifyTask = new ExternalToolRunTask(Metaphlan2Support::TOOL_NAME,
-                                          getArguments(),
-                                          new ExternalToolLogParser(),
-                                          QString(),
-                                          QStringList() << settings.bowtie2ExternalToolPath);
-    setListenerForTask(classifyTask);
+    prepareClassifyTask();
     result << classifyTask;
 
     return result;
@@ -144,6 +134,16 @@ QStringList Metaphlan2ClassifyTask::getArguments() {
     return arguments;
 }
 
+
+void Metaphlan2ClassifyTask::prepareClassifyTask() {
+    classifyTask = new ExternalToolRunTask(Metaphlan2Support::TOOL_NAME,
+                                            getArguments(),
+                                            new ExternalToolLogParser(),
+                                            QString(),
+                                            QStringList() << settings.bowtie2ExternalToolPath
+                                                          << settings.pythonExternalToolPath);
+    setListenerForTask(classifyTask);
+}
 
 } // namespace U2
 

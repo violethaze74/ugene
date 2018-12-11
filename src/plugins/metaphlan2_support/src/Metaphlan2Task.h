@@ -43,6 +43,7 @@ struct  Metaphlan2TaskSettings {
     QString outputFile;
 
     QString bowtie2ExternalToolPath;
+    QString pythonExternalToolPath;
     QString tmpDir;
     QString readsUrl;
     QString pairedReadsUrl;
@@ -60,6 +61,7 @@ private:
     void prepare() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;
     QStringList getArguments();
+    void prepareClassifyTask();
 
     bool needToCountSequences;
     int sequencesNumber;
