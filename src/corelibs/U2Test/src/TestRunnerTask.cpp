@@ -72,6 +72,9 @@ QList<Task*> TestRunnerTask::onSubTaskFinished(Task* subTask) {
         GTest* test = qobject_cast<GTest*>(subTask);
         assert(test);
         test->cleanup();
+        if (!test->hasError()) {
+            test->removeTempDir();
+        }
         GTestState* testState = stateByTest.value(test);
         assert(testState!=NULL);
         assert(testState->isNew());
