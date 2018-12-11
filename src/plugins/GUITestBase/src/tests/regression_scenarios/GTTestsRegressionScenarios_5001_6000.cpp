@@ -104,6 +104,7 @@
 #include "GTUtilsWorkflowDesigner.h"
 #include <primitives/GTRadioButton.h>
 
+#include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
@@ -3849,6 +3850,21 @@ GUI_TEST_CLASS_DEFINITION(test_5775) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/3"), "Results string not match");
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5781) {
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
+    AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/ref2.fa", QStringList());
+    parameters.samOutput = false;
+    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
+    //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "can't be mapped"));
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/COI2.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+    
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
+    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
 }
 
