@@ -81,6 +81,7 @@
 #include "GTUtilsWorkflowDesigner.h"
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
@@ -1090,6 +1091,17 @@ GUI_TEST_CLASS_DEFINITION(test_6225) {
 
     const int size = GTUtilsProjectTreeView::getDocuments(os).size();
     CHECK_SET_ERR(size == 2, QString("Unexpected documents number; expected: 2, current: %1").arg(size));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6226) {
+    
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
+    AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
+    parameters.samOutput = false;
+    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/reads.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6232_1) {
