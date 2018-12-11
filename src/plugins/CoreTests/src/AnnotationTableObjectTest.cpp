@@ -141,6 +141,8 @@ void GTest_FindAnnotationByNum::cleanup() {
     if (result != NULL && !annotationContextName.isEmpty()) {
         removeContext(annotationContextName);
     }
+
+    XmlTest::cleanup();
 }
 
 //---------------------------------------------------------------
@@ -221,6 +223,8 @@ void GTest_FindAnnotationByName::cleanup() {
     if (result != NULL && !annotationContextName.isEmpty()) {
         removeContext(annotationContextName);
     }
+
+    XmlTest::cleanup();
 }
 
 //---------------------------------------------------------------
@@ -1063,6 +1067,8 @@ void GTest_FindAnnotationByLocation::cleanup() {
     if (result != NULL && !annotationContextName.isEmpty()) {
         removeContext(annotationContextName);
     }
+
+    XmlTest::cleanup();
 }
 
 //---------------------------------------------------------------
@@ -1099,6 +1105,8 @@ void GTest_CreateTmpAnnotationObject::cleanup() {
         removeContext(objContextName);
     }
     delete aobj;
+
+    XmlTest::cleanup();
 }
 
 //---------------------------------------------------------------

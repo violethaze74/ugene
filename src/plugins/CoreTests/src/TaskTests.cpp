@@ -190,6 +190,8 @@ void GTest_TaskCreateTest::cleanup() {
     if (deleteTask /*|| task->hasFlags(TaskFlag_NoAutoDelete)*/) {
         delete task;
     }
+
+    XmlTest::cleanup();
 }
 
 void GTest_TaskAddSubtaskTest::init(U2::XMLTestFormat *tf, const QDomElement &el){

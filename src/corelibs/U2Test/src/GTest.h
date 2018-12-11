@@ -71,7 +71,9 @@ public:
         return res;
     }
 
-const GTestEnvironment* getEnv() const {return env;}
+    const GTestEnvironment* getEnv() const {return env;}
+
+    void cleanup();
 
 protected:
     GTest* getContextProvider() const {return contextProvider;}

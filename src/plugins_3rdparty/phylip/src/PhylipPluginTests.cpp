@@ -154,8 +154,4 @@ Task::ReportResult GTest_NeighborJoin::report() {
     return ReportResult_Finished;
 }
 
-void GTest_NeighborJoin::cleanup() {
-	
-}
-
 }

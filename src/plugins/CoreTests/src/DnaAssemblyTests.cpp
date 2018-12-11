@@ -164,12 +164,16 @@ void GTest_DnaAssemblyToReferenceTask::cleanup()
 {
     // cleanup temporary files
 
-     QDir dir(env->getVar("TEMP_DATA_DIR"));
-     QStringList tmpFiles = dir.entryList(QStringList() << "*.sarr" << "*.idx" << "*.ref", QDir::Files);
+    if (!hasError()) {
+        QDir dir(env->getVar("TEMP_DATA_DIR"));
+        QStringList tmpFiles = dir.entryList(QStringList() << "*.sarr" << "*.idx" << "*.ref", QDir::Files);
 
-     foreach (const QString& f, tmpFiles) {
-         QFile::remove(dir.absoluteFilePath(f));
-     }
+        foreach (const QString& f, tmpFiles) {
+            QFile::remove(dir.absoluteFilePath(f));
+        }
+    }
+
+     XmlTest::cleanup();
 }
 
 //----------------------------------------------------------
