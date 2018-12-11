@@ -25,6 +25,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 
 #include <U2Lang/WorkflowSettings.h>
@@ -64,6 +65,14 @@ void GTest_RunCMDLine::init(XMLTestFormat *tf, const QDomElement& el) {
             workingDir = env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + workingDir;
         }
     }
+
+    autoRemoveWorkingDir = false;
+    if (workingDir.isEmpty()) {
+        workingDir = GUrlUtils::rollFileName(env->getVar(TEMP_DATA_DIR_ENV_ID) + "/workingDir", "_");
+        autoRemoveWorkingDir = true;
+        taskLog.trace(QString("Working dir is not defined, the foolowing dir will be used as working: %1").arg(workingDir));
+    }
+
     QString protosPath = env->getVar(COMMON_DATA_DIR_ENV_ID) + "/" +  env->getVar(CONFIG_PROTOTYPE);
     QDir protoDir(protosPath), userScriptsDir(WorkflowSettings::getUserDirectory());
     QStringList filters;
@@ -183,8 +192,8 @@ void GTest_RunCMDLine::prepare() {
 static const QString ERROR_LABEL_TRY1 = "finished with error";
 static QString getErrorMsg(const QString & str) {
     int ind = str.indexOf(ERROR_LABEL_TRY1);
-    if(ind != -1) {
-        return str.mid(ind + ERROR_LABEL_TRY1.size() );
+    if (ind != -1) {
+        return str.mid(ind + ERROR_LABEL_TRY1.size());
     }
     return QString();
 }
@@ -217,23 +226,36 @@ Task::ReportResult GTest_RunCMDLine::report() {
     }
 
     QString err = getErrorMsg(output);
-    if( !err.isEmpty() ) {
+    if (!err.isEmpty()) {
         int eofIdx = err.indexOf("\n");
-        if (eofIdx>0) {
-            err = err.left(eofIdx-1);
+        if (eofIdx > 0) {
+            err = err.left(eofIdx - 1);
         }
-        setError( "Process finished with error" + err);
+        err.replace("\n", "");
+        setError("Process finished with error: " + err);
     }
+
     if (proc->exitStatus() == QProcess::CrashExit) {
         setError("Process is crashed!");
     }
+
     return ReportResult_Finished;
 }
 
 void GTest_RunCMDLine::cleanup() {
-    foreach(const QString & file, tmpFiles) {
-        QFile::remove(file);
+    if (!hasError()) {
+        foreach(const QString & file, tmpFiles) {
+            taskLog.trace(QString("Temporary file removed: %1").arg(file));
+            QFile::remove(file);
+        }
+
+        if (autoRemoveWorkingDir) {
+            taskLog.trace(QString("Temporary working dir autoremoved: %1").arg(workingDir));
+            QDir(workingDir).removeRecursively();
+        }
     }
+
+    XmlTest::cleanup();
 }
 
 /************************

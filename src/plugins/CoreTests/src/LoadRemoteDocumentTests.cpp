@@ -97,10 +97,6 @@ namespace U2 {
         return ReportResult_Finished;
     }
 
-    void GTest_LoadRemoteDocumentTask::cleanup(){
-
-    }
-
     QList<XMLTestFactory*> LoadRemoteDocumentTests::createTestFactories(){
         QList<XMLTestFactory*> res;
         res.append(GTest_LoadRemoteDocumentTask::createFactory());

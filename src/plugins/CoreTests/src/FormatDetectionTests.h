@@ -38,7 +38,6 @@ public:
 
     virtual void run();
     virtual ReportResult report();
-    virtual void cleanup() {};
 
 private:
     QString fileURL;
@@ -59,7 +58,6 @@ public:
 
     virtual void run();
     virtual ReportResult report();
-    virtual void cleanup() {};
 
 private:
     QString fileURL;
