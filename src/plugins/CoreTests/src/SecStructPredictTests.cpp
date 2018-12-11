@@ -157,6 +157,8 @@ void GTest_SecStructPredictTask::cleanup()
     if (contextAdded) {
         removeContext(resultsTableContextName);
     }
+
+    XmlTest::cleanup();
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 

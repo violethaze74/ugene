@@ -81,6 +81,8 @@ void GTest_LoadAsnTree::cleanup()
         removeContext(asnTreeContextName);
         delete rootElem;
     }
+
+    XmlTest::cleanup();
 }
 
 Task::ReportResult GTest_LoadAsnTree::report() {
@@ -125,6 +127,8 @@ void GTest_FindFirstNodeByName::cleanup()
     if (contextAdded) {
         removeContext(nodeContextName);
     }
+
+    XmlTest::cleanup();
 }
 
 Task::ReportResult GTest_FindFirstNodeByName::report() {

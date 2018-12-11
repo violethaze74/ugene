@@ -208,8 +208,11 @@ Task::ReportResult GTest_uMuscle::report() {
 void GTest_uMuscle::cleanup() {
     //if(ma_result!=NULL)
     //    delete ma_result;
-    if(ctxAdded)
+    if(ctxAdded) {
         removeContext(resultCtxName);
+    }
+
+    XmlTest::cleanup();
 }
 
 void GTest_CompareMAlignment::init(XMLTestFormat *tf, const QDomElement& el) {

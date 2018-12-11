@@ -35,7 +35,6 @@ namespace U2 {
         SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_LoadRemoteDocumentTask, "load-remote-document", TaskFlags_NR_FOSCOE);
 
         void prepare();
-        void cleanup();
         ReportResult report();
     private:
         LoadRemoteDocumentTask *t;

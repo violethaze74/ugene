@@ -41,7 +41,6 @@ public:
 
     void prepare();
     Task::ReportResult report();
-    void cleanup();
 
 private:    
     QString inputDocCtxName;

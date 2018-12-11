@@ -597,6 +597,8 @@ void GTest_SArrayBasedFindTask::init(XMLTestFormat *tf, const QDomElement& el) {
 
 void GTest_SArrayBasedFindTask::cleanup() {
     wholeSeq = QByteArray();
+
+    XmlTest::cleanup();
 }
 
 void GTest_SArrayBasedFindTask::prepare() {

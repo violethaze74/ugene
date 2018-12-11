@@ -266,6 +266,8 @@ void GTest_RemoteBLAST::cleanup() {
         delete ao;
         ao = NULL;
     }
+
+    XmlTest::cleanup();
 }
 
 }

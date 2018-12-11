@@ -131,9 +131,12 @@ void GTest_LoadDocument::cleanup() {
     if (contextAdded) {
         removeContext(docContextName);
     }
-    if(tempFile){
+    if(!hasError() && tempFile){
+        taskLog.trace(QString("Temporary file removed: %1").arg(url));
         QFile::remove(url);
     }
+
+    XmlTest::cleanup();
 }
 
 void GTest_LoadDocument::prepare() {
@@ -279,9 +282,11 @@ Task::ReportResult GTest_LoadBrokenDocument::report() {
 }
 
 void GTest_LoadBrokenDocument::cleanup() {
-    if (tempFile) {
+    if (!hasError() && tempFile) {
         QFile::remove(url);
     }
+
+    XmlTest::cleanup();
 }
 
 /*******************************
@@ -357,11 +362,15 @@ void GTest_ImportDocument::cleanup() {
         removeContext(docContextName);
     }
 
-    if (tempFile) {
-        QFile::remove(url);
+    if (!hasError()) {
+        if (tempFile) {
+            QFile::remove(url);
+        }
+
+        QFile::remove(destUrl);
     }
 
-    QFile::remove(destUrl);
+    XmlTest::cleanup();
 }
 
 void GTest_ImportDocument::prepare() {
@@ -462,10 +471,14 @@ Task::ReportResult GTest_ImportBrokenDocument::report() {
 }
 
 void GTest_ImportBrokenDocument::cleanup() {
-    if (tempFile) {
-        QFile::remove(url);
+    if (!hasError()) {
+        if (tempFile) {
+            QFile::remove(url);
+        }
+        QFile::remove(destUrl);
     }
-    QFile::remove(destUrl);
+
+    XmlTest::cleanup();
 }
 
 /*******************************
@@ -699,6 +712,8 @@ void GTest_FindGObjectByName::cleanup() {
     if (result!=NULL && !objContextName.isEmpty()) {
         removeContext(objContextName);
     }
+
+    XmlTest::cleanup();
 }
 
 

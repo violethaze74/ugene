@@ -296,9 +296,11 @@ Task::ReportResult GTest_UHMMER3Build::report() {
 }
 
 void GTest_UHMMER3Build::cleanup() {
-    if (delOutFile) {
+    if (!hasError() && delOutFile) {
         QFile::remove(outFile);
     }
+
+    XmlTest::cleanup();
 }
 
 GTest_UHMMER3Build::~GTest_UHMMER3Build() {

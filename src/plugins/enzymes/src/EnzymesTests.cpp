@@ -228,6 +228,8 @@ void GTest_FindEnzymes::cleanup() {
         }
         delete aObj;
     }
+
+    XmlTest::cleanup();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -457,6 +459,8 @@ void GTest_LigateFragments::cleanup()
     if (contextAdded) {
         removeContext(resultDocName);
     }
+
+    XmlTest::cleanup();
 }
 
 

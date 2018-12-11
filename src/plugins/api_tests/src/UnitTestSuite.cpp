@@ -153,6 +153,8 @@ void UnitTestSuite::cleanup() {
         taskLog.info("Test failed: " + QString::number(failed));
         setError("Test failed");
     }
+
+    XmlTest::cleanup();
 }
 
 } //namespace

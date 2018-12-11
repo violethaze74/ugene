@@ -23,6 +23,7 @@
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/Timer.h>
 
@@ -129,7 +130,13 @@ QList<Task*> TestRunnerTask::onSubTaskFinished(Task* subTask) {
                 }
 
                 if (newEnv->getVars().contains("TEMP_DATA_DIR")) {
-                    newEnv->setVar("TEMP_DATA_DIR", suiteDir + newEnv->getVar("TEMP_DATA_DIR"));
+                    const QString suiteName = testState->getTestRef()->getSuite()->getName();
+                    const QString testName = testState->getTestRef()->getShortName();
+                    const QString tempDir = suiteDir +
+                                            newEnv->getVar("TEMP_DATA_DIR") + "/" +
+                                            GUrlUtils::fixFileName(suiteName) + "/" +
+                                            GUrlUtils::fixFileName(testName);
+                    newEnv->setVar("TEMP_DATA_DIR", tempDir);
                 }
 
                 if (newEnv->getVars().contains("WORKFLOW_OUTPUT_DIR")) {
@@ -139,6 +146,8 @@ QList<Task*> TestRunnerTask::onSubTaskFinished(Task* subTask) {
                 QDir tmpDir(newEnv->getVar("TEMP_DATA_DIR"));
                 if (!tmpDir.exists()) {
                     tmpDir.mkpath(tmpDir.absolutePath());
+                } else {
+                    taskLog.info(QString("Warning: the test temp dir already exists: %1").arg(tmpDir.path()));
                 }
 
                 QString workflowSamplePath = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/workflow_samples/";
