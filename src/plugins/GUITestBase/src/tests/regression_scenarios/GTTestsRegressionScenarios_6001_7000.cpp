@@ -1104,6 +1104,20 @@ GUI_TEST_CLASS_DEFINITION(test_6226) {
     GTGlobals::sleep();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6229) {
+    
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
+    AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
+    parameters.samOutput = false;
+    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/reads.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+    
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
+    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6232_1) {
     //1. Open "STEP1_pFUS2_a2a_5.gb" sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5.gb");
