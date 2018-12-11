@@ -48,6 +48,7 @@ const QString CMDLineCoreOptions::LAUNCH_GUI_TEST_CRAZY_USER = "gui-test-crazy-u
 const QString CMDLineCoreOptions::USAGE         = "usage";
 const QString CMDLineCoreOptions::TMP_DIR       = "tmp-dir";
 const QString CMDLineCoreOptions::SESSION_DB    = "session-db";
+const QString CMDLineCoreOptions::USE_SAME_INI_FOR_TESTS = "use-same-ini-for-tests";
 
 
 void CMDLineCoreOptions::initHelp() {

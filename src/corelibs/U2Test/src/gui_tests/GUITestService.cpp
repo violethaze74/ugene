@@ -30,6 +30,7 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GObject.h>
 #include <U2Core/Log.h>
+#include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/TaskStarter.h>
 #include <U2Core/Timer.h>
@@ -189,14 +190,31 @@ Task* GUITestService::createTestSuiteLauncherTask() const {
 
     bool ok;
     int suiteNumber = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE).toInt(&ok);
+    bool use_same_ini = cmdLine->hasParameter(CMDLineCoreOptions::USE_SAME_INI_FOR_TESTS);
+    QString ini_template;
+
+    if (use_same_ini) {
+        QString settingsFile = AppContext::getSettings()->fileName();
+        QFileInfo ini_file(settingsFile);
+        // check if file exists and if yes: Is it really a file and no directory?
+        if (ini_file.exists() && ini_file.isFile()) {
+            ini_template = QString(settingsFile);
+        } else {
+            use_same_ini = false;
+        }
+    }
     if(!ok){
         QString pathToSuite = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE);
-        Task *task = new GUITestLauncher(pathToSuite);
+        Task *task = !use_same_ini ?
+                    new GUITestLauncher(pathToSuite) :
+                    new GUITestLauncher(pathToSuite, false, ini_template);
         Q_ASSERT(task);
         return task;
     }
 
-    Task *task = new GUITestLauncher(suiteNumber);
+    Task *task = !use_same_ini ?
+                new GUITestLauncher(suiteNumber) :
+                new GUITestLauncher(suiteNumber, false, ini_template);
     Q_ASSERT(task);
 
     return task;

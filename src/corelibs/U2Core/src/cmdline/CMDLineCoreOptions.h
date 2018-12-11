@@ -52,6 +52,7 @@ public:
     static const QString USAGE;
     static const QString TMP_DIR;
     static const QString SESSION_DB;
+    static const QString USE_SAME_INI_FOR_TESTS;
 
 public:
     // initialize help for core cmdline options

@@ -34,8 +34,8 @@ namespace U2 {
 class GUITestLauncher: public Task {
     Q_OBJECT
 public:
-    GUITestLauncher(int _suiteNumber, bool _noIgnored = false);
-    GUITestLauncher(QString _pathToSuite = "", bool _noIgnored = false);
+    GUITestLauncher(int _suiteNumber, bool _noIgnored = false, QString _iniFileTemplate = nullptr);
+    GUITestLauncher(QString _pathToSuite = "", bool _noIgnored = false, QString _iniFileTemplate = nullptr);
 
     virtual void run();
     virtual QString generateReport() const;
@@ -47,6 +47,7 @@ private:
     bool noIgnored;
     QString pathToSuite;
     QString testOutDir;
+    QString iniFileTemplate;
 
     static QStringList getTestProcessArguments(const QString &testName);
     QProcessEnvironment getProcessEnvironment(QString testName);
