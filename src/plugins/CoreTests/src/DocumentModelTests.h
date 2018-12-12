@@ -218,6 +218,7 @@ private:
     QStringList commentsStartWith;
     bool line_num_only;
     bool mixed_lines;
+    qint64 forceBufferSize;
 
     int first_n_lines;
 
