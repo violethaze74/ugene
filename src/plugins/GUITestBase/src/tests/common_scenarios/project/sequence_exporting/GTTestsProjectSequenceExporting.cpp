@@ -296,20 +296,21 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
     const QString firstAnnFileName = "1.gb";
     const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFaleName = "2.gb";
+    const QString secondAnnFileName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QModelIndex nc_001363 = GTUtilsProjectTreeView::findIndex(os,"NC_001363 sequence", GTUtilsProjectTreeView::findIndex(os, "1.gb"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, nc_001363));
     GTMouseDriver::doubleClick();
-    GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
-    GTGlobals::sleep(100);
+    GTGlobals::sleep(1000);
+    GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);   
 
     QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "C");
     CHECK_SET_ERR(item != NULL, "AnnotationsTreeView is NULL");
