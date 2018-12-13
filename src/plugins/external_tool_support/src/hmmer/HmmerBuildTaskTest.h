@@ -54,8 +54,7 @@ public:
     static void setBuildSettings(HmmerBuildSettings & settings, const QDomElement& el, TaskStateInfo & ti);
 
 public:
-    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_UHMMER3Build, "uhmmer3-build");
-    ~GTest_UHMMER3Build();
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_UHMMER3Build, "uhmmer3-build")
 
     virtual void prepare();
     ReportResult report();

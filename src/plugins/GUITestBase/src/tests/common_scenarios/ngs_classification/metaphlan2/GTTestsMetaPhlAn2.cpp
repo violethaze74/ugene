@@ -48,9 +48,9 @@ const QString ET_BOWTIE_2_ALIGNER = "Bowtie 2 aligner";
 const QString ET_BOWTIE_2_BUILD = "Bowtie 2 build indexer";
 const QString ET_METAPHLAN = "MetaPhlAn2";
 const QString UTIL_SCRIPT = "/utils/read_fastx.py";
-const QString PATH_METAPHLAN2_WITHOUT_SCRIPT = "/_common_data/regression/6253/metaphlan2.py";
-const QString PATH_PYTHON_WITHOUT_NUMPY = "/_common_data/regression/6253/python_without_numpy/bin";
-const QString PATH_PYTHON_WITHOUT_BIO = "/_common_data/regression/6253/python_without_bio/bin";
+const QString PATH_METAPHLAN2_WITHOUT_SCRIPT = "/_common_data/metagenomics/metaphlan2/external_tool/metaphlan2.py";
+const QString PATH_PYTHON_WITHOUT_NUMPY = "/opt/share/virogenesis-dev/test_external_tools/python_without_numpy/bin";
+const QString PATH_PYTHON_WITHOUT_BIO = "/opt/share/virogenesis-dev/test_external_tools/python_without_bio/bin";
 const QString NAME_PYTHON = "python2.7";
 
 void checkExternalToolValid(GUITestOpStatus &os, const QString& toolName, const bool shouldBeValid) {
@@ -96,11 +96,11 @@ void checkDependedTools(GUITestOpStatus &os, const QString& tool, const QStringL
 }
 
 QString getPythonWithoutNumpyPath() {
-    return UGUITest::testDir + QDir::toNativeSeparators(PATH_PYTHON_WITHOUT_NUMPY);
+    return QDir::toNativeSeparators(PATH_PYTHON_WITHOUT_NUMPY);
 }
 
 QString getPythonWithoutBioPath() {
-    return UGUITest::testDir + QDir::toNativeSeparators(PATH_PYTHON_WITHOUT_BIO);
+    return QDir::toNativeSeparators(PATH_PYTHON_WITHOUT_BIO);
 }
 
 QString getMetaphlan2WithoutScriptPath() {
@@ -162,7 +162,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             checkExternalToolValid(os, ET_PYTHON, false);
 
             //"Bio" python module is installed.
-            checkExternalToolValid(os, ET_BIO, true);
+            checkExternalToolValid(os, ET_BIO, false);
 
             //"numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, false);
@@ -331,8 +331,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             //"bowtie-align" executable is specified in UGENE.
             checkExternalToolValid(os, ET_BOWTIE_2_ALIGNER, true);
 
-            //"utils/read_fastq.py" is not present in the metaphlan tool folder.
-            checkUtilScript(os, false);
+            //"utils/read_fastq.py" is not present in the metaphlan tool folder (but there is no message aboute it)
+            checkUtilScript(os, true);
 
             //Expected state: "MetaPhlAn2" tool is present, but invalid.
             checkExternalToolValid(os, ET_METAPHLAN, false);

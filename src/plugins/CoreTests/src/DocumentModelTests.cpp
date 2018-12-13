@@ -415,7 +415,7 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat* tf, const QDomElement& el) 
     Q_UNUSED(tf);
 
     QString             urlAttr = el.attribute("url");
-    QString             outUrlAttr = el.attribute("outUrl");
+    QString             outUrlAttr = getTempDir(env) + "/" + el.attribute("outUrl");
     QString             dir = el.attribute("dir");
     DocumentFormatId    formatId = el.attribute("format");
 
@@ -730,6 +730,7 @@ static const QString COMMENTS_START_WITH = "comments_start_with";
 static const QString COMPARE_LINE_NUMBER_ONLY = "line_num_only";
 static const QString COMPARE_FIRST_N_LINES = "first_n_lines";
 static const QString COMPARE_MIXED_LINES = "mixed-lines";
+static const QString COMPARE_FORCE_BUFFER_SIZE = "buffer-size";
 
 void GTest_CompareFiles::init(XMLTestFormat *tf, const QDomElement& el) {
     Q_UNUSED(tf);
@@ -749,22 +750,28 @@ void GTest_CompareFiles::init(XMLTestFormat *tf, const QDomElement& el) {
         return;
     }
 
-    if (!el.attribute(COMPARE_FIRST_N_LINES).isEmpty()){
+    if (!el.attribute(COMPARE_FIRST_N_LINES).isEmpty()) {
         first_n_lines = el.attribute(COMPARE_FIRST_N_LINES).toInt();
-    }else{
+    } else {
         first_n_lines = -1;
     }
 
-    if (!el.attribute(COMPARE_LINE_NUMBER_ONLY).isEmpty()){
+    if (!el.attribute(COMPARE_LINE_NUMBER_ONLY).isEmpty()) {
         line_num_only = true;
-    }else{
+    } else {
         line_num_only = false;
     }
 
-    if(!el.attribute(COMPARE_MIXED_LINES).isEmpty()){
+    if (!el.attribute(COMPARE_MIXED_LINES).isEmpty()) {
         mixed_lines = true;
-    }else{
+    } else {
         mixed_lines = false;
+    }
+
+    if (!el.attribute(COMPARE_FORCE_BUFFER_SIZE).isEmpty()) {
+        forceBufferSize = el.attribute(COMPARE_FORCE_BUFFER_SIZE).toInt();
+    } else {
+        forceBufferSize = 0;
     }
 
     // Get the full documents paths
@@ -889,13 +896,15 @@ IOAdapter* GTest_CompareFiles::createIoAdapter(const QString& filePath) {
 QByteArray GTest_CompareFiles::getLine(IOAdapter* io) {
     QByteArray line;
 
-    QByteArray readBuff(READ_BUFF_SIZE + 1, 0);
+    const qint64 bufferSize = forceBufferSize > 0 ? forceBufferSize : READ_BUFF_SIZE;
+    QByteArray readBuff(bufferSize + 1, 0);
     char* buff = readBuff.data();
     bool commentString = false;
 
     do {
         bool lineOk = true;
-        qint64 len = io->readUntil(buff, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
+        const bool forceSize = forceBufferSize > 0;
+        qint64 len = io->readUntil(buff, bufferSize, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
         CHECK(len != 0, "");
         CHECK_EXT(lineOk, setError("Line is too long"), "");
 

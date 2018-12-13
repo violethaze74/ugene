@@ -56,6 +56,7 @@ private:
     QStringList tmpFiles;
     QString     workingDir;
     bool        autoRemoveWorkingDir;
+    bool        customIniSet;
 
     static const QString UGENECL_PATH;
 }; // GTest_RunCMDLine

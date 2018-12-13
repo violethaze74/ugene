@@ -27,6 +27,7 @@
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
+#include <U2Core/Settings.h>
 
 #include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -55,6 +56,7 @@ const QString GTest_RunCMDLine::UGENECL_PATH    = "/ugenecld";
 
 void GTest_RunCMDLine::init(XMLTestFormat *tf, const QDomElement& el) {
     Q_UNUSED(tf);
+    customIniSet = false;
     setUgeneclPath();
     setArgs(el);
     proc = new QProcess(this);
@@ -108,6 +110,10 @@ void GTest_RunCMDLine::setArgs(const QDomElement & el) {
         if(node.nodeName() == WORKING_DIR_ATTR){
             continue;
         }
+        if (node.nodeName() == CMDLineCoreOptions::INI_FILE) {
+            customIniSet = true;
+        }
+
         QString argument = "--" + node.nodeName() + "=" + getVal(node.nodeValue());
          if( argument.startsWith("--task") ) {
             args.prepend(argument);
@@ -117,6 +123,11 @@ void GTest_RunCMDLine::setArgs(const QDomElement & el) {
             commandLine.append(argument + " ");
         }
     }
+
+    if (!customIniSet) {
+        args.append("--" + CMDLineCoreOptions::INI_FILE + "=" + AppContext::getSettings()->fileName());
+    }
+
     args.append("--log-level-details");
     args.append("--lang=en");
     args.append("--log-no-task-progress");
@@ -231,8 +242,7 @@ Task::ReportResult GTest_RunCMDLine::report() {
         if (eofIdx > 0) {
             err = err.left(eofIdx - 1);
         }
-        err.replace("\n", "");
-        setError("Process finished with error: " + err);
+        setError("Process finished with error" + err);
     }
 
     if (proc->exitStatus() == QProcess::CrashExit) {

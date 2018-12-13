@@ -374,11 +374,6 @@ void GTest_Bwa::cleanup() {
     XmlTest::cleanup();
 }
 
-
-GTest_Bwa::~GTest_Bwa() {
-    cleanup();
-}
-
 QString GTest_Bwa::getTempDataDir()
 {
     QString dir(env->getVar("TEMP_DATA_DIR"));

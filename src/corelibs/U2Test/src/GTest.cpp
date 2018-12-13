@@ -67,13 +67,10 @@ void GTest::removeContext(const QString& name) {
     contextProvider->subtestsContext.remove(name);
 }
 
-void GTest::cleanup() {
-    if (!hasError()) {
-        QDir tempDir(env->getVar("TEMP_DATA_DIR"));
-        taskLog.trace(QString("Test successfully passed, removing test temporary dir: %1").arg(tempDir.path()));
-        tempDir.removeRecursively();
-    }
-    Task::cleanup();
+void GTest::removeTempDir() {
+    QDir tempDir(env->getVar("TEMP_DATA_DIR"));
+    taskLog.trace(QString("Removing test temporary dir: %1").arg(tempDir.path()));
+    tempDir.removeRecursively();
 }
 
 void GTest::failMissingValue( const QString& name) {
