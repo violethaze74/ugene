@@ -3865,6 +3865,7 @@ GUI_TEST_CLASS_DEFINITION(test_5781) {
     
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTGlobals::sleep();
 
 }
 
