@@ -149,6 +149,7 @@ public:
     static QString getCellValue(HI::GUITestOpStatus& os, QString parameter, QTableWidget* table);
     static void setCellValue(HI::GUITestOpStatus& os, QWidget* parent, QVariant value, valueType type, GTGlobals::UseMethod method);
     static QStringList getAllParameters(HI::GUITestOpStatus& os);
+    static QStringList getComboBoxParameterValues(HI::GUITestOpStatus& os, QString parameter);
 
     static QTableWidget* getInputPortsTable(HI::GUITestOpStatus &os, int index);
     static QTableWidget* getOutputPortsTable(HI::GUITestOpStatus &os, int index);

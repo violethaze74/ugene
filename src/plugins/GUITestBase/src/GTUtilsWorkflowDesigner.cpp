@@ -1124,6 +1124,42 @@ QStringList GTUtilsWorkflowDesigner::getAllParameters(HI::GUITestOpStatus &os){
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getComboBoxParameterValues"
+QStringList GTUtilsWorkflowDesigner::getComboBoxParameterValues(HI::GUITestOpStatus& os, QString parameter) {
+    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
+    GT_CHECK_RESULT(table, "tableView not found", QStringList());
+
+    //FIND CELL
+    QAbstractItemModel* model = table->model();
+    int iMax = model->rowCount();
+    int row = -1;
+    for (int i = 0; i < iMax; i++){
+        QString s = model->data(model->index(i, 0)).toString();
+        if (s.compare(parameter, Qt::CaseInsensitive) == 0) {
+            row = i;
+            break;
+        }
+    }
+    GT_CHECK_RESULT(row != -1, QString("parameter not found: %1").arg(parameter), QStringList());
+    table->scrollTo(model->index(row, 1));
+
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, row));
+    GTMouseDriver::click();
+    GTGlobals::sleep();
+
+    QComboBox* box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
+    GT_CHECK_RESULT(box, "QComboBox not found. Widget in this cell might be not QComboBox", QStringList());
+
+    QStringList result;
+    int valuesCount = box->count();
+    for (int i = 0; i < valuesCount; i++) {
+        result << box->itemText(i);
+    }
+
+    return result;
+}
+#undef GT_METHOD_NAME
+
 namespace {
     bool equalStrings(const QString &where, const QString &what, bool exactMatch) {
         if (exactMatch) {
