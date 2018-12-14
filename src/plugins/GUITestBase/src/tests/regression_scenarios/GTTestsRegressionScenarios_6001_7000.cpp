@@ -1094,7 +1094,7 @@ GUI_TEST_CLASS_DEFINITION(test_6225) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6226) {
-    
+
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
     parameters.samOutput = false;
@@ -1105,7 +1105,7 @@ GUI_TEST_CLASS_DEFINITION(test_6226) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6229) {
-    
+
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
     parameters.samOutput = false;
@@ -1113,7 +1113,7 @@ GUI_TEST_CLASS_DEFINITION(test_6229) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/reads.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
-    
+
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }

@@ -3150,26 +3150,26 @@ GUI_TEST_CLASS_DEFINITION(test_4463) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4483) {
-    
+
     // Open "samples/CLUSTALW/ty3.aln.gz".
     // Click "Export as image".
     // Choose SVG.
     // Export.
-    
+
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     for (int i=0; i<8; i++) {
         GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
     }
     GTUtilsDialog::waitForDialog(os,new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("SVG")));
     GTUtilsDialog::waitForDialog( os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    
+
     qint64 fileSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/test.svg");
     CHECK_SET_ERR(fileSize > 7000000 && fileSize < 80000000, "Current size: " + QString().setNum(fileSize));
-   
-    
+
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4486) {
@@ -5154,7 +5154,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_4) {
     settings.runBlast = true;
     settings.withInputFile = true;
     settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
-    settings.inputPath = sandBoxDir + "regression_test_4784_4.fa";    
+    settings.inputPath = sandBoxDir + "regression_test_4784_4.fa";
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST+ search...");
     GTGlobals::sleep(5000);
