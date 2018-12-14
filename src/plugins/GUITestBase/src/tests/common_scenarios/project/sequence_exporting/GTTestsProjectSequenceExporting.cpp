@@ -305,8 +305,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTUtilsDocument::checkDocument(os, "2.gb");
+
     QModelIndex nc_001363 = GTUtilsProjectTreeView::findIndex(os,"NC_001363 sequence", GTUtilsProjectTreeView::findIndex(os, "1.gb"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, nc_001363));
     GTMouseDriver::doubleClick();
     GTGlobals::sleep(1000);
