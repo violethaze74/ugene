@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QTableWidget>
 #include <QTreeWidget>
 
 #include <primitives/GTLineEdit.h>
@@ -31,8 +32,13 @@
 #include <primitives/GTWidget.h>
 
 #include <GTUtilsTaskTreeView.h>
+#include "GTUtilsWorkflowDesigner.h"
 
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+
+#include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
+#include <U2Core/AppSettings.h>
 
 #include "U2Test/UGUITest.h"
 
@@ -387,4 +393,352 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 }
 
 } // namespace GUITest_common_scenarios_mg_metaphlan2_external_tool
+
+namespace GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element {
+
+static const QString INPUT_DATA = "Input data";
+static const QString INPUT_FILE_FORMAT = "Input file format";
+static const QString DATABASE = "Database";
+static const QString NUMBER_OF_THREADS = "Number of threads";
+static const QString ANALYSIS_TYPE = "Analysis type";
+static const QString TAX_LEVEL = "Tax level";
+static const QString PRESENCE_THRESHOLD = "Presence threshold";
+static const QString NORMALIZE_BY_METAGENOME_SIZE = "Normalize by metagenome size";
+static const QString BOWTIE2_OUTPUT_FILE = "Bowtie2 output file";
+static const QString OUTPUT_FILE = "Output file";
+
+static const QStringList INPUT_DATA_VALUES = { "SE reads or contigs",
+                                               "PE reads" };
+
+static const QStringList INPUT_FILE_FORMAT_VALUES = { "FASTA",
+                                               "FASTQ" };
+
+static const QStringList ANALYSIS_TYPE_VALUES = { "Relative abundance",
+                                                  "Relative abundance with reads statistics",
+                                                  "Reads mapping",
+                                                  "Clade profiles",
+                                                  "Marker abundance table",
+                                                  "Marker presence table" };
+
+static const QStringList TAX_LEVEL_VALUES = { "All",
+                                              "Kingdoms",
+                                              "Phyla",
+                                              "Classes",
+                                              "Orders",
+                                              "Families",
+                                              "Genera",
+                                              "Species" };
+
+static const QStringList NORMALIZE_BY_METAGENOME_SIZE_VALUES = { "Skip",
+                                                                 "Normalize" };
+
+
+static const QString DEFAULT_OUTPUT_VALUE = "Auto";
+
+
+GUI_TEST_CLASS_DEFINITION(test_0001) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Classify Sequences with MetaPhlAn2" element to the scene
+    GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
+
+    //3. Click on the element
+    GTUtilsWorkflowDesigner::click(os, "Classify Sequences with MetaPhlAn2");
+
+    //Expected default parameters:
+    //Input data, Input data format, Database, Number of threads,
+    //Analysis type, Tax level, Bowtie2 output file, Output file
+    QStringList currentParameters = GTUtilsWorkflowDesigner::getAllParameters(os);
+    CHECK_SET_ERR(currentParameters.size() == 8,
+                  QString("Unexpected number of default parameters, expected: 8, current: %1")
+                          .arg(currentParameters.size()));
+    QStringList defaultParameters = { INPUT_DATA, INPUT_FILE_FORMAT, DATABASE, NUMBER_OF_THREADS,
+                                      ANALYSIS_TYPE, TAX_LEVEL, BOWTIE2_OUTPUT_FILE, OUTPUT_FILE };
+    foreach(const QString& par, defaultParameters) {
+        CHECK_SET_ERR(currentParameters.contains(par), QString("The default parameter \"%1\" is missed").arg(par));
+    }
+
+    {//4. Check "Input data"
+        //Expected: current "Input data" value is "SE reads or contigs", input table has one line
+        QString inputDataValue = GTUtilsWorkflowDesigner::getParameter(os, INPUT_DATA);
+        CHECK_SET_ERR(inputDataValue == INPUT_DATA_VALUES.first(),
+                      QString("Unexpected \"Input data\" value, expected: SE reads or contigs, current: %1")
+                              .arg(inputDataValue));
+
+        QTableWidget* inputTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+        int row = inputTable->rowCount();
+        CHECK_SET_ERR(row = 1,
+                      QString("Unexpected \"Input data\" row count, expected: 1, current: %1")
+                              .arg(row));
+
+        //5. Set "Input data" value on "PE reads"
+        GTUtilsWorkflowDesigner::setParameter(os,
+                                              INPUT_DATA,
+                                              INPUT_DATA_VALUES.last(),
+                                              GTUtilsWorkflowDesigner::comboValue);
+
+        //Expected: input table has two lines
+        inputTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+        row = inputTable->rowCount();
+        CHECK_SET_ERR(row = 2,
+                      QString("Unexpected \"Input data\" row count, expected: 2, current: %1")
+                              .arg(row));
+    }
+
+    {//6. Check "Input file format"
+        //Expected: current "Input file format" value is "FASTA"
+        QString inputFileFormat = GTUtilsWorkflowDesigner::getParameter(os, INPUT_FILE_FORMAT);
+        CHECK_SET_ERR(inputFileFormat == INPUT_FILE_FORMAT_VALUES.first(),
+                      QString("Unexpected \"Input file format\" value, expected: FASTA, current: %1")
+                              .arg(inputFileFormat));
+    }
+
+    {//7. Check "Database"
+        //Expected: database path ends with 'data/ngs_classification/metaphlan2/mpa_v20_m200'
+        QString databasePath = QDir::toNativeSeparators(GTUtilsWorkflowDesigner::getParameter(os, DATABASE));
+        QString expectedEnd = QDir::toNativeSeparators("data/ngs_classification/metaphlan2/mpa_v20_m200");
+        CHECK_SET_ERR(databasePath.endsWith(expectedEnd),
+                      QString("Unexpected database path end: %1")
+                              .arg(databasePath.right(expectedEnd.size())));
+    }
+
+    {//8. Check "Number of Threads"
+        //Expected: expected optimal for the current OS threads num
+        int threads = GTUtilsWorkflowDesigner::getParameter(os, NUMBER_OF_THREADS).toInt();
+        int expectedThreads = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
+        CHECK_SET_ERR(threads == expectedThreads,
+                      QString("Unexpected threads num, expected: %1, current: %2")
+                              .arg(expectedThreads)
+                              .arg(threads));
+    }
+
+    {//9. Check "Analysis type"
+        //Expected: Analysis type default value is "Relative abundance"
+        QString analysisTypeDefault = GTUtilsWorkflowDesigner::getParameter(os, ANALYSIS_TYPE);
+        CHECK_SET_ERR(analysisTypeDefault == ANALYSIS_TYPE_VALUES.first(),
+                      QString("Unexpected Analysis type default value, expected: %1, current: %2")
+                              .arg(ANALYSIS_TYPE_VALUES.first())
+                              .arg(analysisTypeDefault));
+    }
+
+    {//10. Check "Tax level"
+        //Expected: Tax level default value is "All"
+        QString taxLevelDefault = GTUtilsWorkflowDesigner::getParameter(os, TAX_LEVEL);
+        CHECK_SET_ERR(taxLevelDefault == TAX_LEVEL_VALUES.first(),
+                      QString("Unexpected Tax level default value, expected: %1, current: %2")
+                              .arg(TAX_LEVEL_VALUES.first())
+                              .arg(taxLevelDefault));
+    }
+
+    {//11. Check "Bowtie2 output file"
+        //Expected: Bowtie2 output file value is "Auto"
+        QString bowtie2OutputFileDefault = GTUtilsWorkflowDesigner::getParameter(os, BOWTIE2_OUTPUT_FILE);
+        CHECK_SET_ERR(bowtie2OutputFileDefault == DEFAULT_OUTPUT_VALUE,
+                      QString("Unexpected Bowtie2 output file default value, expected: Auto, current: %1")
+                              .arg(bowtie2OutputFileDefault));
+    }
+
+    {//12. Check "Output file"
+        //Expected: Output file value is "Auto"
+        QString outputFileDefault = GTUtilsWorkflowDesigner::getParameter(os, OUTPUT_FILE);
+        CHECK_SET_ERR(outputFileDefault == DEFAULT_OUTPUT_VALUE,
+                      QString("Unexpected Bowtie2 output file default value, expected: Auto, current: %1")
+                              .arg(outputFileDefault));
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0002) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Classify Sequences with MetaPhlAn2" element to the scene
+    GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
+
+    //3. Click on the element
+    GTUtilsWorkflowDesigner::click(os, "Classify Sequences with MetaPhlAn2");
+
+    {
+        //4. Check if "Analysis type" parameter has 6 values:
+        //Relative abundance, Relative abundance with reads statistics, Reads mapping
+        //Clade profiles, Marker abundance table, Marker presence table
+        QStringList analysisTypeValues = GTUtilsWorkflowDesigner::getComboBoxParameterValues(os, ANALYSIS_TYPE);
+        CHECK_SET_ERR(analysisTypeValues.size() == ANALYSIS_TYPE_VALUES.size(),
+            QString("Unexpected \"Analysis type\" values size, expected: %1, current: %2")
+            .arg(ANALYSIS_TYPE_VALUES.size())
+            .arg(analysisTypeValues.size()));
+
+        foreach(const QString& value, ANALYSIS_TYPE_VALUES) {
+            CHECK_SET_ERR(analysisTypeValues.contains(value),
+                QString("Analysis type doesn't contain %1 value, but should be")
+                .arg(value));
+        }
+    }
+
+    {
+        //5. Check if "Tax level" parameter has 8 values:
+        //All, Kingdoms, Phyla, Classes, Orders, Families, Genera, Species
+        QStringList taxLevelValues = GTUtilsWorkflowDesigner::getComboBoxParameterValues(os, TAX_LEVEL);
+        CHECK_SET_ERR(taxLevelValues.size() == TAX_LEVEL_VALUES.size(),
+            QString("Unexpected \"Tax level\" values size, expected: %1, current: %2")
+            .arg(TAX_LEVEL_VALUES.size())
+            .arg(taxLevelValues.size()));
+
+        foreach(const QString& value, TAX_LEVEL_VALUES) {
+            CHECK_SET_ERR(taxLevelValues.contains(value),
+                QString("Tax level doesn't contain %1 value, but should be")
+                .arg(value));
+        }
+    }
+
+    //6. Set "Analysis type" value on "Marker abundance table"
+    GTUtilsWorkflowDesigner::setParameter(os,
+                                          ANALYSIS_TYPE,
+                                          ANALYSIS_TYPE_VALUES[4],
+                                          GTUtilsWorkflowDesigner::comboValue);
+
+    {
+        //7. Check if "Normalize by metagenome size" parameter has 2 values:
+        //Skip, Normalize
+        QStringList normalizeValues = GTUtilsWorkflowDesigner::getComboBoxParameterValues(os, NORMALIZE_BY_METAGENOME_SIZE);
+        CHECK_SET_ERR(normalizeValues.size() == NORMALIZE_BY_METAGENOME_SIZE_VALUES.size(),
+            QString("Unexpected \"Normalize by metagenome size\" values size, expected: %1, current: %2")
+                    .arg(NORMALIZE_BY_METAGENOME_SIZE_VALUES.size())
+                    .arg(normalizeValues.size()));
+
+        foreach(const QString& value, NORMALIZE_BY_METAGENOME_SIZE_VALUES) {
+            CHECK_SET_ERR(normalizeValues.contains(value),
+                QString("Normalize by metagenome size doesn't contain %1 value, but should be")
+                .arg(value));
+        }
+    }
+
+    {
+        //8. Check if "Input data" parameter has 2 values:
+        //SE reads or contigs, PE reads
+        QStringList inputDataValues = GTUtilsWorkflowDesigner::getComboBoxParameterValues(os, INPUT_DATA);
+        CHECK_SET_ERR(inputDataValues.size() == INPUT_DATA_VALUES.size(),
+            QString("Unexpected \"Input data\" values size, expected: %1, current: %2")
+                    .arg(INPUT_DATA_VALUES.size())
+                    .arg(inputDataValues.size()));
+
+        foreach(const QString& value, INPUT_DATA_VALUES) {
+            CHECK_SET_ERR(inputDataValues.contains(value),
+                QString("Input data doesn't contain %1 value, but should be")
+                        .arg(value));
+        }
+    }
+
+    {
+        //9. Check if "Input file format" parameter has 2 values:
+        //FASTA, FASTQ
+        QStringList inputFileFormatValues = GTUtilsWorkflowDesigner::getComboBoxParameterValues(os, INPUT_FILE_FORMAT);
+        CHECK_SET_ERR(inputFileFormatValues.size() == INPUT_FILE_FORMAT_VALUES.size(),
+            QString("Unexpected \"Input file format\" values size, expected: %1, current: %2")
+                    .arg(INPUT_FILE_FORMAT_VALUES.size())
+                    .arg(inputFileFormatValues.size()));
+
+        foreach(const QString& value, INPUT_FILE_FORMAT_VALUES) {
+            CHECK_SET_ERR(inputFileFormatValues.contains(value),
+                          QString("Input file format doesn't contain %1 value, but should be")
+                                  .arg(value));
+        }
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0003) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Classify Sequences with MetaPhlAn2" element to the scene
+    GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
+
+    //3. Click on the element
+    GTUtilsWorkflowDesigner::click(os, "Classify Sequences with MetaPhlAn2");
+
+    //4. Clear Database value
+    GTUtilsWorkflowDesigner::setParameter(os, DATABASE, QString(), GTUtilsWorkflowDesigner::lineEditWithFileSelector);
+
+    //5. Click to another parameter to change focus
+    GTUtilsWorkflowDesigner::setParameter(os, INPUT_DATA, INPUT_DATA_VALUES.first(), GTUtilsWorkflowDesigner::comboValue);
+
+    //Expected:: Database has value "Required"
+    QString databaseValue = GTUtilsWorkflowDesigner::getParameter(os, DATABASE);
+    CHECK_SET_ERR(databaseValue == "Required",
+                  QString("Unexpected Database value, expected: \"Required\", current: \"%1\"")
+                          .arg(databaseValue));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0004) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Classify Sequences with MetaPhlAn2" element to the scene
+    GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
+
+    //3. Click on the element
+    GTUtilsWorkflowDesigner::click(os, "Classify Sequences with MetaPhlAn2");
+
+    QStringList allParameters = GTUtilsWorkflowDesigner::getAllParameters(os);
+
+    //Expected: Tax value parameter is represented bu default
+    CHECK_SET_ERR(allParameters.contains(TAX_LEVEL), "Tax level parameter is'nt represented by default");
+
+    //4. Set "Analysis type" value to "Relative abundance with reads statistics"
+    GTUtilsWorkflowDesigner::setParameter(os, ANALYSIS_TYPE, ANALYSIS_TYPE_VALUES[1], GTUtilsWorkflowDesigner::comboValue);
+
+    //Change focus to avoid problems
+    GTUtilsWorkflowDesigner::setParameter(os, INPUT_DATA, INPUT_DATA_VALUES.first(), GTUtilsWorkflowDesigner::comboValue);
+
+    //Expected: Tax value parameter is represented
+    allParameters = GTUtilsWorkflowDesigner::getAllParameters(os);
+    CHECK_SET_ERR(allParameters.contains(TAX_LEVEL), "Tax level parameter isn't represented");
+
+    //5. Set "Analysis type" value to "Reads mapping"
+    GTUtilsWorkflowDesigner::setParameter(os, ANALYSIS_TYPE, ANALYSIS_TYPE_VALUES[2], GTUtilsWorkflowDesigner::comboValue);
+
+    //Change focus to avoid problems
+    GTUtilsWorkflowDesigner::setParameter(os, INPUT_DATA, INPUT_DATA_VALUES.first(), GTUtilsWorkflowDesigner::comboValue);
+
+    //Expected: 7 parameters are represented
+    allParameters = GTUtilsWorkflowDesigner::getAllParameters(os);
+    CHECK_SET_ERR(allParameters.size() == 7,
+                  QString("Unexpected parameters number, expected: 7, current: %1")
+                          .arg(allParameters.size()));
+
+    //6. Set "Analysis type" value to "Reads mapping"
+    GTUtilsWorkflowDesigner::setParameter(os, ANALYSIS_TYPE, ANALYSIS_TYPE_VALUES[3], GTUtilsWorkflowDesigner::comboValue);
+
+    //Change focus to avoid problems
+    GTUtilsWorkflowDesigner::setParameter(os, INPUT_DATA, INPUT_DATA_VALUES.first(), GTUtilsWorkflowDesigner::comboValue);
+
+    //Expected: 7 parameters are represented
+    allParameters = GTUtilsWorkflowDesigner::getAllParameters(os);
+    CHECK_SET_ERR(allParameters.size() == 7,
+                  QString("Unexpected parameters number, expected: 7, current: %1")
+                          .arg(allParameters.size()));
+
+    //7. Set "Analysis type" value to "Marker abundance table"
+    GTUtilsWorkflowDesigner::setParameter(os, ANALYSIS_TYPE, ANALYSIS_TYPE_VALUES[4], GTUtilsWorkflowDesigner::comboValue);
+
+    //Change focus to avoid problems
+    GTUtilsWorkflowDesigner::setParameter(os, INPUT_DATA, INPUT_DATA_VALUES.first(), GTUtilsWorkflowDesigner::comboValue);
+
+    //Expected: Normalize by metagenome size parameter is represented
+    allParameters = GTUtilsWorkflowDesigner::getAllParameters(os);
+    CHECK_SET_ERR(allParameters.contains(NORMALIZE_BY_METAGENOME_SIZE), "Normalize by metagenome size parameter isn't represented");
+
+    //8. Set "Analysis type" value to "Marker presence table"
+    GTUtilsWorkflowDesigner::setParameter(os, ANALYSIS_TYPE, ANALYSIS_TYPE_VALUES[5], GTUtilsWorkflowDesigner::comboValue);
+
+    //Change focus to avoid problems
+    GTUtilsWorkflowDesigner::setParameter(os, INPUT_DATA, INPUT_DATA_VALUES.first(), GTUtilsWorkflowDesigner::comboValue);
+
+    //Expected: Presence threshold parameter is represented
+    allParameters = GTUtilsWorkflowDesigner::getAllParameters(os);
+    CHECK_SET_ERR(allParameters.contains(PRESENCE_THRESHOLD), "Presence threshold parameter isn't represented");
+}
+
+}
+
 } // namespace U2
