@@ -101,8 +101,8 @@ QList<Task *> HmmerSearchTask::onSubTaskFinished(Task *subTask) {
 QString HmmerSearchTask::generateReport() const {
     QString res;
     res += "<table>";
-    res += "<tr><td><b>" + tr("HMM profile used: ") + "</b></td><td>" + QFileInfo(settings.hmmProfileUrl).absoluteFilePath() 
-           + ( hmm2Mode 
+    res += "<tr><td><b>" + tr("HMM profile used: ") + "</b></td><td>" + QFileInfo(settings.hmmProfileUrl).absoluteFilePath()
+           + ( hmm2Mode
             ? " <br>Warning: it is not recommended to use HMMER2 models with HMMER3. Details: https://cryptogenomicon.org/2009/03/25/using-hmmer2-models-with-hmmer3-dont-do-that/"
             : "")
             + "</td></tr>";
@@ -112,7 +112,7 @@ QString HmmerSearchTask::generateReport() const {
         res += "</table>";
         return res;
     }
-    
+
     if (NULL != settings.annotationTable && NULL != settings.annotationTable->getDocument()) {
         res += "<tr><td><b>" + tr("Result annotation table: ") + "</b></td><td>" + settings.annotationTable->getDocument()->getName() + "</td></tr>";
     }

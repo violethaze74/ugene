@@ -1004,11 +1004,9 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/scenarios/_regression/6204/6204.uwl");
 
-    //2. add 3 big alignments to "Read Alignment 1" worker ""_common_data/clustal/10000_sequences.aln", ""_common_data/clustal/10000_1_sequences.aln", ""_common_data/clustal/10000_2_sequences.aln"
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment 1", testDir + "_common_data/clustal/10000_sequences.aln");
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment 1", testDir + "_common_data/clustal/10000_1_sequences.aln");
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment 1", testDir + "_common_data/clustal/10000_2_sequences.aln");
-
+    //2. add 3 big alignments to "Read Alignment 1" worker ""_common_data/clustal/100_sequences.aln", ""_common_data/clustal/non_unique_row_names.aln"
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment 1", testDir + "_common_data/clustal/100_sequences.aln");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment 1", testDir + "_common_data/clustal/non_unique_row_names.aln");   
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment", testDir + "_common_data/clustal/COI na.aln");
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
@@ -1094,7 +1092,7 @@ GUI_TEST_CLASS_DEFINITION(test_6225) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6226) {
-    
+
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
     parameters.samOutput = false;
@@ -1105,7 +1103,7 @@ GUI_TEST_CLASS_DEFINITION(test_6226) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6229) {
-    
+
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
     parameters.samOutput = false;
@@ -1113,7 +1111,7 @@ GUI_TEST_CLASS_DEFINITION(test_6229) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/reads.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
-    
+
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }

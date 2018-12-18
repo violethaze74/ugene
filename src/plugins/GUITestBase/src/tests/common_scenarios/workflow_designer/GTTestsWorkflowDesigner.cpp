@@ -489,10 +489,10 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTUtilsWorkflowDesigner::addSample(os, "Intersect annotations");
     GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
- 
+
     GTUtilsWorkflowDesigner::click(os, "Read Annotations A");
     GTGlobals::sleep();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/introns.bed"); 
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/introns.bed");
 
     GTUtilsWorkflowDesigner::click(os, "Read Annotations B");
     GTGlobals::sleep();
@@ -503,8 +503,8 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTUtilsWorkflowDesigner::setParameter(os, "Document format", "BED", GTUtilsWorkflowDesigner::comboValue);
     QString s = QFileInfo(testDir + "_common_data/scenarios/sandbox").absoluteFilePath();
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QVariant(s + "/wd_test_0060"), GTUtilsWorkflowDesigner::textValue);
- 
-    GTUtilsWorkflowDesigner::runWorkflow(os);  
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::equals(os, QDir(sandBoxDir).absolutePath() + "/wd_test_0060", QDir(testDir).absolutePath() + "/_common_data/bedtools/out17.bed"), "Output is incorrect");
