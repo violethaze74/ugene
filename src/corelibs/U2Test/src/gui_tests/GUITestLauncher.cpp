@@ -226,11 +226,11 @@ QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
     env.insert(ENV_USE_NATIVE_DIALOGS, "0");
     env.insert(U2_PRINT_TO_FILE, testOutDir + "/logs/" + testOutFile(testName));
 
-    QString ini_file_name = testOutDir + "/inis/" + testName.replace(':', '_') + "_UGENE.ini";
-    if (iniFileTemplate != nullptr) {
-        QFile::copy(iniFileTemplate, ini_file_name);
+    QString iniFileName = testOutDir + "/inis/" + testName.replace(':', '_') + "_UGENE.ini";
+    if (!iniFileTemplate.isEmpty() && QFile::exists(iniFileTemplate)) {
+        QFile::copy(iniFileTemplate, iniFileName);
     }
-    env.insert(U2_USER_INI, ini_file_name);
+    env.insert(U2_USER_INI, iniFileName);
 
     return env;
 }

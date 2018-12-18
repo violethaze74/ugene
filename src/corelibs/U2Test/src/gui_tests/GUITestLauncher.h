@@ -34,8 +34,8 @@ namespace U2 {
 class GUITestLauncher: public Task {
     Q_OBJECT
 public:
-    GUITestLauncher(int _suiteNumber, bool _noIgnored = false, QString _iniFileTemplate = nullptr);
-    GUITestLauncher(QString _pathToSuite = "", bool _noIgnored = false, QString _iniFileTemplate = nullptr);
+    GUITestLauncher(int _suiteNumber, bool _noIgnored = false, QString _iniFileTemplate = "");
+    GUITestLauncher(QString _pathToSuite = "", bool _noIgnored = false, QString _iniFileTemplate = "");
 
     virtual void run();
     virtual QString generateReport() const;

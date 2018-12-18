@@ -190,31 +190,31 @@ Task* GUITestService::createTestSuiteLauncherTask() const {
 
     bool ok;
     int suiteNumber = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE).toInt(&ok);
-    bool use_same_ini = cmdLine->hasParameter(CMDLineCoreOptions::USE_SAME_INI_FOR_TESTS);
-    QString ini_template;
+    bool useSameIni = cmdLine->hasParameter(CMDLineCoreOptions::USE_SAME_INI_FOR_TESTS);
+    QString iniTemplate;
 
-    if (use_same_ini) {
+    if (useSameIni) {
         QString settingsFile = AppContext::getSettings()->fileName();
-        QFileInfo ini_file(settingsFile);
+        QFileInfo iniFile(settingsFile);
         // check if file exists and if yes: Is it really a file and no directory?
-        if (ini_file.exists() && ini_file.isFile()) {
-            ini_template = QString(settingsFile);
+        if (iniFile.exists() && iniFile.isFile()) {
+            iniTemplate = settingsFile;
         } else {
-            use_same_ini = false;
+            useSameIni = false;
         }
     }
     if(!ok){
         QString pathToSuite = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE);
-        Task *task = !use_same_ini ?
-                    new GUITestLauncher(pathToSuite) :
-                    new GUITestLauncher(pathToSuite, false, ini_template);
+        Task *task = !useSameIni ?
+                     new GUITestLauncher(pathToSuite) :
+                     new GUITestLauncher(pathToSuite, false, iniTemplate);
         Q_ASSERT(task);
         return task;
     }
 
-    Task *task = !use_same_ini ?
-                new GUITestLauncher(suiteNumber) :
-                new GUITestLauncher(suiteNumber, false, ini_template);
+    Task *task = !useSameIni ?
+                 new GUITestLauncher(suiteNumber) :
+                 new GUITestLauncher(suiteNumber, false, iniTemplate);
     Q_ASSERT(task);
 
     return task;
