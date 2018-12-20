@@ -33,9 +33,13 @@ QString NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(const QString &
                                                              const QStringList &prefixes,
                                                              const QString &extension,
                                                              bool truncate) {
-    QString result = GUrlUtils::getPairedFastqFilesBaseName(sourceFileUrl, truncate);
+    QString pairedName = GUrlUtils::getPairedFastqFilesBaseName(sourceFileUrl, truncate);
+    QString result = pairedName;
     foreach(const QString& prefix, prefixes) {
         result += QString("_%1").arg(prefix);
+    }
+    if (pairedName.isEmpty()) {
+        result = result.right(result.size() - 1);
     }
     result += QString(".%1").arg(extension);
     return result;

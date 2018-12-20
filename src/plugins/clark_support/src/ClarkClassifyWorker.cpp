@@ -510,7 +510,16 @@ Task * ClarkClassifyWorker::tick() {
         QString reportUrl = getValue<QString>(ClarkClassifyWorkerFactory::OUTPUT_URL);
         if (reportUrl.isEmpty()) {
             const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
-            reportUrl = tmpDir + "/" + NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(metadata.getFileUrl(), QStringList() << "CLARK" << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX, "csv", paired);
+            QString fileUrl = metadata.getFileUrl();
+            reportUrl = tmpDir +
+                        "/" +
+                        (fileUrl.isEmpty() ? QString("CLARK_%1.txt")
+                                                     .arg(NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX)
+                                           : NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(fileUrl,
+                                                                                                      QStringList() << "CLARK"
+                                                                                                                    << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX,
+                                                                                                      "csv",
+                                                                                                      paired));
         }
         FileAndDirectoryUtils::createWorkingDir(reportUrl, FileAndDirectoryUtils::FILE_DIRECTORY, "", "");
         reportUrl = GUrlUtils::ensureFileExt(reportUrl, QStringList("csv")).getURLString();
