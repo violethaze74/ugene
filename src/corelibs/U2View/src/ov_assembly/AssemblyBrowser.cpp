@@ -33,6 +33,7 @@
 #include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FormatUtils.h>
@@ -226,7 +227,11 @@ QString AssemblyBrowser::tryAddObject(GObject * obj) {
 
         bool setRef = !isAssemblyObjectLocked(true) && !model->isLoadingReference();
         setRef &= model->checkPermissions(QFile::WriteUser, setRef);
-        if(setRef) {
+        if (setRef) {
+            const DNAAlphabet* alphabet = seqObj->getAlphabet();
+            if (!alphabet->isNucleic()) {
+                return tr("Only nucleic sequence can be set as a reference!");
+            }
             if(model->isDbLocked(100)){
                 return tr("Internal error: database is locked");
             }
