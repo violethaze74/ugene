@@ -2499,7 +2499,7 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(100);
+    GTGlobals::sleep(1500);
 //    Excepted state: new *.aln documents (with specified names) should be created and contain founded subsequences for
 //    one pair in each [m]object. Few documents must be loaded to current project, others will stay unloaded
 //    7. Check that numeration of founded sequences starting from 1
