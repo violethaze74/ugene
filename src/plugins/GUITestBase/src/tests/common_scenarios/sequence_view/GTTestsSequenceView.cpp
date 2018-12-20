@@ -2128,9 +2128,9 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
 
     QScrollBar* scrollBar = GTScrollBar::getScrollBar(os, "multiline_scrollbar");
     CHECK_SET_ERR(scrollBar != NULL, "Cannot find multiline_scrollbar");
-
-    GTScrollBar::moveSliderWithMouseWheelDown(os, scrollBar, scrollBar->maximum());
     GTGlobals::sleep(500);
+    GTScrollBar::moveSliderWithMouseWheelDown(os, scrollBar, scrollBar->maximum());
+    GTGlobals::sleep();
 
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     CHECK_SET_ERR(visibleRange.contains(GTUtilsSequenceView::getSeqWidgetByNumber(os)->getSequenceLength() - 1), "The end position of the sequence is not visible. Failed to scroll to the end_1" );
