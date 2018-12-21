@@ -218,6 +218,8 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
         config.reportFile = reportFile.fileName();
         config.emptyOutputPossible = true;
 
+        config.logLevel = LogLevel_TRACE;
+
         cmdlineTask = new CmdlineInOutTaskRunner(config);
         result.append(cmdlineTask);
     } else if (subTask == cmdlineTask && settings.addResultToProject) {

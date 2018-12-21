@@ -62,7 +62,7 @@ SaveDocumentTask::SaveDocumentTask(Document* _doc, IOAdapterFactory* _io, const 
         url = doc->getURLString();
     }
     if (isNoWritePermission(url)) {
-        stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.fileName()));
+        stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.getURLString()));
     }
 
     lock = NULL;
@@ -75,7 +75,7 @@ doc(_doc), iof(doc->getIOAdapterFactory()), url(doc->getURL()), flags(f), exclud
     assert(doc!=NULL);
 
     if (isNoWritePermission(url)) {
-        stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.fileName()));
+        stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.getURLString()));
     }
 }
 
@@ -85,7 +85,7 @@ void SaveDocumentTask::addFlag(SaveDocFlag f) {
 
 void SaveDocumentTask::prepare() {
     if (doc.isNull()) {
-        setError("Document was removed");
+        setError(tr("Document was removed"));
         return;
     }
     lock = new StateLock(getTaskName(), StateLockFlag_LiveLock);
@@ -113,10 +113,14 @@ void SaveDocumentTask::run() {
 
     if (originalFileExists && df->checkFlags(DocumentFormatFlag_DirectWriteOperations)) {
         // Changes are already applied, the file shouldn't be saved
+        coreLog.trace(QString("Document with 'direct write operations' flag saving: "
+                              "file '%1' exists, all changes are already applied, finishing the task").arg(url.getURLString()));
         return;
     }
 
     if (url.isLocalFile() && originalFileExists) {
+        coreLog.trace(QString("Local file '%1' already exists, going to overwrite it").arg(url.getURLString()));
+
         // make tmp file
         QString tmpFileName = GUrlUtils::prepareTmpFileLocation(url.dirPath(), url.fileName(), "tmp", stateInfo);
 
@@ -150,6 +154,7 @@ void SaveDocumentTask::run() {
         bool renamed = QFile::rename(tmpFileName, originalFilePath);
         CHECK_EXT(renamed == true, stateInfo.setError(tr("Can't rename saved tmp file to original file")), );
     } else {
+        coreLog.trace(QString("File '%1' doesn't exist, going to write it directly").arg(url.getURLString()));
         QScopedPointer<IOAdapter> io(IOAdapterUtils::open(url, stateInfo, flags.testFlag(SaveDoc_Append) ? IOAdapterMode_Append : IOAdapterMode_Write, doc->getIOAdapterFactory()));
         CHECK_OP(stateInfo, );
         df->storeDocument(doc, io.data(), stateInfo);
