@@ -130,15 +130,24 @@ void ExternalToolRunTask::run(){
     }
 
     {
-        int exitCode = externalToolProcess->exitCode();
-        if(exitCode != EXIT_SUCCESS && !hasError()) {
+        QProcess::ExitStatus status = externalToolProcess->exitStatus();
+        if (status == QProcess::CrashExit && !hasError()) {
             QString error;
             if (parseOutputFile) {
                 parseStandartOutputFile(outputFile);
                 error = logParser->getLastError();
             }
-            setError(error.isEmpty() ? tr("%1 tool exited with code %2").arg(toolName).arg(exitCode) : error);
-        } else {
+            if (error.isEmpty()) {
+                QString intendedError = tr("%1 tool exited with the following error: %2 (Code: %3)")
+                                           .arg(toolName)
+                                           .arg(externalToolProcess->errorString())
+                                           .arg(externalToolProcess->exitCode());
+                parseError(intendedError);
+                error = logParser->getLastError();
+            }
+
+            setError(error);
+        } else if (status == QProcess::NormalExit) {
             algoLog.details(tr("Tool %1 finished successfully").arg(toolName));
         }
     }
@@ -159,7 +168,7 @@ void ExternalToolRunTask::addOutputListener(ExternalToolListener* outputListener
     listener = outputListener;
 }
 
-void ExternalToolRunTask::parseStandartOutputFile(QString &filepath) {
+void ExternalToolRunTask::parseStandartOutputFile(const QString &filepath) {
     QFile f(filepath);
     if (!f.open(QIODevice::ReadOnly)) {
         return;
@@ -170,6 +179,10 @@ void ExternalToolRunTask::parseStandartOutputFile(QString &filepath) {
     }
     f.close();
     logParser->parseOutput(output);
+}
+
+void ExternalToolRunTask::parseError(const QString& error) {
+    logParser->parseErrOutput(error);
 }
 
 ////////////////////////////////////////
@@ -266,8 +279,9 @@ ExternalToolLogParser::ExternalToolLogParser() {
 
 void ExternalToolLogParser::parseOutput(const QString &partOfLog){
     lastPartOfLog = partOfLog.split(QChar('\n'));
-    lastPartOfLog.first() = lastLine+lastPartOfLog.first();
-    lastLine = lastPartOfLog.takeLast();
+    lastPartOfLog.first() = lastLine + lastPartOfLog.first();
+    //It's a possible situation, that one message will be processed twice
+    lastLine = lastPartOfLog.last();
     foreach (const QString &buf, lastPartOfLog) {
         processLine(buf);
     }
@@ -275,8 +289,9 @@ void ExternalToolLogParser::parseOutput(const QString &partOfLog){
 
 void ExternalToolLogParser::parseErrOutput(const QString &partOfLog){
     lastPartOfLog = partOfLog.split(QChar('\n'));
-    lastPartOfLog.first() = lastErrLine+lastPartOfLog.first();
-    lastErrLine = lastPartOfLog.takeLast();
+    lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
+    //It's a possible situation, that one message will be processed twice
+    lastErrLine = lastPartOfLog.last();
     foreach(const QString &buf, lastPartOfLog) {
         processErrLine(buf);
     }

@@ -626,24 +626,36 @@ TaxonomyClassificationResult ClarkClassifyWorker::parseReport(const QString &url
     return result;
 }
 
-class ClarkLogParser : public ExternalToolLogParser {
-public:
-    ClarkLogParser() {}
+const QMap<QString, QString> ClarkLogParser::wellKnownErrors = ClarkLogParser::initWellKnownErrors();
 
-private:
-    bool isError(const QString &line) const {
-        foreach (const QString &wellKnownError, wellKnownErrors) {
-            if (line.contains(wellKnownError)) {
-                return true;
-            }
+ClarkLogParser::ClarkLogParser() : ExternalToolLogParser() {}
+
+bool ClarkLogParser::isError(const QString &line) const {
+    foreach (const QString &wellKnownError, wellKnownErrors.keys()) {
+        if (line.contains(wellKnownError)) {
+            return true;
         }
-        return false;
     }
+    return false;
+}
 
-    static const QStringList wellKnownErrors;
-};
+void ClarkLogParser::setLastError(const QString &errorKey) {
+    QString errorValue = errorKey;
+    foreach(const QString& wellKnownErrorKey, wellKnownErrors.keys()) {
+        CHECK_CONTINUE(errorKey.contains(wellKnownErrorKey));
 
-const QStringList ClarkLogParser::wellKnownErrors("std::bad_alloc");
+        errorValue = wellKnownErrors.value(wellKnownErrorKey, errorKey);
+    }
+    ExternalToolLogParser::setLastError(errorValue);
+}
+
+QMap<QString, QString> ClarkLogParser::initWellKnownErrors() {
+    QMap<QString, QString> result;
+    result.insert("std::bad_alloc", tr("There is not enough memory (RAM) to execute CLARK."));
+    result.insert("Process crashed", tr("CLARK process crashed. It might happened because there is not enough memory (RAM) to complete the CLARK execution."));
+
+    return result;
+}
 
 ClarkClassifyTask::ClarkClassifyTask(const ClarkClassifySettings &settings, const QString &readsUrl, const QString &pairedReadsUrl, const QString &reportUrl)
     : ExternalToolSupportTask(tr("Classify reads with Clark"), TaskFlags_NR_FOSE_COSC),
@@ -667,6 +679,7 @@ void ClarkClassifyTask::prepare() {
     }
     QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkLogParser(), cfg.databaseUrl));
     CHECK_OP(stateInfo, );
+
     setListenerForTask(task.data());
     addSubTask(task.take());
 }
