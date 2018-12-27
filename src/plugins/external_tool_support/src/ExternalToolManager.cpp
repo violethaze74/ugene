@@ -272,6 +272,7 @@ void ExternalToolManagerImpl::sl_validationTaskStateChanged() {
         if (validationTasksCounter == 0 && buttonToDisable != nullptr) {
             buttonToDisable->setEnabled(true);
         }
+        ExternalToolSupportSettings::setExternalTools();
     }
 
     checkStartupTasksState();
