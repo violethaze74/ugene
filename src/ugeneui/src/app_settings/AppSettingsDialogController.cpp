@@ -112,7 +112,7 @@ bool AppSettingsDialogController::turnPage(AppSettingsTreeItem* page) {
         settingsBox->setTitle(page->pageController->getPageName());
         page->pageState = page->pageState == NULL ? page->pageController->getSavedState() : page->pageState;
         page->pageState->setParent(this);
-        page->pageWidget = page->pageController->createWidget(page->pageState);
+        page->pageWidget = page->pageController->createWidget(page->pageState, buttonBox);
         settingsBox->layout()->addWidget(page->pageWidget);
         delete page->pageState;
         page->pageState = NULL;

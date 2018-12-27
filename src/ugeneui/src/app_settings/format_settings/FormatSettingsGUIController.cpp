@@ -65,7 +65,8 @@ void FormatSettingsGUIPageController::saveState(AppSettingsGUIPageState* _state)
     }
 }
 
-AppSettingsGUIPageWidget* FormatSettingsGUIPageController::createWidget(AppSettingsGUIPageState* state) {
+AppSettingsGUIPageWidget* FormatSettingsGUIPageController::createWidget(AppSettingsGUIPageState* state, QDialogButtonBox *buttonBox) {
+    Q_UNUSED(buttonBox)
     FormatSettingsGUIPageWidget* r = new FormatSettingsGUIPageWidget(this);
     r->setState(state);
     return r;

@@ -24,6 +24,7 @@
 
 #include <U2Core/global.h>
 
+#include <QDialogButtonBox>
 #include <QWidget>
 
 namespace U2 {
@@ -34,7 +35,7 @@ class AppSettingsGUIPageController;
 class U2GUI_EXPORT AppSettingsGUI : public QObject {
     Q_OBJECT
 public:
-    AppSettingsGUI(QObject* p = NULL) : QObject(p){};
+    AppSettingsGUI(QObject* p = nullptr) : QObject(p){};
     
     virtual bool registerPage(AppSettingsGUIPageController* page, const QString& beforePage = QString()) = 0;
 
@@ -50,14 +51,14 @@ public:
 class U2GUI_EXPORT AppSettingsGUIPageState: public QObject {
     Q_OBJECT
 public:
-    AppSettingsGUIPageState(QObject* p = NULL) : QObject(p) {}
+    AppSettingsGUIPageState(QObject* p = nullptr) : QObject(p) {}
 };
 
 /** Page widget */
 class U2GUI_EXPORT AppSettingsGUIPageWidget: public QWidget {
     Q_OBJECT
 public:
-    AppSettingsGUIPageWidget(QWidget* w = NULL) : QWidget(w){}
+    AppSettingsGUIPageWidget(QWidget* w = nullptr) : QWidget(w) {}
 
     //reads data from 'state' and initializes the widget state
     virtual void setState(AppSettingsGUIPageState* state) = 0;
@@ -71,7 +72,7 @@ public:
 class U2GUI_EXPORT AppSettingsGUIPageController: public QObject {
     Q_OBJECT
 public:
-    AppSettingsGUIPageController(const QString& s, const QString& _id, QObject* p = NULL) : QObject(p), name(s), id(_id) {}
+    AppSettingsGUIPageController(const QString& s, const QString& _id, QObject* p = nullptr) : QObject(p), name(s), id(_id) {}
 
     const QString& getPageName() const {return name;}
 
@@ -85,7 +86,7 @@ public:
     virtual void saveState(AppSettingsGUIPageState* s) = 0;
 
     //creates widget and initializes its values with 'data' content
-    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data) = 0;
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data, QDialogButtonBox *buttonBox = nullptr) = 0;
 
 private:
     QString name;

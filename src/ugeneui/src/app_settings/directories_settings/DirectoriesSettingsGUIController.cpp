@@ -91,7 +91,8 @@ void DirectoriesSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     }
 }
 
-AppSettingsGUIPageWidget* DirectoriesSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
+AppSettingsGUIPageWidget* DirectoriesSettingsPageController::createWidget(AppSettingsGUIPageState* state, QDialogButtonBox *buttonBox) {
+    Q_UNUSED(buttonBox)
     DirectoriesSettingsPageWidget* r = new DirectoriesSettingsPageWidget(this);
     r->setState(state);
     return r;

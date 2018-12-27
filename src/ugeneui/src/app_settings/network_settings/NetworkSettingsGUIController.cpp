@@ -59,7 +59,8 @@ void NetworkSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     st->setUseDefaultWebBrowser(state->useDefaultWebBrowser);
 }
 
-AppSettingsGUIPageWidget* NetworkSettingsPageController::createWidget(AppSettingsGUIPageState* data) {
+AppSettingsGUIPageWidget* NetworkSettingsPageController::createWidget(AppSettingsGUIPageState* data, QDialogButtonBox *buttonBox) {
+    Q_UNUSED(buttonBox)
     NetworkSettingsPageWidget* r =  new NetworkSettingsPageWidget();
     r->setState(data);
     return r;

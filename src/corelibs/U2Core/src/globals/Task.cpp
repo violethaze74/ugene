@@ -87,6 +87,9 @@ void Task::cancel() {
 
 
 void Task::addSubTask(Task* sub) {
+    if (sub->parentTask != NULL) {
+        void *v = nullptr;
+    }
     SAFE_POINT(sub != NULL, "Trying to add NULL subtask",);
     SAFE_POINT(sub->parentTask==NULL, "Task already has a parent!",);
     SAFE_POINT(state == State_New, "Parents can be assigned to tasks in NEW state only!",);

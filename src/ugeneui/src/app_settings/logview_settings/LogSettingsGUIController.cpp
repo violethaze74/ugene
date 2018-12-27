@@ -56,7 +56,8 @@ void LogSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     target->setSettings(state->settings);
 }
 
-AppSettingsGUIPageWidget* LogSettingsPageController::createWidget(AppSettingsGUIPageState* data) {
+AppSettingsGUIPageWidget* LogSettingsPageController::createWidget(AppSettingsGUIPageState* data, QDialogButtonBox *buttonBox) {
+    Q_UNUSED(buttonBox)
     LogSettingsPageWidget* w = new LogSettingsPageWidget();
     w->setState(data);
     return w;

@@ -35,7 +35,9 @@
 namespace U2 {
 
 ExternalToolManagerImpl::ExternalToolManagerImpl() :
-    startupChecks(true)
+    startupChecks(true),
+    buttonToDisable(nullptr),
+    validationTasksCounter(0)
 {
     etRegistry = AppContext::getExternalToolRegistry();
 }
@@ -141,7 +143,7 @@ void ExternalToolManagerImpl::validate(const QStringList& toolNames, ExternalToo
     validate(toolNames, StrStrMap(), listener);
 }
 
-void ExternalToolManagerImpl::validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
+void ExternalToolManagerImpl::validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener, QAbstractButton *buttonToDisable_) {
     SAFE_POINT(etRegistry, "The external tool registry is NULL", );
 
     foreach (const QString& toolName, toolNames) {
@@ -160,7 +162,7 @@ void ExternalToolManagerImpl::validate(const QStringList& toolNames, const StrSt
         listener->validationFinished();
     }
 
-    validateTools(toolPaths, listener);
+    validateTools(toolPaths, listener, buttonToDisable_);
 }
 
 bool ExternalToolManagerImpl::isValid(const QString& toolName) const {
@@ -266,6 +268,10 @@ void ExternalToolManagerImpl::sl_validationTaskStateChanged() {
         tool->setValid(task->isValidTool());
 
         searchTools();
+        validationTasksCounter--;
+        if (validationTasksCounter == 0 && buttonToDisable != nullptr) {
+            buttonToDisable->setEnabled(true);
+        }
     }
 
     checkStartupTasksState();
@@ -336,9 +342,13 @@ bool ExternalToolManagerImpl::dependenciesAreOk(const QString& toolName) {
     return result;
 }
 
-void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
+void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, ExternalToolValidationListener* listener, QAbstractButton *buttonToDisable_) {
     QList<Task*> taskList;
-
+	if (buttonToDisable_ != nullptr) {
+        buttonToDisable_->setDisabled(true);
+        buttonToDisable = buttonToDisable_;
+    }
+    QList<Task*> validationTaskList;
     foreach (QString toolName, validateList) {
         validateList.removeAll(toolName);
         toolStates.insert(toolName, ValidationIsInProcess);
@@ -368,6 +378,7 @@ void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, External
                 SIGNAL(si_stateChanged()),
                 SLOT(sl_validationTaskStateChanged()));
         taskList << task;
+        validationTasksCounter++;
     }
 
     if (!taskList.isEmpty()) {

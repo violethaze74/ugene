@@ -19,13 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDialogButtonBox>
 #include <QMessageBox>
 #include <QToolButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultiTask.h>
-#include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
@@ -33,10 +32,6 @@
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
-#include "blast/BlastAllSupport.h"
-#include "blast/FormatDBSupport.h"
-#include "blast_plus/BlastPlusSupport.h"
-#include "utils/ExternalToolValidateTask.h"
 
 namespace U2 {
 
@@ -59,8 +54,9 @@ void ExternalToolSupportSettingsPageController::saveState(AppSettingsGUIPageStat
     ExternalToolSupportSettings::setExternalTools();
 }
 
-AppSettingsGUIPageWidget* ExternalToolSupportSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
-    ExternalToolSupportSettingsPageWidget* r = new ExternalToolSupportSettingsPageWidget(this);
+AppSettingsGUIPageWidget* ExternalToolSupportSettingsPageController::createWidget(AppSettingsGUIPageState* state, QDialogButtonBox *buttonBox) {
+    QAbstractButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    ExternalToolSupportSettingsPageWidget* r = new ExternalToolSupportSettingsPageWidget(this, okButton);
     r->setState(state);
     return r;
 }
@@ -73,7 +69,8 @@ const QString ExternalToolSupportSettingsPageWidget::INSTALLED = QObject::tr("In
 const QString ExternalToolSupportSettingsPageWidget::NOT_INSTALLED = QObject::tr("Not installed");
 const QString ExternalToolSupportSettingsPageWidget::ET_DOWNLOAD_INFO = QObject::tr("<html><head/><body><p>Download <a href=\"http://ugene.net/download-all_html#en_data_analysis_tools\"><span style=\" text-decoration: underline; color:#1866af;\">tools executables</span></a> and configure the tools paths. </p></body></html>");
 
-ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(ExternalToolSupportSettingsPageController* ctrl) {
+ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(ExternalToolSupportSettingsPageController* ctrl, QAbstractButton *okButton) :
+    okButton(okButton) {
     Q_UNUSED(ctrl);
 
     setupUi(this);
@@ -625,7 +622,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
             ExternalToolManager* etManager = AppContext::getExternalToolRegistry()->getManager();
             ExternalToolValidationListener* listener = new ExternalToolValidationListener(toolNames);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
-            etManager->validate(toolNames, toolPaths, listener);
+            etManager->validate(toolNames, toolPaths, listener, okButton);
         }
     }
 }

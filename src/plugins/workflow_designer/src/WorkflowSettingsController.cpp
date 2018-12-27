@@ -69,7 +69,8 @@ void WorkflowSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     WorkflowSettings::setWorkflowOutputDirectory(state->workflowOutputDir);
 }
 
-AppSettingsGUIPageWidget* WorkflowSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
+AppSettingsGUIPageWidget* WorkflowSettingsPageController::createWidget(AppSettingsGUIPageState* state, QDialogButtonBox *buttonBox) {
+    Q_UNUSED(buttonBox)
     WorkflowSettingsPageWidget* r = new WorkflowSettingsPageWidget(this);
     r->setState(state);
     return r;

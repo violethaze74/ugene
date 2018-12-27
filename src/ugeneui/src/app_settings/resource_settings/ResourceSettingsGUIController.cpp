@@ -53,7 +53,8 @@ void ResourceSettingsGUIPageController::saveState(AppSettingsGUIPageState* _stat
     s->setMaxMemorySizeInMB(state->maxMem);
 }
 
-AppSettingsGUIPageWidget* ResourceSettingsGUIPageController::createWidget(AppSettingsGUIPageState* state) {
+AppSettingsGUIPageWidget* ResourceSettingsGUIPageController::createWidget(AppSettingsGUIPageState* state, QDialogButtonBox *buttonBox) {
+    Q_UNUSED(buttonBox)
     ResourceSettingsGUIPageWidget* r = new ResourceSettingsGUIPageWidget(this);
     r->setState(state);
     return r;

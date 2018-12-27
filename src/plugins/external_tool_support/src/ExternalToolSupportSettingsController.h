@@ -47,7 +47,7 @@ public:
 
     AppSettingsGUIPageState* getSavedState();
     void saveState(AppSettingsGUIPageState* s);
-    AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* state);
+    AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* state, QDialogButtonBox *buttonBox = nullptr);
     const QString& getHelpPageId() const {return helpPageId;};
 private:
     static const QString helpPageId;
@@ -62,7 +62,7 @@ public:
 class ExternalToolSupportSettingsPageWidget: public AppSettingsGUIPageWidget, public Ui_ETSSettingsWidget {
     Q_OBJECT
 public:
-    ExternalToolSupportSettingsPageWidget(ExternalToolSupportSettingsPageController* ctrl);
+    ExternalToolSupportSettingsPageWidget(ExternalToolSupportSettingsPageController* ctrl, QAbstractButton *okButton_);
 
     virtual void setState(AppSettingsGUIPageState* state);
 
@@ -93,6 +93,7 @@ private:
     QMap<QString, QTreeWidgetItem*> externalToolsItems;
     QString getToolLink(const QString &toolName) const;
     mutable int buttonsWidth;
+    QAbstractButton *okButton;
 
     static const QString INSTALLED;
     static const QString NOT_INSTALLED;
