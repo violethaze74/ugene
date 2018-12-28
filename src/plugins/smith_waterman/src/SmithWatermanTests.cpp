@@ -288,7 +288,9 @@ Task::ReportResult GTest_SmithWatermnan::report() {
 
 
     if (expectedRes.size() != resultList.size()) {
-        stateInfo.setError(QString("Not expected result: count result not coincide"));
+        stateInfo.setError(QString("Not expected result: count result not coincide, expected: %1, current: %2")
+                                   .arg(expectedRes.size())
+                                   .arg(resultList.size()));
         return ReportResult_Finished;
     }
 
