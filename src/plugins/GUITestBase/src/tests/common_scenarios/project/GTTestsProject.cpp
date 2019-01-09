@@ -655,11 +655,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1){
 
     //check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
+    GTGlobals::sleep();
     title1 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title1 == "test_3637_1 [as] Contig1", "unexpected title for doc1: " + title1);
 
+
     //check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
+    GTGlobals::sleep();
     title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "test_3637_1 [as] Contig2", "unexpected title for doc2: " + title2);
 
