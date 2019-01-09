@@ -118,7 +118,16 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     settings.classificationUrl = getValue<QString>(DiamondClassifyWorkerFactory::OUTPUT_URL_ATTR_ID);
     if (settings.classificationUrl.isEmpty()) {
         const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
-        settings.classificationUrl = tmpDir + "/" + NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(metadata.getFileUrl(), QStringList() << "DIAMOND" << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX, "txt", false);
+        QString fileUrl = metadata.getFileUrl();
+        settings.classificationUrl = tmpDir +
+                                     "/" +
+                                     (fileUrl.isEmpty() ? QString("DIAMOND_%1.txt")
+                                                                  .arg(NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX)
+                                                        : NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(fileUrl,
+                                                                                                                   QStringList() << "DIAMOND"
+                                                                                                                                 << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX,
+                                                                                                                   "txt",
+                                                                                                                   false));
     }
     settings.classificationUrl = GUrlUtils::rollFileName(settings.classificationUrl, "_");
 

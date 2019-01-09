@@ -225,7 +225,9 @@ Task *SpadesWorker::tick() {
     CHECK(!os.hasError(), new FailTask(os.getError()));
 
     QVariantMap unitedPortContext;
-
+    
+    int messageCounter = 0;
+    int messageId = MessageMetadata::INVALID_ID;
     for (int i = 0; i < readsFetchers.size(); i++) {
         const bool isPortEnabled = readsFetchers[i].hasFullDataset();
         CHECK_CONTINUE(isPortEnabled);
@@ -241,6 +243,9 @@ Task *SpadesWorker::tick() {
 
         QList<Message> fullDataset = readsFetchers[i].takeFullDataset();
         foreach(const Message& m, fullDataset) {
+            messageCounter++;
+            messageId = m.getMetadataId();
+
             QVariantMap data = m.getData().toMap();
 
             const QString urlSlotId = SpadesWorkerFactory::READS_URL_SLOT_ID_LIST[index];
@@ -270,7 +275,8 @@ Task *SpadesWorker::tick() {
     }
     CHECK(!settings.reads.isEmpty(), NULL);
 
-    output->setContext(unitedPortContext, MessageMetadata::INVALID_ID);
+    int currentMetadataId = messageCounter == 1 ? messageId : MessageMetadata::INVALID_ID;
+    output->setContext(unitedPortContext, currentMetadataId);
 
     settings.listeners = createLogListeners();
     GenomeAssemblyMultiTask* t = new GenomeAssemblyMultiTask(settings);
