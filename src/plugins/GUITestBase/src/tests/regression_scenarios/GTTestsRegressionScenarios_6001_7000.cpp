@@ -1832,10 +1832,10 @@ GUI_TEST_CLASS_DEFINITION(test_6283) {
                 os.setError("Bio is not valid");
             }
 
-            //Expected: Bio module version is 1.72
+            //Expected: Bio module version is 1.73
             bool hasVerion = true;
 #ifndef Q_OS_WIN
-            hasVerion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "Bio", "Version: 1.72");
+            hasVerion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "Bio", "Version: 1.73");
 #endif
             if (!hasVerion) {
                 os.setError("Incorrect Bio version");
