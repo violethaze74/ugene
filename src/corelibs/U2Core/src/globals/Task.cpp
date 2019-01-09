@@ -85,6 +85,13 @@ void Task::cancel() {
     stateInfo.cancelFlag = true;
 }
 
+QList<Task*> Task::getSubtasks() const {
+    QList<Task*> subtasksPointers;
+    foreach(QPointer<Task> subtask, subtasks) {
+        subtasksPointers << subtask.data();
+    }
+    return subtasksPointers;
+}
 
 void Task::addSubTask(Task* sub) {
     SAFE_POINT(sub != NULL, "Trying to add NULL subtask",);
@@ -100,6 +107,8 @@ void Task::addSubTask(Task* sub) {
 void Task::cleanup()    {
     assert(isFinished());
     foreach(Task* sub, getSubtasks()) {
+        CHECK_CONTINUE(sub != nullptr);
+
         sub->cleanup();
     }
 }
