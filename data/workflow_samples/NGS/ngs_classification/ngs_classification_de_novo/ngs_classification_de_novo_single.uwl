@@ -55,6 +55,14 @@ workflow "SE reads assembly and classification"{
     get-se-reads-list.reads-url1->trimmomatic.in.reads-url1
 
     .meta {
+        parameter-aliases {
+            get-se-reads-list.url1 {
+                alias:in;
+            }
+            trimmomatic.trimming-steps {
+                alias:steps;
+            }
+        }
         visual {
             classification-report {
                 pos:"-465 -300";
