@@ -468,7 +468,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
         QTableWidget* inputTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
         int row = inputTable->rowCount();
-        CHECK_SET_ERR(row = 1,
+        CHECK_SET_ERR(row == 1,
                       QString("Unexpected \"Input data\" row count, expected: 1, current: %1")
                               .arg(row));
 
@@ -481,7 +481,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         //Expected: input table has two lines
         inputTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
         row = inputTable->rowCount();
-        CHECK_SET_ERR(row = 2,
+        CHECK_SET_ERR(row == 2,
                       QString("Unexpected \"Input data\" row count, expected: 2, current: %1")
                               .arg(row));
     }
