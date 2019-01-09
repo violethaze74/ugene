@@ -471,6 +471,8 @@ GUI_TEST_CLASS_DEFINITION(test_3073) {
     GTGlobals::sleep();
 
     GTUtilsDocument::loadDocument(os, "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
     CHECK_SET_ERR( GTUtilsDocument::isDocumentLoaded(os, "test_3073.gb"), "Annotation file is not loaded!");
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Close project", GTGlobals::UseMouse);
