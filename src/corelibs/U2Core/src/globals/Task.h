@@ -27,9 +27,10 @@
 #include <U2Core/U2OpStatus.h>
 
 #include <QDateTime>
+#include <QPointer>
+#include <QReadWriteLock>
 #include <QStringList>
 #include <QVarLengthArray>
-#include <QReadWriteLock>
 
 namespace U2 {
 
@@ -223,7 +224,7 @@ public:
     bool isCanceled() const {return stateInfo.cancelFlag;}
 
     // Returns subtasks of the task. Task must prepare it's subtask on prepare() call and can't change them latter.
-    QList<Task*> getSubtasks() const {return subtasks;}
+    QList<Task*> getSubtasks() const;
 
     QString getTaskName() const {return taskName;}
 
@@ -369,22 +370,22 @@ protected:
         flags = v ? (flags | f) : flags & (~f);
     }
 
-    TaskStateInfo       stateInfo;
-    TaskTimeInfo        timeInfo;
-    ProgressManagement  tpm;
+    TaskStateInfo           stateInfo;
+    TaskTimeInfo            timeInfo;
+    ProgressManagement      tpm;
 
-    float               progressWeightAsSubtask;
-    int                 maxParallelSubtasks;
+    float                   progressWeightAsSubtask;
+    int                     maxParallelSubtasks;
 
 private:
-    TaskFlags           flags;
-    QString             taskName;
-    State               state;
-    Task*               parentTask;
-    QList<Task*>        subtasks;
-    qint64              taskId;
-    TaskResources       taskResources;
-    bool                insidePrepare;
+    TaskFlags               flags;
+    QString                 taskName;
+    State                   state;
+    Task*                   parentTask;
+    QList<QPointer<Task> >  subtasks;
+    qint64                  taskId;
+    TaskResources           taskResources;
+    bool                    insidePrepare;
 };
 
 
