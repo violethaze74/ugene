@@ -903,7 +903,6 @@ QByteArray GTest_CompareFiles::getLine(IOAdapter* io) {
 
     do {
         bool lineOk = true;
-        const bool forceSize = forceBufferSize > 0;
         qint64 len = io->readUntil(buff, bufferSize, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
         CHECK(len != 0, "");
         CHECK_EXT(lineOk, setError("Line is too long"), "");
