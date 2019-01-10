@@ -141,8 +141,8 @@ QString GTUtilsSequenceView::getBeginOfSequenceAsString(HI::GUITestOpStatus &os,
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GT_CHECK_RESULT(mdiWindow != NULL, "MDI window == NULL", NULL);
 
-    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
-    GTMouseDriver::click();
+   // GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center())); commented for test 6232_4
+   // GTMouseDriver::click();
 
     Runnable *filler = new SelectSequenceRegionDialogFiller(os, length);
     GTUtilsDialog::waitForDialog(os, filler);
