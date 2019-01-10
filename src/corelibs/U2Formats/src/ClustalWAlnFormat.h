@@ -55,6 +55,11 @@ private:
     void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& fs, U2OpStatus& ti);
 
     QString formatName;
+
+    static const int MAX_LINE_LEN;
+    static const int MAX_NAME_LEN;
+    static const int MAX_SEQ_LEN;
+    static const int SEQ_ALIGNMENT;
 };
 
 }//namespace
