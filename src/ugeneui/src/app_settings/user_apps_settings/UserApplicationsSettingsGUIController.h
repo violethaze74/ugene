@@ -41,7 +41,7 @@ public:
 
     virtual void saveState(AppSettingsGUIPageState* s);
 
-    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data, QDialogButtonBox *buttonBox = nullptr);
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
     
     QMap<QString, QString> translations;
 

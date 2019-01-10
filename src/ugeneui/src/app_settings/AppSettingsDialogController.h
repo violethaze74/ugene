@@ -51,6 +51,10 @@ public slots:
 protected:
     void timerEvent(QTimerEvent* e);
 
+private slots:
+    void sl_lockCurrentPage();
+    void sl_unlockCurrentPage();
+
 private:
     bool checkCurrentState(bool saveStateInItem, bool showError);
     bool turnPage(AppSettingsTreeItem* page);
@@ -58,7 +62,6 @@ private:
 
     AppSettingsTreeItem* findPageItem(const QString& id) const;
 
-private:
     AppSettingsTreeItem*    currentPage;
     HelpButton*             helpButton;
 };

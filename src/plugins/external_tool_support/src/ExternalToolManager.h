@@ -22,7 +22,6 @@
 #ifndef _U2_EXTERNAL_TOOL_VALIDATION_MANAGER_H_
 #define _U2_EXTERNAL_TOOL_VALIDATION_MANAGER_H_
 
-#include <QAbstractButton>
 #include <QEventLoop>
 #include <QList>
 #include <QObject>
@@ -50,12 +49,11 @@ public:
 
     virtual void check(const QString& toolName, const QString& toolPath, ExternalToolValidationListener* listener);
     virtual void check(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener);
-                 
+
     virtual void validate(const QString& toolName, ExternalToolValidationListener* listener = nullptr);
     virtual void validate(const QString& toolName, const QString& path, ExternalToolValidationListener* listener = nullptr);
     virtual void validate(const QStringList& toolNames, ExternalToolValidationListener* listener = nullptr);
-    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr,
-                            QAbstractButton *buttonToDisable_ = nullptr);
+    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr);
 
     virtual bool isValid(const QString& toolName) const;
     virtual ExternalToolState getToolState(const QString& toolName) const;
@@ -63,7 +61,7 @@ public:
 signals:
     void si_validationComplete(const QStringList& toolNames, QObject* receiver = nullptr, const char* slot = nullptr);
 
-private slots:
+    private slots:
     void sl_checkTaskStateChanged();
     void sl_validationTaskStateChanged();
     void sl_searchTaskStateChanged();
@@ -75,7 +73,7 @@ private:
     void checkStartupTasksState();
     QString addTool(ExternalTool* tool);
     bool dependenciesAreOk(const QString& toolName);
-    void validateTools(const StrStrMap& toolPaths = StrStrMap(), ExternalToolValidationListener* listener = nullptr, QAbstractButton *buttonToDisable_ = nullptr);
+    void validateTools(const StrStrMap& toolPaths = StrStrMap(), ExternalToolValidationListener* listener = nullptr);
     void searchTools();
     void setToolPath(const QString& toolName, const QString& toolPath);
     void setToolValid(const QString& toolName, bool isValid);
@@ -87,8 +85,6 @@ private:
     QMap<QString, ExternalToolState> toolStates;
     QMap<ExternalToolsValidateTask*, ExternalToolValidationListener*> listeners;
     bool startupChecks;
-    QAbstractButton *buttonToDisable;
-    int validationTasksCounter;
 
     static const int MAX_PARALLEL_SUBTASKS = 5;
 };

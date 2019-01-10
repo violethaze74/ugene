@@ -66,6 +66,10 @@ public:
     //returns 'state' of the widget or error if state is not complete
     // the result structure is automatically deleted by controller
     virtual AppSettingsGUIPageState* getState(QString& errMsg) const = 0;
+
+signals:
+    void si_lockMe();
+    void si_unlockMe();
 };
 
 /** Page factory/controller */
@@ -86,7 +90,7 @@ public:
     virtual void saveState(AppSettingsGUIPageState* s) = 0;
 
     //creates widget and initializes its values with 'data' content
-    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data, QDialogButtonBox *buttonBox = nullptr) = 0;
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data) = 0;
 
 private:
     QString name;

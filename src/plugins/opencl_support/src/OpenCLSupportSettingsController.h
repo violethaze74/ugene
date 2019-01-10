@@ -41,7 +41,7 @@ public:
 
     virtual void saveState( AppSettingsGUIPageState * s );
 
-    virtual AppSettingsGUIPageWidget * createWidget(AppSettingsGUIPageState* state, QDialogButtonBox *buttonBox = nullptr);
+    virtual AppSettingsGUIPageWidget * createWidget(AppSettingsGUIPageState* state);
 
     const QString& getHelpPageId() const {return helpPageId;};
 

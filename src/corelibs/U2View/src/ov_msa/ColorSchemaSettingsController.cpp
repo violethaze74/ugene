@@ -119,8 +119,7 @@ void ColorSchemaSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     emit si_customSettingsChanged();
 }
 
-AppSettingsGUIPageWidget* ColorSchemaSettingsPageController::createWidget(AppSettingsGUIPageState* state, QDialogButtonBox *buttonBox) {
-    Q_UNUSED(buttonBox)
+AppSettingsGUIPageWidget* ColorSchemaSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
     ColorSchemaSettingsPageWidget* r = new ColorSchemaSettingsPageWidget(this);
     r->setState(state);
     return r;

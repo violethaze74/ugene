@@ -112,13 +112,15 @@ bool AppSettingsDialogController::turnPage(AppSettingsTreeItem* page) {
         settingsBox->setTitle(page->pageController->getPageName());
         page->pageState = page->pageState == NULL ? page->pageController->getSavedState() : page->pageState;
         page->pageState->setParent(this);
-        page->pageWidget = page->pageController->createWidget(page->pageState, buttonBox);
+        page->pageWidget = page->pageController->createWidget(page->pageState);
         settingsBox->layout()->addWidget(page->pageWidget);
         delete page->pageState;
         page->pageState = NULL;
 
         currentPage = page;
         helpButton->updatePageId(currentPage->pageController->getHelpPageId()) ;
+        connect(currentPage->pageWidget, SIGNAL(si_lockMe()), SLOT(sl_lockCurrentPage()));
+        connect(currentPage->pageWidget, SIGNAL(si_unlockMe()), SLOT(sl_unlockCurrentPage()));
     }
     return true;
 }
@@ -161,6 +163,16 @@ void AppSettingsDialogController::reject() {
 void AppSettingsDialogController::timerEvent(QTimerEvent* te) {
     killTimer(te->timerId());
     tree->setCurrentItem(currentPage);
+}
+
+void AppSettingsDialogController::sl_lockCurrentPage() {
+    buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
+    tree->setDisabled(true);
+}
+
+void AppSettingsDialogController::sl_unlockCurrentPage() {
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+    tree->setEnabled(true);
 }
 
 void AppSettingsDialogController::sl_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous) {

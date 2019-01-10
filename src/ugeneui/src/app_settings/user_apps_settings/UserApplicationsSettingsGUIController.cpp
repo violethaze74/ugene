@@ -98,8 +98,7 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
     }
 }
 
-AppSettingsGUIPageWidget* UserApplicationsSettingsPageController::createWidget(AppSettingsGUIPageState* state, QDialogButtonBox *buttonBox) {
-    Q_UNUSED(buttonBox)
+AppSettingsGUIPageWidget* UserApplicationsSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
     UserApplicationsSettingsPageWidget* r = new UserApplicationsSettingsPageWidget(this);
     r->setState(state);
     return r;

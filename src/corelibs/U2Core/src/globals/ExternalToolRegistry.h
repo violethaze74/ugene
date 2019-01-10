@@ -22,7 +22,6 @@
 #ifndef _U2_EXTERNAL_TOOL_REGISTRY_H
 #define _U2_EXTERNAL_TOOL_REGISTRY_H
 
-#include <QAbstractButton>
 #include <QIcon>
 #include <QList>
 #include <QMap>
@@ -186,7 +185,7 @@ public:
     virtual void validate(const QString& toolName, ExternalToolValidationListener* listener = nullptr) = 0;
     virtual void validate(const QString& toolName, const QString& path, ExternalToolValidationListener* listener = nullptr) = 0;
     virtual void validate(const QStringList& toolNames, ExternalToolValidationListener* listener = nullptr) = 0;
-    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr, QAbstractButton *buttonToDisable_ = nullptr) = 0;
+    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr) = 0;
 
     virtual bool isValid(const QString& toolName) const = 0;
     virtual ExternalToolState getToolState(const QString& toolName) const = 0;
