@@ -86,8 +86,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTFileDialog::openFile(os, testDir+"_common_data/scenarios/project/", "proj1.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
-//     1) Project view with document "1CF7.PDB" is opened
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+//     1) Project view with document "1CF7.pdb" is opened
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 //     2) UGENE window titled with text "proj1 UGENE"
     QString expectedTitle;
 #ifdef Q_OS_MAC
@@ -120,19 +120,19 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTGlobals::sleep();
 
 // Expected state:
-//     1) project view with document "1CF7.PDB" has been opened,
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+//     1) project view with document "1CF7.pdb" has been opened,
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 //     2) UGENE window titled with text "proj1 UGENE"
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 
-//     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.PDB"
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
+//     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.pdb"
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
     GTGlobals::sleep();    
-    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.PDB"); 
+    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.pdb"); 
  
 // 7. Select "1CF7.PDB" in project tree and press Enter
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick( Qt::Key_Enter);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -140,7 +140,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 // Expected state:
 //     1) Document is loaded,
-   GTUtilsDocument::checkDocument(os, "1CF7.PDB", AnnotatedDNAViewFactory::ID);   
+   GTUtilsDocument::checkDocument(os, "1CF7.pdb", AnnotatedDNAViewFactory::ID);   
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -154,7 +154,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
     GTGlobals::sleep(4000);
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir+"_common_data/scenarios/sandbox", "proj2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Save project as...");
@@ -170,12 +170,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     expectedTitle = "proj2 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
     GTGlobals::sleep();
-    GTUtilsToolTip::checkExistingToolTip(os, "samples/PDB/1CF7.PDB");
+    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/pdb/1CF7.pdb");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {

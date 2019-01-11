@@ -61,7 +61,7 @@ void OpenCLSupportSettingsPageController::saveState( AppSettingsGUIPageState * _
     } //else - resource was not registered, nothing to do.
 }
 
-AppSettingsGUIPageWidget * OpenCLSupportSettingsPageController::createWidget( AppSettingsGUIPageState* state ) {
+AppSettingsGUIPageWidget * OpenCLSupportSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
     OpenCLSupportSettingsPageWidget * w = new OpenCLSupportSettingsPageWidget(displayMsg, this);
     w->setState(state);
     return w;

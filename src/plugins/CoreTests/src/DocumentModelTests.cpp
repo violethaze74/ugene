@@ -694,7 +694,9 @@ Task::ReportResult GTest_FindGObjectByName::report() {
     const QList<GObject*>& objs = doc->getObjects();
 
     foreach(GObject* obj, objs) {
-        if ((obj->getGObjectType() == type) && (obj->getGObjectName() == objName)) {
+        QString objectType = obj->getGObjectType();
+        QString objectName = obj->getGObjectName();
+        if ((objectType == type) && (objectName == objName)) {
             result = obj;
             break;
         }

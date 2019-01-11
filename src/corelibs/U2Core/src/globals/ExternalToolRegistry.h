@@ -182,10 +182,10 @@ public:
     virtual void check(const QString& toolName, const QString& toolPath, ExternalToolValidationListener* listener) = 0;
     virtual void check(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener) = 0;
 
-    virtual void validate(const QString& toolName, ExternalToolValidationListener* listener = NULL) = 0;
-    virtual void validate(const QString& toolName, const QString& path, ExternalToolValidationListener* listener = NULL) = 0;
-    virtual void validate(const QStringList& toolNames, ExternalToolValidationListener* listener = NULL) = 0;
-    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = NULL) = 0;
+    virtual void validate(const QString& toolName, ExternalToolValidationListener* listener = nullptr) = 0;
+    virtual void validate(const QString& toolName, const QString& path, ExternalToolValidationListener* listener = nullptr) = 0;
+    virtual void validate(const QStringList& toolNames, ExternalToolValidationListener* listener = nullptr) = 0;
+    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr) = 0;
 
     virtual bool isValid(const QString& toolName) const = 0;
     virtual ExternalToolState getToolState(const QString& toolName) const = 0;

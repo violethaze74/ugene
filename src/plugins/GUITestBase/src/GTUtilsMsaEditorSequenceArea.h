@@ -74,6 +74,7 @@ public:
     static void clickToPosition(GUITestOpStatus &os, const QPoint& globalMaPosition);
 
     static void selectSequence(GUITestOpStatus &os, const QString &seqName);
+    static void selectSequence(GUITestOpStatus &os, const int row);
     static bool isSequenceSelected(GUITestOpStatus &os, const QString &seqName);
     static void removeSequence(GUITestOpStatus &os, const QString &sequenceName);
     static int getSelectedSequencesNum(GUITestOpStatus &os);
