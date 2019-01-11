@@ -156,7 +156,7 @@ GUITestBasePlugin::GUITestBasePlugin() : Plugin(tr("GUITestBase"), tr("GUI Test 
     registerAdditionalActions(guiTestBase);
 
     openGUITestRunnerAction = new QAction(tr("GUI Test runner"), this);
-    openGUITestRunnerAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
+    openGUITestRunnerAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
     openGUITestRunnerAction->setObjectName("GUI_TEST_RUNNER");
     openGUITestRunnerAction->setIcon(QIcon(":gui_test/images/open_gui_test_runner.png"));
     view = NULL;
