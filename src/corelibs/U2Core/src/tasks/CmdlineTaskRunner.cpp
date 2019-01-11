@@ -166,10 +166,13 @@ int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
 
     QList<long> children = getChildrenProcesses(processId, fullTree);
 
+    if (!children.isEmpty()) {
+        uiLog.trace("kill all children of process: " + QString::number(processId));
+    }
     while (!children.isEmpty()) {
         long child = children.takeLast();
 
-        uiLog.trace("kill process: " + QString::number(child));
+        uiLog.trace("    kill process: " + QString::number(child));
         result += killProcess(child);
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
@@ -184,14 +187,16 @@ int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
 
 int CmdlineTaskRunner::killProcessTree(QProcess *process) {
     qint64 processId = process->processId();
-    int result = killChildrenProcesses(processId);
-    process->kill();
-    return result;
+    return killProcessTree(processId);
 }
 
 int CmdlineTaskRunner::killProcessTree(qint64 processId) {
-    killChildrenProcesses(processId);
-    return killProcess(processId);
+    uiLog.trace("Killing full processes tree: " + QString::number(processId));
+    uiLog.trace("Killing children processes: " + QString::number(processId));
+    int result = killChildrenProcesses(processId);
+    uiLog.trace("Killing parent process: " + QString::number(processId));
+    result += killProcess(processId);
+    return result;
 }
 
 int CmdlineTaskRunner::killProcess(qint64 processId) {
