@@ -127,19 +127,20 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 //     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.PDB"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTGlobals::sleep(2000);
-    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.PDB");
-
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
+    GTGlobals::sleep();    
+    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.PDB"); 
+ 
 // 7. Select "1CF7.PDB" in project tree and press Enter
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick( Qt::Key_Enter);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
 
 // Expected state:
 //     1) Document is loaded,
-    GTGlobals::sleep();
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB", AnnotatedDNAViewFactory::ID);
-//     2) 4 sequences and 3D Viewer with molecule is appeared
+   GTUtilsDocument::checkDocument(os, "1CF7.PDB", AnnotatedDNAViewFactory::ID);   
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -169,11 +170,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     expectedTitle = "proj2 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
-    GTGlobals::sleep(4000);
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTGlobals::sleep(4000);
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
+    GTGlobals::sleep();
     GTUtilsToolTip::checkExistingToolTip(os, "samples/PDB/1CF7.PDB");
 }
 
