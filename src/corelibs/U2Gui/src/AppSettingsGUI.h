@@ -35,8 +35,8 @@ class AppSettingsGUIPageController;
 class U2GUI_EXPORT AppSettingsGUI : public QObject {
     Q_OBJECT
 public:
-    AppSettingsGUI(QObject* p = nullptr) : QObject(p){};
-    
+    AppSettingsGUI(QObject* p = nullptr) : QObject(p) {};
+
     virtual bool registerPage(AppSettingsGUIPageController* page, const QString& beforePage = QString()) = 0;
 
     virtual bool unregisterPage(AppSettingsGUIPageController* page) = 0;
@@ -48,14 +48,14 @@ public:
 
 
 /** Data stored on the page */
-class U2GUI_EXPORT AppSettingsGUIPageState: public QObject {
+class U2GUI_EXPORT AppSettingsGUIPageState : public QObject {
     Q_OBJECT
 public:
     AppSettingsGUIPageState(QObject* p = nullptr) : QObject(p) {}
 };
 
 /** Page widget */
-class U2GUI_EXPORT AppSettingsGUIPageWidget: public QWidget {
+class U2GUI_EXPORT AppSettingsGUIPageWidget : public QWidget {
     Q_OBJECT
 public:
     AppSettingsGUIPageWidget(QWidget* w = nullptr) : QWidget(w) {}
@@ -68,19 +68,18 @@ public:
     virtual AppSettingsGUIPageState* getState(QString& errMsg) const = 0;
 
 signals:
-    void si_lockMe();
-    void si_unlockMe();
+    void si_setLockState(bool);
 };
 
 /** Page factory/controller */
-class U2GUI_EXPORT AppSettingsGUIPageController: public QObject {
+class U2GUI_EXPORT AppSettingsGUIPageController : public QObject {
     Q_OBJECT
 public:
     AppSettingsGUIPageController(const QString& s, const QString& _id, QObject* p = nullptr) : QObject(p), name(s), id(_id) {}
 
-    const QString& getPageName() const {return name;}
+    const QString& getPageName() const { return name; }
 
-    const QString& getPageId() const {return id;}
+    const QString& getPageId() const { return id; }
 
     //should be pure virtual, because every page should have own help page index
     virtual const QString& getHelpPageId() const = 0;

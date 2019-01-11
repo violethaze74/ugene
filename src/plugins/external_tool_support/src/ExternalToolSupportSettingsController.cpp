@@ -430,6 +430,7 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
             ExternalToolValidationListener* listener = new ExternalToolValidationListener(toolName);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
             etManager->validate(toolName, path, listener);
+            emit si_setLockState(true);
         }
     }
 }
@@ -448,7 +449,7 @@ void ExternalToolSupportSettingsPageWidget::sl_validationComplete() {
         SAFE_POINT(NULL != tool, QString("External tool %1 not found in the registry.").arg(toolName), );
         setToolState(tool);
     }
-    emit si_unlockMe();
+    emit si_setLockState(false);
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_toolValidationStatusChanged(bool isValid) {
@@ -552,6 +553,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath() {
             ExternalToolValidationListener* listener = new ExternalToolValidationListener(toolNames);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
             etManager->validate(toolNames, toolPaths, listener);
+            emit si_setLockState(true);
         }
     }
 }
@@ -621,7 +623,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
             ExternalToolValidationListener* listener = new ExternalToolValidationListener(toolNames);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
             etManager->validate(toolNames, toolPaths, listener);
-            emit si_lockMe();
+            emit si_setLockState(true);
         }
     }
 }
