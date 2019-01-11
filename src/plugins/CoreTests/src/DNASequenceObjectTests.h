@@ -185,6 +185,18 @@ class GTest_DNAMulSequencePart : public XmlTest {
 
 };
 
+class GTest_DNAMulSequenceName : public XmlTest {
+    Q_OBJECT
+        SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DNAMulSequenceName, "check-Msequence-name");
+
+    ReportResult report();
+
+    QString     objContextName;
+
+    QString     seqName;
+
+};
+
 class GTest_DNAMulSequenceQuality : public XmlTest {
     Q_OBJECT
         SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DNAMulSequenceQuality, "check-Msequence-quality");

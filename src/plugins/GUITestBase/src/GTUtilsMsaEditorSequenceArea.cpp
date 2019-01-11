@@ -452,6 +452,16 @@ void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus &os, const QSt
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "selectSequence"
+void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus &os, const int row) {
+    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>
+        (GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    CHECK_SET_ERR(msaEditArea != NULL, "MsaEditorSequenceArea not found");
+
+    click(os, QPoint(-5, row));
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "isSequenceSelected"
 bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(GUITestOpStatus &os, const QString &seqName) {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>

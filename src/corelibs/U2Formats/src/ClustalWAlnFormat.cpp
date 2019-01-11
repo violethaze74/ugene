@@ -53,6 +53,11 @@ namespace U2 {
 /* TRANSLATOR U2::IOAdapter */
 
 const QByteArray ClustalWAlnFormat::CLUSTAL_HEADER = "CLUSTAL";
+const int ClustalWAlnFormat::MAX_LINE_LEN = 190;
+//The sequence name's length maximum is defined in the "clustalw.h" file of the "CLUSTALW" source code
+const int ClustalWAlnFormat::MAX_NAME_LEN = 150;
+const int ClustalWAlnFormat::MAX_SEQ_LEN = 70;
+const int ClustalWAlnFormat::SEQ_ALIGNMENT = 5;
 
 ClustalWAlnFormat::ClustalWAlnFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("aln"))
 {
@@ -202,10 +207,6 @@ Document* ClustalWAlnFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbi
     return new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
 }
 
-#define MAX_LINE_LEN    80
-#define MAX_NAME_LEN    39
-#define SEQ_ALIGNMENT    5
-
 void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &ti) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "Clustal entry storing: no alignment", );
     const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
@@ -248,6 +249,7 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
     if (seqEnd % SEQ_ALIGNMENT != 0) {
         seqEnd = seqEnd - (seqEnd % SEQ_ALIGNMENT);
     }
+    seqEnd = qMin(seqEnd, seqStart + MAX_SEQ_LEN);
     assert(seqStart % SEQ_ALIGNMENT == 0 && seqEnd % SEQ_ALIGNMENT == 0 && seqEnd > seqStart);
 
     int seqPerPage = seqEnd - seqStart;

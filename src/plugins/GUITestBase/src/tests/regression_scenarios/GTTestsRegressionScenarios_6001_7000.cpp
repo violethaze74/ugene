@@ -1895,6 +1895,38 @@ GUI_TEST_CLASS_DEFINITION(test_6301) {
 
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6314) {
+    //1. Copy "_common_data/clustal/align.aln" to sandbox and open it
+    const QString filePath = sandBoxDir + "test_6043.aln";
+    GTFile::copy(os, testDir + "_common_data/clustal/align.aln", filePath);
+
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Rename the first sequence with some very long name (more than 150 chars)
+    QString veryLongName;
+    for (int i = 0; i < 200; i++) {
+        veryLongName += "Q";
+    }
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "IXI_234", veryLongName);
+
+    //3. Save sequence and close the project
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Save all", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProject::closeProject(os);
+
+    //4. Open the file again
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: the length of the first sequence name is 150 chars
+    QString name = GTUtilsMSAEditorSequenceArea::getVisibleNames(os).first();
+
+    CHECK_SET_ERR(name.size() == 150,
+                  QString("Unexpected sequence name length, expected: 150, current: %1")
+                          .arg(name.size()));
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
