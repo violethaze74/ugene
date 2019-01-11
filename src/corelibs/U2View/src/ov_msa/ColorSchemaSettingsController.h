@@ -34,7 +34,7 @@ const QString ColorSchemaSettingsPageId = "ColorSchemaSettings";
 class U2VIEW_EXPORT ColorSchemaSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    ColorSchemaSettingsPageController(MsaColorSchemeRegistry* mcsr, QObject* p = NULL);
+    ColorSchemaSettingsPageController(MsaColorSchemeRegistry* mcsr, QObject* p = nullptr);
 
     virtual AppSettingsGUIPageState* getSavedState();
 
@@ -42,7 +42,7 @@ public:
 
     virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
 
-    const QString& getHelpPageId() const {return helpPageId;};
+    const QString& getHelpPageId() const { return helpPageId; };
 
 signals:
     void si_customSettingsChanged();
