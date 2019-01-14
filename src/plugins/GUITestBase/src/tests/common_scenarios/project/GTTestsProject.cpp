@@ -199,9 +199,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj1.uprj");
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
-    GTUtilsDocument::removeDocument(os, "1CF7.PDB", GTGlobals::UseMouse);
+    GTUtilsDocument::removeDocument(os, "1CF7.pdb", GTGlobals::UseMouse);
     GTUtilsProject::checkProject(os, GTUtilsProject::Empty);
 }
 

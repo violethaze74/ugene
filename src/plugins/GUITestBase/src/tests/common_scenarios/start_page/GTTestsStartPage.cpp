@@ -111,7 +111,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006){
     GTGlobals::sleep();
     GTUtilsStartPage::clickResentProject(os, "proj1.uprj");
 //    Expected state: project is opened
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
     QString expectedTitle;
     expectedTitle = "proj1 UGENE";
