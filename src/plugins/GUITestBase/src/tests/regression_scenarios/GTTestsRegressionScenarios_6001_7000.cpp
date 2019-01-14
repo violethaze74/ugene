@@ -96,6 +96,7 @@
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
@@ -1911,6 +1912,7 @@ GUI_TEST_CLASS_DEFINITION(test_6314) {
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "IXI_234", veryLongName);
 
     //3. Save sequence and close the project
+    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Save all", GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::closeProject(os);
