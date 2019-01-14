@@ -4124,7 +4124,7 @@ GUI_TEST_CLASS_DEFINITION(test_1393) {
     // are the same as if you open the *.aln file in text editor.
     GTUtilsProjectTreeView::checkItem(os, "test_1393.aln");
 
-    const QString referenceMsaContent = getFileContent(testDir + "_common_data/clustal/test_1393.aln");
+    const QString referenceMsaContent = getFileContent(testDir + "_common_data/regression/1393/test_1393.aln");
     const QString resultMsaContent = getFileContent(sandBoxDir + "test_1393.aln");
     CHECK_SET_ERR(!referenceMsaContent.isEmpty() && referenceMsaContent == resultMsaContent, "Unexpected MSA content");
 }

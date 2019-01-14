@@ -909,7 +909,7 @@ GUI_TEST_CLASS_DEFINITION(test_4096) {
 
     GTUtilsProjectTreeView::checkItem(os, "test_4096.aln");
 
-    const QString referenceMsaContent = getFileContent(testDir + "_common_data/clustal/test_4096.aln");
+    const QString referenceMsaContent = getFileContent(testDir + "_common_data/regression/4096/test_4096.aln");
     const QString resultMsaContent = getFileContent(sandBoxDir + "test_4096.aln");
     CHECK_SET_ERR(!referenceMsaContent.isEmpty() && referenceMsaContent == resultMsaContent, "Unexpected MSA content");
 
