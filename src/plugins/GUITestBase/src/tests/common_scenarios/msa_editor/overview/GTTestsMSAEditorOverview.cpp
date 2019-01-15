@@ -498,7 +498,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0020) {
-/* 1. Open "_common_data/clustal/test_1393.aln".
+/* 1. Open "_common_data/regression/1393/test_1393.aln".
  * 2. Show simple overview.
  * 3. Select whole alignment.
  * Expected state: whole simple overview is filled with a selection rect.
@@ -507,7 +507,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
  * Current state: sequences are added, two of five sequences are selected in the sequence area, but the simple overview is filled with a selection rect like whole alignment is selected.
  */
 
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/test_1393.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/1393/test_1393.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
@@ -525,14 +525,14 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0021) {
-/* 1. Open "_common_data/clustal/test_1393.aln".
+/* 1. Open "_common_data/regression/1393/test_1393.aln".
  * 2. Select whole alignment.
  * 3. Show simple overview.
  * Expected state: whole simple overview is filled with a selection rect.
  * Current state: selection not showed.
  */
 
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/test_1393.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/1393/test_1393.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os);
@@ -546,7 +546,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0022) {
-/* 1. Open "_common_data/clustal/test_1393.aln".
+/* 1. Open "_common_data/regression/1393/test_1393.aln".
  * 2. Open ProjectView if it closed
  * 3. Select whole alignment.
  * 4. Show simple overview.
@@ -556,7 +556,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
  * Current state: selection is not full.
  */
 
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/test_1393.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/1393/test_1393.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::openView(os);
