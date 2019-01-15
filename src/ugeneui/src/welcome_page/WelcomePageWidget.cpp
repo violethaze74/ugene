@@ -109,8 +109,8 @@ void WelcomePageWidget::dragMoveEvent(QDragMoveEvent *event) {
 }
 
 void WelcomePageWidget::sl_loaded() {
-    controller->runJavaScript("document.activeElement.blur();");
     emit si_loaded();
+    controller->runJavaScript("document.activeElement.blur();");
 }
 
 bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
