@@ -28,6 +28,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BioStruct3DObject.h>
 #include <U2Core/GObject.h>
+#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -44,7 +45,7 @@ namespace U2 {
 static QList<BioStruct3DObject*> findAvailableBioStructs() {
     QList<GObject*> objs = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::BIOSTRUCTURE_3D);
     QList<BioStruct3DObject*> biostructs;
-    foreach (GObject *obj, objs) {
+    foreach(GObject *obj, objs) {
         BioStruct3DObject *bso = qobject_cast<BioStruct3DObject*> (obj);
         assert(bso);
         biostructs << bso;
@@ -54,15 +55,14 @@ static QList<BioStruct3DObject*> findAvailableBioStructs() {
 }
 
 StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject *fixedRef/* = 0*/, int fixedRefModel/* = -1*/, QWidget *parent/* = 0*/)
-        : QDialog(parent), task(0)
-{
+    : QDialog(parent), task(0) {
     setupUi(this);
     new HelpButton(this, buttonBox, "22055886");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
 
     StructuralAlignmentAlgorithmRegistry *reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
-    foreach (const QString &id, reg->getFactoriesIds()) {
+    foreach(const QString &id, reg->getFactoriesIds()) {
         algorithmCombo->addItem(id, qVariantFromValue(id));
     }
 
@@ -113,7 +113,7 @@ void StructuralAlignmentDialog::accept() {
     // Since we unable to change mob structure we clone the GObject
     // TODO: clone live-range?
     U2OpStatus2Log os;
-    const U2DbiRef dbiRef = AppContext::getDbiRegistry( )->getSessionTmpDbiRef( os );
+    const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
     BioStruct3DObject *mobClone = qobject_cast<BioStruct3DObject*> (mobSubset.obj->clone(dbiRef, os));
     mobSubset.obj = mobClone;
 
@@ -141,8 +141,7 @@ int StructuralAlignmentDialog::execIfAlgorithmAvailable() {
     if (reg->getFactoriesIds().isEmpty()) {
         QMessageBox::warning(this, "Error", "No available algorithms, make sure that apropriate plugin loaded (for ex. PTools)");
         return Rejected;
-    }
-    else {
+    } else {
         return exec();
     }
 }

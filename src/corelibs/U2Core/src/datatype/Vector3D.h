@@ -23,11 +23,9 @@
 #define _U2_VECTOR_MATH_H_
 
 #include <QtGlobal>
-#include <math.h>
 #include <U2Core/global.h>
 
-namespace U2
-{
+namespace U2 {
 
 class Matrix44;
 

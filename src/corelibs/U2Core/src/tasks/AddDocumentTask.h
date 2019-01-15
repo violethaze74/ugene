@@ -25,8 +25,6 @@
 #include <U2Core/Task.h>
 #include <U2Core/DocumentModel.h>
 
-#include <QPointer>
-
 namespace U2 {
 
 class Document;
@@ -49,7 +47,7 @@ public:
     ReportResult report();
 
     QList<Task*> onSubTaskFinished(Task* subTask);
-    Document* getDocument() {return document;}
+    Document* getDocument() { return document; }
 private:
 
     Document*               document;

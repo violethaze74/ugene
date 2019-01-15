@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <math.h>
+
 #include "Vector3D.h"
 
 #include <U2Core/Matrix44.h>

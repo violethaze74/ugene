@@ -23,7 +23,6 @@
 #define _U2_UDRSCHEMA_H_
 
 #include <U2Core/U2OpStatus.h>
-#include <U2Core/U2Type.h>
 
 namespace U2 {
 

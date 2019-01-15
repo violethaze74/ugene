@@ -20,22 +20,19 @@
  */
 
 #include <U2Core/TextUtils.h>
-#include <U2Core/U2SafePoints.h>
 
 #include "U2Qualifier.h"
 
 namespace U2 {
 
-U2Qualifier::U2Qualifier()
-{
+U2Qualifier::U2Qualifier() {
 
 }
 
 U2Qualifier::U2Qualifier(const QString &name, const QString &value)
     : name(name),
-      value(value)
-{
-//    SAFE_POINT(isValid(), "An attempt to create an invalid qualifier", );
+    value(value) {
+    //    SAFE_POINT(isValid(), "An attempt to create an invalid qualifier", );
 }
 
 bool U2Qualifier::isValid() const {

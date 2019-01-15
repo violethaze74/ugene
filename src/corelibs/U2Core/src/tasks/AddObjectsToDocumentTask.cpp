@@ -20,7 +20,6 @@
  */
 #include "AddObjectsToDocumentTask.h"
 
-#include <U2Core/GObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>

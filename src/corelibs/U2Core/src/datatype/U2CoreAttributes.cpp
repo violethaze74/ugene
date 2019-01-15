@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <QStringList>
-
 #include "U2CoreAttributes.h"
 
 namespace U2 {

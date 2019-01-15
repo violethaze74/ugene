@@ -21,7 +21,6 @@
 
 #include "ResourceTracker.h"
 
-#include <U2Core/Log.h>
 #include "Task.h"
 
 namespace U2 {

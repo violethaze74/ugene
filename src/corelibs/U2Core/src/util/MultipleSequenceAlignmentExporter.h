@@ -25,14 +25,12 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2DbiUtils.h>
-#include <U2Core/U2OpStatus.h>
-
 
 namespace U2 {
 
 struct MsaRowReplacementData {
-    MsaRowReplacementData( const DNASequence &_sequence, const U2MsaRow &_row )
-        : sequence( _sequence ), row( _row ) { }
+    MsaRowReplacementData(const DNASequence &_sequence, const U2MsaRow &_row)
+        : sequence(_sequence), row(_row) {}
 
     DNASequence sequence;
     U2MsaRow row;
@@ -41,13 +39,13 @@ struct MsaRowReplacementData {
 /** Getting a multiple sequence alignment from DBI */
 class U2CORE_EXPORT MultipleSequenceAlignmentExporter {
 public:
-                                        MultipleSequenceAlignmentExporter();
+    MultipleSequenceAlignmentExporter();
 
     MultipleSequenceAlignment                          getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId,
-                                            U2OpStatus& os) const;
+        U2OpStatus& os) const;
     U2Msa                               getAlignmentObject(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const;
     QList<MsaRowReplacementData> getAlignmentRows(const U2DbiRef& dbiRef, const U2DataId& msaId,
-                                            const QList<qint64> rowIds, U2OpStatus& os) const;
+        const QList<qint64> rowIds, U2OpStatus& os) const;
 
 private:
     QList<U2MsaRow>                     exportRows(const U2DataId&, U2OpStatus&) const;

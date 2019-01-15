@@ -23,7 +23,6 @@
 #define _U2_BIOSTRUCT3D_OBJECT_H_
 
 #include <U2Core/GObject.h>
-#include <U2Core/U2Region.h>
 #include <U2Core/BioStruct3D.h>
 #include <U2Core/U2RawData.h>
 
@@ -37,7 +36,7 @@ public:
     U2DataType getType() const;
 };
 
-class U2CORE_EXPORT BioStruct3DObject: public GObject {
+class U2CORE_EXPORT BioStruct3DObject : public GObject {
     Q_OBJECT
 public:
     static BioStruct3DObject * createInstance(const BioStruct3D &bioStruct3D, const QString &objectName, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hintsMap = QVariantMap());

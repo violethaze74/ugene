@@ -22,6 +22,8 @@
 #ifndef _U2_GENOME_ALIGNER_SEARCH_QUERY_H_
 #define _U2_GENOME_ALIGNER_SEARCH_QUERY_H_
 
+#include <QVector>
+
 #include <U2Core/DNASequence.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include "GenomeAlignerIndexPart.h"
@@ -65,10 +67,10 @@ public:
     quint32 firstMCount() const;
     bool contains(SAType result) const;
     const QVector<SAType>& getResults() const;
-    bool isWroteResult() const {return wroteResult;}
-    void writeResult() {wroteResult = true;}
-    SearchQuery *getRevCompl() {return revCompl;}
-    void setRevCompl(SearchQuery *rc) {revCompl = rc;}
+    bool isWroteResult() const { return wroteResult; }
+    void writeResult() { wroteResult = true; }
+    SearchQuery *getRevCompl() { return revCompl; }
+    void setRevCompl(SearchQuery *rc) { revCompl = rc; }
 
     qint64 memoryHint() const;
 private:

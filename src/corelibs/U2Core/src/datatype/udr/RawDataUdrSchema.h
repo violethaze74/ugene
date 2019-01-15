@@ -23,7 +23,6 @@
 #define _U2_RAWDATAUDRSCHEMA_H_
 
 #include <U2Core/U2RawData.h>
-#include <U2Core/UdrRecord.h>
 #include <U2Core/UdrSchema.h>
 #include <U2Core/global.h>
 

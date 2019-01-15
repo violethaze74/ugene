@@ -23,7 +23,6 @@
 #define _U2_USER_ACTIONS_WRITER_H_
 
 #include <QEvent>
-#include <QFile>
 #include <QMouseEvent>
 #include <QObject>
 #include <QMutex>
@@ -36,7 +35,7 @@ namespace U2 {
 class U2CORE_EXPORT UserActionsWriter : public QObject {
     Q_OBJECT
 public:
-     UserActionsWriter();
+    UserActionsWriter();
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);

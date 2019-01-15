@@ -32,7 +32,6 @@ class TextObject;
 class  U2CORE_EXPORT TextSelection : public LRegionsSelection {
 public:
     TextSelection(TextObject* _obj, QObject* p = NULL) : LRegionsSelection(GSelectionTypes::TEXT, p), obj(_obj) {}
-
     TextObject *getObject() const { return obj; }
 
 private:

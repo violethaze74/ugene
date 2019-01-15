@@ -26,6 +26,7 @@
 #include <U2Core/U2Location.h>
 #include <U2Core/U2Qualifier.h>
 
+#include <QDataStream>
 #include <QSharedData>
 #include <QVector>
 #include <QStringList>

@@ -103,7 +103,7 @@ public:
 
 class U2CORE_EXPORT MsaDbiUtils : public QObject {
     Q_OBJECT
-    friend class McaDbiUtils;
+        friend class McaDbiUtils;
 public:
 
     /**
@@ -178,8 +178,8 @@ public:
      * Parameter 'rowId' must contain a valid row ID in the database.
      */
     static void updateRowContent(const U2EntityRef& msaRef, qint64 rowId,
-                                 const QByteArray& seqBytes, const QList<U2MsaGap>& gaps,
-                                 U2OpStatus& os);
+        const QByteArray& seqBytes, const QList<U2MsaGap>& gaps,
+        U2OpStatus& os);
 
     /**
      * If some of specified rows is empty it will be removed.

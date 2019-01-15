@@ -23,6 +23,7 @@
 #define _U2_MYSQL_ASSEMBLY_UTILS_H_
 
 #include <U2Core/U2Assembly.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 

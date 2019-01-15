@@ -23,7 +23,6 @@
 #define _U2_MATRIX_44_H_
 
 #include <QVector>
-#include <QVariantList>
 
 #include <U2Core/global.h>
 

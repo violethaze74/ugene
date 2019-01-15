@@ -24,7 +24,6 @@
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
 
 namespace U2 {
 
@@ -45,7 +44,7 @@ public:
 
     /*
      * Select objects from @fromObjects that are referenced by relations stored in @obj with @relationRole and @type.
-    */
+     */
     static QList<GObject*> selectRelations(GObject* obj, GObjectType type,
         GObjectRelationRole relationRole, const QList<GObject*>& fromObjects,
         UnloadedObjectFilter f);

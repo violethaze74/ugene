@@ -22,7 +22,6 @@
 #include "LocalFileAdapter.h"
 #include "ZlibAdapter.h"
 
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/TextUtils.h>
 
@@ -37,7 +36,7 @@ IOAdapter* LocalFileAdapterFactory::createIOAdapter() {
 }
 
 GzippedLocalFileAdapterFactory::GzippedLocalFileAdapterFactory(QObject* o)
-: LocalFileAdapterFactory(o) {
+    : LocalFileAdapterFactory(o) {
     name = tr("GZIP file");
 }
 
@@ -48,8 +47,7 @@ IOAdapter* GzippedLocalFileAdapterFactory::createIOAdapter() {
 const quint64 LocalFileAdapter::BUF_SIZE = DocumentFormat::READ_BUFF_SIZE;
 
 LocalFileAdapter::LocalFileAdapter(LocalFileAdapterFactory* factory, QObject* o, bool b)
-    : IOAdapter(factory, o), f(NULL), fileSize(0), bufferOptimization(b)
-{
+    : IOAdapter(factory, o), f(NULL), fileSize(0), bufferOptimization(b) {
     bufferOptimization = true;
     if (bufferOptimization) {
         buffer = QByteArray(BUF_SIZE, '\0');
@@ -77,9 +75,9 @@ bool LocalFileAdapter::open(const GUrl& url, IOAdapterMode m) {
     f = new QFile(url.getURLString());
     QIODevice::OpenMode iomode;
     switch (m) {
-        case IOAdapterMode_Read: iomode = QIODevice::ReadOnly; break;
-        case IOAdapterMode_Write: iomode = QIODevice::WriteOnly | QIODevice::Truncate; break;
-        case IOAdapterMode_Append: iomode = QIODevice::WriteOnly | QIODevice::Append; break;
+    case IOAdapterMode_Read: iomode = QIODevice::ReadOnly; break;
+    case IOAdapterMode_Write: iomode = QIODevice::WriteOnly | QIODevice::Truncate; break;
+    case IOAdapterMode_Append: iomode = QIODevice::WriteOnly | QIODevice::Append; break;
     }
     bool res = f->open(iomode);
     if (!res) {
@@ -96,7 +94,7 @@ bool LocalFileAdapter::isOpen() const {
 }
 
 void LocalFileAdapter::close() {
-    SAFE_POINT(isOpen(), "Adapter is not opened!",);
+    SAFE_POINT(isOpen(), "Adapter is not opened!", );
     f->close();
     delete f;
     f = NULL;
@@ -104,7 +102,7 @@ void LocalFileAdapter::close() {
 }
 
 qint64 LocalFileAdapter::readBlock(char* data, qint64 size) {
-    SAFE_POINT(isOpen(), "Adapter is not opened!",-1);
+    SAFE_POINT(isOpen(), "Adapter is not opened!", -1);
     qint64 l = 0;
     if (bufferOptimization) {
         qint64 copySize = 0;
@@ -114,7 +112,7 @@ qint64 LocalFileAdapter::readBlock(char* data, qint64 size) {
                 if (formatMode == TextMode) {
                     bufLen = TextUtils::cutByteOrderMarks(bufData, errorMessage, bufLen);
                 }
-                if (bufLen == -1 || hasError()){
+                if (bufLen == -1 || hasError()) {
                     //error
                     return -1;
                 }
@@ -139,14 +137,14 @@ qint64 LocalFileAdapter::readBlock(char* data, qint64 size) {
 }
 
 qint64 LocalFileAdapter::writeBlock(const char* data, qint64 size) {
-    SAFE_POINT(isOpen(), "Adapter is not opened!",-1);
+    SAFE_POINT(isOpen(), "Adapter is not opened!", -1);
     qint64 l = f->write(data, size);
     fileSize += size;
     return l;
 }
 
 bool LocalFileAdapter::skip(qint64 nBytes) {
-    SAFE_POINT(isOpen(), "Adapter is not opened!",false);
+    SAFE_POINT(isOpen(), "Adapter is not opened!", false);
     if (bufferOptimization) {
         qint64 newPos = currentPos + nBytes;
         if (newPos < 0 || newPos >= bufLen) {
@@ -162,12 +160,12 @@ bool LocalFileAdapter::skip(qint64 nBytes) {
         }
     } else {
         qint64 p = f->pos();
-        return f->seek(p+nBytes);
+        return f->seek(p + nBytes);
     }
 }
 
 qint64 LocalFileAdapter::left() const {
-    SAFE_POINT(isOpen(), "Adapter is not opened!",-1);
+    SAFE_POINT(isOpen(), "Adapter is not opened!", -1);
     qint64 p = f->pos();
     if (bufferOptimization) {
         p -= bufLen - currentPos;
@@ -176,7 +174,7 @@ qint64 LocalFileAdapter::left() const {
 }
 
 int LocalFileAdapter::getProgress() const {
-    SAFE_POINT(isOpen(), "Adapter is not opened!",false);
+    SAFE_POINT(isOpen(), "Adapter is not opened!", false);
     return int(100 * float(bytesRead()) / fileSize);
 }
 

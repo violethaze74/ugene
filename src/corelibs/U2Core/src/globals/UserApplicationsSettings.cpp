@@ -118,7 +118,7 @@ bool UserAppsSettings::resetSettings() const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + RESET_SETTINGS_FLAG, false).toBool();
 }
 
-void UserAppsSettings::setResetSettings(bool b){
+void UserAppsSettings::setResetSettings(bool b) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + RESET_SETTINGS_FLAG, b);
 }
 
@@ -134,7 +134,7 @@ QString UserAppsSettings::getVisualStyle() const {
 #ifdef Q_OS_WIN
 #define DEFAULT_STYLE_NAME ".NET"
     const char* version = qVersion();
-    if (QString("4.4.0")!=version) {
+    if (QString("4.4.0") != version) {
         if (QStyleFactory::keys().contains(DEFAULT_STYLE_NAME)) {
             defaultStyle = DEFAULT_STYLE_NAME;
         }
@@ -149,7 +149,7 @@ void UserAppsSettings::setVisualStyle(const QString& newStyle) {
 }
 
 QString UserAppsSettings::getDownloadDirPath() const {
-    return AppContext::getSettings()->getValue(SETTINGS_ROOT + DOWNLOAD_DIR, QDir::homePath()+"/.UGENE_downloaded").toString();
+    return AppContext::getSettings()->getValue(SETTINGS_ROOT + DOWNLOAD_DIR, QDir::homePath() + "/.UGENE_downloaded").toString();
 }
 
 void UserAppsSettings::setDownloadDirPath(const QString& newPath) const {
@@ -174,17 +174,17 @@ void UserAppsSettings::setUserTemporaryDirPath(const QString& newPath) {
     emit si_temporaryPathChanged();
 }
 
-QString UserAppsSettings::getDefaultDataDirPath() const{
+QString UserAppsSettings::getDefaultDataDirPath() const {
     QString dirpath;
     dirpath = AppContext::getSettings()->getValue(SETTINGS_ROOT + DATA_DIR, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/" + "UGENE_Data").toString();
     QDir d(dirpath);
-    if(!d.exists(dirpath)){
+    if (!d.exists(dirpath)) {
         d.mkpath(dirpath);
     }
     return dirpath;
 }
 
-void UserAppsSettings::setDefaultDataDirPath( const QString& newPath ){
+void UserAppsSettings::setDefaultDataDirPath(const QString& newPath) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + DATA_DIR, newPath);
 }
 
@@ -208,7 +208,7 @@ void UserAppsSettings::setTabbedWindowLayout(bool b) {
 
 QString UserAppsSettings::getCurrentProcessTemporaryDirPath(const QString& domain) const {
     qint64 pid = QCoreApplication::applicationPid();
-    QString tmpDirPath = getUserTemporaryDirPath() + "/" +  QString("ugene_tmp/p%1").arg(pid);
+    QString tmpDirPath = getUserTemporaryDirPath() + "/" + QString("ugene_tmp/p%1").arg(pid);
     if (!domain.isEmpty()) {
         tmpDirPath += "/" + domain;
     }
@@ -249,7 +249,7 @@ QString UserAppsSettings::createCurrentProcessTemporarySubDir(U2OpStatus &os, co
 }
 
 QString UserAppsSettings::getFileStorageDir() const {
-    return AppContext::getSettings()->getValue(SETTINGS_ROOT + FILE_STORAGE_DIR, QDir::homePath()+"/.UGENE_files").toString();
+    return AppContext::getSettings()->getValue(SETTINGS_ROOT + FILE_STORAGE_DIR, QDir::homePath() + "/.UGENE_files").toString();
 }
 
 void UserAppsSettings::setFileStorageDir(const QString &newPath) {

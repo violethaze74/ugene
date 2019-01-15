@@ -28,7 +28,6 @@
 #include <QAuthenticator>
 #include <QEventLoop>
 
-#include <U2Core/global.h>
 #include <U2Core/U2OpStatus.h>
 
 namespace U2 {

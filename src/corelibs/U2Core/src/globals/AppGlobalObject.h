@@ -24,7 +24,6 @@
 
 #include <QObject>
 
-#include <U2Core/global.h>
 #include <U2Core/Identifiable.h>
 
 namespace U2 {

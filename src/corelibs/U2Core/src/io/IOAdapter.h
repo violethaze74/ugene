@@ -24,7 +24,6 @@
 
 #include <QObject>
 
-#include <U2Core/global.h>
 #include <U2Core/GUrl.h>
 
 namespace U2 {
@@ -39,9 +38,9 @@ class IOAdapter;
 
 class U2CORE_EXPORT IOAdapterFactory : public QObject {
 public:
-    IOAdapterFactory(QObject* p) : QObject(p){}
+    IOAdapterFactory(QObject* p) : QObject(p) {}
 
-    virtual IOAdapter* createIOAdapter()  = 0;
+    virtual IOAdapter* createIOAdapter() = 0;
 
     virtual IOAdapterId getAdapterId() const = 0;
 
@@ -59,15 +58,15 @@ class U2CORE_EXPORT IOAdapter : public QObject {
 public:
     IOAdapter(IOAdapterFactory* f, QObject* o = NULL) : QObject(o), formatMode(BinaryMode), factory(f) {}
 
-    virtual ~IOAdapter(){}
+    virtual ~IOAdapter() {}
 
-    IOAdapterId getAdapterId() const {return factory->getAdapterId();}
+    IOAdapterId getAdapterId() const { return factory->getAdapterId(); }
 
-    virtual const QString& getAdapterName() const  {return factory->getAdapterName();}
+    virtual const QString& getAdapterName() const { return factory->getAdapterName(); }
 
-    virtual bool isIOModeSupported(IOAdapterMode m) const  {return factory->isIOModeSupported(m);}
+    virtual bool isIOModeSupported(IOAdapterMode m) const { return factory->isIOModeSupported(m); }
 
-    IOAdapterFactory* getFactory() const {return factory;}
+    IOAdapterFactory* getFactory() const { return factory; }
 
     virtual bool open(const GUrl& url, IOAdapterMode m) = 0;
 
@@ -93,7 +92,7 @@ public:
     virtual qint64 readUntil(char* buff, qint64 maxSize, const QBitArray& readTerminators,
         TerminatorHandling th, bool* terminatorFound = 0);
 
-    virtual bool getChar(char* buff) {return 1 == readBlock(buff, 1);}
+    virtual bool getChar(char* buff) { return 1 == readBlock(buff, 1); }
 
     //If an error occurs, this function returns -1
     virtual qint64 readBlock(char* buff, qint64 maxSize) = 0;
@@ -103,7 +102,7 @@ public:
 
     virtual qint64 writeBlock(const char* buff, qint64 size) = 0;
 
-    qint64 writeBlock(const QByteArray& a) {return writeBlock(a.data(), a.size());}
+    qint64 writeBlock(const QByteArray& a) { return writeBlock(a.data(), a.size()); }
 
     /**
      * Both positive and negative values are accepted.
@@ -123,7 +122,7 @@ public:
 
     virtual GUrl getURL() const = 0;
 
-    virtual QString toString() const {return getURL().getURLString();}
+    virtual QString toString() const { return getURL().getURLString(); }
 
     /* Returns a human-readable description of the last device error that occurred */
     virtual QString errorString() const = 0;
@@ -140,7 +139,7 @@ private:
     IOAdapterFactory* factory;
 };
 
-class U2CORE_EXPORT IOAdapterRegistry  : public QObject {
+class U2CORE_EXPORT IOAdapterRegistry : public QObject {
 public:
     IOAdapterRegistry(QObject* p = NULL) : QObject(p) {}
 

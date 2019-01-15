@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QPoint>
+
 #include <U2Core/U2SafePoints.h>
 
 #include "MaIterator.h"

@@ -25,7 +25,6 @@
 #include <U2Core/InputStream.h>
 #include <U2Core/OutputStream.h>
 #include <U2Core/U2Dbi.h>
-#include <U2Core/UdrSchema.h>
 #include <U2Core/UdrRecord.h>
 
 namespace U2 {

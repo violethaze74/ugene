@@ -28,7 +28,6 @@
 #include <U2Core/PFMatrix.h>
 #include <U2Core/PWMatrix.h>
 #include <U2Core/PhyTree.h>
-#include <U2Core/U2OpStatus.h>
 
 namespace U2 {
 

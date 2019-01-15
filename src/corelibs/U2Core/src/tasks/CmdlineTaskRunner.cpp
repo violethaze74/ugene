@@ -22,7 +22,6 @@
 #include <QTextCodec>
 #include <QTimer>
 #include <U2Core/AppContext.h>
-#include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineUtils.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/Settings.h>
@@ -44,60 +43,58 @@ namespace U2 {
 
 
 CmdlineTaskConfig::CmdlineTaskConfig()
-: logLevel(LogLevel_DETAILS), withPluginList(false)
-{
-}
+    : logLevel(LogLevel_DETAILS), withPluginList(false) {}
 
 /************************************************************************/
 /* CmdlineTaskRunner */
 /************************************************************************/
 namespace {
-    const QString OUTPUT_ERROR_ARG = "ugene-output-error";
-    const QString OUTPUT_PROGRESS_ARG = "ugene-output-progress-state";
-    const QString OUTPUT_PROGRESS_TAG = "task-progress=";
-    const QString ERROR_KEYWORD = "#%*ugene-finished-with-error#%*";
+const QString OUTPUT_ERROR_ARG = "ugene-output-error";
+const QString OUTPUT_PROGRESS_ARG = "ugene-output-progress-state";
+const QString OUTPUT_PROGRESS_TAG = "task-progress=";
+const QString ERROR_KEYWORD = "#%*ugene-finished-with-error#%*";
 
-    inline int getLogNameCandidate(const QString &line, QString &nameCandidate) {
-        if ("" == line) {
-            return -1;
-        }
-
-        if (!line.startsWith("[")) {
-            return -1;
-        }
-
-        // maybe, @line is "[time][loglevel] log"
-        int openPos = line.indexOf("[", 1); // 1 because it is needed to skip first [time] substring
-        if (-1 == openPos) {
-            return -1;
-        }
-        int closePos = line.indexOf("]", openPos);
-        if (-1 == closePos) {
-            return -1;
-        }
-        nameCandidate = line.mid(openPos + 1, closePos - openPos - 1);
-        return closePos;
+inline int getLogNameCandidate(const QString &line, QString &nameCandidate) {
+    if ("" == line) {
+        return -1;
     }
 
-    QString getLogLevelName(LogLevel l) {
-        switch (l) {
-        case LogLevel_TRACE: return "TRACE";
-        case LogLevel_DETAILS: return "DETAILS";
-        case LogLevel_INFO: return "INFO";
-        case LogLevel_ERROR: return "ERROR";
-        default: assert(0);
-        }
-        return "";
+    if (!line.startsWith("[")) {
+        return -1;
     }
 
-    bool containsPrefix(const QStringList &args, const QString &prefix) {
-        foreach(const QString &arg, args) {
-            if (arg.startsWith(prefix)) {
-                return true;
-            }
-        }
-        return false;
+    // maybe, @line is "[time][loglevel] log"
+    int openPos = line.indexOf("[", 1); // 1 because it is needed to skip first [time] substring
+    if (-1 == openPos) {
+        return -1;
     }
+    int closePos = line.indexOf("]", openPos);
+    if (-1 == closePos) {
+        return -1;
+    }
+    nameCandidate = line.mid(openPos + 1, closePos - openPos - 1);
+    return closePos;
+}
+
+QString getLogLevelName(LogLevel l) {
+    switch (l) {
+    case LogLevel_TRACE: return "TRACE";
+    case LogLevel_DETAILS: return "DETAILS";
+    case LogLevel_INFO: return "INFO";
+    case LogLevel_ERROR: return "ERROR";
+    default: assert(0);
+    }
+    return "";
+}
+
+bool containsPrefix(const QStringList &args, const QString &prefix) {
+    foreach(const QString &arg, args) {
+        if (arg.startsWith(prefix)) {
+            return true;
+        }
+    }
+    return false;
+}
 }
 
 const QString CmdlineTaskRunner::REPORT_FILE_ARG = "ugene-write-task-report-to-file";
@@ -219,8 +216,7 @@ int CmdlineTaskRunner::killProcess(qint64 processId) {
 }
 
 CmdlineTaskRunner::CmdlineTaskRunner(const CmdlineTaskConfig &config)
-: Task(tr("Run UGENE command line: %1").arg(config.command), TaskFlag_NoRun), config(config), process(NULL)
-{
+    : Task(tr("Run UGENE command line: %1").arg(config.command), TaskFlag_NoRun), config(config), process(NULL) {
     tpm = Progress_Manual;
 }
 
@@ -303,7 +299,7 @@ void CmdlineTaskRunner::writeLog(QStringList &lines) {
             continue;
         }
 
-        for (int i=config.logLevel; i<LogLevel_NumLevels; i++) {
+        for (int i = config.logLevel; i < LogLevel_NumLevels; i++) {
             QString logLevelName = getLogLevelName((LogLevel)i);
             if (logLevelName != nameCandidate) {
                 continue;
@@ -312,7 +308,7 @@ void CmdlineTaskRunner::writeLog(QStringList &lines) {
             QString logLine = line.mid(closePos + 1);
             logLine = logLine.trimmed();
             bool commandToken = logLine.startsWith(OUTPUT_PROGRESS_TAG) || logLine.startsWith(ERROR_KEYWORD) || isCommandLogLine(logLine);
-            if (commandToken)  {
+            if (commandToken) {
                 continue;
             }
             taskLog.message((LogLevel)i, processLogPrefix + logLine);
@@ -369,7 +365,7 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
 
     foreach(const QString &line, lines) {
         QStringList words = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        foreach (const QString &word, words) {
+        foreach(const QString &word, words) {
             if (word.startsWith(OUTPUT_PROGRESS_TAG)) {
                 QString numStr = word.mid(OUTPUT_PROGRESS_TAG.size());
                 bool ok = false;
@@ -399,16 +395,15 @@ void CmdlineTaskRunner::sl_onFinish(int exitCode, QProcess::ExitStatus exitStatu
 /* CmdlineTask */
 /************************************************************************/
 namespace {
-    const int UPDATE_PROGRESS_INTERVAL = 500;
+const int UPDATE_PROGRESS_INTERVAL = 500;
 
-    void logError(const QString &error) {
-        coreLog.info(QString("%1%2%1").arg(ERROR_KEYWORD).arg(error));
-    }
+void logError(const QString &error) {
+    coreLog.info(QString("%1%2%1").arg(ERROR_KEYWORD).arg(error));
+}
 }
 
 CmdlineTask::CmdlineTask(const QString &name, TaskFlags flags)
-: Task(name, flags)
-{
+    : Task(name, flags) {
     if (AppContext::getCMDLineRegistry()->hasParameter(OUTPUT_PROGRESS_ARG)) {
         QTimer *timer = new QTimer(this);
         connect(timer, SIGNAL(timeout()), SLOT(sl_outputProgressAndState()));

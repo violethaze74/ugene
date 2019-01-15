@@ -22,6 +22,8 @@
 #ifndef _U2_ASSEMBLY_CONSENSUS_UTILS_H_
 #define _U2_ASSEMBLY_CONSENSUS_UTILS_H_
 
+#include <QVector>
+
 #include <U2Core/U2Assembly.h>
 #include <U2Core/U2Type.h>
 

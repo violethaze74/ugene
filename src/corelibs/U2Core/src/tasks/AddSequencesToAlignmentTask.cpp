@@ -27,7 +27,6 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2MsaDbi.h>
@@ -40,13 +39,12 @@ const int AddSequenceObjectsToAlignmentTask::maxErrorListSize = 5;
 
 AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QList<DNASequence>& seqList)
     : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC)),
-      seqList(seqList),
-      maObj(obj),
-      stateLock(NULL),
-      msaAlphabet(maObj->getAlphabet()),
-      dbi(NULL),
-      modStep(NULL)
-{
+    seqList(seqList),
+    maObj(obj),
+    stateLock(NULL),
+    msaAlphabet(maObj->getAlphabet()),
+    dbi(NULL),
+    modStep(NULL) {
     entityRef = maObj->getEntityRef();
 
     // reset modification inf.
@@ -125,7 +123,7 @@ Task::ReportResult AddSequenceObjectsToAlignmentTask::report() {
 qint64 AddSequenceObjectsToAlignmentTask::createRows(QList<U2MsaRow> &rows) {
     qint64 maxLength = 0;
     U2EntityRef entityRef = maObj->getEntityRef();
-    foreach (const DNASequence& seqObj, seqList) {
+    foreach(const DNASequence& seqObj, seqList) {
         if (isCanceled() || hasError()) {
             return 0;
         }
@@ -177,9 +175,9 @@ void AddSequenceObjectsToAlignmentTask::setupError() {
     setError(error);
 }
 
-void AddSequenceObjectsToAlignmentTask::releaseLock(){
+void AddSequenceObjectsToAlignmentTask::releaseLock() {
     if (stateLock != NULL) {
-        if(maObj != NULL) {
+        if (maObj != NULL) {
             maObj->unlockState(stateLock);
         }
         delete stateLock;

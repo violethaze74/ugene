@@ -22,8 +22,6 @@
 #ifndef _MA_ITERATOR_H_
 #define _MA_ITERATOR_H_
 
-#include <QPoint>
-
 #include <U2Core/MultipleAlignment.h>
 
 namespace U2 {

@@ -24,20 +24,15 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
-#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <QDir>
-#include <QCoreApplication>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -55,31 +50,30 @@ namespace U2 {
 #define START_WAIT_MSEC 3000
 
 ExternalToolRunTask::ExternalToolRunTask(const QString &_toolName, const QStringList &_arguments,
-ExternalToolLogParser *_logParser, const QString &_workingDirectory, const QStringList &_additionalPaths,
-const QString &_additionalProcessToKill, bool parseOutputFile)
-: Task(_toolName + tr(" tool"), TaskFlag_None),
-  arguments(_arguments),
-  logParser(_logParser),
-  toolName(_toolName),
-  workingDirectory(_workingDirectory),
-  additionalPaths(_additionalPaths),
-  externalToolProcess(NULL),
-  helper(NULL),
-  listener(NULL),
-  additionalProcessToKill(_additionalProcessToKill),
-  parseOutputFile(parseOutputFile)
-{
+    ExternalToolLogParser *_logParser, const QString &_workingDirectory, const QStringList &_additionalPaths,
+    const QString &_additionalProcessToKill, bool parseOutputFile)
+    : Task(_toolName + tr(" tool"), TaskFlag_None),
+    arguments(_arguments),
+    logParser(_logParser),
+    toolName(_toolName),
+    workingDirectory(_workingDirectory),
+    additionalPaths(_additionalPaths),
+    externalToolProcess(NULL),
+    helper(NULL),
+    listener(NULL),
+    additionalProcessToKill(_additionalProcessToKill),
+    parseOutputFile(parseOutputFile) {
     coreLog.trace("Creating run task for: " + toolName);
     if (NULL != logParser) {
         logParser->setParent(this);
     }
 }
 
-ExternalToolRunTask::~ExternalToolRunTask(){
+ExternalToolRunTask::~ExternalToolRunTask() {
     delete externalToolProcess;
 }
 
-void ExternalToolRunTask::run(){
+void ExternalToolRunTask::run() {
     if (hasError() || isCanceled()) {
         return;
     }
@@ -96,32 +90,32 @@ void ExternalToolRunTask::run(){
     }
     if (!additionalEnvVariables.isEmpty()) {
         QProcessEnvironment processEnvironment = externalToolProcess->processEnvironment();
-        foreach (const QString& envVarName, additionalEnvVariables.keys()) {
+        foreach(const QString& envVarName, additionalEnvVariables.keys()) {
             processEnvironment.insert(envVarName, additionalEnvVariables.value(envVarName));
         }
         externalToolProcess->setProcessEnvironment(processEnvironment);
     }
 
     helper.reset(new ExternalToolRunTaskHelper(this));
-    if(NULL != listener) {
+    if (NULL != listener) {
         helper->addOutputListener(listener);
     }
 
     externalToolProcess->start(pRun.program, pRun.arguments);
     bool started = externalToolProcess->waitForStarted(START_WAIT_MSEC);
 
-    if (!started){
+    if (!started) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName(toolName);
-        if (tool->isValid()){
+        if (tool->isValid()) {
             stateInfo.setError(tr("Can not run %1 tool.").arg(toolName));
         } else {
             stateInfo.setError(tr("Can not run %1 tool. May be tool path '%2' not valid?")
-                               .arg(toolName)
-                               .arg(AppContext::getExternalToolRegistry()->getByName(toolName)->getPath()));
+                .arg(toolName)
+                .arg(AppContext::getExternalToolRegistry()->getByName(toolName)->getPath()));
         }
         return;
     }
-    while(!externalToolProcess->waitForFinished(1000)){
+    while (!externalToolProcess->waitForFinished(1000)) {
         if (isCanceled()) {
             killProcess(externalToolProcess, additionalProcessToKill);
             algoLog.details(tr("Tool %1 is cancelled").arg(toolName));
@@ -131,7 +125,7 @@ void ExternalToolRunTask::run(){
 
     {
         int exitCode = externalToolProcess->exitCode();
-        if(exitCode != EXIT_SUCCESS && !hasError()) {
+        if (exitCode != EXIT_SUCCESS && !hasError()) {
             QString error;
             if (parseOutputFile) {
                 parseStandartOutputFile(outputFile);
@@ -153,7 +147,7 @@ QList<long> ExternalToolRunTask::getChildPidsRecursive(long parentPid) {
 }
 
 void ExternalToolRunTask::addOutputListener(ExternalToolListener* outputListener) {
-    if(helper) {
+    if (helper) {
         helper->addOutputListener(outputListener);
     }
     listener = outputListener;
@@ -192,22 +186,20 @@ ExternalToolListener* ExternalToolSupportTask::getListener(int listenerNumber) {
 ////////////////////////////////////////
 //ExternalToolRunTaskHelper
 ExternalToolRunTaskHelper::ExternalToolRunTaskHelper(ExternalToolRunTask* t)
-: process(t->externalToolProcess), logParser(t->logParser), os(t->stateInfo), listener(NULL)
-{
+    : process(t->externalToolProcess), logParser(t->logParser), os(t->stateInfo), listener(NULL) {
     logData.resize(1000);
     connect(process, SIGNAL(readyReadStandardOutput()), SLOT(sl_onReadyToReadLog()));
     connect(process, SIGNAL(readyReadStandardError()), SLOT(sl_onReadyToReadErrLog()));
 }
 
 ExternalToolRunTaskHelper::ExternalToolRunTaskHelper(QProcess *_process, ExternalToolLogParser *_logParser, U2OpStatus &_os)
-: process(_process), logParser(_logParser), os(_os), listener(NULL)
-{
+    : process(_process), logParser(_logParser), os(_os), listener(NULL) {
     logData.resize(1000);
     connect(process, SIGNAL(readyReadStandardOutput()), SLOT(sl_onReadyToReadLog()));
     connect(process, SIGNAL(readyReadStandardError()), SLOT(sl_onReadyToReadErrLog()));
 }
 
-void ExternalToolRunTaskHelper::sl_onReadyToReadLog(){
+void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
     QMutexLocker locker(&logMutex);
 
     CHECK(NULL != process, );
@@ -215,11 +207,11 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog(){
         process->setReadChannel(QProcess::StandardOutput);
     }
     int numberReadChars = process->read(logData.data(), logData.size());
-    while(numberReadChars > 0){
+    while (numberReadChars > 0) {
         //call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseOutput(line);
-        if(NULL != listener) {
+        if (NULL != listener) {
             listener->addNewLogMessage(line, ExternalToolListener::OUTPUT_LOG);
         }
         numberReadChars = process->read(logData.data(), logData.size());
@@ -227,7 +219,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog(){
     os.setProgress(logParser->getProgress());
 }
 
-void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog(){
+void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
     QMutexLocker locker(&logMutex);
 
     CHECK(NULL != process, );
@@ -235,11 +227,11 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog(){
         process->setReadChannel(QProcess::StandardError);
     }
     int numberReadChars = process->read(logData.data(), logData.size());
-    while(numberReadChars > 0){
+    while (numberReadChars > 0) {
         //call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseErrOutput(line);
-        if(NULL != listener) {
+        if (NULL != listener) {
             listener->addNewLogMessage(line, ExternalToolListener::ERROR_LOG);
         }
         numberReadChars = process->read(logData.data(), logData.size());
@@ -258,24 +250,24 @@ void ExternalToolRunTaskHelper::addOutputListener(ExternalToolListener* _listene
 ////////////////////////////////////////
 //ExternalToolLogParser
 ExternalToolLogParser::ExternalToolLogParser() {
-    progress=-1;
-    lastLine="";
-    lastErrLine="";
-    lastError="";
+    progress = -1;
+    lastLine = "";
+    lastErrLine = "";
+    lastError = "";
 }
 
-void ExternalToolLogParser::parseOutput(const QString &partOfLog){
+void ExternalToolLogParser::parseOutput(const QString &partOfLog) {
     lastPartOfLog = partOfLog.split(QChar('\n'));
-    lastPartOfLog.first() = lastLine+lastPartOfLog.first();
+    lastPartOfLog.first() = lastLine + lastPartOfLog.first();
     lastLine = lastPartOfLog.takeLast();
-    foreach (const QString &buf, lastPartOfLog) {
+    foreach(const QString &buf, lastPartOfLog) {
         processLine(buf);
     }
 }
 
-void ExternalToolLogParser::parseErrOutput(const QString &partOfLog){
+void ExternalToolLogParser::parseErrOutput(const QString &partOfLog) {
     lastPartOfLog = partOfLog.split(QChar('\n'));
-    lastPartOfLog.first() = lastErrLine+lastPartOfLog.first();
+    lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
     foreach(const QString &buf, lastPartOfLog) {
         processErrLine(buf);
@@ -311,19 +303,19 @@ void ExternalToolLogParser::setLastError(const QString &value) {
 
 ////////////////////////////////////////
 //ExternalToolSupportUtils
-void ExternalToolSupportUtils::removeTmpDir( const QString& tmpDirUrl, U2OpStatus& os) {
+void ExternalToolSupportUtils::removeTmpDir(const QString& tmpDirUrl, U2OpStatus& os) {
     if (tmpDirUrl.isEmpty()) {
         os.setError(tr("Can not remove temporary folder: path is empty."));
         return;
     }
     QDir tmpDir(tmpDirUrl);
-    foreach(const QString& file, tmpDir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries)){
+    foreach(const QString& file, tmpDir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries)) {
         if (!tmpDir.remove(file)) {
             os.setError(tr("Can not remove files from temporary folder."));
             return;
         }
     }
-    if (!tmpDir.rmdir(tmpDir.absolutePath())){
+    if (!tmpDir.rmdir(tmpDir.absolutePath())) {
         os.setError(tr("Can not remove folder for temporary files."));
     }
 }
@@ -362,9 +354,9 @@ bool ExternalToolSupportUtils::startExternalProcess(QProcess *process, const QSt
     bool started = process->waitForStarted(START_WAIT_MSEC);
 
 #ifdef Q_OS_WIN32
-    if(!started) {
+    if (!started) {
         QString execStr = WIN_LAUNCH_CMD_COMMAND + program;
-        foreach (const QString arg, arguments) {
+        foreach(const QString arg, arguments) {
             execStr += " " + arg;
         }
         process->start(execStr);
@@ -395,17 +387,17 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
     QString toolRunnerProgram = tool->getToolRunnerProgram();
     QString listenerProgramMessage = result.program;
 
-    if (!toolRunnerProgram.isEmpty()){
+    if (!toolRunnerProgram.isEmpty()) {
         ScriptingToolRegistry *stregister = AppContext::getScriptingToolRegistry();
         SAFE_POINT_EXT(NULL != stregister, os.setError("No scripting tool registry"), result);
         ScriptingTool *stool = stregister->getByName(toolRunnerProgram);
-        if (NULL == stool || stool->getPath().isEmpty()){
+        if (NULL == stool || stool->getPath().isEmpty()) {
             os.setError(QString("The tool %1 that runs %2 is not installed. Please set the path of the tool in the External Tools settings").arg(toolRunnerProgram).arg(toolName));
             return result;
         }
         result.arguments.prepend(result.program);
 
-        for (int i = stool->getRunParameters().size() - 1; i >= 0; i--){
+        for (int i = stool->getRunParameters().size() - 1; i >= 0; i--) {
             result.arguments.prepend(stool->getRunParameters().at(i));
         }
         foreach(const QString &param, tool->getToolRunnerAdditionalOptions()) {
@@ -423,8 +415,8 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
 
     QProcessEnvironment processEnvironment = QProcessEnvironment::systemEnvironment();
     QString path = additionalPaths.join(pathVariableSeparator) + pathVariableSeparator +
-                   tool->getAdditionalPaths().join(pathVariableSeparator) + pathVariableSeparator +
-                   processEnvironment.value("PATH");
+        tool->getAdditionalPaths().join(pathVariableSeparator) + pathVariableSeparator +
+        processEnvironment.value("PATH");
     if (!additionalPaths.isEmpty()) {
         algoLog.trace(QString("PATH environment variable: '%1'").arg(path));
     }
@@ -432,7 +424,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
 
     result.process = new QProcess();
     result.process->setProcessEnvironment(processEnvironment);
-    if (!workingDirectory.isEmpty()){
+    if (!workingDirectory.isEmpty()) {
         result.process->setWorkingDirectory(workingDirectory);
         algoLog.details(tr("Working folder is \"%1\"").arg(result.process->workingDirectory()));
     }
@@ -440,15 +432,15 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
     // QProcess wraps arguments that contain spaces in quotes automatically.
     // But launched line should look correctly in the log.
     QStringList argumentListForDisplay;
-    foreach (const QString& arg, result.arguments) {
+    foreach(const QString& arg, result.arguments) {
         argumentListForDisplay << GUrlUtils::getQuotedString(arg);
     }
     algoLog.details(tr("Launching %1 tool: %2 %3").arg(toolName).arg(result.program).arg(argumentListForDisplay.join(" ")));
 
-    if(NULL != listener) {
+    if (NULL != listener) {
         listener->setToolName(toolName);
         listener->addNewLogMessage(GUrlUtils::getQuotedString(listenerProgramMessage) + " " + ExternalToolSupportUtils::prepareArgumentsForCmdLine(arguments),
-                                   ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
+            ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     }
     return result;
 }
@@ -538,8 +530,7 @@ ExternalToolLogProcessor::~ExternalToolLogProcessor() {
 }
 
 ExternalToolListener::ExternalToolListener(ExternalToolLogProcessor *logProcessor) :
-    logProcessor(logProcessor)
-{
+logProcessor(logProcessor) {
 
 }
 

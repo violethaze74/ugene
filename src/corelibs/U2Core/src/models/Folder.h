@@ -22,9 +22,6 @@
 #ifndef _U2_FOLDER_H_
 #define _U2_FOLDER_H_
 
-#include <QMimeData>
-#include <QPointer>
-
 #include <U2Core/DocumentModel.h>
 
 namespace U2 {

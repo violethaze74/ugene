@@ -24,7 +24,6 @@
 
 #include <QSet>
 
-#include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 

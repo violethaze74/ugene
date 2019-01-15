@@ -24,8 +24,6 @@
 
 #include <QVariantMap>
 
-#include <U2Core/U2Region.h>
-
 #include "MultipleAlignmentRow.h"
 
 namespace U2 {
@@ -82,15 +80,15 @@ protected:
      * The name must be provided if this is not default alignment.
      */
     MultipleAlignmentData(const QString &name = QString(),
-                          const DNAAlphabet *alphabet = NULL,
-                          const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
+        const DNAAlphabet *alphabet = NULL,
+        const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
     MultipleAlignmentData(const MultipleAlignmentData &multipleAlignment);
 
 public:
     virtual ~MultipleAlignmentData();
 
     // TODO: marked to remove (if it is not used)
-//    const MultipleAlignmentData & operator=(const MultipleAlignmentData &other);
+    //    const MultipleAlignmentData & operator=(const MultipleAlignmentData &other);
 
     /**
      * Clears the alignment. Makes alignment length == 0.

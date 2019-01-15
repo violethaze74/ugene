@@ -25,7 +25,6 @@
 #include <U2Core/Annotation.h>
 #include <U2Core/AnnotationGroup.h>
 #include <U2Core/GObject.h>
-#include <U2Core/U2Feature.h>
 
 namespace U2 {
 
@@ -38,15 +37,15 @@ public:
      * This constructor is intended for interaction with Document. It encapsulates creation of
      * annotation table entity in DB.
      */
-                            AnnotationTableObject(const QString &objectName, const U2DbiRef &dbiRef,
-                                const QVariantMap &hintsMap = QVariantMap());
+    AnnotationTableObject(const QString &objectName, const U2DbiRef &dbiRef,
+        const QVariantMap &hintsMap = QVariantMap());
     /**
      * This constructor works with existed annotation table entity available via @tableRef.
      */
-                            AnnotationTableObject(const QString &objectName, const U2EntityRef &tableRef,
-                                const QVariantMap &hintsMap = QVariantMap());
+    AnnotationTableObject(const QString &objectName, const U2EntityRef &tableRef,
+        const QVariantMap &hintsMap = QVariantMap());
 
-                            ~AnnotationTableObject();
+    ~AnnotationTableObject();
     /**
      * Converts all the features stored in DB to annotations and returns the result
      */

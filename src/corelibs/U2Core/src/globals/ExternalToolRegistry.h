@@ -29,8 +29,6 @@
 #include <QStringList>
 #include <QVariant>
 
-#include <U2Core/IdRegistry.h>
-#include <U2Core/global.h>
 #include <U2Core/StrPackUtils.h>
 
 namespace U2 {
@@ -41,11 +39,10 @@ public:
 
     ExternalToolValidation(const QString& _toolRunnerProgram, const QString& _executableFile, const QStringList& _arguments, const QString& _expectedMsg, const StrStrMap& _possibleErrorsDescr = StrStrMap())
         :toolRunnerProgram(_toolRunnerProgram)
-        ,executableFile(_executableFile)
-        ,arguments(_arguments)
-        ,expectedMsg(_expectedMsg)
-        ,possibleErrorsDescr(_possibleErrorsDescr)
-    {}
+        , executableFile(_executableFile)
+        , arguments(_arguments)
+        , expectedMsg(_expectedMsg)
+        , possibleErrorsDescr(_possibleErrorsDescr) {}
 
 public:
     QString toolRunnerProgram;
@@ -70,7 +67,7 @@ public:
     const QIcon&        getWarnIcon()  const { return warnIcon; }
     const QString&      getDescription()  const { return description; }
     const QString&      getToolRunnerProgram()  const { return toolRunnerProgramm; }
-    const virtual QStringList  getToolRunnerAdditionalOptions() { return QStringList();}
+    const virtual QStringList  getToolRunnerAdditionalOptions() { return QStringList(); }
     const QString&      getExecutableFileName()  const { return executableFileName; }
     const QStringList&  getValidationArguments()  const { return validationArguments; }
     const QString&      getValidMessage()  const { return validMessage; }
@@ -133,7 +130,9 @@ class U2CORE_EXPORT ExternalToolModule : public ExternalTool {
     Q_OBJECT
 public:
     ExternalToolModule(const QString& name) :
-        ExternalTool(name, "") { isModuleTool = true; }
+        ExternalTool(name, "") {
+        isModuleTool = true;
+    }
 };
 
 class U2CORE_EXPORT ExternalToolValidationListener : public QObject {
@@ -152,7 +151,7 @@ public:
 signals:
     void si_validationComplete();
 
-public slots:
+    public slots:
     void sl_validationTaskStateChanged();
 
 private:
@@ -207,8 +206,8 @@ public:
     bool registerEntry(ExternalTool* t);
     void unregisterEntry(const QString& id);
 
-    void setToolkitDescription(const QString& toolkit, const QString& desc) {toolkits[toolkit] = desc;}
-    QString getToolkitDescription(const QString& toolkit) const {return toolkits[toolkit];}
+    void setToolkitDescription(const QString& toolkit, const QString& desc) { toolkits[toolkit] = desc; }
+    QString getToolkitDescription(const QString& toolkit) const { return toolkits[toolkit]; }
 
     QList<ExternalTool*> getAllEntries() const;
     QList< QList<ExternalTool*> > getAllEntriesSortedByToolKits() const;
@@ -225,7 +224,7 @@ protected:
 
 }; // ExternalToolRegistry
 
-class U2CORE_EXPORT DefaultExternalToolValidations{
+class U2CORE_EXPORT DefaultExternalToolValidations {
 public:
     static ExternalToolValidation pythonValidation();
     static ExternalToolValidation rValidation();
