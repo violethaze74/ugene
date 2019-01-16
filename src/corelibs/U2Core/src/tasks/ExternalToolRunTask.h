@@ -68,7 +68,8 @@ public:
     static void killProcess(QProcess *process, QString childProcesses = "");
 private:
     static QList<long> getChildPidsRecursive(long parentPid);
-    void parseStandartOutputFile(QString &filepath);
+    void parseStandartOutputFile(const QString &filepath);
+    void parseError(const QString& error);
 
     QStringList             arguments;
     ExternalToolLogParser*  logParser;
@@ -155,8 +156,7 @@ protected:
     virtual void processLine(const QString &line);
     virtual void processErrLine(const QString &line);
     virtual bool isError(const QString &line) const;
-
-    void setLastError(const QString &value);
+    virtual void setLastError(const QString &value);
 
 private:
     /* If any error occurred, this variable will be non-empty */

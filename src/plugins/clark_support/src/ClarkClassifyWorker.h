@@ -148,6 +148,18 @@ public:
     static const QString WORKFLOW_CLASSIFY_TOOL_CLARK;
 };
 
+class ClarkLogParser : public ExternalToolLogParser {
+public:
+    ClarkLogParser();
+
+private:
+    bool isError(const QString &line) const override;
+    void setLastError(const QString &errorKey) override;
+    static QMap<QString, QString> initWellKnownErrors();
+
+    static const QMap<QString, QString> wellKnownErrors;
+};
+
 class ClarkClassifyTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
@@ -156,8 +168,7 @@ public:
     const QString &getReportUrl() const {return reportUrl;}
 
 private:
-    void prepare();
-
+    void prepare() override;
     QStringList getArguments();
 
     const ClarkClassifySettings cfg;
