@@ -42,6 +42,7 @@
 #include <QTreeWidget>
 
 #include <QFile>
+#include <QFileInfoList>
 
 namespace U2{
 using namespace HI;
@@ -299,6 +300,25 @@ void AppSettingsDialogFiller::clickOnTool(HI::GUITestOpStatus &os, const QString
             return;
         }
     }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setExternalToolsDir"
+void AppSettingsDialogFiller::setExternalToolsDir(HI::GUITestOpStatus &os, const QString& dirPath) {
+    QWidget *dialog = QApplication::activeModalWidget();
+    GT_CHECK(dialog, "activeModalWidget is NULL");
+
+    openTab(os, ExternalTools);
+
+    QWidget* selectExToolsDirButton = GTWidget::findWidget(os, "selectToolPackButton", dialog);
+    GT_CHECK(selectExToolsDirButton, "selectToolPackButton not found");
+    while (!selectExToolsDirButton->isEnabled()) {
+        uiLog.trace("selectToolPackButton is disabled");
+        GTGlobals::sleep(100);
+    }
+    
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dirPath, "", GTFileDialogUtils::Choose));
+    GTWidget::click(os, selectExToolsDirButton);
 }
 #undef GT_METHOD_NAME
 

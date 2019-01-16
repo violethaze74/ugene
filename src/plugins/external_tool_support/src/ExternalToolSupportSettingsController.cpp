@@ -419,6 +419,7 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
     foreach(QTreeWidgetItem* item, listOfItems) {
         QWidget* itemWid = treeWidget->itemWidget(item, 1);
         if (par == itemWid) {       //may be no good method for check QTreeWidgetItem
+            emit si_setLockState(true);
             QString toolName = item->text(0);
             if (path.isEmpty()) {
                 item->setIcon(0, AppContext::getExternalToolRegistry()->getByName(toolName)->getGrayIcon());
@@ -430,7 +431,6 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
             ExternalToolValidationListener* listener = new ExternalToolValidationListener(toolName);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
             etManager->validate(toolName, path, listener);
-            emit si_setLockState(true);
         }
     }
 }
@@ -549,11 +549,11 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath() {
             }
         }
         if (!toolNames.isEmpty()) {
+            emit si_setLockState(true);
             ExternalToolManager* etManager = AppContext::getExternalToolRegistry()->getManager();
             ExternalToolValidationListener* listener = new ExternalToolValidationListener(toolNames);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
             etManager->validate(toolNames, toolPaths, listener);
-            emit si_setLockState(true);
         }
     }
 }
@@ -619,11 +619,11 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
                 QMessageBox::Ok);
         }
         if (!toolNames.isEmpty()) {
+            emit si_setLockState(true);
             ExternalToolManager* etManager = AppContext::getExternalToolRegistry()->getManager();
             ExternalToolValidationListener* listener = new ExternalToolValidationListener(toolNames);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
             etManager->validate(toolNames, toolPaths, listener);
-            emit si_setLockState(true);
         }
     }
 }

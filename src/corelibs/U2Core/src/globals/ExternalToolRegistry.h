@@ -151,7 +151,7 @@ public:
 signals:
     void si_validationComplete();
 
-    public slots:
+public slots:
     void sl_validationTaskStateChanged();
 
 private:

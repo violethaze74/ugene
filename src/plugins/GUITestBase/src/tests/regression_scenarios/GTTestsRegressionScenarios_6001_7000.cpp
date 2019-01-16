@@ -38,10 +38,12 @@
 #include <primitives/GTTableView.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
+#include <primitives/GTTreeWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
+#include <utils/GTThread.h>
 
 #include <U2Core/HttpFileAdapter.h>
 
@@ -1894,6 +1896,43 @@ GUI_TEST_CLASS_DEFINITION(test_6301) {
 
     CHECK_SET_ERR(!os.hasError(), os.getError());
 
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6309) {
+
+    class SetToolUrlScenario : public CustomScenario {
+    public:
+        SetToolUrlScenario() : CustomScenario() {}
+
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
+            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
+            QPushButton* pushButton = box->button(QDialogButtonBox::Ok);
+            CHECK_SET_ERR(pushButton != NULL, "pushButton is NULL");
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+            QString tabixPath = AppSettingsDialogFiller::getExternalToolPath(os, "Tabix");
+            QDir tabixDir(tabixPath);
+            tabixDir.cdUp();
+            tabixDir.cdUp();
+            QString extToolsPath = tabixDir.absolutePath();
+            AppSettingsDialogFiller::setExternalToolsDir(os, extToolsPath);
+
+            CHECK_SET_ERR(pushButton->isEnabled() == false , "pushButton is enabled");
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            CHECK_SET_ERR(pushButton->isEnabled() == true, "pushButton is disabled");
+            GTWidget::click(os, pushButton);
+        }
+    };
+    //1. Open UGENE
+    //2. Open menu Settings->Preferences select page 'External tools'
+    //3. Press top '...' button and select folder with external tools
+    //Expected state: Ok button and left Tree element with preferences pages are disabled while external tools validating
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetToolUrlScenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6314) {
