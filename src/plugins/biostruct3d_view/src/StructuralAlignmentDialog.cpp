@@ -29,6 +29,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BioStruct3DObject.h>
 #include <U2Core/GObject.h>
+#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>

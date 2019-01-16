@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <math.h>
 #include <time.h>
 
 #include <QColorDialog>
