@@ -220,6 +220,8 @@ QString AssemblyBrowser::tryAddObject(GObject * obj) {
     Document * objDoc = obj->getDocument();
     SAFE_POINT(NULL != objDoc, "", tr("Internal error: only object with document can be added to browser"));
 
+    static const QString unacceptableObjectError = tr("Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser.");
+
     if (GObjectTypes::SEQUENCE == obj->getGObjectType()) {
         U2SequenceObject * seqObj = qobject_cast<U2SequenceObject*>(obj);
         CHECK(NULL != seqObj, tr("Internal error: broken sequence object"));
@@ -230,7 +232,7 @@ QString AssemblyBrowser::tryAddObject(GObject * obj) {
         if (setRef) {
             const DNAAlphabet* alphabet = seqObj->getAlphabet();
             if (!alphabet->isNucleic()) {
-                return tr("Only nucleic sequence can be set as a reference!");
+                return unacceptableObjectError;
             }
             if(model->isDbLocked(100)){
                 return tr("Internal error: database is locked");
@@ -275,7 +277,7 @@ QString AssemblyBrowser::tryAddObject(GObject * obj) {
         addObjectToView(obj);
         connect(model.data(), SIGNAL(si_trackRemoved(VariantTrackObject *)), SLOT(sl_trackRemoved(VariantTrackObject *)));
     } else {
-        return tr("Only sequence or variant track objects can be added to assembly browser");
+        return unacceptableObjectError;
     }
 
     return "";
