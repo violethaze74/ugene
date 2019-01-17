@@ -22,6 +22,7 @@ del /s /f /q Makefile*
 del /s /f /q *.pdb
 del /s /f /q *.idb
 del /s /f /q *.vcproj*
+del /s /f /q *.vcxproj*
 del /s /f /q *.suo
 del /s /f /q *.ncb 
 del /s /f /q UpgradeLog.XML
