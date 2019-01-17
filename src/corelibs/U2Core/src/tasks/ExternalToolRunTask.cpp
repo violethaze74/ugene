@@ -126,12 +126,9 @@ void ExternalToolRunTask::run() {
     {
 
         QProcess::ExitStatus status = externalToolProcess->exitStatus();
+        int exitCode = externalToolProcess->exitCode();
         if (status == QProcess::CrashExit && !hasError()) {
-            QString error;
-            if (parseOutputFile) {
-                parseStandartOutputFile(outputFile);
-                error = logParser->getLastError();
-            }
+            QString error = parseStandartOutputFile();
             if (error.isEmpty()) {
                 QString intendedError = tr("%1 tool exited with the following error: %2 (Code: %3)")
                                            .arg(toolName)
@@ -142,7 +139,10 @@ void ExternalToolRunTask::run() {
             }
 
             setError(error);
-        } else if (status == QProcess::NormalExit) {
+        } else if (status == QProcess::NormalExit && exitCode != EXIT_SUCCESS && !hasError()) {
+            QString error = parseStandartOutputFile();
+            setError(error.isEmpty() ? tr("%1 tool exited with code %2").arg(toolName).arg(exitCode) : error);
+        } else if (status == QProcess::NormalExit && exitCode == EXIT_SUCCESS) {
             algoLog.details(tr("Tool %1 finished successfully").arg(toolName));
         }
     }
@@ -163,20 +163,23 @@ void ExternalToolRunTask::addOutputListener(ExternalToolListener* outputListener
     listener = outputListener;
 }
 
-void ExternalToolRunTask::parseStandartOutputFile(const QString &filepath) {
-    QFile f(filepath);
-    if (!f.open(QIODevice::ReadOnly)) {
-        return;
-    }
+QString ExternalToolRunTask::parseStandartOutputFile() const {
+    CHECK(parseOutputFile, QString());
+
+    QFile f(outputFile);
+    CHECK(f.open(QIODevice::ReadOnly), QString());
+
     QString output;
     for (QByteArray line = f.readLine(); line.length() > 0; line = f.readLine()) {
         output += line;
     }
     f.close();
     logParser->parseOutput(output);
+
+    return logParser->getLastError();
 }
 
-void ExternalToolRunTask::parseError(const QString& error) {
+void ExternalToolRunTask::parseError(const QString& error) const {
     logParser->parseErrOutput(error);
 }
 
