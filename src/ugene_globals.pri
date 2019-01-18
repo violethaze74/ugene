@@ -44,6 +44,13 @@ macx {
 linux-g++ {
     # We have a lot of such warning from QT -> disable them.
     QMAKE_CXXFLAGS += -Wno-expansion-to-defined
+    
+    # build with coverage (gcov) support, now for Linux only
+    equals(UGENE_GCOV_ENABLE, 1) {
+	message("Build with gcov support. See gcov/lcov doc for generating coverage info")
+	QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
+	QMAKE_LFLAGS += -lgcov --coverage
+    }
 }
 
 isEmpty( INSTALL_PREFIX )  : INSTALL_PREFIX  = /usr
