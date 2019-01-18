@@ -841,7 +841,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027){
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
 //    3. Drag and drop COI object to assembly browser
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok,
-                                                                "Only sequence or variant track objects can be added to assembly browser"));
+                                                                "Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser"));
     GTUtilsAssemblyBrowser::addRefFromProject(os, "COI");
 //    Expected: error message box appears
     GTGlobals::sleep(500);
