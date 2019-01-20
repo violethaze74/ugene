@@ -14,7 +14,7 @@ use_bundled_zlib() {
 
 LIBS += -lugenedb -lsamtools
 
-win32-msvc2013|win32-msvc2015 {
+win32-msvc2013|win32-msvc2015|win32-msvc2017 {
     DEFINES += NOMINMAX _XKEYCHECK_H
     LIBS += -lzlib
 }
@@ -40,7 +40,7 @@ win32 {
         LIBS -= -lugenedb -lsamtools
         LIBS += -lugenedbd -lsamtoolsd
 
-        win32-msvc2013|win32-msvc2015 {
+        win32-msvc2013|win32-msvc2015|win32-msvc2017 {
             LIBS -= -lzlib
             LIBS += -lzlibd
         }

@@ -52,7 +52,7 @@ INCLUDEPATH += ../../libs_3rdparty/sqlite3/src
         LIBS -= -L../../_release -lU2Core -lU2Algorithm -lugenedb -lsamtools
         LIBS += -L../../_debug -lU2Cored -lU2Algorithmd -lugenedbd -lsamtoolsd
 
-        win32-msvc2013|win32-msvc2015 {
+        win32-msvc2013|win32-msvc2015|win32-msvc2017 {
             LIBS -= -lzlib
             LIBS += -lzlibd
         }
