@@ -1656,6 +1656,7 @@ GUI_TEST_CLASS_DEFINITION( test_2266_1 ){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
+    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
