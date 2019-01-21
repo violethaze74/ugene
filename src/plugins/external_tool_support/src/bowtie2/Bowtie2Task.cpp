@@ -153,7 +153,9 @@ void Bowtie2AlignTask::prepare() {
         return;
     }
 
+    arguments.append("-x");
     arguments.append(settings.indexFileName);
+
     {
         // we assume that all datasets have same library type
         ShortReadSet::LibraryType libType = settings.shortReadSets.at(0).type;
