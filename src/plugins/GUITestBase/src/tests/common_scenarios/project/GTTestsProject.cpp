@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1198,13 +1198,13 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 
 //ann
 GUI_TEST_CLASS_DEFINITION(test_0072) {
-    //Ctrl+Shift+V в GUI-test?
+    //Ctrl+Shift+V ?? GUI-test?
     //UGENE-4907
     /*
     GTUtilsProject::openFiles(os, dataDir + "samples/Genbank/murine.gb");
     //select annotations
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/Genbank/sars.gb");
-    //Ctrl+Shift+V в GUI-test?
+    //Ctrl+Shift+V ?? GUI-test?
     //GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier + Qt::Key_Shift);
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1213,7 +1213,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0073) {
-    //Ctrl+Shift+V в GUI-test?
+    //Ctrl+Shift+V ?? GUI-test?
     /*
     GTUtilsProject::openFiles(os, dataDir + "samples/Genbank/murine.gb");
 
