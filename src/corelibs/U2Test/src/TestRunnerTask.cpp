@@ -142,8 +142,10 @@ QList<Task*> TestRunnerTask::onSubTaskFinished(Task* subTask) {
                     newEnv->setVar("TEMP_DATA_DIR", tempDir);
                 }
 
-                if (newEnv->getVars().contains("WORKFLOW_OUTPUT_DIR")) {
-                    newEnv->setVar("WORKFLOW_OUTPUT_DIR", suiteDir + newEnv->getVar("WORKFLOW_OUTPUT_DIR"));
+                if (!newEnv->getVars().contains("WORKFLOW_OUTPUT_DIR") || newEnv->getVar("WORKFLOW_OUTPUT_DIR").isEmpty()) {
+                    newEnv->setVar("WORKFLOW_OUTPUT_DIR", newEnv->getVar("TEMP_DATA_DIR"));
+                } else {
+                    newEnv->setVar("WORKFLOW_OUTPUT_DIR", suiteDir + "/" + newEnv->getVar("WORKFLOW_OUTPUT_DIR"));
                 }
 
                 QDir tmpDir(newEnv->getVar("TEMP_DATA_DIR"));
