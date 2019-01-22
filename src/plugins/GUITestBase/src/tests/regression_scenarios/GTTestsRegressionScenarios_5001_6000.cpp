@@ -1163,7 +1163,7 @@ GUI_TEST_CLASS_DEFINITION(test_5360) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::click(os, "Read FASTQ Files with Reads");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + QString::fromUtf8("_common_data/scenarios/_regression/5360/??????????/????????.fastq"), true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + QString::fromUtf8("_common_data/scenarios/_regression/5360/папка/риды.fastq"), true);
 
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -1345,7 +1345,7 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "5371.bam.ugenedb"));
 
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/??????????/", "?????? ??????????????.bam", GTFileDialogUtils::Open,
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open,
         GTGlobals::UseKey , GTFileDialogUtils::CopyPaste);
     GTUtilsDialog::waitForDialog(os, ob);
 
@@ -2638,7 +2638,7 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
     //GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QString sequence = "????????...";
+    QString sequence = "фыва...";
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setText(sequence);
 
@@ -4602,7 +4602,7 @@ GUI_TEST_CLASS_DEFINITION(test_5872) {
 //    4. Click to the position (3, 3).
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(2, 2));
 
-//    Expected state: there is no message in the log starting with ???'ASSERT: "!isInRange'.
+//    Expected state: there is no message in the log starting with 'ASSERT: "!isInRange'.
     GTUtilsLog::checkContainsMessage(os, logTracer, false);
 }
 
