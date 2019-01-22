@@ -458,7 +458,7 @@ void AnnotationsTreeView::sl_onItemSelectionChanged() {
 
 void AnnotationsTreeView::sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &added, const QList<Annotation *> &removed) {
     tree->disconnect(this, SIGNAL(sl_onItemSelectionChanged()));
-
+    clearGroupSelection();
     foreach (Annotation *a, removed) {
         AnnotationGroup *g = a->getGroup();
         AVAnnotationItem *item = findAnnotationItem(g, a);
@@ -1853,6 +1853,15 @@ void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const 
         }
     }
     sequenceSelection->addRegion(regionToSelect);
+}
+
+void AnnotationsTreeView::clearGroupSelection() {
+    foreach(QTreeWidgetItem *item, tree->selectedItems()) {
+        AVItem *groupItem = static_cast<AVItem *>(item);
+        if (groupItem != nullptr && groupItem->type == AVItemType_Group) {
+            item->setSelected(false);
+        }
+    }
 }
 
 void AnnotationsTreeView::sl_onCopyQualifierValue() {
