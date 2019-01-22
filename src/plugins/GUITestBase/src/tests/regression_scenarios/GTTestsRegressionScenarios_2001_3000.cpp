@@ -601,7 +601,7 @@ GUI_TEST_CLASS_DEFINITION( test_2021_9 )
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(44, 2), QPoint( 46,2));
     GTGlobals::sleep();
 
-    //3. Press BACKSPAC???
+    //3. Press BACKSPACE
     GTKeyboardDriver::keyClick(Qt::Key_Backspace );
     GTGlobals::sleep();
 
