@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -601,7 +601,7 @@ GUI_TEST_CLASS_DEFINITION( test_2021_9 )
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(44, 2), QPoint( 46,2));
     GTGlobals::sleep();
 
-    //3. Press BACKSPAC�
+    //3. Press BACKSPAC???
     GTKeyboardDriver::keyClick(Qt::Key_Backspace );
     GTGlobals::sleep();
 

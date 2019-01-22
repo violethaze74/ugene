@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -6382,7 +6382,7 @@ GUI_TEST_CLASS_DEFINITION( test_1628 ) {
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsMSAEditorSequenceArea::renameSequence(os, "Montana_montana", "йцукен123");
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "Montana_montana", "????????????123");
 
     QAbstractButton *undo = GTAction::button( os, "msa_action_undo" );
     CHECK_SET_ERR(undo != NULL, "Undo button is NULL");
@@ -6395,7 +6395,7 @@ GUI_TEST_CLASS_DEFINITION( test_1628 ) {
     GTGlobals::sleep();
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
-    CHECK_SET_ERR(names.contains("йцукен123") && !names.contains("Montana_montana"), "Undo-redo worked incorrectly");
+    CHECK_SET_ERR(names.contains("????????????123") && !names.contains("Montana_montana"), "Undo-redo worked incorrectly");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1629) {

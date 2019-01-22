@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -2261,7 +2261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022){
 //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//2. Select character â„–3 in "Phaneroptera_falcata"(G)
+//2. Select character ????????3 in "Phaneroptera_falcata"(G)
     GTUtilsMSAEditorSequenceArea::click(os,QPoint(2,0));
     QLabel* posLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os,"Position"));
     CHECK_SET_ERR(posLabel, "Position label not found");
@@ -2284,7 +2284,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1){//DIFFERENCE: Column label is tested
 //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//2. Select character â„–3 in "Phaneroptera_falcata"(G)
+//2. Select character ????????3 in "Phaneroptera_falcata"(G)
     GTUtilsMSAEditorSequenceArea::click(os,QPoint(2,0));
     QLabel* colLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os,"Column"));
     CHECK_SET_ERR(colLabel, "Column label not found");
