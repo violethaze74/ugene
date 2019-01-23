@@ -35,11 +35,15 @@ public:
     ReportResult report();
 
 private:
+    bool copyDirectry(const QString& from, const QString& to);
+
     QString             fromUrl;
     QString             toUrl;
+    bool                isDir;
 
     static const QString FROM_URL_ATTR;
     static const QString TO_URL_ATTR;
+    static const QString IS_DIRECTORY;
 };
 
 class GTest_AddSharedDbUrl : public XmlTest {
