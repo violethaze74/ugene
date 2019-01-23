@@ -403,6 +403,23 @@ void MWMDIManagerImpl::sl_onSubWindowActivated(QMdiSubWindow *w) {
     // clear old windows menu/tb content
     clearMDIContent(false);
 
+#ifdef Q_OS_MAC
+    // A workaround for UGENE-6315 (QTBUG-67895): background widgets are drawn over the foreground widget on macOS with the native style
+    if (QMdiArea::TabbedView == mdiArea->viewMode()) {
+        foreach (MDIItem *item, items) {
+            if (item != mdiItem && nullptr != item && nullptr != item->w && nullptr != item->qw) {
+                item->w->hide();
+                item->qw->setWindowFlags(item->qw->windowFlags() | Qt::FramelessWindowHint);
+            }
+        }
+
+        if (nullptr != mdiItem && nullptr != mdiItem->w && nullptr != mdiItem->qw) {
+            mdiItem->qw->setWindowFlags(mdiItem->qw->windowFlags() & (~Qt::FramelessWindowHint));
+            mdiItem->w->show();
+        }
+    }
+#endif
+
     // add new content to menu/tb
     QToolBar* tb = mw->getToolbar(MWTOOLBAR_ACTIVEMDI);
     mdiContentOwner = mdiItem;
