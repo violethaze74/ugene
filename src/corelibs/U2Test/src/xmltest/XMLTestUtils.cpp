@@ -208,9 +208,7 @@ void GTest_DeleteTmpFile::init(XMLTestFormat*, const QDomElement& el) {
 }
 
 Task::ReportResult GTest_DeleteTmpFile::report() {
-    if (!QFile::exists(url)) {
-        stateInfo.setError(QString("TMP file not found: %1").arg(url));
-    } else if(!QFileInfo(url).isDir()) {
+    if (!QFileInfo(url).isDir()) {
         QFile::remove(url);
     } else{
         GUrlUtils::removeDir(url, stateInfo);
