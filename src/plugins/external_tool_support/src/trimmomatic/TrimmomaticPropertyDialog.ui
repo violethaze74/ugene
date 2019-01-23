@@ -66,7 +66,7 @@
               <enum>QLayout::SetFixedSize</enum>
              </property>
              <item>
-              <widget class="QPushButton" name="buttonAdd">
+              <widget class="QToolButton" name="buttonAdd">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -104,6 +104,9 @@
                 <iconset resource="../../external_tool_support.qrc">
                  <normaloff>:/external_tool_support/images/add.png</normaloff>:/external_tool_support/images/add.png</iconset>
                </property>
+               <property name="popupMode">
+                <enum>QToolButton::InstantPopup</enum>
+               </property>
               </widget>
              </item>
              <item>
@@ -123,7 +126,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="buttonUp">
+              <widget class="QToolButton" name="buttonUp">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -183,7 +186,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="buttonDown">
+              <widget class="QToolButton" name="buttonDown">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -240,7 +243,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="buttonRemove">
+              <widget class="QToolButton" name="buttonRemove">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
