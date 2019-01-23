@@ -187,6 +187,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007){
     QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
+    //Close Project view for small screens
+    GTKeyboardDriver::keyClick('1', Qt::AltModifier);
 
     for(int i=0; i<12; i++){
         //saving overviews' images
