@@ -193,7 +193,7 @@ private:
 
     void annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotations, const U2Region selectedRegion = U2Region());
     void annotationDoubleClicked(AVAnnotationItem* item, const U2Region& selectedRegion, const int numOfClickedRegion = -1);
-    void clearGroupSelection();
+    void clearSelectedNotAnnotations();
 
     AnnotationsTreeWidget* tree;
 
