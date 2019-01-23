@@ -281,9 +281,6 @@ void TestRunnerService::readBuiltInVars() {
     if (!vars.contains("TEMP_DATA_DIR") || vars.value("TEMP_DATA_DIR").isEmpty()) {
         env->setVar("TEMP_DATA_DIR", "/_tmp");
     }
-    if (!vars.contains("WORKFLOW_OUTPUT_DIR") || vars.value("WORKFLOW_OUTPUT_DIR").isEmpty()) {
-        env->setVar("WORKFLOW_OUTPUT_DIR", "/_tmp");
-    }
 }
 
 void TestRunnerService::readSavedSuites() {
