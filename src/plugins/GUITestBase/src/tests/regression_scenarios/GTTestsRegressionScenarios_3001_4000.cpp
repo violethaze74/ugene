@@ -484,7 +484,7 @@ GUI_TEST_CLASS_DEFINITION(test_3073) {
 
     GTUtilsDocument::loadDocument(os, "test_3073.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(200);
     CHECK_SET_ERR( GTUtilsDocument::isDocumentLoaded(os, "human_T1.fa"), "Sequence file is not loaded!");
 
     GTUtilsLog::check(os, l);
