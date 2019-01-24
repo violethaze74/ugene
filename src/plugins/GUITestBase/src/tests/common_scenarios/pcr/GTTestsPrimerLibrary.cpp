@@ -719,6 +719,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
     // 5. Set the primers from the library
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PrimerLibrarySelectorFiller(os, 0, true));
     GTWidget::click(os, GTUtilsPcr::browseButton(os, U2Strand::Direct));
