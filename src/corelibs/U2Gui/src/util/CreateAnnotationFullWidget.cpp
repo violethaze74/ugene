@@ -132,6 +132,7 @@ void CreateAnnotationFullWidget::setUsePatternNamesVisible(bool visible) {
 }
 
 void CreateAnnotationFullWidget::setAnnotationTableOptionVisible(bool visible) {
+    gbSaveAnnotationsInnerWidget->setVisible(visible);
     saveAnnotationsInnerWidget->setVisible(visible);
 }
 
