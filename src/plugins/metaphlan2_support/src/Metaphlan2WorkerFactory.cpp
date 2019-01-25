@@ -39,6 +39,7 @@
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
+#include <U2Lang/PairedReadsPortValidator.h>
 #include <U2Lang/WorkflowEnv.h>
 
 #include <../ngs_reads_classification/src/DatabaseDelegate.h>
@@ -379,6 +380,7 @@ void Metaphlan2WorkerFactory::init() {
     proto->addExternalTool(Metaphlan2Support::ET_PYTHON);
     proto->addExternalTool(Metaphlan2Support::ET_PYTHON_NUMPY);
     proto->addExternalTool(Metaphlan2Support::ET_BOWTIE_2_ALIGNER);
+    proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     proto->setValidator(new Metaphlan2Validator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 

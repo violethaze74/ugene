@@ -1970,6 +1970,37 @@ GUI_TEST_CLASS_DEFINITION(test_6314) {
                           .arg(name.size()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6334) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Read FASTQ Files with PE Reads", "Classify Sequences with MetaPhlAn2" and connect them
+    WorkflowProcessItem* readElement = GTUtilsWorkflowDesigner::addElement(os, "Read FASTQ Files with PE Reads");
+    WorkflowProcessItem* metaphlan2Element = GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
+    GTUtilsWorkflowDesigner::connect(os, readElement, metaphlan2Element);
+
+    //3. Set "Classify" parameters: Inpet data = PE reads
+    GTUtilsWorkflowDesigner::click(os, metaphlan2Element);
+    GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
+
+    //4. Set the "Input URL 2" slot to "empty"
+    QTableWidget* table = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+    CHECK_SET_ERR(table != nullptr, "Input Ports table isn't found");
+
+    GTUtilsWorkflowDesigner::setTableValue(os, "Input URL 2", "<empty>", GTUtilsWorkflowDesigner::comboValue, table);
+
+    //5. Click validateThe mandatory "Input URL 2" slot is not connected.
+    GTUtilsWorkflowDesigner::click(os, metaphlan2Element);
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+
+    //Expected: there is the following validation error appeared:
+    //Classify Sequences with MetaPhlAn2: The mandatory "Input URL 2" slot is not connected."), "Expected error isn't found
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.contains("Classify Sequences with MetaPhlAn2: The mandatory \"Input URL 2\" slot is not connected."), "Expected error isn't found");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
