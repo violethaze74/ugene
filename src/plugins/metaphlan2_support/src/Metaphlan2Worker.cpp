@@ -107,7 +107,6 @@ Metaphlan2TaskSettings Metaphlan2Worker::getSettings(U2OpStatus &os) {
         settings.pairedReadsUrl = message.getData().toMap()[Metaphlan2WorkerFactory::PAIRED_INPUT_SLOT].toString();
     }
 
-    settings.inputType = getValue<QString>(Metaphlan2WorkerFactory::INPUT_FORMAT);
     settings.databaseUrl = getValue<QString>(Metaphlan2WorkerFactory::DB_URL);
     settings.numberOfThreads = getValue<int>(Metaphlan2WorkerFactory::NUM_THREADS);
     settings.analysisType = getValue<QString>(Metaphlan2WorkerFactory::ANALYSIS_TYPE);
