@@ -904,10 +904,12 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
     //Expected: Sequence length = 423
     const int length = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_SET_ERR(length == 423, QString("Unexpected sequence length, expected: 423, current: %1").arg(length));
+    GTGlobals::sleep(200);
 
     //Check annotaions
     foreach(const int i, QList<int>() << 30 << 376) {
         GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", i, 0, true);
+        GTGlobals::sleep();
         QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
         CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection annotation regions, expected: 1, current: %1").arg(sel.size()));
     }
