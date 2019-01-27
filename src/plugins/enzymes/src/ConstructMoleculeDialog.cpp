@@ -27,6 +27,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -39,6 +40,10 @@
 #include "ConstructMoleculeDialog.h"
 #include "CreateFragmentDialog.h"
 #include "EditFragmentDialog.h"
+
+// This is maximum sequence size we allow to use with construct molecule task on 32-bit OSes: 300Mb.
+// UGENE has 2Gb limitation on 32-bit systems and cloning algorithm is not optimized for memory limits.
+#define MAX_MOLECULE_SEQUENCE_LENGTH_32_BIT_OS (300 * 1000 * 1000)
 
 namespace U2 {
 
@@ -85,6 +90,14 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
     molConstructWidget->installEventFilter(this);
 }
 
+static bool is32BitOs() {
+    bool result = false;
+#ifdef Q_PROCESSOR_X86_32
+    result = true;
+#endif
+    return result;
+}
+
 void ConstructMoleculeDialog::accept()
 {
     if (selected.isEmpty()) {
@@ -93,9 +106,17 @@ void ConstructMoleculeDialog::accept()
     }
 
     QList<DNAFragment> toLigate;
-    foreach(int idx, selected)
-    {
-        toLigate.append(fragments[idx]);
+    qint64 resultSequenceSize = 0;
+    foreach(int idx, selected) {
+        const DNAFragment& fragment = fragments[idx];
+        foreach (const U2Region& region, fragment.getFragmentRegions()) {
+            resultSequenceSize += region.length;
+        }
+        toLigate.append(fragment);
+    }
+    if (is32BitOs() && resultSequenceSize > MAX_MOLECULE_SEQUENCE_LENGTH_32_BIT_OS) {
+        QMessageBox::warning(this->window(), L10N::warningTitle(),  tr("Selected region is too large to proceed!"));
+        return;
     }
 
     LigateFragmentsTaskConfig cfg;
