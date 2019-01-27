@@ -72,6 +72,7 @@ void GraphAction::sl_handleGraphAction() {
         ADVSingleSequenceWidget* sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(menuAction->seqWidget);
         if (sequenceWidget->getSequenceLength() > MAX_SEQUENCE_LENGTH_TO_ALLOW_GRAPHS) {
             QMessageBox::warning(sequenceWidget->window(), L10N::warningTitle(),  tr("Sequence size is too large to calculate graphs!"));
+            this->setChecked(false);
             return;
         }
         view = new GSequenceGraphViewWithFactory(sequenceWidget, factory);
