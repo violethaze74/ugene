@@ -216,7 +216,7 @@ Task * ClassificationReportWorker::tick() {
         if (outputFileUrl.isEmpty()) {
             QString reportFilePrefix = getReportFilePrefix(message);
             outputFileUrl = context->workingDir() +
-                    "/classification_report/";
+                    "/run/classification_report/";
             if (!reportFilePrefix.isEmpty()) {
                 outputFileUrl += reportFilePrefix + "_";
             }
