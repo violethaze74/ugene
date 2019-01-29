@@ -79,6 +79,7 @@ class U2TEST_EXPORT XMLTestUtils {
 public:
     static QList<XMLTestFactory*> createTestFactories();
     static void replacePrefix(const GTestEnvironment* env, QString &path);
+    static bool parentTasksHaveError(Task* t);
 
     static const QString TMP_DATA_DIR_PREFIX;
     static const QString COMMON_DATA_DIR_PREFIX;
