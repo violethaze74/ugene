@@ -410,9 +410,6 @@ static const QString OUTPUT_FILE = "Output file";
 static const QStringList INPUT_DATA_VALUES = { "SE reads or contigs",
                                                "PE reads" };
 
-static const QStringList INPUT_FILE_FORMAT_VALUES = { "FASTA",
-                                               "FASTQ" };
-
 static const QStringList ANALYSIS_TYPE_VALUES = { "Relative abundance",
                                                   "Relative abundance with reads statistics",
                                                   "Reads mapping",
@@ -484,14 +481,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         CHECK_SET_ERR(row == 2,
                       QString("Unexpected \"Input data\" row count, expected: 2, current: %1")
                               .arg(row));
-    }
-
-    {//6. Check "Input file format"
-        //Expected: current "Input file format" value is "FASTA"
-        QString inputFileFormat = GTUtilsWorkflowDesigner::getParameter(os, INPUT_FILE_FORMAT);
-        CHECK_SET_ERR(inputFileFormat == INPUT_FILE_FORMAT_VALUES.first(),
-                      QString("Unexpected \"Input file format\" value, expected: FASTA, current: %1")
-                              .arg(inputFileFormat));
     }
 
     {//7. Check "Database"
@@ -629,21 +618,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         }
     }
 
-    {
-        //9. Check if "Input file format" parameter has 2 values:
-        //FASTA, FASTQ
-        QStringList inputFileFormatValues = GTUtilsWorkflowDesigner::getComboBoxParameterValues(os, INPUT_FILE_FORMAT);
-        CHECK_SET_ERR(inputFileFormatValues.size() == INPUT_FILE_FORMAT_VALUES.size(),
-            QString("Unexpected \"Input file format\" values size, expected: %1, current: %2")
-                    .arg(INPUT_FILE_FORMAT_VALUES.size())
-                    .arg(inputFileFormatValues.size()));
-
-        foreach(const QString& value, INPUT_FILE_FORMAT_VALUES) {
-            CHECK_SET_ERR(inputFileFormatValues.contains(value),
-                          QString("Input file format doesn't contain %1 value, but should be")
-                                  .arg(value));
-        }
-    }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
