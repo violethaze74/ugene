@@ -253,7 +253,7 @@ Task::ReportResult GTest_RunCMDLine::report() {
 }
 
 void GTest_RunCMDLine::cleanup() {
-    if (!hasError()) {
+    if (!XMLTestUtils::parentTasksHaveError(this)) {
         foreach(const QString & file, tmpFiles) {
             taskLog.trace(QString("Temporary file removed: %1").arg(file));
             QFile::remove(file);

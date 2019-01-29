@@ -122,6 +122,19 @@ void XMLTestUtils::replacePrefix(const GTestEnvironment *env, QString &path){
     path = result.mid(0, result.size() - 1); // without the last ';'
 }
 
+bool XMLTestUtils::parentTasksHaveError(Task* t) {
+    Task* parentTask = t->getParentTask();
+    CHECK(nullptr != parentTask, false);
+
+    bool result = false;
+    if (parentTask->hasError()) {
+        result = true;
+    } else {
+        result = parentTasksHaveError(parentTask);
+    }
+    return result;
+}
+
 const QString XMLMultiTest::FAIL_ON_SUBTEST_FAIL = "fail-on-subtest-fail";
 const QString XMLMultiTest::LOCK_FOR_LOG_LISTENING = "lockForLogListening";
 
