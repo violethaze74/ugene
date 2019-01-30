@@ -71,6 +71,14 @@ QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirM
         if (!result.endsWith("/")) {
             result += "/";
         }
+        if (dirMode == WORKFLOW_INTERNAL_CUSTOM) {
+            if (!customDir.isEmpty()) {
+                result += customDir;
+            }
+            if (!result.endsWith("/")) {
+                result += "/";
+            }
+        }
     }
 
     QDir dir(result);

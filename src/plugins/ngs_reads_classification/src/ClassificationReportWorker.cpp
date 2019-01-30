@@ -215,14 +215,15 @@ Task * ClassificationReportWorker::tick() {
         QString outputFileUrl = getValue<QString>(OUT_FILE);
         if (outputFileUrl.isEmpty()) {
             QString reportFilePrefix = getReportFilePrefix(message);
-            outputFileUrl = context->workingDir() +
-                    "/run/classification_report/";
+            outputFileUrl = FileAndDirectoryUtils::createWorkingDir(context->workingDir(),
+                                    FileAndDirectoryUtils::WORKFLOW_INTERNAL_CUSTOM,
+                                    "classification_report/",
+                                    context->workingDir());
             if (!reportFilePrefix.isEmpty()) {
                 outputFileUrl += reportFilePrefix + "_";
             }
             outputFileUrl += producerClassifyToolName +
                     "_report.txt";
-            FileAndDirectoryUtils::createWorkingDir(outputFileUrl, FileAndDirectoryUtils::FILE_DIRECTORY, "", "");
         }
         outputFileUrl = GUrlUtils::rollFileName(QFileInfo(outputFileUrl).absoluteFilePath(), "_");
 

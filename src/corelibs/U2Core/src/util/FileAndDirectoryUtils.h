@@ -34,7 +34,8 @@ public:
     enum OutDirectory {
         FILE_DIRECTORY = 0,
         WORKFLOW_INTERNAL,
-        CUSTOM
+        CUSTOM,
+        WORKFLOW_INTERNAL_CUSTOM
     };
 
     static QString createWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
