@@ -617,7 +617,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                         .arg(value));
         }
     }
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
