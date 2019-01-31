@@ -45,7 +45,6 @@ public:
     static const QString PAIRED_INPUT_SLOT;
 
     static const QString SEQUENCING_READS;
-    static const QString INPUT_FORMAT;
     static const QString DB_URL;
     static const QString NUM_THREADS;
     static const QString ANALYSIS_TYPE;
@@ -57,9 +56,6 @@ public:
 
     static const QString SINGLE_END_TEXT;
     static const QString PAIRED_END_TEXT;
-
-    static const QString INPUT_TYPE_FASTA;
-    static const QString INPUT_TYPE_FASTQ;
 
     static const QString ANALYSIS_TYPE_REL_AB_TEXT;
     static const QString ANALYSIS_TYPE_REL_AB_W_READ_STATS_TEXT;

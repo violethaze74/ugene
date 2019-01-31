@@ -56,7 +56,6 @@ const QString Metaphlan2WorkerFactory::INPUT_SLOT = "reads-url1";
 const QString Metaphlan2WorkerFactory::PAIRED_INPUT_SLOT = "reads-url2";
 
 const QString Metaphlan2WorkerFactory::SEQUENCING_READS = "input-data";
-const QString Metaphlan2WorkerFactory::INPUT_FORMAT = "input-format";
 const QString Metaphlan2WorkerFactory::DB_URL = "database";
 const QString Metaphlan2WorkerFactory::NUM_THREADS = "threads";
 const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE = "analysis-type";
@@ -68,9 +67,6 @@ const QString Metaphlan2WorkerFactory::OUTPUT_URL = "output-url";
 
 const QString Metaphlan2WorkerFactory::SINGLE_END_TEXT = QCoreApplication::translate("Metaphlan2WorkerFactory", "SE reads or contigs");
 const QString Metaphlan2WorkerFactory::PAIRED_END_TEXT = QCoreApplication::translate("Metaphlan2WorkerFactory", "PE reads");
-
-const QString Metaphlan2WorkerFactory::INPUT_TYPE_FASTA = "fasta";
-const QString Metaphlan2WorkerFactory::INPUT_TYPE_FASTQ = "fastq";
 
 const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_REL_AB_TEXT = QCoreApplication::translate("Metaphlan2WorkerFactory", "Relative abundance");
 const QString Metaphlan2WorkerFactory::ANALYSIS_TYPE_REL_AB_W_READ_STATS_TEXT = QCoreApplication::translate("Metaphlan2WorkerFactory", "Relative abundance with reads statistics");
@@ -152,10 +148,6 @@ void Metaphlan2WorkerFactory::init() {
                                                 "Pass URL(s) to data to these slots.<br><br>"
                                                 "The input files should be in FASTA or FASTQ formats. See \"Input file format\" parameter."));
 
-        Descriptor inputFormatDescriptor(INPUT_FORMAT,
-                                         tr("Input file format"),
-                                         tr("Set type of an input file (--input-type). "
-                                            "Each input file will usually contain a lot of sequences that should be classified."));
 
         Descriptor databaseDescriptor(DB_URL,
                                       tr("Database"),
@@ -223,11 +215,6 @@ void Metaphlan2WorkerFactory::init() {
                                                                              PAIRED_INPUT_SLOT,
                                                                              QVariantList() << PAIRED_END));
 
-        Attribute* inputFormatAttribute = new Attribute(inputFormatDescriptor,
-                                                        BaseTypes::STRING_TYPE(),
-                                                        Attribute::None,
-                                                        INPUT_TYPE_FASTA);
-
         QString databasePath;
         U2DataPath* metaphlan2DataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::METAPHLAN2_DATABASE_DATA_ID);
         if (NULL != metaphlan2DataPath && metaphlan2DataPath->isValid()) {
@@ -277,7 +264,6 @@ void Metaphlan2WorkerFactory::init() {
         precenceThresholdAttribute->addRelation(new VisibilityRelation(ANALYSIS_TYPE, QVariantList() << ANALYSIS_TYPE_MARKER_PRES_TABLE_VALUE));
 
         attributes << sequencingReadsAttribute;
-        attributes << inputFormatAttribute;
         attributes << databaseAttribute;
         attributes << numberOfThreadsAttribute;
         attributes << analysisTypeAttribute;
@@ -294,11 +280,6 @@ void Metaphlan2WorkerFactory::init() {
         sequencingReadsMap[SINGLE_END_TEXT] = SINGLE_END;
         sequencingReadsMap[PAIRED_END_TEXT] = PAIRED_END;
         delegates[SEQUENCING_READS] = new ComboBoxDelegate(sequencingReadsMap);
-
-        QVariantMap inputFormatMap;
-        inputFormatMap["FASTA"] = INPUT_TYPE_FASTA;
-        inputFormatMap["FASTQ"] = INPUT_TYPE_FASTQ;
-        delegates[INPUT_FORMAT] = new ComboBoxDelegate(inputFormatMap);
 
         QList<StrStrPair> databaseMap;
         databaseMap << StrStrPair(NgsReadsClassificationPlugin::METAPHLAN2_DATABASE_DATA_ID,

@@ -32,7 +32,6 @@ struct  Metaphlan2TaskSettings {
     Metaphlan2TaskSettings();
 
     bool isPairedEnd;
-    QString inputType;
     QString databaseUrl;
     int numberOfThreads;
     QString analysisType;
@@ -62,6 +61,8 @@ private:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
     QStringList getArguments();
     void prepareClassifyTask();
+    DocumentFormatId detectInputFormats();
+    DocumentFormatId detectFormat(const GUrl& url);
 
     bool needToCountSequences;
     int sequencesNumber;
