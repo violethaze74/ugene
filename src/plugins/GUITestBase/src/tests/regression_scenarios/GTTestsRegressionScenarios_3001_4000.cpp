@@ -1508,22 +1508,31 @@ GUI_TEST_CLASS_DEFINITION(test_3229){
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
     GTUtilsWorkflowDesigner::connect(os, read, write);
+
 //    2. Set input a single file human_T1
     GTUtilsWorkflowDesigner::click(os, read);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
+
 //    3. Set the output path: ../test.fa or ./test.fa Output file
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "./test.fa", GTUtilsWorkflowDesigner::textValue);
+
 //    4. Run the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//    Expected state: there is a single result file on the WD dashboard.
-    //QString text = "test.fa\"
-    HIWebElement table = GTUtilsDashboard::findElement(os, "test.fa", "TABLE");
-    QString s = table.toInnerXml();
-    int i = s.count("test.fa");
 
-    CHECK_SET_ERR( i==3, "unexpected table content: " + s);
+//    Expected state: there is a single result file on the WD dashboard.
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+
+    const int expectedFilesCount = 1;
+    CHECK_SET_ERR(expectedFilesCount == outputFiles.size(),
+                  QString("An unexpected count of output files: expected %1, got %2")
+                  .arg(expectedFilesCount).arg(outputFiles.size()));
+
+    const QString expectedFileName = "test.fa";
+    CHECK_SET_ERR(expectedFileName == outputFiles.first(),
+                  QString("An unexpected result file name: expected '%1', got '%2'")
+                  .arg(expectedFileName).arg(outputFiles.first()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3245) {

@@ -92,9 +92,9 @@ QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus &os){
     return GTWidget::findExactWidget<QTabWidget*>(os, "WorkflowTabView");
 }
 
-QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os, const QString &producerName) {
-    const HIWebElement outputFilesWidget = GTWebView::findElementById(os, getDashboard(os), "output files", "table");
-    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsById(os, getDashboard(os), producerName, "button", outputFilesWidget);
+QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os) {
+    const QString selector = "button.btn.full-width.long-text";
+    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector);
     QStringList outputFilesNames;
     foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
         const QString outputFileName = outputFilesButton.toPlainText();
@@ -106,8 +106,9 @@ QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os, const QStr
 }
 
 #define GT_METHOD_NAME "clickOutputFile"
-void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outputFileName, const QString &producerName) {
-    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsById(os, getDashboard(os), producerName, "button");
+void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outputFileName) {
+    const QString selector = "button.btn.full-width.long-text";
+    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector);
     foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
         QString buttonText = outputFilesButton.toPlainText();
         if (buttonText == outputFileName) {
@@ -124,7 +125,7 @@ void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outpu
         }
     }
 
-    GT_CHECK(false, QString("The output file with name '%1' produced by '%2' not found").arg(outputFileName).arg(producerName));
+    GT_CHECK(false, QString("The output file with name '%1' not found").arg(outputFileName));
 }
 #undef GT_METHOD_NAME
 

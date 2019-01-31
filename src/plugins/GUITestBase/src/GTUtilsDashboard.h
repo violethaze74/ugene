@@ -37,8 +37,8 @@ public:
     static QWebView* getDashboard(HI::GUITestOpStatus &os);
     static QTabWidget* getTabWidget(HI::GUITestOpStatus &os);
 
-    static QStringList getOutputFiles(HI::GUITestOpStatus &os, const QString &producerName = "");
-    static void clickOutputFile(HI::GUITestOpStatus &os, const QString &outputFileName, const QString &producerName = "");
+    static QStringList getOutputFiles(HI::GUITestOpStatus &os);
+    static void clickOutputFile(HI::GUITestOpStatus &os, const QString &outputFileName);
 
     static HI::HIWebElement findElement(HI::GUITestOpStatus &os, QString text, QString tag = "*", bool exactMatch = false);
     static HI::HIWebElement findTreeElement(HI::GUITestOpStatus &os, QString text);
