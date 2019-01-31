@@ -38,7 +38,6 @@ public:
     void init();
     Task *tick();
     void cleanup();
-    bool isReady() const;
 
 private slots:
     void sl_taskFinished(Task *task);
@@ -46,7 +45,6 @@ private slots:
 private:
     bool isReadyToRun() const;
     bool dataFinished() const;
-    QString checkPairedReads() const;
 
     KrakenClassifyTaskSettings getSettings(U2OpStatus &os);
     TaxonomyClassificationResult parseReport(const QString &url);

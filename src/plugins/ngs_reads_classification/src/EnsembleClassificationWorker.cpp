@@ -401,50 +401,50 @@ void EnsembleClassificationTask::run() {
     seqs.removeDuplicates();
     CHECK_OP(stateInfo, );
     seqs.sort();
-    QString csv;
-    csv.reserve(seqs.size() * 64);
     int counter = 0;
-    foreach (QString seq, seqs) {
-        CHECK_OP(stateInfo, );
-        stateInfo.setProgress(++counter * 100 /seqs.size());
 
-        TaxID id1 = taxData[0].value(seq, TaxonomyTree::UNDEFINED_ID);
-        TaxID id2 = taxData[1].value(seq, TaxonomyTree::UNDEFINED_ID);
-        TaxID id3 = taxData[2].value(seq, TaxonomyTree::UNDEFINED_ID);
-        if (id1 == TaxonomyTree::UNDEFINED_ID) {
-            QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT1);
-            algoLog.trace(msg);
-            hasMissing = true;
-            continue;
-        }
-        if (id2 == TaxonomyTree::UNDEFINED_ID) {
-            QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT2);
-            algoLog.trace(msg);
-            hasMissing = true;
-            continue;
-        }
-        if (tripleInput && id3 == TaxonomyTree::UNDEFINED_ID) {
-            QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT3);
-            algoLog.trace(msg);
-            hasMissing = true;
-            continue;
-        }
-        csv.append(seq).append(',').append(QString::number(id1)).append(',').append(QString::number(id2));
-        if (tripleInput) {
-            csv.append(',').append(QString::number(id3));
-        }
-        csv.append('\n');
-    }
-
+    outputFile = GUrlUtils::rollFileName(outputFile, "_");
     if (!QFileInfo(outputFile).isAbsolute()) {
         QString tmpDir = FileAndDirectoryUtils::createWorkingDir(workingDir, FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", workingDir);
         outputFile = tmpDir + '/' + outputFile;
     }
-    outputFile = GUrlUtils::rollFileName(outputFile, "_");
 
     QFile csvFile(outputFile);
     if (csvFile.open(QIODevice::Append)) {
-        csvFile.write(csv.toLocal8Bit());
+
+        foreach(QString seq, seqs) {
+            CHECK_OP(stateInfo, );
+            stateInfo.setProgress(++counter * 100 / seqs.size());
+
+            TaxID id1 = taxData[0].value(seq, TaxonomyTree::UNDEFINED_ID);
+            TaxID id2 = taxData[1].value(seq, TaxonomyTree::UNDEFINED_ID);
+            TaxID id3 = taxData[2].value(seq, TaxonomyTree::UNDEFINED_ID);
+            if (id1 == TaxonomyTree::UNDEFINED_ID) {
+                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT1);
+                algoLog.trace(msg);
+                hasMissing = true;
+                continue;
+            }
+            if (id2 == TaxonomyTree::UNDEFINED_ID) {
+                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT2);
+                algoLog.trace(msg);
+                hasMissing = true;
+                continue;
+            }
+            if (tripleInput && id3 == TaxonomyTree::UNDEFINED_ID) {
+                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT3);
+                algoLog.trace(msg);
+                hasMissing = true;
+                continue;
+            }
+            QString csvString;
+            csvString.append(seq).append(',').append(QString::number(id1)).append(',').append(QString::number(id2));
+            if (tripleInput) {
+                csvString.append(',').append(QString::number(id3));
+            }
+            csvString.append("\n");
+            csvFile.write(csvString.toLocal8Bit());
+        }
         csvFile.close();
     } else {
         setError(csvFile.errorString());

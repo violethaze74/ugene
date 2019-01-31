@@ -306,7 +306,7 @@ private:
 const QStringList ClarkBuildLogParser::wellKnownErrors = QStringList() << "abort" << "core dumped";
 
 void ClarkBuildTask::prepare() {
-    const QString db("custom");// = QString("custom_%1").arg(rank);
+    const QString db("custom");
     const QString reflist = dbUrl + "/.custom";
     QDir dir(dbUrl);
     if (!dir.mkpath(db)){

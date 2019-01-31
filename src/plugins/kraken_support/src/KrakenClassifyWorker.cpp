@@ -51,11 +51,9 @@ KrakenClassifyWorker::KrakenClassifyWorker(Actor *actor)
 
 void KrakenClassifyWorker::init() {
     input = ports.value(KrakenClassifyWorkerFactory::INPUT_PORT_ID);
-//    pairedInput = ports.value(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID);
     output = ports.value(KrakenClassifyWorkerFactory::OUTPUT_PORT_ID);
 
     SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::INPUT_PORT_ID), );
-//    SAFE_POINT(NULL != pairedInput, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID), );
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::OUTPUT_PORT_ID), );
 
     pairedReadsInput = (getValue<QString>(KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == KrakenClassifyTaskSettings::PAIRED_END);
@@ -84,44 +82,11 @@ Task *KrakenClassifyWorker::tick() {
         output->setEnded();
     }
 
-//    if (pairedReadsInput) {
-//        const QString error = checkPairedReads();
-//        if (!error.isEmpty()) {
-//            return new FailTask(error);
-//        }
-//    }
-
     return NULL;
 }
 
 void KrakenClassifyWorker::cleanup() {
 
-}
-
-bool KrakenClassifyWorker::isReady() const {
-    if (isDone()) {
-        return false;
-    }
-
-    const int hasMessage1 = input->hasMessage();
-    const bool ended1 = input->isEnded();
-//    if (!pairedReadsInput)
-    {
-        return hasMessage1 || ended1;
-    }
-/*
-    const int hasMessage2 = pairedInput->hasMessage();
-    const bool ended2 = pairedInput->isEnded();
-
-    if (hasMessage1 && hasMessage2) {
-        return true;
-    } else if (hasMessage1) {
-        return ended2;
-    } else if (hasMessage2) {
-        return ended1;
-    }
-
-    return ended1 && ended2;*/
 }
 
 void KrakenClassifyWorker::sl_taskFinished(Task *task) {
@@ -145,22 +110,11 @@ void KrakenClassifyWorker::sl_taskFinished(Task *task) {
 }
 
 bool KrakenClassifyWorker::isReadyToRun() const {
-    return input->hasMessage()/* && (!pairedReadsInput || pairedInput->hasMessage())*/;
+    return input->hasMessage();
 }
 
 bool KrakenClassifyWorker::dataFinished() const {
-    return input->isEnded() /*|| (pairedReadsInput && pairedInput->isEnded())*/;
-}
-
-QString KrakenClassifyWorker::checkPairedReads() const {
-    /*CHECK(pairedReadsInput, "");
-    if (input->isEnded() && (!pairedInput->isEnded() || pairedInput->hasMessage())) {
-        return tr("Not enough downstream reads datasets");
-    }
-    if (pairedInput->isEnded() && (!input->isEnded() || input->hasMessage())) {
-        return tr("Not enough upstream reads datasets");
-    }*/
-    return "";
+    return input->isEnded();
 }
 
 KrakenClassifyTaskSettings KrakenClassifyWorker::getSettings(U2OpStatus &os) {

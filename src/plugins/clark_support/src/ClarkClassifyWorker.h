@@ -80,7 +80,6 @@ public:
     ClarkClassifyWorker(Actor *a);
 protected:
     void init();
-    bool isReady() const;
     Task * tick();
     void cleanup();
 

@@ -252,12 +252,6 @@ void ClarkClassifyWorkerFactory::init() {
         Descriptor outputUrl(OUTPUT_URL, ClarkClassifyWorker::tr("Output file"),
                          ClarkClassifyWorker::tr("Specify the output file name."));
 
-//        Descriptor taxonomy(TAXONOMY, ClarkClassifyWorker::tr("Taxonomy"),
-//            ClarkClassifyWorker::tr("A set of files that define the taxonomic name and tree information, and the GI number to taxon map."
-//                                    "<br>The NCBI taxonomy is used by default."));
-
-//        Descriptor rank(TAXONOMY_RANK, ClarkClassifyWorker::tr("Taxonomy rank"),
-//            ClarkClassifyWorker::tr("All input sequences are classified against all taxa from the selected database, which are defined all at the same taxonomy level (--species, --genus, --family, --order, --class, --phylum)."));
 
         Descriptor kLength(K_LENGTH, ClarkClassifyWorker::tr("K-mer length"),
             ClarkClassifyWorker::tr("Set the k-mer length (-k).<br><br>"
@@ -325,9 +319,6 @@ void ClarkClassifyWorkerFactory::init() {
         }
         a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, clarkDatabasePath);
 
-//        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
-//        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
-
         Attribute *klenAttr = new Attribute(kLength, BaseTypes::NUM_TYPE(), Attribute::None, 31);
         klenAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_DEFAULT)));
         a << klenAttr;
@@ -346,8 +337,6 @@ void ClarkClassifyWorkerFactory::init() {
         Attribute *gapAttr = new Attribute(gap, BaseTypes::NUM_TYPE(), Attribute::None, 4);
         gapAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_LIGHT)));
         a << gapAttr;
-
-        //a << new Attribute( outFile, BaseTypes::STRING_TYPE(), false, "results.csv");
 
         a << new Attribute(db2ram, BaseTypes::BOOL_TYPE(), Attribute::None, false);
         a << new Attribute(numThreads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
@@ -470,33 +459,8 @@ void ClarkClassifyWorker::init() {
     }
 }
 
-bool ClarkClassifyWorker::isReady() const {
-    if (isDone()) {
-        return false;
-    }
-    const int hasMessage1 = input->hasMessage();
-    const bool ended1 = input->isEnded();
-    //if (!paired)
-    {
-        return hasMessage1 || ended1;
-    }
-/*
-    const int hasMessage2 = pairedInput->hasMessage();
-    const bool ended2 = pairedInput->isEnded();
-
-    if (hasMessage1 && hasMessage2) {
-        return true;
-    } else if (hasMessage1) {
-        return ended2;
-    } else if (hasMessage2) {
-        return ended1;
-    }
-
-    return ended1 && ended2;*/
-}
-
 Task * ClarkClassifyWorker::tick() {
-    if (input->hasMessage() /*&& (!paired || pairedInput->hasMessage())*/) {
+    if (input->hasMessage()) {
         const Message message = getMessageAndSetupScriptValues(input);
 
         QString readsUrl = message.getData().toMap()[ClarkClassifyWorkerFactory::INPUT_SLOT].toString();
@@ -526,7 +490,6 @@ Task * ClarkClassifyWorker::tick() {
         reportUrl = GUrlUtils::rollFileName(reportUrl, "_");
 
         if (paired) {
-//            const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
             pairedReadsUrl = message.getData().toMap()[ClarkClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
         }
         //TODO uncompress input files if needed
@@ -542,20 +505,6 @@ Task * ClarkClassifyWorker::tick() {
         algoLog.info("CLARK worker is done as input has ended");
         output->setEnded();
     }
-
-//    if (paired) {
-//        QString error;
-//        if (input->isEnded() && (!pairedInput->isEnded() || pairedInput->hasMessage())) {
-//            error = tr("Not enough downstream reads datasets");
-//        }
-//        if (pairedInput->isEnded() && (!input->isEnded() || input->hasMessage())) {
-//            error = tr("Not enough upstream reads datasets");
-//        }
-
-//        if (!error.isEmpty()) {
-//            return new FailTask(error);
-//        }
-//    }
 
     return NULL;
 }
