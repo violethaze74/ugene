@@ -397,7 +397,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 namespace GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element {
 
 static const QString INPUT_DATA = "Input data";
-static const QString INPUT_FILE_FORMAT = "Input file format";
 static const QString DATABASE = "Database";
 static const QString NUMBER_OF_THREADS = "Number of threads";
 static const QString ANALYSIS_TYPE = "Analysis type";
@@ -447,10 +446,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //Input data, Input data format, Database, Number of threads,
     //Analysis type, Tax level, Bowtie2 output file, Output file
     QStringList currentParameters = GTUtilsWorkflowDesigner::getAllParameters(os);
-    CHECK_SET_ERR(currentParameters.size() == 8,
-                  QString("Unexpected number of default parameters, expected: 8, current: %1")
+    CHECK_SET_ERR(currentParameters.size() == 7,
+                  QString("Unexpected number of default parameters, expected: 7, current: %1")
                           .arg(currentParameters.size()));
-    QStringList defaultParameters = { INPUT_DATA, INPUT_FILE_FORMAT, DATABASE, NUMBER_OF_THREADS,
+    QStringList defaultParameters = { INPUT_DATA, DATABASE, NUMBER_OF_THREADS,
                                       ANALYSIS_TYPE, TAX_LEVEL, BOWTIE2_OUTPUT_FILE, OUTPUT_FILE };
     foreach(const QString& par, defaultParameters) {
         CHECK_SET_ERR(currentParameters.contains(par), QString("The default parameter \"%1\" is missed").arg(par));
@@ -675,8 +674,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     //Expected: 7 parameters are represented
     allParameters = GTUtilsWorkflowDesigner::getAllParameters(os);
-    CHECK_SET_ERR(allParameters.size() == 7,
-                  QString("Unexpected parameters number, expected: 7, current: %1")
+    CHECK_SET_ERR(allParameters.size() == 6,
+                  QString("Unexpected parameters number, expected: 6, current: %1")
                           .arg(allParameters.size()));
 
     //6. Set "Analysis type" value to "Reads mapping"
@@ -687,8 +686,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     //Expected: 7 parameters are represented
     allParameters = GTUtilsWorkflowDesigner::getAllParameters(os);
-    CHECK_SET_ERR(allParameters.size() == 7,
-                  QString("Unexpected parameters number, expected: 7, current: %1")
+    CHECK_SET_ERR(allParameters.size() == 6,
+                  QString("Unexpected parameters number, expected: 6, current: %1")
                           .arg(allParameters.size()));
 
     //7. Set "Analysis type" value to "Marker abundance table"
