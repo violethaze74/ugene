@@ -80,6 +80,7 @@
 #include "bowtie2/Bowtie2Support.h"
 #include "bowtie2/Bowtie2Task.h"
 #include "bowtie2/Bowtie2Worker.h"
+#include "bowtie2/bowtie2_tests/Bowtie2Tests.h"
 #include "bwa/BwaMemWorker.h"
 #include "bwa/BwaSettingsWidget.h"
 #include "bwa/BwaSupport.h"
@@ -591,6 +592,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
 
         GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
         l->qlist = BowtieTests::createTestFactories();
+        l->qlist << Bowtie2Tests::createTestFactories();
 
         foreach(XMLTestFactory *f, l->qlist) {
             bool res = xmlTestFormat->registerTestFactory(f);
