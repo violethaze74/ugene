@@ -956,7 +956,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     void run(HI::GUITestOpStatus& os) {
         QWidget *dialog = QApplication::activeModalWidget();
 
-        QPushButton* addButton = GTWidget::findExactWidget<QPushButton*>(os, "buttonAdd", dialog);
+        QToolButton* addButton = GTWidget::findExactWidget<QToolButton*>(os, "buttonAdd", dialog);
         CHECK_SET_ERR(addButton != NULL, "addButton unexpectedly not found");
 
         GTWidget::click(os, addButton);

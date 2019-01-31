@@ -332,7 +332,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
 //    3. Fill the wizard till the end. Run the workflow.
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_3.ugenedb").absoluteFilePath());
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            GTGlobals::sleep(200);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
@@ -343,7 +344,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
 //    Expected state: the result alignment rows are named like "SZYD_Cas9_*".
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDashboard::clickOutputFile(os, "sanger_test_0005_3.ugenedb", "align-to-reference");
+    GTUtilsDashboard::clickOutputFile(os, "sanger_test_0005_3.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     const QStringList expectedReadsnames = QStringList() << "SZYD_Cas9_5B70"
@@ -405,7 +406,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
 //    4. Fill the wizard till the end. Run the workflow.
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_4.ugenedb").absoluteFilePath());
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            GTGlobals::sleep(200);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
@@ -416,7 +418,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
 //    Expected state: the result alignment rows are named like "sanger_*".
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDashboard::clickOutputFile(os, "sanger_test_0005_4.ugenedb", "align-to-reference");
+    GTUtilsDashboard::clickOutputFile(os, "sanger_test_0005_4.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     const QStringList expectedReadsnames = QStringList() << "sanger_01"
