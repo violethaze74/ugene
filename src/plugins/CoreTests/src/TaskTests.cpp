@@ -46,6 +46,9 @@ namespace U2 {
 #define RUN_AFTER_ALL_SUBS_FINISHED_FLAG_ATTR "run_after_all_subs"
 #define DELAY_ATTR       "ms"
 #define CONDITION_ATTR   "cond"
+#define BASE_TASK                 "base_task"
+#define INFINITE_TASK             "infinite_task"
+#define DESTRUCTOR_CLEANUP_TASK   "destructor_cleanup_task"
 
 class SThread : public QThread {
 public:
@@ -100,10 +103,24 @@ static Task::State stateFromString(QString str, bool *ok = NULL) {
     return taskState;
 }
 
+/*****************************************/
+/*InfiniteTestTask*/
+/*****************************************/
+
 void InfiniteTestTask::run() {
     while(!stateInfo.cancelFlag) {
         SThread::msleep(100);
     }
+}
+
+/*****************************************/
+/*DestructorCleanupTask*/
+/*****************************************/
+
+DestructorCleanupTask::DestructorCleanupTask(QString taskName, TaskFlags f) :Task(taskName, f) {}
+
+DestructorCleanupTask::~DestructorCleanupTask() {
+    cleanup();
 }
 
 StateOrderTestTask::StateOrderTestTask(StateOrderTestTaskCallback *ptr, TaskFlags _f)
@@ -166,11 +183,13 @@ void GTest_TaskCreateTest::init(XMLTestFormat *tf, const QDomElement& el) {
         }
     }
 
-    if( taskType_str == "base_task") {
+    if (taskType_str == BASE_TASK) {
         task = new Task(taskName_str, taskFlags|TaskFlags(TaskFlag_NoRun));
-    } else if(taskType_str == "infinite_task") {
+    } else if (taskType_str == INFINITE_TASK) {
         task = new InfiniteTestTask(taskName_str, taskFlags);
-    } else {
+    } else if (taskType_str == DESTRUCTOR_CLEANUP_TASK) {
+        task = new DestructorCleanupTask(taskName_str, taskFlags | TaskFlags(TaskFlag_NoRun));
+    }  else {
         failMissingValue(TASK_TYPE_ATTR);
         return;
     }

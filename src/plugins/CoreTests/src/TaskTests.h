@@ -33,7 +33,14 @@ class InfiniteTestTask : public Task {
     Q_OBJECT
 public:
     InfiniteTestTask(QString _taskName, TaskFlags _f) : Task(_taskName, _f) {}
-    void run();
+    void run() override;
+};
+
+class DestructorCleanupTask : public Task {
+    Q_OBJECT
+public:
+    DestructorCleanupTask(QString taskName, TaskFlags f);
+    ~DestructorCleanupTask();
 };
 
 enum StateOrderType {
