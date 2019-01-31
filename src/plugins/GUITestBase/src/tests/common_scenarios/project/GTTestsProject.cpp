@@ -128,9 +128,9 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 //     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.pdb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
-    GTGlobals::sleep();    
-    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.pdb"); 
- 
+    GTGlobals::sleep();
+    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.pdb");
+
 // 7. Select "1CF7.PDB" in project tree and press Enter
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
     GTMouseDriver::click();
@@ -140,7 +140,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 // Expected state:
 //     1) Document is loaded,
-   GTUtilsDocument::checkDocument(os, "1CF7.pdb", AnnotatedDNAViewFactory::ID);   
+   GTUtilsDocument::checkDocument(os, "1CF7.pdb", AnnotatedDNAViewFactory::ID);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {

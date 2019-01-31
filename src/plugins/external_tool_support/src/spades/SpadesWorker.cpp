@@ -225,7 +225,7 @@ Task *SpadesWorker::tick() {
     CHECK(!os.hasError(), new FailTask(os.getError()));
 
     QVariantMap unitedPortContext;
-    
+
     int messageCounter = 0;
     int messageId = MessageMetadata::INVALID_ID;
     for (int i = 0; i < readsFetchers.size(); i++) {

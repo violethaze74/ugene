@@ -3321,7 +3321,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
 //    5. Accept the dialog.
 
     GTUtilsMsaEditor::removeColumn(os, 1);
-    GTThread::waitForMainThread();   
+    GTThread::waitForMainThread();
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
     GTGlobals::sleep(500);
 
