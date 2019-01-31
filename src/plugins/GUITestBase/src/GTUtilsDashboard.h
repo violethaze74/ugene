@@ -47,9 +47,44 @@ public:
     static bool areThereNotifications(HI::GUITestOpStatus &os);
     static void openTab(HI::GUITestOpStatus &os, Tabs tab);
 
+    static bool doesTabExist(HI::GUITestOpStatus &os, Tabs tab);
+
+// External tools tab
+    static QString getRootNode(HI::GUITestOpStatus &os);
+    static QString getNodeText(HI::GUITestOpStatus &os, const QString &nodeId);
+    static int getChildrenNodesCount(HI::GUITestOpStatus &os, const QString &nodeId);
+    static QString getChildNodeId(HI::GUITestOpStatus &os, const QString &nodeId, int childNum);
+    static QString getDescendantNodeId(HI::GUITestOpStatus &os, const QString &nodeId, const QList<int> &childNums);
+
+    static QSize getCopyButtonSize(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
+    static void clickCopyButton(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
+
+    // All parent nodes should be expanded
+    static bool isNodeVisible(HI::GUITestOpStatus &os, const QString &nodeId);
+    static bool isNodeCollapsed(HI::GUITestOpStatus &os, const QString &nodeId);
+    static void collapseNode(HI::GUITestOpStatus &os, const QString &nodeId);
+    static void expandNode(HI::GUITestOpStatus &os, const QString &nodeId);
+
+    static QString getLogFileUrlFromOutputNode(HI::GUITestOpStatus &os, const QString &outputNodeId);
+
+    static const QString TREE_ROOT_ID;      // This constant is defined in ExternalToolWidget.js
+
 private:
     static QMap<QString, Tabs> initTabMap();
+    static QString getNodeSpanId(const QString &nodeId);
+    static HI::HIWebElement getCopyButton(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
+    static HI::HIWebElement getNodeSpan(HI::GUITestOpStatus &os, const QString &nodeId);
+    static HI::HIWebElement getNodeUl(HI::GUITestOpStatus &os, const QString &nodeId);
+
     static const QMap<QString, Tabs> tabMap;
+    static const QString PARENT_LI;     // This constant is defined in ExternalToolWidget.js
+
+    // Some CSS attributes
+    static const QString WIDTH;
+    static const QString HEIGHT;
+    static const QString TITLE;
+    static const QString COLLAPSED_NODE_TITLE;
+    static const QString ON_CLICK;
 };
 
 }   // namespace U2

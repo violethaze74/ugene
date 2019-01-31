@@ -137,11 +137,13 @@ public:
     //sets input file with path "filePath" to the current dataset
     //this method should be called after selecting worker which contains dataset on scene
     static void setDatasetInputFile(HI::GUITestOpStatus &os, const QString &filePath, bool pastePath = false);
+    static void setDatasetInputFiles(HI::GUITestOpStatus &os, const QStringList &filePaths);
 
     static void addInputFile(HI::GUITestOpStatus &os, const QString &elementName, const QString &url);
 
     //sets input folder with path "filePath" to dataset
     static void setDatasetInputFolder(HI::GUITestOpStatus &os, QString filePath);
+    static void setDatasetInputFolders(HI::GUITestOpStatus &os, const QStringList &dirPaths);
 
     //sets oneparameter worker parameter
     static void setParameter(HI::GUITestOpStatus& os, QString parameter, QVariant value, valueType type, GTGlobals::UseMethod method = GTGlobals::UseMouse);

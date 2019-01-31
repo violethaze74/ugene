@@ -70,6 +70,7 @@ function ExternalToolsWidget(containerId) {
     var BACK_SLASH = "s_quote";
     var SINGLE_QUOTE = "b_slash";
 
+    var TREE_ROOT_DIV_ID = 'treeRootDiv';
     var TREE_ROOT_ID = 'treeRoot';
 
     var LIMIT_EXEEDED_ATTRIBUTE = 'limitExeeded';
@@ -107,8 +108,8 @@ function ExternalToolsWidget(containerId) {
 
     function lwInitContainer(container) {
         var mainHtml =
-                '<div class="tree" id="' + TREE_ROOT_ID + '">' +
-                '<ul>'  +
+                '<div class="tree" id="' + TREE_ROOT_DIV_ID + '">' +
+                '<ul id="' + TREE_ROOT_ID + '">' +
                 '</ul>' +
                 '</div>';
 
@@ -242,8 +243,7 @@ function ExternalToolsWidget(containerId) {
         var actorNode = document.getElementById(actorNodeId);
 
         if (actorNode === null) {
-            var root = document.getElementById(TREE_ROOT_ID);
-            var rootList = root.getElementsByTagName('ul')[0];
+            var rootList = document.getElementById(TREE_ROOT_ID);
 
             if (rootList.hasAttribute(LIMIT_EXEEDED_ATTRIBUTE)) {
                 return;
@@ -455,23 +455,8 @@ function onButtonReleased(element, event) {
 }
 
 function copyRunInfo(event, toolRunNodeId) {
-    var resultString = "";
-
-    resultString += getElementText(toolRunNodeId + '_command_content_span');
-    agent.setClipboardText(resultString);
+    agent.setClipboardText(document.getElementById(toolRunNodeId + '_command_content_span').innerHTML);
     event.stopPropagation();
-}
-
-//Get text of the element without linebreak symbols
-function getElementText(elementId) {
-    var pathNode = document.getElementById(elementId);
-
-    var resultString = "";
-    if(pathNode !== null) {
-        resultString = pathNode.innerHTML;
-        resultString = resultString.replace(/<br>/g, ' ');
-    }
-    return resultString;
 }
 
 function isNodeCollapsed(node) {

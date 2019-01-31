@@ -404,7 +404,6 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
     }
     result.program = tool->getPath();
     QString toolRunnerProgram = tool->getToolRunnerProgram();
-    QString listenerProgramMessage = result.program;
 
     if (!toolRunnerProgram.isEmpty()) {
         ScriptingToolRegistry *stregister = AppContext::getScriptingToolRegistry();
@@ -423,7 +422,6 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
             result.arguments.prepend(param);
         }
         result.program = stool->getPath();
-        listenerProgramMessage.prepend(result.program + " ");
     }
 
 #ifdef Q_OS_WIN
@@ -450,16 +448,12 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
 
     // QProcess wraps arguments that contain spaces in quotes automatically.
     // But launched line should look correctly in the log.
-    QStringList argumentListForDisplay;
-    foreach(const QString& arg, result.arguments) {
-        argumentListForDisplay << GUrlUtils::getQuotedString(arg);
-    }
-    algoLog.details(tr("Launching %1 tool: %2 %3").arg(toolName).arg(result.program).arg(argumentListForDisplay.join(" ")));
+    const QString commandWithArguments = GUrlUtils::getQuotedString(result.program) + ExternalToolSupportUtils::prepareArgumentsForCmdLine(result.arguments);
+    algoLog.details(tr("Launching %1 tool: %2").arg(toolName).arg(commandWithArguments));
 
     if (NULL != listener) {
         listener->setToolName(toolName);
-        listener->addNewLogMessage(GUrlUtils::getQuotedString(listenerProgramMessage) + " " + ExternalToolSupportUtils::prepareArgumentsForCmdLine(arguments),
-            ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
+        listener->addNewLogMessage(commandWithArguments, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     }
     return result;
 }
