@@ -308,9 +308,10 @@ Task * EnsembleClassificationWorker::tick() {
         }
         output->setContext(unitedContext, metadataId);
 
-        QString outputFile2 = getValue<QString>(OUT_FILE);
-        if (outputFile == DEFAULT_OUT_FILE_NAME) {
-            if (sourceFileUrl != NULL && !sourceFileUrl.isEmpty()) {
+        if (getValue<QString>(OUT_FILE).isEmpty()
+                && outputFile == DEFAULT_OUT_FILE_NAME) {
+            if (sourceFileUrl != NULL
+                    && !sourceFileUrl.isEmpty()) {
                 QString prefix = GUrlUtils::getPairedFastqFilesBaseName(sourceFileUrl, true);
                 if (!prefix.isEmpty()) {
                     outputFile = prefix + "_" + DEFAULT_OUT_FILE_NAME;
