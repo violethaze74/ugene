@@ -34,6 +34,10 @@ public:
                                            const QStringList &prefixes,
                                            const QString &extension,
                                            bool truncate);
+    static QString getBaseFileNameWithPrefixes(const QString &sourceFileUrl,
+                                           const QStringList &prefixes,
+                                           const QString &extension,
+                                           bool truncate);
     static int countClassified(const LocalWorkflow::TaxonomyClassificationResult &classification);
 
     static const QString CLASSIFICATION_SUFFIX;

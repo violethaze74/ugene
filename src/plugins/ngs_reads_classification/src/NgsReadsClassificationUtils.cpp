@@ -45,6 +45,23 @@ QString NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(const QString &
     return result;
 }
 
+QString NgsReadsClassificationUtils::getBaseFileNameWithPrefixes(const QString &sourceFileUrl,
+                                                             const QStringList &prefixes,
+                                                             const QString &extension,
+                                                             bool truncate) {
+    QString pairedName = GUrlUtils::getPairedFastqFilesBaseName(sourceFileUrl, truncate);
+    QString result = "";
+    foreach(const QString& prefix, prefixes) {
+        result += QString("%1_").arg(prefix);
+    }
+    result += pairedName;
+    if (pairedName.isEmpty()) {
+        result = result.right(result.size() - 1);
+    }
+    result += QString(".%1").arg(extension);
+    return result;
+}
+
 int NgsReadsClassificationUtils::countClassified(const LocalWorkflow::TaxonomyClassificationResult& classification) {
     LocalWorkflow::TaxonomyClassificationResult::const_iterator it;
     int classifiedCount = 0;

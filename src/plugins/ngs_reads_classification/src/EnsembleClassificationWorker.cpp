@@ -75,7 +75,9 @@ static const QString OUTPUT_SLOT = BaseSlots::URL_SLOT().getId();
 static const QString NUMBER_OF_TOOLS("number-tools");
 static const QString OUT_FILE("out-file");
 
-static const QString DEFAULT_OUT_FILE_NAME("ensemble.csv");
+static const QString DEFAULT_OUT_FILE_BASE_NAME("ensemble");
+static const QString DEFAULT_OUT_FILE_SUFFIX("csv");
+static const QString DEFAULT_OUT_FILE_NAME(DEFAULT_OUT_FILE_BASE_NAME + "." + DEFAULT_OUT_FILE_SUFFIX);
 
 QString EnsembleClassificationPrompter::composeRichDoc() {
     const QString outFile = getHyperlink(OUT_FILE, getURL(OUT_FILE, (bool*)0, "", DEFAULT_OUT_FILE_NAME));
@@ -243,10 +245,6 @@ void EnsembleClassificationWorker::init() {
     SAFE_POINT(NULL != input3, QString("Port with id '%1' is NULL").arg(INPUT_PORT3), );
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
 
-    outputFile = getValue<QString>(OUT_FILE);
-    if (outputFile.isEmpty()) {
-        outputFile = DEFAULT_OUT_FILE_NAME;
-    }
     tripleInput = getValue<int>(NUMBER_OF_TOOLS) == 3;
 }
 
@@ -270,10 +268,10 @@ Task * EnsembleClassificationWorker::tick() {
     if (isReadyToRun()) {
         QList<TaxonomyClassificationResult> taxData;
 
-        QString sourceFileUrl = NULL;
-        QString sourceFileUrl1 = NULL;
-        QString sourceFileUrl2 = NULL;
-        QString sourceFileUrl3 = NULL;
+        QString sourceFileUrl;
+        QString sourceFileUrl1;
+        QString sourceFileUrl2;
+        QString sourceFileUrl3;
 
         const Message message1 = getMessageAndSetupScriptValues(input1);
         taxData << message1.getData().toMap()[INPUT_SLOT1].value<TaxonomyClassificationResult>();
@@ -308,13 +306,16 @@ Task * EnsembleClassificationWorker::tick() {
         }
         output->setContext(unitedContext, metadataId);
 
-        if (getValue<QString>(OUT_FILE).isEmpty()
-                && outputFile == DEFAULT_OUT_FILE_NAME) {
-            if (sourceFileUrl != NULL
-                    && !sourceFileUrl.isEmpty()) {
+        outputFile = getValue<QString>(OUT_FILE);
+        if (outputFile.isEmpty()) {
+            outputFile = DEFAULT_OUT_FILE_NAME;
+            if (!sourceFileUrl.isEmpty()) {
                 QString prefix = GUrlUtils::getPairedFastqFilesBaseName(sourceFileUrl, true);
                 if (!prefix.isEmpty()) {
-                    outputFile = prefix + "_" + DEFAULT_OUT_FILE_NAME;
+                    outputFile = NgsReadsClassificationUtils::getBaseFileNameWithPrefixes(outputFile,
+                                                                                          QStringList() << prefix,
+                                                                                          DEFAULT_OUT_FILE_SUFFIX,
+                                                                                          true);
                 }
             }
         }
