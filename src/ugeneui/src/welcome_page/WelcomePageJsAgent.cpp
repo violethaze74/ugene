@@ -91,9 +91,6 @@ QString WelcomePageJsAgent::getUrlById(const QString &urlId) {
     if ("linkedin" == urlId) {
         return "https://www.linkedin.com/profile/view?id=200543736";
     }
-    if ("google_plus" == urlId) {
-        return "https://plus.google.com/u/0/110549832082666204900";
-    }
     if ("youtube" == urlId) {
         return "http://www.youtube.com/user/UniproUGENE";
     }
