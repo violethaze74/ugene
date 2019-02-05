@@ -76,8 +76,8 @@ static const QString NUMBER_OF_TOOLS("number-tools");
 static const QString OUT_FILE("out-file");
 
 static const QString DEFAULT_OUT_FILE_BASE_NAME("ensemble");
-static const QString DEFAULT_OUT_FILE_SUFFIX("csv");
-static const QString DEFAULT_OUT_FILE_NAME(DEFAULT_OUT_FILE_BASE_NAME + "." + DEFAULT_OUT_FILE_SUFFIX);
+static const QString DEFAULT_OUT_FILE_EXTENSION("csv");
+static const QString DEFAULT_OUT_FILE_NAME(DEFAULT_OUT_FILE_BASE_NAME + "." + DEFAULT_OUT_FILE_EXTENSION);
 
 QString EnsembleClassificationPrompter::composeRichDoc() {
     const QString outFile = getHyperlink(OUT_FILE, getURL(OUT_FILE, (bool*)0, "", DEFAULT_OUT_FILE_NAME));
@@ -314,8 +314,8 @@ Task * EnsembleClassificationWorker::tick() {
                 if (!prefix.isEmpty()) {
                     outputFile = NgsReadsClassificationUtils::getBaseFileNameWithPrefixes(outputFile,
                                                                                           QStringList() << prefix,
-                                                                                          DEFAULT_OUT_FILE_SUFFIX,
-                                                                                          true);
+                                                                                          DEFAULT_OUT_FILE_EXTENSION,
+                                                                                          false);
                 }
             }
         }

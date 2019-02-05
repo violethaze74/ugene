@@ -31,7 +31,7 @@ namespace U2 {
 class U2NGS_READS_CLASSIFICATION_EXPORT NgsReadsClassificationUtils {
 public:
     static QString getBaseFileNameWithSuffixes(const QString &sourceFileUrl,
-                                           const QStringList &prefixes,
+                                           const QStringList &suffixes,
                                            const QString &extension,
                                            bool truncate);
     static QString getBaseFileNameWithPrefixes(const QString &sourceFileUrl,

@@ -30,13 +30,13 @@ namespace U2 {
 const QString NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX = "classification";
 
 QString NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(const QString &sourceFileUrl,
-                                                             const QStringList &prefixes,
+                                                             const QStringList &suffixes,
                                                              const QString &extension,
                                                              bool truncate) {
     QString pairedName = GUrlUtils::getPairedFastqFilesBaseName(sourceFileUrl, truncate);
     QString result = pairedName;
-    foreach(const QString& prefix, prefixes) {
-        result += QString("_%1").arg(prefix);
+    foreach(const QString& suffix, suffixes) {
+        result += QString("_%1").arg(suffix);
     }
     if (pairedName.isEmpty()) {
         result = result.right(result.size() - 1);
@@ -56,7 +56,7 @@ QString NgsReadsClassificationUtils::getBaseFileNameWithPrefixes(const QString &
     }
     result += pairedName;
     if (pairedName.isEmpty()) {
-        result = result.right(result.size() - 1);
+        result.chop(1);
     }
     result += QString(".%1").arg(extension);
     return result;
