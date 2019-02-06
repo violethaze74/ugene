@@ -60,6 +60,7 @@ workflow "Parallel classification for PE reads"{
     metaphlan2-classify {
         type:metaphlan2-classify;
         name:MetaPhlAn2;
+        input-data:paired-end;
     }
 
     .actor-bindings {
@@ -92,6 +93,7 @@ workflow "Parallel classification for PE reads"{
     get-pe-reads-list.reads-url1->trimmomatic.in.reads-url1
     get-pe-reads-list.reads-url2->trimmomatic.in.reads-url2
     trimmomatic.reads-url1->metaphlan2-classify.in.reads-url1
+    trimmomatic.reads-url2->metaphlan2-classify.in.reads-url2
 
     .meta {
         visual {
