@@ -44,7 +44,7 @@ KrakenClassifyTaskSettings::KrakenClassifyTaskSettings()
 }
 
 KrakenClassifyTask::KrakenClassifyTask(const KrakenClassifyTaskSettings &settings)
-    : ExternalToolSupportTask(tr("Classify reads with Kraken"), TaskFlags_NR_FOSE_COSC),
+    : ExternalToolSupportTask(tr("Classify reads with Kraken"), TaskFlags_FOSE_COSC),
       settings(settings),
       classifyTask(NULL)
 {
@@ -58,6 +58,10 @@ KrakenClassifyTask::KrakenClassifyTask(const KrakenClassifyTaskSettings &setting
 
 const QString &KrakenClassifyTask::getClassificationUrl() const {
     return settings.classificationUrl;
+}
+
+const LocalWorkflow::TaxonomyClassificationResult & KrakenClassifyTask::getParsedReport() const {
+    return parsedReport;
 }
 
 void KrakenClassifyTask::prepare() {
@@ -92,6 +96,41 @@ QStringList KrakenClassifyTask::getArguments() {
     }
 
     return arguments;
+}
+
+void KrakenClassifyTask::run() {
+    QFile reportFile(settings.classificationUrl);
+    if (!reportFile.open(QIODevice::ReadOnly)) {
+        setError(tr("Cannot open classification report: %1").arg(settings.classificationUrl));
+    } else {
+        QByteArray line;
+
+        while ((line = reportFile.readLine()).size() != 0) {
+            if (line.startsWith("C\t") || line.startsWith("U\t")) {
+                QList<QByteArray> row = line.split('\t');
+                if (row.size() >= 5) {
+                    QString objID = row[1];
+                    QByteArray &assStr = row[2];
+                    algoLog.trace(QString("Found Kraken classification: %1=%2").arg(objID).arg(QString(assStr)));
+
+                    bool ok = true;
+                    LocalWorkflow::TaxID assID = assStr.toUInt(&ok);
+                    if (ok) {
+                        if (parsedReport.contains(objID)) {
+                            QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
+                            algoLog.info(msg);
+                        } else {
+                            parsedReport.insert(objID, assID);
+                        }
+                        continue;
+                    }
+                }
+            }
+            setError(tr("Broken Kraken report : %1").arg(settings.classificationUrl));
+            break;
+        }
+        reportFile.close();
+    }
 }
 
 }   // namespace U2

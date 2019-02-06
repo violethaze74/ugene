@@ -44,7 +44,6 @@ private slots:
 
 private:
     DiamondClassifyTaskSettings getSettings(U2OpStatus &os);
-    TaxonomyClassificationResult parseReport(const QString &url);
 
     IntegralBus *input;
     IntegralBus *output;

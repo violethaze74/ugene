@@ -24,6 +24,8 @@
 
 #include <U2Core/ExternalToolRunTask.h>
 
+#include "../ngs_reads_classification/src/TaxonomySupport.h"
+
 namespace U2 {
 
 struct DiamondClassifyTaskSettings {
@@ -69,16 +71,17 @@ public:
     DiamondClassifyTask(const DiamondClassifyTaskSettings &settings);
 
     const QString &getClassificationUrl() const;
+    const LocalWorkflow::TaxonomyClassificationResult &getParsedReport() const;
 
 private:
     void prepare();
-
+    void run() override;
     void checkSettings();
     QStringList getArguments() const;
 
     const DiamondClassifyTaskSettings settings;
-
     static const QString TAXONOMIC_CLASSIFICATION_OUTPUT_FORMAT;
+    LocalWorkflow::TaxonomyClassificationResult parsedReport;
 };
 
 }   // namespace U2

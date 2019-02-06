@@ -83,9 +83,6 @@ protected:
     Task * tick();
     void cleanup();
 
-private:
-    TaxonomyClassificationResult parseReport(const QString& url);
-
 private slots:
     void sl_taskFinished(Task *task);
 
@@ -165,16 +162,17 @@ public:
     ClarkClassifyTask(const ClarkClassifySettings &cfg, const QString &readsUrl, const QString &pairedReadsUrl, const QString &reportUrl);
 
     const QString &getReportUrl() const {return reportUrl;}
-
+    const TaxonomyClassificationResult &getParsedReport() const;
 private:
     void prepare() override;
+    void run() override;
     QStringList getArguments();
 
     const ClarkClassifySettings cfg;
     const QString readsUrl;
     const QString pairedReadsUrl;
     QString reportUrl;
-
+    TaxonomyClassificationResult parsedReport;
 };
 
 } //LocalWorkflow

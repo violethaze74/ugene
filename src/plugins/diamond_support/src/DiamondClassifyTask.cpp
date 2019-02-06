@@ -60,7 +60,7 @@ DiamondClassifyTaskSettings::DiamondClassifyTaskSettings()
 const QString DiamondClassifyTask::TAXONOMIC_CLASSIFICATION_OUTPUT_FORMAT = "102";  // from the DIAMOND manual
 
 DiamondClassifyTask::DiamondClassifyTask(const DiamondClassifyTaskSettings &settings)
-    : ExternalToolSupportTask(tr("Classify sequences with DIAMOND"), TaskFlags_NR_FOSE_COSC),
+    : ExternalToolSupportTask(tr("Classify sequences with DIAMOND"), TaskFlags_FOSE_COSC),
       settings(settings)
 {
     GCOUNTER(cvar, tvar, "DiamondClassifyTask");
@@ -70,6 +70,44 @@ DiamondClassifyTask::DiamondClassifyTask(const DiamondClassifyTaskSettings &sett
 
 const QString &DiamondClassifyTask::getClassificationUrl() const {
     return settings.classificationUrl;
+}
+
+const LocalWorkflow::TaxonomyClassificationResult & DiamondClassifyTask::getParsedReport() const {
+    return parsedReport;
+}
+
+void DiamondClassifyTask::run() {
+    QFile reportFile(settings.classificationUrl);
+    if (!reportFile.open(QIODevice::ReadOnly)) {
+        setError(tr("Cannot open classification report: %1").arg(settings.classificationUrl));
+    } else {
+        QByteArray line;
+
+        while ((line = reportFile.readLine()).size() != 0) {
+
+            QList<QByteArray> row = line.split('\t');
+            if (row.size() == 3) {
+                QString objID = row[0];
+                QByteArray &assStr = row[1];
+                algoLog.trace(QString("Found Diamond classification: %1=%2").arg(objID).arg(QString(assStr)));
+
+                bool ok = true;
+                LocalWorkflow::TaxID assID = assStr.toUInt(&ok);
+                if (ok) {
+                    if (parsedReport.contains(objID)) {
+                        QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
+                        algoLog.info(msg);
+                    } else {
+                        parsedReport.insert(objID, assID);
+                    }
+                    continue;
+                }
+            }
+            setError(tr("Broken Diamond report : %1").arg(settings.classificationUrl));
+            break;
+        }
+        reportFile.close();
+    }
 }
 
 void DiamondClassifyTask::prepare() {

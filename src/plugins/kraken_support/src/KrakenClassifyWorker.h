@@ -47,10 +47,7 @@ private:
     bool dataFinished() const;
 
     KrakenClassifyTaskSettings getSettings(U2OpStatus &os);
-    TaxonomyClassificationResult parseReport(const QString &url);
-
     IntegralBus *input;
-//    IntegralBus *pairedInput;
     IntegralBus *output;
 
     bool pairedReadsInput;

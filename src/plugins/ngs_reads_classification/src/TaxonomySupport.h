@@ -46,7 +46,6 @@ namespace LocalWorkflow {
 typedef uint TaxID;
 typedef QSet<TaxID> TaxIDSet;
 typedef QMap<QString, TaxID> TaxonomyClassificationResult;
-//typedef QVariantMap TaxonomyClassificationResult;
 
 class TaxonomyTreeModel;
 

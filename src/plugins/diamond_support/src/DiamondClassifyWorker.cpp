@@ -94,7 +94,7 @@ void DiamondClassifyWorker::sl_taskFinished(Task *task) {
     const QString classificationUrl = diamondTask->getClassificationUrl();
 
     QVariantMap data;
-    TaxonomyClassificationResult classificationResult = parseReport(classificationUrl);
+    const TaxonomyClassificationResult &classificationResult = diamondTask->getParsedReport();
     data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID] = QVariant::fromValue<U2::LocalWorkflow::TaxonomyClassificationResult>(classificationResult);
     output->put(Message(output->getBusType(), data));
     context->getMonitor()->addOutputFile(classificationUrl, getActor()->getId());
@@ -102,7 +102,7 @@ void DiamondClassifyWorker::sl_taskFinished(Task *task) {
     LocalWorkflow::TaxonomyClassificationResult::const_iterator it;
     int classifiedCount = NgsReadsClassificationUtils::countClassified(classificationResult);
     context->getMonitor()->addInfo(tr("There were %1 input reads, %2 reads were classified.").arg(QString::number(classificationResult.size())).arg(QString::number(classifiedCount))
-                                    , getActor()->getId(), WorkflowNotification::U2_INFO);
+        , getActor()->getId(), WorkflowNotification::U2_INFO);
 }
 
 DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
@@ -119,15 +119,9 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     if (settings.classificationUrl.isEmpty()) {
         const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
         QString fileUrl = metadata.getFileUrl();
-        settings.classificationUrl = tmpDir +
-                                     "/" +
-                                     (fileUrl.isEmpty() ? QString("DIAMOND_%1.txt")
-                                                                  .arg(NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX)
-                                                        : NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(fileUrl,
-                                                                                                                   QStringList() << "DIAMOND"
-                                                                                                                                 << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX,
-                                                                                                                   "txt",
-                                                                                                                   false));
+        settings.classificationUrl = tmpDir + "/" + (fileUrl.isEmpty() ? QString("DIAMOND_%1.txt").arg(NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX)
+                                                    : NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(fileUrl,QStringList() << "DIAMOND"
+                                                    << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX,"txt", false));
     }
     settings.classificationUrl = GUrlUtils::rollFileName(settings.classificationUrl, "_");
 
@@ -144,44 +138,6 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     settings.num_threads = getValue<int>(DiamondClassifyWorkerFactory::THREADS_ATTR_ID);
 
     return settings;
-}
-
-TaxonomyClassificationResult DiamondClassifyWorker::parseReport(const QString &url)
-{
-    TaxonomyClassificationResult result;
-    QFile reportFile(url);
-    if (!reportFile.open(QIODevice::ReadOnly)) {
-        reportError(tr("Cannot open classification report: %1").arg(url));
-    } else {
-        QByteArray line;
-
-        while ((line = reportFile.readLine()).size() != 0) {
-
-            QList<QByteArray> row = line.split('\t');
-            if (row.size() == 3) {
-                QString objID = row[0];
-                QByteArray &assStr = row[1];
-                algoLog.trace(QString("Found Diamond classification: %1=%2").arg(objID).arg(QString(assStr)));
-
-                bool ok = true;
-                TaxID assID = assStr.toUInt(&ok);
-                if (ok) {
-                    if (result.contains(objID)) {
-                        QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
-                        monitor()->addInfo(msg, getActorId(), WorkflowNotification::U2_WARNING);
-                        algoLog.info(msg);
-                    } else {
-                        result[objID] = assID;
-                    }
-                    continue;
-                }
-            }
-            reportError(tr("Broken Diamond report : %1").arg(url));
-            break;
-        }
-        reportFile.close();
-    }
-    return result;
 }
 
 }   // namespace LocalWorkflow

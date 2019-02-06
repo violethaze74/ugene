@@ -98,7 +98,7 @@ void KrakenClassifyWorker::sl_taskFinished(Task *task) {
     const QString rawClassificationUrl = krakenTask->getClassificationUrl();
 
     QVariantMap data;
-    TaxonomyClassificationResult classificationResult = parseReport(rawClassificationUrl);
+    const TaxonomyClassificationResult &classificationResult = krakenTask->getParsedReport();
     data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID] = QVariant::fromValue<U2::LocalWorkflow::TaxonomyClassificationResult>(classificationResult);
     output->put(Message(output->getBusType(), data));
     context->getMonitor()->addOutputFile(rawClassificationUrl, getActor()->getId());
@@ -106,7 +106,7 @@ void KrakenClassifyWorker::sl_taskFinished(Task *task) {
     LocalWorkflow::TaxonomyClassificationResult::const_iterator it;
     int classifiedCount = NgsReadsClassificationUtils::countClassified(classificationResult);
     context->getMonitor()->addInfo(tr("There were %1 input reads, %2 reads were classified.").arg(QString::number(classificationResult.size())).arg(QString::number(classifiedCount))
-                                    , getActor()->getId(), WorkflowNotification::U2_INFO);
+        , getActor()->getId(), WorkflowNotification::U2_INFO);
 }
 
 bool KrakenClassifyWorker::isReadyToRun() const {
@@ -130,8 +130,7 @@ KrakenClassifyTaskSettings KrakenClassifyWorker::getSettings(U2OpStatus &os) {
 
     if (pairedReadsInput) {
         settings.pairedReads = true;
-        //const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
-        settings.pairedReadsUrl = message.getData().toMap()[KrakenClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();//pairedMessage.getData().toMap()[BaseSlots::URL_SLOT().getId()].toString();
+        settings.pairedReadsUrl = message.getData().toMap()[KrakenClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
     }
 
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
@@ -141,58 +140,13 @@ KrakenClassifyTaskSettings KrakenClassifyWorker::getSettings(U2OpStatus &os) {
     if (settings.classificationUrl.isEmpty()) {
         const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
         QString fileUrl = metadata.getFileUrl();
-        settings.classificationUrl = tmpDir +
-                                     "/" +
-                                     (fileUrl.isEmpty() ? QString("Kraken_%1.txt")
-                                                                  .arg(NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX)
-                                                        : NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(metadata.getFileUrl(),
-                                                                                                                   QStringList() << "Kraken"
-                                                                                                                                 << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX,
-                                                                                                                   "txt",
-                                                                                                                   pairedReadsInput));
+        settings.classificationUrl = tmpDir + "/" + (fileUrl.isEmpty() ? QString("Kraken_%1.txt").arg(NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX)
+        : NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(metadata.getFileUrl(), QStringList() << "Kraken" << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX,
+                                                                    "txt", pairedReadsInput));
     }
     settings.classificationUrl = GUrlUtils::rollFileName(settings.classificationUrl, "_");
 
     return settings;
-}
-
-TaxonomyClassificationResult KrakenClassifyWorker::parseReport(const QString &url)
-{
-    TaxonomyClassificationResult result;
-    QFile reportFile(url);
-    if (!reportFile.open(QIODevice::ReadOnly)) {
-        reportError(tr("Cannot open classification report: %1").arg(url));
-    } else {
-        QByteArray line;
-
-        while ((line = reportFile.readLine()).size() != 0) {
-            if (line.startsWith("C\t") || line.startsWith("U\t")) {
-                QList<QByteArray> row = line.split('\t');
-                if (row.size() >= 5) {
-                    QString objID = row[1];
-                    QByteArray &assStr = row[2];
-                    algoLog.trace(QString("Found Kraken classification: %1=%2").arg(objID).arg(QString(assStr)));
-
-                    bool ok = true;
-                    TaxID assID = assStr.toUInt(&ok);
-                    if (ok) {
-                        if (result.contains(objID)) {
-                            QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
-                            monitor()->addInfo(msg, getActorId(), WorkflowNotification::U2_WARNING);
-                            algoLog.info(msg);
-                        } else {
-                            result[objID] = assID;
-                        }
-                        continue;
-                    }
-                }
-            }
-            reportError(tr("Broken Kraken report : %1").arg(url));
-            break;
-        }
-        reportFile.close();
-    }
-    return result;
 }
 
 }   // namespace LocalWorkflow
