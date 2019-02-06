@@ -74,6 +74,19 @@ HIWebElement GTUtilsDashboard::getNodeUl(GUITestOpStatus &os, const QString &nod
     return GTWebView::findElementBySelector(os, getDashboard(os), selector, options);
 }
 
+#define GT_METHOD_NAME "clickOutputFile"
+QString GTUtilsDashboard::getLogUrlFromElement(GUITestOpStatus &os, const HIWebElement &element) {
+    Q_UNUSED(os);
+        const QString onclickFunction = element.attribute(ON_CLICK);
+    QRegularExpression urlFetcher("openLog\\(\\\'(.*)\\\'\\)");
+    const QRegularExpressionMatch match = urlFetcher.match(onclickFunction);
+    GT_CHECK_RESULT(match.hasMatch(),
+                    QString("Can't get URL with a regexp from an element: regexp is '%1', element ID is '%2', element class is '%3'")
+                    .arg(urlFetcher.pattern()).arg(element.id()).arg(element.attribute("class")), QString());
+    return match.captured(1);
+}
+#undef GT_METHOD_NAME
+
 const QMap<QString, GTUtilsDashboard::Tabs> GTUtilsDashboard::tabMap = initTabMap();
 const QString GTUtilsDashboard::TREE_ROOT_ID = "treeRoot";
 const QString GTUtilsDashboard::PARENT_LI = "parent_li";
@@ -206,6 +219,56 @@ QString GTUtilsDashboard::getDescendantNodeId(GUITestOpStatus &os, const QString
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getChildWithTextId"
+QString GTUtilsDashboard::getChildWithTextId(GUITestOpStatus &os, const QString &nodeId, const QString &text) {
+    const int childrenCount = getChildrenNodesCount(os, nodeId);
+    QString resultChildId;
+    QStringList quotedChildrenTexts;
+    for (int i = 0; i < childrenCount; i++) {
+        const QString currentChildId = getChildNodeId(os, nodeId, i);
+        const QString childText = getNodeText(os, currentChildId);
+        quotedChildrenTexts << "\'" + childText + "\'";
+        if (text == childText) {
+            GT_CHECK_RESULT(resultChildId.isEmpty(),
+                     QString("Expected text '%1' is not unique among the node with ID '%2' children")
+                     .arg(text).arg(nodeId), "");
+            resultChildId = currentChildId;
+        }
+    }
+
+    GT_CHECK_RESULT(!resultChildId.isEmpty(),
+             QString("Child with text '%1' not found among the node with ID '%2' children; there are children with the following texts: %3")
+             .arg(text).arg(nodeId).arg(quotedChildrenTexts.join(", ")), "");
+
+    return resultChildId;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "doesNodeHaveLimitationMessageNode"
+bool GTUtilsDashboard::doesNodeHaveLimitationMessageNode(GUITestOpStatus &os, const QString &nodeId) {
+    const QString selector = QString("UL#%1 > LI.%2 > SPAN.limitation-message").arg(nodeId).arg(PARENT_LI);
+
+    GTGlobals::FindOptions options;
+    options.failIfNotFound = false;
+
+    return !GTWebView::findElementsBySelector(os, getDashboard(os), selector, options).isEmpty();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getLimitationMessageNodeText"
+QString GTUtilsDashboard::getLimitationMessageNodeText(GUITestOpStatus &os, const QString &nodeId) {
+    const QString selector = QString("UL#%1 > LI.%2 > SPAN.limitation-message").arg(nodeId).arg(PARENT_LI);
+    return GTWebView::findElementBySelector(os, getDashboard(os), selector).toPlainText();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getLimitationMessageLogUrl"
+QString GTUtilsDashboard::getLimitationMessageLogUrl(GUITestOpStatus &os, const QString &nodeId) {
+    const QString selector = QString("UL#%1 > LI.%2 > SPAN.limitation-message > A").arg(nodeId).arg(PARENT_LI);
+    return getLogUrlFromElement(os, GTWebView::findElementBySelector(os, getDashboard(os), selector));
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getCopyButtonSize"
 QSize GTUtilsDashboard::getCopyButtonSize(GUITestOpStatus &os, const QString &toolRunNodeId) {
     return getCopyButton(os, toolRunNodeId).geometry().size();
@@ -256,16 +319,10 @@ void GTUtilsDashboard::expandNode(GUITestOpStatus &os, const QString &nodeId) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLogFileUrlFromOutputNode"
-QString GTUtilsDashboard::getLogFileUrlFromOutputNode(GUITestOpStatus &os, const QString &outputNodeId) {
+#define GT_METHOD_NAME "getLogUrlFromNode"
+QString GTUtilsDashboard::getLogUrlFromNode(GUITestOpStatus &os, const QString &outputNodeId) {
     const QString logFileLinkSelector = QString("SPAN#%1 A").arg(getNodeSpanId(outputNodeId));
-    const QString onclickFunction = GTWebView::findElementBySelector(os, getDashboard(os), logFileLinkSelector).attribute(ON_CLICK);
-    QRegularExpression urlFetcher("openLog\\(\\\'(.*)\\\'\\)");
-    const QRegularExpressionMatch match = urlFetcher.match(onclickFunction);
-    GT_CHECK_RESULT(match.hasMatch(),
-                    QString("Can't get URL with a regexp from a string: regexp is '%1', string is '%2'")
-                    .arg(urlFetcher.pattern()).arg(logFileLinkSelector), QString());
-    return match.captured(1);
+    return getLogUrlFromElement(os, GTWebView::findElementBySelector(os, getDashboard(os), logFileLinkSelector));
 }
 #undef GT_METHOD_NAME
 

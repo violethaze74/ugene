@@ -113,6 +113,78 @@ QString putToolToFolderWithoutSpaces(GUITestOpStatus &os, const QString &toolNam
     return newToolPath;
 }
 
+QMap<QString, QList<QPair<QString, QStringList> > > getNodesTexts(GUITestOpStatus &os) {
+    const int firstLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(os, GTUtilsDashboard::TREE_ROOT_ID);
+    QMap<QString, QList<QPair<QString, QStringList> > > nodesTexts;
+    for (int i = 0; i < firstLevelNodesCount; i++) {
+        const QString firstLevelNodeId = GTUtilsDashboard::getChildNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, i);
+        const QString firstLevelNodeText = GTUtilsDashboard::getNodeText(os, firstLevelNodeId);
+
+        const int secondLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(os, firstLevelNodeId);
+        QList<QPair<QString, QStringList> > subtree;
+        for (int j = 0; j < secondLevelNodesCount; j++) {
+            const QString secondLevelNodeId = GTUtilsDashboard::getChildNodeId(os, firstLevelNodeId, j);
+            const QString secondLevelNodeText = GTUtilsDashboard::getNodeText(os, secondLevelNodeId);
+
+            const int thirdLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(os, secondLevelNodeId);
+            QStringList thirdLevelNodesTexts;
+            for (int k = 0; k < thirdLevelNodesCount; k++) {
+                thirdLevelNodesTexts << GTUtilsDashboard::getNodeText(os, GTUtilsDashboard::getChildNodeId(os, secondLevelNodeId, k));
+            }
+            subtree << qMakePair(secondLevelNodeText, thirdLevelNodesTexts);
+        }
+        nodesTexts.insert(firstLevelNodeText, subtree);
+    }
+    return nodesTexts;
+}
+
+void checkTreeStructure(GUITestOpStatus &os, const QMap<QString, QList<QPair<QString, QStringList> > > &expectedNodesTexts) {
+    const QMap<QString, QList<QPair<QString, QStringList> > > nodesTexts = getNodesTexts(os);
+
+    // Do explicitely comparison to be able to log the incorrect values
+    CHECK_SET_ERR(nodesTexts.size() == expectedNodesTexts.size(),
+            QString("Unexpected first level nodes count: expected %1, got %2")
+            .arg(expectedNodesTexts.size()).arg(nodesTexts.size()));
+
+    foreach (const QString &expectedFirstLevelNodeText, expectedNodesTexts.keys()) {
+        CHECK_SET_ERR(nodesTexts.contains(expectedFirstLevelNodeText),
+                      QString("An expected first level node with text '%1' is not found in the tree")
+                      .arg(expectedFirstLevelNodeText));
+
+        const QList<QPair<QString, QStringList> > &expectedSecondLevelNodes = expectedNodesTexts[expectedFirstLevelNodeText];
+        const QList<QPair<QString, QStringList> > &secondLevelNodes = nodesTexts[expectedFirstLevelNodeText];
+
+        CHECK_SET_ERR(expectedSecondLevelNodes.size() == secondLevelNodes.size(),
+                QString("Unexpected second level nodes count for the first level node with text '%1': expected %2, got %3")
+                .arg(expectedFirstLevelNodeText).arg(expectedSecondLevelNodes.size()).arg(secondLevelNodes.size()));
+
+        for (int i = 0, n = expectedSecondLevelNodes.size(); i < n; i++) {
+            const QPair<QString, QStringList> &expectedSecondLevelNode = expectedSecondLevelNodes[i];
+            const QPair<QString, QStringList> &secondLevelNode = secondLevelNodes[i];
+
+            const QString expectedSecondLevelNodeText = expectedSecondLevelNode.first;
+            const QString secondLevelNodeText = secondLevelNode.first;
+            CHECK_SET_ERR(expectedSecondLevelNodeText == secondLevelNodeText,
+                          QString("%1 (zero-based) child of the first level node with text '%2' has unexpected text: expected '%3', got '%4'")
+                          .arg(i).arg(expectedFirstLevelNodeText).arg(expectedSecondLevelNodeText).arg(secondLevelNodeText));
+
+            const QStringList &expectedThirdLevelNodes = expectedSecondLevelNode.second;
+            const QStringList &thirdLevelNodes = secondLevelNode.second;
+
+            CHECK_SET_ERR(expectedThirdLevelNodes.size() == thirdLevelNodes.size(),
+                    QString("Unexpected third level nodes count for the second level node with text '%1', which is %2 (zero-based) child of the first level node with text '%3': expected %4, got %5")
+                    .arg(expectedSecondLevelNodeText).arg(i).arg(expectedFirstLevelNodeText).arg(expectedThirdLevelNodes.size()).arg(thirdLevelNodes.size()));
+
+            for (int j = 0, m = expectedThirdLevelNodes.size(); j < m; j++) {
+                CHECK_SET_ERR(expectedThirdLevelNodes[j] == thirdLevelNodes[j],
+                        QString("%1 (zero-based) child of the second level node with text '%2', which is %3 (zero-based) child of "
+                                "the first node with text '%4', has unexpected text: expected '%5', got '%6'")
+                        .arg(j).arg(expectedSecondLevelNodeText).arg(i).arg(expectedFirstLevelNodeText).arg(expectedThirdLevelNodes[j]).arg(thirdLevelNodes[j]));
+            }
+        }
+    }
+}
+
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0001) {
@@ -478,19 +550,280 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0001) {
-    os.setError("Not implemented");
+//    1. Ensure that taxonomy data is set. It should be full enough to pass the kraken-build validator.
+    // Currently, it is impossible to set taxonomy data after UGENE launch: UGENE-5979
+    // Test should be updated.
+
+//    2. Set the "_common_data/workflow/dashboard/fake_tools/fake_kraken-build" as "kraken-build" external tool in the "Application Settings".
+    const QString krakenBuildToolName = "kraken-build";
+    const QString krakenBuildToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_kraken-build").absoluteFilePath());
+    GTUtilsExternalTools::setToolUrl(os, krakenBuildToolName, krakenBuildToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Open "_common_data/workflow/dashboard/2_kraken-builds.uwl".
+    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/2_kraken-builds.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    4. Click "Build Kraken Database" element.
+    GTUtilsWorkflowDesigner::click(os, "Build Kraken Database");
+
+//    5. Set "Database" attribute value to tree_nodes_creation_test_0001_db1".
+    const QString db1Url = QFileInfo(sandBoxDir + "tree_nodes_creation_test_0001_db1").absoluteFilePath();
+    QDir().mkpath(db1Url);
+    GTUtilsWorkflowDesigner::setParameter(os, "Database", db1Url, GTUtilsWorkflowDesigner::textValue);
+
+//    6. Click the "..." button in the "Genomic library" attribute value field.
+//    Expected result: "Select Genomes for Kraken Database" dialog appeared.
+//    7. Add "data/samples/FASTA/human_T1.fa", "_common_data/fasta/COI2.fa", "_common_data/fasta/DNA.fa" files to the dataset in the dialog.
+//    8. Click the "Select" button in the dialog.
+    QStringList urls = { QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath(),
+                         QFileInfo(testDir + "_common_data/fasta/COI2.fa").absoluteFilePath(),
+                         QFileInfo(testDir + "_common_data/fasta/DNA.fa").absoluteFilePath() };
+    GTUtilsDialog::waitForDialog(os, new GenomicLibraryDialogFiller(os, urls));
+    GTUtilsWorkflowDesigner::setParameter(os, "Genomic library", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
+
+//    9. Click "Build Kraken Database 1" element.
+    GTUtilsWorkflowDesigner::click(os, "Build Kraken Database 1");
+
+//    10. Set "Database" attribute value to tree_nodes_creation_test_0001_db2".
+    const QString db2Url = QFileInfo(sandBoxDir + "tree_nodes_creation_test_0001_db2").absoluteFilePath();
+    QDir().mkpath(db2Url);
+    GTUtilsWorkflowDesigner::setParameter(os, "Database", db2Url, GTUtilsWorkflowDesigner::textValue);
+
+//    11. Click the "..." button in the "Genomic library" attribute value field.
+//    Expected result: "Select Genomes for Kraken Database" dialog appeared.
+//    12. Add "data/samples/FASTA/human_T1.fa", "_common_data/fasta/COI2.fa" files to the dataset in the dialog.
+//    13. Click the "Select" button in the dialog.
+    urls.removeLast();
+    GTUtilsDialog::waitForDialog(os, new GenomicLibraryDialogFiller(os, urls));
+    GTUtilsWorkflowDesigner::setParameter(os, "Genomic library", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
+
+//    14. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+//    15. Wait the workflow execution finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    16. Switch to an "External Tools" tab.
+    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+
+//    Expected result:
+//    The tree looks like:
+//     -----------
+//    Build Kraken Database
+//    └Build Kraken Database run 1
+//      ├kraken-build run 1
+//      ├kraken-build run 2
+//      ├kraken-build run 3
+//      └Messages limit on the dashboard exceeded. See log files, if required.
+//    Build Kraken Database 1
+//    └Build Kraken Database 1 run 1
+//      ├kraken-build run 1
+//      ├kraken-build run 2
+//      └kraken-build run 3
+//     -----------
+//    "log files" in a message is a link to a dir with tools execution logs.
+
+    QMap<QString, QList<QPair<QString, QStringList> > > expectedNodesTexts;
+    expectedNodesTexts.insert("Build Kraken Database", { qMakePair(QString("Build Kraken Database run 1"),
+                                                                   QStringList({ "kraken-build run 1 ",
+                                                                                 "kraken-build run 2 ",
+                                                                                 "kraken-build run 3 " })) });
+    expectedNodesTexts.insert("Build Kraken Database 1", { qMakePair(QString("Build Kraken Database 1 run 1"),
+                                                                     QStringList({ "kraken-build run 1 ",
+                                                                                   "kraken-build run 2 ",
+                                                                                   "kraken-build run 3 " })) });
+    checkTreeStructure(os, expectedNodesTexts);
+
+    const QString elementNodeId = GTUtilsDashboard::getChildWithTextId(os, GTUtilsDashboard::TREE_ROOT_ID, "Build Kraken Database");
+    const QString elementTickNodeId = GTUtilsDashboard::getChildNodeId(os, elementNodeId, 0);
+    const bool limitationMessageNodeExists = GTUtilsDashboard::doesNodeHaveLimitationMessageNode(os, elementTickNodeId);
+    CHECK_SET_ERR(limitationMessageNodeExists, QString("Message node unexpectedly not found, parent node ID: '%1'").arg(elementTickNodeId));
+
+    const QString messageNodeText = GTUtilsDashboard::getLimitationMessageNodeText(os, elementTickNodeId);
+    const QString expectedMessageNodeText = "Messages limit on the dashboard exceeded. See log files, if required.";
+    CHECK_SET_ERR(expectedMessageNodeText == messageNodeText,
+                  QString("Unexpected message node text: expected '%1', got '%2'; parent node ID: '%3'")
+                  .arg(expectedMessageNodeText).arg(messageNodeText).arg(elementTickNodeId));
+
+    const QString logUrl = GTUtilsDashboard::getLimitationMessageLogUrl(os, elementTickNodeId);
+
+    const QFileInfo fileInfo(logUrl);
+    CHECK_SET_ERR(fileInfo.exists(), QString("Dir with URL '%1' doesn't exist").arg(logUrl));
+    CHECK_SET_ERR(fileInfo.isDir(), QString("Entry with URL '%1' is not a dir").arg(logUrl));
+    CHECK_SET_ERR(!QDir(logUrl).entryList(QDir::Files).isEmpty(), QString("Dir with URL '%1' doesn't contain log files").arg(logUrl));
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0002) {
-    os.setError("Not implemented");
+//    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
+    const QString cutadaptToolName = "cutadapt";
+    const QString cutadaptToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py").absoluteFilePath());
+    GTUtilsExternalTools::setToolUrl(os, cutadaptToolName, cutadaptToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "_common_data/workflow/dashboard/cutadapt.uwl".
+    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Click "Read File URL(s)" element.
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+
+//    4. Add "data/samples/FASTQ/eas.fastq" file 100 times to "Dataset 1" dataset.
+    const QString inputDir = QFileInfo(sandBoxDir + "tree_nodes_creation_test_0002_input").absoluteFilePath();
+    QDir().mkpath(inputDir);
+    for (int i = 0; i < 100; i++) {
+        GTFile::copy(os, dataDir + "samples/FASTQ/eas.fastq", inputDir + "/" + QString("eas_%2.fastq").arg(i));
+    }
+    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, inputDir);
+
+//    5. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+//    6. Wait the workflow execution finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    7. Switch to an "External Tools" tab.
+    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+
+//    Expected result:
+//    The tree looks like:
+//     -----------
+//    Cut Adapter
+//    ├Cut Adapter run 1
+//     |└cutadapt run
+//    ├Cut Adapter run 2
+//     |└cutadapt run
+//    ...
+//    └Cut Adapter run 100
+//      └cutadapt run
+    QMap<QString, QList<QPair<QString, QStringList> > > expectedNodesTexts;
+    QList<QPair<QString, QStringList> > secondLevelNodes;
+    for (int i = 1; i < 101; i++) {
+        secondLevelNodes << qMakePair(QString("Cut Adapter run %1").arg(i), QStringList({ "cutadapt run " }));
+    }
+    expectedNodesTexts.insert("Cut Adapter", secondLevelNodes);
+    checkTreeStructure(os, expectedNodesTexts);
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0003) {
-    os.setError("Not implemented");
+//    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
+    const QString cutadaptToolName = "cutadapt";
+    const QString cutadaptToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py").absoluteFilePath());
+    GTUtilsExternalTools::setToolUrl(os, cutadaptToolName, cutadaptToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "_common_data/workflow/dashboard/50_cutadapts.uwl".
+    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/50_cutadapts.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Click "Read File URL(s)" element.
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+
+//    4. Add "_common_data/fastq/eas.fastq" and "_common_data/fastq/eas_broken.fastq" files to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFiles(os, { testDir + "_common_data/fastq/eas.fastq", testDir + "_common_data/fastq/eas_broken.fastq" });
+
+//    5. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+//    6. Wait the workflow execution finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    7. Switch to an "External Tools" tab.
+    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+
+//    Expected result:
+//    The tree looks like (note, that the elements order is not fixed):
+//     -----------
+//    Cut Adapter 1
+//    ├Cut Adapter 1 run 1
+//     |└cutadapt run
+//    └Cut Adapter 1 run 2
+//      └cutadapt run
+//    Cut Adapter 2
+//    ├Cut Adapter 2 run 1
+//     |└cutadapt run
+//    └Cut Adapter 2 run 2
+//      └cutadapt run
+//    ...
+//    Cut Adapter 50
+//    ├Cut Adapter 50 run 1
+//     |└cutadapt run
+//    └Cut Adapter 50 run 2
+//      └cutadapt run
+    QMap<QString, QList<QPair<QString, QStringList> > > expectedNodesTexts;
+    QList<QPair<QString, QStringList> > secondLevelNodes;
+    for (int i = 1; i < 51; i++) {
+        expectedNodesTexts.insert(QString("Cut Adapter %1").arg(i), { qMakePair(QString("Cut Adapter %1 run 1").arg(i), QStringList({ "cutadapt run " })),
+                                                                      qMakePair(QString("Cut Adapter %1 run 2").arg(i), QStringList({ "cutadapt run " })) });
+    }
+    checkTreeStructure(os, expectedNodesTexts);
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0004) {
-    os.setError("Not implemented");
+//    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
+    const QString cutadaptToolName = "cutadapt";
+    const QString cutadaptToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py").absoluteFilePath());
+    GTUtilsExternalTools::setToolUrl(os, cutadaptToolName, cutadaptToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "_common_data/workflow/dashboard/101_cutadapts.uwl".
+    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/101_cutadapts.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Click "Read File URL(s)" element.
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+
+//    4. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+
+//    5. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+//    6. Wait the workflow execution finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    7. Switch to an "External Tools" tab.
+    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+
+//    Expected result:
+//    The tree looks like (note, that the elements order is not fixed):
+//     -----------
+//    Cut Adapter 1
+//    └Cut Adapter 1 run 1
+//      └cutadapt run
+//    Cut Adapter 2
+//    └Cut Adapter 2 run 1
+//      └cutadapt run
+//    ...
+//    Cut Adapter 101
+//    └Cut Adapter 101 run 1
+//      └cutadapt run
+//    Messages limit on the dashboard exceeded. See log files, if required.
+//     -----------
+//    "log files" in a message is a link to a dir with tools execution logs.
+    QMap<QString, QList<QPair<QString, QStringList> > > expectedNodesTexts;
+    QList<QPair<QString, QStringList> > secondLevelNodes;
+    for (int i = 1; i < 101; i++) {
+        expectedNodesTexts.insert(QString("Cut Adapter %1").arg(i), { qMakePair(QString("Cut Adapter %1 run 1").arg(i), QStringList({ "cutadapt run " })) });
+    }
+    expectedNodesTexts.insert(QString("Cut Adapter 101"), { qMakePair(QString("Cut Adapter 101 run 1"), QStringList()) });
+    checkTreeStructure(os, expectedNodesTexts);
+
+    const bool limitationMessageNodeExists = GTUtilsDashboard::doesNodeHaveLimitationMessageNode(os, GTUtilsDashboard::TREE_ROOT_ID);
+    CHECK_SET_ERR(limitationMessageNodeExists, QString("Message node unexpectedly not found, parent node ID: '%1'").arg(GTUtilsDashboard::TREE_ROOT_ID));
+
+    const QString messageNodeText = GTUtilsDashboard::getLimitationMessageNodeText(os, GTUtilsDashboard::TREE_ROOT_ID);
+    const QString expectedMessageNodeText = "Messages limit on the dashboard exceeded. See log files, if required.";
+    CHECK_SET_ERR(expectedMessageNodeText == messageNodeText,
+                  QString("Unexpected message node text: expected '%1', got '%2'; parent node ID: '%3'")
+                  .arg(expectedMessageNodeText).arg(messageNodeText).arg(GTUtilsDashboard::TREE_ROOT_ID));
+
+    const QString logUrl = GTUtilsDashboard::getLimitationMessageLogUrl(os, GTUtilsDashboard::TREE_ROOT_ID);
+
+    const QFileInfo fileInfo(logUrl);
+    CHECK_SET_ERR(fileInfo.exists(), QString("Dir with URL '%1' doesn't exist").arg(logUrl));
+    CHECK_SET_ERR(fileInfo.isDir(), QString("Entry with URL '%1' is not a dir").arg(logUrl));
+    CHECK_SET_ERR(!QDir(logUrl).entryList(QDir::Files).isEmpty(), QString("Dir with URL '%1' doesn't contain log files").arg(logUrl));
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
@@ -1338,39 +1671,43 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0013) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0014) {
-//    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_kraken-build" as "kraken-build" external tool in the "Application Settings".
+//    1. Ensure that taxonomy data is set. It should be full enough to pass the "kraken-build" validator.
+    // Currently, it is impossible to set taxonomy data after UGENE launch: UGENE-5979
+    // Test should be updated.
+
+//    2. Set the "_common_data/workflow/dashboard/fake_tools/fake_kraken-build" as "kraken-build" external tool in the "Application Settings".
     const QString krakenBuildToolName = "kraken-build";
     const QString spadesToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_kraken-build").absoluteFilePath());
     GTUtilsExternalTools::setToolUrl(os, krakenBuildToolName, spadesToolPath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    2. Open "_common_data/workflow/dashboard/kraken-build.uwl".
+//    3. Open "_common_data/workflow/dashboard/kraken-build.uwl".
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/kraken-build.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    3. Click "Build Kraken Database" element.
+//    4. Click "Build Kraken Database" element.
     GTUtilsWorkflowDesigner::click(os, "Build Kraken Database");
 
-//    4. Set "Database" attribute value to "tool_launch_nodes_test_0013".
+//    5. Set "Database" attribute value to "tool_launch_nodes_test_0013".
     GTUtilsWorkflowDesigner::setParameter(os, "Database", "tool_launch_nodes_test_0013", GTUtilsWorkflowDesigner::textValue);
 
-//    5. Click the "..." button in the "Genomic library" attribute value field.
+//    6. Click the "..." button in the "Genomic library" attribute value field.
 //    Expected result: "Select Genomes for Kraken Database" dialog appeared.
-//    6. Add "data/samples/FASTA/human_T1.fa" file to the dataset in the dialog.
-//    7. Click the "Select" button in the dialog.
+//    7. Add "data/samples/FASTA/human_T1.fa" file to the dataset in the dialog.
+//    8. Click the "Select" button in the dialog.
     GTUtilsDialog::waitForDialog(os, new GenomicLibraryDialogFiller(os, { dataDir + "samples/FASTA/human_T1.fa" }));
-    GTUtilsWorkflowDesigner::setParameter(os, "Genomic library", "tool_launch_nodes_test_0013", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsWorkflowDesigner::setParameter(os, "Genomic library", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
 
-//    8. Set "Clean" attribute value to "False".
+//    9. Set "Clean" attribute value to "False".
     GTUtilsWorkflowDesigner::setParameter(os, "Clean", "False", GTUtilsWorkflowDesigner::comboValue);
 
-//    9. Launch the workflow.
+//    10. Launch the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
-//    10. Wait the workflow execution finish.
+//    11. Wait the workflow execution finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    11. Switch to an "External Tools" tab.
+//    12. Switch to an "External Tools" tab.
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
 
 //    Expected result: there is one second-level node "Build Kraken Database run 1", it has two child nodes: "kraken-build run 1" and "kraken-build run 2"
@@ -1408,7 +1745,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0014) {
                   QString("Node with ID '%1' has unexpected text: expected '%2', got '%3'")
                   .arg(thirdLevelNodeId2).arg(expectedNodeText).arg(nodeText));
 
-//    12. Expand the third-level node "kraken-build run 1".
+//    13. Expand the third-level node "kraken-build run 1".
     GTUtilsDashboard::expandNode(os, thirdLevelNodeId1);
 
 //    Expected result: the third-level node "kraken-build run 1" has child nodes "Command", "Output log (stdout)" and "Output log (stderr)". These nodes contain text "--add-to-library".
@@ -1521,7 +1858,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0014) {
                   QString("Node with ID '%1' text doesn't contain expected text: expected part is '%2', full node text is '%3'")
                   .arg(stderrDataNodeId).arg(expectedNodeTextPart).arg(nodeText));
 
-//    13. Expand the third-level node "kraken-build run 2".
+//    14. Expand the third-level node "kraken-build run 2".
     GTUtilsDashboard::collapseNode(os, thirdLevelNodeId1);
     GTUtilsDashboard::expandNode(os, thirdLevelNodeId2);
 
@@ -1690,7 +2027,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0015) {
                   .arg(stdoutDataNodeId).arg(expectedNodeTextPart).arg(nodeText.right(200)));
 
 //        the link from the previous item is correct: it points to a file with the same data; the file size is not less than the node contents size; the file name contains "stdout".
-    const QString url = GTUtilsDashboard::getLogFileUrlFromOutputNode(os, stdoutDataNodeId);
+    const QString url = GTUtilsDashboard::getLogUrlFromNode(os, stdoutDataNodeId);
 
     const QFileInfo fileInfo(url);
     CHECK_SET_ERR(fileInfo.exists(), QString("File with URL '%1' doesn't exist").arg(url));
@@ -1769,7 +2106,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0016) {
                   .arg(stderrDataNodeId).arg(expectedNodeTextPart).arg(nodeText.right(200)));
 
 //        the link from the previous item is correct: it points to a file with the same data; the file size is not less than the node contents size; the file name contains "stderr".
-    const QString url = GTUtilsDashboard::getLogFileUrlFromOutputNode(os, stderrDataNodeId);
+    const QString url = GTUtilsDashboard::getLogUrlFromNode(os, stderrDataNodeId);
 
     const QFileInfo fileInfo(url);
     CHECK_SET_ERR(fileInfo.exists(), QString("File with URL '%1' doesn't exist").arg(url));
@@ -1876,7 +2213,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
                   .arg(stderrDataNodeId).arg(expectedNodeTextPart).arg(stderrNodeText.right(200)));
 
 //        the links from the previous item are correct: they point to files with the same data as in nodes; the file sizes are not less than the appropriate nodes contents size; the appropriate files names contain "stdout" and "stderr".
-    const QString stdoutLogUrl = GTUtilsDashboard::getLogFileUrlFromOutputNode(os, stdoutDataNodeId);
+    const QString stdoutLogUrl = GTUtilsDashboard::getLogUrlFromNode(os, stdoutDataNodeId);
 
     const QFileInfo stdoutFileInfo(stdoutLogUrl);
     CHECK_SET_ERR(stdoutFileInfo.exists(), QString("File with URL '%1' doesn't exist").arg(stdoutLogUrl));
@@ -1898,7 +2235,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
                   QString("File '%1' data doesn't start with node '%2' text")
                   .arg(stdoutLogUrl).arg(stdoutDataNodeId));
 
-    const QString stderrLogUrl = GTUtilsDashboard::getLogFileUrlFromOutputNode(os, stderrDataNodeId);
+    const QString stderrLogUrl = GTUtilsDashboard::getLogUrlFromNode(os, stderrDataNodeId);
 
     const QFileInfo stderrFileInfo(stderrLogUrl);
     CHECK_SET_ERR(stderrFileInfo.exists(), QString("File with URL '%1' doesn't exist").arg(stderrLogUrl));
