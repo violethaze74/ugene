@@ -55,6 +55,11 @@ public:
     static int getChildrenNodesCount(HI::GUITestOpStatus &os, const QString &nodeId);
     static QString getChildNodeId(HI::GUITestOpStatus &os, const QString &nodeId, int childNum);
     static QString getDescendantNodeId(HI::GUITestOpStatus &os, const QString &nodeId, const QList<int> &childNums);
+    static QString getChildWithTextId(HI::GUITestOpStatus &os, const QString &nodeId, const QString &text);     // childrens has to have unique texts
+
+    static bool doesNodeHaveLimitationMessageNode(HI::GUITestOpStatus &os, const QString &nodeId);
+    static QString getLimitationMessageNodeText(HI::GUITestOpStatus &os, const QString &nodeId);
+    static QString getLimitationMessageLogUrl(HI::GUITestOpStatus &os, const QString &nodeId);
 
     static QSize getCopyButtonSize(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
     static void clickCopyButton(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
@@ -65,7 +70,7 @@ public:
     static void collapseNode(HI::GUITestOpStatus &os, const QString &nodeId);
     static void expandNode(HI::GUITestOpStatus &os, const QString &nodeId);
 
-    static QString getLogFileUrlFromOutputNode(HI::GUITestOpStatus &os, const QString &outputNodeId);
+    static QString getLogUrlFromNode(HI::GUITestOpStatus &os, const QString &outputNodeId);
 
     static const QString TREE_ROOT_ID;      // This constant is defined in ExternalToolWidget.js
 
@@ -75,6 +80,8 @@ private:
     static HI::HIWebElement getCopyButton(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
     static HI::HIWebElement getNodeSpan(HI::GUITestOpStatus &os, const QString &nodeId);
     static HI::HIWebElement getNodeUl(HI::GUITestOpStatus &os, const QString &nodeId);
+
+    static QString getLogUrlFromElement(HI::GUITestOpStatus &os, const HI::HIWebElement &element);
 
     static const QMap<QString, Tabs> tabMap;
     static const QString PARENT_LI;     // This constant is defined in ExternalToolWidget.js

@@ -272,8 +272,7 @@ function ExternalToolsWidget(containerId) {
                 return;
             }
 
-            var root = document.getElementById(TREE_ROOT_ID);
-            var rootList = root.getElementsByTagName('ul')[0];
+            var rootList = document.getElementById(TREE_ROOT_ID);
             if (rootList.hasAttribute(LIMIT_EXEEDED_ATTRIBUTE)) {
                 return;
             }
@@ -331,8 +330,7 @@ function ExternalToolsWidget(containerId) {
             }
 
             if (getTotalToolRunNodesConut() >= MAXIMUM_TOOL_RUN_NODES_TOTAL) {
-                var root = document.getElementById(TREE_ROOT_ID);
-                var rootList = root.getElementsByTagName('ul')[0];
+                var rootList = document.getElementById(TREE_ROOT_ID);
                 if (rootList.hasAttribute(LIMIT_EXEEDED_ATTRIBUTE)) {
                     return;
                 }
