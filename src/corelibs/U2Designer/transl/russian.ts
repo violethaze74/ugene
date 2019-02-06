@@ -500,7 +500,7 @@ this merge sequence slot:</source>
         <translation>Выберите пример</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowGUIUtils.cpp" line="159"/>
+        <location filename="../src/WorkflowGUIUtils.cpp" line="160"/>
         <source>Double click to load the sample</source>
         <translation>Двойной щелчок загрузит пример</translation>
     </message>
@@ -525,22 +525,22 @@ this merge sequence slot:</source>
         <translation>UGENE обнаружил &quot;%1&quot; в файловой системе. Хотите дабавить в качестве %2 с парными ридами?</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="78"/>
+        <location filename="../src/EstimationReporter.cpp" line="35"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="79"/>
+        <location filename="../src/EstimationReporter.cpp" line="36"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="94"/>
+        <location filename="../src/EstimationReporter.cpp" line="51"/>
         <source>Workflow Estimation</source>
         <translation>Оценка выполнения схемы</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="95"/>
+        <location filename="../src/EstimationReporter.cpp" line="52"/>
         <source>Approximate estimation time of the workflow run is </source>
         <translation>Примерная оценка длительности выполнения схемы </translation>
     </message>
@@ -690,14 +690,14 @@ Set up the folder:</source>
 <context>
     <name>U2::BowtieWidgetController</name>
     <message>
-        <location filename="../src/wizard/BowtieWidgetController.cpp" line="70"/>
+        <location filename="../src/wizard/BowtieWidgetController.cpp" line="68"/>
         <source>Select
 bowtie index file</source>
         <translation>Выберите
 индексный bowtie файл</translation>
     </message>
     <message>
-        <location filename="../src/wizard/BowtieWidgetController.cpp" line="81"/>
+        <location filename="../src/wizard/BowtieWidgetController.cpp" line="79"/>
         <source>Select one of Bowtie index files</source>
         <translation>Выберите один индексный Bowtie файл</translation>
     </message>
@@ -705,17 +705,17 @@ bowtie index file</source>
 <context>
     <name>U2::BreakpointHitCountDialog</name>
     <message>
-        <location filename="../src/BreakpointHitCountDialog.cpp" line="68"/>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="69"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointHitCountDialog.cpp" line="69"/>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="70"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointHitCountDialog.cpp" line="70"/>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="71"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -770,49 +770,50 @@ bowtie index file</source>
 <context>
     <name>U2::Dashboard</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="165"/>
         <source>Output Files</source>
-        <translation>Выходные файлы</translation>
+        <translation type="vanished">Выходные файлы</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="166"/>
         <source>Workflow Task</source>
-        <translation>Задача схемы</translation>
+        <translation type="vanished">Задача схемы</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="167"/>
         <source>Common Statistics</source>
-        <translation>Общая статистика</translation>
+        <translation type="vanished">Общая статистика</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="174"/>
         <source>Parameters</source>
-        <translation>Параметры</translation>
+        <translation type="vanished">Параметры</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="191"/>
-        <source>Notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="251"/>
-        <location filename="../src/dashboard/Dashboard.cpp" line="259"/>
         <source>External Tools</source>
-        <translation>Внешние инструменты</translation>
+        <translation type="vanished">Внешние инструменты</translation>
     </message>
     <message>
         <source>Problems</source>
         <translation type="vanished">Проблемы</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="201"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="179"/>
         <source>Can not create a folder: </source>
         <translation>Невозможно создать папку: </translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="216"/>
         <source>Can not open a file for writing: </source>
-        <translation>Невозможно открыть файл для записи: </translation>
+        <translation type="vanished">Невозможно открыть файл для записи: </translation>
+    </message>
+</context>
+<context>
+    <name>U2::DashboardJsAgent</name>
+    <message>
+        <location filename="../src/dashboard/DashboardJsAgent.cpp" line="79"/>
+        <source>Error</source>
+        <translation type="unfinished">Ошибка</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/DashboardJsAgent.cpp" line="79"/>
+        <source>The file does not exist</source>
+        <translation type="unfinished">Файл не существует</translation>
     </message>
 </context>
 <context>
@@ -994,23 +995,6 @@ bowtie index file</source>
     </message>
 </context>
 <context>
-    <name>U2::ExternalToolsWidget</name>
-    <message>
-        <location filename="../src/dashboard/ExternalToolsWidget.cpp" line="206"/>
-        <source>
-
-The external tools output is too large and can&apos;t be visualized on the dashboard. Find full output in file &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/dashboard/ExternalToolsWidget.cpp" line="208"/>
-        <source>
-
-The external tools output is too large and can&apos;t be visualized on the dashboard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>U2::GroupBox</name>
     <message>
         <location filename="../src/wizard/WizardController.cpp" line="907"/>
@@ -1076,14 +1060,12 @@ The external tools output is too large and can&apos;t be visualized on the dashb
 <context>
     <name>U2::JavascriptAgent</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="394"/>
         <source>Error</source>
-        <translation>Ошибка</translation>
+        <translation type="vanished">Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="394"/>
         <source>The file does not exist</source>
-        <translation>Файл не существует</translation>
+        <translation type="vanished">Файл не существует</translation>
     </message>
 </context>
 <context>
@@ -1175,34 +1157,28 @@ The external tools output is too large and can&apos;t be visualized on the dashb
 <context>
     <name>U2::NotificationsWidget</name>
     <message>
-        <location filename="../src/dashboard/NotificationsWidget.cpp" line="58"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation type="obsolete">Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/NotificationsWidget.cpp" line="61"/>
         <source>Warning</source>
-        <translation type="unfinished">Ожидание</translation>
+        <translation type="obsolete">Ожидание</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/NotificationsWidget.cpp" line="64"/>
         <source>Information</source>
-        <translation type="unfinished">Информация</translation>
+        <translation type="obsolete">Информация</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/NotificationsWidget.cpp" line="120"/>
         <source>Type</source>
-        <translation type="unfinished">Тип</translation>
+        <translation type="obsolete">Тип</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/NotificationsWidget.cpp" line="120"/>
         <source>Element</source>
-        <translation type="unfinished">Элемент</translation>
+        <translation type="obsolete">Элемент</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/NotificationsWidget.cpp" line="120"/>
         <source>Message</source>
-        <translation type="unfinished">Сообщение</translation>
+        <translation type="obsolete">Сообщение</translation>
     </message>
 </context>
 <context>
@@ -1239,28 +1215,24 @@ The external tools output is too large and can&apos;t be visualized on the dashb
 <context>
     <name>U2::OutputFilesWidget</name>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="65"/>
         <source>File</source>
-        <translation>Файл</translation>
+        <translation type="vanished">Файл</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="65"/>
         <source>Producer</source>
-        <translation>Производитель</translation>
+        <translation type="vanished">Производитель</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="89"/>
         <source>Open containing folder</source>
-        <translation>Открыть содержащую папку</translation>
+        <translation type="vanished">Открыть содержащую папку</translation>
     </message>
     <message>
         <source>Open by operating system</source>
         <translation type="vanished">Открыть при помощи операционной системы</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="207"/>
         <source>files</source>
-        <translation>файлы</translation>
+        <translation type="vanished">файлы</translation>
     </message>
 </context>
 <context>
@@ -1363,7 +1335,7 @@ The external tools output is too large and can&apos;t be visualized on the dashb
 <context>
     <name>U2::RemoveDashboardsTask</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="469"/>
+        <location filename="../src/dashboard/RemoveDashboardsTask.cpp" line="30"/>
         <source>Remove dashboards</source>
         <translation>Удалить панель</translation>
     </message>
@@ -1371,45 +1343,38 @@ The external tools output is too large and can&apos;t be visualized on the dashb
 <context>
     <name>U2::ResourcesWidget</name>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="51"/>
         <source>Time</source>
-        <translation>Время</translation>
+        <translation type="vanished">Время</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="103"/>
         <source>The workflow task is in progress...</source>
-        <translation>Задача выполнения схемы в процессе...</translation>
+        <translation type="vanished">Задача выполнения схемы в процессе...</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="108"/>
         <source>The workflow task is in progress. There are problems...</source>
-        <translation>Задача выполнения схемы в процессе. Есть проблемы...</translation>
+        <translation type="vanished">Задача выполнения схемы в процессе. Есть проблемы...</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="114"/>
         <source>The workflow task has been finished with warnings!</source>
-        <translation>Задача выполнения схемы завершилась с предупреждениями!</translation>
+        <translation type="vanished">Задача выполнения схемы завершилась с предупреждениями!</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="120"/>
         <source>The workflow task has been finished with errors!</source>
-        <translation>Задача выполнения схемы завершилась с ошибками!</translation>
+        <translation type="vanished">Задача выполнения схемы завершилась с ошибками!</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="126"/>
         <source>The workflow task has been finished successfully!</source>
-        <translation>Задача выполнения схемы завершилась без ошибок!</translation>
+        <translation type="vanished">Задача выполнения схемы завершилась без ошибок!</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="131"/>
         <source>The workflow task has been canceled!</source>
-        <translation>Задача выполнения схемы была отменена!</translation>
+        <translation type="vanished">Задача выполнения схемы была отменена!</translation>
     </message>
 </context>
 <context>
     <name>U2::ScanDashboardsDirTask</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="423"/>
+        <location filename="../src/dashboard/ScanDashboardsDirTask.cpp" line="35"/>
         <source>Scan dashboards folder</source>
         <translation>Сканирование папки панели</translation>
     </message>
@@ -1443,19 +1408,16 @@ The external tools output is too large and can&apos;t be visualized on the dashb
 <context>
     <name>U2::StatisticsWidget</name>
     <message>
-        <location filename="../src/dashboard/StatisticsWidget.cpp" line="63"/>
         <source>Element</source>
-        <translation>Элемент</translation>
+        <translation type="vanished">Элемент</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/StatisticsWidget.cpp" line="63"/>
         <source>Elapsed time</source>
-        <translation>Прошедшее время</translation>
+        <translation type="vanished">Прошедшее время</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/StatisticsWidget.cpp" line="63"/>
         <source>Output messages</source>
-        <translation>Выходные сообщения</translation>
+        <translation type="vanished">Выходные сообщения</translation>
     </message>
 </context>
 <context>

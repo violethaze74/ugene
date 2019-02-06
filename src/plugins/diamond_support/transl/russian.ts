@@ -68,6 +68,18 @@
         <source>Unknown sensitivity value: %1, ignored.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cannot open classification report: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate sequence name &apos;%1&apos; have been detected in the classification output.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Broken Diamond report : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::DiamondSupport</name>
@@ -308,18 +320,6 @@ The input files may contain single-end reads, contigs, or &quot;left&quot; reads
 </context>
 <context>
     <name>U2::LocalWorkflow::DiamondClassifyWorker</name>
-    <message>
-        <source>Cannot open classification report: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate sequence name &apos;%1&apos; have been detected in the classification output.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Broken Diamond report : %1</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>There were %1 input reads, %2 reads were classified.</source>
         <translation type="unfinished"></translation>

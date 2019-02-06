@@ -184,9 +184,13 @@ Probably, the data are too big.</source>
         <translation>Выберите метод выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="42"/>
         <source>Align short reads method</source>
-        <translation>Метод выравнивания</translation>
+        <translation type="vanished">Метод выравнивания</translation>
+    </message>
+    <message>
+        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="42"/>
+        <source>Map short reads method</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="76"/>
@@ -1512,12 +1516,12 @@ Double-click to collapse the branch</source>
         <translation>Цвет по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightTree.cpp" line="53"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightTree.cpp" line="52"/>
         <source>Annotation</source>
         <translation>Аннотация</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightTree.cpp" line="53"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightTree.cpp" line="52"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
@@ -2169,19 +2173,16 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2</name>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="121"/>
         <source>All alphabets</source>
-        <translation type="unfinished">Все алфавиты</translation>
+        <translation type="obsolete">Все алфавиты</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="122"/>
         <source>Amino acid alphabet</source>
-        <translation type="unfinished">Аминокислотный алфавит</translation>
+        <translation type="obsolete">Аминокислотный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="123"/>
         <source>Nucleotide alphabet</source>
-        <translation type="unfinished">Нуклеотидный алфавит</translation>
+        <translation type="obsolete">Нуклеотидный алфавит</translation>
     </message>
 </context>
 <context>
@@ -2761,19 +2762,19 @@ Double-click to collapse the branch</source>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="202"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1190"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
         <source>Copy qualifier text</source>
         <translation>Копировать значение квалификатора</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="205"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1198"/>
         <source>Copy qualifier URL</source>
         <translation>Копировать ссылку</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="208"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1199"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1203"/>
         <source>Toggle column</source>
         <translation>Переключить столбец</translation>
     </message>
@@ -2812,17 +2813,17 @@ Double-click to collapse the branch</source>
         <translation>Аннотация</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2035"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2044"/>
         <source>Edit Group</source>
         <translation>Редактировать группу</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2082"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2091"/>
         <source>Edit Annotation</source>
         <translation>Редактирование аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2082"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2091"/>
         <source>Edit</source>
         <translation>Редактирование</translation>
     </message>
@@ -2883,27 +2884,27 @@ Double-click to collapse the branch</source>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="895"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1200"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1204"/>
         <source>Hide &apos;%1&apos; column</source>
         <translation>Скрыть столбец &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1190"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
         <source>Copy qualifier &apos;%1&apos; value</source>
         <translation>Копировать значение &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1198"/>
         <source>Copy qualifier &apos;%1&apos; URL</source>
         <translation>Копировать ссылку &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1200"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1204"/>
         <source>Add &apos;%1&apos; column</source>
         <translation>Добавить столбец &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2232"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2241"/>
         <source>Create Permanent Annotation</source>
         <translation>Создать постоянную аннотацию</translation>
     </message>
@@ -2911,32 +2912,37 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AssemblyBrowser</name>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="209"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="210"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="153"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="154"/>
         <source>Failed to open assembly browser for %1, assembly %2: model length should be &gt; 0</source>
         <translation>Failed to open assembly browser for %1, assembly %2: model length should be &gt; 0</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="143"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="144"/>
         <source>Error opening open assembly browser for %1, assembly %2</source>
         <translation>Error opening open assembly browser for %1, assembly %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="220"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="221"/>
         <source>Internal error: only object with document can be added to browser</source>
         <translation>Internal error: only object with document can be added to browser</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="224"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="223"/>
+        <source>Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="227"/>
         <source>Internal error: broken sequence object</source>
         <translation>Internal error: broken sequence object</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="225"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="228"/>
         <source>Internal error: empty document format</source>
         <translation>Internal error: empty document format</translation>
     </message>
@@ -2957,7 +2963,7 @@ Double-click to collapse the branch</source>
         <translation type="vanished">Internal error: database is busy</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="267"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="274"/>
         <source>Internal error: broken variant track object</source>
         <translation>Internal error: broken variant track object</translation>
     </message>
@@ -2966,102 +2972,97 @@ Double-click to collapse the branch</source>
         <translation type="vanished">Только последовательности или вариации могут быть добавлены в браузер сборок</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="231"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="238"/>
         <source>Internal error: database is locked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="273"/>
-        <source>Only sequence or variant track objects can be added to assembly browser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="282"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="289"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="283"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="290"/>
         <source>This action requires changing the assembly object that is locked for editing</source>
         <translation>Это действие требует изменения объекта сборки, который заблокирован для редактирования</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="630"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="637"/>
         <source>Zoom in</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="633"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="640"/>
         <source>Zoom out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="636"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="643"/>
         <source>Linear</source>
         <translation>Линейная</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="638"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="645"/>
         <source>Logarithmic</source>
         <translation>Логарифмическая</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="644"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="651"/>
         <source>Show coordinates on ruler</source>
         <translation>Показывать координаты на шкале</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="648"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="655"/>
         <source>Show coverage under ruler cursor</source>
         <translation>Показывать покрытие под шкалой курсора</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="652"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="659"/>
         <source>Show information about read under cursor in pop-up hint</source>
         <translation>Показывать информацию о риде в сплывающей подсказке под курсором</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="657"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="664"/>
         <source>Export as image</source>
         <translation>Экспорт изображения</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="660"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="667"/>
         <source>Export assembly to SAM format</source>
         <translation>Экспортировать сборку в формат SAM</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="663"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="670"/>
         <source>Set reference</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="667"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="674"/>
         <source>Export assembly region</source>
         <translation>Экспорт региона сборки</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="984"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="991"/>
         <source>Open file with a sequence</source>
         <translation>Открыть файл с последовательностью</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="995"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1002"/>
         <source>An error occurred while setting reference to &quot;%1&quot; assembly. The selected file &quot;%2&quot; does not contain sequences.</source>
         <translation>Возникла ошибка при попытке установить референсную последовтельность для сборки &quot;%1&quot;. Выбранный файл &quot;%2&quot; не содержит последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="997"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1004"/>
         <source>An error occurred while setting reference to &quot;%1&quot; assembly. There are more than one sequence in file &quot;%2&quot;. Please select the required sequence object in the Project View and click &quot;Set reference&quot; again.</source>
         <translation>Возникла ошибка при попытке установить референсную последовтельность для сборки &quot;%1&quot;. В файле &quot;%2&quot; содержится более одной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1058"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1065"/>
         <source>An error occurred while setting reference to &quot;%1&quot;. You have more than one sequence object selected in the Project View. Please select only one object and try again.</source>
         <translation>Возникла ошибка при попытке установить референсную последовтельность для сборки &quot;%1&quot;. В проекте выделено более одной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1057"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1064"/>
         <source>Choose Reference Sequence</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
@@ -3082,7 +3083,7 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AssemblyBrowserUi</name>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1178"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1185"/>
         <source>Assembly has no mapped reads. Nothing to visualize.</source>
         <translation>Сборка не имеет ридов.</translation>
     </message>
@@ -4671,12 +4672,12 @@ Please, check external tools in the settings.</source>
         <translation type="vanished">Экспортировать консенсус в MSA</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorTasks.cpp" line="335"/>
+        <location filename="../src/ov_msa/MaEditorTasks.cpp" line="339"/>
         <source>Extract consensus</source>
         <translation>Извлечь консенсус</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorTasks.cpp" line="359"/>
+        <location filename="../src/ov_msa/MaEditorTasks.cpp" line="363"/>
         <source>No sequences in alignment</source>
         <translation>No sequences in alignment</translation>
     </message>
@@ -4942,7 +4943,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::FindQualifierTask</name>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2593"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2602"/>
         <source>Searching for a qualifier</source>
         <translation>Поиск квалификатора</translation>
     </message>
@@ -5067,12 +5068,6 @@ Please, check external tools in the settings.</source>
         <translation>Папка для сохранения не указана!</translation>
     </message>
     <message>
-        <source>Unable to create output folder for result assembly.
-Directory Path: %1</source>
-        <translation type="obsolete">Невозможно создать выходную папку.
-Путь до папки: %1</translation>
-    </message>
-    <message>
         <source>No reads. Please, add file(s) with short reads.</source>
         <translation type="vanished">Нет ридов. Добавьте файл(ы) с короткими ридами.</translation>
     </message>
@@ -5120,7 +5115,7 @@ Directory Path: %1</source>
         <translation>Assembly has zero length</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.h" line="45"/>
+        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.h" line="46"/>
         <source>Get length of Assembly</source>
         <translation>Get length of Assembly</translation>
     </message>
@@ -5136,6 +5131,14 @@ Directory Path: %1</source>
         <location filename="../src/ov_assembly/ExportCoverageTask.h" line="70"/>
         <source>Get visible name of Assembly</source>
         <translation>Get visible name of Assembly</translation>
+    </message>
+</context>
+<context>
+    <name>U2::GraphAction</name>
+    <message>
+        <location filename="../src/ov_sequence/GraphMenu.cpp" line="74"/>
+        <source>Sequence size is too large to calculate graphs!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5167,12 +5170,12 @@ Directory Path: %1</source>
 <context>
     <name>U2::GraphMenuAction</name>
     <message>
-        <location filename="../src/ov_sequence/GraphMenu.cpp" line="117"/>
+        <location filename="../src/ov_sequence/GraphMenu.cpp" line="126"/>
         <source>Graphs</source>
         <translation>Графики</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/GraphMenu.cpp" line="125"/>
+        <location filename="../src/ov_sequence/GraphMenu.cpp" line="134"/>
         <source>Close all graphs</source>
         <translation>Закрыть все графики</translation>
     </message>
@@ -6270,12 +6273,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaExportConsensusWidget</name>
     <message>
-        <location filename="../src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp" line="92"/>
+        <location filename="../src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp" line="94"/>
         <source>A problem occurred during export consensus. The multiple alignment is no more available.</source>
         <translation>A problem occurred during export consensus. The multiple alignment is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp" line="139"/>
+        <location filename="../src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp" line="151"/>
         <source>Save file</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -7156,16 +7159,19 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::Registry</name>
     <message>
+        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="121"/>
         <source>All alphabets</source>
-        <translation type="vanished">Все алфавиты</translation>
+        <translation>Все алфавиты</translation>
     </message>
     <message>
+        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="122"/>
         <source>Amino acid alphabet</source>
-        <translation type="vanished">Аминокислотный алфавит</translation>
+        <translation>Аминокислотный алфавит</translation>
     </message>
     <message>
+        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="123"/>
         <source>Nucleotide alphabet</source>
-        <translation type="vanished">Нуклеотидный алфавит</translation>
+        <translation>Нуклеотидный алфавит</translation>
     </message>
 </context>
 <context>

@@ -1371,19 +1371,19 @@
 <context>
     <name>U2::PrompterBaseImpl</name>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1346"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1366"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1403"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1359"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1380"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1417"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1381"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1395"/>
         <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>файл(ы) рядом с исходным(и) &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1349"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1363"/>
         <source>the list of files</source>
         <translation>список файлов</translation>
     </message>
@@ -1914,17 +1914,17 @@
         <translation>Не удалось создать соединение процессов %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="257"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="258"/>
         <source>Failed to create a workflow context</source>
         <translation>Невозможно создать контекст схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="319"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="323"/>
         <source>No workers are ready, while not all workers are done. Workflow is broken?</source>
         <translation>Все процессы находятся в состоянии &quot;не готовы&quot; (обработали входные данные), но не все процессы находятся в состоянии &quot;завершил исполнение&quot;. Пожалуйста, проверьте схему?</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="263"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="264"/>
         <source>Failed to create scheduler in domain %1</source>
         <translation>Не удалось создать планировщик для среды исполнения %1</translation>
     </message>
@@ -2110,32 +2110,36 @@
         <translation>The required parameter %1.%2 is empty and not aliased</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="882"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="892"/>
         <source>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</source>
         <translation>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="886"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="896"/>
         <source>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</source>
         <translation>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1201"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1211"/>
         <source>Can&apos;t access output file path: &apos;%1&apos;</source>
         <translation>Can&apos;t access output file path: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1220"/>
-        <source>Can&apos;t output folder path: &apos;%1&apos;, check permissions</source>
-        <translation>Can&apos;t output folder path: &apos;%1&apos;, check permissions</translation>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1229"/>
+        <source>Workflow output folder &apos;%1&apos; can&apos;t be accessed. Check that the folder exists and you have enough permissions to write to it, or choose another folder in the UGENE Application Settings.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1239"/>
+        <source>Can&apos;t output folder path: &apos;%1&apos;, check permissions</source>
+        <translation type="vanished">Can&apos;t output folder path: &apos;%1&apos;, check permissions</translation>
+    </message>
+    <message>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1249"/>
         <source>Empty shared database URL specified</source>
         <translation>Empty shared database URL specified</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1311"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1321"/>
         <source>Wrong samples map string</source>
         <translation>Wrong samples map string</translation>
     </message>

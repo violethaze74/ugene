@@ -199,92 +199,92 @@
 <context>
     <name>U2::BioStruct3DGLWidget</name>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="765"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="770"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="766"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="771"/>
         <source>Spin</source>
         <translation>Вращение</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="754"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="759"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="755"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="760"/>
         <source>Off</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="761"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="766"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="762"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="767"/>
         <source>Models..</source>
         <translation>Модели..</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="784"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="789"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="785"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="790"/>
         <source>Align With...</source>
         <translation>Выровнять с...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="805"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="810"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="806"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="811"/>
         <source>Molecular Surface Render Style</source>
         <translation>Стиль отрисовки поверхности</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="809"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="814"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="810"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="815"/>
         <source>Molecular Surface</source>
         <translation>Молекулярная поверхность</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="582"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="587"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="583"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="588"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="582"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="587"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="583"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="588"/>
         <source>Unable to open file %1 for writing</source>
         <translation>Невозможно открыть файл %1 для записи</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="769"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="774"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="770"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="775"/>
         <source>Settings...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="772"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="777"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="773"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="778"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="775"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="780"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="776"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="781"/>
         <source>Export Image...</source>
         <translation>Экспортировать изображение...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="788"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="793"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="789"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="794"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="795"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="800"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="796"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="801"/>
         <source>Render Style</source>
         <translation>Стиль отрисовки</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="800"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="805"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="801"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="806"/>
         <source>Coloring Scheme</source>
         <translation>Цветовая схема</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="834"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="839"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="835"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="840"/>
         <source>Structural Alignment</source>
         <translation>Структурное выравнивание</translation>
     </message>
@@ -510,13 +510,13 @@ You may try to upgrade your system by updating the video card driver.</translati
 <context>
     <name>U2::StructuralAlignmentDialog</name>
     <message>
-        <location filename="../src/StructuralAlignmentDialog.cpp" line="61"/>
+        <location filename="../src/StructuralAlignmentDialog.cpp" line="62"/>
         <location filename="../src/deprecated/StructuralAlignmentDialog.cpp" line="61"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/StructuralAlignmentDialog.cpp" line="62"/>
+        <location filename="../src/StructuralAlignmentDialog.cpp" line="63"/>
         <location filename="../src/deprecated/StructuralAlignmentDialog.cpp" line="62"/>
         <source>OK</source>
         <translation>ОК</translation>

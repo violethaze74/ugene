@@ -67,8 +67,8 @@ const QString KrakenClassifyWorkerFactory::MIN_HITS_NUMBER_ATTR_ID = "min-hits";
 const QString KrakenClassifyWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
 const QString KrakenClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID = "preload";
 
-const QString KrakenClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or contigs");
-const QString KrakenClassifyWorkerFactory::PAIRED_END_TEXT = QObject::tr("PE reads");
+const QString KrakenClassifyWorkerFactory::SINGLE_END_TEXT = "SE reads or contigs";
+const QString KrakenClassifyWorkerFactory::PAIRED_END_TEXT = "PE reads";
 
 const QString KrakenClassifyWorkerFactory::WORKFLOW_CLASSIFY_TOOL_KRAKEN = "Kraken";
 

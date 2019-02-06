@@ -520,42 +520,42 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
         <translation>Использовать индекс: %2</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="206"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="208"/>
         <source>Can not init short reads loader.</source>
         <translation>Невозможно загрузить короткие риды.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="343"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="348"/>
         <source>The aligning is finished.</source>
         <translation>Выравнивание завершено.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="344"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="349"/>
         <source>Whole working time = %1.</source>
         <translation>Время выполнения = %1.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="345"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="350"/>
         <source>%1% reads aligned.</source>
         <translation>%1% ридов было выровнено.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="347"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="352"/>
         <source>Short-reads loading time = %1</source>
         <translation>Время загрузки ридов = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="348"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="353"/>
         <source>Results writing time = %1</source>
         <translation>Время записи результатов = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="350"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="355"/>
         <source>Index loading time = %1</source>
         <translation>Время загрузки индекса = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="351"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="356"/>
         <source>Short-reads IO time = %1</source>
         <translation>Время IO коротких ридов = %1</translation>
     </message>

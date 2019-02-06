@@ -559,14 +559,14 @@
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="557"/>
         <location filename="../src/DotPlotWidget.cpp" line="590"/>
-        <location filename="../src/DotPlotWidget.cpp" line="657"/>
+        <location filename="../src/DotPlotWidget.cpp" line="671"/>
         <source>Task is already running</source>
         <translation>Задача уже запущена</translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="557"/>
         <location filename="../src/DotPlotWidget.cpp" line="590"/>
-        <location filename="../src/DotPlotWidget.cpp" line="657"/>
+        <location filename="../src/DotPlotWidget.cpp" line="671"/>
         <source>Build or Load DotPlot task is already running</source>
         <translation>Задача построения или загрузки dotplot уже запущена</translation>
     </message>
@@ -581,53 +581,58 @@
         <translation>Текущая и загружаемая последовательность различаются. Продолжить загрузку?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="712"/>
-        <location filename="../src/DotPlotWidget.cpp" line="717"/>
+        <location filename="../src/DotPlotWidget.cpp" line="702"/>
+        <source>Sequence size is too large!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotWidget.cpp" line="736"/>
+        <location filename="../src/DotPlotWidget.cpp" line="741"/>
         <source>Invalid sequence</source>
         <translation>Некорректная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="712"/>
+        <location filename="../src/DotPlotWidget.cpp" line="736"/>
         <source>First selected sequence is invalid</source>
         <translation>Первая выделенная последовательность некорректна</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="717"/>
+        <location filename="../src/DotPlotWidget.cpp" line="741"/>
         <source>Second selected sequence is invalid</source>
         <translation>Вторая выделенная последовательность некорректна</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="727"/>
+        <location filename="../src/DotPlotWidget.cpp" line="751"/>
         <source>Wrong alphabet types</source>
         <translation>Неправильные типы алфавитов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="727"/>
+        <location filename="../src/DotPlotWidget.cpp" line="751"/>
         <source>Both sequence must have the same alphabet</source>
         <translation>Обе последовательности должны иметь одинаковый алфавит</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="806"/>
+        <location filename="../src/DotPlotWidget.cpp" line="830"/>
         <source>Save dot-plot</source>
         <translation>Сохранить dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="806"/>
+        <location filename="../src/DotPlotWidget.cpp" line="830"/>
         <source>Save dot-plot data before closing?</source>
         <translation>Сохранить данные dotplot перед закрытием?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="952"/>
+        <location filename="../src/DotPlotWidget.cpp" line="976"/>
         <source>Invalid weight and height parameters!</source>
         <translation>Некорректные параметры!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="1004"/>
+        <location filename="../src/DotPlotWidget.cpp" line="1028"/>
         <source>Dotplot is calculating...</source>
         <translation>Выполняется расчёт...</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="1052"/>
+        <location filename="../src/DotPlotWidget.cpp" line="1076"/>
         <source> (min length %1, identity %2%)</source>
         <translation>(мин. длина %1, идентичность %2%)</translation>
     </message>

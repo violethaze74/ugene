@@ -4,22 +4,22 @@
 <context>
     <name>EMBLGenbankAbstractDocument</name>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="56"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="57"/>
         <source>The file contains features of another remote GenBank file. These features have been skipped.</source>
         <translation>Файл содержит аннотации другого GenBank файла. Эти аннотации проигнорированы.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="57"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="58"/>
         <source>The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.</source>
         <translation>Файл содержит аннотации присоединенные к регионам, расположенным на другой цепи. Все такие аннотации будут сохранены на одной цепи.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="58"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="59"/>
         <source>Location parsing error.</source>
         <translation>Location parsing error.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="59"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="60"/>
         <source>The number of valid sequence characters does not coincide with the declared size in the sequence header.</source>
         <translation>Число допустимых символов последовательности не совпадает с заявленным размером в заголовке последовательности.</translation>
     </message>
@@ -141,27 +141,27 @@
         <translation>ACE</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="216"/>
+        <location filename="../src/ace/AceFormat.cpp" line="213"/>
         <source>Line is too long</source>
         <translation>Строка слишком длинная</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="378"/>
+        <location filename="../src/ace/AceFormat.cpp" line="349"/>
         <source>A name is not match with AF names</source>
         <translation>Имя не совпадает с именами AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="420"/>
+        <location filename="../src/ace/AceFormat.cpp" line="388"/>
         <source>First line is not an ace header</source>
         <translation>Первая строка не является заголовком ACE</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="425"/>
+        <location filename="../src/ace/AceFormat.cpp" line="391"/>
         <source>No contig count tag in the header line</source>
         <translation>Отсутствует тег числа контигов в строке заголовка</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="439"/>
+        <location filename="../src/ace/AceFormat.cpp" line="404"/>
         <source>Must be CO keyword</source>
         <translation>Ожидается ключевое слово CO</translation>
     </message>
@@ -171,13 +171,13 @@
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="453"/>
+        <location filename="../src/ace/AceFormat.cpp" line="414"/>
         <source>There is no note about reads count</source>
         <translation>Отсуствтует информация о числе считываний</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="228"/>
-        <location filename="../src/ace/AceFormat.cpp" line="278"/>
+        <location filename="../src/ace/AceFormat.cpp" line="223"/>
+        <location filename="../src/ace/AceFormat.cpp" line="266"/>
         <source>There is no AF note</source>
         <translation>Отсутствует</translation>
     </message>
@@ -187,70 +187,70 @@
         <translation>ACE это формат используемый для хранения информации о геномных конфигурациях</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="232"/>
-        <location filename="../src/ace/AceFormat.cpp" line="298"/>
+        <location filename="../src/ace/AceFormat.cpp" line="224"/>
+        <location filename="../src/ace/AceFormat.cpp" line="281"/>
         <source>A name is duplicated</source>
         <translation>Повторные вхождения имени</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="240"/>
+        <location filename="../src/ace/AceFormat.cpp" line="231"/>
         <source>No consensus</source>
         <translation>Отсутствует консенсус</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="251"/>
+        <location filename="../src/ace/AceFormat.cpp" line="243"/>
         <source>BQ keyword hasn&apos;t been found</source>
         <translation>Не найдено ключевое слово BQ</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="256"/>
+        <location filename="../src/ace/AceFormat.cpp" line="246"/>
         <source>Bad consensus data</source>
         <translation>Плохие данные в консенсусе</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="285"/>
-        <location filename="../src/ace/AceFormat.cpp" line="291"/>
+        <location filename="../src/ace/AceFormat.cpp" line="273"/>
+        <location filename="../src/ace/AceFormat.cpp" line="278"/>
         <source>Bad AF note</source>
         <translation>Плохое примечание AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="328"/>
+        <location filename="../src/ace/AceFormat.cpp" line="308"/>
         <source>There is no read note</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="336"/>
+        <location filename="../src/ace/AceFormat.cpp" line="316"/>
         <source>No sequence</source>
         <translation>Нет последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="347"/>
+        <location filename="../src/ace/AceFormat.cpp" line="328"/>
         <source>QA keyword hasn&apos;t been found</source>
         <translation>Ключевое слово QA не было найдено</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="355"/>
-        <location filename="../src/ace/AceFormat.cpp" line="361"/>
+        <location filename="../src/ace/AceFormat.cpp" line="334"/>
+        <location filename="../src/ace/AceFormat.cpp" line="337"/>
         <source>QA error no clear range</source>
         <translation>Ошибка QA нет четкого региона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="367"/>
+        <location filename="../src/ace/AceFormat.cpp" line="341"/>
         <source>QA error bad range</source>
         <translation>Ошибка QA: плохой регион</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="373"/>
+        <location filename="../src/ace/AceFormat.cpp" line="346"/>
         <source>Bad sequence data</source>
         <translation>Некорректные данные в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="504"/>
+        <location filename="../src/ace/AceFormat.cpp" line="462"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="530"/>
+        <location filename="../src/ace/AceFormat.cpp" line="488"/>
         <source>File doesn&apos;t contain any msa objects</source>
         <translation>Файл не содержит msa объектов</translation>
     </message>
@@ -312,7 +312,7 @@
         <translation>SNP форматы используются для сохранения полиморфизма однонуклеотидных данных</translation>
     </message>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="141"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="142"/>
         <source>Line %1: There are too few columns in this line. The line was skipped.</source>
         <translation>Строка %1: Слишком мало столбцов в этой строке. Строка была проигнорирована.</translation>
     </message>
@@ -356,47 +356,47 @@
 <context>
     <name>U2::AprFormat</name>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="60"/>
+        <location filename="../src/apr/AprFormat.cpp" line="61"/>
         <source>Unexpected end of file</source>
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="70"/>
+        <location filename="../src/apr/AprFormat.cpp" line="71"/>
         <source>There is no sequences in alignment</source>
         <translation>Выравнивание не содержит последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="97"/>
+        <location filename="../src/apr/AprFormat.cpp" line="98"/>
         <source>Attemt to find any number in the string failed</source>
         <translation>Attemt to find any number in the string failed</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="148"/>
+        <location filename="../src/apr/AprFormat.cpp" line="149"/>
         <source>Vector NTI/AlignX</source>
         <translation>Vector NTI/AlignX</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="149"/>
+        <location filename="../src/apr/AprFormat.cpp" line="150"/>
         <source>Vector NTI/AlignX is a Vector NTI format for multiple alignment</source>
         <translation>Vector NTI/AlignX это Vector NTI формат для множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="170"/>
+        <location filename="../src/apr/AprFormat.cpp" line="171"/>
         <source>Open in read-only mode</source>
         <translation>Открыть только для чтения</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="180"/>
+        <location filename="../src/apr/AprFormat.cpp" line="181"/>
         <source>File doesn&apos;t contain any msa objects</source>
         <translation>Файл не содержит msa объектов</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="202"/>
+        <location filename="../src/apr/AprFormat.cpp" line="205"/>
         <source>Illegal header line</source>
         <translation>Неправильная строка заголовка</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="218"/>
+        <location filename="../src/apr/AprFormat.cpp" line="220"/>
         <source>Sequences not found</source>
         <translation>Последовательности не найдены</translation>
     </message>
@@ -658,6 +658,14 @@
     </message>
 </context>
 <context>
+    <name>U2::CalculateSequencesNumberTask</name>
+    <message>
+        <location filename="../src/tasks/CalculateSequencesNumberTask.cpp" line="28"/>
+        <source>Calculate sequences number</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::CloneAssemblyWithReferenceToDbiTask</name>
     <message>
         <location filename="../src/ace/CloneAssemblyWithReferenceToDbiTask.cpp" line="43"/>
@@ -700,42 +708,42 @@
 <context>
     <name>U2::ClustalWAlnFormat</name>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="60"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="65"/>
         <source>Clustalw is a format for storing multiple sequence alignments</source>
         <translation>Clustalw это формат для сохранения множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="83"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="90"/>
         <source>Illegal header line</source>
         <translation>Неправильная строка заголовка</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="103"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="111"/>
         <source>Error parsing file</source>
         <translation>Ошибка разбора файла</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="115"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="123"/>
         <source>Invalid alignment format</source>
         <translation>Неверный формат выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="156"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="164"/>
         <source>Incorrect number of sequences in block</source>
         <translation>Неверное количество последовательностей в блоке</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="162"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="170"/>
         <source>Sequence names are not matched</source>
         <translation>Встретилось непарное имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="186"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="194"/>
         <source>Alphabet is unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="59"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="64"/>
         <source>CLUSTALW</source>
         <translation>CLUSTALW</translation>
     </message>
@@ -867,7 +875,7 @@
         <translation>Дифференциальный формат это текстовый формат для представления выходных файлов Cuffdiff.</translation>
     </message>
     <message>
-        <location filename="../src/DifferentialFormat.cpp" line="289"/>
+        <location filename="../src/DifferentialFormat.cpp" line="288"/>
         <source>Required column is missed: %1</source>
         <translation>Пропущен необходимый столбец: %1</translation>
     </message>
@@ -875,10 +883,10 @@
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="264"/>
-        <location filename="../src/FastaFormat.cpp" line="272"/>
-        <location filename="../src/FastqFormat.cpp" line="391"/>
-        <location filename="../src/PDWFormat.cpp" line="154"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="265"/>
+        <location filename="../src/FastaFormat.cpp" line="279"/>
+        <location filename="../src/FastqFormat.cpp" line="410"/>
+        <location filename="../src/PDWFormat.cpp" line="156"/>
         <source>Document is empty.</source>
         <translation>Документ не содержит данных.</translation>
     </message>
@@ -1085,23 +1093,23 @@
 <context>
     <name>U2::EMBLGenbankAbstractDocument</name>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="580"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="582"/>
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="318"/>
         <source>Annotation name is empty</source>
         <translation>Не указано имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="589"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="593"/>
         <source>Error parsing location</source>
         <translation>Не указан регион аннотации</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="684"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="686"/>
         <source>Error parsing sequence: unexpected empty line</source>
         <translation>Ошибка чтения последовательности: пустая строка</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="615"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="621"/>
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="372"/>
         <source>Unexpected line format</source>
         <translation>Слишком длинная строка или неожиданный конец файла</translation>
@@ -1113,52 +1121,52 @@
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="145"/>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="314"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="315"/>
         <source>Reading entry header</source>
         <translation>Чтение заголовка</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="219"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="222"/>
         <source>Merge error: found annotations without sequence</source>
         <translation>Ошибка слияния: обнаружена таблица аннотаций без соотв последовательности</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="471"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="474"/>
         <source>The file contains an incorrect data that describes a qualifier value. </source>
         <translation>Файл содержит некорректные данные, которые описываются value. </translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="472"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="475"/>
         <source>The value cannot contain a single quote character. The qualifier is &apos;%1&apos;</source>
         <translation>Значение не может содержать одиночные кавычки. Квалификатор &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="669"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="676"/>
         <source>Reading sequence %1</source>
         <translation>Чтение последовательности: %1</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="704"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="701"/>
         <source>Sequence is truncated</source>
         <translation>Последовательность повреждена</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="710"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="707"/>
         <source>Reading annotations %1</source>
         <translation>Чтение аннотаций: %1</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="720"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="717"/>
         <source>Invalid format of feature table</source>
         <translation>Таблица аннотаций повреждена</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="808"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="814"/>
         <source>Line is too long.</source>
         <translation>Слишком длинная строка.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="810"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="816"/>
         <source>IO error.</source>
         <translation>Ошибка чтения.</translation>
     </message>
@@ -1211,45 +1219,45 @@
         <translation>Формат FASTA является текстовым форматом для представления нуклеотидных или пептидных последовательностей, в котором пары оснований или аминокислоты представлены с использованием одно-буквенных кодов. Формат также позволяет задавать имена и комментарии к последовательностям.</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="179"/>
-        <location filename="../src/FastaFormat.cpp" line="409"/>
+        <location filename="../src/FastaFormat.cpp" line="182"/>
+        <location filename="../src/FastaFormat.cpp" line="418"/>
         <source>Line is too long</source>
         <translation>Слишком длинная строка</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="182"/>
-        <location filename="../src/FastaFormat.cpp" line="411"/>
+        <location filename="../src/FastaFormat.cpp" line="185"/>
+        <location filename="../src/FastaFormat.cpp" line="420"/>
         <source>First line is not a FASTA header</source>
         <translation>Неправильный заголовок FASTA</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="240"/>
+        <location filename="../src/FastaFormat.cpp" line="247"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="278"/>
+        <location filename="../src/FastaFormat.cpp" line="285"/>
         <source>Loaded sequences: %1.
 </source>
         <translation>Loaded sequences: %1.
 </translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="279"/>
+        <location filename="../src/FastaFormat.cpp" line="286"/>
         <source>Skipped sequences: %1.
 </source>
         <translation>Пропущены последовательности: %1.
 </translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="280"/>
+        <location filename="../src/FastaFormat.cpp" line="287"/>
         <source>The following sequences are empty:
 %1</source>
         <translation>Следующие последовательности пусты:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="477"/>
+        <location filename="../src/FastaFormat.cpp" line="486"/>
         <source>Unreferenced sequence in the beginning of patterns: %1</source>
         <translation>Неиспользуемая последовательность в начале образцов: %1</translation>
     </message>
@@ -1277,33 +1285,33 @@
         <translation>Не удалось найти начало имени последовательности</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="173"/>
-        <location filename="../src/FastqFormat.cpp" line="199"/>
+        <location filename="../src/FastqFormat.cpp" line="176"/>
+        <location filename="../src/FastqFormat.cpp" line="209"/>
         <source>Error while reading sequence</source>
         <translation>Ошибка чтения последовательности</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="324"/>
+        <location filename="../src/FastqFormat.cpp" line="343"/>
         <source>Sequence name differs from quality scores name: %1 and %2</source>
         <translation>Sequence name differs from quality scores name: %1 and %2</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="344"/>
+        <location filename="../src/FastqFormat.cpp" line="363"/>
         <source>Bad quality scores: inconsistent size.</source>
         <translation>Bad quality scores: inconsistent size.</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="363"/>
+        <location filename="../src/FastqFormat.cpp" line="382"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="559"/>
+        <location filename="../src/FastqFormat.cpp" line="579"/>
         <source>Not a valid FASTQ file, sequence name differs from quality scores name</source>
         <translation>Некорректный FASTQ файл, имя последовательности отличается от имени показателей качества</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="568"/>
+        <location filename="../src/FastqFormat.cpp" line="588"/>
         <source>Not a valid FASTQ file. Bad quality scores: inconsistent size.</source>
         <translation>Некорректный FASTQ файл. Плохие показатели качества: несовместимый размер.</translation>
     </message>
@@ -1316,67 +1324,67 @@
         <translation>FPKM (fragments per kilobase of exon model per million mapped fragments) Tracking Format это внутренний Cufflinks формат для выходных значений оценки выражений.</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="128"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="130"/>
         <source>Internal error: qualifier with name &apos;%1&apos; and &apos;%2&apos; can&apos;t be added</source>
         <translation>Internal error: qualifier with name &apos;%1&apos; and &apos;%2&apos; can&apos;t be added</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="159"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="161"/>
         <source>FPKM Tracking Format parsing error: incorrect number of fields at line %1!</source>
         <translation>FPKM Tracking Format parsing error: incorrect number of fields at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="164"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="166"/>
         <source>FPKM Tracking Format parsing error: a field at line %1 is empty!</source>
         <translation>FPKM Tracking Format parsing error: a field at line %1 is empty!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="169"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="171"/>
         <source>FPKM Tracking Format parsing error: incorrect coordinates at line %1!</source>
         <translation>FPKM Tracking Format parsing error: incorrect coordinates at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="181"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="183"/>
         <source>FPKM Tracking Format parsing error: different sequence names were detected in an input file. Sequence name &apos;%1&apos; is used.</source>
         <translation>FPKM Tracking Format parsing error: different sequence names were detected in an input file. Sequence name &apos;%1&apos; is used.</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="197"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="199"/>
         <source>FPKM Tracking Format parsing error: tracking ID value is empty at line %1!</source>
         <translation>FPKM Tracking Format parsing error: tracking ID value is empty at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="220"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="222"/>
         <source>FPKM Tracking Format parsing error: incorrect length value at line %1!</source>
         <translation>FPKM Tracking Format parsing error: incorrect length value at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="225"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="227"/>
         <source>FPKM Tracking Format parsing error: incorrect coverage value at line %1!</source>
         <translation>FPKM Tracking Format parsing error: incorrect coverage value at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="515"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="518"/>
         <source>Skipped qualifier &apos;%1&apos; while saving a FPKM header.</source>
         <translation>Skipped qualifier &apos;%1&apos; while saving a FPKM header.</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="585"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="588"/>
         <source>FPKM Tracking Format saving error: tracking ID shouldn&apos;t be empty!</source>
         <translation>FPKM Tracking Format saving error: tracking ID shouldn&apos;t be empty!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="610"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="613"/>
         <source>FPKM Tracking Format saving error: failed to parse locus qualifier &apos;%1&apos;, writing it to the output file anyway!</source>
         <translation>FPKM Tracking Format saving error: failed to parse locus qualifier &apos;%1&apos;, writing it to the output file anyway!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="617"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="620"/>
         <source>FPKM Tracking Format saving error: an annotation region (%1, %2) differs from the information stored in the &apos;locus&apos; qualifier (%3, %4). Writing the &apos;locus&apos; qualifier to output!</source>
         <translation>FPKM Tracking Format saving error: an annotation region (%1, %2) differs from the information stored in the &apos;locus&apos; qualifier (%3, %4). Writing the &apos;locus&apos; qualifier to output!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="651"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="654"/>
         <source>FPKM Tracking Format saving error: one or more errors occurred while saving a file, see TRACE log for details!</source>
         <translation>FPKM Tracking Format saving error: one or more errors occurred while saving a file, see TRACE log for details!</translation>
     </message>
@@ -1394,92 +1402,92 @@
         <translation>GFF это формат используемый для хранения аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="91"/>
+        <location filename="../src/GFFFormat.cpp" line="94"/>
         <source>Parsing error: invalid header</source>
         <translation>Parsing error: invalid header</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="95"/>
+        <location filename="../src/GFFFormat.cpp" line="98"/>
         <source>Parsing error: file does not contain version header</source>
         <translation>Parsing error: file does not contain version header</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="99"/>
+        <location filename="../src/GFFFormat.cpp" line="102"/>
         <source>Parsing error: format version is not an integer</source>
         <translation>Parsing error: format version is not an integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="103"/>
+        <location filename="../src/GFFFormat.cpp" line="106"/>
         <source>Parsing error: GFF version %1 is not supported</source>
         <translation>Parsing error: GFF version %1 is not supported</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="219"/>
+        <location filename="../src/GFFFormat.cpp" line="222"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="265"/>
+        <location filename="../src/GFFFormat.cpp" line="276"/>
         <source>Parsing error: file contains empty line %1, line skipped</source>
         <translation>Parsing error: file contains empty line %1, line skipped</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="305"/>
+        <location filename="../src/GFFFormat.cpp" line="316"/>
         <source>Parsing error: sequence in FASTA sequence has whitespaces at line %1</source>
         <translation>Parsing error: sequence in FASTA sequence has whitespaces at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="312"/>
+        <location filename="../src/GFFFormat.cpp" line="323"/>
         <source>Parsing error: too few fields at line %1</source>
         <translation>Parsing error: too few fields at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="318"/>
+        <location filename="../src/GFFFormat.cpp" line="329"/>
         <source>Parsing error: start position at line %1 is not integer</source>
         <translation>Parsing error: start position at line %1 is not integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="324"/>
+        <location filename="../src/GFFFormat.cpp" line="335"/>
         <source>Parsing error: end position at line %1 is not integer</source>
         <translation>Parsing error: end position at line %1 is not integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="329"/>
+        <location filename="../src/GFFFormat.cpp" line="340"/>
         <source>Parsing error: incorrect annotation region at line %1</source>
         <translation>Parsing error: incorrect annotation region at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="380"/>
+        <location filename="../src/GFFFormat.cpp" line="391"/>
         <source>Parsing error: incorrect attributes field %1 at line %2</source>
         <translation>Parsing error: incorrect attributes field %1 at line %2</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="419"/>
+        <location filename="../src/GFFFormat.cpp" line="430"/>
         <source>Parsing error: incorrect score parameter at line %1. Score can be a float number or &apos;.&apos; symbol</source>
         <translation>Parsing error: incorrect score parameter at line %1. Score can be a float number or &apos;.&apos; symbol</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="429"/>
+        <location filename="../src/GFFFormat.cpp" line="440"/>
         <source>Parsing error: incorrect frame parameter at line %1. Frame can be a number between 0-2 or &apos;.&apos; symbol</source>
         <translation>Parsing error: incorrect frame parameter at line %1. Frame can be a number between 0-2 or &apos;.&apos; symbol</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="439"/>
+        <location filename="../src/GFFFormat.cpp" line="450"/>
         <source>Parsing error: incorrect strand patameter at line %1. Strand can be &apos;+&apos;,&apos;-&apos; or &apos;.&apos;</source>
         <translation>Parsing error: incorrect strand patameter at line %1. Strand can be &apos;+&apos;,&apos;-&apos; or &apos;.&apos;</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="494"/>
+        <location filename="../src/GFFFormat.cpp" line="505"/>
         <source>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</source>
         <translation>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="613"/>
+        <location filename="../src/GFFFormat.cpp" line="624"/>
         <source>Can not detect chromosome name. &apos;Chr&apos; name will be used.</source>
         <translation>Can not detect chromosome name. &apos;Chr&apos; name will be used.</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="370"/>
+        <location filename="../src/GFFFormat.cpp" line="381"/>
         <source>Wrong location for joined annotation at line %1. Line was skipped.</source>
         <translation>Wrong location for joined annotation at line %1. Line was skipped.</translation>
     </message>
@@ -1492,17 +1500,17 @@
         <translation>The Gene transfer format (GTF) это формат используемый для хранения информации о структуре гена.</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="153"/>
+        <location filename="../src/GTFFormat.cpp" line="157"/>
         <source>GTF parsing error: incorrect number of fields at line %1!</source>
         <translation>GTF parsing error: incorrect number of fields at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="158"/>
+        <location filename="../src/GTFFormat.cpp" line="162"/>
         <source>GTF parsing error: a field at line %1 is empty!</source>
         <translation>GTF parsing error: a field at line %1 is empty!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="163"/>
+        <location filename="../src/GTFFormat.cpp" line="167"/>
         <source>GTF parsing error: incorrect coordinates at line %1!</source>
         <translation>GTF parsing error: incorrect coordinates at line %1!</translation>
     </message>
@@ -1511,45 +1519,45 @@
         <translation type="vanished">GTF parsing error: unexpected value of the &quot;feature&quot; value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="188"/>
+        <location filename="../src/GTFFormat.cpp" line="192"/>
         <source>GTF parsing error: incorrect score value &quot;%1&quot; at line %2!</source>
         <translation>GTF parsing error: incorrect score value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="196"/>
+        <location filename="../src/GTFFormat.cpp" line="200"/>
         <source>GTF parsing error: incorrect frame value &quot;%1&quot; at line %2!</source>
         <translation>GTF parsing error: incorrect frame value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="217"/>
+        <location filename="../src/GTFFormat.cpp" line="221"/>
         <source>GTF parsing error: invalid attributes format at line %1!</source>
         <translation>GTF parsing error: invalid attributes format at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="224"/>
-        <location filename="../src/GTFFormat.cpp" line="229"/>
+        <location filename="../src/GTFFormat.cpp" line="228"/>
+        <location filename="../src/GTFFormat.cpp" line="233"/>
         <source>GTF parsing error: mandatory attribute &apos;</source>
         <translation>GTF parsing error: mandatory attribute &apos;</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="225"/>
-        <location filename="../src/GTFFormat.cpp" line="230"/>
+        <location filename="../src/GTFFormat.cpp" line="229"/>
+        <location filename="../src/GTFFormat.cpp" line="234"/>
         <source>&apos; is absent at line %1!</source>
         <translation>&apos; is absent at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="237"/>
+        <location filename="../src/GTFFormat.cpp" line="241"/>
         <source>GTF parsing error: incorrect strand value &quot;%1&quot; at line %2!</source>
         <translation>GTF parsing error: incorrect strand value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="284"/>
+        <location filename="../src/GTFFormat.cpp" line="289"/>
         <source>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="612"/>
         <location filename="../src/GTFFormat.cpp" line="617"/>
+        <location filename="../src/GTFFormat.cpp" line="622"/>
         <source>Can&apos;t save an annotation to a GTF file - the annotation doesn&apos;t have the &apos;%1&apos; qualifier!</source>
         <translation>Can&apos;t save an annotation to a GTF file - the annotation doesn&apos;t have the &apos;%1&apos; qualifier!</translation>
     </message>
@@ -1856,91 +1864,91 @@
         <translation>Mega это формат файла программы MEGA</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="312"/>
+        <location filename="../src/MegaFormat.cpp" line="315"/>
         <source>Found sequences of different sizes</source>
         <translation>Обнаружены последовательности разной длины</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="148"/>
+        <location filename="../src/MegaFormat.cpp" line="152"/>
         <source>Bad name of sequence</source>
         <translation>Неверное имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="168"/>
+        <location filename="../src/MegaFormat.cpp" line="172"/>
         <source>Unexpected # in comments</source>
         <translation>Неожиданный символ &quot;#&quot; в комментариях</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="177"/>
+        <location filename="../src/MegaFormat.cpp" line="181"/>
         <source>A comment has not end</source>
         <translation>У комментария отсутствует окончание</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="199"/>
+        <location filename="../src/MegaFormat.cpp" line="205"/>
         <source>Unexpected symbol between comments</source>
         <translation>Неоижданные символы между комментариями</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="260"/>
+        <location filename="../src/MegaFormat.cpp" line="263"/>
         <source>Incorrect format</source>
         <translation>Неверный формат</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="273"/>
+        <location filename="../src/MegaFormat.cpp" line="276"/>
         <source>Identical symbol at the first sequence</source>
         <translation>Идентичный символ в первой последовательности</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="294"/>
+        <location filename="../src/MegaFormat.cpp" line="297"/>
         <source>Incorrect order of sequences&apos; names</source>
         <translation>Неправильный порядок имён последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="300"/>
+        <location filename="../src/MegaFormat.cpp" line="303"/>
         <source>Incorrect sequence</source>
         <translation>Incorrect sequence</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="320"/>
+        <location filename="../src/MegaFormat.cpp" line="323"/>
         <source>Alphabet is unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="391"/>
-        <location filename="../src/MegaFormat.cpp" line="403"/>
+        <location filename="../src/MegaFormat.cpp" line="394"/>
+        <location filename="../src/MegaFormat.cpp" line="401"/>
         <source>No header</source>
         <translation>Отсутствует заголовок</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="396"/>
+        <location filename="../src/MegaFormat.cpp" line="395"/>
         <source>No # before header</source>
         <translation>Отсутствует символ &quot;#&quot; перед заголовком</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="408"/>
+        <location filename="../src/MegaFormat.cpp" line="402"/>
         <source>Not MEGA-header</source>
         <translation>Не является заголовком MEGA</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="431"/>
-        <location filename="../src/MegaFormat.cpp" line="442"/>
-        <location filename="../src/MegaFormat.cpp" line="469"/>
+        <location filename="../src/MegaFormat.cpp" line="425"/>
+        <location filename="../src/MegaFormat.cpp" line="434"/>
+        <location filename="../src/MegaFormat.cpp" line="459"/>
         <source>No data in file</source>
         <translation>Отсутствуют данные в файле</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="451"/>
-        <location filename="../src/MegaFormat.cpp" line="457"/>
+        <location filename="../src/MegaFormat.cpp" line="440"/>
+        <location filename="../src/MegaFormat.cpp" line="445"/>
         <source>Incorrect title</source>
         <translation>Неправильный заголовок</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="501"/>
+        <location filename="../src/MegaFormat.cpp" line="492"/>
         <source>Sequence has empty part</source>
         <translation>Часть последовательности пустая</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="521"/>
+        <location filename="../src/MegaFormat.cpp" line="512"/>
         <source>Bad symbols in a sequence</source>
         <translation>Некорректные символы в последовательности</translation>
     </message>
@@ -2036,7 +2044,7 @@
     </message>
     <message>
         <location filename="../src/PDWFormat.cpp" line="100"/>
-        <location filename="../src/PDWFormat.cpp" line="190"/>
+        <location filename="../src/PDWFormat.cpp" line="192"/>
         <source>Line is too long</source>
         <translation>Слишком длинная строка</translation>
     </message>
@@ -2075,7 +2083,7 @@
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="350"/>
+        <location filename="../src/PhylipFormat.cpp" line="355"/>
         <source>Error parsing file</source>
         <translation>Ошибка разбора формата</translation>
     </message>
@@ -2083,32 +2091,32 @@
 <context>
     <name>U2::PhylipInterleavedFormat</name>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="238"/>
+        <location filename="../src/PhylipFormat.cpp" line="242"/>
         <source>PHYLIP Interleaved</source>
         <translation>PHYLIP Interleaved</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="337"/>
+        <location filename="../src/PhylipFormat.cpp" line="341"/>
         <source>Illegal line</source>
         <translation>Неправильная строка</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="344"/>
+        <location filename="../src/PhylipFormat.cpp" line="348"/>
         <source>Wrong header</source>
         <translation>Неверный заголовок</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="379"/>
+        <location filename="../src/PhylipFormat.cpp" line="388"/>
         <source>Block is incomplete</source>
         <translation>Block is incomplete</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="390"/>
+        <location filename="../src/PhylipFormat.cpp" line="399"/>
         <source>Block is incomlete</source>
         <translation>Block is incomlete</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="397"/>
+        <location filename="../src/PhylipFormat.cpp" line="407"/>
         <source>Number of characters does not correspond to the stated number</source>
         <translation>Число символов не соответствует установленному числу</translation>
     </message>
@@ -2121,29 +2129,30 @@
         <translation>PHYLIP Sequential</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="201"/>
+        <location filename="../src/PhylipFormat.cpp" line="202"/>
         <source>Illegal line</source>
         <translation>Неправильная строка</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="208"/>
+        <location filename="../src/PhylipFormat.cpp" line="209"/>
         <source>Wrong header</source>
         <translation>Неверный заголовок</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="211"/>
-        <location filename="../src/PhylipFormat.cpp" line="348"/>
+        <location filename="../src/PhylipFormat.cpp" line="212"/>
+        <location filename="../src/PhylipFormat.cpp" line="352"/>
         <source>There is not enough data</source>
         <translation>Недостаточно данных</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="215"/>
-        <location filename="../src/PhylipFormat.cpp" line="357"/>
+        <location filename="../src/PhylipFormat.cpp" line="201"/>
+        <location filename="../src/PhylipFormat.cpp" line="216"/>
+        <location filename="../src/PhylipFormat.cpp" line="363"/>
         <source>Error parsing file</source>
         <translation>Ошибка разбора формата</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="229"/>
+        <location filename="../src/PhylipFormat.cpp" line="233"/>
         <source>Number of characters does not correspond to the stated number</source>
         <translation>Число символов не соответствует установленному числу</translation>
     </message>
@@ -2174,7 +2183,7 @@
         <translation>Сырой файл последовательности - все содержимое файла рассматривается как один нуклеотид или пептидная последовательность. UGENE удалит все символы не принадлежащие алфавиту из результирующей последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/RawDNASequenceFormat.cpp" line="131"/>
+        <location filename="../src/RawDNASequenceFormat.cpp" line="128"/>
         <source>Sequence is empty</source>
         <translation>Последовательность пуста</translation>
     </message>
@@ -2231,54 +2240,54 @@
 <context>
     <name>U2::StockholmFormat</name>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="677"/>
+        <location filename="../src/StockholmFormat.cpp" line="727"/>
         <source>Stockholm</source>
         <translation>Stockholm</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="678"/>
+        <location filename="../src/StockholmFormat.cpp" line="728"/>
         <source>A multiple sequence alignments file format</source>
         <translation>Формат файла для множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="699"/>
-        <location filename="../src/StockholmFormat.cpp" line="716"/>
+        <location filename="../src/StockholmFormat.cpp" line="749"/>
+        <location filename="../src/StockholmFormat.cpp" line="766"/>
         <source>unknown error occurred</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="451"/>
+        <location filename="../src/StockholmFormat.cpp" line="489"/>
         <source>invalid file: bad header line</source>
         <translation>Неверный заголовок</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="483"/>
+        <location filename="../src/StockholmFormat.cpp" line="527"/>
         <source>invalid file: empty sequence name</source>
         <translation>Не указано имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="486"/>
+        <location filename="../src/StockholmFormat.cpp" line="530"/>
         <source>invalid file: equal sequence names in one block</source>
         <translation>одинаковые имена последовательностей в блоке</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="498"/>
+        <location filename="../src/StockholmFormat.cpp" line="542"/>
         <source>invalid file: sequence names are not equal in blocks</source>
         <translation>Непарное имя последовательности в блоке</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="493"/>
-        <location filename="../src/StockholmFormat.cpp" line="504"/>
+        <location filename="../src/StockholmFormat.cpp" line="537"/>
+        <location filename="../src/StockholmFormat.cpp" line="548"/>
         <source>invalid file: sequences in block are not of equal size</source>
         <translation>Блок содержит последовательности разной длины</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="518"/>
+        <location filename="../src/StockholmFormat.cpp" line="567"/>
         <source>invalid file: empty sequence alignment</source>
         <translation>Выравнивание не содержит последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="522"/>
+        <location filename="../src/StockholmFormat.cpp" line="571"/>
         <source>invalid file: unknown alphabet</source>
         <translation>Не удалось установить алфавит</translation>
     </message>
@@ -2286,12 +2295,12 @@
 <context>
     <name>U2::StreamSequenceReader</name>
     <message>
-        <location filename="../src/StreamSequenceReader.cpp" line="91"/>
+        <location filename="../src/StreamSequenceReader.cpp" line="95"/>
         <source>File %1 unsupported format.</source>
         <translation>File %1 unsupported format.</translation>
     </message>
     <message>
-        <location filename="../src/StreamSequenceReader.cpp" line="109"/>
+        <location filename="../src/StreamSequenceReader.cpp" line="113"/>
         <source>Unsupported file format or short reads list is empty</source>
         <translation>Unsupported file format or short reads list is empty</translation>
     </message>

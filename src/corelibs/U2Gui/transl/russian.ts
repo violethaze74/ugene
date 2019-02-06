@@ -3125,6 +3125,29 @@ Are you sure you want to open all of them?</source>
     </message>
 </context>
 <context>
+    <name>U2::ReloadDocumentsTask</name>
+    <message>
+        <location filename="../src/ReloadDocumentsTask.cpp" line="36"/>
+        <source>Reload documents task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ReloadDocumentsTask.cpp" line="46"/>
+        <source>Document &apos;%1&apos; can&apos;t be unloaded. &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ReloadDocumentsTask.cpp" line="65"/>
+        <source>Document(s) reloading failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ReloadDocumentsTask.cpp" line="72"/>
+        <source>The following errors occurred during the document(s) reloading: &lt;ul&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::RemovePartFromSequenceDialogController</name>
     <message>
         <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="60"/>
@@ -3423,66 +3446,76 @@ check connection settings</translation>
 <context>
     <name>U2::UnloadDocumentTask</name>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="50"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="53"/>
         <source>Unload document task: %1</source>
         <translation>Выгрузка документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="76"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="79"/>
         <source>Document &apos;%1&apos; can&apos;t be unloaded: </source>
         <translation>Документ &apos;%1&apos; не может быть выгружен: </translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="79"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="82"/>
         <source>save failed!</source>
         <translation>Ошибка сохранения!</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="91"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="94"/>
         <source>unexpected error</source>
         <translation>неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="112"/>
-        <location filename="../src/UnloadDocumentTask.cpp" line="135"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="115"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="138"/>
         <source>Question?</source>
         <translation>Вопрос?</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="112"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="115"/>
         <source>Close views for document: %1</source>
         <translation>Закрыть показ для документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="135"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="138"/>
         <source>Save document: %1</source>
         <translation>Сохранить документ:%1</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="154"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="157"/>
         <source>Failed to unload document</source>
         <translation>Не удалось выгрузить документ</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="158"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="161"/>
         <source>Failed to unload document: %1, error: %2</source>
         <translation>Невозможно выгрузить документ: %1, ошибка: %2</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="109"/>
-        <location filename="../src/UnloadDocumentTask.cpp" line="171"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="183"/>
+        <source>The document is locked by some algorithm.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>There is an active view with document content</source>
-        <translation>Документ используется в открытых окнах</translation>
+        <translation type="vanished">Документ используется в открытых окнах</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="180"/>
         <source>Document is locked by some algorithm and cannot be unloaded</source>
-        <translation>Документ был заблокирован одним из алгоритмов и не может быть выгружен</translation>
+        <translation type="vanished">Документ был заблокирован одним из алгоритмов и не может быть выгружен</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="160"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="163"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
+    </message>
+</context>
+<context>
+    <name>U2::WebViewControllerPrivate</name>
+    <message>
+        <location filename="../src/util/webview/WebViewControllerPrivate.cpp" line="42"/>
+        <source>Can not open a file for writing: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3505,6 +3538,14 @@ check connection settings</translation>
         <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="109"/>
         <source>Screenshot</source>
         <translation>Скриншот</translation>
+    </message>
+</context>
+<context>
+    <name>UnloadDocumentTask</name>
+    <message>
+        <location filename="../src/UnloadDocumentTask.cpp" line="50"/>
+        <source>There is an active view with the document content.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
