@@ -97,9 +97,6 @@ QString WelcomePageJsAgent::getUrlById(const QString &urlId) {
     if ("vkontakte" == urlId) {
         return "http://vk.com/uniprougene";
     }
-    if ("mendeley" == urlId) {
-        return "http://www.mendeley.com/profiles/ugene-unipro/";
-    }
     if ("rss" == urlId) {
         return "http://feeds2.feedburner.com/NewsOfUgeneProject";
     }
