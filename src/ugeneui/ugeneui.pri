@@ -18,6 +18,7 @@ useWebKit() {
 
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release
+macx : CONFIG -= app_bundle
 DEFINES+= QT_DLL QT_FATAL_ASSERT
 INCLUDEPATH += src _tmp ../include ../corelibs/U2Private/src ../libs_3rdparty/QSpec/src
 macx : INCLUDEPATH += /System/Library/Frameworks/Security.framework/Headers
