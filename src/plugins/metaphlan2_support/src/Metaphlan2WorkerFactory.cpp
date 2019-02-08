@@ -173,7 +173,7 @@ void Metaphlan2WorkerFactory::init() {
                                              "estimate the number of reads coming from each clade (\"-t rel_ab_w_read_stats\")</li>"
                                              "<li>Reads mapping - mapping from reads to clades, "
                                              "the output contains reads that hit a marker only (\"-t reads_map\")</li>"
-                                             "<li>Clade profiles - normalized marker counts for clades with at least a non - null marker(\"-t clade_profiles\")</li>"
+                                             "<li>Clade profiles - normalized marker counts for clades with at least a non-null marker(\"-t clade_profiles\")</li>"
                                              "<li>Marker abundance table - normalized marker counts: "
                                              "only when > 0.0 and optionally normalized by metagenome size "
                                              "(\"-t marker_ab_table\"), see also \"Normalize by metagenome size\" parameter</li>"
