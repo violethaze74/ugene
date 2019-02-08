@@ -13,7 +13,7 @@ U2_DISTRIBUTION_INFO=sources
 
 # int version levels for executables
 UGENE_VER_MAJOR=1
-UGENE_VER_MINOR=32
+UGENE_VER_MINOR=33
 UGENE_VER_PATCH=0
 
 # product version
