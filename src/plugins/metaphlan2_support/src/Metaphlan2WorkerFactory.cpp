@@ -121,8 +121,8 @@ void Metaphlan2WorkerFactory::init() {
                                           tr("URL(s) to FASTQ or FASTA file(s) should be provided. "
                                              "In case of SE reads or contigs use the \"Input URL 1\" slot only. "
                                              "In case of PE reads input \"left\" reads to \"Input URL 1\", "
-                                             "\"right\" reads to \"Input URL 2\"."
-                                             "See also the \"Input data\" parameter of the element"));
+                                             "\"right\" reads to \"Input URL 2\". "
+                                             "See also the \"Input data\" parameter of the element."));
 
         Descriptor inSlot1Descriptor(INPUT_SLOT,
                                      tr("Input URL 1"),
