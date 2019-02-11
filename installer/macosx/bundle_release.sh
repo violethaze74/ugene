@@ -35,14 +35,17 @@ rm -f "${SYMBOLS_DIR}.tar.gz"
 mkdir "${SYMBOLS_DIR}"
 
 echo
-echo copying UGENE bundle 
-cp -R $RELEASE_DIR/ugeneui.app/ "$TARGET_APP_DIR"
+echo creating UGENE bundle
+
+mkdir "${TARGET_APP_DIR}"
+mkdir "${TARGET_APP_DIR}/Contents"
+mkdir "${TARGET_APP_DIR}/Contents/Frameworks"
+mkdir "${TARGET_APP_DIR}/Contents/MacOS"
+mkdir "${TARGET_APP_DIR}/Contents/Resources"
+mkdir "${TARGET_EXE_DIR}/plugins"
 
 echo copying icons
 cp ${SOURCE_DIR}/src/ugeneui/images/ugene-doc.icns "$TARGET_APP_DIR/Contents/Resources"
-
-mkdir "${TARGET_EXE_DIR}/../Frameworks"
-mkdir "${TARGET_EXE_DIR}/plugins"
 
 echo copying translations
 cp $RELEASE_DIR/transl_*.qm "$TARGET_EXE_DIR"
