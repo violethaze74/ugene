@@ -61,7 +61,7 @@ GraphLabelsSelectDialog::GraphLabelsSelectDialog(int maxWindowSize, QWidget* par
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 
-    new HelpButton(this, buttonBox, "22055890");
+    new HelpButton(this, buttonBox, "23331037");
 
     mainLayout->addLayout(spinLayout);
     mainLayout->addWidget(usedIntervalsCheck);

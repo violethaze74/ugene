@@ -33,7 +33,7 @@ namespace Workflow {
 SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( const Schema & schema, QWidget * p )
 : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "22056243");
+    new HelpButton(this, buttonBox, "23331384");
 
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));

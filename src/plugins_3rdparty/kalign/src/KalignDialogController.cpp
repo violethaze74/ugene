@@ -59,7 +59,7 @@ KalignDialogController::KalignDialogController(QWidget* w, const MultipleSequenc
 : QDialog(w), ma(_ma->getCopy()), settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "22056100");
+    new HelpButton(this, buttonBox, "23331247");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -123,7 +123,7 @@ KalignAlignWithExtFileSpecifyDialogController::KalignAlignWithExtFileSpecifyDial
       saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "22056126");
+    new HelpButton(this, buttonBox, "23331273");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

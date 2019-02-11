@@ -42,7 +42,7 @@ ExportMSA2MSADialog::ExportMSA2MSADialog(const QString& defaultFileName, const D
     : QDialog(p),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "22055798");
+    new HelpButton(this, buttonBox, "23330945");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

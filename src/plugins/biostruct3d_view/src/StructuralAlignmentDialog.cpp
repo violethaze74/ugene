@@ -58,7 +58,7 @@ StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject *fi
         : QDialog(parent), task(0)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "22055886");
+    new HelpButton(this, buttonBox, "23331033");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
 

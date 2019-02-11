@@ -60,7 +60,7 @@ DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatD
 : QDialog(p), formatDetectionResults(results)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "22055785");
+    new HelpButton(this, buttonBox, "23330932");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

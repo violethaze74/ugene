@@ -33,7 +33,7 @@ TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap& settin
 : BaseSettingsDialog(parent) {
 
     setupUi(this);
-    new HelpButton(this, buttonBox, "22055999");
+    new HelpButton(this, buttonBox, "23331146");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
