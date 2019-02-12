@@ -126,7 +126,7 @@ void BedGraphToBigWigFactory::init() {
             BedGraphToBigWigWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BedGraphToBigWigWorker::OUT_NAME_ID, BedGraphToBigWigWorker::tr("Output name"),
-            BedGraphToBigWigWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first BAM file with an extention."));
+            BedGraphToBigWigWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first BAM file with an extension."));
 
         Descriptor blockSize(BedGraphToBigWigWorker::BLOCK_SIZE, BedGraphToBigWigWorker::tr("Block size"),
             BedGraphToBigWigWorker::tr("Number of items to bundle in r-tree (-blockSize)."));

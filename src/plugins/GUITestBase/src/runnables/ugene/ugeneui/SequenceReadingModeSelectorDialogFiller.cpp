@@ -48,7 +48,7 @@ void SequenceReadingModeSelectorDialogFiller::commonScenario()
     GT_CHECK(buttonBox != NULL, "buttonBox not found");
     if (cancel) {
         QPushButton *button = buttonBox->button(QDialogButtonBox::Cancel);
-        GT_CHECK(button != NULL, "standart button not found");
+        GT_CHECK(button != NULL, "standard button not found");
         GTWidget::click(os, button);
         return;
     }

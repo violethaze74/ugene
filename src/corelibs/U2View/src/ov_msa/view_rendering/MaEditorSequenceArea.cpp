@@ -613,7 +613,7 @@ void MaEditorSequenceArea::onVisibleRangeChanged() {
 
     const QList<int> visibleRows =  ui->getDrawHelper()->getVisibleRowsIndexes(height());
     foreach (const int rowIndex, visibleRows) {
-        SAFE_POINT(rowIndex < rowsNames.size(), QString("Row index is out of rowsNames boudaries: index is %1, size is %2").arg(rowIndex).arg(rowsNames.size()), );
+        SAFE_POINT(rowIndex < rowsNames.size(), QString("Row index is out of rowsNames boundaries: index is %1, size is %2").arg(rowIndex).arg(rowsNames.size()), );
         visibleRowsNames << rowsNames[rowIndex];
     }
 

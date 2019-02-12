@@ -95,7 +95,7 @@ static int getNumber(QString string, int startPos, U2OpStatus& os) {
         resultLength = currentLength;
     }
     if (resultLength == 0) {
-        os.setError(AprFormat::tr("Attemt to find any number in the string failed"));
+        os.setError(AprFormat::tr("Attempt to find any number in the string failed"));
     }
     return resultLength;
 }

@@ -393,8 +393,8 @@
     <name>U2::DotPlotImageExportToBitmapTask</name>
     <message>
         <location filename="../src/DotPlotImageExportTask.cpp" line="48"/>
-        <source>Incorrect DPI paramter</source>
-        <translation>Incorrect DPI paramter</translation>
+        <source>Incorrect DPI parameter</source>
+        <translation>Incorrect DPI parameter</translation>
     </message>
 </context>
 <context>

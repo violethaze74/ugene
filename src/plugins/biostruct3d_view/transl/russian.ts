@@ -420,7 +420,7 @@ You may try to upgrade your system by updating the video card driver.</translati
     <message>
         <location filename="../src/SelectModelsDialog.cpp" line="90"/>
         <location filename="../src/deprecated/SelectModelsDialog.cpp" line="90"/>
-        <source>At least one model shoud be selected.</source>
+        <source>At least one model should be selected.</source>
         <translation>Выберите как минимум одну модель.</translation>
     </message>
 </context>

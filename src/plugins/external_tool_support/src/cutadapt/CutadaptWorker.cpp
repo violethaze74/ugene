@@ -122,7 +122,7 @@ void CutAdaptFastqWorkerFactory::init() {
             CutAdaptFastqWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, CutAdaptFastqWorker::tr("Output file name"),
-            CutAdaptFastqWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));
+            CutAdaptFastqWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension."));
 
         Descriptor adapters(ADAPTERS_URL, CutAdaptFastqWorker::tr("FASTA file with 3' adapters"),
             CutAdaptFastqWorker::tr("A FASTA file with one or multiple sequences of adapter that were ligated to the 3' end. "

@@ -196,8 +196,8 @@
     </message>
     <message>
         <location filename="../src/CircularViewImageExportTask.cpp" line="151"/>
-        <source>Sequece Gobject is NULL</source>
-        <translation>Sequece Gobject is NULL</translation>
+        <source>Sequence Gobject is NULL</source>
+        <translation>Sequence Gobject is NULL</translation>
     </message>
 </context>
 <context>
@@ -215,8 +215,8 @@
         <translation type="obsolete">Sequence context is NULL!</translation>
     </message>
     <message>
-        <source>Sequece Gobject is NULL</source>
-        <translation type="obsolete">Sequece Gobject is NULL</translation>
+        <source>Sequence Gobject is NULL</source>
+        <translation type="obsolete">Sequence Gobject is NULL</translation>
     </message>
 </context>
 <context>

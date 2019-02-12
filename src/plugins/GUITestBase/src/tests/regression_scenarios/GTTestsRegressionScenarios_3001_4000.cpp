@@ -2822,7 +2822,7 @@ GUI_TEST_CLASS_DEFINITION(test_3439){
     GTGlobals::sleep();
     //there is should be 2 errors
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Write Alignment") == 1, "Errors count dont match, should be 2 validation errors");
-    //set paramter "Data storage" to "Shared UGENE database"
+    //set parameter "Data storage" to "Shared UGENE database"
     GTUtilsWorkflowDesigner::click(os, "Write Alignment", QPoint(-30,-30));
     GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setParameter(os, "Data storage", 1, GTUtilsWorkflowDesigner::comboValue);
@@ -6258,7 +6258,7 @@ GUI_TEST_CLASS_DEFINITION(test_3998){
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep();
 
-//    Current state: error occured, sequence disappeared from the display
+//    Current state: error occurred, sequence disappeared from the display
     GTUtilsLog::check(os, l);
 }
 

@@ -114,7 +114,7 @@ void RmdupBamWorkerFactory::init() {
             RmdupBamWorker::tr("Select the custom output folder."));
 
         Descriptor outName(OUT_NAME_ID, RmdupBamWorker::tr("Output BAM name"),
-            RmdupBamWorker::tr("A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .nodup.bam extention."));
+            RmdupBamWorker::tr("A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .nodup.bam extension."));
 
         Descriptor removeSE(REMOVE_SINGLE_END_ID, RmdupBamWorker::tr("Remove for single-end reads"),
             RmdupBamWorker::tr("Remove duplicate for single-end reads. By default, the command works for paired-end reads only (-s)."));

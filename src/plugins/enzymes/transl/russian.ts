@@ -1278,7 +1278,7 @@ To start ligation create a project or open an existing.</source>
     </message>
     <message>
         <location filename="../src/EnzymesQuery.cpp" line="114"/>
-        <source>If &lt;i&gt;True&lt;/i&gt; considers the sequence circular. That allows to search for restriction sites between the end and the beginning of the sequence.</source>
+        <source>If &lt;i&gt;True&lt;/i&gt; considers the sequence circular. That allows one to search for restriction sites between the end and the beginning of the sequence.</source>
         <translation>Если&lt;i&gt;Истина&lt;/i&gt; то последовательность рассматривается как круговая. Сайты будут искаться между началом и концом последовательности.</translation>
     </message>
 </context>

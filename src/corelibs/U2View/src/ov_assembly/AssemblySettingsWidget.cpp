@@ -189,7 +189,7 @@ QWidget * AssemblySettingsWidget::createConsensusSettings() {
 void AssemblySettingsWidget::sl_consensusAlgorithmChanged() {
     QAction * action = qobject_cast<QAction*>(sender());
     int index = ui->getConsensusArea()->getAlgorithmActions().indexOf(action);
-    SAFE_POINT(index >= 0, "consensus algoritm action not found",);
+    SAFE_POINT(index >= 0, "consensus algorithm action not found",);
     algorithmCombo->setCurrentIndex(index);
 }
 

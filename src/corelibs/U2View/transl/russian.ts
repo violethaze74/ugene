@@ -3265,8 +3265,8 @@ Try to open another file with a reference sequence and associate it with the ass
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="332"/>
-        <source>Unexected object is set as reference</source>
-        <translation>Unexected object is set as reference</translation>
+        <source>Unexpected object is set as reference</source>
+        <translation>Unexpected object is set as reference</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="367"/>

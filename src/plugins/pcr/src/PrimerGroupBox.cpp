@@ -99,7 +99,7 @@ void PrimerGroupBox::sl_browse() {
 }
 
 void PrimerGroupBox::sl_findPrimerTaskStateChanged() {
-    SAFE_POINT(findPrimerTask != NULL, "Catched the taskStateChanged of unknown task", );
+    SAFE_POINT(findPrimerTask != NULL, "Caught the taskStateChanged of unknown task", );
 
     CHECK(findPrimerTask->isFinished() || findPrimerTask->isCanceled() || findPrimerTask->hasError(), );
 

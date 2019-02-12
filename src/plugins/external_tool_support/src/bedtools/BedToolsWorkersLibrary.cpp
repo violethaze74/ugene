@@ -119,7 +119,7 @@ void SlopbedWorkerFactory::init() {
             SlopbedWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, SlopbedWorker::tr("Output file name"),
-            SlopbedWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));
+            SlopbedWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension."));
 
         Descriptor genomeAttrDesc(GENOME_ID, SlopbedWorker::tr("Genome"),
             SlopbedWorker::tr("In order to prevent the extension of intervals beyond chromosome boundaries, bedtools slop requires a genome file defining the length of each chromosome or contig. The format of the file is: <chromName><TAB><chromSize> (-g)."));
@@ -127,7 +127,7 @@ void SlopbedWorkerFactory::init() {
         Descriptor bAttr(B_ID, SlopbedWorker::tr("Each direction increase"),
             SlopbedWorker::tr("Increase the BED/GFF/VCF entry by the same number base pairs in each direction. If this parameter is used -l and -l are ignored. Enter 0 to disable. (-b)"));
 
-        Descriptor lAttr(L_ID, SlopbedWorker::tr("Substract from start"),
+        Descriptor lAttr(L_ID, SlopbedWorker::tr("Subtract from start"),
             SlopbedWorker::tr("The number of base pairs to subtract from the start coordinate. Enter 0 to disable. (-l)"));
 
         Descriptor rAttr(R_ID, SlopbedWorker::tr("Add to end"),
@@ -143,7 +143,7 @@ void SlopbedWorkerFactory::init() {
             SlopbedWorker::tr("Print the header from the input file prior to results. (-header)"));
 
         Descriptor filterAttr(FILTER_ID, SlopbedWorker::tr("Filter start>end fields"),
-            SlopbedWorker::tr("Remove lines with start postion greater than end position"));
+            SlopbedWorker::tr("Remove lines with start position greater than end position"));
 
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
@@ -507,7 +507,7 @@ void GenomecovWorkerFactory::init() {
             GenomecovWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, GenomecovWorker::tr("Output file name"),
-            GenomecovWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));
+            GenomecovWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension."));
 
         Descriptor genomeAttrDesc(GENOME_ID, GenomecovWorker::tr("Genome"),
             GenomecovWorker::tr("In order to prevent the extension of intervals beyond chromosome boundaries, bedtools slop requires a genome file defining the length of each chromosome or contig. The format of the file is: <chromName><TAB><chromSize>. (-g)"));

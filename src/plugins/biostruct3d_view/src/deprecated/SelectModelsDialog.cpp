@@ -87,7 +87,7 @@ void SelectModelsDialog::accept() {
     }
 
     if (selectedModelsIndexes.isEmpty()) {
-        QMessageBox::warning(this, tr("Error"), tr("At least one model shoud be selected."));
+        QMessageBox::warning(this, tr("Error"), tr("At least one model should be selected."));
         return;
     }
 

@@ -1096,7 +1096,7 @@ void BioStruct3DGLWidget::sl_resetAlignment() {
 void BioStruct3DGLWidget::sl_onAlignmentDone(Task *task) {
     if (!task->hasError()) {
         StructuralAlignmentTask *saTask = qobject_cast<StructuralAlignmentTask*> (task);
-        assert(saTask && "Task shoud have type StructuralAlignmentTask");
+        assert(saTask && "Task should have type StructuralAlignmentTask");
 
         StructuralAlignment result = saTask->getResult();
         StructuralAlignmentTaskSettings settings = saTask->getSettings();

@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/TestRunnerPlugin.cpp" line="52"/>
         <source>test_runner_desc</source>
-        <translation>Test runner allows to run and manage tests suites and individual tests for Unipro UGENE. Enabled if environment variable UGENE_DEV is set</translation>
+        <translation>Test runner allows one to run and manage tests suites and individual tests for Unipro UGENE. Enabled if environment variable UGENE_DEV is set</translation>
     </message>
     <message>
         <location filename="../src/TestRunnerPlugin.cpp" line="96"/>

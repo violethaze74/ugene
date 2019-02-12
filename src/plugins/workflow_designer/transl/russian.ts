@@ -248,11 +248,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/CreateScriptBlockDialog.ui" line="164"/>
-        <source>Error occured while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</source>
+        <source>Error occurred while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</source>
         <translation>Произошла ошибка во время сохранения нового актера. Невозможно записать в текущей папке. Выберите другую папку</translation>
     </message>
     <message>
-        <source>Error occured while saving new actor. Can&apos;t write to current folder. Choose another folder for store user&apos;s elements</source>
+        <source>Error occurred while saving new actor. Can&apos;t write to current folder. Choose another folder for store user&apos;s elements</source>
         <translation type="vanished">Произошла ошибка во время сохранения нового актера. Невозможно записать в текущей папке. Выберите другую папку</translation>
     </message>
     <message>
@@ -1585,7 +1585,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="113"/>
-        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
         <translation>Имя выходного файла.</translation>
     </message>
     <message>
@@ -2304,7 +2304,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="268"/>
-        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
         <translation>Имя выходного файла.</translation>
     </message>
     <message>
@@ -2675,7 +2675,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="153"/>
-        <source>A name of an output BAM/SAM file. If default of empty value is provided the output name is the name of the first BAM/SAM file with .filtered extention.</source>
+        <source>A name of an output BAM/SAM file. If default of empty value is provided the output name is the name of the first BAM/SAM file with .filtered extension.</source>
         <translation>Имя выходного BAM/SAM файла.</translation>
     </message>
     <message>
@@ -2695,7 +2695,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="159"/>
-        <source>Regions to filter. For BAM output only. chr2 to output the whole chr2. chr2:1000 to output regions of chr 2 starting from 1000. chr2:1000-2000 to ouput regions of chr2 between 1000 and 2000 including the end point. To input multiple regions use the space seprator (e.g. chr1 chr2 chr3:1000-2000).</source>
+        <source>Regions to filter. For BAM output only. chr2 to output the whole chr2. chr2:1000 to output regions of chr 2 starting from 1000. chr2:1000-2000 to output regions of chr2 between 1000 and 2000 including the end point. To input multiple regions use the space separator (e.g. chr1 chr2 chr3:1000-2000).</source>
         <translation>участки для фильтрации. Только в случае выходных файлов в формате BAM. Например, chr2 - для всей chr2. chr2:1000 - для регионов chr 2, начиная с 1000. chr2:1000-2000 - для регионов chr2 между 1000 и 2000, включая конец интервала. Для ввода нескольких участков используйте пробел (напр, chr1 chr2 chr3:1000-2000).</translation>
     </message>
     <message>
@@ -3443,7 +3443,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="115"/>
-        <source>A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .merged.bam extention.</source>
+        <source>A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .merged.bam extension.</source>
         <translation>Имя выходного BAM файла.</translation>
     </message>
     <message>
@@ -3544,7 +3544,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="493"/>
-        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
         <translation>Имя выходного файла.</translation>
     </message>
     <message>
@@ -3778,7 +3778,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation type="vanished">Имя выходного файла</translation>
     </message>
     <message>
-        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
         <translation type="vanished">Имя выходного файла.</translation>
     </message>
     <message>
@@ -4411,7 +4411,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="117"/>
-        <source>A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .nodup.bam extention.</source>
+        <source>A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .nodup.bam extension.</source>
         <translation>Имя выходного BAM файла.</translation>
     </message>
     <message>
@@ -4957,7 +4957,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="115"/>
-        <source>A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .sorted.bam extention.</source>
+        <source>A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .sorted.bam extension.</source>
         <translation>Имя выходного BAM файла.</translation>
     </message>
     <message>
@@ -5928,7 +5928,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/WorkflowDesignerPlugin.cpp" line="75"/>
-        <source>Workflow Designer allows to create complex computational workflows.</source>
+        <source>Workflow Designer allows one to create complex computational workflows.</source>
         <translation>Дизайнер вычислительных схем позволяет создавать и переиспользовать многоэтапные алгоритмы обработки данных.
 Алгоритмы создаются в виде визуальных диаграмм потоков данных, не требуя навыков программирования или знания языков программирования.</translation>
     </message>

@@ -367,8 +367,8 @@
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="98"/>
-        <source>Attemt to find any number in the string failed</source>
-        <translation>Attemt to find any number in the string failed</translation>
+        <source>Attempt to find any number in the string failed</source>
+        <translation>Attempt to find any number in the string failed</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="149"/>
@@ -2021,7 +2021,7 @@
     </message>
     <message>
         <location filename="../src/PDBFormat.cpp" line="528"/>
-        <source>Invalid SEQRES: less then 24 charachters</source>
+        <source>Invalid SEQRES: less then 24 characters</source>
         <translation>Неверный SEQRES: меньше чем 24 символа</translation>
     </message>
     <message>

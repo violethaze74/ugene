@@ -45,7 +45,7 @@ void DotPlotImageExportToBitmapTask::run() {
         tmp.fill(Qt::white);
         defaultDpm = tmp.dotsPerMeterX();
     }
-    SAFE_POINT(dpm != 0, tr("Incorrect DPI paramter"), );
+    SAFE_POINT(dpm != 0, tr("Incorrect DPI parameter"), );
     float fontScale = (float)defaultDpm / dpm;
     dotplotWidget->drawAll(painter, settings.imageSize, fontScale, dpExportSettings);
 

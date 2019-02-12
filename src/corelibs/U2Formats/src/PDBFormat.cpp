@@ -525,7 +525,7 @@ void PDBFormat::PDBParser::parseSequence(BioStruct3D& biostruct, U2OpStatus& ti)
 
     if (currentPDBLine.length() < 24 /* at least one residue */)
     {
-        ti.setError(U2::PDBFormat::tr("Invalid SEQRES: less then 24 charachters"));
+        ti.setError(U2::PDBFormat::tr("Invalid SEQRES: less then 24 characters"));
         return;
     }
 

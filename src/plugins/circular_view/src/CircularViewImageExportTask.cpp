@@ -148,7 +148,7 @@ void CircularViewImageExportController::initSettingsWidget() {
         sequenceComboBox = new QComboBox();
         foreach(CircularView* cv, cvList) {
             SAFE_POINT( cv->getSequenceContext() != NULL, tr("Sequence context is NULL!"), );
-            SAFE_POINT( cv->getSequenceContext()->getSequenceGObject() != NULL, tr("Sequece Gobject is NULL"), );
+            SAFE_POINT( cv->getSequenceContext()->getSequenceGObject() != NULL, tr("Sequence Gobject is NULL"), );
             QString seqName = cv->getSequenceContext()->getSequenceGObject()->getGObjectName();
             sequenceComboBox->addItem(seqName);
             if (cv == cvWidget) {

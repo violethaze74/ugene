@@ -154,7 +154,7 @@ bool SQLiteQuery::reset(bool clearBindings) {
     }
     int rc = sqlite3_reset(st);
     if (rc != SQLITE_OK) {
-        setError(QString("SQLite: Error reseting statement: ") + U2DbiL10n::queryError(sqlite3_errmsg(db->handle)));
+        setError(QString("SQLite: Error resetting statement: ") + U2DbiL10n::queryError(sqlite3_errmsg(db->handle)));
         return false;
     }
     return true;

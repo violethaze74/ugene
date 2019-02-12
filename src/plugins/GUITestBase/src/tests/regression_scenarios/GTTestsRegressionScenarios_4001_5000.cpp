@@ -242,7 +242,7 @@ GUI_TEST_CLASS_DEFINITION(test_4009) {
     GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==0, "some tasks were not cancelled")
 
-    //Current state: the task hangs, debug error occured with message "Infinite wait has timed out"
+    //Current state: the task hangs, debug error occurred with message "Infinite wait has timed out"
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4010) {
@@ -287,7 +287,7 @@ GUI_TEST_CLASS_DEFINITION(test_4011){
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/regression/4011/human_T1.aln");
     GTUtilsWorkflowDesigner::runWorkflow(os);
 //    Current state:
-//    Runtime error occured(x86 version of UGENE)
+//    Runtime error occurred(x86 version of UGENE)
 //    Windows hangs(x64 version)
     l.checkMessage("Nothing to write");
 }
@@ -3128,7 +3128,7 @@ GUI_TEST_CLASS_DEFINITION(test_4463) {
 //    4. Press "Yes"
 //    Expected state: UGENE does not crash
 //    5. Load the document again
-//    Expected state: the document is succesfully loaded
+//    Expected state: the document is successfully loaded
 
     GTFile::copy(os, testDir + "_common_data/genbank/gbbct131.gb.gz", sandBoxDir + "/test_4463.gb.gz");
 

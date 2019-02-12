@@ -1060,7 +1060,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="580"/>
-        <source>Gap extention penalty (-E)</source>
+        <source>Gap extension penalty (-E)</source>
         <translation>Штраф за расширение пробела (-E)</translation>
     </message>
     <message>
@@ -1418,7 +1418,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/bwa/BwaSwSettings.ui" line="159"/>
-        <source>Gap extention penalty (-r)</source>
+        <source>Gap extension penalty (-r)</source>
         <translation>Штраф за расширение пробела (-r)</translation>
     </message>
     <message>
@@ -2678,17 +2678,17 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="338"/>
-        <source>Viterbi filter treshold</source>
+        <source>Viterbi filter threshold</source>
         <translation>Порог фильтрации Viterbi</translation>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="368"/>
-        <source>MSV filter treshold</source>
+        <source>MSV filter threshold</source>
         <translation>Порог фильтрации MSV</translation>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="401"/>
-        <source>Forward filter treshold</source>
+        <source>Forward filter threshold</source>
         <translation>Порог фильтрации Forward</translation>
     </message>
     <message>
@@ -3929,7 +3929,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="661"/>
-        <source>Used databse</source>
+        <source>Used database</source>
         <translation>Используемая база данных</translation>
     </message>
     <message>
@@ -4359,7 +4359,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="626"/>
-        <source>Used databse</source>
+        <source>Used database</source>
         <translation>Используемая база данных</translation>
     </message>
     <message>
@@ -6715,7 +6715,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="129"/>
-        <source>A name of an output file. If default of empty value is provided the output name is the name of the first BAM file with an extention.</source>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first BAM file with an extension.</source>
         <translation>Имя выходного файла. По умолчанию будет взято имя первого файла с соответствующим расширением.</translation>
     </message>
     <message>
@@ -9516,7 +9516,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="125"/>
-        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
         <translation>Имя выходного файла. По умолчанию будет использовано имя первого файла с соответствующим расширением.</translation>
     </message>
     <message>
@@ -9654,7 +9654,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="120"/>
-        <source>Specifies a non-default file which contains the list of adapter sequences which will be explicity searched against the library. The file must contain sets of named adapters in the form name[tab]sequence.  Lines prefixed with a hash will be ignored.</source>
+        <source>Specifies a non-default file which contains the list of adapter sequences which will be explicitly searched against the library. The file must contain sets of named adapters in the form name[tab]sequence.  Lines prefixed with a hash will be ignored.</source>
         <translation>добавить произвольный файл со списком адаптеров, для которых будет проведён поиск в данных.</translation>
     </message>
     <message>
@@ -9773,7 +9773,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="510"/>
-        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
         <translation>Имя выходного файла. По умолчанию будет использовано имя первого файла с соответствующим расширением.</translation>
     </message>
     <message>
@@ -11098,7 +11098,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="122"/>
-        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
         <translation>Имя выходного файла. По умолчанию будет использовано имя первого файла с соответствующим расширением.</translation>
     </message>
     <message>
@@ -11123,7 +11123,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="130"/>
-        <source>Substract from start</source>
+        <source>Subtract from start</source>
         <translation>Вычесть из начала</translation>
     </message>
     <message>
@@ -11177,7 +11177,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="146"/>
-        <source>Remove lines with start postion greater than end position</source>
+        <source>Remove lines with start position greater than end position</source>
         <translation>Удаляет линии, в которых стартовая позиция больши конечной позиции</translation>
     </message>
     <message>

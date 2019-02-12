@@ -822,7 +822,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1446"/>
-        <source>Show debuging info</source>
+        <source>Show debugging info</source>
         <translation>Показывать отладочную информацию</translation>
     </message>
     <message>

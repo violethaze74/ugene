@@ -3232,7 +3232,7 @@ void test_0039_function(HI::GUITestOpStatus &os, int comboNum, QString extention
     //3.Fill dialog:
     //    File name: test/_common_data/scenarios/sandbox/transl.aln
     //    File format: CLUSTALW(use other formats too, check extension change)
-    //    Amino translation: Standart genetic code
+    //    Amino translation: Standard genetic code
     //    Add document to project: checked
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
         << "action_project__export_to_amino_action"));

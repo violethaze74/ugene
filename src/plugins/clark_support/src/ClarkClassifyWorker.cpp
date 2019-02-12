@@ -287,7 +287,7 @@ void ClarkClassifyWorkerFactory::init() {
         Descriptor db2ram(DB_TO_RAM, ClarkClassifyWorker::tr("Load database into memory"),
             ClarkClassifyWorker::tr("Request the loading of database file by memory mapped-file (--ldm).<br><br>"
                                     "This option accelerates the loading time but it will require an additional amount of RAM significant. "
-                                    "This option also allows to load the database in multithreaded-task (see also the \"Number of threads\" parameter)."));
+                                    "This option also allows one to load the database in multithreaded-task (see also the \"Number of threads\" parameter)."));
 
         Descriptor numThreads(NUM_THREADS, ClarkClassifyWorker::tr("Number of threads"),
             ClarkClassifyWorker::tr("Use multiple threads for the classification and, with the \"Load database into memory\" option enabled, for the loading of the database into RAM (-n)."));

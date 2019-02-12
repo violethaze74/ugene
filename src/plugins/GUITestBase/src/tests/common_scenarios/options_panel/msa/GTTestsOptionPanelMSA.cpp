@@ -1343,7 +1343,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007_1){
 //    3. Add Phaneroptera_falcata and Isophya_altaica_EF540820 sequences to PA
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
-//    4. Set gap extention penalty to 1000. Press align button
+//    4. Set gap extension penalty to 1000. Press align button
     setGapExtd(os, 1000);
     inNewWindow(os, false);
     align(os);

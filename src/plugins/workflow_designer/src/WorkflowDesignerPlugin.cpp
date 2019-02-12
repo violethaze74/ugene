@@ -72,7 +72,7 @@ const QString WorkflowDesignerPlugin::REMOTE_MACHINE            = "task-remote-m
 const QString WorkflowDesignerPlugin::PRINT                     = "print";
 
 WorkflowDesignerPlugin::WorkflowDesignerPlugin()
-: Plugin(tr("Workflow Designer"), tr("Workflow Designer allows to create complex computational workflows.")){
+: Plugin(tr("Workflow Designer"), tr("Workflow Designer allows one to create complex computational workflows.")){
     if (AppContext::getMainWindow()) {
         services << new WorkflowDesignerService();
         AppContext::getAppSettingsGUI()->registerPage(new WorkflowSettingsPageController());
@@ -165,7 +165,7 @@ void WorkflowDesignerPlugin::registerCMDLineHelp() {
         PRINT,
         tr("Prints the content of the specified slot."),
         tr("Prints the content of the specified slot. The incoming/outcoming content of"
-        " specified slot is printed to the standart output."),
+        " specified slot is printed to the standard output."),
         tr("<actor_name>.<port_name>.<slot_name>"));
     Q_UNUSED(printSection);
 

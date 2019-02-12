@@ -138,7 +138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002){
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     //Align short sequences with default settings(on platforms with MAFFT)
-    //Expected state: MAFFT alignment started and finished succesfully with using option --addfragments
+    //Expected state: MAFFT alignment started and finished successfully with using option --addfragments
     ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
@@ -174,7 +174,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
 GUI_TEST_CLASS_DEFINITION(test_0004){
     //Remove MAFFT from external tools, then align short sequences
-    //Expected state: UGENE alignment started and finished succesfully
+    //Expected state: UGENE alignment started and finished successfully
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

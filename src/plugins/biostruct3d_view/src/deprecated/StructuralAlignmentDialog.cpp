@@ -139,7 +139,7 @@ void StructuralAlignmentDialog::accept() {
 int StructuralAlignmentDialog::execIfAlgorithmAvailable() {
     StructuralAlignmentAlgorithmRegistry *reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
     if (reg->getFactoriesIds().isEmpty()) {
-        QMessageBox::warning(this, "Error", "No available algorithms, make sure that apropriate plugin loaded (for ex. PTools)");
+        QMessageBox::warning(this, "Error", "No available algorithms, make sure that appropriate plugin loaded (for ex. PTools)");
         return Rejected;
     } else {
         return exec();

@@ -2681,7 +2681,7 @@ GUI_TEST_CLASS_DEFINITION(test_1245){
 
                 QLineEdit* lineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit"));
                 CHECK_SET_ERR(lineEdit != NULL, "fileNameEdit not found");
-                CHECK_SET_ERR(GTLineEdit::copyText(os, lineEdit).endsWith(".fa"), "Wrong extention");
+                CHECK_SET_ERR(GTLineEdit::copyText(os, lineEdit).endsWith(".fa"), "Wrong extension");
 
                 QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
                 CHECK_SET_ERR(box != NULL, "buttonBox is NULL");

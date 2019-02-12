@@ -136,7 +136,7 @@ DNATranslation* DNATranslationRegistry::getStandardGeneticCodeTranslation(const 
     if (srcAlphabet->isNucleic()) {
         return lookupTranslation(srcAlphabet, DNATranslationID(1));
     }
-    FAIL("Standart genetic code is used only with source nucleic alphabet", NULL);
+    FAIL("Standard genetic code is used only with source nucleic alphabet", NULL);
 }
 
 DNATranslation* DNATranslationRegistry::lookupTranslation(const DNAAlphabet* srcAlphabet,

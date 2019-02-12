@@ -339,7 +339,7 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Request the loading of database file by memory mapped-file (--ldm).&lt;br&gt;&lt;br&gt;This option accelerates the loading time but it will require an additional amount of RAM significant. This option also allows to load the database in multithreaded-task (see also the &quot;Number of threads&quot; parameter).</source>
+        <source>Request the loading of database file by memory mapped-file (--ldm).&lt;br&gt;&lt;br&gt;This option accelerates the loading time but it will require an additional amount of RAM significant. This option also allows one to load the database in multithreaded-task (see also the &quot;Number of threads&quot; parameter).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

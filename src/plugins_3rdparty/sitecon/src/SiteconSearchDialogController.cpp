@@ -319,7 +319,7 @@ void SiteconSearchDialogController::runTask() {
     cfg.complOnly = rbComplement->isChecked();
     cfg.minPSUM = errLevelBox->itemData(errLevelBox->currentIndex()).toInt();
     if (cfg.minPSUM == 0) {
-        QMessageBox::critical(this, tr("Error"), tr("Error parsing minumum score"));
+        QMessageBox::critical(this, tr("Error"), tr("Error parsing minimum score"));
         return;
     }
 
