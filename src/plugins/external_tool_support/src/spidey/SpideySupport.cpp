@@ -25,6 +25,7 @@
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -130,15 +131,6 @@ void SpideySupportContext::buildMenu(GObjectView* view, QMenu* m) {
         }
 }
 
-//TODO: move this function to global utils package. For example to AppContext class.
-static bool is32BitOs() {
-    bool result = false;
-#ifdef Q_PROCESSOR_X86_32
-    result = true;
-#endif
-    return result;
-}
-
 // This is maximum sequence size we allow to use with Spidey task on 32-bit OSes
 // 100Mb sequence size will result to ~1.5Gb memory usage by Spidey process.
 #define MAX_SPIDEY_SEQUENCE_LENGTH_32_BIT_OS (100 * 1000 * 1000)
@@ -169,7 +161,7 @@ void SpideySupportContext::sl_align_with_Spidey() {
     settings.allowMultipleSelection = false;
     settings.objectTypesToShow.insert(GObjectTypes::SEQUENCE);
     QScopedPointer<U2SequenceObjectConstraints> seqConstraints(new U2SequenceObjectConstraints());
-    if (is32BitOs()) {
+    if (AppResourcePool::is32BitBuild()) {
         seqConstraints->sequenceSize = MAX_SPIDEY_SEQUENCE_LENGTH_32_BIT_OS;
     }
     seqConstraints->alphabetType = DNAAlphabet_NUCL;

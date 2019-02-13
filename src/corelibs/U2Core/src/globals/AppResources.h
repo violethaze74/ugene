@@ -281,6 +281,19 @@ public:
 
     static int getTotalPhysicalMemory();
 
+    /*
+     * Returns true if UGENE is built in 32bit mode. 
+     * Otherwise UGENE is built in 64bit mode.
+     */
+    static bool is32BitBuild();
+    
+    /* 
+     * Returns true if OS is 64 bit. 
+     * Note: even 32-bit UGENE may be run on 64-bit OS. 
+     * Warning: 
+     *     this method is implemented for MacOS only.
+     * TODO: check if this method can be safely moved to external tools package (the only user) from here.
+     */
     static bool isSystem64bit();
 
     static const int x32MaxMemoryLimitMb = 3*512;       // 1536Mb

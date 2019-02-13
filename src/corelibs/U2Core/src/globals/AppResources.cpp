@@ -151,6 +151,14 @@ int AppResourcePool::getTotalPhysicalMemory() {
     return totalPhysicalMemory;
 }
 
+bool AppResourcePool::is32BitBuild() {
+    bool result = false;
+#ifdef Q_PROCESSOR_X86_32
+    result = true;
+#endif
+    return result;
+}
+
 bool AppResourcePool::isSystem64bit() {
 #ifdef Q_OS_MAC
     QProcess p;

@@ -23,6 +23,7 @@
 #include <QScopedPointer>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentUtils.h>
@@ -90,14 +91,6 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
     molConstructWidget->installEventFilter(this);
 }
 
-static bool is32BitOs() {
-    bool result = false;
-#ifdef Q_PROCESSOR_X86_32
-    result = true;
-#endif
-    return result;
-}
-
 void ConstructMoleculeDialog::accept()
 {
     if (selected.isEmpty()) {
@@ -114,7 +107,7 @@ void ConstructMoleculeDialog::accept()
         }
         toLigate.append(fragment);
     }
-    if (is32BitOs() && resultSequenceSize > MAX_MOLECULE_SEQUENCE_LENGTH_32_BIT_OS) {
+    if (AppResourcePool::is32BitBuild() && resultSequenceSize > MAX_MOLECULE_SEQUENCE_LENGTH_32_BIT_OS) {
         QMessageBox::warning(this->window(), L10N::warningTitle(),  tr("Selected region is too large to proceed!"));
         return;
     }

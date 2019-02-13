@@ -41,6 +41,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/AppResources.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
@@ -655,15 +656,6 @@ bool DotPlotWidget::sl_showLoadFileDialog() {
 #define MAX_DOT_PLOT_W_SUM_SEQUENCE_LENGTH_32_BIT_OS (600 * 1000 * 1000)
 #define MAX_DOT_PLOT_WK_SUM_SEQUENCE_LENGTH_32_BIT_OS (200 * 1000 * 1000)
 
-//TODO: move this function to global utils package. For example to AppContext class.
-static bool is32BitOs() {
-    bool result = false;
-#ifdef Q_PROCESSOR_X86_32
-    result = true;
-#endif
-    return result;
-}
-
 // creating new dotplot or changing settings
 bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
 
@@ -694,7 +686,7 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
     sequenceX = d->getXSeq();
     sequenceY = d->getYSeq();
 
-    if (is32BitOs()) {
+    if (AppResourcePool::is32BitBuild()) {
         quint64 sumSeqLen = sequenceX->getSequenceLength() + sequenceY->getSequenceLength();
         bool wkMode = identity < 100;
         if ((wkMode && sumSeqLen > MAX_DOT_PLOT_WK_SUM_SEQUENCE_LENGTH_32_BIT_OS)||
