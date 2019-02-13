@@ -199,7 +199,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx) : ctx(_ctx), dn
     connect(removeAnnsAndQsAction, SIGNAL(triggered()), SLOT(sl_removeAnnsAndQs()));
     tree->addAction(removeAnnsAndQsAction);
 
-    copyQualifierAction = new QAction(tr("Copy qualifier text"), this);
+    copyQualifierAction = new QAction(QIcon(":/core/images/copy_qualifier.png"), tr("Copy qualifier text"), this);
     connect(copyQualifierAction, SIGNAL(triggered()), SLOT(sl_onCopyQualifierValue()));
 
     copyQualifierURLAction = new QAction(tr("Copy qualifier URL"), this);
