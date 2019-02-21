@@ -19,27 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_METAPHLAN_SUPPORT_H_
-#define _U2_METAPHLAN_SUPPORT_H_
+#ifndef _U2_METAPHLAN2_LOG_PARSER_H_
+#define _U2_METAPHLAN2_LOG_PARSER_H_
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
-class Metaphlan2Support : public ExternalTool {
-    Q_OBJECT
-public:
-    Metaphlan2Support(const QString& name, const QString& path = "");
-    void performAdditionalChecks(const QString& toolPath);
+class Metaphlan2LogParser : public ExternalToolLogParser {
+private:
+    bool isError(const QString &line) const override;
 
-    static const QString TOOL_NAME;
-    static const QString UTIL_SCRIPT;
-
-    static const QString ET_BOWTIE_2_ALIGNER;
-    static const QString ET_PYTHON;
-    static const QString ET_PYTHON_BIO;
-    static const QString ET_PYTHON_NUMPY;
+    static const QStringList wellKnownErrors;
+    static QStringList initWellKnownErrors();
 };
 
-}//namespace
-#endif // _U2_METAPHLAN_SUPPORT_H_
+}   // namespace U2
+
+#endif // _U2_METAPHLAN2_LOG_PARSER_H_

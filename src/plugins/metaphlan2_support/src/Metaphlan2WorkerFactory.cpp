@@ -359,6 +359,7 @@ void Metaphlan2WorkerFactory::init() {
     proto->setPrompter(new Metaphlan2Prompter(nullptr));
     proto->addExternalTool(Metaphlan2Support::TOOL_NAME);
     proto->addExternalTool(Metaphlan2Support::ET_PYTHON);
+    proto->addExternalTool(Metaphlan2Support::ET_PYTHON_BIO);
     proto->addExternalTool(Metaphlan2Support::ET_PYTHON_NUMPY);
     proto->addExternalTool(Metaphlan2Support::ET_BOWTIE_2_ALIGNER);
     proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));

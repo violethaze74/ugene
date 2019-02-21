@@ -19,27 +19,25 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_METAPHLAN_SUPPORT_H_
-#define _U2_METAPHLAN_SUPPORT_H_
-
-#include <U2Core/ExternalToolRegistry.h>
+#include "Metaphlan2LogParser.h"
 
 namespace U2 {
 
-class Metaphlan2Support : public ExternalTool {
-    Q_OBJECT
-public:
-    Metaphlan2Support(const QString& name, const QString& path = "");
-    void performAdditionalChecks(const QString& toolPath);
+const QStringList Metaphlan2LogParser::wellKnownErrors = Metaphlan2LogParser::initWellKnownErrors();
 
-    static const QString TOOL_NAME;
-    static const QString UTIL_SCRIPT;
+bool Metaphlan2LogParser::isError(const QString &line) const {
+    foreach(const QString &wellKnownError, wellKnownErrors) {
+        if (line.contains(wellKnownError)) {
+            return true;
+        }
+    }
+    return false;
+}
 
-    static const QString ET_BOWTIE_2_ALIGNER;
-    static const QString ET_PYTHON;
-    static const QString ET_PYTHON_BIO;
-    static const QString ET_PYTHON_NUMPY;
-};
+QStringList Metaphlan2LogParser::initWellKnownErrors() {
+    QStringList result;
+    result << "ImportError: No module";
+    return result;
+}
 
-}//namespace
-#endif // _U2_METAPHLAN_SUPPORT_H_
+}   // namespace U2
