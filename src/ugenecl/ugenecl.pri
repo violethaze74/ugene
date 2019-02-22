@@ -15,7 +15,9 @@ macx : CONFIG -= app_bundle
 DEFINES+= QT_DLL QT_FATAL_ASSERT
 INCLUDEPATH += src _tmp ../include ../corelibs/U2Private/src
 
-LIBS += -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Test -lU2Lang -lU2Private -lugenedb -lbreakpad -lQSpec
+LIBS += -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Test -lU2Lang -lU2Private -lbreakpad -lQSpec
+LIBS += $$add_sqlite_lib()
+
 if (contains(DEFINES, HI_EXCLUDED)) {
     LIBS -= -lQSpec
 }
@@ -27,8 +29,8 @@ if (contains(DEFINES, HI_EXCLUDED)) {
         DESTDIR=../_debug
         MOC_DIR=_tmp/moc/debug
         OBJECTS_DIR=_tmp/obj/debug
-        LIBS -= -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Test -lU2Lang -lU2Private -lugenedb -lbreakpad -lQSpec
-        LIBS += -L../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Guid -lU2Testd -lU2Langd -lU2Privated -lugenedbd -lbreakpadd -lQSpecd
+        LIBS -= -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Test -lU2Lang -lU2Private -lbreakpad -lQSpec
+        LIBS += -L../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Guid -lU2Testd -lU2Langd -lU2Privated -lbreakpadd -lQSpecd
         if (contains(DEFINES, HI_EXCLUDED)) {
             LIBS -= -lQSpecd
         }

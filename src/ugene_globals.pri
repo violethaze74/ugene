@@ -168,6 +168,34 @@ use_bundled_zlib() {
     DEFINES+=UGENE_USE_BUNDLED_ZLIB
 }
 
+# By default, UGENE uses bundled sqlite library built with special flags (see sqlite3.pri)
+# To use locally installed sqlite library use UGENE_USE_BUNDLED_SQLITE = 0
+
+defineTest( use_bundled_sqlite ) {
+    contains( UGENE_USE_BUNDLED_SQLITE, 0 ) : return (false)
+    return (true)
+}
+
+use_bundled_sqlite() {
+    DEFINES += UGENE_USE_BUNDLED_SQLITE
+}
+
+# A function to add SQLite library to the list of libraries
+defineReplace(add_sqlite_lib) {
+    use_bundled_sqlite() {
+        !debug_and_release|build_pass {
+            CONFIG(debug, debug|release) {
+                RES = -lugenedbd
+            } else {
+                RES = -lugenedb
+            }
+        }
+    } else {
+        RES = -lsqlite3
+    }
+    return ($$RES)
+}
+
 #Variable enabling exclude list for ugene modules
 #UGENE_EXCLUDE_LIST_ENABLED = 1
 defineTest( exclude_list_enabled ) {

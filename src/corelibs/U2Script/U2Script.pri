@@ -21,15 +21,16 @@ INCLUDEPATH +=      ../../include \
 #                    $${UGENE_NODE_DIR}/deps/uv/include
 #}
 
-LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Private -lugenedb -lU2Gui -lU2Test
+LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Private -lU2Gui -lU2Test
+LIBS += $$add_sqlite_lib()
 
 !debug_and_release|build_pass {
 
     CONFIG( debug, debug|release ) {
         DESTDIR =   ../../_debug
 
-        LIBS -=     -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Private -lugenedb -lU2Gui -lU2Test
-        LIBS +=     -L../../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Langd -lU2Privated -lugenedbd -lU2Guid -lU2Testd
+        LIBS -=     -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Private -lU2Gui -lU2Test
+        LIBS +=     -L../../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Langd -lU2Privated -lU2Guid -lU2Testd
                     
 #        count( UGENE_NODE_DIR, 1 ) {
 #            LIBS += -l$${UGENE_NODE_DIR}/Debug/node

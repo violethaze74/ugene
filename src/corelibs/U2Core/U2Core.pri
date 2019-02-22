@@ -17,10 +17,11 @@ use_bundled_zlib() {
     LIBS += -lz
 }
 
+LIBS += $$add_sqlite_lib()
+
 unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
 
 LIBS += -L../../_release
-LIBS += -lugenedb
 
 !debug_and_release|build_pass {
 
@@ -32,8 +33,6 @@ LIBS += -lugenedb
             LIBS += -lzlibd
             LIBS -= -lzlib
         }
-        LIBS -= -lugenedb
-        LIBS += -lugenedbd
     }
 
     CONFIG(release, debug|release) {

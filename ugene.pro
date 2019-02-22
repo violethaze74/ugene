@@ -19,10 +19,13 @@ use_bundled_zlib() {
     SUBDIRS += src/libs_3rdparty/zlib
 }
 
+use_bundled_sqlite() {
+    SUBDIRS += src/libs_3rdparty/sqlite3
+}
+
 SUBDIRS += \
           src/libs_3rdparty/breakpad \
           src/libs_3rdparty/qscore \
-          src/libs_3rdparty/sqlite3 \
           src/libs_3rdparty/samtools \
           src/libs_3rdparty/QSpec \
           src/corelibs/U2Core \

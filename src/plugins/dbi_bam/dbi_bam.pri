@@ -12,7 +12,8 @@ use_bundled_zlib() {
     macx: LIBS += -lz
 }
 
-LIBS += -lugenedb -lsamtools
+LIBS += -lsamtools
+LIBS += $$add_sqlite_lib()
 
 win32-msvc2013|win32-msvc2015|win32-msvc2017 {
     DEFINES += NOMINMAX _XKEYCHECK_H
@@ -37,8 +38,8 @@ win32 {
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        LIBS -= -lugenedb -lsamtools
-        LIBS += -lugenedbd -lsamtoolsd
+        LIBS -= -lsamtools
+        LIBS += -lsamtoolsd
 
         win32-msvc2013|win32-msvc2015|win32-msvc2017 {
             LIBS -= -lzlib

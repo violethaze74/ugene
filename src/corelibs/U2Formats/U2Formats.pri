@@ -14,7 +14,8 @@ UGENE_RELATIVE_DESTDIR = ''
 DEFINES += QT_FATAL_ASSERT BUILDING_U2FORMATS_DLL
 
 LIBS += -L../../_release -lU2Core -lU2Algorithm
-LIBS += -lugenedb -lsamtools
+LIBS += -lsamtools
+LIBS += $$add_sqlite_lib()
 
 win32-msvc2013 {
     DEFINES += NOMINMAX _XKEYCHECK_H
@@ -49,8 +50,8 @@ INCLUDEPATH += ../../libs_3rdparty/sqlite3/src
 
     CONFIG(debug, debug|release) {
         DESTDIR=../../_debug
-        LIBS -= -L../../_release -lU2Core -lU2Algorithm -lugenedb -lsamtools
-        LIBS += -L../../_debug -lU2Cored -lU2Algorithmd -lugenedbd -lsamtoolsd
+        LIBS -= -L../../_release -lU2Core -lU2Algorithm -lsamtools
+        LIBS += -L../../_debug -lU2Cored -lU2Algorithmd -lsamtoolsd
 
         win32-msvc2013|win32-msvc2015|win32-msvc2017 {
             LIBS -= -lzlib
