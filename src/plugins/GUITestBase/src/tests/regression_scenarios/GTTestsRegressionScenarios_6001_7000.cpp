@@ -2001,6 +2001,37 @@ GUI_TEST_CLASS_DEFINITION(test_6334) {
     CHECK_SET_ERR(errors.contains("Classify Sequences with MetaPhlAn2: The mandatory \"Input URL 2\" slot is not connected."), "Expected error isn't found");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6378) {
+    //1. Remove Python from external tools
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+            AppSettingsDialogFiller::clearToolPath(os, "python");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Open "UGENE Application Settings", select "External Tools" tab.
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+    
+    //2. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    
+    //3. Place Metaphlan worker on scene
+    GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
+    
+    //4. Validate scheme
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTGlobals::sleep();
+    //Expected state: validation contains message: Classify Sequences with MetaPhlAn2: External tool "Bio" is not set
+    GTUtilsWorkflowDesigner::checkErrorList(os, "Classify Sequences with MetaPhlAn2: External tool \"Bio\" is not set");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
