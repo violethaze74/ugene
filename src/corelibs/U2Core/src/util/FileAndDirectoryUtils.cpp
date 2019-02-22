@@ -41,7 +41,7 @@ QString FileAndDirectoryUtils::getFormatId(const FormatDetectionResult &r) {
     return "";
 }
 
-QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirMode, const QString &customDir, const QString &workingDir){
+QString FileAndDirectoryUtils::getWorkingDir(const QString &fileUrl, int dirMode, const QString &customDir, const QString &workingDir) {
     QString result;
 
     bool useInternal = false;
@@ -80,7 +80,11 @@ QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirM
             }
         }
     }
+    return result;
+}
 
+QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirMode, const QString &customDir, const QString &workingDir){
+    const QString result = getWorkingDir(fileUrl, dirMode, customDir, workingDir);
     QDir dir(result);
     if (!dir.exists(result)) {
         dir.mkdir(result);
