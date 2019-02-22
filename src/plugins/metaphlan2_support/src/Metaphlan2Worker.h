@@ -49,8 +49,8 @@ private:
     bool isReadyToRun() const;
     bool dataFinished() const;
     Metaphlan2TaskSettings getSettings(U2OpStatus &os);
-    QString createOutputDirectory() const;
-    QString createOutputToolDirectory(QString& tmpDir,
+    QString getDefaultOutputDir() const;
+    QString createOutputToolDirectory(const QString& tmpDir,
                                       const Message& message,
                                       const bool isPairedEnd,
                                       const Output out) const;

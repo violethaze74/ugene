@@ -38,6 +38,7 @@ public:
         WORKFLOW_INTERNAL_CUSTOM
     };
 
+    static QString getWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
     static QString createWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
     static QString detectFormat(const QString &url);
     static bool isFileEmpty(const QString& url);
