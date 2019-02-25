@@ -123,6 +123,7 @@ Metaphlan2TaskSettings Metaphlan2Worker::getSettings(U2OpStatus &os) {
         const bool dirCreated = QDir().mkpath(QFileInfo(settings.bowtie2OutputFile).absoluteDir().path());
         CHECK_EXT(dirCreated, os.setError(tr("Can't create a folder for the output file: %1").arg(settings.bowtie2OutputFile)), settings);
     }
+    settings.bowtie2OutputFile = GUrlUtils::rollFileName(settings.bowtie2OutputFile, "_");
 
     settings.outputFile = getValue<QString>(Metaphlan2WorkerFactory::OUTPUT_URL);
     if (settings.outputFile.isEmpty()) {
@@ -131,6 +132,7 @@ Metaphlan2TaskSettings Metaphlan2Worker::getSettings(U2OpStatus &os) {
         const bool dirCreated = QDir().mkpath(QFileInfo(settings.outputFile).absoluteDir().path());
         CHECK_EXT(dirCreated, os.setError(tr("Can't create a folder for the output file: %1").arg(settings.outputFile)), settings);
     }
+    settings.outputFile = GUrlUtils::rollFileName(settings.outputFile, "_");
 
     QString bowtie2AlignerPath = WorkflowUtils::getExternalToolPath(Metaphlan2Support::ET_BOWTIE_2_ALIGNER);
     CHECK_EXT(!bowtie2AlignerPath.isEmpty(), os.setError("Bowtie2 aligner isn't found"), settings);
