@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -90,7 +90,8 @@ void VFSAdapter::close() {
 qint64 VFSAdapter::readBlock(char* data, qint64 size) {
     qint64 l = buffer->read(data, size);
     if (formatMode == TextMode) {
-        l = TextUtils::cutByteOrderMarks(data, l);
+        l = TextUtils::cutByteOrderMarks(data, errorMessage, l);
+        CHECK(errorMessage.isEmpty(), -1);
     }
     return l;
 }
@@ -124,8 +125,8 @@ qint64 VFSAdapter::bytesRead() const {
     return buffer->pos();
 }
 
-QString VFSAdapter::errorString() const{
-    return buffer->errorString();
+QString VFSAdapter::errorString() const {
+    return buffer->errorString().isEmpty() ? errorMessage : buffer->errorString();
 }
 
 

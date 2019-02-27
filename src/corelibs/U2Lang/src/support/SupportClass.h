@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,16 +32,17 @@ namespace U2 {
 class WorkflowNotification;
 typedef QList<WorkflowNotification> NotificationsList;
 
-#define ACTOR_REF (Qt::UserRole)
+#define ACTOR_ID_REF (Qt::UserRole)
 #define PORT_REF (Qt::UserRole + 1)
 #define TEXT_REF (Qt::UserRole + 3)
 #define TYPE_REF (Qt::UserRole + 4)
+#define ACTOR_NAME_REF (Qt::UserRole + 5)
 
 class U2LANG_EXPORT WorkflowNotification {
 public:
-    WorkflowNotification(const QString &message = "", const QString &actor = "", const QString &_type = U2_ERROR);
+    WorkflowNotification(const QString &message = "", const QString &actorId = "", const QString &type = U2_ERROR);
     QString message;
-    QString actor;
+    QString actorId;
     QString type;
     QString port;
 

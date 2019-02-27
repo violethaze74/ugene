@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,11 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include <U2Gui/HelpButton.h>
 #include <U2Core/QObjectScopedPointer.h>
+
+#include <U2Designer/ScanDashboardsDirTask.h>
+
+#include <U2Gui/HelpButton.h>
 
 #include "DashboardsManagerDialog.h"
 
@@ -45,7 +48,7 @@ DashboardsManagerDialog::DashboardsManagerDialog(ScanDashboardsDirTask *_task, Q
 : QDialog(parent), task(_task)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "22056229");
+    new HelpButton(this, buttonBox, "23331370");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
 

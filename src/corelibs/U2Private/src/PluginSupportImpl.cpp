@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,6 @@
 namespace U2 {
 
 /* TRANSLATOR U2::PluginSupportImpl */
-#define PLUGINS_LIST_SETTINGS QString("plugin_support/list/")
 #define SKIP_LIST_SETTINGS QString("plugin_support/skip_list/")
 #define PLUGINS_ACCEPTED_LICENSE_LIST QString("plugin_support/accepted_list/")
 #define PLUGIN_VERIFICATION QString("plugin_support/verification/")
@@ -63,7 +62,7 @@ PluginRef::PluginRef(Plugin* _plugin, QLibrary* _library, const PluginDesc& desc
 PluginSupportImpl::PluginSupportImpl(): allLoaded(false) {
     connect(this, SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_registerServices()));
 
-    Task* loadStartUpPlugins = new LoadAllPluginsTask(this, getPluginPaths().toList());
+    Task* loadStartUpPlugins = new LoadAllPluginsTask(this, findAllPluginsInDefaultPluginsDir());
     AppContext::getTaskScheduler()->registerTopLevelTask(loadStartUpPlugins);
 }
 
@@ -257,7 +256,6 @@ void PluginSupportImpl::registerPlugin(PluginRef* ref) {
     plugRefs.push_back(ref);
     plugins.push_back(ref->plugin);
     updateSavedState(ref);
-    emit si_pluginAdded(ref->plugin);
 }
 
 
@@ -274,17 +272,6 @@ QString PluginSupportImpl::getPluginFileURL(Plugin* p) const {
         }
     }
     return QString::null;
-}
-
-
-Task* PluginSupportImpl::addPluginTask(const QString& pathToPlugin) {
-    QString err;
-    PluginDesc desc = PluginDescriptorHelper::readPluginDescriptor(pathToPlugin, err);
-    Task* res = new AddPluginTask(this, desc, true);
-    if (!err.isEmpty()) {
-        res->setError(err);
-    }
-    return res;
 }
 
 PluginRef* PluginSupportImpl::findRef(Plugin* p) const {
@@ -305,23 +292,6 @@ PluginRef* PluginSupportImpl::findRefById(const QString& pluginId) const {
     return NULL;
 }
 
-
-//plugin will not be removed from the plugin list during the next app run
-void PluginSupportImpl::setRemoveFlag(Plugin* p, bool v) {
-    PluginRef* r = findRef(p);
-    assert(r!=NULL);
-    if (r->removeFlag == v) {
-        return;
-    }
-    r->removeFlag = v;
-    updateSavedState(r);
-    emit si_pluginRemoveFlagChanged(p);
-}
-
-bool PluginSupportImpl::getRemoveFlag(Plugin* p) const {
-    PluginRef* r = findRef(p);
-    return r->removeFlag;
-}
 void PluginSupportImpl::setLicenseAccepted(Plugin *p){
     p->acceptLicense();
     PluginRef* r = findRef(p);
@@ -334,14 +304,11 @@ void PluginSupportImpl::updateSavedState(PluginRef* ref) {
         return;
     }
     Settings* settings = AppContext::getSettings();
-    QString pluginListSettingsDir = settings->toVersionKey(PLUGINS_LIST_SETTINGS);
     QString skipListSettingsDir = settings->toVersionKey(SKIP_LIST_SETTINGS);
     QString pluginAcceptedLicenseSettingsDir = settings->toVersionKey(PLUGINS_ACCEPTED_LICENSE_LIST);
     QString descUrl = ref->pluginDesc.descriptorUrl.getURLString();
     QString pluginId = ref->pluginDesc.id;
     if (ref->removeFlag) {
-        settings->remove(pluginListSettingsDir + pluginId);
-
         //add to skip-list if auto-loaded
         if (isDefaultPluginsDir(descUrl)) {
             QStringList skipFiles = settings->getValue(skipListSettingsDir, QStringList()).toStringList();
@@ -351,8 +318,6 @@ void PluginSupportImpl::updateSavedState(PluginRef* ref) {
             }
         }
     } else {
-        settings->setValue(pluginListSettingsDir + pluginId, descUrl);
-
         //remove from skip-list if present
         if (isDefaultPluginsDir(descUrl)) {
             QStringList skipFiles = settings->getValue(skipListSettingsDir, QStringList()).toStringList();
@@ -376,31 +341,6 @@ bool PluginSupportImpl::isDefaultPluginsDir(const QString& url) {
     QDir plugsDir = getDefaultPluginsDir();
     return  urlAbsDir == plugsDir;
 }
-
-QSet<QString> PluginSupportImpl::getPluginPaths(){
-    Settings* settings = AppContext::getSettings();
-    QString pluginListSettingsDir = settings->toVersionKey(PLUGINS_LIST_SETTINGS);
-
-    QStringList pluginsIds;
-    if (AppContext::getCMDLineRegistry()->hasParameter(CMDLineRegistry::PLUGINS_ARG)) {
-        pluginsIds = getCmdlinePlugins();
-    } else {
-        pluginsIds = settings->getAllKeys(pluginListSettingsDir);
-    }
-
-    QSet<QString> pluginFiles;
-    foreach (const QString& pluginId, pluginsIds) {
-        QString file = settings->getValue(pluginListSettingsDir + pluginId).toString();
-        if(!file.isEmpty()) {
-            pluginFiles.insert(file);
-        }
-    }
-    //read all plugins from the current folder and from ./plugins folder
-    pluginFiles.unite(findAllPluginsInDefaultPluginsDir().toSet());
-
-    return pluginFiles;
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 /// Tasks
@@ -582,7 +522,7 @@ void VerifyPluginTask::run() {
     int elapsedTime = 0;
     while(!proc->waitForFinished(1000) && elapsedTime < timeOut) {
         if(isCanceled()) {
-            proc->kill();
+            CmdlineTaskRunner::killProcessTree(proc);
         }
         elapsedTime += 1000;
     }

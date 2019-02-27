@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -92,7 +92,7 @@ protected:
 private:
     SharedAnnotationData readAnnotation(IOAdapter* io, char* cbuff, int contentLen, int bufSize, U2OpStatus& si, int offset, int seqLen = -1);
     void load(const U2DbiRef& dbiRef, IOAdapter* io, QList<GObject*>& objects, QVariantMap& fs, U2OpStatus& si, QString& writeLockReason);
-    void skipInvalidAnnotation(int len, IOAdapter* io, char* cbuff, int READ_BUFF_SIZE);
+    void skipInvalidAnnotation(U2OpStatus& si, int len, IOAdapter* io, char* cbuff, int READ_BUFF_SIZE);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ public:
     QString value() const;
     QString key () const;
     bool hasKey(const char*, int slen) const;
-    bool hasKey(const char* s) const {return hasKey(s, strlen(s));}
+    bool hasKey(const char* s) const {return hasKey(s, (int)strlen(s));}
     bool hasContinuation() const { return len > valOffset && hasKey(" ");}
     bool hasValue() const {return len > valOffset;}
     bool readNextLine(bool emptyOK = false);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,8 +20,6 @@
  */
 
 #include <U2Core/DbiConnection.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GHints.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -35,8 +33,7 @@
 namespace U2 {
 
 MaSavedState::MaSavedState()
-    : lastState(NULL)
-{
+    : lastState(NULL) {
 
 }
 
@@ -63,13 +60,12 @@ void MaSavedState::setState(const MultipleAlignment &ma) {
 }
 
 MultipleAlignmentObject::MultipleAlignmentObject(const QString &gobjectType,
-                                                 const QString &name,
-                                                 const U2EntityRef &maRef,
-                                                 const QVariantMap &hintsMap,
-                                                 const MultipleAlignment &alignment)
+    const QString &name,
+    const U2EntityRef &maRef,
+    const QVariantMap &hintsMap,
+    const MultipleAlignment &alignment)
     : GObject(gobjectType, name, hintsMap),
-      cachedMa(alignment->getCopy())
-{
+    cachedMa(alignment->getCopy()) {
     entityRef = maRef;
     dataLoaded = false;
 
@@ -78,7 +74,7 @@ MultipleAlignmentObject::MultipleAlignmentObject(const QString &gobjectType,
     }
 }
 
-MultipleAlignmentObject::~MultipleAlignmentObject(){
+MultipleAlignmentObject::~MultipleAlignmentObject() {
     emit si_invalidateAlignmentObject();
 }
 
@@ -290,12 +286,12 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
         }
     }
 
-     if (mi.modifiedRowIds.isEmpty() && removedRowIds.isEmpty()) { // suppose that in this case all the alignment has changed
+    if (mi.modifiedRowIds.isEmpty() && removedRowIds.isEmpty()) { // suppose that in this case all the alignment has changed
         loadAlignment(os);
         SAFE_POINT_OP(os, );
     } else { // only specified rows were changed
         if (!removedRowIds.isEmpty()) {
-            foreach (qint64 rowId, removedRowIds) {
+            foreach(qint64 rowId, removedRowIds) {
                 const int rowIndex = cachedMa->getRowIndexByRowId(rowId, os);
                 SAFE_POINT_OP(os, );
                 cachedMa->removeRow(rowIndex, os);
@@ -375,7 +371,7 @@ namespace {
 template<typename T>
 inline QList<T> mergeLists(const QList<T> &first, const QList<T> &second) {
     QList<T> result = first;
-    foreach (const T &item, second) {
+    foreach(const T &item, second) {
         if (!result.contains(item)) {
             result.append(item);
         }
@@ -388,7 +384,7 @@ QList<qint64> getRowsAffectedByDeletion(const MultipleAlignment &ma, const QList
     U2OpStatus2Log os;
     const QList<qint64> maRows = ma->getRowsIds();
     int previousRemovedRowIndex = -1;
-    foreach (qint64 removedRowId, removedRowIds) {
+    foreach(qint64 removedRowId, removedRowIds) {
         if (-1 != previousRemovedRowIndex) {
             const int currentRemovedRowIndex = ma->getRowIndexByRowId(removedRowId, os);
             SAFE_POINT_OP(os, QList<qint64>());
@@ -437,7 +433,7 @@ void MultipleAlignmentObject::removeRegion(int startPos, int startRow, int nBase
         if (!removedRows.isEmpty()) { // suppose that if at least one row in msa was removed then
             // all the rows below it were changed
             const QList<qint64> rowIdsAffectedByDeletion = getRowsAffectedByDeletion(ma, removedRows);
-            foreach (qint64 removedRowId, removedRows) { // removed rows ain't need to be update
+            foreach(qint64 removedRowId, removedRows) { // removed rows ain't need to be update
                 modifiedRowIds.removeAll(removedRowId);
             }
             modifiedRowIds = mergeLists(modifiedRowIds, rowIdsAffectedByDeletion);
@@ -532,7 +528,7 @@ int MultipleAlignmentObject::shiftRegion(int startPos, int startRow, int nBases,
     return n;
 }
 
-void MultipleAlignmentObject::saveState(){
+void MultipleAlignmentObject::saveState() {
     const MultipleAlignment &ma = getMultipleAlignment();
     emit si_completeStateChanged(false);
     savedState.setState(ma);
@@ -568,7 +564,7 @@ void MultipleAlignmentObject::loadDataCore(U2OpStatus &os) {
 int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps) {
     const MultipleAlignment &ma = getMultipleAlignment();
     SAFE_POINT_EXT(U2Region(0, ma->getNumRows()).contains(rows) && 0 <= pos && 0 <= maxGaps && ma->getLength() > pos,
-                   os.setError("Illegal parameters of the gap region"), 0);
+        os.setError("Illegal parameters of the gap region"), 0);
 
     const int maxRemovedGaps = qBound(0, maxGaps, ma->getLength() - pos);
     // check if there is nothing to remove

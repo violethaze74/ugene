@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,16 +54,16 @@ Document* PlainTextFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRe
     QByteArray block(BUFF_SIZE, '\0');
     int blockLen = 0;
     while ((blockLen = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
+        CHECK_EXT_BREAK(!io->hasError(), os.setError(io->errorString()));
+
         int sizeBefore = text.length();
         QString line = QString::fromLocal8Bit(block.data(), blockLen);
         text.append(line);
-        if (text.length() != sizeBefore + blockLen) {
-            os.setError(L10N::errorReadingFile(io->getURL()));
-            break;
-        }
+        CHECK_EXT_BREAK(text.length() == (sizeBefore + blockLen), os.setError(L10N::errorReadingFile(io->getURL())));
+
         os.setProgress(io->getProgress());
     }
-
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
     CHECK_OP(os, NULL);
 
     //todo: check file-readonly status?

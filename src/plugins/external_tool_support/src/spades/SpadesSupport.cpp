@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,11 +38,12 @@ SpadesSupport::SpadesSupport(const QString &name, const QString &path):
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
     }
 
-    executableFileName="spades.py";
-    validMessage="SPAdes genome assembler";
-    description=tr("<i>SPAdes</i> - St. Petersburg genome assembler - is intended for both standard isolates and single-cell MDA bacteria assemblies. Official site: http://bioinf.spbau.ru/spades");
-    versionRegExp=QRegExp("v.(\\d+\\.\\d+\\.\\d+)");
-    toolKitName="SPAdes";
+    executableFileName = "spades.py";
+    validMessage = "SPAdes";
+    description = tr("<i>SPAdes</i> - St. Petersburg genome assembler - is intended for both standard isolates and single-cell MDA bacteria assemblies. Official site: http://bioinf.spbau.ru/spades");
+    validationArguments << "--version";
+    versionRegExp = QRegExp("SPAdes v(\\d+.\\d+.\\d+)");
+    toolKitName = "SPAdes";
 
     toolRunnerProgramm = ET_PYTHON;
     dependencies << ET_PYTHON;

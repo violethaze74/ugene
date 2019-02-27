@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-class GTest_AnnotatorSearch : public GTest {
+class GTest_AnnotatorSearch : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_AnnotatorSearch, "plugin_dna-annotator-search");
@@ -52,7 +52,7 @@ private:
     QVector<U2Region> expectedResults;
 };
 
-class GTest_CustomAutoAnnotation : public GTest {
+class GTest_CustomAutoAnnotation : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CustomAutoAnnotation, "custom-auto-annotation-search");
@@ -69,7 +69,7 @@ private:
 };
 
 
-class GTest_GeneByGeneApproach : public GTest{
+class GTest_GeneByGeneApproach : public XmlTest{
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_GeneByGeneApproach, "plugin_dna-annotator-gene-by-gene");
 

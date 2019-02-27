@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1014,6 +1014,8 @@ int BedFormatParser::readLine() {
     curLine.clear();
     do {
         len = io->readLine(buff.data(), BufferSize - 1);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), -1);
+
         buff.data()[len] = '\0';
         curLine.append(QString(buff.data()));
     } while (len == BufferSize - 1);

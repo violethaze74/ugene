@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
 #include <U2Core/ScriptingToolRegistry.h>
@@ -143,14 +144,12 @@ void ExternalToolJustValidateTask::run() {
             }
         }
 
-        if (!parseLog(validation)) {
-            return;
-        }
-
-        if (!isValid) {
-            return;
-        }
+        CHECK(parseLog(validation), );
+        CHECK(isValid, );
     }
+
+    performAdditionalChecks();
+    CHECK_OP(stateInfo, );
 }
 
 Task::ReportResult ExternalToolJustValidateTask::report() {
@@ -173,7 +172,7 @@ Task::ReportResult ExternalToolJustValidateTask::report() {
 }
 
 void ExternalToolJustValidateTask::cancelProcess() {
-    externalToolProcess->kill();
+    CmdlineTaskRunner::killProcessTree(externalToolProcess);
 }
 
 void ExternalToolJustValidateTask::setEnvironment(ExternalTool *tool) {
@@ -287,6 +286,15 @@ void ExternalToolJustValidateTask::checkArchitecture(const QString &toolPath) {
         setError("This external tool has unsupported architecture");
     }
 #endif
+}
+
+void ExternalToolJustValidateTask::performAdditionalChecks() {
+    tool->performAdditionalChecks(toolPath);
+
+    if (tool->hasAdditionalErrorMessage()) {
+        isValid = false;
+        stateInfo.setError(tool->getAdditionalErrorMessage());
+    }
 }
 
 ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString& _toolName) :

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -102,7 +102,7 @@ void GSequenceGraphView::setGraphDrawer(GSequenceGraphDrawer* gd) {
 void GSequenceGraphView::mousePressEvent(QMouseEvent *me) {
     setFocus();
 
-    if(Qt::ShiftModifier == me->modifiers()) {
+    if(me->modifiers() == Qt::ShiftModifier && me->button() == Qt::LeftButton) {
         float pos = toRenderAreaPoint(me->pos()).x() / renderArea->getCurrentScale() + getVisibleRange().startPos;
         addLabel(pos);
     }

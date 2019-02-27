@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,13 +61,13 @@ void OpenCLSupportSettingsPageController::saveState( AppSettingsGUIPageState * _
     } //else - resource was not registered, nothing to do.
 }
 
-AppSettingsGUIPageWidget * OpenCLSupportSettingsPageController::createWidget( AppSettingsGUIPageState* state ) {
+AppSettingsGUIPageWidget * OpenCLSupportSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
     OpenCLSupportSettingsPageWidget * w = new OpenCLSupportSettingsPageWidget(displayMsg, this);
     w->setState(state);
     return w;
 }
 
-const QString OpenCLSupportSettingsPageController::helpPageId = QString("22055811");
+const QString OpenCLSupportSettingsPageController::helpPageId = QString("23330958");
 
 OpenCLSupportSettingsPageState::OpenCLSupportSettingsPageState( int num_gpus ) {
     assert( num_gpus >= 0 );

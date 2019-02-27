@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -176,6 +176,9 @@ void TestRunnerService::serviceStateChangedCallback(ServiceState oldState, bool 
         readBuiltInVars();
 
         windowAction = new QAction(tr("Test runner"), this);
+#ifdef _DEBUG
+        windowAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_T));
+#endif
         windowAction->setObjectName("action__testrunner");
         connect(windowAction, SIGNAL(triggered()), SLOT(sl_showWindow()));
         AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS)->addAction(windowAction);

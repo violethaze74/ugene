@@ -95,7 +95,7 @@
         <translation>FPKM Tracking Format</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="84"/>
+        <location filename="../src/GTFFormat.cpp" line="83"/>
         <source>GTF</source>
         <translation>GTF</translation>
     </message>
@@ -1487,70 +1487,69 @@
 <context>
     <name>U2::GTFFormat</name>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="102"/>
+        <location filename="../src/GTFFormat.cpp" line="101"/>
         <source>The Gene transfer format (GTF) is a file format used to hold information about gene structure.</source>
         <translation>The Gene transfer format (GTF) это формат используемый для хранения информации о структуре гена.</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="158"/>
+        <location filename="../src/GTFFormat.cpp" line="153"/>
         <source>GTF parsing error: incorrect number of fields at line %1!</source>
         <translation>GTF parsing error: incorrect number of fields at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="163"/>
+        <location filename="../src/GTFFormat.cpp" line="158"/>
         <source>GTF parsing error: a field at line %1 is empty!</source>
         <translation>GTF parsing error: a field at line %1 is empty!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="168"/>
+        <location filename="../src/GTFFormat.cpp" line="163"/>
         <source>GTF parsing error: incorrect coordinates at line %1!</source>
         <translation>GTF parsing error: incorrect coordinates at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="180"/>
         <source>GTF parsing error: unexpected value of the &quot;feature&quot; value &quot;%1&quot; at line %2!</source>
-        <translation>GTF parsing error: unexpected value of the &quot;feature&quot; value &quot;%1&quot; at line %2!</translation>
+        <translation type="vanished">GTF parsing error: unexpected value of the &quot;feature&quot; value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="198"/>
+        <location filename="../src/GTFFormat.cpp" line="188"/>
         <source>GTF parsing error: incorrect score value &quot;%1&quot; at line %2!</source>
         <translation>GTF parsing error: incorrect score value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="206"/>
+        <location filename="../src/GTFFormat.cpp" line="196"/>
         <source>GTF parsing error: incorrect frame value &quot;%1&quot; at line %2!</source>
         <translation>GTF parsing error: incorrect frame value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="227"/>
+        <location filename="../src/GTFFormat.cpp" line="217"/>
         <source>GTF parsing error: invalid attributes format at line %1!</source>
         <translation>GTF parsing error: invalid attributes format at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="234"/>
-        <location filename="../src/GTFFormat.cpp" line="239"/>
+        <location filename="../src/GTFFormat.cpp" line="224"/>
+        <location filename="../src/GTFFormat.cpp" line="229"/>
         <source>GTF parsing error: mandatory attribute &apos;</source>
         <translation>GTF parsing error: mandatory attribute &apos;</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="235"/>
-        <location filename="../src/GTFFormat.cpp" line="240"/>
+        <location filename="../src/GTFFormat.cpp" line="225"/>
+        <location filename="../src/GTFFormat.cpp" line="230"/>
         <source>&apos; is absent at line %1!</source>
         <translation>&apos; is absent at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="247"/>
+        <location filename="../src/GTFFormat.cpp" line="237"/>
         <source>GTF parsing error: incorrect strand value &quot;%1&quot; at line %2!</source>
         <translation>GTF parsing error: incorrect strand value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="294"/>
+        <location filename="../src/GTFFormat.cpp" line="284"/>
         <source>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="628"/>
-        <location filename="../src/GTFFormat.cpp" line="633"/>
+        <location filename="../src/GTFFormat.cpp" line="612"/>
+        <location filename="../src/GTFFormat.cpp" line="617"/>
         <source>Can&apos;t save an annotation to a GTF file - the annotation doesn&apos;t have the &apos;%1&apos; qualifier!</source>
         <translation>Can&apos;t save an annotation to a GTF file - the annotation doesn&apos;t have the &apos;%1&apos; qualifier!</translation>
     </message>
@@ -2045,13 +2044,17 @@
 <context>
     <name>U2::PairedFastqComparator</name>
     <message>
-        <location filename="../src/util/PairedFastqComparator.cpp" line="77"/>
         <source>Too much reads without a pair (&gt;%1). Check the input data is set correctly.</source>
-        <translation>Too much reads without a pair (&gt;%1). Check the input data is set correctly.</translation>
+        <translation type="vanished">Too much reads without a pair (&gt;%1). Check the input data is set correctly.</translation>
     </message>
     <message>
         <source>The list doesn&apos;t contains the item</source>
         <translation type="vanished">The list doesn&apos;t contains the item</translation>
+    </message>
+    <message>
+        <location filename="../src/util/PairedFastqComparator.cpp" line="77"/>
+        <source>Too much reads without a pair (&gt;%1). Check the input data are set correctly.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/PairedFastqComparator.cpp" line="172"/>
@@ -2659,9 +2662,13 @@
         <translation>New variant track ID is empty</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="124"/>
         <source>Packed data is empty</source>
-        <translation>Packed data is empty</translation>
+        <translation type="vanished">Packed data is empty</translation>
+    </message>
+    <message>
+        <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="124"/>
+        <source>Packed data are empty</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="131"/>
@@ -2672,26 +2679,42 @@
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="139"/>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="476"/>
-        <source>Data is corrupted, no name end marker found: %1</source>
-        <translation>Data is corrupted, no name end marker found: %1</translation>
+        <source>Data are corrupted, no name end marker found: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="148"/>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="485"/>
-        <source>Data is corrupted, no sequence end marker found: %1</source>
-        <translation>Data is corrupted, no sequence end marker found: %1</translation>
+        <source>Data are corrupted, no sequence end marker found: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="157"/>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="494"/>
-        <source>Data is corrupted, no CIGAR end marker found: %1</source>
-        <translation>Data is corrupted, no CIGAR end marker found: %1</translation>
+        <source>Data are corrupted, no CIGAR end marker found: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="176"/>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="513"/>
+        <source>Data are corrupted, no rnext end marker found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data is corrupted, no name end marker found: %1</source>
+        <translation type="vanished">Data is corrupted, no name end marker found: %1</translation>
+    </message>
+    <message>
+        <source>Data is corrupted, no sequence end marker found: %1</source>
+        <translation type="vanished">Data is corrupted, no sequence end marker found: %1</translation>
+    </message>
+    <message>
+        <source>Data is corrupted, no CIGAR end marker found: %1</source>
+        <translation type="vanished">Data is corrupted, no CIGAR end marker found: %1</translation>
+    </message>
+    <message>
         <source>Data is corrupted, no rnext end marker found: %1</source>
-        <translation>Data is corrupted, no rnext end marker found: %1</translation>
+        <translation type="vanished">Data is corrupted, no rnext end marker found: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="191"/>
@@ -2742,8 +2765,12 @@
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="461"/>
+        <source>Packed data are empty!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Packed data is empty!</source>
-        <translation>Packed data is empty!</translation>
+        <translation type="vanished">Packed data is empty!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="224"/>

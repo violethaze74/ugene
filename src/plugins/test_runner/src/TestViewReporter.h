@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 
 #include "TestViewController.h"
 
+#include <U2Gui/U2WebView.h>
 #include <U2Gui/MainWindow.h>
 #include <ui_Reporter.h>
 
@@ -76,6 +77,7 @@ namespace U2 {
 
     QString curReportText;
     TestViewController* curParent;
+    U2WebView *reportText;
 
     QAction* save;
     private slots:

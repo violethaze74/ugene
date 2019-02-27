@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,6 @@ class U2FORMATS_EXPORT StreamSequenceReader : public QObject {
     QList<ReaderContext> readers;
     int currentReaderIndex;
     QScopedPointer<DNASequence> currentSeq;
-    bool errorOccured;
     bool lookupPerformed;
     QString errorMessage;
     TaskStateInfo taskInfo;
@@ -72,10 +71,12 @@ public:
     DocumentFormat* getFormat() const;
 
     bool hasNext();
-    bool hasError() { return errorOccured; }
+    bool hasError() { return !errorMessage.isEmpty(); }
     int getProgress();
     QString getErrorMessage();
     DNASequence* getNextSequenceObject();
+
+    static int getNumberOfSequences(const QString& url, U2OpStatus& os);
 };
 
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -134,7 +134,7 @@ void TaskSchedulerImpl::propagateStateToParent(Task* task) {
         cancelTask(parentTask);
     } else if (task->hasError() && parentTask->getFlags().testFlag(TaskFlag_FailOnSubtaskError)) {
         TaskStateInfo& tsi = getTaskStateInfo(parentTask);
-        if (parentTask->getFlags().testFlag(TaskFlag_MinimizeSubtaskErrorText)) {
+        if (parentTask->isMinimizeSubtaskErrorText()) {
             tsi.setError(task->getError());
         } else {
             tsi.setError( tr("Subtask {%1} is failed: %2").arg(task->getTaskName()).arg(task->getError()));
@@ -347,6 +347,7 @@ void TaskSchedulerImpl::runReady() {
         } else {
             runThread(ti);
         }
+        connect(ti->thread, SIGNAL(si_processMySubtasks()), SLOT(sl_processSubtasks()), Qt::BlockingQueuedConnection);
     }
 }
 
@@ -587,7 +588,7 @@ bool TaskSchedulerImpl::addToPriorityQueue(Task* task, TaskInfo* pti) {
     for (int i = 0, n = subtasks.size(); i < n; i++) {
         Task* sub = subtasks[i];
         bool ok = i < nParallel && addToPriorityQueue(sub, ti);
-        if (!ok && !sub->hasError()) { //if task got err on resource allocation -> its not new now, but failed
+        if (!ok && (!sub->hasError() || sub->getTaskResources().count() == 0)) { //if task got err on resource allocation -> its not new now, but failed
             ti->newSubtasks.append(sub);
             if( !tasksWithNewSubtasks.contains(ti) ){
                 tasksWithNewSubtasks.append(ti);
@@ -714,7 +715,7 @@ void TaskSchedulerImpl::checkSerialPromotion(TaskInfo* pti, Task* subtask) {
             // the current task (that is not "locked"). In this case their
             // state would be "New"
             if (sub->getTaskResources().size() == 0) {
-                assert(subState!=Task::State_New);
+                assert(subState != Task::State_New || sub->hasError());
             }
         }
     }
@@ -962,7 +963,18 @@ void TaskSchedulerImpl::sl_threadFinished() {
     timer.setInterval(0);
 }
 
-Task * TaskSchedulerImpl::getTopLevelTaskById( qint64 id ) const {
+void TaskSchedulerImpl::sl_processSubtasks() {
+    TaskThread *taskThread = qobject_cast<TaskThread*>(sender());
+    foreach(Task *subtask, taskThread->ti->task->getSubtasks()) {
+        if (subtask->isFinished() && !taskThread->getProcessedSubtasks().contains(subtask)) {
+            onSubTaskFinished(taskThread, subtask);
+            taskThread->appendProcessedSubtask(subtask);
+            break;
+        }
+    }
+}
+
+Task * TaskSchedulerImpl::getTopLevelTaskById(qint64 id) const {
     Task * ret = NULL;
     foreach( Task * task, topLevelTasks ) {
         assert( NULL != task );
@@ -1088,15 +1100,7 @@ bool TaskThread::event(QEvent *event) {
 
 void TaskThread::getNewSubtasks() {
     if(ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && !newSubtasksObtained) {
-        TaskSchedulerImpl *scheduler = dynamic_cast<TaskSchedulerImpl *>(AppContext::getTaskScheduler());
-        assert(NULL != scheduler);
-        foreach (Task *subtask, ti->task->getSubtasks()) {
-            if (subtask->isFinished() && !processedSubtasks.contains(subtask)) {
-                scheduler->onSubTaskFinished(this, subtask);
-                processedSubtasks << subtask;
-                break;
-            }
-        }
+        emit si_processMySubtasks();
     }
 }
 
@@ -1122,6 +1126,14 @@ void TaskThread::resume() {
         pauseLocker.unlock();
         pauser.wakeAll();
     }
+}
+
+QList<Task*> TaskThread::getProcessedSubtasks() const {
+    return processedSubtasks;
+}
+
+void TaskThread::appendProcessedSubtask(Task *subtask) {
+    processedSubtasks << subtask;
 }
 
 TaskInfo::~TaskInfo() {

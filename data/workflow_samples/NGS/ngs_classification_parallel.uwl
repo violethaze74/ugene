@@ -6,9 +6,10 @@
 #   - Classify the pre-processed reads with Kraken.
 #   - Classify these reads with CLARK.
 #   - Classify these reads with DIAMOND (in case of SE reads).
-#   - Ensemble the classification output into a CSV file.
-#   - Improve classification with WEVOTE.
-#   - Provide general classification reports
+#   - Classify these reads with MetaPhlAn2.
+#   - Ensemble the classification output from Kraken, CLARK, and DIAMOND into a CSV file.
+#   - Improve classification from these tools with WEVOTE.
+#   - Provide general classification reports.
 
 workflow "Parallel NGS reads classification" {
     .meta {

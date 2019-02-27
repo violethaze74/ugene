@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,6 +40,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/DialogUtils.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/ActorValidator.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -73,8 +75,12 @@ static const QString OUTPUT_SLOT = BaseSlots::URL_SLOT().getId();
 static const QString NUMBER_OF_TOOLS("number-tools");
 static const QString OUT_FILE("out-file");
 
+static const QString DEFAULT_OUT_FILE_BASE_NAME("ensemble");
+static const QString DEFAULT_OUT_FILE_EXTENSION("csv");
+static const QString DEFAULT_OUT_FILE_NAME(DEFAULT_OUT_FILE_BASE_NAME + "." + DEFAULT_OUT_FILE_EXTENSION);
+
 QString EnsembleClassificationPrompter::composeRichDoc() {
-    const QString outFile = getHyperlink(OUT_FILE, getURL(OUT_FILE));
+    const QString outFile = getHyperlink(OUT_FILE, getURL(OUT_FILE, (bool*)0, "", DEFAULT_OUT_FILE_NAME));
     return tr("Ensemble classification data from other elements into %1").arg(outFile);
 }
 
@@ -141,8 +147,7 @@ void EnsembleClassificationWorkerFactory::init() {
                                            ));
 
         Attribute *numberOfTools = new Attribute(numberOfToolsDescriptor, BaseTypes::NUM_TYPE(), Attribute::None, 2);
-        Attribute *outFileAttribute = new Attribute(outFileDesc, BaseTypes::STRING_TYPE(), true, "ensemble.csv");
-
+        Attribute *outFileAttribute = new Attribute(outFileDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
         a << numberOfTools;
         a << outFileAttribute;
 
@@ -156,7 +161,12 @@ void EnsembleClassificationWorkerFactory::init() {
         numberOfToolsMap["3"] = 3;
         delegates[NUMBER_OF_TOOLS] = new ComboBoxDelegate(numberOfToolsMap);
 
-        delegates[OUT_FILE] = new URLDelegate(".csv", "classification/ensemble");
+        const URLDelegate::Options options = URLDelegate::SelectFileToSave;
+        DelegateTags tags;
+        tags.set(DelegateTags::PLACEHOLDER_TEXT, EnsembleClassificationWorker::tr("Auto"));
+        tags.set(DelegateTags::FILTER, DialogUtils::prepareFileFilter("CSV", QStringList("csv"), false, QStringList()));
+
+        delegates[OUT_FILE] = new URLDelegate(tags, "classification/ensemble", options);
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
@@ -235,7 +245,6 @@ void EnsembleClassificationWorker::init() {
     SAFE_POINT(NULL != input3, QString("Port with id '%1' is NULL").arg(INPUT_PORT3), );
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
 
-    outputFile = getValue<QString>(OUT_FILE);
     tripleInput = getValue<int>(NUMBER_OF_TOOLS) == 3;
 }
 
@@ -259,10 +268,10 @@ Task * EnsembleClassificationWorker::tick() {
     if (isReadyToRun()) {
         QList<TaxonomyClassificationResult> taxData;
 
-        QString sourceFileUrl = NULL;
-        QString sourceFileUrl1 = NULL;
-        QString sourceFileUrl2 = NULL;
-        QString sourceFileUrl3 = NULL;
+        QString sourceFileUrl;
+        QString sourceFileUrl1;
+        QString sourceFileUrl2;
+        QString sourceFileUrl3;
 
         const Message message1 = getMessageAndSetupScriptValues(input1);
         taxData << message1.getData().toMap()[INPUT_SLOT1].value<TaxonomyClassificationResult>();
@@ -296,6 +305,20 @@ Task * EnsembleClassificationWorker::tick() {
             metadataId = metadata1.getId();
         }
         output->setContext(unitedContext, metadataId);
+
+        outputFile = getValue<QString>(OUT_FILE);
+        if (outputFile.isEmpty()) {
+            outputFile = DEFAULT_OUT_FILE_NAME;
+            if (!sourceFileUrl.isEmpty()) {
+                QString prefix = GUrlUtils::getPairedFastqFilesBaseName(sourceFileUrl, true);
+                if (!prefix.isEmpty()) {
+                    outputFile = NgsReadsClassificationUtils::getBaseFileNameWithPrefixes(outputFile,
+                                                                                          QStringList() << prefix,
+                                                                                          DEFAULT_OUT_FILE_EXTENSION,
+                                                                                          false);
+                }
+            }
+        }
 
         Task* t = new EnsembleClassificationTask(taxData, tripleInput, outputFile, context->workingDir());
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
@@ -390,51 +413,50 @@ void EnsembleClassificationTask::run() {
     seqs.removeDuplicates();
     CHECK_OP(stateInfo, );
     seqs.sort();
-    QString csv;
-    csv.reserve(seqs.size() * 64);
     int counter = 0;
-    foreach (QString seq, seqs) {
-        CHECK_OP(stateInfo, );
-        stateInfo.setProgress(++counter * 100 /seqs.size());
 
-        TaxID id1 = taxData[0].value(seq, TaxonomyTree::UNDEFINED_ID);
-        TaxID id2 = taxData[1].value(seq, TaxonomyTree::UNDEFINED_ID);
-        TaxID id3 = taxData[2].value(seq, TaxonomyTree::UNDEFINED_ID);
-        if (id1 == TaxonomyTree::UNDEFINED_ID) {
-            QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT1);
-            algoLog.trace(msg);
-            hasMissing = true;
-            continue;
-        }
-        if (id2 == TaxonomyTree::UNDEFINED_ID) {
-            QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT2);
-            algoLog.trace(msg);
-            hasMissing = true;
-            continue;
-        }
-        if (tripleInput && id3 == TaxonomyTree::UNDEFINED_ID) {
-            QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT3);
-            algoLog.trace(msg);
-            hasMissing = true;
-            continue;
-        }
-        csv.append(seq).append(',').append(QString::number(id1)).append(',').append(QString::number(id2));
-        if (tripleInput) {
-            csv.append(',').append(QString::number(id3));
-        }
-        csv.append('\n');
-    }
-
+    outputFile = GUrlUtils::rollFileName(outputFile, "_");
     if (!QFileInfo(outputFile).isAbsolute()) {
         QString tmpDir = FileAndDirectoryUtils::createWorkingDir(workingDir, FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", workingDir);
-        tmpDir = GUrlUtils::createDirectory(tmpDir, "_", stateInfo);
-        CHECK_OP(stateInfo, );
         outputFile = tmpDir + '/' + outputFile;
     }
 
     QFile csvFile(outputFile);
     if (csvFile.open(QIODevice::Append)) {
-        csvFile.write(csv.toLocal8Bit());
+
+        foreach(QString seq, seqs) {
+            CHECK_OP(stateInfo, );
+            stateInfo.setProgress(++counter * 100 / seqs.size());
+
+            TaxID id1 = taxData[0].value(seq, TaxonomyTree::UNDEFINED_ID);
+            TaxID id2 = taxData[1].value(seq, TaxonomyTree::UNDEFINED_ID);
+            TaxID id3 = taxData[2].value(seq, TaxonomyTree::UNDEFINED_ID);
+            if (id1 == TaxonomyTree::UNDEFINED_ID) {
+                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT1);
+                algoLog.trace(msg);
+                hasMissing = true;
+                continue;
+            }
+            if (id2 == TaxonomyTree::UNDEFINED_ID) {
+                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT2);
+                algoLog.trace(msg);
+                hasMissing = true;
+                continue;
+            }
+            if (tripleInput && id3 == TaxonomyTree::UNDEFINED_ID) {
+                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT3);
+                algoLog.trace(msg);
+                hasMissing = true;
+                continue;
+            }
+            QString csvString;
+            csvString.append(seq).append(',').append(QString::number(id1)).append(',').append(QString::number(id2));
+            if (tripleInput) {
+                csvString.append(',').append(QString::number(id3));
+            }
+            csvString.append("\n");
+            csvFile.write(csvString.toLocal8Bit());
+        }
         csvFile.close();
     } else {
         setError(csvFile.errorString());

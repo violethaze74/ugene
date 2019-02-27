@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,6 +55,13 @@ Task::ReportResult MultiTask::report() {
         p->unlockState(l);
         delete l;
         l = NULL;
+    }
+    foreach(Task* t, tasks) {
+        CHECK_CONTINUE(t->isConcatenateChildrenErrors());
+
+        setReportingSupported(true);
+        setReportingEnabled(true);
+        break;
     }
     return Task::ReportResult_Finished;
 }

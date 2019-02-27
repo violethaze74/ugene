@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,14 +71,17 @@ Document* GFFFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, con
     return doc;
 }
 
-int readLongLine(QString &buffer, IOAdapter* io, QScopedArrayPointer<char> &charbuff, int readBufferSize) {
+int readLongLine (QString &buffer, IOAdapter* io, QScopedArrayPointer<char> &charbuff, int readBufferSize, U2OpStatus& os) {
     int len;
     buffer.clear();
     do {
         len = io->readLine(charbuff.data(), readBufferSize - 1);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), -1);
+
         charbuff.data()[len] = '\0';
         buffer.append(QString(charbuff.data()));
     } while (readBufferSize - 1 == len);
+
     return buffer.length();
 }
 
@@ -229,6 +232,8 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
     QScopedArrayPointer<char> buff(new char[LOCAL_READ_BUFFER_SIZE]);
     int len = io->readLine(buff.data(), LOCAL_READ_BUFFER_SIZE);
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
+
     buff.data()[len] = '\0';
     QString qstrbuf(buff.data());
     QStringList words = qstrbuf.split(QRegExp("\\s+"));
@@ -240,6 +245,8 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     int lineNumber = 2;//because first line checked in method validateHeader above
     if (!skipHeader) {
         io->skip(-io->bytesRead());
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
+
         lineNumber--;
     }
 
@@ -259,7 +266,11 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     const int objectsCountLimit = hints.contains(DocumentReadingMode_MaxObjectsInDoc) ? hints[DocumentReadingMode_MaxObjectsInDoc].toInt() : -1;
 
     while (!io->isEof()) {
-        len = readLongLine(qstrbuf, io, buff, GFFFormat::LOCAL_READ_BUFFER_SIZE);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
+
+        len = readLongLine(qstrbuf, io, buff, GFFFormat::LOCAL_READ_BUFFER_SIZE, os);
+        CHECK_OP(os, );
+
         //skip empty lines
         if (TextUtils::remove(buff.data(), len, TextUtils::WHITES) == 0) {
             ioLog.info(GFFFormat::tr("Parsing error: file contains empty line %1, line skipped").arg(lineNumber));
@@ -290,7 +301,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
                 DNASequence sequence(objName, seq);
                 sequence.info.insert(DNAInfo::FASTA_HDR, objName);
                 U2SequenceObject *seqObj = importSequence(sequence, objName, objects, seqImporter, dbiRef, folder, os);
-                CHECK_OP(os,);
+                CHECK_OP(os, );
 
                 SAFE_POINT(seqObj != NULL, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error",);
                 dbiObjects.objects << seqObj->getSequenceRef().entityId;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,8 +29,6 @@
 #include <QStringList>
 #include <QVariant>
 
-#include <U2Core/IdRegistry.h>
-#include <U2Core/global.h>
 #include <U2Core/StrPackUtils.h>
 
 namespace U2 {
@@ -41,11 +39,10 @@ public:
 
     ExternalToolValidation(const QString& _toolRunnerProgram, const QString& _executableFile, const QStringList& _arguments, const QString& _expectedMsg, const StrStrMap& _possibleErrorsDescr = StrStrMap())
         :toolRunnerProgram(_toolRunnerProgram)
-        ,executableFile(_executableFile)
-        ,arguments(_arguments)
-        ,expectedMsg(_expectedMsg)
-        ,possibleErrorsDescr(_possibleErrorsDescr)
-    {}
+        , executableFile(_executableFile)
+        , arguments(_arguments)
+        , expectedMsg(_expectedMsg)
+        , possibleErrorsDescr(_possibleErrorsDescr) {}
 
 public:
     QString toolRunnerProgram;
@@ -70,7 +67,7 @@ public:
     const QIcon&        getWarnIcon()  const { return warnIcon; }
     const QString&      getDescription()  const { return description; }
     const QString&      getToolRunnerProgram()  const { return toolRunnerProgramm; }
-    const virtual QStringList  getToolRunnerAdditionalOptions() { return QStringList();}
+    const virtual QStringList  getToolRunnerAdditionalOptions() { return QStringList(); }
     const QString&      getExecutableFileName()  const { return executableFileName; }
     const QStringList&  getValidationArguments()  const { return validationArguments; }
     const QString&      getValidMessage()  const { return validMessage; }
@@ -82,10 +79,14 @@ public:
     virtual QStringList getAdditionalPaths() const;
 
     virtual void        getAdditionalParameters(const QString& output) { Q_UNUSED(output) }
+    virtual void        performAdditionalChecks(const QString& toolPath);
 
     ExternalToolValidation getToolValidation();
     const QList<ExternalToolValidation>& getToolAdditionalValidations() const { return additionalValidators; }
     const QStringList& getDependencies() const { return dependencies; }
+    const QString& getAdditionalErrorMessage() const;
+    void setAdditionalErrorMessage(const QString& message);
+    bool hasAdditionalErrorMessage() const;
 
     void setPath(const QString& _path);
     void setValid(bool _isValid);
@@ -119,6 +120,7 @@ protected:
     StrStrMap   additionalInfo;         // any additional info, it is specific for the extenal tool
     QList<ExternalToolValidation> additionalValidators;     // validators for the environment state (e.g. some external program should be installed)
     QStringList dependencies;           // a list of dependencies for the tool of another external tools (e.g. python for python scripts).
+    QString     additionalErrorMesage;  // a string, which contains an error message, specific for each tool
     bool        muted;                  // a muted tool doesn't write its validation error to the log
     bool        isModuleTool;           // a module tool is a part of another external tool
 
@@ -128,7 +130,9 @@ class U2CORE_EXPORT ExternalToolModule : public ExternalTool {
     Q_OBJECT
 public:
     ExternalToolModule(const QString& name) :
-        ExternalTool(name, "") { isModuleTool = true; }
+        ExternalTool(name, "") {
+        isModuleTool = true;
+    }
 };
 
 class U2CORE_EXPORT ExternalToolValidationListener : public QObject {
@@ -177,10 +181,10 @@ public:
     virtual void check(const QString& toolName, const QString& toolPath, ExternalToolValidationListener* listener) = 0;
     virtual void check(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener) = 0;
 
-    virtual void validate(const QString& toolName, ExternalToolValidationListener* listener = NULL) = 0;
-    virtual void validate(const QString& toolName, const QString& path, ExternalToolValidationListener* listener = NULL) = 0;
-    virtual void validate(const QStringList& toolNames, ExternalToolValidationListener* listener = NULL) = 0;
-    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = NULL) = 0;
+    virtual void validate(const QString& toolName, ExternalToolValidationListener* listener = nullptr) = 0;
+    virtual void validate(const QString& toolName, const QString& path, ExternalToolValidationListener* listener = nullptr) = 0;
+    virtual void validate(const QStringList& toolNames, ExternalToolValidationListener* listener = nullptr) = 0;
+    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr) = 0;
 
     virtual bool isValid(const QString& toolName) const = 0;
     virtual ExternalToolState getToolState(const QString& toolName) const = 0;
@@ -202,8 +206,8 @@ public:
     bool registerEntry(ExternalTool* t);
     void unregisterEntry(const QString& id);
 
-    void setToolkitDescription(const QString& toolkit, const QString& desc) {toolkits[toolkit] = desc;}
-    QString getToolkitDescription(const QString& toolkit) const {return toolkits[toolkit];}
+    void setToolkitDescription(const QString& toolkit, const QString& desc) { toolkits[toolkit] = desc; }
+    QString getToolkitDescription(const QString& toolkit) const { return toolkits[toolkit]; }
 
     QList<ExternalTool*> getAllEntries() const;
     QList< QList<ExternalTool*> > getAllEntriesSortedByToolKits() const;
@@ -220,7 +224,7 @@ protected:
 
 }; // ExternalToolRegistry
 
-class U2CORE_EXPORT DefaultExternalToolValidations{
+class U2CORE_EXPORT DefaultExternalToolValidations {
 public:
     static ExternalToolValidation pythonValidation();
     static ExternalToolValidation rValidation();

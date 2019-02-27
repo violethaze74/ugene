@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -55,6 +55,9 @@ public:
 
     static void setThreshold(HI::GUITestOpStatus &os, int threshold);
     static int getThreshold(HI::GUITestOpStatus &os);
+
+    static void setExportFileName(HI::GUITestOpStatus &os, QString exportFileName);
+    static QString getExportFileName(HI::GUITestOpStatus &os);
 
     static void setFileFormat(HI::GUITestOpStatus &os, FileFormat fileFormat);
 

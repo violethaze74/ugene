@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,7 +80,7 @@ int FastQCParser::getProgress(){
 //FastQCTask
 FastQCTask::FastQCTask(const FastQCSetting &settings)
 :ExternalToolSupportTask(QString("FastQC for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC)
-,settings(settings)
+, settings(settings), temporaryDir(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + "/")
 {
 
 }
@@ -104,8 +104,7 @@ void FastQCTask::prepare(){
 
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, );
-
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_FASTQC, args, new FastQCParser(), settings.outDir);
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_FASTQC, args, new FastQCParser(), temporaryDir.path());
     setListenerForTask(etTask);
     addSubTask(etTask);
 }
@@ -113,12 +112,23 @@ void FastQCTask::prepare(){
 void FastQCTask::run(){
     CHECK_OP(stateInfo, );
 
-    const QFileInfo resFile(getResFileUrl());
+    QString resFileUrl = getResFileUrl();
+    const QFileInfo resFile(resFileUrl);
     if (!resFile.exists()) {
         setError(tr("Result file does not exist: %1. See the log for details.").arg(resFile.absoluteFilePath()));
         return ;
     }
-    resultUrl = getResFileUrl();
+    if (!settings.fileName.isEmpty()) {
+        QFileInfo fi(settings.fileName);
+        resultUrl = GUrlUtils::rollFileName(settings.outDir + QDir::separator() + fi.baseName() + ".html", "_");
+    } else {
+        QFileInfo fi(settings.inputUrl);
+        resultUrl = GUrlUtils::rollFileName(settings.outDir + QDir::separator() + fi.baseName() + "_fastqc.html", "_");
+    }
+    QFile result(resFileUrl);
+    if (!result.rename(resultUrl)) {
+        setError(tr("Unable to move result file from temporary directory to desired location: %1.").arg(resultUrl));
+    }
 }
 
 QString FastQCTask::getResFileUrl() const{
@@ -137,7 +147,7 @@ QString FastQCTask::getResFileUrl() const{
             .replace(QRegExp(".bam$"), "");
     name += "_fastqc.html";
 
-    res = settings.outDir + QDir::separator() + name;
+    res = temporaryDir.path() + QDir::separator() + name;
     return res;
 }
 
@@ -145,7 +155,7 @@ QStringList FastQCTask::getParameters(U2OpStatus & /*os*/) const{
     QStringList res;
 
     res << QString("-o");
-    res << settings.outDir;
+    res << temporaryDir.path();
 
 
     if(!settings.conts.isEmpty()){

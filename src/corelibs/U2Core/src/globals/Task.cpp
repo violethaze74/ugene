@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -85,6 +85,13 @@ void Task::cancel() {
     stateInfo.cancelFlag = true;
 }
 
+QList<Task*> Task::getSubtasks() const {
+    QList<Task*> subtasksPointers;
+    foreach(QPointer<Task> subtask, subtasks) {
+        subtasksPointers << subtask.data();
+    }
+    return subtasksPointers;
+}
 
 void Task::addSubTask(Task* sub) {
     SAFE_POINT(sub != NULL, "Trying to add NULL subtask",);
@@ -100,6 +107,8 @@ void Task::addSubTask(Task* sub) {
 void Task::cleanup()    {
     assert(isFinished());
     foreach(Task* sub, getSubtasks()) {
+        CHECK_CONTINUE(sub != nullptr);
+
         sub->cleanup();
     }
 }
@@ -150,6 +159,18 @@ void Task::addTaskResource(const TaskResourceUsage& r) {
     SAFE_POINT(!insidePrepare || !r.prepareStageLock, "Can't add prepare-time resource from within prepare function call!",);
     SAFE_POINT(!r.locked, QString("Resource is already locked, resource id: %1").arg(r.resourceId),);
     taskResources.append(r);
+}
+
+bool Task::isMinimizeSubtaskErrorText() const {
+    bool result = false;
+    Task* parentTask = getParentTask();
+    if (getFlags().testFlag(TaskFlag_MinimizeSubtaskErrorText)) {
+        result = true;
+    } else if (parentTask != nullptr) {
+        result = parentTask->isMinimizeSubtaskErrorText();
+    }
+
+    return result;
 }
 
 void Task::setCollectChildrensWarningsFlag(bool v) {

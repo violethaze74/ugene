@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QMouseEvent>
 #include <QGraphicsView>
 #include <QInputDialog>
 #include <QMenu>
+#include <QMouseEvent>
 #include <QPushButton>
 #include <QTabBar>
 #include <QVBoxLayout>
@@ -30,9 +30,10 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "WorkflowViewController.h"
+#include <U2Designer/ScanDashboardsDirTask.h>
 
 #include "WorkflowTabView.h"
+#include "WorkflowViewController.h"
 
 namespace U2 {
 
@@ -94,11 +95,11 @@ void WorkflowTabView::sl_workflowStateChanged(bool isRunning) {
     closeButton->setEnabled(!isRunning);
 }
 
-int WorkflowTabView::addDashboard(Dashboard *db) {
+int WorkflowTabView::addDashboard(Dashboard *db, AddingPolicy addingPolicy) {
     if (db->getName().isEmpty()) {
         db->setName(generateName());
     }
-    int idx = addTab(db, db->getName());
+    int idx = (Prepend == addingPolicy ? insertTab(0, db, db->getName()) : addTab(db, db->getName()));
 
     CloseButton *closeButton = new CloseButton(db);
     tabBar()->setTabButton(idx, QTabBar::RightSide, closeButton);
@@ -182,11 +183,15 @@ void WorkflowTabView::sl_dashboardsLoaded() {
     CHECK(NULL != t, );
     CHECK(t->isFinished(), );
 
-    foreach (const QString &dbPath, t->getOpenedDashboards()) {
-        addDashboard(new Dashboard(dbPath, this));
+    const int countBeforeAdding = count();
+
+    const QStringList openedDashboards = t->getOpenedDashboards();
+    for (int i = openedDashboards.size() - 1; i >= 0; --i) {
+        addDashboard(new Dashboard(openedDashboards[i], this), Prepend);
     }
+
     int nDashboards = count();
-    if (nDashboards > 0) {
+    if (nDashboards > 0 && 0 == countBeforeAdding) {
         setCurrentIndex(nDashboards - 1);
     }
 }
@@ -201,19 +206,13 @@ QStringList WorkflowTabView::allNames() const {
 }
 
 QString WorkflowTabView::generateName(const QString &name) const {
+    // TODO: there should be the name rolling, it was removed during the fast fix of UGENE-6357.
+    // The fast fix should be reverted before the full fix.
     QString baseName = name;
     if (baseName.isEmpty()) {
         baseName = tr("Run");
     }
-
-    QString result;
-    QStringList all = allNames();
-    int num = 1;
-    do {
-        result = baseName + QString(" %1").arg(num);
-        num++;
-    } while (all.contains(result));
-    return result;
+    return baseName;
 }
 
 bool WorkflowTabView::eventFilter(QObject *watched, QEvent *event) {

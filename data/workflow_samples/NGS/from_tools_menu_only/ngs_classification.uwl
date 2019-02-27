@@ -32,7 +32,7 @@ workflow "NGS reads classification" {
                             value {
                                 id: parallel;
                                 label: "Parallel reads classification";
-                                tooltip:"Improve reads quality with Trimmomatic, classify them with Kraken, CLARK and in case of single-end reads with DIAMOND. Join the classification output with WEVOTE.";
+                                tooltip:"Improve reads quality with Trimmomatic, classify them with Kraken, CLARK, DIAMOND (in case of single-end reads), and MetaPhlAn2. Compare output from Kraken, CLARK, and DIAMOND with WEVOTE.";
                             }
                             value {
                                 id: de_novo;

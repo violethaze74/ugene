@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,6 +82,10 @@ QString SaveDocumentController::SimpleFormatsInfo::getFormatNameByExtension(cons
 
 QString SaveDocumentController::SimpleFormatsInfo::getIdByName(const QString &name) const {
     return names.key(name);
+}
+
+void SaveDocumentController::forceRoll(const QSet<QString>& excludeList) {
+    setPath(getSaveFileName(), excludeList);
 }
 
 QStringList SaveDocumentController::SimpleFormatsInfo::getExtensionsByName(const QString &formatName) const {
@@ -328,13 +332,13 @@ QString SaveDocumentController::prepareFileFilter() const {
     return FormatUtils::prepareFileFilter(formatsWithExtensions, false, extraExtensions);
 }
 
-void SaveDocumentController::setPath(const QString &path) {
-    QSet<QString> excludeList;
+void SaveDocumentController::setPath(const QString &path, const QSet<QString>& excludeList) {
+    QSet<QString> currentExcludeList = excludeList;
     if (conf.rollOutProjectUrls) {
-        excludeList += DocumentUtils::getNewDocFileNameExcludesHint();
+        currentExcludeList += DocumentUtils::getNewDocFileNameExcludesHint();
     }
 
-    const QString newPath = (conf.rollFileName && !overwritingConfirmed) ? GUrlUtils::rollFileName(path, conf.rollSuffix, excludeList) : path;
+    const QString newPath = (conf.rollFileName && !overwritingConfirmed) ? GUrlUtils::rollFileName(path, conf.rollSuffix, currentExcludeList) : path;
     conf.fileNameEdit->setText(QDir::toNativeSeparators(newPath));
     overwritingConfirmed = false;
     emit si_pathChanged(newPath);

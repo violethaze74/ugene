@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
@@ -225,9 +226,9 @@ void SamtoolsMpileupTask::run() {
 
     while(!vcfutils.process->waitForFinished(1000)){
         if (isCanceled()) {
-            samtools.process->kill();
-            bcftools.process->kill();
-            vcfutils.process->kill();
+            CmdlineTaskRunner::killProcessTree(samtools.process);
+            CmdlineTaskRunner::killProcessTree(bcftools.process);
+            CmdlineTaskRunner::killProcessTree(vcfutils.process);
             return;
         }
     }

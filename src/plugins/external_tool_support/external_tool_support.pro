@@ -49,6 +49,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/bowtie/BowtieSupport.h \
            src/bowtie/BowtieTask.h \
            src/bowtie/BowtieWorker.h \
+           src/bowtie2/bowtie2_tests/Bowtie2Tests.h \
            src/bowtie2/Bowtie2Support.h \
            src/bowtie2/Bowtie2Task.h \
            src/bowtie2/Bowtie2SettingsWidget.h \
@@ -165,6 +166,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/spades/SpadesSlotRelationDescriptor.h \
            src/spades/SpadesSupport.h \
            src/spades/SpadesTask.h \
+		   src/spades/SpadesTaskTest.h \
            src/spades/SpadesWorker.h \
            src/spidey/SpideySupport.h \
            src/spidey/SpideySupportTask.h \
@@ -304,6 +306,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/bowtie/BowtieSupport.cpp \
            src/bowtie/BowtieTask.cpp \
            src/bowtie/BowtieWorker.cpp \
+           src/bowtie2/bowtie2_tests/Bowtie2Tests.cpp \
            src/bowtie2/Bowtie2Support.cpp \
            src/bowtie2/Bowtie2Task.cpp \
            src/bowtie2/Bowtie2SettingsWidget.cpp \
@@ -419,6 +422,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/spades/SpadesSlotRelationDescriptor.cpp \
            src/spades/SpadesSupport.cpp \
            src/spades/SpadesTask.cpp \
+		   src/spades/SpadesTaskTest.cpp \
            src/spades/SpadesWorker.cpp \
            src/spidey/SpideySupport.cpp \
            src/spidey/SpideySupportTask.cpp \

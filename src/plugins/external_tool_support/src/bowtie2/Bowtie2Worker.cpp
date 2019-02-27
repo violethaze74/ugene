@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,6 +31,9 @@
 #include "Bowtie2Support.h"
 #include "Bowtie2Worker.h"
 #include "Bowtie2Task.h"
+
+#include "perl/PerlSupport.h"
+#include "python/PythonSupport.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -235,6 +238,8 @@ void Bowtie2WorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator());
     proto->addExternalTool(ET_BOWTIE2_ALIGN);
+    proto->addExternalTool(ET_PYTHON);
+    proto->addExternalTool(ET_PERL);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new Bowtie2WorkerFactory());
 }

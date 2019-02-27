@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -518,6 +518,9 @@ GUI_TEST_CLASS_DEFINITION( test_2021_6 )
     // 1. Open "data/samples/CLUSTAL/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    if (GTUtilsProjectTreeView::isVisible(os)) {
+        GTUtilsProjectTreeView::toggleView(os);
+    }
 
     //2. Set cursor to the position 45 of the first line (after gaps).
     //const QPoint initialSelectionPos(44, 0);
@@ -565,6 +568,9 @@ GUI_TEST_CLASS_DEFINITION( test_2021_8 )
     // 1. Open "data/samples/CLUSTAL/COI.aln".
     GTFileDialog::openFile( os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    if (GTUtilsProjectTreeView::isVisible(os)) {
+        GTUtilsProjectTreeView::toggleView(os);
+    }
 
     //2. Select the 45 and 46 of the second line (two symbols after gaps).
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint( 44,1), QPoint( 45, 1));
@@ -587,12 +593,15 @@ GUI_TEST_CLASS_DEFINITION( test_2021_9 )
     // 1. Open "data/samples/CLUSTAL/COI.aln".
     GTFileDialog::openFile( os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    if (GTUtilsProjectTreeView::isVisible(os)) {
+        GTUtilsProjectTreeView::toggleView(os);
+    }
 
     //2. Select the 45 and 46 of the second line (two symbols after gaps).
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(44, 2), QPoint( 46,2));
     GTGlobals::sleep();
 
-    //3. Press BACKSPAC�
+    //3. Press BACKSPACE
     GTKeyboardDriver::keyClick(Qt::Key_Backspace );
     GTGlobals::sleep();
 
@@ -1542,7 +1551,7 @@ GUI_TEST_CLASS_DEFINITION( test_2192 ){
 //    7. Choose "Copy element content" on any tree element and paste the data to any editor.
 //       Expected state: correct data was copied.
 //    8. Select some amount of text on a tree and click on "Copy selected text" which is now should be available.
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "SAMtools run 1"));
+    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "SAMtools run"));
     HIWebElement el = GTUtilsDashboard::findElement(os, samtoolsPath, "SPAN");
     GTWebView::selectElementText(os, GTUtilsDashboard::getDashboard(os), el);
     GTUtilsDashboard::click(os, el, Qt::RightButton);
@@ -1647,6 +1656,7 @@ GUI_TEST_CLASS_DEFINITION( test_2266_1 ){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
+    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
@@ -3857,6 +3867,7 @@ GUI_TEST_CLASS_DEFINITION( test_2568 ){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add the "Call Variants" sample
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
+    GTGlobals::sleep(100);
 //    3. Run the wizard
 
     class customFileDialog : public CustomScenario {
@@ -3896,6 +3907,7 @@ GUI_TEST_CLASS_DEFINITION( test_2568 ){
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new customWizard()));
     GTWidget::click(os, GTAction::button(os, "Show wizard"));
+    GTGlobals::sleep(100);
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2569 ){
@@ -4786,7 +4798,13 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
 //    Expected state: dialog about detected file modification has appeared in UGENE window
 //    6. Press "Yes"
 //    Expected state: "human_T1" view has disappeared from the "Bookmarks" list, "murine.gb" has been reloaded.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+    const GUIDialogWaiter::WaitSettings waitSettings("");
+    GTUtilsDialog::waitForDialog(os,
+                                 new MessageBoxDialogFiller(os,
+                                                            QMessageBox::Yes,
+                                                            "Document 'test_2713.gb' was modified. Do you want to reload it?",
+                                                            ""),
+                                 waitSettings);
 
     QFile file(sandBoxDir + "/test_2713.gb");
     bool opened = file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -5425,12 +5443,14 @@ GUI_TEST_CLASS_DEFINITION(test_2811) {
 //    2. Open any workflow, create a breakpoint for any element.
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setBreakpoint(os, "Align with MUSCLE");
 
 //    3. Open another workflow.
 //    Expected state: breakpoints list is cleared.
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep();
     QStringList breakpointList = GTUtilsWorkflowDesigner::getBreakpointList(os);
     CHECK_SET_ERR(breakpointList.isEmpty(), "There are unexpected breakpoints");
 }
@@ -5742,7 +5762,7 @@ GUI_TEST_CLASS_DEFINITION(test_2900) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(500);
     const int firstAnnotationsCount = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "enzyme  (8, 0)").size();
 
@@ -5751,7 +5771,7 @@ GUI_TEST_CLASS_DEFINITION(test_2900) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(500);
     const int secondAnnotationsCount = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "enzyme  (8, 0)").size();
 
@@ -5764,7 +5784,15 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
     GTFileDialog::openFile( os, testDir + "_common_data/regression/2903", "unknown_virus.fa" );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new RemoteBLASTDialogFiller(os));
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new RemoteBLASTDialogFiller(os, new Scenario));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                       << "Query NCBI BLAST database"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "render_area_virus_X"));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -212,6 +212,11 @@ QWidget* AnnotatedDNAView::createWidget() {
     scrolledWidget->installEventFilter(this);
     scrolledWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
+    clipb = new ADVClipboard(this);
+    QAction* pasteAction = clipb->getPasteSequenceAction();
+    pasteAction->setEnabled(false);
+    connect(pasteAction, SIGNAL(triggered()), this, SLOT(sl_paste()));
+
     annotationsView = new AnnotationsTreeView(this);
     annotationsView->setParent(mainSplitter);
     annotationsView->setObjectName("annotations_tree_view");
@@ -233,11 +238,6 @@ QWidget* AnnotatedDNAView::createWidget() {
 
     //TODO: scroll area does not restore focus for last active child widget after Alt-Tab...
     scrollArea->setWidget(scrolledWidget);
-
-    clipb = new ADVClipboard(this);
-    QAction* pasteAction = clipb->getPasteSequenceAction();
-    pasteAction->setEnabled(false);
-    connect(pasteAction, SIGNAL(triggered()), this, SLOT(sl_paste()));
 
     mainSplitter->installEventFilter(this);
     mainSplitter->setAcceptDrops(true);

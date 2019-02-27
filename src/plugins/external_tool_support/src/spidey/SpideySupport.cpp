@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -130,6 +130,19 @@ void SpideySupportContext::buildMenu(GObjectView* view, QMenu* m) {
         }
 }
 
+//TODO: move this function to global utils package. For example to AppContext class.
+static bool is32BitOs() {
+    bool result = false;
+#ifdef Q_PROCESSOR_X86_32
+    result = true;
+#endif
+    return result;
+}
+
+// This is maximum sequence size we allow to use with Spidey task on 32-bit OSes
+// 100Mb sequence size will result to ~1.5Gb memory usage by Spidey process.
+#define MAX_SPIDEY_SEQUENCE_LENGTH_32_BIT_OS (100 * 1000 * 1000)
+
 void SpideySupportContext::sl_align_with_Spidey() {
 
 
@@ -156,6 +169,9 @@ void SpideySupportContext::sl_align_with_Spidey() {
     settings.allowMultipleSelection = false;
     settings.objectTypesToShow.insert(GObjectTypes::SEQUENCE);
     QScopedPointer<U2SequenceObjectConstraints> seqConstraints(new U2SequenceObjectConstraints());
+    if (is32BitOs()) {
+        seqConstraints->sequenceSize = MAX_SPIDEY_SEQUENCE_LENGTH_32_BIT_OS;
+    }
     seqConstraints->alphabetType = DNAAlphabet_NUCL;
     settings.objectConstraints.insert(seqConstraints.data());
 

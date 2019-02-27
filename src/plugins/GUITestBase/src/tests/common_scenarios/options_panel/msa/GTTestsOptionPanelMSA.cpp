@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,16 +28,17 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTDoubleSpinBox.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSlider.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
-#include <drivers/GTMouseDriver.h>
 #include <system/GTFile.h>
 
 #include <U2Core/AppContext.h>
@@ -1439,27 +1440,27 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 //    4. Add Isophya_altaica_EF540820 sequence
 //    5. Select some existing read-only file as output
-    QString s = sandBoxDir + "pairwise_alignment_test_0009";
+    QString dirPath = sandBoxDir + "pairwise_alignment_test_0009";
 
-    QDir().mkpath(s);
+    QDir().mkpath(dirPath);
 
-    s += "/" + fileName;
-    QFile f(s);
+    const QString filePath = dirPath + "/" + fileName;
+    QFile f(filePath);
     bool created = f.open(QFile::ReadWrite);
     CHECK_SET_ERR(created, "file not created");
     f.close();
-    GTFile::setReadOnly(os, s);
+    GTFile::setReadOnly(os, filePath);
 
     setOutputPath(os, sandBoxDir + dirName, fileName);
     align(os);
     GTGlobals::sleep(500);
 //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'pairwise_alignment_test_0009.aln' file.
     QString error = l.getError();
-    QString expected;
-    expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(fileName);
+    const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
+    const QString expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(expectedFilePath);
     CHECK_SET_ERR(error.contains(expected), QString("enexpected error: %1").arg(error));
 
-    GTFile::setReadWrite(os, s);
+    GTFile::setReadWrite(os, filePath);
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010){
@@ -1476,21 +1477,24 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010){
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 //    4. Add Isophya_altaica_EF540820 sequence
 //    5. Select some existing read-only file as output
-    QString s = sandBoxDir + dirName;
-    bool ok = QDir().mkpath(s);
+    QString dirPath = sandBoxDir + dirName;
+    bool ok = QDir().mkpath(dirPath);
     CHECK_SET_ERR(ok, "subfolder not created");
 
-    GTFile::setReadOnly(os, s);
+    GTFile::setReadOnly(os, dirPath);
 
-    setOutputPath(os, sandBoxDir + dirName,  fileName);
+    const QString filePath = dirPath + "/" + fileName;
+
+    setOutputPath(os, dirPath, fileName);
     align(os);
     GTGlobals::sleep(500);
 //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'COI_transl.aln' file.
     QString error = l.getError();
-    QString expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(fileName);
+    const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
+    const QString expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(expectedFilePath);
     CHECK_SET_ERR(error == expected, QString("enexpected error: %1").arg(error));
 
-    GTFile::setReadWrite(os, s);
+    GTFile::setReadWrite(os, dirPath);
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011){
@@ -1997,28 +2001,28 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002){
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 //    3. Select existing read-only file "export_consensus_test_0002.aln" as output
 
-    QString s = sandBoxDir + "export_consensus_test_0002";
-    QDir().mkpath(s);
+    const QString dirPath = sandBoxDir + "export_consensus_test_0002";
+    QDir().mkpath(dirPath);
 
-    s += "/" + fileName;
-    QFile f(s);
+    const QString filePath = dirPath + "/" + fileName;
+    QFile f(filePath);
     bool created = f.open(QFile::ReadWrite);
     CHECK_SET_ERR(created, "file not created");
     f.close();
 
-    GTFile::setReadOnly(os, s);
+    GTFile::setReadOnly(os, filePath);
 
-    setConsensusOutputPath(os, s);
+    setConsensusOutputPath(os, filePath);
 //    4. Press export button
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
     GTGlobals::sleep(300);
 //    Expected state: error in log: Task {Save document} finished with error: No permission to write to 'COI_transl.aln' file.
     QString error = l.getError();
-    QString expected;
-    expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(fileName);
+    const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
+    QString expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(expectedFilePath);
     CHECK_SET_ERR(error.contains(expected), QString("Unexpected error: %1").arg(error));
 
-    GTFile::setReadWrite(os, s);
+    GTFile::setReadWrite(os, filePath);
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003){
@@ -2031,24 +2035,39 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003){
 //    2. Open export consensus option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 //    3. Select some existing file in read-only directory as output
-    QString s = sandBoxDir + dirName;
-    bool ok = QDir().mkpath(s);
+    QString dirPath = sandBoxDir + dirName;
+    bool ok = QDir().mkpath(dirPath);
     CHECK_SET_ERR(ok, "subfolder not created");
-    GTFile::setReadOnly(os, s);
+    GTFile::setReadOnly(os, dirPath);
 
-    setConsensusOutputPath(os, sandBoxDir + dirName + '/' + fileName);
+    const QString filePath = dirPath + '/' + fileName;
+    setConsensusOutputPath(os, filePath);
 //    4. Press export button
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
     GTGlobals::sleep(300);
 //    Expected state: error in log: Task {Pairwise Alignment Task} finished with error: No permission to write to 'COI_transl.aln' file.
     QString error = l.getError();
-    QString expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(fileName);
+    const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
+    QString expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(expectedFilePath);
     CHECK_SET_ERR(error == expected, QString("Unexpected error: %1").arg(error));
 
-    GTFile::setReadWrite(os, s);
+    GTFile::setReadWrite(os, dirPath);
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004){
+    //0. Change Documents folder to sandbox
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+            AppSettingsDialogFiller::setDocumentsDirPath(os, sandBoxDir);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2073,7 +2092,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004){
 
     QLineEdit* pathLe = GTWidget::findExactWidget<QLineEdit*>(os, "pathLe");
     QString pathLeText = pathLe->text();
-    CHECK_SET_ERR(!pathLeText.isEmpty() && pathLeText.contains("COI_consensus.txt"), "wrong lineEdit text: " + pathLeText);
+    CHECK_SET_ERR(!pathLeText.isEmpty() && pathLeText.contains("COI_consensus_1.txt"), "wrong lineEdit text: " + pathLeText);
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0005){

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -163,7 +163,7 @@ WorkflowIterationRunTask::WorkflowIterationRunTask(const Schema& sh,
     : WorkflowAbstractIterationRunner(tr("Workflow run"),
     (getAdditionalFlags() | TaskFlag_CancelOnSubtaskCancel | TaskFlag_FailOnSubtaskError)),
     context(NULL), schema(new Schema()), scheduler(NULL), debugInfo(initDebugInfo),
-    isNextTickRestoring(false)
+    nextTickRestoring(false), contextInitialized(false)
 {
 
     rmap = HRSchemaSerializer::deepCopy(sh, schema, stateInfo);
@@ -253,7 +253,8 @@ void WorkflowIterationRunTask::prepare() {
         lmap.insert(key, cc);
     }
 
-    if (!context->init()) {
+    contextInitialized = context->init();
+    if (!contextInitialized) {
         stateInfo.setError(tr("Failed to create a workflow context"));
         return;
     }
@@ -282,9 +283,9 @@ QList<Task*> WorkflowIterationRunTask::onSubTaskFinished(Task* subTask) {
     while(debugInfo->isPaused() && !isCanceled()) {
         QCoreApplication::processEvents();
     }
-    if(scheduler->isReady() && isNextTickRestoring) {
+    if(scheduler->isReady() && nextTickRestoring) {
         Task *replayingTask = scheduler->replayLastWorkerTick();
-        isNextTickRestoring = false;
+        nextTickRestoring = false;
         if(NULL != replayingTask) {
             tasks << replayingTask;
             emit si_ticked();
@@ -311,6 +312,9 @@ QList<Task*> WorkflowIterationRunTask::onSubTaskFinished(Task* subTask) {
 }
 
 Task::ReportResult WorkflowIterationRunTask::report() {
+    if (!contextInitialized) {
+        return ReportResult_Finished;
+    }
     context->getMonitor()->pause();
     if (scheduler) {
         scheduler->cleanup();
@@ -410,7 +414,7 @@ int WorkflowIterationRunTask::getDataProduced(const ActorId &actor) {
 void WorkflowIterationRunTask::sl_pauseStateChanged(bool isPaused) {
     if (isPaused) {
         if (!debugInfo->isCurrentStepIsolated()) {
-            isNextTickRestoring = scheduler->cancelCurrentTaskIfAllowed();
+            nextTickRestoring = scheduler->cancelCurrentTaskIfAllowed();
         }
         if (AppContext::isGUIMode()) {
             AppContext::getTaskScheduler()->pauseThreadWithTask(this);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -118,6 +118,7 @@ public:
     /** if path == "default" then nothing is changed. Returns the new path */
     static QString updateExternalToolPath(const QString &toolName, const QString &path);
 
+    static QString getExternalToolPath(const QString &toolName);
     static QString externalToolError(const QString &toolName);
     static QString externalToolInvalidError(const QString &toolName);
 
@@ -186,7 +187,7 @@ public:
 
     virtual ActorDocument * createDescription(Actor*) = 0;
 
-    QString getURL(const QString& id, bool * empty = NULL, const QString &onEmpty = "");
+    QString getURL(const QString& id, bool * empty = NULL, const QString &onEmpty = "", const QString &defaultValue = "");
     QString getScreenedURL(IntegralBusPort* input, const QString& id, const QString& slot, const QString &onEmpty = "");
     QString getRequiredParam(const QString& id);
     QVariant getParameter(const QString& id);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -152,10 +152,6 @@ Task::ReportResult GTest_NeighborJoin::report() {
     }
     
     return ReportResult_Finished;
-}
-
-void GTest_NeighborJoin::cleanup() {
-	
 }
 
 }

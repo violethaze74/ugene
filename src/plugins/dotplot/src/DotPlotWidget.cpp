@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -650,6 +650,20 @@ bool DotPlotWidget::sl_showLoadFileDialog() {
     return true;
 }
 
+// This is maximum sequence size (X+Y) we allow to use with dot plots
+// W is 100% match algorithm, it uses less memory that WK which is a <100% algorithm and requires more memory.
+#define MAX_DOT_PLOT_W_SUM_SEQUENCE_LENGTH_32_BIT_OS (600 * 1000 * 1000)
+#define MAX_DOT_PLOT_WK_SUM_SEQUENCE_LENGTH_32_BIT_OS (200 * 1000 * 1000)
+
+//TODO: move this function to global utils package. For example to AppContext class.
+static bool is32BitOs() {
+    bool result = false;
+#ifdef Q_PROCESSOR_X86_32
+    result = true;
+#endif
+    return result;
+}
+
 // creating new dotplot or changing settings
 bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
 
@@ -679,6 +693,16 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
 
     sequenceX = d->getXSeq();
     sequenceY = d->getYSeq();
+
+    if (is32BitOs()) {
+        quint64 sumSeqLen = sequenceX->getSequenceLength() + sequenceY->getSequenceLength();
+        bool wkMode = identity < 100;
+        if ((wkMode && sumSeqLen > MAX_DOT_PLOT_WK_SUM_SEQUENCE_LENGTH_32_BIT_OS)||
+                (!wkMode && sumSeqLen > MAX_DOT_PLOT_W_SUM_SEQUENCE_LENGTH_32_BIT_OS)) {
+            QMessageBox::warning(this, L10N::warningTitle(),  tr("Sequence size is too large!"));
+            return false;
+        }
+    }
 
     if (res){
         resetZooming();

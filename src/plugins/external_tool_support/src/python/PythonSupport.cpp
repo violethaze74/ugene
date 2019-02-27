@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -102,7 +102,7 @@ PythonModuleDjangoSupport::PythonModuleDjangoSupport(const QString &name) :
 
     validationArguments << "import django;print(\"django version: \", django.VERSION);";
     validMessage = "django version:";
-    versionRegExp = QRegExp("(\\d+,\\d+,\\d+)");
+    versionRegExp = QRegExp("(\\d+,\\s\\d+,\\s\\d+)");
 }
 
 PythonModuleNumpySupport::PythonModuleNumpySupport(const QString &name) :
@@ -112,6 +112,19 @@ PythonModuleNumpySupport::PythonModuleNumpySupport(const QString &name) :
     validationArguments << "import numpy;print(\"numpy version: \", numpy.__version__);";
     validMessage = "numpy version:";
     versionRegExp = QRegExp("(\\d+.\\d+.\\d+)");
+}
+
+namespace {
+    const QString ET_METAPHLAN = "MetaPhlAn2";
+}
+
+PythonModuleBioSupport::PythonModuleBioSupport(const QString& name) :
+    PythonModuleSupport(name) {
+    description += ET_PYTHON_BIO + tr(" (or biopython) is a python module for biological computations.");
+
+    validationArguments << "import Bio;print(\"Bio version: \", Bio.__version__);";
+    validMessage = "Bio version:";
+    versionRegExp = QRegExp("(\\d+.\\d+)");
 }
 
 

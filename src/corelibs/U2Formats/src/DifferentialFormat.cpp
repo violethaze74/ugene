@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -116,10 +116,9 @@ const int DifferentialFormat::BUFFER_SIZE = 4194304;
 QString DifferentialFormat::readLine(IOAdapter *io, QByteArray &buffer, U2OpStatus &os) {
     bool eol = false;
     qint64 size = io->readLine(buffer.data(), BUFFER_SIZE, &eol);
-    if (!eol && !io->isEof()) {
-        os.setError("Line line is too long");
-        return "";
-    }
+    CHECK_EXT(eol || io->isEof(), os.setError("Line is too long"), QString());
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), QString());
+
     return buffer.left(size).trimmed();
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,11 +87,13 @@ public:
 
     void addFormat(const QString &id, const QString &name, const QStringList &extenstions);
 
-    void setPath(const QString &path);
+    void setPath(const QString &path, const QSet<QString>& excludeList = QSet<QString>());
     void setFormat(const QString &formatId);
 
     QString getSaveFileName() const;
     DocumentFormatId getFormatIdToSave() const;
+
+    void forceRoll(const QSet<QString>& excludeList = QSet<QString>());
 
 signals:
     void si_formatChanged(const QString &newFormatId);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -168,7 +168,7 @@ bool validateParameters(const Schema &schema, NotificationsList &infoList) {
         const int notificationCountBefore = infoList.size();
         good &= a->validate(infoList);
         for (int i = notificationCountBefore; i < infoList.size(); ++i) {
-            infoList[i].actor = a->getId();
+            infoList[i].actorId = a->getId();
         }
     }
     return good;
@@ -208,7 +208,7 @@ bool validatePorts(Actor *a, NotificationsList &infoList) {
                 WorkflowNotification item;
                 item.message = notification.message;
                 item.port = p->getId();
-                item.actor = a->getId();
+                item.actorId = a->getId();
                 item.type = notification.type;
                 infoList << item;
             }
@@ -263,7 +263,7 @@ bool validateScript(Actor *a, NotificationsList &infoList) {
         notification.message = QObject::tr("Script syntax check failed! Line: %1, error: %2")
             .arg(syntaxResult.errorLineNumber())
             .arg(syntaxResult.errorMessage());
-        notification.actor = a->getId();
+        notification.actorId = a->getId();
         notification.type = WorkflowNotification::U2_ERROR;
         infoList << notification;
         return false;
@@ -274,7 +274,7 @@ bool validateScript(Actor *a, NotificationsList &infoList) {
 }
 
 bool WorkflowUtils::validate(const Schema &schema, NotificationsList &notificationList) {
-    bool good = true;
+    bool good = validateOutputDir(WorkflowSettings::getWorkflowOutputDirectory(), notificationList);
     foreach (Actor *a, schema.getProcesses()) {
         good &= validatePorts(a, notificationList);
         if (a->getProto()->isScriptFlagSet()) {
@@ -298,23 +298,23 @@ bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &info
     bool good = validate(schema, notifications);
 
     foreach (const WorkflowNotification &notification, notifications) {
-        QListWidgetItem *item = NULL;
-        if (notification.actor.isEmpty()) {
-            item = new QListWidgetItem(notification.type + ": " + notification.message);
+        QListWidgetItem *item = nullptr;
+        Actor *a = nullptr;
+        if (notification.actorId.isEmpty()) {
+            item = new QListWidgetItem(notification.message);
         } else {
-            Actor *a = schema.actorById(notification.actor);
+            a = schema.actorById(notification.actorId);
             item = new QListWidgetItem(QString("%1: %2").arg(a->getLabel()).arg(notification.message));
-
-            if (notification.type == WorkflowNotification::U2_ERROR) {
-                item->setIcon(QIcon(":U2Lang/images/error.png"));
-            } else if (notification.type == WorkflowNotification::U2_WARNING) {
-                item->setIcon(QIcon(":U2Lang/images/warning.png"));
-            } else {
-                item->setIcon(a->getProto()->getIcon());
-            }
+        }
+        if (notification.type == WorkflowNotification::U2_ERROR) {
+            item->setIcon(QIcon(":U2Lang/images/error.png"));
+        } else if (notification.type == WorkflowNotification::U2_WARNING) {
+            item->setIcon(QIcon(":U2Lang/images/warning.png"));
+        } else if (a != nullptr){
+            item->setIcon(a->getProto()->getIcon());
         }
 
-        item->setData(ACTOR_REF, notification.actor);
+        item->setData(ACTOR_ID_REF, notification.actorId);
         item->setData(PORT_REF, notification.port);
         item->setData(TEXT_REF, notification.message);
         item->setData(TYPE_REF, notification.type);
@@ -332,10 +332,10 @@ bool WorkflowUtils::validate(const Workflow::Schema &schema, QStringList &errs) 
 
     foreach (const WorkflowNotification &notification, notifications) {
         QString res = QString();
-        if (notification.actor.isEmpty()) {
+        if (notification.actorId.isEmpty()) {
             res = notification.message;
         } else {
-            Actor *a = schema.actorById(notification.actor);
+            Actor *a = schema.actorById(notification.actorId);
             QString message = notification.message;
             res = QString("%1: %2").arg(a->getLabel()).arg(message);
 
@@ -878,6 +878,16 @@ QString WorkflowUtils::updateExternalToolPath(const QString &toolName, const QSt
     return tool->getPath();
 }
 
+QString WorkflowUtils::getExternalToolPath(const QString &toolName) {
+    ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
+    SAFE_POINT(NULL != registry, "NULL external tool registry", "");
+
+    ExternalTool *tool = registry->getByName(toolName);
+    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(toolName), "");
+
+    return tool->getPath();
+}
+
 QString WorkflowUtils::externalToolError(const QString &toolName) {
     return tr("External tool \"%1\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(toolName);
 }
@@ -1215,9 +1225,9 @@ bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &not
 
     if (canWriteToPath(fi.absoluteFilePath())) {
         return true;
-    }
-    else {
-        notificationList << WorkflowNotification(tr("Can't output folder path: '%1', check permissions").arg(url));
+    } else {
+        notificationList << WorkflowNotification(tr("Workflow output folder '%1' can't be accessed. Check that the folder exists and you have"
+            " enough permissions to write to it, or choose another folder in the UGENE Application Settings.").arg(url), "", WorkflowNotification::U2_ERROR);
         return false;
     }
 }
@@ -1327,7 +1337,7 @@ QVariant PrompterBaseImpl::getParameter(const QString& id) {
     }
 }
 
-QString PrompterBaseImpl::getURL(const QString& id, bool * empty, const QString &onEmpty) {
+QString PrompterBaseImpl::getURL(const QString& id, bool * empty, const QString &onEmpty, const QString &defaultValue) {
     QVariant urlVar = getParameter(id);
     QString url;
     if (urlVar.canConvert< QList<Dataset> >()) {
@@ -1343,7 +1353,11 @@ QString PrompterBaseImpl::getURL(const QString& id, bool * empty, const QString 
         if (!onEmpty.isEmpty()) {
             return onEmpty;
         }
-        url = "<font color='red'>"+tr("unset")+"</font>";
+        if (!defaultValue.isEmpty()) {
+            url = defaultValue;
+        } else {
+            url = "<font color='red'>" + tr("unset") + "</font>";
+        }
         if(empty != NULL) { *empty = true; }
     } else if (url.indexOf(";") != -1) {
         url = tr("the list of files");

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,10 @@ DNASequence* TextDocumentFormat::loadSequence(IOAdapter* io, U2OpStatus& ti) {
 }
 
 FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray& rawData, const GUrl& url) const {
-    QByteArray cuttedRawData = TextUtils::cutByteOrderMarks(rawData);
+    QString error;
+    QByteArray cuttedRawData = TextUtils::cutByteOrderMarks(rawData, error);
+    CHECK(error.isEmpty(), FormatDetection_NotMatched);
+
     FormatCheckResult checkResult = checkRawTextData(cuttedRawData, url);
 
     return checkResult;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@
 
 #include "MSAUtils.h"
 
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -43,10 +42,10 @@ bool MSAUtils::equalsIgnoreGaps(const MultipleAlignmentRow& row, int startPos, c
     int pLen = pat.size();
     int i = startPos;
     int gapsCounter = 0;
-    for (int j = 0; i  < sLen && j < pLen; i++, j++) {
+    for (int j = 0; i < sLen && j < pLen; i++, j++) {
         char c1 = row->charAt(i);
         char c2 = pat[j];
-        while(c1 == U2Msa::GAP_CHAR && ++i < sLen) {
+        while (c1 == U2Msa::GAP_CHAR && ++i < sLen) {
             gapsCounter++;
             c1 = row->charAt(i);
         }
@@ -67,10 +66,10 @@ int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow&
     int pLen = pat.size();
     int i = startPos;
     int similarity = 0;
-    for (int j = 0; i  < sLen && j < pLen; i++, j++) {
+    for (int j = 0; i < sLen && j < pLen; i++, j++) {
         char c1 = row->charAt(i);
         char c2 = pat[j];
-        while(c1 == U2Msa::GAP_CHAR && ++i < sLen) {
+        while (c1 == U2Msa::GAP_CHAR && ++i < sLen) {
             c1 = row->charAt(i);
         }
         if (c1 == c2) {
@@ -95,9 +94,8 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpS
 namespace {
 
 MultipleSequenceAlignmentObject * prepareSequenceHeadersList(const QList<GObject *> &list, bool useGenbankHeader, QList<U2SequenceObject *> &dnaList,
-    QList<QString> &nameList)
-{
-    foreach (GObject *obj, list) {
+    QList<QString> &nameList) {
+    foreach(GObject *obj, list) {
         U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(obj);
         if (dnaObj == NULL) {
             if (MultipleSequenceAlignmentObject *maObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj)) {
@@ -178,7 +176,7 @@ void MSAUtils::updateAlignmentAlphabet(MultipleSequenceAlignment& ma, const DNAA
     } else {
         al = U2AlphabetUtils::deriveCommonAlphabet(al, alphabet);
         if (al == NULL) {
-            if (ma->getAlphabet() == NULL && alphabet == NULL){
+            if (ma->getAlphabet() == NULL && alphabet == NULL) {
                 os.setError(tr("Alphabets of the alignment and the sequence cannot be derived"));
                 return;
             }
@@ -212,6 +210,26 @@ QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool tr
     return lst;
 }
 
+QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps, const QSet<qint64>& rowIds) {
+    QBitArray gapCharMap = TextUtils::createBitMap(U2Msa::GAP_CHAR);
+    int len = ma->getLength();
+    const DNAAlphabet* al = ma->getAlphabet();
+    U2OpStatus2Log os;
+    QList<DNASequence> result;
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+        if (rowIds.contains(row->getRowId())) {
+            DNASequence s(row->getName(), row->toByteArray(os, len), al);
+            if (trimGaps) {
+                int newLen = TextUtils::remove(s.seq.data(), s.length(), gapCharMap);
+                s.seq.resize(newLen);
+            }
+            result << s;
+        }
+    }
+    return result;
+}
+
+
 
 bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2OpStatus& ti) {
     if (ali->getLength() == 0) {
@@ -223,7 +241,7 @@ bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2
         ti.setError(tr("Alignment is empty!"));
         return false;
     }
-    for (int i=0, n = ali->getNumRows(); i < n; i++) {
+    for (int i = 0, n = ali->getNumRows(); i < n; i++) {
         int rowCoreLength = ali->getMsaRow(i)->getCoreLength();
         if (rowCoreLength > coreLen) {
             ti.setError(tr("Sequences in alignment have different sizes!"));
@@ -250,7 +268,7 @@ namespace {
 
 bool listContainsSeqObject(const QList<GObject *> &objs, int &firstSeqObjPos) {
     int objectNumber = 0;
-    foreach (GObject *o, objs) {
+    foreach(GObject *o, objs) {
         if (o->getGObjectType() == GObjectTypes::SEQUENCE) {
             firstSeqObjPos = objectNumber;
             return true;
@@ -302,10 +320,10 @@ MultipleSequenceAlignmentObject * MSAUtils::seqObjs2msaObj(const QList<GObject *
     return MultipleSequenceAlignmentImporter::createAlignment(dbiRef, dstFolder, ma, os, sequencesInDB);
 }
 
-MultipleSequenceAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs, const QVariantMap& hints, U2OpStatus& os){
+MultipleSequenceAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs, const QVariantMap& hints, U2OpStatus& os) {
     CHECK(!docs.isEmpty(), NULL);
     QList<GObject*> objects;
-    foreach(Document* doc, docs){
+    foreach(Document* doc, docs) {
         objects << doc->getObjects();
     }
     return seqObjs2msaObj(objects, hints, os);
@@ -319,7 +337,7 @@ QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignmen
         QString rowName = newMsaRow->getName().replace(" ", "_");
 
         bool rowFound = false;
-        foreach (const MultipleSequenceAlignmentRow &origMsaRow, origMsaRows) {
+        foreach(const MultipleSequenceAlignmentRow &origMsaRow, origMsaRows) {
             if (origMsaRow->getName().replace(" ", "_") == rowName && origMsaRow->getSequence().seq == newMsaRow->getSequence().seq) {
                 rowFound = true;
                 qint64 rowId = origMsaRow->getRowDbInfo().rowId;
@@ -407,12 +425,12 @@ MultipleSequenceAlignment MSAUtils::setUniqueRowNames(const MultipleSequenceAlig
 
 bool MSAUtils::restoreRowNames(MultipleSequenceAlignment &ma, const QStringList &names) {
     int rowNumber = ma->getNumRows();
-    CHECK( rowNumber == names.size(), false);
+    CHECK(rowNumber == names.size(), false);
 
     QStringList oldNames = ma->getRowNames();
     for (int i = 0; i < rowNumber; i++) {
         int idx = oldNames[i].toInt();
-        CHECK( 0 <= idx && idx <= rowNumber, false);
+        CHECK(0 <= idx && idx <= rowNumber, false);
         ma->renameRow(i, names[idx]);
     }
     return true;

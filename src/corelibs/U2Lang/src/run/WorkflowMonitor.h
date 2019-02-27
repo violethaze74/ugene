@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,21 +63,23 @@ namespace Monitor {
     };
     class U2LANG_EXPORT WorkerLogInfo {
     public:
-        WorkerLogInfo(): runNumber(0){}
-        ~WorkerLogInfo();
-        int runNumber;
+        WorkerLogInfo(): workerRunNumber(0){}
+        int workerRunNumber;
         QList<ExternalToolListener*> logs;
     };
 
     class U2LANG_EXPORT LogEntry {
     public:
         LogEntry() :
-            runNumber(0),
-            logType(0) {}
+            actorRunNumber(0),
+            toolRunNumber(0),
+            contentType(0) {}
         QString toolName;
+        QString actorId;
         QString actorName;
-        int runNumber;
-        int logType;
+        int actorRunNumber;
+        int toolRunNumber;
+        int contentType;
         QString lastLine;
     };
 
@@ -118,15 +120,20 @@ public:
     void start();
     void pause();
     void resume();
+    bool isExternalToolScheme() const;
 
     void registerTask(Task *task, const QString &actor);
 
     void setOutputDir(const QString &dir);
     QString outputDir() const;
+    QString getLogsDir() const;
+    QString getLogUrl(const QString &actorId, int actorRunNumber, const QString &toolName, int toolRunNumber, int contentType) const;
 
     void setSaveSchema(const Metadata &meta);
 
-    QList<ExternalToolListener*> createWorkflowListeners(const QString& workerName, int listenersNumber = 1);
+    QList<ExternalToolListener*> createWorkflowListeners(const QString &workerId, const QString& workerName, int listenersNumber = 1);
+    WDListener *getListener(const QString &actorId, int actorRunNumber, const QString &toolName, int toolRunNumber) const;
+    int getNewToolRunNumber(const QString &actorId, int actorRunNumber, const QString &toolName);
 
     void onLogChanged(const WDListener* listener, int messageType, const QString& message);
 
@@ -139,33 +146,35 @@ public slots:
 
 signals:
     void si_firstNotification();
-    void si_newOutputFile(const U2::Workflow::Monitor::FileInfo &info);
-    void si_newNotification(const WorkflowNotification &info);
-    void si_workerInfoChanged(const QString &actor, const U2::Workflow::Monitor::WorkerInfo &info);
+    void si_newOutputFile(const Monitor::FileInfo &info);
+    void si_newNotification(const WorkflowNotification &info, int count);
+    void si_workerInfoChanged(const QString &actor, const Monitor::WorkerInfo &info);
     void si_progressChanged(int progress);
     void si_runStateChanged(bool paused);
     void si_taskStateChanged(Monitor::TaskState state);
     void si_updateProducers();
     void si_report();
     void si_dirSet(const QString &dir);
-    void si_logChanged(U2::Workflow::Monitor::LogEntry entry);
+    void si_logChanged(Monitor::LogEntry entry);
 
 private:
-    Schema *schema;
-    QScopedPointer<Metadata> meta;
-    QPointer<WorkflowAbstractIterationRunner> task;
-    QMap<QString, Actor*> procMap;
-    QMap<Task*, Actor*> taskMap;
-    QList<Task*> errorTasks;
-    QList<Monitor::FileInfo> outputFiles;
-    NotificationsList notifications;
-    QMap<QString, Monitor::WorkerInfo> workers;
-    QList<Monitor::WorkerParamsInfo> workersParamsInfo;
-    QMap<QString, Monitor::WorkerLogInfo> workersLog;
+    Schema                                      *schema;
+    QScopedPointer<Metadata>                    meta;
+    QPointer<WorkflowAbstractIterationRunner>   task;
+    QMap<QString, QPointer<Actor> >             procMap;
+    StrStrMap                                   processNames;
+    QMap<Task*, Actor*>                         taskMap;
+    QList<Task*>                                errorTasks;
+    QList<Monitor::FileInfo>                    outputFiles;
+    NotificationsList                           notifications;
+    QMap<QString, Monitor::WorkerInfo>          workers;
+    QList<Monitor::WorkerParamsInfo>            workersParamsInfo;
+    QMap<QString, Monitor::WorkerLogInfo>       workersLog;
     QMap<QString, QMultiMap<QString, QString> > workersReports;  // workerId<taskName, taskReport> >
-    QString _outputDir;
+    QString                                     _outputDir;
     bool saveSchema;
     bool started;
+    bool externalTools;
 
 protected:
     void setWorkerInfo(const QString &actorId, const Monitor::WorkerInfo &info);
@@ -182,26 +191,37 @@ public:
     static QString toSlashedUrl(const QString &url);
 };
 
-class U2LANG_EXPORT WDListener: public ExternalToolListener{
+class U2LANG_EXPORT WDListener: public ExternalToolListener {
 public:
-    WDListener(WorkflowMonitor* _monitor, const QString& _actorName, int _runNumber);
+    WDListener(WorkflowMonitor *monitor, const QString& actorId, const QString &actorName, int actorRunNumber);
 
-    void addNewLogMessage(const QString& message, int messageType);
+    void addNewLogMessage(const QString& message, int messageType) override;
 
+    void setToolName(const QString& toolName) override;
+
+    const QString& getActorId() const {return actorId;}
     const QString& getActorName() const {return actorName;}
 
-    int getRunNumber() const {return runNumber;}
+    int getActorRunNumber() const {return actorRunNumber;}
+    int getToolRunNumber() const {return toolRunNumber;}
 
-    static QString getStandardOutputLogFileUrl(const QString &actorName, int runNumber);
-    static QString getStandardErrorLogFileUrl(const QString &actorName, int runNumber);
+    QString getStdoutLogFileUrl();
+    QString getStderrLogFileUrl();
 
 private:
+    static QString getStdoutLogFileUrl(const QString &actorName, int actorRunNumber, const QString &toolName, int toolRunNumber);
+    static QString getStderrLogFileUrl(const QString &actorName, int actorRunNumber, const QString &toolName, int toolRunNumber);
+
+    void initLogFile(int contentType);
+
     void writeToFile(int messageType, const QString& message);
     static void writeToFile(QTextStream &logStream, const QString& message);
 
     WorkflowMonitor* monitor;
+    QString actorId;
     QString actorName;
-    int runNumber;
+    int actorRunNumber;
+    int toolRunNumber;
 
     QFile outputLogFile;
     QFile errorLogFile;
@@ -218,5 +238,6 @@ Q_DECLARE_METATYPE( U2::Workflow::Monitor::TaskState )
 Q_DECLARE_METATYPE( U2::Workflow::Monitor::FileInfo )
 Q_DECLARE_METATYPE( U2::Workflow::Monitor::WorkerInfo )
 Q_DECLARE_METATYPE( U2::Workflow::Monitor::LogEntry )
+Q_DECLARE_METATYPE( U2::Workflow::Monitor::WorkerParamsInfo )
 
 #endif // _U2_WORKFLOWMONITOR_H_

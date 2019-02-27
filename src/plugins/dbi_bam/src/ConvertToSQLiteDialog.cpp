@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _b
       sourceUrl(_sourceUrl),
       bamInfo(_bamInfo) {
     ui.setupUi(this);
-    new HelpButton(this, ui.buttonBox, "22055960");
+    new HelpButton(this, ui.buttonBox, "23331107");
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     ui.buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

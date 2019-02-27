@@ -69,6 +69,11 @@ macx {
     QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
 }
 
+linux-g++ {
+    # Original samtools package has multiple warnings like this.
+    QMAKE_CXXFLAGS += -Wno-sign-compare
+}
+
 #unix {
 #    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
 #    INSTALLS += target

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,6 +60,10 @@ public:
     static const QString CLARK_BACTERIAL_VIRAL_DATABASE_PATH;
     static const QString CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID;
     static const QString CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID;
+
+    static const QString METAPHLAN2_DATABASE_PATH;
+    static const QString METAPHLAN2_DATABASE_DATA_ID;
+    static const QString METAPHLAN2_DATABASE_ITEM_ID;
 
     static const QString MINIKRAKEN_4_GB_PATH;
     static const QString MINIKRAKEN_4_GB_DATA_ID;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,6 @@ public:
     void init();
     Task *tick();
     void cleanup();
-    bool isReady() const;
 
 private slots:
     void sl_taskFinished(Task *task);
@@ -46,13 +45,9 @@ private slots:
 private:
     bool isReadyToRun() const;
     bool dataFinished() const;
-    QString checkPairedReads() const;
 
     KrakenClassifyTaskSettings getSettings(U2OpStatus &os);
-    TaxonomyClassificationResult parseReport(const QString &url);
-
     IntegralBus *input;
-//    IntegralBus *pairedInput;
     IntegralBus *output;
 
     bool pairedReadsInput;

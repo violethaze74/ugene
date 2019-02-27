@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ QString FileAndDirectoryUtils::getFormatId(const FormatDetectionResult &r) {
     return "";
 }
 
-QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirMode, const QString &customDir, const QString &workingDir){
+QString FileAndDirectoryUtils::getWorkingDir(const QString &fileUrl, int dirMode, const QString &customDir, const QString &workingDir) {
     QString result;
 
     bool useInternal = false;
@@ -71,8 +71,20 @@ QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirM
         if (!result.endsWith("/")) {
             result += "/";
         }
+        if (dirMode == WORKFLOW_INTERNAL_CUSTOM) {
+            if (!customDir.isEmpty()) {
+                result += customDir;
+            }
+            if (!result.endsWith("/")) {
+                result += "/";
+            }
+        }
     }
+    return result;
+}
 
+QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirMode, const QString &customDir, const QString &workingDir){
+    const QString result = getWorkingDir(fileUrl, dirMode, customDir, workingDir);
     QDir dir(result);
     if (!dir.exists(result)) {
         dir.mkdir(result);

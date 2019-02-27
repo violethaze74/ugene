@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,12 +87,10 @@ Task *TrimmomaticWorker::tick() {
                 continue;
             }
             QPair<QString, QString> paths = getAbsoluteAndCopiedPathFromStep(trimmingStep);
-            QFile destFile(paths.second);
             paths.second = GUrlUtils::rollFileName(paths.second, "_", takenNames);
             takenNames.insert(paths.second);
             tasks.append(new CopyFileTask(paths.first, paths.second));
-            QFileInfo copy(paths.second);
-            copiedAdapters.append(copy.fileName());
+            copiedAdapters.append(paths.second);
         }
         if (!tasks.isEmpty()) {
             Task *copyFiles = new MultiTask(tr("Copy adapters to working folder"), tasks);
@@ -127,6 +125,14 @@ Task *TrimmomaticWorker::tick() {
 
 void TrimmomaticWorker::cleanup() {
 
+}
+
+void TrimmomaticWorker::setDone() {
+    BaseWorker::setDone();
+    foreach (const QString& name, copiedAdapters) {
+        QFile adapter(name);
+        adapter.remove();
+    }
 }
 
 void TrimmomaticWorker::sl_taskFinished(Task *task) {
@@ -217,7 +223,7 @@ TrimmomaticTaskSettings TrimmomaticWorker::getSettings(U2OpStatus &os) {
             int indexOfSecondQuote = step.indexOf("'", indexOfFirstQuote + 1);
             QString firstPart = step.left(indexOfFirstQuote);
             QString secondPart = step.right(step.size() - (indexOfSecondQuote + 1));
-            step = firstPart + copiedAdapters[adaptersCounter++] + secondPart;
+            step = firstPart + QFileInfo(copiedAdapters[adaptersCounter++]).fileName() + secondPart;
         }
     }
 

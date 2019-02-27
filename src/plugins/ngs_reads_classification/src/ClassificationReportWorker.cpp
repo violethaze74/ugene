@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -215,12 +215,15 @@ Task * ClassificationReportWorker::tick() {
         QString outputFileUrl = getValue<QString>(OUT_FILE);
         if (outputFileUrl.isEmpty()) {
             QString reportFilePrefix = getReportFilePrefix(message);
-            outputFileUrl = context->workingDir() +
-                    "/classification_report/" +
-                    reportFilePrefix +
-                    "_" + producerClassifyToolName +
+            outputFileUrl = FileAndDirectoryUtils::createWorkingDir(context->workingDir(),
+                                    FileAndDirectoryUtils::WORKFLOW_INTERNAL_CUSTOM,
+                                    "classification_report/",
+                                    context->workingDir());
+            if (!reportFilePrefix.isEmpty()) {
+                outputFileUrl += reportFilePrefix + "_";
+            }
+            outputFileUrl += producerClassifyToolName +
                     "_report.txt";
-            FileAndDirectoryUtils::createWorkingDir(outputFileUrl, FileAndDirectoryUtils::FILE_DIRECTORY, "", "");
         }
         outputFileUrl = GUrlUtils::rollFileName(QFileInfo(outputFileUrl).absoluteFilePath(), "_");
 

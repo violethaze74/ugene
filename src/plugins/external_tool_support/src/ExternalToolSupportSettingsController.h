@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,10 +28,9 @@
 
 #include <QLineEdit>
 
-namespace U2
-{
+namespace U2 {
 #define ExternalToolSupportSettingsPageId QString("ets")
-struct ExternalToolInfo{
+struct ExternalToolInfo {
     QString name;
     QString path;
     QString description;
@@ -48,7 +47,7 @@ public:
     AppSettingsGUIPageState* getSavedState();
     void saveState(AppSettingsGUIPageState* s);
     AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* state);
-    const QString& getHelpPageId() const {return helpPageId;};
+    const QString& getHelpPageId() const { return helpPageId; };
 private:
     static const QString helpPageId;
 };
@@ -59,7 +58,7 @@ public:
     QList<ExternalTool*>    externalTools;
 };
 
-class ExternalToolSupportSettingsPageWidget: public AppSettingsGUIPageWidget, public Ui_ETSSettingsWidget {
+class ExternalToolSupportSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_ETSSettingsWidget {
     Q_OBJECT
 public:
     ExternalToolSupportSettingsPageWidget(ExternalToolSupportSettingsPageController* ctrl);
@@ -96,6 +95,7 @@ private:
 
     static const QString INSTALLED;
     static const QString NOT_INSTALLED;
+    static const QString ET_DOWNLOAD_INFO;
 };
 
 class PathLineEdit : public QLineEdit {
@@ -114,6 +114,7 @@ private:
     bool    multi;
     QString path;
 };
+
 }//namespace
 
 #endif // _U2_EXTERNAL_TOOL_SUPPORT_SETTINGS_CONTROLLER_H

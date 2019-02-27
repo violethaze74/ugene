@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -182,6 +182,7 @@ bool U2DataPathRegistry::registerEntry(U2DataPath *dp) {
 }
 
 void U2DataPathRegistry::unregisterEntry(const QString &name) {
+    CHECK(registry.contains(name), );
     delete registry.take(name);
 }
 

@@ -48,12 +48,16 @@ workflow "Parallel classification for SE reads"{
         type:trimmomatic;
         name:Trimmomatic;
     }
+    metaphlan2-classify {
+        type:metaphlan2-classify;
+        name:MetaPhlAn2;
+    }
 
     .actor-bindings {
-        clark-classify.out->ensemble-classification.tax-data2
-        kraken-classify.out->ensemble-classification.tax-data1
         get-se-reads-list.out->fastqc-before.in-file
         get-se-reads-list.out->trimmomatic.in
+        kraken-classify.out->ensemble-classification.tax-data1
+        clark-classify.out->ensemble-classification.tax-data2
         diamond-classify.out->ensemble-classification.tax-data3
         ensemble-classification.out->wevote-classify.in
         wevote-classify.out->classification-report.in
@@ -61,6 +65,7 @@ workflow "Parallel classification for SE reads"{
         trimmomatic.out->diamond-classify.in
         trimmomatic.out->clark-classify.in
         trimmomatic.out->kraken-classify.in
+        trimmomatic.out->metaphlan2-classify.in
     }
 
     get-se-reads-list.reads-url1->fastqc-before.in-file.url
@@ -74,31 +79,32 @@ workflow "Parallel classification for SE reads"{
     ensemble-classification.url->wevote-classify.in.url
     wevote-classify.tax-data->classification-report.in.tax-data
     get-se-reads-list.reads-url1->trimmomatic.in.reads-url1
+    trimmomatic.reads-url1->metaphlan2-classify.in.reads-url1
 
     .meta {
         visual {
             clark-classify {
-                pos:"-360 -405";
+                pos:"-345 -390";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:95.5275;
                 out.angle:272.862;
             }
             classification-report {
-                pos:"45 -225";
+                pos:"45 -210";
                 style:simple;
                 bg-color-simple:"141 126 194 255";
                 in.angle:180;
             }
             diamond-classify {
-                pos:"-495 -405";
+                pos:"-480 -390";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:57.0948;
                 out.angle:288.925;
             }
             ensemble-classification {
-                pos:"-330 -225";
+                pos:"-315 -210";
                 style:simple;
                 bg-color-simple:"102 102 102 255";
                 out.angle:356.1;
@@ -107,39 +113,45 @@ workflow "Parallel classification for SE reads"{
                 tax-data3.angle:153.435;
             }
             fastqc-after {
-                pos:"-255 -705";
+                pos:"-240 -690";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:225;
             }
             fastqc-before {
-                pos:"-585 -705";
+                pos:"-570 -690";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:216.87;
             }
             get-se-reads-list {
-                pos:"-720 -600";
+                pos:"-705 -585";
                 style:simple;
                 bg-color-simple:"23 106 239 255";
                 out.angle:360;
             }
             kraken-classify {
-                pos:"-240 -405";
+                pos:"-225 -390";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:90;
                 out.angle:247.964;
             }
+            metaphlan2-classify {
+                pos:"-90 -390";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:144.638;
+            }
             trimmomatic {
-                pos:"-435 -600";
+                pos:"-420 -585";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in.angle:180;
                 out.angle:320.464;
             }
             wevote-classify {
-                pos:"-120 -225";
+                pos:"-105 -210";
                 style:simple;
                 bg-color-simple:"0 106 0 255";
                 in.angle:180;
@@ -173,7 +185,10 @@ workflow "Parallel classification for SE reads"{
                 text-pos:"-45 -43";
             }
             trimmomatic.out->kraken-classify.in {
-                text-pos:"20 2";
+                text-pos:"5 15";
+            }
+            trimmomatic.out->metaphlan2-classify.in {
+                text-pos:"67 9";
             }
             wevote-classify.out->classification-report.in {
                 text-pos:"-45 -43";
@@ -318,6 +333,34 @@ workflow "Parallel classification for SE reads"{
             page {
                 id:6;
                 next:7;
+                title:"MetaPhlAn2 settings"
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        metaphlan2-classify.database {
+                        }
+                        metaphlan2-classify.analysis-type {
+                        }
+                        metaphlan2-classify.tax-level {
+                        }
+                        metaphlan2-classify.normalize-by-size {
+                        }
+                        metaphlan2-classify.presence-threshold {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        metaphlan2-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:7;
+                next:8;
                 title:"WEVOTE settings";
                 parameters-area {
                     group {
@@ -340,7 +383,7 @@ workflow "Parallel classification for SE reads"{
                 }
             }
             page {
-                id:7;
+                id:8;
                 title:"Output data";
                 parameters-area {
                     group {
@@ -354,6 +397,9 @@ workflow "Parallel classification for SE reads"{
                         }
                         diamond-classify.output-url {
                             label:"DIAMOND output file";
+                        }
+                        metaphlan2-classify.output-url {
+                            label:"MetaPhlAn2 output file"
                         }
                         wevote-classify.output-url {
                             label:"WEVOTE output file";

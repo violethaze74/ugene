@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -787,10 +787,9 @@ FASTQIterator::~FASTQIterator(){
 DNASequence FASTQIterator::next(){
     if (hasNext()) {
         kseq_t *realSeq = static_cast<kseq_t *>(seq);
-
-        QString name = QString::fromLatin1(realSeq->name.s);
-        QString comment = QString::fromLatin1(realSeq->comment.s);
-        QString rseq = QString::fromLatin1(realSeq->seq.s);
+        QString name = realSeq->name.l != 0 ? QString::fromLatin1(realSeq->name.s) : "";
+        QString comment = realSeq->comment.l != 0 ? QString::fromLatin1(realSeq->comment.s) : "";
+        QString rseq = realSeq->seq.l != 0 ? QString::fromLatin1(realSeq->seq.s) : "";
         DNAQuality quality = (realSeq->qual.l) ? QString::fromLatin1(realSeq->qual.s).toLatin1()
             : QByteArray("");
         DNASequence res(name, rseq.toLatin1());

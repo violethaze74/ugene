@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -471,6 +471,8 @@ GUI_TEST_CLASS_DEFINITION(test_3073) {
     GTGlobals::sleep();
 
     GTUtilsDocument::loadDocument(os, "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
     CHECK_SET_ERR( GTUtilsDocument::isDocumentLoaded(os, "test_3073.gb"), "Annotation file is not loaded!");
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Close project", GTGlobals::UseMouse);
@@ -481,6 +483,8 @@ GUI_TEST_CLASS_DEFINITION(test_3073) {
     GTGlobals::sleep();
 
     GTUtilsDocument::loadDocument(os, "test_3073.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(200);
     CHECK_SET_ERR( GTUtilsDocument::isDocumentLoaded(os, "human_T1.fa"), "Sequence file is not loaded!");
 
     GTUtilsLog::check(os, l);
@@ -538,12 +542,12 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QFile(sandBoxDir + "murine_3085_1.gb").rename(sandBoxDir + "murine_3085_1_1.gb");
     QFile(testDir + "_common_data/regression/3085/murine_1.gb").copy(sandBoxDir + "murine_3085_1.gb");
-    GTGlobals::sleep(10000);
+    GTGlobals::sleep(6000);
 
     //Expected state: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded1Sv = GTUtilsMdi::activeWindow(os);
-    GTGlobals::sleep(1000);
     CHECK_SET_ERR(sv != reloaded1Sv, "File is not reloaded 1");
+    GTGlobals::sleep(100);
 
     //4. Change the annotations file outside UGENE (e.g. change annotation region).
     //Expected state:: dialog about file modification appeared.
@@ -551,7 +555,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QFile(sandBoxDir + "murine_3085_1.gb").rename(sandBoxDir + "murine_3085_1_2.gb");
     QFile(testDir + "_common_data/regression/3085/murine_2.gb").copy(sandBoxDir + "murine_3085_1.gb");
-    GTGlobals::sleep(10000);
+    GTGlobals::sleep(6000);
 
     //Expected state:: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded2Sv = GTUtilsMdi::activeWindow(os);
@@ -571,7 +575,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QFile(sandBoxDir + "murine_3085_2.gb").rename(sandBoxDir + "murine_3085_2_1.gb");
     QFile(testDir + "_common_data/regression/3085/test_1.gb").copy(sandBoxDir + "murine_3085_2.gb");
-    GTGlobals::sleep(10000);
+    GTGlobals::sleep(6000);
 
     //Expected state: document reloaded without errors/warnings.
     CHECK_SET_ERR(!l.hasError(), "Errors in log");
@@ -1504,22 +1508,31 @@ GUI_TEST_CLASS_DEFINITION(test_3229){
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
     GTUtilsWorkflowDesigner::connect(os, read, write);
+
 //    2. Set input a single file human_T1
     GTUtilsWorkflowDesigner::click(os, read);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
+
 //    3. Set the output path: ../test.fa or ./test.fa Output file
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "./test.fa", GTUtilsWorkflowDesigner::textValue);
+
 //    4. Run the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//    Expected state: there is a single result file on the WD dashboard.
-    //QString text = "test.fa\"
-    HIWebElement table = GTUtilsDashboard::findElement(os, "test.fa", "TABLE");
-    QString s = table.toInnerXml();
-    int i = s.count("test.fa");
 
-    CHECK_SET_ERR( i==3, "unexpected table content: " + s);
+//    Expected state: there is a single result file on the WD dashboard.
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+
+    const int expectedFilesCount = 1;
+    CHECK_SET_ERR(expectedFilesCount == outputFiles.size(),
+                  QString("An unexpected count of output files: expected %1, got %2")
+                  .arg(expectedFilesCount).arg(outputFiles.size()));
+
+    const QString expectedFileName = "test.fa";
+    CHECK_SET_ERR(expectedFileName == outputFiles.first(),
+                  QString("An unexpected result file name: expected '%1', got '%2'")
+                  .arg(expectedFileName).arg(outputFiles.first()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3245) {
@@ -2526,7 +2539,7 @@ GUI_TEST_CLASS_DEFINITION(test_3379) {
     //3.Add more files to the project and open a few more views
     GTFileDialog::openFile(os, testDir + "_common_data/cmdline/", "DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
+    GTGlobals::sleep(1000);
 
     //4. Return to 'abcd.fa' view
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "seq1"));
@@ -3461,7 +3474,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList(), new AllEnzymesSearchScenario()));
     GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
     GTThread::waitForMainThread();
-    GTGlobals::sleep(40000);
+    GTGlobals::sleep(1000);
 
     GTUtilsTaskTreeView::openView(os);
     GTUtilsDialog::waitForDialog(os, new SiteconCustomFiller(os));
@@ -4618,6 +4631,7 @@ GUI_TEST_CLASS_DEFINITION(test_3715) {
     //3. Choose a sample
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTKeyboardDriver::keyClick( 'r', Qt::ControlModifier);
@@ -5652,6 +5666,7 @@ GUI_TEST_CLASS_DEFINITION(test_3886) {
 
     //2. Open 'Extract consensus as sequence' sample.
     GTUtilsWorkflowDesigner::addSample(os, "Extract consensus as sequence");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //3. Show wizard.
     class TestWizardFiller : public Filler {
@@ -6067,29 +6082,6 @@ GUI_TEST_CLASS_DEFINITION(test_3960) {
 
     CHECK_SET_ERR(logTracer.hasError() == false, QString("Error message found: %1, but not expected.").arg(logTracer.getError()));
 
-}
-GUI_TEST_CLASS_DEFINITION(test_3967){
-    GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new SpadesGenomeAssemblyDialogFiller(os, "Paired-end (Interlaced)", QStringList()<<testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq",
-                                                                          QStringList(), sandBoxDir));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads de novo assembly (with SPAdes)...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
-////  1. Open workflow designer
-///
-//    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    QMap<QString, QVariant> map;
-//    map.insert("Left Read URL(s)", testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq");
-//    map.insert("Right Read URL(s)", testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_2.fq");
-//    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Assembly Pipeline", QStringList()<<"Paired tags"));
-//    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Assemble Genomes Wizard", QStringList(), map));
-////  2. Add spades sampale. Use interlaced paired-read mode
-//    GTUtilsWorkflowDesigner::addSample(os, "Assembly with Spades");
-////  3. Run workflow
-//    GTUtilsWorkflowDesigner::runWorkflow(os);
-//    GTUtilsTaskTreeView::waitTaskFinished(os);
-////  4. Expected stat
-//    GTUtilsLog::check(os, l);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3975) {

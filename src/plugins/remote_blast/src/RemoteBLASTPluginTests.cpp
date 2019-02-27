@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -266,6 +266,8 @@ void GTest_RemoteBLAST::cleanup() {
         delete ao;
         ao = NULL;
     }
+
+    XmlTest::cleanup();
 }
 
 }

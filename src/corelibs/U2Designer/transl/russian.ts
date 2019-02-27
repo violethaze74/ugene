@@ -723,12 +723,12 @@ bowtie index file</source>
 <context>
     <name>U2::ComboBoxWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="181"/>
+        <location filename="../src/PropertyWidget.cpp" line="182"/>
         <source>False</source>
         <translation>Ложь</translation>
     </message>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="182"/>
+        <location filename="../src/PropertyWidget.cpp" line="183"/>
         <source>True</source>
         <translation>Истина</translation>
     </message>
@@ -736,7 +736,7 @@ bowtie index file</source>
 <context>
     <name>U2::ComboBoxWithDbUrlWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="342"/>
+        <location filename="../src/PropertyWidget.cpp" line="343"/>
         <source>Add New Connection</source>
         <translation>Добавить новое соединение</translation>
     </message>
@@ -744,12 +744,12 @@ bowtie index file</source>
 <context>
     <name>U2::ComboBoxWithUrlWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="317"/>
+        <location filename="../src/PropertyWidget.cpp" line="318"/>
         <source>Select a folder</source>
         <translation>Укажите папку</translation>
     </message>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="322"/>
+        <location filename="../src/PropertyWidget.cpp" line="323"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
@@ -790,15 +790,19 @@ bowtie index file</source>
         <translation>Параметры</translation>
     </message>
     <message>
+        <location filename="../src/dashboard/Dashboard.cpp" line="191"/>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="251"/>
         <location filename="../src/dashboard/Dashboard.cpp" line="259"/>
         <source>External Tools</source>
         <translation>Внешние инструменты</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="191"/>
         <source>Problems</source>
-        <translation>Проблемы</translation>
+        <translation type="vanished">Проблемы</translation>
     </message>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="201"/>
@@ -990,24 +994,41 @@ bowtie index file</source>
     </message>
 </context>
 <context>
+    <name>U2::ExternalToolsWidget</name>
+    <message>
+        <location filename="../src/dashboard/ExternalToolsWidget.cpp" line="206"/>
+        <source>
+
+The external tools output is too large and can&apos;t be visualized on the dashboard. Find full output in file &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/ExternalToolsWidget.cpp" line="208"/>
+        <source>
+
+The external tools output is too large and can&apos;t be visualized on the dashboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::GroupBox</name>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="906"/>
+        <location filename="../src/wizard/WizardController.cpp" line="907"/>
         <source>Show</source>
         <translation>Показать</translation>
     </message>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="911"/>
+        <location filename="../src/wizard/WizardController.cpp" line="912"/>
         <source>Hide</source>
         <translation>Скрыть</translation>
     </message>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="931"/>
+        <location filename="../src/wizard/WizardController.cpp" line="932"/>
         <source>additional</source>
         <translation>дополнительно</translation>
     </message>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="935"/>
+        <location filename="../src/wizard/WizardController.cpp" line="936"/>
         <source> settings</source>
         <translation> настройки</translation>
     </message>
@@ -1152,6 +1173,39 @@ bowtie index file</source>
     </message>
 </context>
 <context>
+    <name>U2::NotificationsWidget</name>
+    <message>
+        <location filename="../src/dashboard/NotificationsWidget.cpp" line="58"/>
+        <source>Error</source>
+        <translation type="unfinished">Ошибка</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/NotificationsWidget.cpp" line="61"/>
+        <source>Warning</source>
+        <translation type="unfinished">Ожидание</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/NotificationsWidget.cpp" line="64"/>
+        <source>Information</source>
+        <translation type="unfinished">Информация</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/NotificationsWidget.cpp" line="120"/>
+        <source>Type</source>
+        <translation type="unfinished">Тип</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/NotificationsWidget.cpp" line="120"/>
+        <source>Element</source>
+        <translation type="unfinished">Элемент</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/NotificationsWidget.cpp" line="120"/>
+        <source>Message</source>
+        <translation type="unfinished">Сообщение</translation>
+    </message>
+</context>
+<context>
     <name>U2::OutputDirectoryWidget</name>
     <message>
         <location filename="../src/support/OutputDirectoryWidget.cpp" line="71"/>
@@ -1212,34 +1266,28 @@ bowtie index file</source>
 <context>
     <name>U2::ProblemsWidget</name>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="58"/>
         <source>Error</source>
-        <translation>Ошибка</translation>
+        <translation type="vanished">Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="61"/>
         <source>Warning</source>
-        <translation>Ожидание</translation>
+        <translation type="vanished">Ожидание</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="64"/>
         <source>Information</source>
-        <translation>Информация</translation>
+        <translation type="vanished">Информация</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="120"/>
         <source>Element</source>
-        <translation>Элемент</translation>
+        <translation type="vanished">Элемент</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="120"/>
         <source>Message</source>
-        <translation>Сообщение</translation>
+        <translation type="vanished">Сообщение</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="120"/>
         <source>Type</source>
-        <translation>Тип</translation>
+        <translation type="vanished">Тип</translation>
     </message>
 </context>
 <context>
@@ -1522,7 +1570,7 @@ bowtie index file</source>
 <context>
     <name>U2::URLWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="505"/>
+        <location filename="../src/PropertyWidget.cpp" line="506"/>
         <source>add</source>
         <translation>добавить</translation>
     </message>

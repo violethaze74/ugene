@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -190,7 +190,7 @@ void TrimmomaticWorkerFactory::init() {
                              TrimmomaticPrompter::tr("Use multiple threads (-threads)."));
 
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, TrimmomaticTaskSettings::SINGLE_END);
-        Attribute *trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_LIST_TYPE(), Attribute::Required);
+        Attribute *trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_LIST_TYPE(), true);
         Attribute *seOutputUrlAttribute = new Attribute(seOutputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
         Attribute *pairedOutputUrl1Attribute = new Attribute(pairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
         Attribute *pairedOutputUrl2Attribute = new Attribute(pairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);

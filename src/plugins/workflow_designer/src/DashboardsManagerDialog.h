@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DASHBOARDSMANAGERDIALOG_H_
-#define _U2_DASHBOARDSMANAGERDIALOG_H_
+#ifndef _U2_DASHBOARDS_MANAGER_DIALOG_H_
+#define _U2_DASHBOARDS_MANAGER_DIALOG_H_
 
 #include <U2Designer/Dashboard.h>
+#include <U2Designer/DashboardInfo.h>
 
 #include <ui_DashboardsManagerDialog.h>
 
@@ -56,4 +57,4 @@ private:
 
 } // U2
 
-#endif // _U2_DASHBOARDSMANAGERDIALOG_H_
+#endif // _U2_DASHBOARDS_MANAGER_DIALOG_H_

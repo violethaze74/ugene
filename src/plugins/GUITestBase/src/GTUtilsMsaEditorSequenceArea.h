@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -74,6 +74,7 @@ public:
     static void clickToPosition(GUITestOpStatus &os, const QPoint& globalMaPosition);
 
     static void selectSequence(GUITestOpStatus &os, const QString &seqName);
+    static void selectSequence(GUITestOpStatus &os, const int row);
     static bool isSequenceSelected(GUITestOpStatus &os, const QString &seqName);
     static void removeSequence(GUITestOpStatus &os, const QString &sequenceName);
     static int getSelectedSequencesNum(GUITestOpStatus &os);

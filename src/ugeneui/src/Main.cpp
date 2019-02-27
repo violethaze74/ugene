@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,6 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <tchar.h>
+#endif // Q_OS_WIN
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -150,9 +155,33 @@
 #include "shtirlitz/Shtirlitz.h"
 #include "task_view/TaskViewController.h"
 #include "update/UgeneUpdater.h"
-#include "welcome_page/WelcomePageController.h"
+#include "welcome_page/WelcomePageMdiController.h"
 
 using namespace U2;
+
+#ifdef Q_OS_WIN
+typedef BOOL(WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
+
+LPFN_ISWOW64PROCESS fnIsWow64Process;
+
+BOOL IsWow64() {
+    BOOL bIsWow64 = FALSE;
+
+    //IsWow64Process is not available on all supported versions of Windows.
+    //Use GetModuleHandle to get a handle to the DLL that contains the function
+    //and GetProcAddress to get a pointer to the function if available.
+
+    fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(
+        GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
+
+    if (NULL != fnIsWow64Process) {
+        if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64)) {
+            //handle error
+        }
+    }
+    return bIsWow64;
+}
+#endif // Q_OS_WIN
 
 static void registerCoreServices() {
     ServiceRegistry* sr = AppContext::getServiceRegistry();
@@ -214,7 +243,18 @@ static void initLogsCache(LogCacheExt& logsCache, const QStringList& ) {
     }
     LogSettings ls;
     ls.reinitAll();
-    if(ls.toFile){
+
+#ifdef UGENE_FORCE_WRITE_LOG_TO_FILE
+    // It should be defined during the UGENE building.
+    // It is to force log writing for user's personal packages to avoid explaining how to write the log to file
+    // Add to DEFINES when you execute qmake for the project
+    ls.toFile = true;
+    const QString logsDir = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/logs";
+    QDir().mkpath(logsDir);
+    ls.outputFile = logsDir + "/ugene_log_" + QDateTime::currentDateTime().toString("yyyy.MM.dd_hh-mm") + ".txt";
+#endif
+
+    if (ls.toFile) {
         logsCache.setFileOutputEnabled(ls.outputFile);
     }
 }
@@ -468,6 +508,37 @@ int main(int argc, char **argv)
     coreLog.details(UserAppsSettings::tr("UGENE initialization started"));
     GCOUNTER( cvar, tvar, "ugeneui" );
 
+#if defined UGENE_X86_64
+    GCOUNTER(cvar1, tvar1, "Ugene x64");
+#elif defined UGENE_X86
+    GCOUNTER(cvar1, tvar1, "Ugene x86");
+#else
+    GCOUNTER(cvar1, tvar1, "Undetected architecture");
+#endif
+
+#if defined Q_OS_WIN
+    if (IsWow64()) {
+        GCOUNTER(cvar2, tvar2, "Windows x64");
+    } else {
+        GCOUNTER(cvar3, tvar3, "Windows x86");
+    }
+#elif defined Q_OS_MAC
+    GCOUNTER(cvar2, tvar2, "MacOS x64");
+#elif defined Q_OS_LINUX
+    if(QSysInfo::currentCpuArchitecture().contains("64")) {
+        GCOUNTER(cvar2, tvar2, "Linux x64");
+    } else {
+        GCOUNTER(cvar3, tvar3, "Linux x86");
+    }
+#elif defined Q_OS_UNIX
+    if(QSysInfo::currentCpuArchitecture().contains("64")) {
+        GCOUNTER(cvar2, tvar2, "Unix x64");
+    } else {
+        GCOUNTER(cvar3, tvar3, "Unix x86");
+    }
+#else
+    GCOUNTER(cvar2, tvar2, "Undetected OS");
+#endif
     coreLog.trace(QString("UGENE run at dir %1 with parameters %2").arg(AppContext::getWorkingDirectoryPath()).arg(app.arguments().join(" ")));
 
     //print some settings info, can't do it earlier than logging is initialized
@@ -747,7 +818,7 @@ int main(int argc, char **argv)
     QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), splashScreen, SLOT(sl_close()));
     QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), mw, SLOT(sl_show()));
 
-    WelcomePageController *wpc = new WelcomePageController();
+    WelcomePageMdiController *wpc = new WelcomePageMdiController();
     QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), wpc, SLOT(sl_showPage()));
     QObject::connect(mw, SIGNAL(si_showWelcomePage()), wpc, SLOT(sl_showPage()));
     QObject::connect(pli, SIGNAL(si_recentListChanged()), wpc, SLOT(sl_onRecentChanged()));

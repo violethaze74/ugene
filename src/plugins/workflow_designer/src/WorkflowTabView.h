@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include <QToolButton>
 
 #include <U2Designer/Dashboard.h>
+#include <U2Designer/DashboardInfo.h>
 
 #include <U2Lang/WorkflowMonitor.h>
 
@@ -61,11 +62,15 @@ private slots:
     void sl_workflowStateChanged(bool isRunning);
 
 private:
-    int addDashboard(Dashboard *db);
+    enum AddingPolicy {
+        Prepend,
+        Append
+    };
+
+    int addDashboard(Dashboard *db, AddingPolicy addingPolicy = Append);
     QString generateName(const QString &baseName = "") const;
     QStringList allNames() const;
 
-private:
     WorkflowView *parent;
 };
 

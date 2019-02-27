@@ -261,17 +261,17 @@
         <translation>Диагональный</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="286"/>
+        <location filename="../src/DotPlotDialog.cpp" line="291"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="318"/>
+        <location filename="../src/DotPlotDialog.cpp" line="323"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="318"/>
+        <location filename="../src/DotPlotDialog.cpp" line="323"/>
         <source>Error opening files</source>
         <translation>Ошибка открытия файлов</translation>
     </message>

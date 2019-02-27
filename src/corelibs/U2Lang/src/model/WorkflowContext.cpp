@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -194,7 +194,7 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
     if (useOutputDir()) {
         root = WorkflowSettings::getWorkflowOutputDirectory();
     } else {
-        root = QDir::currentPath();
+        root = QProcess().workingDirectory();
     }
 
     // 2. Create folder if it does not exist

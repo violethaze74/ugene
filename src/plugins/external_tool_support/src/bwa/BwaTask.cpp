@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -609,15 +609,15 @@ BwaTask::BwaTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildInd
 }
 
 void BwaTask::prepare() {
+    if (!justBuildIndex) {
+        setUpIndexBuilding(indexSuffixes);
+    }
     QString indexFileName = settings.indexFileName;
+    if (indexFileName.isEmpty()) {
+        indexFileName = settings.refSeqUrl.getURLString();
+    }
 
     if (!settings.prebuiltIndex) {
-        if (!justBuildIndex) {
-            setUpIndexBuilding(indexSuffixes);
-        }
-        if (indexFileName.isEmpty()) {
-            indexFileName = settings.refSeqUrl.getURLString();
-        }
         buildIndexTask = new BwaBuildIndexTask(settings.refSeqUrl.getURLString(), indexFileName, settings);
         buildIndexTask->addListeners(QList <ExternalToolListener*>() << getListener(0));
     }

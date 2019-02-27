@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -197,7 +197,7 @@ void FilterBamWorkerFactory::init() {
         formatMap[BaseDocumentFormats::BAM] = BaseDocumentFormats::BAM;
         formatMap[BaseDocumentFormats::SAM] = BaseDocumentFormats::SAM;
         delegates[OUT_FORMAT_ID] = new ComboBoxDelegate(formatMap);
-        QVariantMap lenMap; lenMap["minimum"] = QVariant(0); lenMap["maximum"] = QVariant(INT_MAX);
+        QVariantMap lenMap; lenMap["minimum"] = QVariant(0); lenMap["maximum"] = QVariant(254);
         delegates[MAPQ_ID] = new SpinBoxDelegate(lenMap);
 
         QVariantMap flags;
@@ -403,7 +403,7 @@ void SamtoolsViewFilterTask::run(){
 
     while(!samtools.process->waitForFinished(1000)){
         if (isCanceled()) {
-            samtools.process->kill();
+            CmdlineTaskRunner::killProcessTree(samtools.process);
             return;
         }
     }

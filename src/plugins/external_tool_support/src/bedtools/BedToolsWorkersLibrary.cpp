@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -862,7 +862,8 @@ Task* BedtoolsIntersectWorker::createTask() {
     settings.entitiesA = getAnnotationsEntityRefFromMessages(storeA, IN_PORT_A_ID);
     settings.entitiesB = getAnnotationsEntityRefFromMessages(storeB, IN_PORT_B_ID);
 
-    Task* t = new BedtoolsIntersectAnnotationsByEntityTask(settings);
+    BedtoolsIntersectAnnotationsByEntityTask* t = new BedtoolsIntersectAnnotationsByEntityTask(settings);
+    t->addListeners(createLogListeners());
     connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
     return t;
 }

@@ -57,19 +57,25 @@ workflow "Parallel classification for PE reads"{
         name:Trimmomatic;
         input-data:paired-end;
     }
+    metaphlan2-classify {
+        type:metaphlan2-classify;
+        name:MetaPhlAn2;
+        input-data:paired-end;
+    }
 
     .actor-bindings {
+        get-pe-reads-list.out->fastqc-before-1.in-file
+        get-pe-reads-list.out->fastqc-before-2.in-file
+        get-pe-reads-list.out->trimmomatic.in
+        kraken-classify.out->ensemble-classification.tax-data1
+        ensemble-classification.out->wevote-classify.in
+        clark-classify.out->ensemble-classification.tax-data2
         wevote-classify.out->classification-report.in
         trimmomatic.out->fastqc-after-1.in-file
         trimmomatic.out->fastqc-after-2.in-file
         trimmomatic.out->kraken-classify.in
         trimmomatic.out->clark-classify.in
-        kraken-classify.out->ensemble-classification.tax-data1
-        clark-classify.out->ensemble-classification.tax-data2
-        ensemble-classification.out->wevote-classify.in
-        get-pe-reads-list.out->fastqc-before-1.in-file
-        get-pe-reads-list.out->fastqc-before-2.in-file
-        get-pe-reads-list.out->trimmomatic.in
+        trimmomatic.out->metaphlan2-classify.in
     }
 
     get-pe-reads-list.reads-url1->fastqc-before-1.in-file.url
@@ -86,77 +92,85 @@ workflow "Parallel classification for PE reads"{
     wevote-classify.tax-data->classification-report.in.tax-data
     get-pe-reads-list.reads-url1->trimmomatic.in.reads-url1
     get-pe-reads-list.reads-url2->trimmomatic.in.reads-url2
+    trimmomatic.reads-url1->metaphlan2-classify.in.reads-url1
+    trimmomatic.reads-url2->metaphlan2-classify.in.reads-url2
 
     .meta {
         visual {
             clark-classify {
-                pos:"-255 -435";
+                pos:"-315 -420";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:99.7276;
                 out.angle:291.541;
             }
             classification-report {
-                pos:"-600 -285";
+                pos:"-585 -270";
                 style:simple;
                 bg-color-simple:"141 126 194 255";
                 in.angle:345.964;
             }
             ensemble-classification {
-                pos:"-165 -285";
+                pos:"-150 -270";
                 style:simple;
                 bg-color-simple:"102 102 102 255";
                 out.angle:186.911;
-                tax-data1.angle:53.427;
+                tax-data1.angle:90;
                 tax-data2.angle:128.66;
                 tax-data3.angle:225;
             }
             fastqc-after-1 {
-                pos:"-165 -705";
+                pos:"-150 -690";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:236.31;
             }
             fastqc-after-2 {
-                pos:"-60 -705";
+                pos:"-45 -690";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:212.471;
             }
             fastqc-before-1 {
-                pos:"-480 -705";
+                pos:"-465 -690";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:233.842;
             }
             fastqc-before-2 {
-                pos:"-375 -705";
+                pos:"-360 -690";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:227.911;
             }
             get-pe-reads-list {
-                pos:"-600 -585";
+                pos:"-585 -570";
                 style:simple;
                 bg-color-simple:"23 106 239 255";
                 out.angle:1.50744;
             }
             kraken-classify {
-                pos:"-105 -435";
+                pos:"-165 -420";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
-                in.angle:90;
-                out.angle:244.179;
+                in.angle:106.699;
+                out.angle:283.241;
+            }
+            metaphlan2-classify {
+                pos:"0 -420";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:126.529;
             }
             trimmomatic {
-                pos:"-330 -585";
+                pos:"-315 -570";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in.angle:180;
                 out.angle:360;
             }
             wevote-classify {
-                pos:"-375 -285";
+                pos:"-360 -270";
                 style:simple;
                 bg-color-simple:"0 106 0 255";
                 in.angle:349.046;
@@ -191,6 +205,9 @@ workflow "Parallel classification for PE reads"{
             }
             trimmomatic.out->kraken-classify.in {
                 text-pos:"-3 7";
+            }
+            trimmomatic.out->metaphlan2-classify.in {
+                text-pos:"-45 -43";
             }
             wevote-classify.out->classification-report.in {
                 text-pos:"-48 4";
@@ -300,6 +317,34 @@ workflow "Parallel classification for PE reads"{
             page {
                 id:5;
                 next:6;
+                title:"MetaPhlAn2 settings"
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        metaphlan2-classify.database {
+                        }
+                        metaphlan2-classify.analysis-type {
+                        }
+                        metaphlan2-classify.tax-level {
+                        }
+                        metaphlan2-classify.normalize-by-size {
+                        }
+                        metaphlan2-classify.presence-threshold {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        metaphlan2-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:6;
+                next:7;
                 title:"WEVOTE settings";
                 parameters-area {
                     group {
@@ -322,7 +367,7 @@ workflow "Parallel classification for PE reads"{
                 }
             }
             page {
-                id:6;
+                id:7;
                 title:"Output data";
                 parameters-area {
                     group {
@@ -333,6 +378,9 @@ workflow "Parallel classification for PE reads"{
                         }
                         clark-classify.output-url {
                             label:"CLARK output file";
+                        }
+                        metaphlan2-classify.output-url {
+                            label:"MetaPhlAn2 output file"
                         }
                         wevote-classify.output-url {
                             label:"WEVOTE output file";

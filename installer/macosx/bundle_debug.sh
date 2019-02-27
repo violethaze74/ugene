@@ -1,9 +1,10 @@
 #!/usr/bin/bash
 PRODUCT_NAME="ugeneuid"
 
-VERSION=`cat ../../src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}'`
+if [ -z ${SOURCE_DIR} ]; then SOURCE_DIR=../..; fi
+
 BUILD_DIR=./debug_bundle
-DEBUG_DIR=../../src/_debug
+DEBUG_DIR=${SOURCE_DIR}/src/_debug
 TARGET_APP_DIR="$BUILD_DIR/${PRODUCT_NAME}.app"
 TARGET_EXE_DIR="${TARGET_APP_DIR}/Contents/MacOS"
 
@@ -100,6 +101,7 @@ add-plugin hmm2
 add-plugin kalign
 add-plugin kraken_support
 add-plugin linkdata_support
+add-plugin metaphlan2_support
 add-plugin ngs_reads_classification
 add-plugin opencl_support
 add-plugin orf_marker

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -117,9 +117,9 @@ qint64 IOAdapter::readLine( char* buff, qint64 maxSize, bool* terminatorFound /*
     return len;
 }
 
-void IOAdapter::cutByteOrderMarks(char* data, qint64& length) {
+void IOAdapter::cutByteOrderMarks(char* data, QString& errorString, qint64& length) {
     QByteArray dataByteArray(data, length);
-    qint64 newCached = TextUtils::cutByteOrderMarks(data, length);
+    qint64 newCached = TextUtils::cutByteOrderMarks(data, errorString, length);
     QByteArray newDatatByteArray(data);
     if (dataByteArray != newDatatByteArray) {
         length = newCached;

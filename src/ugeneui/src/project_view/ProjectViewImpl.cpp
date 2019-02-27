@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -70,6 +70,7 @@
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/ProjectUtils.h>
+#include <U2Gui/ReloadDocumentsTask.h>
 #include <U2Gui/UnloadDocumentTask.h>
 
 #include <U2View/ADVSequenceWidget.h>
@@ -386,8 +387,6 @@ void DocumentUpdater::excludeDocumentsInTasks(const QList<Task*>& tasks, QList<D
 }
 
 void DocumentUpdater::reloadDocuments( QList<Document*> docs2Reload ){
-    Task* reloadTask = new Task(tr("Reload documents task"), TaskFlag_NoRun);
-
     QList<GObjectViewState*> states;
     QList<GObjectViewWindow*> viewWindows;
 
@@ -406,17 +405,9 @@ void DocumentUpdater::reloadDocuments( QList<Document*> docs2Reload ){
             vw->closeView();
         }
 
-        QString unloadErr = UnloadDocumentTask::checkSafeUnload(doc);
-        if (!unloadErr.isEmpty()) {
-            QMessageBox::warning(QApplication::activeWindow(),
-                U2_APP_TITLE,
-                tr("Unable to unload '%1'. Unload error: '%2'").arg(doc->getName(), unloadErr));
-            doc->setLastUpdateTime();
-            continue;
-        }
-        reloadTask->addSubTask(new ReloadDocumentTask(doc));
     }
 
+    ReloadDocumentsTask* reloadTask = new ReloadDocumentsTask(docs2Reload);
     Task* updateViewTask = new Task(tr("Restore state task"), TaskFlag_NoRun);
 
     foreach(GObjectViewState* state, states) {

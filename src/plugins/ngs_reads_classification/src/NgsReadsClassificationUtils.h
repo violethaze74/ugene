@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,8 +30,17 @@ namespace U2 {
 
 class U2NGS_READS_CLASSIFICATION_EXPORT NgsReadsClassificationUtils {
 public:
-    static QString getClassificationFileName(const QString &sourceFileUrl, const QString &toolName, const QString &extension, bool truncate);
+    static QString getBaseFileNameWithSuffixes(const QString &sourceFileUrl,
+                                           const QStringList &suffixes,
+                                           const QString &extension,
+                                           bool truncate);
+    static QString getBaseFileNameWithPrefixes(const QString &sourceFileUrl,
+                                           const QStringList &prefixes,
+                                           const QString &extension,
+                                           bool truncate);
     static int countClassified(const LocalWorkflow::TaxonomyClassificationResult &classification);
+
+    static const QString CLASSIFICATION_SUFFIX;
 };
 
 }   // namespace U2

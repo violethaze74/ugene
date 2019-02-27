@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ class QMdiArea;
 class QToolBar;
 
 #if defined(Q_OS_MACX) && !defined(_DEBUG)
-//#define _INSTALL_TO_PATH_ACTION
+#define _INSTALL_TO_PATH_ACTION
 #endif
 
 namespace U2 {

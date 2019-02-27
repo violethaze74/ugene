@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,6 +52,7 @@ public:
     static const QString USAGE;
     static const QString TMP_DIR;
     static const QString SESSION_DB;
+    static const QString USE_SAME_INI_FOR_TESTS;
 
 public:
     // initialize help for core cmdline options

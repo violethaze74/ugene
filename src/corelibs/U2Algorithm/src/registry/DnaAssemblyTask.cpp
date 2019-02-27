@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,10 +42,6 @@ DnaAssemblyToReferenceTask::DnaAssemblyToReferenceTask(const DnaAssemblyToRefTas
 }
 
 void DnaAssemblyToReferenceTask::setUpIndexBuilding(const QStringList &indexSuffixes) {
-    if (settings.prebuiltIndex) {
-        return;
-    }
-
     if (isIndexUrl(settings.refSeqUrl.getURLString(), indexSuffixes)) {
         settings.prebuiltIndex = true;
         settings.refSeqUrl = getBaseUrl(settings.refSeqUrl.getURLString(), indexSuffixes);

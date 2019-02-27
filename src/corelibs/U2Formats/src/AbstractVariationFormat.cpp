@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,21 +68,20 @@ AbstractVariationFormat::AbstractVariationFormat(QObject *p, const QStringList &
 }
 
 namespace {
-    const int LOCAL_READ_BUFF_SIZE = 10 * 1024; // 10 Kb
+const int LOCAL_READ_BUFF_SIZE = 10 * 1024; // 10 Kb
 
-    inline QByteArray readLine(IOAdapter *io, char *buffer, int bufferSize) {
-        QByteArray result;
-        bool terminatorFound = false;
-        do {
-            qint64 length = io->readLine(buffer, bufferSize, &terminatorFound);
-            CHECK(-1 != length, result);
-            result += QByteArray(buffer, length);
-        } while (!terminatorFound && !io->isEof());
-        return result;
-    }
+inline QByteArray readLine(IOAdapter *io, char *buffer, int bufferSize, U2OpStatus& os) {
+    QByteArray result;
+    bool terminatorFound = false;
+    do {
+        qint64 length = io->readLine(buffer, bufferSize, &terminatorFound);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), QByteArray());
+        CHECK(-1 != length, result);
+
+        result += QByteArray(buffer, length);
+    } while (!terminatorFound && !io->isEof());
+    return result;
 }
-
-namespace {
 
 void addStringAttribute(U2OpStatus &os, U2Dbi *dbi, const U2VariantTrack &variantTrack, const QString &name, const QString &value) {
     CHECK(!value.isEmpty(), );
@@ -119,7 +118,9 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRe
     int lineNumber = 0;
     do {
         os.setProgress(io->getProgress());
-        QString line = readLine(io, buff, LOCAL_READ_BUFF_SIZE);
+        QString line = readLine(io, buff, LOCAL_READ_BUFF_SIZE, os);
+        CHECK_OP(os, NULL);
+
         lineNumber++;
         if (line.isEmpty()) {
             continue;
@@ -214,6 +215,7 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRe
 
 
     } while (!io->isEof());
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
 
     GAutoDeleteList<GObject> objects;
     QSet<QString> names;

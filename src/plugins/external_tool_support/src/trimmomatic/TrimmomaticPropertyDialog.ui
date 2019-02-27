@@ -55,6 +55,9 @@
                <height>119</height>
               </size>
              </property>
+             <property name="movement">
+              <enum>QListView::Free</enum>
+             </property>
             </widget>
            </item>
            <item>
@@ -66,7 +69,7 @@
               <enum>QLayout::SetFixedSize</enum>
              </property>
              <item>
-              <widget class="QPushButton" name="buttonAdd">
+              <widget class="QToolButton" name="buttonAdd">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -104,6 +107,9 @@
                 <iconset resource="../../external_tool_support.qrc">
                  <normaloff>:/external_tool_support/images/add.png</normaloff>:/external_tool_support/images/add.png</iconset>
                </property>
+               <property name="popupMode">
+                <enum>QToolButton::InstantPopup</enum>
+               </property>
               </widget>
              </item>
              <item>
@@ -123,7 +129,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="buttonUp">
+              <widget class="QToolButton" name="buttonUp">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -183,7 +189,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="buttonDown">
+              <widget class="QToolButton" name="buttonDown">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -240,7 +246,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="buttonRemove">
+              <widget class="QToolButton" name="buttonRemove">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -317,6 +323,20 @@
              <width>0</width>
              <height>160</height>
             </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QGroupBox {
+    font: bold;
+    border: 1px solid silver;
+    border-radius: 6px;
+    margin-top: 6px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 7px;
+    padding: 0px 5px 0px 5px;
+}</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <property name="spacing">

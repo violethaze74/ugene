@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -193,6 +193,7 @@ private:
 
     void annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotations, const U2Region selectedRegion = U2Region());
     void annotationDoubleClicked(AVAnnotationItem* item, const U2Region& selectedRegion, const int numOfClickedRegion = -1);
+    void clearSelectedNotAnnotations();
 
     AnnotationsTreeWidget* tree;
 

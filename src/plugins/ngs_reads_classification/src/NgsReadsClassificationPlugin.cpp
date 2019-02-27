@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,6 +56,10 @@ const QString NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_PATH 
 const QString NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID = "clark_bacterial_viral_database";
 const QString NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID = "bacterial_viral_database";
 
+const QString NgsReadsClassificationPlugin::METAPHLAN2_DATABASE_PATH = "ngs_classification/metaphlan2/mpa_v20_m200";
+const QString NgsReadsClassificationPlugin::METAPHLAN2_DATABASE_DATA_ID = "metaphlan2_mpa_v20_m200";
+const QString NgsReadsClassificationPlugin::METAPHLAN2_DATABASE_ITEM_ID = "mpa_v20_m200";
+
 const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_PATH = "ngs_classification/kraken/minikraken_4gb";
 const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_DATA_ID = "minikraken_4gb";
 const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ITEM_ID = "minikraken_4gb";
@@ -100,6 +104,7 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
     registerData(TAXONOMY_DATA_ID, TAXONOMY_PATH, tr("NCBI taxonomy classification data"), false);
     registerData(CLARK_VIRAL_DATABASE_DATA_ID, CLARK_VIRAL_DATABASE_PATH, tr("CLARK viral database"), true);
     registerData(CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID, CLARK_BACTERIAL_VIRAL_DATABASE_PATH, tr("CLARK bacterial and viral database"), true);
+    registerData(METAPHLAN2_DATABASE_DATA_ID, METAPHLAN2_DATABASE_PATH, tr("MetaPhlAn2 database"), true);
     registerData(MINIKRAKEN_4_GB_DATA_ID, MINIKRAKEN_4_GB_PATH, tr("Minikraken 4Gb database"), true);
     registerData(DIAMOND_UNIPROT_50_DATABASE_DATA_ID, DIAMOND_UNIPROT_50_DATABASE_PATH, tr("DIAMOND database built from UniProt50"));
     registerData(DIAMOND_UNIPROT_90_DATABASE_DATA_ID, DIAMOND_UNIPROT_90_DATABASE_PATH, tr("DIAMOND database built from UniProt90"));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,8 @@
 #define _U2_DIAMOND_CLASSIFY_TASK_H_
 
 #include <U2Core/ExternalToolRunTask.h>
+
+#include "../ngs_reads_classification/src/TaxonomySupport.h"
 
 namespace U2 {
 
@@ -69,16 +71,17 @@ public:
     DiamondClassifyTask(const DiamondClassifyTaskSettings &settings);
 
     const QString &getClassificationUrl() const;
+    const LocalWorkflow::TaxonomyClassificationResult &getParsedReport() const;
 
 private:
     void prepare();
-
+    void run() override;
     void checkSettings();
     QStringList getArguments() const;
 
     const DiamondClassifyTaskSettings settings;
-
     static const QString TAXONOMIC_CLASSIFICATION_OUTPUT_FORMAT;
+    LocalWorkflow::TaxonomyClassificationResult parsedReport;
 };
 
 }   // namespace U2

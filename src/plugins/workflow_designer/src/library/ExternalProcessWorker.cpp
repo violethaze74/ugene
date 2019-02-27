@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,22 +21,23 @@
 
 #include "ExternalProcessWorker.h"
 
-#include <U2Core/AppSettings.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/FailTask.h>
-#include <U2Core/UserApplicationsSettings.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/AnnotationTableObject.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/CmdlineTaskRunner.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/GObjectRelationRoles.h>
+#include <U2Core/IOAdapter.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/TextObject.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceUtils.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
@@ -601,7 +602,7 @@ void LaunchExternalToolTask::run() {
 
     while(!externalProcess->waitForFinished(1000)) {
         if(isCanceled()) {
-            externalProcess->kill();
+            CmdlineTaskRunner::killProcessTree(externalProcess);
         }
     }
 }

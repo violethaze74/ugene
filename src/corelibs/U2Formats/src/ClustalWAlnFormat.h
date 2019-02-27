@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,6 +55,11 @@ private:
     void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& fs, U2OpStatus& ti);
 
     QString formatName;
+
+    static const int MAX_LINE_LEN;
+    static const int MAX_NAME_LEN;
+    static const int MAX_SEQ_LEN;
+    static const int SEQ_ALIGNMENT;
 };
 
 }//namespace

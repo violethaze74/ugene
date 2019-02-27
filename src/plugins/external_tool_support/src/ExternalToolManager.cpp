@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,21 +35,19 @@
 namespace U2 {
 
 ExternalToolManagerImpl::ExternalToolManagerImpl() :
-    startupChecks(true)
-{
+startupChecks(true) {
     etRegistry = AppContext::getExternalToolRegistry();
 }
 
-ExternalToolManagerImpl::~ExternalToolManagerImpl() {
-}
+ExternalToolManagerImpl::~ExternalToolManagerImpl() {}
 
 void ExternalToolManagerImpl::start() {
     if (AppContext::getPluginSupport()->isAllPluginsLoaded()) {
         sl_pluginsLoaded();
     } else {
         connect(AppContext::getPluginSupport(),
-                SIGNAL(si_allStartUpPluginsLoaded()),
-                SLOT(sl_pluginsLoaded()));
+            SIGNAL(si_allStartUpPluginsLoaded()),
+            SLOT(sl_pluginsLoaded()));
     }
 }
 
@@ -66,7 +64,7 @@ void ExternalToolManagerImpl::innerStart() {
 
     QList<ExternalTool*> toolsList = etRegistry->getAllEntries();
     StrStrMap toolPaths;
-    foreach (ExternalTool* tool, toolsList) {
+    foreach(ExternalTool* tool, toolsList) {
         SAFE_POINT(tool, "Tool is NULL", );
         QString toolPath = addTool(tool);
         if (!toolPath.isEmpty()) {
@@ -87,7 +85,7 @@ void ExternalToolManagerImpl::checkStartupTasksState() {
 
 void ExternalToolManagerImpl::stop() {
     CHECK(etRegistry, );
-    foreach (ExternalTool* tool, etRegistry->getAllEntries()) {
+    foreach(ExternalTool* tool, etRegistry->getAllEntries()) {
         disconnect(tool, NULL, this, NULL);
     }
 }
@@ -104,7 +102,7 @@ void ExternalToolManagerImpl::check(const QStringList& toolNames, const StrStrMa
 
     QList<Task*> taskList;
 
-    foreach (const QString& toolName, toolNames) {
+    foreach(const QString& toolName, toolNames) {
         QString toolPath = toolPaths.value(toolName);
         if (dependenciesAreOk(toolName) && !toolPath.isEmpty()) {
             ExternalToolValidateTask* task = new ExternalToolJustValidateTask(toolName, toolPath);
@@ -144,7 +142,8 @@ void ExternalToolManagerImpl::validate(const QStringList& toolNames, ExternalToo
 void ExternalToolManagerImpl::validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
     SAFE_POINT(etRegistry, "The external tool registry is NULL", );
 
-    foreach (const QString& toolName, toolNames) {
+    foreach(const QString& toolName, toolNames) {
+        etRegistry->getByName(toolName)->setAdditionalErrorMessage(QString());
         if (dependenciesAreOk(toolName)) {
             validateList << toolName;
         } else {
@@ -183,12 +182,12 @@ QString ExternalToolManagerImpl::addTool(ExternalTool* tool) {
     }
 
     connect(tool,
-            SIGNAL(si_toolValidationStatusChanged(bool)),
-            SLOT(sl_toolValidationStatusChanged(bool)));
+        SIGNAL(si_toolValidationStatusChanged(bool)),
+        SLOT(sl_toolValidationStatusChanged(bool)));
 
     QStringList toolDependencies = tool->getDependencies();
     if (!toolDependencies.isEmpty()) {
-        foreach (const QString& dependency, toolDependencies) {
+        foreach(const QString& dependency, toolDependencies) {
             dependencies.insertMulti(dependency, tool->getName());
         }
 
@@ -225,7 +224,7 @@ void ExternalToolManagerImpl::sl_checkTaskStateChanged() {
             listeners.remove(masterTask);
 
             QList<Task*> subTasks = masterTask->getSubtasks();
-            foreach (Task* subTask, subTasks) {
+            foreach(Task* subTask, subTasks) {
                 ExternalToolValidateTask* task = qobject_cast<ExternalToolValidateTask*>(subTask);
                 SAFE_POINT(task, "Unexpected task", );
 
@@ -253,7 +252,7 @@ void ExternalToolManagerImpl::sl_validationTaskStateChanged() {
         if (tool->isModule()) {
             QStringList toolDependencies = tool->getDependencies();
             SAFE_POINT(!toolDependencies.isEmpty(), QString("Tool's dependencies list is unexpectedly empty: "
-                                                            "a master tool for the module '%1' is not defined").arg(tool->getName()), );
+                "a master tool for the module '%1' is not defined").arg(tool->getName()), );
             QString masterName = toolDependencies.first();
             ExternalTool* masterTool = etRegistry->getByName(masterName);
             SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(masterName), );
@@ -265,6 +264,7 @@ void ExternalToolManagerImpl::sl_validationTaskStateChanged() {
         tool->setValid(task->isValidTool());
 
         searchTools();
+        ExternalToolSupportSettings::setExternalTools();
     }
 
     checkStartupTasksState();
@@ -300,7 +300,7 @@ void ExternalToolManagerImpl::sl_toolValidationStatusChanged(bool isValid) {
     }
 
     StrStrMap toolPaths;
-    foreach (const QString& vassalName, dependencies.values(tool->getName())) {
+    foreach(const QString& vassalName, dependencies.values(tool->getName())) {
         ExternalTool* vassalTool = etRegistry->getByName(vassalName);
         SAFE_POINT(vassalTool, QString("An external tool '%1' isn't found in the registry").arg(vassalName), );
 
@@ -310,8 +310,8 @@ void ExternalToolManagerImpl::sl_toolValidationStatusChanged(bool isValid) {
         }
 
         if (isValid &&
-                dependenciesAreOk(vassalName) &&
-                ValidationIsInProcess != toolStates.value(vassalName, NotDefined)) {
+            dependenciesAreOk(vassalName) &&
+            ValidationIsInProcess != toolStates.value(vassalName, NotDefined)) {
             validateList << vassalName;
             searchList.removeAll(vassalName);
         } else if (ValidationIsInProcess != toolStates.value(vassalName, NotDefined)) {
@@ -329,7 +329,7 @@ void ExternalToolManagerImpl::sl_pluginsLoaded() {
 
 bool ExternalToolManagerImpl::dependenciesAreOk(const QString& toolName) {
     bool result = true;
-    foreach (const QString& masterName, dependencies.keys(toolName)) {
+    foreach(const QString& masterName, dependencies.keys(toolName)) {
         result &= (Valid == toolStates.value(masterName, NotDefined));
     }
     return result;
@@ -337,8 +337,7 @@ bool ExternalToolManagerImpl::dependenciesAreOk(const QString& toolName) {
 
 void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
     QList<Task*> taskList;
-
-    foreach (QString toolName, validateList) {
+    foreach(QString toolName, validateList) {
         validateList.removeAll(toolName);
         toolStates.insert(toolName, ValidationIsInProcess);
 
@@ -364,8 +363,8 @@ void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, External
             task = new ExternalToolSearchAndValidateTask(toolName);
         }
         connect(task,
-                SIGNAL(si_stateChanged()),
-                SLOT(sl_validationTaskStateChanged()));
+            SIGNAL(si_stateChanged()),
+            SLOT(sl_validationTaskStateChanged()));
         taskList << task;
     }
 
@@ -379,7 +378,7 @@ void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, External
         TaskScheduler* scheduler = AppContext::getTaskScheduler();
         SAFE_POINT(scheduler, "Task scheduler is NULL", );
         scheduler->registerTopLevelTask(validationTask);
-    } else  {
+    } else {
         if (listener) {
             listener->validationFinished();
         }
@@ -391,13 +390,13 @@ void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, External
 void ExternalToolManagerImpl::searchTools() {
     QList<Task*> taskList;
 
-    foreach (const QString& toolName, searchList) {
+    foreach(const QString& toolName, searchList) {
         searchList.removeAll(toolName);
         toolStates.insert(toolName, SearchingIsInProcess);
         ExternalToolSearchTask* task = new ExternalToolSearchTask(toolName);
         connect(task,
-                SIGNAL(si_stateChanged()),
-                SLOT(sl_searchTaskStateChanged()));
+            SIGNAL(si_stateChanged()),
+            SLOT(sl_searchTaskStateChanged()));
         taskList << task;
     }
 

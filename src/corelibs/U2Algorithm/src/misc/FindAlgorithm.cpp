@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -483,17 +483,14 @@ static void regExpSearch(   const QString &refSequence,
     if (cyclePoint == -1) {
         cyclePoint = sequenceRange.endPos();
     }
-
+    int percentsCompletedOnStart = percentsCompleted;
     int foundStartPos = 0;
-    while ( 0 == stopFlag
-        && -1 != ( foundStartPos = regExp.indexIn( refSequence, foundStartPos ) ) )
-    {
-        // remember that there are a few iterations, so a single one yields
-        // 1 / @conEnd of total progress
-        percentsCompleted = ( 100 * foundStartPos * ( currentStrand + 1 ) )
-            / ( sequenceRange.length * totalStrandCount );
+    while (stopFlag == 0 && (foundStartPos = regExp.indexIn(refSequence, foundStartPos)) != -1 ) {
+        // remember that there are a few iterations, so a single one yields (1 / @conEnd) of total progress
+        int percentsCompletedInner = (100 * foundStartPos * (currentStrand + 1)) / (sequenceRange.length * totalStrandCount);
+        percentsCompleted = qMin(percentsCompletedOnStart + percentsCompletedInner, 100);
 
-        const int foundLength = regExp.matchedLength( );
+        int foundLength = regExp.matchedLength();
         if ( maxResultLen >= foundLength ) {
             int resultStartPos = refSeqIsAminoTranslation ? foundStartPos * 3 : foundStartPos;
             if (resultStartPos < cyclePoint || sequenceRange.startPos != 0) {
@@ -518,12 +515,12 @@ static void regExpSearch(   const QString &refSequence,
             if ( maxResultLen >= foundSubstrLength ) {
                 int resultStartPos = refSeqIsAminoTranslation ? foundStartPos * 3 : foundStartPos;
                 if (resultStartPos < cyclePoint || sequenceRange.startPos != 0) {
-                    const int resultLen = refSeqIsAminoTranslation ? foundSubstrLength * 3 : foundSubstrLength;
+                    int resultLen = refSeqIsAminoTranslation ? foundSubstrLength * 3 : foundSubstrLength;
                     prepareResultPosition( sequenceRange.startPos + (refSeqIsAminoTranslation * aminoFrameNumber),
                                            sequenceRange.length - (refSeqIsAminoTranslation * aminoFrameNumber),
                                            resultStartPos,
                                            resultLen,
-                                           searchStrand );
+                                           searchStrand);
                     resultStartPos -= (searchStrand.isCompementary() && refSeqIsAminoTranslation ? tailCutted : 0);
 
                     sendResultToListener( resultStartPos, resultLen, searchStrand, rl );

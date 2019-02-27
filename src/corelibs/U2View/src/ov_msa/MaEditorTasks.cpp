@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -284,6 +284,10 @@ ExportMaConsensusTask::ExportMaConsensusTask(const ExportMaConsensusTaskSettings
 void ExportMaConsensusTask::prepare(){
     extractConsensus = new ExtractConsensusTask(settings.keepGaps, settings.ma, settings.algorithm);
     addSubTask(extractConsensus);
+}
+
+const QString& ExportMaConsensusTask::getConsensusUrl() const {
+    return settings.url;
 }
 
 QList<Task*> ExportMaConsensusTask::onSubTaskFinished( Task* subTask ){

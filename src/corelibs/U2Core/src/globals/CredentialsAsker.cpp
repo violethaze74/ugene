@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  * UGENE - Integrated Bioinformatics Tools.
  *

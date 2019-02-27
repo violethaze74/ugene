@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1467,7 +1467,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
 
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
     GTWidget::click(os, editButton);
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/PBR322.gb");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1749,8 +1749,8 @@ GUI_TEST_CLASS_DEFINITION(test_1124){
             //    2. Hover the {Input files (long DNA reads to assembly)} field with mouse and wait the tooltip appeares.
             QListWidget* seqList = GTWidget::findExactWidget<QListWidget*>(os, "seqList", dialog);
             GTWidget::click(os, seqList);
-            GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(20,20));
-            GTGlobals::sleep(3000);
+            GTGlobals::sleep(300);
+            GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(10,10));
             //    Expected state: tooltip is presented.
             GTUtilsToolTip::checkExistingToolTip(os, "The quality scores for FASTA sequences can be provided in an additional file");
 
@@ -1774,8 +1774,9 @@ GUI_TEST_CLASS_DEFINITION(test_1133) {
     QString patttern = "ATGAA    GGAAAAA\nA T G CTA AG GG\nCAGC    CAGAG AGAGGTCA GGT";
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, patttern));
     GTWidget::click(os, GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find pattern [Smith-Waterman]"));
-    GTGlobals::sleep(500);
+    GTGlobals::sleep();
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTGlobals::sleep(100);
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 }
@@ -2498,7 +2499,7 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTGlobals::sleep(1500);
 //    Excepted state: new *.aln documents (with specified names) should be created and contain founded subsequences for
 //    one pair in each [m]object. Few documents must be loaded to current project, others will stay unloaded
 //    7. Check that numeration of founded sequences starting from 1
@@ -2881,6 +2882,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
 
     // Excepted state : Input "Annotations" slot of WS is not empty and contains annotations from ORF Finder
     GTUtilsWorkflowDesigner::click(os, "Write Sequence");
+    GTUtilsWorkflowDesigner::changeInputPortBoxHeight(os, 100);
 
     QTableWidget* tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");
@@ -3062,7 +3064,11 @@ GUI_TEST_CLASS_DEFINITION(test_1263){
 GUI_TEST_CLASS_DEFINITION(test_1266) {
 //    1. Open "Call variants" sample pipleine from the "NGS" category
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     class custom : public CustomScenario {
     public:
@@ -3077,11 +3083,13 @@ GUI_TEST_CLASS_DEFINITION(test_1266) {
             CHECK_SET_ERR(s.contains("<html>Disable"), "unexpected tooltip: " + s);
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+            GTGlobals::sleep();
         }
     };
 //    2. Run its wizzard
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new custom()));
     GTWidget::click(os, GTAction::button(os, "Show wizard"));
+    GTGlobals::sleep();
 //    Expected state: all parameters of the wizzard have tooltips with their descriptions
 }
 
@@ -3211,15 +3219,20 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
  *  Expected state: Popup menu should appear, contains bold "Additional" item menu
  */
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsWorkflowDesigner::addSample(os, "Find substrings in sequences");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::click(os, "Find Substrings");
+    GTGlobals::sleep();
 
     QTableWidget* tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");
 
     GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by Read Sequence)", GTUtilsWorkflowDesigner::comboValue, tw);
+    GTGlobals::sleep(1000);
 
     int row = -1;
     for(int i = 0; i<tw->rowCount(); i++){
@@ -3233,7 +3246,8 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
     QPoint globalP = tw->viewport()->mapToGlobal(rect.center());
     GTMouseDriver::moveTo(globalP);
     GTMouseDriver::click();
-    GTGlobals::sleep(500);
+    GTGlobals::sleep();
+
     QComboBox* box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
 
     CHECK_SET_ERR(box->itemText(3) != "Additional", "Additional item not found");
@@ -3686,11 +3700,9 @@ public:
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
     };
+    GTUtilsDialog::waitForDialog(os, new CallVariantsWizardFiller(os));
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
-
-    GTUtilsDialog::waitForDialog(os, new CallVariantsWizardFiller(os));
-    GTWidget::click(os, GTAction::button(os, "Show wizard"));
 }
 
 GUI_TEST_CLASS_DEFINITION( test_1337 ) {
@@ -4112,7 +4124,7 @@ GUI_TEST_CLASS_DEFINITION(test_1393) {
     // are the same as if you open the *.aln file in text editor.
     GTUtilsProjectTreeView::checkItem(os, "test_1393.aln");
 
-    const QString referenceMsaContent = getFileContent(testDir + "_common_data/clustal/test_1393.aln");
+    const QString referenceMsaContent = getFileContent(testDir + "_common_data/regression/1393/test_1393.aln");
     const QString resultMsaContent = getFileContent(sandBoxDir + "test_1393.aln");
     CHECK_SET_ERR(!referenceMsaContent.isEmpty() && referenceMsaContent == resultMsaContent, "Unexpected MSA content");
 }
@@ -4592,7 +4604,7 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
     GTGlobals::sleep();
     //3. Close WD
     GTUtilsMdi::click( os, GTGlobals::Close );
-    GTMouseDriver::click();
+    //GTMouseDriver::click();
     GTGlobals::sleep();
     //4. Reopen the scheme's file
     //   Expected result: scheme is loaded completely without any error messages in log
@@ -5169,7 +5181,7 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
     GTUtilsWorkflowDesigner::setTableValue(os, "Source URL", "Source URL (by Read Sequence 1)", GTUtilsWorkflowDesigner::comboValue, w);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(5000);
 
     CHECK_SET_ERR(l.hasError(), "No errors in the log");
 }
@@ -5394,24 +5406,6 @@ GUI_TEST_CLASS_DEFINITION(test_1531) {
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::Statistics);
     warningMessage = GTWidget::findWidget(os, "refSeqWarning");
     CHECK_SET_ERR(warningMessage->isVisible(), QString("Reference sequence warning must be visible"));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_1533){
-//    1. Open an alignment in ClustalW format (e.g. "test.aln")
-    GTFile::copy(os, dataDir+"samples/CLUSTALW/COI.aln", testDir + "_common_data/scenarios/sandbox/COI.aln");
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-//    2. Outside UGENE create a FASTA file with the same name as the alignment file (e.g. "test.aln", even if it is FASTA)
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesAll));
-//    3. Copy the second file to replace the first one outside UGENE
-    QFile f(testDir + "_common_data/scenarios/sandbox/COI.aln");
-    f.remove();
-    //CHECK_SET_ERR(f.remove(), "file not removed");
-    GTFile::copy(os, dataDir+"samples/FASTA/human_T1.fa", testDir + "_common_data/scenarios/sandbox/COI.aln");
-    GTGlobals::sleep(10000);
-//    4. Confirm to reload the file in UGENE
-//    => Unloaded file is shown, "Alignment is empty" error occurs when it is opened. This error doesn't appear if the file is just opened in UGENE.
-    GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1537){
@@ -7501,7 +7495,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_2){
 
 GUI_TEST_CLASS_DEFINITION(test_1714){
 //    1. Open the "external tools" configuration window using Settings/Preferences menu
-//    2. Select path for external tools package (if not set). External tools package can be downloaded from http://ugene.net/external.html
+//    2. Select path for external tools package (if not set).
 //    3. Deselect all Cistrome tools
 //    4. Deselect python external tool
 //    Expected state: the python tool is deselected. UGENE doesn't hangs up (or crashes)
@@ -7658,7 +7652,7 @@ GUI_TEST_CLASS_DEFINITION(test_1733){
 GUI_TEST_CLASS_DEFINITION(test_1734){
 //    1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2. Select "Call variants sample"
+//    2. Select "Call variants sample", wizard opens automatically
 
     class custom : public CustomScenario {
     public:
@@ -7680,11 +7674,8 @@ GUI_TEST_CLASS_DEFINITION(test_1734){
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
         }
     };
-
-    GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
-//    3. Open wizard. Try to add several bams on the first page
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new custom()));
-    GTWidget::click(os, GTAction::button(os, "Show wizard"));
+    GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
 //    Expected state: adding several bams is allowed
 }
 
@@ -8160,7 +8151,7 @@ GUI_TEST_CLASS_DEFINITION(test_1834) {
     //3. Set the input file for the "Read Alignment" element to "data/samples/COI.aln".
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment", dataDir + "samples/CLUSTALW/COI.aln");
 
-    //4. Set the "Document format" parameter of the "File Format Conversion" element to "mega".
+    //4. Set the "Document format" parameter of the "File Format Conversion" element to "Mega".
     GTUtilsWorkflowDesigner::click(os, "File Format Conversion");
     GTUtilsWorkflowDesigner::setParameter(os, "Document format", "mega", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
     GTUtilsWorkflowDesigner::setParameter(os, "Output folder", 0, GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
@@ -8448,8 +8439,8 @@ GUI_TEST_CLASS_DEFINITION(test_1918) {
     GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", testDir + "_common_data/mega/MegaTest_2.meg");
     GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", testDir + "_common_data/clustal/align.aln");
 
-    //5. Set the following parameters of the "File Conversion" element: { Document format : nexus },
-    //                                                                  { Excluded formats : clustal }
+    //5. Set the following parameters of the "File Conversion" element: { Document format : NEXUS },
+    //                                                                  { Excluded formats : CLUSTAL }
     GTUtilsWorkflowDesigner::click(os, "File Format Conversion");
     GTUtilsWorkflowDesigner::setParameter(os, "Document format", "nexus", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
     GTUtilsWorkflowDesigner::setParameter(os, "Excluded formats", QStringList("clustal"), GTUtilsWorkflowDesigner::ComboChecks);

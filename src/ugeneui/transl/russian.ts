@@ -29,9 +29,13 @@
 <context>
     <name>AppSettingsDialog</name>
     <message>
-        <location filename="../src/app_settings/AppSettingsDialog.ui" line="14"/>
         <source>AppSettingsDialog</source>
-        <translation>Настройки</translation>
+        <translation type="vanished">Настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/AppSettingsDialog.ui" line="14"/>
+        <source>Application Settings</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/app_settings/AppSettingsDialog.ui" line="50"/>
@@ -2532,9 +2536,8 @@ Would you like to download and install it?</source>
 <context>
     <name>UserApplicationsSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="26"/>
         <source>LangBoxTitle</source>
-        <translation>Язык интерфейса (изменение после перезапуска)</translation>
+        <translation type="vanished">Язык интерфейса (изменение после перезапуска)</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="41"/>
@@ -2562,6 +2565,11 @@ Would you like to download and install it?</source>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="63"/>
         <source>Project</source>
         <translation>Проект</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="26"/>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="115"/>

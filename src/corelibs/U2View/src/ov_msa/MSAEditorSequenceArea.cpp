@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -283,7 +283,7 @@ void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modI
 
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     Q_UNUSED(v);
-    
+
     t->addAction(ui->getUndoAction());
     t->addAction(ui->getRedoAction());
     t->addAction(gotoAction);
@@ -570,27 +570,19 @@ void MSAEditorSequenceArea::sl_createSubaligniment(){
         U2Region window = dialog->getRegion();
         bool addToProject = dialog->getAddToProjFlag();
         QString path = dialog->getSavePath();
-        QStringList seqNames = dialog->getSelectedSeqNames();
+        QList<qint64> rowIds = dialog->getSelectedRowIds();
         Task* csTask = new CreateSubalignmentAndOpenViewTask(getEditor()->getMaObject(),
-            CreateSubalignmentSettings(window, seqNames, path, true, addToProject, dialog->getFormatId()));
+            CreateSubalignmentSettings(window, rowIds, path, true, addToProject, dialog->getFormatId()));
         AppContext::getTaskScheduler()->registerTopLevelTask(csTask);
     }
 }
 
 void MSAEditorSequenceArea::sl_saveSequence(){
     CHECK(getEditor() != NULL, );
-    QStringList seqNames;
-    MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
-    QRect selection = editor->getCurrentSelection();
-    int startSeq = selection.y();
-    int endSeq = selection.y() + selection.height() - 1;
-    MSACollapsibleItemModel *model = editor->getUI()->getCollapseModel();
-    for (int i = startSeq; i <= endSeq; i++) {
-        seqNames.append(ma->getRow(model->mapToRow(i))->getName());
-    }
 
-    QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(editor->getMaObject()->getDocument()->getURL().dirPath(),
-        (QWidget*)AppContext::getMainWindow()->getQMainWindow(), seqNames, editor->getMaObject()->getGObjectName() + "_sequence");
+    QWidget* parentWidget = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
+    QString suggestedFileName = editor->getMaObject()->getGObjectName() + "_sequence";
+    QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(parentWidget, suggestedFileName);
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 
@@ -601,7 +593,19 @@ void MSAEditorSequenceArea::sl_saveSequence(){
     SAFE_POINT(df != NULL, "Unknown document format", );
     QString extension = df->getSupportedDocumentFileExtensions().first();
 
-    AppContext::getTaskScheduler()->registerTopLevelTask(new ExportSequencesTask(getEditor()->getMaObject()->getMsa(), seqNames, d->getTrimGapsFlag(), d->getAddToProjectFlag(), d->getUrl(), d->getFormat(), extension, d->getCustomFileName()));
+    const QRect& selection = editor->getCurrentSelection();
+    int startSeq = selection.y();
+    int endSeq = selection.y() + selection.height() - 1;
+    MSACollapsibleItemModel *model = editor->getUI()->getCollapseModel();
+    const MultipleAlignment& ma = editor->getMaObject()->getMultipleAlignment();
+    QSet<qint64> seqIds;
+    for (int i = startSeq; i <= endSeq; i++) {
+        seqIds.insert(ma->getRow(model->mapToRow(i))->getRowId());
+    }
+    ExportSequencesTask* exportTask = new ExportSequencesTask(getEditor()->getMaObject()->getMsa(), seqIds, d->getTrimGapsFlag(),
+                                                              d->getAddToProjectFlag(), d->getUrl(), d->getFormat(), extension,
+                                                              d->getCustomFileName());
+    AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
 }
 
 void MSAEditorSequenceArea::sl_modelChanged() {

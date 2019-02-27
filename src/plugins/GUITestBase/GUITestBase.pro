@@ -120,6 +120,9 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h \
+            src/runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h \
+#   Runnables / UGENE / plugins / ngs_classification
+            src/runnables/ugene/plugins/ngs_classification/GenomicLibraryDialogFiller.h \
 #   Runnables / UGENE / plugins / orf_marker
             src/runnables/ugene/plugins/orf_marker/OrfDialogFiller.h \
 #   Runnables / UGENE / plugins / pcr
@@ -217,6 +220,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h \
+            src/tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.h \
             src/tests/common_scenarios/options_panel/GTTestsOptionPanel.h \
             src/tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.h \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h \
@@ -247,6 +251,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/tree_viewer/GTTestsCommonScenariousTreeviewer.h \
             src/tests/common_scenarios/undo_redo/GTTestsUndoRedo.h \
             src/tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.h \
+            src/tests/common_scenarios/workflow_designer/dashboard/GTTestsWorkflowDashboard.h \
             src/tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.h \
             src/tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.h \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h \
@@ -380,6 +385,9 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.cpp \
+            src/runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.cpp \
+#   Runnables / UGENE / plugins / ngs_classification
+            src/runnables/ugene/plugins/ngs_classification/GenomicLibraryDialogFiller.cpp \
 #   Runnables / UGENE / plugins / orf_marker
             src/runnables/ugene/plugins/orf_marker/OrfDialogFiller.cpp \
 #   Runnables / UGENE / plugins / pcr
@@ -477,6 +485,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.cpp  \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.cpp \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.cpp \
+            src/tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.cpp \
             src/tests/common_scenarios/options_panel/GTTestsOptionPanel.cpp \
             src/tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.cpp \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.cpp \
@@ -507,6 +516,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/tree_viewer/GTTestsCommonScenariousTreeviewer.cpp \
             src/tests/common_scenarios/undo_redo/GTTestsUndoRedo.cpp \
             src/tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.cpp \
+            src/tests/common_scenarios/workflow_designer/dashboard/GTTestsWorkflowDashboard.cpp \
             src/tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.cpp \
             src/tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.cpp \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.cpp \

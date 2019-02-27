@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/McaDbiUtils.h>
-#include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2MsaDbi.h>
@@ -99,7 +98,7 @@ QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os
 
 QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const {
     QList<U2McaRow> result;
-    foreach (qint64 rowId, rowIds) {
+    foreach(qint64 rowId, rowIds) {
         result << McaDbiUtils::getMcaRow(os, U2EntityRef(dbiRef, mcaId), rowId);
         CHECK_OP(os, QList<U2McaRow>());
     }
@@ -110,7 +109,7 @@ QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(
     QList<McaRowMemoryData> mcaRowsMemoryData;
     mcaRowsMemoryData.reserve(rows.count());
 
-    foreach (const U2McaRow &row, rows) {
+    foreach(const U2McaRow &row, rows) {
         McaRowMemoryData mcaRowMemoryData;
         mcaRowMemoryData.chromatogram = ChromatogramUtils::exportChromatogram(os, U2EntityRef(connection.dbi->getDbiRef(), row.chromatogramId));
         CHECK_OP(os, QList<McaRowMemoryData>());
@@ -174,7 +173,7 @@ QVariantMap MultipleChromatogramAlignmentExporter::exportAlignmentInfo(U2OpStatu
     QList<U2DataId> attributeIds = attributeDbi->getObjectAttributes(mcaId, "", os);
     CHECK_OP(os, QVariantMap());
 
-    foreach (const U2DataId &attributeId, attributeIds) {
+    foreach(const U2DataId &attributeId, attributeIds) {
         if (dbi->getEntityTypeById(attributeId) != U2Type::AttributeString) {
             continue;
         }

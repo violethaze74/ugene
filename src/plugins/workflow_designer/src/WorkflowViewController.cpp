@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,15 +47,16 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectService.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/GUrlUtils.h>
 
 #include <U2Designer/Dashboard.h>
 #include <U2Designer/DelegateEditors.h>
@@ -63,6 +64,8 @@
 #include <U2Designer/EstimationReporter.h>
 #include <U2Designer/GrouperEditor.h>
 #include <U2Designer/MarkerEditor.h>
+#include <U2Designer/RemoveDashboardsTask.h>
+#include <U2Designer/ScanDashboardsDirTask.h>
 #include <U2Designer/WizardController.h>
 
 #include <U2Gui/DialogUtils.h>
@@ -70,7 +73,6 @@
 #include <U2Gui/GlassView.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Lang/ActorModel.h>
@@ -96,7 +98,6 @@
 #include "ChooseItemDialog.h"
 #include "CreateScriptWorker.h"
 #include "DashboardsManagerDialog.h"
-#include "EstimationDialog.h"
 #include "GalaxyConfigConfigurationDialogImpl.h"
 #include "ImportSchemaDialog.h"
 #include "ItemViewStyle.h"
@@ -1372,7 +1373,7 @@ void WorkflowView::setupContextMenu(QMenu* m) {
 }
 
 void WorkflowView::sl_pickInfo(QListWidgetItem* info) {
-    ActorId id = info->data(ACTOR_REF).value<ActorId>();
+    ActorId id = info->data(ACTOR_ID_REF).value<ActorId>();
     foreach(QGraphicsItem* it, scene->items()) {
         if (it->type() == WorkflowProcessItemType)
         {
@@ -2183,7 +2184,7 @@ void WorkflowView::commitWarningsToMonitor(WorkflowAbstractRunner* t) {
         QListWidgetItem* warning = infoList->item(i);
         foreach (WorkflowMonitor* monitor, t->getMonitors()) {
             monitor->addError(warning->data(TEXT_REF).toString(),
-                              warning->data(ACTOR_REF).toString(),
+                              warning->data(ACTOR_ID_REF).toString(),
                               warning->data(TYPE_REF).toString());
         }
     }
@@ -2273,8 +2274,8 @@ void WorkflowView::sl_onSceneLoaded() {
     scene->setModified(false);
     rescale();
     sl_refreshActorDocs();
-    checkAutoRunWizard();
     hideDashboards();
+    checkAutoRunWizard();
     tabs->setCurrentIndex(ElementsTab);
 }
 

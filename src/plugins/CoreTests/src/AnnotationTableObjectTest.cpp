@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -141,6 +141,8 @@ void GTest_FindAnnotationByNum::cleanup() {
     if (result != NULL && !annotationContextName.isEmpty()) {
         removeContext(annotationContextName);
     }
+
+    XmlTest::cleanup();
 }
 
 //---------------------------------------------------------------
@@ -221,6 +223,8 @@ void GTest_FindAnnotationByName::cleanup() {
     if (result != NULL && !annotationContextName.isEmpty()) {
         removeContext(annotationContextName);
     }
+
+    XmlTest::cleanup();
 }
 
 //---------------------------------------------------------------
@@ -1063,6 +1067,8 @@ void GTest_FindAnnotationByLocation::cleanup() {
     if (result != NULL && !annotationContextName.isEmpty()) {
         removeContext(annotationContextName);
     }
+
+    XmlTest::cleanup();
 }
 
 //---------------------------------------------------------------
@@ -1099,6 +1105,8 @@ void GTest_CreateTmpAnnotationObject::cleanup() {
         removeContext(objContextName);
     }
     delete aobj;
+
+    XmlTest::cleanup();
 }
 
 //---------------------------------------------------------------

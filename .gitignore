@@ -16,7 +16,8 @@ Makefile.Debug
 # Doxygen generated files
 /html
 
-# VS project files
+# VS project files and directories
+/.vs/
 *.sdf
 *.opensdf
 *.suo
@@ -31,8 +32,7 @@ Makefile.Debug
 
 # Windows generated files
 *.obj
-**/Win32/Debug/*
-ugene.VC.db
+*moc_predefs.h*ugene.VC.db
 ugene.VC.VC.opendb
 
 # Generated ugene shell launcher

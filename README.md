@@ -4,7 +4,7 @@
 
 ### Prerequisites
 
-Make sure the Qt (>= 5.2.1 and < 5.6) development libraries are installed:
+Make sure the Qt (>= 5.3.2) development libraries are installed:
 
 * Ubuntu >=14.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev libqt5webkit5-dev`
 * Ubuntu 12.04:

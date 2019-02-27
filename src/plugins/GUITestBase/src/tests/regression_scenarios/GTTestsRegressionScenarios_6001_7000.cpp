@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,23 +20,32 @@
  */
 
 #include <QApplication>
+#include <QDir>
+#include <QPushButton>
 #include <QRadioButton>
 #include <QSpinBox>
 #include <QTableWidget>
 
-#include <base_dialogs/MessageBoxFiller.h>
 #include <base_dialogs/DefaultDialogFiller.h>
+#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTTableView.h>
-#include <primitives/GTTextEdit.h>
-#include <primitives/GTTabWidget.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTTableView.h>
+#include <primitives/GTTabWidget.h>
+#include <primitives/GTTextEdit.h>
+#include <primitives/GTTreeWidget.h>
 #include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
+#include <utils/GTThread.h>
+
+#include <U2Core/HttpFileAdapter.h>
 
 #include <U2View/DetView.h>
 
@@ -56,8 +65,8 @@
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsNotifications.h"
-#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelMca.h"
+#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPcr.h"
@@ -73,12 +82,24 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 
+#include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
-#include "../../workflow_designer/src/WorkflowViewItems.h"
-#include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -128,26 +149,16 @@ GUI_TEST_CLASS_DEFINITION(test_6033) {
 
     CHECK_SET_ERR(correct, "Incorrect paste operation");
 }
-
-GUI_TEST_CLASS_DEFINITION(test_6038) {
-//    1. Open WD.
+GUI_TEST_CLASS_DEFINITION(test_6038_1) {
+    //    1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-//    2. Add 'Improve Reads with Trimmomatic', 'Classify Sequences with CLARK', 'Classify Sequences with Kraken' and 'Filter by Classification' elements to the scene.
+    //    2. Add 'Improve Reads with Trimmomatic', 'Classify Sequences with CLARK', 'Classify Sequences with Kraken' and 'Filter by Classification' elements to the scene.
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
-    const QString clarkName = "Classify Sequences with CLARK";
-    const QString krakenName = "Classify Sequences with Kraken";
-    const QString filterName = "Filter by Classification";
-
     WorkflowProcessItem *trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
-    WorkflowProcessItem *clarkElement = GTUtilsWorkflowDesigner::addElement(os, clarkName);
-    WorkflowProcessItem *krakenElement = GTUtilsWorkflowDesigner::addElement(os, krakenName);
-    WorkflowProcessItem *filterElement = GTUtilsWorkflowDesigner::addElement(os, filterName);
 
-//    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
-//    Expected state: 'Classify Sequences with Kraken' and 'Classify Sequences with CLARK' elements have two input slots ('Input URL 1' and 'Input URL 2') and some output slots;
-//                    'Improve Reads with Trimmomatic' element has two input slots ('Input FASTQ URL 1' and 'Input FASTQ URL 2') and two output slots ('Output FASTQ URL 1' and 'Output FASTQ URL 2');
-//                    'Filter by Classification' element has three input slots (two of them are 'Input URL 1' and 'Input URL 2'), and two output slots ('Output URL 1' and 'Output URL 2').
+    //    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
+    //    Expected state: 'Improve Reads with Trimmomatic' element has two input slots ('Input FASTQ URL 1' and 'Input FASTQ URL 2') and two output slots ('Output FASTQ URL 1' and 'Output FASTQ URL 2');
     {
         GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
@@ -174,8 +185,65 @@ GUI_TEST_CLASS_DEFINITION(test_6038) {
         CHECK_SET_ERR(outputSlotsNames.contains("Output FASTQ URL 1 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 1 (by Improve Reads with Trimmomatic)' slot not found in element '%1'").arg(trimmomaticName));
         CHECK_SET_ERR(outputSlotsNames.contains("Output FASTQ URL 2 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 2 (by Improve Reads with Trimmomatic)' slot not found in element '%1'").arg(trimmomaticName));
     }
-
+    //    4. Set 'Input data' parameter in each element to 'SE reads' in 'Improve Reads with Trimmomatic' element.
+    //    Expected state: 'Improve Reads with Trimmomatic' element has one input slot ('Input FASTQ URL 1') and one output slot ('Output FASTQ URL 1');
+    //
     {
+        GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
+        GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
+        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads", GTUtilsWorkflowDesigner::comboValue);
+
+        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+
+        QStringList inputSlotsNames;
+        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
+            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
+        }
+
+        CHECK_SET_ERR(inputSlotsNames.contains("Input FASTQ URL 1"), QString("'Input FASTQ URL 1' slot not found in element '%1'").arg(trimmomaticName));
+        CHECK_SET_ERR(!inputSlotsNames.contains("Input FASTQ URL 2"), QString("'Input FASTQ URL 2' slot unexpectedly found in element '%1'").arg(trimmomaticName));
+
+        QTableWidget *outputPortTable = GTUtilsWorkflowDesigner::getOutputPortsTable(os, 0);
+        CHECK_SET_ERR(NULL != outputPortTable, "outputPortTable is NULL");
+
+        QStringList outputSlotsNames;
+        for (int i = 0; i < GTTableView::rowCount(os, outputPortTable); i++) {
+            outputSlotsNames << GTTableView::data(os, outputPortTable, i, 0);
+        }
+
+        CHECK_SET_ERR(outputSlotsNames.contains("Output FASTQ URL 1 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 1 (by Improve Reads with Trimmomatic)' slot not found in element '%1'").arg(trimmomaticName));
+        CHECK_SET_ERR(!outputSlotsNames.contains("Output FASTQ URL 2 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 2 (by Improve Reads with Trimmomatic)' slot unexpectedly found in element '%1'").arg(trimmomaticName));
+
+    }
+
+    //    5. Click 'Validate workflow' button on the toolbar.
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+
+    //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
+    QSet<QString> acceptableErrors = QSet<QString>()
+        << QString("%1: The mandatory \"Input FASTQ URL 1\" slot is not connected.").arg(trimmomaticName)
+        << QString("%1: Required parameter is not set: Trimming steps").arg(trimmomaticName);
+
+    QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
+    CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
+        arg(acceptableErrors.size()).
+        arg(actualErrors.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6038_2) {
+    //    1. Open WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //    2. Add 'Improve Reads with Trimmomatic', 'Classify Sequences with CLARK', 'Classify Sequences with Kraken' and 'Filter by Classification' elements to the scene.
+    const QString clarkName = "Classify Sequences with CLARK";
+
+    WorkflowProcessItem *clarkElement = GTUtilsWorkflowDesigner::addElement(os, clarkName);
+
+    //    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
+    //    Expected state: 'Classify Sequences with CLARK' elements have two input slots ('Input URL 1' and 'Input URL 2') and some output slots;
+
         GTUtilsWorkflowDesigner::click(os, clarkElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
 
@@ -189,23 +257,64 @@ GUI_TEST_CLASS_DEFINITION(test_6038) {
 
         CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(clarkName));
         CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(clarkName));
-    }
 
-    {
-        GTUtilsWorkflowDesigner::click(os, krakenElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
+        //    4. Set 'Input data' parameter in each element to 'SE reads or contigs' ('SE reads' in 'Improve Reads with Trimmomatic' element).
+        //    Expected state: 'Classify Sequences with Kraken' and 'Classify Sequences with CLARK' elements have one input slot ('Input URL 1') and some output slots;
+        //                    'Improve Reads with Trimmomatic' element has one input slot ('Input FASTQ URL 1') and one output slot ('Output FASTQ URL 1');
+        //                    'Filter by Classification' element has two input slots (one of them is 'Input URL 1'), and one output slot ('Output URL 1').
+        {
+            GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
+            GTUtilsWorkflowDesigner::click(os, clarkElement);
+            GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
 
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+            QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+            CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
 
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
+            QStringList inputSlotsNames;
+            for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
+                inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
+            }
+
+            CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(clarkName));
+            CHECK_SET_ERR(!inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot unexpectedly found in element '%1'").arg(clarkName));
         }
+    //    5. Click 'Validate workflow' button on the toolbar.
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
 
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(krakenName));
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(krakenName));
-    }
+    //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
+    QSet<QString> acceptableErrors;
+
+#ifdef Q_OS_WIN
+    acceptableErrors = QSet<QString>()
+        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)
+        << QString("%1: External tool \"CLARK\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
+        << QString("%1: External tool \"CLARK-l\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
+        << QString("%1: Required parameter is not set: Database").arg(clarkName);
+#else
+    acceptableErrors = QSet<QString>()
+        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)
+        << QString("%1: Required parameter is not set: Database").arg(clarkName);
+#endif
+
+    QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
+    CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
+        arg(acceptableErrors.size()).
+        arg(actualErrors.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6038_4) {
+
+        //    1. Open WD.
+        GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+        //    2. Add 'Filter by Classification' element to the scene.
+        const QString filterName = "Filter by Classification";
+
+        WorkflowProcessItem *filterElement = GTUtilsWorkflowDesigner::addElement(os, filterName);
+
+        //    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
+        //    Expected state:  'Filter by Classification' element has three input slots (two of them are 'Input URL 1' and 'Input URL 2'), and two output slots ('Output URL 1' and 'Output URL 2').
 
     {
         GTUtilsWorkflowDesigner::click(os, filterElement);
@@ -234,70 +343,11 @@ GUI_TEST_CLASS_DEFINITION(test_6038) {
         CHECK_SET_ERR(outputSlotsNames.contains("Output URL 2 (by Filter by Classification)"), QString("'Output URL 2 (by Filter by Classification)' slot not found in element '%1'").arg(filterName));
     }
 
-//    4. Set 'Input data' parameter in each element to 'SE reads or contigs' ('SE reads' in 'Improve Reads with Trimmomatic' element).
-//    Expected state: 'Classify Sequences with Kraken' and 'Classify Sequences with CLARK' elements have one input slot ('Input URL 1') and some output slots;
-//                    'Improve Reads with Trimmomatic' element has one input slot ('Input FASTQ URL 1') and one output slot ('Output FASTQ URL 1');
-//                    'Filter by Classification' element has two input slots (one of them is 'Input URL 1'), and one output slot ('Output URL 1').
-    {
-        GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input FASTQ URL 1"), QString("'Input FASTQ URL 1' slot not found in element '%1'").arg(trimmomaticName));
-        CHECK_SET_ERR(!inputSlotsNames.contains("Input FASTQ URL 2"), QString("'Input FASTQ URL 2' slot unexpectedly found in element '%1'").arg(trimmomaticName));
-
-        QTableWidget *outputPortTable = GTUtilsWorkflowDesigner::getOutputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != outputPortTable, "outputPortTable is NULL");
-
-        QStringList outputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, outputPortTable); i++) {
-            outputSlotsNames << GTTableView::data(os, outputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(outputSlotsNames.contains("Output FASTQ URL 1 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 1 (by Improve Reads with Trimmomatic)' slot not found in element '%1'").arg(trimmomaticName));
-        CHECK_SET_ERR(!outputSlotsNames.contains("Output FASTQ URL 2 (by Improve Reads with Trimmomatic)"), QString("'Output FASTQ URL 2 (by Improve Reads with Trimmomatic)' slot unexpectedly found in element '%1'").arg(trimmomaticName));
-    }
+    //    4. Set 'Input data' parameter in each element to 'SE reads or contigs' ('SE reads' in 'Improve Reads with Trimmomatic' element).
+    //    Expected state: 'Filter by Classification' element has two input slots (one of them is 'Input URL 1'), and one output slot ('Output URL 1').
 
     {
-        GTUtilsWorkflowDesigner::click(os, clarkElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(clarkName));
-        CHECK_SET_ERR(!inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot unexpectedly found in element '%1'").arg(clarkName));
-    }
-
-    {
-        GTUtilsWorkflowDesigner::click(os, krakenElement);
-        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
-
-        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
-
-        QStringList inputSlotsNames;
-        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
-        }
-
-        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(krakenName));
-        CHECK_SET_ERR(!inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot unexpectedly found in element '%1'").arg(krakenName));
-    }
-
-    {
+        GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
         GTUtilsWorkflowDesigner::click(os, filterElement);
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
 
@@ -324,26 +374,93 @@ GUI_TEST_CLASS_DEFINITION(test_6038) {
         CHECK_SET_ERR(!outputSlotsNames.contains("Output URL 2 (by Filter by Classification)"), QString("'Output URL 2 (by Filter by Classification)' slot unexpectedly found in element '%1'").arg(filterName));
     }
 
-//    5. Click 'Validate workflow' button on the toolbar.
+    //    5. Click 'Validate workflow' button on the toolbar.
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsWorkflowDesigner::validateWorkflow(os);
 
-//    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
-    QSet<QString> acceptableErrors = QSet<QString>() << QString("%1: %1 : The mandatory \"Input URL 1\" slot is not connected.").arg(clarkName)
-                                                     << QString("%1: External tool \"CLARK\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
-                                                     << QString("%1: External tool \"CLARK-l\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(clarkName)
-                                                     << QString("%1: %1 : The mandatory \"Input URL 1\" slot is not connected.").arg(krakenName)
-                                                     << QString("%1: External tool \"kraken\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(krakenName)
-                                                     << QString("%1: %1 : The mandatory \"Input URL 1\" slot is not connected.").arg(filterName)
-                                                     << QString("%1: %1 : The mandatory \"Input FASTQ URL 1\" slot is not connected.").arg(trimmomaticName)
-                                                     << QString("%1: External tool \"Trimmomatic\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(trimmomaticName)
-                                                     << QString("%1: Required parameter is not set: Database").arg(clarkName)
-                                                     << QString("%1: Required parameter is not set: Database").arg(krakenName)
-                                                     << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName)
-                                                     << QString("%1: Required parameter is not set: Trimming steps").arg(trimmomaticName);
+    //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
+    QSet<QString> acceptableErrors = QSet<QString>()
+        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(filterName)
+        << QString("%1: Taxonomy classification data from NCBI are not available").arg(filterName);
+    QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
+    CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
+        arg(acceptableErrors.size()).
+        arg(actualErrors.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6038_3) {
+
+        //    1. Open WD.
+        GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+        //    2. Add 'Classify Sequences with Kraken' element to the scene.
+        const QString krakenName = "Classify Sequences with Kraken";
+        WorkflowProcessItem *krakenElement = GTUtilsWorkflowDesigner::addElement(os, krakenName);
+
+
+        //    3. Each element has 'Input data' parameter. Set it to 'PE reads'.
+        //    Expected state: 'Classify Sequences with Kraken' element has two input slots ('Input URL 1' and 'Input URL 2') and some output slots;
+
+    {
+        GTUtilsWorkflowDesigner::click(os, krakenElement);
+        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
+
+        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+
+        QStringList inputSlotsNames;
+        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
+            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
+        }
+
+        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(krakenName));
+        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(krakenName));
+    }
+
+    //    4. Set 'Input data' parameter in each element to 'SE reads or contigs
+    //    Expected state: 'Classify Sequences with Kraken' and some output slots;
+
+    {
+        GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
+        GTUtilsWorkflowDesigner::click(os, krakenElement);
+        GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
+
+        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+
+        QStringList inputSlotsNames;
+        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
+            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
+        }
+
+        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(krakenName));
+        CHECK_SET_ERR(!inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot unexpectedly found in element '%1'").arg(krakenName));
+    }
+
+    //    5. Click 'Validate workflow' button on the toolbar.
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+
+    //    Expected state: there could be errors, but there are neither errors not warnings about not connected slots.
+    QSet<QString> acceptableErrors;
+
+#ifdef Q_OS_WIN
+    acceptableErrors = QSet<QString>()
+        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(krakenName)
+        << QString("%1: External tool \"kraken\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(krakenName)
+        << QString("%1: Required parameter is not set: Database").arg(krakenName)
+        << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName);
+#else
+    acceptableErrors = QSet<QString>()
+        << QString("%1: The mandatory \"Input URL 1\" slot is not connected.").arg(krakenName)
+        << QString("%1: Required parameter is not set: Database").arg(krakenName)
+        << QString("%1: The database folder \"\" doesn't exist.").arg(krakenName);
+#endif
 
     QSet<QString> actualErrors = GTUtilsWorkflowDesigner::getErrors(os).toSet();
-    CHECK_SET_ERR(acceptableErrors.contains(actualErrors), "There are unexpected errors after the workflow validation");
+    CHECK_SET_ERR(acceptableErrors.size() == actualErrors.size(), QString("Unexpected errors number, expected: %1, current: %2").
+        arg(acceptableErrors.size()).
+        arg(actualErrors.size()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6043) {
@@ -407,13 +524,19 @@ GUI_TEST_CLASS_DEFINITION(test_6058_2) {
 
     //2. Check "30. Peritrich Nuclear" "Genetic code" parameter option in "Classify Sequences with DIAMOND" WD element
     WorkflowProcessItem *diamondElement = GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with DIAMOND", true);
+    GTGlobals::sleep();
+    WorkflowProcessItem *orfMarker = GTUtilsWorkflowDesigner::addElementByUsingNameFilter(os, "ORF Marker");
+    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::click(os, diamondElement);
+    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setParameter(os, "Genetic code", "30. Peritrich Nuclear", GTUtilsWorkflowDesigner::comboValue);
+    GTGlobals::sleep();
 
     //3. Check "27. Karyorelict Nuclear" "Genetic code" parameter option in "ORF Marker" WD element
-    WorkflowProcessItem *orfmarkerElement = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker", true);
-    GTUtilsWorkflowDesigner::click(os, orfmarkerElement);
+    GTUtilsWorkflowDesigner::click(os, orfMarker);
+    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setParameter(os, "Genetic code", "27. Karyorelict Nuclear", GTUtilsWorkflowDesigner::comboValue);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6062) {
@@ -542,12 +665,14 @@ GUI_TEST_CLASS_DEFINITION(test_6071) {
 
     //3. Scroll to the 3874 coordinate.
     GTUtilsSequenceView::goToPosition(os, 3874);
+    GTGlobals::sleep();
 
     DetView* dw = GTUtilsSequenceView::getDetViewByNumber(os);
     const U2Region firstVisibleRange = dw->getVisibleRange();
 
     //4. Click on 2-th CDS join annotation
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 3412);
+    GTGlobals::sleep();
 
     //Expected: visible range was not changed
     const U2Region secondVisibleRange = dw->getVisibleRange();
@@ -649,7 +774,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //2. Make scheme "Read FASTQ File with SE Reads" -> "Improve Reads with Trimmomatic"
+    //2. Make workflow "Read FASTQ File with SE Reads" -> "Improve Reads with Trimmomatic"
     const QString readSEName = "Read FASTQ File with SE Reads";
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
 
@@ -672,6 +797,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse"));
+            GTGlobals::sleep(500);
 
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
             menu = qobject_cast<QMenu*>(GTWidget::findWidget(os, "stepsMenu"));
@@ -694,8 +820,8 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     QTableView* table = GTWidget::findExactWidget<QTableView*>(os, "table");
     GTMouseDriver::moveTo(GTTableView::getCellPoint(os, table, 1, 1));
     GTMouseDriver::click();
-    GTGlobals::sleep(500);
-    GTWidget::click(os, GTWidget::findButtonByText(os, "...", table));
+    GTGlobals::sleep();
+    GTWidget::click(os, GTWidget::findWidget(os, "trimmomaticPropertyToolButton", table));
     GTGlobals::sleep(500);
 
     //4. Run this workflow.
@@ -705,6 +831,47 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!l.hasError(), "Errors in the log");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6135) {
+
+    // Open "COI.aln".
+    // Rename the second sequence to "Phaneroptera_falcata".
+    // Current state: There are two sequences with name "Phaneroptera_falcata" (the first and the second one).
+    // Select "Export -> Save subalignment" in the context menu.
+    // Select only one "Phaneroptera_falcata" sequence and click "Extract".
+    // Expected state: one selected sequence was exported.
+
+    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+
+    class custom: public CustomScenario{
+    public:
+        virtual void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "Phaneroptera_falcata");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<MSAE_MENU_EXPORT<<"Save subalignment"));
+    GTUtilsDialog::waitForDialog(os,new ExtractSelectedAsMSADialogFiller(os, new custom()));
+
+    GTMenu::showContextMenu(os,GTWidget::findWidget(os,"msa_editor_sequence_area"));
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));;
+    GTMouseDriver::click();
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    CHECK_SET_ERR(sequencesNameList.length() == 1, "Length of namelist is not 1! Length: " + QString::number(sequencesNameList.length()));
+}
+
+
 
 GUI_TEST_CLASS_DEFINITION(test_6136) {
     // 1. Open "test/scenarios/_common_data/genbank/target_gene_new.gb".
@@ -737,10 +904,12 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
     //Expected: Sequence length = 423
     const int length = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_SET_ERR(length == 423, QString("Unexpected sequence length, expected: 423, current: %1").arg(length));
+    GTGlobals::sleep(200);
 
     //Check annotaions
     foreach(const int i, QList<int>() << 30 << 376) {
         GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", i, 0, true);
+        GTGlobals::sleep();
         QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
         CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection annotation regions, expected: 1, current: %1").arg(sel.size()));
     }
@@ -750,6 +919,159 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
         QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
         CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection primer annotation regions, expected: 1, current: %1").arg(sel.size()));
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6167) {
+    //1. Change workflow designer output folder to sandbox
+    class Custom : public CustomScenario {
+    void run(HI::GUITestOpStatus &os){
+        QWidget *dialog = QApplication::activeModalWidget();
+
+        QTreeWidget* tree = GTWidget::findExactWidget<QTreeWidget*>(os, "tree", dialog);
+        CHECK_SET_ERR(tree != NULL, "QTreeWidget unexpectedly not found");
+
+        AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::WorkflowDesigner);
+
+        QLineEdit* workflowOutputEdit = GTWidget::findExactWidget<QLineEdit*>(os, "workflowOutputEdit", dialog);
+        CHECK_SET_ERR(workflowOutputEdit != NULL, "QLineEdit unexpectedly not found");
+
+        GTLineEdit::setText(os, workflowOutputEdit, sandBoxDir);
+
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open "test\_common_data\regression\6167\6167.uwl" and run
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/6167/6167.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", dataDir + "samples/FASTQ/eas.fastq");
+
+    class TrimmomaticCustomScenario : public CustomScenario {
+    void run(HI::GUITestOpStatus& os) {
+        QWidget *dialog = QApplication::activeModalWidget();
+
+        QToolButton* addButton = GTWidget::findExactWidget<QToolButton*>(os, "buttonAdd", dialog);
+        CHECK_SET_ERR(addButton != NULL, "addButton unexpectedly not found");
+
+        GTWidget::click(os, addButton);
+        GTGlobals::sleep(200);
+        for (int i = 0; i < 4; i++) {
+            GTKeyboardDriver::keyClick(Qt::Key_Down);
+            GTGlobals::sleep(200);
+        }
+
+        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        GTGlobals::sleep(500);
+        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        GTGlobals::sleep(200);
+        GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        GTGlobals::sleep(200);
+
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, new TrimmomaticCustomScenario()));
+    GTUtilsWorkflowDesigner::click(os, "Trimmomatic 1");
+    GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, new TrimmomaticCustomScenario()));
+    GTUtilsWorkflowDesigner::click(os, "Trimmomatic 2");
+    GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: There are no adapter files in the output directory
+    QDir sandbox(sandBoxDir);
+    QStringList filter = QStringList() << "????.??.??_?\?-??";
+    QStringList sandboxEntry = sandbox.entryList(filter, QDir::AllEntries);
+    CHECK_SET_ERR(sandboxEntry.size() == 1, QString("Unexpected nomber of folders, expected: 1, current62: %1").arg(sandboxEntry.size()));
+
+    QString insideSandbox(sandBoxDir + sandboxEntry.first());
+    QDir insideSandboxDir(insideSandbox);
+    QStringList resultDirs = insideSandboxDir.entryList();
+    CHECK_SET_ERR(resultDirs.size() == 5, QString("Unexpected number of result folders, expected: 5, current: %1").arg(resultDirs.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6204) {
+    //1. Open the WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/scenarios/_regression/6204/6204.uwl");
+
+    //2. add 3 big alignments to "Read Alignment 1" worker ""_common_data/clustal/100_sequences.aln", ""_common_data/clustal/non_unique_row_names.aln"
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment 1", testDir + "_common_data/clustal/100_sequences.aln");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment 1", testDir + "_common_data/clustal/non_unique_row_names.aln");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Alignment", testDir + "_common_data/clustal/COI na.aln");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    // There is no message "Task is in progress.." after finished task where 2 notifications are present
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(100);
+    HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task has been finished");
+    CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6212) {
+    //1. Open the WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Read File URL data" and "Improve Reads with Trimmomatic" elements and connect them.
+    const QString readFileName = "Read File URL(s)";
+    const QString trimmomaticName = "Improve Reads with Trimmomatic";
+    WorkflowProcessItem* readFileNameElement = GTUtilsWorkflowDesigner::addElement(os, readFileName);
+    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+    GTUtilsWorkflowDesigner::addInputFile(os, readFileName, dataDir + "samples/FASTQ/eas.fastq");
+    GTUtilsWorkflowDesigner::connect(os, readFileNameElement, trimmomaticElement);
+    GTUtilsWorkflowDesigner::click(os, trimmomaticName);
+    QTableWidget* table1 = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+    CHECK_SET_ERR(table1 != NULL, "QTableWidget isn't found");
+
+    GTUtilsWorkflowDesigner::setTableValue(os, "Input FASTQ URL 1", "Dataset name (by Read File URL(s))", GTUtilsWorkflowDesigner::comboValue, table1);
+
+    //3. Click on the Trimmomatic element, then click on the "Configure steps" parameter in the Property Editor, click on the appeared browse button in the value field.
+    class TrimmomaticCustomScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+
+            QDialogButtonBox* buttonBox = GTWidget::findExactWidget<QDialogButtonBox*>(os, "buttonBox", dialog);
+            CHECK_SET_ERR(buttonBox != NULL, "QDialogButtonBox unexpectedly not found");
+
+            QPushButton* buttonOk =  buttonBox->button(QDialogButtonBox::Ok);
+            CHECK_SET_ERR(buttonOk != NULL, "buttonOk unexpectedly not found");
+            CHECK_SET_ERR(!buttonOk->isEnabled(), "buttonOk should be disabled");
+
+            //4. Close the dialog
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, new TrimmomaticCustomScenario()));
+    GTUtilsWorkflowDesigner::click(os, trimmomaticName);
+    GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    //5. Click "Validate workflow".
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+
+    //Expected state: Validation doesn't pass, there is an error about absent steps.
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 1, QString("Unexpected errors number, expected: 1, current: %1").arg(errors.size()));
+    CHECK_SET_ERR(errors.first() == "Improve Reads with Trimmomatic: Required parameter is not set: Trimming steps", "Unexpected error in the log. Is should be something about Trimming steps");
+
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6225) {
@@ -774,6 +1096,445 @@ GUI_TEST_CLASS_DEFINITION(test_6225) {
     CHECK_SET_ERR(size == 2, QString("Unexpected documents number; expected: 2, current: %1").arg(size));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6226) {
+
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
+    AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
+    parameters.samOutput = false;
+    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/reads.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6229) {
+
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
+    AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
+    parameters.samOutput = false;
+    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/reads.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
+    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6232_1) {
+    //1. Open "STEP1_pFUS2_a2a_5.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state : the corresponding "Fragment" annotations have been created
+    QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
+    CHECK_SET_ERR(groupNames.contains("fragments  (0, 2)"), "The group \"fragments  (0, 2)\" is unexpectedly absent");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6232_2) {
+    //1. Open "STEP1_pFUS2_a2a_5_2.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5_2.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: "left_end_seq" qualifier of the first fragment and "right_end_seq" of the second fragment should have "TGAC" value
+    /*QTreeWidgetItem* fragment1 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 1");
+    CHECK_SET_ERR(fragment1 != NULL, "Fragment 1 is not found");
+*/
+    QString firstValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_seq", "Fragment 1");
+    CHECK_SET_ERR(firstValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(firstValue));
+
+    QString secondValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_seq", "Fragment 2");
+    CHECK_SET_ERR(secondValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(secondValue));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6232_3) {
+    //1. Open "STEP1_pFUS2_a2a_5.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes", disable "Circular Molecule" checkBox and click "OK".
+    class Scenario : public CustomScenario {
+        void run(GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTCheckBox::setChecked(os, "circularBox", false, dialog);
+            GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: despite the sequence is circular, fragments were found without the gap it the junction  point
+    //Expected: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "fragments  (0, 2)");
+    CHECK_SET_ERR(regions.size() == 2, QString("Unexpected number of fragments, expected: 2, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first() == U2Region(2, 2467), QString("Unexpected fragment region, expected: start = 2, length = 2467; current: start = %1, length = %2").arg(regions.first().startPos).arg(regions.first().length));
+    CHECK_SET_ERR(regions.last() == U2Region(2473, 412), QString("Unexpected fragment region, expected: start = 2473, length = 412; current: start = %1, length = %2").arg(regions.last().startPos).arg(regions.last().length));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6232_4) {
+    //1. Open "STEP1_pFUS2_a2a_5_not_circular.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5_not_circular.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" checkBox and click "OK".
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //4. Select "Actions > Cloning > Construct molecule...". Click "Add all" button, click "OK".
+    QList<ConstructMoleculeDialogFiller::Action> actions;
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::AddAllFragments, "");
+    actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickOk, "");
+    GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Cloning" << "Construct molecule...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: the first fragment begins from 3 base, there are "AC" bases before it
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "STEP1_pFUS2_a2a_5 Fragment 1  (0, 1)");
+    CHECK_SET_ERR(regions.size() == 1, QString("Unexpected number of fragments, expected: 1, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first().startPos == 2, QString("Unexpected fragment startPos, expected: 2; current: %1").arg(regions.first().startPos));
+
+    QString beginning = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 2);
+    CHECK_SET_ERR(beginning == "AC", QString("Unexpected beginning, expected: AC, currecnt: %1").arg(beginning));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6233) {
+    //1. Find the link to the ET downloadp page in the application settings
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+            QLabel* selectToolPackLabel = GTWidget::findExactWidget<QLabel*>(os, "selectToolPackLabel");
+            CHECK_SET_ERR(selectToolPackLabel != NULL, "selectToolPackLabel unexpectedly not found");
+
+            QPoint pos(selectToolPackLabel->pos().x(), selectToolPackLabel->pos().y());
+            QPoint globalPos = selectToolPackLabel->mapToGlobal(pos);
+#ifdef Q_OS_LINUX
+            globalPos.setY(globalPos.y() - 20);
+#endif
+            GTMouseDriver::moveTo(globalPos);
+            const int xpos = globalPos.x();
+            GTClipboard::clear(os);
+            for (int i = 0; i < 7; i++) {
+                for (int j = 0; j < 20; j++) {
+                    GTGlobals::sleep(100);
+                    QPoint mousePos(GTMouseDriver::getMousePosition());
+#ifdef Q_OS_WIN
+                    globalPos = QPoint(mousePos.x() + 11, mousePos.y() + 1);
+#else
+                    globalPos = QPoint(mousePos.x() + 10, mousePos.y());
+#endif
+                    GTMouseDriver::moveTo(globalPos);
+                    Qt::CursorShape shape = selectToolPackLabel->cursor().shape();
+                    if (shape != Qt::ArrowCursor) {
+                        GTMouseDriver::click(Qt::RightButton);
+                        GTGlobals::sleep(200);
+                        GTKeyboardDriver::keyClick(Qt::Key_Down);
+                        GTGlobals::sleep(200);
+                        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+                        clip = GTClipboard::text(os);
+                        if (!clip.isEmpty()) {
+                            break;
+                        }
+                    }
+                }
+                if (!clip.isEmpty()) {
+                    break;
+                }
+                GTGlobals::sleep(25);
+                globalPos = QPoint(xpos, globalPos.y() + 5);
+                GTMouseDriver::moveTo(globalPos);
+            }
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+
+    public:
+        QString clip;
+    };
+
+    Custom* c = new Custom();
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, c));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+
+    //2. Pull html by the link
+    HttpFileAdapterFactory* factory = new HttpFileAdapterFactory;
+    IOAdapter* adapter = factory->createIOAdapter();
+    bool isOpened = adapter->open(GUrl(c->clip), IOAdapterMode_Read);
+    CHECK_SET_ERR(isOpened, "HttpFileAdapter unexpectedly wasn't opened");
+
+    char* data = new char[128];
+    bool isNotFound = false;
+    bool eof = false;
+
+    while (!isNotFound && !eof) {
+        int read = adapter->readLine(data, 128);
+        QString d(data);
+        isNotFound = d.contains("Page not found");
+        eof = read == 0;
+    }
+
+    CHECK_SET_ERR(!isNotFound, "The External Tools page is not found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6235_1) {
+    //1. Open "_common_data/regression/6235/6235_1.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, check "Circular molecule", click "OK".
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+
+            GTCheckBox::setChecked(os, "circularBox", true, dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 410)
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "fragments  (0, 2)");
+    CHECK_SET_ERR(regions.size() == 2, QString("Unexpected number of fragments, expected: 2, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first() == U2Region(2, 2467), QString("Unexpected fragment region, expected: start = 2, length = 2467; current: start = %1, length = %2").arg(regions.first().startPos).arg(regions.first().length));
+    CHECK_SET_ERR(regions.last() == U2Region(2473, 410), QString("Unexpected fragment region, expected: start = 2473, length = 410; current: start = %1, length = %2").arg(regions.last().startPos).arg(regions.last().length));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6235_2) {
+    //1. Open "_common_data/regression/6235/6235_1.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, uncheck "Circular molecule", click "OK".
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+
+            GTCheckBox::setChecked(os, "circularBox", false, dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "fragments  (0, 2)");
+    CHECK_SET_ERR(regions.size() == 2, QString("Unexpected number of fragments, expected: 2, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first() == U2Region(2, 2467), QString("Unexpected fragment region, expected: start = 2, length = 2467; current: start = %1, length = %2").arg(regions.first().startPos).arg(regions.first().length));
+    CHECK_SET_ERR(regions.last() == U2Region(2473, 412), QString("Unexpected fragment region, expected: start = 2473, length = 412; current: start = %1, length = %2").arg(regions.last().startPos).arg(regions.last().length));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6235_3) {
+    //1. Open "_common_data/regression/6235/6235_2.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_2.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, check "Circular molecule", click "OK".
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+
+            GTCheckBox::setChecked(os, "circularBox", true, dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "fragments  (0, 2)");
+    CHECK_SET_ERR(regions.size() == 2, QString("Unexpected number of fragments, expected: 2, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first() == U2Region(416, 2467), QString("Unexpected fragment region, expected: start = 416, length = 2467; current: start = %1, length = %2").arg(regions.first().startPos).arg(regions.first().length));
+    CHECK_SET_ERR(regions.last() == U2Region(2, 410), QString("Unexpected fragment region, expected: start = 2, length = 410; current: start = %1, length = %2").arg(regions.last().startPos).arg(regions.last().length));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6235_4) {
+    //1. Open "_common_data/regression/6235/6235_2.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6235/6235_2.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find restriction sites...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, uncheck "Circular molecule", click "OK".
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+
+            GTCheckBox::setChecked(os, "circularBox", false, dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
+    QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "fragments  (0, 2)");
+    CHECK_SET_ERR(regions.size() == 2, QString("Unexpected number of fragments, expected: 2, current: %1").arg(regions.size()));
+    CHECK_SET_ERR(regions.first() == U2Region(416, 2467), QString("Unexpected fragment region, expected: start = 416, length = 2467; current: start = %1, length = %2").arg(regions.first().startPos).arg(regions.first().length));
+    CHECK_SET_ERR(regions.last() == U2Region(0, 412), QString("Unexpected fragment region, expected: start = 0, length = 412; current: start = %1, length = %2").arg(regions.last().startPos).arg(regions.last().length));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6236) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    //2. Compose workflow read sequence -> Remote blase
+    WorkflowProcessItem *readElement = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    WorkflowProcessItem *remoteBlast = GTUtilsWorkflowDesigner::addElementByUsingNameFilter(os, "Remote BLAST");
+    GTUtilsWorkflowDesigner::connect(os, readElement, remoteBlast);
+
+    //3. Set the input sequence file: "data/samples/Genbank/NC_014267.1.gb".
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
+    GTMouseDriver::click();
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
+
+    GTLogTracer l;
+    //4. run workflow
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTGlobals::sleep(60000);
+    GTUtilsWorkflowDesigner::stopWorkflow(os);
+
+    //5. Check id of the blast job in log
+    bool desiredMessage = l.checkMessage("Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID");
+    CHECK_SET_ERR(desiredMessage, "No expected message in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6238) {
+    QString fastqFile = testDir + "_common_data/regression/6238/eas.fastq";
+    QString sandboxFastqFile = sandBoxDir + "eas.fastq";
+    QString badFastqFile = testDir + "_common_data/regression/6238/6238.fastq";
+    //1. Open "data/samples/FASTQ/eas.fastq".
+    GTFile::copy(os, fastqFile, sandboxFastqFile);
+
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, sandboxFastqFile);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the file in some external text editor.
+    QFile file(sandboxFastqFile);
+    QFile badFile(badFastqFile);
+    file.open(QFile::ReadWrite);
+    badFile.open(QFile::ReadOnly);
+
+    //3. Replace the file content with the content if the file "_common_data/regression/6238/6238.fastq".
+    //Expected state : UGENE offers to reload the modified file.
+    //4. Accept the offering.
+    //Expected state: the file reloading failed, an error notification appeared, there are error messages in the log.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesAll));
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
+    GTUtilsNotifications::waitForNotification(os, false, "The text file can't be read. Check the file encoding and make sure the file is not corrupted");
+    QByteArray badData = badFile.readAll();
+    file.write(badData);
+    file.close();
+    badFile.close();
+    GTGlobals::sleep(10000);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6240) {
+    //1. Open WD. This step allows us to prevent a bad case, when, at the first opening of WD, the dialog "Choose output directory" appears and the filler below is catching it
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            CHECK_SET_ERR(wizard != NULL, "Wizard isn't found");
+
+            GTUtilsWizard::setParameter(os, "Input file(s)", dataDir + "samples/Assembly/chrM.sam");
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    //2. Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
+    //3. Choose "samples/Assembly/chrM.sam" as input and click "Run"
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads quality control...");
+    GTGlobals::sleep();
+
+    //Expected: The dashboard appears
+    QWebView* dashboard = GTUtilsDashboard::getDashboard(os);
+    CHECK_SET_ERR(dashboard != NULL, "Dashboard isn't found");
+}
 
 GUI_TEST_CLASS_DEFINITION(test_6243) {
     //1. Select "File" -> "Access remove database...".
@@ -798,6 +1559,477 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
     QString second = QString("%1.fa").arg(ensemblyIds.last());
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, first), QString("The sequence %1 is absent in the project tree view").arg(first));
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, second), QString("The sequence %1 is absent in the project tree view").arg(second));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6247) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            CHECK_SET_ERR(dialog != NULL, "Dialog isn't found");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    //1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + "alignment.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open "Export consensus" tab, set "../sandbox/Mapped reads_consensus.txt" to the "Export to file" field and click export
+    QString exportToFile = sandBoxDir + "Aligned reads_consensus.txt";
+    GTUtilsOptionPanelMca::setExportFileName(os, exportToFile);
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario));
+    GTUtilsOptionPanelMca::pushExportButton(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Open "alignment.ugenedb" again
+    GTUtilsProjectTreeView::doubleClickItem(os, "alignment.ugenedb");
+
+    //4. And again open "Export consensus" tab, and click export
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario));
+    GTUtilsOptionPanelMca::pushExportButton(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: there are 3 documents in the project tree: "alignment.ugenedb", "Aligned reads_consensus.txt" and "Aligned reads_consensus_1.txt"
+    QMap<QString, QStringList> docs = GTUtilsProjectTreeView::getDocuments(os);
+    CHECK_SET_ERR(docs.size() == 3, QString("Unexpected docs number, expected: 3, current: %1").arg(docs.size()));
+    CHECK_SET_ERR(docs.keys().contains("alignment.ugenedb"), "alignment.ugenedb in unexpectably absent");
+    CHECK_SET_ERR(docs.keys().contains("Aligned reads_consensus.txt"), "alignment.ugenedb in unexpectably absent");
+    CHECK_SET_ERR(docs.keys().contains("Aligned reads_consensus_1.txt"), "alignment.ugenedb in unexpectably absent");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6249_1) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    //2. Compose workflow read file urls -> Fastqc quality control
+    GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)", true);
+    GTUtilsWorkflowDesigner::addElement(os, "FastQC Quality Control", true);
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"),
+                                         GTUtilsWorkflowDesigner::getWorker(os, "FastQC Quality Control"));
+
+    //3. Set the input sequence files: "data\samples\FASTQ\eas.fastq" and "data\samples\Assembly\chrM.sam"
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read File URL(s)"));
+    GTMouseDriver::click();
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
+
+    //4. Run workflow, and check result files on dashboard
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList outFiles = GTUtilsDashboard::getOutputFiles(os);
+
+    CHECK_SET_ERR(outFiles.contains("eas_fastqc.html"), QString("Output files not contains desired file eas_fastqc.html"));
+    CHECK_SET_ERR(outFiles.contains("chrM_fastqc.html"), QString("Output files not contains desired file chrM_fastqc.html"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6249_2) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    //2. Compose workflow read file urls -> Fastqc quality control
+    GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)", true);
+    GTUtilsWorkflowDesigner::addElement(os, "FastQC Quality Control", true);
+    GTUtilsWorkflowDesigner::connect(os,    GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"),
+                                            GTUtilsWorkflowDesigner::getWorker(os, "FastQC Quality Control"));
+
+    //3. Set the input sequence files: "data\samples\FASTQ\eas.fastq" and "data\samples\FASTQ\eas.fastq"
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read File URL(s)"));
+    GTMouseDriver::click();
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
+
+    //4. Set parameter "Output file" to any location
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "FastQC Quality Control"));
+    GTMouseDriver::click();
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_6249_2_zzzz.html", GTUtilsWorkflowDesigner::textValue);
+
+    //5. Run workflow, and check result files on dashboard
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList outFiles = GTUtilsDashboard::getOutputFiles(os);
+
+    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz.html"), QString("Output files not contains desired file test_6249_2_zzzz.html"));
+    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz_1.html"), QString("Output files not contains desired file test_6249_2_zzzz_1.html"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6249_3) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    //2. Compose workflow read file urls -> Fastqc quality control x2
+    GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)", true);
+    GTUtilsWorkflowDesigner::addElement(os, "FastQC Quality Control", true);
+    GTUtilsWorkflowDesigner::addElement(os, "FastQC Quality Control", true);
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"),
+        GTUtilsWorkflowDesigner::getWorker(os, "FastQC Quality Control"));
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"),
+        GTUtilsWorkflowDesigner::getWorker(os, "FastQC Quality Control 1"));
+
+    //3. Set the input sequence files: "data\samples\FASTQ\eas.fastq" and "data\samples\Assembly\chrM.sam"
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read File URL(s)"));
+    GTMouseDriver::click();
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTGlobals::sleep(300);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
+
+    //4. Run workflow, and check result files on dashboard
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList outFiles = GTUtilsDashboard::getOutputFiles(os);
+
+    CHECK_SET_ERR(outFiles.contains("eas_fastqc.html"), QString("Output files not contains desired file eas_fastqc.html"));
+    CHECK_SET_ERR(outFiles.contains("chrM_fastqc.html"), QString("Output files not contains desired file chrM_fastqc.html"));
+    CHECK_SET_ERR(outFiles.contains("eas_fastqc_1.html"), QString("Output files not contains desired file eas_fastqc_1.html"));
+    CHECK_SET_ERR(outFiles.contains("chrM_fastqc_1.html"), QString("Output files not contains desired file chrM_fastqc_1.html"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6256) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    QString tempDir = QDir(sandBoxDir + "test_6256").absolutePath();
+
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::WorkflowDesigner);
+            QWidget *dialog = QApplication::activeModalWidget();
+            QDir().mkpath(tempDir);
+            GTFile::setReadOnly(os, tempDir);
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "workflowOutputEdit", dialog), tempDir);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    public:
+        QString tempDir;
+    };
+    //2. Open application settings and change workflow output directory to nonexistent path
+    Custom* c = new Custom();
+    c->tempDir = tempDir;
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, c));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+    //3. Add "Read File URL" element and validate workflow
+    //Expected state: there are 2 erorrs after validation
+    GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)", true);
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTGlobals::sleep(1000);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTGlobals::sleep(1000);
+    GTFile::setReadWrite(os, tempDir);
+
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::getErrors(os).size() == 2, "Unexpected number of errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6277) {
+//    The test checks that the second column of a table with annotations colors on the "Annotations Highlighting" options panel tab in Sequence View is wide enough.
+//    UGENE behaviour differed if it was build with Qt5.4 and Qt5.7
+
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "Annotations Highlighting" options panel tab.
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
+
+//    Expected state: the second column's width is 60 pixels; it took at least 20% of the table width; the first column took all available space.
+    QTreeWidget *table = GTWidget::findExactWidget<QTreeWidget *>(os, "OP_ANNOT_HIGHLIGHT_TREE");
+    CHECK_SET_ERR(nullptr != table, "OP_ANNOT_HIGHLIGHT_TREE widget is NULL");
+
+    QScrollBar *scrollBar = table->verticalScrollBar();
+    const int scrollBarWidth = nullptr == scrollBar ? 0 : (scrollBar->isVisible() ? scrollBar->width() : 0);
+
+    // These numbers are defined in the widget stylesheet in AnnotHighlightTree.cpp
+    const int MARGIN_LEFT = 5;
+    const int MARGIN_RIGHT = 10;
+    const int BORDER_WIDTH = 1;
+    const int MAGIC_NUMBER = scrollBarWidth + MARGIN_LEFT + MARGIN_RIGHT + 2 * BORDER_WIDTH;
+
+    const int COLOR_COLUMN_NUMBER = 1;
+    int colorColumnWidth = table->columnWidth(COLOR_COLUMN_NUMBER);
+    int totalTableWidth = table->width();
+
+    const int EXPECTED_COLOR_COLUMN_WIDTH = 60;
+    CHECK_SET_ERR(EXPECTED_COLOR_COLUMN_WIDTH == colorColumnWidth,
+                  QString("Color column width is incorrect: expected %1, got %2")
+                  .arg(EXPECTED_COLOR_COLUMN_WIDTH).arg(colorColumnWidth));
+
+    CHECK_SET_ERR(static_cast<double>(colorColumnWidth) / totalTableWidth >= 0.2,
+                  QString("Color column is too narrow: it's width is %1, the table width is %2")
+                  .arg(colorColumnWidth).arg(totalTableWidth));
+
+    const int ANNOTATION_NAME_COLUMN_NUMBER = 0;
+    int annotationNameColumnWidth = table->columnWidth(ANNOTATION_NAME_COLUMN_NUMBER);
+    CHECK_SET_ERR(annotationNameColumnWidth == totalTableWidth - colorColumnWidth - MAGIC_NUMBER,
+                  QString("Annotation name column isn't stretched: it's width is %1, width of the color column is %2, "
+                          "the table width is %3")
+                  .arg(annotationNameColumnWidth).arg(colorColumnWidth).arg(totalTableWidth));
+
+//    3. Drag and drop the options panel tab's left border to enlarge it.
+    GTUtilsOptionsPanel::resizeToMaximum(os);
+
+//    Expected state: the second column's width is 60 pixels; the first column took all available space.
+    colorColumnWidth = table->columnWidth(COLOR_COLUMN_NUMBER);
+    totalTableWidth = table->width();
+    annotationNameColumnWidth = table->columnWidth(ANNOTATION_NAME_COLUMN_NUMBER);
+
+    CHECK_SET_ERR(EXPECTED_COLOR_COLUMN_WIDTH == colorColumnWidth,
+                  QString("Color column width is incorrect after resizing: expected %1, got %2")
+                  .arg(EXPECTED_COLOR_COLUMN_WIDTH).arg(colorColumnWidth));
+
+    CHECK_SET_ERR(annotationNameColumnWidth == totalTableWidth - colorColumnWidth - MAGIC_NUMBER,
+                  QString("Annotation name column isn't stretched after resizing: it's width is %1, width of the color column is %2, "
+                          "the table width is %3")
+                  .arg(annotationNameColumnWidth).arg(colorColumnWidth).arg(totalTableWidth));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6279) {
+    class Custom : public CustomScenario {
+    public:
+        virtual void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "dialog not found");
+
+            QLineEdit *lineEdit = dialog->findChild<QLineEdit*>("leAnnotationName");
+            CHECK_SET_ERR(lineEdit != NULL, "line edit leAnnotationName not found");
+
+            QRadioButton* gbFormatLocation = dialog->findChild<QRadioButton*>("rbGenbankFormat");
+            CHECK_SET_ERR(gbFormatLocation != NULL, "radio button rbGenbankFormat not found");
+
+            QLineEdit *lineEdit1 = dialog->findChild<QLineEdit*>("leLocation");
+            CHECK_SET_ERR(lineEdit1 != NULL, "line edit leLocation not found");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    //1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Click CDS annotation on pan view
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970, 0, true);
+    //3. Press F2 to open Edit annotation dialog
+    GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new Custom()));
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
+    GTGlobals::sleep(1000);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6283) {
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            //2. Open a python tab
+            AppSettingsDialogFiller::isExternalToolValid(os, "python");
+
+            //Expected:: Bio module is valid
+            bool isToolValid = true;
+#ifndef Q_OS_WIN
+            isToolValid = AppSettingsDialogFiller::isExternalToolValid(os, "Bio");
+#endif
+            if (!isToolValid) {
+                os.setError("Bio is not valid");
+            }
+
+            //Expected: Bio module version is 1.73
+            bool hasVerion = true;
+#ifndef Q_OS_WIN
+            hasVerion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "Bio", "Version: 1.73");
+#endif
+            if (!hasVerion) {
+                os.setError("Incorrect Bio version");
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Open "UGENE Application Settings", select "External Tools" tab.
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+
+    CHECK_SET_ERR(!os.hasError(), os.getError());
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6291) {
+    //1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Click CDS annotation on pan view
+    //GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970, 0, true);
+    //3. Select qualifier
+    QString qValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "product", GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
+    //QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "db_xref");
+    GTUtilsAnnotationsTreeView::clickItem(os, "product", 1, false);
+    //4. Click active action "Copy qualifier..." in menu actions
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Copy/Paste" << "Copy qualifier 'product' value", GTGlobals::UseMouse);
+    QString actualValue = GTClipboard::text(os);
+    CHECK_SET_ERR(actualValue == qValue, QString("Qualifier text %1 differs with expected %2.").arg(actualValue).arg(qValue));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6301) {
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            //Expected: SPAdes description contains the following string - "Version: 3.13.0"
+            const bool hasVersion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "SPAdes", "Version: 3.13.0");
+            if (!hasVersion) {
+                os.setError("Unexpected SPAdes version");
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Open "UGENE Application Settings", select "External Tools" tab.
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+
+    CHECK_SET_ERR(!os.hasError(), os.getError());
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6309) {
+
+    class SetToolUrlScenario : public CustomScenario {
+    public:
+        SetToolUrlScenario() : CustomScenario() {}
+
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
+            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
+            QPushButton* pushButton = box->button(QDialogButtonBox::Ok);
+            CHECK_SET_ERR(pushButton != NULL, "pushButton is NULL");
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+            QString tabixPath = AppSettingsDialogFiller::getExternalToolPath(os, "Tabix");
+            QDir tabixDir(tabixPath);
+            tabixDir.cdUp();
+            tabixDir.cdUp();
+            QString extToolsPath = tabixDir.absolutePath();
+            AppSettingsDialogFiller::setExternalToolsDir(os, extToolsPath);
+
+            CHECK_SET_ERR(pushButton->isEnabled() == false , "pushButton is enabled");
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            CHECK_SET_ERR(pushButton->isEnabled() == true, "pushButton is disabled");
+            GTWidget::click(os, pushButton);
+        }
+    };
+    //1. Open UGENE
+    //2. Open menu Settings->Preferences select page 'External tools'
+    //3. Press top '...' button and select folder with external tools
+    //Expected state: Ok button and left Tree element with preferences pages are disabled while external tools validating
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetToolUrlScenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6314) {
+    //1. Copy "_common_data/clustal/align.aln" to sandbox and open it
+    const QString filePath = sandBoxDir + "test_6043.aln";
+    GTFile::copy(os, testDir + "_common_data/clustal/align.aln", filePath);
+
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Rename the first sequence with some very long name (more than 150 chars)
+    QString veryLongName;
+    for (int i = 0; i < 200; i++) {
+        veryLongName += "Q";
+    }
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "IXI_234", veryLongName);
+
+    //3. Save sequence and close the project
+    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Save all", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProject::closeProject(os);
+
+    //4. Open the file again
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: the length of the first sequence name is 150 chars
+    QString name = GTUtilsMSAEditorSequenceArea::getVisibleNames(os).first();
+
+    CHECK_SET_ERR(name.size() == 150,
+                  QString("Unexpected sequence name length, expected: 150, current: %1")
+                          .arg(name.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6334) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Read FASTQ Files with PE Reads", "Classify Sequences with MetaPhlAn2" and connect them
+    WorkflowProcessItem* readElement = GTUtilsWorkflowDesigner::addElement(os, "Read FASTQ Files with PE Reads");
+    WorkflowProcessItem* metaphlan2Element = GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
+    GTUtilsWorkflowDesigner::connect(os, readElement, metaphlan2Element);
+
+    //3. Set "Classify" parameters: Inpet data = PE reads
+    GTUtilsWorkflowDesigner::click(os, metaphlan2Element);
+    GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
+
+    //4. Set the "Input URL 2" slot to "empty"
+    QTableWidget* table = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+    CHECK_SET_ERR(table != nullptr, "Input Ports table isn't found");
+
+    GTUtilsWorkflowDesigner::setTableValue(os, "Input URL 2", "<empty>", GTUtilsWorkflowDesigner::comboValue, table);
+
+    //5. Click validateThe mandatory "Input URL 2" slot is not connected.
+    GTUtilsWorkflowDesigner::click(os, metaphlan2Element);
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+
+    //Expected: there is the following validation error appeared:
+    //Classify Sequences with MetaPhlAn2: The mandatory "Input URL 2" slot is not connected."), "Expected error isn't found
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.contains("Classify Sequences with MetaPhlAn2: The mandatory \"Input URL 2\" slot is not connected."), "Expected error isn't found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6378) {
+    //1. Remove Python from external tools
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+            AppSettingsDialogFiller::clearToolPath(os, "python");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Open "UGENE Application Settings", select "External Tools" tab.
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+    
+    //2. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    
+    //3. Place Metaphlan worker on scene
+    GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
+    
+    //4. Validate scheme
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTGlobals::sleep();
+    //Expected state: validation contains message: Classify Sequences with MetaPhlAn2: External tool "Bio" is not set
+    GTUtilsWorkflowDesigner::checkErrorList(os, "Classify Sequences with MetaPhlAn2: External tool \"Bio\" is not set");
 }
 
 } // namespace GUITest_regression_scenarios

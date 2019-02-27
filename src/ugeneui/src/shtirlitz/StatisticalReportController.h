@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,13 @@
 #ifndef _U2_STATISTICAL_REPORT_CONTROLLER_H_
 #define _U2_STATISTICAL_REPORT_CONTROLLER_H_
 
+#include <U2Gui/U2WebView.h>
+
 #include "ui_StatisticalReport.h"
 
 namespace U2 {
 
-class MultilingualHtmlView;
+class SimpleWebViewBasedWidgetController;
 
 class StatisticalReportController : public QDialog, public Ui_StatisticalReport {
     Q_OBJECT
@@ -36,11 +38,12 @@ public:
 public slots:
     void accept();
 
-protected:
-    void paintEvent(QPaintEvent *event);
+private slots:
+    void sl_pageReady();
 
 private:
-    MultilingualHtmlView*   htmlView;
+    U2WebView*   htmlView;
+    SimpleWebViewBasedWidgetController *htmlViewController;
 };
 
 }

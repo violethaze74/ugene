@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -141,8 +141,10 @@ static QString readSequenceName(U2OpStatus& os, IOAdapter *io, char beginWith = 
         int readedCount = 0;
         while ((readedCount == 0) && !io->isEof()) { // skip \ns
             readedCount = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE, &sequenceNameStartFound);
+            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), QString());
         }
-        CHECK_EXT(io->isEof() == false,,"");
+        CHECK(io->isEof() == false, QString());
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), QString());
         CHECK_EXT(readedCount >= 0, os.setError(errorMessage), "");
 
         buffArray.resize(readedCount);
@@ -170,6 +172,7 @@ static void readSequence(U2OpStatus& os, IOAdapter *io, QByteArray &sequence, ch
     while (!io->isEof()) {
         bool eolnFound = false;
         int readedCount = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &eolnFound);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
         CHECK_EXT(readedCount >= 0, os.setError(U2::FastqFormat::tr("Error while reading sequence")),);
 
         QByteArray trimmed = QByteArray(buffArray.data(), readedCount);
@@ -177,11 +180,17 @@ static void readSequence(U2OpStatus& os, IOAdapter *io, QByteArray &sequence, ch
 
         if (eolnFound && checkFirstSymbol(trimmed, readUntil)) { // read quality sequence name line, reverting back
             io->skip(-readedCount);
+            if (io->hasError()) {
+                os.setError(io->errorString());
+            }
             return;
         }
 
         sequence.append(trimmed);
         CHECK_OP(os,);
+    }
+    if (io->hasError()) {
+        os.setError(io->errorString());
     }
 }
 
@@ -196,6 +205,7 @@ static void readQuality(U2OpStatus& os, IOAdapter *io, QByteArray &sequence, int
     while (!io->isEof() && (readed < count)) {
         bool eolnFound = false;
         int readedCount = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &eolnFound);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
         CHECK_EXT(readedCount >= 0, os.setError(U2::FastqFormat::tr("Error while reading sequence")),);
 
         QByteArray trimmed = QByteArray(buffArray.data(), readedCount);
@@ -204,11 +214,17 @@ static void readQuality(U2OpStatus& os, IOAdapter *io, QByteArray &sequence, int
         int qualitySize = sequence.size() + trimmed.size();
         if (eolnFound && (qualitySize > count)) { // read quality sequence name line, reverting back
             io->skip(-readedCount);
+            if (io->hasError()) {
+                os.setError(io->errorString());
+            }
             return;
         }
 
         sequence.append(trimmed);
         CHECK_OP(os,);
+    }
+    if (io->hasError()) {
+        os.setError(io->errorString());
     }
 }
 
@@ -263,6 +279,9 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
         QString sequenceName = readSequenceName(warningOs, io, '@');
         // check for eof while trying to read another FASTQ block
         if (io->isEof()) {
+            if (io->hasError()) {
+                os.setError(io->errorString());
+            }
             break;
         }
 
@@ -534,8 +553,8 @@ void FastqFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObje
 }
 
 DNASequence *FastqFormat::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
-    CHECK_EXT((io != NULL) && (io->isOpen() == true), os.setError(L10N::badArgument("IO adapter")), NULL);
     U2OpStatus2Log logOs;
+    CHECK_EXT((io != NULL) && (io->isOpen() == true), os.setError(L10N::badArgument("IO adapter")), NULL);
     QByteArray readBuff;
     QByteArray sequence;
     QByteArray qualityScores;
@@ -547,7 +566,7 @@ DNASequence *FastqFormat::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
     readBuff.clear();
     QString sequenceName = readSequenceName(os, io, '@');
     // check for eof while trying to read another FASTQ block
-    CHECK_EXT(!io->isEof(), , NULL);
+    CHECK(!io->isEof(), NULL);
     CHECK_OP(os, new DNASequence());
 
     sequence.clear();
@@ -555,6 +574,7 @@ DNASequence *FastqFormat::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
     CHECK_OP(logOs, new DNASequence());
 
     QString qualSequenceName = readSequenceName(logOs, io, '+');
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
     if (!qualSequenceName.isEmpty()) {
         static const QString err = U2::FastqFormat::tr("Not a valid FASTQ file, sequence name differs from quality scores name");
         CHECK_EXT(sequenceName == qualSequenceName, logOs.setError(err), new DNASequence());

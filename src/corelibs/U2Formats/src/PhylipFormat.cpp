@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -198,6 +198,7 @@ MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatu
 
     // Header: "<number of species> <number of characters>"
     int len = io->readLine(buff, READ_BUFF_SIZE, &resOk);
+    CHECK_EXT(len != 0, os.setError(PhylipSequentialFormat::tr("Error parsing file")), MultipleSequenceAlignment());
     CHECK_EXT(resOk, os.setError( PhylipSequentialFormat::tr("Illegal line")), MultipleSequenceAlignment());
 
     QByteArray line = QByteArray(buff, len).trimmed();
@@ -211,13 +212,16 @@ MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatu
         CHECK_EXT(!io->isEof(), os.setError( PhylipSequentialFormat::tr("There is not enough data")), MultipleSequenceAlignment());
         // get name
         len = io->readBlock(buff, MAX_NAME_LEN);
-        QByteArray name = QByteArray(buff, len).trimmed();
-        CHECK_EXT(len != 0, os.setError( PhylipSequentialFormat::tr("Error parsing file") ), MultipleSequenceAlignment());
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
+        CHECK_EXT(len != 0, os.setError(PhylipSequentialFormat::tr("Error parsing file")), MultipleSequenceAlignment());
 
+        QByteArray name = QByteArray(buff, len).trimmed();
         // get sequence
         QByteArray value;
         while ((value.size() != numberOfCharacters) && (!io->isEof())) {
             len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
+            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
+
             QByteArray line = QByteArray(buff, len);
             removeSpaces(line);
             value.append(line);
@@ -333,7 +337,7 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
 
     // First line: "<number of species> <number of characters>"
     int len = io->readLine(buff, READ_BUFF_SIZE, &resOk);
-
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
     CHECK_EXT(resOk, os.setError( PhylipInterleavedFormat::tr("Illegal line") ), MultipleSequenceAlignment());
 
     QByteArray line = QByteArray(buff, len).trimmed();
@@ -347,6 +351,7 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
     for (int i = 0; i < numberOfSpecies; i++) {
         CHECK_EXT(!io->isEof(), os.setError( PhylipSequentialFormat::tr("There is not enough data")), MultipleSequenceAlignment());
         len = io->readBlock(buff, MAX_NAME_LEN);
+        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
         CHECK_EXT(len != 0, os.setError( PhylipFormat::tr("Error parsing file") ), MultipleSequenceAlignment());
 
         QByteArray name = QByteArray(buff, len).trimmed();
@@ -354,7 +359,9 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
         QByteArray value;
         do {
             len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
-            CHECK_EXT(len != 0, os.setError( PhylipSequentialFormat::tr("Error parsing file") ), MultipleSequenceAlignment());
+            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
+            CHECK_EXT(len != 0, os.setError(PhylipSequentialFormat::tr("Error parsing file")), MultipleSequenceAlignment());
+
             value.append(QByteArray(buff, len));
         } while (!resOk);
 
@@ -372,6 +379,8 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
             QByteArray value;
             do {
                 len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
+                CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
+
                 value.append(QByteArray(buff, len));
             } while (!resOk && !io->isEof());
             if (value.size() == 0) {
@@ -394,6 +403,7 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
         os.setProgress(io->getProgress());
         currentLen += blockSize;
     }
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
     CHECK_EXT(al->getLength() == numberOfCharacters, os.setError( PhylipInterleavedFormat::tr("Number of characters does not correspond to the stated number") ),
               MultipleSequenceAlignment());
     return al;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -199,7 +199,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx) : ctx(_ctx), dn
     connect(removeAnnsAndQsAction, SIGNAL(triggered()), SLOT(sl_removeAnnsAndQs()));
     tree->addAction(removeAnnsAndQsAction);
 
-    copyQualifierAction = new QAction(tr("Copy qualifier text"), this);
+    copyQualifierAction = new QAction(QIcon(":/core/images/copy_qualifier.png"), tr("Copy qualifier text"), this);
     connect(copyQualifierAction, SIGNAL(triggered()), SLOT(sl_onCopyQualifierValue()));
 
     copyQualifierURLAction = new QAction(tr("Copy qualifier URL"), this);
@@ -458,7 +458,7 @@ void AnnotationsTreeView::sl_onItemSelectionChanged() {
 
 void AnnotationsTreeView::sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &added, const QList<Annotation *> &removed) {
     tree->disconnect(this, SIGNAL(sl_onItemSelectionChanged()));
-
+    clearSelectedNotAnnotations();
     foreach (Annotation *a, removed) {
         AnnotationGroup *g = a->getGroup();
         AVAnnotationItem *item = findAnnotationItem(g, a);
@@ -968,14 +968,18 @@ void AnnotationsTreeView::sl_onBuildPopupMenu(GObjectView*, QMenu* m) {
 
 void AnnotationsTreeView::adjustMenu(QMenu* m) const {
     QMenu* addMenu = GUIUtils::findSubMenu(m, ADV_MENU_ADD);
-    SAFE_POINT(addMenu != NULL, "addMenu",);
+    SAFE_POINT(addMenu != NULL, "addMenu", );
     addMenu->addAction(addAnnotationObjectAction);
     addMenu->addAction(addQualifierAction);
 
     QMenu* removeMenu = GUIUtils::findSubMenu(m, ADV_MENU_REMOVE);
-    SAFE_POINT(removeMenu != NULL, "removeMenu",);
+    SAFE_POINT(removeMenu != NULL, "removeMenu", );
     removeMenu->addAction(removeObjectsFromViewAction);
     removeMenu->addAction(removeAnnsAndQsAction);
+
+    QMenu* copyMenu = GUIUtils::findSubMenu(m, ADV_MENU_COPY);
+    SAFE_POINT(removeMenu != NULL, "copyMenu", );
+    copyMenu->addAction(copyQualifierAction);
 }
 
 void AnnotationsTreeView::sl_paste(){
@@ -1711,10 +1715,6 @@ void AnnotationsTreeView::sl_annotationClicked(AnnotationSelectionData* asd) {
     }
 
     expandItemRecursevly(item->parent());
-    {
-        SignalBlocker blocker(tree);
-        item->setSelected(setSelected);
-    }
     SAFE_POINT(asd->locationIdxList.size() == 1, "Incorrect size", );
     annotationSelection->addToSelection(item->annotation, asd->locationIdxList.first());
     annotationClicked(item, sortedAnnotationSelections, selectedRegion);
@@ -1853,6 +1853,15 @@ void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const 
         }
     }
     sequenceSelection->addRegion(regionToSelect);
+}
+
+void AnnotationsTreeView::clearSelectedNotAnnotations() {
+    foreach(QTreeWidgetItem *item, tree->selectedItems()) {
+        AVItem *aVItem = static_cast<AVItem *>(item);
+        if (aVItem != nullptr && aVItem->type != AVItemType_Annotation) {
+            item->setSelected(false);
+        }
+    }
 }
 
 void AnnotationsTreeView::sl_onCopyQualifierValue() {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -192,7 +192,8 @@ Task * RmdupBamWorker::tick() {
             setting.removeSingleEnd = getValue<bool>(REMOVE_SINGLE_END_ID);
             setting.treatReads = getValue<bool>(TREAT_READS_ID);
 
-            Task *t = new SamtoolsRmdupTask(setting);
+            SamtoolsRmdupTask *t = new SamtoolsRmdupTask(setting);
+            t->addListeners(createLogListeners());
             connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return t;
         }
@@ -322,7 +323,7 @@ void SamtoolsRmdupTask::run(){
 
     while(!samtools.process->waitForFinished(1000)){
         if (isCanceled()) {
-            samtools.process->kill();
+            CmdlineTaskRunner::killProcessTree(samtools.process);
             return;
         }
     }

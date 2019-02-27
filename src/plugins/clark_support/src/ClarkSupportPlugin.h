@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,12 @@
 #ifndef _U2_CLARK_SUPPORT_PLUGIN_H_
 #define _U2_CLARK_SUPPORT_PLUGIN_H_
 
+#include <U2Core/GAutoDeleteList.h>
 #include <U2Core/PluginModel.h>
 
 namespace U2 {
+
+class XMLTestFactory;
 
 class ClarkSupportPlugin : public Plugin {
     Q_OBJECT
@@ -34,6 +37,9 @@ public:
 
     static const QString PLUGIN_NAME;
     static const QString PLUGIN_DESCRIPRION;
+
+private:
+    GAutoDeleteList<XMLTestFactory> *testFactories;
 };
 
 }   // namespace U2

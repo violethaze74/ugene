@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -909,7 +909,7 @@ GUI_TEST_CLASS_DEFINITION(test_4096) {
 
     GTUtilsProjectTreeView::checkItem(os, "test_4096.aln");
 
-    const QString referenceMsaContent = getFileContent(testDir + "_common_data/clustal/test_4096.aln");
+    const QString referenceMsaContent = getFileContent(testDir + "_common_data/regression/4096/test_4096.aln");
     const QString resultMsaContent = getFileContent(sandBoxDir + "test_4096.aln");
     CHECK_SET_ERR(!referenceMsaContent.isEmpty() && referenceMsaContent == resultMsaContent, "Unexpected MSA content");
 
@@ -2094,7 +2094,6 @@ GUI_TEST_CLASS_DEFINITION(test_4232) {
     const QModelIndex sequenceDocIndex = GTUtilsProjectTreeView::findIndex(os, "illumina.fa");
     const QModelIndex sequenceObjIndex = sequenceDocIndex.child(0, 0);
 
-    GTUtilsNotifications::waitForNotification(os, true, "It seems that sequence");
     GTUtilsProjectTreeView::dragAndDrop(os, sequenceObjIndex, GTWidget::findWidget(os, "assembly_reads_area"));
 
     // Expected state: sequence object and document are highlighted in the Project view
@@ -3150,6 +3149,29 @@ GUI_TEST_CLASS_DEFINITION(test_4463) {
     CHECK_SET_ERR(NULL != GTUtilsSequenceView::getSeqWidgetByNumber(os), "Can't find sequence view widget");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4483) {
+
+    // Open "samples/CLUSTALW/ty3.aln.gz".
+    // Click "Export as image".
+    // Choose SVG.
+    // Export.
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    for (int i=0; i<8; i++) {
+        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
+    }
+    GTUtilsDialog::waitForDialog(os,new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("SVG")));
+    GTUtilsDialog::waitForDialog( os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    qint64 fileSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/test.svg");
+    CHECK_SET_ERR(fileSize > 7000000 && fileSize < 80000000, "Current size: " + QString().setNum(fileSize));
+
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4486) {
 //    1. Open "data/samples/Assembly/chrM.sorted.bam".
 //    2. Import with default settings.
@@ -3300,6 +3322,8 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
 
     GTUtilsMsaEditor::removeColumn(os, 1);
     GTThread::waitForMainThread();
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
+    GTGlobals::sleep(500);
 
     class Scenario2 : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -3537,6 +3561,9 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     // 3. Open the "Align sequences with MUSCLE" sample scheme.
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTGlobals::sleep();
+    GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+    GTGlobals::sleep();
 
     // 4. Set "_common_data/scenarios/_regression/4563/test_ma.fa" as the input file.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
@@ -5054,7 +5081,8 @@ GUI_TEST_CLASS_DEFINITION(test_4784_1) {
     settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST search...");
-    GTGlobals::sleep(3000);
+    GTGlobals::sleep(1000);
+
     //5. Delete "chr6.fa" in file browser.
     //7. Click "No" in the appeared message box.
     //Expected result: An error notification appears - "A problem occurred during doing BLAST. The sequence is no more available".
@@ -5081,6 +5109,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
     settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST+...", GTGlobals::UseMouse);
+    GTGlobals::sleep(100);
 
     //5. Delete "chr6.fa" in file browser.
     //7. Click "No" in the appeared message box.
@@ -5117,7 +5146,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_4784_4) {
     QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_4.fa");
-
+    GTGlobals::sleep();
     //1. Click the menu Tools -> BLAST-> BLAST+ Search...
     //2. Select "_common_data/fasta/chr6" as input file.
     //3. Press "Select a database file".
@@ -5126,17 +5155,18 @@ GUI_TEST_CLASS_DEFINITION(test_4784_4) {
     BlastAllSupportDialogFiller::Parameters settings;
     settings.runBlast = true;
     settings.withInputFile = true;
-    settings.inputPath = sandBoxDir + "regression_test_4784_4.fa";
     settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
+    settings.inputPath = sandBoxDir + "regression_test_4784_4.fa";
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST+ search...");
+    GTGlobals::sleep(5000);
 
     //6. Remove "chr6.fa" from project.
     //Expected result: An error notification appears - "A problem occurred during doing BLAST. The sequence is no more available".
     GTUtilsNotifications::waitForNotification(os, true, "The sequence is no more available");
     GTUtilsDocument::removeDocument(os, "regression_test_4784_4.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4785_1) {
@@ -5851,18 +5881,19 @@ GUI_TEST_CLASS_DEFINITION(test_4918_1) {
 GUI_TEST_CLASS_DEFINITION(test_4934) {
     //1. Open samples/CLUSTALW/ty3.aln.gz
     GTLogTracer l;
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
+    //GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/1798", "1.4k.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Align with Kalign
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseMouse));
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     //3. while aligning lock document for editing
-    GTUtilsDocument::lockDocument(os, "ty3.aln.gz");
+    GTUtilsDocument::lockDocument(os, "1.4k.aln");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //4. Unlock document after alignment finished
-    GTUtilsDocument::unlockDocument(os, "ty3.aln.gz");
+    GTUtilsDocument::unlockDocument(os, "1.4k.aln");
 
     //5. Align with Kalign again
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseMouse));
@@ -5870,7 +5901,7 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::checkContainsError(os, l, "Object 'ty3.aln.gz' removed");
+    GTUtilsLog::checkContainsError(os, l, "Object '1.4k.aln' removed");
     int errorNum = GTUtilsLog::getErrors(os, l).size();
     CHECK_SET_ERR(errorNum==1, QString("Too many errors in log: %1").arg(errorNum));
 }

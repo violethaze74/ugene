@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -134,6 +134,8 @@ QVariant TrimmomaticPropertyWidget::value() {
             steps << step;
         }
     }
+    CHECK(!steps.isEmpty(), QVariant::Invalid);
+
     return steps;
 }
 
@@ -179,7 +181,7 @@ const QString TrimmomaticPropertyDialog::DEFAULT_SETTINGS_TEXT = QObject::tr("Ad
 TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
                                       QWidget *parent) : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "22059547");
+    new HelpButton(this, buttonBox, "23331522");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
 
@@ -209,6 +211,7 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
     connect(buttonRemove, SIGNAL(pressed()), SLOT(sl_removeStep()));
 
     parseCommand(value);
+    sl_valuesChanged();
 }
 
 QString TrimmomaticPropertyDialog::getValue() const {

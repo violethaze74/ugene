@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ namespace Workflow {
 
 bool WriteAnnotationsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const {
     Q_UNUSED(options);
-    
+
     Port* port = actor->getPort(BasePorts::IN_ANNOTATIONS_PORT_ID());
     if (port == NULL) {
         notificationList << WorkflowNotification(tr("Input port is NULL"), actor->getId(), WorkflowNotification::U2_ERROR);

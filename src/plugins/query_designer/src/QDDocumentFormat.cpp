@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,6 +71,7 @@ Document* QDDocFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& targetDb,
         rawData.append(block.data(), blockLen);
         os.setProgress(io->getProgress());
     }
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
 
     if (checkRawData(rawData).score != FormatDetection_Matched) {
         os.setError(tr("Invalid header. %1 expected").arg(QDDocument::HEADER_LINE));

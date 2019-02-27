@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,8 @@ public:
     static void killProcess(QProcess *process, QString childProcesses = "");
 private:
     static QList<long> getChildPidsRecursive(long parentPid);
-    void parseStandartOutputFile(QString &filepath);
+    QString parseStandartOutputFile() const;
+    void parseError(const QString& error) const;
 
     QStringList             arguments;
     ExternalToolLogParser*  logParser;
@@ -155,8 +156,7 @@ protected:
     virtual void processLine(const QString &line);
     virtual void processErrLine(const QString &line);
     virtual bool isError(const QString &line) const;
-
-    void setLastError(const QString &value);
+    virtual void setLastError(const QString &value);
 
 private:
     /* If any error occurred, this variable will be non-empty */
@@ -188,10 +188,9 @@ public:
 class U2CORE_EXPORT ExternalToolListener {
 public:
     enum LogType {
-        ERROR_LOG,
-        OUTPUT_LOG,
-        PROGRAM_PATH,
-        ARGUMENTS
+        ERROR_LOG = 0,
+        OUTPUT_LOG = 1,
+        PROGRAM_WITH_ARGUMENTS = 2
     };
 
     ExternalToolListener(ExternalToolLogProcessor *logProcessor = NULL);
@@ -199,7 +198,7 @@ public:
 
     virtual void addNewLogMessage(const QString& message, int messageType) = 0;
 
-    void setToolName(const QString& toolName);
+    virtual void setToolName(const QString& toolName);
     void setLogProcessor(ExternalToolLogProcessor *logProcessor);
     const QString &getToolName() const;
 

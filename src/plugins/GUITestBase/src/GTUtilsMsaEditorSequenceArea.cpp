@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -448,6 +448,16 @@ void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus &os, const QSt
     while (names[row] != seqName) {
         row++;
     }
+    click(os, QPoint(-5, row));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "selectSequence"
+void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus &os, const int row) {
+    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>
+        (GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    CHECK_SET_ERR(msaEditArea != NULL, "MsaEditorSequenceArea not found");
+
     click(os, QPoint(-5, row));
 }
 #undef GT_METHOD_NAME

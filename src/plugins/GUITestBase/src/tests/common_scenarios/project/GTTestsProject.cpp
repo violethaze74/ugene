@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@
  */
 
 #include <QMdiSubWindow>
-#include <QWebElement>
 #include <QApplication>
 #include <QTreeWidget>
 #include <QDebug>
@@ -87,8 +86,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTFileDialog::openFile(os, testDir+"_common_data/scenarios/project/", "proj1.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
-//     1) Project view with document "1CF7.PDB" is opened
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+//     1) Project view with document "1CF7.pdb" is opened
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 //     2) UGENE window titled with text "proj1 UGENE"
     QString expectedTitle;
 #ifdef Q_OS_MAC
@@ -121,25 +120,27 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTGlobals::sleep();
 
 // Expected state:
-//     1) project view with document "1CF7.PDB" has been opened,
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+//     1) project view with document "1CF7.pdb" has been opened,
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 //     2) UGENE window titled with text "proj1 UGENE"
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 
-//     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.PDB"
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTGlobals::sleep(2000);
-    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.PDB");
+//     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.pdb"
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
+    GTGlobals::sleep();
+    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.pdb");
 
 // 7. Select "1CF7.PDB" in project tree and press Enter
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick( Qt::Key_Enter);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
 
 // Expected state:
 //     1) Document is loaded,
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB", AnnotatedDNAViewFactory::ID);
-//     2) 4 sequences and 3D Viewer with molecule is appeared
+   GTUtilsDocument::checkDocument(os, "1CF7.pdb", AnnotatedDNAViewFactory::ID);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -152,7 +153,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     expectedTitle = "proj1 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTGlobals::sleep(4000);
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir+"_common_data/scenarios/sandbox", "proj2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Save project as...");
@@ -168,11 +170,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     expectedTitle = "proj2 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTGlobals::sleep(2000);
-    GTUtilsToolTip::checkExistingToolTip(os, "samples/PDB/1CF7.PDB");
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
+    GTGlobals::sleep();
+    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/pdb/1CF7.pdb");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -196,9 +199,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj1.uprj");
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
-    GTUtilsDocument::removeDocument(os, "1CF7.PDB", GTGlobals::UseMouse);
+    GTUtilsDocument::removeDocument(os, "1CF7.pdb", GTGlobals::UseMouse);
     GTUtilsProject::checkProject(os, GTUtilsProject::Empty);
 }
 
@@ -653,11 +656,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1){
 
     //check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
+    GTGlobals::sleep();
     title1 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title1 == "test_3637_1 [as] Contig1", "unexpected title for doc1: " + title1);
 
+
     //check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
+    GTGlobals::sleep();
     title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "test_3637_1 [as] Contig2", "unexpected title for doc2: " + title2);
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,6 +82,22 @@ void ExternalTool::setAdditionalInfo(const StrStrMap &newAdditionalInfo) {
 ExternalToolValidation ExternalTool::getToolValidation() {
     ExternalToolValidation result(toolRunnerProgramm, executableFileName, validationArguments, validMessage, errorDescriptions);
     return result;
+}
+
+void ExternalTool::performAdditionalChecks(const QString& toolPath) {
+    Q_UNUSED(toolPath);
+}
+
+const QString& ExternalTool::getAdditionalErrorMessage() const {
+    return additionalErrorMesage;
+}
+
+void ExternalTool::setAdditionalErrorMessage(const QString& message) {
+    additionalErrorMesage = message;
+}
+
+bool ExternalTool::hasAdditionalErrorMessage() const {
+    return !additionalErrorMesage.isEmpty();
 }
 
 bool ExternalTool::isMuted() const {

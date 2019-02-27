@@ -270,34 +270,34 @@
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="68"/>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="115"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="116"/>
         <source>Outside</source>
         <translation>Снаружи</translation>
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="71"/>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="120"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="122"/>
         <source>Inside/Outside</source>
         <translation>Внутри/Снаружи</translation>
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="74"/>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="117"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="119"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="130"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="131"/>
         <source>Title</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="133"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="134"/>
         <source>Ruler</source>
         <translation>Шкала</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="136"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="137"/>
         <source>Annotations</source>
         <translation>Аннотации</translation>
     </message>

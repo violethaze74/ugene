@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -252,12 +252,6 @@ void ClarkClassifyWorkerFactory::init() {
         Descriptor outputUrl(OUTPUT_URL, ClarkClassifyWorker::tr("Output file"),
                          ClarkClassifyWorker::tr("Specify the output file name."));
 
-//        Descriptor taxonomy(TAXONOMY, ClarkClassifyWorker::tr("Taxonomy"),
-//            ClarkClassifyWorker::tr("A set of files that define the taxonomic name and tree information, and the GI number to taxon map."
-//                                    "<br>The NCBI taxonomy is used by default."));
-
-//        Descriptor rank(TAXONOMY_RANK, ClarkClassifyWorker::tr("Taxonomy rank"),
-//            ClarkClassifyWorker::tr("All input sequences are classified against all taxa from the selected database, which are defined all at the same taxonomy level (--species, --genus, --family, --order, --class, --phylum)."));
 
         Descriptor kLength(K_LENGTH, ClarkClassifyWorker::tr("K-mer length"),
             ClarkClassifyWorker::tr("Set the k-mer length (-k).<br><br>"
@@ -325,9 +319,6 @@ void ClarkClassifyWorkerFactory::init() {
         }
         a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, clarkDatabasePath);
 
-//        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
-//        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
-
         Attribute *klenAttr = new Attribute(kLength, BaseTypes::NUM_TYPE(), Attribute::None, 31);
         klenAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_DEFAULT)));
         a << klenAttr;
@@ -346,8 +337,6 @@ void ClarkClassifyWorkerFactory::init() {
         Attribute *gapAttr = new Attribute(gap, BaseTypes::NUM_TYPE(), Attribute::None, 4);
         gapAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_LIGHT)));
         a << gapAttr;
-
-        //a << new Attribute( outFile, BaseTypes::STRING_TYPE(), false, "results.csv");
 
         a << new Attribute(db2ram, BaseTypes::BOOL_TYPE(), Attribute::None, false);
         a << new Attribute(numThreads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
@@ -470,33 +459,8 @@ void ClarkClassifyWorker::init() {
     }
 }
 
-bool ClarkClassifyWorker::isReady() const {
-    if (isDone()) {
-        return false;
-    }
-    const int hasMessage1 = input->hasMessage();
-    const bool ended1 = input->isEnded();
-    //if (!paired)
-    {
-        return hasMessage1 || ended1;
-    }
-/*
-    const int hasMessage2 = pairedInput->hasMessage();
-    const bool ended2 = pairedInput->isEnded();
-
-    if (hasMessage1 && hasMessage2) {
-        return true;
-    } else if (hasMessage1) {
-        return ended2;
-    } else if (hasMessage2) {
-        return ended1;
-    }
-
-    return ended1 && ended2;*/
-}
-
 Task * ClarkClassifyWorker::tick() {
-    if (input->hasMessage() /*&& (!paired || pairedInput->hasMessage())*/) {
+    if (input->hasMessage()) {
         const Message message = getMessageAndSetupScriptValues(input);
 
         QString readsUrl = message.getData().toMap()[ClarkClassifyWorkerFactory::INPUT_SLOT].toString();
@@ -510,13 +474,22 @@ Task * ClarkClassifyWorker::tick() {
         QString reportUrl = getValue<QString>(ClarkClassifyWorkerFactory::OUTPUT_URL);
         if (reportUrl.isEmpty()) {
             const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
-            reportUrl = tmpDir + "/" + NgsReadsClassificationUtils::getClassificationFileName(metadata.getFileUrl(), "CLARK", "csv", paired);
+            QString fileUrl = metadata.getFileUrl();
+            reportUrl = tmpDir +
+                        "/" +
+                        (fileUrl.isEmpty() ? QString("CLARK_%1.txt")
+                                                     .arg(NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX)
+                                           : NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(fileUrl,
+                                                                                                      QStringList() << "CLARK"
+                                                                                                                    << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX,
+                                                                                                      "csv",
+                                                                                                      paired));
         }
+        FileAndDirectoryUtils::createWorkingDir(reportUrl, FileAndDirectoryUtils::FILE_DIRECTORY, "", "");
         reportUrl = GUrlUtils::ensureFileExt(reportUrl, QStringList("csv")).getURLString();
         reportUrl = GUrlUtils::rollFileName(reportUrl, "_");
 
         if (paired) {
-//            const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
             pairedReadsUrl = message.getData().toMap()[ClarkClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
         }
         //TODO uncompress input files if needed
@@ -533,20 +506,6 @@ Task * ClarkClassifyWorker::tick() {
         output->setEnded();
     }
 
-//    if (paired) {
-//        QString error;
-//        if (input->isEnded() && (!pairedInput->isEnded() || pairedInput->hasMessage())) {
-//            error = tr("Not enough downstream reads datasets");
-//        }
-//        if (pairedInput->isEnded() && (!input->isEnded() || input->hasMessage())) {
-//            error = tr("Not enough upstream reads datasets");
-//        }
-
-//        if (!error.isEmpty()) {
-//            return new FailTask(error);
-//        }
-//    }
-
     return NULL;
 }
 
@@ -561,7 +520,7 @@ void ClarkClassifyWorker::sl_taskFinished(Task *t) {
     algoLog.details(QString("CLARK produced classification: %1").arg(rawClassificationUrl));
 
     QVariantMap data;
-    TaxonomyClassificationResult classificationResult = parseReport(rawClassificationUrl);
+    const TaxonomyClassificationResult &classificationResult = task->getParsedReport();
     data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID] = QVariant::fromValue<U2::LocalWorkflow::TaxonomyClassificationResult>(classificationResult);
     output->put(Message(output->getBusType(), data));
     context->getMonitor()->addOutputFile(rawClassificationUrl, getActor()->getId());
@@ -569,83 +528,49 @@ void ClarkClassifyWorker::sl_taskFinished(Task *t) {
     LocalWorkflow::TaxonomyClassificationResult::const_iterator it;
     int classifiedCount = NgsReadsClassificationUtils::countClassified(classificationResult);
     context->getMonitor()->addInfo(tr("There were %1 input reads, %2 reads were classified.").arg(QString::number(classificationResult.size())).arg(QString::number(classifiedCount))
-                                    , getActor()->getId(), WorkflowNotification::U2_INFO);
+        , getActor()->getId(), WorkflowNotification::U2_INFO);
 }
 
 void ClarkClassifyWorker::cleanup() {
 
 }
 
-//also see in clark: getObjectsDataComputeFast, getObjectsDataCompute, getObjectsDataComputeFastLight,getObjectsDataComputeFastSpaced, getObjectsDataComputeFull, printExtendedResults
-static const QByteArray DEFAULT_REPORT("Object_ID, Length, Assignment");
-static const QByteArray REPORT_PREFIX("Object_ID,");
-static const QByteArray EXTENDED_REPORT_SUFFIX(",Length,Gamma,1st_assignment,score1,2nd_assignment,score2,confidence");
+const QMap<QString, QString> ClarkLogParser::wellKnownErrors = ClarkLogParser::initWellKnownErrors();
 
-TaxonomyClassificationResult ClarkClassifyWorker::parseReport(const QString &url)
-{
-    TaxonomyClassificationResult result;
-    QFile reportFile(url);
-    if (!reportFile.open(QIODevice::ReadOnly)) {
-        reportError(tr("Cannot open classification report: %1").arg(url));
-    } else {
-        QByteArray line = reportFile.readLine().trimmed();
+ClarkLogParser::ClarkLogParser() : ExternalToolLogParser() {}
 
-        bool extended = line.endsWith(EXTENDED_REPORT_SUFFIX);
-        if (!line.startsWith(REPORT_PREFIX)) {
-            reportError(tr("Failed to recognize CLARK report format: %1").arg(QString(line)));
-        } else {
-            while ((line = reportFile.readLine().trimmed()).size() != 0) {
-                QList<QByteArray> row = line.split(',');
-                if (extended ? row.size() < 6 : row.size() != 3) {
-                    reportError(tr("Broken CLARK report: %1").arg(url));
-                    break;
-                }
-                int assignmentIdx = extended ? row.size() - 5 : 2;
-                QString objID = row[0];
-                QByteArray &assStr = row[assignmentIdx];
-                algoLog.trace(QString("Found CLARK classification: %1=%2").arg(objID).arg(QString(assStr)));
-
-                bool ok = true;
-                TaxID assID = (assStr != "NA") ? assStr.toUInt(&ok) : TaxonomyTree::UNCLASSIFIED_ID;
-                if (!ok) {
-                    reportError(tr("Broken CLARK report: %1").arg(url));
-                    break;
-                }
-                if (result.contains(objID)) {
-                    QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
-                    monitor()->addInfo(msg, getActorId(), WorkflowNotification::U2_WARNING);
-                    algoLog.info(msg);
-                } else {
-                    result[objID] = assID;
-                }
-            }
+bool ClarkLogParser::isError(const QString &line) const {
+    foreach (const QString &wellKnownError, wellKnownErrors.keys()) {
+        if (line.contains(wellKnownError)) {
+            return true;
         }
-        reportFile.close();
     }
+    return false;
+}
+
+void ClarkLogParser::setLastError(const QString &errorKey) {
+    QString errorValue = errorKey;
+    foreach(const QString& wellKnownErrorKey, wellKnownErrors.keys()) {
+        CHECK_CONTINUE(errorKey.contains(wellKnownErrorKey));
+
+        errorValue = wellKnownErrors.value(wellKnownErrorKey, errorKey);
+    }
+    ExternalToolLogParser::setLastError(errorValue);
+}
+
+QMap<QString, QString> ClarkLogParser::initWellKnownErrors() {
+    QMap<QString, QString> result;
+    result.insert("std::bad_alloc", tr("There is not enough memory (RAM) to execute CLARK."));
+    result.insert("Process crashed", tr("CLARK process crashed. It might happened because there is not enough memory (RAM) to complete the CLARK execution."));
+
     return result;
 }
 
-class ClarkLogParser : public ExternalToolLogParser {
-public:
-    ClarkLogParser() {}
-
-private:
-    bool isError(const QString &line) const {
-        foreach (const QString &wellKnownError, wellKnownErrors) {
-            if (line.contains(wellKnownError)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static const QStringList wellKnownErrors;
-};
-
-const QStringList ClarkLogParser::wellKnownErrors("std::bad_alloc");
+static const QByteArray REPORT_PREFIX("Object_ID,");
+static const QByteArray EXTENDED_REPORT_SUFFIX(",Length,Gamma,1st_assignment,score1,2nd_assignment,score2,confidence");
 
 ClarkClassifyTask::ClarkClassifyTask(const ClarkClassifySettings &settings, const QString &readsUrl, const QString &pairedReadsUrl, const QString &reportUrl)
-    : ExternalToolSupportTask(tr("Classify reads with Clark"), TaskFlags_NR_FOSE_COSC),
+    : ExternalToolSupportTask(tr("Classify reads with Clark"), TaskFlags_FOSE_COSC),
       cfg(settings), readsUrl(readsUrl), pairedReadsUrl(pairedReadsUrl), reportUrl(reportUrl)
 {
     GCOUNTER(cvar, tvar, "ClarkClassifyTask");
@@ -666,6 +591,7 @@ void ClarkClassifyTask::prepare() {
     }
     QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkLogParser(), cfg.databaseUrl));
     CHECK_OP(stateInfo, );
+
     setListenerForTask(task.data());
     addSubTask(task.take());
 }
@@ -709,6 +635,50 @@ QStringList ClarkClassifyTask::getArguments() {
     }
 
     return arguments;
+}
+
+const TaxonomyClassificationResult & ClarkClassifyTask::getParsedReport() const {
+    return parsedReport;
+}
+
+void ClarkClassifyTask::run() {
+    QFile reportFile(reportUrl);
+    if (!reportFile.open(QIODevice::ReadOnly)) {
+        setError(tr("Cannot open classification report: %1").arg(reportUrl));
+    } else {
+        QByteArray line = reportFile.readLine().trimmed();
+
+        bool extended = line.endsWith(EXTENDED_REPORT_SUFFIX);
+        if (!line.startsWith(REPORT_PREFIX)) {
+            setError(tr("Failed to recognize CLARK report format: %1").arg(QString(line)));
+        } else {
+            while ((line = reportFile.readLine().trimmed()).size() != 0) {
+                QList<QByteArray> row = line.split(',');
+                if (extended ? row.size() < 6 : row.size() != 3) {
+                    setError(tr("Broken CLARK report: %1").arg(reportUrl));
+                    break;
+                }
+                int assignmentIdx = extended ? row.size() - 5 : 2;
+                QString objID = row.at(0);
+                const QByteArray &assStr = row.at(assignmentIdx);
+                algoLog.trace(QString("Found CLARK classification: %1=%2").arg(objID).arg(QString(assStr)));
+
+                bool ok = true;
+                TaxID assID = (assStr != "NA") ? assStr.toUInt(&ok) : TaxonomyTree::UNCLASSIFIED_ID;
+                if (!ok) {
+                    setError(tr("Broken CLARK report: %1").arg(reportUrl));
+                    break;
+                }
+                if (parsedReport.contains(objID)) {
+                    QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
+                    algoLog.info(msg);
+                } else {
+                    parsedReport.insert(objID, assID);
+                }
+            }
+        }
+        reportFile.close();
+    }
 }
 
 ClarkClassifySettings::ClarkClassifySettings()

@@ -5,9 +5,9 @@ isEmpty(QT_VERSION) {
     error("QT_VERSION not defined. Unipro UGENE does not work with Qt 3.")
 }
 
-!minQtVersion(5, 2, 1) {
+!minQtVersion(5, 3, 2) {
     message("Cannot build Unipro UGENE with Qt version $${QT_VERSION}")
-    error("Use at least Qt 5.2.1.")
+    error("Use at least Qt 5.3.2.")
 }
 
 
@@ -72,6 +72,7 @@ SUBDIRS += \
           src/plugins/genome_aligner \
           src/plugins/kraken_support \
           src/plugins/linkdata_support \
+          src/plugins/metaphlan2_support \
           src/plugins/orf_marker \
           src/plugins/pcr \
           src/plugins/perf_monitor \
@@ -102,14 +103,28 @@ exclude_list_enabled() {
     SUBDIRS -= src/libs_3rdparty/QSpec
 }
 
-if(exists( ./src/libs_3rdparty/QSpec/QSpec.pro ):!exclude_list_enabled()) {
-    message( "QSpec exists, enable GUI testing..." )
-    !exists( ./src/libs_3rdparty/QSpec/custom.pri) {
-        unix: system( cp ./installer/_common_data/QSpec_custom.pri ./src/libs_3rdparty/QSpec/custom.pri )
-        win32: system (copy /B installer\_common_data\QSpec_custom.pri src\libs_3rdparty\QSpec\custom.pri)
+message("Qt version is $${QT_VERSION}")
+if (useWebKit()) {
+    message("WebKit is used as web engine")
+} else {
+    message("Qt WebEngine is used as web engine")
+}
+
+GUI_TESTING_ENABLED = 0
+if (exists(./src/libs_3rdparty/QSpec/QSpec.pro): !exclude_list_enabled()) {
+    if (!useWebKit()) {
+        message ("QSpec exists, but QT WebEngine is used, GUI testing is disabled")
+    } else {
+        message( "QSpec exists, enable GUI testing..." )
+        !exists( ./src/libs_3rdparty/QSpec/custom.pri) {
+            unix: system( cp ./installer/_common_data/QSpec_custom.pri ./src/libs_3rdparty/QSpec/custom.pri )
+            win32: system (copy /B installer\_common_data\QSpec_custom.pri src\libs_3rdparty\QSpec\custom.pri)
+        }
+        GUI_TESTING_ENABLED = 1
     }
 }
-!exists( ./src/libs_3rdparty/QSpec/QSpec.pro ){
+
+!equals(GUI_TESTING_ENABLED, 1) {
     DEFINES += HI_EXCLUDED
     SUBDIRS -= src/plugins/GUITestBase
     SUBDIRS -= src/libs_3rdparty/QSpec

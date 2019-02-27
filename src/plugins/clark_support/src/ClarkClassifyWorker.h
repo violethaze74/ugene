@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,12 +80,8 @@ public:
     ClarkClassifyWorker(Actor *a);
 protected:
     void init();
-    bool isReady() const;
     Task * tick();
     void cleanup();
-
-private:
-    TaxonomyClassificationResult parseReport(const QString& url);
 
 private slots:
     void sl_taskFinished(Task *task);
@@ -148,23 +144,35 @@ public:
     static const QString WORKFLOW_CLASSIFY_TOOL_CLARK;
 };
 
+class ClarkLogParser : public ExternalToolLogParser {
+public:
+    ClarkLogParser();
+
+private:
+    bool isError(const QString &line) const override;
+    void setLastError(const QString &errorKey) override;
+    static QMap<QString, QString> initWellKnownErrors();
+
+    static const QMap<QString, QString> wellKnownErrors;
+};
+
 class ClarkClassifyTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     ClarkClassifyTask(const ClarkClassifySettings &cfg, const QString &readsUrl, const QString &pairedReadsUrl, const QString &reportUrl);
 
     const QString &getReportUrl() const {return reportUrl;}
-
+    const TaxonomyClassificationResult &getParsedReport() const;
 private:
-    void prepare();
-
+    void prepare() override;
+    void run() override;
     QStringList getArguments();
 
     const ClarkClassifySettings cfg;
     const QString readsUrl;
     const QString pairedReadsUrl;
     QString reportUrl;
-
+    TaxonomyClassificationResult parsedReport;
 };
 
 } //LocalWorkflow

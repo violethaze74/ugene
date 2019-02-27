@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -735,7 +735,7 @@ GUI_TEST_CLASS_DEFINITION(test_0598) {
     // 5. Set parameters: window = 1000, step = 4
     // 6. Press 'Ok'
     // Expected state: 'Calculate graph points' task is started
-    GTUtilsDialog::waitForDialog(os, new GraphSettingsDialogFiller(os, 100, 25));
+    GTUtilsDialog::waitForDialog(os, new GraphSettingsDialogFiller(os, 200, 100));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Graph"
         << "visual_properties_action"));
     QWidget* graphView = GTUtilsSequenceView::getGraphView(os);
@@ -2570,6 +2570,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTUtilsProjectTreeView::click(os, "Gene.fa");
     GTGlobals::sleep();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTGlobals::sleep(1000);
 
     GTLogTracer l2;
     GTUtilsNotifications::waitForNotification(os, false);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -226,6 +226,8 @@ Task *SpadesWorker::tick() {
 
     QVariantMap unitedPortContext;
 
+    int messageCounter = 0;
+    int messageId = MessageMetadata::INVALID_ID;
     for (int i = 0; i < readsFetchers.size(); i++) {
         const bool isPortEnabled = readsFetchers[i].hasFullDataset();
         CHECK_CONTINUE(isPortEnabled);
@@ -241,6 +243,9 @@ Task *SpadesWorker::tick() {
 
         QList<Message> fullDataset = readsFetchers[i].takeFullDataset();
         foreach(const Message& m, fullDataset) {
+            messageCounter++;
+            messageId = m.getMetadataId();
+
             QVariantMap data = m.getData().toMap();
 
             const QString urlSlotId = SpadesWorkerFactory::READS_URL_SLOT_ID_LIST[index];
@@ -270,7 +275,8 @@ Task *SpadesWorker::tick() {
     }
     CHECK(!settings.reads.isEmpty(), NULL);
 
-    output->setContext(unitedPortContext, MessageMetadata::INVALID_ID);
+    int currentMetadataId = messageCounter == 1 ? messageId : MessageMetadata::INVALID_ID;
+    output->setContext(unitedPortContext, currentMetadataId);
 
     settings.listeners = createLogListeners();
     GenomeAssemblyMultiTask* t = new GenomeAssemblyMultiTask(settings);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,6 +80,7 @@
 #include "bowtie2/Bowtie2Support.h"
 #include "bowtie2/Bowtie2Task.h"
 #include "bowtie2/Bowtie2Worker.h"
+#include "bowtie2/bowtie2_tests/Bowtie2Tests.h"
 #include "bwa/BwaMemWorker.h"
 #include "bwa/BwaSettingsWidget.h"
 #include "bwa/BwaSupport.h"
@@ -135,6 +136,7 @@
 #include "spades/SpadesSettingsWidget.h"
 #include "spades/SpadesSupport.h"
 #include "spades/SpadesTask.h"
+#include "spades/SpadesTaskTest.h"
 #include "spades/SpadesWorker.h"
 #include "spidey/SpideySupport.h"
 #include "spidey/SpideySupportTask.h"
@@ -226,6 +228,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     etRegistry->registerEntry(new PythonSupport(ET_PYTHON));
     etRegistry->registerEntry(new PythonModuleDjangoSupport(ET_PYTHON_DJANGO));
     etRegistry->registerEntry(new PythonModuleNumpySupport(ET_PYTHON_NUMPY));
+    etRegistry->registerEntry(new PythonModuleBioSupport(ET_PYTHON_BIO));
 
     // Rscript with modules
     etRegistry->registerEntry(new RSupport(ET_R));
@@ -589,6 +592,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
 
         GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
         l->qlist = BowtieTests::createTestFactories();
+        l->qlist << Bowtie2Tests::createTestFactories();
 
         foreach(XMLTestFactory *f, l->qlist) {
             bool res = xmlTestFormat->registerTestFactory(f);
@@ -648,6 +652,21 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
 
         GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
         l->qlist = HmmerTests::createTestFactories();
+
+        foreach(XMLTestFactory* f, l->qlist) {
+            bool res = xmlTestFormat->registerTestFactory(f);
+            Q_UNUSED(res);
+            assert(res);
+        }
+    }
+    {
+
+        GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+        assert(xmlTestFormat != NULL);
+
+        GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
+        l->qlist = SpadesTaskTest::createTestFactories();
 
         foreach(XMLTestFactory* f, l->qlist) {
             bool res = xmlTestFormat->registerTestFactory(f);

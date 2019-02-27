@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -376,20 +376,22 @@ Task* BlastPlusWorker::tick() {
         cfg.matchReward = matchScores.split(" ").at(0).toInt();
         cfg.mismatchPenalty = matchScores.split(" ").at(1).toInt();
 
-        Task * t=NULL;
-        if(cfg.programName == "blastn"){
-            t = new BlastNPlusSupportTask(cfg);
-        }else if(cfg.programName == "blastp"){
-            t = new BlastPPlusSupportTask(cfg);
-        }else if(cfg.programName == "blastx"){
-            t = new BlastXPlusSupportTask(cfg);
-        }else if(cfg.programName == "tblastn"){
-            t = new TBlastNPlusSupportTask(cfg);
-        }else if(cfg.programName == "tblastx"){
-            t = new TBlastXPlusSupportTask(cfg);
+        ExternalToolSupportTask *task = nullptr;
+        if (cfg.programName == "blastn") {
+            task = new BlastNPlusSupportTask(cfg);
+        } else if (cfg.programName == "blastp") {
+            task = new BlastPPlusSupportTask(cfg);
+        } else if (cfg.programName == "blastx") {
+            task = new BlastXPlusSupportTask(cfg);
+        } else if (cfg.programName == "tblastn") {
+            task = new TBlastNPlusSupportTask(cfg);
+        } else if (cfg.programName == "tblastx") {
+            task = new TBlastXPlusSupportTask(cfg);
         }
-        connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
-        return t;
+        SAFE_POINT(nullptr != task, QString("An unknown program name: %1").arg(cfg.programName), new FailTask(QString("An unknown program name: %1").arg(cfg.programName)));
+        task->addListeners(createLogListeners());
+        connect(task, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
+        return task;
     } else if (input->isEnded()) {
         setDone();
         output->setEnded();
