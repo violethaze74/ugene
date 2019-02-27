@@ -121,8 +121,8 @@ void Metaphlan2WorkerFactory::init() {
                                           tr("URL(s) to FASTQ or FASTA file(s) should be provided. "
                                              "In case of SE reads or contigs use the \"Input URL 1\" slot only. "
                                              "In case of PE reads input \"left\" reads to \"Input URL 1\", "
-                                             "\"right\" reads to \"Input URL 2\"."
-                                             "See also the \"Input data\" parameter of the element"));
+                                             "\"right\" reads to \"Input URL 2\". "
+                                             "See also the \"Input data\" parameter of the element."));
 
         Descriptor inSlot1Descriptor(INPUT_SLOT,
                                      tr("Input URL 1"),
@@ -173,7 +173,7 @@ void Metaphlan2WorkerFactory::init() {
                                              "estimate the number of reads coming from each clade (\"-t rel_ab_w_read_stats\")</li>"
                                              "<li>Reads mapping - mapping from reads to clades, "
                                              "the output contains reads that hit a marker only (\"-t reads_map\")</li>"
-                                             "<li>Clade profiles - normalized marker counts for clades with at least a non - null marker(\"-t clade_profiles\")</li>"
+                                             "<li>Clade profiles - normalized marker counts for clades with at least a non-null marker(\"-t clade_profiles\")</li>"
                                              "<li>Marker abundance table - normalized marker counts: "
                                              "only when > 0.0 and optionally normalized by metagenome size "
                                              "(\"-t marker_ab_table\"), see also \"Normalize by metagenome size\" parameter</li>"
@@ -359,6 +359,7 @@ void Metaphlan2WorkerFactory::init() {
     proto->setPrompter(new Metaphlan2Prompter(nullptr));
     proto->addExternalTool(Metaphlan2Support::TOOL_NAME);
     proto->addExternalTool(Metaphlan2Support::ET_PYTHON);
+    proto->addExternalTool(Metaphlan2Support::ET_PYTHON_BIO);
     proto->addExternalTool(Metaphlan2Support::ET_PYTHON_NUMPY);
     proto->addExternalTool(Metaphlan2Support::ET_BOWTIE_2_ALIGNER);
     proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));

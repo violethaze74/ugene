@@ -91,7 +91,7 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidge
 Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
     : U2WebView(parent),
       loadingStarted(false),
-      loadUrl("file://" + dirPath + REPORT_SUB_DIR + DB_FILE_NAME),
+      loadUrl(QUrl::fromLocalFile(dirPath + REPORT_SUB_DIR + DB_FILE_NAME).toString()),
       dir(dirPath),
       opened(true),
       monitor(NULL),

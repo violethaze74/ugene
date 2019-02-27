@@ -19,6 +19,11 @@
  * MA 02110-1301, USA.
  */
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <tchar.h>
+#endif // Q_OS_WIN
+
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QIcon>
@@ -153,6 +158,30 @@
 #include "welcome_page/WelcomePageMdiController.h"
 
 using namespace U2;
+
+#ifdef Q_OS_WIN
+typedef BOOL(WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
+
+LPFN_ISWOW64PROCESS fnIsWow64Process;
+
+BOOL IsWow64() {
+    BOOL bIsWow64 = FALSE;
+
+    //IsWow64Process is not available on all supported versions of Windows.
+    //Use GetModuleHandle to get a handle to the DLL that contains the function
+    //and GetProcAddress to get a pointer to the function if available.
+
+    fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(
+        GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
+
+    if (NULL != fnIsWow64Process) {
+        if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64)) {
+            //handle error
+        }
+    }
+    return bIsWow64;
+}
+#endif // Q_OS_WIN
 
 static void registerCoreServices() {
     ServiceRegistry* sr = AppContext::getServiceRegistry();
@@ -479,6 +508,37 @@ int main(int argc, char **argv)
     coreLog.details(UserAppsSettings::tr("UGENE initialization started"));
     GCOUNTER( cvar, tvar, "ugeneui" );
 
+#if defined UGENE_X86_64
+    GCOUNTER(cvar1, tvar1, "Ugene x64");
+#elif defined UGENE_X86
+    GCOUNTER(cvar1, tvar1, "Ugene x86");
+#else
+    GCOUNTER(cvar1, tvar1, "Undetected architecture");
+#endif
+
+#if defined Q_OS_WIN
+    if (IsWow64()) {
+        GCOUNTER(cvar2, tvar2, "Windows x64");
+    } else {
+        GCOUNTER(cvar3, tvar3, "Windows x86");
+    }
+#elif defined Q_OS_MAC
+    GCOUNTER(cvar2, tvar2, "MacOS x64");
+#elif defined Q_OS_LINUX
+    if(QSysInfo::currentCpuArchitecture().contains("64")) {
+        GCOUNTER(cvar2, tvar2, "Linux x64");
+    } else {
+        GCOUNTER(cvar3, tvar3, "Linux x86");
+    }
+#elif defined Q_OS_UNIX
+    if(QSysInfo::currentCpuArchitecture().contains("64")) {
+        GCOUNTER(cvar2, tvar2, "Unix x64");
+    } else {
+        GCOUNTER(cvar3, tvar3, "Unix x86");
+    }
+#else
+    GCOUNTER(cvar2, tvar2, "Undetected OS");
+#endif
     coreLog.trace(QString("UGENE run at dir %1 with parameters %2").arg(AppContext::getWorkingDirectoryPath()).arg(app.arguments().join(" ")));
 
     //print some settings info, can't do it earlier than logging is initialized

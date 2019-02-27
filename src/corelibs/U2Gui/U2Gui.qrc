@@ -185,5 +185,6 @@
         <file>images/mismatch-forward.png</file>
         <file>images/edit.png</file>
         <file>javascript/WebPageInitialize.js</file>
+        <file>images/copy_qualifier.png</file>
     </qresource>
 </RCC>

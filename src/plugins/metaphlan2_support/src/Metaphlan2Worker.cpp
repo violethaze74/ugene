@@ -114,15 +114,25 @@ Metaphlan2TaskSettings Metaphlan2Worker::getSettings(U2OpStatus &os) {
     settings.normalizeByMetagenomeSize = getValue<QString>(Metaphlan2WorkerFactory::NORMALIZE) == Metaphlan2WorkerFactory::NOT_SKIP_NORMILIZE_BY_SIZE;
     settings.presenceThreshold = getValue<int>(Metaphlan2WorkerFactory::PRESENCE_THRESHOLD);
 
-    QString outputDirectory = createOutputDirectory();
+    const QString defaultOutputDirectory = getDefaultOutputDir();
+
     settings.bowtie2OutputFile = getValue<QString>(Metaphlan2WorkerFactory::BOWTIE2_OUTPUT_URL);
     if (settings.bowtie2OutputFile.isEmpty()) {
-        settings.bowtie2OutputFile = createOutputToolDirectory(outputDirectory, message, settings.isPairedEnd, Bowtie2);
+        settings.bowtie2OutputFile = createOutputToolDirectory(defaultOutputDirectory, message, settings.isPairedEnd, Bowtie2);
+    } else {
+        const bool dirCreated = QDir().mkpath(QFileInfo(settings.bowtie2OutputFile).absoluteDir().path());
+        CHECK_EXT(dirCreated, os.setError(tr("Can't create a folder for the output file: %1").arg(settings.bowtie2OutputFile)), settings);
     }
+    settings.bowtie2OutputFile = GUrlUtils::rollFileName(settings.bowtie2OutputFile, "_");
+
     settings.outputFile = getValue<QString>(Metaphlan2WorkerFactory::OUTPUT_URL);
     if (settings.outputFile.isEmpty()) {
-        settings.outputFile = createOutputToolDirectory(outputDirectory, message, settings.isPairedEnd, MetaPhlAn2);
+        settings.outputFile = createOutputToolDirectory(defaultOutputDirectory, message, settings.isPairedEnd, MetaPhlAn2);
+    } else {
+        const bool dirCreated = QDir().mkpath(QFileInfo(settings.outputFile).absoluteDir().path());
+        CHECK_EXT(dirCreated, os.setError(tr("Can't create a folder for the output file: %1").arg(settings.outputFile)), settings);
     }
+    settings.outputFile = GUrlUtils::rollFileName(settings.outputFile, "_");
 
     QString bowtie2AlignerPath = WorkflowUtils::getExternalToolPath(Metaphlan2Support::ET_BOWTIE_2_ALIGNER);
     CHECK_EXT(!bowtie2AlignerPath.isEmpty(), os.setError("Bowtie2 aligner isn't found"), settings);
@@ -138,14 +148,13 @@ Metaphlan2TaskSettings Metaphlan2Worker::getSettings(U2OpStatus &os) {
     return settings;
 }
 
-QString Metaphlan2Worker::createOutputDirectory() const {
-    QString outputDirectory = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
-    outputDirectory = QString("%1/%2").arg(outputDirectory).arg(METAPHLAN2_ROOT_DIR);
-    createDirectory(outputDirectory);
-    return outputDirectory;
+QString Metaphlan2Worker::getDefaultOutputDir() const {
+    QString defaultOutputDirectory = FileAndDirectoryUtils::getWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+    defaultOutputDirectory += METAPHLAN2_ROOT_DIR;
+    return GUrlUtils::rollFileName(defaultOutputDirectory, "_");
 }
 
-QString Metaphlan2Worker::createOutputToolDirectory(QString& outputDirectory, const Message& message, const bool isPairedEnd, const Output out) const {
+QString Metaphlan2Worker::createOutputToolDirectory(const QString& outputDirectory, const Message& message, const bool isPairedEnd, const Output out) const {
     QStringList suffix;
     QString folder;
     switch (out) {
