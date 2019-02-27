@@ -168,6 +168,23 @@ use_bundled_zlib() {
     DEFINES+=UGENE_USE_BUNDLED_ZLIB
 }
 
+# A function to add SQLite library to the list of libraries
+defineReplace(add_z_lib) {
+    use_bundled_zlib() {
+        !debug_and_release|build_pass {
+            CONFIG(debug, debug|release) {
+                RES = -lzlibd
+            } else {
+                RES = -lzlib
+            }
+        }
+    } else {
+        RES = -lz
+    }
+    return ($$RES)
+}
+
+
 # By default, UGENE uses bundled sqlite library built with special flags (see sqlite3.pri)
 # To use locally installed sqlite library use UGENE_USE_BUNDLED_SQLITE = 0
 

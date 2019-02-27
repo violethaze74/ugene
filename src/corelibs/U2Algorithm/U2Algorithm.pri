@@ -15,12 +15,7 @@ DEFINES+= QT_FATAL_ASSERT BUILDING_U2ALGORITHM_DLL
 unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
 
 LIBS += -L../../_release -lU2Core -lsamtools
-use_bundled_zlib() {
-    INCLUDEPATH += ../../libs_3rdparty/zlib/src
-    LIBS += -lzlib
-} else {
-    LIBS += -lz
-}
+LIBS += $$add_z_lib()
 
 # Force re-linking when lib changes
 unix:POST_TARGETDEPS += ../../_release/libsamtools.a
@@ -39,11 +34,6 @@ win32:LIBS+=-lws2_32
 
         unix:POST_TARGETDEPS -= ../../_release/libsamtools.a
         unix:POST_TARGETDEPS += ../../_debug/libsamtoolsd.a
-
-        use_bundled_zlib() {
-            LIBS += -lzlibd
-            LIBS -= -lzlib
-        }
     }
 
     CONFIG(release, debug|release) {

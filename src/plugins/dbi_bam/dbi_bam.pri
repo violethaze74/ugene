@@ -6,18 +6,12 @@ PLUGIN_VENDOR=Unipro
 
 include( ../../ugene_plugin_common.pri )
 
-use_bundled_zlib() {
-    macx: LIBS += -lzlib
-} else {
-    macx: LIBS += -lz
-}
-
 LIBS += -lsamtools
+LIBS += $$add_z_lib()
 LIBS += $$add_sqlite_lib()
 
 win32-msvc2013|win32-msvc2015|win32-msvc2017 {
     DEFINES += NOMINMAX _XKEYCHECK_H
-    LIBS += -lzlib
 }
 
 # Force re-linking when lib changes
@@ -40,18 +34,6 @@ win32 {
     CONFIG(debug, debug|release) {
         LIBS -= -lsamtools
         LIBS += -lsamtoolsd
-
-        win32-msvc2013|win32-msvc2015|win32-msvc2017 {
-            LIBS -= -lzlib
-            LIBS += -lzlibd
-        }
-
-        macx {
-            use_bundled_zlib() {
-                LIBS -= -lzlib
-                LIBS += -lzlibd
-            }
-        }
 
         unix:POST_TARGETDEPS -= ../../_release/libsamtools.a
         unix:POST_TARGETDEPS += ../../_debug/libsamtoolsd.a

@@ -11,12 +11,7 @@ DEFINES+=UGENE_MIN_VERSION_SQLITE=$${UGENE_MIN_VERSION_SQLITE}
 DEFINES+=UGENE_MIN_VERSION_MYSQL=$${UGENE_MIN_VERSION_MYSQL}
 DEFINES+=QT_FATAL_ASSERT BUILDING_U2CORE_DLL
 
-use_bundled_zlib() {
-    LIBS += -lzlib
-} else {
-    LIBS += -lz
-}
-
+LIBS += $$add_z_lib()
 LIBS += $$add_sqlite_lib()
 
 unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
@@ -29,10 +24,6 @@ LIBS += -L../../_release
         DESTDIR=../../_debug
         LIBS += -L../../_debug
         LIBS -= -L../../_release
-        use_bundled_zlib() {
-            LIBS += -lzlibd
-            LIBS -= -lzlib
-        }
     }
 
     CONFIG(release, debug|release) {

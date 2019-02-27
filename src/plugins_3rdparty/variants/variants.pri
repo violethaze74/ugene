@@ -18,9 +18,6 @@ win32 {
 
 use_bundled_zlib() {
     INCLUDEPATH += ../../libs_3rdparty/zlib/src
-    LIBS += -lzlib
-}else{
-    LIBS += -lz
 }
 
 
@@ -33,15 +30,12 @@ INCLUDEPATH += ../../libs_3rdparty/samtools/src
 INCLUDEPATH += ../../libs_3rdparty/samtools/src/samtools/bcftools
 win32 : INCLUDEPATH += ../../libs_3rdparty/samtools/src/samtools/win32
 
+LIBS += $$add_z_lib()
 LIBS += -lsamtools
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        use_bundled_zlib() {
-            LIBS -= -lzlib
-            LIBS += -lzlibd
-        }
         LIBS -= -lsamtools
         LIBS += -lsamtoolsd
     }

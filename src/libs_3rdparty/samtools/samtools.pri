@@ -9,11 +9,7 @@ DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE _USE_KNETFILE
 win32 : DEFINES += _USE_MATH_DEFINES "__func__=__FUNCTION__" "R_OK=4" "atoll=_atoi64" "alloca=_alloca"
 LIBS += -L../../_release
 
-use_bundled_zlib() {
-    LIBS += -lzlib
-} else {
-    LIBS += -lz
-}
+LIBS += $$add_z_lib()
 
 macx {
     DEFINES+="_CURSES_LIB=1"
@@ -31,10 +27,6 @@ macx {
         OBJECTS_DIR=_tmp/obj/debug
         LIBS -= -L../../_release
         LIBS += -L../../_debug
-        use_bundled_zlib() {
-            LIBS -= -lzlib
-            LIBS += -lzlibd
-        }
     }
 
     CONFIG(release, debug|release) {

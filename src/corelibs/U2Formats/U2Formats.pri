@@ -3,11 +3,7 @@
 MODULE_ID=U2Formats
 include( ../../ugene_lib_common.pri )
 
-use_bundled_zlib() {
-    macx: LIBS += -lzlib
-} else {
-    macx: LIBS += -lz
-}
+LIBS += $$add_z_lib()
 
 UGENE_RELATIVE_DESTDIR = ''
 
@@ -19,11 +15,6 @@ LIBS += $$add_sqlite_lib()
 
 win32-msvc2013 {
     DEFINES += NOMINMAX _XKEYCHECK_H
-    LIBS += -lzlib
-}
-
-win32-msvc2015 {
-    LIBS += -lzlib
 }
 
 QT += sql widgets
@@ -52,18 +43,6 @@ INCLUDEPATH += ../../libs_3rdparty/sqlite3/src
         DESTDIR=../../_debug
         LIBS -= -L../../_release -lU2Core -lU2Algorithm -lsamtools
         LIBS += -L../../_debug -lU2Cored -lU2Algorithmd -lsamtoolsd
-
-        win32-msvc2013|win32-msvc2015|win32-msvc2017 {
-            LIBS -= -lzlib
-            LIBS += -lzlibd
-        }
-
-        macx {
-            use_bundled_zlib() {
-                LIBS -= -lzlib
-                LIBS += -lzlibd
-            }
-        }
 
         unix:POST_TARGETDEPS -= ../../_release/libsamtools.a
         unix:POST_TARGETDEPS += ../../_debug/libsamtoolsd.a
