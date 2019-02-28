@@ -62,15 +62,11 @@ private slots:
     void sl_workflowStateChanged(bool isRunning);
 
 private:
-    enum AddingPolicy {
-        Prepend,
-        Append
-    };
-
-    int addDashboard(Dashboard *db, AddingPolicy addingPolicy = Append);
+    int addDashboard(Dashboard *db);
     QString generateName(const QString &baseName = "") const;
     QStringList allNames() const;
 
+private:
     WorkflowView *parent;
 };
 
