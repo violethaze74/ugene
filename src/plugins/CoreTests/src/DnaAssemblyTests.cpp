@@ -164,7 +164,7 @@ void GTest_DnaAssemblyToReferenceTask::cleanup()
 {
     // cleanup temporary files
 
-    if (!hasError()) {
+    if (!XMLTestUtils::parentTasksHaveError(this)) {
         QDir dir(env->getVar("TEMP_DATA_DIR"));
         QStringList tmpFiles = dir.entryList(QStringList() << "*.sarr" << "*.idx" << "*.ref", QDir::Files);
 
