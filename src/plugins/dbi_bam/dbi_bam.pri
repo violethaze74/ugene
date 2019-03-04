@@ -10,7 +10,7 @@ LIBS += -lsamtools
 LIBS += $$add_z_lib()
 LIBS += $$add_sqlite_lib()
 
-win32-msvc2013|win32-msvc2015|win32-msvc2017 {
+win32-msvc2013|win32-msvc2015|greaterThan(QMAKE_MSC_VER, 1909) {
     DEFINES += NOMINMAX _XKEYCHECK_H
 }
 

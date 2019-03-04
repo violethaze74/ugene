@@ -18,18 +18,18 @@ contains(_UGENE_NGS, 1) : DEFINES += UGENE_NGS
 win32 : QMAKE_CXXFLAGS += /MP # use parallel build with nmake
 win32 : DEFINES+= _WINDOWS
 win32-msvc2013 : DEFINES += _SCL_SECURE_NO_WARNINGS
-win32-msvc2015|win32-msvc2017 {
-	DEFINES += _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS _XKEYCHECK_H
-	QMAKE_CXXFLAGS-=-Zc:strictStrings
-	QMAKE_CXXFLAGS-=Zc:strictStrings
-	QMAKE_CFLAGS-=-Zc:strictStrings
-	QMAKE_CFLAGS-=Zc:strictStrings
-	QMAKE_CXXFLAGS-=-g
-	QMAKE_CFLAGS-=-g
+win32-msvc2015|greaterThan(QMAKE_MSC_VER, 1909) {
+    DEFINES += _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS _XKEYCHECK_H
+    QMAKE_CXXFLAGS-=-Zc:strictStrings
+    QMAKE_CXXFLAGS-=Zc:strictStrings
+    QMAKE_CFLAGS-=-Zc:strictStrings
+    QMAKE_CFLAGS-=Zc:strictStrings
+    QMAKE_CXXFLAGS-=-g
+    QMAKE_CFLAGS-=-g
 }
 
-win32-msvc2017 {
-	DEFINES += _ALLOW_KEYWORD_MACROS __STDC_LIMIT_MACROS
+greaterThan(QMAKE_MSC_VER, 1909) {
+    DEFINES += _ALLOW_KEYWORD_MACROS __STDC_LIMIT_MACROS
 }
 
 win32 : QMAKE_CFLAGS_RELEASE += -O2 -Oy- -MD -Zi
@@ -50,9 +50,9 @@ linux-g++ {
     
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {
-	message("Build with gcov support. See gcov/lcov doc for generating coverage info")
-	QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
-	QMAKE_LFLAGS += -lgcov --coverage
+    message("Build with gcov support. See gcov/lcov doc for generating coverage info")
+    QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
+    QMAKE_LFLAGS += -lgcov --coverage
     }
 }
 
