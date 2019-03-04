@@ -285,7 +285,6 @@ int main(int argc, char **argv)
     ConsoleLogDriver logs;
     Q_UNUSED(logs);
     coreLog.details(AppContextImpl::tr("UGENE initialization started"));
-    GCOUNTER( cvar, tvar, "ugenecl" );
 
     ResourceTracker* resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);

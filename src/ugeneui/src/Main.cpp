@@ -506,38 +506,41 @@ int main(int argc, char **argv)
     LogCache::setAppGlobalInstance(&logsCache);
     app.installEventFilter(new UserActionsWriter());
     coreLog.details(UserAppsSettings::tr("UGENE initialization started"));
-    GCOUNTER( cvar, tvar, "ugeneui" );
-
+    
+    GReportableCounter ugeneArchCounter("UGENE architecture", "", 1);
+    ++ugeneArchCounter.totalCount;
 #if defined UGENE_X86_64
-    GCOUNTER(cvar1, tvar1, "Ugene x64");
+    ugeneArchCounter.suffix = "Ugene x64";
 #elif defined UGENE_X86
-    GCOUNTER(cvar1, tvar1, "Ugene x86");
+    ugeneArchCounter.suffix = "Ugene x86";
 #else
-    GCOUNTER(cvar1, tvar1, "Undetected architecture");
+    ugeneArchCounter.suffix = "Undetected architecture";
 #endif
 
+    GReportableCounter sysArchCounter("OS architecture", "", 1);
+    ++sysArchCounter.totalCount;
 #if defined Q_OS_WIN
     if (IsWow64()) {
-        GCOUNTER(cvar2, tvar2, "Windows x64");
+        sysArchCounter.suffix = "Windows x64";
     } else {
-        GCOUNTER(cvar3, tvar3, "Windows x86");
+        sysArchCounter.suffix = "Windows x86";
     }
 #elif defined Q_OS_MAC
-    GCOUNTER(cvar2, tvar2, "MacOS x64");
+    sysArchCounter.suffix = "MacOS x64";
 #elif defined Q_OS_LINUX
     if(QSysInfo::currentCpuArchitecture().contains("64")) {
-        GCOUNTER(cvar2, tvar2, "Linux x64");
+        sysArchCounter.suffix = "Linux x64";
     } else {
-        GCOUNTER(cvar3, tvar3, "Linux x86");
+        sysArchCounter.suffix = "Linux x86";
     }
 #elif defined Q_OS_UNIX
     if(QSysInfo::currentCpuArchitecture().contains("64")) {
-        GCOUNTER(cvar2, tvar2, "Unix x64");
+        sysArchCounter.suffix = "Unix x64";
     } else {
-        GCOUNTER(cvar3, tvar3, "Unix x86");
+        sysArchCounter.suffix = "Unix x86";
     }
 #else
-    GCOUNTER(cvar2, tvar2, "Undetected OS");
+    sysArchCounter.suffix = "Undetected OS";
 #endif
     coreLog.trace(QString("UGENE run at dir %1 with parameters %2").arg(AppContext::getWorkingDirectoryPath()).arg(app.arguments().join(" ")));
 
