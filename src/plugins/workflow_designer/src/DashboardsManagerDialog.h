@@ -29,15 +29,13 @@
 
 namespace U2 {
 
-class ScanDashboardsDirTask;
-
 class DashboardsManagerDialog : public QDialog, public Ui_DashboardsManagerDialog {
     Q_OBJECT
 public:
-    DashboardsManagerDialog(ScanDashboardsDirTask *task, QWidget *parent);
+    DashboardsManagerDialog(QWidget *parent);
 
-    QList<DashboardInfo> selectedDashboards();
-    QList<DashboardInfo> removedDashboards();
+    QMap<QString, bool> getDashboardsVisibility() const;
+    const QStringList &removedDashboards() const;
 
 private slots:
     void sl_check();
@@ -47,12 +45,11 @@ private slots:
 
 private:
     void setupList();
-    QList<QTreeWidgetItem*> allItems();
+    QList<QTreeWidgetItem*> allItems() const;
     bool confirmDashboardsRemoving( ) const;
 
 private:
-    ScanDashboardsDirTask *task;
-    QList<DashboardInfo> removed;
+    QStringList toRemove;
 };
 
 } // U2

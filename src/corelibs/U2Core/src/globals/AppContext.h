@@ -45,6 +45,7 @@ class CudaGpuRegistry;
 class DBXRefRegistry;
 class DNAAlphabetRegistry;
 class DNATranslationRegistry;
+class DashboardInfoRegistry;
 class DataBaseRegistry;
 class DnaAssemblyAlgRegistry;
 class DocumentFormatRegistry;
@@ -259,6 +260,8 @@ public:
 
     static PasteFactory*        getPasteFactory() {return getInstance()->_getPasteFactory();}
 
+    static DashboardInfoRegistry *getDashboardInfoRegistry() { return getInstance()->_getDashboardInfoRegistry(); }
+
 protected:
     static AppContext* getInstance() {assert(instance); return instance;}
 
@@ -330,6 +333,7 @@ protected:
     virtual IdRegistry<WelcomePageAction>* _getWelcomePageActionRegistry() const = 0;
     virtual ProjectFilterTaskRegistry * _getProjectFilterTaskRegistry() const = 0;
     virtual PasteFactory * _getPasteFactory() const = 0;
+    virtual DashboardInfoRegistry * _getDashboardInfoRegistry() const = 0;
 
     virtual void _registerGlobalObject(AppGlobalObject* go) = 0;
     virtual void _unregisterGlobalObject(const QString& id) = 0;

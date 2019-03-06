@@ -33,6 +33,8 @@ public:
     DashboardInfo();
     DashboardInfo(const QString &dirPath, bool opened = true);
 
+    const QString &getId() const;
+
     bool operator==(const DashboardInfo &other) const;
 
     QString path;
