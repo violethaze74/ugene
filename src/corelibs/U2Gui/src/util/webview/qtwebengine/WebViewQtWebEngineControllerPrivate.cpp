@@ -78,6 +78,7 @@ void WebViewQtWebEngineControllerPrivate::init() {
     const QString onSocketsArgument = (U2WebChannel::INVALID_PORT == port ? "false" : "true");
     const QString portArgument = (U2WebChannel::INVALID_PORT == port ? "" : "," + QString::number(port));
     runJavaScript("installWebChannel(" + onSocketsArgument + portArgument + ")");
+    webView->setContextMenuPolicy(Qt::NoContextMenu);
 }
 
 }   // namespace U2
