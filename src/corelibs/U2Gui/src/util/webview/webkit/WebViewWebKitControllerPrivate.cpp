@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QAction>
 #include <QWebFrame>
 
 #include "WebViewWebKitControllerPrivate.h"
@@ -57,6 +58,7 @@ void WebViewWebKitControllerPrivate::init() {
     webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
     connect(webView->page(), SIGNAL(linkClicked(const QUrl &)), SLOT(sl_linkClicked(const QUrl &)));
     runJavaScript("initializeWebkitPage();");
+    webView->page()->action(QWebPage::Reload)->setVisible(false);
 }
 
 }   // namespace U2
