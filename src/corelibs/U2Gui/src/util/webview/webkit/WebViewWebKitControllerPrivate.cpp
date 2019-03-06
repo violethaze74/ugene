@@ -19,7 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <QAction>
 #include <QWebFrame>
 
 #include "WebViewWebKitControllerPrivate.h"
