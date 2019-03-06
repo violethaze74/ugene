@@ -4035,7 +4035,7 @@ GUI_TEST_CLASS_DEFINITION( test_2579 ) {
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MafftInactivation()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
-
+    GTGlobals::sleep();
     GTUtilsLog::check(os, l);
 }
 GUI_TEST_CLASS_DEFINITION(test_2581) {

@@ -542,12 +542,12 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QFile(sandBoxDir + "murine_3085_1.gb").rename(sandBoxDir + "murine_3085_1_1.gb");
     QFile(testDir + "_common_data/regression/3085/murine_1.gb").copy(sandBoxDir + "murine_3085_1.gb");
-    GTGlobals::sleep(6000);
+    GTGlobals::sleep(1000);
 
     //Expected state: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded1Sv = GTUtilsMdi::activeWindow(os);
+    GTGlobals::sleep(1000);
     CHECK_SET_ERR(sv != reloaded1Sv, "File is not reloaded 1");
-    GTGlobals::sleep(100);
 
     //4. Change the annotations file outside UGENE (e.g. change annotation region).
     //Expected state:: dialog about file modification appeared.
@@ -559,6 +559,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
 
     //Expected state:: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded2Sv = GTUtilsMdi::activeWindow(os);
+    GTGlobals::sleep(1000);
     CHECK_SET_ERR(reloaded1Sv != reloaded2Sv, "File is not reloaded 2");
 }
 
@@ -579,6 +580,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
 
     //Expected state: document reloaded without errors/warnings.
     CHECK_SET_ERR(!l.hasError(), "Errors in log");
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3086) {
