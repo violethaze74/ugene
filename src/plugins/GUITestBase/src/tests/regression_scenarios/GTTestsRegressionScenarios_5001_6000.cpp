@@ -4,7 +4,7 @@
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
+ * modify it under the terms of the GNU General Public License57
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  *
@@ -3576,7 +3576,7 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
         QPoint perturbation(moveMouseTo.x(), moveMouseTo.y() + moving);
         GTMouseDriver::moveTo(perturbation);
         i--;
-        GTGlobals::sleep(20);
+        GTGlobals::sleep(300);
     }
     GTMouseDriver::release();
     QStringList errors = GTUtilsLog::getErrors(os, trace);
