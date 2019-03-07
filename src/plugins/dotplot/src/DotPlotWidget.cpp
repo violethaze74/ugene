@@ -1070,7 +1070,7 @@ void DotPlotWidget::drawNames(QPainter &p) const {
 
     // If nameX doesn't fit, it should be aligned left instead of center
     int flags = (nameXWidth < w) ? Qt::AlignCenter : Qt::AlignVCenter | Qt::AlignLeft;
-    p.drawText(textSpace, h + textSpace, w, textSpace, Qt::AlignCenter, nameX);
+    p.drawText(textSpace, h + textSpace, w, textSpace, flags, nameX);
 
     p.save();
 
