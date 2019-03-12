@@ -268,6 +268,7 @@ void PanViewRenderer::drawSequenceSelection(QPainter& p, const QSize &canvasSize
         }
         int x1 = qMax(0, posToXCoord(r.startPos, canvasSize, visibleRange));
         int x2 = qMin(canvasSize.width(), posToXCoord(r.endPos(), canvasSize, visibleRange));
+        x2 = qMax(x2, canvasSize.width());
 
         p.setPen(pen1);
         if (visibleRange.contains(r.startPos) && s->numLines > 1) {
