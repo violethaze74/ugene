@@ -106,5 +106,10 @@ SOURCES += src/Main.cpp \
            src/welcome_page/WelcomePageMdiController.cpp \
            src/welcome_page/WelcomePageWidget.cpp
 
+macx {
+OBJECTIVE_HEADERS += src/app_settings/ResetSettingsMac.h
+OBJECTIVE_SOURCES += src/app_settings/ResetSettingsMac.mm
+}
+
 RESOURCES += ugeneui.qrc
 TRANSLATIONS += transl/russian.ts

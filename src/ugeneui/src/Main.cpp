@@ -19,10 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+#include <qglobal.h>
+
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <tchar.h>
 #endif // Q_OS_WIN
+
+#ifdef Q_OS_MAC
+#include "app_settings/ResetSettingsMac.h"
+#endif
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -1042,8 +1048,12 @@ int main(int argc, char **argv)
     delete globalSettings;
 
     if (deleteSettingsFile){
+#ifndef Q_OS_MAC
         QFile ff;
         ff.remove(iniFile);
+#else
+        ResetSettingsMac::reset();
+#endif // !Q_OS_MAC        
     }
 
     UgeneUpdater::onClose();

@@ -547,7 +547,6 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     //Expected state: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded1Sv = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(sv != reloaded1Sv, "File is not reloaded 1");
-    GTGlobals::sleep(100);
 
     //4. Change the annotations file outside UGENE (e.g. change annotation region).
     //Expected state:: dialog about file modification appeared.
@@ -579,6 +578,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
 
     //Expected state: document reloaded without errors/warnings.
     CHECK_SET_ERR(!l.hasError(), "Errors in log");
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3086) {

@@ -26,7 +26,7 @@ macx : INCLUDEPATH += /System/Library/Frameworks/Security.framework/Headers
 LIBS += -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2View -lU2Test -lU2Lang -lU2Private -lbreakpad -lQSpec
 LIBS += $$add_sqlite_lib()
 
-macx: LIBS += /System/Library/Frameworks/Security.framework/Security
+macx: LIBS += -framework Foundation /System/Library/Frameworks/Security.framework/Security
 if (contains(DEFINES, HI_EXCLUDED)) {
     LIBS -= -lQSpec
 }
