@@ -71,6 +71,8 @@
 #include <U2Core/Version.h>
 #include <U2Core/VirtualFileSystem.h>
 
+#include <U2Designer/DashboardInfoRegistry.h>
+
 #include <U2Formats/ConvertFileTask.h>
 #include <U2Formats/DocumentFormatUtils.h>
 
@@ -391,6 +393,9 @@ int main(int argc, char **argv)
     VirtualFileSystemRegistry * vfsReg = new VirtualFileSystemRegistry();
     appContext->setVirtualFileSystemRegistry( vfsReg );
 
+    DashboardInfoRegistry *dashboardInfoRegistry = new DashboardInfoRegistry;
+    appContext->setDashboardInfoRegistry(dashboardInfoRegistry);
+
     Workflow::WorkflowEnv::init(new Workflow::WorkflowEnvImpl());
     Workflow::WorkflowEnv::getDomainRegistry()->registerEntry(new LocalWorkflow::LocalDomainFactory());
 
@@ -496,6 +501,9 @@ int main(int argc, char **argv)
 
     appContext->setDataPathRegistry(NULL);
     delete dpr;
+
+    appContext->setDashboardInfoRegistry(nullptr);
+    delete dashboardInfoRegistry;
 
     appContext->setVirtualFileSystemRegistry( NULL );
     delete vfsReg;

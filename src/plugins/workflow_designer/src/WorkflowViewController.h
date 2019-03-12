@@ -291,6 +291,7 @@ private:
     void setupActions();
     void hideDashboards();
     void showDashboards();
+    void setDashboardActionDecoration(bool isDashboardsViewActive);
     void setDashboardActionVisible(bool visible);
     void commitWarningsToMonitor(WorkflowAbstractRunner *t);
 
@@ -412,10 +413,10 @@ public:
     DashboardManagerHelper(QAction *dmAction, WorkflowView *parent);
 
 private slots:
-    void sl_runScanTask();
     void sl_result(int result);
-    void sl_scanTaskFinished();
-    void sl_removeTaskFinished();
+    void sl_showDashboardsManagerDialog();
+    void sl_dashboardsScanningStarted();
+    void sl_dashboardsScanningFinished();
 
 private:
     QAction *dmAction;

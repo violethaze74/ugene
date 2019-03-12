@@ -59,6 +59,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/Dashboard.h>
+#include <U2Designer/DashboardInfoRegistry.h>
 #include <U2Designer/DelegateEditors.h>
 #include <U2Designer/DesignerUtils.h>
 #include <U2Designer/EstimationReporter.h>
@@ -219,55 +220,57 @@ static QToolButton * scriptMenu(WorkflowView *parent, const QList<QAction*> &scr
 }
 
 DashboardManagerHelper::DashboardManagerHelper(QAction *_dmAction, WorkflowView *_parent)
-: dmAction(_dmAction), parent(_parent)
+    : QObject(_parent),
+      dmAction(_dmAction),
+      parent(_parent)
 {
-    connect(dmAction, SIGNAL(triggered()), SLOT(sl_runScanTask()));
+    connect(dmAction, SIGNAL(triggered()), SLOT(sl_showDashboardsManagerDialog()));
+
+    DashboardInfoRegistry *dashboardInfoRegistry = AppContext::getDashboardInfoRegistry();
+    connect(dashboardInfoRegistry, SIGNAL(si_scanningStarted()), SLOT(sl_dashboardsScanningStarted()));
+    connect(dashboardInfoRegistry, SIGNAL(si_scanningFinished()), SLOT(sl_dashboardsScanningFinished()));
 }
 
-void DashboardManagerHelper::sl_runScanTask() {
-    dmAction->setEnabled(false);
-    ScanDashboardsDirTask *t = new ScanDashboardsDirTask();
-    connect(t, SIGNAL(si_stateChanged()), SLOT(sl_scanTaskFinished()));
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+void DashboardManagerHelper::sl_result(int result) {
+    DashboardsManagerDialog *d = qobject_cast<DashboardsManagerDialog *>(sender());
+    if (QDialog::Accepted == result) {
+        DashboardInfoRegistry *dashboardInfoRegistry = AppContext::getDashboardInfoRegistry();
+
+        const QMap<QString, bool> dashboardsVisibility = d->getDashboardsVisibility();
+        QList<DashboardInfo> newDashboardInfos;
+        foreach (const QString &dashboardId, dashboardsVisibility.keys()) {
+            DashboardInfo newDashboardInfo = dashboardInfoRegistry->getById(dashboardId);
+            newDashboardInfo.opened = dashboardsVisibility[dashboardId];
+            newDashboardInfos << newDashboardInfo;
+        }
+        dashboardInfoRegistry->updateDashboardInfos(newDashboardInfos);
+
+        const QStringList dashboardsToRemove = d->removedDashboards();
+        if (!dashboardsToRemove.isEmpty()) {
+            dashboardInfoRegistry->removeDashboards(dashboardsToRemove);
+        }
+    }
 }
 
-void DashboardManagerHelper::sl_scanTaskFinished() {
-    ScanDashboardsDirTask *t = dynamic_cast<ScanDashboardsDirTask*>(sender());
-    CHECK(NULL != t, );
-    CHECK(t->isFinished(), );
-
-    if (t->getResult().isEmpty()) {
-        dmAction->setEnabled(true);
+void DashboardManagerHelper::sl_showDashboardsManagerDialog() {
+    if (AppContext::getDashboardInfoRegistry()->isEmpty()) {
         QMessageBox *d = new QMessageBox(QMessageBox::Information, tr("No Dashboards Found"),
             tr("You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."), QMessageBox::NoButton, parent);
         d->show();
         return;
     }
 
-    DashboardsManagerDialog *d = new DashboardsManagerDialog(t, parent);
+    DashboardsManagerDialog *d = new DashboardsManagerDialog(parent);
     connect(d, SIGNAL(finished(int)), SLOT(sl_result(int)));
     d->setWindowModality(Qt::ApplicationModal);
     d->show();
 }
 
-void DashboardManagerHelper::sl_result(int result) {
-    DashboardsManagerDialog *d = dynamic_cast<DashboardsManagerDialog*>(sender());
-    if (QDialog::Accepted == result) {
-        parent->tabView->updateDashboards(d->selectedDashboards());
-        if (!d->removedDashboards().isEmpty()) {
-            RemoveDashboardsTask *rt = new RemoveDashboardsTask(d->removedDashboards());
-            connect(rt, SIGNAL(si_stateChanged()), SLOT(sl_removeTaskFinished()));
-            AppContext::getTaskScheduler()->registerTopLevelTask(rt);
-            return;
-        }
-    }
-    dmAction->setEnabled(true);
+void DashboardManagerHelper::sl_dashboardsScanningStarted() {
+    dmAction->setEnabled(false);
 }
 
-void DashboardManagerHelper::sl_removeTaskFinished() {
-    RemoveDashboardsTask *t = dynamic_cast<RemoveDashboardsTask*>(sender());
-    CHECK(NULL != t, );
-    CHECK(t->isFinished(), );
+void DashboardManagerHelper::sl_dashboardsScanningFinished() {
     dmAction->setEnabled(true);
 }
 
@@ -1213,6 +1216,7 @@ void WorkflowView::setupMDIToolbar(QToolBar* tb) {
     addToggleDashboardAction(tb, toggleDashboard);
 
     sl_dashboardCountChanged();
+    setDashboardActionDecoration(tabView->isVisible());
     setupActions();
 }
 
@@ -2158,21 +2162,29 @@ static QIcon getToolbarIcon(const QString &srcPath) {
 }
 
 void WorkflowView::hideDashboards() {
-    toggleDashboard->setIconText("Go to Dashboard");
-    toggleDashboard->setIcon(getToolbarIcon("dashboard.png"));
-    toggleDashboard->setToolTip(tr("Show dashboard"));
+    setDashboardActionDecoration(false);
     tabView->setVisible(false);
     splitter->setVisible(true);
     setupActions();
 }
 
 void WorkflowView::showDashboards() {
-    toggleDashboard->setIconText("To Workflow Designer");
-    toggleDashboard->setIcon(getToolbarIcon("wd.png"));
-    toggleDashboard->setToolTip(tr("Show workflow"));
+    setDashboardActionDecoration(true);
     splitter->setVisible(false);
     tabView->setVisible(true);
     setupActions();
+}
+
+void WorkflowView::setDashboardActionDecoration(bool isDashboardsViewActive) {
+    if (isDashboardsViewActive) {
+        toggleDashboard->setIconText("To Workflow Designer");
+        toggleDashboard->setIcon(getToolbarIcon("wd.png"));
+        toggleDashboard->setToolTip(tr("Show workflow"));
+    } else {
+        toggleDashboard->setIconText("Go to Dashboard");
+        toggleDashboard->setIcon(getToolbarIcon("dashboard.png"));
+        toggleDashboard->setToolTip(tr("Show dashboard"));
+    }
 }
 
 void WorkflowView::setDashboardActionVisible(bool visible) {
