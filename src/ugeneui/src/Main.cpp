@@ -92,6 +92,8 @@
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/VirtualFileSystem.h>
 
+#include <U2Designer/DashboardInfoRegistry.h>
+
 #include <U2Formats/ConvertFileTask.h>
 #include <U2Formats/DocumentFormatUtils.h>
 
@@ -516,9 +518,9 @@ int main(int argc, char **argv)
     GReportableCounter ugeneArchCounter("UGENE architecture", "", 1);
     ++ugeneArchCounter.totalCount;
 #if defined UGENE_X86_64
-    ugeneArchCounter.suffix = "Ugene x64";
+    ugeneArchCounter.suffix = "Ugene 64-bit";
 #elif defined UGENE_X86
-    ugeneArchCounter.suffix = "Ugene x86";
+    ugeneArchCounter.suffix = "Ugene 32-bit";
 #else
     ugeneArchCounter.suffix = "Undetected architecture";
 #endif
@@ -527,23 +529,23 @@ int main(int argc, char **argv)
     ++sysArchCounter.totalCount;
 #if defined Q_OS_WIN
     if (IsWow64()) {
-        sysArchCounter.suffix = "Windows x64";
+        sysArchCounter.suffix = "Windows 64-bit";
     } else {
-        sysArchCounter.suffix = "Windows x86";
+        sysArchCounter.suffix = "Windows 32-bit";
     }
 #elif defined Q_OS_MAC
-    sysArchCounter.suffix = "MacOS x64";
+    sysArchCounter.suffix = "MacOS 64-bit";
 #elif defined Q_OS_LINUX
     if(QSysInfo::currentCpuArchitecture().contains("64")) {
-        sysArchCounter.suffix = "Linux x64";
+        sysArchCounter.suffix = "Linux 64-bit";
     } else {
-        sysArchCounter.suffix = "Linux x86";
+        sysArchCounter.suffix = "Linux 32-bit";
     }
 #elif defined Q_OS_UNIX
     if(QSysInfo::currentCpuArchitecture().contains("64")) {
-        sysArchCounter.suffix = "Unix x64";
+        sysArchCounter.suffix = "Unix 64-bit";
     } else {
-        sysArchCounter.suffix = "Unix x86";
+        sysArchCounter.suffix = "Unix 32-bit";
     }
 #else
     sysArchCounter.suffix = "Undetected OS";
@@ -752,6 +754,9 @@ int main(int argc, char **argv)
     PasteFactory *pasteFactory = new PasteFactoryImpl;
     appContext->setPasteFactory(pasteFactory);
 
+    DashboardInfoRegistry *dashboardInfoRegistry = new DashboardInfoRegistry;
+    appContext->setDashboardInfoRegistry(dashboardInfoRegistry);
+
     Workflow::WorkflowEnv::init(new Workflow::WorkflowEnvImpl());
     Workflow::WorkflowEnv::getDomainRegistry()->registerEntry(new LocalWorkflow::LocalDomainFactory());
 
@@ -857,6 +862,9 @@ int main(int argc, char **argv)
     }
 
     delete wpc;
+
+    appContext->setDashboardInfoRegistry(nullptr);
+    delete dashboardInfoRegistry;
 
     appContext->setPasteFactory(NULL);
     delete pasteFactory;

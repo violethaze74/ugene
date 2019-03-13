@@ -46,6 +46,7 @@ public:
 
     void setClosed();
     const QString &directory() const;
+    const QString &getDashboardId() const;
 
     const QString &getName() const;
     void setName(const QString &value);
@@ -101,6 +102,10 @@ private:
     void serialize();
     void saveSettings();
     void loadSettings();
+
+    void registerDashboard() const;
+    void updateDashboard() const;
+    void reserveName() const;
 
     bool loadingStarted;
     QString loadUrl;

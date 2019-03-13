@@ -22,8 +22,10 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2Designer/DashboardInfoRegistry.h>
 #include <U2Designer/ScanDashboardsDirTask.h>
 
 #include <U2Gui/HelpButton.h>
@@ -44,8 +46,8 @@ static const int DASHBOARD_MAX_DISPLAING_NAME_COUNT = 5;
 
 namespace U2 {
 
-DashboardsManagerDialog::DashboardsManagerDialog(ScanDashboardsDirTask *_task, QWidget *parent)
-: QDialog(parent), task(_task)
+DashboardsManagerDialog::DashboardsManagerDialog(QWidget *parent)
+    : QDialog(parent)
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "23331370");
@@ -69,7 +71,8 @@ void DashboardsManagerDialog::setupList() {
     const int defaultNameColumnWidth = 250;
     listWidget->header()->resizeSection(0, defaultNameColumnWidth);
 
-    foreach (const DashboardInfo &info, task->getResult()) {
+    const QList<DashboardInfo> dashboardInfos = AppContext::getDashboardInfoRegistry()->getAllEntries();
+    foreach (const DashboardInfo &info, dashboardInfos) {
         QStringList data;
         data << info.name << info.dirName;
         QTreeWidgetItem *item = new QTreeWidgetItem(listWidget, data);
@@ -82,22 +85,20 @@ void DashboardsManagerDialog::setupList() {
     listWidget->sortByColumn(1, Qt::AscendingOrder);
 }
 
-QList<QTreeWidgetItem*> DashboardsManagerDialog::allItems() {
+QList<QTreeWidgetItem*> DashboardsManagerDialog::allItems() const {
     return listWidget->findItems("*", Qt::MatchWildcard);
 }
 
-QList<DashboardInfo> DashboardsManagerDialog::selectedDashboards() {
-    QList<DashboardInfo> result;
+QMap<QString, bool> DashboardsManagerDialog::getDashboardsVisibility() const {
+    QMap<QString, bool> result;
     foreach (QTreeWidgetItem *item, allItems()) {
-        if (Qt::Checked == item->checkState(0)) {
-            result << item->data(0, Qt::UserRole).value<DashboardInfo>();
-        }
+        result.insert(item->data(0, Qt::UserRole).value<DashboardInfo>().getId(), Qt::Checked == item->checkState(0));
     }
     return result;
 }
 
-QList<DashboardInfo> DashboardsManagerDialog::removedDashboards() {
-    return removed;
+const QStringList &DashboardsManagerDialog::removedDashboards() const {
+    return toRemove;
 }
 
 void DashboardsManagerDialog::sl_check() {
@@ -124,7 +125,7 @@ void DashboardsManagerDialog::sl_remove() {
     }
 
     foreach (QTreeWidgetItem *item, listWidget->selectedItems()) {
-        removed << item->data(0, Qt::UserRole).value<DashboardInfo>();
+        toRemove << item->data(0, Qt::UserRole).value<DashboardInfo>().getId();
         delete item;
     }
 }

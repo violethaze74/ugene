@@ -57,6 +57,7 @@ void WebViewWebKitControllerPrivate::init() {
     webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
     connect(webView->page(), SIGNAL(linkClicked(const QUrl &)), SLOT(sl_linkClicked(const QUrl &)));
     runJavaScript("initializeWebkitPage();");
+    webView->setContextMenuPolicy(Qt::NoContextMenu);
 }
 
 }   // namespace U2

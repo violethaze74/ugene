@@ -21,19 +21,20 @@
 
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "RemoveDashboardsTask.h"
 
 namespace U2 {
 
-RemoveDashboardsTask::RemoveDashboardsTask(const QList<DashboardInfo> &_dashboards)
-    : Task(tr("Remove dashboards"), TaskFlag_None), dashboards(_dashboards)
+RemoveDashboardsTask::RemoveDashboardsTask(const QList<DashboardInfo> &_dashboardInfos)
+    : Task(tr("Remove dashboards"), TaskFlag_None), dashboardInfos(_dashboardInfos)
 {
 
 }
 
 void RemoveDashboardsTask::run() {
-    foreach (const DashboardInfo &info, dashboards) {
+    foreach (const DashboardInfo &info, dashboardInfos) {
         U2OpStatus2Log os;
         GUrlUtils::removeDir(info.path, os);
     }

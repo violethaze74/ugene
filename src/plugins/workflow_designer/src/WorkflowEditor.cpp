@@ -203,6 +203,8 @@ void WorkflowEditor::createInputPortTable(Actor* a) {
 
         if (inputPortBox->isChecked()) {
             changeSizes(inputPortBox, inputHeight);
+        } else {
+            sl_changeVisibleInput(false);
         }
     } else {
         inputPortBox->setEnabled(false);
@@ -235,6 +237,8 @@ void WorkflowEditor::createOutputPortTable(Actor* a) {
 
         if (outputPortBox->isChecked()) {
             changeSizes(outputPortBox, outputHeight);
+        } else {
+            sl_changeVisibleOutput(false);
         }
     } else {
         outputPortBox->setEnabled(false);

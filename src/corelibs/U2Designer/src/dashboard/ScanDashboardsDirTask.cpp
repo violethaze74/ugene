@@ -34,15 +34,11 @@ namespace U2 {
 ScanDashboardsDirTask::ScanDashboardsDirTask()
     : Task(tr("Scan dashboards folder"), TaskFlag_None)
 {
-
-}
-
-const QStringList &ScanDashboardsDirTask::getOpenedDashboards() const {
-    return openedDashboards;
+    tpm = Progress_Manual;
 }
 
 const QList<DashboardInfo> &ScanDashboardsDirTask::getResult() const {
-    return result;
+    return dashboardInfos;
 }
 
 void ScanDashboardsDirTask::run() {
@@ -50,28 +46,31 @@ void ScanDashboardsDirTask::run() {
     CHECK(outDir.exists(), );
 
     QFileInfoList dirs = outDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    int counter = 0;
     foreach (const QFileInfo &info, dirs) {
+        CHECK_OP(stateInfo, );
         QString dirPath = info.absoluteFilePath() + "/";
-        DashboardInfo dbi(dirPath);
-        if (isDashboardDir(dirPath, dbi)) {
-            result << dbi;
-            if (dbi.opened) {
-                openedDashboards << dirPath;
-            }
+        if (isDashboardDir(dirPath)) {
+            dashboardInfos << readDashboardInfo(dirPath);
         }
+        stateInfo.setProgress((100 * counter++) / dirs.count());
     }
 }
 
-bool ScanDashboardsDirTask::isDashboardDir(const QString &dirPath, DashboardInfo &info) {
+bool ScanDashboardsDirTask::isDashboardDir(const QString &dirPath) {
     QDir dir(dirPath + Dashboard::REPORT_SUB_DIR);
     CHECK(dir.exists(), false);
     CHECK(dir.exists(Dashboard::DB_FILE_NAME), false);
     CHECK(dir.exists(Dashboard::SETTINGS_FILE_NAME), false);
+    return true;
+}
 
+DashboardInfo ScanDashboardsDirTask::readDashboardInfo(const QString &dirPath) {
+    DashboardInfo info(dirPath);
     QSettings settings(dirPath + Dashboard::REPORT_SUB_DIR + Dashboard::SETTINGS_FILE_NAME, QSettings::IniFormat);
     info.opened = settings.value(Dashboard::OPENED_SETTING).toBool();
     info.name = settings.value(Dashboard::NAME_SETTING).toString();
-    return true;
+    return info;
 }
 
 }   // namespace U2

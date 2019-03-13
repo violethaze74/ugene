@@ -35,6 +35,8 @@
 #include <U2Core/TaskStarter.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Designer/DashboardInfoRegistry.h>
+
 #include <U2Gui/ToolsMenu.h>
 
 #include <U2Lang/IncludedProtoFactory.h>
@@ -103,6 +105,10 @@ WorkflowDesignerPlugin::WorkflowDesignerPlugin()
 
     CHECK(AppContext::getPluginSupport(), );
     connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_initWorkers()));
+
+    DashboardInfoRegistry *dashboardsInfoRegistry = AppContext::getDashboardInfoRegistry();
+    SAFE_POINT(nullptr != dashboardsInfoRegistry, "dashboardsInfoRegistry is nullptr", );
+    AppContext::getDashboardInfoRegistry()->scanDashboardsDir();
 }
 
 void WorkflowDesignerPlugin::processCMDLineOptions() {
