@@ -379,7 +379,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             checkUtilScript(os, true);
 
             //Expected state: "MetaPhlAn2" tool is present, but invalid.
-            checkExternalToolValid(os, ET_METAPHLAN, true);
+            checkExternalToolValid(os, ET_METAPHLAN, false);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
