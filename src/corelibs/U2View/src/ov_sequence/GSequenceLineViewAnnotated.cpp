@@ -273,13 +273,20 @@ void GSequenceLineViewAnnotated::mouseDoubleClickEvent(QMouseEvent* me) {
         CHECK(asd != NULL, );
 
         const QVector<U2Region> selRegions = asd->getSelectedRegions();
-        CHECK(selRegions.size() == 1, );
+        CHECK(selRegions.size() == 1 || U1AnnotationUtils::isAnnotationAroundJunctionPoint(asd, seqLen), );
 
-        const U2Region regionToSelect = selRegions.first();
         const qint64 currentPos = renderArea->coordToPos(toRenderAreaPoint(me->pos()));
-        if (regionToSelect.contains(currentPos)) {
+        bool containsCurrentPoint = false;
+        foreach(const U2Region& reg, selRegions) {
+            CHECK_CONTINUE(reg.contains(currentPos));
+
+            containsCurrentPoint = true;
+            break;
+        }
+        if (containsCurrentPoint) {
             ctx->emitAnnotationSequenceSelection(asd);
         }
+        lastPressPos = currentPos;
     } else {
         GSequenceLineView::mouseDoubleClickEvent(me);
     }

@@ -81,6 +81,8 @@ public:
 
     static const int MIN_OUTER_SIZE;
     static const int CV_REGION_ITEM_WIDTH;
+    static const int GRADUATION;
+    static const int MAX_GRADUATION_ANGLE;
 
     void setAngle(int angle);
     void updateMinSize();
@@ -123,6 +125,8 @@ protected:
      */
     void invertCurrentSelection();
 
+    CircularViewRenderArea* getRenderArea() const;
+
     Direction getDirection(float a, float b) const;
 
     QVBoxLayout *layout;
@@ -130,12 +134,11 @@ protected:
     int lastMovePos;
     int currectSelectionLen;
     int lastMouseY;
-    CircularViewRenderArea* ra;
-    bool clockwise, holdSelection;
-    CircularViewSettings*   settings;
-
-private:
-    static const int graduation;
+    bool clockwise;
+    bool holdSelection;
+    qreal lastPressAngle;
+    qreal lastMoveAngle;
+    CircularViewSettings* settings;
 };
 
 class CircularViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
@@ -153,7 +156,11 @@ public:
 
     static const int MIDDLE_ELLIPSE_SIZE;
     int getCenterY() const { return verticalOffset; }
+    qreal coordToAsin(const QPoint& p) const;
+    qint64 asinToPos(const qreal asin) const;
+
 protected:
+    qint64 coordToPos(const QPoint& p) const override;
     void resizeEvent(QResizeEvent *e);
     virtual void drawAll(QPaintDevice* pd);
     virtual U2Region getAnnotationYRange(Annotation *a, int ri, const AnnotationSettings *as) const;

@@ -1629,9 +1629,7 @@ void AnnotationsTreeView::sl_itemDoubleClicked(QTreeWidgetItem *i, int) {
         QVector<U2Region> annotationRegions = ai->annotation->getRegions();
         SAFE_POINT(!annotationRegions.isEmpty(), "Annotation regions are empty", );
 
-        foreach(const U2Region& region, annotationRegions) {
-            annotationDoubleClicked(ai, region);
-        }
+        annotationDoubleClicked(ai, annotationRegions.toList());
     }
 
     if (item->type == AVItemType_Qualifier) {
@@ -1679,6 +1677,8 @@ void AnnotationsTreeView::sl_itemExpanded(QTreeWidgetItem *qi) {
     }
 }
 
+//TODO: refactor this method
+//UTI-155
 void AnnotationsTreeView::sl_annotationClicked(AnnotationSelectionData* asd) {
     AnnotationSelection* annotationSelection = ctx->getAnnotationsSelection();
 
@@ -1686,24 +1686,24 @@ void AnnotationsTreeView::sl_annotationClicked(AnnotationSelectionData* asd) {
     CHECK(annotationItems.size() == 1, );
     AVAnnotationItem* item = annotationItems.first();
 
-    const QVector<U2Region> selectedRegions = asd->getSelectedRegions();
-    CHECK(selectedRegions.size() == 1, );
-    const U2Region selectedRegion = selectedRegions.first();
+    const qint64 seqLength = ctx->getSequenceContext(asd->annotation->getGObject())->getSequenceLength();
+    SAFE_POINT(asd->locationIdxList.size() == 1 || U1AnnotationUtils::isAnnotationAroundJunctionPoint(asd, seqLength), tr("Wrong annotation selection"), );
 
     bool setSelected = true;
-
     const ADVSequenceObjectContext* advctx = qobject_cast<ADVSequenceObjectContext*>(sender());
     SAFE_POINT(advctx != NULL, "Incorrect sender", );
 
     QList<AnnotationTableObject*> annotationObjects = advctx->getAnnotationObjects().toList();
-
     QMap<AVAnnotationItem*, QList<U2Region> > sortedAnnotationSelections = sortAnnotationSelection(annotationObjects);
+    const QVector<U2Region> selectedRegions = asd->getSelectedRegions();
 
     //In case of joined annotation, we need to check "Did we click to this region of annotation already?"
     //If yes - remove this selected region
     //If no - we have no need to do smth, because if this click continue as double-click, we will expand selected regions of this annotation for current region too
     //Check "selectedAnnotation.value(item).size() == 1" here because we need to know - if we want to remove the last selected region of current annotation, we need also to remove annotation selection too
-    const bool removeLastRegion = (sortedAnnotationSelections.value(item).size() == 1) && sortedAnnotationSelections.value(item).contains(selectedRegion);
+    const bool removeLastRegion = (sortedAnnotationSelections.value(item).size() == 1) &&
+                                  (sortedAnnotationSelections.value(item).contains(selectedRegions.first())) &&
+                                  (sortedAnnotationSelections.value(item).contains(selectedRegions.last()));
 
     if (removeLastRegion) {
         foreach(int loc, asd->locationIdxList) {
@@ -1715,9 +1715,13 @@ void AnnotationsTreeView::sl_annotationClicked(AnnotationSelectionData* asd) {
     }
 
     expandItemRecursevly(item->parent());
-    SAFE_POINT(asd->locationIdxList.size() == 1, "Incorrect size", );
+    SAFE_POINT(asd->locationIdxList.size() == 1 || U1AnnotationUtils::isAnnotationAroundJunctionPoint(asd, seqLength), tr("Wrong  annotation selection"), );
+
     annotationSelection->addToSelection(item->annotation, asd->locationIdxList.first());
-    annotationClicked(item, sortedAnnotationSelections, selectedRegion);
+    if (2 == asd->locationIdxList.size()) {
+        annotationSelection->addToSelection(item->annotation, asd->locationIdxList.last());
+    }
+    annotationClicked(item, sortedAnnotationSelections, selectedRegions.toList());
 }
 
 //TODO: refactor this method
@@ -1729,8 +1733,6 @@ void AnnotationsTreeView::sl_annotationDoubleClicked(AnnotationSelectionData* as
             ctx->getAnnotationsSelection()->addToSelection(asd->annotation, loc);
         }
     }
-
-    const U2Region regionToSelect = asd->getSelectedRegions().first();
     QList<AVAnnotationItem*> annotationItems = findAnnotationItems(asd->annotation);
     foreach(AVAnnotationItem* item, annotationItems) {
         expandItemRecursevly(item->parent());
@@ -1738,8 +1740,7 @@ void AnnotationsTreeView::sl_annotationDoubleClicked(AnnotationSelectionData* as
             SignalBlocker blocker(tree);
             item->setSelected(true);
         }
-        SAFE_POINT(asd->locationIdxList.size() == 1, "Incorrect size", );
-        annotationDoubleClicked(item, regionToSelect, asd->locationIdxList.first());
+        annotationDoubleClicked(item, asd->getSelectedRegions().toList(), asd->locationIdxList.first());
     }
 }
 
@@ -1790,7 +1791,7 @@ void AnnotationsTreeView::sl_sequenceRemoved(ADVSequenceObjectContext* advContex
 //TODO: refactoring of annotationClicked and annotationDoubleClicked methods.
 //It's too difficult to understand what's going on in this methods
 //UTI-155
-void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotations, const U2Region selectedRegion) {
+void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotations, const QList<U2Region>& selectedRegions) {
     ADVSequenceObjectContext* seqObjCtx = ctx->getSequenceContext(item->getAnnotationTableObject());
     SAFE_POINT(seqObjCtx != NULL, "ADVSequenceObjectContext is NULL", );
 
@@ -1806,9 +1807,16 @@ void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnot
         }
     } else {
         QVector<U2Region> toSelect;
-        if (!selectedRegion.isEmpty() && selectedAnnotations.value(item).contains(selectedRegion)) {
-            selectedAnnotation[item].removeOne(selectedRegion);
-            selectedAnnotations[item].removeOne(selectedRegion);
+        if (!selectedRegions.isEmpty() &&
+            selectedAnnotations.value(item).contains(selectedRegions.first()) &&
+            selectedAnnotations.value(item).contains(selectedRegions.last())) {
+
+            selectedAnnotation[item].removeOne(selectedRegions.first());
+            selectedAnnotations[item].removeOne(selectedRegions.first());
+            if (selectedRegions.size() == 2) {
+                selectedAnnotation[item].removeOne(selectedRegions.last());
+                selectedAnnotations[item].removeOne(selectedRegions.last());
+            }
             if (selectedAnnotation[item].isEmpty()) {
                 selectedAnnotation.remove(item);
             }
@@ -1829,8 +1837,8 @@ void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnot
     }
 }
 
-void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const U2Region& selectedRegion, const int numOfClickedRegion) {
-    selectedAnnotation[item] << selectedRegion;
+void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const QList<U2Region>& selectedRegions, const int numOfClickedRegion) {
+    selectedAnnotation[item] << selectedRegions;
 
     ADVSequenceObjectContext* seqObjCtx = ctx->getSequenceContext(item->getAnnotationTableObject());
     SAFE_POINT(seqObjCtx != NULL, "ADVSequenceObjectContext is NULL", );
@@ -1843,16 +1851,20 @@ void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const 
 
     annotationSelection->addToSelection(item->annotation, numOfClickedRegion);
 
-    U2Region regionToSelect = selectedRegion;
-
+    QList<U2Region> regionsToSelect = selectedRegions;
     const QVector<U2Region> regions = sequenceSelection->getSelectedRegions();
     foreach(const U2Region& reg, regions) {
-        if (reg.intersects(regionToSelect)) {
-            sequenceSelection->removeRegion(reg);
-            regionToSelect = U2Region::containingRegion(reg, regionToSelect);
+        foreach(const U2Region& selectedRegion, selectedRegions) {
+            if (reg.intersects(selectedRegion)) {
+                sequenceSelection->removeRegion(reg);
+                regionsToSelect.removeOne(selectedRegion);
+                regionsToSelect << U2Region::containingRegion(reg, selectedRegion);
+            }
         }
     }
-    sequenceSelection->addRegion(regionToSelect);
+    foreach(const U2Region& reg, regionsToSelect) {
+        sequenceSelection->addRegion(reg);
+    }
 }
 
 void AnnotationsTreeView::clearSelectedNotAnnotations() {
