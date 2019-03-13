@@ -63,12 +63,6 @@ public:
     bool skip( const GZipIndexAccessPoint& point, qint64 offset );
 
     /**
-     * on error *ok set to false and GZipIndex() is returned
-     * io - opened ioadapter, on the beginning of the file
-     */
-    static GZipIndex buildGzipIndex( IOAdapter* io, qint64 span, bool* ok = NULL );
-
-    /**
      * returns -1 if a file is failed to open
      */
     static qint64 getUncompressedFileSizeInBytes(const GUrl &url);

@@ -136,10 +136,8 @@ int MaIterator::getStep(qint64 position) const {
     switch (direction) {
     case Forward:
         return row->getCoreEnd() <= columnNumber ? ma->getLength() - columnNumber : 1;
-        break;
     case Backward:
         return row->getCoreStart() >= columnNumber ? ma->getLength() - columnNumber : 1;
-        break;
     default:
         FAIL("An unknown direction", 1);
     }

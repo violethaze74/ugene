@@ -298,8 +298,7 @@ void SQLiteQuery::bindString(int idx, const QString& val) {
     }
     assert(st!=NULL);
     QByteArray utf8 = val.toUtf8();
-    bool transient = true;
-    int rc = sqlite3_bind_text(st, idx, utf8, utf8.length(), transient ? SQLITE_TRANSIENT : SQLITE_STATIC);
+    int rc = sqlite3_bind_text(st, idx, utf8, utf8.length(), SQLITE_TRANSIENT);
     if (rc != SQLITE_OK) {
         setError(U2DbiL10n::tr("Error binding text value! Query: '%1', idx: %2, value: '%3'").arg(sql).arg(idx).arg(val));
         return;
