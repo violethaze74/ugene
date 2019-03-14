@@ -2032,6 +2032,14 @@ GUI_TEST_CLASS_DEFINITION(test_6378) {
     GTUtilsWorkflowDesigner::checkErrorList(os, "Classify Sequences with MetaPhlAn2: External tool \"Bio\" is not set");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6398) {
+    //1. Open "_common_data/regression/6398/6398.gtf" file
+    //Expected: 5 similarity points of the 'GTF" format
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF", 5, 1));
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6398/6398.gtf");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2

@@ -61,11 +61,16 @@ FormatDetectionScore GTFLineValidateFlags::getFormatDetectionScore()
         return FormatDetection_NotMatched;
     }
 
-    if (noGeneIdAttribute || noTranscriptIdAttribute) {
+    /*
+     * These two attributes are required according to the '.gtf' format specification
+     * But, the absence of them doesn't have any influence on the file opening
+     * So, there is a decision was made to increase the similarity points if only one of these attributes is lost
+     */
+    if (noGeneIdAttribute && noTranscriptIdAttribute) {
         return FormatDetection_VeryLowSimilarity;
     }
 
-    if (incorrectScore || incorrectStrand || incorrectFrame) {
+    if (incorrectScore || incorrectStrand || incorrectFrame || noGeneIdAttribute || noTranscriptIdAttribute) {
         return FormatDetection_LowSimilarity;
     }
 

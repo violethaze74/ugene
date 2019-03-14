@@ -106,6 +106,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, QByteArray& 
         rb->setChecked(i == 0);
 
         QLabel* label = new QLabel(text);
+        label->setObjectName(QString("label_%1").arg(i + 1));
         label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         label->setSizePolicy(QSizePolicy::Expanding, label->sizePolicy().verticalPolicy());
         label->installEventFilter(new LabelClickProvider(label, rb));
