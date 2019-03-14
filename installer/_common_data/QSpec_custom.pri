@@ -12,20 +12,20 @@ QT += testlib webkitwidgets
 DEFINES += BUILDING_QSPEC_DLL
 DEFINES += QT_DLL
 
+DESTDIR = ../../$$corelibs_out_dir()
+
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
         TARGET = QSpecd
         DEFINES += _DEBUG
         CONFIG +=console
-        DESTDIR=../../_debug/
         OBJECTS_DIR=_tmp/obj/debug
     }
 
     CONFIG(release, debug|release) {
         TARGET = QSpec
         DEFINES+=NDEBUG
-        DESTDIR=../../_release/
         OBJECTS_DIR=_tmp/obj/release
     }
 }

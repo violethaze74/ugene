@@ -213,6 +213,18 @@ defineReplace(add_sqlite_lib) {
     return ($$RES)
 }
 
+# Returns active UGENE output dir for core libs and executables used by the build process: debug or release.
+defineReplace(corelibs_out_dir) {
+    !debug_and_release|build_pass {
+        CONFIG(debug, debug|release) {
+            RES = _debug
+        } else {
+            RES = _release
+        }
+    }
+    return ($$RES)
+}
+
 #Variable enabling exclude list for ugene modules
 #UGENE_EXCLUDE_LIST_ENABLED = 1
 defineTest( exclude_list_enabled ) {

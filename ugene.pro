@@ -138,12 +138,12 @@ without_non_free() {
 }
 
 # create target build & plugin folders (to copy licenses/descriptors to)
-mkpath($$OUT_PWD/src/_debug/plugins)
-mkpath($$OUT_PWD/src/_release/plugins)
+mkpath($$OUT_PWD/_debug/plugins)
+mkpath($$OUT_PWD/_release/plugins)
 
 !win32 {
-    system( cp ./installer/_common_data/ugene $$OUT_PWD/src/_release/ugene )
-    system( cp ./installer/_common_data/ugened $$OUT_PWD/src/_debug/ugened )
+    system( cp ./installer/_common_data/ugene $$OUT_PWD/_release/ugene )
+    system( cp ./installer/_common_data/ugened $$OUT_PWD/_debug/ugened )
 }
 
 
@@ -153,7 +153,7 @@ UGENE_TRANSL_FILES = russian.ts english.ts
 UGENE_TRANSL_TAG   = ru         en
 
 UGENE_TRANSL_DIR   = transl
-UGENE_TRANSL_QM_TARGET_DIR = $$OUT_PWD/src/_debug $$OUT_PWD/src/_release
+UGENE_TRANSL_QM_TARGET_DIR = $$OUT_PWD/_debug $$OUT_PWD/_release
 
 #detecting lrelease binary
 win32 : UGENE_DEV_NULL = nul
@@ -205,14 +205,14 @@ unix {
     binscript.path = $$UGENE_INSTALL_BINDIR
 
 # to copy ugene executable to /usr/lib/ugene folder
-    ugene_starter.files = ./src/_release/ugene
+    ugene_starter.files = ./_release/ugene
     ugene_starter.path = $$UGENE_INSTALL_DIR
 
-    transl.files = ./src/_release/transl_en.qm
-    transl.files += ./src/_release/transl_ru.qm
+    transl.files = ./_release/transl_en.qm
+    transl.files += ./_release/transl_ru.qm
     transl.path = $$UGENE_INSTALL_DIR
 
-    plugins.files = ./src/_release/plugins/*
+    plugins.files = ./_release/plugins/*
     plugins.path = $$UGENE_INSTALL_DIR/plugins
 
     scripts.files += scripts/*

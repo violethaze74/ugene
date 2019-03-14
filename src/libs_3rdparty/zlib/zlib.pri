@@ -7,7 +7,7 @@ DEFINES+= _CRT_SECURE_NO_WARNINGS
 INCLUDEPATH += src
 
 TARGET = zlib
-DESTDIR=../../_release
+DESTDIR = ../../../$$corelibs_out_dir()
 
 !debug_and_release|build_pass {
 
@@ -15,7 +15,6 @@ DESTDIR=../../_release
         TARGET = zlibd
         DEFINES+=_DEBUG
         CONFIG +=console
-        DESTDIR=../../_debug
         OBJECTS_DIR=_tmp/obj/debug
         MOC_DIR=_tmp/moc/debug
     }
