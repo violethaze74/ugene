@@ -84,7 +84,7 @@ void GTest_AnnotatorSearch::init(XMLTestFormat *tf, const QDomElement& el) {
             }
             bool startOk, finishOk;
             int start = bounds.first().toInt(&startOk), finish = bounds.last().toInt(&finishOk);
-            if (startOk && finishOk != true) {
+            if (!startOk || !finishOk) {
                 stateInfo.setError( QString("wrong value for %1").arg(EXPECTED_RESULTS_ATTR));
                 return;
             }

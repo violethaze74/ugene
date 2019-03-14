@@ -94,13 +94,13 @@ AnnotatorViewContext::AnnotatorViewContext(QObject* p, bool customAutoAnnotation
 
 void AnnotatorViewContext::initViewContext(GObjectView* v) {
     AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(v);
-    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":annotator/images/regions.png"), tr("Find annotated regions..."), 30);
-    connect(a, SIGNAL(triggered()), SLOT(sl_showCollocationDialog()));
+    ADVGlobalAction* findRegionsAction = new ADVGlobalAction(av, QIcon(":annotator/images/regions.png"), tr("Find annotated regions..."), 30);
+    connect(findRegionsAction, SIGNAL(triggered()), SLOT(sl_showCollocationDialog()));
 
     if (customFeaturesAvailable) {
-        ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":annotator/images/plasmid_features.png"), tr("Annotate plasmid..."), 31);
-        a->addAlphabetFilter(DNAAlphabet_NUCL);
-        connect(a, SIGNAL(triggered()), SLOT(sl_showCustomAutoAnnotationDialog()));
+        ADVGlobalAction* annotatePlasmidAction = new ADVGlobalAction(av, QIcon(":annotator/images/plasmid_features.png"), tr("Annotate plasmid..."), 31);
+        annotatePlasmidAction->addAlphabetFilter(DNAAlphabet_NUCL);
+        connect(annotatePlasmidAction, SIGNAL(triggered()), SLOT(sl_showCustomAutoAnnotationDialog()));
     }
 }
 
@@ -113,8 +113,8 @@ void AnnotatorViewContext::sl_showCollocationDialog() {
     QSet<QString> allNames;
 
     foreach (AnnotationTableObject *ao, av->getAnnotationObjects()) {
-        foreach (Annotation *a, ao->getAnnotations()) {
-            allNames.insert(a->getName());
+        foreach (Annotation *annotation, ao->getAnnotations()) {
+            allNames.insert(annotation->getName());
         }
     }
     if (allNames.isEmpty()) {

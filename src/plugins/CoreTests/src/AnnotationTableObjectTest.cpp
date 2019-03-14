@@ -466,24 +466,7 @@ Task::ReportResult GTest_CheckAnnotationQualifierIsAbsent::report() {
     }
     const SharedAnnotationData a = annCtx->getAnnotation();
     QVector<U2Qualifier> res;
-    if (res.isEmpty()) {
-        int i = 0;
-        i++;
-    }
-    else {
-        int j = 0;
-        j++;
-    }
     a->findQualifiers(qName, res);
-    if (res.isEmpty()) {
-        int i = 0;
-        i++;
-    }
-    else {
-        int j = 0;
-        j++;
-        stateInfo.setError(QString("An annotation has qualifier %1, but it shouldn't!").arg(qName));
-    }
     if (!res.isEmpty()) {
         stateInfo.setError(QString("An annotation has qualifier %1, but it shouldn't!").arg(qName));
     }

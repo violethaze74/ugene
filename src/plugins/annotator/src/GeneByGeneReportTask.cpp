@@ -99,7 +99,7 @@ GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASeq
         }
     }
 
-    if (result.identical == false && maxIdentity != -1.0f){
+    if (!result.identical && maxIdentity != -1.0f){
         result.identityString.append(QString("\\%1").arg(maxIdentity));
     }
 
@@ -332,7 +332,7 @@ void GeneByGeneReportTask::run(){
         }
 
         progressCounter+=progressStep;
-        stateInfo.progress = static_cast<float>(progressCounter + 0.5f);
+        stateInfo.progress = static_cast<int>(progressCounter + 0.5f);
     }
 
     stateInfo.progress = 100;

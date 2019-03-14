@@ -44,7 +44,6 @@ public:
 private:
     QString seqName;
     QString docName;
-    QString resultDocContextName;
     QSet<QString> groupsToSearch;
     int regionSize;
     CollocationsAlgorithm::SearchType st;
@@ -64,7 +63,6 @@ private:
     QString docName;
     QString resultDocContextName;
     bool isCircular;
-    SharedFeatureStore featureStore;
     CustomPatternAnnotationTask* searchTask;
 };
 
@@ -79,7 +77,6 @@ private:
     QString seqName;
     QString annName;
     QString docName;
-    QString resultDocContextName;
     bool expected;
     float identity;
     GeneByGeneCompareResult result;

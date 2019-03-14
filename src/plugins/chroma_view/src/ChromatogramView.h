@@ -145,10 +145,6 @@ private:
     qreal           bLinearTransformTrace;
     qreal           kLinearTransformBaseCallsOfEdited;
     qreal           bLinearTransformBaseCallsOfEdited;
-    qreal           xBaseCallsOfEdited;
-    qreal           yBaseCallsOfEdited;
-    qreal           wBaseCallsOfEdited;
-    qreal           hBaseCallsOfEdited;
 };
 
 

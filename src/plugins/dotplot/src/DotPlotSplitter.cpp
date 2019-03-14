@@ -306,11 +306,8 @@ void DotPlotSplitter::sl_dotPlotChanged(ADVSequenceObjectContext* sequenceX, ADV
 }
 
 void DotPlotSplitter::sl_dotPlotSelecting() {
-    bool selecting = false;
     foreach (DotPlotWidget* w, dotPlotList) {
-        selecting = w->hasSelection();
-
-        if (selecting) {
+        if (w->hasSelection()) {
             break;
         }
     }

@@ -75,8 +75,8 @@ void CustomPatternAnnotationTask::prepare()
         return;
     }
 
-    index = QSharedPointer<SArrayIndex>(new SArrayIndex(sequence.constData(), sequence.length(),
-        featureStore->getMinFeatureSize(), stateInfo, unknownChar));
+    index = QSharedPointer<SArrayIndex>(new SArrayIndex(sequence.constData(), quint32(sequence.length()),
+        quint32(featureStore->getMinFeatureSize()), stateInfo, unknownChar));
 
     if (hasError()) {
         return;
@@ -139,8 +139,8 @@ QList<Task*> CustomPatternAnnotationTask::onSubTaskFinished(Task* subTask) {
         data->setStrand(strand);
 
         if (dnaObj.isCircular() && endPos > seqLen) {
-            int outerLen = endPos - seqLen;
-            int innerLen = task->getQuery().length() - outerLen;
+            qint64 outerLen = endPos - seqLen;
+            qint64 innerLen = task->getQuery().length() - outerLen;
             U2Region region1(pos - 1, innerLen);
             U2Region region2(0, outerLen);
             data->location->regions << region1 << region2;

@@ -253,8 +253,6 @@ void ConvertToSQLiteDialog::sl_refUrlButtonClicked() {
     GUrl currentUrl = ui.refUrlEdit->text();
     if (ui.refUrlEdit->text().isEmpty()) {
         currentUrl = sourceUrl;
-    } else {
-        currentUrl = ui.refUrlEdit->text();
     }
     QString dir = currentUrl.dirPath() + "/" + currentUrl.baseFileName();
     QString value;
