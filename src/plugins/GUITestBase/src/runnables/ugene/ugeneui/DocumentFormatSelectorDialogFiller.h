@@ -32,13 +32,21 @@ using namespace HI;
 class DocumentFormatSelectorDialogFiller : public Filler
 {
 public:
-    DocumentFormatSelectorDialogFiller(HI::GUITestOpStatus &os, const QString &_format):
-        Filler(os, "DocumentFormatSelectorDialog"), format(_format){}
+    DocumentFormatSelectorDialogFiller(HI::GUITestOpStatus &os,
+                                       const QString &_format,
+                                       const int _score = -1,
+                                       const int _formatLineLable = -1):
+        Filler(os, "DocumentFormatSelectorDialog"),
+        format(_format),
+        score(_score),
+        formatLineLable(_formatLineLable){}
     DocumentFormatSelectorDialogFiller(HI::GUITestOpStatus &os, CustomScenario* custom):
         Filler(os, "DocumentFormatSelectorDialog", custom){}
     virtual void commonScenario();
 private:
     QString format;
+    int score;
+    int formatLineLable;
     QRadioButton* getButton(HI::GUITestOpStatus &os);
 };
 
