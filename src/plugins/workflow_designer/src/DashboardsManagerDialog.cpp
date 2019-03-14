@@ -32,7 +32,6 @@
 
 #include "DashboardsManagerDialog.h"
 
-static const QString REMOVE_DASHBOARDS_MESSAGE_BOX_TITLE = QObject::tr( "Removing Dashboards" );
 static const QString REMOVE_MULTIPLE_DASHBOARDS_MESSAGE_BOX_TEXT
     = QObject::tr( "The following dashboards are about to be deleted:" );
 static const QString REMOVE_SINGLE_DASHBOARD_MESSAGE_BOX_TEXT
@@ -173,7 +172,7 @@ bool DashboardsManagerDialog::confirmDashboardsRemoving( ) const {
 
     QObjectScopedPointer<QMessageBox> questionBox = new QMessageBox;
     questionBox->setIcon( QMessageBox::Question );
-    questionBox->setWindowTitle( REMOVE_DASHBOARDS_MESSAGE_BOX_TITLE );
+    questionBox->setWindowTitle(QObject::tr( "Removing Dashboards"));
     questionBox->setText( warningMessageText );
     if ( tooManyDashboardsSelected ) {
         questionBox->setDetailedText( fullDashboardNamesList );

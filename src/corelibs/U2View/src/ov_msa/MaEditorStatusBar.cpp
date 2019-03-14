@@ -108,8 +108,6 @@ void MaEditorStatusBar::sl_lockStateChanged() {
     updateLock();
 }
 
-static const QString NONE_SELECTION = QObject::tr("none");
-
 QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo(const QPoint& pos) const{
     if (pos.isNull()) {
         return QPair<QString, QString>(NONE_MARK, NONE_MARK);
@@ -161,13 +159,13 @@ void MaEditorStatusBar::updateSelectionLabel() {
     MaEditorSelection selection = seqArea->getSelection();
     QString selSize;
     if (selection.isEmpty()) {
-        selSize = NONE_SELECTION;
+        selSize = QObject::tr("none");
     } else {
         selSize = QString::number(selection.width()) + "x" + QString::number(selection.height());
     }
     QFontMetrics fm(lineLabel->font(),this);
     int maxSelLength = fm.width(selectionPattern.arg(QString::number(aliObj->getLength()) + "x" + QString::number( aliObj->getNumRows())));
-    int nonSelLength = fm.width(selectionPattern.arg(NONE_SELECTION));
+    int nonSelLength = fm.width(selectionPattern.arg(QObject::tr("none")));
 
     selectionLabel->update(selSize, 10 + qMax(maxSelLength, nonSelLength));
 }

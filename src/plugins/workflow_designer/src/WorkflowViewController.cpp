@@ -136,24 +136,17 @@ enum {ElementsTab,SamplesTab};
 #define WS 1000
 #define MAX_FILE_SIZE 1000000
 
-static const QString XML_SCHEMA_WARNING = QObject::tr("You opened obsolete workflow in XML format. It is strongly recommended"
-                                                           " to clear working space and create workflow from scratch.");
-
-static const QString XML_SCHEMA_APOLOGIZE = QObject::tr("Sorry! This workflow is obsolete and cannot be opened.");
-
-static const QString BREAKPOINT_MANAGER_LABEL = QObject::tr( "Breakpoints" );
 static const int ABSENT_WIDGET_TAB_NUMBER = -1;
 
 /************************************************************************/
 /* Utilities */
 /************************************************************************/
-static QString percentStr = QObject::tr("%");
 class PercentValidator : public QRegExpValidator {
 public:
-    PercentValidator(QObject* parent) : QRegExpValidator(QRegExp("[1-9][0-9]*"+percentStr), parent) {}
+    PercentValidator(QObject* parent) : QRegExpValidator(QRegExp("[1-9][0-9]*"+QObject::tr("%")), parent) {}
     void fixup(QString& input) const {
-        if (!input.endsWith(percentStr)) {
-            input.append(percentStr);
+        if (!input.endsWith(QObject::tr("%"))) {
+            input.append(QObject::tr("%"));
         }
     }
 }; // PercentValidator
@@ -420,9 +413,10 @@ void WorkflowView::loadSceneFromObject() {
         SchemaSerializer::readMeta(&meta, xml.documentElement());
         scene->setModified(false);
         if(err.isEmpty()) {
-            QMessageBox::warning(this, tr("Warning!"), XML_SCHEMA_WARNING);
+            QMessageBox::warning(this, tr("Warning!"), QObject::tr("You opened obsolete workflow in XML format. It is strongly recommended"
+                                                                   " to clear working space and create workflow from scratch."));
         } else {
-            QMessageBox::warning(this, tr("Warning!"), XML_SCHEMA_APOLOGIZE);
+            QMessageBox::warning(this, tr("Warning!"), QObject::tr("Sorry! This workflow is obsolete and cannot be opened."));
         }
     } else {
         coreLog.error(tr("Undefined workflow format for %1").arg(go->getDocument() ? go->getDocument()->getURLString() : tr("file")));
@@ -536,7 +530,7 @@ void WorkflowView::addBottomWidgetsToInfoSplitter() {
     connect(scene, SIGNAL(si_itemDeleted(const ActorId &)),
             breakpointView, SLOT(sl_breakpointRemoved(const ActorId &)));
     if ( WorkflowSettings::isDebuggerEnabled( ) ) {
-        bottomTabs->addTab( breakpointView, BREAKPOINT_MANAGER_LABEL );
+        bottomTabs->addTab( breakpointView, QObject::tr( "Breakpoints" ) );
     }
 
     investigationWidgets = new WorkflowInvestigationWidgetsController(bottomTabs);
@@ -547,20 +541,20 @@ void WorkflowView::addBottomWidgetsToInfoSplitter() {
 
 void WorkflowView::sl_rescaleScene(const QString &scale)
 {
-    int percentPos = scale.indexOf(percentStr);
+    int percentPos = scale.indexOf(QObject::tr("%"));
     meta.scalePercent = scale.left(percentPos).toInt();
     rescale(false);
 }
 
 static void updateComboBox(QComboBox *scaleComboBox, int scalePercent) {
-    QString value = QString("%1%2").arg(scalePercent).arg(percentStr);
+    QString value = QString("%1%2").arg(scalePercent).arg(QObject::tr("%"));
     bool isOk = true;
     for (int i=0; i<scaleComboBox->count(); i++) {
         if (scaleComboBox->itemText(i) == value) {
             scaleComboBox->setCurrentIndex(i);
             return;
         } else{
-            QString itemText = scaleComboBox->itemText(i).mid(0, scaleComboBox->itemText(i).size() - percentStr.size());
+            QString itemText = scaleComboBox->itemText(i).mid(0, scaleComboBox->itemText(i).size() - QObject::tr("%").size());
             if (itemText.toInt(&isOk) > scalePercent && isOk){
                 scaleComboBox->insertItem(i, value);
                 scaleComboBox->setCurrentIndex(i);
@@ -1646,7 +1640,7 @@ void WorkflowView::paintEvent(QPaintEvent *event) {
     const bool isWorkflowRunning = ( NULL != scene->getRunner( ) );
     const bool isDebuggerEnabled = WorkflowSettings::isDebuggerEnabled( );
     if ( isDebuggerEnabled && ABSENT_WIDGET_TAB_NUMBER == bottomTabs->indexOf( breakpointView ) ) {
-        bottomTabs->addTab( breakpointView, BREAKPOINT_MANAGER_LABEL );
+        bottomTabs->addTab( breakpointView, QObject::tr( "Breakpoints" ) );
     } else if ( !isDebuggerEnabled
         && ABSENT_WIDGET_TAB_NUMBER != bottomTabs->indexOf( breakpointView ) )
     {
@@ -2254,9 +2248,10 @@ void WorkflowView::sl_loadScene(const QString &url, bool fromDashboard) {
 void WorkflowView::sl_xmlSchemaLoaded(Task* t) {
     assert(t != NULL);
     if(!t->hasError()) {
-        QMessageBox::warning(this, tr("Warning!"), XML_SCHEMA_WARNING);
+        QMessageBox::warning(this, tr("Warning!"), QObject::tr("You opened obsolete workflow in XML format. It is strongly recommended"
+                                                               " to clear working space and create workflow from scratch."));
     } else {
-        QMessageBox::warning(this, tr("Warning!"), XML_SCHEMA_APOLOGIZE);
+        QMessageBox::warning(this, tr("Warning!"), QObject::tr("Sorry! This workflow is obsolete and cannot be opened."));
     }
 }
 

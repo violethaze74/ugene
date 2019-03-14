@@ -139,9 +139,6 @@ void SpadesPropertyWidget::sl_showDialog() {
 /*SpadesPropertyDialog*/
 /********************************************************************/
 
-static const QString MESSAGE_BOX_ERROR = QApplication::translate("SpadesPropertyDialog", "At least one of the required input ports should be set in the \"Input data\" parameter.");
-static const QString INCORRECT_PARAMETERS_ERROR = QApplication::translate("SpadesPropertyDialog", "Incorrect parameters, can't parse");
-
 SpadesPropertyDialog::SpadesPropertyDialog(const QMap<QString, QVariant> &value,
     QWidget *parent) : QDialog(parent) {
     setupUi(this);
@@ -153,7 +150,7 @@ SpadesPropertyDialog::SpadesPropertyDialog(const QMap<QString, QVariant> &value,
 
 void SpadesPropertyDialog::accept() {
     CHECK_EXT(isSomeRequiredParemeterChecked(),
-        QMessageBox::critical(this, windowTitle(), MESSAGE_BOX_ERROR), );
+        QMessageBox::critical(this, windowTitle(), QApplication::translate("SpadesPropertyDialog", "At least one of the required input ports should be set in the \"Input data\" parameter.")), );
 
     QDialog::accept();
 }
@@ -169,7 +166,7 @@ QVariantMap SpadesPropertyDialog::getValue() const {
         if (pairEndCheckBox->isChecked()) {
             QStringList params = getDataFromComboBoxes(pairEndReadsDirectionComboBox,
                                                        pairEndReadsTypeComboBox);
-            SAFE_POINT(params.size() == 2, INCORRECT_PARAMETERS_ERROR, QVariantMap());
+            SAFE_POINT(params.size() == 2, QApplication::translate("SpadesPropertyDialog", "Incorrect parameters, can't parse"), QVariantMap());
 
             result.insert(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[0],
                           QString("%1:%2").arg(params.first()).arg(params.last()));
@@ -177,7 +174,7 @@ QVariantMap SpadesPropertyDialog::getValue() const {
         if (hightQualityCheckBox->isChecked()) {
             QStringList params = getDataFromComboBoxes(hightQualityReadsDirectionComboBox,
                                                        hightQualityReadsTypeComboBox);
-            SAFE_POINT(params.size() == 2, INCORRECT_PARAMETERS_ERROR, QVariantMap());
+            SAFE_POINT(params.size() == 2, QApplication::translate("SpadesPropertyDialog", "Incorrect parameters, can't parse"), QVariantMap());
 
             result.insert(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[2],
                           QString("%1:%2").arg(params.first()).arg(params.last()));
@@ -199,7 +196,7 @@ QVariantMap SpadesPropertyDialog::getValue() const {
         if (matePairsCheckBox->isChecked()) {
             QStringList params = getDataFromComboBoxes(matePairsReadsDirectionComboBox,
                                                        matePairsTypeComboBox);
-            SAFE_POINT(params.size() == 2, INCORRECT_PARAMETERS_ERROR, QVariantMap());
+            SAFE_POINT(params.size() == 2, QApplication::translate("SpadesPropertyDialog", "Incorrect parameters, can't parse"), QVariantMap());
 
             result.insert(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1],
                           QString("%1:%2").arg(params.first()).arg(params.last()));
@@ -229,7 +226,7 @@ void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
     //required
     if (value.contains(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID)) {
         const QVariant platformVariant = value.value(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID);
-        SAFE_POINT(platformVariant.canConvert<QString>(), INCORRECT_PARAMETERS_ERROR, );
+        SAFE_POINT(platformVariant.canConvert<QString>(), QApplication::translate("SpadesPropertyDialog", "Incorrect parameters, can't parse"), );
 
         sequencingPlatformComboBox->setCurrentIndex(sequencingPlatformComboBox->findData(platformVariant.toString()));
 
@@ -312,11 +309,11 @@ QStringList SpadesPropertyDialog::getDataFromComboBoxes(QComboBox* directionComb
 }
 
 void SpadesPropertyDialog::setDataForComboBoxes(QComboBox* directionComboBox, QComboBox* typeComboBox, const QVariant& value) {
-    SAFE_POINT(value.canConvert<QString>(), INCORRECT_PARAMETERS_ERROR, );
+    SAFE_POINT(value.canConvert<QString>(), QApplication::translate("SpadesPropertyDialog", "Incorrect parameters, can't parse"), );
 
     const QString stringValue = value.toString();
     const QStringList valueList = stringValue.split(":");
-    SAFE_POINT(valueList.size() == 2, INCORRECT_PARAMETERS_ERROR, );
+    SAFE_POINT(valueList.size() == 2, QApplication::translate("SpadesPropertyDialog", "Incorrect parameters, can't parse"), );
 
     directionComboBox->setCurrentIndex(directionComboBox->findData(valueList.first()));
     typeComboBox->setCurrentIndex(typeComboBox->findData(valueList.last()));

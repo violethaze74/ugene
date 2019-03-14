@@ -132,7 +132,6 @@ FormatCheckResult FastqFormat::checkRawTextData(const QByteArray& rawData, const
 }
 
 static QString readSequenceName(U2OpStatus& os, IOAdapter *io, char beginWith = '@') {
-    static const QString errorMessage = U2::FastqFormat::tr("Error while trying to find sequence name start");
 
     QByteArray buffArray(DocumentFormat::READ_BUFF_SIZE + 1, 0);
     { // read name string
@@ -145,14 +144,14 @@ static QString readSequenceName(U2OpStatus& os, IOAdapter *io, char beginWith = 
         }
         CHECK(io->isEof() == false, QString());
         CHECK_EXT(!io->hasError(), os.setError(io->errorString()), QString());
-        CHECK_EXT(readedCount >= 0, os.setError(errorMessage), "");
+        CHECK_EXT(readedCount >= 0, os.setError(U2::FastqFormat::tr("Error while trying to find sequence name start")), "");
 
         buffArray.resize(readedCount);
         buffArray = buffArray.trimmed();
     }
 
     const char *buff = buffArray.constData();
-    CHECK_EXT((buffArray.size() > 0) && (buff[0] == beginWith), os.setError(errorMessage), "");
+    CHECK_EXT((buffArray.size() > 0) && (buff[0] == beginWith), os.setError(U2::FastqFormat::tr("Error while trying to find sequence name start")), "");
 
     QString sequenceName = QString::fromLatin1(buff+1, buffArray.size()-1);
     return sequenceName;
@@ -340,9 +339,8 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
 
         QString qualSequenceName = readSequenceName(warningOs, io, '+');
         if (!qualSequenceName.isEmpty()) {
-            static const QString err = U2::FastqFormat::tr("Sequence name differs from quality scores name: %1 and %2");
             if (sequenceName != qualSequenceName){
-                warningOs.setError(err.arg(sequenceName).arg(qualSequenceName));
+                warningOs.setError(U2::FastqFormat::tr("Sequence name differs from quality scores name: %1 and %2").arg(sequenceName).arg(qualSequenceName));
             }
             if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
                 U2OpStatusImpl seqOs;
@@ -360,9 +358,8 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
             continue;
         }
 
-        static const QString err = U2::FastqFormat::tr("Bad quality scores: inconsistent size.");
         if(sequence.length() != qualityScores.length()){
-            warningOs.setError(err);
+            warningOs.setError(U2::FastqFormat::tr("Bad quality scores: inconsistent size."));
         }
         if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
             U2OpStatusImpl seqOs;
@@ -576,8 +573,7 @@ DNASequence *FastqFormat::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
     QString qualSequenceName = readSequenceName(logOs, io, '+');
     CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
     if (!qualSequenceName.isEmpty()) {
-        static const QString err = U2::FastqFormat::tr("Not a valid FASTQ file, sequence name differs from quality scores name");
-        CHECK_EXT(sequenceName == qualSequenceName, logOs.setError(err), new DNASequence());
+        CHECK_EXT(sequenceName == qualSequenceName, logOs.setError(U2::FastqFormat::tr("Not a valid FASTQ file, sequence name differs from quality scores name")), new DNASequence());
     }
 
     // read qualities
@@ -585,8 +581,7 @@ DNASequence *FastqFormat::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
     readQuality(logOs, io, qualityScores, sequence.size());
     CHECK_OP(logOs, new DNASequence());
 
-    static const QString err = U2::FastqFormat::tr("Not a valid FASTQ file. Bad quality scores: inconsistent size.");
-    CHECK_EXT(sequence.length() == qualityScores.length(), logOs.setError(err), new DNASequence());
+    CHECK_EXT(sequence.length() == qualityScores.length(), logOs.setError(U2::FastqFormat::tr("Not a valid FASTQ file. Bad quality scores: inconsistent size.")), new DNASequence());
 
     DNASequence *seq = new DNASequence(sequenceName, sequence);
     seq->quality = DNAQuality(qualityScores);
