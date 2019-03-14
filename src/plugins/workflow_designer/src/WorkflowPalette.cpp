@@ -584,6 +584,7 @@ bool WorkflowPaletteElements::removeElement() {
     ActorPrototypeRegistry *reg = WorkflowEnv::getProtoRegistry();
     assert(reg);
     reg->unregisterProto(id);
+    WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(id);
     return true;
 }
 
