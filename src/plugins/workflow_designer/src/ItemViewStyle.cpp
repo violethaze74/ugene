@@ -79,7 +79,7 @@ void ItemViewStyle::selectBGColor() {
 
 void ItemViewStyle::selectFont() {
     bool ok;
-    QFont res = QFontDialog::getFont(&ok, defFont, owner->scene()->views().first());
+    QFont res = QFontDialog::getFont(&ok, defFont, owner->scene()->views().first(), tr("Characters Font"), QFontDialog::DontUseNativeDialog);
     if (ok) {
         defFont = res;
         WorkflowScene* sc = qobject_cast<WorkflowScene*>(owner->scene());
