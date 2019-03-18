@@ -213,7 +213,13 @@ void WorkflowTabView::sl_dashboardsListChanged(const QStringList &added, const Q
 
     const int countAfterAdding = count();
     if (0 == countBeforeAdding && countAfterAdding > 0) {
-        setCurrentIndex(countAfterAdding - 1);
+        const int newIndex = countAfterAdding - 1;
+        if (newIndex > 0) {
+            setCurrentIndex(countAfterAdding - 1);
+        } else {
+            // emit the signal manually, because signals emitting was blocked during the dashboards adding
+            emit currentChanged(newIndex);
+        }
     }
 
     emit si_countChanged();
@@ -237,6 +243,7 @@ void WorkflowTabView::sl_dashboardsChanged(const QStringList &dashboardIds) {
         }
 
         if (!dashboardInfo.opened) {
+            dashboard->setClosed();
             removeDashboard(dashboard);
         } else if (dashboardInfo.name != dashboard->getName()) {
             dashboard->setName(dashboardInfo.name);
