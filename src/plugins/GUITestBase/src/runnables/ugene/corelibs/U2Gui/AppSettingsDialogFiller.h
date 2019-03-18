@@ -50,6 +50,7 @@ public:
     static bool isToolDescriptionContainsString(HI::GUITestOpStatus &os, const QString& toolName, const QString& checkIfContains);
     static void setTemporaryDirPath(HI::GUITestOpStatus &os, const QString &path);
     static void setDocumentsDirPath(HI::GUITestOpStatus &os, const QString &path);
+    static void setWorkflowOutputDirPath(HI::GUITestOpStatus &os, const QString &path);
 
 private:
     style itemStyle;

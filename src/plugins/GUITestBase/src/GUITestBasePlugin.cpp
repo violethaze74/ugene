@@ -170,7 +170,7 @@ void GUITestBasePlugin::sl_showWindow() {
     if (view == NULL) {
         view = new GUITestRunner(AppContext::getGUITestBase());
     }
-    view->show();
+    view->raise();
 }
 
 void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
@@ -2839,6 +2839,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0016);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0017);
+
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0004);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer/Estimating

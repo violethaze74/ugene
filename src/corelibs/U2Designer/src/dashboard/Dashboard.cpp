@@ -105,6 +105,7 @@ Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
     saveSettings();
 
     connect(dashboardPageController, SIGNAL(si_pageReady()), SLOT(sl_pageReady()));
+    setObjectName("Dashboard");
 }
 
 void Dashboard::onShow() {
