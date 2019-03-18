@@ -340,6 +340,7 @@ void ChromatogramView::sl_onSequenceObjectLoaded(Task* t) {
         update();
     } else {
         qCritical("object not found!");
+        Q_ASSERT(false);
     }
 }
 
@@ -706,6 +707,7 @@ void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w
     qreal bLinearTransformBaseCalls = leftMargin - kLinearTransformBaseCalls*a1;
 
     if (!is)    {
+        xBaseCallsOfEdited;
         kLinearTransformBaseCallsOfEdited = kLinearTransformBaseCalls;
         bLinearTransformBaseCallsOfEdited = bLinearTransformBaseCalls;
     }

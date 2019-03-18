@@ -263,6 +263,7 @@ qint64 ZlibAdapter::readBlock(char* data, qint64 size)
 {
     if (!isOpen() || z->isCompressing()) {
         qCritical("not ready to read");
+        Q_ASSERT(false);
         return false;
     }
     // first use data put back to buffer if any
@@ -296,6 +297,7 @@ qint64 ZlibAdapter::readBlock(char* data, qint64 size)
 qint64 ZlibAdapter::writeBlock(const char* data, qint64 size) {
     if (!isOpen() || !z->isCompressing()) {
         qCritical("not ready to write");
+        Q_ASSERT(false);
         return false;
     }
     qint64 l = z->compress(data, size);
@@ -305,6 +307,7 @@ qint64 ZlibAdapter::writeBlock(const char* data, qint64 size) {
 bool ZlibAdapter::skip(qint64 nBytes) {
     if (!isOpen() || z->isCompressing()) {
         qCritical("not ready to seek");
+        Q_ASSERT(false);
         return false;
     }
     assert(buf);
