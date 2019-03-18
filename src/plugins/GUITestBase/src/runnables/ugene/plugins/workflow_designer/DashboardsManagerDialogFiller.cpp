@@ -67,6 +67,22 @@ bool DashboardsManagerDialogFiller::isDashboardPresent(HI::GUITestOpStatus &os, 
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getDashboardsState"
+QList<QPair<QString, bool> > DashboardsManagerDialogFiller::getDashboardsState(HI::GUITestOpStatus &os) {
+    QList<QPair<QString, bool> > result;
+
+    QWidget *dialog = QApplication::activeModalWidget();
+    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", result);
+
+    QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "listWidget", dialog);
+    for (int i = 0; i < treeWidget->topLevelItemCount(); ++i) {
+        QTreeWidgetItem *item = treeWidget->topLevelItem(i);
+        result << QPair<QString, bool>(item->text(0), Qt::Checked == item->checkState(0));
+    }
+    return result;
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }

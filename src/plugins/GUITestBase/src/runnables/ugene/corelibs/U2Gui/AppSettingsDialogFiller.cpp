@@ -268,6 +268,17 @@ void AppSettingsDialogFiller::setDocumentsDirPath(GUITestOpStatus &os, const QSt
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "setWorkflowOutputDirPath"
+void AppSettingsDialogFiller::setWorkflowOutputDirPath(GUITestOpStatus &os, const QString &path) {
+    QWidget *dialog = QApplication::activeModalWidget();
+    GT_CHECK(nullptr != dialog, "activeModalWidget is nullptr");
+
+    openTab(os, WorkflowDesigner);
+
+    GTLineEdit::setText(os, "workflowOutputEdit", path, dialog);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "OpenTab"
 void AppSettingsDialogFiller::openTab(HI::GUITestOpStatus &os, Tabs tab){
     QWidget *dialog = QApplication::activeModalWidget();

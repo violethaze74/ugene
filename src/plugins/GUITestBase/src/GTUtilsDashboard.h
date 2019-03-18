@@ -37,6 +37,8 @@ public:
     static QWebView* getDashboard(HI::GUITestOpStatus &os);
     static QTabWidget* getTabWidget(HI::GUITestOpStatus &os);
 
+    static const QString getDashboardName(HI::GUITestOpStatus &os, int dashboardNumber);
+
     static QStringList getOutputFiles(HI::GUITestOpStatus &os);
     static void clickOutputFile(HI::GUITestOpStatus &os, const QString &outputFileName);
 

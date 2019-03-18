@@ -59,6 +59,11 @@ GUI_TEST_CLASS_DECLARATION(tool_launch_nodes_test_0015)
 GUI_TEST_CLASS_DECLARATION(tool_launch_nodes_test_0016)
 GUI_TEST_CLASS_DECLARATION(tool_launch_nodes_test_0017)
 
+GUI_TEST_CLASS_DECLARATION(view_opening_test_0001)
+GUI_TEST_CLASS_DECLARATION(view_opening_test_0002)
+GUI_TEST_CLASS_DECLARATION(view_opening_test_0003)
+GUI_TEST_CLASS_DECLARATION(view_opening_test_0004)
+
 #undef GUI_TEST_SUITE
 }   // namespace GUITest_common_scenarios_workflow_dashboard
 
