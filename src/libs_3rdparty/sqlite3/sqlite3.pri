@@ -11,8 +11,7 @@ DEFINES+=SQLITE_ENABLE_COLUMN_METADATA
 DEFINES+=SQLITE_ENABLE_RTREE
 unix:DEFINES+=SQLITE_OMIT_LOAD_EXTENSION
 DEFINES+=THREADSAFE
-LIBS += -L../../../$$corelibs_out_dir()
-DESTDIR = ../../../$$corelibs_out_dir()
+LIBS += -L../../_release
 
 !debug_and_release|build_pass {
 
@@ -20,12 +19,16 @@ DESTDIR = ../../../$$corelibs_out_dir()
         TARGET = ugenedbd
         DEFINES+=_DEBUG
         CONFIG +=console
+        DESTDIR=../../_debug/
         OBJECTS_DIR=_tmp/obj/debug
+        LIBS -= -L../../_release 
+        LIBS += -L../../_debug
     }
 
     CONFIG(release, debug|release) {
         TARGET = ugenedb
         DEFINES+=NDEBUG
+        DESTDIR=../../_release/
         OBJECTS_DIR=_tmp/obj/release
     }
 }

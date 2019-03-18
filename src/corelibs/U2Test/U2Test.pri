@@ -6,25 +6,26 @@ include( ../../ugene_lib_common.pri )
 
 QT += xml gui widgets
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2TEST_DLL
-
-LIBS += -L../../../$$corelibs_out_dir()
-LIBS += -lU2Core -lQSpec
+LIBS += -L../../_release -lU2Core -lQSpec
 INCLUDEPATH += ../../libs_3rdparty/QSpec/src
 
 if (contains(DEFINES, HI_EXCLUDED)) {
     LIBS -= -lQSpec
 }
 
-DESTDIR = ../../../$$corelibs_out_dir()
-
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        LIBS -= -lU2Core -lQSpec
-        LIBS += -lU2Cored -lQSpecd
+        DESTDIR=../../_debug
+        LIBS -= -L../../_release -lU2Core -lQSpec
+        LIBS += -L../../_debug -lU2Cored -lQSpecd
         if (contains(DEFINES, HI_EXCLUDED)) {
             LIBS -= -lQSpecd
         }
+    }
+
+    CONFIG(release, debug|release) {
+        DESTDIR=../../_release
     }
 }
 

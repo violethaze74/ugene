@@ -7,9 +7,7 @@ CONFIG +=qt thread debug_and_release staticlib warn_off
 QT += network xml script
 INCLUDEPATH += src _tmp ../../core/src  ../../include
 
-LIBS += -L../../../$$corelibs_out_dir()
-LIBS += -lU2Core -lU2Core -lcore
-DESTDIR = ../../../$$corelibs_out_dir()
+LIBS += -L../../_release -lU2Core -lU2Core -lcore
 
 !debug_and_release|build_pass {
 
@@ -17,15 +15,17 @@ DESTDIR = ../../../$$corelibs_out_dir()
         TARGET = qscored
         DEFINES+=_DEBUG
         CONFIG +=console
+        DESTDIR=../../_debug/
         MOC_DIR=_tmp/moc/debug
         OBJECTS_DIR=_tmp/obj/debug
-        LIBS -= -lU2Core -lU2Core -lcore
-        LIBS += -lcored -lU2Cored -lU2Cored
+        LIBS -= -L../../_release -lU2Core -lU2Core -lcore
+        LIBS += -L../../_debug -lcored -lU2Cored -lU2Cored
     }
 
     CONFIG(release, debug|release) {
         TARGET = qscore
         DEFINES+=NDEBUG
+        DESTDIR=../../_release/
         MOC_DIR=_tmp/moc/release
         OBJECTS_DIR=_tmp/obj/release
     }

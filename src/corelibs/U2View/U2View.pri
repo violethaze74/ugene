@@ -13,18 +13,20 @@ useWebKit() {
 }
 
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2VIEW_DLL
-LIBS += -L../../../$$corelibs_out_dir()
-LIBS += -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Gui
+LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Gui
 
 unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
-
-DESTDIR = ../../../$$corelibs_out_dir()
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        LIBS -= -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Gui
-        LIBS += -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Langd -lU2Guid
+        DESTDIR=../../_debug
+        LIBS -= -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Gui
+        LIBS += -L../../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Langd -lU2Guid
+    }
+
+    CONFIG(release, debug|release) {
+        DESTDIR=../../_release
     }
 }
 

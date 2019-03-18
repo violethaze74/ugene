@@ -14,14 +14,11 @@ DEFINES+= QT_FATAL_ASSERT BUILDING_U2ALGORITHM_DLL
 
 unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
 
+LIBS += -L../../_release -lU2Core -lsamtools
 LIBS += $$add_z_lib()
-LIBS += -L../../../$$corelibs_out_dir()
-LIBS += -lU2Core -lsamtools
-
-DESTDIR = ../../../$$corelibs_out_dir()
 
 # Force re-linking when lib changes
-unix:POST_TARGETDEPS += ../../../_release/libsamtools.a
+unix:POST_TARGETDEPS += ../../_release/libsamtools.a
 # Same options which samtools is built with
 DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE _USE_KNETFILE
 INCLUDEPATH += ../../libs_3rdparty/samtools/src ../../libs_3rdparty/samtools/src/samtools
@@ -31,11 +28,16 @@ win32:LIBS+=-lws2_32
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        LIBS -= -lU2Core -lsamtools
-        LIBS += -lU2Cored -lsamtoolsd
+        DESTDIR=../../_debug
+        LIBS -= -L../../_release -lU2Core -lsamtools
+        LIBS += -L../../_debug -lU2Cored -lsamtoolsd
 
-        unix:POST_TARGETDEPS -= ../../../_release/libsamtools.a
-        unix:POST_TARGETDEPS += ../../../_debug/libsamtoolsd.a
+        unix:POST_TARGETDEPS -= ../../_release/libsamtools.a
+        unix:POST_TARGETDEPS += ../../_debug/libsamtoolsd.a
+    }
+
+    CONFIG(release, debug|release) {
+        DESTDIR=../../_release
     }
 }
 

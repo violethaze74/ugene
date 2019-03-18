@@ -13,11 +13,23 @@ DEFINES+=QT_FATAL_ASSERT BUILDING_U2CORE_DLL
 
 LIBS += $$add_z_lib()
 LIBS += $$add_sqlite_lib()
-LIBS += -L../../../$$corelibs_out_dir()
-
-DESTDIR = ../../../$$corelibs_out_dir()
 
 unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
+
+LIBS += -L../../_release
+
+!debug_and_release|build_pass {
+
+    CONFIG(debug, debug|release) {
+        DESTDIR=../../_debug
+        LIBS += -L../../_debug
+        LIBS -= -L../../_release
+    }
+
+    CONFIG(release, debug|release) {
+        DESTDIR=../../_release
+    }
+}
 
 # Special compiler flags for windows configuration
 win32 {

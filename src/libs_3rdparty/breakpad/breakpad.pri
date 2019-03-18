@@ -5,7 +5,7 @@ TEMPLATE = lib
 CONFIG += thread debug_and_release warn_off
 INCLUDEPATH += src
 TARGET = breakpad
-DESTDIR = ../../../$$corelibs_out_dir()
+DESTDIR = ../../_release
 QT -= gui
 
 !debug_and_release|build_pass {
@@ -13,6 +13,7 @@ QT -= gui
         TARGET = breakpadd
         DEFINES += _DEBUG
         CONFIG += console
+        DESTDIR = ../../_debug
         OBJECTS_DIR = _tmp/obj/debug
     }
 
