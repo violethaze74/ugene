@@ -439,7 +439,7 @@ void BlastPlusSupportCommonTask::parseXMLHsp(const QDomNode &xml,const QString &
         ad->qualifiers.push_back(U2Qualifier("hit-to", elem.text()));
     }
 
-    elem = xml.lastChildElement("Hsp_hit-frame");
+    elem = xml.lastChildElement("Hsp_query-frame");
     int frame = elem.text().toInt(&isOk);
     if(!isOk) {
         stateInfo.setError(tr("Can't get location"));
