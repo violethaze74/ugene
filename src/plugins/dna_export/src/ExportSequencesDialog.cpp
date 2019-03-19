@@ -45,9 +45,10 @@ namespace U2 {
 
 ExportSequencesDialog::ExportSequencesDialog( bool m, bool allowComplement, bool allowTranslation,
     bool allowBackTranslation, const QString& defaultFileName, const QString &sourceFileBaseName,
-    const DocumentFormatId& defaultFormatId, QWidget* p )
+    const qint64 sourceSequenceLength, const DocumentFormatId& defaultFormatId, QWidget* p )
     : QDialog(p),
       sequenceName(sourceFileBaseName),
+      sequenceLength(sourceSequenceLength),
       saveController(NULL),
       defaultFileName(defaultFileName) {
     setupUi(this);

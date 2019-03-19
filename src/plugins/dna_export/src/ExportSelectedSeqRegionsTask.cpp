@@ -125,7 +125,7 @@ void CreateExportItemsFromSeqRegionsTask::run() {
         ExportSequenceItem ei;
 
         U2SequenceImporter seqImporter(QVariantMap(), true);
-        seqImporter.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, name, false);
+        seqImporter.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, name, seqObject->isCircular());
         SAFE_POINT_OP(stateInfo, );
         for (qint64 pos = r.startPos; pos < r.endPos(); pos += sequenceChunkMaxLength) {
             const qint64 currentChunkSize = qMin(sequenceChunkMaxLength, r.endPos() - pos);

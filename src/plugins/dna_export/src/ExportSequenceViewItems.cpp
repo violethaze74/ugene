@@ -302,11 +302,14 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
     bool allowBackTranslation = true;
 
     QMap<const ADVSequenceObjectContext*, QList<SharedAnnotationData> > annotationsPerSeq;
+
+    ADVSequenceObjectContext* seqCtx = getContextFromAnnotationsFromOneView(annotations);
+    if (seqCtx == nullptr) {
+        QMessageBox::warning(view->getWidget(), L10N::warningTitle(), tr("Annotation from different views are selected"));
+        return;
+    }
+
     foreach (Annotation *a, annotations) {
-        ADVSequenceObjectContext* seqCtx = view->getSequenceContext(a->getGObject());
-        if (seqCtx == NULL) {
-            continue;
-        }
         QList<SharedAnnotationData> &annsPerSeq = annotationsPerSeq[seqCtx];
         annsPerSeq.append(a->getData());
         if (annsPerSeq.size() > 1) {
@@ -331,10 +334,17 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
     GUrl seqUrl = view->getSequenceInFocus()->getSequenceGObject()->getDocument()->getURL();
     GUrlUtils::getLocalPathFromUrl(seqUrl, view->getSequenceInFocus()->getSequenceGObject()->getGObjectName(), dirPath, fileBaseName);
     GUrl defaultUrl = GUrlUtils::rollFileName(dirPath + QDir::separator() + fileBaseName + "_annotation." + fileExt, DocumentUtils::getNewDocFileNameExcludesHint());
+    qint64 sequenceLength = seqCtx->getSequenceLength();
 
-    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(true, allowComplement, allowTranslation, allowBackTranslation,
-        defaultUrl.getURLString(), fileBaseName, BaseDocumentFormats::FASTA,
-        AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(true,
+                                                                              allowComplement,
+                                                                              allowTranslation,
+                                                                              allowBackTranslation,
+                                                                              defaultUrl.getURLString(),
+                                                                              fileBaseName,
+                                                                              sequenceLength,
+                                                                              BaseDocumentFormats::FASTA,
+                                                                              AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle("Export Sequence of Selected Annotations");
     d->disableAllFramesOption(true); // only 1 frame is suitable
     d->disableStrandOption(true);    // strand is already recorded in annotation
@@ -389,11 +399,18 @@ void ADVExportContext::sl_saveSelectedSequences() {
 
     GUrl seqUrl = seqCtx->getSequenceGObject()->getDocument()->getURL();
     GUrlUtils::getLocalPathFromUrl(seqUrl, seqCtx->getSequenceGObject()->getGObjectName(), dirPath, fileBaseName);
-
     GUrl defaultUrl = GUrlUtils::rollFileName(dirPath + QDir::separator() + fileBaseName + "_region." + fileExt, DocumentUtils::getNewDocFileNameExcludesHint());
+    qint64 sequenceLength = seqCtx->getSequenceLength();
 
-    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(merge, complement, amino, nucleic, defaultUrl.getURLString(), fileBaseName, BaseDocumentFormats::FASTA,
-        AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(merge,
+                                                                              complement,
+                                                                              amino,
+                                                                              nucleic,
+                                                                              defaultUrl.getURLString(),
+                                                                              fileBaseName,
+                                                                              sequenceLength,
+                                                                              BaseDocumentFormats::FASTA,
+                                                                              AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle("Export Selected Sequence Region");
     const int rc = d->exec();
     CHECK(!d.isNull(), );
@@ -661,6 +678,18 @@ void ADVExportContext::selectionToAlignment(const QString& title, bool annotatio
     }
     Task* t = ExportUtils::wrapExportTask(new ExportAlignmentTask(ma, d->url, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
+}
+
+ADVSequenceObjectContext* ADVExportContext::getContextFromAnnotationsFromOneView(const QList<Annotation*>& annotations) {
+    CHECK(!annotations.isEmpty(), nullptr);
+
+    ADVSequenceObjectContext* resultContext = view->getSequenceContext(annotations.first()->getGObject());
+    foreach(Annotation* ann, annotations) {
+        ADVSequenceObjectContext* context = view->getSequenceContext(ann->getGObject());
+        CHECK(resultContext == context, nullptr);
+    }
+
+    return resultContext;
 }
 
 void ADVExportContext::sl_saveSelectedAnnotationsToAlignment() {

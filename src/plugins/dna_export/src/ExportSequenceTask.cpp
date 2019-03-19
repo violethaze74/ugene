@@ -84,6 +84,18 @@ ExportSequenceItem & ExportSequenceItem::operator =(const ExportSequenceItem &ot
     return *this;
 }
 
+bool ExportSequenceItem::operator==(const ExportSequenceItem& other) const {
+    return seqRef == other.seqRef &&
+           name == other.name &&
+           circular == other.circular &&
+           alphabet == other.alphabet &&
+           length == other.length &&
+           annotations == other.annotations &&
+           complTT == other.complTT &&
+           aminoTT == other.aminoTT &&
+           backTT == other.backTT;
+}
+
 ExportSequenceItem::~ExportSequenceItem() {
     releaseOwnedSeq();
 }
@@ -149,6 +161,11 @@ bool ExportSequenceItem::ownsSeq() const {
     return sequencesRefCounts.contains(seqRef);
 }
 
+bool ExportSequenceItem::isEmpty() const {
+    ExportSequenceItem empty;
+    return this == &empty;
+}
+
 void ExportSequenceItem::setSequenceInfo(U2SequenceObject *seqObj) {
     SAFE_POINT(NULL != seqObj, L10N::nullPointerError("sequence object"), );
 
@@ -160,11 +177,14 @@ void ExportSequenceItem::setSequenceInfo(U2SequenceObject *seqObj) {
 }
 
 ExportSequenceTaskSettings::ExportSequenceTaskSettings()
-    : merge(false), mergeGap(0), strand(TriState_Yes), allAminoFrames(false), mostProbable(true), saveAnnotations(false),
-    formatId(BaseDocumentFormats::FASTA)
-{
-
-}
+                          : merge(false),
+                            mergeGap(0),
+                            strand(TriState_Yes),
+                            allAminoFrames(false),
+                            mostProbable(true),
+                            saveAnnotations(false),
+                            formatId(BaseDocumentFormats::FASTA),
+                            sequenceLength(0) {}
 
 //////////////////////////////////////////////////////////////////////////
 //ExportSequenceTask
@@ -464,6 +484,29 @@ void ExportSequenceTask::run() {
         //TODO: if we do not need to merge items, here we can use streaming & save the doc!
     }
     CHECK_EXT(!notMergedItems.isEmpty(), stateInfo.setError(tr("No sequences have been produced.")), );
+
+    if (notMergedItems.first().circular && notMergedItems.size() > 1) {
+        ExportSequenceItem startItem;
+        ExportSequenceItem endItem;
+        foreach(const ExportSequenceItem& item, notMergedItems) {
+            QRegExp findRegion("region \\[(\\d+) (\\d+)\\]");
+            findRegion.indexIn(item.name);
+            qint64 start = findRegion.cap(1).toInt();
+            qint64 end = findRegion.cap(2).toInt();
+            CHECK_CONTINUE(!(start == 1 && end == config.sequenceLength));
+            CHECK_OPERATIONS(start != 1, startItem = item, continue);
+            CHECK_OPERATIONS(end != config.sequenceLength, endItem = item, continue);
+        }
+        if (!startItem.isEmpty() && !endItem.isEmpty()) {
+            const ExportSequenceItem mergedCircularItem = mergeExportItems(QList<ExportSequenceItem>() << startItem << endItem, 0, stateInfo);
+            CHECK_OP(stateInfo, );
+
+            notMergedItems.removeOne(startItem);
+            notMergedItems.removeOne(endItem);
+            notMergedItems << mergedCircularItem;
+        }
+
+    }
 
     QList<ExportSequenceItem> resultItems;
     if (config.merge && notMergedItems.size() > 1) {

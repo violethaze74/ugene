@@ -46,8 +46,10 @@ public:
     // after calling this method the client code takes responsibility for correct release the sequence from the database
     U2SequenceObject * takeOwnedSeq();
     bool ownsSeq() const;
+    bool isEmpty() const;
 
     ExportSequenceItem & operator =(const ExportSequenceItem &other);
+    bool operator==(const ExportSequenceItem& other) const;
 
     U2EntityRef                 seqRef; // sequence to copy
     QString                     name;
@@ -90,7 +92,9 @@ public:
 
     DocumentFormatId    formatId;
 
-    QString             sequenceName;             // custom sequence name
+    QString             sequenceName;           // custom sequence name
+
+    qint64              sequenceLength;         // length of the sequence if there is the only source sequence
 };
 
 /** Exports sequences a file */
