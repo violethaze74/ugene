@@ -257,7 +257,7 @@ void GTest_SpadesTaskTest::init(XMLTestFormat *tf, const QDomElement& el) {
 }
 
 void GTest_SpadesTaskTest::prepare() {
-    collector = new OutputCollector();
+    collector = new OutputCollector(false);
     taskSettings.listeners = QList<ExternalToolListener*>() << collector;
     spadesTask = new SpadesTask(taskSettings);
     addSubTask(spadesTask);
