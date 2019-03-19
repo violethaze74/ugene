@@ -528,10 +528,14 @@ int main(int argc, char **argv)
     GReportableCounter sysArchCounter("OS architecture", "", 1);
     ++sysArchCounter.totalCount;
 #if defined Q_OS_WIN
-    if (IsWow64()) {
+    if (ugeneArchCounter.suffix == "Ugene 64-bit") {
         sysArchCounter.suffix = "Windows 64-bit";
     } else {
-        sysArchCounter.suffix = "Windows 32-bit";
+        if (IsWow64()) {
+            sysArchCounter.suffix = "Windows 64-bit";
+        } else {
+            sysArchCounter.suffix = "Windows 32-bit";
+        }
     }
 #elif defined Q_OS_MAC
     sysArchCounter.suffix = "MacOS 64-bit";
