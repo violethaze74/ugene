@@ -133,6 +133,9 @@ public:
     //returns all workers placed on workflow scene
     static QList<WorkflowProcessItem*> getWorkers(HI::GUITestOpStatus &os);
 
+    static QWidget *getDatasetsListWidget(HI::GUITestOpStatus& os);
+    static QWidget *getCurrentDatasetWidget(HI::GUITestOpStatus& os);
+
     static void createDataset(HI::GUITestOpStatus& os, QString datasetName = "");
     //sets input file with path "filePath" to the current dataset
     //this method should be called after selecting worker which contains dataset on scene

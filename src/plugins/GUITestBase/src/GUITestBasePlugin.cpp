@@ -161,7 +161,6 @@ GUITestBasePlugin::GUITestBasePlugin() : Plugin(tr("GUITestBase"), tr("GUI Test 
     openGUITestRunnerAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
     openGUITestRunnerAction->setObjectName("GUI_TEST_RUNNER");
     openGUITestRunnerAction->setIcon(QIcon(":gui_test/images/open_gui_test_runner.png"));
-    view = NULL;
     connect(openGUITestRunnerAction, SIGNAL(triggered()), SLOT(sl_showWindow()));
     ToolsMenu::addAction(ToolsMenu::TOOLS, openGUITestRunnerAction);
 }
@@ -169,8 +168,10 @@ GUITestBasePlugin::GUITestBasePlugin() : Plugin(tr("GUITestBase"), tr("GUI Test 
 void GUITestBasePlugin::sl_showWindow() {
     if (view == NULL) {
         view = new GUITestRunner(AppContext::getGUITestBase());
+        view->show();
+    } else {
+        view->raise();
     }
-    view->raise();
 }
 
 void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {

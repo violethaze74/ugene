@@ -453,7 +453,7 @@ void WorkflowView::loadUiSettings() {
 
 void WorkflowView::setupMainSplitter() {
     splitter = new QSplitter(this);
-    splitter->setObjectName("splitter");
+    splitter->setObjectName("WorkflowViewMainSplitter");
     {
         splitter->addWidget(tabs);
         splitter->addWidget(infoSplitter);

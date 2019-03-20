@@ -81,6 +81,7 @@ WizardController::~WizardController() {
 
 QWizard * WizardController::createGui() {
     QWizard *result = new QWizard((QWidget*)AppContext::getMainWindow()->getQMainWindow());
+    result->setAttribute(Qt::WA_DeleteOnClose);
     setupButtons(result);
 
     int idx = 0;

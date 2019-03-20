@@ -1599,7 +1599,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253) {
     GTFileDialog::openFile(os, dataDir + "/samples/ABIF/", "A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
-    QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle*>(GTWidget::findWidget(os, "qt_splithandle_"));
+    QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle*>(GTWidget::findWidget(os, "qt_splithandle_", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR( NULL != splitterHandle, "splitterHandle is not present" );
 
     QWidget *chromaView = GTWidget::findWidget( os, "chromatogram_view_A1#berezikov");
