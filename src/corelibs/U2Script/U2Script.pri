@@ -21,17 +21,28 @@ INCLUDEPATH +=      ../../include \
 #                    $${UGENE_NODE_DIR}/deps/uv/include
 #}
 
-LIBS += -L../../$$out_dir()
-LIBS += -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Private -lU2Gui -lU2Test
+LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Private -lU2Gui -lU2Test
 LIBS += $$add_sqlite_lib()
-
-DESTDIR = ../../$$out_dir()
 
 !debug_and_release|build_pass {
 
     CONFIG( debug, debug|release ) {
-        LIBS -= -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Private -lU2Gui -lU2Test
-        LIBS += -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Langd -lU2Privated -lU2Guid -lU2Testd
+        DESTDIR =   ../../_debug
+
+        LIBS -=     -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Private -lU2Gui -lU2Test
+        LIBS +=     -L../../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Langd -lU2Privated -lU2Guid -lU2Testd
+                    
+#        count( UGENE_NODE_DIR, 1 ) {
+#            LIBS += -l$${UGENE_NODE_DIR}/Debug/node
+#        }
+    }
+
+    CONFIG( release, debug|release ) {
+        DESTDIR =   ../../_release
+
+#        count( UGENE_NODE_DIR, 1 ) {
+#            LIBS += -l$${UGENE_NODE_DIR}/Release/node
+#        }
     }
 }
 

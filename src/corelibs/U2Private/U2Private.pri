@@ -6,15 +6,18 @@ include( ../../ugene_lib_common.pri )
 
 QT += xml widgets network
 DEFINES += QT_FATAL_ASSERT BUILDING_U2PRIVATE_DLL
-LIBS += -L../../$$out_dir()
-LIBS += -lU2Core -lU2Formats -lbreakpad
+LIBS += -L../../_release -lU2Core -lU2Formats -lbreakpad
 INCLUDEPATH += ../../libs_3rdparty/breakpad/src
-DESTDIR = ../../$$out_dir()
 
 !debug_and_release|build_pass {
     CONFIG(debug, debug|release) {
-        LIBS -= -lU2Core -lU2Formats -lbreakpad
-        LIBS += -lU2Cored -lU2Formatsd -lbreakpadd
+        DESTDIR = ../../_debug
+        LIBS -= -L../../_release -lU2Core -lU2Formats -lbreakpad
+        LIBS += -L../../_debug -lU2Cored -lU2Formatsd -lbreakpadd
+    }
+
+    CONFIG(release, debug|release) {
+        DESTDIR = ../../_release
     }
 }
 

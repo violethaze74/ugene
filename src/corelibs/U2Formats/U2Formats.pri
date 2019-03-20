@@ -9,8 +9,7 @@ UGENE_RELATIVE_DESTDIR = ''
 
 DEFINES += QT_FATAL_ASSERT BUILDING_U2FORMATS_DLL
 
-LIBS += -L../../$$out_dir()
-LIBS += -lU2Core -lU2Algorithm
+LIBS += -L../../_release -lU2Core -lU2Algorithm
 LIBS += -lsamtools
 LIBS += $$add_sqlite_lib()
 
@@ -21,7 +20,7 @@ win32-msvc2013 {
 QT += sql widgets
 
 # Force re-linking when lib changes
-unix:POST_TARGETDEPS += ../../$$out_dir()/libsamtools.a
+unix:POST_TARGETDEPS += ../../_release/libsamtools.a
 # Same options which samtools is built with
 DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE _USE_KNETFILE
 INCLUDEPATH += ../../libs_3rdparty/samtools/src ../../libs_3rdparty/samtools/src/samtools
@@ -37,16 +36,20 @@ win32 {
 }
 
 INCLUDEPATH += ../../libs_3rdparty/sqlite3/src
-DESTDIR = ../../$$out_dir()
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        LIBS -= -lU2Core -lU2Algorithm -lsamtools
-        LIBS += -lU2Cored -lU2Algorithmd -lsamtoolsd
+        DESTDIR=../../_debug
+        LIBS -= -L../../_release -lU2Core -lU2Algorithm -lsamtools
+        LIBS += -L../../_debug -lU2Cored -lU2Algorithmd -lsamtoolsd
 
-        unix:POST_TARGETDEPS -= ../../$$out_dir()/libsamtools.a
-        unix:POST_TARGETDEPS += ../../$$out_dir()/libsamtoolsd.a
+        unix:POST_TARGETDEPS -= ../../_release/libsamtools.a
+        unix:POST_TARGETDEPS += ../../_debug/libsamtoolsd.a
+    }
+
+    CONFIG(release, debug|release) {
+        DESTDIR=../../_release
     }
 }
 

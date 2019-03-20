@@ -73,7 +73,15 @@ isEmpty(PLUGIN_MODE)  {
 
 
 # Now generate the descriptor
-PLUGIN_DESC_FILE=$$OUT_PWD/../../$$out_dir()/plugins/$${PLUGIN_ID}.plugin
+
+!debug_and_release|build_pass {
+    CONFIG(debug, debug|release) {
+        PLUGIN_DESC_FILE=$$OUT_PWD/../../_debug/plugins/$${PLUGIN_ID}.plugin
+    }
+    CONFIG(release, debug|release) {
+        PLUGIN_DESC_FILE=$$OUT_PWD/../../_release/plugins/$${PLUGIN_ID}.plugin
+    }
+}
 
 defineTest(write){
     val = $$1
@@ -118,5 +126,14 @@ write("</ugene-plugin>",  >>)
 
 PLUGIN_LICENSE_FILE=$$_PRO_FILE_PWD_/*.license
 PLUGIN_LICENSE_FILE_REP=$$replace(PLUGIN_LICENSE_FILE, "/","\\")
-unix: system (cat $$PLUGIN_LICENSE_FILE > $$OUT_PWD/../../$$out_dir()/plugins/$${PLUGIN_ID}.license)
-win32: system (copy /B $$PLUGIN_LICENSE_FILE_REP $$system_path($$OUT_PWD)\\..\\..\\..\\$$corelibs_out_dir()\\plugins\\$${PLUGIN_ID}.license)
+!debug_and_release|build_pass {
+    CONFIG(debug, debug|release) {
+        unix: system (cat $$PLUGIN_LICENSE_FILE > $$OUT_PWD/../../_debug/plugins/$${PLUGIN_ID}.license)
+        win32: system (copy /B $$PLUGIN_LICENSE_FILE_REP $$system_path($$OUT_PWD)\\..\\..\\_debug\\plugins\\$${PLUGIN_ID}.license)
+    }
+    CONFIG(release, debug|release) {
+        unix: system (cat $$PLUGIN_LICENSE_FILE > $$OUT_PWD/../../_release/plugins/$${PLUGIN_ID}.license)
+        win32: system (copy /B $$PLUGIN_LICENSE_FILE_REP $$system_path($$OUT_PWD)\\..\\..\\_release\\plugins\\$${PLUGIN_ID}.license)
+    }
+}
+
