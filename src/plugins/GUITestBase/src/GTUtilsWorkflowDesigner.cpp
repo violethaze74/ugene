@@ -315,7 +315,7 @@ void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetI
 
 #define GT_METHOD_NAME "expandTabs"
 void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os){
-    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os,"splitter"));
+    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "WorkflowViewMainSplitter"));
     GT_CHECK(splitter, "splitter not found");
     QList<int> s;
     s  = splitter->sizes();
@@ -849,13 +849,27 @@ QList<WorkflowProcessItem*> GTUtilsWorkflowDesigner::getWorkers(HI::GUITestOpSta
     return result;
 }
 
+#define GT_METHOD_NAME "getDatasetsListWidget"
+QWidget *GTUtilsWorkflowDesigner::getDatasetsListWidget(GUITestOpStatus &os) {
+    return GTWidget::findWidget(os, "DatasetsListWidget");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getCurrentDatasetWidget"
+QWidget *GTUtilsWorkflowDesigner::getCurrentDatasetWidget(GUITestOpStatus &os) {
+    QTabWidget* datasetsTabWidget = GTWidget::findExactWidget<QTabWidget *>(os, "DatasetsTabWidget");
+    GT_CHECK_RESULT(datasetsTabWidget, "DatasetsTabWidget not found", nullptr);
+    return datasetsTabWidget->currentWidget();
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "setDatasetInputFile"
 void GTUtilsWorkflowDesigner::setDatasetInputFile(GUITestOpStatus &os, const QString &filePath, bool pastePath) {
     GTGlobals::sleep(200);
-    QWidget* DatasetWidget = GTWidget::findWidget(os, "DatasetWidget");
-    GT_CHECK(DatasetWidget, "DatasetWidget not found");
+    QWidget *currentDatasetWidget = getCurrentDatasetWidget(os);
+    GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
 
-    QWidget* addFileButton = GTWidget::findWidget(os, "addFileButton", DatasetWidget);
+    QWidget *addFileButton = GTWidget::findWidget(os, "addFileButton", currentDatasetWidget);
     GT_CHECK(addFileButton, "addFileButton not found");
 
     GTFileDialogUtils::TextInput t = pastePath ? GTFileDialogUtils::CopyPaste : GTFileDialogUtils::Typing;
@@ -871,10 +885,10 @@ void GTUtilsWorkflowDesigner::setDatasetInputFile(GUITestOpStatus &os, const QSt
 #define GT_METHOD_NAME "setDatasetInputFiles"
 void GTUtilsWorkflowDesigner::setDatasetInputFiles(GUITestOpStatus &os, const QStringList &filePaths) {
     GTGlobals::sleep(200);
-    QWidget *datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
-    GT_CHECK(nullptr != datasetWidget, "DatasetWidget not found");
+    QWidget *currentDatasetWidget = getCurrentDatasetWidget(os);
+    GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
 
-    QWidget *addFileButton = GTWidget::findWidget(os, "addFileButton", datasetWidget);
+    QWidget *addFileButton = GTWidget::findWidget(os, "addFileButton", currentDatasetWidget);
     GT_CHECK(nullptr != addFileButton, "addFileButton not found");
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, filePaths));
@@ -895,10 +909,7 @@ void GTUtilsWorkflowDesigner::addInputFile(HI::GUITestOpStatus &os, const QStrin
 
 #define GT_METHOD_NAME "createDataset"
 void GTUtilsWorkflowDesigner::createDataset(HI::GUITestOpStatus &os, QString datasetName){
-    QWidget* DatasetWidget = GTWidget::findWidget(os, "DatasetWidget");
-    GT_CHECK(DatasetWidget, "DatasetWidget not found");
-
-    QWidget* plusButton = GTWidget::findButtonByText(os, "+");
+    QWidget* plusButton = GTWidget::findButtonByText(os, "+", getDatasetsListWidget(os));
     GT_CHECK(plusButton, "plusButton not found");
 
     GTUtilsDialog::waitForDialog(os, new DatasetNameEditDialogFiller(os, datasetName));
@@ -910,10 +921,10 @@ void GTUtilsWorkflowDesigner::createDataset(HI::GUITestOpStatus &os, QString dat
 
 #define GT_METHOD_NAME "setDatasetInputFolder"
 void GTUtilsWorkflowDesigner::setDatasetInputFolder(HI::GUITestOpStatus &os, QString filePath){
-    QWidget* DatasetWidget = GTWidget::findWidget(os, "DatasetWidget");
-    GT_CHECK(DatasetWidget, "DatasetWidget not found");
+    QWidget *currentDatasetWidget = getCurrentDatasetWidget(os);
+    GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
 
-    QWidget* addDirButton = GTWidget::findWidget(os, "addDirButton", DatasetWidget);
+    QWidget* addDirButton = GTWidget::findWidget(os, "addDirButton", currentDatasetWidget);
     GT_CHECK(addDirButton, "addFileButton not found");
 
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, filePath, "", GTFileDialogUtils::Choose, GTGlobals::UseMouse);
@@ -925,10 +936,10 @@ void GTUtilsWorkflowDesigner::setDatasetInputFolder(HI::GUITestOpStatus &os, QSt
 
 #define GT_METHOD_NAME "setDatasetInputFolders"
 void GTUtilsWorkflowDesigner::setDatasetInputFolders(GUITestOpStatus &os, const QStringList &dirPaths) {
-    QWidget *datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
-    GT_CHECK(nullptr != datasetWidget, "DatasetWidget not found");
+    QWidget *currentDatasetWidget = getCurrentDatasetWidget(os);
+    GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
 
-    QWidget *addDirButton = GTWidget::findWidget(os, "addDirButton", datasetWidget);
+    QWidget *addDirButton = GTWidget::findWidget(os, "addDirButton", currentDatasetWidget);
     GT_CHECK(nullptr != addDirButton, "addFileButton not found");
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, dirPaths));
