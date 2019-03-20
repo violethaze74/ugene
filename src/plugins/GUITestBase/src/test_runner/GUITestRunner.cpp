@@ -45,6 +45,8 @@ GUITestRunner::GUITestRunner(UGUITestBase* _guiTestBase, QWidget *parent) :
 {
     setupUi(this);
     setWindowIcon(QIcon(QString(":gui_test/images/open_gui_test_runner.png")));
+    setAttribute(Qt::WA_DeleteOnClose);
+
     tree->setColumnWidth(0,550);
 
     const GUITests tests = guiTestBase->getTests();
