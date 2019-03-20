@@ -15,7 +15,7 @@ win32-msvc2013|win32-msvc2015|greaterThan(QMAKE_MSC_VER, 1909) {
 }
 
 # Force re-linking when lib changes
-unix:POST_TARGETDEPS += ../../_release/libsamtools.a
+unix:POST_TARGETDEPS += ../../$$out_dir()/libsamtools.a
 # Same options which samtools is built with
 DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE _USE_KNETFILE
 INCLUDEPATH += ../../libs_3rdparty/samtools/src ../../libs_3rdparty/samtools/src/samtools
@@ -35,8 +35,8 @@ win32 {
         LIBS -= -lsamtools
         LIBS += -lsamtoolsd
 
-        unix:POST_TARGETDEPS -= ../../_release/libsamtools.a
-        unix:POST_TARGETDEPS += ../../_debug/libsamtoolsd.a
+        unix:POST_TARGETDEPS -= ../../$$out_dir()/libsamtools.a
+        unix:POST_TARGETDEPS += ../../$$out_dir()/libsamtoolsd.a
     }
 }
 

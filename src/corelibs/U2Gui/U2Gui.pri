@@ -14,19 +14,16 @@ useWebKit() {
 } else {
     QT += webenginewidgets websockets webchannel
 }
+LIBS += -L../../$$out_dir()
+LIBS += -lU2Core -lU2Formats -lU2Private
 
-LIBS += -L../../_release -lU2Core -lU2Formats -lU2Private
+DESTDIR = ../../$$out_dir()
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        DESTDIR=../../_debug
-        LIBS -= -L../../_release -lU2Core -lU2Formats -lU2Private
-        LIBS += -L../../_debug -lU2Cored -lU2Formatsd -lU2Privated
-    }
-
-    CONFIG(release, debug|release) {
-        DESTDIR=../../_release
+        LIBS -= -lU2Core -lU2Formats -lU2Private
+        LIBS += -lU2Cored -lU2Formatsd -lU2Privated
     }
 }
 

@@ -15,24 +15,25 @@ CONFIG -= app_bundle
 DEFINES+= QT_DLL QT_FATAL_ASSERT
 INCLUDEPATH += src _tmp ../include ../corelibs/U2Private/src
 
-LIBS += -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Private -lbreakpad
+LIBS += -L../$$out_dir()
+LIBS += -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Private -lbreakpad
 LIBS += $$add_sqlite_lib()
+
+DESTDIR = ../$$out_dir()
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
         TARGET = plugins_checkerd
         DEFINES+=_DEBUG
-        DESTDIR=../_debug
         MOC_DIR=_tmp/moc/debug
         OBJECTS_DIR=_tmp/obj/debug
-        LIBS -= -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Private -lbreakpad
-        LIBS += -L../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Guid -lU2Privated -lbreakpadd
+        LIBS -= -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Private -lbreakpad
+        LIBS += -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Guid -lU2Privated -lbreakpadd
     }
 
     CONFIG(release, debug|release) {
         TARGET = plugins_checker
-        DESTDIR=../_release
         DEFINES+=NDEBUG
         MOC_DIR=_tmp/moc/release
         OBJECTS_DIR=_tmp/obj/release

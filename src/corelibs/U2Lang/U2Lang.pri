@@ -7,18 +7,15 @@ UGENE_RELATIVE_DESTDIR = ''
 QT += xml widgets
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2LANG_DLL
 
-LIBS += -L../../_release -lU2Core
+LIBS += -L../../$$out_dir()
+LIBS += -lU2Core
+DESTDIR = ../../$$out_dir()
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        DESTDIR=../../_debug
-        LIBS += -L../../_debug -lU2Cored
-        LIBS -= -L../../_release -lU2Core
-    }
-
-    CONFIG(release, debug|release) {
-        DESTDIR=../../_release
+        LIBS += -lU2Cored
+        LIBS -= -lU2Core
     }
 }
 
