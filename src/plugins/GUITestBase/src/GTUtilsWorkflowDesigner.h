@@ -159,6 +159,9 @@ public:
     static QTableWidget* getInputPortsTable(HI::GUITestOpStatus &os, int index);
     static QTableWidget* getOutputPortsTable(HI::GUITestOpStatus &os, int index);
 
+    static bool getGroupBoxChecked(HI::GUITestOpStatus &os, QWidget *box);
+    static bool setGroupBoxChecked(HI::GUITestOpStatus &os, QWidget *box, bool newCheckStatus);
+
     //gets oneparameter worker parameter
     static QString getParameter(HI::GUITestOpStatus& os, QString parameter, bool exactMatch = false);
     static bool isParameterEnabled(HI::GUITestOpStatus& os, QString parameter);
