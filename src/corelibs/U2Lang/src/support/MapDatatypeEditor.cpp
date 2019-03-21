@@ -345,6 +345,7 @@ QWidget *DescriptorListEditorDelegate::createEditor(QWidget *parent,
 {
     QComboBox* editor = new QComboBox(parent);
     editor->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
+    connect(editor, SIGNAL(currentIndexChanged(int)), SLOT(sl_commitData()));
     return editor;
 }
 
@@ -451,6 +452,10 @@ void DescriptorListEditorDelegate::setModelData(QWidget *editor, QAbstractItemMo
     }
     model->setData(index, value, Qt::UserRole);
     model->setData(index, value.value<Descriptor>().getDisplayName(), Qt::DisplayRole);
+}
+
+void DescriptorListEditorDelegate::sl_commitData() {
+    commitData(qobject_cast<QWidget*>(sender()));
 }
 
 /************************************************************************/

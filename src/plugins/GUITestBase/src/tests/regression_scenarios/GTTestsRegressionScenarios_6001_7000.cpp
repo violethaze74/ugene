@@ -21,6 +21,7 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QGroupBox>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QSpinBox>
@@ -1020,6 +1021,40 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
     GTGlobals::sleep(100);
     HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task has been finished");
     CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6207) {
+    //1. Open the WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    //2. Compose scheme read fastq with PE reads -> Filter by Classification
+    GTUtilsWorkflowDesigner::addElement(os, "Read FASTQ Files with PE Reads", true);
+    GTUtilsWorkflowDesigner::addElement(os, "Filter by Classification", true);
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read FASTQ Files with PE Reads"),
+                                         GTUtilsWorkflowDesigner::getWorker(os, "Filter by Classification"));
+    //3. Set eas.fastq as input data
+    //GTUtilsWorkflowDesigner::click(os, "Read FASTQ File with PE Reads");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ Files with PE Reads", dataDir + "samples/FASTQ/eas.fastq");
+
+    //4. Validate scheme. Count errors
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    int errorCount = GTUtilsWorkflowDesigner::getErrors(os).size();
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTUtilsWorkflowDesigner::click(os, "Filter by Classification");
+    GTWidget::click(os, GTWidget::findExactWidget<QGroupBox*>(os, "inputPortBox"), Qt::LeftButton, QPoint(7,7));
+
+    //6. In the Property Editor change value of the "Input URL 1" slot to empty. Don't change focus.
+    QTableWidget* table1 = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+    //GTUtilsWorkflowDesigner::setTableValue(os, "Source URL", "<empty>", GTUtilsWorkflowDesigner::comboValue, table1);
+    GTUtilsWorkflowDesigner::setTableValue(os, "Input URL 1", "<empty>", GTUtilsWorkflowDesigner::comboValue, table1);
+
+    //7. Validate workflow, count errors
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+
+    //Expected state: error counter contains 1 error more
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::getErrors(os).size() == 1 + errorCount, QString("Workflow validation error count doesn't match. Expected error count %1, actual %2.")
+                  .arg(QString::number(1 + errorCount)).arg(QString::number(GTUtilsWorkflowDesigner::getErrors(os).size())));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6212) {
