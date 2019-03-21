@@ -11,10 +11,10 @@ use_bundled_zlib() {
 }
 
 LIBS += $$add_z_lib()
-LIBS += -lsamtools -L../../_release -lU2Script
+LIBS += -lsamtools -lU2Script
 
 # Force re-linking when lib changes
-unix:POST_TARGETDEPS += ../../_release/libsamtools.a
+unix:POST_TARGETDEPS += ../../$$out_dir()/libsamtools.a
 # Same options which samtools is built with
 DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE _USE_KNETFILE
 INCLUDEPATH += ../../libs_3rdparty/samtools/src ../../libs_3rdparty/samtools/src/samtools
@@ -35,10 +35,10 @@ win32 {
 
 !debug_and_release|build_pass {
     CONFIG(debug, debug|release) {
-        LIBS -= -lsamtools -L../../_release -lU2Script
-        LIBS += -lsamtoolsd -L../../_debug -lU2Scriptd
+        LIBS -= -lsamtools -lU2Script
+        LIBS += -lsamtoolsd -lU2Scriptd
 
-        unix:POST_TARGETDEPS -= ../../_release/libsamtools.a
-        unix:POST_TARGETDEPS += ../../_debug/libsamtoolsd.a
+        unix:POST_TARGETDEPS -= ../../$$out_dir()/libsamtools.a
+        unix:POST_TARGETDEPS += ../../$$out_dir()/libsamtoolsd.a
     }
 }

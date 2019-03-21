@@ -14,18 +14,14 @@ useWebKit() {
 
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2DESIGNER_DLL
 
-LIBS += -L../../_release -lU2Core -lU2Lang -lU2Gui
+LIBS += -L../../$$out_dir()
+LIBS += -lU2Core -lU2Lang -lU2Gui
+DESTDIR = ../../$$out_dir()
 
 !debug_and_release|build_pass {
-
     CONFIG(debug, debug|release) {
-        DESTDIR=../../_debug
-        LIBS -= -L../../_release -lU2Core -lU2Lang -lU2Gui
-        LIBS += -L../../_debug -lU2Cored -lU2Langd -lU2Guid
-    }
-
-    CONFIG(release, debug|release) {
-        DESTDIR=../../_release
+        LIBS -= -lU2Core -lU2Lang -lU2Gui
+        LIBS += -lU2Cored -lU2Langd -lU2Guid
     }
 }
 
