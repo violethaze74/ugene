@@ -42,6 +42,7 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTDoubleSpinBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTSpinBox.h>
@@ -1121,7 +1122,7 @@ QString GTUtilsWorkflowDesigner::getCellValue(HI::GUITestOpStatus &os, QString p
 #define GT_METHOD_NAME "getInputPortsTable"
 QTableWidget* GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus &os, int index){
     QWidget* inputPortBox = GTWidget::findWidget(os, "inputPortBox");
-    setGroupBoxChecked(os, inputPortBox, true);
+    GTGroupBox::setChecked(os, "inputPortBox", true);
     QList<QTableWidget*> tables= inputPortBox->findChildren<QTableWidget*>();
     foreach (QTableWidget* w, tables) {
         if(!w->isVisible()){
@@ -1137,7 +1138,7 @@ QTableWidget* GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus &o
 #define GT_METHOD_NAME "getOutputPortsTable"
 QTableWidget *GTUtilsWorkflowDesigner::getOutputPortsTable(GUITestOpStatus &os, int index) {
     QWidget *outputPortBox = GTWidget::findWidget(os, "outputPortBox");
-    setGroupBoxChecked(os, outputPortBox, true);
+    GTGroupBox::setChecked(os, "outputPortBox", true);
     QList<QTableWidget *> tables= outputPortBox->findChildren<QTableWidget *>();
     foreach (QTableWidget *w, tables) {
         if (!w->isVisible()){
@@ -1147,36 +1148,6 @@ QTableWidget *GTUtilsWorkflowDesigner::getOutputPortsTable(GUITestOpStatus &os, 
     int number = tables.count();
     GT_CHECK_RESULT(index < number, QString("there are %1 visables tables for output ports").arg(number), NULL);
     return tables[index];
-}
-#undef GT_METHOD_NAME
-
-
-#define GT_METHOD_NAME "getGroupBoxChecked"
-bool GTUtilsWorkflowDesigner::getGroupBoxChecked(HI::GUITestOpStatus &os,
-                                                 QWidget *widget)
-{
-    QGroupBox *groupBox = dynamic_cast<QGroupBox *>(widget);
-    GT_CHECK_RESULT(groupBox, "The widget is not a 'QGroupBox *'", false);
-    return groupBox->isChecked();
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "setGroupBoxChecked"
-bool GTUtilsWorkflowDesigner::setGroupBoxChecked(HI::GUITestOpStatus &os,
-                                                 QWidget *widget,
-                                                 bool newCheckStatus)
-{
-    int count = 10;
-    QGroupBox *groupBox = dynamic_cast<QGroupBox *>(widget);
-    GT_CHECK_RESULT(groupBox, "The widget is not a 'QGroupBox *'", false);
-    while (groupBox->isCheckable()
-           && groupBox->isChecked() != newCheckStatus
-           && count >= 0) {
-        groupBox->setChecked(newCheckStatus);
-        GTGlobals::sleep(100);
-        count--;
-    }
-    return groupBox->isChecked();
 }
 #undef GT_METHOD_NAME
 

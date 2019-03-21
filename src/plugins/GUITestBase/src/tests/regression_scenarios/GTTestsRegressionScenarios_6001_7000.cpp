@@ -32,6 +32,7 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
@@ -2038,6 +2039,53 @@ GUI_TEST_CLASS_DEFINITION(test_6398) {
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF", 5, 1));
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6398/6398.gtf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6400) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Filter Annotations by Name", "Filter Annotations by Name" and connect them
+    WorkflowProcessItem* element1 = GTUtilsWorkflowDesigner::addElement(os, "Filter Annotations by Name");
+    WorkflowProcessItem* element2 = GTUtilsWorkflowDesigner::addElement(os, "Filter Annotations by Name");
+
+    //3. Check Input port.
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+    GTGroupBox::setChecked(os, "inputPortBox", true);
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, element2);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
+
+    //4. Check Input port.
+    GTGroupBox::setChecked(os, "inputPortBox", false);
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, element2);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+
+    //5. Check Output port.
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't closed");
+    GTGroupBox::setChecked(os, "outputPortBox", true);
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, element2);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't opened");
+
+    //6. Check Output port.
+    GTGroupBox::setChecked(os, "outputPortBox", false);
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, element2);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't closed");
 }
 
 } // namespace GUITest_regression_scenarios
