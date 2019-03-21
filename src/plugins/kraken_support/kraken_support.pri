@@ -16,6 +16,7 @@ PLUGIN_DEPENDS=ngs_reads_classification:$${UGENE_VERSION};external_tool_support:
 include( ../../ugene_plugin_common.pri )
 
 LIBS += -L../../$$out_dir()/plugins
+LIBS += -lngs_reads_classification
 
 !debug_and_release|build_pass {
     CONFIG(debug, debug|release) {
