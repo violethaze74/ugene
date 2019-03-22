@@ -355,6 +355,29 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
     return lowerCaseRegs;
 }
 
+bool U1AnnotationUtils::isAnnotationAroundJunctionPoint(AnnotationSelectionData* asd, const qint64 sequenceLength) {
+    const QVector<U2Region> selectedRegions = asd->getSelectedRegions();
+    CHECK(2 == selectedRegions.size(), false);
+    CHECK(2 == asd->locationIdxList.size(), false);
+
+    bool hasCorrectStart = false;
+    bool hasCorrectEnd = false;
+    foreach(const U2Region& reg, selectedRegions) {
+        if (reg.startPos == 0) {
+            hasCorrectStart = true;
+            continue;
+        }
+        const qint64 endPos = reg.endPos();
+        if (endPos == sequenceLength) {
+            hasCorrectEnd = true;
+            continue;
+        }
+    }
+    bool hasJunctionPoint = hasCorrectStart && hasCorrectEnd;
+
+    return hasJunctionPoint;
+}
+
 char * U1AnnotationUtils::applyLowerCaseRegions(char *seq, qint64 first, qint64 len,
     qint64 globalOffset, const QList<U2Region> &regs)
 {
