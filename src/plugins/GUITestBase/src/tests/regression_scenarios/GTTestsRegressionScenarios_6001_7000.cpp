@@ -2069,23 +2069,23 @@ GUI_TEST_CLASS_DEFINITION(test_6400) {
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
 
     //5. Check Output port.
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't closed");
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
     GTGroupBox::setChecked(os, "outputPortBox", true);
     GTUtilsWorkflowDesigner::click(os, element1);
-    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't opened");
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
     GTUtilsWorkflowDesigner::click(os, element2);
-    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't opened");
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
     GTUtilsWorkflowDesigner::click(os, element1);
-    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't opened");
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
 
     //6. Check Output port.
     GTGroupBox::setChecked(os, "outputPortBox", false);
     GTUtilsWorkflowDesigner::click(os, element1);
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't closed");
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
     GTUtilsWorkflowDesigner::click(os, element2);
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't closed");
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
     GTUtilsWorkflowDesigner::click(os, element1);
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Input Ports table isn't closed");
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
 }
 
 } // namespace GUITest_regression_scenarios
