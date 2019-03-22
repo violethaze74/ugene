@@ -54,7 +54,6 @@ void ExportUtils::loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings& s, Ex
     s.mostProbable = d->mostProbable;
     s.saveAnnotations = d->withAnnotations;
     s.sequenceName = d->sequenceName;
-    s.sequenceLength = d->sequenceLength;
 }
 
 Task* ExportUtils::wrapExportTask(DocumentProviderTask* t, bool addToProject) {

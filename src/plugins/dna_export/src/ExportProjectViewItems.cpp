@@ -366,7 +366,6 @@ void ExportProjectViewItemsContoller::exportSequences(const QList<GObject *> &se
                                                                               allowBackTranslate,
                                                                               defaultFileName,
                                                                               fileBaseName,
-                                                                              0,
                                                                               BaseDocumentFormats::FASTA,
                                                                               AppContext::getMainWindow()->getQMainWindow());
 

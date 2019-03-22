@@ -105,6 +105,10 @@ public:
 
     void run();
 
+    static ExportSequenceItem mergedCircularItem(const ExportSequenceItem &first,
+                                                 const ExportSequenceItem &second,
+                                                 U2OpStatus &os);
+
 private:
     ExportSequenceTaskSettings config;
 };

@@ -80,7 +80,6 @@ private:
     void prepareMAFromSequences(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os);
     void fetchSequencesFromRemoteDB(const QString & listId);
     void selectionToAlignment(const QString& title, bool annotations, bool translate);
-    ADVSequenceObjectContext* getContextFromAnnotationsFromOneView(const QList<Annotation*>& annotations);
 
     AnnotatedDNAView*   view;
 

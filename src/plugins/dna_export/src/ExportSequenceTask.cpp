@@ -162,8 +162,8 @@ bool ExportSequenceItem::ownsSeq() const {
 }
 
 bool ExportSequenceItem::isEmpty() const {
-    ExportSequenceItem empty;
-    return this == &empty;
+    static const ExportSequenceItem empty;
+    return *this == empty;
 }
 
 void ExportSequenceItem::setSequenceInfo(U2SequenceObject *seqObj) {
@@ -485,29 +485,6 @@ void ExportSequenceTask::run() {
     }
     CHECK_EXT(!notMergedItems.isEmpty(), stateInfo.setError(tr("No sequences have been produced.")), );
 
-    if (notMergedItems.first().circular && notMergedItems.size() > 1) {
-        ExportSequenceItem startItem;
-        ExportSequenceItem endItem;
-        foreach(const ExportSequenceItem& item, notMergedItems) {
-            QRegExp findRegion("region \\[(\\d+) (\\d+)\\]");
-            findRegion.indexIn(item.name);
-            qint64 start = findRegion.cap(1).toInt();
-            qint64 end = findRegion.cap(2).toInt();
-            CHECK_CONTINUE(!(start == 1 && end == config.sequenceLength));
-            CHECK_OPERATIONS(start != 1, startItem = item, continue);
-            CHECK_OPERATIONS(end != config.sequenceLength, endItem = item, continue);
-        }
-        if (!startItem.isEmpty() && !endItem.isEmpty()) {
-            const ExportSequenceItem mergedCircularItem = mergeExportItems(QList<ExportSequenceItem>() << startItem << endItem, 0, stateInfo);
-            CHECK_OP(stateInfo, );
-
-            notMergedItems.removeOne(startItem);
-            notMergedItems.removeOne(endItem);
-            notMergedItems << mergedCircularItem;
-        }
-
-    }
-
     QList<ExportSequenceItem> resultItems;
     if (config.merge && notMergedItems.size() > 1) {
         const ExportSequenceItem mergedEi = mergeExportItems(notMergedItems, config.mergeGap, stateInfo);
@@ -523,6 +500,9 @@ void ExportSequenceTask::run() {
     f->storeDocument(resultDocument, stateInfo);
 }
 
+ExportSequenceItem ExportSequenceTask::mergedCircularItem(const ExportSequenceItem &first, const ExportSequenceItem &second, U2OpStatus &os) {
+    return mergeExportItems(QList<ExportSequenceItem>() << first << second, 0, os);
+}
 
 //////////////////////////////////////////////////////////////////////////
 // Export sequence under annotations

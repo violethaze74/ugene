@@ -110,6 +110,8 @@ void CreateExportItemsFromSeqRegionsTask::run() {
     DbiOperationsBlock dbiBlock(dbiRef, stateInfo);
     Q_UNUSED(dbiBlock);
 
+    ExportSequenceItem startItem;
+    ExportSequenceItem endItem;
     int regionCount = 0;
     QSet<QString> usedNames;
     foreach (const U2Region &r, regions) {
@@ -152,6 +154,21 @@ void CreateExportItemsFromSeqRegionsTask::run() {
         exportSettings.items.append(ei);
 
         stateInfo.setProgress(100 * ++regionCount / regions.size());
+
+        const qint64 endPos = r.endPos();
+        const qint64 seqLength = seqObject->getSequenceLength();
+        CHECK_CONTINUE(!(r.startPos == 0 && endPos == seqLength));
+        CHECK_OPERATIONS(r.startPos != 0, startItem = ei, continue);
+        CHECK_OPERATIONS(endPos != seqLength, endItem = ei, continue);
+    }
+
+    if (!startItem.isEmpty() && !endItem.isEmpty() && seqObject->isCircular()) {
+        const ExportSequenceItem circularItem = ExportSequenceTask::mergedCircularItem(endItem, startItem, stateInfo);
+        CHECK_OP(stateInfo, );
+
+        exportSettings.items.removeOne(startItem);
+        exportSettings.items.removeOne(endItem);
+        exportSettings.items.append(circularItem);
     }
 }
 
