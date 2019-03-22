@@ -119,4 +119,4 @@ write("</ugene-plugin>",  >>)
 PLUGIN_LICENSE_FILE=$$_PRO_FILE_PWD_/*.license
 PLUGIN_LICENSE_FILE_REP=$$replace(PLUGIN_LICENSE_FILE, "/","\\")
 unix: system (cat $$PLUGIN_LICENSE_FILE > $$OUT_PWD/../../$$out_dir()/plugins/$${PLUGIN_ID}.license)
-win32: system (copy /B $$PLUGIN_LICENSE_FILE_REP $$system_path($$OUT_PWD)\\..\\..\\..\\$$corelibs_out_dir()\\plugins\\$${PLUGIN_ID}.license)
+win32: system (copy /B $$PLUGIN_LICENSE_FILE_REP $$system_path($$OUT_PWD)\\..\\..\\..\\$$out_dir()\\plugins\\$${PLUGIN_ID}.license)
