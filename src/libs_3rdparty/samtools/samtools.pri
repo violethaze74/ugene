@@ -11,6 +11,7 @@ win32 : DEFINES += _USE_MATH_DEFINES "__func__=__FUNCTION__" "R_OK=4" "atoll=_at
 LIBS += -L../../$$out_dir()
 LIBS += $$add_z_lib()
 DESTDIR = ../../$$out_dir()
+TARGET = samtools$$D
 
 macx {
     DEFINES+="_CURSES_LIB=1"
@@ -20,7 +21,6 @@ macx {
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        TARGET = samtoolsd
         DEFINES+=_DEBUG
         CONFIG +=console
         MOC_DIR=_tmp/moc/debug
@@ -28,7 +28,6 @@ macx {
     }
 
     CONFIG(release, debug|release) {
-        TARGET = samtools
         DEFINES+=NDEBUG
         MOC_DIR=_tmp/moc/release
         OBJECTS_DIR=_tmp/obj/release

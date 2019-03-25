@@ -8,23 +8,20 @@ QT += network xml script
 INCLUDEPATH += src _tmp ../../core/src  ../../include
 
 LIBS += -L../../$$out_dir()
-LIBS += -lU2Core -lU2Core -lcore
+LIBS += -lU2Core$$D -lU2Core$$D -lcore$$D
 DESTDIR = ../../$$out_dir()
+TARGET = qscore$$D
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        TARGET = qscored
         DEFINES+=_DEBUG
         CONFIG +=console
         MOC_DIR=_tmp/moc/debug
         OBJECTS_DIR=_tmp/obj/debug
-        LIBS -= -lU2Core -lU2Core -lcore
-        LIBS += -lcored -lU2Cored -lU2Cored
     }
 
     CONFIG(release, debug|release) {
-        TARGET = qscore
         DEFINES+=NDEBUG
         MOC_DIR=_tmp/moc/release
         OBJECTS_DIR=_tmp/obj/release

@@ -8,16 +8,8 @@ QT += xml widgets
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2LANG_DLL
 
 LIBS += -L../../$$out_dir()
-LIBS += -lU2Core
+LIBS += -lU2Core$$D
 DESTDIR = ../../$$out_dir()
-
-!debug_and_release|build_pass {
-
-    CONFIG(debug, debug|release) {
-        LIBS += -lU2Cored
-        LIBS -= -lU2Core
-    }
-}
 
 unix {
     target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
