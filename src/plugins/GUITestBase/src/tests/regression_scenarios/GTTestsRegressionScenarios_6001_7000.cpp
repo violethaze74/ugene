@@ -2076,7 +2076,7 @@ GUI_TEST_CLASS_DEFINITION(test_6398) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6400) {
+GUI_TEST_CLASS_DEFINITION(test_6262) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -2087,20 +2087,20 @@ GUI_TEST_CLASS_DEFINITION(test_6400) {
     //3. Check Input port.
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
     GTGroupBox::setChecked(os, "inputPortBox", true);
-    GTUtilsWorkflowDesigner::click(os, element1);
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
     CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
-    GTUtilsWorkflowDesigner::click(os, element2);
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
     CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
-    GTUtilsWorkflowDesigner::click(os, element1);
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
     CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
 
     //4. Check Input port.
     GTGroupBox::setChecked(os, "inputPortBox", false);
-    GTUtilsWorkflowDesigner::click(os, element1);
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
-    GTUtilsWorkflowDesigner::click(os, element2);
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
-    GTUtilsWorkflowDesigner::click(os, element1);
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
 
     //5. Check Output port.
