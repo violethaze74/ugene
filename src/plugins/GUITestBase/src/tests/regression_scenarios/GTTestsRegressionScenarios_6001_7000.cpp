@@ -1030,13 +1030,13 @@ GUI_TEST_CLASS_DEFINITION(test_6207) {
     //1. Open the WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //2. Compose scheme read fastq with PE reads -> Filter by Classification
-    GTUtilsWorkflowDesigner::addElement(os, "Read FASTQ Files with PE Reads", true);
+    GTUtilsWorkflowDesigner::addElement(os, "Read FASTQ File with SE Reads", true);
     GTUtilsWorkflowDesigner::addElement(os, "Filter by Classification", true);
-    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read FASTQ Files with PE Reads"),
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read FASTQ File with SE Reads"),
                                          GTUtilsWorkflowDesigner::getWorker(os, "Filter by Classification"));
     //3. Set eas.fastq as input data
     //GTUtilsWorkflowDesigner::click(os, "Read FASTQ File with PE Reads");
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ Files with PE Reads", dataDir + "samples/FASTQ/eas.fastq");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ File with SE Reads", dataDir + "samples/FASTQ/eas.fastq");
 
     //4. Validate scheme. Count errors
     GTUtilsWorkflowDesigner::validateWorkflow(os);
