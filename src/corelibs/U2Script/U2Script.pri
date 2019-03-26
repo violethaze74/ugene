@@ -22,10 +22,18 @@ INCLUDEPATH +=      ../../include \
 #}
 
 LIBS += -L../../$$out_dir()
-LIBS += -lU2Core$$D -lU2Algorithm$$D -lU2Formats$$D -lU2Lang$$D -lU2Private$$D -lU2Gui$$D -lU2Test$$D
+LIBS += -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Private -lU2Gui -lU2Test
 LIBS += $$add_sqlite_lib()
 
 DESTDIR = ../../$$out_dir()
+
+!debug_and_release|build_pass {
+
+    CONFIG( debug, debug|release ) {
+        LIBS -= -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Private -lU2Gui -lU2Test
+        LIBS += -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Langd -lU2Privated -lU2Guid -lU2Testd
+    }
+}
 
 unix {
     target.path =   $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR

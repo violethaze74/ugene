@@ -15,9 +15,15 @@ useWebKit() {
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2DESIGNER_DLL
 
 LIBS += -L../../$$out_dir()
-LIBS += -lU2Core$$D -lU2Lang$$D -lU2Gui$$D
-
+LIBS += -lU2Core -lU2Lang -lU2Gui
 DESTDIR = ../../$$out_dir()
+
+!debug_and_release|build_pass {
+    CONFIG(debug, debug|release) {
+        LIBS -= -lU2Core -lU2Lang -lU2Gui
+        LIBS += -lU2Cored -lU2Langd -lU2Guid
+    }
+}
 
 unix {
     target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR

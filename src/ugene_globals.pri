@@ -225,25 +225,6 @@ defineReplace(out_dir) {
     return ($$RES)
 }
 
-# Returns active UGENE output dir name for core libs and executables used by build process: _debug or _release.
-defineTest(is_debug_build) {
-    !debug_and_release|build_pass {
-        CONFIG(debug, debug|release) {
-            RES = true
-        } else {
-            RES = false
-        }
-    }
-    return ($$RES)
-}
-
-# Common library suffix for all libraries that depends on build mode: 'd' for debug and '' for release.
-# Example: 'libCore$$D.so' will result to the 'libCored.so' in debug mode and to the 'libCore.so' in release mode.
-D=
-is_debug_build() {
-    D=d
-}
-
 #Variable enabling exclude list for ugene modules
 #UGENE_EXCLUDE_LIST_ENABLED = 1
 defineTest( exclude_list_enabled ) {

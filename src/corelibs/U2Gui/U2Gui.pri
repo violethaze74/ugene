@@ -15,11 +15,19 @@ useWebKit() {
     QT += webenginewidgets websockets webchannel
 }
 LIBS += -L../../$$out_dir()
-LIBS += -lU2Core$$D -lU2Formats$$D -lU2Private$$D
+LIBS += -lU2Core -lU2Formats -lU2Private
 
 DESTDIR = ../../$$out_dir()
 
-        unix {
+!debug_and_release|build_pass {
+
+    CONFIG(debug, debug|release) {
+        LIBS -= -lU2Core -lU2Formats -lU2Private
+        LIBS += -lU2Cored -lU2Formatsd -lU2Privated
+    }
+}
+
+unix {
     target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
     INSTALLS += target
 }

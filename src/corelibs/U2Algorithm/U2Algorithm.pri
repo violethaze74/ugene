@@ -16,17 +16,28 @@ unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
 
 LIBS += $$add_z_lib()
 LIBS += -L../../$$out_dir()
-LIBS += -lU2Core$$D -lsamtools$$D
+LIBS += -lU2Core -lsamtools
 
 DESTDIR = ../../$$out_dir()
 
 # Force re-linking when lib changes
-unix:POST_TARGETDEPS += ../../$$out_dir()/libsamtools$${D}.a
+unix:POST_TARGETDEPS += ../../$$out_dir()/libsamtools.a
 # Same options which samtools is built with
 DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE _USE_KNETFILE
 INCLUDEPATH += ../../libs_3rdparty/samtools/src ../../libs_3rdparty/samtools/src/samtools
 win32:INCLUDEPATH += ../../libs_3rdparty/samtools/src/samtools/win32
 win32:LIBS+=-lws2_32
+
+!debug_and_release|build_pass {
+
+    CONFIG(debug, debug|release) {
+        LIBS -= -lU2Core -lsamtools
+        LIBS += -lU2Cored -lsamtoolsd
+
+        unix:POST_TARGETDEPS -= ../../$$out_dir()/libsamtools.a
+        unix:POST_TARGETDEPS += ../../$$out_dir()/libsamtoolsd.a
+    }
+}
 
 win32-msvc2013 {
     DEFINES += NOMINMAX
