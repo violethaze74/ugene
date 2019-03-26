@@ -40,7 +40,7 @@ Bowtie2Support::Bowtie2Support(const QString& name, const QString& path /* = */ 
     }
 
     toolKitName = "Bowtie2";
-    versionRegExp=QRegExp("(\\d+\\.\\d+\\.\\d+[.]{0,1}[\\d+]{0,1})");
+    versionRegExp = QRegExp("version (\\d+\\.\\d+\\.\\d+[.]{0,1}[\\d+]{0,1})");
 
     if (name == ET_BOWTIE2_ALIGN) { // Bowtie2-align
         toolRunnerProgramm = ET_PERL;
