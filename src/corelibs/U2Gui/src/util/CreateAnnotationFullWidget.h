@@ -95,7 +95,6 @@ private:
 
     void initLayout();
     void init();
-    //macOS as default
     void initOsDependingLayoutSettings();
     void connectSignals();
 

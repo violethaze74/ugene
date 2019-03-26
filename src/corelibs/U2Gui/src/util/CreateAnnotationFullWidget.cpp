@@ -268,6 +268,7 @@ void CreateAnnotationFullWidget::init() {
 }
 
 void CreateAnnotationFullWidget::initOsDependingLayoutSettings() {
+//macOS as default
 #ifdef Q_OS_WIN
     verticalLayout_6->setSpacing(6);
     horizontalLayout_10->setSpacing(2);
