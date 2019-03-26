@@ -307,6 +307,7 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
         if (seqCtx == NULL) {
             continue;
         }
+
         QList<SharedAnnotationData> &annsPerSeq = annotationsPerSeq[seqCtx];
         annsPerSeq.append(a->getData());
         if (annsPerSeq.size() > 1) {
@@ -332,9 +333,14 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
     GUrlUtils::getLocalPathFromUrl(seqUrl, view->getSequenceInFocus()->getSequenceGObject()->getGObjectName(), dirPath, fileBaseName);
     GUrl defaultUrl = GUrlUtils::rollFileName(dirPath + QDir::separator() + fileBaseName + "_annotation." + fileExt, DocumentUtils::getNewDocFileNameExcludesHint());
 
-    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(true, allowComplement, allowTranslation, allowBackTranslation,
-        defaultUrl.getURLString(), fileBaseName, BaseDocumentFormats::FASTA,
-        AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(true,
+                                                                              allowComplement,
+                                                                              allowTranslation,
+                                                                              allowBackTranslation,
+                                                                              defaultUrl.getURLString(),
+                                                                              fileBaseName,
+                                                                              BaseDocumentFormats::FASTA,
+                                                                              AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle("Export Sequence of Selected Annotations");
     d->disableAllFramesOption(true); // only 1 frame is suitable
     d->disableStrandOption(true);    // strand is already recorded in annotation
@@ -389,11 +395,16 @@ void ADVExportContext::sl_saveSelectedSequences() {
 
     GUrl seqUrl = seqCtx->getSequenceGObject()->getDocument()->getURL();
     GUrlUtils::getLocalPathFromUrl(seqUrl, seqCtx->getSequenceGObject()->getGObjectName(), dirPath, fileBaseName);
-
     GUrl defaultUrl = GUrlUtils::rollFileName(dirPath + QDir::separator() + fileBaseName + "_region." + fileExt, DocumentUtils::getNewDocFileNameExcludesHint());
 
-    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(merge, complement, amino, nucleic, defaultUrl.getURLString(), fileBaseName, BaseDocumentFormats::FASTA,
-        AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(merge,
+                                                                              complement,
+                                                                              amino,
+                                                                              nucleic,
+                                                                              defaultUrl.getURLString(),
+                                                                              fileBaseName,
+                                                                              BaseDocumentFormats::FASTA,
+                                                                              AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle("Export Selected Sequence Region");
     const int rc = d->exec();
     CHECK(!d.isNull(), );

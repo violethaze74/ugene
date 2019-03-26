@@ -85,6 +85,7 @@
 #include "GTUtilsWorkflowDesigner.h"
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
@@ -94,6 +95,7 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
@@ -2037,6 +2039,32 @@ GUI_TEST_CLASS_DEFINITION(test_6334) {
     CHECK_SET_ERR(errors.contains("Classify Sequences with MetaPhlAn2: The mandatory \"Input URL 2\" slot is not connected."), "Expected error isn't found");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6350) {
+    //1. Open "human_T1.fa"
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Mark the sequence as circular
+    GTUtilsProjectTreeView::markSequenceAsCircular(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+
+    //3. Select a joined region, which contains a part in the end and a part in the beginning
+    GTUtilsSequenceView::selectSeveralRegionsByDialog(os, "150000..199950,1..50000");
+
+    //4. Export selected region as sequence
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir + "human_T1_reg.fa", QString()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Export" << "Export selected sequence region...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: there is the only sequence in the exported file
+    QStringList list = GTUtilsProjectTreeView::getDocuments(os).value("human_T1_reg.fa");
+    CHECK_SET_ERR(list.size() == 1,
+                  QString("Unexpected sequence number, expected: 1, current: %1")
+                          .arg(list.size()));
+    CHECK_SET_ERR(list.first() == "[s] region [150000 199950]",
+                  QString("Unexpected sequence name, expected: [s] region [150000 199950], current %1")
+                          .arg(list.first()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6378) {
     //1. Remove Python from external tools
     class Custom : public CustomScenario {
@@ -2052,13 +2080,13 @@ GUI_TEST_CLASS_DEFINITION(test_6378) {
     //1. Open "UGENE Application Settings", select "External Tools" tab.
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
-    
+
     //2. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    
+
     //3. Place Metaphlan worker on scene
     GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
-    
+
     //4. Validate scheme
     GTUtilsWorkflowDesigner::validateWorkflow(os);
     GTGlobals::sleep();

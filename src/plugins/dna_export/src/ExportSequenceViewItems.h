@@ -79,7 +79,6 @@ private:
     void prepareMAFromAnnotations(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os);
     void prepareMAFromSequences(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os);
     void fetchSequencesFromRemoteDB(const QString & listId);
-
     void selectionToAlignment(const QString& title, bool annotations, bool translate);
 
     AnnotatedDNAView*   view;
