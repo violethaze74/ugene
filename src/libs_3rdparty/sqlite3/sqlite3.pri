@@ -13,18 +13,17 @@ unix:DEFINES+=SQLITE_OMIT_LOAD_EXTENSION
 DEFINES+=THREADSAFE
 LIBS += -L../../$$out_dir()
 DESTDIR = ../../$$out_dir()
+TARGET = ugenedb$$D
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        TARGET = ugenedbd
         DEFINES+=_DEBUG
         CONFIG +=console
         OBJECTS_DIR=_tmp/obj/debug
     }
 
     CONFIG(release, debug|release) {
-        TARGET = ugenedb
         DEFINES+=NDEBUG
         OBJECTS_DIR=_tmp/obj/release
     }

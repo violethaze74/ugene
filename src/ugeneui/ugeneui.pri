@@ -24,33 +24,27 @@ INCLUDEPATH += src _tmp ../include ../corelibs/U2Private/src ../libs_3rdparty/QS
 macx : INCLUDEPATH += /System/Library/Frameworks/Security.framework/Headers
 
 LIBS += -L../$$out_dir()
-LIBS += -lU2Core -lU2Designer -lU2Algorithm -lU2Formats -lU2Gui -lU2View -lU2Test -lU2Lang -lU2Private -lbreakpad -lQSpec
+LIBS += -lU2Core$$D -lU2Designer$$D -lU2Algorithm$$D -lU2Formats$$D -lU2Gui$$D -lU2View$$D -lU2Test$$D -lU2Lang$$D -lU2Private$$D -lbreakpad$$D -lQSpec$$D
 LIBS += $$add_sqlite_lib()
 
 macx: LIBS += -framework Foundation /System/Library/Frameworks/Security.framework/Security
 if (contains(DEFINES, HI_EXCLUDED)) {
-    LIBS -= -lQSpec
+    LIBS -= -lQSpec$$D
 }
 
 DESTDIR = ../$$out_dir()
+TARGET = ugeneui$$D
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        TARGET = ugeneuid
         DEFINES+=_DEBUG
         CONFIG +=console
         MOC_DIR=_tmp/moc/debug
         OBJECTS_DIR=_tmp/obj/debug
-        LIBS -= -lU2Core -lU2Algorithm -lU2Designer -lU2Formats -lU2Gui -lU2View -lU2Test -lU2Lang -lU2Private -lbreakpad -lQSpec
-        LIBS += -lU2Cored -lU2Algorithmd -lU2Designerd -lU2Formatsd -lU2Guid -lU2Viewd -lU2Testd -lU2Langd -lU2Privated -lbreakpadd -lQSpecd
-        if (contains(DEFINES, HI_EXCLUDED)) {
-            LIBS -= -lQSpecd
-        }
     }
 
     CONFIG(release, debug|release) {
-        TARGET = ugeneui
         DEFINES+=NDEBUG
         MOC_DIR=_tmp/moc/release
         OBJECTS_DIR=_tmp/obj/release

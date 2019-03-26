@@ -16,32 +16,25 @@ DEFINES+= QT_DLL QT_FATAL_ASSERT
 INCLUDEPATH += src _tmp ../include ../corelibs/U2Private/src
 
 LIBS += -L../$$out_dir()
-LIBS += -lU2Core -lU2Algorithm -lU2Designer -lU2Formats -lU2Gui -lU2Test -lU2Lang -lU2Private -lbreakpad -lQSpec
+LIBS += -lU2Core$$D -lU2Algorithm$$D -lU2Designer$$D -lU2Formats$$D -lU2Gui$$D -lU2Test$$D -lU2Lang$$D -lU2Private$$D -lbreakpad$$D -lQSpec$$D
 LIBS += $$add_sqlite_lib()
 
 if (contains(DEFINES, HI_EXCLUDED)) {
-    LIBS -= -lQSpec
+    LIBS -= -lQSpec$$D
 }
 
 DESTDIR = ../$$out_dir()
+TARGET = ugenecl$$D
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        TARGET = ugenecld
         DEFINES+=_DEBUG
         MOC_DIR=_tmp/moc/debug
         OBJECTS_DIR=_tmp/obj/debug
-        LIBS -= -lU2Core -lU2Algorithm -lU2Designer -lU2Formats -lU2Gui -lU2Test -lU2Lang -lU2Private -lbreakpad -lQSpec
-        LIBS += -lU2Cored -lU2Algorithmd -lU2Designerd -lU2Formatsd -lU2Guid -lU2Testd -lU2Langd -lU2Privated -lbreakpadd -lQSpecd
-        if (contains(DEFINES, HI_EXCLUDED)) {
-            LIBS -= -lQSpecd
-        }
-
     }
 
     CONFIG(release, debug|release) {
-        TARGET = ugenecl
         DEFINES+=NDEBUG
         MOC_DIR=_tmp/moc/release
         OBJECTS_DIR=_tmp/obj/release
