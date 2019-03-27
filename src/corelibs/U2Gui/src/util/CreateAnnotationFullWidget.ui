@@ -659,18 +659,66 @@
    </hints>
   </connection>
   <connection>
-   <sender>chbUsePatternNames</sender>
+   <sender>rbCreateNewTable</sender>
    <signal>toggled(bool)</signal>
-   <receiver>rbUseAutoTable</receiver>
-   <slot>setVisible(bool)</slot>
+   <receiver>leNewTablePath</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>441</x>
-     <y>121</y>
+     <x>60</x>
+     <y>451</y>
     </hint>
     <hint type="destinationlabel">
-     <x>306</x>
-     <y>482</y>
+     <x>377</x>
+     <y>451</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbCreateNewTable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>tbBrowseNewTable</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>60</x>
+     <y>451</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>589</x>
+     <y>451</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbExistingTable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cbExistingTable</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>68</x>
+     <y>423</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>376</x>
+     <y>423</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbExistingTable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>tbBrowseExistingTable</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>68</x>
+     <y>423</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>590</x>
+     <y>423</y>
     </hint>
    </hints>
   </connection>
