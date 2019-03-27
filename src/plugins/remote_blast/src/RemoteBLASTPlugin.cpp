@@ -104,9 +104,9 @@ void RemoteBLASTViewContext::initViewContext(GObjectView * view) {
 }
 
 /*
- * NCBI blast service provides no details about request size limits. 
+ * NCBI blast service provides no details about request size limits.
  * See: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=DeveloperInfo
- * 
+ *
  * But it is safe to expect that any single request should not exceed some meaningful size: normally it is below ~10k.
  * We use 1000x bigger size (10M) to 1) keep safety 2) avoid unnecessary limitations for users.
  */
@@ -134,7 +134,7 @@ void RemoteBLASTViewContext::sl_showDialog() {
         } else {
             regions =  s->getSelectedRegions();
         }
-        
+
         // First check that the regions are not too large: remote service will not accept gigs of data.
         foreach(const U2Region& region, regions) {
             if (region.length > MAX_REGION_SIZE_TO_SEARCH_WITH_REMOTE_BLAST) {

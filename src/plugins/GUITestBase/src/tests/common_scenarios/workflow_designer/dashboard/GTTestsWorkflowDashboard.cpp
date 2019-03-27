@@ -607,7 +607,7 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0001) {
 //    3. Open "_common_data/workflow/dashboard/2_kraken-builds.uwl".
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/2_kraken-builds.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
 //    4. Click "Build Kraken Database" element.
     GTUtilsWorkflowDesigner::click(os, "Build Kraken Database");
 

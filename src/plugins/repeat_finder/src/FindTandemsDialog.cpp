@@ -210,7 +210,7 @@ void FindTandemsDialog::accept() {
             return;
         }
     }
-    
+
     U2OpStatusImpl os;
     DNASequence seq = sc->getSequenceObject()->getSequence(range, os);
     CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
