@@ -48,7 +48,7 @@ bool U2Qualifier::operator!=(const U2Qualifier &q) const {
 }
 
 bool U2Qualifier::isValidQualifierName(const QString &name) {
-    return !name.isEmpty() && name.length() <= 20 && TextUtils::fits(TextUtils::QUALIFIER_NAME_CHARS, name.toLocal8Bit().data(), name.length());
+    return !name.isEmpty() && TextUtils::fits(TextUtils::QUALIFIER_NAME_CHARS, name.toLocal8Bit().data(), name.length());
 }
 
 bool U2Qualifier::isValidQualifierValue(const QString &) {
