@@ -5,10 +5,10 @@ UGENE_RELATIVE_DESTDIR = ''
 TEMPLATE = lib
 CONFIG +=qt thread debug_and_release staticlib warn_off
 QT += network xml script
-INCLUDEPATH += src _tmp ../../core/src  ../../include
+INCLUDEPATH += src _tmp ../../include
 
 LIBS += -L../../$$out_dir()
-LIBS += -lU2Core$$D -lU2Core$$D -lcore$$D
+LIBS += -lU2Core$$D
 DESTDIR = ../../$$out_dir()
 TARGET = qscore$$D
 
