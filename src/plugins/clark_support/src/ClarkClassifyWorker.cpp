@@ -468,7 +468,7 @@ Task * ClarkClassifyWorker::tick() {
 
         U2OpStatusImpl os;
         QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
-        tmpDir = GUrlUtils::createDirectory(tmpDir + "clark", "_", os);
+        tmpDir = GUrlUtils::createDirectory(tmpDir + "CLARK", "_", os);
         CHECK_OP(os, new FailTask(os.getError()));
 
         QString reportUrl = getValue<QString>(ClarkClassifyWorkerFactory::OUTPUT_URL);

@@ -433,7 +433,7 @@ void ClassificationFilterTask::run()
 
     algoLog.trace(QString("Going to filter file: %1").arg(readsUrl));
 
-    dir = GUrlUtils::createDirectory(cfg.workingDir + "filter", "_", stateInfo);
+    dir = GUrlUtils::createDirectory(cfg.workingDir + "Filter", "_", stateInfo);
     CHECK_OP(stateInfo, );
 
     while(reader.hasNext()) {

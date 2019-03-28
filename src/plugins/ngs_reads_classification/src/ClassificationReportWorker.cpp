@@ -217,7 +217,7 @@ Task * ClassificationReportWorker::tick() {
             QString reportFilePrefix = getReportFilePrefix(message);
             outputFileUrl = FileAndDirectoryUtils::createWorkingDir(context->workingDir(),
                                     FileAndDirectoryUtils::WORKFLOW_INTERNAL_CUSTOM,
-                                    "classification_report/",
+                                    "Classification_Report/",
                                     context->workingDir());
             if (!reportFilePrefix.isEmpty()) {
                 outputFileUrl += reportFilePrefix + "_";

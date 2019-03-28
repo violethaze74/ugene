@@ -37,9 +37,9 @@ public:
 
 protected:
     // BaseOneOneWorker
-    Task * processNextInputMessage();
-    Task * onInputEnded();
-    QList<Message> fetchResult(Task *task, U2OpStatus &os);
+    Task * processNextInputMessage() override;
+    Task * onInputEnded() override;
+    QList<Message> fetchResult(Task *task, U2OpStatus &os) override;
 
     virtual Task * createTask(const QList<Message> &messages) const = 0;
     virtual QVariantMap getResult(Task *task, U2OpStatus &os) const = 0;
