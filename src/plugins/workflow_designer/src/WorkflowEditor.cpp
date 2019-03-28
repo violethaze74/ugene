@@ -409,6 +409,7 @@ void WorkflowEditor::sl_changeVisibleInput(bool isChecked) {
     } else {
         changeSizes(inputPortBox, inputHeight);
     }
+    inputPortBox->adjustSize();
 }
 
 void WorkflowEditor::sl_changeVisibleOutput(bool isChecked) {
@@ -420,6 +421,7 @@ void WorkflowEditor::sl_changeVisibleOutput(bool isChecked) {
     } else {
         changeSizes(outputPortBox, outputHeight);
     }
+    outputPortBox->adjustSize();
 }
 
 void WorkflowEditor::editPort(Port* p) {
