@@ -180,7 +180,7 @@ void SWWorkerFactory::init() {
 
         a << new Attribute(mxd, BaseTypes::STRING_TYPE(), true, QString("Auto"));
         a << new Attribute(ald, BaseTypes::STRING_TYPE(), true);
-        a << new Attribute(frd, BaseTypes::STRING_TYPE(), false, filterLst.isEmpty() ? QString() : filterLst.first());
+        a << new Attribute(frd, BaseTypes::STRING_TYPE(), false, filterLst.isEmpty() ? QString() : "filter-intersections");
         a << new Attribute(scd, BaseTypes::NUM_TYPE(), false, 90);
         a << new Attribute(BaseAttributes::STRAND_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, BaseAttributes::STRAND_BOTH());
         a << new Attribute(amd, BaseTypes::BOOL_TYPE(), false, false);
