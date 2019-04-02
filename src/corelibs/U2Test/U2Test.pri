@@ -1,6 +1,5 @@
 # include (U2Test.pri)
 
-UGENE_RELATIVE_DESTDIR = ''
 MODULE_ID=U2Test
 include( ../../ugene_lib_common.pri )
 
@@ -18,7 +17,7 @@ if (contains(DEFINES, HI_EXCLUDED)) {
 DESTDIR = ../../$$out_dir()
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }
 

@@ -3,7 +3,6 @@ include (ugene_lib_common.pri)
 
 # This file is common for all UGENE plugins
 
-UGENE_RELATIVE_DESTDIR = 'plugins'
 QT += network xml svg
 
 useWebKit() {
@@ -32,10 +31,10 @@ win32 {
 }
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/plugins
     INSTALLS += target
 }
 
 macx {
-    QMAKE_RPATHDIR += @executable_path/$${UGENE_RELATIVE_DESTDIR}/
+    QMAKE_RPATHDIR += @executable_path/plugins/
 }

@@ -1,5 +1,4 @@
 include( ../../ugene_globals.pri )
-UGENE_RELATIVE_DESTDIR = ''
 
 TEMPLATE = lib
 CONFIG +=thread debug_and_release staticlib warn_off
@@ -63,6 +62,6 @@ linux-g++ {
 }
 
 #unix {
-#    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+#    target.path = $$UGENE_INSTALL_DIR/
 #    INSTALLS += target
 #}

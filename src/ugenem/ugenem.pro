@@ -1,5 +1,4 @@
 include(../ugene_globals.pri)
-UGENE_RELATIVE_DESTDIR = ''
 
 QT += xml network widgets
 TEMPLATE = app
@@ -42,7 +41,7 @@ win32 {
 }
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }
 

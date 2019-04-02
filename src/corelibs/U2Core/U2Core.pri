@@ -3,8 +3,6 @@
 MODULE_ID=U2Core
 include( ../../ugene_lib_common.pri )
 
-UGENE_RELATIVE_DESTDIR = ''
-
 QT += network xml widgets
 
 DEFINES+=UGENE_MIN_VERSION_SQLITE=$${UGENE_MIN_VERSION_SQLITE}
@@ -25,6 +23,6 @@ win32 {
 }
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }

@@ -9,7 +9,6 @@ use_opencl(){
     DEFINES += OPENCL_SUPPORT
 }
 
-UGENE_RELATIVE_DESTDIR = ''
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2ALGORITHM_DLL
 
 unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
@@ -33,6 +32,6 @@ win32-msvc2013 {
 }
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }

@@ -6,8 +6,6 @@ use_opencl(){
     DEFINES += OPENCL_SUPPORT
 }
 
-UGENE_RELATIVE_DESTDIR = ''
-
 QT += xml network script widgets
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release console
@@ -59,6 +57,6 @@ macx {
 }
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }

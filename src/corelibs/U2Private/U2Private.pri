@@ -1,6 +1,5 @@
 # include (U2Private.pri)
 
-UGENE_RELATIVE_DESTDIR = ''
 MODULE_ID=U2Private
 include( ../../ugene_lib_common.pri )
 
@@ -12,7 +11,7 @@ INCLUDEPATH += ../../libs_3rdparty/breakpad/src
 DESTDIR = ../../$$out_dir()
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }
 

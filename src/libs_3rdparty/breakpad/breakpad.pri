@@ -1,5 +1,4 @@
 include( ../../ugene_globals.pri )
-UGENE_RELATIVE_DESTDIR = ''
 
 TEMPLATE = lib
 CONFIG += thread debug_and_release warn_off
@@ -23,7 +22,7 @@ QT -= gui
 }
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }
 

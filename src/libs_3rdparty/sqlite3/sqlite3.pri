@@ -1,7 +1,6 @@
 # include (sqlite.pri)
 
 include( ../../ugene_globals.pri )
-UGENE_RELATIVE_DESTDIR = ''
 
 TARGET = ugenedb
 TEMPLATE = lib
@@ -41,7 +40,7 @@ win32 {
 
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }
 

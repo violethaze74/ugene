@@ -6,8 +6,6 @@ use_opencl(){
     DEFINES += OPENCL_SUPPORT
 }
 
-UGENE_RELATIVE_DESTDIR = ''
-
 QT += xml network script widgets
 
 useWebKit() {
@@ -59,9 +57,7 @@ UI_DIR=_tmp/ui
 RCC_DIR=_tmp/rcc
 
 win32 {
-
     LIBS += -luser32     # to import CharToOemA with nmake build
-
     QMAKE_CXXFLAGS_WARN_ON = -W3
     QMAKE_CFLAGS_WARN_ON = -W3
     RC_FILE = ugeneui.rc
@@ -74,7 +70,7 @@ macx {
 }
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }
 

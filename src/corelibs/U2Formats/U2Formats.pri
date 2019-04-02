@@ -5,8 +5,6 @@ include( ../../ugene_lib_common.pri )
 
 LIBS += $$add_z_lib()
 
-UGENE_RELATIVE_DESTDIR = ''
-
 DEFINES += QT_FATAL_ASSERT BUILDING_U2FORMATS_DLL
 
 LIBS += -L../../$$out_dir()
@@ -40,6 +38,6 @@ INCLUDEPATH += ../../libs_3rdparty/sqlite3/src
 DESTDIR = ../../$$out_dir()
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }

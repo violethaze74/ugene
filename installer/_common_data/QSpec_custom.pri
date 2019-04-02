@@ -1,7 +1,6 @@
 # include (QSpec.pri)
 
 include( ../../ugene_globals.pri )
-UGENE_RELATIVE_DESTDIR = ''
 
 TARGET = QSpec
 TEMPLATE = lib
@@ -41,7 +40,7 @@ unix {
         QMAKE_RPATHDIR += @executable_path
         QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
     }
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }
 

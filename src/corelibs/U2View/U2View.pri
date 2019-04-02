@@ -1,6 +1,5 @@
 # include (U2View.pri)
 
-UGENE_RELATIVE_DESTDIR = ''
 MODULE_ID=U2View
 include( ../../ugene_lib_common.pri )
 
@@ -21,7 +20,7 @@ unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
 DESTDIR = ../../$$out_dir()
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }
 

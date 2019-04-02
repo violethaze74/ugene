@@ -4,8 +4,6 @@ MODULE_ID=U2Script
 
 include( ../../ugene_lib_common.pri )
 
-UGENE_RELATIVE_DESTDIR = ''
-
 DEFINES +=          QT_FATAL_ASSERT BUILDING_U2SCRIPT_DLL
 
 QT += network xml widgets
@@ -28,6 +26,6 @@ LIBS += $$add_sqlite_lib()
 DESTDIR = ../../$$out_dir()
 
 unix {
-    target.path =   $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path =   $$UGENE_INSTALL_DIR/
     INSTALLS +=     target
 }
