@@ -2399,10 +2399,10 @@ GUI_TEST_CLASS_DEFINITION(test_0861_5){
 //    2. Open the "Annotations Highlighting" bar of the Options Panel
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
     QLineEdit* editQualifiers = GTWidget::findExactWidget<QLineEdit*>(os, "editQualifiers");
-    GTLineEdit::setText(os, editQualifiers, "aaaaaaaaaaaaaaaaaaaaaaa");
+    GTLineEdit::setText(os, editQualifiers, "aaaaaaaaaaa aaaaaaaaaaaa");
     QString style = editQualifiers->styleSheet();
     CHECK_SET_ERR(style == "background-color: rgb(255, 152, 142);", "unexpected styleSheet: " + style);
-//    3. Enter any character set longer then 20 symbols in the line editor of the bar
+//    3. Enter something with an incorrect symbol (eg "space")
 //    Expected state: the line editor is highlighted in red background-color: rgb(255, 152, 142);
 }
 
