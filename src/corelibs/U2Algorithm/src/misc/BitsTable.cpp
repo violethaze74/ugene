@@ -23,16 +23,22 @@
 
 namespace U2 {
 
-const quint32 BitsTable::NUCL_BITS_SIZE = 2;
-const quint32 BitsTable::PROTEIN_BITS_SIZE = 5;
-const quint32 BitsTable::RAW_BITS_SIZE = 8;
+#define NUCL_BITS_SIZE 2
+#define PROTEIN_BITS_SIZE  5
+#define RAW_BITS_SIZE 8
 
-BitsTable::BitsTable () {
+static quint32 NUCL_BITS[256];
+static quint32 PROTEIN_BITS[256];
+static quint32 RAW_BITS[256];
+
+BitsTable::BitsTable() {
     for (int i = 256; --i >= 0;) {
-        PROTEIN_BITS[i] = 0; NUCL_BITS[i] = 0; RAW_BITS[i] = i;
+        PROTEIN_BITS[i] = 0;
+        NUCL_BITS[i] = 0;
+        RAW_BITS[i] = i;
     }
 
-    quint32 pBits= 1;
+    quint32 pBits = 1;
     PROTEIN_BITS['A'] = pBits++;
     PROTEIN_BITS['C'] = pBits++;
     PROTEIN_BITS['D'] = pBits++;
@@ -70,8 +76,8 @@ quint32 BitsTable::getBitMaskCharBitsNum(DNAAlphabetType al) const {
     return al == DNAAlphabet_NUCL ? NUCL_BITS_SIZE : al == DNAAlphabet_AMINO ? PROTEIN_BITS_SIZE : RAW_BITS_SIZE;
 }
 
-const quint32* BitsTable::getBitMaskCharBits(DNAAlphabetType al) const {
-    return al == DNAAlphabet_NUCL ? NUCL_BITS: al == DNAAlphabet_AMINO ? PROTEIN_BITS: RAW_BITS;
+const quint32 *BitsTable::getBitMaskCharBits(DNAAlphabetType al) const {
+    return al == DNAAlphabet_NUCL ? NUCL_BITS : al == DNAAlphabet_AMINO ? PROTEIN_BITS : RAW_BITS;
 }
 
 }//namespace
