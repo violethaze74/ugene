@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-const QString ColorSchemaSettingsPageId = "ColorSchemaSettings";
+#define ColorSchemaSettingsPageId "ColorSchemaSettings"
 
 
 class U2VIEW_EXPORT ColorSchemaSettingsPageController : public AppSettingsGUIPageController {
@@ -46,8 +46,9 @@ public:
 
 signals:
     void si_customSettingsChanged();
+
 private:
-    static const QString helpPageId;
+    const QString helpPageId;
 };
 
 
