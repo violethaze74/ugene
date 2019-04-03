@@ -32,25 +32,35 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 //GeneByGeneReportSettings
 
-const QString GeneByGeneReportSettings::MERGE_EXISTING = "Merge";
-const QString GeneByGeneReportSettings::OVERWRITE_EXISTING = "Overwrite";
-const QString GeneByGeneReportSettings::RENAME_EXISTING = "Rename";
+#define MERGE_EXISTING "Merge"
+#define OVERWRITE_EXISTING "Overwrite"
+#define RENAME_EXISTING  "Rename"
 
 GeneByGeneReportSettings::GeneByGeneReportSettings(){
     initDefaults();
 }
 
-void GeneByGeneReportSettings::initDefaults(){
+QStringList GeneByGeneReportSettings::getAvailableFileHandlingOptions() {
+    return QStringList() << MERGE_EXISTING << OVERWRITE_EXISTING << RENAME_EXISTING;
+}
+
+QString GeneByGeneReportSettings::getDefaultFileHandlingOption() {
+    return MERGE_EXISTING;
+}
+
+void GeneByGeneReportSettings::initDefaults() {
     outFile = "";
-    existingFile = GeneByGeneReportSettings::MERGE_EXISTING;
+    existingFile = MERGE_EXISTING;
     identity = 90.0f;
     annName = "blast_result";
 }
 
 //////////////////////////////////////////////////////////////////////////
 //GeneByGeneCompareResult
-const QString GeneByGeneCompareResult::IDENTICAL_YES = "Yes";
-const QString GeneByGeneCompareResult::IDENTICAL_NO = "No";
+#define IDENTICAL_YES  "Yes"
+#define IDENTICAL_NO  "No"
+
+GeneByGeneCompareResult::GeneByGeneCompareResult() : identical(false), identityString(IDENTICAL_NO) {}
 
 //////////////////////////////////////////////////////////////////////////
 //GeneByGeneComparator
@@ -77,7 +87,7 @@ GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASeq
                         float blastIdent = parseBlastQual(ident);
                         if (blastIdent != -1.0f && blastIdent >= identity){
                             result.identical = true;
-                            result.identityString = GeneByGeneCompareResult::IDENTICAL_YES;
+                            result.identityString = IDENTICAL_YES;
                             result.identityString.append(QString("\\%1").arg(blastIdent));
                             QString gaps = adata->findFirstQualifierValue(BLAST_GAPS);
                             if (!gaps.isEmpty()){
@@ -91,7 +101,7 @@ GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASeq
                         }
                     }else{ //not a blast annotation
                         result.identical = true;
-                        result.identityString = GeneByGeneCompareResult::IDENTICAL_YES;
+                        result.identityString = IDENTICAL_YES;
                     }
                 }
             }
@@ -140,7 +150,7 @@ GeneByGeneReportIO::~GeneByGeneReportIO(){
         QList<QString> toWrite;
         toWrite.append(key);
         toWrite.append(mergedTable.take(key));
-        toWrite.append(GeneByGeneCompareResult::IDENTICAL_NO);
+        toWrite.append(IDENTICAL_NO);
         writeRow(toWrite);
     }
 
@@ -153,9 +163,9 @@ GeneByGeneReportIO::~GeneByGeneReportIO(){
 
 void GeneByGeneReportIO::prepareOutputFile( U2OpStatus& os ){
     if(QFile::exists(outFile)){
-        if (GeneByGeneReportSettings::RENAME_EXISTING == existingMode){
+        if (existingMode == RENAME_EXISTING){
             outFile = GUrlUtils::rollFileName(outFile, QSet<QString>());
-        }else if (GeneByGeneReportSettings::MERGE_EXISTING == existingMode){
+        } else if (existingMode == MERGE_EXISTING){
             readMergedTable(outFile, os);
             if(os.hasError()){
                 return;
@@ -187,7 +197,7 @@ void GeneByGeneReportIO::writeTableItem( const QString& geneName, const QString&
             oldIdentities = mergedTable.take(geneName);
         }else{
             for(int i = 0; i < mergedGenomesSize; i++){
-                oldIdentities.append(GeneByGeneCompareResult::IDENTICAL_NO);
+                oldIdentities.append(IDENTICAL_NO);
             }
         }
         toWrite.append(oldIdentities);

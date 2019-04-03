@@ -36,15 +36,14 @@ class GeneByGeneReportSettings{
 public:
     GeneByGeneReportSettings();
 
+    static QStringList getAvailableFileHandlingOptions();
+    static QString getDefaultFileHandlingOption();
+
 public:
     QString     outFile;
     QString     existingFile;
     float       identity;
     QString     annName;
-
-    static const QString MERGE_EXISTING;
-    static const QString OVERWRITE_EXISTING;
-    static const QString RENAME_EXISTING;
 
 private:
     void initDefaults();
@@ -54,16 +53,9 @@ private:
 //Algorithm
 class GeneByGeneCompareResult{
 public:
-    GeneByGeneCompareResult()
-        :identical(false)
-        ,identityString(IDENTICAL_NO)
-    {}
-
+    GeneByGeneCompareResult();
     bool        identical;
     QString     identityString;
-
-    static const QString IDENTICAL_YES;
-    static const QString IDENTICAL_NO;
 };
 
 class GeneByGeneComparator{

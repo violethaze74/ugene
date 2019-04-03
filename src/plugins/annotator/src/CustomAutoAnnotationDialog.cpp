@@ -34,6 +34,14 @@
 
 namespace U2 {
 
+#define PLASMID_FEATURE "Feature"
+#define PLASMID_GENE "Gene"
+#define PLASMID_ORIGIN "Origin"
+#define PLASMID_PRIMER "Primer"
+#define PLASMID_PROMOTER "Promoter"
+#define PLASMID_REGULATORY "Regulatory"
+#define PLASMID_TERMINATOR "Terminator"
+
 CustomAutoAnnotationDialog::CustomAutoAnnotationDialog(ADVSequenceObjectContext* ctx)
  : QDialog(ctx->getAnnotatedDNAView()->getWidget()), seqCtx(ctx)
 {
@@ -48,13 +56,13 @@ void CustomAutoAnnotationDialog::loadSettings() {
 
     QStringList filteredFeatures = AppContext::getSettings()->getValue(FILTERED_FEATURE_LIST, QStringList() ).toStringList();
 
-    featureBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::FEATURE));
-    genesBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::GENE));
-    originBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::ORIGIN));
-    primerBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::PRIMER));
-    promotersBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::PROMOTER));
-    regulatoryBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::REGULATORY));
-    terminatorBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::TERMINATOR));
+    featureBox->setChecked( !filteredFeatures.contains(PLASMID_FEATURE));
+    genesBox->setChecked( !filteredFeatures.contains(PLASMID_GENE));
+    originBox->setChecked( !filteredFeatures.contains(PLASMID_ORIGIN));
+    primerBox->setChecked( !filteredFeatures.contains(PLASMID_PRIMER));
+    promotersBox->setChecked( !filteredFeatures.contains(PLASMID_PROMOTER));
+    regulatoryBox->setChecked( !filteredFeatures.contains(PLASMID_REGULATORY));
+    terminatorBox->setChecked( !filteredFeatures.contains(PLASMID_TERMINATOR));
 }
 
 void CustomAutoAnnotationDialog::saveSettings() {
@@ -62,25 +70,25 @@ void CustomAutoAnnotationDialog::saveSettings() {
     QStringList filteredFeatures;
 
     if (!featureBox->isChecked()) {
-        filteredFeatures.append(PlasmidFeatureTypes::FEATURE);
+        filteredFeatures.append(PLASMID_FEATURE);
     }
     if (!genesBox->isChecked()) {
-        filteredFeatures.append(PlasmidFeatureTypes::GENE);
+        filteredFeatures.append(PLASMID_GENE);
     }
     if (!originBox->isChecked()) {
-        filteredFeatures.append(PlasmidFeatureTypes::ORIGIN);
+        filteredFeatures.append(PLASMID_ORIGIN);
     }
     if (!primerBox->isChecked()) {
-        filteredFeatures.append(PlasmidFeatureTypes::PRIMER);
+        filteredFeatures.append(PLASMID_PRIMER);
     }
     if (!promotersBox->isChecked()) {
-        filteredFeatures.append(PlasmidFeatureTypes::PROMOTER);
+        filteredFeatures.append(PLASMID_PROMOTER);
     }
     if (!regulatoryBox->isChecked()) {
-        filteredFeatures.append(PlasmidFeatureTypes::REGULATORY);
+        filteredFeatures.append(PLASMID_REGULATORY);
     }
     if (!terminatorBox->isChecked()) {
-        filteredFeatures.append(PlasmidFeatureTypes::TERMINATOR);
+        filteredFeatures.append(PLASMID_TERMINATOR);
     }
 
     AppContext::getSettings()->setValue(FILTERED_FEATURE_LIST, filteredFeatures );

@@ -38,15 +38,6 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // CustomPatternAnnotationTask
-
-const QString PlasmidFeatureTypes::FEATURE("Feature");
-const QString PlasmidFeatureTypes::GENE("Gene");
-const QString PlasmidFeatureTypes::ORIGIN("Origin");
-const QString PlasmidFeatureTypes::PRIMER("Primer");
-const QString PlasmidFeatureTypes::PROMOTER("Promoter");
-const QString PlasmidFeatureTypes::REGULATORY("Regulatory");
-const QString PlasmidFeatureTypes::TERMINATOR("Terminator");
-
 CustomPatternAnnotationTask::CustomPatternAnnotationTask(AnnotationTableObject* aObj, const U2::U2EntityRef &entityRef,
                                                          const SharedFeatureStore &store, const QStringList& filteredFeatureTypes)
     : Task(tr("Custom pattern annotation"), TaskFlags_NR_FOSCOE), dnaObj("ref", entityRef), aTableObj(aObj),
