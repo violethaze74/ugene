@@ -254,7 +254,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     QMap<QString, AnnotationData *> joinedAnnotations;
-    QMap<AnnotationData *, QString> annotationGroups;
+    QMap<QString, AnnotationData *> annotationGroups;
     QMap<AnnotationData *, AnnotationTableObject *> annotationTables;
     bool fastaSectionStarts = false;
     bool anyNamelessSequence = false;
@@ -450,8 +450,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
                     os.setError(tr("Parsing error: incorrect strand patameter at line %1. Strand can be '+','-' or '.'").arg(lineNumber));
                     return;
                 }
-
-                annotationGroups.insert(ad, groupName);
+                annotationGroups.insertMulti(groupName, ad);
                 annotationTables.insert(ad, ato);
             } else {
                 delete ad;
@@ -463,9 +462,10 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     }
 
     // add annotation data to annotation table
-    foreach (AnnotationData *ann, annotationGroups.keys()) {
-        SAFE_POINT(annotationGroups.contains(ann) && annotationTables.contains(ann), "Unexpected annotation!", );
-        annotationTables[ann]->addAnnotations(QList<SharedAnnotationData>() << SharedAnnotationData(ann), annotationGroups[ann]);
+    QList<AnnotationData*> data = annotationGroups.values();
+    foreach (AnnotationData *ann, data) {
+        SAFE_POINT(data.contains(ann) && annotationTables.contains(ann), "Unexpected annotation!", );
+        annotationTables[ann]->addAnnotations(QList<SharedAnnotationData>() << SharedAnnotationData(ann), annotationGroups.key(ann));
     }
 
     //handling last fasta sequence
