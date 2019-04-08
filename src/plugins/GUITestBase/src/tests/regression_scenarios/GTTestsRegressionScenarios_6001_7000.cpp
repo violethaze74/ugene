@@ -35,8 +35,10 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
+#include "primitives/GTMainWindow.h"
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTSpinBox.h>
 #include <primitives/GTTableView.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
@@ -91,6 +93,7 @@
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
@@ -1763,6 +1766,53 @@ GUI_TEST_CLASS_DEFINITION(test_6256) {
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getErrors(os).size() == 2, "Unexpected number of errors");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6262) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Filter Annotations by Name", "Filter Annotations by Name" and connect them
+    WorkflowProcessItem* element1 = GTUtilsWorkflowDesigner::addElement(os, "Filter Annotations by Name");
+    WorkflowProcessItem* element2 = GTUtilsWorkflowDesigner::addElement(os, "Filter Annotations by Name");
+
+    //3. Check Input port.
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+    GTGroupBox::setChecked(os, "inputPortBox", true);
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
+
+    //4. Check Input port.
+    GTGroupBox::setChecked(os, "inputPortBox", false);
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+
+    //5. Check Output port.
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
+    GTGroupBox::setChecked(os, "outputPortBox", true);
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, element2);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
+
+    //6. Check Output port.
+    GTGroupBox::setChecked(os, "outputPortBox", false);
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, element2);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6277) {
 //    The test checks that the second column of a table with annotations colors on the "Annotations Highlighting" options panel tab in Sequence View is wide enough.
 //    UGENE behaviour differed if it was build with Qt5.4 and Qt5.7
@@ -2096,59 +2146,81 @@ GUI_TEST_CLASS_DEFINITION(test_6378) {
     GTUtilsWorkflowDesigner::checkErrorList(os, "Classify Sequences with MetaPhlAn2: External tool \"Bio\" is not set");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6397) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Place repeat worker
+    GTUtilsWorkflowDesigner::addElement(os, "Find Repeats");
+
+    //Expected state: default value for "Apply 'Max distance' attribute" is False
+    GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Find Repeats"));
+    QString defaultAttr = GTUtilsWorkflowDesigner::getParameter(os,  "Apply 'Max distance' attribute");
+    CHECK_SET_ERR(defaultAttr == "False","Attribute value isn't 'False'");
+
+    //3. Set "Apply 'Max distance' attribute" value to 'True'
+    GTUtilsWorkflowDesigner::setParameter(os, "Apply 'Max distance' attribute", "True", GTUtilsWorkflowDesigner::comboValue);
+
+    //4. Set "Max distance" parameter to 1
+    GTUtilsWorkflowDesigner::setParameter(os, "Max distance", "1", GTUtilsWorkflowDesigner::spinValue, GTGlobals::UseKey);
+    GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Find Repeats"));
+    GTGlobals::sleep();
+    GTUtilsWorkflowDesigner::clickParameter(os, "Max distance");
+
+    //QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
+    QList<QWidget*> list;
+    foreach(QWidget *w, GTMainWindow::getMainWindowsAsWidget(os)) {
+        list.append(w);
+    }
+
+    QSpinBox *qsb = nullptr;
+    foreach (QWidget *w, list) {
+        foreach (QObject *o, w->findChildren<QObject*>()) {
+            qsb = qobject_cast<QSpinBox*>(o);
+            if (qsb != nullptr) {
+                break;
+            }
+        }
+        if (qsb != nullptr) {
+            break;
+        }
+    }
+
+    //Expected state: it set successfully, ensure that 1 is minimum value
+    QString maxDistance = GTUtilsWorkflowDesigner::getParameter(os,  "Max distance", true);
+    CHECK_SET_ERR(maxDistance == "1 bp", "Attribute value isn't 1 bp");
+    CHECK_SET_ERR(qsb->minimum() == 1, "Minimum value isn't 1");
+
+    //6. Open human_t1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            GTGlobals::sleep(1000);
+            QWidget* dialog = QApplication::activeModalWidget();
+
+            QSpinBox *maxDistanceBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "maxDistBox", dialog));
+            GTSpinBox::setValue(os, maxDistanceBox, 1, GTGlobals::UseKeyBoard);
+            CHECK_SET_ERR(GTSpinBox::getValue(os, maxDistanceBox) == 1,"Max distance value isn't 1 bp");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    //7. Open repeat finder dialog
+    //Expected state: minimum value for max distance combobox is 1
+    GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find repeats...", GTGlobals::UseMouse);
+    GTGlobals::sleep();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6398) {
     //1. Open "_common_data/regression/6398/6398.gtf" file
     //Expected: 5 similarity points of the 'GTF" format
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF", 5, 1));
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6398/6398.gtf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_6262) {
-    //1. Open WD
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-
-    //2. Add "Filter Annotations by Name", "Filter Annotations by Name" and connect them
-    WorkflowProcessItem* element1 = GTUtilsWorkflowDesigner::addElement(os, "Filter Annotations by Name");
-    WorkflowProcessItem* element2 = GTUtilsWorkflowDesigner::addElement(os, "Filter Annotations by Name");
-
-    //3. Check Input port.
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
-    GTGroupBox::setChecked(os, "inputPortBox", true);
-    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
-    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
-    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
-    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
-    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
-    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
-
-    //4. Check Input port.
-    GTGroupBox::setChecked(os, "inputPortBox", false);
-    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
-    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
-    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
-
-    //5. Check Output port.
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
-    GTGroupBox::setChecked(os, "outputPortBox", true);
-    GTUtilsWorkflowDesigner::click(os, element1);
-    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
-    GTUtilsWorkflowDesigner::click(os, element2);
-    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
-    GTUtilsWorkflowDesigner::click(os, element1);
-    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
-
-    //6. Check Output port.
-    GTGroupBox::setChecked(os, "outputPortBox", false);
-    GTUtilsWorkflowDesigner::click(os, element1);
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
-    GTUtilsWorkflowDesigner::click(os, element2);
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
-    GTUtilsWorkflowDesigner::click(os, element1);
-    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
 }
 
 } // namespace GUITest_regression_scenarios

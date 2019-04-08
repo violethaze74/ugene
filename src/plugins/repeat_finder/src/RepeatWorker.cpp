@@ -67,7 +67,8 @@ static const QString USE_MIN_DISTANCE_ATTR("use-mindistance");
 const QString RepeatWorkerFactory::ACTOR_ID("repeats-search");
 
 void RepeatWorkerFactory::init() {
-    QList<PortDescriptor*> p; QList<Attribute*> a;
+    QList<PortDescriptor*> p; 
+    QList<Attribute*> a;
 
     {
         Descriptor id(BasePorts::IN_SEQ_PORT_ID(), RepeatWorker::tr("Input sequences"),
@@ -93,7 +94,7 @@ void RepeatWorkerFactory::init() {
         Descriptor thd(THREADS_ATTR, RepeatWorker::tr("Parallel threads"), RepeatWorker::tr("Number of parallel threads used for the task."));
         Descriptor tan(TANMEDS_ATTR, RepeatWorker::tr("Exclude tandems"), RepeatWorker::tr("Exclude tandems areas before find repeat task is run."));
         Descriptor umaxd(USE_MAX_DISTANCE_ATTR, RepeatWorker::tr("Apply 'Max distance' attribute"), RepeatWorker::tr("Apply 'Max distance' attribute."));
-        Descriptor umind(USE_MIN_DISTANCE_ATTR, RepeatWorker::tr("Apply 'Min distance' attribute"), RepeatWorker::tr("Apply 'Max distance' attribute."));
+        Descriptor umind(USE_MIN_DISTANCE_ATTR, RepeatWorker::tr("Apply 'Min distance' attribute"), RepeatWorker::tr("Apply 'Min distance' attribute."));
 
         FindRepeatsTaskSettings cfg = FindRepeatsDialog::defaultSettings();
         Attribute *aa;
@@ -109,7 +110,7 @@ void RepeatWorkerFactory::init() {
         aa->setAttributeValue(cfg.minDist);
         aa->addRelation(new VisibilityRelation(USE_MIN_DISTANCE_ATTR, true));
         a << aa;
-        a << new Attribute(umaxd, BaseTypes::BOOL_TYPE(), false, true);
+        a << new Attribute(umaxd, BaseTypes::BOOL_TYPE(), false, false);
         aa = new Attribute(mad, BaseTypes::NUM_TYPE(), false);
         aa->setAttributeValue(cfg.maxDist);
         aa->addRelation(new VisibilityRelation(USE_MAX_DISTANCE_ATTR, true));
@@ -138,36 +139,47 @@ void RepeatWorkerFactory::init() {
     QMap<QString, PropertyDelegate*> delegates;
     delegates[USE_MIN_DISTANCE_ATTR] = new ComboBoxWithBoolsDelegate();
     delegates[USE_MAX_DISTANCE_ATTR] = new ComboBoxWithBoolsDelegate();
-    {
-        QVariantMap m; m["minimum"] = 0; m["maximum"] = INT_MAX; m["suffix"] = L10N::suffixBp();
-        delegates[MIN_DIST_ATTR] = new SpinBoxDelegate(m);
-        m["specialValueText"] = RepeatWorker::tr("Any");
-        delegates[MAX_DIST_ATTR] = new SpinBoxDelegate(m);
-        m["minimum"] = 2;
-        delegates[LEN_ATTR] = new SpinBoxDelegate(m);
-    }
-    {
-        QVariantMap m; m["minimum"] = 50; m["maximum"] = 100; m["suffix"] = "%";
-        delegates[IDENTITY_ATTR] = new SpinBoxDelegate(m);
-    }
-    {
-        QVariantMap m; m["specialValueText"] = "Auto";
-        delegates[THREADS_ATTR] = new SpinBoxDelegate(m);
-    }
-    {
-        QVariantMap m;
-        m["Auto"] = RFAlgorithm_Auto;
-        m["Diagonals"] = RFAlgorithm_Diagonal;
-        m["Suffix index"] = RFAlgorithm_Suffix;
-        delegates[ALGO_ATTR] = new ComboBoxDelegate(m);
-    }
-    {
-        QVariantMap m;
-        m["Disjoint repeats"] = DisjointRepeats;
-        m["No filtering"] = NoFiltering;
-        m["Unique repeats"] = UniqueRepeats;
-        delegates[NESTED_ATTR] = new ComboBoxDelegate(m);
-    }
+
+    QVariantMap minDistProperties; 
+    minDistProperties["minimum"] = 0;
+    minDistProperties["maximum"] = INT_MAX;
+    minDistProperties["suffix"] = L10N::suffixBp();
+    delegates[MIN_DIST_ATTR] = new SpinBoxDelegate(minDistProperties);
+    
+    QVariantMap maxDistProperties;
+    maxDistProperties["minimum"] = 1;
+    maxDistProperties["maximum"] = INT_MAX;
+    maxDistProperties["suffix"] = L10N::suffixBp();
+    delegates[MAX_DIST_ATTR] = new SpinBoxDelegate(maxDistProperties);
+
+    QVariantMap lengthProperties;
+    lengthProperties["minimum"] = 2;
+    lengthProperties["maximum"] = INT_MAX;
+    lengthProperties["suffix"] = L10N::suffixBp();
+    lengthProperties["specialValueText"] = RepeatWorker::tr("Any");
+    delegates[LEN_ATTR] = new SpinBoxDelegate(lengthProperties);
+
+    QVariantMap identityProperties; 
+    identityProperties["minimum"] = 50;
+    identityProperties["maximum"] = 100;
+    identityProperties["suffix"] = "%";
+    delegates[IDENTITY_ATTR] = new SpinBoxDelegate(identityProperties);
+    
+    QVariantMap threadProperties; 
+    threadProperties["specialValueText"] = "Auto";
+    delegates[THREADS_ATTR] = new SpinBoxDelegate(threadProperties);
+
+    QVariantMap algoProperties;
+    algoProperties["Auto"] = RFAlgorithm_Auto;
+    algoProperties["Diagonals"] = RFAlgorithm_Diagonal;
+    algoProperties["Suffix index"] = RFAlgorithm_Suffix;
+    delegates[ALGO_ATTR] = new ComboBoxDelegate(algoProperties);
+
+    QVariantMap nestedProperties;
+    nestedProperties["Disjoint repeats"] = DisjointRepeats;
+    nestedProperties["No filtering"] = NoFiltering;
+    nestedProperties["Unique repeats"] = UniqueRepeats;
+    delegates[NESTED_ATTR] = new ComboBoxDelegate(nestedProperties);
 
     proto->setPrompter(new RepeatPrompter());
     proto->setEditor(new DelegateEditor(delegates));
