@@ -5079,8 +5079,8 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
     const QStringList msaSequences1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(msaSequences1 != msaSequences0, "MSA is not changed");
     GTGlobals::sleep(5000);
-    QWidget* qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button",
-                                                          GTWidget::findWidget(os, "COI [m] COI"), GTGlobals::FindOptions(false));
+    QWidget *parent = GTWidget::findWidget(os, "COI [m] COI", GTWidget::findWidget(os, "COI [m] COI_SubWindow"));
+    QWidget* qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", parent, GTGlobals::FindOptions(false));
     if(qt_toolbar_ext_button != NULL && qt_toolbar_ext_button->isVisible()){
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Sort Alignment"));
         GTWidget::click(os, qt_toolbar_ext_button);

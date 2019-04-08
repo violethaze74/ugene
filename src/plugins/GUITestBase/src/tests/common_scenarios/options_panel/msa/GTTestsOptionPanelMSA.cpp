@@ -128,7 +128,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002){
     QLineEdit* sequenceLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "sequenceLineEdit"));
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "phan");
-    QStringList names = GTBaseCompleter::getNames(os, GTBaseCompleter::getCompleter(os));
+    QStringList names = GTBaseCompleter::getNames(os, sequenceLineEdit);
 //Expected state: popup helper contains Phaneroptera_falcata.(case insencivity is checked)
     int num = names.count();
     CHECK_SET_ERR(num == 1, QString("wrong number of sequences in completer. Expected 1, found %1").arg(num));
@@ -149,7 +149,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003){
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "wrong name");
 //    Expected state: empty popup helper appeared
-    bool empty = GTBaseCompleter::isEmpty(os, GTBaseCompleter::getCompleter(os));
+    bool empty = GTBaseCompleter::isEmpty(os, sequenceLineEdit);
     CHECK_SET_ERR(empty, "completer is not empty");
     GTWidget::click(os, sequenceLineEdit);//needed to close completer
 }
@@ -166,7 +166,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0004){
     QLineEdit* sequenceLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "sequenceLineEdit"));
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "Phan");
-    QStringList completerList = GTBaseCompleter::getNames(os, GTBaseCompleter::getCompleter(os));
+    QStringList completerList = GTBaseCompleter::getNames(os, sequenceLineEdit);
 //    Expected state: two sequence names "Phaneroptera_falcata" appeared in popup helper
     CHECK_SET_ERR(completerList.count() == 2, "wrong number of sequences in completer");
     QString first = completerList.at(0);
@@ -1164,14 +1164,14 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0004){
     QLineEdit* line1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
     CHECK_SET_ERR(line1 != NULL, "lineEdit 1 not found");
     GTLineEdit::setText(os, line1, "wrong name");
-    CHECK_SET_ERR(GTBaseCompleter::isEmpty(os), "Completer is not empty");
+    CHECK_SET_ERR(GTBaseCompleter::isEmpty(os, line1), "Completer is not empty");
 
     GTKeyboardDriver::keyClick( Qt::Key_Escape);
 
     QLineEdit* line2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
     CHECK_SET_ERR(line2 != NULL, "lineEdit 2 not found");
     GTLineEdit::setText(os, line2, "wrong name");
-    CHECK_SET_ERR(GTBaseCompleter::isEmpty(os), "Completer is not empty");
+    CHECK_SET_ERR(GTBaseCompleter::isEmpty(os, line2), "Completer is not empty");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: empty popup helper appeared
@@ -1667,9 +1667,9 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005){
     CHECK_SET_ERR(showDistancesCheck != NULL, "showDistancesCheck not found");
     QCheckBox* alignLabelsCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "alignLabelsCheck"));
     CHECK_SET_ERR(alignLabelsCheck != NULL, "alignLabelsCheck not found");
-
-    QWidget* parent = GTWidget::findWidget(os, "COI [m] COI");
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView", parent));
+    QWidget* parent = GTWidget::findWidget(os, "COI [m] COI_SubWindow");
+    QWidget* parent2 = GTWidget::findWidget(os, "COI [m] COI", parent);
+    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView", parent2));
 
     QList<QGraphicsSimpleTextItem*> initNames = GTUtilsPhyTree::getVisiableLabels(os, treeView);
     QList<QGraphicsSimpleTextItem*> initDistanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);

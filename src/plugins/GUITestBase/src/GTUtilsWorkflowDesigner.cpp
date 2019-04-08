@@ -338,7 +338,7 @@ void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os){
 
 #define GT_METHOD_NAME "findByNameFilter"
 void GTUtilsWorkflowDesigner::findByNameFilter(HI::GUITestOpStatus& os, const QString& elementName) {
-    QLineEdit* nameFilterLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit"));
+    QLineEdit* nameFilterLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit", GTWidget::findWidget(os, "palette")));
     GT_CHECK(nameFilterLineEdit != NULL, "Filter name line edit is not found");
 
     const QPoint mappedLineEditPos = nameFilterLineEdit->mapToGlobal(nameFilterLineEdit->pos());
@@ -363,7 +363,7 @@ void GTUtilsWorkflowDesigner::findByNameFilter(HI::GUITestOpStatus& os, const QS
 
 #define GT_METHOD_NAME "cleanNameFilter"
 void GTUtilsWorkflowDesigner::cleanNameFilter(HI::GUITestOpStatus& os) {
-    QLineEdit* nameFilterLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit"));
+    QLineEdit* nameFilterLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit", GTWidget::findWidget(os, "palette")));
     GT_CHECK(nameFilterLineEdit != NULL, "Filter name line edit is not found");
 
     const QPoint mappedLineEditPos = nameFilterLineEdit->mapToGlobal(nameFilterLineEdit->pos());

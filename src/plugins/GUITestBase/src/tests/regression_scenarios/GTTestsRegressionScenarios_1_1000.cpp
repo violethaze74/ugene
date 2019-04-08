@@ -2960,10 +2960,10 @@ GUI_TEST_CLASS_DEFINITION(test_0938) {
     GTGlobals::sleep();
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_NAVIGATION"));
     GTGlobals::sleep();
-
-    CHECK_SET_ERR(GTWidget::findWidget(os, "go_to_pos_line_edit") != NULL, "go_to_pos_line_edit not found");
-    CHECK_SET_ERR(GTWidget::findWidget(os, "Go!") != NULL, "Go! button not found");
-    CHECK_SET_ERR(GTWidget::findWidget(os, "COVERED") != NULL, "Covered regions widget not found");
+    QWidget *parent = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "go_to_pos_line_edit", parent) != NULL, "go_to_pos_line_edit not found");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "Go!", parent) != NULL, "Go! button not found");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "COVERED", parent) != NULL, "Covered regions widget not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0940) {

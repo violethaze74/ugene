@@ -803,7 +803,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
             GTGlobals::sleep(500);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
-            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
             GTGlobals::sleep(500);
 
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
@@ -813,7 +813,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
             GTGlobals::sleep(500);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1554,8 +1554,6 @@ GUI_TEST_CLASS_DEFINITION(test_6238) {
 
 GUI_TEST_CLASS_DEFINITION(test_6240) {
     //1. Open WD. This step allows us to prevent a bad case, when, at the first opening of WD, the dialog "Choose output directory" appears and the filler below is catching it
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) {
