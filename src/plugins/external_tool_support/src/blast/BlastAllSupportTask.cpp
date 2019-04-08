@@ -482,12 +482,26 @@ void BlastAllSupportTask::parseXMLHsp(const QDomNode &xml,const QString &id, con
         ad->qualifiers.push_back(U2Qualifier("hit_frame", frame_txt));
     }
 
-    elem = xml.lastChildElement("Hsp_query-frame");
+    QString strandTag;
+    switch (settings.strandSource) {
+    case BlastTaskSettings::HitFrame:
+        strandTag = "Hsp_hit-frame";
+    	break;
+    case BlastTaskSettings::QueryFrame:
+        strandTag = "Hsp_query-frame";
+        break;
+    default:
+        SAFE_POINT_EXT(false, stateInfo.setError(tr("Unknown strand source setting")), );
+        break;
+    }
+    
+    elem = xml.lastChildElement(strandTag);
     int frame = elem.text().toInt(&isOk);
-    if(!isOk) {
-        stateInfo.setError(tr("Can't get location. Hsp_query-frame[%1]").arg(elem.text()));
+    if (!isOk) {
+        stateInfo.setError(tr("Can't get location. %1[%2]").arg(strandTag).arg(elem.text()));
         return;
     }
+
     QString frame_txt = (frame < 0) ? "complement" : "direct";
     ad->qualifiers.push_back(U2Qualifier("source_frame", frame_txt));
     ad->setStrand(frame < 0 ? U2Strand::Complementary :  U2Strand::Direct);

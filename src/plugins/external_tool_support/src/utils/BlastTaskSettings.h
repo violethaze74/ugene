@@ -88,6 +88,11 @@ blastall 2.2.21 not included arguments:
 
 class BlastTaskSettings {
 public:
+    enum StrandSource {
+        HitFrame,
+        QueryFrame
+    };
+
     BlastTaskSettings();
     void reset();
 
@@ -137,6 +142,7 @@ public:
     const DNAAlphabet*    alphabet;
     //settings for annotations
     bool                    needCreateAnnotations;
+    StrandSource            strandSource;
     AnnotationTableObject *   aobj;
     QString                 groupName;
     QString                 annDescription;
