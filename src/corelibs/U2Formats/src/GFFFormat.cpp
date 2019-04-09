@@ -254,7 +254,8 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     QMap<QString, AnnotationData *> joinedAnnotations;
-    QMap<QString, AnnotationData *> annotationGroups;
+    //QMap<QString, AnnotationData *> annotationGroups;
+    QMap<QString, QList<AnnotationData *> >* annotationGroups;
     QMap<AnnotationData *, AnnotationTableObject *> annotationTables;
     bool fastaSectionStarts = false;
     bool anyNamelessSequence = false;
@@ -450,7 +451,9 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
                     os.setError(tr("Parsing error: incorrect strand patameter at line %1. Strand can be '+','-' or '.'").arg(lineNumber));
                     return;
                 }
-                annotationGroups.insertMulti(groupName, ad);
+                QList<AnnotationData*> group = annotationGroups->take(groupName);
+                group.append(ad);
+                annotationGroups->insert(groupName, group);
                 annotationTables.insert(ad, ato);
             } else {
                 delete ad;
@@ -462,10 +465,13 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     }
 
     // add annotation data to annotation table
-    QList<AnnotationData*> data = annotationGroups.values();
-    foreach (AnnotationData *ann, data) {
-        SAFE_POINT(data.contains(ann) && annotationTables.contains(ann), "Unexpected annotation!", );
-        annotationTables[ann]->addAnnotations(QList<SharedAnnotationData>() << SharedAnnotationData(ann), annotationGroups.key(ann));
+    foreach(const QString& key, annotationGroups->keys()) {
+        QList<AnnotationData *> data = annotationGroups->value(key);
+        foreach(AnnotationData* ann, data) {
+            SAFE_POINT(data.contains(ann) && annotationTables.contains(ann), "Unexpected annotation!", );
+
+            annotationTables[ann]->addAnnotations(QList<SharedAnnotationData>() << SharedAnnotationData(ann), key);
+        }
     }
 
     //handling last fasta sequence
