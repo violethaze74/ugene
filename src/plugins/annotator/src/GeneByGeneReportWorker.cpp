@@ -41,17 +41,19 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-#define ANNOT_SLOT_ID "gene-ann"
-#define  SEQ_SLOT_ID "gene-seq"
+const QString GeneByGeneReportWorkerFactory::ACTOR_ID("genebygene-report-id");
 
-#define IN_TYPE_ID "genebygene-data"
+static const QString ANNOT_SLOT_ID("gene-ann");
+static const QString SEQ_SLOT_ID("gene-seq");
 
-#define IN_PORT_DESCR "in-data"
+static const QString IN_TYPE_ID("genebygene-data");
 
-#define OUTPUT_FILE "output-file"
-#define EXISTING_FILE "existing"
-#define IDENTITY "identity"
-#define ANN_NAME "annotation_name"
+static const QString IN_PORT_DESCR("in-data");
+
+static const QString OUTPUT_FILE("output-file");
+static const QString EXISTING_FILE("existing");
+static const QString IDENTITY("identity");
+static const QString ANN_NAME("annotation_name");
 
 
 /************************************************************************/
@@ -182,7 +184,7 @@ void GeneByGeneReportWorkerFactory::init() {
 
         attrs << new Attribute(outFile, BaseTypes::STRING_TYPE(), true, QVariant(""));
         attrs << new Attribute(annName, BaseTypes::STRING_TYPE(), true, QVariant("blast_result"));
-        attrs << new Attribute(existingFile, BaseTypes::STRING_TYPE(), false, QVariant(GeneByGeneReportSettings::getDefaultFileHandlingOption()));
+        attrs << new Attribute(existingFile, BaseTypes::STRING_TYPE(), false, QVariant(GeneByGeneReportSettings::MERGE_EXISTING));
         attrs << new Attribute(identitiDescr, BaseTypes::NUM_TYPE(), false, QVariant(90.0f));
     }
 
@@ -191,9 +193,9 @@ void GeneByGeneReportWorkerFactory::init() {
         delegates[OUTPUT_FILE] = new URLDelegate("", "", false, false);
         {
             QVariantMap vm;
-            foreach(const QString& option, GeneByGeneReportSettings::getAvailableFileHandlingOptions()){
-                vm[option] = option;
-            }
+            vm[GeneByGeneReportSettings::MERGE_EXISTING] = GeneByGeneReportSettings::MERGE_EXISTING;
+            vm[GeneByGeneReportSettings::OVERWRITE_EXISTING] = GeneByGeneReportSettings::OVERWRITE_EXISTING;
+            vm[GeneByGeneReportSettings::RENAME_EXISTING] = GeneByGeneReportSettings::RENAME_EXISTING;
             delegates[EXISTING_FILE] = new ComboBoxDelegate(vm);
         }
         {
@@ -207,8 +209,7 @@ void GeneByGeneReportWorkerFactory::init() {
         }
     }
 
-    GeneByGeneReportWorkerFactory* factory = new GeneByGeneReportWorkerFactory();
-    Descriptor protoDesc(factory->getId(),
+    Descriptor protoDesc(GeneByGeneReportWorkerFactory::ACTOR_ID,
         GeneByGeneReportWorker::tr("Gene-by-gene Approach Report"),
         GeneByGeneReportWorker::tr("Output a table of genes found in a reference sequence."));
 
@@ -216,7 +217,7 @@ void GeneByGeneReportWorkerFactory::init() {
     proto->setPrompter(new GeneByGeneReportPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
-    WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(factory);
+    WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GeneByGeneReportWorkerFactory());
 }
 
 Worker *GeneByGeneReportWorkerFactory::createWorker(Actor *a) {

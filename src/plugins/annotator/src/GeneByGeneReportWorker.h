@@ -57,7 +57,9 @@ private slots:
 
 class GeneByGeneReportWorkerFactory : public DomainFactory {
 public:
-    GeneByGeneReportWorkerFactory() : DomainFactory("genebygene-report-id") {}
+    static const QString ACTOR_ID;
+
+    GeneByGeneReportWorkerFactory() : DomainFactory(ACTOR_ID) {}
     static void init();
     virtual Worker *createWorker(Actor *a);
 }; // GeneByGeneReportWorkerFactory

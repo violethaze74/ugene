@@ -62,12 +62,11 @@ protected:
 
 class CollocationWorkerFactory : public DomainFactory {
 public:
-    CollocationWorkerFactory() : DomainFactory("collocated-annotation-search") {}
+    static const QString ACTOR_ID;
+    static void init();
+    CollocationWorkerFactory() : DomainFactory(ACTOR_ID) {}
     virtual ~CollocationWorkerFactory() {}
     virtual Worker* createWorker(Actor* a) {return new CollocationWorker(a);}
-
-    static void init();
-
 };
 
 }//Workflow namespace
