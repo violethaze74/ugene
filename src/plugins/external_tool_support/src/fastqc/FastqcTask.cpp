@@ -37,44 +37,74 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 //FastQCParser
 
-FastQCParser::FastQCParser()
-    :ExternalToolLogParser(),progress(-1)
-{
+const QMap<FastQCParser::ErrorType, QString> FastQCParser::initWellKnownErrors() {
+    QMap<ErrorType, QString> errors;
+    errors.insertMulti(Common, "ERROR");
+    errors.insertMulti(Common, "Failed to process file");
+    errors.insertMulti(Multiline, "uk.ac.babraham.FastQC.Sequence.SequenceFormatException");
+    errors.insertMulti(Multiline, "didn't start with '+'");
 
+    return errors;
 }
 
-void FastQCParser::parseOutput( const QString& partOfLog ){
-    ExternalToolLogParser::parseOutput(partOfLog);
-}
+const QMap<FastQCParser::ErrorType, QString> FastQCParser::WELL_KNOWN_ERRORS = initWellKnownErrors();
 
-void FastQCParser::parseErrOutput( const QString& partOfLog ){
-    lastPartOfLog=partOfLog.split(QRegExp("(\n|\r)"));
-    lastPartOfLog.first()=lastErrLine+lastPartOfLog.first();
-    lastErrLine=lastPartOfLog.takeLast();
-    foreach(const QString& buf, lastPartOfLog){
-        if(buf.contains("ERROR", Qt::CaseInsensitive) || buf.contains("Failed to process file", Qt::CaseInsensitive)){
-            coreLog.error("FastQC: " + buf);
-        }
-    }
-}
+FastQCParser::FastQCParser(const QString& _inputFile) :
+        ExternalToolLogParser(), progress(-1), inputFile(_inputFile) {}
 
-int FastQCParser::getProgress(){
+int FastQCParser::getProgress() {
     //parsing Approx 20% complete for filename
-    if(!lastPartOfLog.isEmpty()){
-        QString lastMessage=lastPartOfLog.last();
+    if(!lastPartOfLog.isEmpty()) {
+        QString lastMessage = lastPartOfLog.last();
         QRegExp rx("Approx (\\d+)% complete");
-        if(lastMessage.contains(rx)){
+        if(lastMessage.contains(rx)) {
             SAFE_POINT(rx.indexIn(lastMessage) > -1, "bad progress index", 0);
             int step = rx.cap(1).toInt();
-            if(step > progress){
-                return  progress = step;
+            if(step > progress) {
+                return progress = step;
             }
         }
     }
     return progress;
 }
 
+void FastQCParser::processErrLine(const QString &line) {
+    if (isCommonError(line)){
+        ExternalToolLogParser::setLastError(tr("FastQC: %1").arg(line));
+    } else if (isMultiLineError(line)) {
+        setLastError(tr("Tool FastQC finished with an error."));
+    }
+}
 
+void FastQCParser::setLastError(const QString &value) {
+    ExternalToolLogParser::setLastError(value);
+    ioLog.details(tr("FastQC failed to process input file '%1'. Make sure each read takes exactly four lines.")
+                      .arg(inputFile));
+    foreach(const QString& buf, lastPartOfLog) {
+        CHECK_CONTINUE(!buf.isEmpty());
+
+        ioLog.trace(buf);
+    }
+}
+
+bool FastQCParser::isCommonError(const QString& err)  const {
+    foreach(const QString& commonError, WELL_KNOWN_ERRORS.values(Common)) {
+        CHECK_CONTINUE(err.contains(commonError, Qt::CaseInsensitive));
+
+        return true;
+    }
+
+    return false;
+}
+
+bool FastQCParser::isMultiLineError(const QString& err) {
+    QStringList multiLineErrors = WELL_KNOWN_ERRORS.values(Multiline);
+    if (err.contains(multiLineErrors.first()) && err.contains(multiLineErrors.last())) {
+        return true;
+    }
+
+    return false;
+}
 
 //////////////////////////////////////////////////////////////////////////
 //FastQCTask
@@ -104,7 +134,7 @@ void FastQCTask::prepare(){
 
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, );
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_FASTQC, args, new FastQCParser(), temporaryDir.path());
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_FASTQC, args, new FastQCParser(settings.inputUrl), temporaryDir.path());
     setListenerForTask(etTask);
     addSubTask(etTask);
 }
