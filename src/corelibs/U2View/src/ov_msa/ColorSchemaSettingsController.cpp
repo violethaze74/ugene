@@ -71,10 +71,10 @@ static void setSchemaColors(const ColorSchemeData& customSchema){
     QScopedPointer<IOAdapter> io(factory->createIOAdapter());
 
     const QMap<char, QColor> & alphColors = customSchema.alpColors;
-    QString file  = customSchema.name + COLOR_SCHEME_NAME_FILTERS;
+    const QString& file  = customSchema.name + ColorSchemeUtils::COLOR_SCHEME_NAME_FILTERS;
     bool defaultType = customSchema.defaultAlpType;
 
-    QString keyword(customSchema.type == DNAAlphabet_AMINO ? COLOR_SCHEME_AMINO_KEYWORD : (defaultType ? COLOR_SCHEME_NUCL_DEFAULT_KEYWORD : COLOR_SCHEME_NUCL_EXTENDED_KEYWORD));
+    QString keyword(customSchema.type == DNAAlphabet_AMINO ? ColorSchemeUtils::COLOR_SCHEME_AMINO_KEYWORD : (defaultType ? ColorSchemeUtils::COLOR_SCHEME_NUCL_DEFAULT_KEYWORD : ColorSchemeUtils::COLOR_SCHEME_NUCL_EXTENDED_KEYWORD));
 
     io->open(dir.filePath(file), IOAdapterMode_Write);
     // write header
@@ -92,10 +92,11 @@ static void setSchemaColors(const ColorSchemeData& customSchema){
 }
 
 
+const QString ColorSchemaSettingsPageController::helpPageId = QString("23330961");
+
 ColorSchemaSettingsPageController::ColorSchemaSettingsPageController(MsaColorSchemeRegistry* mcsr, QObject* p)
-        : AppSettingsGUIPageController(tr("Alignment Color Scheme"), ColorSchemaSettingsPageId, p),
-          helpPageId("23330961") {
-    connect(this, SIGNAL(si_customSettingsChanged()), mcsr, SLOT(sl_onCustomSettingsChanged()));
+: AppSettingsGUIPageController(tr("Alignment Color Scheme"), ColorSchemaSettingsPageId, p) {
+       connect(this, SIGNAL(si_customSettingsChanged()), mcsr, SLOT(sl_onCustomSettingsChanged()));
 }
 
 
