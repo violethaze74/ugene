@@ -82,7 +82,7 @@ public:
     // in case of the schema's pause
     Task *tick(bool &canResultBeCanceled);
 
-    QList<ExternalToolListener*> createLogListeners(int listenersNumber = 1);
+    QList<ExternalToolListener*> createLogListeners(int listenersNumber = 1) const;
 private:
     // bind values from input ports to script vars.
     // This function is called before 'get' data from channel -> to set up parameters for scripting

@@ -33,7 +33,7 @@ const QString TrimmomaticTaskSettings::SINGLE_END = "single-end";
 const QString TrimmomaticTaskSettings::PAIRED_END = "paired-end";
 
 TrimmomaticTaskSettings::TrimmomaticTaskSettings()
-    : readsArePaired(false),
+    : pairedReadsInput(false),
       generateLog(false),
       numberOfThreads(1)
 {
@@ -46,7 +46,7 @@ TrimmomaticTask::TrimmomaticTask(const TrimmomaticTaskSettings &settings)
 {
     GCOUNTER(cvar, tvar, "TrimmomaticTask");
 
-    if (settings.readsArePaired) {
+    if (settings.pairedReadsInput) {
         SAFE_POINT_EXT(!settings.pairedOutputUrl1.isEmpty() && !settings.pairedOutputUrl2.isEmpty() &&
                       !settings.unpairedOutputUrl1.isEmpty() && !settings.unpairedOutputUrl2.isEmpty(),
                       setError("At least one of the four output files is not set!"), );
@@ -66,7 +66,7 @@ void TrimmomaticTask::prepare() {
 QStringList TrimmomaticTask::getArguments() {
     QStringList arguments;
 
-    if (!settings.readsArePaired) {
+    if (!settings.pairedReadsInput) {
         arguments << "SE";
     } else {
         arguments << "PE";
@@ -79,7 +79,7 @@ QStringList TrimmomaticTask::getArguments() {
         GUrlUtils::prepareFileLocation(settings.logUrl, stateInfo);
     }
 
-    if (!settings.readsArePaired) {
+    if (!settings.pairedReadsInput) {
         arguments << settings.inputUrl1;
         arguments << settings.seOutputUrl;
         GUrlUtils::prepareFileLocation(settings.seOutputUrl, stateInfo);

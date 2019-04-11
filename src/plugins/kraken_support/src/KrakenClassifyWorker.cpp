@@ -37,7 +37,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString KrakenClassifyWorker::KRAKEN_DIR = "kraken";
+const QString KrakenClassifyWorker::KRAKEN_DIR = "Kraken";
 
 KrakenClassifyWorker::KrakenClassifyWorker(Actor *actor)
     : BaseWorker(actor, false),
