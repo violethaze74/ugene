@@ -21,25 +21,18 @@
 
 #include <QScopedPointer>
 
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Core/DNATranslation.h>
+#include <U2Core/Log.h>
 #include <U2Core/QVariantUtils.h>
+
+#include <U2Designer/DelegateEditors.h>
+
+#include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseActorCategories.h>
-#include <U2Designer/DelegateEditors.h>
-#include <U2Lang/CoreLibConstants.h>
-
-#include <U2Core/AnnotationTableObject.h>
-#include <U2Core/DNASequence.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNATranslation.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Lang/WorkflowEnv.h>
 
 #include "CollocationsSearchAlgorithm.h"
 #include "CollocationsDialogController.h"

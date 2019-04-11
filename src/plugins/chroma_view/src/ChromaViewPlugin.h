@@ -22,12 +22,9 @@
 #ifndef _U2_CHROMA_VIEW_PLUGIN_H_
 #define _U2_CHROMA_VIEW_PLUGIN_H_
 
-#include <U2Core/PluginModel.h>
 #include <U2Core/AppContext.h>
-#include <U2Gui/ObjectViewModel.h>
 
-#include <QMap>
-#include <QAction>
+#include <U2Gui/ObjectViewModel.h>
 
 #include <U2View/ADVSequenceWidget.h>
 

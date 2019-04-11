@@ -19,11 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/UdrDbi.h>
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/UdrDbi.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "TextObjectUnitTests.h"
 

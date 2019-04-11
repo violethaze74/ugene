@@ -22,7 +22,6 @@
 #ifndef _U2_GENEBYGENEREPORT_WORKER_H_
 #define _U2_GENEBYGENEREPORT_WORKER_H_
 
-#include <U2Core/U2OpStatus.h>
 #include <U2Core/AnnotationData.h>
 
 #include <U2Lang/LocalDomain.h>

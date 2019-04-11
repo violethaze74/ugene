@@ -24,7 +24,6 @@
 
 #include <QSharedPointer>
 
-#include <U2Algorithm/SArrayBasedFindTask.h>
 #include <U2Algorithm/SArrayIndex.h>
 
 #include <U2Core/AnnotationData.h>

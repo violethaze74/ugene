@@ -22,10 +22,11 @@
 #ifndef _U2_FEATURES_DBI_UNIT_TESTS_H_
 #define _U2_FEATURES_DBI_UNIT_TESTS_H_
 
+#include <unittest.h>
+
 #include <U2Core/U2Feature.h>
 #include <U2Core/U2Sequence.h>
 
-#include <unittest.h>
 #include "core/dbi/DbiTest.h"
 
 namespace U2 {

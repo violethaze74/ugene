@@ -21,7 +21,6 @@
 
 #include <QColorDialog>
 #include <QPainter>
-#include <QPushButton>
 
 #include <U2Algorithm/ColorSchemeUtils.h>
 

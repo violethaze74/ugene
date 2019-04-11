@@ -20,10 +20,10 @@
  */
 
 #include <U2Core/AppContext.h>
-#include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/UdrSchema.h>
 #include <U2Core/UdrSchemaRegistry.h>
 #include <U2Core/UdrRecord.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "UdrSchemaUnitTests.h"
 

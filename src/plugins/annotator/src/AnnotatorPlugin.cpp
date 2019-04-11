@@ -22,17 +22,13 @@
 #include <QMenu>
 #include <QMessageBox>
 
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/U2SafePoints.h>
-
-#include <U2Gui/GUIUtils.h>
 #include <U2Core/QObjectScopedPointer.h>
 
-#include <U2Test/GTest.h>
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Test/GTestFrameworkComponents.h>
-#include <U2Test/XMLTestFormat.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVUtils.h>

@@ -19,18 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QFileInfo>
-#include <QMenu>
-#include <QToolButton>
-
 #include <U2Core/AnnotationSettings.h>
-#include <U2Core/AnnotationTableObject.h>
-#include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 

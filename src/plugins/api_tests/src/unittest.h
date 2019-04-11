@@ -22,9 +22,6 @@
 #ifndef _U2_UNIT_TEST_H_
 #define _U2_UNIT_TEST_H_
 
-#include <U2Core/U2SafePoints.h>
-
-#include <QMetaType>
 #include <QString>
 
 
