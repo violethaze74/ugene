@@ -21,6 +21,7 @@
 
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "RawDataUdrSchemaUnitTests.h"
 

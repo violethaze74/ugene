@@ -19,12 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include <QDomDocument>
-#include <QPrinter>
-#include <QLabel>
 #include <QCheckBox>
 #include <QComboBox>
-#include <QVBoxLayout>
+#include <QDomDocument>
+#include <QLabel>
+#include <QPrinter>
 #include <QSvgGenerator>
 
 #include <U2Core/U2SafePoints.h>

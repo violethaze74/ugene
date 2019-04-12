@@ -24,13 +24,10 @@
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2DbiRegistry.h>
-#include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceDbi.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
-#include <U2Test/XMLTestFormat.h>
 
 #include "ApiTestsPlugin.h"
 #include "UnitTestSuite.h"

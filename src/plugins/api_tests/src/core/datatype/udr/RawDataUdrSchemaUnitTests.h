@@ -22,11 +22,9 @@
 #ifndef _U2_RAW_DATA_UDR_SCHEMA_UNIT_TESTS_H_
 #define _U2_RAW_DATA_UDR_SCHEMA_UNIT_TESTS_H_
 
-#include "core/dbi/DbiTest.h"
-
-#include <U2Core/U2RawData.h>
-
 #include <unittest.h>
+
+#include "core/dbi/DbiTest.h"
 
 namespace U2 {
 

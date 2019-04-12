@@ -19,11 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2FeatureDbi.h>
-#include <U2Core/U2SequenceDbi.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2FeatureUtils.h>
+#include <U2Core/U2SequenceDbi.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "FeatureDbiUnitTests.h"
 

@@ -23,11 +23,9 @@
 #define _U2_CIRCULAR_VIEW_PLUGIN_H_
 
 #include <U2Core/PluginModel.h>
-#include <U2Core/AppContext.h>
 #include <U2Gui/ObjectViewModel.h>
 
 #include <QMap>
-#include <QSet>
 #include <QAction>
 
 #include <U2View/ADVSequenceWidget.h>

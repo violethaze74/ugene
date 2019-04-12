@@ -19,41 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include <QDir>
-#include <QUrl>
-
-#include <QNetworkProxy>
-
-#include <QClipboard>
 #include <QApplication>
-
-#include <U2Core/AppContext.h>
-#include <U2Gui/OpenViewTask.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/DocumentUtils.h>
-#include <U2Core/Counter.h>
+#include <QClipboard>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/UserApplicationsSettings.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/Log.h>
-#include <U2Core/ProjectModel.h>
-#include <U2Core/NetworkConfiguration.h>
-#include <U2Core/Counter.h>
-#include <U2Core/DBXRefRegistry.h>
-#include <U2Core/DocumentUtils.h>
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/CopyDataTask.h>
-#include <U2Core/U2SafePoints.h>
-
-#include <U2Core/StringAdapter.h>
-
-#include <U2Core/LoadRemoteDocumentTask.h>
-
-#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/Counter.h>
+#include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/LoadRemoteDocumentTask.h>
+#include <U2Core/ProjectModel.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
+#include <U2Gui/OpenViewTask.h>
 
 #include "BrowserSupportPlugin.h"
 

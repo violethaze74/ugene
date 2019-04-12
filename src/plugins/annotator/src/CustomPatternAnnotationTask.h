@@ -24,7 +24,6 @@
 
 #include <QSharedPointer>
 
-#include <U2Algorithm/SArrayBasedFindTask.h>
 #include <U2Algorithm/SArrayIndex.h>
 
 #include <U2Core/AnnotationData.h>
@@ -38,6 +37,17 @@ class AnnotationTableObject;
 
 #define PLASMID_FEATURES_GROUP_NAME "plasmid_features"
 #define FILTERED_FEATURE_LIST "filter_feature_list"
+
+class PlasmidFeatureTypes {
+public:
+    static const QString GENE;
+    static const QString FEATURE;
+    static const QString ORIGIN;
+    static const QString PRIMER;
+    static const QString PROMOTER;
+    static const QString REGULATORY;
+    static const QString TERMINATOR;
+};
 
 struct FeaturePattern {
     QString name;

@@ -22,13 +22,11 @@
 #include "ChromaViewPlugin.h"
 #include "ChromatogramView.h"
 
+#include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNAChromatogramObject.h>
-#include <U2Core/DocumentSelection.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
@@ -39,9 +37,6 @@
 #include <U2View/ADVSequenceObjectContext.h>
 
 #include <U2Gui/GUIUtils.h>
-
-#include <QMessageBox>
-#include <QMenu>
 
 namespace U2 {
 

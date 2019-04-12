@@ -22,7 +22,6 @@
 #ifndef _U2_GENEBYGENEREPORT_WORKER_H_
 #define _U2_GENEBYGENEREPORT_WORKER_H_
 
-#include <U2Core/U2OpStatus.h>
 #include <U2Core/AnnotationData.h>
 
 #include <U2Lang/LocalDomain.h>
@@ -57,7 +56,9 @@ private slots:
 
 class GeneByGeneReportWorkerFactory : public DomainFactory {
 public:
-    GeneByGeneReportWorkerFactory() : DomainFactory("genebygene-report-id") {}
+    static const QString ACTOR_ID;
+
+    GeneByGeneReportWorkerFactory() : DomainFactory(ACTOR_ID) {}
     static void init();
     virtual Worker *createWorker(Actor *a);
 }; // GeneByGeneReportWorkerFactory

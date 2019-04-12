@@ -122,7 +122,6 @@ class U2LANG_EXPORT DomainFactory : public IdRegistry<DomainFactory>, public Des
 public:
     DomainFactory(const Descriptor& d) : Descriptor(d) {}
     DomainFactory(const QString& id) : Descriptor(id) {}
-    DomainFactory(const char* id) : Descriptor(QString(id)) {}
     virtual ~DomainFactory(){}
 
     // computational tasks domain
