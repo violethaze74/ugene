@@ -72,14 +72,13 @@ void FastQCParser::processErrLine(const QString &line) {
     if (isCommonError(line)){
         ExternalToolLogParser::setLastError(tr("FastQC: %1").arg(line));
     } else if (isMultiLineError(line)) {
-        setLastError(tr("Tool FastQC finished with an error."));
+        setLastError(tr("FastQC failed to process input file '%1'. Make sure each read takes exactly four lines.")
+                     .arg(inputFile));
     }
 }
 
 void FastQCParser::setLastError(const QString &value) {
     ExternalToolLogParser::setLastError(value);
-    ioLog.details(tr("FastQC failed to process input file '%1'. Make sure each read takes exactly four lines.")
-                      .arg(inputFile));
     foreach(const QString& buf, lastPartOfLog) {
         CHECK_CONTINUE(!buf.isEmpty());
 
@@ -109,7 +108,7 @@ bool FastQCParser::isMultiLineError(const QString& err) {
 //////////////////////////////////////////////////////////////////////////
 //FastQCTask
 FastQCTask::FastQCTask(const FastQCSetting &settings)
-:ExternalToolSupportTask(QString("FastQC for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC)
+:ExternalToolSupportTask(QString("FastQC for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText)
 , settings(settings), temporaryDir(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + "/")
 {
 
