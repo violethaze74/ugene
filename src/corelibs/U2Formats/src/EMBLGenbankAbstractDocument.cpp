@@ -265,12 +265,11 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
     CHECK_EXT(!objects.isEmpty() || merge, os.setError(Document::tr("Document is empty.")), );
     SAFE_POINT(contigs.size() == mergedMapping.size(), "contigs <-> regions mapping failed!", );
 
-    if (merge) {
-        writeLockReason = DocumentFormat::MERGED_SEQ_LOCK;
-    } else {
+    if (!merge) {
         return;
     }
-
+    writeLockReason = QObject::tr("Document sequences were merged");
+    
     U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(os);
     dbiObjects.objects << u2seq.id;
 

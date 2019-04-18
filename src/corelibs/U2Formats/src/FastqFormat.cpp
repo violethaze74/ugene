@@ -418,7 +418,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
     objects << new U2SequenceObject(u2seq.visualName, U2EntityRef(dbiRef, u2seq.id));
     objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, headers, mergedMapping, hints);
     if (headers.size() > 1) {
-        writeLockReason = DocumentFormat::MERGED_SEQ_LOCK;
+        writeLockReason = QObject::tr("Document sequences were merged");
     }
 }
 

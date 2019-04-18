@@ -738,7 +738,7 @@ Document* StockholmFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRe
         QString lockReason;
         load( io, dbiRef, objects, fs, os, uniFile);
         if ( !uniFile ) {
-            lockReason = DocumentFormat::CREATED_NOT_BY_UGENE;
+            lockReason = QObject::tr("The document is created not by UGENE");
         }
         return new Document( this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason );
     }

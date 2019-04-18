@@ -130,8 +130,6 @@ typedef QFlags<DocumentFormatFlag> DocumentFormatFlags;
 class U2CORE_EXPORT DocumentFormat: public QObject {
     Q_OBJECT
 public:
-    static const QString CREATED_NOT_BY_UGENE;
-    static const QString MERGED_SEQ_LOCK;
     static const QString DBI_REF_HINT;
     static const QString DBI_FOLDER_HINT;
     static const QString DEEP_COPY_OBJECT;

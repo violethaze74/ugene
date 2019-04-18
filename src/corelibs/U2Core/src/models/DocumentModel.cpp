@@ -47,8 +47,6 @@
 
 namespace U2 {
 
-const QString DocumentFormat::CREATED_NOT_BY_UGENE(QObject::tr("The document is created not by UGENE"));
-const QString DocumentFormat::MERGED_SEQ_LOCK(QObject::tr("Document sequences were merged"));
 const QString DocumentFormat::DBI_REF_HINT("dbi_alias");
 const QString DocumentFormat::DBI_FOLDER_HINT("dbi_folder");
 const QString DocumentFormat::DEEP_COPY_OBJECT("deep_copy_object");
@@ -58,7 +56,7 @@ const int DocumentFormat::READ_BUFF_SIZE = 4194304; //4Mb optimal buffer size fo
 
 Document* DocumentFormat::createNewLoadedDocument(IOAdapterFactory* iof, const GUrl& url,
     U2OpStatus& os, const QVariantMap& hints) {
-    const U2DbiRef tmpDbiRef = fetchDbiRef(hints, os);
+    U2DbiRef tmpDbiRef = fetchDbiRef(hints, os);
     CHECK_OP(os, NULL);
 
     Document* doc = new Document(this, iof, url, tmpDbiRef, QList<UnloadedObjectInfo>(),
@@ -89,7 +87,7 @@ Document* DocumentFormat::loadDocument(IOAdapterFactory* iof, const GUrl& url, c
 
     Document* res = NULL;
 
-    const U2DbiRef dbiRef = fetchDbiRef(hints, os);
+    U2DbiRef dbiRef = fetchDbiRef(hints, os);
     CHECK_OP(os, NULL);
 
     if (dbiRef.isValid()) {
