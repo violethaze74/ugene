@@ -52,10 +52,6 @@ DocumentFormatId DifferentialFormat::getFormatId() const {
     return BaseDocumentFormats::DIFF;
 }
 
-const QString & DifferentialFormat::getFormatName() const {
-    return formatName;
-}
-
 QList<ColumnDataParser::Column> DifferentialFormat::getColumns() const {
     return QList<ColumnDataParser::Column>()
         << ColumnDataParser::Column("test_id", ColumnDataParser::STRING, "-", true /*required*/)

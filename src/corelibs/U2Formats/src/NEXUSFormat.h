@@ -44,7 +44,6 @@ public:
     NEXUSFormat(QObject *p);
 
     virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::NEXUS; }
-    virtual const QString& getFormatName() const { return formatName; }
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl& = GUrl()) const;
@@ -53,9 +52,6 @@ protected:
 private:
     QList<GObject*> loadObjects(IOAdapter *io, const U2DbiRef& dbiRef, const QVariantMap &fs, U2OpStatus &ti);
     void storeObjects(QList<GObject*> objects, bool simpleNames, IOAdapter *io, U2OpStatus &ti);
-
-private:
-    QString formatName;
 };
 
 } // namespace U2

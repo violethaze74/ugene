@@ -44,8 +44,6 @@ protected:
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
     virtual MultipleSequenceAlignment parse(IOAdapter* io, U2OpStatus &os) const = 0;
-
-    QString formatName;
 };
 
 class U2FORMATS_EXPORT PhylipSequentialFormat : public PhylipFormat {
@@ -53,7 +51,6 @@ class U2FORMATS_EXPORT PhylipSequentialFormat : public PhylipFormat {
 public:
     PhylipSequentialFormat(QObject* p);
     virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PHYLIP_SEQUENTIAL;}
-    virtual const QString& getFormatName() const {return formatName;}
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
 
 protected:
@@ -67,7 +64,6 @@ class U2FORMATS_EXPORT PhylipInterleavedFormat : public PhylipFormat {
 public:
     PhylipInterleavedFormat(QObject* p);
     virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PHYLIP_INTERLEAVED;}
-    virtual const QString& getFormatName() const {return formatName;}
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
 
 protected:

@@ -48,9 +48,10 @@ namespace U2 {
 static const int PROGRESS_UPDATE_STEP = 1000;
 
 FastqFormat::FastqFormat(QObject* p)
-    : TextDocumentFormat(p, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "fastq" << "fq"), fn(tr("FASTQ"))
+    : TextDocumentFormat(p, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "fastq" << "fq")
 {
     supportedObjectTypes+=GObjectTypes::SEQUENCE;
+    formatName = tr("FASTQ");
     formatDescription  = tr("FASTQ format is a text-based format for storing both a biological sequence (usually nucleotide sequence) "
         "and its corresponding quality scores. \
         Both the sequence letter and quality score are encoded with a single ASCII character for brevity. \

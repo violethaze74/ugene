@@ -41,7 +41,6 @@ public:
     AprFormat(QObject* p);
 
     virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::VECTOR_NTI_ALIGNX; }
-    virtual const QString& getFormatName() const { return formatName; }
     virtual QString getRadioButtonText() const;
 
 protected:
@@ -50,8 +49,6 @@ protected:
 
 private:
     void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap &hints, U2OpStatus& ti);
-
-    QString formatName;
 };
 
 } //namespace

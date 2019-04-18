@@ -85,8 +85,6 @@ FormatDetectionScore GTFLineValidateFlags::getFormatDetectionScore()
 //-------------------------------------------------------------------
 //  GTFFormat
 //-------------------------------------------------------------------
-const QString GTFFormat::FORMAT_NAME = QObject::tr("GTF");
-
 const int GTFFormat::FIELDS_COUNT_IN_EACH_LINE = 9;
 
 const QString GTFFormat::NO_VALUE_STR = ".";
@@ -103,6 +101,7 @@ const QString GTFFormat::TRANSCRIPT_ID_QUALIFIER_NAME = "transcript_id";
 GTFFormat::GTFFormat(QObject* parent)
     : TextDocumentFormat(parent, DocumentFormatFlag_SupportWriting, QStringList("gtf"))
 {
+    formatName = tr("GTF");
     formatDescription = tr("The Gene transfer format (GTF) is a file format used to hold"
         " information about gene structure.");
 

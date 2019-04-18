@@ -151,8 +151,12 @@ public:
     /* returns unique document format id */
     virtual DocumentFormatId getFormatId() const = 0;
 
-    /* returns localized name of the format */
-    virtual const QString& getFormatName() const = 0;
+    /* Returns localized format name. */
+    const QString& getFormatName() const {return formatName;}
+    
+    /* Returns localized format description. */
+    const QString& getFormatDescription() const {return formatDescription;}
+    
 
     /* returns list of usual file extensions for the format
        Example: "fa", "fasta", "gb" ...
@@ -200,9 +204,6 @@ public:
     */
     virtual FormatCheckResult checkRawData(const QByteArray& dataPrefix, const GUrl& url = GUrl()) const = 0;
 
-    /** Returns generic format description */
-    virtual QString getFormatDescription() const {return formatDescription;}
-
     /* Checks that document format satisfies given constraints */
     virtual bool checkConstraints(const DocumentFormatConstraints& c) const;
 
@@ -239,6 +240,7 @@ protected:
     DocumentFormatFlags formatFlags;
     QStringList         fileExtensions;
     QSet<GObjectType>   supportedObjectTypes;
+    QString             formatName;
     QString             formatDescription;
 
 private:

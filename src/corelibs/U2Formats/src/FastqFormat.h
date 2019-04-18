@@ -41,8 +41,6 @@ public:
 
     virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::FASTQ;}
 
-    virtual const QString& getFormatName() const {return fn;}
-
     virtual void storeDocument( Document* d, IOAdapter* io, U2OpStatus& os );
 
     virtual bool isStreamingSupport() {return true;}
@@ -57,9 +55,6 @@ protected:
     virtual DNASequence *loadTextSequence(IOAdapter* io, U2OpStatus& os);
 
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
-
-private:
-    QString fn;
 };
 
 }//namespace

@@ -61,7 +61,8 @@ const QString EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE = QCoreApplic
 
 EMBLGenbankAbstractDocument::EMBLGenbankAbstractDocument(const DocumentFormatId& _id, const QString& _formatName, int mls,
     DocumentFormatFlags flags, QObject* p)
-    : TextDocumentFormat(p, flags), id(_id), formatName(_formatName), maxAnnotationLineLen(mls), savedInUgene(false) {
+    : TextDocumentFormat(p, flags), id(_id), maxAnnotationLineLen(mls), savedInUgene(false) {
+    formatName = _formatName;
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
     supportedObjectTypes += GObjectTypes::SEQUENCE;
 }

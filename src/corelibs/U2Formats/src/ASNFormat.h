@@ -73,7 +73,6 @@ public:
     ASNFormat(QObject* p);
     ~ASNFormat();
     virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PLAIN_ASN;}
-    virtual const QString& getFormatName() const {return formatName;}
     virtual FormatCheckResult checkRawData(const QByteArray& data, const GUrl& = GUrl()) const;
 
 protected:
@@ -137,8 +136,6 @@ public:
 
 private:
 
-    QString formatName;
-
     struct AsnBaseException {
         QString msg;
         AsnBaseException( const QString& what ) : msg( what ){}
@@ -154,7 +151,8 @@ private:
     };
 
     struct AsnBioStructError : public AsnBaseException {
-        AsnBioStructError( const QString& what ) : AsnBaseException(QString(ASNFormat::tr("biostruct3d obj loading error: %1")).arg(what) ){}
+        AsnBioStructError( const QString& what ) 
+            : AsnBaseException(ASNFormat::tr("biostruct3d obj loading error: %1").arg(what) ){}
     };
 
 

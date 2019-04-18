@@ -46,8 +46,6 @@ public:
 
     virtual DocumentFormatId getFormatId() const {return id;}
 
-    virtual const QString& getFormatName() const {return formatName;}
-
     static const QString UGENE_MARK;
     static const QString DEFAULT_OBJ_NAME;
     static const QString LOCUS_TAG_CIRCULAR;
@@ -83,7 +81,6 @@ protected:
     virtual bool breakQualifierOnSpaceOnly(const QString &qualifierName) const;
 
     DocumentFormatId id;
-    QString     formatName;
     QByteArray  fPrefix;
     QByteArray  sequenceStartPrefix;
     int         maxAnnotationLineLen;

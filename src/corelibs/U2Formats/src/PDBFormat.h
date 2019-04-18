@@ -44,7 +44,6 @@ class U2FORMATS_EXPORT  PDBFormat : public TextDocumentFormat {
 public:
     PDBFormat(QObject* p);
     virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PLAIN_PDB;}
-    virtual const QString& getFormatName() const {return formatName;}
 
     static int getElementNumberByName(const QByteArray& elementName);
     static char getAcronymByName(const QByteArray& name);
@@ -57,8 +56,6 @@ protected:
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
-
-    QString formatName;
     static QHash<QByteArray,int> atomNumMap;
     static QHash<QByteArray, char> acronymNameMap;
 

@@ -38,8 +38,6 @@ public:
 
     virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::FASTA;}
 
-    virtual const QString& getFormatName() const {return formatName;}
-
     void storeSequence(const DNASequence& sequence, IOAdapter* io, U2OpStatus& os);
     void storeSequence(const U2SequenceObject *sequence, IOAdapter *io, U2OpStatus &os);
 
@@ -59,10 +57,6 @@ protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
     virtual DNASequence *loadTextSequence(IOAdapter* io, U2OpStatus& os);
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
-
-private:
-
-    QString formatName;
 };
 
 }//namespace

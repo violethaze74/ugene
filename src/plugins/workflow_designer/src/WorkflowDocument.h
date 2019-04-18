@@ -47,8 +47,6 @@ public:
     static const DocumentFormatId FORMAT_ID;
     virtual DocumentFormatId getFormatId() const {return FORMAT_ID;}
 
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual Document* createNewLoadedDocument(IOAdapterFactory* io, const GUrl& url, U2OpStatus& os, const QVariantMap& fs = QVariantMap());
 
     virtual void storeDocument( Document* d, IOAdapter* io, U2OpStatus& os);
@@ -57,9 +55,6 @@ protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
 
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os);
-
-private:
-    QString formatName;
 };
 
 class WorkflowGObject : public GObject {

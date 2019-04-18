@@ -42,8 +42,6 @@ public:
     DifferentialFormat(QObject *parent);
 
     DocumentFormatId getFormatId() const;
-    const QString & getFormatName() const;
-
     void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
 
 protected:
@@ -64,8 +62,6 @@ private:
     static QString createValue(const SharedAnnotationData &data, const ColumnDataParser::Column &column, U2OpStatus &os);
 
 private:
-    QString formatName;
-
     static const int BUFFER_SIZE;
 };
 

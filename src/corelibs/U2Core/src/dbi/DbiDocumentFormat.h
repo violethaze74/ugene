@@ -37,8 +37,6 @@ public:
 
     virtual DocumentFormatId getFormatId() const {return formatId;}
 
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
@@ -50,7 +48,6 @@ protected:
     QList<GObject *> cloneObjects(const QList<GObject *> &srcObjects, const U2DbiRef &dstDbiRef, const QVariantMap &hints, U2OpStatus &os);
 
 private:
-    QString                  formatName;
     U2DbiFactoryId           id;
     DocumentFormatId         formatId;
 };

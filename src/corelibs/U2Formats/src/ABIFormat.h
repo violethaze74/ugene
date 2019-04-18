@@ -39,8 +39,6 @@ public:
 
     virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::ABIF;}
 
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
@@ -52,7 +50,6 @@ protected:
 private:
     Document* parseABI(const U2DbiRef& dbiRef, SeekableBuf*, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);
     bool loadABIObjects(SeekableBuf* fp, DNASequence& seq, DNAChromatogram& cd);
-    QString formatName;
 };
 
 }//namespace

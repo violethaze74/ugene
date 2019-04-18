@@ -41,15 +41,10 @@ public:
 
     virtual DocumentFormatId getFormatId() const {return FORMAT_ID;}
 
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
     virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
-
-private:
-    QString formatName;
 };
 
 class PFMatrixViewFactory : public GObjectViewFactory {
@@ -80,15 +75,10 @@ public:
 
     virtual DocumentFormatId getFormatId() const {return FORMAT_ID;}
 
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
     virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
-
-private:
-    QString formatName;
 };
 
 class PWMatrixViewFactory : public GObjectViewFactory {

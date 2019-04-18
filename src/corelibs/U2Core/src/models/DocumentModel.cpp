@@ -118,12 +118,12 @@ DNASequence* DocumentFormat::loadSequence(IOAdapter*, U2OpStatus& os) {
 
 void DocumentFormat::storeDocument(Document*, IOAdapter*, U2OpStatus& os) {
     assert(0);
-    os.setError(tr("Writing is not supported for this format (%1). Feel free to send a feature request though.").arg(getFormatName()));
+    os.setError(tr("Writing is not supported for this format (%1). Feel free to send a feature request though.").arg(formatName));
 }
 
 void DocumentFormat::storeDocument(Document* doc, U2OpStatus& os, IOAdapterFactory* iof, const GUrl& newDocURL) {
     SAFE_POINT_EXT(formatFlags.testFlag(DocumentFormatFlag_SupportWriting),
-        os.setError(tr("Writing is not supported for this format (%1). Feel free to send a feature request though.").arg(getFormatName())), );
+        os.setError(tr("Writing is not supported for this format (%1). Feel free to send a feature request though.").arg(formatName)), );
 
     assert(doc->getDocumentModLock(DocumentModLock_FORMAT_AS_INSTANCE) == NULL);
     if (iof == NULL) {

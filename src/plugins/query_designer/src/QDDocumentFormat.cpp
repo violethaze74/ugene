@@ -48,8 +48,8 @@ const DocumentFormatId QDDocFormat::FORMAT_ID = "QueryDocFormat";
 //Format
 //////////////////////////////////////////////////////////////////////////
 QDDocFormat::QDDocFormat(QObject* p)
-: TextDocumentFormat(p, DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)),
-formatName(tr("Query Schema")) {
+: TextDocumentFormat(p, DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)) {
+    formatName = tr("Query Schema");
     formatDescription = tr("QDDoc is a format used for creating/editing/storing/retrieving"
         "query schema with the text file");
     supportedObjectTypes += QDGObject::TYPE;

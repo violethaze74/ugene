@@ -40,8 +40,6 @@ public:
 
     virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::SCF;}
 
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
     static void exportDocumentToSCF(const QString& fileName, const DNAChromatogram& cd, const QByteArray& seq, U2OpStatus& ts);
@@ -55,8 +53,6 @@ private:
     Document* parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);
 
     bool loadSCFObjects( IOAdapter* io,  DNASequence& dna, DNAChromatogram& cd, U2OpStatus& os );
-
-    QString formatName;
 };
 
 }//namespace
