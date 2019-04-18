@@ -358,9 +358,9 @@ public:
 
 class U2DESIGNER_EXPORT SchemaRunModeDelegate : public ComboBoxDelegate {
     Q_OBJECT
-public:
-    static const QString THIS_COMPUTER_STR;
-    static const QString REMOTE_COMPUTER_STR;
+private:
+    QString thisComputerOption;
+    QString remoteComputerOption;
 
 public:
     SchemaRunModeDelegate(QObject * parent = 0);

@@ -619,20 +619,20 @@ FileModeDelegate::FileModeDelegate(bool appendSupported, QObject *parent)
 /********************************
  * SchemaRunModeDelegate
  ********************************/
-const QString SchemaRunModeDelegate::THIS_COMPUTER_STR      = SchemaRunModeDelegate::tr( "This computer" );
-const QString SchemaRunModeDelegate::REMOTE_COMPUTER_STR    = SchemaRunModeDelegate::tr( "Remote computer" );
-
 SchemaRunModeDelegate::SchemaRunModeDelegate( QObject * parent )
 : ComboBoxDelegate( QVariantMap(), parent ) {
-    comboItems.append(qMakePair( THIS_COMPUTER_STR, true ));
-    comboItems.append(qMakePair( REMOTE_COMPUTER_STR, false ));
+    thisComputerOption = SchemaRunModeDelegate::tr( "This computer" );
+    remoteComputerOption = SchemaRunModeDelegate::tr( "Remote computer" );
+    
+    comboItems.append(qMakePair(thisComputerOption, true ));
+    comboItems.append(qMakePair(remoteComputerOption, false ));
 
     connect( this, SIGNAL( si_valueChanged( const QString & ) ), this,
         SLOT( sl_valueChanged( const QString & ) ) );
 }
 
 void SchemaRunModeDelegate::sl_valueChanged( const QString & val ) {
-    emit si_showOpenFileButton( THIS_COMPUTER_STR == val );
+    emit si_showOpenFileButton( thisComputerOption == val );
 }
 
 
