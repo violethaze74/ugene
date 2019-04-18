@@ -43,7 +43,7 @@ namespace U2 {
 
 static U2DataId emptyId;
 
-const QString U2DbiUtils::PUBLIC_DATABASE_NAME = QObject::tr("UGENE public database");
+const QString U2DbiUtils::PUBLIC_DATABASE_NAME = "UGENE public database";
 const QString U2DbiUtils::PUBLIC_DATABASE_LOGIN = "public";
 const QString U2DbiUtils::PUBLIC_DATABASE_PASSWORD = "public";
 const QString U2DbiUtils::PUBLIC_DATABASE_URL = U2DbiUtils::createFullDbiUrl(PUBLIC_DATABASE_LOGIN, "5.9.139.103", 3306, "public_ugene_1_25");
