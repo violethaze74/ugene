@@ -26,6 +26,9 @@
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QMouseEvent>
+#include <QOffscreenSurface>
+#include <QOpenGLContext>
+#include <QOpenGLFunctions>
 #include <QTime>
 
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
@@ -75,10 +78,36 @@ namespace U2 {
 
 int BioStruct3DGLWidget::widgetCount = 0;
 
+bool BioStruct3DGLWidget::checkGlVersion() {
+    QOffscreenSurface surf;
+    surf.create();
+
+    QOpenGLContext ctx;
+    ctx.create();
+    ctx.makeCurrent(&surf);
+
+    QString version((const char*)ctx.functions()->glGetString(GL_VERSION));
+    QRegularExpression  versionRegExp("(\\d+\\.\\d+)");
+    QRegularExpressionMatch versionMatch = versionRegExp.match(version);
+
+    QString versionNumberString = versionMatch.captured();
+    coreLog.details(tr("OpenGL version number: %1").arg(versionNumberString));
+
+    double versionNumber = versionNumberString.toDouble();
+    bool res = versionNumber >= MINIMUM_ACCEPTABLE_VERSION;
+    if (!res) {
+        coreLog.error(tr("The \"3D Structure Viewer\" was disabled, because there was a problem with video drivers. Please try to update the drivers and reset the UGENE settings to default in the \"Application Settings\" dialog."));
+    }
+
+    return res;
+}
+
 void BioStruct3DGLWidget::tryGL() {
     volatile QOpenGLWidget wgt;
     Q_UNUSED(wgt);
 }
+
+const double BioStruct3DGLWidget::MINIMUM_ACCEPTABLE_VERSION = 2.0f;
 
 static QColor DEFAULT_BACKGROUND_COLOR = Qt::black;
 static QColor DEFAULT_SELECTION_COLOR = Qt::yellow;
