@@ -233,6 +233,7 @@ void Dashboard::registerDashboard() const {
     dashboardInfo.name = name;
     const bool registered = AppContext::getDashboardInfoRegistry()->registerEntry(dashboardInfo);
     Q_ASSERT(registered);
+    Q_UNUSED(registered);
 }
 
 void Dashboard::updateDashboard() const {
