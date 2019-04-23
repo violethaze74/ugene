@@ -74,12 +74,6 @@ CreateExternalProcessDialog::CreateExternalProcessDialog(QWidget *p, ExternalPro
     connect(ui.deleteAttributeButton, SIGNAL(clicked()), SLOT(sl_deleteAttribute()));
     connect(this, SIGNAL(currentIdChanged(int)), SLOT(sl_validatePage(int)));
 
-    QFontMetrics info(ui.descr1TextEdit->font());
-    ui.descr1TextEdit->setFixedHeight(info.height() * 8);
-    ui.descr2TextEdit->setFixedHeight(info.height() * 10);
-    ui.descr3TextEdit->setFixedHeight(info.height() * 7);
-    ui.descr4TextEdit->setFixedHeight(info.height() * 12);
-
     ui.inputTableView->setModel(new CfgExternalToolModel(true));
     ui.outputTableView->setModel(new CfgExternalToolModel(false));
     ui.attributesTableView->setModel(new CfgExternalToolModelAttributes());
@@ -108,7 +102,6 @@ CreateExternalProcessDialog::CreateExternalProcessDialog(QWidget *p, ExternalPro
     connect(ui.inputTableView->model(), SIGNAL(dataChanged ( const QModelIndex &, const QModelIndex &)), SLOT(validateDataModel(const QModelIndex &, const QModelIndex &)));
     connect(ui.outputTableView->model(), SIGNAL(dataChanged ( const QModelIndex &, const QModelIndex &)), SLOT(validateDataModel(const QModelIndex &, const QModelIndex &)));
     connect(ui.attributesTableView->model(), SIGNAL(dataChanged ( const QModelIndex &, const QModelIndex &)), SLOT(validateAttributeModel(const QModelIndex &, const QModelIndex &)));
-    descr1 = ui.descr1TextEdit->toHtml();
     //validateNextPage();
 
     DialogUtils::setWizardMinimumSize(this);
@@ -249,13 +242,6 @@ CreateExternalProcessDialog::CreateExternalProcessDialog( QWidget *p /* = NULL*/
     ui.inputTableView->setColumnWidth(1, fm.width(SEQ_WITH_ANNS)*1.5);
     ui.outputTableView->setColumnWidth(1, fm.width(SEQ_WITH_ANNS)*1.5);
 
-    QFontMetrics info(ui.descr1TextEdit->font());
-    ui.descr1TextEdit->setFixedHeight(info.height() * 8);
-    ui.descr2TextEdit->setFixedHeight(info.height() * 10);
-    ui.descr3TextEdit->setFixedHeight(info.height() * 7);
-    ui.descr4TextEdit->setFixedHeight(info.height() * 12);
-
-    descr1 = ui.descr1TextEdit->toHtml();
     editing = false;
 
     ui.templateLineEdit->setValidator(new ExecStringValidator(this));
@@ -486,19 +472,11 @@ bool CreateExternalProcessDialog::validateProcessName(const QString &name, QStri
     return true;
 }
 
-static QString statusTemplate = QString("<font color=\"%1\">%2</font>");
 void CreateExternalProcessDialog::sl_validateName( const QString &text) {
     QString error;
     bool res = validateProcessName(text, error);
 
     button(QWizard::NextButton)->setEnabled(res);
-    QString statusStr;
-    if (res) {
-        statusStr = statusTemplate.arg("green").arg(tr("It is the correct name"));
-    } else {
-        statusStr = statusTemplate.arg("#A6392E").arg(error);
-    }
-    ui.descr1TextEdit->setText(descr1.arg(statusStr));
 }
 
 void CreateExternalProcessDialog::sl_validateCmdLine( const QString & text) {
