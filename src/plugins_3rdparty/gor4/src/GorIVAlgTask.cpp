@@ -31,6 +31,7 @@
 
 namespace U2 {
 
+const QString GorIVAlgTask::taskName = "GORIV";
 QMutex GorIVAlgTask::runLock;
 
 GorIVAlgTask::GorIVAlgTask(const QByteArray& inputSeq) : SecStructPredictTask(inputSeq)
