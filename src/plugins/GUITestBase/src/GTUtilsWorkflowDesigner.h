@@ -22,6 +22,7 @@
 #ifndef _U2_GT_UTILS_WORKFLOW_DESIGNER_H_
 #define _U2_GT_UTILS_WORKFLOW_DESIGNER_H_
 
+#include <QMdiArea>
 #include <QTreeWidget>
 #include <QGraphicsItem>
 
@@ -58,6 +59,8 @@ public:
 
     //opens WorkflowDesigner
     static void openWorkflowDesigner(HI::GUITestOpStatus &os);
+
+    static QTabBar* getWorkflowsTabBar(HI::GUITestOpStatus &os);
 
     static void loadWorkflow(HI::GUITestOpStatus &os, const QString &fileUrl);
     static void saveWorkflow(HI::GUITestOpStatus &os);
