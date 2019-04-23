@@ -139,9 +139,9 @@ private:
 
     bool                         automaticUpdating;
 
-    static const QString DataIsOutdatedMessage;
-    static const QString DataIsValidMessage;
-    static const QString DataIsBeingUpdatedMessage;
+    QString DataIsOutdatedMessage;
+    QString DataIsValidMessage;
+    QString DataIsBeingUpdatedMessage;
 };
 } //namespace
 

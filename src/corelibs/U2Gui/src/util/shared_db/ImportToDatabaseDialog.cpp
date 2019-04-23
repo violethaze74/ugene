@@ -50,9 +50,6 @@
 
 namespace U2 {
 
-const QString ImportToDatabaseDialog::DIR_HELPER_NAME = "import_to_database";
-const QString ImportToDatabaseDialog::FILES_AND_FOLDERS = QObject::tr("Files and folders");
-const QString ImportToDatabaseDialog::OBJECTS_AND_DOCUMENTS = QObject::tr("Documents and objects");
 
 ImportToDatabaseDialog::ImportToDatabaseDialog(Document *dbConnection, const QString &defaultFolder, QWidget *parent) :
     QDialog(parent),
@@ -61,6 +58,10 @@ ImportToDatabaseDialog::ImportToDatabaseDialog(Document *dbConnection, const QSt
     baseFolder(U2DbiUtils::makeFolderCanonical(defaultFolder))
 {
     ui->setupUi(this);
+    DIR_HELPER_NAME = "import_to_database";
+    FILES_AND_FOLDERS = tr("Files and folders");
+    OBJECTS_AND_DOCUMENTS = tr("Documents and objects");
+    
     new HelpButton(this, ui->buttonBox, "23331306");
     init();
     connectSignals();

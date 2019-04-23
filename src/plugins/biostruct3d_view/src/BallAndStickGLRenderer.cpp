@@ -34,7 +34,7 @@
 namespace U2 {
 
 
-const QString BallAndStickGLRenderer::ID(QObject::tr("Ball-and-Stick"));
+const QString BallAndStickGLRenderer::ID("Ball-and-Stick");
 QList<GLuint> BallAndStickGLRenderer::dlIndexStorage;
 QMutex BallAndStickGLRenderer::mutex;
 

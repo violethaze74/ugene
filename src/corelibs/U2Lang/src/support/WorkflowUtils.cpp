@@ -378,14 +378,16 @@ QStringList WorkflowUtils::findMatchingTypesAsStringList(DataTypePtr set, DataTy
     return candidatesAsStringList(descList);
 }
 
-const Descriptor EMPTY_VALUES_DESC("", QObject::tr("<empty>"), QObject::tr("Default value"));
+Descriptor newEmptyValuesDesc() {
+    return Descriptor("", QObject::tr("<empty>"), QObject::tr("Default value"));
+}
 
 QList<Descriptor> WorkflowUtils::findMatchingCandidates(DataTypePtr from, DataTypePtr elementDatatype) {
     QList<Descriptor> candidates = findMatchingTypes(from, elementDatatype);
     if (elementDatatype->isList()) {
         candidates += findMatchingTypes(from, elementDatatype->getDatatypeByDescriptor());
     } else {
-        candidates.append(EMPTY_VALUES_DESC);
+        candidates.append(newEmptyValuesDesc());
     }
     return candidates;
 }
@@ -402,11 +404,11 @@ Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor> &
         if (!currentVal.isEmpty()) {
             return Descriptor(currentVal, tr("<List of values>"), tr("List of values"));
         } else {
-            return EMPTY_VALUES_DESC;
+            return newEmptyValuesDesc();
         }
     } else {
         int idx = bindings.contains(key.getId()) ? candidates.indexOf(bindings.value(key.getId())) : 0;
-        return idx >= 0 ? candidates.at(idx) : EMPTY_VALUES_DESC;
+        return idx >= 0 ? candidates.at(idx) : newEmptyValuesDesc();
     }
 }
 

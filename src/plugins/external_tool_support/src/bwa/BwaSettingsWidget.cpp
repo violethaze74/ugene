@@ -37,17 +37,8 @@ const QString STYLE_SHEET_FONT_WEIGHT_ATTRIBUTE =   "font-weight";
 const QString INFO_MESSAGE_FONT =                   "bold";
 const QString STYLE_SHEET_ATTRIBUTE_EQUALS_SIGN =   ": ";
 const QString STYLE_SHEET_ATTRIBUTES_SEPARATOR =     ";";
-const QString IS_BUILD_INDEX_ALGO_WARNING =          QObject::tr( "NOTE: \"is\" index algorithm "
-    "is not supposed to work with reference sequences having size larger than 2 GB. In order "
-    "to achieve stable BWA performance it is strongly recommend to set the index algorithm to "
-    "\"bwtsw\"" );
-const QString BWTSW_BUILD_INDEX_ALGO_WARNING =       QObject::tr( "NOTE: \"bwtsw\" index algorithm"
-    " is not supposed to work with reference sequences having size smaller than 10 MB.\nIn order "
-    "to achieve stable BWA performance it is strongly recommend to set the index algorithm to "
-    "\"is\"" );
 
-
-void setStylesheetAttributeValue( const QString &attributeName, const QString &attributeValue,
+static void setStylesheetAttributeValue( const QString &attributeName, const QString &attributeValue,
     QString &stylesheet )
 {
     int attributeDescriptionStart = stylesheet.indexOf( attributeName );
@@ -87,11 +78,17 @@ void BwaIndexAlgorithmWarningReporter::sl_IndexAlgorithmChanged( int index ) {
     QString infoText = QString( );
     if ( 3 == index ) {
         if ( MAX_REFERENCE_SIZE_FOR_IS_METHOD < referenceSequenceFile.size( ) ) {
-            infoText = IS_BUILD_INDEX_ALGO_WARNING;
+            infoText = tr( "NOTE: \"is\" index algorithm "
+                                    "is not supposed to work with reference sequences having size larger than 2 GB. In order "
+                                    "to achieve stable BWA performance it is strongly recommend to set the index algorithm to "
+                                    "\"bwtsw\"" );
         }
     } else if ( 1 == index ) {
         if ( MIN_REFERENCE_SIZE_FOR_BWTSW_METHOD > referenceSequenceFile.size( ) ) {
-            infoText = BWTSW_BUILD_INDEX_ALGO_WARNING;
+            infoText = tr( "NOTE: \"bwtsw\" index algorithm"
+                                    " is not supposed to work with reference sequences having size smaller than 10 MB.\nIn order "
+                                    "to achieve stable BWA performance it is strongly recommend to set the index algorithm to "
+                                    "\"is\"" );
         }
     }
     using namespace U2;

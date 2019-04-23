@@ -64,13 +64,9 @@ const QString KrakenBuildWorkerFactory::WORK_ON_DISK_ATTR_ID = "work-on-disk";
 const QString KrakenBuildWorkerFactory::JELLYFISH_HASH_SIZE_ATTR_ID = "jellyfish-hash-size";
 const QString KrakenBuildWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
 
-const QString KrakenBuildWorkerFactory::BUILD_MODE_TEXT = QObject::tr("Build");
-const QString KrakenBuildWorkerFactory::SHRINK_MODE_TEXT = QObject::tr("Shrink");
-
 KrakenBuildWorkerFactory::KrakenBuildWorkerFactory()
     : DomainFactory(ACTOR_ID)
 {
-
 }
 
 Worker *KrakenBuildWorkerFactory::createWorker(Actor *actor) {
@@ -179,8 +175,8 @@ void KrakenBuildWorkerFactory::init() {
     QMap<QString, PropertyDelegate *> delegates;
     {
         QVariantMap modeValues;
-        modeValues[BUILD_MODE_TEXT] = KrakenBuildTaskSettings::BUILD;
-        modeValues[SHRINK_MODE_TEXT] = KrakenBuildTaskSettings::SHRINK;
+        modeValues[KrakenSupport::tr("Build")] = KrakenBuildTaskSettings::BUILD;
+        modeValues[KrakenSupport::tr("Shrink")] = KrakenBuildTaskSettings::SHRINK;
         delegates[MODE_ATTR_ID] = new ComboBoxDelegate(modeValues);
         delegates[INPUT_DATABASE_NAME_ATTR_ID] = new URLDelegate("", "kraken/database", false, true, false);
 

@@ -118,7 +118,6 @@ public:
 
     static bool isUnknownValue(float value) {return qFuzzyCompare(value, UNKNOWN_VAL);}
 
-    static const QString DEFAULT_COLOR;
     static const float UNKNOWN_VAL;
 
 signals:
@@ -154,6 +153,9 @@ protected:
     GSequenceGraphWindowData        wdata;
     GSequenceGraphMinMaxCutOffData  commdata;
     BackgroundTaskRunner<PairVector> calculationTaskRunner;
+
+private:    
+    QString DEFAULT_COLOR;
 };
 
 
