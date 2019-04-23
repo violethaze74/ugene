@@ -44,7 +44,7 @@
 #include "CfgExternalToolModel.h"
 #include "CreateExternalProcessDialog.h"
 #include "WorkflowEditorDelegates.h"
-#include "../util/WorkerNameValidator.h"
+#include "util/WorkerNameValidator.h"
 
 namespace U2 {
 
@@ -60,54 +60,30 @@ public:
     }
 };
 
-CreateExternalProcessDialog::CreateExternalProcessDialog(QWidget *p, ExternalProcessConfig *cfg, bool lastPage)
-: QWizard(p), initialCfg(NULL), lastPage(lastPage) {
-    ui.setupUi(this);
-
-    new U2::HelpButton(this, button(QWizard::HelpButton), "2097199");
-
-    connect(ui.addInputButton, SIGNAL(clicked()), SLOT(sl_addInput()));
-    connect(ui.addOutputButton, SIGNAL(clicked()), SLOT(sl_addOutput()));
-    connect(ui.deleteInputButton, SIGNAL(clicked()), SLOT(sl_deleteInput()));
-    connect(ui.deleteOutputButton, SIGNAL(clicked()), SLOT(sl_deleteOutput()));
-    connect(ui.addAttributeButton, SIGNAL(clicked()), SLOT(sl_addAttribute()));
-    connect(ui.deleteAttributeButton, SIGNAL(clicked()), SLOT(sl_deleteAttribute()));
-    connect(this, SIGNAL(currentIdChanged(int)), SLOT(sl_validatePage(int)));
-
-    ui.inputTableView->setModel(new CfgExternalToolModel(true));
-    ui.outputTableView->setModel(new CfgExternalToolModel(false));
-    ui.attributesTableView->setModel(new CfgExternalToolModelAttributes());
-
-    ui.inputTableView->setItemDelegate(new ProxyDelegate());
-    ui.outputTableView->setItemDelegate(new ProxyDelegate());
-    ui.attributesTableView->setItemDelegate(new ProxyDelegate());
-
-    ui.inputTableView->horizontalHeader()->setStretchLastSection(true);
-    ui.outputTableView->horizontalHeader()->setStretchLastSection(true);
-    ui.attributesTableView->horizontalHeader()->setStretchLastSection(true);
-    ui.inputTableView->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-    ui.outputTableView->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-    ui.attributesTableView->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-    QFontMetrics fm(ui.inputTableView->font());
-    ui.inputTableView->setColumnWidth(1, fm.width(SEQ_WITH_ANNS)*1.5);
-    ui.outputTableView->setColumnWidth(1, fm.width(SEQ_WITH_ANNS)*1.5);
-    ui.templateLineEdit->setValidator(new ExecStringValidator(this));    ui.nameLineEdit->setValidator(new WorkerNameValidator(this));
-
-    initialCfg = new ExternalProcessConfig(*cfg);
-    init(cfg);
-
-    editing = true;
-    connect(ui.nameLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(sl_validateName(const QString &)));
-    connect(ui.templateLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(sl_validateCmdLine(const QString &)));
-    connect(ui.inputTableView->model(), SIGNAL(dataChanged ( const QModelIndex &, const QModelIndex &)), SLOT(validateDataModel(const QModelIndex &, const QModelIndex &)));
-    connect(ui.outputTableView->model(), SIGNAL(dataChanged ( const QModelIndex &, const QModelIndex &)), SLOT(validateDataModel(const QModelIndex &, const QModelIndex &)));
-    connect(ui.attributesTableView->model(), SIGNAL(dataChanged ( const QModelIndex &, const QModelIndex &)), SLOT(validateAttributeModel(const QModelIndex &, const QModelIndex &)));
-    //validateNextPage();
-
-    DialogUtils::setWizardMinimumSize(this);
+CreateExternalProcessDialog::CreateExternalProcessDialog(QWidget *_p)
+    : QWizard(_p),
+      initialCfg(nullptr),
+      cfg(nullptr),
+      mode(Creating),
+      lastPage(false)
+{
+    init();
 }
 
-static void clearModel(QAbstractItemModel *model) {
+CreateExternalProcessDialog::CreateExternalProcessDialog(QWidget *p, ExternalProcessConfig *existingCfg, bool lastPage)
+    : QWizard(p),
+      initialCfg(new ExternalProcessConfig(*existingCfg)),
+      cfg(nullptr),
+      mode(Editing),
+      lastPage(lastPage)
+{
+    init();
+    applyConfig(existingCfg);
+}
+
+namespace {
+
+void clearModel(QAbstractItemModel *model) {
     int count = model->rowCount();
     while (count > 0) {
         model->removeRow(0);
@@ -115,49 +91,55 @@ static void clearModel(QAbstractItemModel *model) {
     }
 }
 
-void CreateExternalProcessDialog::init(ExternalProcessConfig *cfg) {
-    int ind = 0;
-    clearModel(ui.inputTableView->model());
-    foreach(const DataConfig &dataCfg, cfg->inputs) {
-        ui.inputTableView->model()->insertRow(0, QModelIndex());
-        QModelIndex index = ui.inputTableView->model()->index(ind,0);
-        ui.inputTableView->model()->setData(index, dataCfg.attrName);
-        index = ui.inputTableView->model()->index(ind,1);
-        ui.inputTableView->model()->setData(index, dataCfg.type);
-        index = ui.inputTableView->model()->index(ind,2);
-        ui.inputTableView->model()->setData(index, dataCfg.format);
-        index = ui.inputTableView->model()->index(ind,3);
-        ui.inputTableView->model()->setData(index, dataCfg.description);
-        ind++;
-    }
+void initPortModel(QAbstractItemModel *model, const QList<DataConfig> &portDataConfigs) {
+    int row = 0;
+    clearModel(model);
+    foreach(const DataConfig &dataCfg, portDataConfigs) {
+        const int ignoredRowNumber = 0;
+        model->insertRow(ignoredRowNumber, QModelIndex());
 
-    ind = 0;
-    clearModel(ui.outputTableView->model());
-    foreach(const DataConfig &dataCfg, cfg->outputs) {
-        ui.outputTableView->model()->insertRow(0, QModelIndex());
-        QModelIndex index = ui.outputTableView->model()->index(ind,0);
-        ui.outputTableView->model()->setData(index, dataCfg.attrName);
-        index = ui.outputTableView->model()->index(ind,1);
-        ui.outputTableView->model()->setData(index, dataCfg.type);
-        index = ui.outputTableView->model()->index(ind,2);
-        ui.outputTableView->model()->setData(index, dataCfg.format);
-        index = ui.outputTableView->model()->index(ind,3);
-        ui.outputTableView->model()->setData(index, dataCfg.description);
-        ind++;
-    }
+        QModelIndex index = model->index(row, CfgExternalToolModel::COLUMN_NAME);
+        model->setData(index, dataCfg.attrName);
 
-    ind = 0;
-    clearModel(ui.attributesTableView->model());
-    foreach(const AttributeConfig &attrCfg, cfg->attrs) {
-        ui.attributesTableView->model()->insertRow(0, QModelIndex());
-        QModelIndex index = ui.attributesTableView->model()->index(ind,0);
-        ui.attributesTableView->model()->setData(index, attrCfg.attrName);
-        index = ui.attributesTableView->model()->index(ind,1);
-        ui.attributesTableView->model()->setData(index, attrCfg.type);
-        index = ui.attributesTableView->model()->index(ind,2);
-        ui.attributesTableView->model()->setData(index, attrCfg.description);
-        ind++;
+        index = model->index(row, CfgExternalToolModel::COLUMN_DATA_TYPE);
+        model->setData(index, dataCfg.type);
+
+        index = model->index(row, CfgExternalToolModel::COLUMN_FORMAT);
+        model->setData(index, dataCfg.format);
+
+        index = model->index(row, CfgExternalToolModel::COLUMN_DESCRIPTION);
+        model->setData(index, dataCfg.description);
+
+        row++;
     }
+}
+
+void initAttributeModel(QAbstractItemModel *model, const QList<AttributeConfig> &attributeDataConfigs) {
+    int row = 0;
+    clearModel(model);
+    foreach(const AttributeConfig &attrCfg, attributeDataConfigs) {
+        const int ignoredRowNumber = 0;
+        model->insertRow(ignoredRowNumber, QModelIndex());
+
+        QModelIndex index = model->index(row, CfgExternalToolModelAttributes::COLUMN_NAME);
+        model->setData(index, attrCfg.attrName);
+
+        index = model->index(row, CfgExternalToolModelAttributes::COLUMN_DATA_TYPE);
+        model->setData(index, attrCfg.type);
+
+        index = model->index(row, CfgExternalToolModelAttributes::COLUMN_DESCRIPTION);
+        model->setData(index, attrCfg.description);
+
+        row++;
+    }
+}
+
+}
+
+void CreateExternalProcessDialog::applyConfig(ExternalProcessConfig *existingConfig) {
+    initPortModel(ui.inputTableView->model(), existingConfig->inputs);
+    initPortModel(ui.outputTableView->model(), existingConfig->outputs);
+    initAttributeModel(ui.attributesTableView->model(), existingConfig->attrs);
 
     ui.nameLineEdit->setText(cfg->name);
     ui.descriptionTextEdit->setText(cfg->description);
@@ -198,8 +180,20 @@ void CreateExternalProcessDialog::sl_deleteAttribute() {
     validateAttributeModel();
 }
 
-CreateExternalProcessDialog::CreateExternalProcessDialog( QWidget *p /* = NULL*/ )
-: QWizard(p), initialCfg(NULL), lastPage(false) {
+CreateExternalProcessDialog::~CreateExternalProcessDialog() {
+    delete initialCfg;
+}
+
+void CreateExternalProcessDialog::showEvent(QShowEvent *event) {
+    QDialog::showEvent(event);
+    if (lastPage) {
+        for (int i= 0; i < (pageIds().size() - 1); i++) {
+            next();
+        }
+    }
+}
+
+void CreateExternalProcessDialog::init() {
     ui.setupUi(this);
 
     new U2::HelpButton(this, button(QWizard::HelpButton), "2097199");
@@ -210,21 +204,19 @@ CreateExternalProcessDialog::CreateExternalProcessDialog( QWidget *p /* = NULL*/
     connect(ui.deleteOutputButton, SIGNAL(clicked()), SLOT(sl_deleteOutput()));
     connect(ui.addAttributeButton, SIGNAL(clicked()), SLOT(sl_addAttribute()));
     connect(ui.deleteAttributeButton, SIGNAL(clicked()), SLOT(sl_deleteAttribute()));
-    //connect(button(QWizard::FinishButton), SIGNAL(clicked()), SLOT(sl_OK()));
     connect(button(QWizard::NextButton), SIGNAL(clicked()), SLOT(sl_generateTemplateString()));
-    //connect(button(QWizard::NextButton), SIGNAL(clicked()), SLOT(validateNextPage()));
     connect(this, SIGNAL(currentIdChanged(int)), SLOT(sl_validatePage(int)));
 
-    connect(ui.nameLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(sl_validateName(const QString &)));
+    connect(ui.nameLineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_validateName(const QString &)));
     connect(ui.templateLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(sl_validateCmdLine(const QString &)));
 
-    ui.inputTableView->setModel(new CfgExternalToolModel(true));
-    ui.outputTableView->setModel(new CfgExternalToolModel(false));
+    ui.inputTableView->setModel(new CfgExternalToolModel(CfgExternalToolModel::Input));
+    ui.outputTableView->setModel(new CfgExternalToolModel(CfgExternalToolModel::Output));
     ui.attributesTableView->setModel(new CfgExternalToolModelAttributes());
 
-    connect(ui.inputTableView->model(), SIGNAL(dataChanged ( const QModelIndex &, const QModelIndex &)), SLOT(validateDataModel(const QModelIndex &, const QModelIndex &)));
-    connect(ui.outputTableView->model(), SIGNAL(dataChanged ( const QModelIndex &, const QModelIndex &)), SLOT(validateDataModel(const QModelIndex &, const QModelIndex &)));
-    connect(ui.attributesTableView->model(), SIGNAL(dataChanged ( const QModelIndex &, const QModelIndex &)), SLOT(validateAttributeModel(const QModelIndex &, const QModelIndex &)));
+    connect(ui.inputTableView->model(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), SLOT(validateDataModel(const QModelIndex &, const QModelIndex &)));
+    connect(ui.outputTableView->model(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), SLOT(validateDataModel(const QModelIndex &, const QModelIndex &)));
+    connect(ui.attributesTableView->model(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), SLOT(validateAttributeModel(const QModelIndex &, const QModelIndex &)));
 
     ui.inputTableView->setItemDelegate(new ProxyDelegate());
     ui.outputTableView->setItemDelegate(new ProxyDelegate());
@@ -239,28 +231,14 @@ CreateExternalProcessDialog::CreateExternalProcessDialog( QWidget *p /* = NULL*/
     ui.attributesTableView->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 
     QFontMetrics fm(ui.inputTableView->font());
-    ui.inputTableView->setColumnWidth(1, fm.width(SEQ_WITH_ANNS)*1.5);
-    ui.outputTableView->setColumnWidth(1, fm.width(SEQ_WITH_ANNS)*1.5);
-
-    editing = false;
+    const int columnWidth = static_cast<int>(fm.width(SEQ_WITH_ANNS) * 1.5);
+    ui.inputTableView->setColumnWidth(1, columnWidth);
+    ui.outputTableView->setColumnWidth(1, columnWidth);
 
     ui.templateLineEdit->setValidator(new ExecStringValidator(this));
     ui.nameLineEdit->setValidator(new WorkerNameValidator(this));
 
     DialogUtils::setWizardMinimumSize(this);
-}
-
-CreateExternalProcessDialog::~CreateExternalProcessDialog() {
-    delete initialCfg;
-}
-
-void CreateExternalProcessDialog::showEvent(QShowEvent *event) {
-    QDialog::showEvent(event);
-    if (lastPage) {
-        for (int i=0; i<(pageIds().size()-1); i++) {
-            next();
-        }
-    }
 }
 
 QString removeEmptyLines(const QString &str) {
@@ -280,17 +258,17 @@ void CreateExternalProcessDialog::accept() {
     cfg->description = removeEmptyLines(ui.descriptionTextEdit->toPlainText());
     cfg->templateDescription = removeEmptyLines(ui.prompterTextEdit->toPlainText());
 
-    model = static_cast<CfgExternalToolModel*>(ui.inputTableView->model());
+    model = qobject_cast<CfgExternalToolModel *>(ui.inputTableView->model());
     foreach(CfgExternalToolItem *item, model->getItems()) {
         cfg->inputs << item->itemData;
     }
 
-    model = static_cast<CfgExternalToolModel*>(ui.outputTableView->model());
+    model = qobject_cast<CfgExternalToolModel *>(ui.outputTableView->model());
     foreach(CfgExternalToolItem *item, model->getItems()) {
         cfg->outputs << item->itemData;
     }
 
-    CfgExternalToolModelAttributes *aModel = static_cast<CfgExternalToolModelAttributes*>(ui.attributesTableView->model());
+    CfgExternalToolModelAttributes *aModel = qobject_cast<CfgExternalToolModelAttributes*>(ui.attributesTableView->model());
     foreach(AttributeItem *item, aModel->getItems()) {
         AttributeConfig attributeData;
         attributeData.attrName = item->getName();
@@ -301,11 +279,11 @@ void CreateExternalProcessDialog::accept() {
 
     cfg->cmdLine = ui.templateLineEdit->text();
 
-    if(!validate()) {
+    if (!validate()) {
         return;
     }
 
-    if (NULL != initialCfg) {
+    if (nullptr != initialCfg) {
         if (!(*initialCfg == *cfg)) {
             int res = QMessageBox::question(this, tr("Warning"),
                 tr("You have changed the structure of the element (name, slots, attributes' names and types). "
@@ -315,7 +293,7 @@ void CreateExternalProcessDialog::accept() {
             if (QMessageBox::No == res) {
                 return;
             } else if (QMessageBox::Reset == res) {
-                init(initialCfg);
+                applyConfig(initialCfg);
                 return;
             }
         }
@@ -324,7 +302,7 @@ void CreateExternalProcessDialog::accept() {
     QString str = HRSchemaSerializer::actor2String(cfg);
     QString dir = WorkflowSettings::getExternalToolDirectory();
     QDir d(dir);
-    if(!d.exists()) {
+    if (!d.exists()) {
         d.mkdir(dir);
     }
     cfg->filePath = dir + cfg->name + ".etc";
@@ -338,28 +316,28 @@ void CreateExternalProcessDialog::accept() {
 
 bool CreateExternalProcessDialog::validate() {
     QString title = tr("Create Element");
-    if(cfg->inputs.isEmpty() && cfg->outputs.isEmpty())  {
+    if (cfg->inputs.isEmpty() && cfg->outputs.isEmpty())  {
         QMessageBox::critical(this, title, tr("Please set the input/output data."));
         return false;
     }
 
-    if(cfg->cmdLine.isEmpty()) {
+    if (cfg->cmdLine.isEmpty()) {
         QMessageBox::critical(this, title, tr("Please set the command line to run external tool."));
         return false;
     }
 
-    if(cfg->name.isEmpty()) {
+    if (cfg->name.isEmpty()) {
         QMessageBox::critical(this, title, tr("Please set the name for the new element."));
         return false;
     }
 
     QRegExp invalidSymbols("[\\.,:;\\?]");
-    if(cfg->name.contains(invalidSymbols)) {
+    if (cfg->name.contains(invalidSymbols)) {
         QMessageBox::critical(this, title, tr("Invalid symbols in the element name."));
         return false;
     }
 
-    if(WorkflowEnv::getProtoRegistry()->getProto(cfg->name) && !editing) {
+    if (WorkflowEnv::getProtoRegistry()->getProto(cfg->name) && Creating == mode) {
         QMessageBox::critical(this, title, tr("Element with this name already exists."));
         return false;
     }
@@ -367,46 +345,46 @@ bool CreateExternalProcessDialog::validate() {
     invalidSymbols = QRegExp("\\W");
     QStringList nameList;
     foreach(const DataConfig & dc, cfg->inputs) {
-        if(dc.attrName.isEmpty()) {
+        if (dc.attrName.isEmpty()) {
             QMessageBox::critical(this, title, tr("For one or more parameter name was not set."));
             return false;
         }
-        if(dc.attrName.contains(invalidSymbols)) {
+        if (dc.attrName.contains(invalidSymbols)) {
             QMessageBox::critical(this, title, tr("Invalid symbols in a name.").arg(dc.attrName));
             return false;
         }
         nameList << dc.attrName;
     }
     foreach(const DataConfig & dc, cfg->outputs) {
-        if(dc.attrName.isEmpty()) {
+        if (dc.attrName.isEmpty()) {
             QMessageBox::critical(this, title, tr("For one or more parameter name was not set."));
             return false;
         }
-        if(dc.attrName.contains(invalidSymbols)) {
+        if (dc.attrName.contains(invalidSymbols)) {
             QMessageBox::critical(this, title, tr("Invalid symbols in a name.").arg(dc.attrName));
             return false;
         }
         nameList << dc.attrName;
     }
     foreach(const AttributeConfig & ac, cfg->attrs) {
-        if(ac.attrName.isEmpty()) {
+        if (ac.attrName.isEmpty()) {
             QMessageBox::critical(this, title, tr("For one or more parameter name was not set."));
             return false;
         }
-        if(ac.attrName.contains(invalidSymbols)) {
+        if (ac.attrName.contains(invalidSymbols)) {
             QMessageBox::critical(this, title, tr("Invalid symbols in a name.").arg(ac.attrName));
             return false;
         }
         nameList << ac.attrName;
     }
 
-    if(nameList.removeDuplicates() > 0) {
+    if (nameList.removeDuplicates() > 0) {
         QMessageBox::critical(this, title, tr("The same name of element parameters was found"));
         return false;
     }
 
     foreach(const QString &str, nameList) {
-        if(!cfg->cmdLine.contains("$" + str)) {
+        if (!cfg->cmdLine.contains("$" + str)) {
             QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
             msgBox->setWindowTitle(title);
             msgBox->setText(tr("You don't use parameter %1 in template string. Continue?").arg(str));
@@ -414,7 +392,7 @@ bool CreateExternalProcessDialog::validate() {
             QPushButton *cancel = msgBox->addButton(tr("Abort"), QMessageBox::ActionRole);
             msgBox->exec();
             CHECK(!msgBox.isNull(), false);
-            if(msgBox->clickedButton() == cancel) {
+            if (msgBox->clickedButton() == cancel) {
                 return false;
             }
         }
@@ -426,17 +404,17 @@ bool CreateExternalProcessDialog::validate() {
 void CreateExternalProcessDialog::sl_generateTemplateString() {
     QString cmd = "<My tool>";
 
-    CfgExternalToolModel *model = static_cast<CfgExternalToolModel*>(ui.inputTableView->model());
+    CfgExternalToolModel *model = qobject_cast<CfgExternalToolModel*>(ui.inputTableView->model());
     foreach(CfgExternalToolItem *item, model->getItems()) {
-        cmd += " $" + item->itemData.attrName;
+        cmd += " $" + item->getName();
     }
 
-    model = static_cast<CfgExternalToolModel*>(ui.outputTableView->model());
+    model = qobject_cast<CfgExternalToolModel*>(ui.outputTableView->model());
     foreach(CfgExternalToolItem *item, model->getItems()) {
-        cmd += " $" + item->itemData.attrName;
+        cmd += " $" + item->getName();
     }
 
-    CfgExternalToolModelAttributes *aModel = static_cast<CfgExternalToolModelAttributes*>(ui.attributesTableView->model());
+    CfgExternalToolModelAttributes *aModel = qobject_cast<CfgExternalToolModelAttributes*>(ui.attributesTableView->model());
     int i = 0;
     foreach(AttributeItem *item, aModel->getItems()) {
         i++;
@@ -447,24 +425,24 @@ void CreateExternalProcessDialog::sl_generateTemplateString() {
 }
 
 bool CreateExternalProcessDialog::validateProcessName(const QString &name, QString &error) {
-    if(name.isEmpty()) {
+    if (name.isEmpty()) {
         error = tr("Please set the name for the new element.");
         return false;
     }
 
     QRegExp spaces("\\s");
-    if(name.contains(spaces)) {
+    if (name.contains(spaces)) {
         error = tr("Spaces in the element name.");
         return false;
     }
 
     QRegExp invalidSymbols("\\W");
-    if(name.contains(invalidSymbols)) {
+    if (name.contains(invalidSymbols)) {
         error = tr("Invalid symbols in the element name.");
         return false;
     }
 
-    if(WorkflowEnv::getProtoRegistry()->getProto(name) && !editing) {
+    if (WorkflowEnv::getProtoRegistry()->getProto(name) && Creating == mode) {
         error = tr("Element with this name already exists.");
         return false;
     }
@@ -493,40 +471,40 @@ void CreateExternalProcessDialog::validateDataModel(const QModelIndex &, const Q
 
     QRegExp invalidSymbols("\\W");
     QStringList nameList;
-    model = static_cast<CfgExternalToolModel*>(ui.inputTableView->model());
+    model = qobject_cast<CfgExternalToolModel*>(ui.inputTableView->model());
     foreach(CfgExternalToolItem *item, model->getItems()) {
-        if(item->itemData.attrName.isEmpty()) {
+        if (item->getName().isEmpty()) {
             //QMessageBox::critical(this, title, tr("For one or more parameter name was not set."));
             res = false;
         }
-        if(item->itemData.attrName.contains(invalidSymbols)) {
+        if (item->getName().contains(invalidSymbols)) {
             //QMessageBox::critical(this, title, tr("Invalid symbols in a name.").arg(dc.attrName));
             res = false;
         }
-        nameList << item->itemData.attrName;
+        nameList << item->getName();
     }
 
-    model = static_cast<CfgExternalToolModel*>(ui.outputTableView->model());
+    model = qobject_cast<CfgExternalToolModel*>(ui.outputTableView->model());
     foreach(CfgExternalToolItem *item, model->getItems()) {
-        if(item->itemData.attrName.isEmpty()) {
+        if (item->getName().isEmpty()) {
             //QMessageBox::critical(this, title, tr("For one or more parameter name was not set."));
             res = false;
         }
-        if(item->itemData.attrName.contains(invalidSymbols)) {
+        if (item->getName().contains(invalidSymbols)) {
             //QMessageBox::critical(this, title, tr("Invalid symbols in a name.").arg(dc.attrName));
             res = false;
         }
-        nameList << item->itemData.attrName;
+        nameList << item->getName();
     }
 
 
 
-    if(nameList.removeDuplicates() > 0) {
+    if (nameList.removeDuplicates() > 0) {
         //QMessageBox::critical(this, title, tr("The same name of element parameters was found"));
         res = false;
     }
 
-    if(nameList.isEmpty()) {
+    if (nameList.isEmpty()) {
         res = false;
     }
     button(QWizard::NextButton)->setEnabled(res);
@@ -538,39 +516,39 @@ void CreateExternalProcessDialog::validateAttributeModel(const QModelIndex &, co
 
     QRegExp invalidSymbols("\\W");
     QStringList nameList;
-    model = static_cast<CfgExternalToolModel*>(ui.inputTableView->model());
+    model = qobject_cast<CfgExternalToolModel*>(ui.inputTableView->model());
     foreach(CfgExternalToolItem *item, model->getItems()) {
-        if(item->itemData.attrName.isEmpty()) {
+        if (item->getName().isEmpty()) {
             //QMessageBox::critical(this, title, tr("For one or more parameter name was not set."));
             res = false;
         }
-        if(item->itemData.attrName.contains(invalidSymbols)) {
+        if (item->getName().contains(invalidSymbols)) {
             //QMessageBox::critical(this, title, tr("Invalid symbols in a name.").arg(dc.attrName));
             res = false;
         }
-        nameList << item->itemData.attrName;
+        nameList << item->getName();
     }
 
-    model = static_cast<CfgExternalToolModel*>(ui.outputTableView->model());
+    model = qobject_cast<CfgExternalToolModel*>(ui.outputTableView->model());
     foreach(CfgExternalToolItem *item, model->getItems()) {
-        if(item->itemData.attrName.isEmpty()) {
+        if (item->getName().isEmpty()) {
             //QMessageBox::critical(this, title, tr("For one or more parameter name was not set."));
             res = false;
         }
-        if(item->itemData.attrName.contains(invalidSymbols)) {
+        if (item->getName().contains(invalidSymbols)) {
             //QMessageBox::critical(this, title, tr("Invalid symbols in a name.").arg(dc.attrName));
             res = false;
         }
-        nameList << item->itemData.attrName;
+        nameList << item->getName();
     }
 
-    CfgExternalToolModelAttributes *aModel = static_cast<CfgExternalToolModelAttributes*>(ui.attributesTableView->model());
+    CfgExternalToolModelAttributes *aModel = qobject_cast<CfgExternalToolModelAttributes*>(ui.attributesTableView->model());
     foreach(AttributeItem *item, aModel->getItems()) {
-        if(item->getName().isEmpty()) {
+        if (item->getName().isEmpty()) {
             //QMessageBox::critical(this, title, tr("For one or more parameter name was not set."));
             res = false;
         }
-        if(item->getName().contains(invalidSymbols)) {
+        if (item->getName().contains(invalidSymbols)) {
             //QMessageBox::critical(this, title, tr("Invalid symbols in a name.").arg(ac.attrName));
             res = false;
         }
@@ -578,7 +556,7 @@ void CreateExternalProcessDialog::validateAttributeModel(const QModelIndex &, co
     }
 
 
-    if(nameList.removeDuplicates() > 0) {
+    if (nameList.removeDuplicates() > 0) {
         //QMessageBox::critical(this, title, tr("The same name of element parameters was found"));
         res = false;
     }

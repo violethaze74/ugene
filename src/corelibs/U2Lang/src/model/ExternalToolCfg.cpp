@@ -26,15 +26,15 @@
 
 namespace U2 {
 
-DocumentFormatId DataConfig::StringValue = DocumentFormatId("string-value");
-DocumentFormatId DataConfig::OutputFileUrl = DocumentFormatId("output-file-url");
+const DocumentFormatId DataConfig::STRING_VALUE = DocumentFormatId("string-value");
+const DocumentFormatId DataConfig::OUTPUT_FILE_URL = DocumentFormatId("output-file-url");
 
 bool DataConfig::isStringValue() const {
-    return (BaseTypes::STRING_TYPE()->getId() == type) && (StringValue == format);
+    return (BaseTypes::STRING_TYPE()->getId() == type) && (STRING_VALUE == format);
 }
 
 bool DataConfig::isFileUrl() const {
-    return (OutputFileUrl == format);
+    return (OUTPUT_FILE_URL == format);
 }
 
 bool DataConfig::isSequence() const {
