@@ -47,7 +47,6 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/library/ConvertFilesFormatWorker.h \
            src/library/ConvertSnpeffVariationsToAnnotationsWorker.h \
            src/library/CoreLib.h \
-           src/library/CreateExternalProcessDialog.h \
            src/library/DocActors.h \
            src/library/DocWorkers.h \
            src/library/ExternalProcessWorker.h \
@@ -89,6 +88,7 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/library/WriteAnnotationsWorker.h \
            src/library/WriteAssemblyWorkers.h \
            src/library/WriteVariationWorker.h \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.h \
            src/tasks/ReadAssemblyTask.h \
            src/tasks/RenameChromosomeInVariationTask.h \
            src/tasks/SequenceQualityTrimTask.h \
@@ -104,7 +104,6 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
 FORMS += src/ChooseItemDialog.ui \
            src/CreateScriptBlockDialog.ui \
            src/DashboardsManagerDialog.ui \
-           src/library/ExternalProcessWorkerDialog.ui \
            src/GalaxyConfigConfigurationDialog.ui \
            src/ImportSchemaDialog.ui \
            src/PaletteWidget.ui \
@@ -113,7 +112,11 @@ FORMS += src/ChooseItemDialog.ui \
            src/StartupDialog.ui \
            src/WorkflowEditorWidget.ui \
            src/WorkflowMetaDialog.ui \
-           src/WorkflowSettingsWidget.ui
+           src/WorkflowSettingsWidget.ui \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardAttributesPage.ui \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardCommandTemplatePage.ui \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputOutputPage.ui \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardNamePage.ui
 
 SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/ActorCfgModel.cpp \
@@ -161,7 +164,6 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/library/ConvertFilesFormatWorker.cpp \
            src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp \
            src/library/CoreLib.cpp \
-           src/library/CreateExternalProcessDialog.cpp \
            src/library/DocActors.cpp \
            src/library/DocWorkers.cpp \
            src/library/ExternalProcessWorker.cpp \
@@ -203,6 +205,7 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/library/WriteAnnotationsWorker.cpp \
            src/library/WriteAssemblyWorkers.cpp \
            src/library/WriteVariationWorker.cpp \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp \
            src/tasks/ReadAssemblyTask.cpp \
            src/tasks/RenameChromosomeInVariationTask.cpp \
            src/tasks/SequenceQualityTrimTask.cpp \

@@ -224,7 +224,7 @@ QVariant CfgExternalToolModel::headerData(int section, Qt::Orientation orientati
     return QVariant();
 }
 
-bool CfgExternalToolModel::insertRows(int row, int count, const QModelIndex & parent) {
+bool CfgExternalToolModel::insertRows(int row, int count, const QModelIndex &parent) {
     Q_UNUSED(row);
     Q_UNUSED(count);
     beginInsertRows(parent, items.size(), items.size());
@@ -236,17 +236,17 @@ bool CfgExternalToolModel::insertRows(int row, int count, const QModelIndex & pa
     return true;
 }
 
-bool CfgExternalToolModel::removeRows(int row, int count, const QModelIndex & parent) {
-    Q_UNUSED(count);
-    if (row >= 0 && row < items.size()) {
-        beginRemoveRows(parent, row, row);
-        items.removeAt(row);
-        endRemoveRows();
-        return true;
+bool CfgExternalToolModel::removeRows(int row, int count, const QModelIndex &parent) {
+    CHECK(0 <= row && row < items.size(), false);
+    CHECK(0 <= row + count - 1 && row + count - 1 < items.size(), false);
+    CHECK(0 < count, false);
+
+    beginRemoveRows(parent, row, row + count - 1);
+    for (int i = row + count - 1; i >= row; --i) {
+        delete items.takeAt(i);
     }
-    else {
-        return false;
-    }
+    endRemoveRows();
+    return true;
 }
 
 void CfgExternalToolModel::init() {
@@ -373,6 +373,7 @@ CfgExternalToolModelAttributes::CfgExternalToolModelAttributes() {
     types["Boolean"] = "Boolean";
     delegate = new ComboBoxDelegate(types);
 }
+
 CfgExternalToolModelAttributes::~CfgExternalToolModelAttributes() {
     foreach(AttributeItem* item, items) {
         delete item;
@@ -474,16 +475,16 @@ bool CfgExternalToolModelAttributes::insertRows(int row, int count, const QModel
 }
 
 bool CfgExternalToolModelAttributes::removeRows(int row, int count, const QModelIndex & parent) {
-    Q_UNUSED(count);
-    if (row >= 0 && row < items.size()) {
-        beginRemoveRows(parent, row, row);
-        items.removeAt(row);
-        endRemoveRows();
-        return true;
+    CHECK(0 <= row && row < items.size(), false);
+    CHECK(0 <= row + count - 1 && row + count - 1 < items.size(), false);
+    CHECK(0 < count, false);
+
+    beginRemoveRows(parent, row, row + count - 1);
+    for (int i = row + count - 1; i >= row; --i) {
+        delete items.takeAt(i);
     }
-    else {
-        return false;
-    }
+    endRemoveRows();
+    return true;
 }
 
 } // U2

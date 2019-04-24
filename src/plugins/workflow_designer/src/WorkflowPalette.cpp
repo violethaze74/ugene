@@ -50,9 +50,9 @@
 #include "CreateScriptWorker.h"
 #include "WorkflowPalette.h"
 #include "WorkflowSamples.h"
-#include "library/CreateExternalProcessDialog.h"
 #include "library/ExternalProcessWorker.h"
 #include "library/ScriptWorker.h"
+#include "library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.h"
 
 namespace U2 {
 
@@ -515,17 +515,16 @@ void WorkflowPaletteElements::editElement() {
         }
     } else { //External process category
         ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigByName(proto->getId());
-        ExternalProcessConfig *cfg = new ExternalProcessConfig(*oldCfg);
-        QObjectScopedPointer<CreateExternalProcessDialog> dlg = new CreateExternalProcessDialog(this, cfg, false);
+        QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(new ExternalProcessConfig(*oldCfg), this);
         dlg->exec();
         CHECK(!dlg.isNull(), );
 
         if (dlg->result() == QDialog::Accepted) {
-            cfg = dlg->config();
+            QScopedPointer<ExternalProcessConfig> newConfig(dlg->takeConfig());
 
             bool deleted = true;
-            if (!(*oldCfg == *cfg)) {
-                if(oldName != cfg->name) {
+            if (*oldCfg != *newConfig) {
+                if (oldName != newConfig->name) {
                     deleted = removeElement();
                 } else {
                     emit si_protoDeleted(proto->getId());
@@ -533,12 +532,14 @@ void WorkflowPaletteElements::editElement() {
                     delete proto;
                 }
 
-                LocalWorkflow::ExternalProcessWorkerFactory::init(cfg);
+                LocalWorkflow::ExternalProcessWorkerFactory::init(newConfig.data());
             }
+
             if (deleted) {
                 WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(oldName);
             }
-            WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(cfg);
+
+            WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(newConfig.take());
             emit si_protoChanged();
         }
     }

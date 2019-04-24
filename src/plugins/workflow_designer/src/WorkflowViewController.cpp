@@ -118,9 +118,9 @@
 #include "WorkflowViewController.h"
 #include "WorkflowViewItems.h"
 #include "debug_messages_translation/WorkflowDebugMessageParserImpl.h"
-#include "library/CreateExternalProcessDialog.h"
 #include "library/ExternalProcessWorker.h"
 #include "library/ScriptWorker.h"
+#include "library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.h"
 
 namespace U2 {
 
@@ -861,16 +861,17 @@ void WorkflowView::sl_createScript() {
 }
 
 void WorkflowView::sl_externalAction() {
-    QObjectScopedPointer<CreateExternalProcessDialog> dlg = new CreateExternalProcessDialog(this);
+    QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(nullptr, this);
     dlg->exec();
     CHECK(!dlg.isNull(), );
 
     if (dlg->result() == QDialog::Accepted) {
-        ExternalProcessConfig *cfg = dlg->config();
-        if(LocalWorkflow::ExternalProcessWorkerFactory::init(cfg)) {
+        QScopedPointer<ExternalProcessConfig> cfg(dlg->takeConfig());
+        if (LocalWorkflow::ExternalProcessWorkerFactory::init(cfg.data())) {
             ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(cfg->name);
             QRectF rect = scene->sceneRect();
             addProcess(createActor(proto, QVariantMap()), rect.center());
+            cfg.take();
         }
     }
 }
@@ -959,16 +960,15 @@ void WorkflowView::sl_editExternalTool() {
         ActorPrototype *proto = selectedActors.first()->getProto();
 
         ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigByName(proto->getId());
-        ExternalProcessConfig *cfg = new ExternalProcessConfig(*oldCfg);
-        QObjectScopedPointer<CreateExternalProcessDialog> dlg = new CreateExternalProcessDialog(this, cfg, true);
+        QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(new ExternalProcessConfig(*oldCfg), this);
         dlg->exec();
         CHECK(!dlg.isNull(), );
 
         if(dlg->result() == QDialog::Accepted) {
-            cfg = dlg->config();
+            QScopedPointer<ExternalProcessConfig> newCfg(dlg->takeConfig());
 
-            if (!(*oldCfg == *cfg)) {
-                if (oldCfg->name != cfg->name) {
+            if (*oldCfg != *newCfg) {
+                if (oldCfg->name != newCfg->name) {
                     if (!QFile::remove(proto->getFilePath())) {
                         uiLog.error(tr("Can't remove element %1").arg(proto->getDisplayName()));
                     }
@@ -977,10 +977,10 @@ void WorkflowView::sl_editExternalTool() {
                 WorkflowEnv::getProtoRegistry()->unregisterProto(proto->getId());
                 delete proto;
 
-                LocalWorkflow::ExternalProcessWorkerFactory::init(cfg);
+                LocalWorkflow::ExternalProcessWorkerFactory::init(newCfg.data());
             }
             WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(oldCfg->name);
-            WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(cfg);
+            WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(newCfg.take());
             scene->sl_updateDocs();
         }
     }

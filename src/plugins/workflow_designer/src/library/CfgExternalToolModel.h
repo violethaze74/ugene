@@ -59,23 +59,22 @@ private:
     DataTypeRegistry *dtr;
 };
 
-
 class CfgExternalToolModel : public QAbstractTableModel {
     Q_OBJECT
 public:
     CfgExternalToolModel(bool isInput, QObject *obj = NULL);
 
-    int rowCount(const QModelIndex & /* = QModelIndex */) const;
-    int columnCount(const QModelIndex & /* = QModelIndex */) const;
-    Qt::ItemFlags flags(const QModelIndex &) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
     CfgExternalToolItem* getItem(const QModelIndex &index) const;
     QList<CfgExternalToolItem*> getItems() const;
-    QVariant data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     void createFormatDelegate(const QString &newType, CfgExternalToolItem *item);
-    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool insertRows(int row, int count = 0, const QModelIndex & parent = QModelIndex());
-    bool removeRows(int row, int count = 0, const QModelIndex & parent = QModelIndex());
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
 private:
     void init();
@@ -94,7 +93,6 @@ private:
     QVariantMap textFormat;
 };
 
-
 class AttributeItem {
 public:
     QString getName() const;
@@ -107,7 +105,6 @@ private:
     QString name;
     QString type;
     QString description;
-
 };
 
 class CfgExternalToolModelAttributes : public QAbstractTableModel {
@@ -116,16 +113,16 @@ public:
     CfgExternalToolModelAttributes();
     ~CfgExternalToolModelAttributes();
 
-    int rowCount(const QModelIndex & /* = QModelIndex */) const;
-    int columnCount(const QModelIndex & /* = QModelIndex */) const;
-    Qt::ItemFlags flags(const QModelIndex &) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
     AttributeItem* getItem(const QModelIndex &index) const;
     QList<AttributeItem*> getItems() const;
-    QVariant data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool insertRows(int row, int count = 0, const QModelIndex & parent = QModelIndex());
-    bool removeRows(int row, int count = 0, const QModelIndex & parent = QModelIndex());
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
 private:
     QList<AttributeItem*> items;
