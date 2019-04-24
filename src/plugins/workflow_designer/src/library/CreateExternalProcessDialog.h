@@ -19,15 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef CreateExternalProcessDialog_h__
-#define CreateExternalProcessDialog_h__
+#ifndef _U2_CREATE_EXTERNAL_PROCESS_DIALOG_H_
+#define _U2_CREATE_EXTERNAL_PROCESS_DIALOG_H_
 
-#include "ui_ExternalProcessWorkerDialog.h"
-#include <U2Lang/Datatype.h>
 #include <U2Lang/Attribute.h>
 #include <U2Lang/ConfigurationEditor.h>
+#include <U2Lang/Datatype.h>
 
-
+#include "ui_ExternalProcessWorkerDialog.h"
 
 namespace U2 {
 
@@ -36,7 +35,12 @@ class ExternalProcessConfig;
 class CreateExternalProcessDialog: public QWizard {
     Q_OBJECT
 public:
-    CreateExternalProcessDialog(QWidget *p = NULL);
+    enum DialogMode {
+        Creating,
+        Editing
+    };
+
+    CreateExternalProcessDialog(QWidget *p = nullptr);
     CreateExternalProcessDialog(QWidget *p, ExternalProcessConfig *cfg, bool lastPage);
     ~CreateExternalProcessDialog();
     ExternalProcessConfig* config() const {return cfg;}
@@ -63,21 +67,22 @@ private slots:
     void sl_validatePage(int);
     //void sl_OK();
 
-protected:
-    virtual void showEvent(QShowEvent *event);
-
 private:
+    virtual void showEvent(QShowEvent *event);
+    void init();
+    bool validateProcessName(const QString &name, QString &error);
+    void applyConfig(ExternalProcessConfig *existingConfig);
+
     Ui_CreateExternalProcessWorkerDialog ui;
     ExternalProcessConfig *initialCfg;
     ExternalProcessConfig *cfg;
-    bool editing;
+    DialogMode mode;
     bool lastPage;
-    static const int INFO_STRINGS_NUM = 5;
-    bool validateProcessName(const QString &name, QString &error);
     QString descr1;
-    void init(ExternalProcessConfig *cfg);
+
+    static const int INFO_STRINGS_NUM = 5;
 };
 
-}
+}   // namespace U2
 
-#endif // CreateExternalProcessDialog_h__
+#endif // _U2_CREATE_EXTERNAL_PROCESS_DIALOG_H_

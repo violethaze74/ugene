@@ -28,8 +28,8 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
 
-#include "../WorkflowEditorDelegates.h"
 #include "CfgExternalToolModel.h"
+#include "../WorkflowEditorDelegates.h"
 
 namespace U2 {
 
@@ -88,21 +88,22 @@ void CfgExternalToolItem::setDescription(const QString & _descr) {
 /// CfgExternalToolModel
 //////////////////////////////////////////////////////////////////////////
 
-CfgExternalToolModel::CfgExternalToolModel(bool isInput, QObject *obj)
-    : QAbstractTableModel(obj), isInput(isInput)
+CfgExternalToolModel::CfgExternalToolModel(CfgExternalToolModel::ModelType _modelType, QObject *_obj)
+    : QAbstractTableModel(_obj),
+      isInput(Input == _modelType)
 {
     init();
 }
 
-int CfgExternalToolModel::rowCount(const QModelIndex & /* = QModelIndex */) const{
+int CfgExternalToolModel::rowCount(const QModelIndex & /*index*/) const{
     return items.size();
 }
 
-int CfgExternalToolModel::columnCount(const QModelIndex & /* = QModelIndex */) const {
-    return 4;
+int CfgExternalToolModel::columnCount(const QModelIndex & /*index*/) const {
+    return COLUMNS_COUNT;
 }
 
-Qt::ItemFlags CfgExternalToolModel::flags(const QModelIndex &) const{
+Qt::ItemFlags CfgExternalToolModel::flags(const QModelIndex & /*index*/) const{
     return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
@@ -114,27 +115,52 @@ QList<CfgExternalToolItem*> CfgExternalToolModel::getItems() const {
     return items;
 }
 
-QVariant CfgExternalToolModel::data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const {
+QVariant CfgExternalToolModel::data(const QModelIndex &index, int role) const {
     CfgExternalToolItem *item = getItem(index);
     int col = index.column();
 
     switch (role) {
-    case Qt::DisplayRole:
+    case Qt::DisplayRole: // fallthrough
     case Qt::ToolTipRole:
-        if (col == 0) return item->getName();
-        else if (col == 1) return item->delegateForTypes->getDisplayValue(item->getDataType());
-        else if (col == 2) return item->delegateForFormats->getDisplayValue(item->getFormat());
-        else if (col == 3) return item->getDescription();
-        else return QVariant();
+        switch (col) {
+        case COLUMN_NAME:
+            return item->getName();
+        case COLUMN_DATA_TYPE:
+            return item->delegateForTypes->getDisplayValue(item->getDataType());
+        case COLUMN_FORMAT:
+            return item->delegateForFormats->getDisplayValue(item->getFormat());
+        case COLUMN_DESCRIPTION:
+            return item->getDescription();
+        default:
+            // do nothing, inaccessible code
+            Q_ASSERT(false);
+            return QVariant();
+        }
     case DelegateRole:
-        if (col == 1) return qVariantFromValue<PropertyDelegate*>(item->delegateForTypes);
-        else if (col == 2) return qVariantFromValue<PropertyDelegate*>(item->delegateForFormats);
-        else return QVariant();
-    case Qt::EditRole:
+        switch (col) {
+        case COLUMN_DATA_TYPE:
+            return qVariantFromValue<PropertyDelegate*>(item->delegateForTypes);
+        case COLUMN_FORMAT:
+            return qVariantFromValue<PropertyDelegate*>(item->delegateForFormats);
+        default:
+            return QVariant();
+        }
+    case Qt::EditRole: // fallthrough
     case ConfigurationEditor::ItemValueRole:
-        if (col == 1) return item->getDataType();
-        else if (col == 2) return item->getFormat();
-        else return QVariant();
+        switch (col) {
+        case COLUMN_NAME:
+            return item->getName();
+        case COLUMN_DATA_TYPE:
+            return item->getDataType();
+        case COLUMN_FORMAT:
+            return item->getFormat();
+        case COLUMN_DESCRIPTION:
+            return item->getDescription();
+        default:
+            // do nothing, inaccessible code
+            Q_ASSERT(false);
+            return QVariant();
+        }
     default:
         return QVariant();
     }
@@ -174,14 +200,15 @@ bool CfgExternalToolModel::setData(const QModelIndex &index, const QVariant &val
     int col = index.column();
     CfgExternalToolItem * item = getItem(index);
     switch (role) {
-    case Qt::EditRole:
+    case Qt::EditRole: // fallthrough
     case ConfigurationEditor::ItemValueRole:
-        if (col == 0) {
+        switch (col) {
+        case COLUMN_NAME:
             if (item->getName() != value.toString()) {
                 item->setName(value.toString());
             }
-        }
-        else if (col == 1) {
+            break;
+        case COLUMN_DATA_TYPE: {
             QString newType = value.toString();
             if (item->getDataType() != newType) {
                 if (!newType.isEmpty()) {
@@ -189,18 +216,26 @@ bool CfgExternalToolModel::setData(const QModelIndex &index, const QVariant &val
                     createFormatDelegate(newType, item);
                 }
             }
+            break;
         }
-        else if (col == 2) {
+        case COLUMN_FORMAT:
             if (item->getFormat() != value.toString() && !value.toString().isEmpty())  {
                 item->setFormat(value.toString());
             }
-        }
-        else if (col == 3) {
+            break;
+        case COLUMN_DESCRIPTION:
             if (item->getDescription() != value.toString()) {
                 item->setDescription(value.toString());
             }
+            break;
+        default:
+            // do nothing, inaccessible code
+            Q_ASSERT(false);
         }
         emit dataChanged(index, index);
+        break;
+    default:
+        ; // do nothing
     }
     return true;
 }
@@ -208,25 +243,28 @@ bool CfgExternalToolModel::setData(const QModelIndex &index, const QVariant &val
 QVariant CfgExternalToolModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
-        case 0: return tr("Name for command line parameter");
-        case 1: return tr("Type");
-        case 2:
+        case COLUMN_NAME:
+            return tr("Name for command line parameter");
+        case COLUMN_DATA_TYPE:
+            return tr("Type");
+        case COLUMN_FORMAT:
             if (isInput) {
                 return tr("Read as");
-            }
-            else {
+            } else {
                 return tr("Write as");
             }
-        case 3: return tr("Description");
-        default: return QVariant();
+        case COLUMN_DESCRIPTION:
+            return tr("Description");
+        default:
+            // do nothing, inaccessible code
+            Q_ASSERT(false);
+            return QVariant();
         }
     }
     return QVariant();
 }
 
-bool CfgExternalToolModel::insertRows(int row, int count, const QModelIndex & parent) {
-    Q_UNUSED(row);
-    Q_UNUSED(count);
+bool CfgExternalToolModel::insertRows(int /*row*/, int /*count*/, const QModelIndex & parent) {
     beginInsertRows(parent, items.size(), items.size());
     CfgExternalToolItem *newItem = new CfgExternalToolItem();
     newItem->delegateForTypes = new ComboBoxDelegate(types);
@@ -236,15 +274,13 @@ bool CfgExternalToolModel::insertRows(int row, int count, const QModelIndex & pa
     return true;
 }
 
-bool CfgExternalToolModel::removeRows(int row, int count, const QModelIndex & parent) {
-    Q_UNUSED(count);
+bool CfgExternalToolModel::removeRows(int row, int /*count*/, const QModelIndex & parent) {
     if (row >= 0 && row < items.size()) {
         beginRemoveRows(parent, row, row);
         items.removeAt(row);
         endRemoveRows();
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -310,12 +346,11 @@ void CfgExternalToolModel::initFormats() {
 
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_TEXT);
     if (isInput) {
-        textFormat[tr("String value")] = DataConfig::StringValue;
+        textFormat[tr("String value")] = DataConfig::STRING_VALUE;
+    } else {
+        textFormat[tr("Output file url")] = DataConfig::OUTPUT_FILE_URL;
     }
     textFormat[tr("Text file")] = df->getFormatId();
-    if (!isInput) {
-        textFormat[tr("Output file url")] = DataConfig::OutputFileUrl;
-    }
 }
 
 void CfgExternalToolModel::initTypes() {
@@ -378,15 +413,15 @@ CfgExternalToolModelAttributes::~CfgExternalToolModelAttributes() {
         delete item;
     }
 }
-int CfgExternalToolModelAttributes::rowCount(const QModelIndex & /* = QModelIndex */) const{
+int CfgExternalToolModelAttributes::rowCount(const QModelIndex & /*index*/) const{
     return items.size();
 }
 
-int CfgExternalToolModelAttributes::columnCount(const QModelIndex & /* = QModelIndex */) const {
-    return 3;
+int CfgExternalToolModelAttributes::columnCount(const QModelIndex & /*index*/) const {
+    return COLUMNS_COUNT;
 }
 
-Qt::ItemFlags CfgExternalToolModelAttributes::flags(const QModelIndex &) const{
+Qt::ItemFlags CfgExternalToolModelAttributes::flags(const QModelIndex & /*index*/) const{
     return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
@@ -398,24 +433,45 @@ QList<AttributeItem*> CfgExternalToolModelAttributes::getItems() const {
     return items;
 }
 
-QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const {
+QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role) const {
     AttributeItem *item = getItem(index);
     int col = index.column();
 
     switch (role) {
-    case Qt::DisplayRole:
+    case Qt::DisplayRole: // fallthrough
     case Qt::ToolTipRole:
-        if (col == 0) return item->getName();
-        else if (col == 1) return delegate->getDisplayValue(item->getDataType());
-        else if (col == 2) return item->getDescription();
-        else return QVariant();
+        switch (col) {
+        case COLUMN_NAME:
+            return item->getName();
+        case COLUMN_DATA_TYPE:
+            return delegate->getDisplayValue(item->getDataType());
+        case COLUMN_DESCRIPTION:
+            return item->getDescription();
+        default:
+            // do nothing, inaccessible code
+            Q_ASSERT(false);
+            return QVariant();
+        }
     case DelegateRole:
-        if (col == 1) return qVariantFromValue<PropertyDelegate*>(delegate);
-        else return QVariant();
-    case Qt::EditRole:
+        if (COLUMN_DATA_TYPE == col) {
+            return qVariantFromValue<PropertyDelegate*>(delegate);
+        } else {
+            return QVariant();
+        }
+    case Qt::EditRole: // fallthrough
     case ConfigurationEditor::ItemValueRole:
-        if (col == 1) return item->getDataType();
-        else return QVariant();
+        switch (col) {
+        case COLUMN_NAME:
+            return item->getName();
+        case COLUMN_DATA_TYPE:
+            return item->getDataType();
+        case COLUMN_DESCRIPTION:
+            return item->getDescription();
+        default:
+            // do nothing, inaccessible code
+            Q_ASSERT(false);
+            return QVariant();
+        }
     default:
         return QVariant();
     }
@@ -425,27 +481,37 @@ bool CfgExternalToolModelAttributes::setData(const QModelIndex &index, const QVa
     int col = index.column();
     AttributeItem * item = getItem(index);
     switch (role) {
-    case Qt::EditRole:
+    case Qt::EditRole: // fallthrough
     case ConfigurationEditor::ItemValueRole:
-        if (col == 0) {
+        switch (col) {
+        case COLUMN_NAME:
             if (item->getName() != value.toString()) {
                 item->setName(value.toString());
             }
-        }
-        else if (col == 1) {
+            break;
+        case COLUMN_DATA_TYPE: {
             QString newType = value.toString();
             if (item->getDataType() != newType) {
                 if (!newType.isEmpty()) {
                     item->setDataType(newType);
                 }
             }
+            break;
         }
-        else if (col == 2) {
+        case COLUMN_DESCRIPTION:
             if (item->getDescription() != value.toString()) {
                 item->setDescription(value.toString());
             }
+            break;
+        default:
+            // do nothing, inaccessible code
+            Q_ASSERT(false);
         }
+
         emit dataChanged(index, index);
+        break;
+    default:
+        ; // do nothing
     }
     return true;
 }
@@ -453,18 +519,22 @@ bool CfgExternalToolModelAttributes::setData(const QModelIndex &index, const QVa
 QVariant CfgExternalToolModelAttributes::headerData(int section, Qt::Orientation orientation, int role) const {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
-        case 0: return tr("Name");
-        case 1: return tr("Type");
-        case 2: return tr("Description");
-        default: return QVariant();
+        case COLUMN_NAME:
+            return tr("Name");
+        case COLUMN_DATA_TYPE:
+            return tr("Type");
+        case COLUMN_DESCRIPTION:
+            return tr("Description");
+        default:
+            // do nothing, inaccessible code
+            Q_ASSERT(false);
+            return QVariant();
         }
     }
     return QVariant();
 }
 
-bool CfgExternalToolModelAttributes::insertRows(int row, int count, const QModelIndex & parent)  {
-    Q_UNUSED(row);
-    Q_UNUSED(count);
+bool CfgExternalToolModelAttributes::insertRows(int /*row*/, int /*count*/, const QModelIndex & parent)  {
     beginInsertRows(parent, items.size(), items.size());
     AttributeItem *newItem = new AttributeItem();
     newItem->setDataType("String");
@@ -473,15 +543,13 @@ bool CfgExternalToolModelAttributes::insertRows(int row, int count, const QModel
     return true;
 }
 
-bool CfgExternalToolModelAttributes::removeRows(int row, int count, const QModelIndex & parent) {
-    Q_UNUSED(count);
+bool CfgExternalToolModelAttributes::removeRows(int row, int /*count*/, const QModelIndex & parent) {
     if (row >= 0 && row < items.size()) {
         beginRemoveRows(parent, row, row);
         items.removeAt(row);
         endRemoveRows();
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }

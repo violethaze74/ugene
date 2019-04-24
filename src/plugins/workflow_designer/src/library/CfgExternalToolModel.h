@@ -59,18 +59,30 @@ private:
     DataTypeRegistry *dtr;
 };
 
-
 class CfgExternalToolModel : public QAbstractTableModel {
     Q_OBJECT
 public:
-    CfgExternalToolModel(bool isInput, QObject *obj = NULL);
+    enum ModelType {
+        Input,
+        Output
+    };
 
-    int rowCount(const QModelIndex & /* = QModelIndex */) const;
-    int columnCount(const QModelIndex & /* = QModelIndex */) const;
-    Qt::ItemFlags flags(const QModelIndex &) const;
+    enum Columns {
+        COLUMN_NAME = 0,
+        COLUMN_DATA_TYPE = 1,
+        COLUMN_FORMAT = 2,
+        COLUMN_DESCRIPTION = 3,
+        COLUMNS_COUNT = COLUMN_DESCRIPTION + 1   // elements count
+    };
+
+    CfgExternalToolModel(ModelType modelType, QObject *obj = NULL);
+
+    int rowCount(const QModelIndex &index = QModelIndex()) const;
+    int columnCount(const QModelIndex &index = QModelIndex()) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
     CfgExternalToolItem* getItem(const QModelIndex &index) const;
     QList<CfgExternalToolItem*> getItems() const;
-    QVariant data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const;
+    QVariant data(const QModelIndex &index, int role) const;
     void createFormatDelegate(const QString &newType, CfgExternalToolItem *item);
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -94,34 +106,42 @@ private:
     QVariantMap textFormat;
 };
 
-
 class AttributeItem {
 public:
     QString getName() const;
     void setName(const QString& _name);
+
     QString getDataType() const;
     void setDataType(const QString &_type);
+
     QString getDescription() const;
     void setDescription(const QString &_description);
+
 private:
     QString name;
     QString type;
     QString description;
-
 };
 
 class CfgExternalToolModelAttributes : public QAbstractTableModel {
     Q_OBJECT
 public:
+    enum Columns {
+        COLUMN_NAME = 0,
+        COLUMN_DATA_TYPE = 1,
+        COLUMN_DESCRIPTION = 2,
+        COLUMNS_COUNT = COLUMN_DESCRIPTION + 1   // elements count
+    };
+
     CfgExternalToolModelAttributes();
     ~CfgExternalToolModelAttributes();
 
-    int rowCount(const QModelIndex & /* = QModelIndex */) const;
-    int columnCount(const QModelIndex & /* = QModelIndex */) const;
+    int rowCount(const QModelIndex &index = QModelIndex()) const;
+    int columnCount(const QModelIndex &index = QModelIndex()) const;
     Qt::ItemFlags flags(const QModelIndex &) const;
     AttributeItem* getItem(const QModelIndex &index) const;
     QList<AttributeItem*> getItems() const;
-    QVariant data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const;
+    QVariant data(const QModelIndex &index, int role) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     bool insertRows(int row, int count = 0, const QModelIndex & parent = QModelIndex());
