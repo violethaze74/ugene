@@ -56,9 +56,7 @@ public:
 
     static QTabBar* getTabBar(HI::GUITestOpStatus &os);
     static int      getCurrentTab(HI::GUITestOpStatus &os);
-    static int      getCurrentTab(QTabBar* tabBar);
     static void     clickTab(HI::GUITestOpStatus &os, int tabIndex);
-    static void     clickTab(QTabBar* tabBar, int tabIndex);
 };
 
 } // namespace
