@@ -26,7 +26,6 @@
 #include <QGroupBox>
 #include <QListWidget>
 #include <QMainWindow>
-#include <QMdiArea>
 #include <QMessageBox>
 #include <QSpinBox>
 #include <QTableView>
@@ -81,34 +80,6 @@ void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus &os){
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Workflow Designer...");
     GTUtilsMdi::waitWindowOpened(os, "Workflow Designer");
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getWorkflowsTabBar"
-QTabBar* GTUtilsWorkflowDesigner::getWorkflowsTabBar(HI::GUITestOpStatus &os) {
-    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    QList<QMdiArea *> listArea = mw->findChildren<QMdiArea *>();
-
-    GT_CHECK_RESULT(listArea.size() > 0, "listArea.size() <= 0", NULL);
-    QList<QTabBar *> tabBarList = listArea.at(0)->findChildren<QTabBar *>();
-
-    GT_CHECK_RESULT(tabBarList.size() > 0, "tabBarList.size() <= 0", NULL);
-    QTabBar* workflowsTabBar = NULL;
-    for (QTabBar* tabBar: tabBarList) {
-        GT_CHECK_RESULT(tabBar != NULL, "tabBar == NULL", NULL);
-        int count = tabBar->count();
-        for (int i = 0; i < count; i++) {
-            QString text = tabBar->tabText(i);
-            if (QString::compare(text, "Start Page") == 0) {
-                // We found TabBar !
-                workflowsTabBar = tabBar;
-                coreLog.info(QString("Workflows' TabBar was found"));
-                break;
-            }
-        }
-    }
-    GT_CHECK_RESULT(workflowsTabBar != NULL, "Workflow's TabBar was not found", NULL);
-    return workflowsTabBar;
 }
 #undef GT_METHOD_NAME
 

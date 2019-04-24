@@ -23,6 +23,7 @@
 #define _U2_GT_UTILS_MDI_H_
 
 #include <QPoint>
+#include <QTabBar>
 
 #include "GTGlobals.h"
 #include "primitives/GTMenuBar.h"
@@ -52,6 +53,12 @@ public:
     static void waitWindowOpened(HI::GUITestOpStatus &os, const QString &windowNamePart, qint64 timeout = 180000);
 
     static bool isTabbedLayout(HI::GUITestOpStatus &os);
+
+    static QTabBar* getTabBar(HI::GUITestOpStatus &os);
+    static int      getCurrentTab(HI::GUITestOpStatus &os);
+    static int      getCurrentTab(QTabBar* tabBar);
+    static void     clickTab(HI::GUITestOpStatus &os, int tabIndex);
+    static void     clickTab(QTabBar* tabBar, int tabIndex);
 };
 
 } // namespace
