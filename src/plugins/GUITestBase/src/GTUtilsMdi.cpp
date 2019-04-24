@@ -329,29 +329,16 @@ bool GTUtilsMdi::isAnyPartOfWindowVisible(HI::GUITestOpStatus &os, const QString
 
 #define GT_METHOD_NAME "getTabBar"
 QTabBar* GTUtilsMdi::getTabBar(HI::GUITestOpStatus &os) {
-    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    QList<QMdiArea *> listArea = mw->findChildren<QMdiArea *>();
+    MainWindow* mainWindow = AppContext::getMainWindow();
+    GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == nullptr", NULL);
 
-    GT_CHECK_RESULT(listArea.size() > 0, "listArea.size() <= 0", NULL);
-    QList<QTabBar *> tabBarList = listArea.at(0)->findChildren<QTabBar *>();
+    QMdiArea *mdiArea = GTWidget::findExactWidget<QMdiArea *>(os, "MDI_Area", mainWindow->getQMainWindow());
+    GT_CHECK_RESULT(mdiArea != nullptr, "mdiArea == nullptr", NULL);
 
-    GT_CHECK_RESULT(tabBarList.size() > 0, "tabBarList.size() <= 0", NULL);
-    QTabBar* wantedTabBar = NULL;
-    for (QTabBar* tabBar: tabBarList) {
-        GT_CHECK_RESULT(tabBar != NULL, "tabBar == NULL", NULL);
-        int count = tabBar->count();
-        for (int i = 0; i < count; i++) {
-            QString text = tabBar->tabText(i);
-            if (QString::compare(text, "Start Page") == 0) {
-                // We found TabBar !
-                wantedTabBar = tabBar;
-                coreLog.info(QString("TabBar was found"));
-                break;
-            }
-        }
-    }
-    GT_CHECK_RESULT(wantedTabBar != NULL, "TabBar was not found", NULL);
-    return wantedTabBar;
+    QTabBar *tabBar = mdiArea->findChild<QTabBar *>("", Qt::FindDirectChildrenOnly);
+    GT_CHECK_RESULT(tabBar != nullptr, "MDI tabbar not found", NULL);
+
+    return tabBar;
 }
 #undef GT_METHOD_NAME
 
