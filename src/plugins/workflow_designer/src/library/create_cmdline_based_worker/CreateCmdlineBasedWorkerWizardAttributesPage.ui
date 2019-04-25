@@ -49,7 +49,7 @@
      <item>
       <widget class="QPushButton" name="pbAdd">
        <property name="text">
-        <string>Add attribute</string>
+        <string>Add parameter</string>
        </property>
       </widget>
      </item>
