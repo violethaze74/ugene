@@ -264,7 +264,7 @@ QVariant CfgExternalToolModel::headerData(int section, Qt::Orientation orientati
     return QVariant();
 }
 
-bool CfgExternalToolModel::insertRows(int /*row*/, int /*count*/, const QModelIndex & parent) {
+bool CfgExternalToolModel::insertRows(int /*row*/, int /*count*/, const QModelIndex &parent) {
     beginInsertRows(parent, items.size(), items.size());
     CfgExternalToolItem *newItem = new CfgExternalToolItem();
     newItem->delegateForTypes = new ComboBoxDelegate(types);
@@ -274,15 +274,17 @@ bool CfgExternalToolModel::insertRows(int /*row*/, int /*count*/, const QModelIn
     return true;
 }
 
-bool CfgExternalToolModel::removeRows(int row, int /*count*/, const QModelIndex & parent) {
-    if (row >= 0 && row < items.size()) {
-        beginRemoveRows(parent, row, row);
-        items.removeAt(row);
-        endRemoveRows();
-        return true;
-    } else {
-        return false;
+bool CfgExternalToolModel::removeRows(int row, int count, const QModelIndex &parent) {
+    CHECK(0 <= row && row < items.size(), false);
+    CHECK(0 <= row + count - 1 && row + count - 1 < items.size(), false);
+    CHECK(0 < count, false);
+
+    beginRemoveRows(parent, row, row + count - 1);
+    for (int i = row + count - 1; i >= row; --i) {
+        delete items.takeAt(i);
     }
+    endRemoveRows();
+    return true;
 }
 
 void CfgExternalToolModel::init() {
@@ -408,6 +410,7 @@ CfgExternalToolModelAttributes::CfgExternalToolModelAttributes() {
     types["Boolean"] = "Boolean";
     delegate = new ComboBoxDelegate(types);
 }
+
 CfgExternalToolModelAttributes::~CfgExternalToolModelAttributes() {
     foreach(AttributeItem* item, items) {
         delete item;
@@ -543,15 +546,17 @@ bool CfgExternalToolModelAttributes::insertRows(int /*row*/, int /*count*/, cons
     return true;
 }
 
-bool CfgExternalToolModelAttributes::removeRows(int row, int /*count*/, const QModelIndex & parent) {
-    if (row >= 0 && row < items.size()) {
-        beginRemoveRows(parent, row, row);
-        items.removeAt(row);
-        endRemoveRows();
-        return true;
-    } else {
-        return false;
+bool CfgExternalToolModelAttributes::removeRows(int row, int count, const QModelIndex & parent) {
+    CHECK(0 <= row && row < items.size(), false);
+    CHECK(0 <= row + count - 1 && row + count - 1 < items.size(), false);
+    CHECK(0 < count, false);
+
+    beginRemoveRows(parent, row, row + count - 1);
+    for (int i = row + count - 1; i >= row; --i) {
+        delete items.takeAt(i);
     }
+    endRemoveRows();
+    return true;
 }
 
 } // U2

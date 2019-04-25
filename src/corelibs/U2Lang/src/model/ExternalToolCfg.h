@@ -76,8 +76,8 @@ public:
     QString filePath;
 
     bool operator ==(const ExternalProcessConfig &other) const;
+    bool operator !=(const ExternalProcessConfig &other) const;
 };
-
 
 class U2LANG_EXPORT ExternalToolCfgRegistry: public QObject {
     Q_OBJECT
@@ -111,5 +111,8 @@ private:
 };
 
 }
+
+Q_DECLARE_METATYPE(U2::AttributeConfig)
+Q_DECLARE_METATYPE(U2::DataConfig)
 
 #endif // ExternalToolCfg_h__

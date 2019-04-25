@@ -95,4 +95,8 @@ bool ExternalProcessConfig::operator ==(const ExternalProcessConfig &other) cons
     return true;
 }
 
+bool ExternalProcessConfig::operator !=(const ExternalProcessConfig &other) const {
+    return !operator==(other);
+}
+
 } // U2
