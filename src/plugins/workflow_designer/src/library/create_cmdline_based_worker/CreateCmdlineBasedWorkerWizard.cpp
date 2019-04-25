@@ -93,7 +93,7 @@ void CreateCmdlineBasedWorkerWizard::accept() {
     if (nullptr != initialConfig && *initialConfig != *actualConfig) {
         int res = QMessageBox::question(this,
                                         tr("Warning"),
-                                        tr("You have changed the structure of the element (name, slots, attributes' names and types). "
+                                        tr("You have changed the structure of the element (name, slots, parameters' names and types). "
                                            "All elements on the scene would be removed. Do you really want to change it?\n"
                                            "You could also reset the dialog to the initial state."),
                                         QMessageBox::Yes | QMessageBox::No | QMessageBox::Reset,
