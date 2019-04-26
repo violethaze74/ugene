@@ -144,6 +144,7 @@ public:
     CreateCmdlineBasedWorkerWizardCommandTemplatePage(ExternalProcessConfig *initialConfig);
 
     void initializePage() override;
+    bool isComplete() const override;
     bool validatePage() override;
 
 private:

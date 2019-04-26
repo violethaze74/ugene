@@ -458,13 +458,18 @@ CreateCmdlineBasedWorkerWizardCommandTemplatePage::CreateCmdlineBasedWorkerWizar
 {
     setupUi(this);
 
-    registerField(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_FIELD + "*", leTemplate);
+    splitter->setSizes( {10, 10000} );
+
+    teTemplate->setWordWrapMode(QTextOption::WrapAnywhere);
+    teTemplate->document()->setDefaultStyleSheet("span { white-space: pre-wrap; }");
+
+    registerField(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_FIELD + "*", teTemplate, "plainText", SIGNAL(textChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_DESCRIPTION_FIELD, tePrompter, "plainText", SIGNAL(textChanged()));
 }
 
 void CreateCmdlineBasedWorkerWizardCommandTemplatePage::initializePage() {
     if (nullptr != initialConfig) {
-        leTemplate->setText(initialConfig->cmdLine);
+        teTemplate->setText(initialConfig->cmdLine);
         tePrompter->setPlainText(initialConfig->templateDescription);
     } else {
         QString commandTemplate = "<My tool>";
@@ -485,12 +490,16 @@ void CreateCmdlineBasedWorkerWizardCommandTemplatePage::initializePage() {
             commandTemplate += " -p" + QString::number(++i) + " $" + name;
         }
 
-        leTemplate->setText(commandTemplate);
+        teTemplate->setText(commandTemplate);
     }
 }
 
+bool CreateCmdlineBasedWorkerWizardCommandTemplatePage::isComplete() const {
+    return !teTemplate->toPlainText().isEmpty();
+}
+
 bool CreateCmdlineBasedWorkerWizardCommandTemplatePage::validatePage() {
-    const QString commandTemplate = leTemplate->text();
+    const QString commandTemplate = teTemplate->toPlainText();
     QStringList names = field(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD).toStringList() +
                         field(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD).toStringList() +
                         field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD).toStringList();
