@@ -375,7 +375,7 @@ void CfgExternalToolModel::initTypes() {
 /// AttributeItem
 //////////////////////////////////////////////////////////////////////////
 
-QString AttributeItem::getName() const {
+const QString &AttributeItem::getName() const {
     return name;
 }
 
@@ -383,7 +383,7 @@ void AttributeItem::setName(const QString& _name) {
     name = _name;
 }
 
-QString AttributeItem::getDataType() const {
+const QString &AttributeItem::getDataType() const {
     return type;
 }
 
@@ -391,7 +391,15 @@ void AttributeItem::setDataType(const QString &_type) {
     type = _type;
 }
 
-QString AttributeItem::getDescription() const {
+const QString &AttributeItem::getDefaultValue() const {
+    return defaultValue;
+}
+
+void AttributeItem::setDefaultValue(const QString &_defaultValue) {
+    defaultValue = _defaultValue;
+}
+
+const QString &AttributeItem::getDescription() const {
     return description;
 }
 
@@ -448,6 +456,8 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role
             return item->getName();
         case COLUMN_DATA_TYPE:
             return delegate->getDisplayValue(item->getDataType());
+        case COLUMN_DEFAULT_VALUE:
+            return item->getDefaultValue();
         case COLUMN_DESCRIPTION:
             return item->getDescription();
         default:
@@ -468,6 +478,8 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role
             return item->getName();
         case COLUMN_DATA_TYPE:
             return item->getDataType();
+        case COLUMN_DEFAULT_VALUE:
+            return item->getDefaultValue();
         case COLUMN_DESCRIPTION:
             return item->getDescription();
         default:
@@ -501,6 +513,12 @@ bool CfgExternalToolModelAttributes::setData(const QModelIndex &index, const QVa
             }
             break;
         }
+        case COLUMN_DEFAULT_VALUE: {
+            if (item->getDefaultValue() != value.toString()) {
+                item->setDefaultValue(value.toString());
+            }
+            break;
+        }
         case COLUMN_DESCRIPTION:
             if (item->getDescription() != value.toString()) {
                 item->setDescription(value.toString());
@@ -526,6 +544,8 @@ QVariant CfgExternalToolModelAttributes::headerData(int section, Qt::Orientation
             return tr("Name");
         case COLUMN_DATA_TYPE:
             return tr("Type");
+        case COLUMN_DEFAULT_VALUE:
+            return tr("Default value");
         case COLUMN_DESCRIPTION:
             return tr("Description");
         default:
