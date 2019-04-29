@@ -72,7 +72,6 @@ class U2FORMATS_EXPORT  ASNFormat : public DocumentFormat
 public:
     ASNFormat(QObject* p);
     ~ASNFormat();
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PLAIN_ASN;}
     virtual FormatCheckResult checkRawData(const QByteArray& data, const GUrl& = GUrl()) const;
 
 protected:

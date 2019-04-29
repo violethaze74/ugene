@@ -37,8 +37,6 @@ class U2FORMATS_EXPORT  ABIFormat : public DocumentFormat {
 public:
     ABIFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::ABIF;}
-
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:

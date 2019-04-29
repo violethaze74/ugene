@@ -30,7 +30,6 @@ class U2FORMATS_EXPORT DatabaseConnectionFormat : public DocumentFormat {
 public:
     DatabaseConnectionFormat(QObject* p);
 
-    DocumentFormatId getFormatId() const;
     const QString& getFormatName() const;
 
     FormatCheckResult checkRawData(QByteArray const &, GUrl const & = GUrl()) const;

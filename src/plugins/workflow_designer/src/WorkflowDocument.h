@@ -45,7 +45,6 @@ public:
     WorkflowDocFormat(QObject* p);
 
     static const DocumentFormatId FORMAT_ID;
-    virtual DocumentFormatId getFormatId() const {return FORMAT_ID;}
 
     virtual Document* createNewLoadedDocument(IOAdapterFactory* io, const GUrl& url, U2OpStatus& os, const QVariantMap& fs = QVariantMap());
 

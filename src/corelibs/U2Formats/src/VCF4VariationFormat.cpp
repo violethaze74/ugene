@@ -24,7 +24,7 @@
 namespace U2 {
 
 VCF4VariationFormat::VCF4VariationFormat(QObject *p)
-: AbstractVariationFormat(p, QStringList()<<"vcf", true)
+: AbstractVariationFormat(p, BaseDocumentFormats::VCF4, QStringList()<<"vcf", true)
 {
     formatName = QString("VCFv4");
 

@@ -32,8 +32,6 @@ class U2FORMATS_EXPORT SimpleSNPVariationFormat : public AbstractVariationFormat
 public:
     SimpleSNPVariationFormat(QObject *p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::SNP;}
-
 protected:
     virtual bool checkFormatByColumnCount(int columnCount) const;
 };

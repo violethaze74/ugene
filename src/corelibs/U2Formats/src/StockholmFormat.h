@@ -49,10 +49,6 @@ public:
 public:
     StockholmFormat( QObject* obj );
 
-    virtual DocumentFormatId getFormatId() const {
-        return BaseDocumentFormats::STOCKHOLM;
-    }
-
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
     virtual bool isObjectOpSupported( const Document* d , DocumentFormat::DocObjectOp op, GObjectType t ) const;

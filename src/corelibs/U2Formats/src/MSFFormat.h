@@ -38,8 +38,6 @@ public:
 
     MSFFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::MSF; }
-
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);

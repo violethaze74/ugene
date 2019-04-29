@@ -24,7 +24,7 @@
 namespace U2 {
 
 SimpleSNPVariationFormat::SimpleSNPVariationFormat(QObject *p)
-: AbstractVariationFormat(p, QStringList()<<"snp")
+: AbstractVariationFormat(p, BaseDocumentFormats::SNP, QStringList()<<"snp")
 {
     formatName = QString("SimpleSNP");
 

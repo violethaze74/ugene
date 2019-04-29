@@ -30,7 +30,7 @@ namespace U2 {
 /* Base class for all non binary document formats that can be opened in a usual text editor. */
 class U2FORMATS_EXPORT TextDocumentFormat : public DocumentFormat {
 public:
-    TextDocumentFormat(QObject* p, DocumentFormatFlags _flags, const QStringList& fileExts = QStringList());
+    TextDocumentFormat(QObject* p, const DocumentFormatId& id, DocumentFormatFlags _flags, const QStringList& fileExts = QStringList());
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:

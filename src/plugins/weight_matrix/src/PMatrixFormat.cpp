@@ -43,9 +43,7 @@
 
 namespace U2{
 
-const DocumentFormatId PFMatrixFormat::FORMAT_ID = "PFMatrix";
-
-PFMatrixFormat::PFMatrixFormat(QObject* p): DocumentFormat(p, DocumentFormatFlag_SingleObjectFormat, QStringList("pfm")) {
+PFMatrixFormat::PFMatrixFormat(QObject* p): DocumentFormat(p, DocumentFormatId("PFMatrix"), DocumentFormatFlag_SingleObjectFormat, QStringList("pfm")) {
     formatName = tr("Position frequency matrix");
     supportedObjectTypes += PFMatrixObject::TYPE;
     formatDescription = tr("Position frequency matrix file.");
@@ -166,9 +164,7 @@ void OpenPFMatrixViewTask::open(){
 
 ///PWM
 
-const DocumentFormatId PWMatrixFormat::FORMAT_ID = "PWMatrix";
-
-PWMatrixFormat::PWMatrixFormat( QObject* p ): DocumentFormat(p, DocumentFormatFlag_SingleObjectFormat, QStringList("pwm")) {
+PWMatrixFormat::PWMatrixFormat( QObject* p ): DocumentFormat(p, DocumentFormatId("PWMatrix"), DocumentFormatFlag_SingleObjectFormat, QStringList("pwm")) {
     formatName = tr("Position weight matrix");
     supportedObjectTypes += PFMatrixObject::TYPE;
     formatDescription = tr("Position weight matrix file.");

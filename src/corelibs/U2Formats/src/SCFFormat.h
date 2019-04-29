@@ -38,8 +38,6 @@ class U2FORMATS_EXPORT  SCFFormat : public DocumentFormat {
 public:
     SCFFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::SCF;}
-
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
     static void exportDocumentToSCF(const QString& fileName, const DNAChromatogram& cd, const QByteArray& seq, U2OpStatus& ts);

@@ -54,6 +54,12 @@ const QString DocumentMimeData::MIME_TYPE("application/x-ugene-document-mime");
 
 const int DocumentFormat::READ_BUFF_SIZE = 4194304; //4Mb optimal buffer size for reading from network drives
 
+DocumentFormat::DocumentFormat(QObject* p, const DocumentFormatId& _id, DocumentFormatFlags _flags, const QStringList& fileExts) : QObject(p),
+id(_id),
+formatFlags(_flags),
+fileExtensions(fileExts)
+{}
+
 Document* DocumentFormat::createNewLoadedDocument(IOAdapterFactory* iof, const GUrl& url,
     U2OpStatus& os, const QVariantMap& hints) {
     U2DbiRef tmpDbiRef = fetchDbiRef(hints, os);
@@ -160,7 +166,7 @@ bool DocumentFormat::checkConstraints(const DocumentFormatConstraints& c) const 
         return false; // filtered by exclude flags
     }
 
-    if (c.formatsToExclude.contains(getFormatId())) {
+    if (c.formatsToExclude.contains(id)) {
         return false; // format is explicetely excluded
     }
 

@@ -58,7 +58,7 @@ public:
         NoSplit
     };
 
-    AbstractVariationFormat(QObject *p, const QStringList &fileExts, bool _isSupportHeader = false);
+    AbstractVariationFormat(QObject *p, const DocumentFormatId& id, const QStringList &fileExts, bool _isSupportHeader = false);
 
     virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);

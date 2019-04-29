@@ -32,8 +32,6 @@ class U2FORMATS_EXPORT VCF4VariationFormat : public AbstractVariationFormat {
 public:
     VCF4VariationFormat(QObject *p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::VCF4;}
-
 protected:
     virtual bool checkFormatByColumnCount(int columnCount) const;
 };

@@ -43,7 +43,6 @@ class U2FORMATS_EXPORT NEXUSFormat : public TextDocumentFormat {
 public:
     NEXUSFormat(QObject *p);
 
-    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::NEXUS; }
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl& = GUrl()) const;

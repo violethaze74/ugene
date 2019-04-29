@@ -45,7 +45,7 @@ namespace U2
 {
 
 NEXUSFormat::NEXUSFormat(QObject *p) :
-        TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList()<<"nex"<<"nxs")      // disable streaming for now
+        TextDocumentFormat(p, BaseDocumentFormats::NEXUS, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList()<<"nex"<<"nxs")      // disable streaming for now
 {
     formatName = tr("NEXUS");
     formatDescription = tr("Nexus is a multiple alignment and phylogenetic trees file format");
