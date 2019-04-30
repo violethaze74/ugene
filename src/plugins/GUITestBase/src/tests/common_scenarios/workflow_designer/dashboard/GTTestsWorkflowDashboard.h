@@ -64,6 +64,11 @@ GUI_TEST_CLASS_DECLARATION(view_opening_test_0002)
 GUI_TEST_CLASS_DECLARATION(view_opening_test_0003)
 GUI_TEST_CLASS_DECLARATION(view_opening_test_0004)
 
+GUI_TEST_CLASS_DECLARATION(output_dir_scanning_test_0001)
+GUI_TEST_CLASS_DECLARATION(output_dir_scanning_test_0002)
+GUI_TEST_CLASS_DECLARATION(output_dir_scanning_test_0003)
+
+
 #undef GUI_TEST_SUITE
 }   // namespace GUITest_common_scenarios_workflow_dashboard
 
