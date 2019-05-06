@@ -56,8 +56,6 @@ public:
             incorrectScore ||
             incorrectStrand ||
             incorrectFrame ||
-            noGeneIdAttribute ||
-            noTranscriptIdAttribute ||
             incorrectFormatOfAttributes;
     }
 
