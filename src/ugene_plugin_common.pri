@@ -18,9 +18,6 @@ LIBS += -lU2Core$$D -lU2Algorithm$$D -lU2Formats$$D -lU2Gui$$D -lU2View$$D -lU2T
 DESTDIR=../../$$out_dir()/plugins
 PLUGIN_ID=$$join(PLUGIN_ID, "", "", $$D)
 
-# Visual Studio project file name
-QMAKE_PROJECT_NAME=$${PLUGIN_ID}
-
 !debug_and_release|build_pass {
     # Plugin output dir must exist before *.plugin/*.license files generation
     mkpath($$OUT_PWD)

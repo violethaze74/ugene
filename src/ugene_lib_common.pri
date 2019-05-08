@@ -11,6 +11,10 @@ macx : CONFIG -=plugin
 DEFINES+= QT_DLL
 QT += script
 INCLUDEPATH += src _tmp ../../include
+
+# Visual Studio project file name
+QMAKE_PROJECT_NAME=$${MODULE_ID}
+
 MODULE_ID=$$join(MODULE_ID, "", "", $$D)
 TARGET = $${MODULE_ID}
 CONFDIR=$$out_dir()
