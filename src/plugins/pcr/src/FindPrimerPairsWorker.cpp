@@ -140,7 +140,7 @@ void FindPrimerPairsWorkerFactory::init() {
     ActorPrototype * proto = new IntegralBusActorPrototype( desc, p, attrs);
 
     QMap<QString, PropertyDelegate*> delegates;
-    const QString filter = DialogUtils::prepareFileFilter(FindPrimerPairsWorker::tr("Report file"), QStringList("html"), true);
+    QString filter = DialogUtils::prepareFileFilter(FindPrimerPairsWorker::tr("Report file"), QStringList("html"), true);
     DelegateTags tags;
     tags.set("filter", filter);
     tags.set("extensions", QStringList() << "html");

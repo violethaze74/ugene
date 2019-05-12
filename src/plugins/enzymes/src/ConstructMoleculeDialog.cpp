@@ -58,7 +58,7 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     tabWidget->setCurrentIndex(0);
-    const QString coreLengthStr = ConstructMoleculeDialog::tr("core length");
+    QString coreLengthStr = ConstructMoleculeDialog::tr("core length");
 
     foreach(const DNAFragment& frag, fragments) {
         QString fragItem = QString("%1 (%2) %3 [%4 - %5 bp]")
