@@ -108,18 +108,22 @@ private:
 
 class AttributeItem {
 public:
-    QString getName() const;
-    void setName(const QString& _name);
+    const QString &getName() const;
+    void setName(const QString &name);
 
-    QString getDataType() const;
-    void setDataType(const QString &_type);
+    const QString &getDataType() const;
+    void setDataType(const QString &type);
 
-    QString getDescription() const;
-    void setDescription(const QString &_description);
+    const QString &getDefaultValue() const;
+    void setDefaultValue(const QString &defaultValue);
+
+    const QString &getDescription() const;
+    void setDescription(const QString &description);
 
 private:
     QString name;
     QString type;
+    QString defaultValue;
     QString description;
 };
 
@@ -129,7 +133,8 @@ public:
     enum Columns {
         COLUMN_NAME = 0,
         COLUMN_DATA_TYPE = 1,
-        COLUMN_DESCRIPTION = 2,
+        COLUMN_DEFAULT_VALUE = 2,
+        COLUMN_DESCRIPTION = 3,
         COLUMNS_COUNT = COLUMN_DESCRIPTION + 1   // elements count
     };
 

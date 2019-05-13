@@ -252,4 +252,8 @@ void DbFolderUrlContainer::setRecursive(bool value) {
     recursive = value;
 }
 
+URLContainerVisitor::~URLContainerVisitor() {
+    // do nothing
+}
+
 } // U2

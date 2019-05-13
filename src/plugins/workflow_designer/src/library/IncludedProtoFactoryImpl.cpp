@@ -152,16 +152,16 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
         if(acfg.type == "URL") {
             type = BaseTypes::STRING_TYPE();
             delegates[acfg.attrName] = new URLDelegate("All Files(*.*)","");
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type);
+            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if(acfg.type == "String") {
             type = BaseTypes::STRING_TYPE();
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type);
+            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if(acfg.type == "Number") {
             type = BaseTypes::NUM_TYPE();
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type);
+            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if(acfg.type == "Boolean") {
             type = BaseTypes::BOOL_TYPE();
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type, false, QVariant(false));
+            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type, Attribute::None, (acfg.defaultValue == "true" ? QVariant(true) : QVariant(false)));
         }
 
         //attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, acfg.type), type);

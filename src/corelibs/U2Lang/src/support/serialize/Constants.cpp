@@ -74,6 +74,7 @@ const QString Constants::ATTRIBUTES_START      = ".attributes";
 const QString Constants::TYPE_PORT             = "type";
 const QString Constants::FORMAT_PORT           = "format";
 const QString Constants::CMDLINE               = "cmdline";
+const QString Constants::DEFAULT_VALUE         = "default-value";
 const QString Constants::DESCRIPTION           = "description";
 const QString Constants::PROMPTER              = "templatedescription";
 const QString Constants::COMMA                 = ",";

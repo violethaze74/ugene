@@ -66,8 +66,9 @@ bool DataConfig::operator ==(const DataConfig &other) const {
 
 bool AttributeConfig::operator ==(const AttributeConfig &other) const {
     return attrName == other.attrName
-        && type == other.type
-        && description == other.description;
+            && type == other.type
+            && defaultValue == other.defaultValue
+            && description == other.description;
 }
 
 #define CHECK_EQ(expr1, expr2) \
