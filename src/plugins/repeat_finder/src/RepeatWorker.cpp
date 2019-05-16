@@ -67,7 +67,7 @@ static const QString USE_MIN_DISTANCE_ATTR("use-mindistance");
 const QString RepeatWorkerFactory::ACTOR_ID("repeats-search");
 
 void RepeatWorkerFactory::init() {
-    QList<PortDescriptor*> p; 
+    QList<PortDescriptor*> p;
     QList<Attribute*> a;
 
     {
@@ -140,12 +140,12 @@ void RepeatWorkerFactory::init() {
     delegates[USE_MIN_DISTANCE_ATTR] = new ComboBoxWithBoolsDelegate();
     delegates[USE_MAX_DISTANCE_ATTR] = new ComboBoxWithBoolsDelegate();
 
-    QVariantMap minDistProperties; 
+    QVariantMap minDistProperties;
     minDistProperties["minimum"] = 0;
     minDistProperties["maximum"] = INT_MAX;
     minDistProperties["suffix"] = L10N::suffixBp();
     delegates[MIN_DIST_ATTR] = new SpinBoxDelegate(minDistProperties);
-    
+
     QVariantMap maxDistProperties;
     maxDistProperties["minimum"] = 1;
     maxDistProperties["maximum"] = INT_MAX;
@@ -159,13 +159,13 @@ void RepeatWorkerFactory::init() {
     lengthProperties["specialValueText"] = RepeatWorker::tr("Any");
     delegates[LEN_ATTR] = new SpinBoxDelegate(lengthProperties);
 
-    QVariantMap identityProperties; 
+    QVariantMap identityProperties;
     identityProperties["minimum"] = 50;
     identityProperties["maximum"] = 100;
     identityProperties["suffix"] = "%";
     delegates[IDENTITY_ATTR] = new SpinBoxDelegate(identityProperties);
-    
-    QVariantMap threadProperties; 
+
+    QVariantMap threadProperties;
     threadProperties["specialValueText"] = "Auto";
     delegates[THREADS_ATTR] = new SpinBoxDelegate(threadProperties);
 

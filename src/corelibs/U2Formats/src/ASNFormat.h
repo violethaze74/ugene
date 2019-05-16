@@ -150,7 +150,7 @@ private:
     };
 
     struct AsnBioStructError : public AsnBaseException {
-        AsnBioStructError( const QString& what ) 
+        AsnBioStructError( const QString& what )
             : AsnBaseException(ASNFormat::tr("biostruct3d obj loading error: %1").arg(what) ){}
     };
 

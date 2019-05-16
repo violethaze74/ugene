@@ -149,10 +149,10 @@ public:
 
     /* Returns localized format name. */
     const QString& getFormatName() const {return formatName;}
-    
+
     /* Returns localized format description. */
     const QString& getFormatDescription() const {return formatDescription;}
-    
+
 
     /* returns list of usual file extensions for the format
        Example: "fa", "fasta", "gb" ...

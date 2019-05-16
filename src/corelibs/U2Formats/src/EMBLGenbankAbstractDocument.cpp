@@ -270,7 +270,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
         return;
     }
     writeLockReason = QObject::tr("Document sequences were merged");
-    
+
     U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(os);
     dbiObjects.objects << u2seq.id;
 
