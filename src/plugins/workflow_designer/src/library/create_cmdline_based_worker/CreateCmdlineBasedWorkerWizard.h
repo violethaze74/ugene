@@ -53,6 +53,7 @@ public:
     static const QString OUTPUTS_DATA_FIELD;
     static const QString OUTPUTS_NAMES_FIELD;
     static const QString WORKER_DESCRIPTION_FIELD;
+    static const QString WORKER_ID_FIELD;
     static const QString WORKER_NAME_FIELD;
 
 private slots:
@@ -71,10 +72,12 @@ public:
     CreateCmdlineBasedWorkerWizardNamePage(ExternalProcessConfig *initialConfig);
 
     void initializePage() override;
-    bool isComplete() const override;
+    bool validatePage() override;
 
 private:
     ExternalProcessConfig *initialConfig;
+
+    static char const * const WORKER_ID_PROPERTY;
 };
 
 class CreateCmdlineBasedWorkerWizardInputOutputPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardInputOutputPage {

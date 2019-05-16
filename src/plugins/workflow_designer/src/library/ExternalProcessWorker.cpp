@@ -205,6 +205,15 @@ namespace {
     }
 } // namespace
 
+ExternalProcessWorker::ExternalProcessWorker(Actor *a)
+    : BaseWorker(a, false),
+      output(nullptr)
+{
+    ExternalToolCfgRegistry *reg = WorkflowEnv::getExternalCfgRegistry();
+    cfg = reg->getConfigById(actor->getProto()->getId());
+    commandLine = cfg->cmdLine;
+}
+
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
         int pos = execString.indexOf(QRegExp("\\$" + a->getDisplayName() + "(\\W|$)"));
@@ -431,7 +440,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
         }
     }
 
-    DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(OUTPUT_PORT_TYPE + cfg->name);
+    DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(OUTPUT_PORT_TYPE + cfg->id);
 
     if (seqsForMergingBySlotId.isEmpty()) {
         output->put(Message(dataType, v));
@@ -617,7 +626,7 @@ QMap<QString, DataConfig> LaunchExternalToolTask::takeOutputUrls() {
 /* ExternalProcessWorkerPrompter */
 /************************************************************************/
 QString ExternalProcessWorkerPrompter::composeRichDoc() {
-    ExternalProcessConfig *cfg = WorkflowEnv::getExternalCfgRegistry()->getConfigByName(target->getProto()->getId());
+    ExternalProcessConfig *cfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(target->getProto()->getId());
     assert(cfg);
     QString doc = cfg->templateDescription;
 

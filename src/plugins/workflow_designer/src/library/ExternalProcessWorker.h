@@ -36,11 +36,8 @@ namespace LocalWorkflow {
 class ExternalProcessWorker: public BaseWorker {
     Q_OBJECT
 public:
-    ExternalProcessWorker(Actor *a): BaseWorker(a, false), output(NULL) {
-        ExternalToolCfgRegistry * reg = WorkflowEnv::getExternalCfgRegistry();
-        cfg = reg->getConfigByName(actor->getProto()->getId());
-        commandLine = cfg->cmdLine;
-    }
+    ExternalProcessWorker(Actor *a);
+
     bool isReady() const;
     Task* tick();
     void init();

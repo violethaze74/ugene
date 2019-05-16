@@ -84,8 +84,8 @@ bool IncludedProtoFactory::isRegistered(const QString &actorName) {
     }
 }
 
-bool IncludedProtoFactory::isRegisteredTheSameProto(const QString &actorName, ActorPrototype *proto) {
-    ActorPrototype *regProto = WorkflowEnv::getProtoRegistry()->getProto(actorName);
+bool IncludedProtoFactory::isRegisteredTheSameProto(const QString &actorId, ActorPrototype *proto) {
+    ActorPrototype *regProto = WorkflowEnv::getProtoRegistry()->getProto(actorId);
     assert(NULL != proto);
 
     // compare simple proto parameters

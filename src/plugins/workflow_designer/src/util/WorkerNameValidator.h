@@ -19,23 +19,34 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKERNAMEVALIDATOR_H_
-#define _U2_WORKERNAMEVALIDATOR_H_
+#ifndef _U2_WORKER_NAME_VALIDATOR_H_
+#define _U2_WORKER_NAME_VALIDATOR_H_
 
 #include <QValidator>
 
 namespace U2 {
 
 /**
- * The class for validating worker names:
- * only English names.
+ * The worker name can't contain '=' and '"' because of parser restrictions.
+ * Also it shouldn't be empty.
  */
 class WorkerNameValidator : public QValidator {
 public:
-    WorkerNameValidator(QObject *parent = NULL);
+    WorkerNameValidator(QObject *parent = nullptr);
+
     State validate(QString &input, int &pos) const;
+};
+
+/**
+ * The class for validating worker names:
+ * only English names.
+ */
+class DeprecatedWorkerNameValidator : public QValidator {
+public:
+    DeprecatedWorkerNameValidator(QObject *parent = nullptr);
+    State validate(QString &input, int &pos) const override;
 };
 
 } // U2
 
-#endif // _U2_WORKERNAMEVALIDATOR_H_
+#endif // _U2_WORKER_NAME_VALIDATOR_H_

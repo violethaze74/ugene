@@ -199,13 +199,13 @@ static bool getAbsoluteIncludePath(QString &path) {
 void HRSchemaSerializer::parseIncludes(Tokenizer &tokenizer, QList<QString> includedUrls) {
     tokenizer.assertToken(Constants::INCLUDE);
     QString path = tokenizer.take();
-    QString actorName;
+    QString actorId;
     bool includeAs = false;
     QString tok = tokenizer.look();
     if (Constants::INCLUDE_AS == tok) {
         tokenizer.assertToken(Constants::INCLUDE_AS);
         includeAs = true;
-        actorName = tokenizer.take();
+        actorId = tokenizer.take();
     }
 
     if (!getAbsoluteIncludePath(path)) {
@@ -241,9 +241,9 @@ void HRSchemaSerializer::parseIncludes(Tokenizer &tokenizer, QList<QString> incl
                 throw ReadFailed(tr("File '%1' contains mistakes").arg(path));
             }
             if (includeAs) {
-                cfg->name = actorName;
+                cfg->id = actorId;
             } else {
-                actorName = cfg->name;
+                actorId = cfg->id;
             }
             cfg->filePath = path;
             proto = IncludedProtoFactory::getExternalToolProto(cfg);
@@ -260,18 +260,18 @@ void HRSchemaSerializer::parseIncludes(Tokenizer &tokenizer, QList<QString> incl
             error = string2Schema(rawData, schema, NULL, &procMap, newUrlList);
             if (NULL != schema && error.isEmpty()) {
                 if (includeAs) {
-                    schema->setTypeName(actorName);
+                    schema->setTypeName(actorId);
                 } else {
-                    actorName = schema->getTypeName();
+                    actorId = schema->getTypeName();
                 }
-                proto = IncludedProtoFactory::getSchemaActorProto(schema, actorName, path);
+                proto = IncludedProtoFactory::getSchemaActorProto(schema, actorId, path);
             }
         }
     } else if(rawData.startsWith(Constants::OLD_XML_HEADER)) {
         includeType = SCRIPT;
-        proto = ScriptWorkerSerializer::string2actor(rawData, actorName, error, path);
+        proto = ScriptWorkerSerializer::string2actor(rawData, actorId, error, path);
         if (!includeAs && NULL != proto) {
-            actorName = proto->getDisplayName();
+            actorId = proto->getDisplayName();
         }
     } else {
         throw ReadFailed(tr("Unknown file format: '%1'").arg(path));
@@ -281,10 +281,10 @@ void HRSchemaSerializer::parseIncludes(Tokenizer &tokenizer, QList<QString> incl
     }
 
     // register the new proto
-    if (IncludedProtoFactory::isRegistered(actorName)) {
-        bool isEqualProtos = IncludedProtoFactory::isRegisteredTheSameProto(actorName, proto);
+    if (IncludedProtoFactory::isRegistered(actorId)) {
+        bool isEqualProtos = IncludedProtoFactory::isRegisteredTheSameProto(actorId, proto);
         if (!isEqualProtos) {
-            throw ReadFailed( QString("Another worker with this name is already registered: %1").arg(actorName) );
+            throw ReadFailed( QString("Another worker with ID '%1' is already registered: %1").arg(actorId) );
         }
     } else {
         WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_INCLUDES(), proto);
@@ -292,9 +292,9 @@ void HRSchemaSerializer::parseIncludes(Tokenizer &tokenizer, QList<QString> incl
             WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(cfg);
             IncludedProtoFactory::registerExternalToolWorker(cfg);
         } else if (SCRIPT == includeType) {
-            IncludedProtoFactory::registerScriptWorker(actorName);
+            IncludedProtoFactory::registerScriptWorker(actorId);
         } else if (SCHEMA == includeType) {
-            WorkflowEnv::getSchemaActorsRegistry()->registerSchema(actorName, schema);
+            WorkflowEnv::getSchemaActorsRegistry()->registerSchema(actorId, schema);
         }
     }
 }
@@ -1329,7 +1329,7 @@ void HRSchemaSerializer::parseAttributes(Tokenizer & tokenizer, QList<AttributeC
 
 ExternalProcessConfig*  HRSchemaSerializer::parseActorBody(Tokenizer & tokenizer) {
     ExternalProcessConfig *cfg = new ExternalProcessConfig();
-    cfg->name = tokenizer.take();
+    cfg->id = tokenizer.take();
     while(tokenizer.notEmpty() && tokenizer.look() != Constants::BLOCK_END) {
         QString tok = tokenizer.take();
         QString next = tokenizer.look();
@@ -1350,6 +1350,9 @@ ExternalProcessConfig*  HRSchemaSerializer::parseActorBody(Tokenizer & tokenizer
             /*Actor * proc = HRSchemaSerializer::parseElementsDefinition(tokenizer, tok, data.actorMap, data.idMap);
             data.schema->addProcess(proc);
             tokenizer.assertToken(HRSchemaSerializer::BLOCK_END);*/
+        } else if(tok == Constants::NAME_ATTR) {
+            tokenizer.assertToken(Constants::COLON);
+            cfg->name = tokenizer.take();
         } else if(tok == Constants::CMDLINE) {
             tokenizer.assertToken(Constants::COLON);
             cfg->cmdLine = tokenizer.take();
@@ -1363,6 +1366,12 @@ ExternalProcessConfig*  HRSchemaSerializer::parseActorBody(Tokenizer & tokenizer
             throw ReadFailed(Constants::UNDEFINED_CONSTRUCT.arg(tok).arg(next));
         }
     }
+
+    if (cfg->name.isEmpty()) {
+        // Name is absent in old config files, ID was used as worker name.
+        cfg->name = cfg->id;
+    }
+
     return cfg;
 }
 
@@ -2011,10 +2020,11 @@ static QString attributesDefinition(const QList<AttributeConfig> &attrs) {
 
 QString HRSchemaSerializer::actor2String(ExternalProcessConfig *cfg ) {
     QString res = Constants::HEADER_LINE + "\n";
-    res += "\"" + cfg->name + "\" {\n";
+    res += "\"" + cfg->id + "\" {\n";
     res += inputsDefenition(cfg->inputs);
     res += outputsDefenition(cfg->outputs);
     res += attributesDefinition(cfg->attrs);
+    res += Constants::TAB + Constants::NAME_ATTR + ":\"" + cfg->name + "\";\n";
     res += Constants::TAB + Constants::CMDLINE + ":\"" + cfg->cmdLine + "\";\n";
     if(!cfg->description.isEmpty()) {
         res += Constants::TAB + Constants::DESCRIPTION + ":\"" + cfg->description + "\";\n";

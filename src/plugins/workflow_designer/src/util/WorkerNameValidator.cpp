@@ -19,17 +19,32 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/U2SafePoints.h>
+
 #include "WorkerNameValidator.h"
 
 namespace U2 {
 
-WorkerNameValidator::WorkerNameValidator(QObject *parent)
-: QValidator(parent)
+WorkerNameValidator::WorkerNameValidator(QObject *_parent)
+    : QValidator(_parent)
 {
 
 }
 
 QValidator::State WorkerNameValidator::validate(QString &input, int & /*pos*/) const {
+    CHECK(!input.isEmpty(), Intermediate);
+    CHECK(!input.contains('='), Invalid);
+    CHECK(!input.contains('\"'), Invalid);
+    return Acceptable;
+}
+
+DeprecatedWorkerNameValidator::DeprecatedWorkerNameValidator(QObject *parent)
+: QValidator(parent)
+{
+
+}
+
+QValidator::State DeprecatedWorkerNameValidator::validate(QString &input, int & /*pos*/) const {
     QRegExp rx("[^0-9\\s_\\-a-zA-Z]");
     if (-1 != rx.indexIn(input)) {
         return Invalid;

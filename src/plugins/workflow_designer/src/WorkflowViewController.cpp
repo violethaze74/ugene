@@ -868,7 +868,7 @@ void WorkflowView::sl_externalAction() {
     if (dlg->result() == QDialog::Accepted) {
         QScopedPointer<ExternalProcessConfig> cfg(dlg->takeConfig());
         if (LocalWorkflow::ExternalProcessWorkerFactory::init(cfg.data())) {
-            ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(cfg->name);
+            ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(cfg->id);
             QRectF rect = scene->sceneRect();
             addProcess(createActor(proto, QVariantMap()), rect.center());
             cfg.take();
@@ -917,15 +917,15 @@ void WorkflowView::sl_appendExternalToolWorker() {
 
         QScopedPointer<ExternalProcessConfig> cfg(HRSchemaSerializer::string2Actor(data.data()));
         if(cfg.data()) {
-            if (WorkflowEnv::getProtoRegistry()->getProto(cfg->name)) {
-                coreLog.error("Element with this name already exists");
+            if (WorkflowEnv::getProtoRegistry()->getProto(cfg->id)) {
+                coreLog.error(QString("Element with ID '%1' already exists").arg(cfg->id));
             } else {
                 U2OpStatus2Log os;
                 QString internalUrl = copyIntoUgene(url, os);
                 CHECK_OP(os, );
                 cfg->filePath = internalUrl;
                 LocalWorkflow::ExternalProcessWorkerFactory::init(cfg.data());
-                ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(cfg->name);
+                ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(cfg->id);
                 QRectF rect = scene->sceneRect();
                 addProcess(createActor(proto, QVariantMap()), rect.center());
                 cfg.take();
@@ -959,7 +959,7 @@ void WorkflowView::sl_editExternalTool() {
     if (selectedActors.size() == 1) {
         ActorPrototype *proto = selectedActors.first()->getProto();
 
-        ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigByName(proto->getId());
+        ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(proto->getId());
         QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(new ExternalProcessConfig(*oldCfg), this);
         dlg->exec();
         CHECK(!dlg.isNull(), );
@@ -968,7 +968,7 @@ void WorkflowView::sl_editExternalTool() {
             QScopedPointer<ExternalProcessConfig> newCfg(dlg->takeConfig());
 
             if (*oldCfg != *newCfg) {
-                if (oldCfg->name != newCfg->name) {
+                if (oldCfg->id != newCfg->id) {
                     if (!QFile::remove(proto->getFilePath())) {
                         uiLog.error(tr("Can't remove element %1").arg(proto->getDisplayName()));
                     }
@@ -979,7 +979,7 @@ void WorkflowView::sl_editExternalTool() {
 
                 LocalWorkflow::ExternalProcessWorkerFactory::init(newCfg.data());
             }
-            WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(oldCfg->name);
+            WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(oldCfg->id);
             WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(newCfg.take());
             scene->sl_updateDocs();
         }
