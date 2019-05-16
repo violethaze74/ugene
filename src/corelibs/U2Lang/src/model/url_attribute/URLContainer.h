@@ -138,6 +138,8 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 class U2LANG_EXPORT URLContainerVisitor {
 public:
+    virtual ~URLContainerVisitor();
+
     virtual void visit(FileUrlContainer *) = 0;
     virtual void visit(DirUrlContainer *) = 0;
     virtual void visit(DbObjUrlContainer *) = 0;

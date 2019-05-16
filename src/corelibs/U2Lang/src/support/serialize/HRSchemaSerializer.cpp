@@ -1321,6 +1321,7 @@ void HRSchemaSerializer::parseAttributes(Tokenizer & tokenizer, QList<AttributeC
         tokenizer.assertToken(Constants::BLOCK_START);
         ParsedPairs pairs(tokenizer);
         cfg.type = pairs.equalPairs.take(Constants::TYPE_PORT);
+        cfg.defaultValue = pairs.equalPairs.take(Constants::DEFAULT_VALUE);
         cfg.description = pairs.equalPairs.take(Constants::DESCRIPTION);
         tokenizer.assertToken(Constants::BLOCK_END);
         attrs << cfg;
@@ -2009,8 +2010,11 @@ static QString attributesDefinition(const QList<AttributeConfig> &attrs) {
     foreach(const AttributeConfig &cfg, attrs) {
         res += Constants::TAB + Constants::TAB + cfg.attrName + " {\n";
         res += Constants::TAB + Constants::TAB + Constants::TAB + "type:" + cfg.type + ";\n";
-        if(!cfg.description.isEmpty()) {
-            res += Constants::TAB + Constants::TAB + Constants::TAB + "description:\"" + cfg.description + "\";\n";
+        if (!cfg.defaultValue.isEmpty()) {
+            res += Constants::TAB + Constants::TAB + Constants::TAB + Constants::DEFAULT_VALUE + ":" + cfg.defaultValue + ";\n";
+        }
+        if (!cfg.description.isEmpty()) {
+            res += Constants::TAB + Constants::TAB + Constants::TAB + Constants::DESCRIPTION + Constants::COLON + Constants::QUOTE + cfg.description + Constants::QUOTE + Constants::SEMICOLON + Constants::NEW_LINE;
         }
         res += Constants::TAB + Constants::TAB + "}\n";
     }

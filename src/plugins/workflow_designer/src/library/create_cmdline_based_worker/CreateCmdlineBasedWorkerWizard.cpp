@@ -425,6 +425,7 @@ void CreateCmdlineBasedWorkerWizardAttributesPage::sl_updateAttributes() {
         AttributeConfig attributeConfig;
         attributeConfig.attrName = item->getName();
         attributeConfig.type = item->getDataType();
+        attributeConfig.defaultValue = item->getDefaultValue();
         attributeConfig.description = item->getDescription();
         data << attributeConfig;
         names << item->getName();
@@ -447,6 +448,9 @@ void CreateCmdlineBasedWorkerWizardAttributesPage::initModel(QAbstractItemModel 
 
         index = model->index(row, CfgExternalToolModelAttributes::COLUMN_DATA_TYPE);
         model->setData(index, attributeConfig.type);
+
+        index = model->index(row, CfgExternalToolModelAttributes::COLUMN_DEFAULT_VALUE);
+        model->setData(index, attributeConfig.defaultValue);
 
         index = model->index(row, CfgExternalToolModelAttributes::COLUMN_DESCRIPTION);
         model->setData(index, attributeConfig.description);

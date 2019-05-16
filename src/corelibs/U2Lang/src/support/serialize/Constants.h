@@ -79,6 +79,7 @@ public:
     static const QString TYPE_PORT;
     static const QString FORMAT_PORT;
     static const QString CMDLINE;
+    static const QString DEFAULT_VALUE;
     static const QString DESCRIPTION;
     static const QString PROMPTER;
     static const QString COMMA;

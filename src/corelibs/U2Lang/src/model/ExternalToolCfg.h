@@ -58,6 +58,7 @@ class U2LANG_EXPORT AttributeConfig {
 public:
     QString attrName;
     QString type;
+    QString defaultValue;
     QString description;
     //PropertyDelegate *delegate;
 
