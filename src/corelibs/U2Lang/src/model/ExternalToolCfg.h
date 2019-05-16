@@ -70,6 +70,7 @@ public:
     QList<DataConfig> outputs;
     QList<AttributeConfig> attrs;
     QString cmdLine;
+    QString id;
     QString name;
     QString description;
     QString templateDescription;
@@ -84,30 +85,32 @@ class U2LANG_EXPORT ExternalToolCfgRegistry: public QObject {
 public:
     ExternalToolCfgRegistry(QObject *p = NULL): QObject(p) {}
     bool registerExternalTool(ExternalProcessConfig *cfg) {
-        if(configs.contains(cfg->name)) {
+        if(configs.contains(cfg->id)) {
             return false;
         } else {
-            configs.insert(cfg->name, cfg);
+            configs.insert(cfg->id, cfg);
             return true;
         }
     }
-    ExternalProcessConfig *getConfigByName(const QString& name) const {
-        if(configs.contains(name)) {
-            return configs.value(name);
+
+    ExternalProcessConfig *getConfigById(const QString& id) const {
+        if(configs.contains(id)) {
+            return configs.value(id);
         } else {
             return NULL;
         }
     }
-    void unregisterConfig(const QString &name) {
-        configs.remove(name);
+
+    void unregisterConfig(const QString &id) {
+        configs.remove(id);
     }
+
     QList<ExternalProcessConfig*> getConfigs() const {
         return configs.values();
     }
 
 private:
     QMap<QString, ExternalProcessConfig*> configs;
-
 };
 
 }

@@ -38,7 +38,7 @@ class ExternalProcessWorker: public BaseWorker {
 public:
     ExternalProcessWorker(Actor *a): BaseWorker(a, false), output(NULL) {
         ExternalToolCfgRegistry * reg = WorkflowEnv::getExternalCfgRegistry();
-        cfg = reg->getConfigByName(actor->getProto()->getId());
+        cfg = reg->getConfigById(actor->getProto()->getId());
         commandLine = cfg->cmdLine;
     }
     bool isReady() const;

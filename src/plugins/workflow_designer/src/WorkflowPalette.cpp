@@ -485,11 +485,12 @@ void WorkflowPaletteElements::sl_selectProcess(bool checked) {
 
 void WorkflowPaletteElements::editElement() {
     ActorPrototype *proto = currentAction->data().value<ActorPrototype *>();
-    QString oldName = proto->getDisplayName();
+    QString oldId = proto->getId();
     ActorPrototypeRegistry *reg = WorkflowEnv::getProtoRegistry();
     QMap<Descriptor, QList<ActorPrototype*> > categories = reg->getProtos();
 
     if(categories.value(BaseActorCategories::CATEGORY_SCRIPT()).contains(proto)) {
+        QString oldName = proto->getDisplayName();
         QObjectScopedPointer<CreateScriptElementDialog> dlg = new CreateScriptElementDialog(this, proto);
         dlg->exec();
         CHECK(!dlg.isNull(), );
@@ -514,7 +515,7 @@ void WorkflowPaletteElements::editElement() {
             LocalWorkflow::ScriptWorkerFactory::init(input, output, attrs, name, desc, dlg->getActorFilePath());
         }
     } else { //External process category
-        ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigByName(proto->getId());
+        ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(proto->getId());
         QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(new ExternalProcessConfig(*oldCfg), this);
         dlg->exec();
         CHECK(!dlg.isNull(), );
@@ -524,7 +525,7 @@ void WorkflowPaletteElements::editElement() {
 
             bool deleted = true;
             if (*oldCfg != *newConfig) {
-                if (oldName != newConfig->name) {
+                if (oldId != newConfig->id) {
                     deleted = removeElement();
                 } else {
                     emit si_protoDeleted(proto->getId());
@@ -536,7 +537,7 @@ void WorkflowPaletteElements::editElement() {
             }
 
             if (deleted) {
-                WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(oldName);
+                WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(oldId);
             }
 
             WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(newConfig.take());
