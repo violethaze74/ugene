@@ -132,13 +132,13 @@ void GTUtilsWorkflowDesigner::validateWorkflow(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "runWorkflow"
 void GTUtilsWorkflowDesigner::runWorkflow(HI::GUITestOpStatus &os) {
-    GTWidget::click(os, GTAction::button(os, "Run workflow"));
+    GTWidget::click(os, GTAction::button(os, "Run workflow", GTUtilsMdi::activeWindow(os)));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "stopWorkflow"
 void GTUtilsWorkflowDesigner::stopWorkflow(HI::GUITestOpStatus &os) {
-    GTWidget::click(os, GTAction::button(os, "Stop workflow"));
+    GTWidget::click(os, GTAction::button(os, "Stop workflow", GTUtilsMdi::activeWindow(os)));
 }
 #undef GT_METHOD_NAME
 
@@ -164,10 +164,10 @@ QTreeWidgetItem* GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os,Q
     QTreeWidgetItem* foundItem=NULL;
     QTreeWidget *w;
     if(t==algoriths){
-        w=qobject_cast<QTreeWidget*>(GTWidget::findWidget(os,"WorkflowPaletteElements"));
+        w=qobject_cast<QTreeWidget*>(GTWidget::findWidget(os,"WorkflowPaletteElements",GTUtilsMdi::activeWindow(os)));
     }
     else{
-        w=qobject_cast<QTreeWidget*>(GTWidget::findWidget(os,"samples"));
+        w=qobject_cast<QTreeWidget*>(GTWidget::findWidget(os,"samples",GTUtilsMdi::activeWindow(os)));
     }
     GT_CHECK_RESULT(w!=NULL,"WorkflowPaletteElements is null", NULL);
 
@@ -284,9 +284,9 @@ void GTUtilsWorkflowDesigner::selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidg
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addSample"
-void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &sampName) {
-    expandTabs(os);
-    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs"));
+void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &sampName, QWidget const * const parentWidget) {
+    expandTabs(os, parentWidget);
+    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs", parentWidget));
     GT_CHECK(tabs != NULL, "tabs widget not found");
 
     GTTabWidget::setCurrentIndex(os, tabs, 1);
@@ -295,17 +295,17 @@ void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &
     GTGlobals::sleep(100);
     GT_CHECK(samp != NULL,"sample is NULL");
 
-    selectSample(os, samp);
+    selectSample(os, samp, parentWidget);
     GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectSample"
-void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample) {
+void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget const * const parentWidget) {
     GT_CHECK(sample != NULL, "sample is NULL");
     GTGlobals::sleep(500);
 
-    QTreeWidget *paletteTree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os,"samples"));
+    QTreeWidget *paletteTree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os,"samples",parentWidget));
     paletteTree->scrollToItem(sample);
     GTThread::waitForMainThread();
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, sample));
@@ -315,8 +315,8 @@ void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetI
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "expandTabs"
-void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os){
-    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "WorkflowViewMainSplitter"));
+void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os, QWidget const * const parentWidget){
+    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "WorkflowViewMainSplitter", parentWidget));
     GT_CHECK(splitter, "splitter not found");
     QList<int> s;
     s  = splitter->sizes();
@@ -531,7 +531,7 @@ void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QGraphicsItem* item
 
 #define GT_METHOD_NAME "getWorker"
 WorkflowProcessItem* GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os,QString itemName,const GTGlobals::FindOptions &options){
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
+    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView",GTUtilsMdi::activeWindow(os)));
     GT_CHECK_RESULT(sceneView, "sceneView not found", NULL);
     QList<QGraphicsItem *> items = sceneView->items();
 
@@ -858,7 +858,9 @@ QWidget *GTUtilsWorkflowDesigner::getDatasetsListWidget(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getCurrentDatasetWidget"
 QWidget *GTUtilsWorkflowDesigner::getCurrentDatasetWidget(GUITestOpStatus &os) {
-    QTabWidget* datasetsTabWidget = GTWidget::findExactWidget<QTabWidget *>(os, "DatasetsTabWidget");
+    QTabWidget* datasetsTabWidget = GTWidget::findExactWidget<QTabWidget *>(os
+                                                                            , "DatasetsTabWidget"
+                                                                            , GTUtilsMdi::activeWindow(os));
     GT_CHECK_RESULT(datasetsTabWidget, "DatasetsTabWidget not found", nullptr);
     return datasetsTabWidget->currentWidget();
 }
