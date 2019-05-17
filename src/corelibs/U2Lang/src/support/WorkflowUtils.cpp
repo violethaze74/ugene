@@ -587,10 +587,9 @@ QString WorkflowUtils::getParamIdFromHref(const QString& href) {
     return id;
 }
 
-QString WorkflowUtils::generateWorkerIdFromName(const QString &workerName) {
-    static const QRegularExpression INACCEPTABLE_SYMBOLS("[^a-zA-Z0-9\\-_]");
-    QString id = workerName;
-    id.replace(QRegularExpression("\\s"), "-").replace(INACCEPTABLE_SYMBOLS, "_");
+QString WorkflowUtils::generateIdFromName(const QString &name) {
+    QString id = name;
+    id.replace(QRegularExpression("\\s"), "-").replace(WorkflowEntityValidator::INACCEPTABLE_SYMBOLS_IN_ID, "_");
     return id;
 }
 
@@ -1334,6 +1333,14 @@ QList<TophatSample> WorkflowUtils::unpackSamples(const QString &samplesStr, U2Op
     }
     return result;
 }
+
+const QString WorkflowEntityValidator::NAME_INACCEPTABLE_SYMBOLS_TEMPLATE = "=\\\"";
+const QString WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE = "a-zA-Z0-9\\-_";
+
+const QRegularExpression WorkflowEntityValidator::ACCEPTABLE_NAME("[^" + NAME_INACCEPTABLE_SYMBOLS_TEMPLATE + "]*");
+const QRegularExpression WorkflowEntityValidator::INACCEPTABLE_SYMBOL_IN_NAME("[" + NAME_INACCEPTABLE_SYMBOLS_TEMPLATE + "]");
+const QRegularExpression WorkflowEntityValidator::ACCEPTABLE_ID("[" + ID_ACCEPTABLE_SYMBOLS_TEMPLATE + "]*");
+const QRegularExpression WorkflowEntityValidator::INACCEPTABLE_SYMBOLS_IN_ID("[^" + ID_ACCEPTABLE_SYMBOLS_TEMPLATE + "]");
 
 /*****************************
  * PrompterBaseImpl

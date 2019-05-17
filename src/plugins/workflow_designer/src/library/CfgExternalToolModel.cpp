@@ -27,6 +27,7 @@
 
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "CfgExternalToolModel.h"
 #include "../WorkflowEditorDelegates.h"
@@ -41,18 +42,22 @@ CfgExternalToolItem::CfgExternalToolItem()  {
     dfr = AppContext::getDocumentFormatRegistry();
     dtr = Workflow::WorkflowEnv::getDataTypeRegistry();
 
-    delegateForTypes = NULL;
-    delegateForFormats = NULL;
+    delegateForNames = nullptr;
+    delegateForIds = nullptr;
+    delegateForTypes = nullptr;
+    delegateForFormats = nullptr;
     itemData.type = BaseTypes::DNA_SEQUENCE_TYPE()->getId();
     itemData.format = BaseDocumentFormats::FASTA;
 }
 
 CfgExternalToolItem::~CfgExternalToolItem() {
+    delete delegateForNames;
+    delete delegateForIds;
     delete delegateForTypes;
     delete delegateForFormats;
 }
 
-QString CfgExternalToolItem::getDataType() const {
+const QString &CfgExternalToolItem::getDataType() const {
     return itemData.type;
 }
 
@@ -60,7 +65,15 @@ void CfgExternalToolItem::setDataType(const QString& id) {
     itemData.type = id;
 }
 
-QString CfgExternalToolItem::getName() const {
+const QString &CfgExternalToolItem::getId() const {
+    return itemData.attributeId;
+}
+
+void CfgExternalToolItem::setId(const QString &_id) {
+    itemData.attributeId = _id;
+}
+
+const QString &CfgExternalToolItem::getName() const {
     return itemData.attrName;
 }
 
@@ -68,7 +81,7 @@ void CfgExternalToolItem::setName(const QString &_name) {
     itemData.attrName = _name;
 }
 
-QString CfgExternalToolItem::getFormat() const {
+const QString &CfgExternalToolItem::getFormat() const {
     return itemData.format;
 }
 
@@ -76,7 +89,7 @@ void CfgExternalToolItem::setFormat(const QString & f) {
     itemData.format = f;
 }
 
-QString CfgExternalToolItem::getDescription() const {
+const QString &CfgExternalToolItem::getDescription() const {
     return itemData.description;
 }
 
@@ -125,6 +138,8 @@ QVariant CfgExternalToolModel::data(const QModelIndex &index, int role) const {
         switch (col) {
         case COLUMN_NAME:
             return item->getName();
+        case COLUMN_ID:
+            return item->getId();
         case COLUMN_DATA_TYPE:
             return item->delegateForTypes->getDisplayValue(item->getDataType());
         case COLUMN_FORMAT:
@@ -138,6 +153,10 @@ QVariant CfgExternalToolModel::data(const QModelIndex &index, int role) const {
         }
     case DelegateRole:
         switch (col) {
+        case COLUMN_NAME:
+            return qVariantFromValue<PropertyDelegate*>(item->delegateForNames);
+        case COLUMN_ID:
+            return qVariantFromValue<PropertyDelegate*>(item->delegateForIds);
         case COLUMN_DATA_TYPE:
             return qVariantFromValue<PropertyDelegate*>(item->delegateForTypes);
         case COLUMN_FORMAT:
@@ -150,6 +169,8 @@ QVariant CfgExternalToolModel::data(const QModelIndex &index, int role) const {
         switch (col) {
         case COLUMN_NAME:
             return item->getName();
+        case COLUMN_ID:
+            return item->getId();
         case COLUMN_DATA_TYPE:
             return item->getDataType();
         case COLUMN_FORMAT:
@@ -205,7 +226,17 @@ bool CfgExternalToolModel::setData(const QModelIndex &index, const QVariant &val
         switch (col) {
         case COLUMN_NAME:
             if (item->getName() != value.toString()) {
+                const QString oldGeneratedId = WorkflowUtils::generateIdFromName(item->getName());
+                const bool wasIdEditedByUser = (oldGeneratedId != item->getId());
                 item->setName(value.toString());
+                if (!wasIdEditedByUser) {
+                    item->setId(WorkflowUtils::generateIdFromName(item->getName()));
+                }
+            }
+        break;
+        case COLUMN_ID:
+            if (item->getId() != value.toString()) {
+                item->setId(value.toString());
             }
             break;
         case COLUMN_DATA_TYPE: {
@@ -244,7 +275,9 @@ QVariant CfgExternalToolModel::headerData(int section, Qt::Orientation orientati
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
         case COLUMN_NAME:
-            return tr("Name for command line parameter");
+            return tr("Display name");
+        case COLUMN_ID:
+            return tr("Argument name");
         case COLUMN_DATA_TYPE:
             return tr("Type");
         case COLUMN_FORMAT:
@@ -267,6 +300,8 @@ QVariant CfgExternalToolModel::headerData(int section, Qt::Orientation orientati
 bool CfgExternalToolModel::insertRows(int /*row*/, int /*count*/, const QModelIndex &parent) {
     beginInsertRows(parent, items.size(), items.size());
     CfgExternalToolItem *newItem = new CfgExternalToolItem();
+    newItem->delegateForNames = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_NAME);
+    newItem->delegateForIds = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_ID);
     newItem->delegateForTypes = new ComboBoxDelegate(types);
     newItem->delegateForFormats = new ComboBoxDelegate(seqFormatsW);
     items.append(newItem);
@@ -375,6 +410,26 @@ void CfgExternalToolModel::initTypes() {
 /// AttributeItem
 //////////////////////////////////////////////////////////////////////////
 
+AttributeItem::AttributeItem()
+    : delegateForNames(nullptr),
+      delegateForIds(nullptr)
+{
+
+}
+
+AttributeItem::~AttributeItem() {
+    delete delegateForNames;
+    delete delegateForIds;
+}
+
+const QString &AttributeItem::getId() const {
+    return id;
+}
+
+void AttributeItem::setId(const QString &_id) {
+    id = _id;
+}
+
 const QString &AttributeItem::getName() const {
     return name;
 }
@@ -454,6 +509,8 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role
         switch (col) {
         case COLUMN_NAME:
             return item->getName();
+        case COLUMN_ID:
+            return item->getId();
         case COLUMN_DATA_TYPE:
             return delegate->getDisplayValue(item->getDataType());
         case COLUMN_DEFAULT_VALUE:
@@ -466,9 +523,14 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role
             return QVariant();
         }
     case DelegateRole:
-        if (COLUMN_DATA_TYPE == col) {
+        switch (col) {
+        case COLUMN_NAME:
+            return qVariantFromValue<PropertyDelegate*>(item->delegateForNames);
+        case COLUMN_ID:
+            return qVariantFromValue<PropertyDelegate*>(item->delegateForIds);
+        case COLUMN_DATA_TYPE:
             return qVariantFromValue<PropertyDelegate*>(delegate);
-        } else {
+        default:
             return QVariant();
         }
     case Qt::EditRole: // fallthrough
@@ -476,6 +538,8 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role
         switch (col) {
         case COLUMN_NAME:
             return item->getName();
+        case COLUMN_ID:
+            return item->getId();
         case COLUMN_DATA_TYPE:
             return item->getDataType();
         case COLUMN_DEFAULT_VALUE:
@@ -501,7 +565,17 @@ bool CfgExternalToolModelAttributes::setData(const QModelIndex &index, const QVa
         switch (col) {
         case COLUMN_NAME:
             if (item->getName() != value.toString()) {
+                const QString oldGeneratedId = WorkflowUtils::generateIdFromName(item->getName());
+                const bool wasIdEditedByUser = (oldGeneratedId != item->getId());
                 item->setName(value.toString());
+                if (!wasIdEditedByUser) {
+                    item->setId(WorkflowUtils::generateIdFromName(item->getName()));
+                }
+            }
+            break;
+        case COLUMN_ID:
+            if (item->getId() != value.toString()) {
+                item->setId(value.toString());
             }
             break;
         case COLUMN_DATA_TYPE: {
@@ -541,7 +615,9 @@ QVariant CfgExternalToolModelAttributes::headerData(int section, Qt::Orientation
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
         case COLUMN_NAME:
-            return tr("Name");
+            return tr("Display name");
+        case COLUMN_ID:
+            return tr("Argument name");
         case COLUMN_DATA_TYPE:
             return tr("Type");
         case COLUMN_DEFAULT_VALUE:
@@ -560,6 +636,8 @@ QVariant CfgExternalToolModelAttributes::headerData(int section, Qt::Orientation
 bool CfgExternalToolModelAttributes::insertRows(int /*row*/, int /*count*/, const QModelIndex & parent)  {
     beginInsertRows(parent, items.size(), items.size());
     AttributeItem *newItem = new AttributeItem();
+    newItem->delegateForNames = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_NAME);
+    newItem->delegateForIds = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_ID);
     newItem->setDataType("String");
     items.append(newItem);
     endInsertRows();

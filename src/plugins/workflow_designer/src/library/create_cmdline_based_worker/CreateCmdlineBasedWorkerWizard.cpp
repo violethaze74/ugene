@@ -34,7 +34,6 @@
 
 #include "CreateCmdlineBasedWorkerWizard.h"
 #include "WorkflowEditorDelegates.h"
-#include "util/WorkerNameValidator.h"
 
 namespace U2 {
 
@@ -45,12 +44,15 @@ const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {
 #endif
 
 const QString CreateCmdlineBasedWorkerWizard::ATTRIBUTES_DATA_FIELD = "attributes-data";
+const QString CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD = "attributes-ids";
 const QString CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD = "attributes-names";
 const QString CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_DESCRIPTION_FIELD = "command-template-description";
 const QString CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_FIELD = "command-template";
 const QString CreateCmdlineBasedWorkerWizard::INPUTS_DATA_FIELD = "inputs-data";
+const QString CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD = "inputs-ids";
 const QString CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD = "inputs-names";
 const QString CreateCmdlineBasedWorkerWizard::OUTPUTS_DATA_FIELD = "outputs-data";
+const QString CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD = "outputs-ids";
 const QString CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD = "outputs-names";
 const QString CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD = "worker-description";
 const QString CreateCmdlineBasedWorkerWizard::WORKER_ID_FIELD = "worker-id";
@@ -161,7 +163,7 @@ CreateCmdlineBasedWorkerWizardNamePage::CreateCmdlineBasedWorkerWizardNamePage(E
     setupUi(this);
 
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
-    leName->setValidator(new WorkerNameValidator(leName));
+    leName->setValidator(new QRegularExpressionValidator(WorkflowEntityValidator::ACCEPTABLE_NAME, leName));
 
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD + "*", leName);
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_ID_FIELD, this, WORKER_ID_PROPERTY);
@@ -189,13 +191,15 @@ bool CreateCmdlineBasedWorkerWizardNamePage::validatePage() {
         setField(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD, name);
     }
 
-    setProperty(WORKER_ID_PROPERTY, WorkflowUtils::generateWorkerIdFromName(name));
+    setProperty(WORKER_ID_PROPERTY, WorkflowUtils::generateIdFromName(name));
     return true;
 }
 
 char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::INPUTS_DATA_PROPERTY = "inputs-data-property";
+char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::INPUTS_IDS_PROPERTY = "inputs-ids-property";
 char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::INPUTS_NAMES_PROPERTY = "inputs-names-property";
 char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::OUTPUTS_DATA_PROPERTY = "outputs-data-property";
+char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::OUTPUTS_IDS_PROPERTY = "outputs-ids-property";
 char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::OUTPUTS_NAMES_PROPERTY = "outputs-names-property";
 
 CreateCmdlineBasedWorkerWizardInputOutputPage::CreateCmdlineBasedWorkerWizardInputOutputPage(ExternalProcessConfig *_initialConfig)
@@ -243,10 +247,12 @@ CreateCmdlineBasedWorkerWizardInputOutputPage::CreateCmdlineBasedWorkerWizardInp
     columnWidth = static_cast<int>(fm.width(SEQ_WITH_ANNS) * 1.5);
     tvOutput->setColumnWidth(1, columnWidth);
 
-    registerField(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD, this, INPUTS_NAMES_PROPERTY, SIGNAL(si_inputsChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_DATA_FIELD, this, INPUTS_DATA_PROPERTY, SIGNAL(si_inputsChanged()));
-    registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD, this, OUTPUTS_NAMES_PROPERTY, SIGNAL(si_outputsChanged()));
+    registerField(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD, this, INPUTS_IDS_PROPERTY);
+    registerField(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD, this, INPUTS_NAMES_PROPERTY);
     registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_DATA_FIELD, this, OUTPUTS_DATA_PROPERTY, SIGNAL(si_outputsChanged()));
+    registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD, this, OUTPUTS_IDS_PROPERTY);
+    registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD, this, OUTPUTS_NAMES_PROPERTY);
 }
 
 void CreateCmdlineBasedWorkerWizardInputOutputPage::initializePage() {
@@ -257,7 +263,14 @@ void CreateCmdlineBasedWorkerWizardInputOutputPage::initializePage() {
 
 bool CreateCmdlineBasedWorkerWizardInputOutputPage::isComplete() const {
     bool res = true;
-    QRegExp invalidSymbols("\\W");
+
+    QStringList ids = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList() +
+                      field(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD).toStringList();
+    foreach (const QString &id, ids) {
+        if (id.isEmpty()) {
+            res = false;
+        }
+    }
 
     QStringList names = field(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD).toStringList() +
                         field(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD).toStringList();
@@ -265,16 +278,13 @@ bool CreateCmdlineBasedWorkerWizardInputOutputPage::isComplete() const {
         if (name.isEmpty()) {
             res = false;
         }
-        if (name.contains(invalidSymbols)) {
-            res = false;
-        }
     }
 
-    if (names.removeDuplicates() > 0) {
+    if (ids.removeDuplicates() > 0) {
         res = false;
     }
 
-    if (names.isEmpty()) {
+    if (ids.isEmpty()) {
         res = false;
     }
 
@@ -302,25 +312,31 @@ void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_deleteOutput() {
 }
 
 void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_updateInputsProperties() {
+    QStringList ids;
     QStringList names;
     QList<DataConfig> data;
     foreach (CfgExternalToolItem *item, inputsModel->getItems()) {
         data << item->itemData;
+        ids << item->getId();
         names << item->getName();
     }
     setProperty(INPUTS_DATA_PROPERTY, QVariant::fromValue<QList<DataConfig> >(data));
+    setProperty(INPUTS_IDS_PROPERTY, ids);
     setProperty(INPUTS_NAMES_PROPERTY, names);
     emit si_inputsChanged();
 }
 
 void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_updateOutputsProperties() {
+    QStringList ids;
     QStringList names;
     QList<DataConfig> data;
     foreach (CfgExternalToolItem *item, outputsModel->getItems()) {
         data << item->itemData;
+        ids << item->getId();
         names << item->getName();
     }
     setProperty(OUTPUTS_DATA_PROPERTY, QVariant::fromValue<QList<DataConfig> >(data));
+    setProperty(OUTPUTS_IDS_PROPERTY, ids);
     setProperty(OUTPUTS_NAMES_PROPERTY, names);
     emit si_outputsChanged();
 }
@@ -336,6 +352,9 @@ void CreateCmdlineBasedWorkerWizardInputOutputPage::initModel(QAbstractItemModel
         QModelIndex index = model->index(row, CfgExternalToolModel::COLUMN_NAME);
         model->setData(index, dataConfig.attrName);
 
+        index = model->index(row, CfgExternalToolModel::COLUMN_ID);
+        model->setData(index, dataConfig.attributeId);
+
         index = model->index(row, CfgExternalToolModel::COLUMN_DATA_TYPE);
         model->setData(index, dataConfig.type);
 
@@ -350,6 +369,7 @@ void CreateCmdlineBasedWorkerWizardInputOutputPage::initModel(QAbstractItemModel
 }
 
 char const * const CreateCmdlineBasedWorkerWizardAttributesPage::ATTRIBUTES_DATA_PROPERTY = "attributes-data-property";
+char const * const CreateCmdlineBasedWorkerWizardAttributesPage::ATTRIBUTES_IDS_PROPERTY = "attributes-ids-property";
 char const * const CreateCmdlineBasedWorkerWizardAttributesPage::ATTRIBUTES_NAMES_PROPERTY = "attributes-names-property";
 
 CreateCmdlineBasedWorkerWizardAttributesPage::CreateCmdlineBasedWorkerWizardAttributesPage(ExternalProcessConfig *_initialConfig)
@@ -374,8 +394,9 @@ CreateCmdlineBasedWorkerWizardAttributesPage::CreateCmdlineBasedWorkerWizardAttr
     tvAttributes->horizontalHeader()->setStretchLastSection(true);
     tvAttributes->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 
-    registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_DATA_FIELD, this, ATTRIBUTES_DATA_PROPERTY);
-    registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD, this, ATTRIBUTES_NAMES_PROPERTY, SIGNAL(si_attributesChanged()));
+    registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_DATA_FIELD, this, ATTRIBUTES_DATA_PROPERTY, SIGNAL(si_attributesChanged()));
+    registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD, this, ATTRIBUTES_IDS_PROPERTY);
+    registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD, this, ATTRIBUTES_NAMES_PROPERTY);
 }
 
 void CreateCmdlineBasedWorkerWizardAttributesPage::initializePage() {
@@ -386,22 +407,24 @@ void CreateCmdlineBasedWorkerWizardAttributesPage::initializePage() {
 bool CreateCmdlineBasedWorkerWizardAttributesPage::isComplete() const {
     bool res = true;
 
-    QRegExp invalidSymbols("\\W");
-    QStringList names = field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD).toStringList();
-
-    foreach (const QString &name, names) {
-        if (name.isEmpty()) {
-            res = false;
-        }
-        if (name.contains(invalidSymbols)) {
+    QStringList ids = field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD).toStringList();
+    foreach (const QString &id, ids) {
+        if (id.isEmpty()) {
             res = false;
         }
     }
 
-    names << field(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD).toStringList();
-    names << field(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD).toStringList();
+    QStringList names = field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD).toStringList();
+    foreach (const QString &name, names) {
+        if (name.isEmpty()) {
+            res = false;
+        }
+    }
 
-    if (names.removeDuplicates() > 0) {
+    ids << field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList();
+    ids << field(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD).toStringList();
+
+    if (ids.removeDuplicates() > 0) {
         res = false;
     }
 
@@ -419,18 +442,22 @@ void CreateCmdlineBasedWorkerWizardAttributesPage::sl_deleteAttribute() {
 }
 
 void CreateCmdlineBasedWorkerWizardAttributesPage::sl_updateAttributes() {
+    QStringList ids;
     QStringList names;
     QList<AttributeConfig> data;
     foreach (AttributeItem *item, model->getItems()) {
         AttributeConfig attributeConfig;
+        attributeConfig.attributeId = item->getId();
         attributeConfig.attrName = item->getName();
         attributeConfig.type = item->getDataType();
         attributeConfig.defaultValue = item->getDefaultValue();
         attributeConfig.description = item->getDescription();
         data << attributeConfig;
+        ids << item->getId();
         names << item->getName();
     }
     setProperty(ATTRIBUTES_DATA_PROPERTY, QVariant::fromValue<QList<AttributeConfig> >(data));
+    setProperty(ATTRIBUTES_IDS_PROPERTY, ids);
     setProperty(ATTRIBUTES_NAMES_PROPERTY, names);
     emit si_attributesChanged();
 }
@@ -445,6 +472,9 @@ void CreateCmdlineBasedWorkerWizardAttributesPage::initModel(QAbstractItemModel 
 
         QModelIndex index = model->index(row, CfgExternalToolModelAttributes::COLUMN_NAME);
         model->setData(index, attributeConfig.attrName);
+
+        index = model->index(row, CfgExternalToolModelAttributes::COLUMN_ID);
+        model->setData(index, attributeConfig.attributeId);
 
         index = model->index(row, CfgExternalToolModelAttributes::COLUMN_DATA_TYPE);
         model->setData(index, attributeConfig.type);
@@ -481,17 +511,17 @@ void CreateCmdlineBasedWorkerWizardCommandTemplatePage::initializePage() {
     } else {
         QString commandTemplate = "<My tool>";
 
-        const QStringList inputsNames = field(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD).toStringList();
+        const QStringList inputsNames = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList();
         foreach (const QString &name, inputsNames) {
             commandTemplate += " $" + name;
         }
 
-        const QStringList outputsNames = field(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD).toStringList();
+        const QStringList outputsNames = field(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD).toStringList();
         foreach (const QString &name, outputsNames) {
             commandTemplate += " $" + name;
         }
 
-        const QStringList attributesNames = field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD).toStringList();
+        const QStringList attributesNames = field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD).toStringList();
         int i = 0;
         foreach (const QString &name, attributesNames) {
             commandTemplate += " -p" + QString::number(++i) + " $" + name;
@@ -507,15 +537,15 @@ bool CreateCmdlineBasedWorkerWizardCommandTemplatePage::isComplete() const {
 
 bool CreateCmdlineBasedWorkerWizardCommandTemplatePage::validatePage() {
     const QString commandTemplate = teTemplate->toPlainText();
-    QStringList names = field(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD).toStringList() +
-                        field(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD).toStringList() +
-                        field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD).toStringList();
+    QStringList ids = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList() +
+                      field(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD).toStringList() +
+                      field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD).toStringList();
 
-    foreach (const QString &name, names) {
-        if (!commandTemplate.contains("$" + name)) {
+    foreach (const QString &id, ids) {
+        if (!commandTemplate.contains("$" + id)) {
             QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
             msgBox->setWindowTitle(tr("Create Element"));
-            msgBox->setText(tr("You don't use parameter %1 in template string. Continue?").arg(name));
+            msgBox->setText(tr("You don't use parameter %1 in template string. Continue?").arg(id));
             msgBox->addButton(tr("Continue"), QMessageBox::ActionRole);
             QPushButton *cancel = msgBox->addButton(tr("Abort"), QMessageBox::ActionRole);
             msgBox->exec();

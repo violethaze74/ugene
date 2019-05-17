@@ -89,7 +89,7 @@ public:
 
     static QString getParamIdFromHref(const QString& href);
 
-    static QString generateWorkerIdFromName(const QString &workerName);
+    static QString generateIdFromName(const QString &name);
 
     static void print(const QString &slotString, const QVariant &data, DataTypePtr type, WorkflowContext *context);
 
@@ -174,8 +174,18 @@ public:
 private:
     static QStringList initExtensions();
     static bool validate(const Workflow::Schema &s, NotificationsList &notificationList);
-
 }; // WorkflowUtils
+
+class U2LANG_EXPORT WorkflowEntityValidator {
+public:
+    static const QString NAME_INACCEPTABLE_SYMBOLS_TEMPLATE;
+    static const QString ID_ACCEPTABLE_SYMBOLS_TEMPLATE;
+
+    static const QRegularExpression ACCEPTABLE_NAME;
+    static const QRegularExpression INACCEPTABLE_SYMBOL_IN_NAME;
+    static const QRegularExpression ACCEPTABLE_ID;
+    static const QRegularExpression INACCEPTABLE_SYMBOLS_IN_ID;
+};
 
 /**
  * provides utility functions for ActorDocument purposes

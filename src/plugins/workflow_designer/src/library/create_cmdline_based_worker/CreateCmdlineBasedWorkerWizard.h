@@ -45,12 +45,15 @@ public:
     static const QString PAGE_TITLE_STYLE_SHEET;
 
     static const QString ATTRIBUTES_DATA_FIELD;
+    static const QString ATTRIBUTES_IDS_FIELD;
     static const QString ATTRIBUTES_NAMES_FIELD;
     static const QString COMMAND_TEMPLATE_DESCRIPTION_FIELD;
     static const QString COMMAND_TEMPLATE_FIELD;
     static const QString INPUTS_DATA_FIELD;
+    static const QString INPUTS_IDS_FIELD;
     static const QString INPUTS_NAMES_FIELD;
     static const QString OUTPUTS_DATA_FIELD;
+    static const QString OUTPUTS_IDS_FIELD;
     static const QString OUTPUTS_NAMES_FIELD;
     static const QString WORKER_DESCRIPTION_FIELD;
     static const QString WORKER_ID_FIELD;
@@ -109,8 +112,10 @@ private:
     CfgExternalToolModel *outputsModel;
 
     static char const * const INPUTS_DATA_PROPERTY;
+    static char const * const INPUTS_IDS_PROPERTY;
     static char const * const INPUTS_NAMES_PROPERTY;
     static char const * const OUTPUTS_DATA_PROPERTY;
+    static char const * const OUTPUTS_IDS_PROPERTY;
     static char const * const OUTPUTS_NAMES_PROPERTY;
 };
 
@@ -138,6 +143,7 @@ private:
     CfgExternalToolModelAttributes *model;
 
     static char const * const ATTRIBUTES_DATA_PROPERTY;
+    static char const * const ATTRIBUTES_IDS_PROPERTY;
     static char const * const ATTRIBUTES_NAMES_PROPERTY;
 };
 
