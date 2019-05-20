@@ -39,8 +39,6 @@ class U2FORMATS_EXPORT FastqFormat : public TextDocumentFormat {
 public:
     FastqFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::FASTQ;}
-
     virtual void storeDocument( Document* d, IOAdapter* io, U2OpStatus& os );
 
     virtual bool isStreamingSupport() {return true;}

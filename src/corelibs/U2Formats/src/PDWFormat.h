@@ -40,8 +40,6 @@ class U2FORMATS_EXPORT PDWFormat : public TextDocumentFormat {
 public:
                                     PDWFormat(QObject *p);
 
-    virtual DocumentFormatId        getFormatId() const { return BaseDocumentFormats::PDW; }
-
 protected:
     virtual FormatCheckResult       checkRawTextData(const QByteArray &rawData,
                                         const GUrl & = GUrl()) const;

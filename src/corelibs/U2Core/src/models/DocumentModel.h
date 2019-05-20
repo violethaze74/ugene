@@ -142,21 +142,17 @@ public:
     };
 
 
-    DocumentFormat(QObject* p, DocumentFormatFlags _flags, const QStringList& fileExts = QStringList())
-        : QObject(p),
-          formatFlags(_flags),
-          fileExtensions(fileExts)
-    {}
+    DocumentFormat(QObject* p, const DocumentFormatId& id, DocumentFormatFlags _flags, const QStringList& fileExts = QStringList());
 
     /* returns unique document format id */
-    virtual DocumentFormatId getFormatId() const = 0;
+    const DocumentFormatId& getFormatId() const {return id;}
 
     /* Returns localized format name. */
     const QString& getFormatName() const {return formatName;}
-    
+
     /* Returns localized format description. */
     const QString& getFormatDescription() const {return formatDescription;}
-    
+
 
     /* returns list of usual file extensions for the format
        Example: "fa", "fasta", "gb" ...
@@ -237,6 +233,7 @@ protected:
     */
     virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os) = 0;
 
+    DocumentFormatId    id;
     DocumentFormatFlags formatFlags;
     QStringList         fileExtensions;
     QSet<GObjectType>   supportedObjectTypes;

@@ -56,8 +56,6 @@ public:
             incorrectScore ||
             incorrectStrand ||
             incorrectFrame ||
-            noGeneIdAttribute ||
-            noTranscriptIdAttribute ||
             incorrectFormatOfAttributes;
     }
 
@@ -116,8 +114,6 @@ class U2FORMATS_EXPORT GTFFormat : public TextDocumentFormat {
 
 public:
     GTFFormat(QObject* parent);
-
-    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::GTF; }
 
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 

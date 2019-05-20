@@ -698,7 +698,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     CHECK_SET_ERR(vSeqScroll != NULL, "No scroll bar at the bottom of sequence area");
     CHECK_SET_ERR(!vSeqScroll->isVisible(), "Scroll bar at the rigth side of sequence area is visible");
-    
+
     QWidget *parent = GTWidget::findWidget(os, "COI [m] COI", GTWidget::findWidget(os, "COI [m] COI_SubWindow"));
     QWidget* hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
@@ -731,7 +731,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
-    parent = GTWidget::findWidget(os, "fungal - all [m] fungal - all", GTWidget::findWidget(os, "fungal - all [m] fungal - all_SubWindow"));   
+    parent = GTWidget::findWidget(os, "fungal - all [m] fungal - all", GTWidget::findWidget(os, "fungal - all [m] fungal - all_SubWindow"));
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area for fungal-all.aln");
     CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the bottom of name list area is not visible for fungal-all.aln");

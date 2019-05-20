@@ -36,8 +36,6 @@ class U2FORMATS_EXPORT FastaFormat : public TextDocumentFormat {
 public:
     FastaFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::FASTA;}
-
     void storeSequence(const DNASequence& sequence, IOAdapter* io, U2OpStatus& os);
     void storeSequence(const U2SequenceObject *sequence, IOAdapter *io, U2OpStatus &os);
 

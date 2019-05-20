@@ -52,7 +52,7 @@ const char FastaFormat::FASTA_HEADER_START_SYMBOL = '>';
 const char FastaFormat::FASTA_COMMENT_START_SYMBOL = ';';
 
 FastaFormat::FastaFormat(QObject* p)
-: TextDocumentFormat(p, DocumentFormatFlags_SW, QStringList()<<"fa"<<"mpfa"<<"fna"<<"fsa"<<"fas"<<"fasta"<<"sef"<<"seq"<<"seqs")
+: TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW, QStringList()<<"fa"<<"mpfa"<<"fna"<<"fsa"<<"fas"<<"fasta"<<"sef"<<"seq"<<"seqs")
 {
     formatName = tr("FASTA");
     supportedObjectTypes+=GObjectTypes::SEQUENCE;

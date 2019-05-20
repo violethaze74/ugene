@@ -48,7 +48,7 @@ namespace U2 {
 static const int PROGRESS_UPDATE_STEP = 1000;
 
 FastqFormat::FastqFormat(QObject* p)
-    : TextDocumentFormat(p, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "fastq" << "fq")
+    : TextDocumentFormat(p, BaseDocumentFormats::FASTQ, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "fastq" << "fq")
 {
     supportedObjectTypes+=GObjectTypes::SEQUENCE;
     formatName = tr("FASTQ");

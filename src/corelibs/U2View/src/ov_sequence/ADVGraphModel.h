@@ -154,7 +154,7 @@ protected:
     GSequenceGraphMinMaxCutOffData  commdata;
     BackgroundTaskRunner<PairVector> calculationTaskRunner;
 
-private:    
+private:
     QString DEFAULT_COLOR;
 };
 

@@ -47,7 +47,7 @@
 
 namespace U2 {
 
-ABIFormat::ABIFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlag_SupportStreaming, QStringList() << "ab1" << "abi" << "abif")
+ABIFormat::ABIFormat(QObject* p) : DocumentFormat(p, BaseDocumentFormats::ABIF, DocumentFormatFlag_SupportStreaming, QStringList() << "ab1" << "abi" << "abif")
 {
     formatName = tr("ABIF");
     formatDescription = tr("A chromatogram file format");

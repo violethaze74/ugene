@@ -1855,6 +1855,7 @@ void WorkflowView::sl_cutItems() {
 
 void WorkflowView::sl_pasteSample(const QString& s) {
     tabs->setCurrentIndex(ElementsTab);
+    infoList->clear();
     if (scene->items().isEmpty()) {
         // fixing bug with pasting same schema 2 times
         {

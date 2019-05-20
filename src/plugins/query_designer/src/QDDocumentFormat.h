@@ -40,9 +40,6 @@ class QDDocFormat : public TextDocumentFormat {
 public:
     QDDocFormat(QObject* p);
 
-    static const DocumentFormatId FORMAT_ID;
-    virtual DocumentFormatId getFormatId() const {return FORMAT_ID;}
-
     virtual Document* createNewLoadedDocument(IOAdapterFactory* io, const GUrl& url, U2OpStatus& os, const QVariantMap& fs = QVariantMap());
 
     virtual void storeDocument( Document* d, IOAdapter* io, U2OpStatus& os);

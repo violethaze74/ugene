@@ -817,8 +817,8 @@ bool BowtieToolsValidator::validateBowtie(const Actor *actor, NotificationsList 
             Version topHatVersion = Version::parseVersion(topHatTool->getVersion( ));
 
             if ( topHatVersion.text.isEmpty( ) || bowtieVersion.text.isEmpty( ) ) {
-                const QString toolName = topHatVersion.text.isEmpty( ) ? "TopHat" : "Bowtie";
-                const QString message = QObject::tr( "%1 tool's version is undefined, "
+                QString toolName = topHatVersion.text.isEmpty( ) ? "TopHat" : "Bowtie";
+                QString message = QObject::tr( "%1 tool's version is undefined, "
                     "this may cause some compatibility issues" ).arg( toolName );
 
                 WorkflowNotification warning( message, actor->getLabel( ), WorkflowNotification::U2_WARNING );
@@ -827,7 +827,7 @@ bool BowtieToolsValidator::validateBowtie(const Actor *actor, NotificationsList 
             } else if ( !( Version::parseVersion("0.12.9") > bowtieVersion && Version::parseVersion("2.0.8") >= topHatVersion )
                  && !( Version::parseVersion("0.12.9") <= bowtieVersion && Version::parseVersion("2.0.8b") <= topHatVersion ) )
             {
-                const QString message = QObject::tr( "Bowtie and TopHat tools have incompatible "
+                QString message = QObject::tr( "Bowtie and TopHat tools have incompatible "
                     "versions. Your TopHat's version is %1, Bowtie's one is %2. The following are "
                     "considered to be compatible: Bowtie < \"0.12.9\" and TopHat <= \"2.0.8\" or "
                     "Bowtie >= \"0.12.9\" and TopHat >= \"2.0.8.b\"" ).arg( topHatVersion.text,

@@ -1,4 +1,5 @@
 MODULE_ID=$${PLUGIN_ID}
+
 include (ugene_lib_common.pri)
 
 # This file is common for all UGENE plugins

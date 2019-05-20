@@ -202,8 +202,8 @@ MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(UpdatedWidg
     DataIsOutdatedMessage = QString("<FONT COLOR=#FF0000>%1</FONT>").arg(tr("Data are outdated"));
     DataIsValidMessage = QString("<FONT COLOR=#00FF00>%1</FONT>").arg(tr("Data are valid"));
     DataIsBeingUpdatedMessage = QString("<FONT COLOR=#0000FF>%1</FONT>").arg(tr("Data are being updated"));
-    
-    
+
+
     settings = &contentWidget->getSettings();
     connect(settings->ma, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
         this, SLOT(sl_onAlignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));

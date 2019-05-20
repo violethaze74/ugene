@@ -72,7 +72,6 @@ class U2FORMATS_EXPORT  ASNFormat : public DocumentFormat
 public:
     ASNFormat(QObject* p);
     ~ASNFormat();
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PLAIN_ASN;}
     virtual FormatCheckResult checkRawData(const QByteArray& data, const GUrl& = GUrl()) const;
 
 protected:
@@ -151,7 +150,7 @@ private:
     };
 
     struct AsnBioStructError : public AsnBaseException {
-        AsnBioStructError( const QString& what ) 
+        AsnBioStructError( const QString& what )
             : AsnBaseException(ASNFormat::tr("biostruct3d obj loading error: %1").arg(what) ){}
     };
 

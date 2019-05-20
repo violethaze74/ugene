@@ -43,7 +43,6 @@ class U2FORMATS_EXPORT  PDBFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     PDBFormat(QObject* p);
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PLAIN_PDB;}
 
     static int getElementNumberByName(const QByteArray& elementName);
     static char getAcronymByName(const QByteArray& name);

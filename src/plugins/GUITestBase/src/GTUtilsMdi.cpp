@@ -327,6 +327,42 @@ bool GTUtilsMdi::isAnyPartOfWindowVisible(HI::GUITestOpStatus &os, const QString
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getTabBar"
+QTabBar* GTUtilsMdi::getTabBar(HI::GUITestOpStatus &os) {
+    MainWindow* mainWindow = AppContext::getMainWindow();
+    GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == nullptr", NULL);
+
+    QMdiArea *mdiArea = GTWidget::findExactWidget<QMdiArea *>(os, "MDI_Area", mainWindow->getQMainWindow());
+    GT_CHECK_RESULT(mdiArea != nullptr, "mdiArea == nullptr", NULL);
+
+    QTabBar *tabBar = mdiArea->findChild<QTabBar *>("", Qt::FindDirectChildrenOnly);
+    GT_CHECK_RESULT(tabBar != nullptr, "MDI tabbar not found", NULL);
+
+    return tabBar;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getTabBar"
+int GTUtilsMdi::getCurrentTab(HI::GUITestOpStatus &os) {
+    QTabBar* tabBar = getTabBar(os);
+    GT_CHECK_RESULT(tabBar != NULL, "tabBar == NULL", -1);
+
+    return tabBar->currentIndex();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickTab"
+void GTUtilsMdi::clickTab(HI::GUITestOpStatus &os, int tabIndex) {
+    QTabBar* tabBar = getTabBar(os);
+    GT_CHECK_RESULT(tabBar != NULL, "tabBar == NULL", );
+
+    coreLog.info(QString("Try to click tab %1(%2)").arg(tabIndex).arg(tabBar->tabText(tabIndex)));
+    QPoint tabCenter = tabBar->mapToGlobal(tabBar->tabRect(tabIndex).center());
+    GTMouseDriver::moveTo(tabCenter);
+    GTMouseDriver::click();
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }

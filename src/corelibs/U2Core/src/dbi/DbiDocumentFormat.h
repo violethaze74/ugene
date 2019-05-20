@@ -35,8 +35,6 @@ public:
     DbiDocumentFormat(const U2DbiFactoryId& id, const DocumentFormatId& formatId,
         const QString& formatName, const QStringList& exits, DocumentFormatFlags flags, QObject* p = NULL);
 
-    virtual DocumentFormatId getFormatId() const {return formatId;}
-
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
@@ -49,7 +47,6 @@ protected:
 
 private:
     U2DbiFactoryId           id;
-    DocumentFormatId         formatId;
 };
 
 }//namespace
