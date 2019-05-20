@@ -58,14 +58,16 @@ bool DataConfig::isText() const {
 }
 
 bool DataConfig::operator ==(const DataConfig &other) const {
-    return attrName == other.attrName
-        && type == other.type
-        && format == other.format
-        && description == other.description;
+    return attributeId == other.attributeId
+            && attrName == other.attrName
+            && type == other.type
+            && format == other.format
+            && description == other.description;
 }
 
 bool AttributeConfig::operator ==(const AttributeConfig &other) const {
-    return attrName == other.attrName
+    return attributeId == other.attributeId
+            && attrName == other.attrName
             && type == other.type
             && defaultValue == other.defaultValue
             && description == other.description;

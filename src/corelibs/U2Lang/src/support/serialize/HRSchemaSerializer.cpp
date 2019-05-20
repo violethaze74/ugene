@@ -1303,13 +1303,19 @@ void HRSchemaSerializer::postProcessing(Schema *schema) {
 void HRSchemaSerializer::parsePorts(Tokenizer & tokenizer, QList<DataConfig>& ports) {
     while(tokenizer.look() != Constants::BLOCK_END) {
         DataConfig cfg;
-        cfg.attrName = tokenizer.take();
+        cfg.attributeId = tokenizer.take();
         tokenizer.assertToken(Constants::BLOCK_START);
         ParsedPairs pairs(tokenizer);
+        cfg.attrName = pairs.equalPairs.take(Constants::NAME_ATTR);
         cfg.type = pairs.equalPairs.take(Constants::TYPE_PORT);
         cfg.format = pairs.equalPairs.take(Constants::FORMAT_PORT);
         cfg.description = pairs.equalPairs.take(Constants::DESCRIPTION);
         tokenizer.assertToken(Constants::BLOCK_END);
+
+        if (cfg.attrName.isEmpty()) {
+            cfg.attrName = cfg.attributeId;
+        }
+
         ports << cfg;
     }
 }
@@ -1317,13 +1323,19 @@ void HRSchemaSerializer::parsePorts(Tokenizer & tokenizer, QList<DataConfig>& po
 void HRSchemaSerializer::parseAttributes(Tokenizer & tokenizer, QList<AttributeConfig>& attrs) {
     while(tokenizer.look() != Constants::BLOCK_END) {
         AttributeConfig cfg;
-        cfg.attrName = tokenizer.take();
+        cfg.attributeId = tokenizer.take();
         tokenizer.assertToken(Constants::BLOCK_START);
         ParsedPairs pairs(tokenizer);
+        cfg.attrName = pairs.equalPairs.take(Constants::NAME_ATTR);
         cfg.type = pairs.equalPairs.take(Constants::TYPE_PORT);
         cfg.defaultValue = pairs.equalPairs.take(Constants::DEFAULT_VALUE);
         cfg.description = pairs.equalPairs.take(Constants::DESCRIPTION);
         tokenizer.assertToken(Constants::BLOCK_END);
+
+        if (cfg.attrName.isEmpty()) {
+            cfg.attrName = cfg.attributeId;
+        }
+
         attrs << cfg;
     }
 }
@@ -1978,7 +1990,8 @@ QMap<ActorId, ActorId> HRSchemaSerializer::deepCopy(const Schema& from, Schema* 
 static QString inputsDefenition(const QList<DataConfig> &inputs) {
     QString res = Constants::TAB + Constants::INPUT_START + " {\n";
     foreach(const DataConfig& cfg, inputs) {
-        res += Constants::TAB + Constants::TAB + cfg.attrName + " {\n";
+        res += Constants::TAB + Constants::TAB + cfg.attributeId + " {\n";
+        res += Constants::TAB + Constants::TAB + Constants::TAB + "name:\"" + cfg.attrName + "\";\n";
         res += Constants::TAB + Constants::TAB + Constants::TAB + "type:" + cfg.type + ";\n";
         res += Constants::TAB + Constants::TAB + Constants::TAB + "format:" + cfg.format + ";\n";
         if(!cfg.description.isEmpty()) {
@@ -1993,7 +2006,8 @@ static QString inputsDefenition(const QList<DataConfig> &inputs) {
 static QString outputsDefenition(const QList<DataConfig> &inputs) {
     QString res = Constants::TAB + Constants::OUTPUT_START + " {\n";
     foreach(const DataConfig& cfg, inputs) {
-        res += Constants::TAB + Constants::TAB + cfg.attrName + " {\n";
+        res += Constants::TAB + Constants::TAB + cfg.attributeId + " {\n";
+        res += Constants::TAB + Constants::TAB + Constants::TAB + "name:\"" + cfg.attrName + "\";\n";
         res += Constants::TAB + Constants::TAB + Constants::TAB + "type:" + cfg.type + ";\n";
         res += Constants::TAB + Constants::TAB + Constants::TAB + "format:" + cfg.format + ";\n";
         if(!cfg.description.isEmpty()) {
@@ -2008,7 +2022,8 @@ static QString outputsDefenition(const QList<DataConfig> &inputs) {
 static QString attributesDefinition(const QList<AttributeConfig> &attrs) {
     QString res = Constants::TAB + Constants::ATTRIBUTES_START + " {\n";
     foreach(const AttributeConfig &cfg, attrs) {
-        res += Constants::TAB + Constants::TAB + cfg.attrName + " {\n";
+        res += Constants::TAB + Constants::TAB + cfg.attributeId + " {\n";
+        res += Constants::TAB + Constants::TAB + Constants::TAB + "name:\"" + cfg.attrName + "\";\n";
         res += Constants::TAB + Constants::TAB + Constants::TAB + "type:" + cfg.type + ";\n";
         if (!cfg.defaultValue.isEmpty()) {
             res += Constants::TAB + Constants::TAB + Constants::TAB + Constants::DEFAULT_VALUE + ":" + cfg.defaultValue + ";\n";

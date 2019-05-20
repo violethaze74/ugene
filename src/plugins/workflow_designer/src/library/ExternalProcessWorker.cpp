@@ -29,6 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/GObjectRelationRoles.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
@@ -135,7 +136,7 @@ namespace {
         if (!dir.exists()) {
             dir.mkpath(path);
         }
-        url = path + "/tmp" + name + QString::number(QDateTime::currentDateTime().toTime_t()) +  "." + extention;
+        url = path + "/tmp" + GUrlUtils::fixFileName(name) + QString::number(QDateTime::currentDateTime().toTime_t()) +  "." + extention;
         return url;
     }
 
@@ -230,7 +231,7 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
 
 QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
     QStringList urls;
-    int ind = execString.indexOf(QRegExp("\\$" + dataCfg.attrName + "(\\W|$)"));
+    int ind = execString.indexOf(QRegExp(QString("\\$%1([^%2]|$)").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE)));
     CHECK(-1 != ind, urls);
 
     QString paramValue;
@@ -251,12 +252,12 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
         paramValue = "\"" + d->getURLString() + "\"";
     }
 
-    execString.replace(ind, dataCfg.attrName.size() + 1 , paramValue);
+    execString.replace(ind, dataCfg.attributeId.size() + 1 , paramValue);
     return urls;
 }
 
 QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os) {
-    int ind = execString.indexOf(QRegExp("\\$" + dataCfg.attrName + "(\\W|$)"));
+    int ind = execString.indexOf(QRegExp(QString("\\$%1([^%2]|$)").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE)));
     CHECK(-1 != ind, "");
 
     QString extension;
@@ -268,7 +269,7 @@ QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConf
         extension = f->getSupportedDocumentFileExtensions().first();
     }
     QString url = generateAndCreateURL(extension, dataCfg.attrName);
-    execString.replace(ind, dataCfg.attrName.size() + 1 , "\"" + url + "\"");
+    execString.replace(ind, dataCfg.attributeId.size() + 1 , "\"" + url + "\"");
 
     return url;
 }
@@ -484,7 +485,7 @@ void ExternalProcessWorker::init() {
     output = ports.value(OUT_PORT_ID);
 
     foreach(const DataConfig& input, cfg->inputs) {
-        IntegralBus *inBus = ports.value(input.attrName);
+        IntegralBus *inBus = ports.value(input.attributeId);
         inputs << inBus;
 
         inBus->addComplement(output);
@@ -631,9 +632,9 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
     QString doc = cfg->templateDescription;
 
     foreach(const DataConfig& dataCfg, cfg->inputs) {
-        QRegExp param("\\$" + dataCfg.attrName + /*"[,:;\s\.\-]"*/"\\W|$");
+        QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if(doc.contains(param)) {
-            IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(dataCfg.attrName));
+            IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(dataCfg.attributeId));
             DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(dataCfg.type);
             if(dataCfg.type == SEQ_WITH_ANNS) {
                 dataType = BaseTypes::DNA_SEQUENCE_TYPE();
@@ -641,12 +642,12 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
             Actor* producer = input->getProducer(WorkflowUtils::getSlotDescOfDatatype(dataType).getId());
             QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
             QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
-            doc.replace("$" + dataCfg.attrName, producerName);
+            doc.replace("$" + dataCfg.attributeId, producerName);
         }
     }
 
     foreach(const DataConfig& dataCfg, cfg->outputs) {
-        QRegExp param("\\$" + dataCfg.attrName + /*"[,:;\s\.\-]"*/"\\W|$");
+        QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if(doc.contains(param)) {
             IntegralBusPort* output = qobject_cast<IntegralBusPort*>(target->getPort(OUT_PORT_ID));
             DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(dataCfg.type);
@@ -667,15 +668,15 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
             } else {
                 destinations.resize(destinations.size() - 1); //remove last semicolon
             }
-            doc.replace("$" + dataCfg.attrName, destinations);
+            doc.replace("$" + dataCfg.attributeId, destinations);
         }
     }
 
     foreach(const AttributeConfig &attrCfg, cfg->attrs) {
-        QRegExp param("\\$" + attrCfg.attrName + /*"[,:;\s\.\-]"*/"\\W|$");
+        QRegExp param(QString("\\$%1([^%2]|$)").arg(attrCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if(doc.contains(param)) {
-            QString prm = getRequiredParam(attrCfg.attrName);
-            doc.replace("$" + attrCfg.attrName, getHyperlink(attrCfg.attrName, prm));
+            QString prm = getRequiredParam(attrCfg.attributeId);
+            doc.replace("$" + attrCfg.attributeId, getHyperlink(attrCfg.attrName, prm));
         }
     }
 

@@ -27,19 +27,9 @@
 namespace U2 {
 
 /**
- * The worker name can't contain '=' and '"' because of parser restrictions.
- * Also it shouldn't be empty.
- */
-class WorkerNameValidator : public QValidator {
-public:
-    WorkerNameValidator(QObject *parent = nullptr);
-
-    State validate(QString &input, int &pos) const;
-};
-
-/**
  * The class for validating worker names:
  * only English names.
+ * The class is deprecated. Use QRegularExpressionValidator with regexps from WorkflowEntityValidator class.
  */
 class DeprecatedWorkerNameValidator : public QValidator {
 public:

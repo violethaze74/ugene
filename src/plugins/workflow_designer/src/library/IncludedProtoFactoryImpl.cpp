@@ -115,11 +115,11 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
             map[WorkflowUtils::getSlotDescOfDatatype(dtr->getById(dcfg.type))] = dtr->getById(dcfg.type);
         }
 
-        DataTypePtr input( new MapDataType(Descriptor(INPUT_PORT_TYPE + dcfg.attrName), map) );
+        DataTypePtr input( new MapDataType(Descriptor(INPUT_PORT_TYPE + dcfg.attributeId), map) );
         DataTypeRegistry * dr = WorkflowEnv::getDataTypeRegistry();
         assert(dr);
         dr->registerEntry( input );
-        portDescs << new PortDescriptor(Descriptor(dcfg.attrName, dcfg.attrName, dcfg.description), input, true);
+        portDescs << new PortDescriptor(Descriptor(dcfg.attributeId, dcfg.attrName, dcfg.description), input, true);
     }
 
     QMap<Descriptor, DataTypePtr> map;
@@ -151,17 +151,17 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
         QString descr = acfg.description.isEmpty() ? acfg.type : acfg.description;
         if(acfg.type == "URL") {
             type = BaseTypes::STRING_TYPE();
-            delegates[acfg.attrName] = new URLDelegate("All Files(*.*)","");
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+            delegates[acfg.attributeId] = new URLDelegate("All Files(*.*)","");
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if(acfg.type == "String") {
             type = BaseTypes::STRING_TYPE();
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if(acfg.type == "Number") {
             type = BaseTypes::NUM_TYPE();
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if(acfg.type == "Boolean") {
             type = BaseTypes::BOOL_TYPE();
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type, Attribute::None, (acfg.defaultValue == "true" ? QVariant(true) : QVariant(false)));
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, (acfg.defaultValue == "true" ? QVariant(true) : QVariant(false)));
         }
 
         //attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, acfg.type), type);

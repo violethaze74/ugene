@@ -35,6 +35,7 @@ namespace U2 {
 
 class U2LANG_EXPORT DataConfig {
 public:
+    QString attributeId;
     QString attrName;
     QString type;
     QString format;
@@ -56,6 +57,7 @@ public:
 
 class U2LANG_EXPORT AttributeConfig {
 public:
+    QString attributeId;
     QString attrName;
     QString type;
     QString defaultValue;

@@ -25,19 +25,6 @@
 
 namespace U2 {
 
-WorkerNameValidator::WorkerNameValidator(QObject *_parent)
-    : QValidator(_parent)
-{
-
-}
-
-QValidator::State WorkerNameValidator::validate(QString &input, int & /*pos*/) const {
-    CHECK(!input.isEmpty(), Intermediate);
-    CHECK(!input.contains('='), Invalid);
-    CHECK(!input.contains('\"'), Invalid);
-    return Acceptable;
-}
-
 DeprecatedWorkerNameValidator::DeprecatedWorkerNameValidator(QObject *parent)
 : QValidator(parent)
 {
