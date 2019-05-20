@@ -119,7 +119,9 @@ void CreateCmdlineBasedWorkerWizard::accept() {
         dir.mkdir(dirPath);
     }
 
-    actualConfig->filePath = GUrlUtils::rollFileName(dirPath + GUrlUtils::fixFileName(actualConfig->name) + ".etc", "_");
+    if (nullptr == initialConfig) {
+        actualConfig->filePath = GUrlUtils::rollFileName(dirPath + actualConfig->name + ".etc", "_");
+    }
 
     QFile file(actualConfig->filePath);
     file.open(QIODevice::WriteOnly);
