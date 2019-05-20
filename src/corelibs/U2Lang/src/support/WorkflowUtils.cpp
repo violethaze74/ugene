@@ -587,6 +587,13 @@ QString WorkflowUtils::getParamIdFromHref(const QString& href) {
     return id;
 }
 
+QString WorkflowUtils::generateWorkerIdFromName(const QString &workerName) {
+    static const QRegularExpression INACCEPTABLE_SYMBOLS("[^a-zA-Z0-9\\-_]");
+    QString id = workerName;
+    id.replace(QRegularExpression("\\s"), "-").replace(INACCEPTABLE_SYMBOLS, "_");
+    return id;
+}
+
 static void data2text(WorkflowContext *context, DocumentFormatId formatId, GObject *obj, QString &text) {
     QList<GObject*> objList;
     objList << obj;

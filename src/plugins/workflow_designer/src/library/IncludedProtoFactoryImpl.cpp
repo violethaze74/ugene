@@ -133,7 +133,7 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
         }
     }
     if(!map.isEmpty()) {
-        DataTypePtr outSet( new MapDataType(Descriptor(OUTPUT_PORT_TYPE + cfg->name), map) );
+        DataTypePtr outSet( new MapDataType(Descriptor(OUTPUT_PORT_TYPE + cfg->id), map) );
         DataTypeRegistry * dr = WorkflowEnv::getDataTypeRegistry();
         assert(dr);
         dr->registerEntry( outSet );
@@ -141,7 +141,7 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
         portDescs << new PortDescriptor( outDesc, outSet, false, true );
     }
 
-    Descriptor desc( cfg->name, cfg->name, cfg->description.isEmpty() ? cfg->name : cfg->description );
+    Descriptor desc( cfg->id, cfg->name, cfg->description.isEmpty() ? cfg->name : cfg->description );
 
     QList<Attribute*> attribs;
     QMap<QString, PropertyDelegate*> delegates;
@@ -234,7 +234,7 @@ ActorPrototype *IncludedProtoFactoryImpl::_getSchemaActorProto(Schema *schema, c
 void IncludedProtoFactoryImpl::_registerExternalToolWorker(ExternalProcessConfig *cfg) {
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalWorkflow::LocalDomainFactory::ID);
     WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(cfg);
-    localDomain->registerEntry( new LocalWorkflow::ExternalProcessWorkerFactory(cfg->name) );
+    localDomain->registerEntry( new LocalWorkflow::ExternalProcessWorkerFactory(cfg->id) );
 }
 
 void IncludedProtoFactoryImpl::_registerScriptWorker(const QString &actorName) {

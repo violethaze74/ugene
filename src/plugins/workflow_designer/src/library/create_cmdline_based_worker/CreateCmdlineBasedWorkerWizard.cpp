@@ -30,9 +30,11 @@
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowSettings.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "CreateCmdlineBasedWorkerWizard.h"
 #include "WorkflowEditorDelegates.h"
+#include "util/WorkerNameValidator.h"
 
 namespace U2 {
 
@@ -51,6 +53,7 @@ const QString CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD = "inputs-names
 const QString CreateCmdlineBasedWorkerWizard::OUTPUTS_DATA_FIELD = "outputs-data";
 const QString CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD = "outputs-names";
 const QString CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD = "worker-description";
+const QString CreateCmdlineBasedWorkerWizard::WORKER_ID_FIELD = "worker-id";
 const QString CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD = "worker-name";
 
 CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(ExternalProcessConfig *_initialConfig, QWidget *_parent)
@@ -113,7 +116,7 @@ void CreateCmdlineBasedWorkerWizard::accept() {
         dir.mkdir(dirPath);
     }
 
-    actualConfig->filePath = GUrlUtils::rollFileName(dirPath + actualConfig->name + ".etc", "_");
+    actualConfig->filePath = GUrlUtils::rollFileName(dirPath + GUrlUtils::fixFileName(actualConfig->name) + ".etc", "_");
 
     QFile file(actualConfig->filePath);
     file.open(QIODevice::WriteOnly);
@@ -138,6 +141,7 @@ void CreateCmdlineBasedWorkerWizard::init() {
 
 ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() const {
     ExternalProcessConfig *config = new ExternalProcessConfig();
+    config->id = field(WORKER_ID_FIELD).toString();
     config->name = field(WORKER_NAME_FIELD).toString();
     config->description = removeEmptyLines(field(WORKER_DESCRIPTION_FIELD).toString());
     config->templateDescription = removeEmptyLines(field(COMMAND_TEMPLATE_DESCRIPTION_FIELD).toString());
@@ -148,6 +152,8 @@ ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() cons
     return config;
 }
 
+char const * const CreateCmdlineBasedWorkerWizardNamePage::WORKER_ID_PROPERTY = "worker-id-property";
+
 CreateCmdlineBasedWorkerWizardNamePage::CreateCmdlineBasedWorkerWizardNamePage(ExternalProcessConfig *_initialConfig)
     : QWizardPage(nullptr),
       initialConfig(_initialConfig)
@@ -155,8 +161,10 @@ CreateCmdlineBasedWorkerWizardNamePage::CreateCmdlineBasedWorkerWizardNamePage(E
     setupUi(this);
 
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+    leName->setValidator(new WorkerNameValidator(leName));
 
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD + "*", leName);
+    registerField(CreateCmdlineBasedWorkerWizard::WORKER_ID_FIELD, this, WORKER_ID_PROPERTY);
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD, teDescription, "plainText", SIGNAL(textChanged()));
 }
 
@@ -166,27 +174,22 @@ void CreateCmdlineBasedWorkerWizardNamePage::initializePage() {
     teDescription->setPlainText(initialConfig->description);
 }
 
-bool CreateCmdlineBasedWorkerWizardNamePage::isComplete() const {
-    const QString name = leName->text();
-    if (name.isEmpty()) {
-        return false;
+bool CreateCmdlineBasedWorkerWizardNamePage::validatePage() {
+    QString name = field(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD).toString();
+    if (nullptr == initialConfig) {
+        const QMap<Descriptor, QList<ActorPrototype *> > groups = Workflow::WorkflowEnv::getProtoRegistry()->getProtos();
+        QStringList reservedNames;
+        foreach (const QList<ActorPrototype *> &group, groups) {
+            foreach (ActorPrototype *proto, group) {
+                reservedNames << proto->getDisplayName();
+            }
+        }
+
+        name = WorkflowUtils::createUniqueString(name, " ", reservedNames);
+        setField(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD, name);
     }
 
-    QRegExp spaces("\\s");
-    if (name.contains(spaces)) {
-        return false;
-    }
-
-    QRegExp invalidSymbols("\\W");
-    if (name.contains(invalidSymbols)) {
-        return false;
-    }
-
-    const bool isEditing = (nullptr != initialConfig);
-    if (!isEditing && nullptr != Workflow::WorkflowEnv::getProtoRegistry()->getProto(name)) {
-        return false;
-    }
-
+    setProperty(WORKER_ID_PROPERTY, WorkflowUtils::generateWorkerIdFromName(name));
     return true;
 }
 

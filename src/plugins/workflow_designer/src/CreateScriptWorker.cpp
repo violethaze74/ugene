@@ -389,7 +389,7 @@ CreateScriptElementDialog::CreateScriptElementDialog(QWidget *p, ActorPrototype*
 
     attributeTable->horizontalHeader()->setStretchLastSection(true);
 
-    nameEdit->setValidator(new WorkerNameValidator(this));
+    nameEdit->setValidator(new DeprecatedWorkerNameValidator(this));
 
     if(proto) {
         fillFields(proto);
