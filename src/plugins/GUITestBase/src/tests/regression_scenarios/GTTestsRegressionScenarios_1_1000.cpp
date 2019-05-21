@@ -2617,6 +2617,11 @@ GUI_TEST_CLASS_DEFINITION(test_0888) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0889) {
+    //64-bit OS supported only
+#ifdef Q_OS_WIN32
+    return;
+#endif
+
 //  1) Open RNA.fa
 //  2) Use context menu on sequence {Align->Align sequence to mRNA}
 //  3) Select any item
