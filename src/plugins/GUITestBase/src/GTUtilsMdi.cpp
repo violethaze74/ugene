@@ -159,9 +159,11 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
         void run(HI::GUITestOpStatus &os) {
             const QList<QMdiSubWindow *> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow *>();
             foreach (QMdiSubWindow *mdiWindow, mdiWindows) {
-                GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
+                MessageBoxDialogFiller *filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
+                GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
                 mdiWindow->close();
                 GTGlobals::sleep(100);
+                GTUtilsDialog::removeRunnable(filler);
             }
         }
     };
