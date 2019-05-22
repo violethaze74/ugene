@@ -28,7 +28,7 @@
 #include <QMouseEvent>
 #include <QOffscreenSurface>
 #include <QOpenGLContext>
-#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
 #include <QTime>
 
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
@@ -78,7 +78,7 @@ namespace U2 {
 
 int BioStruct3DGLWidget::widgetCount = 0;
 
-bool BioStruct3DGLWidget::checkGlVersion() {
+bool BioStruct3DGLWidget::checkShaderPrograms() {
     QOffscreenSurface surf;
     surf.create();
 
@@ -86,20 +86,13 @@ bool BioStruct3DGLWidget::checkGlVersion() {
     ctx.create();
     ctx.makeCurrent(&surf);
 
-    QString version((const char*)ctx.functions()->glGetString(GL_VERSION));
-    QRegularExpression  versionRegExp("(\\d+\\.\\d+)");
-    QRegularExpressionMatch versionMatch = versionRegExp.match(version);
-
-    QString versionNumberString = versionMatch.captured();
-    coreLog.details(tr("OpenGL version number: %1").arg(versionNumberString));
-
-    double versionNumber = versionNumberString.toDouble();
-    bool res = versionNumber >= MINIMUM_ACCEPTABLE_VERSION;
-    if (!res) {
-        coreLog.error(tr("The \"3D Structure Viewer\" was disabled, because there was a problem with video drivers. Please try to update the drivers and reset the UGENE settings to default in the \"Application Settings\" dialog."));
+    bool opgl = QOpenGLShaderProgram::hasOpenGLShaderPrograms(&ctx);
+    if (!opgl) {
+        coreLog.error(tr("The \"3D Structure Viewer\" was disabled, because shader programs written in the OpenGL Shading Language (GLSL) are not supported on this system. "
+                         "Please try to update drivers and reset the UGENE settings to default in the \"Application Settings\" dialog."));
     }
 
-    return res;
+    return opgl;
 }
 
 void BioStruct3DGLWidget::tryGL() {
