@@ -93,7 +93,7 @@ BioStruct3DViewPlugin::BioStruct3DViewPlugin()
     : Plugin(tr("3D Structure Viewer"), tr("Visualizes 3D structures of biological molecules."))
 {
     // Init plugin view context
-    if (BioStruct3DGLWidget::checkGlVersion()) {
+    if (BioStruct3DGLWidget::checkShaderPrograms()) {
         viewContext = new BioStruct3DViewContext(this);
         viewContext->init();
     }
