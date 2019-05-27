@@ -79,6 +79,7 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
 }
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
+    BioStruct3DGLWidget::checkShaderPrograms();
     BioStruct3DGLWidget::tryGL();
     return true;
 }
