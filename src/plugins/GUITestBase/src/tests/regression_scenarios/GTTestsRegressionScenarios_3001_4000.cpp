@@ -2563,7 +2563,8 @@ GUI_TEST_CLASS_DEFINITION(test_3384){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_EDIT"
                                                       << "action_edit_insert_sub_sequences"));
     GTUtilsDialog::waitForDialog(os, new InsertSequenceFiller(os, "A"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getDetViewByNumber(os));
+
 
 //    Select an area on CV that contains zero position
     QWidget* cv = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");
