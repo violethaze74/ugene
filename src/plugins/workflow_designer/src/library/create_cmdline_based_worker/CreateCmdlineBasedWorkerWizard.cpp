@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QAbstractButton>
 #include <QMessageBox>
 
 #include <U2Core/GUrlUtils.h>
@@ -544,21 +545,39 @@ bool CreateCmdlineBasedWorkerWizardCommandTemplatePage::validatePage() {
                       field(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD).toStringList() +
                       field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD).toStringList();
 
-    foreach (const QString &id, ids) {
+    QString parameters;
+    foreach(const QString &id, ids) {
         if (!commandTemplate.contains("$" + id)) {
-            QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
-            msgBox->setWindowTitle(tr("Create Element"));
-            msgBox->setText(tr("You don't use parameter %1 in template string. Continue?").arg(id));
-            msgBox->addButton(tr("Continue"), QMessageBox::ActionRole);
-            QPushButton *cancel = msgBox->addButton(tr("Abort"), QMessageBox::ActionRole);
-            msgBox->exec();
-            CHECK(!msgBox.isNull(), false);
-            if (msgBox->clickedButton() == cancel) {
-                return false;
-            }
+            parameters += " - " + id + "\n";
         }
     }
 
+    if (parameters.isEmpty()) {
+        return true;
+    }
+
+    QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
+    msgBox->setWindowTitle(tr("Create Element"));
+    msgBox->setText(tr("You don't use listed parameters in template string. Continue?"));
+    msgBox->setDetailedText(parameters);
+    QAbstractButton *detailsButton = NULL;
+    foreach(QAbstractButton *button, msgBox->buttons()) {
+        if (msgBox->buttonRole(button) == QMessageBox::ActionRole) {
+            QString buttoText = button->text();
+            detailsButton = button;
+            break;
+        }
+    }
+    if (detailsButton) {
+        detailsButton->click();
+    }
+    msgBox->addButton(tr("Continue"), QMessageBox::ActionRole);
+    QPushButton *cancel = msgBox->addButton(tr("Abort"), QMessageBox::ActionRole);
+    msgBox->exec();
+    CHECK(!msgBox.isNull(), false);
+    if (msgBox->clickedButton() == cancel) {
+        return false;
+    }
     return true;
 }
 
