@@ -58,11 +58,11 @@ ActorPrototype *IncludedProtoFactory::getSchemaActorProto(Schema *schema, const 
     }
 }
 
-void IncludedProtoFactory::registerExternalToolWorker(ExternalProcessConfig *cfg) {
+bool IncludedProtoFactory::registerExternalToolWorker(ExternalProcessConfig *cfg) {
     if (NULL != instance) {
         return instance->_registerExternalToolWorker(cfg);
     } else {
-        return;
+        return false;
     }
 }
 
@@ -71,6 +71,14 @@ void IncludedProtoFactory::registerScriptWorker(const QString &actorName) {
         return instance->_registerScriptWorker(actorName);
     } else {
         return;
+    }
+}
+
+ExternalProcessConfig *IncludedProtoFactory::unregisterExternalToolWorker(const QString &id) {
+    if (nullptr != instance) {
+        return instance->_unregisterExternalToolWorker(id);
+    } else {
+        return nullptr;
     }
 }
 

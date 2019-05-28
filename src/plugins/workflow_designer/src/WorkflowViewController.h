@@ -231,9 +231,9 @@ private slots:
     void sl_toggleLock(bool = true);
     void sl_createScript();
     void sl_editScript();
-    void sl_externalAction();
+    void sl_createCmdlineBasedWorkerAction();
     void sl_appendExternalToolWorker();
-    void sl_protoDeleted(const QString& id);
+    void sl_prototypeIsAboutToBeRemoved(ActorPrototype *proto);
     void sl_xmlSchemaLoaded(Task*);
     void sl_editExternalTool();
     void sl_findPrototype();
@@ -330,7 +330,7 @@ private:
     QAction* newAction;
     QAction* createScriptAction;
     QAction* editScriptAction;
-    QAction* externalToolAction;
+    QAction* createCmdlineBasedWorkerAction;
     QAction* appendExternalTool;
     QAction* editExternalToolAction;
     QAction* configureParameterAliasesAction;

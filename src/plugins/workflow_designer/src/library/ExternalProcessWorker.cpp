@@ -60,9 +60,14 @@ const static QString OUTPUT_PORT_TYPE("output-for-");
 static const QString OUT_PORT_ID("out");
 
 bool ExternalProcessWorkerFactory::init(ExternalProcessConfig *cfg) {
-    ActorPrototype *proto = IncludedProtoFactory::getExternalToolProto(cfg);
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_EXTERNAL(), proto);
-    IncludedProtoFactory::registerExternalToolWorker(cfg);
+    QScopedPointer<ActorPrototype> proto(IncludedProtoFactory::getExternalToolProto(cfg));
+    const bool prototypeRegistered = WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_EXTERNAL(), proto.data());
+    CHECK(prototypeRegistered, false);
+    proto.take();
+
+    const bool factoryRegistered = IncludedProtoFactory::registerExternalToolWorker(cfg);
+    CHECK_EXT(factoryRegistered, delete WorkflowEnv::getProtoRegistry()->unregisterProto(cfg->id), false);
+
     return true;
 }
 

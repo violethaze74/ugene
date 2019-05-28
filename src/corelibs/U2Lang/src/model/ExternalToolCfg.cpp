@@ -110,7 +110,7 @@ ExternalToolCfgRegistry::ExternalToolCfgRegistry(QObject *_parent)
 }
 
 bool ExternalToolCfgRegistry::registerExternalTool(ExternalProcessConfig *cfg) {
-    if(configs.contains(cfg->id)) {
+    if (configs.contains(cfg->id)) {
         return false;
     } else {
         configs.insert(cfg->id, cfg);
@@ -119,6 +119,7 @@ bool ExternalToolCfgRegistry::registerExternalTool(ExternalProcessConfig *cfg) {
 }
 
 void ExternalToolCfgRegistry::unregisterConfig(const QString &id) {
+    // TODO: UTI-294
     configs.remove(id);
 }
 

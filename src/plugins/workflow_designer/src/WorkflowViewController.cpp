@@ -360,7 +360,7 @@ void WorkflowView::setupPalette() {
     palette = new WorkflowPalette(WorkflowEnv::getProtoRegistry());
     palette->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored));
     connect(palette, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SLOT(sl_selectPrototype(Workflow::ActorPrototype*, bool)));
-    connect(palette, SIGNAL(si_protoDeleted(const QString&)), SLOT(sl_protoDeleted(const QString&)));
+    connect(palette, SIGNAL(si_prototypeIsAboutToBeRemoved(ActorPrototype *)), SLOT(sl_prototypeIsAboutToBeRemoved(ActorPrototype *)));
     connect(palette, SIGNAL(si_protoListModified()), SLOT(sl_protoListModified()));
     connect(palette, SIGNAL(si_protoChanged()), scene, SLOT(sl_updateDocs()));
 
@@ -799,10 +799,10 @@ void WorkflowView::createActions() {
     editScriptAction->setEnabled(false); // because user need to select actor with script to enable it
     connect(editScriptAction, SIGNAL(triggered()), SLOT(sl_editScript()));
 
-    externalToolAction = new QAction(tr("Create element with command line tool..."), this);
-    externalToolAction->setObjectName("createElementWithCommandLineTool");
-    externalToolAction->setIcon(QIcon(":workflow_designer/images/external_cmd_tool.png"));
-    connect(externalToolAction, SIGNAL(triggered()), SLOT(sl_externalAction()));
+    createCmdlineBasedWorkerAction = new QAction(tr("Create element with command line tool..."), this);
+    createCmdlineBasedWorkerAction->setObjectName("createElementWithCommandLineTool");
+    createCmdlineBasedWorkerAction->setIcon(QIcon(":workflow_designer/images/external_cmd_tool.png"));
+    connect(createCmdlineBasedWorkerAction, SIGNAL(triggered()), SLOT(sl_createCmdlineBasedWorkerAction()));
 
     editExternalToolAction = new QAction(tr("Edit configuration..."),this);
     editExternalToolAction->setObjectName("editConfiguration");
@@ -860,20 +860,13 @@ void WorkflowView::sl_createScript() {
     }
 }
 
-void WorkflowView::sl_externalAction() {
-    QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(nullptr, this);
-    dlg->exec();
-    CHECK(!dlg.isNull(), );
+void WorkflowView::sl_createCmdlineBasedWorkerAction() {
+    QString id = palette->createPrototype();
+    CHECK(!id.isEmpty(), );
 
-    if (dlg->result() == QDialog::Accepted) {
-        QScopedPointer<ExternalProcessConfig> cfg(dlg->takeConfig());
-        if (LocalWorkflow::ExternalProcessWorkerFactory::init(cfg.data())) {
-            ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(cfg->id);
-            QRectF rect = scene->sceneRect();
-            addProcess(createActor(proto, QVariantMap()), rect.center());
-            cfg.take();
-        }
-    }
+    ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(id);
+    QRectF rect = scene->sceneRect();
+    addProcess(createActor(proto, QVariantMap()), rect.center());
 }
 
 namespace {
@@ -886,7 +879,7 @@ namespace {
                 return "";
             }
         }
-        QString filePath = dir.absolutePath() + "/" + QFileInfo(url).fileName();
+        QString filePath = GUrlUtils::rollFileName(dir.absolutePath() + "/" + QFileInfo(url).fileName(), "_");
         if (QFile::exists(filePath)) {
             os.setError(QObject::tr("The file '%1' already exists").arg(filePath));
             return "";
@@ -924,11 +917,14 @@ void WorkflowView::sl_appendExternalToolWorker() {
                 QString internalUrl = copyIntoUgene(url, os);
                 CHECK_OP(os, );
                 cfg->filePath = internalUrl;
-                LocalWorkflow::ExternalProcessWorkerFactory::init(cfg.data());
-                ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(cfg->id);
-                QRectF rect = scene->sceneRect();
-                addProcess(createActor(proto, QVariantMap()), rect.center());
-                cfg.take();
+                if (LocalWorkflow::ExternalProcessWorkerFactory::init(cfg.data())) {
+                    ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(cfg->id);
+                    QRectF rect = scene->sceneRect();
+                    addProcess(createActor(proto, QVariantMap()), rect.center());
+                    cfg.take();
+                } else {
+                    coreLog.error(tr("Can't register element."));
+                }
             }
         } else {
             coreLog.error(tr("Can't load element."));
@@ -958,40 +954,23 @@ void WorkflowView::sl_editExternalTool() {
     QList<Actor *> selectedActors = scene->getSelectedActors();
     if (selectedActors.size() == 1) {
         ActorPrototype *proto = selectedActors.first()->getProto();
-
-        ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(proto->getId());
-        QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(new ExternalProcessConfig(*oldCfg), this);
-        dlg->exec();
-        CHECK(!dlg.isNull(), );
-
-        if(dlg->result() == QDialog::Accepted) {
-            QScopedPointer<ExternalProcessConfig> newCfg(dlg->takeConfig());
-
-            if (*oldCfg != *newCfg) {
-                if (oldCfg->id != newCfg->id) {
-                    if (!QFile::remove(proto->getFilePath())) {
-                        uiLog.error(tr("Can't remove element %1").arg(proto->getDisplayName()));
-                    }
-                }
-                sl_protoDeleted(proto->getId());
-                WorkflowEnv::getProtoRegistry()->unregisterProto(proto->getId());
-                delete proto;
-
-                LocalWorkflow::ExternalProcessWorkerFactory::init(newCfg.data());
-            }
-            WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(oldCfg->id);
-            WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(newCfg.take());
+        const bool edited = palette->editPrototype(proto);
+        if (edited) {
             scene->sl_updateDocs();
         }
     }
 }
 
-void WorkflowView::sl_protoDeleted(const QString &id) {
+void WorkflowView::sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto) {
+    if (currentProto == proto) {
+        currentProto = nullptr;
+    }
+
     QList<WorkflowProcessItem*> deleteList;
     foreach(QGraphicsItem *i, scene->items()) {
         if(i->type() == WorkflowProcessItemType) {
             WorkflowProcessItem *wItem = static_cast<WorkflowProcessItem *>(i);
-            if(wItem->getProcess()->getProto()->getId() == id) {
+            if(wItem->getProcess()->getProto()->getId() == proto->getId()) {
                 deleteList << wItem;
             }
         }
@@ -1192,7 +1171,7 @@ void WorkflowView::setupMDIToolbar(QToolBar* tb) {
     tb->addAction(createScriptAction);
     tb->addAction(editScriptAction);
     scriptSep = tb->addSeparator();
-    tb->addAction(externalToolAction);
+    tb->addAction(createCmdlineBasedWorkerAction);
     tb->addAction(appendExternalTool);
     extSep = tb->addSeparator();
     tb->addAction(copyAction);
@@ -1237,7 +1216,7 @@ void WorkflowView::setupActions() {
     editScriptAction->setVisible(editMode);
     scriptSep->setVisible(editMode);
 
-    externalToolAction->setVisible(editMode);
+    createCmdlineBasedWorkerAction->setVisible(editMode);
     appendExternalTool->setVisible(editMode);
     extSep->setVisible(editMode);
 
@@ -1284,7 +1263,7 @@ void WorkflowView::setupViewMenu(QMenu* m) {
     m->addAction(createScriptAction);
     m->addAction(editScriptAction);
     m->addSeparator();
-    m->addAction(externalToolAction);
+    m->addAction(createCmdlineBasedWorkerAction);
     m->addAction(appendExternalTool);
     m->addSeparator();
 
