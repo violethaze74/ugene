@@ -189,9 +189,14 @@ CreateCmdlineBasedWorkerWizardNamePage::CreateCmdlineBasedWorkerWizardNamePage(E
 }
 
 void CreateCmdlineBasedWorkerWizardNamePage::initializePage() {
-    CHECK(nullptr != initialConfig, );
-    leName->setText(initialConfig->name);
-    teDescription->setPlainText(initialConfig->description);
+    if (nullptr != initialConfig) {
+        leName->setText(initialConfig->name);
+        teDescription->setPlainText(initialConfig->description);
+    } else {
+        QString name = "Custom cmdline worker";
+        makeUniqueWorkerName(name);
+        leName->setText(name);
+    }
 }
 
 bool CreateCmdlineBasedWorkerWizardNamePage::validatePage() {
@@ -222,6 +227,17 @@ bool CreateCmdlineBasedWorkerWizardNamePage::validatePage() {
 
     setProperty(WORKER_ID_PROPERTY, id);
     return true;
+}
+
+void CreateCmdlineBasedWorkerWizardNamePage::makeUniqueWorkerName(QString& name) {
+    const QMap<Descriptor, QList<ActorPrototype *> > groups = Workflow::WorkflowEnv::getProtoRegistry()->getProtos();
+    QStringList reservedNames;
+    foreach(const QList<ActorPrototype *> &group, groups) {
+        foreach(ActorPrototype *proto, group) {
+            reservedNames << proto->getDisplayName();
+        }
+    }
+    name = WorkflowUtils::createUniqueString(name, " ", reservedNames);
 }
 
 char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::INPUTS_DATA_PROPERTY = "inputs-data-property";

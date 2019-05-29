@@ -19,16 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QScopedPointer>
-#include <QDir>
-#include <QUrl>
 #include <QListWidgetItem>
 
-#include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/Dataset.h>
-#include <U2Lang/Datatype.h>
-#include <U2Lang/Descriptor.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/IntegralBusType.h>
 #include <U2Lang/HRSchemaSerializer.h>
@@ -44,19 +37,14 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CredentialsAsker.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/Folder.h>
 #include <U2Core/GObject.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PasswordStorage.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/Settings.h>
 #include <U2Core/StringAdapter.h>
 #include <U2Core/U2OpStatusUtils.h>

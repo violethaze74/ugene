@@ -81,6 +81,8 @@ public:
     bool validatePage() override;
 
 private:
+    static void CreateCmdlineBasedWorkerWizardNamePage::makeUniqueWorkerName(QString& name);
+
     ExternalProcessConfig *initialConfig;
 
     static char const * const WORKER_ID_PROPERTY;
