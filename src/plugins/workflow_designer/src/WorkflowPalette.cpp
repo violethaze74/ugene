@@ -343,6 +343,7 @@ void WorkflowPaletteElements::rebuild() {
 
     if (reg) {
         QVariant saved = saveState();
+        overItem = nullptr;
         clear();
         setContent(reg);
         QVariant changed = changeState(saved);
