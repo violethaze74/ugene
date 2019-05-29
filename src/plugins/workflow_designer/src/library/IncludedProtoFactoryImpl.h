@@ -34,8 +34,10 @@ public:
     virtual ActorPrototype *_getExternalToolProto(ExternalProcessConfig *cfg);
     virtual ActorPrototype *_getSchemaActorProto(Schema *schema, const QString &name, const QString &actorFilePath);
 
-    virtual void _registerExternalToolWorker(ExternalProcessConfig *cfg);
+    virtual bool _registerExternalToolWorker(ExternalProcessConfig *cfg);
     virtual void _registerScriptWorker(const QString &actorName);
+
+    virtual ExternalProcessConfig *_unregisterExternalToolWorker(const QString &id);
 
 private:
     static Descriptor generateUniqueSlotDescriptor( const QList<Descriptor> &existingSlots,

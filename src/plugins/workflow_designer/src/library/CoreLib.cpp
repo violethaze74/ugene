@@ -390,12 +390,13 @@ void CoreLib::initExternalToolsWorkers() {
         file.open(QIODevice::ReadOnly);
         QString data = file.readAll().data();
 
-        ExternalProcessConfig *cfg = NULL;
-        cfg = HRSchemaSerializer::string2Actor(data);
-
-        if(cfg) {
+        ExternalProcessConfig *cfg = HRSchemaSerializer::string2Actor(data);;
+        if (nullptr != cfg) {
             cfg->filePath = url;
-            ExternalProcessWorkerFactory::init(cfg);
+            const bool inited = ExternalProcessWorkerFactory::init(cfg);
+            if (!inited) {
+                delete cfg;
+            }
         }
         file.close();
     }

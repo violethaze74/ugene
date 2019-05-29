@@ -37,10 +37,13 @@ class ExternalProcessConfig;
 class CreateCmdlineBasedWorkerWizard : public QWizard {
     Q_OBJECT
 public:
+    explicit CreateCmdlineBasedWorkerWizard(QWidget *parent = nullptr);
     explicit CreateCmdlineBasedWorkerWizard(ExternalProcessConfig *initialConfig, QWidget *parent = nullptr);
     ~CreateCmdlineBasedWorkerWizard() override;
 
     ExternalProcessConfig *takeConfig();
+
+    static void saveConfig(ExternalProcessConfig *config);
 
     static const QString PAGE_TITLE_STYLE_SHEET;
 

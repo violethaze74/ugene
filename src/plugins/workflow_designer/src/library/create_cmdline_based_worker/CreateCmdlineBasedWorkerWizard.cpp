@@ -60,11 +60,21 @@ const QString CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD = "worker
 const QString CreateCmdlineBasedWorkerWizard::WORKER_ID_FIELD = "worker-id";
 const QString CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD = "worker-name";
 
-CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(ExternalProcessConfig *_initialConfig, QWidget *_parent)
+CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(QWidget *_parent)
     : QWizard(_parent),
-      initialConfig(_initialConfig),
+      initialConfig(nullptr),
       config(nullptr)
 {
+    init();
+}
+
+CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(ExternalProcessConfig *_initialConfig, QWidget *_parent)
+    : QWizard(_parent),
+      initialConfig(nullptr),
+      config(nullptr)
+{
+    SAFE_POINT(nullptr != _initialConfig, "Initial config of the element to edit is nullptr", );
+    initialConfig = new ExternalProcessConfig(*_initialConfig);
     init();
 }
 
@@ -77,6 +87,25 @@ ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::takeConfig() {
     ExternalProcessConfig *toReturn = nullptr;
     qSwap(toReturn, config);
     return toReturn;
+}
+
+void CreateCmdlineBasedWorkerWizard::saveConfig(ExternalProcessConfig *config) {
+    const QString serializedConfig = HRSchemaSerializer::actor2String(config);
+    const QString dirPath = WorkflowSettings::getExternalToolDirectory();
+    const QDir dir(dirPath);
+    if (!dir.exists()) {
+        dir.mkpath(dirPath);
+    }
+
+    if (QFileInfo(config->filePath).dir().absolutePath() != dir.absolutePath()) {
+        config->filePath = dirPath + GUrlUtils::fixFileName(config->name) + ".etc";
+    }
+    config->filePath = GUrlUtils::rollFileName(config->filePath, "_");
+
+    QFile file(config->filePath);
+    file.open(QIODevice::WriteOnly);
+    file.write(serializedConfig.toLatin1());
+    file.close();
 }
 
 namespace {
@@ -113,22 +142,6 @@ void CreateCmdlineBasedWorkerWizard::accept() {
         }
     }
 
-    const QString serializedConfig = HRSchemaSerializer::actor2String(actualConfig.data());
-    const QString dirPath = WorkflowSettings::getExternalToolDirectory();
-    const QDir dir(dirPath);
-    if (!dir.exists()) {
-        dir.mkdir(dirPath);
-    }
-
-    if (nullptr == initialConfig) {
-        actualConfig->filePath = GUrlUtils::rollFileName(dirPath + actualConfig->name + ".etc", "_");
-    }
-
-    QFile file(actualConfig->filePath);
-    file.open(QIODevice::WriteOnly);
-    file.write(serializedConfig.toLatin1());
-    file.close();
-
     config = actualConfig.take();
     done(QDialog::Accepted);
 }
@@ -155,6 +168,7 @@ ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() cons
     config->outputs = field(OUTPUTS_DATA_FIELD).value<QList<DataConfig> >();
     config->attrs = field(ATTRIBUTES_DATA_FIELD).value<QList<AttributeConfig> >();
     config->cmdLine = field(COMMAND_TEMPLATE_FIELD).toString();
+    config->filePath = WorkflowSettings::getExternalToolDirectory() + GUrlUtils::fixFileName(config->name) + ".etc";
     return config;
 }
 
@@ -182,20 +196,31 @@ void CreateCmdlineBasedWorkerWizardNamePage::initializePage() {
 
 bool CreateCmdlineBasedWorkerWizardNamePage::validatePage() {
     QString name = field(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD).toString();
-    if (nullptr == initialConfig) {
-        const QMap<Descriptor, QList<ActorPrototype *> > groups = Workflow::WorkflowEnv::getProtoRegistry()->getProtos();
-        QStringList reservedNames;
-        foreach (const QList<ActorPrototype *> &group, groups) {
-            foreach (ActorPrototype *proto, group) {
-                reservedNames << proto->getDisplayName();
-            }
-        }
 
+    const QMap<Descriptor, QList<ActorPrototype *> > groups = Workflow::WorkflowEnv::getProtoRegistry()->getProtos();
+    QStringList reservedNames;
+    QStringList reservedIds;
+
+    foreach (const QList<ActorPrototype *> &group, groups) {
+        foreach (ActorPrototype *proto, group) {
+            reservedNames << proto->getDisplayName();
+            reservedIds << proto->getId();
+        }
+    }
+
+    if (nullptr == initialConfig || initialConfig->name != name) {
         name = WorkflowUtils::createUniqueString(name, " ", reservedNames);
         setField(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD, name);
     }
 
-    setProperty(WORKER_ID_PROPERTY, WorkflowUtils::generateIdFromName(name));
+    QString id;
+    if (nullptr == initialConfig) {
+        id = WorkflowUtils::createUniqueString(WorkflowUtils::generateIdFromName(name), "-", reservedIds);
+    } else {
+        id = initialConfig->id;
+    }
+
+    setProperty(WORKER_ID_PROPERTY, id);
     return true;
 }
 

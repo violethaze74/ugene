@@ -231,15 +231,31 @@ ActorPrototype *IncludedProtoFactoryImpl::_getSchemaActorProto(Schema *schema, c
     return proto;
 }
 
-void IncludedProtoFactoryImpl::_registerExternalToolWorker(ExternalProcessConfig *cfg) {
+bool IncludedProtoFactoryImpl::_registerExternalToolWorker(ExternalProcessConfig *cfg) {
+    const bool configRegistered = WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(cfg);
+    CHECK(configRegistered, false);
+
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalWorkflow::LocalDomainFactory::ID);
-    WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(cfg);
-    localDomain->registerEntry( new LocalWorkflow::ExternalProcessWorkerFactory(cfg->id) );
+    QScopedPointer<LocalWorkflow::ExternalProcessWorkerFactory> factory(new LocalWorkflow::ExternalProcessWorkerFactory(cfg->id));
+    const bool factoryRegistered = localDomain->registerEntry(factory.data());
+    CHECK_EXT(factoryRegistered, WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(cfg->id), false);
+    factory.take();
+
+    return true;
 }
 
 void IncludedProtoFactoryImpl::_registerScriptWorker(const QString &actorName) {
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalWorkflow::LocalDomainFactory::ID);
     localDomain->registerEntry(new LocalWorkflow::ScriptWorkerFactory(actorName));
+}
+
+ExternalProcessConfig *IncludedProtoFactoryImpl::_unregisterExternalToolWorker(const QString &id) {
+    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalWorkflow::LocalDomainFactory::ID);
+    delete localDomain->unregisterEntry(id);
+
+    ExternalProcessConfig *config = WorkflowEnv::getExternalCfgRegistry()->getConfigById(id);
+    WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(id);
+    return config;
 }
 
 Descriptor IncludedProtoFactoryImpl::generateUniqueSlotDescriptor(

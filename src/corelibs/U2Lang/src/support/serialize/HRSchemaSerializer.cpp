@@ -289,7 +289,6 @@ void HRSchemaSerializer::parseIncludes(Tokenizer &tokenizer, QList<QString> incl
     } else {
         WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_INCLUDES(), proto);
         if (EXTERNAL_TOOL == includeType) {
-            WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(cfg);
             IncludedProtoFactory::registerExternalToolWorker(cfg);
         } else if (SCRIPT == includeType) {
             IncludedProtoFactory::registerScriptWorker(actorId);
