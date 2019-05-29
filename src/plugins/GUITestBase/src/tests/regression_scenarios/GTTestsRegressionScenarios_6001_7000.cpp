@@ -2158,18 +2158,14 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
     //Expected state: default value for "Apply 'Max distance' attribute" is False
     GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Find Repeats"));
     QString defaultAttr = GTUtilsWorkflowDesigner::getParameter(os,  "Apply 'Max distance' attribute");
-    CHECK_SET_ERR(defaultAttr == "False","Attribute value isn't 'False'");
+    CHECK_SET_ERR(defaultAttr == "True","Attribute value isn't 'True'");
 
-    //3. Set "Apply 'Max distance' attribute" value to 'True'
-    GTUtilsWorkflowDesigner::setParameter(os, "Apply 'Max distance' attribute", "True", GTUtilsWorkflowDesigner::comboValue);
-
-    //4. Set "Max distance" parameter to 1
-    GTUtilsWorkflowDesigner::setParameter(os, "Max distance", "1", GTUtilsWorkflowDesigner::spinValue, GTGlobals::UseKey);
+    //3. Set "Max distance" parameter to 0
+    GTUtilsWorkflowDesigner::setParameter(os, "Max distance", "0", GTUtilsWorkflowDesigner::spinValue, GTGlobals::UseKey);
     GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Find Repeats"));
     GTGlobals::sleep();
     GTUtilsWorkflowDesigner::clickParameter(os, "Max distance");
 
-    //QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
     QList<QWidget*> list;
     foreach(QWidget *w, GTMainWindow::getMainWindowsAsWidget(os)) {
         list.append(w);
@@ -2188,12 +2184,12 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
         }
     }
 
-    //Expected state: it set successfully, ensure that 1 is minimum value
+    //Expected state: it set successfully, ensure that 0 is minimum value
     QString maxDistance = GTUtilsWorkflowDesigner::getParameter(os,  "Max distance", true);
-    CHECK_SET_ERR(maxDistance == "1 bp", "Attribute value isn't 1 bp");
-    CHECK_SET_ERR(qsb->minimum() == 1, "Minimum value isn't 1");
+    CHECK_SET_ERR(maxDistance == "0 bp", "Attribute value isn't 0 bp");
+    CHECK_SET_ERR(qsb->minimum() == 0, "Minimum value isn't 0");
 
-    //6. Open human_t1.fa
+    //4. Open human_t1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2210,7 +2206,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
         }
     };
 
-    //7. Open repeat finder dialog
+    //5. Open repeat finder dialog
     //Expected state: minimum value for max distance combobox is 1
     GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, new Custom()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find repeats...", GTGlobals::UseMouse);
