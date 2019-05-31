@@ -1365,6 +1365,15 @@ ExternalProcessConfig*  HRSchemaSerializer::parseActorBody(Tokenizer & tokenizer
         } else if(tok == Constants::NAME_ATTR) {
             tokenizer.assertToken(Constants::COLON);
             cfg->name = tokenizer.take();
+        } else if(tok == Constants::USE_INTEGRATED_TOOL) {
+            tokenizer.assertToken(Constants::COLON);
+            cfg->useIntegratedTool = (0 != QString::compare(tokenizer.take(), Constants::FALSE, Qt::CaseInsensitive));
+        } else if(tok == Constants::CUSTOM_TOOL_PATH) {
+            tokenizer.assertToken(Constants::COLON);
+            cfg->customToolPath = tokenizer.take();
+        } else if(tok == Constants::INTEGRATED_TOOL_ID) {
+            tokenizer.assertToken(Constants::COLON);
+            cfg->integratedToolId = tokenizer.take();
         } else if(tok == Constants::CMDLINE) {
             tokenizer.assertToken(Constants::COLON);
             cfg->cmdLine = tokenizer.take();
@@ -2043,6 +2052,13 @@ QString HRSchemaSerializer::actor2String(ExternalProcessConfig *cfg ) {
     res += outputsDefenition(cfg->outputs);
     res += attributesDefinition(cfg->attrs);
     res += Constants::TAB + Constants::NAME_ATTR + ":\"" + cfg->name + "\";\n";
+    res += Constants::TAB + Constants::USE_INTEGRATED_TOOL + ":" + (cfg->useIntegratedTool ? Constants::TRUE : Constants::FALSE) + ";\n";
+    if (!cfg->customToolPath.isEmpty()) {
+        res += Constants::TAB + Constants::CUSTOM_TOOL_PATH + ":\"" + cfg->customToolPath + "\";\n";   // TODO: it should be escaped (UGENE-6437)
+    }
+    if (!cfg->integratedToolId.isEmpty()) {
+        res += Constants::TAB + Constants::INTEGRATED_TOOL_ID + ":\"" + cfg->integratedToolId + "\";\n";   // TODO: it also should be escaped (UGENE-6437)
+    }
     res += Constants::TAB + Constants::CMDLINE + ":\"" + cfg->cmdLine + "\";\n";
     if(!cfg->description.isEmpty()) {
         res += Constants::TAB + Constants::DESCRIPTION + ":\"" + cfg->description + "\";\n";

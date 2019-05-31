@@ -466,7 +466,9 @@ void AttributeItem::setDescription(const QString &_description) {
 /// CfgExternalToolModelAttributes
 //////////////////////////////////////////////////////////////////////////
 
-CfgExternalToolModelAttributes::CfgExternalToolModelAttributes() {
+CfgExternalToolModelAttributes::CfgExternalToolModelAttributes(QObject *_parent)
+    : QAbstractTableModel(_parent)
+{
     types["URL"] = "URL";
     types["String"] = "String";
     types["Number"] = "Number";
@@ -479,6 +481,7 @@ CfgExternalToolModelAttributes::~CfgExternalToolModelAttributes() {
         delete item;
     }
 }
+
 int CfgExternalToolModelAttributes::rowCount(const QModelIndex & /*index*/) const{
     return items.size();
 }

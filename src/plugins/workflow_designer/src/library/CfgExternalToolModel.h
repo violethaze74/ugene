@@ -155,7 +155,7 @@ public:
         COLUMNS_COUNT = COLUMN_DESCRIPTION + 1   // elements count
     };
 
-    CfgExternalToolModelAttributes();
+    CfgExternalToolModelAttributes(QObject *parent = nullptr);
     ~CfgExternalToolModelAttributes();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
