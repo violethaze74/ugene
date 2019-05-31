@@ -21,15 +21,15 @@
 
 #include <QRegExp>
 
-#include <U2Core/DNATranslation.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNATranslation.h>
+#include <U2Core/GObjectUtils.h>
 #include <U2Core/Log.h>
-#include <U2Core/TextUtils.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Algorithm/DynTable.h>
 #include <U2Algorithm/RollingArray.h>
-#include <U2Core/U2AlphabetUtils.h>
 
 #include "FindAlgorithm.h"
 
@@ -719,7 +719,10 @@ static void find_subst( FindAlgorithmResultsListener* rl,
         SAFE_POINT( NULL != complTT, "Invalid translation supplied!", );
         tmp.resize(patternLen);
         complPattern = tmp.data();
-        TextUtils::translate(complTT->getOne2OneMapper(), pattern, patternLen, complPattern);
+        const DNAAlphabet *patternAlphabet = U2AlphabetUtils::findBestAlphabet(pattern, patternLen);
+        SAFE_POINT(patternAlphabet != nullptr, "Unable to detect search pattern alphabet");
+        DNATranslation *patternTT = GObjectUtils::findComplementTT(patternAlphabet);
+        TextUtils::translate(patternTT->getOne2OneMapper(), pattern, patternLen, complPattern);
         TextUtils::reverse(complPattern, patternLen);
     }
 
@@ -845,7 +848,10 @@ void FindAlgorithm::find(
         SAFE_POINT( NULL != complTT, "Invalid translation supplied!", );
         tmp.resize(patternLen);
         complPattern = tmp.data();
-        TextUtils::translate(complTT->getOne2OneMapper(), pattern, patternLen, complPattern);
+        const DNAAlphabet *patternAlphabet = U2AlphabetUtils::findBestAlphabet(pattern, patternLen);
+        SAFE_POINT(patternAlphabet != nullptr, "Unable to detect search pattern alphabet");
+        DNATranslation *patternTT = GObjectUtils::findComplementTT(patternAlphabet);
+        TextUtils::translate(patternTT->getOne2OneMapper(), pattern, patternLen, complPattern);
         TextUtils::reverse(complPattern, patternLen);
     }
 

@@ -2221,6 +2221,26 @@ GUI_TEST_CLASS_DEFINITION(test_6398) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6459) {
+    //1. Open "data/samples/Genbank/murine.gb".
+    //2. Open "Search in Sequence" options panel tab.
+    //3. Set "Substitute" algorithm.Check "Search with ambiguous bases" checkbox.
+    //4. Ensure that the search is performed on both strands(it is the default value).
+    //5. Enter the following pattern : "YYYGYY".
+    //Expected result: 2738 results are found.
+
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    SchedulerListener listener;
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Substitute");
+    GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases(os);
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "YYYGYY");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2738"), "Results string not match");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
