@@ -33,9 +33,6 @@
 #include <U2Lang/WorkflowRunTask.h>
 
 #include <U2Gui/MainWindow.h>
-#include <U2Gui/ScriptEditorDialog.h>
-
-#include "SampleActionsManager.h"
 
 class QComboBox;
 class QSplitter;
@@ -355,7 +352,6 @@ private:
     QAction* confSep;
     QAction* scriptSep;
     QAction* extSep;
-    QAction* editSep;
     QAction* scaleSep;
     QAction* scaleAction;
     QAction* styleAction;
