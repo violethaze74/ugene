@@ -720,7 +720,7 @@ static void find_subst( FindAlgorithmResultsListener* rl,
         tmp.resize(patternLen);
         complPattern = tmp.data();
         const DNAAlphabet *patternAlphabet = U2AlphabetUtils::findBestAlphabet(pattern, patternLen);
-        SAFE_POINT(patternAlphabet != nullptr, "Unable to detect search pattern alphabet");
+        SAFE_POINT(patternAlphabet != nullptr, "Unable to detect search pattern alphabet",);
         DNATranslation *patternTT = GObjectUtils::findComplementTT(patternAlphabet);
         TextUtils::translate(patternTT->getOne2OneMapper(), pattern, patternLen, complPattern);
         TextUtils::reverse(complPattern, patternLen);
@@ -849,7 +849,7 @@ void FindAlgorithm::find(
         tmp.resize(patternLen);
         complPattern = tmp.data();
         const DNAAlphabet *patternAlphabet = U2AlphabetUtils::findBestAlphabet(pattern, patternLen);
-        SAFE_POINT(patternAlphabet != nullptr, "Unable to detect search pattern alphabet");
+        SAFE_POINT(patternAlphabet != nullptr, "Unable to detect search pattern alphabet",);
         DNATranslation *patternTT = GObjectUtils::findComplementTT(patternAlphabet);
         TextUtils::translate(patternTT->getOne2OneMapper(), pattern, patternLen, complPattern);
         TextUtils::reverse(complPattern, patternLen);
