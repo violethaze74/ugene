@@ -59,7 +59,7 @@ public slots:
 
 signals:
     void processSelected(Workflow::ActorPrototype*, bool);
-    void si_prototypeIsAboutToBeRemoved(ActorPrototype *proto);
+    void si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
     void si_protoChanged();
     void si_protoListModified();
 private:
@@ -89,7 +89,7 @@ public slots:
 
 signals:
     void processSelected(Workflow::ActorPrototype*, bool putToScene);
-    void si_prototypeIsAboutToBeRemoved(ActorPrototype *proto);
+    void si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
     void si_protoChanged();
     void si_protoListModified();
 
@@ -105,7 +105,7 @@ private slots:
     void rebuild();
     void editElement();
     bool removeElement();
-    void sl_prototypeIsAboutToBeRemoved(ActorPrototype *proto);
+    void sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
 
 private:
     QTreeWidgetItem* createItemWidget(QAction* a);
