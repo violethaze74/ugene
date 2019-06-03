@@ -473,7 +473,7 @@ void WorkflowPaletteElements::restoreState(const QVariant& v) {
 }
 
 QString WorkflowPaletteElements::createPrototype() {
-    QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(nullptr, this);
+    QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(this);
     dlg->exec();
     CHECK(!dlg.isNull(), QString());
 
