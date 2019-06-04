@@ -19,33 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <QAbstractItemModel>
-#include <QAction>
-#include <QApplication>
-#include <QButtonGroup>
-#include <QContextMenuEvent>
-#include <QDir>
 #include <QDrag>
-#include <QHeaderView>
-#include <QItemDelegate>
 #include <QMenu>
 #include <QMessageBox>
-#include <QPainter>
-#include <QStyle>
-#include <QToolBox>
-#include <QToolButton>
-#include <QTreeView>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/Settings.h>
-#include <U2Core/U2SafePoints.h>
 
-#include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/IncludedProtoFactory.h>
-#include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowSettings.h>
 
 #include "CreateScriptWorker.h"

@@ -23,6 +23,7 @@
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -76,6 +77,7 @@ CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(QWidget *_parent)
       initialConfig(nullptr),
       config(nullptr)
 {
+    GCOUNTER(cvar, tvar, "\"Configure Element with Command Line Tool\" dialog opened for creating");
     init();
 }
 
@@ -85,6 +87,7 @@ CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(ExternalProcessCo
       config(nullptr)
 {
     SAFE_POINT(nullptr != _initialConfig, "Initial config of the element to edit is nullptr", );
+    GCOUNTER(cvar, tvar, "\"Configure Element with Command Line Tool\" dialog opened for editing");
     initialConfig = new ExternalProcessConfig(*_initialConfig);
     init();
 }
@@ -204,7 +207,11 @@ void CreateCmdlineBasedWorkerWizard::accept() {
             return;
         }
     }
-
+    if (nullptr != initialConfig) {
+        GCOUNTER(cvar, tvar, "\"Configure Element with Command Line Tool\" dialog finished for editing");
+    } else {
+        GCOUNTER(cvar1, tvar1, "\"Configure Element with Command Line Tool\" dialog finished for creating");
+    }
     config = actualConfig.take();
     done(QDialog::Accepted);
 }
@@ -247,7 +254,7 @@ ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() cons
 
 char const * const CreateCmdlineBasedWorkerWizardGeneralSettingsPage::INTEGRATED_TOOL_ID_PROPERTY = "integrated-tool-id-property";
 char const * const CreateCmdlineBasedWorkerWizardGeneralSettingsPage::WORKER_ID_PROPERTY = "worker-id-property";
-const QString CreateCmdlineBasedWorkerWizardGeneralSettingsPage::DOMAIN = "CreateCmdlineBasedWorkerWizard: select custom tool path";
+const QString CreateCmdlineBasedWorkerWizardGeneralSettingsPage::LOD_DOMAIN = "CreateCmdlineBasedWorkerWizard: select custom tool path";
 
 CreateCmdlineBasedWorkerWizardGeneralSettingsPage::CreateCmdlineBasedWorkerWizardGeneralSettingsPage(ExternalProcessConfig *_initialConfig)
     : QWizardPage(nullptr),
@@ -331,7 +338,7 @@ bool CreateCmdlineBasedWorkerWizardGeneralSettingsPage::validatePage() {
 }
 
 void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::sl_browse() {
-    LastUsedDirHelper lod(DOMAIN);
+    LastUsedDirHelper lod(LOD_DOMAIN);
     lod.url = U2FileDialog::getOpenFileName(this, tr("Select an executable file"), lod.dir);
     CHECK(!lod.url.isEmpty(), );
     leToolPath->setText(QDir::toNativeSeparators(lod.url));

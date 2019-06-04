@@ -33,9 +33,6 @@
 #include <U2Lang/WorkflowRunTask.h>
 
 #include <U2Gui/MainWindow.h>
-#include <U2Gui/ScriptEditorDialog.h>
-
-#include "SampleActionsManager.h"
 
 class QComboBox;
 class QSplitter;

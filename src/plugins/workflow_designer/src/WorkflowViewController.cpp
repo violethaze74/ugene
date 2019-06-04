@@ -24,76 +24,51 @@
 
 #include <QBoxLayout>
 #include <QClipboard>
-#include <QCloseEvent>
 #include <QComboBox>
-#include <QFileInfo>
 #include <QGraphicsSceneMouseEvent>
-#include <QGraphicsView>
 #include <QMainWindow>
-#include <QMenu>
-#include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
-#include <QPrinter>
 #include <QShortcut>
-#include <QSplitter>
 #include <QSvgGenerator>
-#include <QTableWidget>
 #include <QToolBar>
-#include <QToolButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectService.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/Dashboard.h>
 #include <U2Designer/DashboardInfoRegistry.h>
-#include <U2Designer/DelegateEditors.h>
 #include <U2Designer/DesignerUtils.h>
 #include <U2Designer/EstimationReporter.h>
 #include <U2Designer/GrouperEditor.h>
 #include <U2Designer/MarkerEditor.h>
 #include <U2Designer/RemoveDashboardsTask.h>
-#include <U2Designer/ScanDashboardsDirTask.h>
 #include <U2Designer/WizardController.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
-#include <U2Gui/GlassView.h>
-#include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/MainWindow.h>
+#include <U2Gui/ScriptEditorDialog.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Lang/ActorModel.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
-#include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/ExternalToolCfg.h>
 #include <U2Lang/GrouperSlotAttribute.h>
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/IncludedProtoFactory.h>
-#include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/MapDatatypeEditor.h>
 #include <U2Lang/SchemaEstimationTask.h>
-#include <U2Lang/WorkflowDebugStatus.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowManager.h>
 #include <U2Lang/WorkflowRunTask.h>
 #include <U2Lang/WorkflowSettings.h>
-#include <U2Lang/WorkflowUtils.h>
 
 #include "BreakpointManagerView.h"
 #include "ChooseItemDialog.h"
@@ -1454,6 +1429,12 @@ void WorkflowView::localHostLaunch() {
     }
 
     const Schema *s = getSchema();
+    foreach(const Actor* actor, schema->getProcesses()) {
+        if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(actor->getId()) != nullptr) {
+            GCOUNTER(cvar, tvar, "Element(s) with command line tool is present in the launched workflow");
+            break;
+        }
+    }
     debugInfo->setMessageParser( new WorkflowDebugMessageParserImpl( ) );
     WorkflowAbstractRunner * t = new WorkflowRunTask(*s, ActorMap(), debugInfo);
 
@@ -1956,6 +1937,9 @@ void WorkflowView::sl_procItemAdded() {
     }
 
     uiLog.trace(currentProto->getDisplayName() + " added");
+    if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(currentProto->getId()) != nullptr) {
+        GCOUNTER(cvar, tvar, "Element with command line tool is added to the scene");
+    }
     palette->resetSelection();
     currentProto = NULL;
     assert(scene->views().size() == 1);

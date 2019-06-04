@@ -102,7 +102,7 @@ private:
 
     static char const * const INTEGRATED_TOOL_ID_PROPERTY;
     static char const * const WORKER_ID_PROPERTY;
-    static const QString DOMAIN;
+    static const QString LOD_DOMAIN;
 };
 
 class CreateCmdlineBasedWorkerWizardInputDataPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardInputDataPage {

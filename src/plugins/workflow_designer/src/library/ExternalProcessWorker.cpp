@@ -35,7 +35,6 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -590,6 +589,7 @@ QStringList LaunchExternalToolTask::parseCombinedArgString(const QString &progra
 #define START_WAIT_MSEC 3000
 
 void LaunchExternalToolTask::run() {
+    GCOUNTER(cvar, tvar, "A task for element with command line tool is launched");
     QProcess *externalProcess = new QProcess();
     if(execString.contains(">")) {
         QString output = execString.split(">").last();

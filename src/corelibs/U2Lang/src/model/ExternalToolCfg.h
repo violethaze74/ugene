@@ -19,10 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef ExternalToolCfg_h__
-#define ExternalToolCfg_h__
+#ifndef _U2_EXTERNAL_TOOL_CONFIG_H_
+#define _U2_EXTERNAL_TOOL_CONFIG_H_
 
-#include <U2Lang/Datatype.h>
 #include <U2Lang/ConfigurationEditor.h>
 
 #include <QString>
@@ -108,4 +107,4 @@ private:
 Q_DECLARE_METATYPE(U2::AttributeConfig)
 Q_DECLARE_METATYPE(U2::DataConfig)
 
-#endif // ExternalToolCfg_h__
+#endif // _U2_EXTERNAL_TOOL_CONFIG_H_
