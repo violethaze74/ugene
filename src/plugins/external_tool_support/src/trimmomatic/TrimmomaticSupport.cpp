@@ -50,7 +50,7 @@ TrimmomaticSupport::TrimmomaticSupport(const QString &name, const QString &path)
     validationArguments << "-h";
     validMessage = "PE \\[-version\\] \\[-threads <threads>\\] \\[-phred33|-phred64\\] \\[-trimlog <trimLogFile>\\]";
 
-    toolRunnerProgramm = ET_JAVA;
+    toolRunnerProgram = ET_JAVA;
     dependencies << ET_JAVA;
 
     initTrimmomaticSteps();

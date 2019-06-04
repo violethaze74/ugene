@@ -94,6 +94,11 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/cufflinks/CuffmergeWorker.h \
            src/cufflinks/GffreadSupportTask.h \
            src/cufflinks/GffreadWorker.h \
+           src/custom_tools/CustomToolConfigParser.h \
+           src/custom_tools/ImportCustomToolsTask.h \
+           src/custom_tools/ImportExternalToolDialog.h \
+           src/custom_tools/LoadCustomExternalToolsTask.h \
+           src/custom_tools/RegisterCustomToolTask.h \
            src/cutadapt/CutadaptSupport.h \
            src/cutadapt/CutadaptWorker.h \
            src/fastqc/FastqcSupport.h \
@@ -166,7 +171,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/spades/SpadesSlotRelationDescriptor.h \
            src/spades/SpadesSupport.h \
            src/spades/SpadesTask.h \
-		   src/spades/SpadesTaskTest.h \
+           src/spades/SpadesTaskTest.h \
            src/spades/SpadesWorker.h \
            src/spidey/SpideySupport.h \
            src/spidey/SpideySupportTask.h \
@@ -225,7 +230,8 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcftools/VcfConsensusWorker.h \
            src/vcfutils/VcfutilsSupport.h
 
-FORMS += src/blast/FormatDBSupportRunDialog.ui \
+FORMS += src/ETSSettingsWidget.ui \
+         src/blast/FormatDBSupportRunDialog.ui \
          src/blast_plus/AlignToReferenceBlastDialog.ui \
          src/blast_plus/BlastDBCmdDialog.ui \
          src/bowtie/BowtieBuildSettings.ui \
@@ -238,7 +244,7 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/cap3/CAP3SupportDialog.ui \
          src/clustalo/ClustalOSupportRunDialog.ui \
          src/clustalw/ClustalWSupportRunDialog.ui \
-         src/ETSSettingsWidget.ui \
+         src/custom_tools/ImportExternalToolDialog.ui \
          src/hmmer/HmmerBuildDialog.ui \
          src/hmmer/HmmerSearchDialog.ui \
          src/hmmer/PhmmerSearchDialog.ui \
@@ -351,6 +357,11 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/cufflinks/CuffmergeWorker.cpp \
            src/cufflinks/GffreadSupportTask.cpp \
            src/cufflinks/GffreadWorker.cpp \
+           src/custom_tools/CustomToolConfigParser.cpp \
+           src/custom_tools/ImportCustomToolsTask.cpp \
+           src/custom_tools/ImportExternalToolDialog.cpp \
+           src/custom_tools/LoadCustomExternalToolsTask.cpp \
+           src/custom_tools/RegisterCustomToolTask.cpp \
            src/cutadapt/CutadaptSupport.cpp \
            src/cutadapt/CutadaptWorker.cpp \
            src/fastqc/FastqcSupport.cpp \
@@ -422,7 +433,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/spades/SpadesSlotRelationDescriptor.cpp \
            src/spades/SpadesSupport.cpp \
            src/spades/SpadesTask.cpp \
-		   src/spades/SpadesTaskTest.cpp \
+           src/spades/SpadesTaskTest.cpp \
            src/spades/SpadesWorker.cpp \
            src/spidey/SpideySupport.cpp \
            src/spidey/SpideySupportTask.cpp \

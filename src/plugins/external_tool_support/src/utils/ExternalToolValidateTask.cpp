@@ -209,7 +209,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
         if (errLog.contains(QRegExp(validation.expectedMsg))) {
             isValid = true;
             checkVersion(errLog);
-            tool->getAdditionalParameters(errLog);
+            tool->extractAdditionalParameters(errLog);
         } else {
             isValid = false;
             foreach (const QString& errStr, validation.possibleErrorsDescr.keys()) {
@@ -226,7 +226,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
         if (log.contains(QRegExp(validation.expectedMsg))) {
             isValid = true;
             checkVersion(log);
-            tool->getAdditionalParameters(log);
+            tool->extractAdditionalParameters(log);
         } else {
             isValid = false;
             foreach (const QString& errStr, validation.possibleErrorsDescr.keys()) {
@@ -242,13 +242,16 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
 }
 
 void ExternalToolJustValidateTask::checkVersion(const QString &partOfLog) {
-    QStringList lastPartOfLog=partOfLog.split(QRegExp("(\n|\r)"));
-
-    foreach (QString buf, lastPartOfLog) {
-        if (buf.contains(checkVersionRegExp)) {
-            checkVersionRegExp.indexIn(buf);
-            version = checkVersionRegExp.cap(1);
-            return;
+    if (checkVersionRegExp.isEmpty()) {
+        version = tool->getPredefinedVersion();
+    } else {
+        QStringList lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+        foreach (QString buf, lastPartOfLog) {
+            if (buf.contains(checkVersionRegExp)) {
+                checkVersionRegExp.indexIn(buf);
+                version = checkVersionRegExp.cap(1);
+                return;
+            }
         }
     }
 }

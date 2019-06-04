@@ -41,7 +41,7 @@ VcfutilsSupport::VcfutilsSupport(const QString &name)
     executableFileName = "vcfutils.pl";
     description = "The set of utilities for VCF format operations";
 
-    toolRunnerProgramm = ET_PERL;
+    toolRunnerProgram = ET_PERL;
     dependencies << ET_PERL;
 
     validMessage = "varFilter";

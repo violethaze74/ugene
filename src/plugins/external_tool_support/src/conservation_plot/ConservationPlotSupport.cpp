@@ -47,7 +47,7 @@ void ConservationPlotSupport::initialize() {
 
     executableFileName = "conservation_plot.py";
 
-    toolRunnerProgramm = ET_PYTHON;
+    toolRunnerProgram = ET_PYTHON;
     dependencies << ET_PYTHON
                  << ET_R;
 

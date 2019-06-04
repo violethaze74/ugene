@@ -52,7 +52,7 @@ void CEASSupport::initialize() {
 
     executableFileName = "ceas.py";
 
-    toolRunnerProgramm = ET_PYTHON;
+    toolRunnerProgram = ET_PYTHON;
     dependencies << ET_PYTHON
                  << ET_R;
 

@@ -45,7 +45,7 @@ SpadesSupport::SpadesSupport(const QString &name, const QString &path):
     versionRegExp = QRegExp("SPAdes v(\\d+.\\d+.\\d+)");
     toolKitName = "SPAdes";
 
-    toolRunnerProgramm = ET_PYTHON;
+    toolRunnerProgram = ET_PYTHON;
     dependencies << ET_PYTHON;
 }
 
