@@ -295,7 +295,7 @@ public:
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
                 if(col == 1) return item->getDataType();
-                else return QVariant();
+                else return item->getName();
             default:
                 return QVariant();
         }
