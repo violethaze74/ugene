@@ -47,7 +47,7 @@ public:
     QueryProcCfgDelegate(QueryEditor* parent) : QItemDelegate(parent) {}
 
     QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
-        QItemDelegate* d = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
+        PropertyDelegate* d = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
         if (d) {
             connect(d, SIGNAL(commitData(QWidget*)), SIGNAL(commitData(QWidget*)));
             return d->createEditor(parent, option, index);
@@ -56,7 +56,7 @@ public:
     }
 
     void setEditorData(QWidget *editor, const QModelIndex &index) const {
-        QItemDelegate* d = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
+        PropertyDelegate* d = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
         if (d) {
             d->setEditorData(editor, index);
             return;
