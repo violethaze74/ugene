@@ -73,6 +73,12 @@ bool AttributeConfig::operator ==(const AttributeConfig &other) const {
             && description == other.description;
 }
 
+ExternalProcessConfig::ExternalProcessConfig()
+    : useIntegratedTool(false)
+{
+
+}
+
 #define CHECK_EQ(expr1, expr2) \
     if (!(expr1 == expr2)) {\
     return false;\
@@ -85,6 +91,9 @@ bool ExternalProcessConfig::operator ==(const ExternalProcessConfig &other) cons
     CHECK_EQ(id, other.id);
     CHECK_EQ(name, other.name);
     CHECK_EQ(description, other.description);
+    CHECK_EQ(useIntegratedTool, other.useIntegratedTool);
+    CHECK_EQ(customToolPath, other.customToolPath);
+    CHECK_EQ(integratedToolId, other.integratedToolId);
 
     foreach (const DataConfig &in, inputs) {
         CHECK_EQ(other.inputs.contains(in), true);

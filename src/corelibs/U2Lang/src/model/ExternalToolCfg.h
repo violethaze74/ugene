@@ -69,6 +69,8 @@ public:
 
 class U2LANG_EXPORT ExternalProcessConfig {
 public:
+    ExternalProcessConfig();
+
     QList<DataConfig> inputs;
     QList<DataConfig> outputs;
     QList<AttributeConfig> attrs;
@@ -78,6 +80,9 @@ public:
     QString description;
     QString templateDescription;
     QString filePath;
+    bool useIntegratedTool;
+    QString customToolPath;
+    QString integratedToolId;
 
     bool operator ==(const ExternalProcessConfig &other) const;
     bool operator !=(const ExternalProcessConfig &other) const;

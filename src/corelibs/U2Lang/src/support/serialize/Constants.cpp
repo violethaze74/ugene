@@ -56,6 +56,8 @@ const QString Constants::ITERATION_ID          = "id";
 const QString Constants::PARAM_ALIASES_START   = "parameter-aliases";
 const QString Constants::PORT_ALIASES_START    = "port-aliases";
 const QString Constants::PATH_THROUGH          = "path-through";
+const QString Constants::TRUE                  = "true";
+const QString Constants::FALSE                 = "false";
 
 // -------------- backward compatibility --------------
     const QString Constants::ALIASES_HELP_START    = "help";
@@ -105,6 +107,9 @@ const QString Constants::ESTIMATIONS           = "estimations";
 const QString Constants::VALIDATOR             = ".validator";
 const QString Constants::V_TYPE                = "type";
 const QString Constants::V_SCRIPT              = "script";
+const QString Constants::USE_INTEGRATED_TOOL   = "use-integrated-tool";
+const QString Constants::CUSTOM_TOOL_PATH      = "custom-tool-path";
+const QString Constants::INTEGRATED_TOOL_ID    = "integrated-tool-id";
 
 } // WorkflowSerialize
 } // U2

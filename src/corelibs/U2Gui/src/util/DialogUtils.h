@@ -51,7 +51,7 @@ public:
 
     static QString prepareDocumentsFileFilterByObjType(const GObjectType& t, bool any);
 
-    static void setWizardMinimumSize(QWizard *wizard);
+    static void setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize = QSize());
 };
 
 class U2GUI_EXPORT FileLineEdit : public QLineEdit {

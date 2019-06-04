@@ -22,10 +22,14 @@
 #include <QAbstractButton>
 #include <QMessageBox>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/DialogUtils.h>
+#include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/U2FileDialog.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/HRSchemaSerializer.h>
@@ -39,6 +43,10 @@
 
 namespace U2 {
 
+/**********************************************/
+/* CreateCmdlineBasedWorkerWizard */
+/**********************************************/
+
 #ifdef Q_OS_MAC
 const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {font-size: 20pt; padding-bottom: 10px; color: #0c3762}";
 #else
@@ -50,12 +58,15 @@ const QString CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD = "attributes
 const QString CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD = "attributes-names";
 const QString CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_DESCRIPTION_FIELD = "command-template-description";
 const QString CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_FIELD = "command-template";
+const QString CreateCmdlineBasedWorkerWizard::CUSTOM_TOOL_PATH_FIELD = "custom-tool-path";
 const QString CreateCmdlineBasedWorkerWizard::INPUTS_DATA_FIELD = "inputs-data";
 const QString CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD = "inputs-ids";
 const QString CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD = "inputs-names";
+const QString CreateCmdlineBasedWorkerWizard::INTEGRATED_TOOL_ID_FIELD = "integrated-tool-id";
 const QString CreateCmdlineBasedWorkerWizard::OUTPUTS_DATA_FIELD = "outputs-data";
 const QString CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD = "outputs-ids";
 const QString CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD = "outputs-names";
+const QString CreateCmdlineBasedWorkerWizard::USE_INTEGRATED_TOOL_FIELD = "use-integrated-tool";
 const QString CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD = "worker-description";
 const QString CreateCmdlineBasedWorkerWizard::WORKER_ID_FIELD = "worker-id";
 const QString CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD = "worker-name";
@@ -110,6 +121,8 @@ void CreateCmdlineBasedWorkerWizard::saveConfig(ExternalProcessConfig *config) {
 
 namespace {
 
+static const int UNNECCESSARY_ARGUMENT = 0;
+
 QString removeEmptyLines(const QString &str) {
     QStringList res;
     foreach(const QString &s, str.split(QRegularExpression("(\n|\r)"))) {
@@ -118,6 +131,56 @@ QString removeEmptyLines(const QString &str) {
         }
     }
     return res.join("\r\n");
+}
+
+void initDataModel(QAbstractItemModel *model, const QList<DataConfig> &dataConfigs) {
+    model->removeRows(0, model->rowCount());
+
+    int row = 0;
+    const int ignoredRowNumber = 0;
+    foreach(const DataConfig &dataConfig, dataConfigs) {
+        model->insertRow(ignoredRowNumber, QModelIndex());
+
+        QModelIndex index = model->index(row, CfgExternalToolModel::COLUMN_NAME);
+        model->setData(index, dataConfig.attrName);
+
+        index = model->index(row, CfgExternalToolModel::COLUMN_ID);
+        model->setData(index, dataConfig.attributeId);
+
+        index = model->index(row, CfgExternalToolModel::COLUMN_DATA_TYPE);
+        model->setData(index, dataConfig.type);
+
+        index = model->index(row, CfgExternalToolModel::COLUMN_FORMAT);
+        model->setData(index, dataConfig.format);
+
+        index = model->index(row, CfgExternalToolModel::COLUMN_DESCRIPTION);
+        model->setData(index, dataConfig.description);
+
+        row++;
+    }
+}
+
+bool checkNamesAndIds(const QStringList &names, const QStringList &ids) {
+    bool res = true;
+
+    foreach (const QString &id, ids) {
+        if (id.isEmpty()) {
+            res = false;
+        }
+    }
+
+    foreach (const QString &name, names) {
+        if (name.isEmpty()) {
+            res = false;
+        }
+    }
+
+    const bool areThereDuplicates = (ids.toSet().size() != ids.size());
+    if (areThereDuplicates) {
+        res = false;
+    }
+
+    return res;
 }
 
 }
@@ -147,15 +210,18 @@ void CreateCmdlineBasedWorkerWizard::accept() {
 }
 
 void CreateCmdlineBasedWorkerWizard::init() {
-    addPage(new CreateCmdlineBasedWorkerWizardNamePage(initialConfig));
-    addPage(new CreateCmdlineBasedWorkerWizardInputOutputPage(initialConfig));
-    addPage(new CreateCmdlineBasedWorkerWizardAttributesPage(initialConfig));
-    addPage(new CreateCmdlineBasedWorkerWizardCommandTemplatePage(initialConfig));
+    addPage(new CreateCmdlineBasedWorkerWizardGeneralSettingsPage(initialConfig));
+    addPage(new CreateCmdlineBasedWorkerWizardInputDataPage(initialConfig));
+    addPage(new CreateCmdlineBasedWorkerWizardParametersPage(initialConfig));
+    addPage(new CreateCmdlineBasedWorkerWizardOutputDataPage(initialConfig));
+    addPage(new CreateCmdlineBasedWorkerWizardCommandPage(initialConfig));
+    addPage(new CreateCmdlineBasedWorkerWizardElementAppearancePage(initialConfig));
+    addPage(new CreateCmdlineBasedWorkerWizardSummaryPage());
 
     setWizardStyle(ClassicStyle);
     setOption(IndependentPages);
 
-    DialogUtils::setWizardMinimumSize(this);
+    DialogUtils::setWizardMinimumSize(this, QSize(600, 500));
 }
 
 ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() const {
@@ -169,12 +235,21 @@ ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() cons
     config->attrs = field(ATTRIBUTES_DATA_FIELD).value<QList<AttributeConfig> >();
     config->cmdLine = field(COMMAND_TEMPLATE_FIELD).toString();
     config->filePath = WorkflowSettings::getExternalToolDirectory() + GUrlUtils::fixFileName(config->name) + ".etc";
+    config->useIntegratedTool = field(USE_INTEGRATED_TOOL_FIELD).toBool();
+    config->integratedToolId = field(INTEGRATED_TOOL_ID_FIELD).toString();
+    config->customToolPath = QDir::fromNativeSeparators(field(CUSTOM_TOOL_PATH_FIELD).toString());
     return config;
 }
 
-char const * const CreateCmdlineBasedWorkerWizardNamePage::WORKER_ID_PROPERTY = "worker-id-property";
+/**********************************************/
+/* CreateCmdlineBasedWorkerWizardGeneralSettingsPage */
+/**********************************************/
 
-CreateCmdlineBasedWorkerWizardNamePage::CreateCmdlineBasedWorkerWizardNamePage(ExternalProcessConfig *_initialConfig)
+char const * const CreateCmdlineBasedWorkerWizardGeneralSettingsPage::INTEGRATED_TOOL_ID_PROPERTY = "integrated-tool-id-property";
+char const * const CreateCmdlineBasedWorkerWizardGeneralSettingsPage::WORKER_ID_PROPERTY = "worker-id-property";
+const QString CreateCmdlineBasedWorkerWizardGeneralSettingsPage::DOMAIN = "CreateCmdlineBasedWorkerWizard: select custom tool path";
+
+CreateCmdlineBasedWorkerWizardGeneralSettingsPage::CreateCmdlineBasedWorkerWizardGeneralSettingsPage(ExternalProcessConfig *_initialConfig)
     : QWizardPage(nullptr),
       initialConfig(_initialConfig)
 {
@@ -183,23 +258,49 @@ CreateCmdlineBasedWorkerWizardNamePage::CreateCmdlineBasedWorkerWizardNamePage(E
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
     leName->setValidator(new QRegularExpressionValidator(WorkflowEntityValidator::ACCEPTABLE_NAME, leName));
 
+    QList<ExternalTool *> tools = AppContext::getExternalToolRegistry()->getAllEntries();
+    for (auto tool : tools) {
+        cbIntegratedTools->addItem(tool->getName(), tool->getId());
+    }
+
+    connect(leToolPath, SIGNAL(textChanged(const QString &)), SIGNAL(completeChanged()));
+    connect(tbBrowse, SIGNAL(clicked()), SLOT(sl_browse()));
+    connect(rbIntegratedTool, SIGNAL(toggled(bool)), SIGNAL(completeChanged()));
+    connect(rbIntegratedTool, SIGNAL(toggled(bool)), SLOT(sl_integratedToolChanged()));
+    connect(cbIntegratedTools, SIGNAL(currentIndexChanged(int)), SLOT(sl_integratedToolChanged()));
+
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD + "*", leName);
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_ID_FIELD, this, WORKER_ID_PROPERTY);
-    registerField(CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD, teDescription, "plainText", SIGNAL(textChanged()));
+    registerField(CreateCmdlineBasedWorkerWizard::USE_INTEGRATED_TOOL_FIELD, rbIntegratedTool);
+    registerField(CreateCmdlineBasedWorkerWizard::CUSTOM_TOOL_PATH_FIELD, leToolPath);
+    registerField(CreateCmdlineBasedWorkerWizard::INTEGRATED_TOOL_ID_FIELD, this, INTEGRATED_TOOL_ID_PROPERTY, SIGNAL(si_integratedToolChanged()));
 }
 
-void CreateCmdlineBasedWorkerWizardNamePage::initializePage() {
+void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initializePage() {
     if (nullptr != initialConfig) {
         leName->setText(initialConfig->name);
-        teDescription->setPlainText(initialConfig->description);
+        rbIntegratedTool->setChecked(initialConfig->useIntegratedTool);
+        leToolPath->setText(QDir::toNativeSeparators(initialConfig->customToolPath));
+        const int index = cbIntegratedTools->findData(initialConfig->integratedToolId);
+        if (-1 != index) {
+            cbIntegratedTools->setCurrentIndex(index);
+        }
     } else {
         QString name = "Custom cmdline worker";
         makeUniqueWorkerName(name);
         leName->setText(name);
     }
+    sl_integratedToolChanged();
 }
 
-bool CreateCmdlineBasedWorkerWizardNamePage::validatePage() {
+bool CreateCmdlineBasedWorkerWizardGeneralSettingsPage::isComplete() const {
+    if (rbCustomTool->isChecked() && leToolPath->text().isEmpty()) {
+        return false;
+    }
+    return QWizardPage::isComplete();
+}
+
+bool CreateCmdlineBasedWorkerWizardGeneralSettingsPage::validatePage() {
     QString name = field(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD).toString();
 
     const QMap<Descriptor, QList<ActorPrototype *> > groups = Workflow::WorkflowEnv::getProtoRegistry()->getProtos();
@@ -229,7 +330,19 @@ bool CreateCmdlineBasedWorkerWizardNamePage::validatePage() {
     return true;
 }
 
-void CreateCmdlineBasedWorkerWizardNamePage::makeUniqueWorkerName(QString& name) {
+void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::sl_browse() {
+    LastUsedDirHelper lod(DOMAIN);
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Select an executable file"), lod.dir);
+    CHECK(!lod.url.isEmpty(), );
+    leToolPath->setText(QDir::toNativeSeparators(lod.url));
+}
+
+void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::sl_integratedToolChanged() {
+    setProperty(INTEGRATED_TOOL_ID_PROPERTY, cbIntegratedTools->currentData());
+    emit si_integratedToolChanged();
+}
+
+void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::makeUniqueWorkerName(QString& name) {
     const QMap<Descriptor, QList<ActorPrototype *> > groups = Workflow::WorkflowEnv::getProtoRegistry()->getProtos();
     QStringList reservedNames;
     foreach(const QList<ActorPrototype *> &group, groups) {
@@ -240,27 +353,27 @@ void CreateCmdlineBasedWorkerWizardNamePage::makeUniqueWorkerName(QString& name)
     name = WorkflowUtils::createUniqueString(name, " ", reservedNames);
 }
 
-char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::INPUTS_DATA_PROPERTY = "inputs-data-property";
-char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::INPUTS_IDS_PROPERTY = "inputs-ids-property";
-char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::INPUTS_NAMES_PROPERTY = "inputs-names-property";
-char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::OUTPUTS_DATA_PROPERTY = "outputs-data-property";
-char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::OUTPUTS_IDS_PROPERTY = "outputs-ids-property";
-char const * const CreateCmdlineBasedWorkerWizardInputOutputPage::OUTPUTS_NAMES_PROPERTY = "outputs-names-property";
+/**********************************************/
+/* CreateCmdlineBasedWorkerWizardInputDataPage */
+/**********************************************/
 
-CreateCmdlineBasedWorkerWizardInputOutputPage::CreateCmdlineBasedWorkerWizardInputOutputPage(ExternalProcessConfig *_initialConfig)
+char const * const CreateCmdlineBasedWorkerWizardInputDataPage::INPUTS_DATA_PROPERTY = "inputs-data-property";
+char const * const CreateCmdlineBasedWorkerWizardInputDataPage::INPUTS_IDS_PROPERTY = "inputs-ids-property";
+char const * const CreateCmdlineBasedWorkerWizardInputDataPage::INPUTS_NAMES_PROPERTY = "inputs-names-property";
+
+CreateCmdlineBasedWorkerWizardInputDataPage::CreateCmdlineBasedWorkerWizardInputDataPage(ExternalProcessConfig *_initialConfig)
     : QWizardPage(nullptr),
       initialConfig(_initialConfig)
 {
     setupUi(this);
 
-    lblInputsTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
-    lblOutputsTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
 
     connect(pbAddInput, SIGNAL(clicked()), SLOT(sl_addInput()));
     connect(pbDeleteInput, SIGNAL(clicked()), SLOT(sl_deleteInput()));
     connect(this, SIGNAL(si_inputsChanged()), SIGNAL(completeChanged()));
 
-    inputsModel = new CfgExternalToolModel(CfgExternalToolModel::Input);
+    inputsModel = new CfgExternalToolModel(CfgExternalToolModel::Input, tvInput);
     connect(inputsModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(sl_updateInputsProperties()));
     connect(inputsModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), SLOT(sl_updateInputsProperties()));
     connect(inputsModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), SLOT(sl_updateInputsProperties()));
@@ -270,93 +383,37 @@ CreateCmdlineBasedWorkerWizardInputOutputPage::CreateCmdlineBasedWorkerWizardInp
     tvInput->horizontalHeader()->setStretchLastSection(true);
     tvInput->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 
-    connect(pbAddOutput, SIGNAL(clicked()), SLOT(sl_addOutput()));
-    connect(pbDeleteOutput, SIGNAL(clicked()), SLOT(sl_deleteOutput()));
-    connect(this, SIGNAL(si_outputsChanged()), SIGNAL(completeChanged()));
-
-    outputsModel = new CfgExternalToolModel(CfgExternalToolModel::Output);
-    connect(outputsModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(sl_updateOutputsProperties()));
-    connect(outputsModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), SLOT(sl_updateOutputsProperties()));
-    connect(outputsModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), SLOT(sl_updateOutputsProperties()));
-
-    tvOutput->setModel(outputsModel);
-    tvOutput->setItemDelegate(new ProxyDelegate());
-    tvOutput->horizontalHeader()->setStretchLastSection(true);
-    tvOutput->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-
     QFontMetrics fm = QFontMetrics(tvInput->font());
     int columnWidth = static_cast<int>(fm.width(SEQ_WITH_ANNS) * 1.5);
     tvInput->setColumnWidth(1, columnWidth);
 
-    fm = QFontMetrics(tvOutput->font());
-    columnWidth = static_cast<int>(fm.width(SEQ_WITH_ANNS) * 1.5);
-    tvOutput->setColumnWidth(1, columnWidth);
-
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_DATA_FIELD, this, INPUTS_DATA_PROPERTY, SIGNAL(si_inputsChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD, this, INPUTS_IDS_PROPERTY);
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD, this, INPUTS_NAMES_PROPERTY);
-    registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_DATA_FIELD, this, OUTPUTS_DATA_PROPERTY, SIGNAL(si_outputsChanged()));
-    registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD, this, OUTPUTS_IDS_PROPERTY);
-    registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD, this, OUTPUTS_NAMES_PROPERTY);
 }
 
-void CreateCmdlineBasedWorkerWizardInputOutputPage::initializePage() {
+void CreateCmdlineBasedWorkerWizardInputDataPage::initializePage() {
     CHECK(nullptr != initialConfig, );
-    initModel(inputsModel, initialConfig->inputs);
-    initModel(outputsModel, initialConfig->outputs);
+    initDataModel(inputsModel, initialConfig->inputs);
 }
 
-bool CreateCmdlineBasedWorkerWizardInputOutputPage::isComplete() const {
-    bool res = true;
-
-    QStringList ids = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList() +
-                      field(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD).toStringList();
-    foreach (const QString &id, ids) {
-        if (id.isEmpty()) {
-            res = false;
-        }
-    }
-
-    QStringList names = field(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD).toStringList() +
-                        field(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD).toStringList();
-    foreach (const QString &name, names) {
-        if (name.isEmpty()) {
-            res = false;
-        }
-    }
-
-    if (ids.removeDuplicates() > 0) {
-        res = false;
-    }
-
-    if (ids.isEmpty()) {
-        res = false;
-    }
-
-    return res;
+bool CreateCmdlineBasedWorkerWizardInputDataPage::isComplete() const {
+    const QStringList ids = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList();
+    const QStringList names = field(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD).toStringList();
+    return checkNamesAndIds(names, ids);
 }
 
-void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_addInput() {
+void CreateCmdlineBasedWorkerWizardInputDataPage::sl_addInput() {
     const int ignoredRowNumber = 0;
     inputsModel->insertRow(ignoredRowNumber, QModelIndex());
     tvInput->setCurrentIndex(inputsModel->index(inputsModel->rowCount(QModelIndex()) - 1, 0));
 }
 
-void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_deleteInput() {
+void CreateCmdlineBasedWorkerWizardInputDataPage::sl_deleteInput() {
     inputsModel->removeRow(tvInput->currentIndex().row());
 }
 
-void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_addOutput() {
-    const int ignoredRowNumber = 0;
-    outputsModel->insertRow(ignoredRowNumber, QModelIndex());
-    tvOutput->setCurrentIndex(outputsModel->index(outputsModel->rowCount(QModelIndex()) - 1, 0));
-}
-
-void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_deleteOutput() {
-    outputsModel->removeRow(tvOutput->currentIndex().row());
-}
-
-void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_updateInputsProperties() {
+void CreateCmdlineBasedWorkerWizardInputDataPage::sl_updateInputsProperties() {
     QStringList ids;
     QStringList names;
     QList<DataConfig> data;
@@ -371,53 +428,15 @@ void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_updateInputsProperties() 
     emit si_inputsChanged();
 }
 
-void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_updateOutputsProperties() {
-    QStringList ids;
-    QStringList names;
-    QList<DataConfig> data;
-    foreach (CfgExternalToolItem *item, outputsModel->getItems()) {
-        data << item->itemData;
-        ids << item->getId();
-        names << item->getName();
-    }
-    setProperty(OUTPUTS_DATA_PROPERTY, QVariant::fromValue<QList<DataConfig> >(data));
-    setProperty(OUTPUTS_IDS_PROPERTY, ids);
-    setProperty(OUTPUTS_NAMES_PROPERTY, names);
-    emit si_outputsChanged();
-}
+/**********************************************/
+/* CreateCmdlineBasedWorkerWizardParametersPage */
+/**********************************************/
 
-void CreateCmdlineBasedWorkerWizardInputOutputPage::initModel(QAbstractItemModel *model, const QList<DataConfig> &dataConfigs) {
-    model->removeRows(0, model->rowCount());
+char const * const CreateCmdlineBasedWorkerWizardParametersPage::ATTRIBUTES_DATA_PROPERTY = "attributes-data-property";
+char const * const CreateCmdlineBasedWorkerWizardParametersPage::ATTRIBUTES_IDS_PROPERTY = "attributes-ids-property";
+char const * const CreateCmdlineBasedWorkerWizardParametersPage::ATTRIBUTES_NAMES_PROPERTY = "attributes-names-property";
 
-    int row = 0;
-    const int ignoredRowNumber = 0;
-    foreach(const DataConfig &dataConfig, dataConfigs) {
-        model->insertRow(ignoredRowNumber, QModelIndex());
-
-        QModelIndex index = model->index(row, CfgExternalToolModel::COLUMN_NAME);
-        model->setData(index, dataConfig.attrName);
-
-        index = model->index(row, CfgExternalToolModel::COLUMN_ID);
-        model->setData(index, dataConfig.attributeId);
-
-        index = model->index(row, CfgExternalToolModel::COLUMN_DATA_TYPE);
-        model->setData(index, dataConfig.type);
-
-        index = model->index(row, CfgExternalToolModel::COLUMN_FORMAT);
-        model->setData(index, dataConfig.format);
-
-        index = model->index(row, CfgExternalToolModel::COLUMN_DESCRIPTION);
-        model->setData(index, dataConfig.description);
-
-        row++;
-    }
-}
-
-char const * const CreateCmdlineBasedWorkerWizardAttributesPage::ATTRIBUTES_DATA_PROPERTY = "attributes-data-property";
-char const * const CreateCmdlineBasedWorkerWizardAttributesPage::ATTRIBUTES_IDS_PROPERTY = "attributes-ids-property";
-char const * const CreateCmdlineBasedWorkerWizardAttributesPage::ATTRIBUTES_NAMES_PROPERTY = "attributes-names-property";
-
-CreateCmdlineBasedWorkerWizardAttributesPage::CreateCmdlineBasedWorkerWizardAttributesPage(ExternalProcessConfig *_initialConfig)
+CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardParametersPage(ExternalProcessConfig *_initialConfig)
     : QWizardPage(nullptr),
       initialConfig(_initialConfig)
 {
@@ -444,49 +463,30 @@ CreateCmdlineBasedWorkerWizardAttributesPage::CreateCmdlineBasedWorkerWizardAttr
     registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD, this, ATTRIBUTES_NAMES_PROPERTY);
 }
 
-void CreateCmdlineBasedWorkerWizardAttributesPage::initializePage() {
+void CreateCmdlineBasedWorkerWizardParametersPage::initializePage() {
     CHECK(nullptr != initialConfig, );
-    initModel(model, initialConfig->attrs);
+    initAttributesModel(model, initialConfig->attrs);
 }
 
-bool CreateCmdlineBasedWorkerWizardAttributesPage::isComplete() const {
-    bool res = true;
-
-    QStringList ids = field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD).toStringList();
-    foreach (const QString &id, ids) {
-        if (id.isEmpty()) {
-            res = false;
-        }
-    }
-
-    QStringList names = field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD).toStringList();
-    foreach (const QString &name, names) {
-        if (name.isEmpty()) {
-            res = false;
-        }
-    }
-
-    ids << field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList();
-    ids << field(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD).toStringList();
-
-    if (ids.removeDuplicates() > 0) {
-        res = false;
-    }
-
-    return res;
+bool CreateCmdlineBasedWorkerWizardParametersPage::isComplete() const {
+    const QStringList ids = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList() +
+                            field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD).toStringList();
+    const QStringList names = field(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD).toStringList() +
+                              field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD).toStringList();
+    return checkNamesAndIds(names, ids);
 }
 
-void CreateCmdlineBasedWorkerWizardAttributesPage::sl_addAttribute() {
+void CreateCmdlineBasedWorkerWizardParametersPage::sl_addAttribute() {
     const int ignoredRowNumber = 0;
     model->insertRow(ignoredRowNumber, QModelIndex());
     tvAttributes->setCurrentIndex(model->index(model->rowCount(QModelIndex()) - 1, 0));
 }
 
-void CreateCmdlineBasedWorkerWizardAttributesPage::sl_deleteAttribute() {
+void CreateCmdlineBasedWorkerWizardParametersPage::sl_deleteAttribute() {
     model->removeRow(tvAttributes->currentIndex().row());
 }
 
-void CreateCmdlineBasedWorkerWizardAttributesPage::sl_updateAttributes() {
+void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
     QStringList ids;
     QStringList names;
     QList<AttributeConfig> data;
@@ -507,7 +507,7 @@ void CreateCmdlineBasedWorkerWizardAttributesPage::sl_updateAttributes() {
     emit si_attributesChanged();
 }
 
-void CreateCmdlineBasedWorkerWizardAttributesPage::initModel(QAbstractItemModel *model, const QList<AttributeConfig> &attributeConfigs) {
+void CreateCmdlineBasedWorkerWizardParametersPage::initAttributesModel(QAbstractItemModel *model, const QList<AttributeConfig> &attributeConfigs) {
     model->removeRows(0, model->rowCount());
 
     int row = 0;
@@ -534,25 +534,105 @@ void CreateCmdlineBasedWorkerWizardAttributesPage::initModel(QAbstractItemModel 
     }
 }
 
-CreateCmdlineBasedWorkerWizardCommandTemplatePage::CreateCmdlineBasedWorkerWizardCommandTemplatePage(ExternalProcessConfig *_initialConfig)
+/**********************************************/
+/* CreateCmdlineBasedWorkerWizardOutputDataPage */
+/**********************************************/
+
+char const * const CreateCmdlineBasedWorkerWizardOutputDataPage::OUTPUTS_DATA_PROPERTY = "outputs-data-property";
+char const * const CreateCmdlineBasedWorkerWizardOutputDataPage::OUTPUTS_IDS_PROPERTY = "outputs-ids-property";
+char const * const CreateCmdlineBasedWorkerWizardOutputDataPage::OUTPUTS_NAMES_PROPERTY = "outputs-names-property";
+
+CreateCmdlineBasedWorkerWizardOutputDataPage::CreateCmdlineBasedWorkerWizardOutputDataPage(ExternalProcessConfig *_initialConfig)
     : QWizardPage(nullptr),
       initialConfig(_initialConfig)
 {
     setupUi(this);
 
-    splitter->setSizes( {10, 10000} );
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
 
-    teTemplate->setWordWrapMode(QTextOption::WrapAnywhere);
-    teTemplate->document()->setDefaultStyleSheet("span { white-space: pre-wrap; }");
+    connect(pbAddOutput, SIGNAL(clicked()), SLOT(sl_addOutput()));
+    connect(pbDeleteOutput, SIGNAL(clicked()), SLOT(sl_deleteOutput()));
+    connect(this, SIGNAL(si_outputsChanged()), SIGNAL(completeChanged()));
 
-    registerField(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_FIELD + "*", teTemplate, "plainText", SIGNAL(textChanged()));
-    registerField(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_DESCRIPTION_FIELD, tePrompter, "plainText", SIGNAL(textChanged()));
+    outputsModel = new CfgExternalToolModel(CfgExternalToolModel::Output);
+    connect(outputsModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(sl_updateOutputsProperties()));
+    connect(outputsModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), SLOT(sl_updateOutputsProperties()));
+    connect(outputsModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), SLOT(sl_updateOutputsProperties()));
+
+    tvOutput->setModel(outputsModel);
+    tvOutput->setItemDelegate(new ProxyDelegate());
+    tvOutput->horizontalHeader()->setStretchLastSection(true);
+    tvOutput->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+
+    QFontMetrics fm = QFontMetrics(tvOutput->font());
+    int columnWidth = static_cast<int>(fm.width(SEQ_WITH_ANNS) * 1.5);
+    tvOutput->setColumnWidth(1, columnWidth);
+
+    registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_DATA_FIELD, this, OUTPUTS_DATA_PROPERTY, SIGNAL(si_outputsChanged()));
+    registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD, this, OUTPUTS_IDS_PROPERTY);
+    registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD, this, OUTPUTS_NAMES_PROPERTY);
 }
 
-void CreateCmdlineBasedWorkerWizardCommandTemplatePage::initializePage() {
+void CreateCmdlineBasedWorkerWizardOutputDataPage::initializePage() {
+    CHECK(nullptr != initialConfig, );
+    initDataModel(outputsModel, initialConfig->outputs);
+}
+
+bool CreateCmdlineBasedWorkerWizardOutputDataPage::isComplete() const {
+    const QStringList ids = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList() +
+                            field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD).toStringList() +
+                            field(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD).toStringList();
+    const QStringList names = field(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD).toStringList() +
+                              field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD).toStringList() +
+                              field(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD).toStringList();
+    return checkNamesAndIds(names, ids);
+}
+
+void CreateCmdlineBasedWorkerWizardOutputDataPage::sl_addOutput() {
+    outputsModel->insertRow(UNNECCESSARY_ARGUMENT, QModelIndex());
+    tvOutput->setCurrentIndex(outputsModel->index(outputsModel->rowCount(QModelIndex()) - 1, 0));
+}
+
+void CreateCmdlineBasedWorkerWizardOutputDataPage::sl_deleteOutput() {
+    outputsModel->removeRow(tvOutput->currentIndex().row());
+}
+
+void CreateCmdlineBasedWorkerWizardOutputDataPage::sl_updateOutputsProperties() {
+    QStringList ids;
+    QStringList names;
+    QList<DataConfig> data;
+    foreach (CfgExternalToolItem *item, outputsModel->getItems()) {
+        data << item->itemData;
+        ids << item->getId();
+        names << item->getName();
+    }
+    setProperty(OUTPUTS_DATA_PROPERTY, QVariant::fromValue<QList<DataConfig> >(data));
+    setProperty(OUTPUTS_IDS_PROPERTY, ids);
+    setProperty(OUTPUTS_NAMES_PROPERTY, names);
+    emit si_outputsChanged();
+}
+
+/**********************************************/
+/* CreateCmdlineBasedWorkerWizardCommandPage */
+/**********************************************/
+
+CreateCmdlineBasedWorkerWizardCommandPage::CreateCmdlineBasedWorkerWizardCommandPage(ExternalProcessConfig *_initialConfig)
+    : QWizardPage(nullptr),
+      initialConfig(_initialConfig)
+{
+    setupUi(this);
+
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+
+    teCommand->setWordWrapMode(QTextOption::WrapAnywhere);
+    teCommand->document()->setDefaultStyleSheet("span { white-space: pre-wrap; }");
+
+    registerField(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_FIELD + "*", teCommand, "plainText", SIGNAL(textChanged()));
+}
+
+void CreateCmdlineBasedWorkerWizardCommandPage::initializePage() {
     if (nullptr != initialConfig) {
-        teTemplate->setText(initialConfig->cmdLine);
-        tePrompter->setPlainText(initialConfig->templateDescription);
+        teCommand->setText(initialConfig->cmdLine);
     } else {
         QString commandTemplate = "<My tool>";
 
@@ -572,23 +652,23 @@ void CreateCmdlineBasedWorkerWizardCommandTemplatePage::initializePage() {
             commandTemplate += " -p" + QString::number(++i) + " $" + name;
         }
 
-        teTemplate->setText(commandTemplate);
+        teCommand->setText(commandTemplate);
     }
 }
 
-bool CreateCmdlineBasedWorkerWizardCommandTemplatePage::isComplete() const {
-    return !teTemplate->toPlainText().isEmpty();
+bool CreateCmdlineBasedWorkerWizardCommandPage::isComplete() const {
+    return !teCommand->toPlainText().isEmpty();
 }
 
-bool CreateCmdlineBasedWorkerWizardCommandTemplatePage::validatePage() {
-    const QString commandTemplate = teTemplate->toPlainText();
+bool CreateCmdlineBasedWorkerWizardCommandPage::validatePage() {
+    const QString command = teCommand->toPlainText();
     QStringList ids = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList() +
                       field(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD).toStringList() +
                       field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD).toStringList();
 
     QString parameters;
     foreach(const QString &id, ids) {
-        if (!commandTemplate.contains("$" + id)) {
+        if (!command.contains("$" + id)) {
             parameters += " - " + id + "\n";
         }
     }
@@ -620,6 +700,47 @@ bool CreateCmdlineBasedWorkerWizardCommandTemplatePage::validatePage() {
         return false;
     }
     return true;
+}
+
+/**********************************************/
+/* CreateCmdlineBasedWorkerWizardElementAppearancePage */
+/**********************************************/
+
+CreateCmdlineBasedWorkerWizardElementAppearancePage::CreateCmdlineBasedWorkerWizardElementAppearancePage(ExternalProcessConfig *_initialConfig)
+    : QWizardPage(nullptr),
+      initialConfig(_initialConfig)
+{
+    setupUi(this);
+
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+
+    registerField(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_DESCRIPTION_FIELD, tePrompter, "plainText", SIGNAL(textChanged()));
+    registerField(CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD, teDescription, "plainText", SIGNAL(textChanged()));
+}
+
+void CreateCmdlineBasedWorkerWizardElementAppearancePage::initializePage() {
+    CHECK(nullptr != initialConfig, );
+    teDescription->setPlainText(initialConfig->description);
+    tePrompter->setPlainText(initialConfig->templateDescription);
+}
+
+/**********************************************/
+/* CreateCmdlineBasedWorkerWizardSummaryPage */
+/**********************************************/
+
+CreateCmdlineBasedWorkerWizardSummaryPage::CreateCmdlineBasedWorkerWizardSummaryPage()
+    : QWizardPage(nullptr)
+{
+    setupUi(this);
+
+    lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+}
+
+void CreateCmdlineBasedWorkerWizardSummaryPage::showEvent(QShowEvent * /*event*/) {
+    lblNameValue->setText(field(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD).toString());
+    lblPrompterValue->setText(field(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_DESCRIPTION_FIELD).toString());
+    lblDescriptionValue->setText(field(CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD).toString());
+    lblCommandValue->setText(field(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_FIELD).toString());
 }
 
 }   // namespace U2
