@@ -330,7 +330,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="68"/>
+        <location filename="../src/HMMIOWorker.cpp" line="69"/>
         <source>HMM Profile</source>
         <translation>Профайл HMM</translation>
     </message>

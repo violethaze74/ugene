@@ -843,7 +843,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryDesignerPlugin</name>
     <message>
-        <location filename="../src/QDDocumentFormat.h" line="83"/>
+        <location filename="../src/QDDocumentFormat.h" line="75"/>
         <location filename="../src/QueryDesignerPlugin.cpp" line="56"/>
         <source>Query Designer</source>
         <translation>Дизайнер запросов</translation>

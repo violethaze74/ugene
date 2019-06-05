@@ -30,14 +30,6 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Build</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shrink</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Kraken external tool support</source>
         <translation type="unfinished"></translation>
     </message>
@@ -124,6 +116,14 @@
     </message>
     <message>
         <source>The &quot;&lt;i&gt;kraken-translate&lt;/i&gt;&quot; executable is used to translate the Kraken classification to make it more readable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Build</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shrink</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
