@@ -312,7 +312,7 @@ private:
 
     bool scriptingMode;
 
-    QMenu *elementsMenu;
+    QPointer<QMenu> elementsMenu;
 
     QAction* deleteAction;
     QAction* deleteShortcut;
