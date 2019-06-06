@@ -980,8 +980,13 @@ void WorkflowView::addProcess(Actor *proc, const QPointF &pos) {
     if (NULL != g || NULL != m) {
         connect(editor, SIGNAL(si_configurationChanged()), scene, SLOT(sl_refreshBindings()));
     }
-
     sl_procItemAdded();
+    ActorPrototype *addedProto = it->getProcess()->getProto();
+    uiLog.trace(addedProto->getDisplayName() + " added");
+    if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(addedProto->getId()) != nullptr) {
+        GCOUNTER(cvar, tvar, "Element with command line tool is added to the scene");
+    }
+
     update();
 }
 
