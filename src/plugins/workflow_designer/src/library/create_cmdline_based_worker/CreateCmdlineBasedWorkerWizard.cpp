@@ -49,9 +49,9 @@ namespace U2 {
 /**********************************************/
 
 #ifdef Q_OS_MAC
-const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {font-size: 20pt; padding-bottom: 10px; color: #0c3762}";
+const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; font-size: 20pt; padding-bottom: 10px; color: #0c3762}";
 #else
-const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {font-size: 16pt; padding-bottom: 10px; color: #0c3762}";
+const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; font-size: 16pt; padding-bottom: 10px; color: #0c3762}";
 #endif
 
 const QString CreateCmdlineBasedWorkerWizard::ATTRIBUTES_DATA_FIELD = "attributes-data";
