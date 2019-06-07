@@ -192,7 +192,6 @@ private slots:
     void sl_onSelectionChanged();
     void sl_showEditor();
     void sl_selectPrototype(Workflow::ActorPrototype*, bool);
-    void sl_procItemAdded();
     void sl_exportScene();
     void sl_saveScene();
     void sl_saveSceneAs();
@@ -295,6 +294,7 @@ private:
     void runWizard(Wizard *w);
     void checkAutoRunWizard();
     void loadWizardResult(const QString &result);
+    void procItemAdded();
 
     DashboardManagerHelper * getDMHInstance();
 

@@ -323,7 +323,6 @@ void WorkflowView::setupScene() {
 
     scene->views().at(0)->setDragMode(QGraphicsView::RubberBandDrag);
 
-    connect(scene, SIGNAL(processItemAdded()), SLOT(sl_procItemAdded()));
     connect(scene, SIGNAL(processDblClicked()), SLOT(sl_toggleStyle()));
     connect(scene, SIGNAL(selectionChanged()), SLOT(sl_editItem()));
     connect(scene, SIGNAL(selectionChanged()), SLOT(sl_onSelectionChanged()));
@@ -980,7 +979,7 @@ void WorkflowView::addProcess(Actor *proc, const QPointF &pos) {
     if (NULL != g || NULL != m) {
         connect(editor, SIGNAL(si_configurationChanged()), scene, SLOT(sl_refreshBindings()));
     }
-    sl_procItemAdded();
+    procItemAdded();
     ActorPrototype *addedProto = it->getProcess()->getProto();
     uiLog.trace(addedProto->getDisplayName() + " added");
     if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(addedProto->getId()) != nullptr) {
@@ -1933,24 +1932,6 @@ void WorkflowView::recreateScene() {
     sceneRecreation = false;
 }
 
-void WorkflowView::sl_procItemAdded() {
-    currentActor = NULL;
-    propertyEditor->setEditable(true);
-    scene->invalidate(QRectF(), QGraphicsScene::BackgroundLayer);
-    if (!currentProto) {
-        return;
-    }
-
-    uiLog.trace(currentProto->getDisplayName() + " added");
-    if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(currentProto->getId()) != nullptr) {
-        GCOUNTER(cvar, tvar, "Element with command line tool is added to the scene");
-    }
-    palette->resetSelection();
-    currentProto = NULL;
-    assert(scene->views().size() == 1);
-    scene->views().at(0)->unsetCursor();
-}
-
 void WorkflowView::sl_showEditor() {
     propertyEditor->show();
     QList<int> s = splitter->sizes();
@@ -2101,6 +2082,19 @@ void WorkflowView::loadWizardResult(const QString &result) {
     if (!schema->getWizards().isEmpty() && !schema->getWizards().first()->isAutoRun()) {
         runWizard(schema->getWizards().first());
     }
+}
+
+void WorkflowView::procItemAdded() {
+    currentActor = NULL;
+    propertyEditor->setEditable(true);
+    scene->invalidate(QRectF(), QGraphicsScene::BackgroundLayer);
+    if (!currentProto) {
+        return;
+    }
+    palette->resetSelection();
+    currentProto = NULL;
+    assert(scene->views().size() == 1);
+    scene->views().at(0)->unsetCursor();
 }
 
 void WorkflowView::checkAutoRunWizard() {
