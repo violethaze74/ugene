@@ -54,7 +54,7 @@ WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry* reg, QWidget *parent)
     vl->addWidget(elementsList);
 
     connect(elementsList, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SIGNAL(processSelected(Workflow::ActorPrototype*, bool)));
-    connect(elementsList, SIGNAL(si_prototypeIsAboutToBeRemoved(ActorPrototype *)), SIGNAL(si_prototypeIsAboutToBeRemoved(ActorPrototype *)));
+    connect(elementsList, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)), SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)));
     connect(elementsList, SIGNAL(si_protoChanged()), SIGNAL(si_protoChanged()));
     connect(elementsList, SIGNAL(si_protoListModified()), SIGNAL(si_protoListModified()));
 
@@ -211,7 +211,7 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, QW
     //setTextElideMode (Qt::ElideMiddle);
     setContent(reg);
     connect(reg, SIGNAL(si_registryModified()), SLOT(rebuild()));
-    connect(this, SIGNAL(si_prototypeIsAboutToBeRemoved(ActorPrototype *)), SLOT(sl_prototypeIsAboutToBeRemoved(ActorPrototype *)));
+    connect(this, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)));
     this->setObjectName("WorkflowPaletteElements");
 }
 

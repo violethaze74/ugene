@@ -230,7 +230,7 @@ private slots:
     void sl_editScript();
     void sl_createCmdlineBasedWorkerAction();
     void sl_appendExternalToolWorker();
-    void sl_prototypeIsAboutToBeRemoved(ActorPrototype *proto);
+    void sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
     void sl_xmlSchemaLoaded(Task*);
     void sl_editExternalTool();
     void sl_findPrototype();
