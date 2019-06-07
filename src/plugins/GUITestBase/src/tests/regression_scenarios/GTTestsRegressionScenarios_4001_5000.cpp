@@ -734,7 +734,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     parent = GTWidget::findWidget(os, "fungal - all [m] fungal - all", GTWidget::findWidget(os, "fungal - all [m] fungal - all_SubWindow"));
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area for fungal-all.aln");
-    CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the bottom of name list area is not visible for fungal-all.aln");
+    CHECK_SET_ERR(!hNameScroll->isVisible(), "Scroll bar at the bottom of name list area is visible for fungal-all.aln");
 
 }
 
