@@ -363,6 +363,12 @@ static SharedDbiDataHandler getAnnotations(Document *d, WorkflowContext *context
 
 void ExternalProcessWorker::sl_onTaskFinishied() {
     LaunchExternalToolTask *t = static_cast<LaunchExternalToolTask*>(sender());
+    bool hasMessages = true;
+    bool isEnded = true;
+    checkInputBusState(hasMessages, isEnded);
+    if (!hasMessages) {
+        setDone();
+    }
     CHECK(output && t->isFinished() && !t->hasError(),);
 
     /* This variable and corresponded code parts with it
@@ -497,7 +503,7 @@ void ExternalProcessWorker::init() {
 }
 
 void ExternalProcessWorker::checkInputBusState(bool &hasMessages, bool &isEnded) const {
-    hasMessages = true;
+    hasMessages = false;
     isEnded = false;
     foreach(const CommunicationChannel *ch, inputs) {
         if (NULL != ch) {
