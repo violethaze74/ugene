@@ -246,9 +246,20 @@ const DNAAlphabet* U2AlphabetUtils::deriveCommonAlphabet(const DNAAlphabet* al1,
     }
 }
 
-
 const DNAAlphabet* U2AlphabetUtils::getById(const QString& id) {
     return AppContext::getDNAAlphabetRegistry()->findById(id);
+}
+
+const U2::DNAAlphabet* U2AlphabetUtils::getExtendedAlphabet(const DNAAlphabet* al) {
+    if (al->getId() == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT()) {
+        return AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_RNA_EXTENDED());
+    } else if (al->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) {
+        return AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
+    } else if (al->getId() == BaseDNAAlphabetIds::AMINO_DEFAULT()) {
+        return AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_EXTENDED());
+    } else {
+        return al;
+    }
 }
 
 } //namespace

@@ -21,10 +21,11 @@
 
 #include <QRegExp>
 
-#include <U2Core/DNAAlphabet.h>
+#include <U2Core/AppContext.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/GObjectUtils.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/Log.h>
+#include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -719,10 +720,7 @@ static void find_subst( FindAlgorithmResultsListener* rl,
         SAFE_POINT( NULL != complTT, "Invalid translation supplied!", );
         tmp.resize(patternLen);
         complPattern = tmp.data();
-        const DNAAlphabet *patternAlphabet = U2AlphabetUtils::findBestAlphabet(pattern, patternLen);
-        SAFE_POINT(patternAlphabet != nullptr, "Unable to detect search pattern alphabet",);
-        DNATranslation *patternTT = GObjectUtils::findComplementTT(patternAlphabet);
-        TextUtils::translate(patternTT->getOne2OneMapper(), pattern, patternLen, complPattern);
+        TextUtils::translate(complTT->getOne2OneMapper(), pattern, patternLen, complPattern);
         TextUtils::reverse(complPattern, patternLen);
     }
 
@@ -816,14 +814,24 @@ void FindAlgorithm::find(
         searchIsCircular = false;
     }
 
+    DNATranslation* newComplTT = complTT;
+    if (complTT != nullptr) {
+        const DNAAlphabet *destinationAlphabet = complTT->getDstAlphabet();
+        if (destinationAlphabet->isExtended()) {
+            newComplTT = complTT;
+        } else {
+            newComplTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(U2AlphabetUtils::getExtendedAlphabet(destinationAlphabet));
+        }
+    }
+
     if ( patternSettings == FindAlgorithmPatternSettings_RegExp ) {
-        findRegExp( rl, aminoTT, complTT, strand, seq, searchIsCircular, range, pattern, maxRegExpResult, stopFlag,
+        findRegExp( rl, aminoTT, newComplTT, strand, seq, searchIsCircular, range, pattern, maxRegExpResult, stopFlag,
             percentsCompleted );
         return;
     }
 
     if( patternSettings == FindAlgorithmPatternSettings_Subst ) {
-        find_subst( rl, aminoTT, complTT, strand, seq, searchIsCircular, range, pattern, patternLen,
+        find_subst( rl, aminoTT, newComplTT, strand, seq, searchIsCircular, range, pattern, patternLen,
             useAmbiguousBases, maxErr, stopFlag, percentsCompleted );
         return;
     }
@@ -838,20 +846,17 @@ void FindAlgorithm::find(
     }
 
     if (aminoTT != NULL) {
-        findInAmino(rl, aminoTT, complTT, strand, insDel, seq, range, searchIsCircular, pattern, patternLen, maxErr,
+        findInAmino(rl, aminoTT, newComplTT, strand, insDel, seq, range, searchIsCircular, pattern, patternLen, maxErr,
             stopFlag, percentsCompleted );
         return;
     }
     char* complPattern = NULL;
     QByteArray tmp;
     if (isComplement(strand)) {
-        SAFE_POINT( NULL != complTT, "Invalid translation supplied!", );
+        SAFE_POINT( NULL != newComplTT, "Invalid translation supplied!", );
         tmp.resize(patternLen);
         complPattern = tmp.data();
-        const DNAAlphabet *patternAlphabet = U2AlphabetUtils::findBestAlphabet(pattern, patternLen);
-        SAFE_POINT(patternAlphabet != nullptr, "Unable to detect search pattern alphabet",);
-        DNATranslation *patternTT = GObjectUtils::findComplementTT(patternAlphabet);
-        TextUtils::translate(patternTT->getOne2OneMapper(), pattern, patternLen, complPattern);
+        TextUtils::translate(newComplTT->getOne2OneMapper(), pattern, patternLen, complPattern);
         TextUtils::reverse(complPattern, patternLen);
     }
 
