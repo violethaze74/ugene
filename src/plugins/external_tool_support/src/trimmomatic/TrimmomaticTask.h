@@ -52,6 +52,7 @@ class TrimmomaticTask : public ExternalToolSupportTask {
 public:
     TrimmomaticTask(const TrimmomaticTaskSettings &settings);
 
+    const QString &getInputUrl1() const;
     const QString &getSeOutputUrl() const;
     const QString &getPairedOutputUrl1() const;
     const QString &getPairedOutputUrl2() const;
