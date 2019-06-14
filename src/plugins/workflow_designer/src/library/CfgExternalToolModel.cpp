@@ -193,24 +193,19 @@ void CfgExternalToolModel::createFormatDelegate(const QString &newType, CfgExter
     if (newType == BaseTypes::DNA_SEQUENCE_TYPE()->getId()) {
         delegate = new ComboBoxDelegate(seqFormatsW);
         format = seqFormatsW.values().first().toString();
-    }
-    else if (newType == BaseTypes::MULTIPLE_ALIGNMENT_TYPE()->getId()) {
+    } else if (newType == BaseTypes::MULTIPLE_ALIGNMENT_TYPE()->getId()) {
         delegate = new ComboBoxDelegate(msaFormatsW);
         format = msaFormatsW.values().first().toString();
-    }
-    else if (newType == BaseTypes::ANNOTATION_TABLE_TYPE()->getId()) {
+    } else if (newType == BaseTypes::ANNOTATION_TABLE_TYPE()->getId()) {
         delegate = new ComboBoxDelegate(annFormatsW);
         format = annFormatsW.values().first().toString();
-    }
-    else if (newType == SEQ_WITH_ANNS){
-        delegate = new ComboBoxDelegate(annFormatsW);
-        format = annFormatsW.values().first().toString();
-    }
-    else if (newType == BaseTypes::STRING_TYPE()->getId()) {
+    } else if (newType == SEQ_WITH_ANNS){
+        delegate = new ComboBoxDelegate(annSeqFormatsW);
+        format = annSeqFormatsW.values().first().toString();
+    } else if (newType == BaseTypes::STRING_TYPE()->getId()) {
         delegate = new ComboBoxDelegate(textFormat);
         format = textFormat.values().first().toString();
-    }
-    else{
+    } else {
         return;
     }
     item->setFormat(format);
@@ -282,9 +277,9 @@ QVariant CfgExternalToolModel::headerData(int section, Qt::Orientation orientati
             return tr("Type");
         case COLUMN_FORMAT:
             if (isInput) {
-                return tr("Read as");
+                return tr("Argument value");
             } else {
-                return tr("Write as");
+                return tr("Argument value");
             }
         case COLUMN_DESCRIPTION:
             return tr("Description");
@@ -353,41 +348,60 @@ void CfgExternalToolModel::initFormats() {
     DocumentFormatConstraints annRead(commonConstraints);
     annRead.supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
 
+    DocumentFormatConstraints annSeqWrite(commonConstraints);
+    annSeqWrite.supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
+    annSeqWrite.supportedObjectTypes += GObjectTypes::SEQUENCE;
+
+    DocumentFormatConstraints annSeqRead(commonConstraints);
+    annSeqRead.supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
+    annSeqRead.supportedObjectTypes += GObjectTypes::SEQUENCE;
+
+    QString argumentValue(tr("URL to %1 file with data"));
     foreach(const DocumentFormatId& id, ids) {
         DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(id);
 
+        QString formatNameKey = argumentValue.arg(df->getFormatName());
+        QString formatId = df->getFormatId();
         if (df->checkConstraints(seqWrite)) {
-            seqFormatsW[df->getFormatName()] = df->getFormatId();
+            seqFormatsW[formatNameKey] = formatId;
         }
 
         if (df->checkConstraints(seqRead)) {
-            seqFormatsR[df->getFormatName()] = df->getFormatId();
+            seqFormatsR[formatNameKey] = formatId;
         }
 
         if (df->checkConstraints(msaWrite)) {
-            msaFormatsW[df->getFormatName()] = df->getFormatId();
+            msaFormatsW[formatNameKey] = formatId;
         }
 
         if (df->checkConstraints(msaRead)) {
-            msaFormatsR[df->getFormatName()] = df->getFormatId();
+            msaFormatsR[formatNameKey] = formatId;
         }
 
         if (df->checkConstraints(annWrite)) {
-            annFormatsW[df->getFormatName()] = df->getFormatId();
+            annFormatsW[formatNameKey] = formatId;
         }
 
         if (df->checkConstraints(annRead)) {
-            annFormatsR[df->getFormatName()] = df->getFormatId();
+            annFormatsR[formatNameKey] = formatId;
+        }
+
+        if (df->checkConstraints(annSeqWrite)) {
+            annSeqFormatsW[formatNameKey] = formatId;
+        }
+
+        if (df->checkConstraints(annSeqRead)) {
+            annSeqFormatsR[formatNameKey] = formatId;
         }
     }
 
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_TEXT);
     if (isInput) {
-        textFormat[tr("String value")] = DataConfig::STRING_VALUE;
+        textFormat[tr("String data value")] = DataConfig::STRING_VALUE;
     } else {
-        textFormat[tr("Output file url")] = DataConfig::OUTPUT_FILE_URL;
+        textFormat[tr("Output URL")] = DataConfig::OUTPUT_FILE_URL;
     }
-    textFormat[tr("Text file")] = df->getFormatId();
+    textFormat[argumentValue.arg("TXT")] = df->getFormatId();
 }
 
 void CfgExternalToolModel::initTypes() {
@@ -395,15 +409,15 @@ void CfgExternalToolModel::initTypes() {
     types[ptr->getDisplayName()] = ptr->getId();
 
     ptr = BaseTypes::ANNOTATION_TABLE_TYPE();
-    types[ptr->getDisplayName()] = ptr->getId();
+    types[tr("Annotations")] = ptr->getId();
 
     ptr = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
-    types[ptr->getDisplayName()] = ptr->getId();
+    types[tr("Alignment")] = ptr->getId();
 
     ptr = BaseTypes::STRING_TYPE();
     types[ptr->getDisplayName()] = ptr->getId();
 
-    types["Sequence with annotations"] = SEQ_WITH_ANNS;
+    types[tr("Annotated sequence")] = SEQ_WITH_ANNS;
 }
 
 //////////////////////////////////////////////////////////////////////////

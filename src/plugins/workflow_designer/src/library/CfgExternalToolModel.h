@@ -106,9 +106,11 @@ private:
     QVariantMap seqFormatsW;
     QVariantMap msaFormatsW;
     QVariantMap annFormatsW;
+    QVariantMap annSeqFormatsW;
     QVariantMap seqFormatsR;
     QVariantMap msaFormatsR;
     QVariantMap annFormatsR;
+    QVariantMap annSeqFormatsR;
     QVariantMap textFormat;
 };
 

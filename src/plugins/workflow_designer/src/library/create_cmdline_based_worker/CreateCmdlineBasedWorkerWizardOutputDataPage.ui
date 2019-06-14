@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>1217</width>
     <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>WizardPage</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QLabel" name="lblTitle">
      <property name="text">
@@ -22,11 +22,30 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableView" name="tvOutput">
-     <property name="selectionMode">
-      <enum>QAbstractItemView::SingleSelection</enum>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>10</number>
      </property>
-    </widget>
+     <item>
+      <widget class="QLabel" name="lblDescription">
+       <property name="text">
+        <string>To output data from this element to other workflow element(s) add one or several port(s) of the required type(s).
+
+It is assumed that the command-line tool creates some file(s). This element reads the data according to the specified type and format. Alternatively, it is possible to pass the output file/folder URL, see the &quot;String&quot; type, &quot;Output URL&quot; argument value.</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableView" name="tvOutput">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="outputsButtonsLayout">
