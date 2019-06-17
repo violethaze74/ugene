@@ -394,6 +394,7 @@ CreateScriptElementDialog::CreateScriptElementDialog(QWidget *p, ActorPrototype*
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_cancelClicked()));
 
     attributeTable->horizontalHeader()->setStretchLastSection(true);
+    attributeTable->verticalHeader()->hide();
 
     nameEdit->setValidator(new WorkerNameValidator(this));
 

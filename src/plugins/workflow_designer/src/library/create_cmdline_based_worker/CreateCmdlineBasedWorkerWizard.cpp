@@ -58,6 +58,7 @@ CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(ExternalProcessCo
       initialConfig(_initialConfig),
       config(nullptr)
 {
+    setWindowTitle(tr("Configure Element with Command Line Tool"));
     init();
 }
 
