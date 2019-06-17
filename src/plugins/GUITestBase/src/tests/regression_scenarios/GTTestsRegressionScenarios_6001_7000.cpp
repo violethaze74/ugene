@@ -1033,7 +1033,7 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
 
 GUI_TEST_CLASS_DEFINITION(test_6207) {
     //1. Open the WD.
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    //GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //2. Compose scheme read fastq with PE reads -> Filter by Classification
     GTUtilsWorkflowDesigner::addElement(os, "Read FASTQ File with SE Reads", true);
