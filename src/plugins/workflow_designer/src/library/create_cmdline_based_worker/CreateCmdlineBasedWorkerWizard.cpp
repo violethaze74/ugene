@@ -225,6 +225,7 @@ void CreateCmdlineBasedWorkerWizard::init() {
     addPage(new CreateCmdlineBasedWorkerWizardElementAppearancePage(initialConfig));
     addPage(new CreateCmdlineBasedWorkerWizardSummaryPage());
 
+    setWindowTitle(tr("Configure Element with Command Line Tool"));
     setWizardStyle(ClassicStyle);
     setOption(IndependentPages);
 
