@@ -104,6 +104,10 @@ QStringList TrimmomaticTask::getArguments() {
     return arguments;
 }
 
+const QString &TrimmomaticTask::getInputUrl1() const {
+    return settings.inputUrl1;
+}
+
 const QString &TrimmomaticTask::getSeOutputUrl() const {
     return settings.seOutputUrl;
 }

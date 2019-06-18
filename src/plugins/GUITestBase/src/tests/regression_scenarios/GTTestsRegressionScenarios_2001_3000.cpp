@@ -1699,7 +1699,7 @@ GUI_TEST_CLASS_DEFINITION( test_2267_1 ){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_ADD << "add_qualifier_action"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "D"));
     GTMouseDriver::click(Qt::RightButton);
-    
+
 //     4. Press Enter
 //     Expected state: Edit qualifier window closes
 }
