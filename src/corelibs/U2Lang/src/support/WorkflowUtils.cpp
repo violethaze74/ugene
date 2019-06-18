@@ -67,19 +67,20 @@ QStringList WorkflowUtils::initExtensions() {
 }
 
 QString WorkflowUtils::getRichDoc(const Descriptor& d) {
+    QString result = QString();
     if(d.getDisplayName().isEmpty()) {
-        if(d.getDocumentation().isEmpty()) {
-            return QString();
-        } else {
-            return QString("%1").arg(d.getDocumentation());
+        if(!d.getDocumentation().isEmpty()) {
+            result = QString("%1").arg(d.getDocumentation());
         }
     } else {
         if(d.getDocumentation().isEmpty()) {
-            return QString("<b>%1</b>").arg(d.getDisplayName());
+            result = QString("<b>%1</b>").arg(d.getDisplayName());
         } else {
-            return QString("<b>%1</b>: %2").arg(d.getDisplayName()).arg(d.getDocumentation());
+            result = QString("<b>%1</b>: %2").arg(d.getDisplayName()).arg(d.getDocumentation());
         }
     }
+    result.replace("\n", "<br>");
+    return result;
 }
 
 QString WorkflowUtils::getDropUrl(QList<DocumentFormat*>& fs, const QMimeData* md) {

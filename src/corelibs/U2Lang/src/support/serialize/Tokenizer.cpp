@@ -267,6 +267,9 @@ void Tokenizer::tokenizeLine(const QString & l, QTextStream & s) {
         if( stream.atEnd() && finishAtQuote && ch != Constants::QUOTE.at(0) ) {
             do {
                 curToken.append(ch);
+                if (stream.atEnd() && finishAtQuote) {
+                    curToken.append('\n');
+                }
                 line = s.readLine();
                 if (line.isEmpty()) {
                     ch = '\n';

@@ -51,7 +51,7 @@ namespace U2 {
 #ifdef Q_OS_MAC
 const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; font-size: 20pt; padding-bottom: 10px; color: #0c3762}";
 #else
-const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; font-size: 16pt; padding-bottom: 10px; color: #0c3762}";
+const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -6px; margin-bottom: -5px; margin-top: -5px; font-size: 16pt; padding-bottom: 10px; color: #0c3762}";
 #endif
 
 const QString CreateCmdlineBasedWorkerWizard::ATTRIBUTES_DATA_FIELD = "attributes-data";
@@ -228,7 +228,7 @@ void CreateCmdlineBasedWorkerWizard::init() {
     setWizardStyle(ClassicStyle);
     setOption(IndependentPages);
 
-    DialogUtils::setWizardMinimumSize(this, QSize(600, 500));
+    DialogUtils::setWizardMinimumSize(this, QSize(600, 420));
 }
 
 ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() const {
@@ -389,11 +389,11 @@ CreateCmdlineBasedWorkerWizardInputDataPage::CreateCmdlineBasedWorkerWizardInput
     tvInput->setItemDelegate(new ProxyDelegate());
     tvInput->horizontalHeader()->setStretchLastSection(true);
     tvInput->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-
+    /*
     QFontMetrics fm = QFontMetrics(tvInput->font());
     int columnWidth = static_cast<int>(fm.width(SEQ_WITH_ANNS) * 1.5);
     tvInput->setColumnWidth(1, columnWidth);
-
+    */
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_DATA_FIELD, this, INPUTS_DATA_PROPERTY, SIGNAL(si_inputsChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD, this, INPUTS_IDS_PROPERTY);
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD, this, INPUTS_NAMES_PROPERTY);
@@ -570,10 +570,6 @@ CreateCmdlineBasedWorkerWizardOutputDataPage::CreateCmdlineBasedWorkerWizardOutp
     tvOutput->setItemDelegate(new ProxyDelegate());
     tvOutput->horizontalHeader()->setStretchLastSection(true);
     tvOutput->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-
-    QFontMetrics fm = QFontMetrics(tvOutput->font());
-    int columnWidth = static_cast<int>(fm.width(SEQ_WITH_ANNS) * 1.5);
-    tvOutput->setColumnWidth(1, columnWidth);
 
     registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_DATA_FIELD, this, OUTPUTS_DATA_PROPERTY, SIGNAL(si_outputsChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD, this, OUTPUTS_IDS_PROPERTY);
