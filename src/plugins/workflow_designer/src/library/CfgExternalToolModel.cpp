@@ -137,9 +137,9 @@ QVariant CfgExternalToolModel::data(const QModelIndex &index, int role) const {
     case Qt::ToolTipRole:
         switch (col) {
         case COLUMN_NAME:
-            return item->getName();
+            return role == Qt::ToolTipRole ? tr("Command line parameter name") : item->getName();
         case COLUMN_ID:
-            return item->getId();
+            return role == Qt::ToolTipRole ? tr("Command line parameter id") : item->getId();
         case COLUMN_DATA_TYPE:
             return item->delegateForTypes->getDisplayValue(item->getDataType());
         case COLUMN_FORMAT:
@@ -287,6 +287,11 @@ QVariant CfgExternalToolModel::headerData(int section, Qt::Orientation orientati
             // do nothing, inaccessible code
             Q_ASSERT(false);
             return QVariant();
+        }
+    }
+    if (role == Qt::ToolTipRole) {
+        if (section == COLUMN_NAME) {
+            return tr("Command line parameter name");
         }
     }
     return QVariant();
