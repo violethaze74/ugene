@@ -1452,7 +1452,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/regression/1080", "blast+marker_new.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
