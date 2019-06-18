@@ -251,34 +251,27 @@ CreateCmdlineBasedWorkerWizardInputOutputPage::CreateCmdlineBasedWorkerWizardInp
 
 void CreateCmdlineBasedWorkerWizardInputOutputPage::initializePage() {
     CHECK(nullptr != initialConfig, );
+    this->duplicateNamesWarningLabel->setVisible(false);
     initModel(inputsModel, initialConfig->inputs);
     initModel(outputsModel, initialConfig->outputs);
 }
 
 bool CreateCmdlineBasedWorkerWizardInputOutputPage::isComplete() const {
-    bool res = true;
+    bool hasErrors = false;
     QRegExp invalidSymbols("\\W");
 
     QStringList names = field(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD).toStringList() +
                         field(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD).toStringList();
     foreach (const QString &name, names) {
-        if (name.isEmpty()) {
-            res = false;
-        }
-        if (name.contains(invalidSymbols)) {
-            res = false;
+        if (name.isEmpty() || name.contains(invalidSymbols)) {
+            hasErrors = true;
+            break;
         }
     }
-
-    if (names.removeDuplicates() > 0) {
-        res = false;
-    }
-
-    if (names.isEmpty()) {
-        res = false;
-    }
-
-    return res;
+    bool hasDuplicates = names.removeDuplicates() > 0;
+    hasErrors = hasErrors || hasDuplicates || names.isEmpty();
+    this->duplicateNamesWarningLabel->setVisible(hasDuplicates);
+    return !hasErrors;
 }
 
 void CreateCmdlineBasedWorkerWizardInputOutputPage::sl_addInput() {
@@ -379,6 +372,7 @@ CreateCmdlineBasedWorkerWizardAttributesPage::CreateCmdlineBasedWorkerWizardAttr
 }
 
 void CreateCmdlineBasedWorkerWizardAttributesPage::initializePage() {
+    this->duplicateNamesWarningLabel->setVisible(false);
     CHECK(nullptr != initialConfig, );
     initModel(model, initialConfig->attrs);
 }
@@ -421,6 +415,7 @@ void CreateCmdlineBasedWorkerWizardAttributesPage::sl_deleteAttribute() {
 void CreateCmdlineBasedWorkerWizardAttributesPage::sl_updateAttributes() {
     QStringList names;
     QList<AttributeConfig> data;
+    bool hasDuplicateNames = false;
     foreach (AttributeItem *item, model->getItems()) {
         AttributeConfig attributeConfig;
         attributeConfig.attrName = item->getName();
@@ -428,10 +423,15 @@ void CreateCmdlineBasedWorkerWizardAttributesPage::sl_updateAttributes() {
         attributeConfig.defaultValue = item->getDefaultValue();
         attributeConfig.description = item->getDescription();
         data << attributeConfig;
-        names << item->getName();
+        QString name = item->getName();
+        hasDuplicateNames = hasDuplicateNames || names.contains(name);
+        names << name;
     }
     setProperty(ATTRIBUTES_DATA_PROPERTY, QVariant::fromValue<QList<AttributeConfig> >(data));
     setProperty(ATTRIBUTES_NAMES_PROPERTY, names);
+
+    this->duplicateNamesWarningLabel->setVisible(hasDuplicateNames);
+
     emit si_attributesChanged();
 }
 
