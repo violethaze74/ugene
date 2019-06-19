@@ -512,7 +512,6 @@ void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
     setProperty(ATTRIBUTES_DATA_PROPERTY, QVariant::fromValue<QList<AttributeConfig> >(data));
     setProperty(ATTRIBUTES_IDS_PROPERTY, ids);
     setProperty(ATTRIBUTES_NAMES_PROPERTY, names);
-
     emit si_attributesChanged();
 }
 
