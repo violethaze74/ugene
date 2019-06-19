@@ -734,8 +734,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected: 3 results were found
-    CHECK_SET_ERR(3 == GTUtilsPcr::productsCount(os), "Wrong results count");
+    // Expected: 2 results were found
+    CHECK_SET_ERR(2 == GTUtilsPcr::productsCount(os), "Wrong results count");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016) {
