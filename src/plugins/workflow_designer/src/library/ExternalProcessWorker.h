@@ -45,6 +45,7 @@ private slots:
     void sl_onTaskFinishied();
 
 private:
+    void applySpecialInternalEnvvars(QString &execString);
     void applyAttributes(QString &execString);
     QStringList applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os);
     QString prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os);

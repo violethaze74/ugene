@@ -27,6 +27,7 @@
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GUrlUtils.h>
@@ -217,6 +218,29 @@ ExternalProcessWorker::ExternalProcessWorker(Actor *a)
     ExternalToolCfgRegistry *reg = WorkflowEnv::getExternalCfgRegistry();
     cfg = reg->getConfigById(actor->getProto()->getId());
     commandLine = cfg->cmdLine;
+}
+
+void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString) {
+    if (execString.indexOf("%UGENE_JAVA%") >= 0) {
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("java");
+        CHECK(tool,);
+        execString.replace("%UGENE_JAVA%", "\"" + tool->getPath() + "\"");
+    }
+    if (execString.indexOf("%UGENE_PYTHON%") >= 0) {
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("python");
+        CHECK(tool,);
+        execString.replace("%UGENE_PYTHON%", "\"" + tool->getPath() + "\"");
+    }
+    if (execString.indexOf("%UGENE_RSCRIPT%") >= 0) {
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("Rscript");
+        CHECK(tool,);
+        execString.replace("%UGENE_RSCRIPT%", "\"" + tool->getPath() + "\"");
+    }
+    if (execString.indexOf("%UGENE_PERL%") >= 0) {
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("perl");
+        CHECK(tool,);
+        execString.replace("%UGENE_PERL%", "\"" + tool->getPath() + "\"");
+    }
 }
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {
@@ -492,6 +516,8 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
 }
 
 void ExternalProcessWorker::init() {
+    applySpecialInternalEnvvars(commandLine);
+
     output = ports.value(OUT_PORT_ID);
 
     foreach(const DataConfig& input, cfg->inputs) {

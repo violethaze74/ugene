@@ -22,8 +22,10 @@
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Lang/Aliasing.h>
+#include <U2Core/AppContext.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
+#include <U2Core/ExternalToolRegistry.h>
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowEnv.h>
@@ -177,6 +179,27 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
 
     proto->setPrompter( new LocalWorkflow::ExternalProcessWorkerPrompter() );
     proto->setNonStandard(cfg->filePath);
+
+    if (cfg->cmdLine.indexOf("%UGENE_JAVA%") >= 0) {
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("java");
+        CHECK(tool, nullptr);
+        proto->addExternalTool(tool->getId());
+    }
+    if (cfg->cmdLine.indexOf("%UGENE_PYTHON%") >= 0) {
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("python");
+        CHECK(tool, nullptr);
+        proto->addExternalTool(tool->getId());
+    }
+    if (cfg->cmdLine.indexOf("%UGENE_RSCRIPT%") >= 0) {
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("Rscript");
+        CHECK(tool, nullptr);
+        proto->addExternalTool(tool->getId());
+    }
+    if (cfg->cmdLine.indexOf("%UGENE_PERL%") >= 0) {
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("perl");
+        CHECK(tool, nullptr);
+        proto->addExternalTool(tool->getId());
+    }
 
     return proto;
 }
