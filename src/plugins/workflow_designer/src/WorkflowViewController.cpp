@@ -1170,6 +1170,8 @@ void WorkflowView::setupMDIToolbar(QToolBar* tb) {
     tb->addAction(externalToolAction);
     tb->addAction(appendExternalTool);
     extSep = tb->addSeparator();
+    tb->addAction(deleteAction);
+    scaleSep = tb->addSeparator();
     scaleAction = tb->addWidget(scaleComboBox);
     scaleSep = tb->addSeparator();
     styleAction = tb->addWidget(styleMenu(this, styleActions));

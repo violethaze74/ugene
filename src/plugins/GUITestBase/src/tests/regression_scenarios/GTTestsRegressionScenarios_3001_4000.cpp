@@ -1473,7 +1473,7 @@ GUI_TEST_CLASS_DEFINITION(test_3226) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read File URL(s)");
 
-    ////2. Setup alias 'in' for input path.
+    //2. Setup alias 'in' for input path.
     QMap<QPoint*, QString> map;
     QPoint p(1, 0);
     map[&p] = "in";
@@ -1481,13 +1481,13 @@ GUI_TEST_CLASS_DEFINITION(test_3226) {
     GTWidget::click(os, GTAction::button(os, "Set parameter aliases"));
 
 
-    ////3. Copy and paste the 'Read File URL(s)' element.
+    //3. Copy and paste the 'Read File URL(s)' element.
     GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
-    //GTKeyboardUtils::copy(os);
-    GTWidget::click(os, GTAction::button(os, "Copy action"));
-/*    GTKeyboardUtils::paste(os);
+    GTKeyboardUtils::copy(os);
+    //GTWidget::click(os, GTAction::button(os, "Copy action"));
+    GTKeyboardUtils::paste(os);
    
-    ////4. Save the workflow.
+    //4. Save the workflow.
     QString path = sandBoxDir + "test_3226_workflow.uwl";
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, path, ""));
     GTWidget::click(os, GTAction::button(os, "Save workflow action"));
@@ -1501,7 +1501,6 @@ GUI_TEST_CLASS_DEFINITION(test_3226) {
 
     //Expected state: the saved workflow is opened, there are no errors in the log, the alias it set only for the one element.
     GTUtilsLog::check(os, l);
-    */
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3229){
