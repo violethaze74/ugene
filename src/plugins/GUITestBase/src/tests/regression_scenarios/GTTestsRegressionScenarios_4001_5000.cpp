@@ -2335,6 +2335,7 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     //clean up
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "test_4295");
+    GTFile::copy(os, testDir + "_common_data/scenarios/_regression/4295/test_4295.etc", sandBoxDir + "test_4295.etc");
 
     // start test
     GTLogTracer logTracer;
@@ -2346,44 +2347,33 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     GTUtilsWorkflowDesigner::addElement(os, "Write Plain Text");
     GTGlobals::sleep(200);
 
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4295", "test_4295.etc");
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, sandBoxDir, "test_4295.etc");
     GTUtilsDialog::waitForDialog(os, ob);
 
     QAbstractButton* button = GTAction::button(os, "AddElementWithCommandLineTool");
     GTWidget::click(os, button);
     GTGlobals::sleep(200);
-    WorkflowProcessItem *cmdlineWorker = GTUtilsWorkflowDesigner::getWorker(os, "test_4295");
+    //WorkflowProcessItem *cmdlineWorker = GTUtilsWorkflowDesigner::getWorker(os, "test_4295");
 
-    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"), cmdlineWorker);
+    GTUtilsWorkflowDesigner::click(os, "test_4295");
+
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.command = "echo $in > $out";
+
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
+    GTUtilsWorkflowDesigner::click(os, "test_4295",QPoint(0,0),Qt::RightButton);
+    GTGlobals::sleep();
+
+    WorkflowProcessItem* element = GTUtilsWorkflowDesigner::addElement(os, "test_4295");
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"), element);
     GTGlobals::sleep(200);
-    GTUtilsWorkflowDesigner::connect(os, cmdlineWorker, GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
+    GTUtilsWorkflowDesigner::connect(os, element, GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
     GTGlobals::sleep(200);
     GTUtilsWorkflowDesigner::click(os, "test_4295");
     GTGlobals::sleep(200);
     QTableWidget* table = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by Read File URL(s))", GTUtilsWorkflowDesigner::comboValue, table);
-    GTUtilsWorkflowDesigner::click(os, "test_4295");
-
-    class OkClicker : public Filler {
-    public:
-        OkClicker(HI::GUITestOpStatus& _os) : Filler(_os, "CreateExternalProcessWorkerDialog"){}
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
-
-            QLineEdit *ed = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "templateLineEdit", w));
-            GTLineEdit::setText(os, ed, "echo $in > $out");
-
-            QAbstractButton *button = GTWidget::findButtonByText(os, "Finish");
-            CHECK(NULL != button, );
-            GTWidget::click(os, button);
-        }
-    };
-
-    GTUtilsDialog::waitForDialog(os, new OkClicker(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
-    GTUtilsWorkflowDesigner::click(os, "test_4295",QPoint(0,0),Qt::RightButton);
-    GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3831,6 +3821,8 @@ GUI_TEST_CLASS_DEFINITION(test_4606) {
     //Expected state: no safepoint triggered
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "Element_4606");
+
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "Element_4606";
 
@@ -3841,9 +3833,7 @@ GUI_TEST_CLASS_DEFINITION(test_4606) {
     input << CreateElementWithCommandLineToolFiller::InOutData("in1",
         inOutDataType);
     settings.input = input;
-    settings.executionString = "echo";
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Continue"));
+    settings.command = "echo";
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     QAbstractButton *createElement = GTAction::button(os, "createElementWithCommandLineTool");

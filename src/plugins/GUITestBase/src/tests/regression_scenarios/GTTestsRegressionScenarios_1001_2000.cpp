@@ -3814,7 +3814,7 @@ GUI_TEST_CLASS_DEFINITION(test_1348) {
     input << CreateElementWithCommandLineToolFiller::InOutData("in1",
                                                                inOutDataType);
     settings.input = input;
-    settings.executionString = "./ugenem $in1";
+    settings.command = "./ugenem $in1";
 
     GTGlobals::sleep();
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
@@ -4691,7 +4691,7 @@ GUI_TEST_CLASS_DEFINITION(test_1435) {
                                                                 inOutDataType);
     settings.output = output;
 
-    settings.executionString = "./ugenem $in1 $in2 $out1 $out2";
+    settings.command = "./ugenem $in1 $in2 $out1 $out2";
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     QAbstractButton *createElement = GTAction::button(os, "createElementWithCommandLineTool");
