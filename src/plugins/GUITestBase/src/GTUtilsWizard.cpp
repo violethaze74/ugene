@@ -49,6 +49,7 @@ QMap<QString, GTUtilsWizard::WizardButton> GTUtilsWizard::initButtonMap(){
    result.insert("Cancel", Cancel);
    result.insert("Defaults", Defaults);
    result.insert("Setup", Setup);
+   result.insert("Finish", Finish);
    return result;
 }
 const QMap<QString, GTUtilsWizard::WizardButton> GTUtilsWizard::buttonMap = GTUtilsWizard::initButtonMap();

@@ -226,6 +226,7 @@ void CreateCmdlineBasedWorkerWizard::init() {
     addPage(new CreateCmdlineBasedWorkerWizardSummaryPage());
 
     setWindowTitle(tr("Configure Element with Command Line Tool"));
+    setObjectName("CreateExternalProcessWorkerDialog");
     setWizardStyle(ClassicStyle);
     setOption(IndependentPages);
 
