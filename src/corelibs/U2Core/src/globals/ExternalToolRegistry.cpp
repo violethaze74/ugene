@@ -28,45 +28,7 @@
 
 #include <U2Core/Log.h>
 
-#include <QRegularExpression>
 namespace U2 {
-
-////////////////////////////////////////
-// Special external tools
-QMap<QString, QString> ExternalTool::specialTools = QMap<QString, QString>({{"java", "UGENE_JAVA"},
-                                                                            {"python", "UGENE_PYTHON"},
-                                                                            {"perl", "UGENE_PERL"},
-                                                                            {"Rscript", "UGENE_RSCRIPT"}});
-
-
-bool ExternalTool::commandContainsSpecialTool(const QString &cmd, const QString &toolKey) {
-    QString value = specialTools.value(toolKey, nullptr);
-    if (value != nullptr) {
-        QRegularExpression regex1 = QRegularExpression("([^\\\\]|^)%" + value + "%");
-        return cmd.indexOf(regex1) >= 0;
-    }
-    return false;
-}
-
-bool ExternalTool::commandReplaceSpecialByUgenePath(QString &cmd, const QString &toolKey) {
-    QString value = specialTools.value(toolKey, nullptr);
-    if (value != nullptr) {
-        QRegularExpression regex1 = QRegularExpression("([^\\\\]|^)%" + value + "%");
-        if (cmd.indexOf(regex1) >= 0) {
-            ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName(toolKey);
-            CHECK(tool, false);
-            cmd.replace(regex1, "\\1\"" + tool->getPath() + "\"");
-            return true;
-        }
-    }
-    return false;
-}
-
-void ExternalTool::commandReplaceAllSpecialByUgenePath(QString &cmd) {
-    for (auto key : specialTools.keys()) {
-        commandReplaceSpecialByUgenePath(cmd, key);
-    }
-}
 
 ////////////////////////////////////////
 //ExternalToolValidation

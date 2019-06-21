@@ -34,6 +34,8 @@
 #include "library/SchemaWorker.h"
 #include "library/ScriptWorker.h"
 
+#include "util/CustomWorkerUtils.h"
+
 #include "IncludedProtoFactoryImpl.h"
 
 
@@ -180,22 +182,22 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
     proto->setPrompter( new LocalWorkflow::ExternalProcessWorkerPrompter() );
     proto->setNonStandard(cfg->filePath);
 
-    if (ExternalTool::commandContainsSpecialTool(cfg->cmdLine, "java")) {
+    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "java")) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("java");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
     }
-    if (ExternalTool::commandContainsSpecialTool(cfg->cmdLine, "python")) {
+    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "python")) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("python");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
     }
-    if (ExternalTool::commandContainsSpecialTool(cfg->cmdLine, "Rscript")) {
+    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "Rscript")) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("Rscript");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
     }
-    if (ExternalTool::commandContainsSpecialTool(cfg->cmdLine, "perl")) {
+    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "perl")) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("perl");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());

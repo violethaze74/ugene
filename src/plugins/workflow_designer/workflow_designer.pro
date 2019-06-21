@@ -92,6 +92,7 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/tasks/ReadAssemblyTask.h \
            src/tasks/RenameChromosomeInVariationTask.h \
            src/tasks/SequenceQualityTrimTask.h \
+           src/util/CustomWorkerUtils.h \
            src/util/DatasetsCountValidator.h \
            src/util/DatasetValidator.h \
            src/util/GrouperActionUtils.h \
@@ -212,6 +213,7 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/tasks/ReadAssemblyTask.cpp \
            src/tasks/RenameChromosomeInVariationTask.cpp \
            src/tasks/SequenceQualityTrimTask.cpp \
+           src/util/CustomWorkerUtils.cpp \
            src/util/DatasetsCountValidator.cpp \
            src/util/DatasetValidator.cpp \
            src/util/GrouperActionUtils.cpp \

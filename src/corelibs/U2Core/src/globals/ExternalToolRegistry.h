@@ -57,10 +57,6 @@ public:
 class U2CORE_EXPORT ExternalTool : public QObject {
     Q_OBJECT
 public:
-    static bool commandContainsSpecialTool(const QString &cmd, const QString &toolKey);
-    static bool commandReplaceSpecialByUgenePath(QString &cmd, const QString &toolKey);
-    static void commandReplaceAllSpecialByUgenePath(QString &cmd);
-
     ExternalTool(QString name, QString path = "");
     ~ExternalTool();
 
@@ -128,8 +124,6 @@ protected:
     QString     additionalErrorMesage;  // a string, which contains an error message, specific for each tool
     bool        muted;                  // a muted tool doesn't write its validation error to the log
     bool        isModuleTool;           // a module tool is a part of another external tool
-
-    static QMap<QString, QString> specialTools;
 
 }; // ExternalTool
 

@@ -50,6 +50,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include "util/CustomWorkerUtils.h"
+
 #include <QDateTime>
 
 namespace U2 {
@@ -221,7 +223,7 @@ ExternalProcessWorker::ExternalProcessWorker(Actor *a)
 }
 
 void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString) {
-    ExternalTool::commandReplaceAllSpecialByUgenePath(execString);
+    CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(execString);
 }
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {
