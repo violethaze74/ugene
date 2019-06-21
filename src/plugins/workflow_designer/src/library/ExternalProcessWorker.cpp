@@ -221,26 +221,7 @@ ExternalProcessWorker::ExternalProcessWorker(Actor *a)
 }
 
 void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString) {
-    if (execString.indexOf("%UGENE_JAVA%") >= 0) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("java");
-        CHECK(tool,);
-        execString.replace("%UGENE_JAVA%", "\"" + tool->getPath() + "\"");
-    }
-    if (execString.indexOf("%UGENE_PYTHON%") >= 0) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("python");
-        CHECK(tool,);
-        execString.replace("%UGENE_PYTHON%", "\"" + tool->getPath() + "\"");
-    }
-    if (execString.indexOf("%UGENE_RSCRIPT%") >= 0) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("Rscript");
-        CHECK(tool,);
-        execString.replace("%UGENE_RSCRIPT%", "\"" + tool->getPath() + "\"");
-    }
-    if (execString.indexOf("%UGENE_PERL%") >= 0) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("perl");
-        CHECK(tool,);
-        execString.replace("%UGENE_PERL%", "\"" + tool->getPath() + "\"");
-    }
+    ExternalTool::commandReplaceAllSpecialByUgenePath(execString);
 }
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {

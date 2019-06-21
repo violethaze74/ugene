@@ -180,22 +180,22 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
     proto->setPrompter( new LocalWorkflow::ExternalProcessWorkerPrompter() );
     proto->setNonStandard(cfg->filePath);
 
-    if (cfg->cmdLine.indexOf("%UGENE_JAVA%") >= 0) {
+    if (ExternalTool::commandContainsSpecialTool(cfg->cmdLine, "java")) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("java");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
     }
-    if (cfg->cmdLine.indexOf("%UGENE_PYTHON%") >= 0) {
+    if (ExternalTool::commandContainsSpecialTool(cfg->cmdLine, "python")) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("python");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
     }
-    if (cfg->cmdLine.indexOf("%UGENE_RSCRIPT%") >= 0) {
+    if (ExternalTool::commandContainsSpecialTool(cfg->cmdLine, "Rscript")) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("Rscript");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
     }
-    if (cfg->cmdLine.indexOf("%UGENE_PERL%") >= 0) {
+    if (ExternalTool::commandContainsSpecialTool(cfg->cmdLine, "perl")) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("perl");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
