@@ -19,15 +19,15 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CUSTOMWORKERUTILS_H_
-#define _U2_CUSTOMWORKERUTILS_H_
+#ifndef _U2_CUSTOM_WORKER_UTILS_H_
+#define _U2_CUSTOM_WORKER_UTILS_H_
 
 #include <QObject>
 
 namespace U2 {
 namespace Workflow {
 
-class CustomWorkerUtils : public QObject {
+class CustomWorkerUtils {
 
 public:
     static bool commandContainsSpecialTool(const QString &cmd, const QString &toolKey);
@@ -42,4 +42,4 @@ protected:
 } // Workflow
 } // U2
 
-#endif // _U2_CUSTOMWORKERUTILS_H_
+#endif // _U2_CUSTOM_WORKER_UTILS_H_
