@@ -29,12 +29,12 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/GObjectRelationRoles.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -59,9 +59,14 @@ const static QString OUTPUT_PORT_TYPE("output-for-");
 static const QString OUT_PORT_ID("out");
 
 bool ExternalProcessWorkerFactory::init(ExternalProcessConfig *cfg) {
-    ActorPrototype *proto = IncludedProtoFactory::getExternalToolProto(cfg);
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_EXTERNAL(), proto);
-    IncludedProtoFactory::registerExternalToolWorker(cfg);
+    QScopedPointer<ActorPrototype> proto(IncludedProtoFactory::getExternalToolProto(cfg));
+    const bool prototypeRegistered = WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_EXTERNAL(), proto.data());
+    CHECK(prototypeRegistered, false);
+    proto.take();
+
+    const bool factoryRegistered = IncludedProtoFactory::registerExternalToolWorker(cfg);
+    CHECK_EXT(factoryRegistered, delete WorkflowEnv::getProtoRegistry()->unregisterProto(cfg->id), false);
+
     return true;
 }
 
@@ -135,7 +140,7 @@ namespace {
         if (!dir.exists()) {
             dir.mkpath(path);
         }
-        url = path + "/tmp" + name + QString::number(QDateTime::currentDateTime().toTime_t()) +  "." + extention;
+        url = path + "/tmp" + GUrlUtils::fixFileName(name) + QString::number(QDateTime::currentDateTime().toTime_t()) +  "." + extention;
         return url;
     }
 
@@ -205,6 +210,15 @@ namespace {
     }
 } // namespace
 
+ExternalProcessWorker::ExternalProcessWorker(Actor *a)
+    : BaseWorker(a, false),
+      output(nullptr)
+{
+    ExternalToolCfgRegistry *reg = WorkflowEnv::getExternalCfgRegistry();
+    cfg = reg->getConfigById(actor->getProto()->getId());
+    commandLine = cfg->cmdLine;
+}
+
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
         int pos = execString.indexOf(QRegExp("\\$" + a->getDisplayName() + "(\\W|$)"));
@@ -221,7 +235,7 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
 
 QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
     QStringList urls;
-    int ind = execString.indexOf(QRegExp("\\$" + dataCfg.attrName + "(\\W|$)"));
+    int ind = execString.indexOf(QRegExp(QString("\\$%1([^%2]|$)").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE)));
     CHECK(-1 != ind, urls);
 
     QString paramValue;
@@ -242,12 +256,12 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
         paramValue = "\"" + d->getURLString() + "\"";
     }
 
-    execString.replace(ind, dataCfg.attrName.size() + 1 , paramValue);
+    execString.replace(ind, dataCfg.attributeId.size() + 1 , paramValue);
     return urls;
 }
 
 QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os) {
-    int ind = execString.indexOf(QRegExp("\\$" + dataCfg.attrName + "(\\W|$)"));
+    int ind = execString.indexOf(QRegExp(QString("\\$%1([^%2]|$)").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE)));
     CHECK(-1 != ind, "");
 
     QString extension;
@@ -259,7 +273,7 @@ QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConf
         extension = f->getSupportedDocumentFileExtensions().first();
     }
     QString url = generateAndCreateURL(extension, dataCfg.attrName);
-    execString.replace(ind, dataCfg.attrName.size() + 1 , "\"" + url + "\"");
+    execString.replace(ind, dataCfg.attributeId.size() + 1 , "\"" + url + "\"");
 
     return url;
 }
@@ -349,6 +363,12 @@ static SharedDbiDataHandler getAnnotations(Document *d, WorkflowContext *context
 
 void ExternalProcessWorker::sl_onTaskFinishied() {
     LaunchExternalToolTask *t = static_cast<LaunchExternalToolTask*>(sender());
+    bool hasMessages = true;
+    bool isEnded = true;
+    checkInputBusState(hasMessages, isEnded);
+    if (!hasMessages) {
+        setDone();
+    }
     CHECK(output && t->isFinished() && !t->hasError(),);
 
     /* This variable and corresponded code parts with it
@@ -431,7 +451,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
         }
     }
 
-    DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(OUTPUT_PORT_TYPE + cfg->name);
+    DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(OUTPUT_PORT_TYPE + cfg->id);
 
     if (seqsForMergingBySlotId.isEmpty()) {
         output->put(Message(dataType, v));
@@ -475,7 +495,7 @@ void ExternalProcessWorker::init() {
     output = ports.value(OUT_PORT_ID);
 
     foreach(const DataConfig& input, cfg->inputs) {
-        IntegralBus *inBus = ports.value(input.attrName);
+        IntegralBus *inBus = ports.value(input.attributeId);
         inputs << inBus;
 
         inBus->addComplement(output);
@@ -483,7 +503,7 @@ void ExternalProcessWorker::init() {
 }
 
 void ExternalProcessWorker::checkInputBusState(bool &hasMessages, bool &isEnded) const {
-    hasMessages = true;
+    hasMessages = false;
     isEnded = false;
     foreach(const CommunicationChannel *ch, inputs) {
         if (NULL != ch) {
@@ -575,6 +595,7 @@ QStringList LaunchExternalToolTask::parseCombinedArgString(const QString &progra
 #define START_WAIT_MSEC 3000
 
 void LaunchExternalToolTask::run() {
+    GCOUNTER(cvar, tvar, "A task for element with command line tool is launched");
     QProcess *externalProcess = new QProcess();
     if(execString.contains(">")) {
         QString output = execString.split(">").last();
@@ -617,14 +638,14 @@ QMap<QString, DataConfig> LaunchExternalToolTask::takeOutputUrls() {
 /* ExternalProcessWorkerPrompter */
 /************************************************************************/
 QString ExternalProcessWorkerPrompter::composeRichDoc() {
-    ExternalProcessConfig *cfg = WorkflowEnv::getExternalCfgRegistry()->getConfigByName(target->getProto()->getId());
+    ExternalProcessConfig *cfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(target->getProto()->getId());
     assert(cfg);
     QString doc = cfg->templateDescription;
 
     foreach(const DataConfig& dataCfg, cfg->inputs) {
-        QRegExp param("\\$" + dataCfg.attrName + /*"[,:;\s\.\-]"*/"\\W|$");
+        QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if(doc.contains(param)) {
-            IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(dataCfg.attrName));
+            IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(dataCfg.attributeId));
             DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(dataCfg.type);
             if(dataCfg.type == SEQ_WITH_ANNS) {
                 dataType = BaseTypes::DNA_SEQUENCE_TYPE();
@@ -632,12 +653,12 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
             Actor* producer = input->getProducer(WorkflowUtils::getSlotDescOfDatatype(dataType).getId());
             QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
             QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
-            doc.replace("$" + dataCfg.attrName, producerName);
+            doc.replace("$" + dataCfg.attributeId, producerName);
         }
     }
 
     foreach(const DataConfig& dataCfg, cfg->outputs) {
-        QRegExp param("\\$" + dataCfg.attrName + /*"[,:;\s\.\-]"*/"\\W|$");
+        QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if(doc.contains(param)) {
             IntegralBusPort* output = qobject_cast<IntegralBusPort*>(target->getPort(OUT_PORT_ID));
             DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(dataCfg.type);
@@ -658,15 +679,15 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
             } else {
                 destinations.resize(destinations.size() - 1); //remove last semicolon
             }
-            doc.replace("$" + dataCfg.attrName, destinations);
+            doc.replace("$" + dataCfg.attributeId, destinations);
         }
     }
 
     foreach(const AttributeConfig &attrCfg, cfg->attrs) {
-        QRegExp param("\\$" + attrCfg.attrName + /*"[,:;\s\.\-]"*/"\\W|$");
+        QRegExp param(QString("\\$%1([^%2]|$)").arg(attrCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if(doc.contains(param)) {
-            QString prm = getRequiredParam(attrCfg.attrName);
-            doc.replace("$" + attrCfg.attrName, getHyperlink(attrCfg.attrName, prm));
+            QString prm = getRequiredParam(attrCfg.attributeId);
+            doc.replace("$" + attrCfg.attributeId, getHyperlink(attrCfg.attrName, prm));
         }
     }
 

@@ -51,12 +51,15 @@ public:
     QVariant saveState() const;
     void restoreState(const QVariant&);
 
+    QString createPrototype();
+    bool editPrototype(ActorPrototype *proto);
+
 public slots:
     void resetSelection();
 
 signals:
     void processSelected(Workflow::ActorPrototype*, bool);
-    void si_protoDeleted(const QString &);
+    void si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
     void si_protoChanged();
     void si_protoListModified();
 private:
@@ -77,13 +80,16 @@ public:
     QVariant saveState() const;
     void restoreState(const QVariant&);
 
+    QString createPrototype();
+    bool editPrototype(ActorPrototype *proto);
+
 public slots:
     void resetSelection();
     void sl_nameFilterChanged(const QString &filter);
 
 signals:
     void processSelected(Workflow::ActorPrototype*, bool putToScene);
-    void si_protoDeleted(const QString &);
+    void si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
     void si_protoChanged();
     void si_protoListModified();
 
@@ -99,13 +105,16 @@ private slots:
     void rebuild();
     void editElement();
     bool removeElement();
+    void sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
 
 private:
     QTreeWidgetItem* createItemWidget(QAction* a);
     QAction* createItemAction(Workflow::ActorPrototype* item);
+    QAction *getActionByProto(Workflow::ActorPrototype *proto) const;
     void setContent(ActorPrototypeRegistry*);
     void sortTree();
     QVariant changeState(const QVariant& v);
+    void removePrototype(Workflow::ActorPrototype *proto);
 
 private:
     QMap<QString,QList<QAction*> > categoryMap;

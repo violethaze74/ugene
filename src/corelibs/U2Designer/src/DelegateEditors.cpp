@@ -947,4 +947,42 @@ void CharacterDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
     model->setData(index, lineEdit->value().toString(), ConfigurationEditor::ItemValueRole);
 }
 
-}//namespace U2
+LineEditWithValidatorDelegate::LineEditWithValidatorDelegate(const QRegularExpression &_regExp, QObject *_parent)
+    : PropertyDelegate(_parent),
+      regExp(_regExp)
+{
+
+}
+
+QWidget *LineEditWithValidatorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const {
+    QScopedPointer<DefaultPropertyWidget> editor(new DefaultPropertyWidget(NO_LIMIT, parent));
+    QLineEdit *lineEdit = editor->findChild<QLineEdit *>("mainWidget");
+    SAFE_POINT(nullptr != lineEdit, "Line edit is nullptr", nullptr);
+
+    lineEdit->setValidator(new QRegularExpressionValidator(regExp, lineEdit));
+    connect(editor.data(), SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_valueChanged()));
+    return editor.take();
+}
+
+void LineEditWithValidatorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
+    QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
+    DefaultPropertyWidget *lineEdit = qobject_cast<DefaultPropertyWidget *>(editor);
+    lineEdit->setValue(val);
+}
+
+void LineEditWithValidatorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
+    DefaultPropertyWidget *lineEdit = qobject_cast<DefaultPropertyWidget *>(editor);
+    model->setData(index, lineEdit->value().toString(), ConfigurationEditor::ItemValueRole);
+}
+
+LineEditWithValidatorDelegate *LineEditWithValidatorDelegate::clone() {
+    return new LineEditWithValidatorDelegate(regExp, parent());
+}
+
+void LineEditWithValidatorDelegate::sl_valueChanged() {
+    DefaultPropertyWidget* editor = qobject_cast<DefaultPropertyWidget *>(sender());
+    CHECK(editor != NULL, );
+    emit commitData(editor);
+}
+
+}   // namespace U2

@@ -19,10 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef ExternalToolCfg_h__
-#define ExternalToolCfg_h__
+#ifndef _U2_EXTERNAL_TOOL_CONFIG_H_
+#define _U2_EXTERNAL_TOOL_CONFIG_H_
 
-#include <U2Lang/Datatype.h>
 #include <U2Lang/ConfigurationEditor.h>
 
 #include <QString>
@@ -35,6 +34,7 @@ namespace U2 {
 
 class U2LANG_EXPORT DataConfig {
 public:
+    QString attributeId;
     QString attrName;
     QString type;
     QString format;
@@ -56,6 +56,7 @@ public:
 
 class U2LANG_EXPORT AttributeConfig {
 public:
+    QString attributeId;
     QString attrName;
     QString type;
     QString defaultValue;
@@ -67,14 +68,20 @@ public:
 
 class U2LANG_EXPORT ExternalProcessConfig {
 public:
+    ExternalProcessConfig();
+
     QList<DataConfig> inputs;
     QList<DataConfig> outputs;
     QList<AttributeConfig> attrs;
     QString cmdLine;
+    QString id;
     QString name;
     QString description;
     QString templateDescription;
     QString filePath;
+    bool useIntegratedTool;
+    QString customToolPath;
+    QString integratedToolId;
 
     bool operator ==(const ExternalProcessConfig &other) const;
     bool operator !=(const ExternalProcessConfig &other) const;
@@ -83,32 +90,16 @@ public:
 class U2LANG_EXPORT ExternalToolCfgRegistry: public QObject {
     Q_OBJECT
 public:
-    ExternalToolCfgRegistry(QObject *p = NULL): QObject(p) {}
-    bool registerExternalTool(ExternalProcessConfig *cfg) {
-        if(configs.contains(cfg->name)) {
-            return false;
-        } else {
-            configs.insert(cfg->name, cfg);
-            return true;
-        }
-    }
-    ExternalProcessConfig *getConfigByName(const QString& name) const {
-        if(configs.contains(name)) {
-            return configs.value(name);
-        } else {
-            return NULL;
-        }
-    }
-    void unregisterConfig(const QString &name) {
-        configs.remove(name);
-    }
-    QList<ExternalProcessConfig*> getConfigs() const {
-        return configs.values();
-    }
+    ExternalToolCfgRegistry(QObject *parent = nullptr);
+
+    bool registerExternalTool(ExternalProcessConfig *cfg);
+    void unregisterConfig(const QString &id);
+
+    ExternalProcessConfig *getConfigById(const QString& id) const;
+    QList<ExternalProcessConfig *> getConfigs() const;
 
 private:
-    QMap<QString, ExternalProcessConfig*> configs;
-
+    QMap<QString, ExternalProcessConfig *> configs;
 };
 
 }
@@ -116,4 +107,4 @@ private:
 Q_DECLARE_METATYPE(U2::AttributeConfig)
 Q_DECLARE_METATYPE(U2::DataConfig)
 
-#endif // ExternalToolCfg_h__
+#endif // _U2_EXTERNAL_TOOL_CONFIG_H_

@@ -61,6 +61,8 @@ public:
     static const QString PARAM_ALIASES_START;
     static const QString PORT_ALIASES_START;
     static const QString PATH_THROUGH;
+    static const QString TRUE;
+    static const QString FALSE;
 
     // -------------- backward compatibility --------------
     static const QString ALIASES_HELP_START;
@@ -110,6 +112,9 @@ public:
     static const QString VALIDATOR;
     static const QString V_TYPE;
     static const QString V_SCRIPT;
+    static const QString USE_INTEGRATED_TOOL;
+    static const QString CUSTOM_TOOL_PATH;
+    static const QString INTEGRATED_TOOL_ID;
 };
 
 } // WorkflowSerialize

@@ -22,10 +22,6 @@
 #ifndef _U2_WORKFLOW_URL_H_
 #define _U2_WORKFLOW_URL_H_
 
-#include <U2Designer/URLLineEdit.h>
-
-#include <U2Lang/ConfigurationEditor.h>
-
 #include <QComboBox>
 #include <QCoreApplication>
 #include <QDialog>
@@ -42,6 +38,10 @@
 #include <QTextEdit>
 #include <QToolButton>
 #include <QVBoxLayout>
+
+#include <U2Designer/URLLineEdit.h>
+
+#include <U2Lang/ConfigurationEditor.h>
 
 #include "PropertyWidget.h"
 
@@ -527,7 +527,25 @@ public:
 
 }; // CharacterDelegate
 
-}//namespace U2
+class U2DESIGNER_EXPORT LineEditWithValidatorDelegate : public PropertyDelegate {
+    Q_OBJECT
+public:
+    LineEditWithValidatorDelegate(const QRegularExpression &regExp, QObject *parent = nullptr);
+
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+
+    virtual LineEditWithValidatorDelegate *clone() override;
+
+private slots:
+    void sl_valueChanged();
+
+private:
+    const QRegularExpression regExp;
+};
+
+}   // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::URLDelegate::Options)
 

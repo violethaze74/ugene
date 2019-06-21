@@ -19,16 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QScopedPointer>
-#include <QDir>
-#include <QUrl>
 #include <QListWidgetItem>
 
-#include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/Dataset.h>
-#include <U2Lang/Datatype.h>
-#include <U2Lang/Descriptor.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/IntegralBusType.h>
 #include <U2Lang/HRSchemaSerializer.h>
@@ -44,19 +37,14 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CredentialsAsker.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/Folder.h>
 #include <U2Core/GObject.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PasswordStorage.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/Settings.h>
 #include <U2Core/StringAdapter.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -79,19 +67,20 @@ QStringList WorkflowUtils::initExtensions() {
 }
 
 QString WorkflowUtils::getRichDoc(const Descriptor& d) {
+    QString result = QString();
     if(d.getDisplayName().isEmpty()) {
-        if(d.getDocumentation().isEmpty()) {
-            return QString();
-        } else {
-            return QString("%1").arg(d.getDocumentation());
+        if(!d.getDocumentation().isEmpty()) {
+            result = QString("%1").arg(d.getDocumentation());
         }
     } else {
         if(d.getDocumentation().isEmpty()) {
-            return QString("<b>%1</b>").arg(d.getDisplayName());
+            result = QString("<b>%1</b>").arg(d.getDisplayName());
         } else {
-            return QString("<b>%1</b>: %2").arg(d.getDisplayName()).arg(d.getDocumentation());
+            result = QString("<b>%1</b>: %2").arg(d.getDisplayName()).arg(d.getDocumentation());
         }
     }
+    result.replace("\n", "<br>");
+    return result;
 }
 
 QString WorkflowUtils::getDropUrl(QList<DocumentFormat*>& fs, const QMimeData* md) {
@@ -584,6 +573,12 @@ QString WorkflowUtils::getParamIdFromHref(const QString& href) {
             break;
         }
     }
+    return id;
+}
+
+QString WorkflowUtils::generateIdFromName(const QString &name) {
+    QString id = name;
+    id.replace(QRegularExpression("\\s"), "-").replace(WorkflowEntityValidator::INACCEPTABLE_SYMBOLS_IN_ID, "_");
     return id;
 }
 
@@ -1327,6 +1322,14 @@ QList<TophatSample> WorkflowUtils::unpackSamples(const QString &samplesStr, U2Op
     }
     return result;
 }
+
+const QString WorkflowEntityValidator::NAME_INACCEPTABLE_SYMBOLS_TEMPLATE = "=\\\"";
+const QString WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE = "a-zA-Z0-9\\-_";
+
+const QRegularExpression WorkflowEntityValidator::ACCEPTABLE_NAME("[^" + NAME_INACCEPTABLE_SYMBOLS_TEMPLATE + "]*");
+const QRegularExpression WorkflowEntityValidator::INACCEPTABLE_SYMBOL_IN_NAME("[" + NAME_INACCEPTABLE_SYMBOLS_TEMPLATE + "]");
+const QRegularExpression WorkflowEntityValidator::ACCEPTABLE_ID("[" + ID_ACCEPTABLE_SYMBOLS_TEMPLATE + "]*");
+const QRegularExpression WorkflowEntityValidator::INACCEPTABLE_SYMBOLS_IN_ID("[^" + ID_ACCEPTABLE_SYMBOLS_TEMPLATE + "]");
 
 /*****************************
  * PrompterBaseImpl

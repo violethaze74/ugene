@@ -58,17 +58,25 @@ bool DataConfig::isText() const {
 }
 
 bool DataConfig::operator ==(const DataConfig &other) const {
-    return attrName == other.attrName
-        && type == other.type
-        && format == other.format
-        && description == other.description;
+    return attributeId == other.attributeId
+            && attrName == other.attrName
+            && type == other.type
+            && format == other.format
+            && description == other.description;
 }
 
 bool AttributeConfig::operator ==(const AttributeConfig &other) const {
-    return attrName == other.attrName
+    return attributeId == other.attributeId
+            && attrName == other.attrName
             && type == other.type
             && defaultValue == other.defaultValue
             && description == other.description;
+}
+
+ExternalProcessConfig::ExternalProcessConfig()
+    : useIntegratedTool(false)
+{
+
 }
 
 #define CHECK_EQ(expr1, expr2) \
@@ -80,8 +88,12 @@ bool ExternalProcessConfig::operator ==(const ExternalProcessConfig &other) cons
     CHECK_EQ(inputs.size(), other.inputs.size());
     CHECK_EQ(outputs.size(), other.outputs.size());
     CHECK_EQ(attrs.size(), other.attrs.size());
+    CHECK_EQ(id, other.id);
     CHECK_EQ(name, other.name);
     CHECK_EQ(description, other.description);
+    CHECK_EQ(useIntegratedTool, other.useIntegratedTool);
+    CHECK_EQ(customToolPath, other.customToolPath);
+    CHECK_EQ(integratedToolId, other.integratedToolId);
 
     foreach (const DataConfig &in, inputs) {
         CHECK_EQ(other.inputs.contains(in), true);
@@ -98,6 +110,34 @@ bool ExternalProcessConfig::operator ==(const ExternalProcessConfig &other) cons
 
 bool ExternalProcessConfig::operator !=(const ExternalProcessConfig &other) const {
     return !operator==(other);
+}
+
+ExternalToolCfgRegistry::ExternalToolCfgRegistry(QObject *_parent)
+    : QObject(_parent)
+{
+
+}
+
+bool ExternalToolCfgRegistry::registerExternalTool(ExternalProcessConfig *cfg) {
+    if (configs.contains(cfg->id)) {
+        return false;
+    } else {
+        configs.insert(cfg->id, cfg);
+        return true;
+    }
+}
+
+void ExternalToolCfgRegistry::unregisterConfig(const QString &id) {
+    // TODO: UTI-294
+    configs.remove(id);
+}
+
+ExternalProcessConfig *ExternalToolCfgRegistry::getConfigById(const QString &id) const {
+    return configs.value(id, nullptr);
+}
+
+QList<ExternalProcessConfig *> ExternalToolCfgRegistry::getConfigs() const {
+    return configs.values();
 }
 
 } // U2

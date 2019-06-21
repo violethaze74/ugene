@@ -113,10 +113,13 @@ FORMS += src/ChooseItemDialog.ui \
            src/WorkflowEditorWidget.ui \
            src/WorkflowMetaDialog.ui \
            src/WorkflowSettingsWidget.ui \
-           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardAttributesPage.ui \
-           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardCommandTemplatePage.ui \
-           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputOutputPage.ui \
-           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardNamePage.ui
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardCommandPage.ui \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui \
+           src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui
 
 SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/ActorCfgModel.cpp \

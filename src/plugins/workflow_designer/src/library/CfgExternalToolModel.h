@@ -37,18 +37,23 @@ public:
     CfgExternalToolItem();
     ~CfgExternalToolItem();
 
-    QString getDataType() const;
-    void setDataType(const QString& id);
+    const QString &getDataType() const;
+    void setDataType(const QString& typeId);
 
-    QString getName() const;
-    void setName(const QString &_name);
+    const QString &getId() const;
+    void setId(const QString &id);
 
-    QString getFormat() const;
-    void setFormat(const QString & f);
+    const QString &getName() const;
+    void setName(const QString &name);
 
-    QString getDescription() const;
-    void setDescription(const QString & _descr);
+    const QString &getFormat() const;
+    void setFormat(const QString &format);
 
+    const QString &getDescription() const;
+    void setDescription(const QString &descr);
+
+    PropertyDelegate *delegateForNames;
+    PropertyDelegate *delegateForIds;
     PropertyDelegate *delegateForTypes;
     PropertyDelegate *delegateForFormats;
 
@@ -69,9 +74,10 @@ public:
 
     enum Columns {
         COLUMN_NAME = 0,
-        COLUMN_DATA_TYPE = 1,
-        COLUMN_FORMAT = 2,
-        COLUMN_DESCRIPTION = 3,
+        COLUMN_ID = 1,
+        COLUMN_DATA_TYPE = 2,
+        COLUMN_FORMAT = 3,
+        COLUMN_DESCRIPTION = 4,
         COLUMNS_COUNT = COLUMN_DESCRIPTION + 1   // elements count
     };
 
@@ -100,14 +106,22 @@ private:
     QVariantMap seqFormatsW;
     QVariantMap msaFormatsW;
     QVariantMap annFormatsW;
+    QVariantMap annSeqFormatsW;
     QVariantMap seqFormatsR;
     QVariantMap msaFormatsR;
     QVariantMap annFormatsR;
+    QVariantMap annSeqFormatsR;
     QVariantMap textFormat;
 };
 
 class AttributeItem {
 public:
+    AttributeItem();
+    ~AttributeItem();
+
+    const QString &getId() const;
+    void setId(const QString &id);
+
     const QString &getName() const;
     void setName(const QString &name);
 
@@ -120,7 +134,11 @@ public:
     const QString &getDescription() const;
     void setDescription(const QString &description);
 
+    PropertyDelegate *delegateForNames;
+    PropertyDelegate *delegateForIds;
+
 private:
+    QString id;
     QString name;
     QString type;
     QString defaultValue;
@@ -132,13 +150,14 @@ class CfgExternalToolModelAttributes : public QAbstractTableModel {
 public:
     enum Columns {
         COLUMN_NAME = 0,
-        COLUMN_DATA_TYPE = 1,
-        COLUMN_DEFAULT_VALUE = 2,
-        COLUMN_DESCRIPTION = 3,
+        COLUMN_ID = 1,
+        COLUMN_DATA_TYPE = 2,
+        COLUMN_DEFAULT_VALUE = 3,
+        COLUMN_DESCRIPTION = 4,
         COLUMNS_COUNT = COLUMN_DESCRIPTION + 1   // elements count
     };
 
-    CfgExternalToolModelAttributes();
+    CfgExternalToolModelAttributes(QObject *parent = nullptr);
     ~CfgExternalToolModelAttributes();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

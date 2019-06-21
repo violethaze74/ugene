@@ -60,6 +60,7 @@ public:
     ExternalTool(QString name, QString path = "");
     ~ExternalTool();
 
+    const QString&      getId()  const { return name; }
     const QString&      getName()  const { return name; }
     const QString&      getPath()  const { return path; }
     const QIcon&        getIcon()  const { return icon; }

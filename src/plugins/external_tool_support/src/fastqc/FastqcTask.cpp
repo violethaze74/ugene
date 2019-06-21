@@ -49,8 +49,13 @@ const QMap<FastQCParser::ErrorType, QString> FastQCParser::initWellKnownErrors()
 
 const QMap<FastQCParser::ErrorType, QString> FastQCParser::WELL_KNOWN_ERRORS = initWellKnownErrors();
 
-FastQCParser::FastQCParser(const QString& _inputFile) :
-        ExternalToolLogParser(), progress(-1), inputFile(_inputFile) {}
+FastQCParser::FastQCParser(const QString& _inputFile)
+    : ExternalToolLogParser(),
+      inputFile(_inputFile),
+      progress(-1)
+{
+
+}
 
 int FastQCParser::getProgress() {
     //parsing Approx 20% complete for filename

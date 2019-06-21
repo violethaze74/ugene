@@ -24,10 +24,13 @@
 
 #include <QWizard>
 
-#include "ui_CreateCmdlineBasedWorkerWizardAttributesPage.h"
-#include "ui_CreateCmdlineBasedWorkerWizardCommandTemplatePage.h"
-#include "ui_CreateCmdlineBasedWorkerWizardInputOutputPage.h"
-#include "ui_CreateCmdlineBasedWorkerWizardNamePage.h"
+#include "ui_CreateCmdlineBasedWorkerWizardCommandPage.h"
+#include "ui_CreateCmdlineBasedWorkerWizardElementAppearancePage.h"
+#include "ui_CreateCmdlineBasedWorkerWizardGeneralSettingsPage.h"
+#include "ui_CreateCmdlineBasedWorkerWizardInputDataPage.h"
+#include "ui_CreateCmdlineBasedWorkerWizardOutputDataPage.h"
+#include "ui_CreateCmdlineBasedWorkerWizardParametersPage.h"
+#include "ui_CreateCmdlineBasedWorkerWizardSummaryPage.h"
 #include "library/CfgExternalToolModel.h"
 
 namespace U2 {
@@ -37,22 +40,32 @@ class ExternalProcessConfig;
 class CreateCmdlineBasedWorkerWizard : public QWizard {
     Q_OBJECT
 public:
+    explicit CreateCmdlineBasedWorkerWizard(QWidget *parent = nullptr);
     explicit CreateCmdlineBasedWorkerWizard(ExternalProcessConfig *initialConfig, QWidget *parent = nullptr);
     ~CreateCmdlineBasedWorkerWizard() override;
 
     ExternalProcessConfig *takeConfig();
 
+    static void saveConfig(ExternalProcessConfig *config);
+
     static const QString PAGE_TITLE_STYLE_SHEET;
 
     static const QString ATTRIBUTES_DATA_FIELD;
+    static const QString ATTRIBUTES_IDS_FIELD;
     static const QString ATTRIBUTES_NAMES_FIELD;
     static const QString COMMAND_TEMPLATE_DESCRIPTION_FIELD;
     static const QString COMMAND_TEMPLATE_FIELD;
+    static const QString CUSTOM_TOOL_PATH_FIELD;
     static const QString INPUTS_DATA_FIELD;
+    static const QString INPUTS_IDS_FIELD;
     static const QString INPUTS_NAMES_FIELD;
+    static const QString INTEGRATED_TOOL_ID_FIELD;
+    static const QString USE_INTEGRATED_TOOL_FIELD;
     static const QString OUTPUTS_DATA_FIELD;
+    static const QString OUTPUTS_IDS_FIELD;
     static const QString OUTPUTS_NAMES_FIELD;
     static const QString WORKER_DESCRIPTION_FIELD;
+    static const QString WORKER_ID_FIELD;
     static const QString WORKER_NAME_FIELD;
 
 private slots:
@@ -66,55 +79,61 @@ private:
     ExternalProcessConfig *config;
 };
 
-class CreateCmdlineBasedWorkerWizardNamePage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardNamePage {
+class CreateCmdlineBasedWorkerWizardGeneralSettingsPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardGeneralSettingsPage {
+    Q_OBJECT
 public:
-    CreateCmdlineBasedWorkerWizardNamePage(ExternalProcessConfig *initialConfig);
+    CreateCmdlineBasedWorkerWizardGeneralSettingsPage(ExternalProcessConfig *initialConfig);
 
     void initializePage() override;
     bool isComplete() const override;
+    bool validatePage() override;
+
+signals:
+    void si_integratedToolChanged();
+
+private slots:
+    void sl_browse();
+    void sl_integratedToolChanged();
 
 private:
+    static void makeUniqueWorkerName(QString& name);
+
     ExternalProcessConfig *initialConfig;
+
+    static char const * const INTEGRATED_TOOL_ID_PROPERTY;
+    static char const * const WORKER_ID_PROPERTY;
+    static const QString LOD_DOMAIN;
 };
 
-class CreateCmdlineBasedWorkerWizardInputOutputPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardInputOutputPage {
+class CreateCmdlineBasedWorkerWizardInputDataPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardInputDataPage {
     Q_OBJECT
 public:
-    CreateCmdlineBasedWorkerWizardInputOutputPage(ExternalProcessConfig *initialConfig);
+    CreateCmdlineBasedWorkerWizardInputDataPage(ExternalProcessConfig *initialConfig);
 
     void initializePage() override;
     bool isComplete() const override;
 
 signals:
     void si_inputsChanged();
-    void si_outputsChanged();
 
 private slots:
     void sl_addInput();
     void sl_deleteInput();
-    void sl_addOutput();
-    void sl_deleteOutput();
     void sl_updateInputsProperties();
-    void sl_updateOutputsProperties();
 
 private:
-    static void initModel(QAbstractItemModel *model, const QList<DataConfig> &dataConfigs);
-
     ExternalProcessConfig *initialConfig;
-
     CfgExternalToolModel *inputsModel;
-    CfgExternalToolModel *outputsModel;
 
     static char const * const INPUTS_DATA_PROPERTY;
+    static char const * const INPUTS_IDS_PROPERTY;
     static char const * const INPUTS_NAMES_PROPERTY;
-    static char const * const OUTPUTS_DATA_PROPERTY;
-    static char const * const OUTPUTS_NAMES_PROPERTY;
 };
 
-class CreateCmdlineBasedWorkerWizardAttributesPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardAttributesPage {
+class CreateCmdlineBasedWorkerWizardParametersPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardParametersPage {
     Q_OBJECT
 public:
-    CreateCmdlineBasedWorkerWizardAttributesPage(ExternalProcessConfig *initialConfig);
+    CreateCmdlineBasedWorkerWizardParametersPage(ExternalProcessConfig *initialConfig);
 
     void initializePage() override;
     bool isComplete() const override;
@@ -128,20 +147,46 @@ private slots:
     void sl_updateAttributes();
 
 private:
-    static void initModel(QAbstractItemModel *model, const QList<AttributeConfig> &attributeConfigs);
+    static void initAttributesModel(QAbstractItemModel *model, const QList<AttributeConfig> &attributeConfigs);
 
     ExternalProcessConfig *initialConfig;
 
     CfgExternalToolModelAttributes *model;
 
     static char const * const ATTRIBUTES_DATA_PROPERTY;
+    static char const * const ATTRIBUTES_IDS_PROPERTY;
     static char const * const ATTRIBUTES_NAMES_PROPERTY;
 };
 
-class CreateCmdlineBasedWorkerWizardCommandTemplatePage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardCommandTemplatePage {
+class CreateCmdlineBasedWorkerWizardOutputDataPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardOutputDataPage {
     Q_OBJECT
 public:
-    CreateCmdlineBasedWorkerWizardCommandTemplatePage(ExternalProcessConfig *initialConfig);
+    CreateCmdlineBasedWorkerWizardOutputDataPage(ExternalProcessConfig *initialConfig);
+
+    void initializePage() override;
+    bool isComplete() const override;
+
+signals:
+    void si_outputsChanged();
+
+private slots:
+    void sl_addOutput();
+    void sl_deleteOutput();
+    void sl_updateOutputsProperties();
+
+private:
+    ExternalProcessConfig *initialConfig;
+    CfgExternalToolModel *outputsModel;
+
+    static char const * const OUTPUTS_DATA_PROPERTY;
+    static char const * const OUTPUTS_IDS_PROPERTY;
+    static char const * const OUTPUTS_NAMES_PROPERTY;
+};
+
+class CreateCmdlineBasedWorkerWizardCommandPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardCommandPage {
+    Q_OBJECT
+public:
+    CreateCmdlineBasedWorkerWizardCommandPage(ExternalProcessConfig *initialConfig);
 
     void initializePage() override;
     bool isComplete() const override;
@@ -149,6 +194,26 @@ public:
 
 private:
     ExternalProcessConfig *initialConfig;
+};
+
+class CreateCmdlineBasedWorkerWizardElementAppearancePage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardElementAppearancePage {
+    Q_OBJECT
+public:
+    CreateCmdlineBasedWorkerWizardElementAppearancePage(ExternalProcessConfig *initialConfig);
+
+    void initializePage() override;
+
+private:
+    ExternalProcessConfig *initialConfig;
+};
+
+class CreateCmdlineBasedWorkerWizardSummaryPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardSummaryPage {
+    Q_OBJECT
+public:
+    CreateCmdlineBasedWorkerWizardSummaryPage();
+
+private:
+    void showEvent(QShowEvent *event) override;
 };
 
 }   // namespace U2

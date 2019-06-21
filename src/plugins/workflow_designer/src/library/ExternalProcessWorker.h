@@ -19,28 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef ExtrenalProcessWorker_h__
-#define ExtrenalProcessWorker_h__
-
+#ifndef _U2_EXTERNAL_PROCESS_WORKER_H_
+#define _U2_EXTERNAL_PROCESS_WORKER_H_
 
 #include <U2Core/Task.h>
+
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
-#include <U2Lang/ExternalToolCfg.h>
 #include <U2Lang/WorkflowEnv.h>
 
 namespace U2 {
 namespace LocalWorkflow {
 
-
 class ExternalProcessWorker: public BaseWorker {
     Q_OBJECT
 public:
-    ExternalProcessWorker(Actor *a): BaseWorker(a, false), output(NULL) {
-        ExternalToolCfgRegistry * reg = WorkflowEnv::getExternalCfgRegistry();
-        cfg = reg->getConfigByName(actor->getProto()->getId());
-        commandLine = cfg->cmdLine;
-    }
+    ExternalProcessWorker(Actor *a);
+
     bool isReady() const;
     Task* tick();
     void init();
@@ -56,7 +51,6 @@ private:
     void checkInputBusState(bool &hasMessages, bool &isEnded) const;
     bool finishWorkIfInputEnded();
 
-private:
     IntegralBus *output;
     QList<IntegralBus*> inputs;
     QString commandLine;
@@ -102,4 +96,4 @@ private:
 }
 
 
-#endif // ExtrenalProcessWorker_h__
+#endif // _U2_EXTERNAL_PROCESS_WORKER_H_
