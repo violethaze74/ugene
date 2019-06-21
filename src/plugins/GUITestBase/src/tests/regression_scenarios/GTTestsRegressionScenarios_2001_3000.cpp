@@ -1692,13 +1692,14 @@ GUI_TEST_CLASS_DEFINITION( test_2267_1 ){
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Add" << "New annotation...");
     GTGlobals::sleep();
 //     3. Press Insert, press '1' key until there is no new symbols in lineedit
-//
-    Runnable *filler = new EditQualifierFiller(os, "111111111111111111111111111111111111111111111111111111111111111111111111111111111", "val", true,true);
+//      Current state: no error message for long qualifier
+    Runnable *filler = new EditQualifierFiller(os, "111111111111111111111111111111111111111111111111111111111111111111111111111111111", "val", true, false);
     GTUtilsDialog::waitForDialog(os, filler);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_ADD << "add_qualifier_action"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "D"));
     GTMouseDriver::click(Qt::RightButton);
+
 //     4. Press Enter
 //     Expected state: Edit qualifier window closes
 }

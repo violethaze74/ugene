@@ -698,7 +698,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     CHECK_SET_ERR(vSeqScroll != NULL, "No scroll bar at the bottom of sequence area");
     CHECK_SET_ERR(!vSeqScroll->isVisible(), "Scroll bar at the rigth side of sequence area is visible");
-    
+
     QWidget *parent = GTWidget::findWidget(os, "COI [m] COI", GTWidget::findWidget(os, "COI [m] COI_SubWindow"));
     QWidget* hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
@@ -731,10 +731,10 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
-    parent = GTWidget::findWidget(os, "fungal - all [m] fungal - all", GTWidget::findWidget(os, "fungal - all [m] fungal - all_SubWindow"));   
+    parent = GTWidget::findWidget(os, "fungal - all [m] fungal - all", GTWidget::findWidget(os, "fungal - all [m] fungal - all_SubWindow"));
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area for fungal-all.aln");
-    CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the bottom of name list area is not visible for fungal-all.aln");
+    CHECK_SET_ERR(!hNameScroll->isVisible(), "Scroll bar at the bottom of name list area is visible for fungal-all.aln");
 
 }
 
@@ -2335,6 +2335,7 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     //clean up
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "test_4295");
+    GTFile::copy(os, testDir + "_common_data/scenarios/_regression/4295/test_4295.etc", sandBoxDir + "test_4295.etc");
 
     // start test
     GTLogTracer logTracer;
@@ -2346,44 +2347,33 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     GTUtilsWorkflowDesigner::addElement(os, "Write Plain Text");
     GTGlobals::sleep(200);
 
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4295", "test_4295.etc");
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, sandBoxDir, "test_4295.etc");
     GTUtilsDialog::waitForDialog(os, ob);
 
     QAbstractButton* button = GTAction::button(os, "AddElementWithCommandLineTool");
     GTWidget::click(os, button);
     GTGlobals::sleep(200);
-    WorkflowProcessItem *cmdlineWorker = GTUtilsWorkflowDesigner::getWorker(os, "test_4295");
+    //WorkflowProcessItem *cmdlineWorker = GTUtilsWorkflowDesigner::getWorker(os, "test_4295");
 
-    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"), cmdlineWorker);
+    GTUtilsWorkflowDesigner::click(os, "test_4295");
+
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.command = "echo $in > $out";
+
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
+    GTUtilsWorkflowDesigner::click(os, "test_4295",QPoint(0,0),Qt::RightButton);
+    GTGlobals::sleep();
+
+    WorkflowProcessItem* element = GTUtilsWorkflowDesigner::addElement(os, "test_4295");
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"), element);
     GTGlobals::sleep(200);
-    GTUtilsWorkflowDesigner::connect(os, cmdlineWorker, GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
+    GTUtilsWorkflowDesigner::connect(os, element, GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
     GTGlobals::sleep(200);
     GTUtilsWorkflowDesigner::click(os, "test_4295");
     GTGlobals::sleep(200);
     QTableWidget* table = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by Read File URL(s))", GTUtilsWorkflowDesigner::comboValue, table);
-    GTUtilsWorkflowDesigner::click(os, "test_4295");
-
-    class OkClicker : public Filler {
-    public:
-        OkClicker(HI::GUITestOpStatus& _os) : Filler(_os, "CreateExternalProcessWorkerDialog"){}
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
-
-            QLineEdit *ed = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "templateLineEdit", w));
-            GTLineEdit::setText(os, ed, "echo $in > $out");
-
-            QAbstractButton *button = GTWidget::findButtonByText(os, "Finish");
-            CHECK(NULL != button, );
-            GTWidget::click(os, button);
-        }
-    };
-
-    GTUtilsDialog::waitForDialog(os, new OkClicker(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
-    GTUtilsWorkflowDesigner::click(os, "test_4295",QPoint(0,0),Qt::RightButton);
-    GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2472,9 +2462,10 @@ GUI_TEST_CLASS_DEFINITION(test_4308) {
     const bool itemExistsBefore = GTUtilsProjectTreeView::checkItem(os, "PF07724_full_family.fa");
     CHECK_SET_ERR(itemExistsBefore, "A loading item not found");
 
-    GTUtilsNotifications::waitForNotification(os, true, "Subtask {Load 'PF07724_full_family.fa'} is canceled Document was removed");
+    //GTUtilsNotifications::waitForNotification(os, true, "Subtask {Load 'PF07724_full_family.fa'} is canceled Document was removed");
+    GTUtilsNotifications::waitForNotification(os, true, "Document was removed");
     GTUtilsDocument::removeDocument(os, "PF07724_full_family.fa");
-    GTGlobals::sleep(500);
+    GTGlobals::sleep();
 
 //    Expected state: the document is removed from the project, the loading task is canceled, a notification about the canceled task appears.
     const bool itemExists = GTUtilsProjectTreeView::checkItem(os, "PF07724_full_family.fa");
@@ -2739,7 +2730,7 @@ GUI_TEST_CLASS_DEFINITION(test_4352) {
     //5. Remove a part of the sequence that contains the selected site.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove subsequence..."));
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "89300..89400"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getDetViewByNumber(os));
 
     //6. Wait while restriction sites recalculates.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3831,6 +3822,8 @@ GUI_TEST_CLASS_DEFINITION(test_4606) {
     //Expected state: no safepoint triggered
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "Element_4606");
+
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "Element_4606";
 
@@ -3841,9 +3834,7 @@ GUI_TEST_CLASS_DEFINITION(test_4606) {
     input << CreateElementWithCommandLineToolFiller::InOutData("in1",
         inOutDataType);
     settings.input = input;
-    settings.executionString = "echo";
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Continue"));
+    settings.command = "echo";
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     QAbstractButton *createElement = GTAction::button(os, "createElementWithCommandLineTool");

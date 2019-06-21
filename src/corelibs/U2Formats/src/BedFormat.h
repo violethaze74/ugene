@@ -102,8 +102,6 @@ class U2FORMATS_EXPORT BedFormat : public TextDocumentFormat {
 public:
     BedFormat(QObject* parent);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::BED;}
-
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
     /** Gets annotation data from a BED file, but doesn't create an annotation table */

@@ -44,6 +44,7 @@ protected:
 
     Task* createTask(const QList<Message> &messages) const override;
     QVariantMap getResult(Task* task, U2OpStatus& os) const override;
+    MessageMetadata generateMetadata(const QString &datasetName) const override;
 
 private:
     TrimmomaticTaskSettings getSettings(const Message& message, const QString& dirForResults) const;
@@ -56,9 +57,11 @@ private:
     QString setAutoUrl(const QString &paramId, const QString &inputFile, const QString &workingDir, const QString &fileNameSuffix) const;
     QPair<QString, QString> getAbsoluteAndCopiedPathFromStep(const QString& trimmingStep) const;
     void changeAdapters();
+    void processMetadata(QList<Task*> tasks) const;
 
     mutable QStringList copiedAdapters;
     mutable QSet<QString> excludedUrls;
+    mutable QString metaFileUrl;
 
     bool pairedReadsInput;
     bool generateLog;

@@ -1153,12 +1153,8 @@ void WorkflowView::setupMDIToolbar(QToolBar* tb) {
     tb->addAction(createCmdlineBasedWorkerAction);
     tb->addAction(appendExternalTool);
     extSep = tb->addSeparator();
-    tb->addAction(copyAction);
-    tb->addAction(pasteAction);
-    pasteAction->setEnabled(!lastPaste.isEmpty());
-    tb->addAction(cutAction);
     tb->addAction(deleteAction);
-    editSep = tb->addSeparator();
+    scaleSep = tb->addSeparator();
     scaleAction = tb->addWidget(scaleComboBox);
     scaleSep = tb->addSeparator();
     styleAction = tb->addWidget(styleMenu(this, styleActions));
@@ -1203,7 +1199,6 @@ void WorkflowView::setupActions() {
     pasteAction->setVisible(editMode);
     cutAction->setVisible(editMode);
     deleteAction->setVisible(editMode);
-    editSep->setVisible(editMode);
 
     scaleAction->setVisible(!dashboard);
     scaleSep->setVisible(!dashboard);
@@ -1819,6 +1814,7 @@ void WorkflowView::sl_cutItems() {
 
 void WorkflowView::sl_pasteSample(const QString& s) {
     tabs->setCurrentIndex(ElementsTab);
+    infoList->clear();
     if (scene->items().isEmpty()) {
         // fixing bug with pasting same schema 2 times
         {

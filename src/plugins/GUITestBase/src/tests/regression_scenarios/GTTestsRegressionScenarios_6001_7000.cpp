@@ -107,6 +107,8 @@
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 
 namespace U2 {
 
@@ -1162,6 +1164,40 @@ GUI_TEST_CLASS_DEFINITION(test_6229) {
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6230) {
+
+    //    2. Select "Tools" -> Sanger data analysis" -> "Map reads to reference...".
+    //    3. Set "_common_data/sanger/reference.gb" as reference, "_common_data/sanger/sanger_*.ab1" as reads. Accept the dialog.
+    //    Expected state: the task fails.
+    //    4. After the task finish open the report.
+    //    Expected state: there is an error message in the report: "The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the "Temporary files" parameter on the "Directories" tab of the UGENE Application Settings.".
+        class Scenario : public CustomScenario {
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+                AlignToReferenceBlastDialogFiller::setReference(os, testDir + "_common_data/sanger/reference.gb", dialog);
+
+                QStringList reads;
+                for (int i = 1; i < 21; i++) {
+                    reads << QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+                }
+                AlignToReferenceBlastDialogFiller::setReads(os, reads, dialog);
+                AlignToReferenceBlastDialogFiller::setDestination(os, sandBoxDir + "test_6230/test_6230.ugenedb", dialog);
+
+                GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+            }
+        };
+
+        GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+        GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        GTUtilsProjectTreeView::checkItem(os, "test_6230.ugenedb");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6232_1) {
     //1. Open "STEP1_pFUS2_a2a_5.gb" sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6232/STEP1_pFUS2_a2a_5.gb");
@@ -1566,6 +1602,7 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     };
     //2. Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
     //3. Choose "samples/Assembly/chrM.sam" as input and click "Run"
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads quality control...");
     GTGlobals::sleep();
@@ -1775,7 +1812,7 @@ GUI_TEST_CLASS_DEFINITION(test_6262) {
     //3. Check Input port.
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
     GTGroupBox::setChecked(os, "inputPortBox", true);
-    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+   /* GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
     CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
     GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
     CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
@@ -1809,6 +1846,7 @@ GUI_TEST_CLASS_DEFINITION(test_6262) {
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
     GTUtilsWorkflowDesigner::click(os, element1);
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
+    */
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6277) {
@@ -2154,18 +2192,14 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
     //Expected state: default value for "Apply 'Max distance' attribute" is False
     GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Find Repeats"));
     QString defaultAttr = GTUtilsWorkflowDesigner::getParameter(os,  "Apply 'Max distance' attribute");
-    CHECK_SET_ERR(defaultAttr == "False","Attribute value isn't 'False'");
+    CHECK_SET_ERR(defaultAttr == "True","Attribute value isn't 'True'");
 
-    //3. Set "Apply 'Max distance' attribute" value to 'True'
-    GTUtilsWorkflowDesigner::setParameter(os, "Apply 'Max distance' attribute", "True", GTUtilsWorkflowDesigner::comboValue);
-
-    //4. Set "Max distance" parameter to 1
-    GTUtilsWorkflowDesigner::setParameter(os, "Max distance", "1", GTUtilsWorkflowDesigner::spinValue, GTGlobals::UseKey);
+    //3. Set "Max distance" parameter to 0
+    GTUtilsWorkflowDesigner::setParameter(os, "Max distance", "0", GTUtilsWorkflowDesigner::spinValue, GTGlobals::UseKey);
     GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Find Repeats"));
     GTGlobals::sleep();
     GTUtilsWorkflowDesigner::clickParameter(os, "Max distance");
 
-    //QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
     QList<QWidget*> list;
     foreach(QWidget *w, GTMainWindow::getMainWindowsAsWidget(os)) {
         list.append(w);
@@ -2184,12 +2218,12 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
         }
     }
 
-    //Expected state: it set successfully, ensure that 1 is minimum value
+    //Expected state: it set successfully, ensure that 0 is minimum value
     QString maxDistance = GTUtilsWorkflowDesigner::getParameter(os,  "Max distance", true);
-    CHECK_SET_ERR(maxDistance == "1 bp", "Attribute value isn't 1 bp");
-    CHECK_SET_ERR(qsb->minimum() == 1, "Minimum value isn't 1");
+    CHECK_SET_ERR(maxDistance == "0 bp", "Attribute value isn't 0 bp");
+    CHECK_SET_ERR(qsb->minimum() == 0, "Minimum value isn't 0");
 
-    //6. Open human_t1.fa
+    //4. Open human_t1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2206,7 +2240,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
         }
     };
 
-    //7. Open repeat finder dialog
+    //5. Open repeat finder dialog
     //Expected state: minimum value for max distance combobox is 1
     GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, new Custom()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find repeats...", GTGlobals::UseMouse);
@@ -2219,6 +2253,26 @@ GUI_TEST_CLASS_DEFINITION(test_6398) {
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF", 5, 1));
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6398/6398.gtf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6459) {
+    //1. Open "data/samples/Genbank/murine.gb".
+    //2. Open "Search in Sequence" options panel tab.
+    //3. Set "Substitute" algorithm.Check "Search with ambiguous bases" checkbox.
+    //4. Ensure that the search is performed on both strands(it is the default value).
+    //5. Enter the following pattern : "YYYGYY".
+    //Expected result: 2738 results are found.
+
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    SchedulerListener listener;
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Substitute");
+    GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases(os);
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "YYYGYY");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2738"), "Results string not match");
 }
 
 } // namespace GUITest_regression_scenarios

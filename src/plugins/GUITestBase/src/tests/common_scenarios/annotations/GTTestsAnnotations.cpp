@@ -625,12 +625,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_1", "200..300",
                                                                       sandBoxDir + "ann_test_0010_1_19.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
-    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
+    GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141619"), Qt::RightButton);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_2", "100..200",
                                                                       sandBoxDir + "ann_test_0010_1_18.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
-    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_1"), Qt::RightButton);
+    GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
 
     QStringList annList;
     annList << "ann_1" << "ann_2";
@@ -677,12 +677,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_1", "200..300",
                                                                       sandBoxDir + "ann_test_0010_2_19.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
-    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
+    GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141619"), Qt::RightButton);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_2", "100..200",
                                                                       sandBoxDir + "ann_test_0010_2_18.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
-    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_1"), Qt::RightButton);
+    GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
 
     QStringList annList;
     annList << "ann_1" << "ann_2";
@@ -729,13 +729,13 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_1", "200..300",
                                                                       sandBoxDir + "ann_test_0010_3_19.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
-    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
+    GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141619"), Qt::RightButton);
 
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_2", "100..200",
                                                                       sandBoxDir + "ann_test_0010_3_18.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
-    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_1"), Qt::RightButton);
+    GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
 
 
     QStringList annList;
@@ -775,9 +775,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     //    1. Open "human_T1.fa"
     //    2. Create an annotation
     //    3. Try to export it to GTF format
-    //    Expected state: error message is in the log(GTF annotation MUST have gene_id and transcript_id attribute!)
+    //    Expected state: info message - "GTF format is not strict - some annotations do not have "gene_id" and/or "transcript_id" qualifiers"
 
-    GTLogTracer l;
+    GTLogTracer l("GTF format is not strict - some annotations do not have \"gene_id\" and/or \"transcript_id\" qualifiers");
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -794,10 +794,11 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf",
                                                                  ExportAnnotationsFiller::gtf, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(l.hasError(), "No error in the log");
+    CHECK_SET_ERR(l.messageFound(), "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {
@@ -806,9 +807,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     //    1. Open "human_T1.fa"
     //    2. Create an annotation
     //    3. Try to export it to GTF format
-    //    Expected state: error message is in the log(GTF annotation MUST have gene_id and transcript_id attribute!)
+    //    Expected state: info message - "GTF format is not strict - some annotations do not have "gene_id" and/or "transcript_id" qualifiers"
 
-    GTLogTracer l;
+    GTLogTracer l("GTF format is not strict - some annotations do not have \"gene_id\" and/or \"transcript_id\" qualifiers");
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -825,10 +826,11 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf",
                                                                  ExportAnnotationsFiller::gtf, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(l.hasError(), "No erro in the log");
+    CHECK_SET_ERR(l.messageFound(), "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {

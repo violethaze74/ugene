@@ -550,7 +550,7 @@ void StringTieWorkerFactory::init() {
 
 
     // Description of the element
-    const Descriptor desc(ACTOR_ID, StringTieWorker::tr("Assemble Transcripts with StringTie"),
+    Descriptor desc(ACTOR_ID, StringTieWorker::tr("Assemble Transcripts with StringTie"),
                     StringTieWorker::tr("StringTie is a fast and highly efficient assembler of RNA-Seq alignments into potential transcripts. "
                                         "It uses a novel network flow algorithm as well as an optional de novo assembly step to assemble "
                                         "and quantitate full-length transcripts representing multiple splice variants for each gene locus."));

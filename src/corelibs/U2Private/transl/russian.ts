@@ -4,36 +4,39 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="87"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="126"/>
         <source>Enter password: </source>
         <translation>Пароль: </translation>
     </message>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="88"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="178"/>
         <source>Enter user name: </source>
         <translation>Имя пользователя: </translation>
     </message>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="90"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="160"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="185"/>
         <source>Would you like UGENE to remember the password?</source>
         <translation>Запомнить пароль?</translation>
     </message>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="91"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="156"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="172"/>
         <source>Connect to the &apos;%1&apos; ...
 </source>
         <translation>Подключение к &apos;%1&apos; ...
 </translation>
     </message>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="92"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="157"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="173"/>
         <source>You are going to log in as &apos;%1&apos;.
 </source>
         <translation>Вы собираетесь войти как &apos;%1&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="93"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="174"/>
         <source>Would you like to log in as another user?</source>
         <translation>Хотите войти под другим пользователем?</translation>
     </message>

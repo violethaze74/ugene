@@ -84,6 +84,14 @@ void TrimmomaticWorker::changeAdapters() {
     }
 }
 
+void TrimmomaticWorker::processMetadata(QList<Task*> tasks) const {
+    metaFileUrl.clear();
+    CHECK(1 == tasks.size(), );
+
+    TrimmomaticTask* trimTask = qobject_cast<TrimmomaticTask*>(tasks.first());
+    metaFileUrl = trimTask->getInputUrl1();
+}
+
 void TrimmomaticWorker::cleanup() {
     foreach(const QString& name, copiedAdapters) {
         QFile adapter(name);
@@ -134,6 +142,7 @@ Task* TrimmomaticWorker::createTask(const QList<Message>& messages) const {
         trimmomaticTasks << task;
     }
     excludedUrls.clear();
+    processMetadata(trimmomaticTasks);
 
     Task* processTrimmomatic = nullptr;
     if (!trimmomaticTasks.isEmpty()) {
@@ -148,8 +157,8 @@ QVariantMap TrimmomaticWorker::getResult(Task* task, U2OpStatus& os) const {
     CHECK_EXT(nullptr != multiTask, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
 
     QVariantMap result;
-    foreach(Task* multiTask, multiTask->getTasks()) {
-        TrimmomaticTask* trimTask = qobject_cast<TrimmomaticTask*>(multiTask);
+    foreach(Task* task, multiTask->getTasks()) {
+        TrimmomaticTask* trimTask = qobject_cast<TrimmomaticTask*>(task);
         CHECK_CONTINUE(trimTask != nullptr);
 
         if (!pairedReadsInput) {
@@ -180,6 +189,12 @@ QVariantMap TrimmomaticWorker::getResult(Task* task, U2OpStatus& os) const {
     }
 
     return result;
+}
+
+MessageMetadata TrimmomaticWorker::generateMetadata(const QString &datasetName) const {
+    CHECK(!metaFileUrl.isEmpty(), BaseDatasetWorker::generateMetadata(datasetName));
+
+    return MessageMetadata(metaFileUrl, datasetName);
 }
 
 QString TrimmomaticWorker::setAutoUrl(const QString &paramId, const QString &inputFileUrl, const QString &workingDir, const QString &fileNameSuffix) const {

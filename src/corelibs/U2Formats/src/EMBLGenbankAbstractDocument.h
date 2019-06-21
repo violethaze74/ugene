@@ -44,8 +44,6 @@ public:
     EMBLGenbankAbstractDocument(const DocumentFormatId& id, const QString& formatName,
                                 int maxLineSize, DocumentFormatFlags flags, QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return id;}
-
     static const QString UGENE_MARK;
     static const QString DEFAULT_OBJ_NAME;
     static const QString LOCUS_TAG_CIRCULAR;
@@ -80,7 +78,6 @@ protected:
     virtual U2Qualifier createQualifier(const QString &qualifierName, const QString &qualifierValue, bool containsDoubleQuotes) const;
     virtual bool breakQualifierOnSpaceOnly(const QString &qualifierName) const;
 
-    DocumentFormatId id;
     QByteArray  fPrefix;
     QByteArray  sequenceStartPrefix;
     int         maxAnnotationLineLen;

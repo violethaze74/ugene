@@ -36,8 +36,6 @@ class U2FORMATS_EXPORT  GFFFormat : public TextDocumentFormat {
 public:
     GFFFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::GFF;}
-
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
 protected:

@@ -37,8 +37,6 @@ class U2FORMATS_EXPORT  SAMFormat : public TextDocumentFormat {
 public:
     SAMFormat(QObject* p = NULL);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::SAM;}
-
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);

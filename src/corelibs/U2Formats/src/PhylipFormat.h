@@ -34,7 +34,7 @@ namespace U2 {
 class U2FORMATS_EXPORT PhylipFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-    PhylipFormat(QObject *p);
+    PhylipFormat(QObject *p, const DocumentFormatId& id);
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
 protected:
@@ -50,7 +50,6 @@ class U2FORMATS_EXPORT PhylipSequentialFormat : public PhylipFormat {
     Q_OBJECT
 public:
     PhylipSequentialFormat(QObject* p);
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PHYLIP_SEQUENTIAL;}
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
 
 protected:
@@ -63,7 +62,6 @@ class U2FORMATS_EXPORT PhylipInterleavedFormat : public PhylipFormat {
     Q_OBJECT
 public:
     PhylipInterleavedFormat(QObject* p);
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PHYLIP_INTERLEAVED;}
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
 
 protected:

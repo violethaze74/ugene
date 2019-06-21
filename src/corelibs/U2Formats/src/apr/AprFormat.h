@@ -40,7 +40,6 @@ class U2FORMATS_EXPORT AprFormat : public TextDocumentFormat {
 public:
     AprFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::VECTOR_NTI_ALIGNX; }
     virtual QString getRadioButtonText() const;
 
 protected:

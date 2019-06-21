@@ -352,7 +352,6 @@ private:
     QAction* confSep;
     QAction* scriptSep;
     QAction* extSep;
-    QAction* editSep;
     QAction* scaleSep;
     QAction* scaleAction;
     QAction* styleAction;

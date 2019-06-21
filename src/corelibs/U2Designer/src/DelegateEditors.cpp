@@ -623,7 +623,7 @@ SchemaRunModeDelegate::SchemaRunModeDelegate( QObject * parent )
 : ComboBoxDelegate( QVariantMap(), parent ) {
     thisComputerOption = SchemaRunModeDelegate::tr( "This computer" );
     remoteComputerOption = SchemaRunModeDelegate::tr( "Remote computer" );
-    
+
     comboItems.append(qMakePair(thisComputerOption, true ));
     comboItems.append(qMakePair(remoteComputerOption, false ));
 

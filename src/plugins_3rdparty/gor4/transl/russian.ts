@@ -4,9 +4,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="34"/>
         <source>GORIV</source>
-        <translation>GORIV</translation>
+        <translation type="vanished">GORIV</translation>
     </message>
 </context>
 <context>

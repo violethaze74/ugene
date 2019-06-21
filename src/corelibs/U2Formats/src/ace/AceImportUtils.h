@@ -91,7 +91,7 @@ private:
     int getClearRangeStart(const QByteArray &cur_line);
     int getClearRangeEnd(const QByteArray &cur_line);
     void formatSequence(QByteArray& data);
-    
+
     IOAdapter *io;
     U2OpStatus *os;
     int contigsCount;

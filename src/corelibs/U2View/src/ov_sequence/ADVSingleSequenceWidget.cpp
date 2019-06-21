@@ -159,12 +159,13 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
 void ADVSingleSequenceWidget::init() {
     ADVSequenceObjectContext* seqCtx = getSequenceContext();
     detView = new DetView(this, seqCtx);
-    detView->setObjectName("det_view_" + getSequenceObject()->getGObjectName());
+    const QString objName = getSequenceObject()->getGObjectName();
+    detView->setObjectName("det_view_" + objName);
     detView->setMouseTracking(true);
     detView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
     panView = new PanView(this, seqCtx);
-    panView->setObjectName("pan_view_" + getSequenceObject()->getGObjectName());
+    panView->setObjectName("pan_view_" + objName);
     panView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     connect(panView, SIGNAL(si_centerPosition(qint64)), SLOT(sl_onLocalCenteringRequest(qint64)));
 
@@ -176,7 +177,7 @@ void ADVSingleSequenceWidget::init() {
     panView->setFrameView(detView);
 
     overview = new Overview(this, seqCtx);
-    overview->setObjectName("overview_" + getSequenceObject()->getGObjectName());
+    overview->setObjectName("overview_" + objName);
     overview->setMouseTracking(true);
     overview->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     lineViews.append(overview);

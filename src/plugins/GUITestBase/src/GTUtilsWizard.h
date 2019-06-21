@@ -35,7 +35,8 @@ public:
         Run,
         Cancel,
         Defaults,
-        Setup
+        Setup,
+        Finish
     };
 
     static void setInputFiles(HI::GUITestOpStatus &os, const QList<QStringList> &list);

@@ -41,7 +41,6 @@ class U2FORMATS_EXPORT DifferentialFormat : public TextDocumentFormat {
 public:
     DifferentialFormat(QObject *parent);
 
-    DocumentFormatId getFormatId() const;
     void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
 
 protected:

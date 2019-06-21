@@ -494,7 +494,7 @@ void BlastAllSupportTask::parseXMLHsp(const QDomNode &xml,const QString &id, con
         SAFE_POINT_EXT(false, stateInfo.setError(tr("Unknown strand source setting")), );
         break;
     }
-    
+
     elem = xml.lastChildElement(strandTag);
     int frame = elem.text().toInt(&isOk);
     if (!isOk) {

@@ -140,7 +140,7 @@ public:
 
     static const DNAAlphabet* deriveCommonAlphabet(const DNAAlphabet* al1, const DNAAlphabet* al2);
 
-
+    static const DNAAlphabet* getExtendedAlphabet(const DNAAlphabet* al);
 };
 
 }//namespace

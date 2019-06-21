@@ -1473,20 +1473,21 @@ GUI_TEST_CLASS_DEFINITION(test_3226) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read File URL(s)");
 
-    ////2. Setup alias 'in' for input path.
+    //2. Setup alias 'in' for input path.
     QMap<QPoint*, QString> map;
     QPoint p(1, 0);
     map[&p] = "in";
     GTUtilsDialog::waitForDialog(os, new AliasesDialogFiller(os, map));
     GTWidget::click(os, GTAction::button(os, "Set parameter aliases"));
 
-    ////3. Copy and paste the 'Read File URL(s)' element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
-    //GTKeyboardUtils::copy(os);
-    GTWidget::click(os, GTAction::button(os, "Copy action"));
-    GTKeyboardUtils::paste(os);
 
-    ////4. Save the workflow.
+    //3. Copy and paste the 'Read File URL(s)' element.
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTKeyboardUtils::copy(os);
+    //GTWidget::click(os, GTAction::button(os, "Copy action"));
+    GTKeyboardUtils::paste(os);
+   
+    //4. Save the workflow.
     QString path = sandBoxDir + "test_3226_workflow.uwl";
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, path, ""));
     GTWidget::click(os, GTAction::button(os, "Save workflow action"));
@@ -2563,7 +2564,8 @@ GUI_TEST_CLASS_DEFINITION(test_3384){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_EDIT"
                                                       << "action_edit_insert_sub_sequences"));
     GTUtilsDialog::waitForDialog(os, new InsertSequenceFiller(os, "A"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getDetViewByNumber(os));
+
 
 //    Select an area on CV that contains zero position
     QWidget* cv = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");

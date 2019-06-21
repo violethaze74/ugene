@@ -225,115 +225,114 @@
         <translation>Создание аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="51"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="63"/>
         <source>Annotation type:</source>
         <translation>Тип аннотации:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="103"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="127"/>
         <source>Annotation name</source>
         <translation>Имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="110"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="137"/>
         <source>Use names of patterns as annotations names. In case the patterns are in FASTA format</source>
         <translation>Использовать имена паттернов в качестве имен для аннотаций. Для случая если паттерны заданы в формате FASTA</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="113"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="140"/>
         <source>Use pattern names</source>
         <translation>Использовать имена паттернов</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="120"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="150"/>
         <source>Group name</source>
         <translation>Имя группы</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="127"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="157"/>
         <source>Predefined group names</source>
         <translation>Стандартные имена групп</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="130"/>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="309"/>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="393"/>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="421"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="160"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="351"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="491"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="565"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="144"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="174"/>
         <source>by type</source>
         <translation>по типу</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="154"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="184"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="161"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="191"/>
         <source>auto</source>
         <translation>авто</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="176"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="206"/>
         <source>Location</source>
         <translation>Позиция</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="208"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="247"/>
         <source>Simple format</source>
         <translation>Простой формат</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="234"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="273"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="246"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="285"/>
         <source>Complement</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="281"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="323"/>
         <source>GenBank/EMBL format</source>
         <translation>Формат GenBank/EMBL</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="299"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="341"/>
         <source>Annotation location in GenBank format</source>
         <translation>Местоположение аннотации (в формате GenBank)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="306"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="348"/>
         <source>Add/remove complement flag</source>
         <translation>Добавить/снять флаг комплементарности</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="347"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="395"/>
         <source>Save annotation(s) to</source>
         <translation>Сохранить результат(ы) в</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="359"/>
         <source>Choose a file to store the annotations</source>
-        <translation>Выбрать файл для сохранения аннотаций</translation>
+        <translation type="vanished">Выбрать файл для сохранения аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="380"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="436"/>
         <source>Existing document</source>
         <translation>Существующий документ</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="407"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="516"/>
         <source>New document</source>
         <translation>Новый документ</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="414"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="596"/>
         <source>Use auto-annotations table</source>
         <translation>Использовать таблицу автоаннотаций</translation>
     </message>
@@ -1225,29 +1224,24 @@ The items cannot be recovered once deleted.</source>
         <translation>Некоторые из выбранных объектов используются другими пользователями базы данных. Попробуйте удалить их позже.</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="54"/>
         <source>Files and folders</source>
-        <translation>Файлы и папки</translation>
+        <translation type="vanished">Файлы и папки</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="55"/>
         <source>Documents and objects</source>
-        <translation>Документы и объекты</translation>
+        <translation type="vanished">Документы и объекты</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="97"/>
         <source>&lt;auto&gt;</source>
-        <translation>&lt;авто&gt;</translation>
+        <translation type="vanished">&lt;авто&gt;</translation>
     </message>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="59"/>
         <source>Format %1 is not supported by %2.</source>
-        <translation>Формат %1 не поддерживается %2.</translation>
+        <translation type="vanished">Формат %1 не поддерживается %2.</translation>
     </message>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="60"/>
         <source>Failed to export image to %1.</source>
-        <translation>Невозможно экспортировать изображение %1.</translation>
+        <translation type="vanished">Невозможно экспортировать изображение %1.</translation>
     </message>
     <message>
         <source>Author</source>
@@ -1836,33 +1830,38 @@ To append data to existing file press &apos;Append&apos;.</source>
 <context>
     <name>U2::CreateAnnotationWidgetController</name>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="240"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="107"/>
+        <source>&lt;auto&gt;</source>
+        <translation type="unfinished">&lt;авто&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="241"/>
         <source>Select annotation saving parameters</source>
         <translation>Выберите параметры сохранения аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="243"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="244"/>
         <source>Document is already added to the project: &apos;%1&apos;</source>
         <translation>Документ уже существует: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="248"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="249"/>
         <source>Illegal folder: %1</source>
         <translation>Не найден путь: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="253"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="254"/>
         <source>Illegal annotation name! </source>
         <translation>Нелегальные символы в имени аннотации. Допустимы только цифры, буквы и подчёркивания! </translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="258"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="259"/>
         <source>Illegal group name</source>
         <translation>Нелегальные символы в имени группы</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="263"/>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="268"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="264"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="269"/>
         <source>Invalid location! Location must be in GenBank format.
 Simple examples:
 1..10
@@ -1875,7 +1874,7 @@ join(1..10,15..45)
 complement(5..15)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="353"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="354"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -2428,17 +2427,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ImageExportController</name>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="76"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="79"/>
         <source>SVG format is not supported</source>
         <translation>SVG format is not supported</translation>
     </message>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="80"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="83"/>
         <source>PS/PDF format is not supported</source>
         <translation>PS/PDF format is not supported</translation>
     </message>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="83"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="86"/>
         <source>Raster formats are disabled</source>
         <translation>Raster formats are disabled</translation>
     </message>
@@ -2446,12 +2445,22 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ImageExportTask</name>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="63"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="61"/>
+        <source>Format %1 is not supported by %2.</source>
+        <translation type="unfinished">Формат %1 не поддерживается %2.</translation>
+    </message>
+    <message>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="62"/>
+        <source>Failed to export image to %1.</source>
+        <translation type="unfinished">Невозможно экспортировать изображение %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="66"/>
         <source>Done!</source>
         <translation>Готово!</translation>
     </message>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.h" line="62"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="60"/>
         <source>Image export task</source>
         <translation>Задача экспорта изображения</translation>
     </message>
@@ -2467,32 +2476,42 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ImportToDatabaseDialog</name>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="98"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="62"/>
+        <source>Files and folders</source>
+        <translation type="unfinished">Файлы и папки</translation>
+    </message>
+    <message>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="63"/>
+        <source>Documents and objects</source>
+        <translation type="unfinished">Документы и объекты</translation>
+    </message>
+    <message>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="99"/>
         <source>Override options</source>
         <translation>Настройки замещения</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="102"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="103"/>
         <source>Reset to general options</source>
         <translation>Сброс на общие настройки</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="205"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="206"/>
         <source>Import</source>
         <translation>Импорт</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="291"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="292"/>
         <source>Select files to import</source>
         <translation>Выберите файлы для импорта</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="314"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="315"/>
         <source>Select a folder to import</source>
         <translation>Выберите папку для импорта</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="549"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="550"/>
         <source>This file will be imported with its own options.
 
 </source>
@@ -2501,59 +2520,59 @@ Are you sure you want to open all of them?</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="552"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="553"/>
         <source>File:
 </source>
         <translation>Файл:
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="555"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="594"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="640"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="657"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="556"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="595"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="641"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="658"/>
         <source>Import to: </source>
         <translation>Импортировать в: </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="559"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="560"/>
         <source>A folder for file objects will be created</source>
         <translation>Будет создана папка для файловых объектов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="563"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="607"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="564"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="608"/>
         <source>If file is not recognized, it will be imported as binary data</source>
         <translation>Если файл не будет распознан, он будет импортирован в виде бинарных данных</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="568"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="612"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="569"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="613"/>
         <source>If file contains more than one sequence, they will imported as separate objects</source>
         <translation>Если файл содержит больше чем одну последовательность, то они будут импортированы как отдельные объекты</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="571"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="615"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="572"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="616"/>
         <source>If file contains more than one sequence, they will imported as single sequence with several &apos;Unknown&apos; bases as separator</source>
         <translation>Если файл содержит больше чем одну последовательность они будут импортированы в одну последовательность с несколькими &apos;Unknown&apos; символами в качестве разделителей</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="572"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="616"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="573"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="617"/>
         <source>Size of separator: %1</source>
         <translation>Размер разделителя: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="575"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="619"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="576"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="620"/>
         <source>If file contains more than one sequence, they will be joined into the multiple alignment</source>
         <translation>Если файл содержит больше чем одну последовательность они будут соединены в выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="588"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="632"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="651"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="589"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="633"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="652"/>
         <source>This folder will be imported with its own options.
 
 </source>
@@ -2562,34 +2581,34 @@ Are you sure you want to open all of them?</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="591"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="592"/>
         <source>Folder:
 </source>
         <translation>Папка:
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="599"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="600"/>
         <source>The folder will be processed recursively</source>
         <translation>Эта папка будет будет обработана рекурсивно</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="603"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="604"/>
         <source>A folder for each file will be created</source>
         <translation>Будет создана папка для каждого файла</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="635"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="636"/>
         <source>The </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="635"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="636"/>
         <source> from document </source>
         <translation> из документа </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="654"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="655"/>
         <source>Document:
 </source>
         <translation>Документ:

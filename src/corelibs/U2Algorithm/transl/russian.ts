@@ -233,22 +233,22 @@
     <message>
         <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="101"/>
         <source>Assembly task finished with error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Assembly task finished with error: %1</translation>
     </message>
     <message>
         <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="103"/>
         <source>Assembly task wasn&apos;t set</source>
-        <translation type="unfinished"></translation>
+        <translation>Assembly task wasn&apos;t set</translation>
     </message>
     <message>
         <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="106"/>
         <source>Assembly was finished successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Assembly was finished successfully</translation>
     </message>
     <message>
         <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="108"/>
         <source>Assembly failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Assembly failed.</translation>
     </message>
 </context>
 <context>

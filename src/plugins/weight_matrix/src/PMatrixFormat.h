@@ -37,10 +37,6 @@ class PFMatrixFormat : public DocumentFormat {
 public:
     PFMatrixFormat(QObject* p);
 
-    static const DocumentFormatId FORMAT_ID;
-
-    virtual DocumentFormatId getFormatId() const {return FORMAT_ID;}
-
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
@@ -70,10 +66,6 @@ class PWMatrixFormat : public DocumentFormat {
     Q_OBJECT
 public:
     PWMatrixFormat(QObject* p);
-
-    static const DocumentFormatId FORMAT_ID;
-
-    virtual DocumentFormatId getFormatId() const {return FORMAT_ID;}
 
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 

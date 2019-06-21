@@ -78,7 +78,7 @@ public:
     static QList<QTreeWidgetItem*> getVisibleSamples(HI::GUITestOpStatus &os);
 
     //expands samples/Elements tabwidget if collapsed
-    static void expandTabs(HI::GUITestOpStatus &os);
+    static void expandTabs(HI::GUITestOpStatus &os, QWidget const * const parentWidget = NULL);
 
     static void findByNameFilter(HI::GUITestOpStatus& os, const QString& elementName);
 
@@ -94,7 +94,7 @@ public:
     static QStringList getPaletteGroupEntriesNames(HI::GUITestOpStatus &os, const QString &groupName);
 
     //add to scene
-    static void addSample(HI::GUITestOpStatus &os, const QString &sampName);
+    static void addSample(HI::GUITestOpStatus &os, const QString &sampName, QWidget const * const parentWidget = NULL);
     static void addAlgorithm(HI::GUITestOpStatus &os, QString algName, bool exactMatch = false, bool useDragAndDrop = false);
     static WorkflowProcessItem * addElement(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch = false);
     static WorkflowProcessItem * addElementByUsingNameFilter(HI::GUITestOpStatus &os, const QString &elementName, bool exactMatch = false);
@@ -193,7 +193,7 @@ public:
 
 private:
     static void selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem *algorithm);
-    static void selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample);
+    static void selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget const * const parentWidget = NULL);
     static QRect getItemRect(HI::GUITestOpStatus &os,QString itemName);
     static QTreeWidget * getCurrentTabTreeWidget(HI::GUITestOpStatus &os);
 

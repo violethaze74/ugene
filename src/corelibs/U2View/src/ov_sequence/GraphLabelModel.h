@@ -84,6 +84,7 @@ public:
 
     bool select(float _position);
     bool isSelected() const;
+    bool isHidden() const;
 
     void setCoord(const QPoint &_coord);
     QPoint getCoord() const {return coord;}

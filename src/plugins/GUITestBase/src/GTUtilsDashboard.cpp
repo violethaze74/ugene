@@ -25,6 +25,7 @@
 #include <QWebFrame>
 #include <QWebView>
 
+#include <GTUtilsMdi.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
@@ -103,7 +104,7 @@ QWebView* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os) {
 }
 
 QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus &os){
-    return GTWidget::findExactWidget<QTabWidget *>(os, "WorkflowTabView");
+    return GTWidget::findExactWidget<QTabWidget *>(os, "WorkflowTabView", GTUtilsMdi::activeWindow(os));
 }
 
 const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashboardNumber) {

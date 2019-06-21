@@ -110,8 +110,6 @@ class U2FORMATS_EXPORT FpkmTrackingFormat : public TextDocumentFormat
 public:
     FpkmTrackingFormat(QObject* parent);
 
-    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::FPKM_TRACKING_FORMAT; }
-
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
 protected:

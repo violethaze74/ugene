@@ -989,6 +989,20 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
 </context>
 <context>
+    <name>BwaIndexAlgorithmWarningReporter</name>
+    <message>
+        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="81"/>
+        <source>NOTE: &quot;is&quot; index algorithm is not supposed to work with reference sequences having size larger than 2 GB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;bwtsw&quot;</source>
+        <translation type="unfinished">NOTE: &quot;is&quot; алгоритм не поддерживается для работы с реверенсными последовательностями, размер которых превышает 2 GB. В таком случае рекомендуется выбрать алгоритм &quot;bwtsw&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="88"/>
+        <source>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB.
+In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</source>
+        <translation type="unfinished">NOTE: &quot;bwtsw&quot; алгоритм не поддерживается для работы с рефересными последовательностями, размер которых меньше 10 MB. В таком случае рекомендуется изменить алгоритм на &quot;is&quot;</translation>
+    </message>
+</context>
+<context>
     <name>BwaMemSettings</name>
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="20"/>
@@ -1059,9 +1073,8 @@ bowtie медленнее, когда указан режим --best.</translati
         <translation>Штраф за отсечение (-L)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="580"/>
         <source>Gap extension penalty (-E)</source>
-        <translation>Штраф за расширение пробела (-E)</translation>
+        <translation type="vanished">Штраф за расширение пробела (-E)</translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="730"/>
@@ -1151,6 +1164,11 @@ bowtie медленнее, когда указан режим --best.</translati
         <location filename="../src/bwa/BwaMemSettings.ui" line="435"/>
         <source>Scoring Options</source>
         <translation>Настройки весов</translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="580"/>
+        <source>Gap extention penalty (-E)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="654"/>
@@ -1417,9 +1435,8 @@ p, li { white-space: pre-wrap; }
         <translation>Веса совпадений (-a)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="159"/>
         <source>Gap extension penalty (-r)</source>
-        <translation>Штраф за расширение пробела (-r)</translation>
+        <translation type="vanished">Штраф за расширение пробела (-r)</translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaSwSettings.ui" line="113"/>
@@ -1450,6 +1467,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/bwa/BwaSwSettings.ui" line="136"/>
         <source>Gap open penalty (-q)</source>
         <translation>Штраф за открытие пробела (-q)</translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="159"/>
+        <source>Gap extention penalty (-r)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaSwSettings.ui" line="182"/>
@@ -2617,9 +2639,13 @@ p, li { white-space: pre-wrap; }
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="87"/>
         <source>Reporting tresholds</source>
-        <translation>Допустимые результаты</translation>
+        <translation type="vanished">Допустимые результаты</translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="87"/>
+        <source>Reporting thresholds</source>
+        <translation type="unfinished">Допустимые результаты</translation>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="103"/>
@@ -2897,7 +2923,7 @@ Uncheck to get the maximum likelihood estimate.</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="410"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="479"/>
         <source>&lt;html&gt;Select the type of input for SPAdes. URL(s) to the input files of the selected type(s) should be provided to the corresponding port(s) of the workflow element.&lt;p&gt;At least one library of the following types is required:&lt;ul&gt;&lt;li&gt;Illumina paired-end/high-quality mate-pairs/unpaired reads&lt;/li&gt;&lt;li&gt;IonTorrent paired-end/high-quality mate-pairs/unpaired reads&lt;/li&gt;&lt;li&gt;PacBio CCS reads (at least 5 reads coverage is recommended)&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;It is strongly suggested to provide multiple paired-end and mate-pair libraries according to their insert size (from smallest to longest).&lt;/p&gt;&lt;p&gt;Additionally, one may input Oxford Nanopore reads, Sanger reads, contigs generated by other assembler(s), etc.Note that Illumina and IonTorrent libraries should not be assembled together. All other types of input data are compatible.&lt;/p&gt;&lt;p&gt;It is also possible to set up reads orientation (forward-reverse (fr), reverse-forward (rf), forward-forward (ff)) and specify whether paired reads are separate or interlaced.&lt;/p&gt;&lt;p&gt;Illumina, IonTorrent or PacBio CCS reads should be provided in FASTQ format.&lt;br&gt;Illumina or PacBio read may also be provided in FASTA format. Error correction should be skipped in this case (see the &quot;Running mode&quot; parameter).&lt;br&gt;Sanger, Oxford Nanopore and PacBio CLR reads can be provided in both formats since SPAdes does not run error correction for these types of data.&lt;/p&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3025,15 +3051,13 @@ Uncheck to get the maximum likelihood estimate.</source>
         <translation>В примере нет данных: </translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="40"/>
         <source>NOTE: &quot;is&quot; index algorithm is not supposed to work with reference sequences having size larger than 2 GB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;bwtsw&quot;</source>
-        <translation>NOTE: &quot;is&quot; алгоритм не поддерживается для работы с реверенсными последовательностями, размер которых превышает 2 GB. В таком случае рекомендуется выбрать алгоритм &quot;bwtsw&quot;</translation>
+        <translation type="vanished">NOTE: &quot;is&quot; алгоритм не поддерживается для работы с реверенсными последовательностями, размер которых превышает 2 GB. В таком случае рекомендуется выбрать алгоритм &quot;bwtsw&quot;</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="44"/>
         <source>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB.
 In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</source>
-        <translation>NOTE: &quot;bwtsw&quot; алгоритм не поддерживается для работы с рефересными последовательностями, размер которых меньше 10 MB. В таком случае рекомендуется изменить алгоритм на &quot;is&quot;</translation>
+        <translation type="vanished">NOTE: &quot;bwtsw&quot; алгоритм не поддерживается для работы с рефересными последовательностями, размер которых меньше 10 MB. В таком случае рекомендуется изменить алгоритм на &quot;is&quot;</translation>
     </message>
     <message>
         <source>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</source>
@@ -3251,12 +3275,17 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>SpadesPropertyDialog</name>
     <message>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="142"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="153"/>
         <source>At least one of the required input ports should be set in the &quot;Input data&quot; parameter.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="143"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="169"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="177"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="199"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="229"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="312"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="316"/>
         <source>Incorrect parameters, can&apos;t parse</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3923,17 +3952,17 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastAllSupportMultiTask</name>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="660"/>
+        <location filename="../src/blast/BlastAllSupportTask.cpp" line="674"/>
         <source>Source file</source>
         <translation>Исходный файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="661"/>
+        <location filename="../src/blast/BlastAllSupportTask.cpp" line="675"/>
         <source>Used database</source>
         <translation>Используемая база данных</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="663"/>
+        <location filename="../src/blast/BlastAllSupportTask.cpp" line="677"/>
         <source>No any results found</source>
         <translation>Результатов не найдено</translation>
     </message>
@@ -4061,27 +4090,36 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation>Can&apos;t get Hsp_query-to element</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="488"/>
-        <source>Can&apos;t get location. Hsp_query-frame[%1]</source>
-        <translation>Can&apos;t get location. Hsp_query-frame[%1]</translation>
+        <location filename="../src/blast/BlastAllSupportTask.cpp" line="494"/>
+        <source>Unknown strand source setting</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="498"/>
+        <location filename="../src/blast/BlastAllSupportTask.cpp" line="501"/>
+        <source>Can&apos;t get location. %1[%2]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t get location. Hsp_query-frame[%1]</source>
+        <translation type="vanished">Can&apos;t get location. Hsp_query-frame[%1]</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/BlastAllSupportTask.cpp" line="512"/>
         <source>Can&apos;t get identity</source>
         <translation>Can&apos;t get identity</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="506"/>
+        <location filename="../src/blast/BlastAllSupportTask.cpp" line="520"/>
         <source>Can&apos;t get gaps</source>
         <translation>Can&apos;t get gaps</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="514"/>
+        <location filename="../src/blast/BlastAllSupportTask.cpp" line="528"/>
         <source>Can&apos;t get align length</source>
         <translation>Can&apos;t get align length</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="527"/>
+        <location filename="../src/blast/BlastAllSupportTask.cpp" line="541"/>
         <source>Can&apos;t evaluate location</source>
         <translation>Can&apos;t evaluate location</translation>
     </message>
@@ -4257,7 +4295,6 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="266"/>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="421"/>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="428"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="445"/>
         <source>Can&apos;t get location</source>
         <translation>Can&apos;t get location</translation>
     </message>
@@ -4279,19 +4316,19 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="319"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="471"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="484"/>
         <source>Can&apos;t get align length</source>
         <translation>Can&apos;t get align length</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="324"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="463"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="476"/>
         <source>Can&apos;t get gaps</source>
         <translation>Can&apos;t get gaps</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="329"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="455"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="468"/>
         <source>Can&apos;t get identity</source>
         <translation>Can&apos;t get identity</translation>
     </message>
@@ -4304,6 +4341,16 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="362"/>
         <source>Can&apos;t read output file</source>
         <translation>Can&apos;t read output file</translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="451"/>
+        <source>Unknown strand source setting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="457"/>
+        <source>Can&apos;t get location. %1[%2]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4353,17 +4400,17 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastPlusSupportMultiTask</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="625"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="638"/>
         <source>Source file</source>
         <translation>Исходный файл</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="626"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="639"/>
         <source>Used database</source>
         <translation>Используемая база данных</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="628"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="641"/>
         <source>No any results found</source>
         <translation>Результатов не найдено</translation>
     </message>
@@ -4633,7 +4680,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BwaMemSettingsWidget</name>
     <message>
-        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="298"/>
+        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="295"/>
         <source>NOTE: bwa mem accepts reads only in FASTA or FASTQ format. Reads should be compiled into a single file for each mate end.</source>
         <translation>NOTE: bwa mem принимает риды только в формате FASTA или FASTQ формате.</translation>
     </message>
@@ -4662,7 +4709,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BwaSwSettingsWidget</name>
     <message>
-        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="230"/>
+        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="227"/>
         <source>NOTE: bwa-sw performs alignment of long sequencing reads (Sanger or 454). It accepts reads only in FASTA or FASTQ format. Reads should be compiled into single file.</source>
         <translation>NOTE: bwa-sw выравнивает длинные риды. Принимает риды только в формате FASTA или FASTQ формате.</translation>
     </message>
@@ -4691,9 +4738,13 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::CAP3Support</name>
     <message>
-        <location filename="../src/cap3/CAP3Support.cpp" line="65"/>
         <source>&lt;i&gt;CAP3&lt;/i&gt; is a contig assembly program.                    &lt;br&gt;It allows to assembly long DNA reads (up to 1000 bp).                    &lt;br&gt;Binaries can be downloaded from http://seq.cs.iastate.edu/cap3.html</source>
-        <translation>&lt;i&gt;CAP3&lt;/i&gt;это программа для сборки контигов.                    &lt;br&gt;Она позволяет собирать длинные ДНК риды (более 1000 нуклеотидов).                    &lt;br&gt;Бинарный пакет может быть скачан отсюда http://seq.cs.iastate.edu/cap3.html</translation>
+        <translation type="vanished">&lt;i&gt;CAP3&lt;/i&gt;это программа для сборки контигов.                    &lt;br&gt;Она позволяет собирать длинные ДНК риды (более 1000 нуклеотидов).                    &lt;br&gt;Бинарный пакет может быть скачан отсюда http://seq.cs.iastate.edu/cap3.html</translation>
+    </message>
+    <message>
+        <location filename="../src/cap3/CAP3Support.cpp" line="65"/>
+        <source>&lt;i&gt;CAP3&lt;/i&gt; is a contig assembly program.                    &lt;br&gt;It allows one to assembly long DNA reads (up to 1000 bp).                    &lt;br&gt;Binaries can be downloaded from http://seq.cs.iastate.edu/cap3.html</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/cap3/CAP3Support.cpp" line="68"/>
@@ -5701,6 +5752,19 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
 </context>
 <context>
+    <name>U2::FastQCParser</name>
+    <message>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="73"/>
+        <source>FastQC: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="75"/>
+        <source>FastQC failed to process input file &apos;%1&apos;. Make sure each read takes exactly four lines.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::FastQCSupport</name>
     <message>
         <location filename="../src/fastqc/FastqcSupport.cpp" line="50"/>
@@ -5711,27 +5775,27 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::FastQCTask</name>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="90"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="119"/>
         <source>No input URL</source>
         <translation>No input URL</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="95"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="124"/>
         <source>The input file &apos;%1&apos; is empty.</source>
         <translation>The input file &apos;%1&apos; is empty.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="101"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="130"/>
         <source>Folder does not exist: %1</source>
         <translation>Folder does not exist: %1</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="118"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="147"/>
         <source>Result file does not exist: %1. See the log for details.</source>
         <translation>Result file does not exist: %1. See the log for details.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="130"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="159"/>
         <source>Unable to move result file from temporary directory to desired location: %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11415,7 +11479,7 @@ Make sure %1 and %2 tools are set in the UGENE Application Settings and can be v
         <translation type="vanished">Собирает риды из &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="617"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="615"/>
         <source>Assemble de novo the input data into contigs and scaffolds.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11451,12 +11515,12 @@ Make sure %1 and %2 tools are set in the UGENE Application Settings and can be v
         <translation type="vanished">Входные риды будут собраны при помощи Spades.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="474"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="457"/>
         <source>Scaffolds URL</source>
         <translation>Путь до Scaffolds</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="475"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="458"/>
         <source>Output scaffolds URL.</source>
         <translation>Путь до выходногог scaffolds.</translation>
     </message>
@@ -11480,82 +11544,82 @@ Make sure %1 and %2 tools are set in the UGENE Application Settings and can be v
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="435"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="418"/>
         <source>Input %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="436"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="419"/>
         <source>Input %1 to be assembled with SPAdes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="442"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="425"/>
         <source>File URL 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="443"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="426"/>
         <source>File URL 1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="451"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="434"/>
         <source>File URL 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="452"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="435"/>
         <source>File URL 2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="478"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="461"/>
         <source>Contigs URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="479"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="462"/>
         <source>Output contigs URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="483"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="466"/>
         <source>Output assembly files.</source>
         <translation>Выходные файлы сборки.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="495"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="478"/>
         <source>Input data</source>
         <translation type="unfinished">Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="499"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="497"/>
         <source>Output folder</source>
         <translation>Выходная папка</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="500"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="498"/>
         <source>Folder to save Spades output files.</source>
         <translation>Папка для сохранения выходных файлов Spades.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="507"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="505"/>
         <source>Memory limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="512"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="510"/>
         <source>Select the input dataset type: standard isolate (the default value) or multiple displacement amplification (corresponds to --sc).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="516"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="514"/>
         <source>By default, SPAdes performs both read error correction and assembly. You can select leave one of only (corresponds to --only-assembler, --only-error-correction).&lt;br&gt;&lt;br&gt;                              Error correction is performed using BayesHammer module in case of Illumina input reads and IonHammer in case of IonTorrent data. Note that you should not use error correction                               in case input reads do not have quality information(e.g. FASTA input files are provided).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="583"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="581"/>
         <source>In general, SPAdes (St. Petersburg genome assembler) is an assembly toolkit containing various assembly pipelines.                           This workflow element provides GUI for the main SPAdes executable script. One can specify Illumina, IonTorrent or                           PacBio reads as input. Hybrid assemblies are also possible, for example, with Oxford Nanopore or Sanger reads.&lt;br&gt;&lt;br&gt;                          To use the element, configure the type of input in the &quot;Input data&quot; parameter. The corresponding input ports will appear                           on the element. Provide URL(s) to the corresponding FASTA or FASTQ file(s) to these ports.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11564,17 +11628,17 @@ Make sure %1 and %2 tools are set in the UGENE Application Settings and can be v
         <translation type="vanished">Папка для сохранения выходных файлов Spades.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="482"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="465"/>
         <source>Output File</source>
         <translation type="unfinished">Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="503"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="501"/>
         <source>Number of threads</source>
         <translation>Число потоков</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="504"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="502"/>
         <source>Number of threads (-t).</source>
         <translation>число потоков (-t).</translation>
     </message>
@@ -11583,12 +11647,12 @@ Make sure %1 and %2 tools are set in the UGENE Application Settings and can be v
         <translation type="vanished">Предел памяти (GB)</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="508"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="506"/>
         <source>Memory limit (-m).</source>
         <translation>Предел памяти (-m).</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="511"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="509"/>
         <source>Dataset type</source>
         <translation>Тип набора данных</translation>
     </message>
@@ -11597,7 +11661,7 @@ Make sure %1 and %2 tools are set in the UGENE Application Settings and can be v
         <translation type="vanished">Тип входного набора данных.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="515"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="513"/>
         <source>Running mode</source>
         <translation>Режим запуска</translation>
     </message>
@@ -11606,52 +11670,52 @@ Make sure %1 and %2 tools are set in the UGENE Application Settings and can be v
         <translation type="vanished">режим запуска.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="521"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="519"/>
         <source>K-mers</source>
         <translation>K-mers</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="522"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="520"/>
         <source>k-mer sizes (-k).</source>
         <translation>Размеры k-mer (-k).</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="554"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="552"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="562"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="560"/>
         <source> Gb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="568"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="566"/>
         <source>Standard isolate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="569"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="567"/>
         <source>MDA single-cell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="573"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="571"/>
         <source>Error correction and assembly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="574"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="572"/>
         <source>Assembly only</source>
         <translation type="unfinished">Только сборка</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="575"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="573"/>
         <source>Error correction only</source>
         <translation type="unfinished">Только исправление ошибок</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="582"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="580"/>
         <source>Assemble Reads with SPAdes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12665,8 +12729,13 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::LocalWorkflow::TrimmomaticWorker</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="96"/>
+        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="110"/>
         <source>Copy adapters to working folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="140"/>
+        <source>Process &quot;Trimmomatic&quot; with one dataset</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13670,22 +13739,22 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideySupport</name>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="72"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="73"/>
         <source>&lt;i&gt;Spidey&lt;/i&gt; is mRNA-to-DNA alignment program.                    &lt;br&gt;Binaries can be downloaded from http://www.ncbi.nlm.nih.gov/spidey/spideyexec.html</source>
         <translation>&lt;i&gt;Spidey&lt;/i&gt;это программа для выранивания mRNA-to-DNA.                    &lt;br&gt;Программа может быть скачана http://www.ncbi.nlm.nih.gov/spidey/spideyexec.html</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="74"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="75"/>
         <source>&lt;br&gt;&lt;br&gt; Wheelan SJ, Church DM, Ostell JM.</source>
         <translation>&lt;br&gt;&lt;br&gt; Wheelan SJ, Church DM, Ostell JM.</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="75"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="76"/>
         <source>&lt;br&gt;Spidey: a tool for mRNA-to-genomic alignments</source>
         <translation>&lt;br&gt;Spidey: a tool for mRNA-to-genomic alignments</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="76"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="77"/>
         <source>&lt;br&gt;Genome Res. 2001 Nov;11(11):1952-7.</source>
         <translation>&lt;br&gt;Genome Res. 2001 Nov;11(11):1952-7.</translation>
     </message>
@@ -13693,17 +13762,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideySupportContext</name>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="115"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="116"/>
         <source>Align sequence to mRNA</source>
         <translation>Выровнять последовательность на мРНК</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="155"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="147"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="156"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="148"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -14076,17 +14145,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="275"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="276"/>
         <source>Read doesn&apos;t contain meaningful data</source>
         <translation>Read doesn&apos;t contain meaningful data</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="356"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="357"/>
         <source>The %1 algorithm is not found. Add the %1 plugin.</source>
         <translation>The %1 algorithm is not found. Add the %1 plugin.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="359"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="360"/>
         <source>The %1 algorithm is not found. Check that the %1 plugin is up to date.</source>
         <translation>The %1 algorithm is not found. Check that the %1 plugin is up to date.</translation>
     </message>

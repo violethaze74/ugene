@@ -439,7 +439,7 @@ void BlastPlusSupportCommonTask::parseXMLHsp(const QDomNode &xml,const QString &
         ad->qualifiers.push_back(U2Qualifier("hit-to", elem.text()));
     }
 
-    QString strandTag; 
+    QString strandTag;
     switch (settings.strandSource) {
     case BlastTaskSettings::HitFrame:
         strandTag = "Hsp_hit-frame";
@@ -457,7 +457,7 @@ void BlastPlusSupportCommonTask::parseXMLHsp(const QDomNode &xml,const QString &
         stateInfo.setError(tr("Can't get location. %1[%2]").arg(strandTag).arg(elem.text()));
         return;
     }
-    
+
     QString frame_txt = (frame < 0) ? "complement" : "direct";
     ad->qualifiers.push_back(U2Qualifier("source_frame", frame_txt));
     ad->setStrand(frame < 0 ? U2Strand::Complementary: U2Strand::Direct);

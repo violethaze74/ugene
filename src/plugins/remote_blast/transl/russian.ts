@@ -925,7 +925,12 @@ p, li { white-space: pre-wrap; }
         <translation>Поиск в базе данных NCBI с помощью BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="138"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="141"/>
+        <source>Selected region is too large!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="155"/>
         <source>Sequence objects is NULL</source>
         <translation>Sequence objects is NULL</translation>
     </message>
