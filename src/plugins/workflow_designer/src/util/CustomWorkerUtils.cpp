@@ -32,10 +32,10 @@ namespace Workflow {
 
 ////////////////////////////////////////
 // Special external tools
-QMap<QString, QString> CustomWorkerUtils::specialTools = QMap<QString, QString>({{"java", "UGENE_JAVA"},
-                                                                                 {"python", "UGENE_PYTHON"},
-                                                                                 {"perl", "UGENE_PERL"},
-                                                                                 {"Rscript", "UGENE_RSCRIPT"}});
+QMap<QString, QString> CustomWorkerUtils::specialTools {{"java", "UGENE_JAVA"},
+                                                        {"python", "UGENE_PYTHON"},
+                                                        {"perl", "UGENE_PERL"},
+                                                        {"Rscript", "UGENE_RSCRIPT"}};
 
 
 bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QString &toolKey) {
