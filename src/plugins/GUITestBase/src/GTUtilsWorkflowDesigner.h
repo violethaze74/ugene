@@ -155,9 +155,12 @@ public:
     static void setCellValue(HI::GUITestOpStatus& os, QWidget* parent, QVariant value, valueType type, GTGlobals::UseMethod method);
     static QStringList getAllParameters(HI::GUITestOpStatus& os);
     static QStringList getComboBoxParameterValues(HI::GUITestOpStatus& os, QString parameter);
+    static QList<QPair<QString, bool> > getCheckableComboboxValuesFromInputPortTable(HI::GUITestOpStatus &os, int tableIndex, const QString &slotName);
 
     static QTableWidget* getInputPortsTable(HI::GUITestOpStatus &os, int index);
     static QTableWidget* getOutputPortsTable(HI::GUITestOpStatus &os, int index);
+
+    static void scrollInputPortsWidgetToTableRow(HI::GUITestOpStatus &os, int tableIndex, const QString &slotName);
 
     static bool getGroupBoxChecked(HI::GUITestOpStatus &os, QWidget *box);
     static bool setGroupBoxChecked(HI::GUITestOpStatus &os, QWidget *box, bool newCheckStatus);

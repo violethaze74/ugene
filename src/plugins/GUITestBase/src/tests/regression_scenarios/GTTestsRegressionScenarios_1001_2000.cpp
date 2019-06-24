@@ -2882,31 +2882,17 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
 
     // Excepted state : Input "Annotations" slot of WS is not empty and contains annotations from ORF Finder
     GTUtilsWorkflowDesigner::click(os, "Write Sequence");
-    GTUtilsWorkflowDesigner::changeInputPortBoxHeight(os, 100);
 
-    QTableWidget* tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-    CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");
-
-    QRect visibleArea = tw->visualItemRect(tw->item(0, 1));
-    const QPoint globalVisibleArea = tw->viewport()->mapToGlobal(visibleArea.center());
-    GTMouseDriver::moveTo(globalVisibleArea);
-    GTMouseDriver::scroll(-5);
-    GTGlobals::sleep();
-
-    QRect rect = tw->visualItemRect(tw->item(2, 1));
-    QPoint globalP = tw->viewport()->mapToGlobal(rect.center()/* - QPoint(0, 3)*/);
-    GTMouseDriver::moveTo(globalP);
-    GTGlobals::sleep();
-    GTMouseDriver::click();
-    GTGlobals::sleep(500);
-    QComboBox* box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
-
-    QStandardItemModel *checkBoxModel = qobject_cast<QStandardItemModel *>(box->model());
-    CHECK_SET_ERR(checkBoxModel != NULL, "Unexpected checkbox model");
-
-    QStandardItem *firstItem = checkBoxModel->item(0);
-    CHECK_SET_ERR(firstItem->data(Qt::DisplayRole).toString() == "Set of annotations (by ORF Marker)", "Unexpected port");
-    CHECK_SET_ERR(Qt::Checked == firstItem->checkState(), "Unexpected check state");
+    const QList<QPair<QString, bool> > items = GTUtilsWorkflowDesigner::getCheckableComboboxValuesFromInputPortTable(os, 0, "Set of annotations");
+    bool found = false;
+    const QString expectedText = "Set of annotations (by ORF Marker)";
+    foreach (const auto &item, items) {
+        if (expectedText == item.first) {
+            found = true;
+            CHECK_SET_ERR(item.second, QString("'%1' is not checked").arg(expectedText));
+        }
+    }
+    CHECK_SET_ERR(found, QString("'%1' is not found among the values").arg(expectedText));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1253){
