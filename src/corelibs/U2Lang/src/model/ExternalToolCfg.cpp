@@ -88,9 +88,11 @@ bool ExternalProcessConfig::operator ==(const ExternalProcessConfig &other) cons
     CHECK_EQ(inputs.size(), other.inputs.size());
     CHECK_EQ(outputs.size(), other.outputs.size());
     CHECK_EQ(attrs.size(), other.attrs.size());
+    CHECK_EQ(cmdLine, other.cmdLine);
     CHECK_EQ(id, other.id);
     CHECK_EQ(name, other.name);
     CHECK_EQ(description, other.description);
+    CHECK_EQ(templateDescription, other.templateDescription);
     CHECK_EQ(useIntegratedTool, other.useIntegratedTool);
     CHECK_EQ(customToolPath, other.customToolPath);
     CHECK_EQ(integratedToolId, other.integratedToolId);
