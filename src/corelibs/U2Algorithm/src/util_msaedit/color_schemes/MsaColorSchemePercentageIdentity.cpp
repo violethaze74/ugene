@@ -51,19 +51,29 @@ MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *pare
     connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
 }
 
-QColor MsaColorSchemePercentageIdentity::getColor(int /*seq*/, int pos, char c) const {
+QColor MsaColorSchemePercentageIdentity::getBackgroundColor(int seq, int pos, char c) const {
+    Q_UNUSED(seq);
+
     updateCache();
     if (c == U2Msa::GAP_CHAR) {
         return QColor();
     }
     quint32 packedVal = indentCache[pos];
     MSAConsensusUtils::unpackConsensusCharsFromInt(packedVal, tmpChars, tmpRanges);
-    for (int i=0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         if (c == tmpChars[i]) {
             int range = tmpRanges[i];
             return colorsByRange[range];
         }
     }
+    return QColor();
+}
+
+QColor MsaColorSchemePercentageIdentity::getFontColor(int seq, int pos, char c) const {
+    Q_UNUSED(seq);
+    Q_UNUSED(pos);
+    Q_UNUSED(c);
+
     return QColor();
 }
 

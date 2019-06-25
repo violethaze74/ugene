@@ -225,7 +225,7 @@ bool MaHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleAlig
     if (seq == refSeq || isEmptyScheme(schemeId) ||
             ((refSeq == U2MsaRow::INVALID_ROW_ID) && !isGapScheme(schemeId) &&
             !highlightingScheme->getFactory()->isRefFree())) {
-        if (colorScheme->getColor(seq, pos, ma->charAt(seq, pos)) != QColor()) {
+        if (colorScheme->getBackgroundColor(seq, pos, ma->charAt(seq, pos)) != QColor()) {
             return true;
         }
     }

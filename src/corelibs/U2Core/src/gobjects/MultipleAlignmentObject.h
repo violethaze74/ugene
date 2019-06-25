@@ -66,6 +66,7 @@ public:
     const DNAAlphabet * getAlphabet() const;
     qint64 getLength() const;
     qint64 getNumRows() const;
+    const QList<MultipleAlignmentRow>& getRows() const;
     const MultipleAlignmentRow getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
     virtual char charAt(int seqNum, qint64 position) const = 0;

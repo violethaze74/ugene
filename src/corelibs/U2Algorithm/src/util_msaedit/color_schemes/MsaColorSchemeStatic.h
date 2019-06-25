@@ -34,7 +34,8 @@ class U2ALGORITHM_EXPORT MsaColorSchemeStatic : public MsaColorScheme {
 public:
     MsaColorSchemeStatic(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj, const QVector<QColor> &colorsPerChar);
 
-    QColor getColor(int seq, int pos, char c) const;
+    QColor getBackgroundColor(int seq, int pos, char c) const override;
+    QColor getFontColor(int seq, int pos, char c) const override;
 
 private:
     QVector<QColor> colorsPerChar;
