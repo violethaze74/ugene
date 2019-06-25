@@ -28,6 +28,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QSpinBox>
+#include <QStandardItemModel>
 #include <QTableView>
 #include <QTableWidget>
 #include <QTextEdit>
@@ -1149,6 +1150,29 @@ QTableWidget *GTUtilsWorkflowDesigner::getOutputPortsTable(GUITestOpStatus &os, 
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "scrollInputPortsWidgetToTableRow"
+void GTUtilsWorkflowDesigner::scrollInputPortsWidgetToTableRow(GUITestOpStatus &os, int tableIndex, const QString &slotName) {
+    QWidget *inputPortBox = GTWidget::findWidget(os, "inputPortBox");
+    QTableWidget *table = getInputPortsTable(os, tableIndex);
+
+    QList<QTableWidgetItem *> itemList = table->findItems(slotName, Qt::MatchFixedString);
+    GT_CHECK(!itemList.isEmpty(), QString("Can't find item for slot name '%1'").arg(slotName));
+
+    const QRect itemLocalRect = table->visualItemRect(itemList.first());
+    const QRect itemPortWidgetRect = QRect(table->viewport()->mapTo(inputPortBox, itemLocalRect.topLeft()),
+                                           table->viewport()->mapTo(inputPortBox, itemLocalRect.bottomRight()));
+
+    bool isCenterVisible = inputPortBox->rect().contains(itemPortWidgetRect.center());
+    if (isCenterVisible) {
+        return;
+    }
+
+    QScrollArea *inputScrollArea = GTWidget::findExactWidget<QScrollArea *>(os, "inputScrollArea", inputPortBox);
+    QScrollBar *scrollBar = inputScrollArea->verticalScrollBar();
+    GTScrollBar::moveSliderWithMouseToValue(os, scrollBar, itemPortWidgetRect.center().y());
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getAllParameters"
 QStringList GTUtilsWorkflowDesigner::getAllParameters(HI::GUITestOpStatus &os){
     QStringList result;
@@ -1195,6 +1219,38 @@ QStringList GTUtilsWorkflowDesigner::getComboBoxParameterValues(HI::GUITestOpSta
     int valuesCount = box->count();
     for (int i = 0; i < valuesCount; i++) {
         result << box->itemText(i);
+    }
+
+    return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getCheckableComboboxValuesFromInputPortTable"
+QList<QPair<QString, bool> > GTUtilsWorkflowDesigner::getCheckableComboboxValuesFromInputPortTable(GUITestOpStatus &os, int tableIndex, const QString &slotName) {
+    QList<QPair<QString, bool> > result;
+
+    QTableWidget *table = getInputPortsTable(os, tableIndex);
+    GT_CHECK_RESULT(nullptr != table, "table is nullptr", result);
+
+    scrollInputPortsWidgetToTableRow(os, tableIndex, slotName);
+
+    QList<QTableWidgetItem *> itemList = table->findItems(slotName, Qt::MatchFixedString);
+    GT_CHECK_RESULT(!itemList.isEmpty(), QString("Can't find item for slot name '%1'").arg(slotName), result);
+    const int row = itemList.first()->row();
+
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, row));
+    GTMouseDriver::click();
+    GTGlobals::sleep();
+
+    QComboBox *box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
+    GT_CHECK_RESULT(box, "QComboBox not found. Widget in this cell might be not QComboBox", result);
+
+    QStandardItemModel *checkBoxModel = qobject_cast<QStandardItemModel *>(box->model());
+    GT_CHECK_RESULT(nullptr != checkBoxModel, "Unexpected checkbox model", result);
+
+    for (int i = 0; i < checkBoxModel->rowCount(); ++i) {
+        QStandardItem *item = checkBoxModel->item(i);
+        result << qMakePair(item->data(Qt::DisplayRole).toString(), Qt::Checked == item->checkState());
     }
 
     return result;

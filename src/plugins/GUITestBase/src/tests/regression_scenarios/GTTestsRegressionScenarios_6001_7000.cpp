@@ -26,6 +26,7 @@
 #include <QRadioButton>
 #include <QSpinBox>
 #include <QTableWidget>
+#include <QWizard>
 
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -42,6 +43,7 @@
 #include <primitives/GTTableView.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -102,13 +104,14 @@
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 
 namespace U2 {
 
@@ -2273,6 +2276,191 @@ GUI_TEST_CLASS_DEFINITION(test_6459) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2738"), "Results string not match");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6488_1) {
+//    1. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click "Create element with command line tool" button on the toolbar.
+//    3. Fill the dialog with the following data:
+//        Element name: "UGENE-6488 test element"
+//        Command line tool: Integrated external tool "python"
+//        No inputs, parameters and outputs
+//        Command: "just a command"
+//        Element description on the scene: "description on the scene"
+//        Detailed element description: "detailed element description"
+//    4. Accept the dialog.
+//    Expected state: the element was created and put on the scene.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "UGENE-6488 test element";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.tool = "python";
+    settings.command = "just a command";
+    settings.description = "detailed element description";
+    settings.prompter = "description on the scene";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with command line tool");
+
+//    5. Click on the element on the scene.
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1");
+
+//    6. Call a context menu on the element on the scene.
+//    7. Select "Edit configuration..." menu item.
+//    8. Go to the "Command" page in the wizard.
+//    9. Set "a modified command" text as command.
+//    10. Go to the last page, accept the dialog.
+    class ModifyScenario : public CustomScenario {
+        void run(GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QWizard *wizard = qobject_cast<QWizard *>(dialog);
+            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teCommand", dialog), "a modified command");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+            GTWidget::click(os, wizard->button(QWizard::FinishButton));
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1", QPoint(), Qt::RightButton);
+
+//    11. Edit the element again.
+//    12. Go to the "Command" page in the wizard.
+//    Expected state: the command is "a modified command".
+    class CheckScenario : public CustomScenario {
+        void run(GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QWizard *wizard = qobject_cast<QWizard *>(dialog);
+            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            const QString expectedText = "a modified command";
+            const QString actualText = GTTextEdit::getText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teCommand", dialog));
+            CHECK_SET_ERR(actualText == expectedText, QString("Unexpected command text: expected '%1', got '%2'").arg(expectedText).arg(actualText));
+
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::addElement(os, "UGENE-6488 test element 1");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1", QPoint(), Qt::RightButton);
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6488_2) {
+//    1. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click "Create element with command line tool" button on the toolbar.
+//    3. Fill the dialog with the following data:
+//        Element name: "UGENE-6488 test element"
+//        Command line tool: Integrated external tool "python"
+//        No inputs, parameters and outputs
+//        Command: "just a command"
+//        Element description on the scene: "description on the scene"
+//        Detailed element description: "detailed element description"
+//    4. Accept the dialog.
+//    Expected state: the element was created and put on the scene.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "UGENE-6488 test element 2";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.tool = "python";
+    settings.command = "just a command";
+    settings.description = "detailed element description";
+    settings.prompter = "description on the scene";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with command line tool");
+
+//    5. Click on the element on the scene.
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2");
+
+//    6. Call a context menu on the element on the scene.
+//    7. Select "Edit configuration..." menu item.
+//    8. Go to the "Element appearance" page in the wizard.
+//    9. Set "a modified description on the scene" text as element description on the scene.
+//    10. Go to the last page, accept the dialog.
+    class ModifyScenario : public CustomScenario {
+        void run(GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QWizard *wizard = qobject_cast<QWizard *>(dialog);
+            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "tePrompter", dialog), "a modified description on the scene");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+            GTWidget::click(os, wizard->button(QWizard::FinishButton));
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", QPoint(), Qt::RightButton);
+
+//    11. Edit the element again.
+//    12. Go to the "Element appearance" page in the wizard.
+//    Expected state: the element description on the scene is "a modified description on the scene".
+    class CheckScenario : public CustomScenario {
+        void run(GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QWizard *wizard = qobject_cast<QWizard *>(dialog);
+            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            const QString expectedText = "a modified description on the scene";
+            const QString actualText = GTTextEdit::getText(os, GTWidget::findExactWidget<QTextEdit *>(os, "tePrompter", dialog));
+            CHECK_SET_ERR(actualText == expectedText, QString("Unexpected command text: expected '%1', got '%2'").arg(expectedText).arg(actualText));
+
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::addElement(os, "UGENE-6488 test element 2");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", QPoint(), Qt::RightButton);
+
+    GTGlobals::sleep();
 }
 
 } // namespace GUITest_regression_scenarios
