@@ -92,8 +92,6 @@ WorkflowEditor::WorkflowEditor(WorkflowView *p)
     outputPortBox->setVisible(true);
     connect(outputPortBox, SIGNAL(toggled(bool)), SLOT(sl_changeVisibleOutput(bool)));
 
-    caption->setMinimumHeight(nameEdit->sizeHint().height());
-
     actorModel = new ActorCfgModel(this, owner);
     proxyModel = new ActorCfgFilterProxyModel(this);
     proxyModel->setSourceModel(actorModel);
