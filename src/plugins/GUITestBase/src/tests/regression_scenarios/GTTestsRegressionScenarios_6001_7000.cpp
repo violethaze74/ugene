@@ -2236,8 +2236,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
             QWidget* dialog = QApplication::activeModalWidget();
 
             QSpinBox *maxDistanceBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "maxDistBox", dialog));
-            GTSpinBox::setValue(os, maxDistanceBox, 1, GTGlobals::UseKeyBoard);
-            CHECK_SET_ERR(GTSpinBox::getValue(os, maxDistanceBox) == 1,"Max distance value isn't 1 bp");
+            GTSpinBox::checkLimits(os, maxDistanceBox, 0, 1000000);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
