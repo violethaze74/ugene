@@ -275,6 +275,7 @@ void WorkflowPaletteElements::createMenu(QMenu *menu) {
 void WorkflowPaletteElements::setContent(ActorPrototypeRegistry* reg) {
     QMapIterator<Descriptor, QList<ActorPrototype*> > it(reg->getProtos());
     categoryMap.clear();
+    actionMap.clear();
     while (it.hasNext()) {
         it.next();
         QTreeWidgetItem* category = NULL;
