@@ -47,7 +47,8 @@ public:
     AppSettingsGUIPageState* getSavedState();
     void saveState(AppSettingsGUIPageState* s);
     AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* state);
-    const QString& getHelpPageId() const { return helpPageId; };
+    const QString& getHelpPageId() const;
+
 private:
     static const QString helpPageId;
 };
@@ -55,7 +56,7 @@ private:
 class ExternalToolSupportSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
-    QList<ExternalTool*>    externalTools;
+    QList<ExternalTool *> externalTools;
 };
 
 class ExternalToolSupportSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_ETSSettingsWidget {
@@ -69,8 +70,10 @@ public:
 
 private:
     QWidget* createPathEditor(QWidget *parent, const QString& path) const;
+    QTreeWidgetItem *findToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName);
+    QTreeWidgetItem *createToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName, const QIcon &icon);
     QTreeWidgetItem* insertChild(QTreeWidgetItem* rootItem, const QString& name, int pos, bool isModule = false);
-    ExternalTool* isMasterWithModules(const QList<ExternalTool*>& toolsList) const;
+    static ExternalTool* isMasterWithModules(const QList<ExternalTool*>& toolsList);
     void setToolState(ExternalTool* tool);
     QString getToolStateDescription(ExternalTool* tool) const;
     void setDescription(ExternalTool* tool);
@@ -86,10 +89,14 @@ private slots:
     void sl_toolValidationStatusChanged(bool isValid);
     void sl_validationComplete();
     void sl_onClickLink(const QUrl& url);
+    void sl_importCustomToolButtonClicked();
+    void sl_deleteCustomToolButtonClicked();
+    void sl_externalToolAdded(const QString &id);
+    void sl_externalToolIsAboutToBeRemoved(const QString &id);
 
 private:
     QMap<QString, ExternalToolInfo> externalToolsInfo;
-    QMap<QString, QTreeWidgetItem*> externalToolsItems;
+    QMap<QString, QTreeWidgetItem *> externalToolsItems;
     QString getToolLink(const QString &toolName) const;
     mutable int buttonsWidth;
 

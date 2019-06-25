@@ -58,33 +58,33 @@ class U2CORE_EXPORT ExternalTool : public QObject {
     Q_OBJECT
 public:
     ExternalTool(QString name, QString path = "");
-    ~ExternalTool();
 
-    const QString&      getId()  const { return name; }
-    const QString&      getName()  const { return name; }
-    const QString&      getPath()  const { return path; }
-    const QIcon&        getIcon()  const { return icon; }
-    const QIcon&        getGrayIcon()  const { return grayIcon; }
-    const QIcon&        getWarnIcon()  const { return warnIcon; }
-    const QString&      getDescription()  const { return description; }
-    const QString&      getToolRunnerProgram()  const { return toolRunnerProgramm; }
-    const virtual QStringList  getToolRunnerAdditionalOptions() { return QStringList(); }
-    const QString&      getExecutableFileName()  const { return executableFileName; }
-    const QStringList&  getValidationArguments()  const { return validationArguments; }
-    const QString&      getValidMessage()  const { return validMessage; }
-    const QString&      getVersion()  const { return version; }
-    const QRegExp&      getVersionRegExp()  const { return versionRegExp; }
-    const QString&      getToolKitName()  const { return toolKitName; }
-    const StrStrMap&    getErrorDescriptions()  const { return errorDescriptions; }
+    const QString&      getId() const;
+    const QString&      getName() const;
+    const QString&      getPath() const;
+    const QIcon&        getIcon() const;
+    const QIcon&        getGrayIcon() const;
+    const QIcon&        getWarnIcon() const;
+    const QString&      getDescription() const;
+    const QString&      getToolRunnerProgram() const;
+    virtual QStringList getToolRunnerAdditionalOptions() const;
+    const QString&      getExecutableFileName() const;
+    const QStringList&  getValidationArguments() const;
+    const QString&      getValidMessage() const;
+    const QString&      getVersion() const;
+    const QString&      getPredefinedVersion() const;
+    const QRegExp&      getVersionRegExp() const;
+    const QString&      getToolKitName() const;
+    const StrStrMap&    getErrorDescriptions() const;
     const StrStrMap&    getAdditionalInfo() const;
     virtual QStringList getAdditionalPaths() const;
 
-    virtual void        getAdditionalParameters(const QString& output) { Q_UNUSED(output) }
+    virtual void        extractAdditionalParameters(const QString& output);
     virtual void        performAdditionalChecks(const QString& toolPath);
 
     ExternalToolValidation getToolValidation();
-    const QList<ExternalToolValidation>& getToolAdditionalValidations() const { return additionalValidators; }
-    const QStringList& getDependencies() const { return dependencies; }
+    const QList<ExternalToolValidation>& getToolAdditionalValidations() const;
+    const QStringList& getDependencies() const;
     const QString& getAdditionalErrorMessage() const;
     void setAdditionalErrorMessage(const QString& message);
     bool hasAdditionalErrorMessage() const;
@@ -94,9 +94,10 @@ public:
     void setVersion(const QString& _version);
     void setAdditionalInfo(const StrStrMap &additionalInfo);
 
-    bool isValid() const { return isValidTool; }
+    bool isValid() const;
     bool isMuted() const;
-    bool isModule() const { return isModuleTool; }
+    bool isModule() const;
+    bool isCustom() const;
 
 signals:
     void si_pathChanged();
@@ -109,11 +110,12 @@ protected:
     QIcon       grayIcon;               // not set tool icon
     QIcon       warnIcon;               // invalid tool icon
     QString     description;            // tool description
-    QString     toolRunnerProgramm;     // starter program (e.g. python for scripts)
+    QString     toolRunnerProgram;      // starter program (e.g. python for scripts)
     QString     executableFileName;     // executable file name (without path)
     QStringList validationArguments;    // arguments to validation run (such as --version)
     QString     validMessage;           // expected message in the validation run output
     QString     version;                // tool version
+    QString     predefinedVersion;      // tool's predefined version, this value is used if tool is not validated and there is no possibility to get actual version
     QRegExp     versionRegExp;          // RegExp to get the version from the validation run output
     bool        isValidTool;            // tool state
     QString     toolKitName;            // toolkit which includes the tool
@@ -124,6 +126,7 @@ protected:
     QString     additionalErrorMesage;  // a string, which contains an error message, specific for each tool
     bool        muted;                  // a muted tool doesn't write its validation error to the log
     bool        isModuleTool;           // a module tool is a part of another external tool
+    bool        isCustomTool;           // the tool is described in a user-written config file and imported to UGENE
 
 }; // ExternalTool
 
@@ -215,6 +218,10 @@ public:
 
     void setManager(ExternalToolManager* manager);
     ExternalToolManager* getManager() const;
+
+signals:
+    void si_toolAdded(const QString &id);
+    void si_toolIsAboutToBeRemoved(const QString &id);
 
 protected:
     QList<ExternalTool*>            registryOrder;

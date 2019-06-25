@@ -36,7 +36,7 @@ public:
         x64
     };
     JavaSupport(const QString &name, const QString &path = "");
-    void getAdditionalParameters(const QString& output);
+    void extractAdditionalParameters(const QString& output);
     Architecture getArchitecture() const;
 
 private slots:

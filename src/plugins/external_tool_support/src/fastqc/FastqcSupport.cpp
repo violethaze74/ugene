@@ -52,7 +52,7 @@ FastQCSupport::FastQCSupport(const QString& name, const QString& path) : Externa
     versionRegExp = QRegExp("FastQC v(\\d+.\\d+.\\d+)");
     toolKitName = "FastQC";
 
-    toolRunnerProgramm = ET_PERL;
+    toolRunnerProgram = ET_PERL;
     dependencies << ET_JAVA;
     dependencies << ET_PERL;
 

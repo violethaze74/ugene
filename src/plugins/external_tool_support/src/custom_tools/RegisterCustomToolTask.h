@@ -19,30 +19,32 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SNPEFF_SUPPORT_H_
-#define _U2_SNPEFF_SUPPORT_H_
+#ifndef _U2_REGISTER_CUSTOM_TOOL_TASK_H_
+#define _U2_REGISTER_CUSTOM_TOOL_TASK_H_
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <QDomDocument>
 
-#define ET_SNPEFF "SnpEff"
+#include <U2Core/Task.h>
 
 namespace U2 {
 
-class SnpEffDatabaseListModel;
+class CustomExternalTool;
 
-class SnpEffSupport : public ExternalTool {
+class RegisterCustomToolTask : public Task {
     Q_OBJECT
 public:
-    SnpEffSupport(const QString& name, const QString& path = "");
+    RegisterCustomToolTask(const QDomDocument &config, const QString &url);
 
-    QStringList getToolRunnerAdditionalOptions() const;
+    CustomExternalTool *getTool() const;
 
-    static SnpEffDatabaseListModel* databaseModel;
+private:
+    void run() override;
 
-private slots:
-    void sl_validationStatusChanged(bool isValid);
-    void sl_databaseListIsReady();
+    const QDomDocument config;
+    const QString url;
+    CustomExternalTool *registeredTool;
 };
 
-}//namespace
-#endif // _U2_SNPEFF_SUPPORT_H_
+}   // namespace U2
+
+#endif // _U2_REGISTER_CUSTOM_TOOL_TASK_H_

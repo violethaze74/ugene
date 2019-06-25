@@ -19,30 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SNPEFF_SUPPORT_H_
-#define _U2_SNPEFF_SUPPORT_H_
+#ifndef _U2_IMPORT_EXTERNAL_TOOL_DIALOG_H_
+#define _U2_IMPORT_EXTERNAL_TOOL_DIALOG_H_
 
-#include <U2Core/ExternalToolRegistry.h>
-
-#define ET_SNPEFF "SnpEff"
+#include "ui_ImportExternalToolDialog.h"
 
 namespace U2 {
 
-class SnpEffDatabaseListModel;
-
-class SnpEffSupport : public ExternalTool {
+class ImportExternalToolDialog : public QDialog, public Ui_ImportExternalToolDialog {
     Q_OBJECT
 public:
-    SnpEffSupport(const QString& name, const QString& path = "");
-
-    QStringList getToolRunnerAdditionalOptions() const;
-
-    static SnpEffDatabaseListModel* databaseModel;
+    ImportExternalToolDialog(QWidget *parent);
 
 private slots:
-    void sl_validationStatusChanged(bool isValid);
-    void sl_databaseListIsReady();
+    void sl_browse();
+    void sl_pathChanged();
+    void accept();
 };
 
-}//namespace
-#endif // _U2_SNPEFF_SUPPORT_H_
+}   // namespace U2
+
+#endif // _U2_IMPORT_EXTERNAL_TOOL_DIALOG_H_

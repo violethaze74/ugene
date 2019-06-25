@@ -52,7 +52,7 @@ CutadaptSupport::CutadaptSupport(const QString& name, const QString& path)
         dpr->registerEntry(dp);
     }
 
-    toolRunnerProgramm = ET_PYTHON;
+    toolRunnerProgram = ET_PYTHON;
     dependencies << ET_PYTHON;
 }
 

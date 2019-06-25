@@ -43,14 +43,14 @@ Bowtie2Support::Bowtie2Support(const QString& name, const QString& path /* = */ 
     versionRegExp = QRegExp("version (\\d+\\.\\d+\\.\\d+[.]{0,1}[\\d+]{0,1})");
 
     if (name == ET_BOWTIE2_ALIGN) { // Bowtie2-align
-        toolRunnerProgramm = ET_PERL;
+        toolRunnerProgram = ET_PERL;
         executableFileName = "bowtie2";
         validationArguments << "--help";
         validMessage = "bowtie2";
         description = tr("<i>Bowtie 2 aligner</i> takes a Bowtie 2 index"
                          " and a set of sequencing read files and outputs a set of alignments.");
     } else if (name == ET_BOWTIE2_BUILD) { // Bowtie2-build
-        toolRunnerProgramm = ET_PYTHON;
+        toolRunnerProgram = ET_PYTHON;
         executableFileName = "bowtie2-build";
         validationArguments << "--version";
         validMessage = "bowtie2-build";
@@ -62,7 +62,7 @@ Bowtie2Support::Bowtie2Support(const QString& name, const QString& path /* = */ 
                          " The original sequence files are no longer used by <i>Bowtie 2</i>"
                          " once the index is built.");
     } else if (name == ET_BOWTIE2_INSPECT) { // Bowtie2-inspect
-        toolRunnerProgramm = ET_PYTHON;
+        toolRunnerProgram = ET_PYTHON;
         executableFileName = "bowtie2-inspect";
         validationArguments << "--version";
         validMessage = "bowtie2-inspect";
