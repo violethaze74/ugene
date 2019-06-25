@@ -2189,7 +2189,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
     //2. Place repeat worker
     GTUtilsWorkflowDesigner::addElement(os, "Find Repeats");
 
-    //Expected state: default value for "Apply 'Max distance' attribute" is False
+    //Expected state: default value for "Apply 'Max distance' attribute" is True
     GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Find Repeats"));
     QString defaultAttr = GTUtilsWorkflowDesigner::getParameter(os,  "Apply 'Max distance' attribute");
     CHECK_SET_ERR(defaultAttr == "True","Attribute value isn't 'True'");
@@ -2256,7 +2256,7 @@ GUI_TEST_CLASS_DEFINITION(test_6398) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6459) {
-    //1. Open "data/samples/Genbank/murine.gb".
+    //1. Open "data/samples/Genbank/human_T1.fa".
     //2. Open "Search in Sequence" options panel tab.
     //3. Set "Substitute" algorithm.Check "Search with ambiguous bases" checkbox.
     //4. Ensure that the search is performed on both strands(it is the default value).
