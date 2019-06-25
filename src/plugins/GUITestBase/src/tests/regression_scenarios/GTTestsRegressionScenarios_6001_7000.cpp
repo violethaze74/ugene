@@ -2243,7 +2243,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
     };
 
     //5. Open repeat finder dialog
-    //Expected state: minimum value for max distance combobox is 1
+    //Expected state: minimum value for max distance combobox is 0
     GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, new Custom()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find repeats...", GTGlobals::UseMouse);
     GTGlobals::sleep();
