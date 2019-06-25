@@ -49,7 +49,7 @@ void MACSSupport::initialize() {
 
     executableFileName = "macs14.py";
 
-    toolRunnerProgramm = ET_PYTHON;
+    toolRunnerProgram = ET_PYTHON;
     dependencies << ET_PYTHON;
 
     validMessage = "macs14.py 1.4.2 20120305";

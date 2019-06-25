@@ -32,6 +32,7 @@
 namespace U2 {
 
 class ExternalToolsValidateTask;
+class Task;
 
 /**
   * Manager can sort an external tools list by their dependencies,
@@ -42,7 +43,6 @@ class ExternalToolManagerImpl : public ExternalToolManager {
     Q_OBJECT
 public:
     ExternalToolManagerImpl();
-    virtual ~ExternalToolManagerImpl();
 
     virtual void start();
     virtual void stop();
@@ -61,12 +61,15 @@ public:
 signals:
     void si_validationComplete(const QStringList& toolNames, QObject* receiver = nullptr, const char* slot = nullptr);
 
-    private slots:
+private slots:
     void sl_checkTaskStateChanged();
     void sl_validationTaskStateChanged();
     void sl_searchTaskStateChanged();
     void sl_toolValidationStatusChanged(bool isValid);
     void sl_pluginsLoaded();
+    void sl_customToolsLoaded(Task *loadTask);
+    void sl_customToolImported(const QString &toolId);
+    void sl_customToolRemoved(const QString &toolId);
 
 private:
     void innerStart();
@@ -74,6 +77,7 @@ private:
     QString addTool(ExternalTool* tool);
     bool dependenciesAreOk(const QString& toolName);
     void validateTools(const StrStrMap& toolPaths = StrStrMap(), ExternalToolValidationListener* listener = nullptr);
+    void loadCustomTools();
     void searchTools();
     void setToolPath(const QString& toolName, const QString& toolPath);
     void setToolValid(const QString& toolName, bool isValid);

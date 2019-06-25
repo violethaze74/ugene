@@ -93,6 +93,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/globals/ClipboardController.h \
            src/globals/Counter.h \
            src/globals/CredentialsAsker.h \
+           src/globals/CustomExternalTool.h \
            src/globals/DataBaseRegistry.h \
            src/globals/DataPathRegistry.h \
            src/globals/DBXRefRegistry.h \
@@ -332,6 +333,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/globals/ClipboardController.cpp \
            src/globals/Counter.cpp \
            src/globals/CredentialsAsker.cpp \
+           src/globals/CustomExternalTool.cpp \
            src/globals/DataBaseRegistry.cpp \
            src/globals/DataPathRegistry.cpp \
            src/globals/DBXRefRegistry.cpp \

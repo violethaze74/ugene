@@ -28,6 +28,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GUrlUtils.h>
@@ -559,47 +560,6 @@ LaunchExternalToolTask::~LaunchExternalToolTask() {
     }
 }
 
-// a function from "qprocess.cpp"
-QStringList LaunchExternalToolTask::parseCombinedArgString(const QString &program)
-{
-    QStringList args;
-    QString tmp;
-    int quoteCount = 0;
-    bool inQuote = false;
-
-    // handle quoting. tokens can be surrounded by double quotes
-    // "hello world". three consecutive double quotes represent
-    // the quote character itself.
-    for (int i = 0; i < program.size(); ++i) {
-        if (program.at(i) == QLatin1Char('"') || program.at(i) == QLatin1Char('\'')) {
-            ++quoteCount;
-            if (quoteCount == 3) {
-                // third consecutive quote
-                quoteCount = 0;
-                tmp += program.at(i);
-            }
-            continue;
-        }
-        if (quoteCount) {
-            if (quoteCount == 1)
-                inQuote = !inQuote;
-            quoteCount = 0;
-        }
-        if (!inQuote && program.at(i).isSpace()) {
-            if (!tmp.isEmpty()) {
-                args += tmp;
-                tmp.clear();
-            }
-        } else {
-            tmp += program.at(i);
-        }
-    }
-    if (!tmp.isEmpty())
-        args += tmp;
-
-    return args;
-}
-
 #define WIN_LAUNCH_CMD_COMMAND "cmd /C "
 #define START_WAIT_MSEC 3000
 
@@ -616,7 +576,7 @@ void LaunchExternalToolTask::run() {
         externalProcess->setStandardOutputFile(output);
     }
 
-    QStringList execStringArgs = parseCombinedArgString(execString);
+    QStringList execStringArgs = ExternalToolSupportUtils::splitCmdLineArguments(execString);
     QString execStringProg = execStringArgs.takeAt(0);
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();

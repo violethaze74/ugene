@@ -42,7 +42,7 @@ KrakenSupport::KrakenSupport(const QString &name)
     validMessage = "Kraken version ";
     versionRegExp = QRegExp("Kraken version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");
     dependencies << "perl";
-    toolRunnerProgramm = "perl";
+    toolRunnerProgram = "perl";
 
     if (BUILD_TOOL == name) {
         initBuild();

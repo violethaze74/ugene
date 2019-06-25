@@ -87,7 +87,6 @@ public:
 
 private:
     QMap<QString, DataConfig> outputUrls;
-    QStringList parseCombinedArgString(const QString &program);
 
     QString execString;
 };

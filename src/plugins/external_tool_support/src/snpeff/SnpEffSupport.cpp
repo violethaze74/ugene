@@ -56,13 +56,13 @@ SnpEffSupport::SnpEffSupport(const QString& name, const QString& path) : Externa
     validationArguments << "-h";
     toolKitName = "SnpEff";
 
-    toolRunnerProgramm = ET_JAVA;
+    toolRunnerProgram = ET_JAVA;
     dependencies << ET_JAVA;
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
 }
 
-const QStringList SnpEffSupport::getToolRunnerAdditionalOptions() {
+QStringList SnpEffSupport::getToolRunnerAdditionalOptions() const {
     QStringList result;
     AppResourcePool* s = AppContext::getAppSettings()->getAppResourcePool();
     CHECK(s != NULL, result);

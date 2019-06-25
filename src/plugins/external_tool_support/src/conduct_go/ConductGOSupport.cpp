@@ -46,7 +46,7 @@ void ConductGOSupport::initialize() {
 
     executableFileName = "go_analysis.py";
 
-    toolRunnerProgramm = ET_PYTHON;
+    toolRunnerProgram = ET_PYTHON;
     dependencies << ET_PYTHON
                  << ET_R
                  << ET_R_GOSTATS

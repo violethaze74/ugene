@@ -46,7 +46,7 @@ VcfConsensusSupport::VcfConsensusSupport(const QString &name, const QString &pat
     versionRegExp = QRegExp("Version: (\\d+.\\d+.\\d+)");
     toolKitName = "VCFtools";
 
-    toolRunnerProgramm = ET_PERL;
+    toolRunnerProgram = ET_PERL;
     dependencies << ET_PERL << ET_TABIX;
 }
 

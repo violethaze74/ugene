@@ -59,7 +59,7 @@ JavaSupport::JavaSupport(const QString &name, const QString &path)
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 }
 
-void JavaSupport::getAdditionalParameters(const QString& output) {
+void JavaSupport::extractAdditionalParameters(const QString& output) {
     Architecture architecture = x32;
     if (output.contains("64-Bit")) {
         architecture = x64;
