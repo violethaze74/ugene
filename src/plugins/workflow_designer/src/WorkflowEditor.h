@@ -75,6 +75,7 @@ private slots:
     void handleDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight);
     void editingLabelFinished();
     void sl_showPropDoc();
+    void sl_changeVisibleParameters(bool);
     void sl_changeVisibleInput(bool);
     void sl_changeVisibleOutput(bool);
     void sl_showDoc(const QString&);
