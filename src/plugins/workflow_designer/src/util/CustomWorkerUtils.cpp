@@ -48,17 +48,18 @@ bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QSt
 }
 
 bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const QString &toolKey) {
+    bool result = false;
     QString value = specialTools.value(toolKey, nullptr);
     if (!value.isNull() && !value.isEmpty()) {
-        QRegularExpression regex1 = QRegularExpression("([^\\\\]|^)%" + value + "%");
-        if (cmd.indexOf(regex1) >= 0) {
+        QRegularExpression regex1 = QRegularExpression("([^\\\\]|[^\\\\](\\\\\\\\)+|^)%" + value + "%");
+        while (cmd.indexOf(regex1) >= 0) {
             ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName(toolKey);
             CHECK(tool, false);
             cmd.replace(regex1, "\\1\"" + tool->getPath() + "\"");
-            return true;
+            result |= true;
         }
     }
-    return false;
+    return result;
 }
 
 void CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(QString &cmd) {
