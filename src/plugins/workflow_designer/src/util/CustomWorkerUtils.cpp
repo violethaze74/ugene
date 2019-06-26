@@ -41,7 +41,7 @@ QMap<QString, QString> CustomWorkerUtils::specialTools {{"java", "UGENE_JAVA"},
 bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QString &toolKey) {
     QString value = specialTools.value(toolKey);
     if (!value.isNull() && !value.isEmpty()) {
-        QRegularExpression regex1 = QRegularExpression("([^\\\\]|^)%" + value + "%");
+        QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + value + "%"));
         return cmd.indexOf(regex1) >= 0;
     }
     return false;
@@ -49,9 +49,9 @@ bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QSt
 
 bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const QString &toolKey) {
     bool result = false;
-    QString value = specialTools.value(toolKey, nullptr);
+    QString value = specialTools.value(toolKey);
     if (!value.isNull() && !value.isEmpty()) {
-        QRegularExpression regex1 = QRegularExpression("([^\\\\]|[^\\\\](\\\\\\\\)+|^)%" + value + "%");
+        QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + value + "%"));
         while (cmd.indexOf(regex1) >= 0) {
             ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName(toolKey);
             CHECK(tool, false);
