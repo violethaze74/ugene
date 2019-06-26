@@ -49,7 +49,7 @@ namespace U2 {
 /**********************************************/
 
 #ifdef Q_OS_MAC
-const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; margin-bottom: -8px; margin-top: -5px; font-size: 20pt; padding-bottom: 10px; color: #0c3762}";
+const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; margin-bottom: -5px; margin-top: -5px; font-size: 20pt; padding-bottom: 10px; color: #0c3762}";
 #else
 const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -6px; margin-bottom: -5px; margin-top: -5px; font-size: 16pt; padding-bottom: 10px; color: #0c3762}";
 #endif
@@ -225,12 +225,12 @@ void CreateCmdlineBasedWorkerWizard::init() {
     addPage(new CreateCmdlineBasedWorkerWizardElementAppearancePage(initialConfig));
     addPage(new CreateCmdlineBasedWorkerWizardSummaryPage());
 
-    setWindowTitle(tr("Configure Element with Command Line Tool"));
+    setWindowTitle(tr("Configure Element with External Tool"));
     setObjectName("CreateExternalProcessWorkerDialog");
     setWizardStyle(ClassicStyle);
     setOption(IndependentPages);
 
-    DialogUtils::setWizardMinimumSize(this, QSize(600, 420));
+    DialogUtils::setWizardMinimumSize(this, QSize(780, 470));
 }
 
 ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() const {
@@ -295,7 +295,7 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initializePage() {
             cbIntegratedTools->setCurrentIndex(index);
         }
     } else {
-        QString name = "Custom cmdline worker";
+        QString name = "Custom Element";
         makeUniqueWorkerName(name);
         leName->setText(name);
     }

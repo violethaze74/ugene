@@ -70,6 +70,7 @@ void DialogUtils::setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize
         bestSize = bestSize.expandedTo(page->size());
     }
     wizard->setMinimumSize(bestSize);
+    wizard->adjustSize();
 }
 
 

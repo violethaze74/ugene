@@ -14,6 +14,21 @@
    <string>WizardPage</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinimumSize</enum>
+   </property>
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>4</number>
+   </property>
+   <property name="rightMargin">
+    <number>8</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QLabel" name="lblTitle">
      <property name="text">
@@ -31,7 +46,11 @@
        <property name="text">
         <string>To output data from this element to other workflow element(s) add one or several port(s) of the required type(s).
 
-It is assumed that the command-line tool creates some file(s). This element reads the data according to the specified type and format. Alternatively, it is possible to pass the output file/folder URL, see the &quot;String&quot; type, &quot;Output URL&quot; argument value.</string>
+It is assumed that the external tool creates some file(s). This element reads the file(s) according to the specified type and format, and pass the data to the next element in the workflow. Alternatively, it is possible to pass the output file or folder URL, see the &quot;String&quot; type, &quot;Output URL&quot; argument value.
+</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignJustify|Qt::AlignVCenter</set>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -99,7 +118,7 @@ It is assumed that the command-line tool creates some file(s). This element read
       </palette>
      </property>
      <property name="text">
-      <string>Error: please use unique argument names for all outputs!</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Error: please use unique argument names for all ports and parameters!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
