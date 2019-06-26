@@ -1690,7 +1690,7 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
     //4. Click this menu item.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit configuration"));
 
-    //Expected state: the last page of the "Create Element with Command Line Tool" dialog appeared.
+    //Expected state: the last page of the "Create Element with External Tool" dialog appeared.
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
@@ -1730,7 +1730,7 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
 
             //Expected state: message box with notification about structure changes appears. Thre buttons presented: {Reset}, {No}, {Yes}.
             //7. Click {Reset} button.
-            //Expected state: "Create Element with Command Line Tool" dialog not closed. Changes from point 7 are reset.
+            //Expected state: "Create Element with External Tool" dialog not closed. Changes from point 7 are reset.
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, reset ? QMessageBox::Reset : QMessageBox::Yes));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
             if (reset) {
@@ -1775,7 +1775,7 @@ GUI_TEST_CLASS_DEFINITION(test_0808) {
 
 GUI_TEST_CLASS_DEFINITION(test_0812) {
     // 1. Create a "seq.txt" file in <some_path> location.
-    // 2. Click "Create element with command line tool".
+    // 2. Click "Create element with external tool".
     // 3. Input a name.
     // 4. Specify a slot.
     // 5. There is no need to add a parameter.
@@ -2148,7 +2148,7 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
     settings.command = "<My tool> $in";
     //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Continue"));
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with command line tool");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
 
 //    2) Right click at this worker on the palette -> Edit.
 //    3) Set a new name for the worker ("test1", for example).
@@ -2738,7 +2738,7 @@ GUI_TEST_CLASS_DEFINITION(test_0908) {
 
     GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "test_0908");
 
-    //2) Click "Create element with command line tool"
+    //2) Click "Create element with external tool"
     //3) input name "test"
     //4) input data : "in1" and "in2" of FASTA
     //5) output data : "out1" of FASTA

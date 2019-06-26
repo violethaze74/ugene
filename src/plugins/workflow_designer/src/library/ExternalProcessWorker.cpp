@@ -564,7 +564,7 @@ LaunchExternalToolTask::~LaunchExternalToolTask() {
 #define START_WAIT_MSEC 3000
 
 void LaunchExternalToolTask::run() {
-    GCOUNTER(cvar, tvar, "A task for element with command line tool is launched");
+    GCOUNTER(cvar, tvar, "A task for an element with external tool is launched");
     QProcess *externalProcess = new QProcess();
     if(execString.contains(">")) {
         QString output = execString.split(">").last();

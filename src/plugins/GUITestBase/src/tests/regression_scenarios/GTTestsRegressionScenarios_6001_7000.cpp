@@ -2281,7 +2281,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
 //    1. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-//    2. Click "Create element with command line tool" button on the toolbar.
+//    2. Click "Create element with external tool" button on the toolbar.
 //    3. Fill the dialog with the following data:
 //        Element name: "UGENE-6488 test element"
 //        Command line tool: Integrated external tool "python"
@@ -2299,7 +2299,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     settings.description = "detailed element description";
     settings.prompter = "description on the scene";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with command line tool");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
 
 //    5. Click on the element on the scene.
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1");
@@ -2373,7 +2373,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
 //    1. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-//    2. Click "Create element with command line tool" button on the toolbar.
+//    2. Click "Create element with external tool" button on the toolbar.
 //    3. Fill the dialog with the following data:
 //        Element name: "UGENE-6488 test element"
 //        Command line tool: Integrated external tool "python"
@@ -2391,7 +2391,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     settings.description = "detailed element description";
     settings.prompter = "description on the scene";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with command line tool");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
 
 //    5. Click on the element on the scene.
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2");
