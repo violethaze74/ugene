@@ -61,8 +61,22 @@ public:
     QString type;
     QString defaultValue;
     QString description;
-    //PropertyDelegate *delegate;
 
+    static const QString NUMBER_DEPRECATED_TYPE;
+    static const QString URL_DEPRECATED_TYPE;
+
+    static const QString BOOLEAN_TYPE;
+    static const QString STRING_TYPE;
+    static const QString INTEGER_TYPE;
+    static const QString DOUBLE_TYPE;
+    static const QString INPUT_FILE_URL_TYPE;
+    static const QString OUTPUT_FILE_URL_TYPE;
+    static const QString INPUT_FOLDER_URL_TYPE;
+    static const QString OUTPUT_FOLDER_URL_TYPE;
+
+    void fixTypes();
+    bool isFile() const;
+    bool isFolder() const;
     bool operator ==(const AttributeConfig &other) const;
 };
 

@@ -1330,11 +1330,10 @@ void HRSchemaSerializer::parseAttributes(Tokenizer & tokenizer, QList<AttributeC
         cfg.defaultValue = pairs.equalPairs.take(Constants::DEFAULT_VALUE);
         cfg.description = pairs.equalPairs.take(Constants::DESCRIPTION);
         tokenizer.assertToken(Constants::BLOCK_END);
-
         if (cfg.attrName.isEmpty()) {
             cfg.attrName = cfg.attributeId;
         }
-
+        cfg.fixTypes();
         attrs << cfg;
     }
 }
