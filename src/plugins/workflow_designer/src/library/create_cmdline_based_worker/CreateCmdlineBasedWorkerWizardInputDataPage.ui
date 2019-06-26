@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>349</height>
+    <width>823</width>
+    <height>328</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,9 +46,21 @@ The incoming data will be either saved into a file and the file URL will be spec
      </item>
      <item>
       <widget class="QTableView" name="tvInput">
+       <property name="minimumSize">
+        <size>
+         <width>700</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="selectionMode">
         <enum>QAbstractItemView::SingleSelection</enum>
        </property>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderHighlightSections">
+        <bool>false</bool>
+       </attribute>
       </widget>
      </item>
     </layout>

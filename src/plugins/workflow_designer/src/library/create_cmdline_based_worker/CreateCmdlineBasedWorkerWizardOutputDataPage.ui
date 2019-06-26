@@ -40,9 +40,21 @@ It is assumed that the command-line tool creates some file(s). This element read
      </item>
      <item>
       <widget class="QTableView" name="tvOutput">
+       <property name="minimumSize">
+        <size>
+         <width>700</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="selectionMode">
         <enum>QAbstractItemView::SingleSelection</enum>
        </property>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderHighlightSections">
+        <bool>false</bool>
+       </attribute>
       </widget>
      </item>
     </layout>
