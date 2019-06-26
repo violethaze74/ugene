@@ -399,6 +399,7 @@ CreateCmdlineBasedWorkerWizardInputDataPage::CreateCmdlineBasedWorkerWizardInput
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_DATA_FIELD, this, INPUTS_DATA_PROPERTY, SIGNAL(si_inputsChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD, this, INPUTS_IDS_PROPERTY);
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD, this, INPUTS_NAMES_PROPERTY);
+    this->duplicateInputsWarningLabel->setVisible(false);
 }
 
 void CreateCmdlineBasedWorkerWizardInputDataPage::initializePage() {
@@ -426,14 +427,20 @@ void CreateCmdlineBasedWorkerWizardInputDataPage::sl_updateInputsProperties() {
     QStringList ids;
     QStringList names;
     QList<DataConfig> data;
+    bool hasDuplicates = false;
     foreach (CfgExternalToolItem *item, inputsModel->getItems()) {
         data << item->itemData;
-        ids << item->getId();
+        QString id = item->getId();
+        hasDuplicates = hasDuplicates || ids.contains(id);
+        ids << id;
         names << item->getName();
     }
     setProperty(INPUTS_DATA_PROPERTY, QVariant::fromValue<QList<DataConfig> >(data));
     setProperty(INPUTS_IDS_PROPERTY, ids);
     setProperty(INPUTS_NAMES_PROPERTY, names);
+
+    this->duplicateInputsWarningLabel->setVisible(hasDuplicates);
+
     emit si_inputsChanged();
 }
 
@@ -470,6 +477,7 @@ CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardPara
     registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_DATA_FIELD, this, ATTRIBUTES_DATA_PROPERTY, SIGNAL(si_attributesChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD, this, ATTRIBUTES_IDS_PROPERTY);
     registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD, this, ATTRIBUTES_NAMES_PROPERTY);
+    this->duplicateParametersWarningLabel->setVisible(false);
 }
 
 void CreateCmdlineBasedWorkerWizardParametersPage::initializePage() {
@@ -499,6 +507,7 @@ void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
     QStringList ids;
     QStringList names;
     QList<AttributeConfig> data;
+    bool hasDuplicates = false;
     foreach (AttributeItem *item, model->getItems()) {
         AttributeConfig attributeConfig;
         attributeConfig.attributeId = item->getId();
@@ -507,12 +516,17 @@ void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
         attributeConfig.defaultValue = item->getDefaultValue();
         attributeConfig.description = item->getDescription();
         data << attributeConfig;
-        ids << item->getId();
+        QString id = item->getId();
+        hasDuplicates = hasDuplicates || ids.contains(id);
+        ids << id;
         names << item->getName();
     }
     setProperty(ATTRIBUTES_DATA_PROPERTY, QVariant::fromValue<QList<AttributeConfig> >(data));
     setProperty(ATTRIBUTES_IDS_PROPERTY, ids);
     setProperty(ATTRIBUTES_NAMES_PROPERTY, names);
+
+    this->duplicateParametersWarningLabel->setVisible(hasDuplicates);
+
     emit si_attributesChanged();
 }
 
@@ -576,6 +590,8 @@ CreateCmdlineBasedWorkerWizardOutputDataPage::CreateCmdlineBasedWorkerWizardOutp
     registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_DATA_FIELD, this, OUTPUTS_DATA_PROPERTY, SIGNAL(si_outputsChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD, this, OUTPUTS_IDS_PROPERTY);
     registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD, this, OUTPUTS_NAMES_PROPERTY);
+    
+    this->duplicateOutputsWarningLabel->setVisible(false);
 }
 
 void CreateCmdlineBasedWorkerWizardOutputDataPage::initializePage() {
@@ -606,14 +622,20 @@ void CreateCmdlineBasedWorkerWizardOutputDataPage::sl_updateOutputsProperties() 
     QStringList ids;
     QStringList names;
     QList<DataConfig> data;
+    bool hasDuplicates = false;
     foreach (CfgExternalToolItem *item, outputsModel->getItems()) {
         data << item->itemData;
-        ids << item->getId();
+        QString id = item->getId();
+        hasDuplicates = hasDuplicates || ids.contains(id);
+        ids << id;
         names << item->getName();
     }
     setProperty(OUTPUTS_DATA_PROPERTY, QVariant::fromValue<QList<DataConfig> >(data));
     setProperty(OUTPUTS_IDS_PROPERTY, ids);
     setProperty(OUTPUTS_NAMES_PROPERTY, names);
+
+    this->duplicateOutputsWarningLabel->setVisible(hasDuplicates);
+
     emit si_outputsChanged();
 }
 
