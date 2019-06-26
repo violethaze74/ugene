@@ -25,8 +25,6 @@
 #include <QFileInfo>
 #include <QXmlInputSource>
 #include <QXmlSimpleReader>
-#include <QXmlSchema>
-#include <QXmlSchemaValidator>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
