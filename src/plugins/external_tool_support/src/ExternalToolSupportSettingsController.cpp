@@ -345,7 +345,7 @@ void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState* s)
 }
 
 QTreeWidgetItem* ExternalToolSupportSettingsPageWidget::insertChild(QTreeWidgetItem* rootItem, const QString& name, int pos, bool isModule) {
-    QTreeWidgetItem* item = new QTreeWidgetItem({ name });
+    QTreeWidgetItem* item = new QTreeWidgetItem(QStringList() << name);
     QTreeWidget *treeWidget = rootItem->treeWidget();
 
     externalToolsItems.insert(name, item);
