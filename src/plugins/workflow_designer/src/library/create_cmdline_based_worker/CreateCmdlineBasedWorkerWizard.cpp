@@ -431,7 +431,7 @@ void CreateCmdlineBasedWorkerWizardInputDataPage::sl_updateInputsProperties() {
     foreach (CfgExternalToolItem *item, inputsModel->getItems()) {
         data << item->itemData;
         QString id = item->getId();
-        hasDuplicates = hasDuplicates || ids.contains(id);
+        hasDuplicates = hasDuplicates || (!id.isEmpty() && ids.contains(id));
         ids << id;
         names << item->getName();
     }
@@ -517,7 +517,7 @@ void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
         attributeConfig.description = item->getDescription();
         data << attributeConfig;
         QString id = item->getId();
-        hasDuplicates = hasDuplicates || ids.contains(id);
+        hasDuplicates = hasDuplicates || (!id.isEmpty() && ids.contains(id));
         ids << id;
         names << item->getName();
     }
@@ -626,7 +626,7 @@ void CreateCmdlineBasedWorkerWizardOutputDataPage::sl_updateOutputsProperties() 
     foreach (CfgExternalToolItem *item, outputsModel->getItems()) {
         data << item->itemData;
         QString id = item->getId();
-        hasDuplicates = hasDuplicates || ids.contains(id);
+        hasDuplicates = hasDuplicates || (!id.isEmpty() && ids.contains(id));
         ids << id;
         names << item->getName();
     }
