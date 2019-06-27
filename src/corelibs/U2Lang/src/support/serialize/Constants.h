@@ -115,6 +115,8 @@ public:
     static const QString USE_INTEGRATED_TOOL;
     static const QString CUSTOM_TOOL_PATH;
     static const QString INTEGRATED_TOOL_ID;
+    static const QString ADD_TO_DASHBOARD;
+    static const QString OPEN_WITH_UGENE;
 };
 
 } // WorkflowSerialize

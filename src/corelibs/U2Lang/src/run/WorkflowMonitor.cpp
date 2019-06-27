@@ -110,7 +110,7 @@ void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer,
     emit si_newOutputFile(info);
 }
 
-void WorkflowMonitor::addOutputFolder(const QString &url, const QString &producer){
+void WorkflowMonitor::addOutputFolder(const QString &url, const QString &producer) {
     addOutputFile(url, producer, true);
 }
 

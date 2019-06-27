@@ -1329,6 +1329,12 @@ void HRSchemaSerializer::parseAttributes(Tokenizer & tokenizer, QList<AttributeC
         cfg.type = pairs.equalPairs.take(Constants::TYPE_PORT);
         cfg.defaultValue = pairs.equalPairs.take(Constants::DEFAULT_VALUE);
         cfg.description = pairs.equalPairs.take(Constants::DESCRIPTION);
+        if (0 == QString::compare(pairs.equalPairs.take(Constants::ADD_TO_DASHBOARD), Constants::TRUE)) {
+            cfg.flags |= AttributeConfig::AddToDashboard;
+        }
+        if (0 == QString::compare(pairs.equalPairs.take(Constants::OPEN_WITH_UGENE), Constants::TRUE)) {
+            cfg.flags |= AttributeConfig::OpenWithUgene;
+        }
         tokenizer.assertToken(Constants::BLOCK_END);
         if (cfg.attrName.isEmpty()) {
             cfg.attrName = cfg.attributeId;
@@ -2026,6 +2032,14 @@ static QString outputsDefenition(const QList<DataConfig> &inputs) {
     return res;
 }
 
+namespace {
+
+QString bool2String(bool value) {
+    return value ? Constants::TRUE : Constants::FALSE;
+}
+
+}
+
 static QString attributesDefinition(const QList<AttributeConfig> &attrs) {
     QString res = Constants::TAB + Constants::ATTRIBUTES_START + " {\n";
     foreach(const AttributeConfig &cfg, attrs) {
@@ -2037,6 +2051,12 @@ static QString attributesDefinition(const QList<AttributeConfig> &attrs) {
         }
         if (!cfg.description.isEmpty()) {
             res += Constants::TAB + Constants::TAB + Constants::TAB + Constants::DESCRIPTION + Constants::COLON + Constants::QUOTE + cfg.description + Constants::QUOTE + Constants::SEMICOLON + Constants::NEW_LINE;
+        }
+        if (cfg.isOutputUrl()) {
+            res += Constants::TAB + Constants::TAB + Constants::TAB + Constants::ADD_TO_DASHBOARD + Constants::COLON + bool2String(cfg.flags.testFlag(AttributeConfig::AddToDashboard)) + Constants::SEMICOLON + Constants::NEW_LINE;
+            if (cfg.isFile()) {
+                res += Constants::TAB + Constants::TAB + Constants::TAB + Constants::OPEN_WITH_UGENE + Constants::COLON + bool2String(cfg.flags.testFlag(AttributeConfig::OpenWithUgene)) + Constants::SEMICOLON + Constants::NEW_LINE;
+            }
         }
         res += Constants::TAB + Constants::TAB + "}\n";
     }

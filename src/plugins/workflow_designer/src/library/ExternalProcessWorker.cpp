@@ -19,7 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include "ExternalProcessWorker.h"
+#include <QDateTime>
+#include <QFile>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -41,19 +42,19 @@
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Lang/ExternalToolCfg.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/IncludedProtoFactory.h>
-
 #include <U2Designer/DelegateEditors.h>
 
-#include "util/CustomWorkerUtils.h"
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/ExternalToolCfg.h>
+#include <U2Lang/IncludedProtoFactory.h>
+#include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowMonitor.h>
 
-#include <QDateTime>
+#include "ExternalProcessWorker.h"
+#include "util/CustomWorkerUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -220,7 +221,6 @@ ExternalProcessWorker::ExternalProcessWorker(Actor *a)
 {
     ExternalToolCfgRegistry *reg = WorkflowEnv::getExternalCfgRegistry();
     cfg = reg->getConfigById(actor->getProto()->getId());
-    commandLine = cfg->cmdLine;
 }
 
 void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString) {
@@ -229,15 +229,22 @@ void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString) {
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
-        int pos = execString.indexOf(QRegExp("\\$" + a->getDisplayName() + "(\\W|$)"));
+        int pos = execString.indexOf(QRegExp("\\$" + a->getId() + "(\\W|$)"));
         if (-1 == pos) {
             continue;
         }
 
         //set parameters in command line with attributes values
         QString value = getValue<QString>(a->getId());
-        int idLength = a->getDisplayName().size() + 1;
+        int idLength = a->getId().size() + 1;
         execString.replace(pos, idLength, value);
+
+        foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
+            if (attributeConfig.attributeId == a->getId() && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
+                urlsForDashboard.insert(value, !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
+                break;
+            }
+        }
     }
 }
 
@@ -290,7 +297,6 @@ Task * ExternalProcessWorker::tick() {
     CHECK(!finishWorkIfInputEnded(), NULL);
 
     QString execString = commandLine;
-    applyAttributes(execString);
 
     int i = 0;
     foreach(const DataConfig &dataCfg, cfg->inputs) { //write all input data to files
@@ -371,13 +377,28 @@ static SharedDbiDataHandler getAnnotations(Document *d, WorkflowContext *context
 
 void ExternalProcessWorker::sl_onTaskFinishied() {
     LaunchExternalToolTask *t = static_cast<LaunchExternalToolTask*>(sender());
+
     bool hasMessages = true;
     bool isEnded = true;
     checkInputBusState(hasMessages, isEnded);
     if (!hasMessages) {
         setDone();
     }
-    CHECK(output && t->isFinished() && !t->hasError(),);
+
+    CHECK(t->isFinished() && !t->hasError(), );
+
+    foreach (const QString &url, urlsForDashboard.keys()) {
+        QFileInfo fileInfo(url);
+        if (fileInfo.exists()) {
+            if (fileInfo.isFile()) {
+                monitor()->addOutputFile(url, getActorId(), urlsForDashboard.value(url));
+            } else if (fileInfo.isDir()) {
+                monitor()->addOutputFolder(url, getActorId());
+            }
+        }
+    }
+
+    CHECK(nullptr != output, );
 
     /* This variable and corresponded code parts with it
      * are temporary created for merging sequences.
@@ -388,6 +409,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
     QMap<QString, DataConfig> outputUrls = t->takeOutputUrls();
     QMap<QString, DataConfig>::iterator i = outputUrls.begin();
     QVariantMap v;
+
     for(; i != outputUrls.end(); i++) {
         DataConfig cfg = i.value();
         QString url = i.key();
@@ -500,7 +522,9 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
 }
 
 void ExternalProcessWorker::init() {
+    commandLine = cfg->cmdLine;
     applySpecialInternalEnvvars(commandLine);
+    applyAttributes(commandLine);
 
     output = ports.value(OUT_PORT_ID);
 

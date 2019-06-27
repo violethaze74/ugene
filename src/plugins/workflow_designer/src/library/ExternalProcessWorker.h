@@ -57,6 +57,7 @@ private:
     QString commandLine;
     ExternalProcessConfig *cfg;
 
+    QMap<QString, bool> urlsForDashboard;       // url -> open by system
     QStringList inputUrls;
 };
 

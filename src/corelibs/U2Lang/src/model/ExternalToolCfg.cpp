@@ -77,6 +77,12 @@ const QString AttributeConfig::OUTPUT_FILE_URL_TYPE = "Output_file_URL";
 const QString AttributeConfig::INPUT_FOLDER_URL_TYPE = "Input_dir_URL";
 const QString AttributeConfig::OUTPUT_FOLDER_URL_TYPE = "Output_dir_URL";
 
+AttributeConfig::AttributeConfig()
+    : flags(None)
+{
+
+}
+
 void AttributeConfig::fixTypes() {
     if (type == URL_DEPRECATED_TYPE) {
         type = INPUT_FILE_URL_TYPE;
@@ -85,12 +91,16 @@ void AttributeConfig::fixTypes() {
     }
 }
 
+bool AttributeConfig::isOutputUrl() const {
+    return type == OUTPUT_FILE_URL_TYPE || type == OUTPUT_FOLDER_URL_TYPE;
+}
+
 bool AttributeConfig::isFile() const {
-    return type == INPUT_FOLDER_URL_TYPE || type == OUTPUT_FOLDER_URL_TYPE;
+    return type == INPUT_FILE_URL_TYPE || type == OUTPUT_FILE_URL_TYPE;
 }
 
 bool AttributeConfig::isFolder() const {
-    return type == INPUT_FILE_URL_TYPE || type == OUTPUT_FILE_URL_TYPE;
+    return type == INPUT_FOLDER_URL_TYPE || type == OUTPUT_FOLDER_URL_TYPE;
 }
 
 bool AttributeConfig::operator ==(const AttributeConfig &other) const {
@@ -98,7 +108,8 @@ bool AttributeConfig::operator ==(const AttributeConfig &other) const {
             && attrName == other.attrName
             && type == other.type
             && defaultValue == other.defaultValue
-            && description == other.description;
+            && description == other.description
+            && flags == other.flags;
 }
 
 ExternalProcessConfig::ExternalProcessConfig()
