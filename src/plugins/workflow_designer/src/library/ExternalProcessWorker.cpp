@@ -228,16 +228,23 @@ void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString) {
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
-        int pos = execString.indexOf(QRegExp("\\$" + a->getDisplayName() + "(\\W|$)"));
-        if (-1 == pos) {
-            continue;
+        QRegularExpression regex = QRegularExpression("(([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$"
+                                                      + a->getDisplayName()
+                                                      + "(\\W|$)");
+        if (execString.indexOf(regex) >= 0) {
+            //set parameters in command line with attributes values
+            QString value = getValue<QString>(a->getId());
+            execString.replace(regex, "\\1" + value + "\\6");
         }
-
-        //set parameters in command line with attributes values
-        QString value = getValue<QString>(a->getId());
-        int idLength = a->getDisplayName().size() + 1;
-        execString.replace(pos, idLength, value);
     }
+
+    // Replace escaped symbols
+    // Example:
+    // "%UGENE_JAVA% \\%UGENE_JAVA% -version \\\$\%\\\\\%\\$"    ─┐
+    // "/usr/bin/java \/usr/bin/java -version \$%\\%\$"         <─┘
+    execString.replace(QRegularExpression("\\\\([\\\\\\%\\$])"), "\\1");
+
+    return;
 }
 
 QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
