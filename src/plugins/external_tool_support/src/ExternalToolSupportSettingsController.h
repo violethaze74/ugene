@@ -64,9 +64,9 @@ class ExternalToolSupportSettingsPageWidget : public AppSettingsGUIPageWidget, p
 public:
     ExternalToolSupportSettingsPageWidget(ExternalToolSupportSettingsPageController* ctrl);
 
-    virtual void setState(AppSettingsGUIPageState* state);
+    virtual void setState(AppSettingsGUIPageState* state) override;
 
-    virtual AppSettingsGUIPageState* getState(QString& err) const;
+    virtual AppSettingsGUIPageState* getState(QString& err) const override;
 
 private:
     QWidget* createPathEditor(QWidget *parent, const QString& path) const;
@@ -76,8 +76,10 @@ private:
     static ExternalTool* isMasterWithModules(const QList<ExternalTool*>& toolsList);
     void setToolState(ExternalTool* tool);
     QString getToolStateDescription(ExternalTool* tool) const;
+    void resetDescription();
     void setDescription(ExternalTool* tool);
     QString warn(const QString& text) const;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private slots:
     void sl_toolPathChanged();
@@ -99,6 +101,7 @@ private:
     QMap<QString, QTreeWidgetItem *> externalToolsItems;
     QString getToolLink(const QString &toolName) const;
     mutable int buttonsWidth;
+    QString defaultDescriptionText;
 
     static const QString INSTALLED;
     static const QString NOT_INSTALLED;
@@ -111,11 +114,16 @@ public:
     PathLineEdit(const QString& filter, const QString& type, bool multi, QWidget *parent)
         : QLineEdit(parent), FileFilter(filter), type(type), multi(multi) {}
 
+signals:
+    void si_focusIn();
+
 private slots:
     void sl_onBrowse();
     void sl_clear();
 
 private:
+    void focusInEvent(QFocusEvent *event) override;
+
     QString FileFilter;
     QString type;
     bool    multi;

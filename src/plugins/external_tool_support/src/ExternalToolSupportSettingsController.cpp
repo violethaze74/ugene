@@ -84,6 +84,8 @@ ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(Ext
     Q_UNUSED(ctrl);
 
     setupUi(this);
+    defaultDescriptionText = descriptionTextBrowser->toPlainText();
+
     selectToolPackLabel->setText(ET_DOWNLOAD_INFO);
     versionLabel->hide();
     binaryPathLabel->hide();
@@ -99,6 +101,9 @@ ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(Ext
 
     twIntegratedTools->setColumnWidth(0, this->geometry().width() / 3);
     twCustomTools->setColumnWidth(0, this->geometry().width() / 3);
+
+    twIntegratedTools->installEventFilter(this);
+    twCustomTools->installEventFilter(this);
 
     connect(pbImport, SIGNAL(clicked()), SLOT(sl_importCustomToolButtonClicked()));
     connect(pbDelete, SIGNAL(clicked()), SLOT(sl_deleteCustomToolButtonClicked()));
@@ -122,9 +127,7 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
     toolPathEdit->setText(QDir::toNativeSeparators(path));
 
     widget->setFocusProxy(toolPathEdit);
-    connect(toolPathEdit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(sl_onPathEditWidgetClick()));
-    connect(toolPathEdit, SIGNAL(textEdited(QString)), this, SLOT(sl_onPathEditWidgetClick()));
-    connect(toolPathEdit, SIGNAL(selectionChanged()), this, SLOT(sl_onPathEditWidgetClick()));
+    connect(toolPathEdit, SIGNAL(si_focusIn()), this, SLOT(sl_onPathEditWidgetClick()));
     connect(toolPathEdit, SIGNAL(editingFinished()), this, SLOT(sl_toolPathChanged()));
 
     QToolButton* selectToolPathButton = new QToolButton(widget);
@@ -482,6 +485,10 @@ QString ExternalToolSupportSettingsPageWidget::getToolStateDescription(ExternalT
     return result;
 }
 
+void ExternalToolSupportSettingsPageWidget::resetDescription() {
+    descriptionTextBrowser->setPlainText(defaultDescriptionText);
+}
+
 void ExternalToolSupportSettingsPageWidget::setDescription(ExternalTool* tool) {
     QString desc = tr("No description");
 
@@ -511,6 +518,27 @@ void ExternalToolSupportSettingsPageWidget::setDescription(ExternalTool* tool) {
 
 QString ExternalToolSupportSettingsPageWidget::warn(const QString& text) const {
     return "<span style=\"color:" + L10N::errorColorLabelStr() + "; font:bold;\">" + text + "</span>";
+}
+
+bool ExternalToolSupportSettingsPageWidget::eventFilter(QObject *watched, QEvent *event) {
+    CHECK(QEvent::FocusIn == event->type(), false);
+
+    QTreeWidgetItem *item = nullptr;
+    if (twIntegratedTools == watched) {
+        item = twIntegratedTools->currentItem();
+    } else if (twCustomTools == watched) {
+        item = twCustomTools->currentItem();
+    }
+
+    const bool itemSelected = (nullptr != item);
+    if (itemSelected) {
+        const QString toolId = externalToolsItems.key(item);
+        setDescription(AppContext::getExternalToolRegistry()->getByName(toolId));
+    } else {
+        resetDescription();
+    }
+
+    return false;
 }
 
 AppSettingsGUIPageState* ExternalToolSupportSettingsPageWidget::getState(QString& err) const {
@@ -788,6 +816,10 @@ void PathLineEdit::sl_clear() {
     s->setEnabled(false);
     setModified(true);
     emit editingFinished();
+}
+
+void PathLineEdit::focusInEvent(QFocusEvent * /*event*/) {
+    emit si_focusIn();
 }
 
 } //namespace
