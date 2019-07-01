@@ -1109,7 +1109,9 @@ GUI_TEST_CLASS_DEFINITION(test_6212) {
     GTGlobals::sleep();
 
     //5. Click "Validate workflow".
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTGlobals::sleep();
 
     //Expected state: Validation doesn't pass, there is an error about absent steps.
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
