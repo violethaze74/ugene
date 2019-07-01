@@ -649,6 +649,29 @@ void CreateCmdlineBasedWorkerWizardOutputDataPage::sl_updateOutputsProperties() 
 /* CreateCmdlineBasedWorkerWizardCommandPage */
 /**********************************************/
 
+CommandValidator::CommandValidator(QTextEdit *_textEdit)
+    : QObject(_textEdit),
+      textEdit(_textEdit)
+{
+    SAFE_POINT(nullptr != textEdit, "textEdit widget is nullptr", );
+    connect(textEdit, SIGNAL(textChanged()), SLOT(sl_textChanged()));
+}
+
+void CommandValidator::sl_textChanged() {
+    QSignalBlocker signalBlocker(textEdit);
+    Q_UNUSED(signalBlocker);
+
+    QTextCursor cursor = textEdit->textCursor();
+    const int position = cursor.position();
+
+    QString text = textEdit->toPlainText();
+    text.replace("\"", "\'");
+    textEdit->setPlainText(text);
+
+    cursor.setPosition(position);
+    textEdit->setTextCursor(cursor);
+}
+
 CreateCmdlineBasedWorkerWizardCommandPage::CreateCmdlineBasedWorkerWizardCommandPage(ExternalProcessConfig *_initialConfig)
     : QWizardPage(nullptr),
       initialConfig(_initialConfig)
@@ -659,6 +682,7 @@ CreateCmdlineBasedWorkerWizardCommandPage::CreateCmdlineBasedWorkerWizardCommand
 
     teCommand->setWordWrapMode(QTextOption::WrapAnywhere);
     teCommand->document()->setDefaultStyleSheet("span { white-space: pre-wrap; }");
+    new CommandValidator(teCommand);
 
     registerField(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_FIELD + "*", teCommand, "plainText", SIGNAL(textChanged()));
 }
