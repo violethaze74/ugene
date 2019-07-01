@@ -238,10 +238,14 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
         }
     }
 
+    return;
+}
+
+void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
     // Replace escaped symbols
     // Example:
-    // "%UGENE_JAVA% \\%UGENE_JAVA% -version \\\$\%\\\\\%\\$"    ─┐
-    // "/usr/bin/java \/usr/bin/java -version \$%\\%\$"         <─┘
+    // "%UGENE_JAVA% \\%UGENE_JAVA% -version \\\$\%\\\\\%\\$"   ─┐
+    // "/usr/bin/java \/usr/bin/java -version $%\\%\$"         <─┘
     execString.replace(QRegularExpression("\\\\([\\\\\\%\\$])"), "\\1");
 
     return;
@@ -297,6 +301,13 @@ Task * ExternalProcessWorker::tick() {
 
     QString execString = commandLine;
     applyAttributes(execString);
+
+    // The following call must be last call in the preparing execString chain
+    // So, this is a third step for execString:
+    //     1) the first one is substitution of the internal vars (like '%...%')
+    //     2) the second is applying attributes (something like '$...')
+    //     3) this call replaces escaped symbols: '\$', '\%', '\\' by the '$', '%', '\'
+    applyEscapedSymbols(execString);
 
     int i = 0;
     foreach(const DataConfig &dataCfg, cfg->inputs) { //write all input data to files
