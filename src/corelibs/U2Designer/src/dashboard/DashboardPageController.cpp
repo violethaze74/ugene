@@ -240,6 +240,7 @@ QString DashboardPageController::serializeFileInfo(const Monitor::FileInfo &info
     infoJS["actor"] = monitor->actorName(info.actor);
     infoJS["url"] = info.url;
     infoJS["openBySystem"] = info.openBySystem;
+    infoJS["isDir"] = info.isDir;
     QJsonDocument doc(infoJS);
     return QString(doc.toJson(QJsonDocument::Compact));
 }

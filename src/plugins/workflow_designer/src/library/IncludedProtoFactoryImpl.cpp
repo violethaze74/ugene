@@ -158,6 +158,8 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.isFolder()) {
             //TODO: UGENE-6484
+            type = BaseTypes::STRING_TYPE();
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::STRING_TYPE) {
             type = BaseTypes::STRING_TYPE();
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
@@ -166,8 +168,12 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, (acfg.defaultValue == "true" ? QVariant(true) : QVariant(false)));
         } else if (acfg.type == AttributeConfig::INTEGER_TYPE) {
             //TODO: UGENE-6484
+            type = BaseTypes::NUM_TYPE();
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::DOUBLE_TYPE) {
             //TODO: UGENE-6484
+            type = BaseTypes::NUM_TYPE();
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         }
     }
 

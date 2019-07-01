@@ -110,6 +110,8 @@ const QString Constants::V_SCRIPT              = "script";
 const QString Constants::USE_INTEGRATED_TOOL   = "use-integrated-tool";
 const QString Constants::CUSTOM_TOOL_PATH      = "custom-tool-path";
 const QString Constants::INTEGRATED_TOOL_ID    = "integrated-tool-id";
+const QString Constants::ADD_TO_DASHBOARD      = "add-to-dashboard";
+const QString Constants::OPEN_WITH_UGENE       = "open-with-ugene";
 
 } // WorkflowSerialize
 } // U2

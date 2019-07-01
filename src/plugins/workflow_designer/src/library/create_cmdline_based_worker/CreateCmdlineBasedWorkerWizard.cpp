@@ -515,6 +515,12 @@ void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
         attributeConfig.type = item->getDataType();
         attributeConfig.defaultValue = item->getDefaultValue();
         attributeConfig.description = item->getDescription();
+        if (attributeConfig.isOutputUrl()) {
+            attributeConfig.flags |= AttributeConfig::AddToDashboard;
+            if (attributeConfig.isFile()) {
+                attributeConfig.flags |= AttributeConfig::OpenWithUgene;
+            }
+        }
         data << attributeConfig;
         QString id = item->getId();
         hasDuplicates = hasDuplicates || (!id.isEmpty() && ids.contains(id));

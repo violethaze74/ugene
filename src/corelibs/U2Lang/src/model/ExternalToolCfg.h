@@ -56,11 +56,21 @@ public:
 
 class U2LANG_EXPORT AttributeConfig {
 public:
+    enum Flag {
+        None,
+        AddToDashboard,         // only for output URLs
+        OpenWithUgene           // only for file URLs that are added to a dashboard
+    };
+    Q_DECLARE_FLAGS(Flags, Flag)
+
+    AttributeConfig();
+
     QString attributeId;
     QString attrName;
     QString type;
     QString defaultValue;
     QString description;
+    Flags flags;
 
     static const QString NUMBER_DEPRECATED_TYPE;
     static const QString URL_DEPRECATED_TYPE;
@@ -75,6 +85,7 @@ public:
     static const QString OUTPUT_FOLDER_URL_TYPE;
 
     void fixTypes();
+    bool isOutputUrl() const;
     bool isFile() const;
     bool isFolder() const;
     bool operator ==(const AttributeConfig &other) const;
@@ -120,5 +131,6 @@ private:
 
 Q_DECLARE_METATYPE(U2::AttributeConfig)
 Q_DECLARE_METATYPE(U2::DataConfig)
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::AttributeConfig::Flags)
 
 #endif // _U2_EXTERNAL_TOOL_CONFIG_H_

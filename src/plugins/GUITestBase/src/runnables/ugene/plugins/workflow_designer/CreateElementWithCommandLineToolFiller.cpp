@@ -139,12 +139,20 @@ QString CreateElementWithCommandLineToolFiller::dataTypeToString(const Parameter
     switch (type) {
     case Boolean:
         return "Boolean";
-    case Number:
-        return "Number";
+    case Integer:
+        return "Integer";
+    case Double:
+        return "Double";
     case ParameterString:
         return "String";
-    case URL:
-        return "URL";
+    case InputFileUrl:
+        return "Input file URL";
+    case InputFolderUrl:
+        return "Input folder URL";
+    case OutputFileUrl:
+        return "Output file URL";
+    case OutputFolderUrl:
+        return "Output folder URL";
     default:
         return QString();
     }
@@ -165,8 +173,7 @@ QString CreateElementWithCommandLineToolFiller::formatToArgumentValue(const QStr
 void CreateElementWithCommandLineToolFiller::processStringType(QTableView* table, int row, const ColumnName columnName, const QString& value) {
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, static_cast<int>(columnName), row));
     GTMouseDriver::click();
-    QString fullValue = formatToArgumentValue(value);
-    GTKeyboardDriver::keySequence(fullValue);
+    GTKeyboardDriver::keySequence(value);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 
