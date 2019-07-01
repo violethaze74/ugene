@@ -45,12 +45,22 @@ private slots:
     void sl_onTaskFinishied();
 
 private:
+    enum InputsCheckResult {
+        ALL_INPUTS_FINISH,
+        SOME_INPUTS_FINISH,
+        ALL_INPUTS_HAVE_MESSAGE,
+        NOT_ALL_INPUTS_HAVE_MESSAGE,
+        INTERNAL_ERROR
+    };
+
     void applySpecialInternalEnvvars(QString &execString);
     void applyAttributes(QString &execString);
     QStringList applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os);
     QString prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os);
-    void checkInputBusState(bool &hasMessages, bool &isEnded) const;
-    bool finishWorkIfInputEnded();
+
+    InputsCheckResult checkInputBusState() const;
+    bool finishWorkIfInputEnded(QString &error);
+    void finish();
 
     IntegralBus *output;
     QList<IntegralBus*> inputs;
