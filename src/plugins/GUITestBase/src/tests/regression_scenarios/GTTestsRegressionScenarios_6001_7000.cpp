@@ -2443,7 +2443,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
 
 //    2. Click "Create element with external tool" button on the toolbar.
 //    3. Fill the dialog with the following data:
-//        Element name: "UGENE-6488 test element"
+//        Element name: "UGENE-6488 test element 1"
 //        Command line tool: Integrated external tool "python"
 //        No inputs, parameters and outputs
 //        Command: "just a command"
@@ -2452,7 +2452,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
 //    4. Accept the dialog.
 //    Expected state: the element was created and put on the scene.
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
-    settings.elementName = "UGENE-6488 test element";
+    settings.elementName = "UGENE-6488 test element 1";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
     settings.tool = "python";
     settings.command = "just a command";
@@ -2460,6 +2460,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     settings.prompter = "description on the scene";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
 
 //    5. Click on the element on the scene.
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1");
@@ -2555,6 +2556,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
 
 //    5. Click on the element on the scene.
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2");
+    GTGlobals::sleep();
 
 //    6. Call a context menu on the element on the scene.
 //    7. Select "Edit configuration..." menu item.

@@ -77,10 +77,12 @@ const int GTUtilsWorkflowDesigner::verticalShift = 35;
 #define GT_CLASS_NAME "GTUtilsWorkflowDesigner"
 
 #define GT_METHOD_NAME "openWorkflowDesigner"
-void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus &os){
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus &os) {
+    StartupDialogFiller *filler = new StartupDialogFiller(os);
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Workflow Designer...");
     GTUtilsMdi::waitWindowOpened(os, "Workflow Designer");
+    GTUtilsDialog::removeRunnable(filler);
 }
 #undef GT_METHOD_NAME
 
