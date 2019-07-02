@@ -294,7 +294,14 @@ QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConf
 }
 
 Task * ExternalProcessWorker::tick() {
-    CHECK(!finishWorkIfInputEnded(), NULL);
+    QString error;
+    if (!inputs.isEmpty() && finishWorkIfInputEnded(error)) {
+        if (!error.isEmpty()) {
+            return new FailTask(error);
+        } else {
+            return nullptr;
+        }
+    }
 
     QString execString = commandLine;
 
@@ -323,18 +330,32 @@ Task * ExternalProcessWorker::tick() {
     return task;
 }
 
-bool ExternalProcessWorker::finishWorkIfInputEnded() {
-    bool hasMessages = true;
-    bool isEnded = true;
-    checkInputBusState(hasMessages, isEnded);
-    if (!hasMessages && isEnded) {
-        if (NULL != output) {
-            output->setEnded();
-        }
-        setDone();
+bool ExternalProcessWorker::finishWorkIfInputEnded(QString &error) {
+    error.clear();
+    const InputsCheckResult checkResult = checkInputBusState();
+    switch (checkResult) {
+    case ALL_INPUTS_FINISH:
+        finish();
         return true;
-    } else {
+    case SOME_INPUTS_FINISH:
+        error = tr("Some inputs are finished while other still have not processed messages");
+        finish();
+        return true;
+    case ALL_INPUTS_HAVE_MESSAGE:
         return false;
+    case INTERNAL_ERROR:
+        error = tr("An internal error has been spotted");
+        finish();
+        return true;
+    case NOT_ALL_INPUTS_HAVE_MESSAGE:
+        return false;
+    }
+}
+
+void ExternalProcessWorker::finish() {
+    setDone();
+    if (nullptr != output) {
+        output->setEnded();
     }
 }
 
@@ -376,16 +397,14 @@ static SharedDbiDataHandler getAnnotations(Document *d, WorkflowContext *context
 } // namespace
 
 void ExternalProcessWorker::sl_onTaskFinishied() {
-    LaunchExternalToolTask *t = static_cast<LaunchExternalToolTask*>(sender());
+    LaunchExternalToolTask *t = qobject_cast<LaunchExternalToolTask *>(sender());
+    CHECK(t->isFinished(), );
 
-    bool hasMessages = true;
-    bool isEnded = true;
-    checkInputBusState(hasMessages, isEnded);
-    if (!hasMessages) {
-        setDone();
+    if (inputs.isEmpty()) {
+        finish();
     }
 
-    CHECK(t->isFinished() && !t->hasError(), );
+    CHECK(!t->hasError(), );
 
     foreach (const QString &url, urlsForDashboard.keys()) {
         QFileInfo fileInfo(url);
@@ -542,27 +561,50 @@ void ExternalProcessWorker::init() {
     }
 }
 
-void ExternalProcessWorker::checkInputBusState(bool &hasMessages, bool &isEnded) const {
-    hasMessages = false;
-    isEnded = false;
+ExternalProcessWorker::InputsCheckResult ExternalProcessWorker::checkInputBusState() const {
+    const int inputsCount = inputs.count();
+    CHECK(0 < inputsCount, ALL_INPUTS_FINISH);
+
+    int inputsWithMessagesCount = 0;
+    int finishedInputs = 0;
     foreach(const CommunicationChannel *ch, inputs) {
-        if (NULL != ch) {
-            hasMessages &= static_cast<bool>(ch->hasMessage());
-            isEnded |= ch->isEnded();
+        SAFE_POINT(nullptr != ch, "Input is nullptr", INTERNAL_ERROR);
+        if (0 != ch->hasMessage()) {
+            ++inputsWithMessagesCount;
         }
+        if (ch->isEnded()) {
+            ++finishedInputs;
+        }
+    }
+
+    if (inputsCount == inputsWithMessagesCount) {
+        return ALL_INPUTS_HAVE_MESSAGE;
+    } else if (inputsCount == finishedInputs) {
+        return ALL_INPUTS_FINISH;
+    } else if (0 < finishedInputs && 0 < inputsWithMessagesCount) {
+        return SOME_INPUTS_FINISH;
+    } else {
+        return NOT_ALL_INPUTS_HAVE_MESSAGE;
     }
 }
 
 bool ExternalProcessWorker::isReady() const {
     CHECK(!isDone(), false);
-    if(inputs.isEmpty()) {
+    if (inputs.isEmpty()) {
         return true;
     } else {
-        bool hasMessages = true;
-        bool isEnded = true;
-        checkInputBusState(hasMessages, isEnded);
-        return hasMessages || isEnded;
+        const InputsCheckResult checkResult = checkInputBusState();
+        switch (checkResult) {
+        case ALL_INPUTS_FINISH:
+        case SOME_INPUTS_FINISH:
+        case ALL_INPUTS_HAVE_MESSAGE:
+        case INTERNAL_ERROR:
+            return true;        // the worker will be marked as 'done' in the 'tick' method
+        case NOT_ALL_INPUTS_HAVE_MESSAGE:
+            return false;
+        }
     }
+    return false;
 }
 
 void ExternalProcessWorker::cleanup() {
