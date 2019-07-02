@@ -337,7 +337,7 @@ Task * ExternalProcessWorker::tick() {
     //     2) function init(): the second is applying attributes (something like '$...')
     //     3) this function: apply substitutions for Input/Output
     //     4) this function: this call replaces escaped symbols: '\$', '\%', '\\' by the '$', '%', '\'
-    applyEscapedSymbols(commandLine);
+    applyEscapedSymbols(execString);
 
     LaunchExternalToolTask *task = new LaunchExternalToolTask(execString, outputUrls);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinishied()));
