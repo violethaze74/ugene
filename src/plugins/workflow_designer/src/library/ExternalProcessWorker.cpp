@@ -279,7 +279,7 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
 }
 
 QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os) {
-    QRegularExpression regex = QRegularExpression(QString("\\$%1([^%2]|$)")
+    QRegularExpression regex = QRegularExpression(QString("((\\\\\\\\)+)\\$%1([^%2]|$)|(^)\\$%1([^%2]|$)|([^\\\\])\\$%1([^%2]|$)")
                                                   .arg(dataCfg.attributeId)
                                                   .arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
     int ind = execString.indexOf(regex);
