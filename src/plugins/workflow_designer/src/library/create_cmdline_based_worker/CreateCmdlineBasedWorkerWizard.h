@@ -183,6 +183,18 @@ private:
     static char const * const OUTPUTS_NAMES_PROPERTY;
 };
 
+class CommandValidator : public QObject {
+    Q_OBJECT
+public:
+    CommandValidator(QTextEdit *textEdit);
+
+private slots:
+    void sl_textChanged();
+
+private:
+    QTextEdit *textEdit;
+};
+
 class CreateCmdlineBasedWorkerWizardCommandPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardCommandPage {
     Q_OBJECT
 public:
