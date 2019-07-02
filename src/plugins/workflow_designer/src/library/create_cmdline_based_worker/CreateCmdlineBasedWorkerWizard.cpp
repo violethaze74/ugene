@@ -49,7 +49,7 @@ namespace U2 {
 /**********************************************/
 
 #ifdef Q_OS_MAC
-const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; margin-bottom: -8px; margin-top: -5px; font-size: 20pt; padding-bottom: 10px; color: #0c3762}";
+const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; margin-bottom: -5px; margin-top: -5px; font-size: 20pt; padding-bottom: 10px; color: #0c3762}";
 #else
 const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -6px; margin-bottom: -5px; margin-top: -5px; font-size: 16pt; padding-bottom: 10px; color: #0c3762}";
 #endif
@@ -77,7 +77,7 @@ CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(QWidget *_parent)
       initialConfig(nullptr),
       config(nullptr)
 {
-    GCOUNTER(cvar, tvar, "\"Configure Element with Command Line Tool\" dialog opened for creating");
+    GCOUNTER(cvar, tvar, "\"Configure Element with External Tool\" dialog is opened for creating");
     init();
 }
 
@@ -87,7 +87,7 @@ CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(ExternalProcessCo
       config(nullptr)
 {
     SAFE_POINT(nullptr != _initialConfig, "Initial config of the element to edit is nullptr", );
-    GCOUNTER(cvar, tvar, "\"Configure Element with Command Line Tool\" dialog opened for editing");
+    GCOUNTER(cvar, tvar, "\"Configure Element with External Tool\" dialog is opened for editing");
     initialConfig = new ExternalProcessConfig(*_initialConfig);
     init();
 }
@@ -208,9 +208,9 @@ void CreateCmdlineBasedWorkerWizard::accept() {
         }
     }
     if (nullptr != initialConfig) {
-        GCOUNTER(cvar, tvar, "\"Configure Element with Command Line Tool\" dialog finished for editing");
+        GCOUNTER(cvar, tvar, "\"Configure Element with External Tool\" dialog is finished for editing");
     } else {
-        GCOUNTER(cvar1, tvar1, "\"Configure Element with Command Line Tool\" dialog finished for creating");
+        GCOUNTER(cvar1, tvar1, "\"Configure Element with External Tool\" dialog is finished for creating");
     }
     config = actualConfig.take();
     done(QDialog::Accepted);
@@ -225,12 +225,12 @@ void CreateCmdlineBasedWorkerWizard::init() {
     addPage(new CreateCmdlineBasedWorkerWizardElementAppearancePage(initialConfig));
     addPage(new CreateCmdlineBasedWorkerWizardSummaryPage());
 
-    setWindowTitle(tr("Configure Element with Command Line Tool"));
+    setWindowTitle(tr("Configure Element with External Tool"));
     setObjectName("CreateExternalProcessWorkerDialog");
     setWizardStyle(ClassicStyle);
     setOption(IndependentPages);
 
-    DialogUtils::setWizardMinimumSize(this, QSize(600, 420));
+    DialogUtils::setWizardMinimumSize(this, QSize(780, 470));
 }
 
 ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() const {
@@ -295,7 +295,7 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initializePage() {
             cbIntegratedTools->setCurrentIndex(index);
         }
     } else {
-        QString name = "Custom cmdline worker";
+        QString name = "Custom Element";
         makeUniqueWorkerName(name);
         leName->setText(name);
     }
@@ -399,6 +399,7 @@ CreateCmdlineBasedWorkerWizardInputDataPage::CreateCmdlineBasedWorkerWizardInput
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_DATA_FIELD, this, INPUTS_DATA_PROPERTY, SIGNAL(si_inputsChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD, this, INPUTS_IDS_PROPERTY);
     registerField(CreateCmdlineBasedWorkerWizard::INPUTS_NAMES_FIELD, this, INPUTS_NAMES_PROPERTY);
+    this->duplicateInputsWarningLabel->setVisible(false);
 }
 
 void CreateCmdlineBasedWorkerWizardInputDataPage::initializePage() {
@@ -426,14 +427,20 @@ void CreateCmdlineBasedWorkerWizardInputDataPage::sl_updateInputsProperties() {
     QStringList ids;
     QStringList names;
     QList<DataConfig> data;
+    bool hasDuplicates = false;
     foreach (CfgExternalToolItem *item, inputsModel->getItems()) {
         data << item->itemData;
-        ids << item->getId();
+        QString id = item->getId();
+        hasDuplicates = hasDuplicates || (!id.isEmpty() && ids.contains(id));
+        ids << id;
         names << item->getName();
     }
     setProperty(INPUTS_DATA_PROPERTY, QVariant::fromValue<QList<DataConfig> >(data));
     setProperty(INPUTS_IDS_PROPERTY, ids);
     setProperty(INPUTS_NAMES_PROPERTY, names);
+
+    this->duplicateInputsWarningLabel->setVisible(hasDuplicates);
+
     emit si_inputsChanged();
 }
 
@@ -470,6 +477,7 @@ CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardPara
     registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_DATA_FIELD, this, ATTRIBUTES_DATA_PROPERTY, SIGNAL(si_attributesChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD, this, ATTRIBUTES_IDS_PROPERTY);
     registerField(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_NAMES_FIELD, this, ATTRIBUTES_NAMES_PROPERTY);
+    this->duplicateParametersWarningLabel->setVisible(false);
 }
 
 void CreateCmdlineBasedWorkerWizardParametersPage::initializePage() {
@@ -499,6 +507,7 @@ void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
     QStringList ids;
     QStringList names;
     QList<AttributeConfig> data;
+    bool hasDuplicates = false;
     foreach (AttributeItem *item, model->getItems()) {
         AttributeConfig attributeConfig;
         attributeConfig.attributeId = item->getId();
@@ -506,13 +515,24 @@ void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
         attributeConfig.type = item->getDataType();
         attributeConfig.defaultValue = item->getDefaultValue();
         attributeConfig.description = item->getDescription();
+        if (attributeConfig.isOutputUrl()) {
+            attributeConfig.flags |= AttributeConfig::AddToDashboard;
+            if (attributeConfig.isFile()) {
+                attributeConfig.flags |= AttributeConfig::OpenWithUgene;
+            }
+        }
         data << attributeConfig;
-        ids << item->getId();
+        QString id = item->getId();
+        hasDuplicates = hasDuplicates || (!id.isEmpty() && ids.contains(id));
+        ids << id;
         names << item->getName();
     }
     setProperty(ATTRIBUTES_DATA_PROPERTY, QVariant::fromValue<QList<AttributeConfig> >(data));
     setProperty(ATTRIBUTES_IDS_PROPERTY, ids);
     setProperty(ATTRIBUTES_NAMES_PROPERTY, names);
+
+    this->duplicateParametersWarningLabel->setVisible(hasDuplicates);
+
     emit si_attributesChanged();
 }
 
@@ -576,6 +596,8 @@ CreateCmdlineBasedWorkerWizardOutputDataPage::CreateCmdlineBasedWorkerWizardOutp
     registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_DATA_FIELD, this, OUTPUTS_DATA_PROPERTY, SIGNAL(si_outputsChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_IDS_FIELD, this, OUTPUTS_IDS_PROPERTY);
     registerField(CreateCmdlineBasedWorkerWizard::OUTPUTS_NAMES_FIELD, this, OUTPUTS_NAMES_PROPERTY);
+    
+    this->duplicateOutputsWarningLabel->setVisible(false);
 }
 
 void CreateCmdlineBasedWorkerWizardOutputDataPage::initializePage() {
@@ -606,14 +628,20 @@ void CreateCmdlineBasedWorkerWizardOutputDataPage::sl_updateOutputsProperties() 
     QStringList ids;
     QStringList names;
     QList<DataConfig> data;
+    bool hasDuplicates = false;
     foreach (CfgExternalToolItem *item, outputsModel->getItems()) {
         data << item->itemData;
-        ids << item->getId();
+        QString id = item->getId();
+        hasDuplicates = hasDuplicates || (!id.isEmpty() && ids.contains(id));
+        ids << id;
         names << item->getName();
     }
     setProperty(OUTPUTS_DATA_PROPERTY, QVariant::fromValue<QList<DataConfig> >(data));
     setProperty(OUTPUTS_IDS_PROPERTY, ids);
     setProperty(OUTPUTS_NAMES_PROPERTY, names);
+
+    this->duplicateOutputsWarningLabel->setVisible(hasDuplicates);
+
     emit si_outputsChanged();
 }
 

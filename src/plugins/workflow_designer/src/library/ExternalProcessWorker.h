@@ -58,6 +58,7 @@ private:
     QString commandLine;
     ExternalProcessConfig *cfg;
 
+    QMap<QString, bool> urlsForDashboard;       // url -> open by system
     QStringList inputUrls;
 };
 
@@ -88,7 +89,6 @@ public:
 
 private:
     QMap<QString, DataConfig> outputUrls;
-    QStringList parseCombinedArgString(const QString &program);
 
     QString execString;
 };

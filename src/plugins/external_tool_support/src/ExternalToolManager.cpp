@@ -23,25 +23,32 @@
 #include <QSet>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/PluginModel.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Core/CustomExternalTool.h>
 #include <U2Core/MultiTask.h>
+#include <U2Core/PluginModel.h>
+#include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
 
+#include "ExternalToolManager.h"
+#include "ExternalToolSupportSettings.h"
+#include "custom_tools/LoadCustomExternalToolsTask.h"
 #include "utils/ExternalToolSearchTask.h"
 #include "utils/ExternalToolValidateTask.h"
-#include "ExternalToolSupportSettings.h"
-#include "ExternalToolManager.h"
 
 namespace U2 {
 
 ExternalToolManagerImpl::ExternalToolManagerImpl() :
-startupChecks(true) {
+    startupChecks(true)
+{
     etRegistry = AppContext::getExternalToolRegistry();
 }
 
-ExternalToolManagerImpl::~ExternalToolManagerImpl() {}
-
 void ExternalToolManagerImpl::start() {
+    if (nullptr != etRegistry && !startupChecks) {
+        connect(etRegistry, SIGNAL(si_toolAdded(const QString &)), SLOT(sl_customToolImported(const QString &)));
+        connect(etRegistry, SIGNAL(si_toolIsAboutToBeRemoved(const QString &)), SLOT(sl_customToolRemoved(const QString &)));
+    }
+
     if (AppContext::getPluginSupport()->isAllPluginsLoaded()) {
         sl_pluginsLoaded();
     } else {
@@ -73,6 +80,8 @@ void ExternalToolManagerImpl::innerStart() {
     }
 
     validateTools(toolPaths);
+
+    loadCustomTools();
 }
 
 void ExternalToolManagerImpl::checkStartupTasksState() {
@@ -80,6 +89,10 @@ void ExternalToolManagerImpl::checkStartupTasksState() {
     CHECK(!toolStates.values().contains(ValidationIsInProcess) && !toolStates.values().contains(SearchingIsInProcess), );
     startupChecks = false;
     ExternalToolSupportSettings::setExternalTools();
+
+    connect(etRegistry, SIGNAL(si_toolAdded(const QString &)), SLOT(sl_customToolImported(const QString &)));
+    connect(etRegistry, SIGNAL(si_toolIsAboutToBeRemoved(const QString &)), SLOT(sl_customToolRemoved(const QString &)));
+
     emit si_startupChecksFinish();
 }
 
@@ -88,6 +101,8 @@ void ExternalToolManagerImpl::stop() {
     foreach(ExternalTool* tool, etRegistry->getAllEntries()) {
         disconnect(tool, NULL, this, NULL);
     }
+    disconnect(etRegistry, SIGNAL(si_toolAdded(const QString &)), this, SLOT(sl_customToolImported(const QString &)));
+    disconnect(etRegistry, SIGNAL(si_toolIsAboutToBeRemoved(const QString &)), this, SLOT(sl_customToolRemoved(const QString &)));
 }
 
 void ExternalToolManagerImpl::check(const QString& toolName, const QString& toolPath, ExternalToolValidationListener* listener) {
@@ -327,6 +342,47 @@ void ExternalToolManagerImpl::sl_pluginsLoaded() {
     innerStart();
 }
 
+void ExternalToolManagerImpl::sl_customToolsLoaded(Task *task) {
+    LoadCustomExternalToolsTask *loadTask = qobject_cast<LoadCustomExternalToolsTask *>(task);
+    SAFE_POINT(nullptr != loadTask, "Unexpected task, can't cast it to LoadCustomExternalToolsTask *", );
+    const QList<CustomExternalTool *> toolsList = loadTask->getTools();
+    StrStrMap toolPaths;
+    foreach(CustomExternalTool* tool, toolsList) {
+        SAFE_POINT(nullptr != tool, "Tool is nullptr", );
+        const QString toolPath = addTool(tool);
+        if (!toolPath.isEmpty()) {
+            toolPaths.insert(tool->getName(), toolPath);
+        }
+    }
+
+    validateTools(toolPaths);
+}
+
+void ExternalToolManagerImpl::sl_customToolImported(const QString &toolId) {
+    SAFE_POINT(nullptr != etRegistry, "The external tool registry is nullptr", );
+    ExternalTool *tool = etRegistry->getByName(toolId);
+    SAFE_POINT(nullptr != tool, "Tool is nullptr", );
+
+    StrStrMap toolPaths;
+    const QString toolPath = addTool(tool);
+    if (!toolPath.isEmpty()) {
+        toolPaths.insert(tool->getName(), toolPath);
+    }
+
+    validateTools(toolPaths);
+}
+
+void ExternalToolManagerImpl::sl_customToolRemoved(const QString &toolId) {
+    toolStates.remove(toolId);
+    QMutableMapIterator<QString, QString> iterator(dependencies);
+    while (iterator.hasNext()) {
+        auto item = iterator.next();
+        if (toolId == item.key() || toolId == item.value()) {
+            iterator.remove();
+        }
+    }
+}
+
 bool ExternalToolManagerImpl::dependenciesAreOk(const QString& toolName) {
     bool result = true;
     foreach(const QString& masterName, dependencies.keys(toolName)) {
@@ -385,6 +441,12 @@ void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, External
     }
 
     checkStartupTasksState();
+}
+
+void ExternalToolManagerImpl::loadCustomTools() {
+    LoadCustomExternalToolsTask *loadTask = new LoadCustomExternalToolsTask();
+    connect(new TaskSignalMapper(loadTask), SIGNAL(si_taskSucceeded(Task *)), SLOT(sl_customToolsLoaded(Task *)));
+    AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
 }
 
 void ExternalToolManagerImpl::searchTools() {

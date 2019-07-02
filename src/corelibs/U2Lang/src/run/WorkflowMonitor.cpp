@@ -110,6 +110,10 @@ void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer,
     emit si_newOutputFile(info);
 }
 
+void WorkflowMonitor::addOutputFolder(const QString &url, const QString &producer) {
+    addOutputFile(url, producer, true);
+}
+
 void WorkflowMonitor::addInfo(const QString &message, const QString &actor, const QString &type) {
     addNotification(WorkflowNotification(message, actor, type));
 }
@@ -365,15 +369,23 @@ void WorkflowMonitor::onLogChanged(const WDListener* listener, int messageType, 
 /* FileInfo */
 /************************************************************************/
 FileInfo::FileInfo( )
-    : url( ), actor( ), openBySystem(false)
+    : url( ), actor( ), openBySystem(false), isDir(false)
 {
 
 }
 
 FileInfo::FileInfo(const QString &_url, const QString &_producer, bool _openBySystem)
-: url(_url), actor(_producer), openBySystem(_openBySystem)
+    : url(_url),
+      actor(_producer),
+      openBySystem(_openBySystem),
+      isDir(QFileInfo(url).isDir())
 {
-
+    if (isDir) {
+        openBySystem = true;
+        if (url.endsWith("/")) {
+            url.chop(1);
+        }
+    }
 }
 
 bool FileInfo::operator== (const FileInfo &other) const {

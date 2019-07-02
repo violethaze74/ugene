@@ -139,6 +139,7 @@ public:
     static bool startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments);
     static ProcessRun prepareProcess(const QString &toolName, const QStringList &arguments, const QString &workingDirectory, const QStringList &additionalPaths, U2OpStatus &os, ExternalToolListener* listener);
     static QString prepareArgumentsForCmdLine(const QStringList &arguments);
+    static QStringList splitCmdLineArguments(const QString &execString);
     static QVariantMap getScoresGapDependencyMap();
 };
 

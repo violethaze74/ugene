@@ -79,9 +79,13 @@ public:
 
     enum ParameterType {
         Boolean,
-        Number,
+        Integer,
+        Double,
         ParameterString,
-        URL
+        InputFileUrl,
+        InputFolderUrl,
+        OutputFileUrl,
+        OutputFolderUrl
     };
     typedef QPair<ParameterType, QString> ParameterDataType;        // type / default value
     typedef Data<ParameterDataType> ParameterData;

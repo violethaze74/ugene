@@ -46,7 +46,7 @@ void Peak2GeneSupport::initialize() {
 
     executableFileName = "peak2gene.py";
 
-    toolRunnerProgramm = ET_PYTHON;
+    toolRunnerProgram = ET_PYTHON;
     dependencies << ET_PYTHON;
 
     validMessage = "peak2gene.py v";

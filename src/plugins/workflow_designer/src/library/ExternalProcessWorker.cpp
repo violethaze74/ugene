@@ -19,7 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include "ExternalProcessWorker.h"
+#include <QDateTime>
+#include <QFile>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -28,6 +29,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GUrlUtils.h>
@@ -40,19 +42,19 @@
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Lang/ExternalToolCfg.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/IncludedProtoFactory.h>
-
 #include <U2Designer/DelegateEditors.h>
 
-#include "util/CustomWorkerUtils.h"
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/ExternalToolCfg.h>
+#include <U2Lang/IncludedProtoFactory.h>
+#include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowMonitor.h>
 
-#include <QDateTime>
+#include "ExternalProcessWorker.h"
+#include "util/CustomWorkerUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -219,7 +221,6 @@ ExternalProcessWorker::ExternalProcessWorker(Actor *a)
 {
     ExternalToolCfgRegistry *reg = WorkflowEnv::getExternalCfgRegistry();
     cfg = reg->getConfigById(actor->getProto()->getId());
-    commandLine = cfg->cmdLine;
 }
 
 void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString) {
@@ -296,14 +297,6 @@ Task * ExternalProcessWorker::tick() {
     CHECK(!finishWorkIfInputEnded(), NULL);
 
     QString execString = commandLine;
-    applyAttributes(execString);
-
-    // The following call must be last call in the preparing execString chain
-    // So, this is a third step for execString:
-    //     1) the first one is substitution of the internal vars (like '%...%')
-    //     2) the second is applying attributes (something like '$...')
-    //     3) this call replaces escaped symbols: '\$', '\%', '\\' by the '$', '%', '\'
-    applyEscapedSymbols(execString);
 
     int i = 0;
     foreach(const DataConfig &dataCfg, cfg->inputs) { //write all input data to files
@@ -384,13 +377,28 @@ static SharedDbiDataHandler getAnnotations(Document *d, WorkflowContext *context
 
 void ExternalProcessWorker::sl_onTaskFinishied() {
     LaunchExternalToolTask *t = static_cast<LaunchExternalToolTask*>(sender());
+
     bool hasMessages = true;
     bool isEnded = true;
     checkInputBusState(hasMessages, isEnded);
     if (!hasMessages) {
         setDone();
     }
-    CHECK(output && t->isFinished() && !t->hasError(),);
+
+    CHECK(t->isFinished() && !t->hasError(), );
+
+    foreach (const QString &url, urlsForDashboard.keys()) {
+        QFileInfo fileInfo(url);
+        if (fileInfo.exists()) {
+            if (fileInfo.isFile()) {
+                monitor()->addOutputFile(url, getActorId(), urlsForDashboard.value(url));
+            } else if (fileInfo.isDir()) {
+                monitor()->addOutputFolder(url, getActorId());
+            }
+        }
+    }
+
+    CHECK(nullptr != output, );
 
     /* This variable and corresponded code parts with it
      * are temporary created for merging sequences.
@@ -401,6 +409,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
     QMap<QString, DataConfig> outputUrls = t->takeOutputUrls();
     QMap<QString, DataConfig>::iterator i = outputUrls.begin();
     QVariantMap v;
+
     for(; i != outputUrls.end(); i++) {
         DataConfig cfg = i.value();
         QString url = i.key();
@@ -513,7 +522,15 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
 }
 
 void ExternalProcessWorker::init() {
+    commandLine = cfg->cmdLine;
     applySpecialInternalEnvvars(commandLine);
+    applyAttributes(commandLine);
+    // The following call must be last call in the preparing execString chain
+    // So, this is a third step for commandLine:
+    //     1) the first one is substitution of the internal vars (like '%...%')
+    //     2) the second is applying attributes (something like '$...')
+    //     3) this call replaces escaped symbols: '\$', '\%', '\\' by the '$', '%', '\'
+    applyEscapedSymbols(commandLine);
 
     output = ports.value(OUT_PORT_ID);
 
@@ -573,52 +590,11 @@ LaunchExternalToolTask::~LaunchExternalToolTask() {
     }
 }
 
-// a function from "qprocess.cpp"
-QStringList LaunchExternalToolTask::parseCombinedArgString(const QString &program)
-{
-    QStringList args;
-    QString tmp;
-    int quoteCount = 0;
-    bool inQuote = false;
-
-    // handle quoting. tokens can be surrounded by double quotes
-    // "hello world". three consecutive double quotes represent
-    // the quote character itself.
-    for (int i = 0; i < program.size(); ++i) {
-        if (program.at(i) == QLatin1Char('"') || program.at(i) == QLatin1Char('\'')) {
-            ++quoteCount;
-            if (quoteCount == 3) {
-                // third consecutive quote
-                quoteCount = 0;
-                tmp += program.at(i);
-            }
-            continue;
-        }
-        if (quoteCount) {
-            if (quoteCount == 1)
-                inQuote = !inQuote;
-            quoteCount = 0;
-        }
-        if (!inQuote && program.at(i).isSpace()) {
-            if (!tmp.isEmpty()) {
-                args += tmp;
-                tmp.clear();
-            }
-        } else {
-            tmp += program.at(i);
-        }
-    }
-    if (!tmp.isEmpty())
-        args += tmp;
-
-    return args;
-}
-
 #define WIN_LAUNCH_CMD_COMMAND "cmd /C "
 #define START_WAIT_MSEC 3000
 
 void LaunchExternalToolTask::run() {
-    GCOUNTER(cvar, tvar, "A task for element with command line tool is launched");
+    GCOUNTER(cvar, tvar, "A task for an element with external tool is launched");
     QProcess *externalProcess = new QProcess();
     if(execString.contains(">")) {
         QString output = execString.split(">").last();
@@ -630,7 +606,7 @@ void LaunchExternalToolTask::run() {
         externalProcess->setStandardOutputFile(output);
     }
 
-    QStringList execStringArgs = parseCombinedArgString(execString);
+    QStringList execStringArgs = ExternalToolSupportUtils::splitCmdLineArguments(execString);
     QString execStringProg = execStringArgs.takeAt(0);
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();

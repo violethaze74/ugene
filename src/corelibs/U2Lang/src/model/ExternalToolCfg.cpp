@@ -65,12 +65,51 @@ bool DataConfig::operator ==(const DataConfig &other) const {
             && description == other.description;
 }
 
+const QString AttributeConfig::NUMBER_DEPRECATED_TYPE = "Number";
+const QString AttributeConfig::URL_DEPRECATED_TYPE = "URL";
+
+const QString AttributeConfig::BOOLEAN_TYPE = "Boolean";
+const QString AttributeConfig::STRING_TYPE = "String";
+const QString AttributeConfig::INTEGER_TYPE = "Integer";
+const QString AttributeConfig::DOUBLE_TYPE = "Double";
+const QString AttributeConfig::INPUT_FILE_URL_TYPE = "Input_file_URL";
+const QString AttributeConfig::OUTPUT_FILE_URL_TYPE = "Output_file_URL";
+const QString AttributeConfig::INPUT_FOLDER_URL_TYPE = "Input_dir_URL";
+const QString AttributeConfig::OUTPUT_FOLDER_URL_TYPE = "Output_dir_URL";
+
+AttributeConfig::AttributeConfig()
+    : flags(None)
+{
+
+}
+
+void AttributeConfig::fixTypes() {
+    if (type == URL_DEPRECATED_TYPE) {
+        type = INPUT_FILE_URL_TYPE;
+    } else if (type == NUMBER_DEPRECATED_TYPE) {
+        type = STRING_TYPE;
+    }
+}
+
+bool AttributeConfig::isOutputUrl() const {
+    return type == OUTPUT_FILE_URL_TYPE || type == OUTPUT_FOLDER_URL_TYPE;
+}
+
+bool AttributeConfig::isFile() const {
+    return type == INPUT_FILE_URL_TYPE || type == OUTPUT_FILE_URL_TYPE;
+}
+
+bool AttributeConfig::isFolder() const {
+    return type == INPUT_FOLDER_URL_TYPE || type == OUTPUT_FOLDER_URL_TYPE;
+}
+
 bool AttributeConfig::operator ==(const AttributeConfig &other) const {
     return attributeId == other.attributeId
             && attrName == other.attrName
             && type == other.type
             && defaultValue == other.defaultValue
-            && description == other.description;
+            && description == other.description
+            && flags == other.flags;
 }
 
 ExternalProcessConfig::ExternalProcessConfig()

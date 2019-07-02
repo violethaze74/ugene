@@ -150,28 +150,31 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
     QList<Attribute*> attribs;
     QMap<QString, PropertyDelegate*> delegates;
     foreach(const AttributeConfig& acfg, cfg->attrs) {
-        //PropertyDelegate *delegate = NULL;
         DataTypePtr type;
         QString descr = acfg.description.isEmpty() ? acfg.type : acfg.description;
-        if(acfg.type == "URL") {
+        if(acfg.isFile()) {
             type = BaseTypes::STRING_TYPE();
             delegates[acfg.attributeId] = new URLDelegate("All Files(*.*)","");
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
-        } else if(acfg.type == "String") {
+        } else if (acfg.isFolder()) {
+            //TODO: UGENE-6484
             type = BaseTypes::STRING_TYPE();
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
-        } else if(acfg.type == "Number") {
-            type = BaseTypes::NUM_TYPE();
+        } else if (acfg.type == AttributeConfig::STRING_TYPE) {
+            type = BaseTypes::STRING_TYPE();
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
-        } else if(acfg.type == "Boolean") {
+        } else if (acfg.type == AttributeConfig::BOOLEAN_TYPE) {
             type = BaseTypes::BOOL_TYPE();
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, (acfg.defaultValue == "true" ? QVariant(true) : QVariant(false)));
+        } else if (acfg.type == AttributeConfig::INTEGER_TYPE) {
+            //TODO: UGENE-6484
+            type = BaseTypes::NUM_TYPE();
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::DOUBLE_TYPE) {
+            //TODO: UGENE-6484
+            type = BaseTypes::NUM_TYPE();
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         }
-
-        //attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, acfg.type), type);
-        /*if(delegate) {
-            delegates[acfg.attrName] = acfg.delegate;
-        }*/
     }
 
     ActorPrototype * proto = new IntegralBusActorPrototype( desc, portDescs, attribs );

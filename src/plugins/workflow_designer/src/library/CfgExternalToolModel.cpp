@@ -483,10 +483,14 @@ void AttributeItem::setDescription(const QString &_description) {
 CfgExternalToolModelAttributes::CfgExternalToolModelAttributes(QObject *_parent)
     : QAbstractTableModel(_parent)
 {
-    types["URL"] = "URL";
-    types["String"] = "String";
-    types["Number"] = "Number";
-    types["Boolean"] = "Boolean";
+    types[tr("Boolean")] = AttributeConfig::BOOLEAN_TYPE;
+    types[tr("String")] = AttributeConfig::STRING_TYPE;
+    types[tr("Integer")] = AttributeConfig::INTEGER_TYPE;
+    types[tr("Double")] = AttributeConfig::DOUBLE_TYPE;
+    types[tr("Input file URL")] = AttributeConfig::INPUT_FILE_URL_TYPE;
+    types[tr("Input folder URL")] = AttributeConfig::INPUT_FOLDER_URL_TYPE;
+    types[tr("Output file URL")] = AttributeConfig::OUTPUT_FILE_URL_TYPE;
+    types[tr("Output folder URL")] = AttributeConfig::OUTPUT_FOLDER_URL_TYPE;
     delegate = new ComboBoxDelegate(types);
 }
 

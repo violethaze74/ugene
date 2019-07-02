@@ -1109,7 +1109,9 @@ GUI_TEST_CLASS_DEFINITION(test_6212) {
     GTGlobals::sleep();
 
     //5. Click "Validate workflow".
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTGlobals::sleep();
 
     //Expected state: Validation doesn't pass, there is an error about absent steps.
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
@@ -2192,7 +2194,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
     //2. Place repeat worker
     GTUtilsWorkflowDesigner::addElement(os, "Find Repeats");
 
-    //Expected state: default value for "Apply 'Max distance' attribute" is False
+    //Expected state: default value for "Apply 'Max distance' attribute" is True
     GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Find Repeats"));
     QString defaultAttr = GTUtilsWorkflowDesigner::getParameter(os,  "Apply 'Max distance' attribute");
     CHECK_SET_ERR(defaultAttr == "True","Attribute value isn't 'True'");
@@ -2236,15 +2238,14 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
             QWidget* dialog = QApplication::activeModalWidget();
 
             QSpinBox *maxDistanceBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "maxDistBox", dialog));
-            GTSpinBox::setValue(os, maxDistanceBox, 1, GTGlobals::UseKeyBoard);
-            CHECK_SET_ERR(GTSpinBox::getValue(os, maxDistanceBox) == 1,"Max distance value isn't 1 bp");
+            GTSpinBox::checkLimits(os, maxDistanceBox, 0, 1000000);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
 
     //5. Open repeat finder dialog
-    //Expected state: minimum value for max distance combobox is 1
+    //Expected state: minimum value for max distance combobox is 0
     GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, new Custom()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find repeats...", GTGlobals::UseMouse);
     GTGlobals::sleep();
@@ -2259,7 +2260,7 @@ GUI_TEST_CLASS_DEFINITION(test_6398) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6459) {
-    //1. Open "data/samples/Genbank/murine.gb".
+    //1. Open "data/samples/Genbank/human_T1.fa".
     //2. Open "Search in Sequence" options panel tab.
     //3. Set "Substitute" algorithm.Check "Search with ambiguous bases" checkbox.
     //4. Ensure that the search is performed on both strands(it is the default value).
@@ -2278,13 +2279,171 @@ GUI_TEST_CLASS_DEFINITION(test_6459) {
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2738"), "Results string not match");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6481_1) {
+//    Test to check that element with external tool will add to dashboard an URL to file that is set as parameter with type "Output file URL" and it will be opened by UGENE by default.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Create element with external tool" button on the toolbar.
+//    3. Fill the wizard with the following values (not mentioned values can be set with any value):
+//        Parameters page: a parameter with a type "Output file URL".
+//    4. Accept the wizard.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "test_6481_1";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.tool = "python";
+    settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_file_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFileUrl, QString()));
+    settings.command = "%UGENE_JAVA% -help $output_file_url";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
+
+//    5. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6481_1");
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
+
+//    6. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an output file on the dashboard.
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "There are no output files on the dashboard");
+    const int expectedCount = 1;
+    CHECK_SET_ERR(expectedCount == outputFiles.size(), QString("There are too many output files on the dashboard: expected %1, got %2").arg(expectedCount).arg(outputFiles.size()));
+    const QString expectedName = "human_T1_cutted.fa";
+    CHECK_SET_ERR(expectedName == outputFiles.first(), QString("An unexpected output file name: expected '%1', got '%2'").arg(expectedName).arg(outputFiles.first()));
+
+//    7. Open a menu on the output item on the dashboard.
+//    Expected state: there are two options in the menu: "Open containing folder" and "Open by operating system".
+    // It is not trivial to get the menu items. It is not implemented yet.
+
+//    8. Click on the file on the dashboard.
+    GTUtilsDashboard::clickOutputFile(os, outputFiles.first());
+
+//    Expected state: UGENE tries to open the file.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDocument::checkDocument(os, "human_T1_cutted.fa", "AnnotatedDNAView");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6481_2) {
+//    Test to check that element with external tool will add to dashboard an URL to folder that is set as parameter with type "Output folder URL" and it doesn't have an option to be opened by UGENE.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Create element with external tool" button on the toolbar.
+//    3. Fill the wizard with the following values (not mentioned values can be set with any value):
+//        Parameters page: a parameter with a type "Output folder URL".
+//    4. Accept the wizard.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "test_6481_2";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.tool = "python";
+    settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_folder_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFolderUrl, QString()));
+    settings.command = "%UGENE_JAVA% -help $output_folder_url";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
+
+//    5. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6481_2");
+    GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", sandBoxDir, GTUtilsWorkflowDesigner::textValue);
+
+//    6. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an output folder on the dashboard.
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "There are no output files on the dashboard");
+    const int expectedCount = 1;
+    CHECK_SET_ERR(expectedCount == outputFiles.size(), QString("There are too many output files on the dashboard: expected %1, got %2").arg(expectedCount).arg(outputFiles.size()));
+    const QString expectedName = "sandbox";
+    CHECK_SET_ERR(expectedName == outputFiles.first(), QString("An unexpected output file name: expected '%1', got '%2'").arg(expectedName).arg(outputFiles.first()));
+
+//    7. Open a menu on the output item on the dashboard.
+//    Expected state: there is the only option "Open containing folder" in the menu.
+    // It is not trivial to get the menu items. It is not implemented yet.
+
+//    8. Click on the output item.
+//    Expected state: a system file manager opens the folder.
+    // It is impossible to check that the file manager is opened on the item clicking.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6481_3) {
+//    Test to check that it is possible to forbid to open by UGENE an URL to file that is added to a dashboard by element with external tool.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Add element with external tool" button on the toolbar.
+//    3. Select "_common_data/scenarios/_regression/6481/test_6481_3.etc". Accept the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6481/test_6481_3.etc"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Add element with external tool");
+    GTGlobals::sleep();
+
+//    4. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6481_3");
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
+
+//    5. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an output file on the dashboard.
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "There are no output files on the dashboard");
+    const int expectedCount = 1;
+    CHECK_SET_ERR(expectedCount == outputFiles.size(), QString("There are too many output files on the dashboard: expected %1, got %2").arg(expectedCount).arg(outputFiles.size()));
+    const QString expectedName = "human_T1_cutted.fa";
+    CHECK_SET_ERR(expectedName == outputFiles.first(), QString("An unexpected output file name: expected '%1', got '%2'").arg(expectedName).arg(outputFiles.first()));
+
+//    7. Open a menu on the output item on the dashboard.
+//    Expected state: there is the only option in the menu: "Open containing folder".
+    // It is not trivial to get the menu items. It is not implemented yet.
+
+//    8. Click on the output item.
+//    Expected state: the file is opened with some other application.
+    // It is impossible to check that some other application is opened on the item clicking.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6481_4) {
+//    Test to check that it is possible to forbid to add to dashboard URLs to file that is set in parameters with types "Output file URL" or "Output folder URL" in element with external tool.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Add element with external tool" button on the toolbar.
+//    3. Select "_common_data/scenarios/_regression/6481/test_6481_4.etc". Accept the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6481/test_6481_4.etc"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Add element with external tool");
+    GTGlobals::sleep();
+
+//    4. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6481_4");
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", sandBoxDir, GTUtilsWorkflowDesigner::textValue);
+
+//    5. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there are no entries in the output widget on the dashboard.
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    const int expectedCount = 0;
+    CHECK_SET_ERR(expectedCount == outputFiles.size(), QString("There are too many output files on the dashboard: expected %1, got %2").arg(expectedCount).arg(outputFiles.size()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6488_1) {
 //    1. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-//    2. Click "Create element with command line tool" button on the toolbar.
+//    2. Click "Create element with external tool" button on the toolbar.
 //    3. Fill the dialog with the following data:
-//        Element name: "UGENE-6488 test element"
+//        Element name: "UGENE-6488 test element 1"
 //        Command line tool: Integrated external tool "python"
 //        No inputs, parameters and outputs
 //        Command: "just a command"
@@ -2293,14 +2452,15 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
 //    4. Accept the dialog.
 //    Expected state: the element was created and put on the scene.
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
-    settings.elementName = "UGENE-6488 test element";
+    settings.elementName = "UGENE-6488 test element 1";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
     settings.tool = "python";
     settings.command = "just a command";
     settings.description = "detailed element description";
     settings.prompter = "description on the scene";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with command line tool");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
 
 //    5. Click on the element on the scene.
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1");
@@ -2374,7 +2534,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
 //    1. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-//    2. Click "Create element with command line tool" button on the toolbar.
+//    2. Click "Create element with external tool" button on the toolbar.
 //    3. Fill the dialog with the following data:
 //        Element name: "UGENE-6488 test element"
 //        Command line tool: Integrated external tool "python"
@@ -2392,10 +2552,11 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     settings.description = "detailed element description";
     settings.prompter = "description on the scene";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with command line tool");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
 
 //    5. Click on the element on the scene.
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2");
+    GTGlobals::sleep();
 
 //    6. Call a context menu on the element on the scene.
 //    7. Select "Edit configuration..." menu item.

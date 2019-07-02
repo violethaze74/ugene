@@ -773,7 +773,7 @@ void WorkflowView::createActions() {
     editScriptAction->setEnabled(false); // because user need to select actor with script to enable it
     connect(editScriptAction, SIGNAL(triggered()), SLOT(sl_editScript()));
 
-    createCmdlineBasedWorkerAction = new QAction(tr("Create element with command line tool..."), this);
+    createCmdlineBasedWorkerAction = new QAction(tr("Create element with external tool..."), this);
     createCmdlineBasedWorkerAction->setObjectName("createElementWithCommandLineTool");
     createCmdlineBasedWorkerAction->setIcon(QIcon(":workflow_designer/images/external_cmd_tool.png"));
     connect(createCmdlineBasedWorkerAction, SIGNAL(triggered()), SLOT(sl_createCmdlineBasedWorkerAction()));
@@ -784,7 +784,7 @@ void WorkflowView::createActions() {
     editExternalToolAction->setEnabled(false); // because user need to select actor with script to enable it
     connect(editExternalToolAction, SIGNAL(triggered()), SLOT(sl_editExternalTool()));
 
-    appendExternalTool = new QAction(tr("Add element with command line tool..."), this);
+    appendExternalTool = new QAction(tr("Add element with external tool..."), this);
     appendExternalTool->setObjectName("AddElementWithCommandLineTool");
     appendExternalTool->setIcon(QIcon(":workflow_designer/images/external_cmd_tool_add.png"));
     connect(appendExternalTool, SIGNAL(triggered()), SLOT(sl_appendExternalToolWorker()));
@@ -983,7 +983,7 @@ void WorkflowView::addProcess(Actor *proc, const QPointF &pos) {
     ActorPrototype *addedProto = it->getProcess()->getProto();
     uiLog.trace(addedProto->getDisplayName() + " added");
     if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(addedProto->getId()) != nullptr) {
-        GCOUNTER(cvar, tvar, "Element with command line tool is added to the scene");
+        GCOUNTER(cvar, tvar, "Element with external tool is added to the scene");
     }
 
     update();

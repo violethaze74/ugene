@@ -113,7 +113,7 @@ const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashbo
 
 QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os) {
     const QString selector = "div#outputWidget button.btn.full-width.long-text";
-    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector);
+    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector, GTGlobals::FindOptions(false));
     QStringList outputFilesNames;
     foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
         const QString outputFileName = outputFilesButton.toPlainText();
