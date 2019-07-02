@@ -237,8 +237,6 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
             execString.replace(regex, "\\1" + value + "\\6");
         }
     }
-
-    return;
 }
 
 void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
@@ -247,8 +245,6 @@ void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
     // "%UGENE_JAVA% \\%UGENE_JAVA% -version \\\$\%\\\\\%\\$"   ─┐
     // "/usr/bin/java \/usr/bin/java -version $%\\%\$"         <─┘
     execString.replace(QRegularExpression("\\\\([\\\\\\%\\$])"), "\\1");
-
-    return;
 }
 
 QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
