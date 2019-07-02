@@ -250,7 +250,10 @@ void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
 
 QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
     QStringList urls;
-    int ind = execString.indexOf(QRegExp(QString("\\$%1([^%2]|$)").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE)));
+    QRegularExpression regex = QRegularExpression(QString("((\\\\\\\\)+)\\$%1([^%2]|$)|(^)\\$%1([^%2]|$)|([^\\\\])\\$%1([^%2]|$)")
+                                                  .arg(dataCfg.attributeId)
+                                                  .arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
+    int ind = execString.indexOf(regex);
     CHECK(-1 != ind, urls);
 
     QString paramValue;
@@ -271,12 +274,15 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
         paramValue = "\"" + d->getURLString() + "\"";
     }
 
-    execString.replace(ind, dataCfg.attributeId.size() + 1 , paramValue);
+    execString.replace(regex, "\\1" + paramValue);
     return urls;
 }
 
 QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os) {
-    int ind = execString.indexOf(QRegExp(QString("\\$%1([^%2]|$)").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE)));
+    QRegularExpression regex = QRegularExpression(QString("\\$%1([^%2]|$)")
+                                                  .arg(dataCfg.attributeId)
+                                                  .arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
+    int ind = execString.indexOf(regex);
     CHECK(-1 != ind, "");
 
     QString extension;
@@ -288,7 +294,7 @@ QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConf
         extension = f->getSupportedDocumentFileExtensions().first();
     }
     QString url = generateAndCreateURL(extension, dataCfg.attrName);
-    execString.replace(ind, dataCfg.attributeId.size() + 1 , "\"" + url + "\"");
+    execString.replace(regex, "\\1\"" + url + "\"");
 
     return url;
 }
@@ -324,6 +330,14 @@ Task * ExternalProcessWorker::tick() {
             outputUrls[url] = dataCfg;
         }
     }
+
+    // The following call must be last call in the preparing execString chain
+    // So, this is a very last step for execString:
+    //     1) function init(): the first one is substitution of the internal vars (like '%...%')
+    //     2) function init(): the second is applying attributes (something like '$...')
+    //     3) this function: apply substitutions for Input/Output
+    //     4) this function: this call replaces escaped symbols: '\$', '\%', '\\' by the '$', '%', '\'
+    applyEscapedSymbols(commandLine);
 
     LaunchExternalToolTask *task = new LaunchExternalToolTask(execString, outputUrls);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinishied()));
@@ -544,12 +558,6 @@ void ExternalProcessWorker::init() {
     commandLine = cfg->cmdLine;
     applySpecialInternalEnvvars(commandLine);
     applyAttributes(commandLine);
-    // The following call must be last call in the preparing execString chain
-    // So, this is a third step for commandLine:
-    //     1) the first one is substitution of the internal vars (like '%...%')
-    //     2) the second is applying attributes (something like '$...')
-    //     3) this call replaces escaped symbols: '\$', '\%', '\\' by the '$', '%', '\'
-    applyEscapedSymbols(commandLine);
 
     output = ports.value(OUT_PORT_ID);
 
