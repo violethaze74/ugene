@@ -29,6 +29,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/DialogUtils.h>
+#include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
 
@@ -229,6 +230,9 @@ void CreateCmdlineBasedWorkerWizard::init() {
     setObjectName("CreateExternalProcessWorkerDialog");
     setWizardStyle(ClassicStyle);
     setOption(IndependentPages);
+
+    setOption(QWizard::HaveHelpButton, true);
+    new U2::HelpButton(this, this->button(QWizard::HelpButton), "24740125");
 
     DialogUtils::setWizardMinimumSize(this, QSize(780, 470));
 }
