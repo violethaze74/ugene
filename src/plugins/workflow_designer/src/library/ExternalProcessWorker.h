@@ -47,6 +47,7 @@ private slots:
 private:
     void applySpecialInternalEnvvars(QString &execString);
     void applyAttributes(QString &execString);
+    void applyEscapedSymbols(QString &execString);
     QStringList applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os);
     QString prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os);
     void checkInputBusState(bool &hasMessages, bool &isEnded) const;

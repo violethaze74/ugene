@@ -228,16 +228,23 @@ void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString) {
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
-        int pos = execString.indexOf(QRegExp("\\$" + a->getDisplayName() + "(\\W|$)"));
-        if (-1 == pos) {
-            continue;
+        QRegularExpression regex = QRegularExpression("(([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$"
+                                                      + a->getDisplayName()
+                                                      + "(\\W|$)");
+        if (execString.indexOf(regex) >= 0) {
+            //set parameters in command line with attributes values
+            QString value = getValue<QString>(a->getId());
+            execString.replace(regex, "\\1" + value + "\\6");
         }
-
-        //set parameters in command line with attributes values
-        QString value = getValue<QString>(a->getId());
-        int idLength = a->getDisplayName().size() + 1;
-        execString.replace(pos, idLength, value);
     }
+}
+
+void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
+    // Replace escaped symbols
+    // Example:
+    // "%UGENE_JAVA% \\%UGENE_JAVA% -version \\\$\%\\\\\%\\$"   ─┐
+    // "/usr/bin/java \/usr/bin/java -version $%\\%\$"         <─┘
+    execString.replace(QRegularExpression("\\\\([\\\\\\%\\$])"), "\\1");
 }
 
 QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
@@ -290,6 +297,13 @@ Task * ExternalProcessWorker::tick() {
 
     QString execString = commandLine;
     applyAttributes(execString);
+
+    // The following call must be last call in the preparing execString chain
+    // So, this is a third step for execString:
+    //     1) the first one is substitution of the internal vars (like '%...%')
+    //     2) the second is applying attributes (something like '$...')
+    //     3) this call replaces escaped symbols: '\$', '\%', '\\' by the '$', '%', '\'
+    applyEscapedSymbols(execString);
 
     int i = 0;
     foreach(const DataConfig &dataCfg, cfg->inputs) { //write all input data to files
