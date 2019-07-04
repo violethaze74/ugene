@@ -89,8 +89,8 @@ public:
         AllowSelectSeveralFiles = 1 << 0,            // allows to select several files. Ignored, if AllowSelectOnlyExistingDir is set.
         AllowSelectOnlyExistingDir = 1 << 1,         // allows to select only existing directory. Otherwise, files can be selected (existing or not).
         SelectFileToSave = 1 << 2,                   // allows to select file to save. File can be existing or not. Ignored, if AllowSelectOnlyExistingDir or AllowSelectSeveralFiles is set.
-        SelectParentDirInsteadSelectedFile = 1 << 3, // user can select files, but the directory will be commited as the selected item. It is not possible to select the directory in this mode, AllowSelectOnlyExistingDir flag is ignored.
-        DoNotUseWorkflowOutputFolder = 1 << 4        // do not offer to save file to thw workflow output folder, show the default save dialog. Only if SelectFileToSave flag is set.
+        SelectParentDirInsteadSelectedFile = 1 << 3, // user can select files, but the directory will be committed as the selected item. It is not possible to select the directory in this mode, AllowSelectOnlyExistingDir flag is ignored.
+        DoNotUseWorkflowOutputFolder = 1 << 4        // do not offer to save file to the workflow output folder, show the default save dialog. Only if SelectFileToSave flag is set.
     };
     Q_DECLARE_FLAGS(Options, Option)
 

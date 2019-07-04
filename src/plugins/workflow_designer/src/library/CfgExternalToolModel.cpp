@@ -216,7 +216,7 @@ bool CfgExternalToolModel::setData(const QModelIndex &index, const QVariant &val
     int col = index.column();
     CfgExternalToolItem * item = getItem(index);
     switch (role) {
-    case Qt::EditRole: // fallthrough
+    case Qt::EditRole: // fall through
     case ConfigurationEditor::ItemValueRole:
         switch (col) {
         case COLUMN_NAME:
@@ -426,7 +426,8 @@ void CfgExternalToolModel::initTypes() {
 
 AttributeItem::AttributeItem()
     : delegateForNames(nullptr),
-      delegateForIds(nullptr)
+      delegateForIds(nullptr),
+      delegateForDefaultValues(nullptr)
 {
 
 }
@@ -434,6 +435,7 @@ AttributeItem::AttributeItem()
 AttributeItem::~AttributeItem() {
     delete delegateForNames;
     delete delegateForIds;
+    delete delegateForDefaultValues;
 }
 
 const QString &AttributeItem::getId() const {
@@ -460,11 +462,11 @@ void AttributeItem::setDataType(const QString &_type) {
     type = _type;
 }
 
-const QString &AttributeItem::getDefaultValue() const {
+const QVariant&AttributeItem::getDefaultValue() const {
     return defaultValue;
 }
 
-void AttributeItem::setDefaultValue(const QString &_defaultValue) {
+void AttributeItem::setDefaultValue(const QVariant&_defaultValue) {
     defaultValue = _defaultValue;
 }
 
@@ -483,21 +485,60 @@ void AttributeItem::setDescription(const QString &_description) {
 CfgExternalToolModelAttributes::CfgExternalToolModelAttributes(QObject *_parent)
     : QAbstractTableModel(_parent)
 {
-    types[tr("Boolean")] = AttributeConfig::BOOLEAN_TYPE;
-    types[tr("String")] = AttributeConfig::STRING_TYPE;
-    types[tr("Integer")] = AttributeConfig::INTEGER_TYPE;
-    types[tr("Double")] = AttributeConfig::DOUBLE_TYPE;
-    types[tr("Input file URL")] = AttributeConfig::INPUT_FILE_URL_TYPE;
-    types[tr("Input folder URL")] = AttributeConfig::INPUT_FOLDER_URL_TYPE;
-    types[tr("Output file URL")] = AttributeConfig::OUTPUT_FILE_URL_TYPE;
-    types[tr("Output folder URL")] = AttributeConfig::OUTPUT_FOLDER_URL_TYPE;
-    delegate = new ComboBoxDelegate(types);
+    types.append(QPair<QString, QVariant>(tr("Boolean"), AttributeConfig::BOOLEAN_TYPE));
+    types.append(QPair<QString, QVariant>(tr("Integer"), AttributeConfig::INTEGER_TYPE));
+    types.append(QPair<QString, QVariant>(tr("Double"), AttributeConfig::DOUBLE_TYPE));
+    types.append(QPair<QString, QVariant>(tr("String"), AttributeConfig::STRING_TYPE));
+    types.append(QPair<QString, QVariant>(tr("Input file URL"), AttributeConfig::INPUT_FILE_URL_TYPE));
+    types.append(QPair<QString, QVariant>(tr("Input folder URL"), AttributeConfig::INPUT_FOLDER_URL_TYPE));
+    types.append(QPair<QString, QVariant>(tr("Output file URL"), AttributeConfig::OUTPUT_FILE_URL_TYPE));
+    types.append(QPair<QString, QVariant>(tr("Output folder URL"), AttributeConfig::OUTPUT_FOLDER_URL_TYPE));
+    typesDelegate = new ComboBoxDelegate(types);
 }
 
 CfgExternalToolModelAttributes::~CfgExternalToolModelAttributes() {
     foreach(AttributeItem* item, items) {
         delete item;
     }
+}
+
+void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString& newType, AttributeItem* item) {
+    PropertyDelegate* propDelegate = nullptr;
+    QVariant defaultValue;
+    if (newType == AttributeConfig::BOOLEAN_TYPE) {
+        propDelegate = new ComboBoxWithBoolsDelegate();
+        defaultValue = true;
+    } else if (newType == AttributeConfig::STRING_TYPE) {
+        propDelegate = new PropertyDelegate();
+    } else if (newType == AttributeConfig::INTEGER_TYPE) {
+        QVariantMap integerValues;
+        integerValues["minimum"] = QVariant(INT_MIN);
+        integerValues["maximum"] = QVariant(INT_MAX);
+        propDelegate = new SpinBoxDelegate(integerValues);
+        defaultValue = QVariant(0);
+    } else if (newType == AttributeConfig::DOUBLE_TYPE) {
+        QVariantMap doubleValues;
+        doubleValues["singleStep"] = 0.1;
+        doubleValues["minimum"] = QVariant(std::numeric_limits<double>::lowest());
+        doubleValues["maximum"] = QVariant(std::numeric_limits<double>::max());
+        doubleValues["decimals"] = 6;
+        propDelegate = new DoubleSpinBoxDelegate(doubleValues);
+        defaultValue = QVariant(0.0);
+    } else if (newType == AttributeConfig::INPUT_FILE_URL_TYPE) {
+        propDelegate = new URLDelegate("", "", false, false, false);
+    } else if (newType == AttributeConfig::OUTPUT_FILE_URL_TYPE) {
+        propDelegate = new URLDelegate("", "", false, false);
+    } else if (newType == AttributeConfig::INPUT_FOLDER_URL_TYPE) {
+        propDelegate = new URLDelegate("", "", false, true, false);
+    } else if (newType == AttributeConfig::OUTPUT_FOLDER_URL_TYPE) {
+        propDelegate = new URLDelegate("", "", false, true, false);
+    } else {
+        return;
+    }
+
+    item->setDefaultValue(defaultValue);
+    delete item->delegateForDefaultValues;
+    item->delegateForDefaultValues = propDelegate;
 }
 
 int CfgExternalToolModelAttributes::rowCount(const QModelIndex & /*index*/) const{
@@ -533,9 +574,9 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role
         case COLUMN_ID:
             return item->getId();
         case COLUMN_DATA_TYPE:
-            return delegate->getDisplayValue(item->getDataType());
+            return typesDelegate->getDisplayValue(item->getDataType());
         case COLUMN_DEFAULT_VALUE:
-            return item->getDefaultValue();
+            return item->delegateForDefaultValues->getDisplayValue(item->getDefaultValue());
         case COLUMN_DESCRIPTION:
             return item->getDescription();
         default:
@@ -550,7 +591,9 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role
         case COLUMN_ID:
             return qVariantFromValue<PropertyDelegate*>(item->delegateForIds);
         case COLUMN_DATA_TYPE:
-            return qVariantFromValue<PropertyDelegate*>(delegate);
+            return qVariantFromValue<PropertyDelegate*>(typesDelegate);
+        case COLUMN_DEFAULT_VALUE:
+            return qVariantFromValue<PropertyDelegate*>(item->delegateForDefaultValues);
         default:
             return QVariant();
         }
@@ -604,6 +647,7 @@ bool CfgExternalToolModelAttributes::setData(const QModelIndex &index, const QVa
             if (item->getDataType() != newType) {
                 if (!newType.isEmpty()) {
                     item->setDataType(newType);
+                    changeDefaultValueDelegate(newType, item);
                 }
             }
             break;
@@ -659,7 +703,8 @@ bool CfgExternalToolModelAttributes::insertRows(int /*row*/, int /*count*/, cons
     AttributeItem *newItem = new AttributeItem();
     newItem->delegateForNames = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_NAME);
     newItem->delegateForIds = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_ID);
-    newItem->setDataType("String");
+    newItem->setDataType(AttributeConfig::STRING_TYPE);
+    changeDefaultValueDelegate(newItem->getDataType(), newItem);
     items.append(newItem);
     endInsertRows();
     return true;

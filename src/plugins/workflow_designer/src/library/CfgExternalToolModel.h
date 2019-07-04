@@ -24,6 +24,8 @@
 
 #include <QAbstractTableModel>
 
+#include <U2Designer/PropertyWidget.h>
+
 #include <U2Lang/ExternalToolCfg.h>
 
 namespace U2 {
@@ -128,20 +130,21 @@ public:
     const QString &getDataType() const;
     void setDataType(const QString &type);
 
-    const QString &getDefaultValue() const;
-    void setDefaultValue(const QString &defaultValue);
+    const QVariant&getDefaultValue() const;
+    void setDefaultValue(const QVariant&defaultValue);
 
     const QString &getDescription() const;
     void setDescription(const QString &description);
 
     PropertyDelegate *delegateForNames;
     PropertyDelegate *delegateForIds;
+    PropertyDelegate *delegateForDefaultValues;
 
 private:
     QString id;
     QString name;
     QString type;
-    QString defaultValue;
+    QVariant defaultValue;
     QString description;
 };
 
@@ -160,6 +163,7 @@ public:
     CfgExternalToolModelAttributes(QObject *parent = nullptr);
     ~CfgExternalToolModelAttributes();
 
+    void changeDefaultValueDelegate(const QString& newType, AttributeItem* item);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -173,8 +177,8 @@ public:
 
 private:
     QList<AttributeItem*> items;
-    PropertyDelegate *delegate;
-    QVariantMap types;
+    PropertyDelegate *typesDelegate;
+    QList<ComboItem> types;
 };
 
 } // U2

@@ -517,7 +517,7 @@ void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
         attributeConfig.attributeId = item->getId();
         attributeConfig.attrName = item->getName();
         attributeConfig.type = item->getDataType();
-        attributeConfig.defaultValue = item->getDefaultValue();
+        attributeConfig.defaultValue = item->getDefaultValue().toString();
         attributeConfig.description = item->getDescription();
         if (attributeConfig.isOutputUrl()) {
             attributeConfig.flags |= AttributeConfig::AddToDashboard;
