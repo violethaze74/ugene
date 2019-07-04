@@ -68,7 +68,7 @@ WorkflowEditor::WorkflowEditor(WorkflowView *p)
     specialParameters->hide();
 
 #ifdef Q_OS_MAC
-    QString style("QGroupBox::title {margin-top: 1px; margin-left: 15px;}");
+    QString style("QGroupBox::title {margin-bottom: 9px;}");
     editorBox->setStyleSheet(style);
 #endif
 
