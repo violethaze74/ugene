@@ -350,6 +350,6 @@ defineTest(useWebKit) {
     return(false)
 }
 
-if (exclude_list_enabled() | !exists( ./libs_3rdparty/QSpec/QSpec.pro ) | !useWebKit()) {
+if (exclude_list_enabled() | !useWebKit()) {
     DEFINES += HI_EXCLUDED
 }
