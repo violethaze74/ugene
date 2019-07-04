@@ -236,6 +236,13 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
             //set parameters in command line with attributes values
             QString value = getValue<QString>(a->getId());
             execString.replace(regex, "\\1" + value + "\\6");
+
+            foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
+                if (attributeConfig.attributeId == a->getId() && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
+                    urlsForDashboard.insert(value, !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
+                    break;
+                }
+            }
         }
     }
 }
