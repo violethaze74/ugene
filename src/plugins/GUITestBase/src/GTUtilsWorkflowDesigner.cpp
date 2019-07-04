@@ -503,7 +503,7 @@ int GTUtilsWorkflowDesigner::getItemBottom(HI::GUITestOpStatus &os, QString item
 }
 #define GT_METHOD_NAME "click"
 void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QString itemName, QPoint p, Qt::MouseButton button){
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
+    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView", GTUtilsMdi::activeWindow(os)));
     GT_CHECK(sceneView!=NULL, "scene view is NULL");
     sceneView->ensureVisible(getWorker(os, itemName));
     GTThread::waitForMainThread();
@@ -762,6 +762,14 @@ void GTUtilsWorkflowDesigner::changeInputPortBoxHeight(HI::GUITestOpStatus &os, 
     QPoint newBottomDevidePos(bottomDevidePos.x(), bottomDevidePos.y() + offset);
     GTMouseDriver::dragAndDrop(bottomDevidePos, newBottomDevidePos);
     GTGlobals::sleep();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "importCmdlineBasedElement"
+void GTUtilsWorkflowDesigner::importCmdlineBasedElement(GUITestOpStatus &os, const QString &path) {
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Add element with external tool");
+    GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 

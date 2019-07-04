@@ -2279,6 +2279,50 @@ GUI_TEST_CLASS_DEFINITION(test_6459) {
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2738"), "Results string not match");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6475_1) {
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on "Add element with external tool" button on the toolbar.
+//    3. Select "_common_data/scenarios/_regression/6475/test_6475_1.etc" file.
+//    Expected state: there is "test_6475_1" element on the scene.
+    GTUtilsWorkflowDesigner::importCmdlineBasedElement(os, testDir + "_common_data/scenarios/_regression/6475/test_6475_1.etc");
+
+//    4. Run the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+//    Expected state: the workflow finishes soon.
+    GTUtilsTaskTreeView::waitTaskFinished(os, 30000);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6475_2) {
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on "Add element with external tool" button on the toolbar.
+//    3. Select "_common_data/scenarios/_regression/6475/test_6475_2.etc" file.
+    GTUtilsWorkflowDesigner::importCmdlineBasedElement(os, testDir + "_common_data/scenarios/_regression/6475/test_6475_2.etc");
+
+//    4. Open "_common_data/scenarios/_regression/6475/test_6475_2.uwl".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6475/test_6475_2.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    5. Click on "Read File URL(s)" element.
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+
+//    6. Add "_common_data/fasta/fa2.fa" and "_common_data/fasta/fa3.fa" to "Dataset 1".
+    GTUtilsWorkflowDesigner::setDatasetInputFiles(os, QStringList({testDir + "_common_data/fasta/fa2.fa", testDir + "_common_data/fasta/fa3.fa"}));
+
+//    4. Run the workflow.
+    GTLogTracer logTracer;
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+//    Expected state: the workflow finishes soon without errors.
+    GTUtilsTaskTreeView::waitTaskFinished(os, 30000);
+    GTUtilsLog::check(os, logTracer);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6481_1) {
 //    Test to check that element with external tool will add to dashboard an URL to file that is set as parameter with type "Output file URL" and it will be opened by UGENE by default.
 

@@ -194,6 +194,9 @@ public:
 
     static void changeInputPortBoxHeight(HI::GUITestOpStatus &os, const int offset);
 
+    // custom elements
+    static void importCmdlineBasedElement(HI::GUITestOpStatus &os, const QString &path);
+
 private:
     static void selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem *algorithm);
     static void selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget const * const parentWidget = NULL);
