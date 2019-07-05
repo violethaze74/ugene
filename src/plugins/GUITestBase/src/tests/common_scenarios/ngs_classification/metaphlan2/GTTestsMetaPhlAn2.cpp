@@ -426,6 +426,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
     QString error("Classify Sequences with MetaPhlAn2: External tool \"MetaPhlAn2\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
     CHECK_SET_ERR(errors.contains(error), "The expected error is absent");
+    const int expectedErrorCount = 1;
+    CHECK_SET_ERR(expectedErrorCount == errors.size(), QString("There are too many errors: expected %1, got %2").arg(expectedErrorCount).arg(error.size()));
 }
 
 } // namespace GUITest_common_scenarios_mg_metaphlan2_external_tool
