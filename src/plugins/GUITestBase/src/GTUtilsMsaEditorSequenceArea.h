@@ -65,6 +65,7 @@ public:
     // zero-based position
     static void selectArea(GUITestOpStatus &os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
     static void cancelSelection(GUITestOpStatus &os);
+    static QPair<U2Region, U2Region> convertCoordinatesToRegions(GUITestOpStatus& os, const QPoint p);
     static QPoint convertCoordinates(GUITestOpStatus &os, const QPoint p);
     static void click(GUITestOpStatus &os, const QPoint &screenMaPoint = QPoint(0, 0));
 
@@ -87,6 +88,8 @@ public:
     static bool hasAminoAlphabet(GUITestOpStatus &os);
     static bool isSequenceHightighted(GUITestOpStatus &os, const QString& seqName);
     static QString getColor(GUITestOpStatus &os, QPoint p);
+    //To increase the accuracy of this function I advice you to maximize the font size before calling
+    static QString getFontColor(GUITestOpStatus& os, QPoint p);
     static bool checkColor(GUITestOpStatus &os, const QPoint& p, const QString& expectedColor);
     static int getRowHeight(GUITestOpStatus &os, int rowNumber);
 
@@ -104,6 +107,11 @@ public:
     *expandedBorder: 0 - top, 1 - right, 2 - bottom, 3 - left, 4 - right top, 5 - right bottom, 6 - left bottom, 7 - left top
     */
     static void expandSelectedRegion(GUITestOpStatus &os, const int expandedBorder, const int symbolsToExpand);
+
+    static void zoomIn(GUITestOpStatus& os);
+    static void zoomOut(GUITestOpStatus& os);
+    static void zoomToMax(GUITestOpStatus& os);
+    static void zoomToMin(GUITestOpStatus& os);
 
     static const QString highlightningColorName;
 };
