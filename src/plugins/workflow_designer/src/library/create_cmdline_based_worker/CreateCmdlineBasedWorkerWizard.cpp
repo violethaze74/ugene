@@ -795,6 +795,11 @@ CreateCmdlineBasedWorkerWizardSummaryPage::CreateCmdlineBasedWorkerWizardSummary
     setupUi(this);
 
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
+    QColor backGroundColor = palette().color(QPalette::Window);
+    lblNameValue->setStyleSheet("background-color:" + backGroundColor.name() + ";");
+    lblPrompterValue->setStyleSheet("background-color:" + backGroundColor.name() + ";");
+    lblDescriptionValue->setStyleSheet("background-color:" + backGroundColor.name() + ";");
+    lblCommandValue->setStyleSheet("background-color:" + backGroundColor.name() + ";");
 }
 
 void CreateCmdlineBasedWorkerWizardSummaryPage::showEvent(QShowEvent * /*event*/) {
