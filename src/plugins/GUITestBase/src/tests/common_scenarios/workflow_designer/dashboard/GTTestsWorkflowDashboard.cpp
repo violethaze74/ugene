@@ -2351,8 +2351,8 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "empty_workflow_output";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2384,8 +2384,8 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2508,8 +2508,8 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "one_visible_one_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2632,8 +2632,8 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_invisible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2697,8 +2697,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2724,8 +2724,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
 //    6. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "empty_workflow_output";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absolutePath(), testWorkflowOutputDir2.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
 //    7. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2779,8 +2779,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2806,8 +2806,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
 //    6. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_visible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absolutePath(), testWorkflowOutputDir2.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
 //    7. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2966,8 +2966,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2995,8 +2995,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
 //    6. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "one_visible_one_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absolutePath(), testWorkflowOutputDir2.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
 //    7. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3149,8 +3149,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3178,8 +3178,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
 //    6. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_invisible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absolutePath(), testWorkflowOutputDir2.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
 //    7. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3273,8 +3273,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3359,8 +3359,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3441,8 +3441,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
 //    19. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "empty_workflow_output";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absolutePath(), testWorkflowOutputDir2.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
 //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
 //        Expected result:
@@ -3675,8 +3675,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3757,8 +3757,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
 //    19. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_visible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absolutePath(), testWorkflowOutputDir2.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
 //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
 //        Expected result:
@@ -4003,8 +4003,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4085,8 +4085,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
 //    19. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "one_visible_one_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absolutePath(), testWorkflowOutputDir2.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
 //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
 //        Expected result:
@@ -4330,8 +4330,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absolutePath(), testWorkflowOutputDir.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4412,8 +4412,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
 //    19. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_invisible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absolutePath(), testWorkflowOutputDir2.absolutePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absolutePath());
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
 //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
 //        Expected result:
