@@ -27,6 +27,7 @@
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
+#include "primitives/GTToolbar.h"
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -83,6 +84,30 @@ void GTUtilsMSAEditorSequenceArea::moveTo(GUITestOpStatus &os, const QPoint &p)
     QPoint convP = convertCoordinates(os,p);
 
     GTMouseDriver::moveTo(convP);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "convertCoordinatesToRegions"
+QPair<U2Region, U2Region> GTUtilsMSAEditorSequenceArea::convertCoordinatesToRegions(GUITestOpStatus& os, const QPoint p) {
+    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
+    MSAEditorSequenceArea* msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area", activeWindow));
+    QPair<U2Region, U2Region> res;
+    GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", res);
+
+    U2Region regX = msaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x());
+    U2Region regY = msaEditArea->getEditor()->getUI()->getRowHeightController()->getRowGlobalRangeByNumber(p.y());
+
+    QPoint leftTop(regX.startPos, regY.startPos);
+    QPoint rightBot(regX.endPos(), regY.endPos());
+
+    QPoint leftTopGlobal = msaEditArea->mapToGlobal(leftTop);
+    QPoint rightBotGlobal = msaEditArea->mapToGlobal(rightBot);
+
+    U2Region regXGlobal(leftTopGlobal.x(), rightBotGlobal.x() - leftTopGlobal.x());
+    U2Region regYGlobal(leftTopGlobal.y(), rightBotGlobal.y() - leftTopGlobal.y());
+
+    res = QPair<U2Region, U2Region>(regXGlobal, regYGlobal);
+    return res;
 }
 #undef GT_METHOD_NAME
 
@@ -611,6 +636,46 @@ QString GTUtilsMSAEditorSequenceArea::getColor(GUITestOpStatus &os, QPoint p){
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getFontColor"
+ QString GTUtilsMSAEditorSequenceArea::getFontColor(GUITestOpStatus& os, QPoint p) {
+     QString backgroundColor = getColor(os, p);
+
+     MSAEditorSequenceArea* msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area", GTUtilsMdi::activeWindow(os)));
+     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", "");
+
+     QPair<U2Region, U2Region> regions = convertCoordinatesToRegions(os, p);
+     U2Region regX = regions.first;
+     U2Region regY = regions.second;
+     //QString resultFontColor;
+     int xEndPos = regX.endPos();
+     QMap<QString, int> usableColors;
+     for (int i = regX.startPos; i < xEndPos; i++) {
+         int yEndPos = regY.endPos();
+         for (int j = regY.startPos; j < yEndPos; j++) {
+             QPoint global(i, j);
+             QPoint local = msaEditArea->mapFromGlobal(global);
+             QColor c = GTWidget::getColor(os, msaEditArea, local);
+             QString name = c.name();
+             CHECK_CONTINUE(backgroundColor != name);
+
+             QString fontColor = name;
+             if (usableColors.keys().contains(fontColor)) {
+                 usableColors[fontColor] = usableColors[fontColor] + 1;
+             } else {
+                 usableColors.insert(fontColor, 1);
+             }
+         }
+     }
+     CHECK(!usableColors.isEmpty(), QString());
+
+     QList<int> values = usableColors.values();
+     int max = *std::max_element(values.begin(), values.end());
+     QString resultFontColor = usableColors.key(max);
+
+     return resultFontColor;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "checkColor"
 bool GTUtilsMSAEditorSequenceArea::checkColor(GUITestOpStatus &os, const QPoint &p, const QString &expectedColor){
     QColor c = getColor(os, p);
@@ -788,6 +853,37 @@ void GTUtilsMSAEditorSequenceArea::expandSelectedRegion(GUITestOpStatus &os, con
 }
 #undef GT_METHOD_NAME
 
+void GTUtilsMSAEditorSequenceArea::zoomIn(GUITestOpStatus& os) {
+    QWidget* zoomInButton = GTWidget::findButtonByText(os, "Zoom in");
+    CHECK_SET_ERR(nullptr != zoomInButton, "Can't find the 'Zoom in' button");
+
+    GTWidget::click(os, zoomInButton);
+}
+
+void GTUtilsMSAEditorSequenceArea::zoomOut(GUITestOpStatus& os) {
+    QWidget* zoomOutButton = GTWidget::findButtonByText(os, "Zoom out");
+    CHECK_SET_ERR(nullptr != zoomOutButton, "Can't find the 'Zoom out' button");
+
+    GTWidget::click(os, zoomOutButton);
+}
+
+void GTUtilsMSAEditorSequenceArea::zoomToMax(GUITestOpStatus& os) {
+    QWidget* zoomInButton = GTWidget::findButtonByText(os, "Zoom in");
+    CHECK_SET_ERR(nullptr != zoomInButton, "Can't find the 'Zoom in' button");
+
+    while (zoomInButton->isEnabled()) {
+        GTWidget::click(os, zoomInButton);
+    }
+}
+
+void GTUtilsMSAEditorSequenceArea::zoomToMin(GUITestOpStatus& os) {
+    QWidget* zoomOutButton = GTWidget::findButtonByText(os, "Zoom out");
+    CHECK_SET_ERR(nullptr != zoomOutButton, "Can't find the 'Zoom out' button");
+
+    while (zoomOutButton->isEnabled()) {
+        GTWidget::click(os, zoomOutButton);
+    }
+}
 
 #undef GT_CLASS_NAME
 
