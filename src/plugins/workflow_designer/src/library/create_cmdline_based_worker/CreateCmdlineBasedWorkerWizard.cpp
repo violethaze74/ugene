@@ -511,6 +511,8 @@ void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
     QStringList ids;
     QStringList names;
     QList<AttributeConfig> data;
+    // this is the second page in the wizard. Check for duplicates with the prev. page ids (inputs)
+    QStringList inputIds = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList();
     bool hasDuplicates = false;
     foreach (AttributeItem *item, model->getItems()) {
         AttributeConfig attributeConfig;
@@ -527,7 +529,7 @@ void CreateCmdlineBasedWorkerWizardParametersPage::sl_updateAttributes() {
         }
         data << attributeConfig;
         QString id = item->getId();
-        hasDuplicates = hasDuplicates || (!id.isEmpty() && ids.contains(id));
+        hasDuplicates = hasDuplicates || (!id.isEmpty() && (ids.contains(id) || inputIds.contains(id)));
         ids << id;
         names << item->getName();
     }
@@ -632,11 +634,16 @@ void CreateCmdlineBasedWorkerWizardOutputDataPage::sl_updateOutputsProperties() 
     QStringList ids;
     QStringList names;
     QList<DataConfig> data;
+
+    // this is the third page in the wizard. Check for duplicates with the prev. pages ids (inputs, attributes)
+    QStringList inputIds = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList();
+    QStringList attributeIds = field(CreateCmdlineBasedWorkerWizard::ATTRIBUTES_IDS_FIELD).toStringList();
     bool hasDuplicates = false;
+
     foreach (CfgExternalToolItem *item, outputsModel->getItems()) {
         data << item->itemData;
         QString id = item->getId();
-        hasDuplicates = hasDuplicates || (!id.isEmpty() && ids.contains(id));
+        hasDuplicates = hasDuplicates || (!id.isEmpty() && (ids.contains(id) || inputIds.contains(id) || attributeIds.contains(id)));
         ids << id;
         names << item->getName();
     }
