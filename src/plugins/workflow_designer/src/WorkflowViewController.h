@@ -354,7 +354,6 @@ private:
     QAction* extSep;
     QAction* scaleSep;
     QAction* scaleAction;
-    QAction* styleAction;
     QAction* scriptAction;
     QAction* dmAction;
     QList<QAction*> styleActions;
