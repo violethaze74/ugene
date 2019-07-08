@@ -1147,8 +1147,6 @@ void WorkflowView::setupMDIToolbar(QToolBar* tb) {
     runSep = tb->addSeparator();
     tb->addAction(configureParameterAliasesAction);
     confSep = tb->addSeparator();
-    tb->addAction(createScriptAction);
-    tb->addAction(editScriptAction);
     scriptSep = tb->addSeparator();
     tb->addAction(createCmdlineBasedWorkerAction);
     tb->addAction(appendExternalTool);
@@ -1157,7 +1155,6 @@ void WorkflowView::setupMDIToolbar(QToolBar* tb) {
     scaleSep = tb->addSeparator();
     scaleAction = tb->addWidget(scaleComboBox);
     scaleSep = tb->addSeparator();
-    styleAction = tb->addWidget(styleMenu(this, styleActions));
     scriptAction = tb->addWidget(scriptMenu(this, scriptingActions));
     tb->addAction(dmAction);
 
@@ -1203,7 +1200,6 @@ void WorkflowView::setupActions() {
     scaleAction->setVisible(!dashboard);
     scaleSep->setVisible(!dashboard);
 
-    styleAction->setVisible(!dashboard);
     scriptAction->setVisible(editMode);
 }
 
