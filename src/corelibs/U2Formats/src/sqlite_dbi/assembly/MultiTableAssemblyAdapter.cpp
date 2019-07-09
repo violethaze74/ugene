@@ -679,7 +679,9 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter* newA, const 
                 insertIds.reset(false);
                 insertIds.bindInt64(1, d.readId);
                 insertIds.bindInt32(2, d.newProw);
+#ifdef _DEBUG
                 assert(newProwRegion.contains(d.newProw));
+#endif
                 insertIds.execute();
                 if (os.hasError()) {
                     break;
