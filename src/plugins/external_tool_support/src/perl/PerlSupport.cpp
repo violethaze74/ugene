@@ -47,6 +47,7 @@ PerlSupport::PerlSupport(const QString &name, const QString &path)
     toolKitName="perl";
 
     muted = true;
+    isRunnerTool = true;
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 }

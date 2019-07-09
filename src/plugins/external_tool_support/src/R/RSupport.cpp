@@ -57,6 +57,7 @@ RSupport::RSupport(const QString& name, const QString& path) : ExternalTool(name
     toolKitName = "R";
 
     muted = true;
+    isRunnerTool = true;
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 }

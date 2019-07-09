@@ -75,4 +75,8 @@ QList<ScriptingTool*> ScriptingToolRegistry::getAllEntries() const{
     return registry.values();
 }
 
+QStringList ScriptingToolRegistry::getAllNames() const {
+    return registry.keys();
+}
+
 }//namespace

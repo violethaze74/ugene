@@ -66,8 +66,6 @@ ClarkSupport::ClarkSupport(const QString& name, const QString& path) : ExternalT
     if (name == ET_CLARK_buildScript) {
         validMessage = name;
     }
-
-    connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 }
 
 void ClarkSupport::registerTools(ExternalToolRegistry *etRegistry)
@@ -90,10 +88,6 @@ void ClarkSupport::unregisterTools(ExternalToolRegistry *etRegistry) {
     etRegistry->unregisterEntry(ET_CLARK_getfilesToTaxNodes);
     etRegistry->unregisterEntry(ET_CLARK_getTargetsDef);
     etRegistry->unregisterEntry(ET_CLARK_buildScript);
-}
-
-void ClarkSupport::sl_toolValidationStatusChanged(bool) {
-    ScriptingTool::onPathChanged(this);
 }
 
 
