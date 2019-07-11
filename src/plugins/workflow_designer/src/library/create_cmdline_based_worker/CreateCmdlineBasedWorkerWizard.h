@@ -22,6 +22,7 @@
 #ifndef _U2_CREATE_CMDLINE_BASED_WORKER_WIZARD_H_
 #define _U2_CREATE_CMDLINE_BASED_WORKER_WIZARD_H_
 
+#include <QStandardItem>
 #include <QWizard>
 
 #include "ui_CreateCmdlineBasedWorkerWizardCommandPage.h"
@@ -36,6 +37,7 @@
 namespace U2 {
 
 class ExternalProcessConfig;
+class ExternalTool;
 
 class CreateCmdlineBasedWorkerWizard : public QWizard {
     Q_OBJECT
@@ -94,11 +96,27 @@ signals:
 private slots:
     void sl_browse();
     void sl_integratedToolChanged();
+    void sl_cbIntegratedToolsIndexChanged(int index);
 
 private:
+    void initExternalTools();
+    void initPopupMenu();
+
+    void addSupportedToolsPopupMenu();
+    void separateSupportedAndCustomTools(const QList<ExternalTool*>& tools);
+    void makeSupportedToolsMapFromList(const QList<ExternalTool*>& tools);
+    void sortCustomToolsList();
+    void sortSupportedToolsMap();
+    void initFirstClickableRow();
+
     static void makeUniqueWorkerName(QString& name);
+    // exclude module and runner tools
+    static void excludeNotSuitableTools(QList<ExternalTool*>& tools);
 
     ExternalProcessConfig *initialConfig;
+    QMap<QString, QList<ExternalTool*> > supportedTools;
+    QList<ExternalTool*> customTools;
+    QString firstClickableRowData;
 
     static char const * const INTEGRATED_TOOL_ID_PROPERTY;
     static char const * const WORKER_ID_PROPERTY;

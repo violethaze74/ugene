@@ -41,9 +41,6 @@ public:
 
     static void registerTools(ExternalToolRegistry *etRegistry);
     static void unregisterTools(ExternalToolRegistry *etRegistry);
-
-private slots:
-    void sl_toolValidationStatusChanged(bool isValid);
 };
 
 }//namespace
