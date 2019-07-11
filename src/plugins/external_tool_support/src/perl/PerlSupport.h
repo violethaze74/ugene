@@ -24,14 +24,15 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_PERL "perl"
-
 namespace U2 {
 
 class PerlSupport : public ExternalTool {
     Q_OBJECT
 public:
-    PerlSupport(const QString &name, const QString &path = "");
+    PerlSupport(const QString& id, const QString &name, const QString &path = "");
+
+    static const QString ET_PERL;
+    static const QString ET_PERL_ID;
 
 private slots:
     void sl_toolValidationStatusChanged(bool isValid);

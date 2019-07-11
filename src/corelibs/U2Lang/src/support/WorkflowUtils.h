@@ -118,9 +118,9 @@ public:
     static QString createUniqueString(const QString &str, const QString &sep, const QStringList &uniqueStrs);
 
     /** if path == "default" then nothing is changed. Returns the new path */
-    static QString updateExternalToolPath(const QString &toolName, const QString &path);
+    static QString updateExternalToolPath(const QString &id, const QString &path);
 
-    static QString getExternalToolPath(const QString &toolName);
+    static QString getExternalToolPath(const QString &toolId);
     static QString externalToolError(const QString &toolName);
     static QString externalToolInvalidError(const QString &toolName);
 

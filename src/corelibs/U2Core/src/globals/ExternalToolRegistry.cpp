@@ -36,8 +36,9 @@ const QString ExternalToolValidation::DEFAULT_DESCR_KEY = "DEFAULT_DESCR";
 
 ////////////////////////////////////////
 //ExternalTool
-ExternalTool::ExternalTool(QString _name, QString _path)
-    : name(_name),
+ExternalTool::ExternalTool(QString _id, QString _name, QString _path)
+    : id(_id),
+      name(_name),
       path(_path),
       isValidTool(false),
       toolKitName(_name),
@@ -53,7 +54,7 @@ ExternalTool::ExternalTool(QString _name, QString _path)
 }
 
 const QString &ExternalTool::getId() const {
-    return name;
+    return id;
 }
 
 const QString &ExternalTool::getName() const {
@@ -80,7 +81,7 @@ const QString &ExternalTool::getDescription() const {
     return description;
 }
 
-const QString &ExternalTool::getToolRunnerProgram() const {
+const QString &ExternalTool::getToolRunnerProgramId() const {
     return toolRunnerProgram;
 }
 
@@ -204,12 +205,12 @@ bool ExternalTool::isCustom() const {
 
 ////////////////////////////////////////
 //ExternalToolValidationListener
-ExternalToolValidationListener::ExternalToolValidationListener(const QString& toolName) {
-    toolNames << toolName;
+ExternalToolValidationListener::ExternalToolValidationListener(const QString& toolId) {
+    toolIds << toolId;
 }
 
-ExternalToolValidationListener::ExternalToolValidationListener(const QStringList& _toolNames) {
-    toolNames = _toolNames;
+ExternalToolValidationListener::ExternalToolValidationListener(const QStringList& _toolIds) {
+    toolIds = _toolIds;
 }
 
 void ExternalToolValidationListener::sl_validationTaskStateChanged() {
@@ -231,17 +232,47 @@ ExternalToolRegistry::~ExternalToolRegistry() {
     qDeleteAll(registry.values());
 }
 
-ExternalTool* ExternalToolRegistry::getByName(const QString& id)
-{
+ExternalTool* ExternalToolRegistry::getByName(const QString& name) const {
+    ExternalTool* result = nullptr;
+    foreach(ExternalTool * tool, registry) {
+        CHECK_CONTINUE(tool->getName() == name);
+
+        result = tool;
+        break;
+    }
+
+    return result;
+}
+
+ExternalTool* ExternalToolRegistry::getById(const QString& id) const {
     return registry.value(id, NULL);
 }
 
-bool ExternalToolRegistry::registerEntry(ExternalTool *t){
-    if (registry.contains(t->getName())) {
+QString ExternalToolRegistry::getToolNameById(const QString& id) const {
+    ExternalTool* et = getById(id);
+    CHECK(nullptr != et, QString());
+
+    return et->getName();
+}
+
+namespace {
+bool containsCaseInsensitive(const QList<QString>& values, const QString& value) {
+    bool result = false;
+    foreach(const QString& v, values) {
+        CHECK_CONTINUE(QString::compare(v, value, Qt::CaseInsensitive) == 0);
+        result = true;
+        break;
+    };
+    return result;
+}
+}
+
+bool ExternalToolRegistry::registerEntry(ExternalTool *t) {
+    if (containsCaseInsensitive(registry.keys(), t->getId())) {
         return false;
     } else {
         registryOrder.append(t);
-        registry.insert(t->getName(), t);
+        registry.insert(t->getId(), t);
         emit si_toolAdded(t->getId());
         return true;
     }

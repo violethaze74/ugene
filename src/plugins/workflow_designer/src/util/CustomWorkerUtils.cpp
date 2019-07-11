@@ -53,7 +53,7 @@ bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const QSt
     if (!value.isNull() && !value.isEmpty()) {
         QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + value + "%"));
         while (cmd.indexOf(regex1) >= 0) {
-            ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName(toolKey);
+            ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolKey);
             CHECK(tool, false);
             cmd.replace(regex1, "\\1\"" + tool->getPath() + "\"");
             result |= true;

@@ -38,7 +38,11 @@
 
 namespace U2 {
 
-MrBayesSupport::MrBayesSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+const QString MrBayesSupport::ET_MRBAYES = "MrBayes";
+const QString MrBayesSupport::ET_MRBAYES_ID = "MRBAYES";
+const QString MrBayesSupport::MRBAYES_TMP_DIR ="mrbayes";
+
+MrBayesSupport::MrBayesSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/mrbayes.png");

@@ -104,7 +104,7 @@ QDomDocument CustomToolConfigParser::serialize(CustomExternalTool *tool) {
     configElement.appendChild(addChildElement(doc, DESCRIPTION, tool->getDescription()));
     configElement.appendChild(addChildElement(doc, TOOLKIT_NAME, tool->getToolKitName()));
     configElement.appendChild(addChildElement(doc, TOOL_VERSION, tool->getPredefinedVersion()));
-    configElement.appendChild(addChildElement(doc, LAUNCHER_ID, tool->getToolRunnerProgram()));
+    configElement.appendChild(addChildElement(doc, LAUNCHER_ID, tool->getToolRunnerProgramId()));
     configElement.appendChild(addChildElement(doc, DEPENDENCIES, tool->getDependencies().join(",")));
     configElement.appendChild(addChildElement(doc, BINARY_NAME, tool->getExecutableFileName()));
     doc.appendChild(configElement);

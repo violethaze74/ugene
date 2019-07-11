@@ -57,7 +57,7 @@ public:
 class U2CORE_EXPORT ExternalTool : public QObject {
     Q_OBJECT
 public:
-    ExternalTool(QString name, QString path = "");
+    ExternalTool(QString id, QString name, QString path);
 
     const QString&      getId() const;
     const QString&      getName() const;
@@ -66,7 +66,7 @@ public:
     const QIcon&        getGrayIcon() const;
     const QIcon&        getWarnIcon() const;
     const QString&      getDescription() const;
-    const QString&      getToolRunnerProgram() const;
+    const QString&      getToolRunnerProgramId() const;
     virtual QStringList getToolRunnerAdditionalOptions() const;
     const QString&      getExecutableFileName() const;
     const QStringList&  getValidationArguments() const;
@@ -104,6 +104,7 @@ signals:
     void si_toolValidationStatusChanged(bool isValid);
 
 protected:
+    QString     id;                     // tool id
     QString     name;                   // tool name
     QString     path;                   // tool path
     QIcon       icon;                   // valid tool icon
@@ -133,8 +134,8 @@ protected:
 class U2CORE_EXPORT ExternalToolModule : public ExternalTool {
     Q_OBJECT
 public:
-    ExternalToolModule(const QString& name) :
-        ExternalTool(name, "") {
+    ExternalToolModule(const QString& id, const QString& name) :
+        ExternalTool(id, name, "") {
         isModuleTool = true;
     }
 };
@@ -142,15 +143,15 @@ public:
 class U2CORE_EXPORT ExternalToolValidationListener : public QObject {
     Q_OBJECT
 public:
-    ExternalToolValidationListener(const QString& toolName = QString());
-    ExternalToolValidationListener(const QStringList& toolNames);
+    ExternalToolValidationListener(const QString& toolId = QString());
+    ExternalToolValidationListener(const QStringList& toolIds);
 
-    const QStringList& getToolNames() const { return toolNames; }
+    const QStringList& getToolIds() const { return toolIds; }
 
     void validationFinished() { emit si_validationComplete(); }
 
-    void setToolState(const QString& toolName, bool isValid) { toolStates.insert(toolName, isValid); }
-    bool getToolState(const QString& toolName) const { return toolStates.value(toolName, false); }
+    void setToolState(const QString& toolId, bool isValid) { toolStates.insert(toolId, isValid); }
+    bool getToolState(const QString& toolId) const { return toolStates.value(toolId, false); }
 
 signals:
     void si_validationComplete();
@@ -159,7 +160,7 @@ public slots:
     void sl_validationTaskStateChanged();
 
 private:
-    QStringList toolNames;
+    QStringList toolIds;
     QMap<QString, bool> toolStates;
 };
 
@@ -205,7 +206,9 @@ public:
     ExternalToolRegistry();
     ~ExternalToolRegistry();
 
-    ExternalTool* getByName(const QString& id);
+    ExternalTool* getByName(const QString& name) const;
+    ExternalTool* getById(const QString& id) const;
+    QString getToolNameById(const QString& id) const;
 
     bool registerEntry(ExternalTool* t);
     void unregisterEntry(const QString& id);

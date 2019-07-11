@@ -26,12 +26,11 @@
 
 namespace U2 {
 
-#define ET_WEVOTE WevoteSupport::TOOL_NAME
-
 class WevoteSupport : public ExternalTool {
 public:
     WevoteSupport();
 
+    static const QString TOOL_ID;
     static const QString TOOL_NAME;
 };
 

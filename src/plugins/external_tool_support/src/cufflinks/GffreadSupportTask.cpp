@@ -42,7 +42,7 @@ void GffreadSupportTask::prepare() {
     checkFormat(settings.transcriptsUrl, BaseDocumentFormats::GTF);
     CHECK_OP(stateInfo, );
 
-    ExternalToolRunTask* runTask = new ExternalToolRunTask(ET_GFFREAD, settings.getArguments(), new ExternalToolLogParser());
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(CufflinksSupport::ET_GFFREAD_ID, settings.getArguments(), new ExternalToolLogParser());
     setListenerForTask(runTask);
     addSubTask(runTask);
 }

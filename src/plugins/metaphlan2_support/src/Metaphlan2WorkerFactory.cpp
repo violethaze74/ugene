@@ -356,7 +356,7 @@ void Metaphlan2WorkerFactory::init() {
                                                           ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new Metaphlan2Prompter(nullptr));
-    proto->addExternalTool(Metaphlan2Support::TOOL_NAME);
+    proto->addExternalTool(Metaphlan2Support::TOOL_ID);
     proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     proto->setValidator(new Metaphlan2Validator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);

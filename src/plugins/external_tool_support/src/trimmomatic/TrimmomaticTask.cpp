@@ -58,7 +58,7 @@ TrimmomaticTask::TrimmomaticTask(const TrimmomaticTaskSettings &settings)
 }
 
 void TrimmomaticTask::prepare() {
-    trimmomaticToolRunTask = new ExternalToolRunTask(ET_TRIMMOMATIC, getArguments(), new TrimmomaticLogParser(), settings.workingDirectory);
+    trimmomaticToolRunTask = new ExternalToolRunTask(TrimmomaticSupport::ET_TRIMMOMATIC_ID, getArguments(), new TrimmomaticLogParser(), settings.workingDirectory);
     setListenerForTask(trimmomaticToolRunTask);
     addSubTask(trimmomaticToolRunTask);
 }

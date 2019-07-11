@@ -54,7 +54,11 @@
 
 namespace U2 {
 
-SpideySupport::SpideySupport(const QString& name, const QString& path) : ExternalTool(name, path)
+const QString SpideySupport::ET_SPIDEY = "Spidey";
+const QString SpideySupport::ET_SPIDEY_ID = "SPIDEY";
+const QString SpideySupport::SPIDEY_TMP_DIR = "spidey";
+
+SpideySupport::SpideySupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         viewCtx = new SpideySupportContext(this);
@@ -89,11 +93,11 @@ void SpideySupport::sl_validationStatusChanged( bool isValid )
     SplicedAlignmentTaskRegistry* registry = AppContext::getSplicedAlignmentTaskRegistry();
     if (isValid)
     {
-        if (!registry->hadRegistered(ET_SPIDEY)) {
-            registry->registerTaskFactory(new SpideyAlignmentTaskFactory, ET_SPIDEY);
+        if (!registry->hadRegistered(ET_SPIDEY_ID)) {
+            registry->registerTaskFactory(new SpideyAlignmentTaskFactory, ET_SPIDEY_ID);
         }
     } else {
-        registry->unregisterTaskFactory(ET_SPIDEY);
+        registry->unregisterTaskFactory(ET_SPIDEY_ID);
     }
 }
 
@@ -141,10 +145,10 @@ void SpideySupportContext::sl_align_with_Spidey() {
     QWidget* parent = QApplication::activeWindow();
 
     //Check that Spidey and tempory folder path defined
-    if (AppContext::getExternalToolRegistry()->getByName(ET_SPIDEY)->getPath().isEmpty()){
+    if (AppContext::getExternalToolRegistry()->getById(SpideySupport::ET_SPIDEY_ID)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(parent);
-        msgBox->setWindowTitle(ET_SPIDEY);
-        msgBox->setText(tr("Path for %1 tool not selected.").arg(ET_SPIDEY));
+        msgBox->setWindowTitle(SpideySupport::ET_SPIDEY);
+        msgBox->setText(tr("Path for %1 tool not selected.").arg(SpideySupport::ET_SPIDEY));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);

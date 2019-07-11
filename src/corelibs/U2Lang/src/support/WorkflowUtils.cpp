@@ -168,7 +168,7 @@ bool validateExternalTools(Actor *a, NotificationsList &infoList) {
     StrStrMap tools = a->getProto()->getExternalTools();
     foreach (const QString &toolId, tools.keys()) {
         Attribute *attr = a->getParameter(tools[toolId]);
-        ExternalTool *tool = AppContext::getExternalToolRegistry()->getByName(toolId);
+        ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(toolId);
         SAFE_POINT(NULL != tool, "NULL tool", false);
 
         bool fromAttr = (NULL != attr) && !attr->isDefaultValue();
@@ -863,11 +863,11 @@ QString WorkflowUtils::createUniqueString(const QString &str, const QString &sep
     return result;
 }
 
-QString WorkflowUtils::updateExternalToolPath(const QString &toolName, const QString &path) {
+QString WorkflowUtils::updateExternalToolPath(const QString &id, const QString &path) {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
     SAFE_POINT(NULL != registry, "NULL external tool registry", "");
-    ExternalTool *tool = registry->getByName(toolName);
-    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(toolName), "");
+    ExternalTool *tool = registry->getById(id);
+    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(id), "");
 
     if (QString::compare(path, "default", Qt::CaseInsensitive) != 0) {
         tool->setPath(path);
@@ -875,12 +875,12 @@ QString WorkflowUtils::updateExternalToolPath(const QString &toolName, const QSt
     return tool->getPath();
 }
 
-QString WorkflowUtils::getExternalToolPath(const QString &toolName) {
+QString WorkflowUtils::getExternalToolPath(const QString &toolId) {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
     SAFE_POINT(NULL != registry, "NULL external tool registry", "");
 
-    ExternalTool *tool = registry->getByName(toolName);
-    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(toolName), "");
+    ExternalTool *tool = registry->getById(toolId);
+    SAFE_POINT(NULL != tool, QString("Unknown tool (id): %1").arg(toolId), "");
 
     return tool->getPath();
 }

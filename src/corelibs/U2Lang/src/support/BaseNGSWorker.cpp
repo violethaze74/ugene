@@ -223,15 +223,15 @@ void BaseNGSTask::run(){
     finishStep();
 }
 
-ExternalToolRunTask *BaseNGSTask::getExternalToolTask(const QString &toolName, ExternalToolLogParser *customParser) {
+ExternalToolRunTask *BaseNGSTask::getExternalToolTask(const QString &toolId, ExternalToolLogParser *customParser) {
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, NULL);
 
     ExternalToolRunTask* etTask = NULL;
     if (customParser == NULL) {
-        etTask = new ExternalToolRunTask(toolName, args, new BaseNGSParser(), settings.outDir);
+        etTask = new ExternalToolRunTask(toolId, args, new BaseNGSParser(), settings.outDir);
     } else {
-        etTask = new ExternalToolRunTask(toolName, args, customParser, settings.outDir);
+        etTask = new ExternalToolRunTask(toolId, args, customParser, settings.outDir);
     }
 
     etTask->setStandartOutputFile(settings.outDir + settings.outName);

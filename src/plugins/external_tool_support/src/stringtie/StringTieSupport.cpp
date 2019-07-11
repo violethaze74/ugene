@@ -23,8 +23,11 @@
 
 namespace U2 {
 
-StringTieSupport::StringTieSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path) {
+const QString StringTieSupport::ET_STRINGTIE = "StringTie";
+const QString StringTieSupport::ET_STRINGTIE_ID = "STRINGTIE";
+
+StringTieSupport::StringTieSupport(const QString& id, const QString &name, const QString &path)
+    : ExternalTool(id, name, path) {
 
     executableFileName = "stringtie";
 

@@ -186,22 +186,22 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
     proto->setNonStandard(cfg->filePath);
 
     if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "java")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("java");
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById("JAVA");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
     }
     if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "python")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("python");
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById("PYTHON2");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
     }
     if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "Rscript")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("Rscript");
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById("RSCRIPT");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
     }
     if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "perl")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("perl");
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById("PERL");
         CHECK(tool, nullptr);
         proto->addExternalTool(tool->getId());
     }

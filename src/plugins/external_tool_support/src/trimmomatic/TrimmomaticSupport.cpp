@@ -40,8 +40,11 @@
 
 namespace U2 {
 
-TrimmomaticSupport::TrimmomaticSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
+const QString TrimmomaticSupport::ET_TRIMMOMATIC = "Trimmomatic";
+const QString TrimmomaticSupport::ET_TRIMMOMATIC_ID = "TRIMMOMATIC";
+
+TrimmomaticSupport::TrimmomaticSupport(const QString& id, const QString &name, const QString &path)
+    : ExternalTool(id, name, path)
 {
     toolKitName = "Trimmomatic";
     description = tr("<i>Trimmomatic</i> is a flexible read trimming tool for Illumina NGS data.");
@@ -50,8 +53,8 @@ TrimmomaticSupport::TrimmomaticSupport(const QString &name, const QString &path)
     validationArguments << "-h";
     validMessage = "PE \\[-version\\] \\[-threads <threads>\\] \\[-phred33|-phred64\\] \\[-trimlog <trimLogFile>\\]";
 
-    toolRunnerProgram = ET_JAVA;
-    dependencies << ET_JAVA;
+    toolRunnerProgram = JavaSupport::ET_JAVA_ID;
+    dependencies << JavaSupport::ET_JAVA_ID;
 
     initTrimmomaticSteps();
 }

@@ -24,17 +24,16 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_SAMTOOLS_EXT "SAMtools"
-
-
 namespace U2 {
 
-class SamToolsExtToolSupport : public ExternalTool
-{
+class SamToolsExtToolSupport : public ExternalTool {
     Q_OBJECT
 
 public:
-    SamToolsExtToolSupport(const QString& name, const QString& path = "");
+    SamToolsExtToolSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_SAMTOOLS_EXT;
+    static const QString ET_SAMTOOLS_EXT_ID;
 };
 
 } // namespace

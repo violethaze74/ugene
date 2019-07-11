@@ -29,7 +29,7 @@ namespace U2 {
 class ExternalToolUtils : public QObject {
     Q_OBJECT
 public:
-    static void checkExtToolsPath(const QStringList &names);
+    static void checkExtToolsPath(const QStringList &ids);
 
     static void addDefaultCistromeDirToSettings();
     static void addCistromeDataPath(const QString& dataName, const QString& dirName, bool entriesAreFolders = false);

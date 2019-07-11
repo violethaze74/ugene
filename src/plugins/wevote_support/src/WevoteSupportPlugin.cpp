@@ -51,7 +51,7 @@ WevoteSupportPlugin::WevoteSupportPlugin()
 WevoteSupportPlugin::~WevoteSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
-    etRegistry->unregisterEntry(WevoteSupport::TOOL_NAME);
+    etRegistry->unregisterEntry(WevoteSupport::TOOL_ID);
 }
 
 }   // namespace U2

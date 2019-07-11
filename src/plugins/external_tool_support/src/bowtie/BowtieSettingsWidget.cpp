@@ -51,7 +51,7 @@ BowtieSettingsWidget::BowtieSettingsWidget(QWidget *parent):
     indexSuffixes << BowtieTask::indexSuffixes;
     indexSuffixes << BowtieTask::largeIndexSuffixes;
 
-    requiredExtToolNames << ET_BOWTIE << ET_BOWTIE_BUILD;
+    requiredExtToolIds << BowtieSupport::ET_BOWTIE_ID << BowtieSupport::ET_BOWTIE_BUILD_ID;
 }
 
 QMap<QString,QVariant> BowtieSettingsWidget::getDnaAssemblyCustomSettings() const {

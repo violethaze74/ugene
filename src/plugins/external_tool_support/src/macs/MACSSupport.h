@@ -26,13 +26,13 @@
 
 namespace U2 {
 
-#define ET_MACS "MACS"
-
 class MACSSupport : public ExternalTool {
     Q_OBJECT
 public:
-    MACSSupport(const QString &name);
+    MACSSupport(const QString& id, const QString &name);
 
+    static const QString ET_MACS;
+    static const QString ET_MACS_ID;
 private:
     void initialize();
 };

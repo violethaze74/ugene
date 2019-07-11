@@ -134,11 +134,11 @@ Metaphlan2TaskSettings Metaphlan2Worker::getSettings(U2OpStatus &os) {
     }
     settings.outputFile = GUrlUtils::rollFileName(settings.outputFile, "_");
 
-    QString bowtie2AlignerPath = WorkflowUtils::getExternalToolPath(Metaphlan2Support::ET_BOWTIE_2_ALIGNER);
+    QString bowtie2AlignerPath = WorkflowUtils::getExternalToolPath(Metaphlan2Support::ET_BOWTIE_2_ALIGNER_ID);
     CHECK_EXT(!bowtie2AlignerPath.isEmpty(), os.setError("Bowtie2 aligner isn't found"), settings);
 
     settings.bowtie2ExternalToolPath = QFileInfo(bowtie2AlignerPath).dir().path();
-    QString pythonPath = WorkflowUtils::getExternalToolPath(Metaphlan2Support::ET_PYTHON);
+    QString pythonPath = WorkflowUtils::getExternalToolPath(Metaphlan2Support::ET_PYTHON_BIO_ID);
     CHECK_EXT(!pythonPath.isEmpty(), os.setError("Python isn't found"), settings);
 
     settings.pythonExternalToolPath = QFileInfo(pythonPath).dir().path();

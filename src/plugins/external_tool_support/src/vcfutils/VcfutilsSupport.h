@@ -29,9 +29,10 @@ namespace U2 {
 class VcfutilsSupport : public ExternalTool {
     Q_OBJECT
 public:
-    VcfutilsSupport(const QString &name);
+    VcfutilsSupport(const QString& id, const QString &name);
 
-    static const QString TOOL_NAME;
+    static const QString VCF_UTILS;
+    static const QString VCF_UTILS_ID;
 };
 
 } // U2

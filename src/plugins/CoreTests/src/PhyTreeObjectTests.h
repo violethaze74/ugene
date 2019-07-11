@@ -41,7 +41,7 @@ class GTest_CalculateTreeFromAligment : public XmlTest {
     PhyTreeGeneratorLauncherTask* task;
     QString objContextName;
     QString treeObjContextName;
-    QString algName;
+    QString algId;
 };
 
 class GTest_CheckPhyNodeHasSibling : public XmlTest {

@@ -31,6 +31,7 @@
 namespace U2 {
 #define ExternalToolSupportSettingsPageId QString("ets")
 struct ExternalToolInfo {
+    QString id;
     QString name;
     QString path;
     QString description;
@@ -72,7 +73,7 @@ private:
     QWidget* createPathEditor(QWidget *parent, const QString& path) const;
     QTreeWidgetItem *findToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName);
     QTreeWidgetItem *createToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName, const QIcon &icon);
-    QTreeWidgetItem* insertChild(QTreeWidgetItem* rootItem, const QString& name, int pos, bool isModule = false);
+    QTreeWidgetItem* insertChild(QTreeWidgetItem* rootItem, const QString& id, int pos, bool isModule = false);
     static ExternalTool* isMasterWithModules(const QList<ExternalTool*>& toolsList);
     void setToolState(ExternalTool* tool);
     QString getToolStateDescription(ExternalTool* tool) const;

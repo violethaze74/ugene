@@ -260,7 +260,7 @@ void BowtieWorkerFactory::init() {
     proto->setPrompter(new ShortReadsAlignerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator);
-    proto->addExternalTool(ET_BOWTIE);
+    proto->addExternalTool(BowtieSupport::ET_BOWTIE_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new BowtieWorkerFactory());
 }

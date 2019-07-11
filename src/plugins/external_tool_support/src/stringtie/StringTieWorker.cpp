@@ -561,7 +561,7 @@ void StringTieWorkerFactory::init() {
     // Init and register the actor prototype
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new StringTiePrompter());
-    proto->addExternalTool(ET_STRINGTIE, "STRINGTIE_EXT_TOOL_PATH");
+    proto->addExternalTool(StringTieSupport::ET_STRINGTIE_ID, "STRINGTIE_EXT_TOOL_PATH");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_RNA_SEQ(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

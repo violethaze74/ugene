@@ -123,7 +123,7 @@ BwaSettingsWidget::BwaSettingsWidget(QWidget *parent)
     warningReporter->setReportingLabel(infoLabel);
     connect(indexAlgorithmComboBox, SIGNAL(currentIndexChanged(int)), warningReporter, SLOT(sl_IndexAlgorithmChanged(int)));
     indexSuffixes << BwaTask::indexSuffixes;
-    requiredExtToolNames << ET_BWA;
+    requiredExtToolIds << BwaSupport::ET_BWA_ID;
 }
 
 QMap<QString,QVariant> BwaSettingsWidget::getDnaAssemblyCustomSettings() const {
@@ -231,7 +231,7 @@ BwaSwSettingsWidget::BwaSwSettingsWidget(QWidget *parent):
 
     warningReporter->setReportingLabel(warningLabel);
     connect(indexAlgorithmComboBox, SIGNAL(currentIndexChanged(int)), warningReporter, SLOT(sl_IndexAlgorithmChanged(int)));
-    requiredExtToolNames << ET_BWA;
+    requiredExtToolIds << BwaSupport::ET_BWA_ID;
 }
 
 QMap<QString,QVariant> BwaSwSettingsWidget::getDnaAssemblyCustomSettings() const {
@@ -298,7 +298,7 @@ BwaMemSettingsWidget::BwaMemSettingsWidget(QWidget *parent):
 
     warningReporter->setReportingLabel(warningLabel);
     connect(indexAlgorithmComboBox, SIGNAL(currentIndexChanged(int)), warningReporter, SLOT(sl_IndexAlgorithmChanged(int)));
-    requiredExtToolNames << ET_BWA;
+    requiredExtToolIds << BwaSupport::ET_BWA_ID;
 }
 
 QMap<QString,QVariant> BwaMemSettingsWidget::getDnaAssemblyCustomSettings() const {

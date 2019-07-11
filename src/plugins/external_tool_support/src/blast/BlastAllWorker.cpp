@@ -324,7 +324,7 @@ void BlastAllWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new BlastAllPrompter());
     proto->setIconPath(":external_tool_support/images/ncbi.png");
-    proto->addExternalTool(ET_BLASTALL, BLASTALL_EXT_TOOL_PATH);
+    proto->addExternalTool(BlastAllSupport::ET_BLASTALL_ID, BLASTALL_EXT_TOOL_PATH);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -380,7 +380,7 @@ Task* BlastAllWorker::tick() {
 
         QString path = actor->getParameter(BLASTALL_EXT_TOOL_PATH)->getAttributeValue<QString>(context);
         if(QString::compare(path, "default", Qt::CaseInsensitive) != 0){
-            AppContext::getExternalToolRegistry()->getByName(ET_BLASTALL)->setPath(path);
+            AppContext::getExternalToolRegistry()->getById(BlastAllSupport::ET_BLASTALL_ID)->setPath(path);
         }
         path = actor->getParameter(BLASTALL_TMP_DIR_PATH)->getAttributeValue<QString>(context);
         if(QString::compare(path, "default", Qt::CaseInsensitive) != 0){

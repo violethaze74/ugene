@@ -34,10 +34,11 @@ namespace U2 {
 class PhyMLSupport : public ExternalTool {
     Q_OBJECT
 public:
-    PhyMLSupport(const QString& name);
+    PhyMLSupport(const QString& id, const QString& name);
 
-    static const QString PhyMlRegistryId;
-    static const QString PhyMlTempDir;
+    static const QString PHYML;
+    static const QString PHYML_ID;
+    static const QString PHYML_TEMP_DIR;
 };
 
 class PhyMLAdapter : public PhyTreeGenerator {

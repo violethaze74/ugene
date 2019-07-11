@@ -30,8 +30,16 @@
 
 namespace U2 {
 
-Bowtie2Support::Bowtie2Support(const QString& name, const QString& path /* = */ )
-    : ExternalTool(name, path)
+const QString Bowtie2Support::BOWTIE2_TMP_DIR = "bowtie2";
+const QString Bowtie2Support::ET_BOWTIE2_ALIGN = "Bowtie 2 aligner";
+const QString Bowtie2Support::ET_BOWTIE2_ALIGN_ID = "BOWTIE2";
+const QString Bowtie2Support::ET_BOWTIE2_BUILD = "Bowtie 2 build indexer";
+const QString Bowtie2Support::ET_BOWTIE2_BUILD_ID = "BOWTIE2_BUILD";
+const QString Bowtie2Support::ET_BOWTIE2_INSPECT = "Bowtie 2 index inspector";
+const QString Bowtie2Support::ET_BOWTIE2_INSPECT_ID = "BOWTIE2_INSPECT";
+
+Bowtie2Support::Bowtie2Support(const QString& id, const QString& name, const QString& path /* = */ )
+    : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -42,15 +50,15 @@ Bowtie2Support::Bowtie2Support(const QString& name, const QString& path /* = */ 
     toolKitName = "Bowtie2";
     versionRegExp = QRegExp("version (\\d+\\.\\d+\\.\\d+[.]{0,1}[\\d+]{0,1})");
 
-    if (name == ET_BOWTIE2_ALIGN) { // Bowtie2-align
-        toolRunnerProgram = ET_PERL;
+    if (id == ET_BOWTIE2_ALIGN_ID) { // Bowtie2-align
+        toolRunnerProgram = PerlSupport::ET_PERL_ID;
         executableFileName = "bowtie2";
         validationArguments << "--help";
         validMessage = "bowtie2";
         description = tr("<i>Bowtie 2 aligner</i> takes a Bowtie 2 index"
                          " and a set of sequencing read files and outputs a set of alignments.");
-    } else if (name == ET_BOWTIE2_BUILD) { // Bowtie2-build
-        toolRunnerProgram = ET_PYTHON;
+    } else if (id == ET_BOWTIE2_BUILD_ID) { // Bowtie2-build
+        toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
         executableFileName = "bowtie2-build";
         validationArguments << "--version";
         validMessage = "bowtie2-build";
@@ -61,8 +69,8 @@ Bowtie2Support::Bowtie2Support(const QString& name, const QString& path /* = */ 
                          " they are all that is needed to align reads to that reference."
                          " The original sequence files are no longer used by <i>Bowtie 2</i>"
                          " once the index is built.");
-    } else if (name == ET_BOWTIE2_INSPECT) { // Bowtie2-inspect
-        toolRunnerProgram = ET_PYTHON;
+    } else if (id == ET_BOWTIE2_INSPECT_ID) { // Bowtie2-inspect
+        toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
         executableFileName = "bowtie2-inspect";
         validationArguments << "--version";
         validMessage = "bowtie2-inspect";

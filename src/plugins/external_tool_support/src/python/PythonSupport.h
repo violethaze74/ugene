@@ -25,17 +25,15 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include "utils/ExternalToolSupportAction.h"
 
-#define ET_PYTHON "python"
-#define ET_PYTHON_DJANGO "django"
-#define ET_PYTHON_NUMPY "numpy"
-#define ET_PYTHON_BIO "Bio"
-
 namespace U2 {
 
 class PythonSupport : public ExternalTool {
     Q_OBJECT
 public:
-    PythonSupport(const QString& name, const QString& path = "");
+    PythonSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_PYTHON;
+    static const QString ET_PYTHON_ID;
 private slots:
     void sl_toolValidationStatusChanged(bool isValid);
 };
@@ -43,25 +41,34 @@ private slots:
 class PythonModuleSupport : public ExternalToolModule {
     Q_OBJECT
 public:
-    PythonModuleSupport(const QString& name);
+    PythonModuleSupport(const QString& id, const QString& name);
 };
 
 class PythonModuleDjangoSupport : public PythonModuleSupport {
     Q_OBJECT
 public:
-    PythonModuleDjangoSupport(const QString& name);
+    PythonModuleDjangoSupport(const QString& id, const QString& name);
+
+    static const QString ET_PYTHON_DJANGO;
+    static const QString ET_PYTHON_DJANGO_ID;
 };
 
 class PythonModuleNumpySupport : public PythonModuleSupport {
     Q_OBJECT
 public:
-    PythonModuleNumpySupport(const QString& name);
+    PythonModuleNumpySupport(const QString& id, const QString& name);
+
+    static const QString ET_PYTHON_NUMPY;
+    static const QString ET_PYTHON_NUMPY_ID;
 };
 
 class PythonModuleBioSupport : public PythonModuleSupport {
     Q_OBJECT
 public:
-    PythonModuleBioSupport(const QString& name);
+    PythonModuleBioSupport(const QString& id, const QString& name);
+
+    static const QString ET_PYTHON_BIO;
+    static const QString ET_PYTHON_BIO_ID;
 };
 
 

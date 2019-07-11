@@ -74,7 +74,7 @@ QList<Task *> WevoteTask::onSubTaskFinished(Task *subTask) {
         const QStringList arguments = getArguments();
         CHECK_OP(stateInfo, newSubTasks);
 
-        ExternalToolRunTask *wevoteTask = new ExternalToolRunTask(WevoteSupport::TOOL_NAME, arguments, new ExternalToolLogParser());
+        ExternalToolRunTask *wevoteTask = new ExternalToolRunTask(WevoteSupport::TOOL_ID, arguments, new ExternalToolLogParser());
         setListenerForTask(wevoteTask);
         newSubTasks << wevoteTask;
     }

@@ -26,14 +26,13 @@
 
 namespace U2 {
 
-#define ET_DIAMOND DiamondSupport::DIAMOND_TOOL
-
 class DiamondSupport : public ExternalTool {
     Q_OBJECT
 public:
-    DiamondSupport(const QString &name);
+    DiamondSupport(const QString& id, const QString &name);
 
     static const QString TOOL_NAME;
+    static const QString TOOL_ID;
 };
 
 }   // namespace U2

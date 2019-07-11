@@ -115,7 +115,7 @@ ExternalToolRunTask* BlastXPlusSupportTask::createBlastPlusTask(){
 
     algoLog.trace("BlastX+ arguments: "+arguments.join(" "));
     QString workingDirectory = QFileInfo(url).absolutePath();
-    ExternalToolRunTask* runTask = new ExternalToolRunTask(ET_BLASTX, arguments, new ExternalToolLogParser(), workingDirectory);
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(BlastPlusSupport::ET_BLASTX_ID, arguments, new ExternalToolLogParser(), workingDirectory);
     setListenerForTask(runTask);
     return runTask;
 }

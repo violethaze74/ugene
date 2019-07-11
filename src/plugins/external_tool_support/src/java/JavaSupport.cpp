@@ -27,12 +27,15 @@
 
 namespace U2 {
 
+const QString JavaSupport::ET_JAVA = "java";
+const QString JavaSupport::ET_JAVA_ID = "JAVA";
+
 const QString JavaSupport::ARCHITECTURE = "architecture";
 const QString JavaSupport::ARCHITECTURE_X32 = "x32";
 const QString JavaSupport::ARCHITECTURE_X64 = "x64";
 
-JavaSupport::JavaSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
+JavaSupport::JavaSupport(const QString& id, const QString &name, const QString &path)
+    : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
