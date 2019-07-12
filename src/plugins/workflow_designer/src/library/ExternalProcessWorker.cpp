@@ -223,8 +223,9 @@ ExternalProcessWorker::ExternalProcessWorker(Actor *a)
     cfg = reg->getConfigById(actor->getProto()->getId());
 }
 
-void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString) {
-    CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(execString);
+void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString,
+                                                        ExternalProcessConfig *cfg) {
+    CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(execString, cfg);
 }
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {
@@ -563,7 +564,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
 
 void ExternalProcessWorker::init() {
     commandLine = cfg->cmdLine;
-    applySpecialInternalEnvvars(commandLine);
+    applySpecialInternalEnvvars(commandLine, cfg);
     applyAttributes(commandLine);
 
     output = ports.value(OUT_PORT_ID);

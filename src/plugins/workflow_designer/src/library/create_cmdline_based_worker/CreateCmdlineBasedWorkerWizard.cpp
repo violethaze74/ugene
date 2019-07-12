@@ -44,6 +44,7 @@
 
 #include "CreateCmdlineBasedWorkerWizard.h"
 #include "WorkflowEditorDelegates.h"
+#include "util/CustomWorkerUtils.h"
 #include "util/WorkerNameValidator.h"
 
 namespace U2 {
@@ -837,6 +838,18 @@ void CreateCmdlineBasedWorkerWizardCommandPage::initializePage() {
         teCommand->setText(initialConfig->cmdLine);
     } else {
         QString commandTemplate = "<My tool>";
+        bool isIntegratedTool = field(CreateCmdlineBasedWorkerWizard::USE_INTEGRATED_TOOL_FIELD).toBool();
+        if (!isIntegratedTool) {
+            commandTemplate = "%TOOL_PATH%";
+        } else {
+            QString integatedToolId = field(CreateCmdlineBasedWorkerWizard::INTEGRATED_TOOL_ID_FIELD).toString();
+            QList<ExternalTool *> all = AppContext::getExternalToolRegistry()->getAllEntries();
+            for (auto tool : all) {
+                if (integatedToolId == tool->getId()) {
+                    commandTemplate = "%" + CustomWorkerUtils::getVarName(tool) + "%";
+                }
+            }
+        }
 
         const QStringList inputsNames = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList();
         foreach (const QString &name, inputsNames) {

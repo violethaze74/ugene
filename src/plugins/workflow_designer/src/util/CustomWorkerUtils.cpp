@@ -22,7 +22,6 @@
 #include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
-#include "U2Core/ExternalToolRegistry.h"
 #include <U2Core/U2SafePoints.h>
 
 #include "CustomWorkerUtils.h"
@@ -30,41 +29,71 @@
 namespace U2 {
 namespace Workflow {
 
-////////////////////////////////////////
-// Special external tools
-QMap<QString, QString> CustomWorkerUtils::specialTools {{"java", "UGENE_JAVA"},
-                                                        {"python", "UGENE_PYTHON"},
-                                                        {"perl", "UGENE_PERL"},
-                                                        {"Rscript", "UGENE_RSCRIPT"}};
+QString CustomWorkerUtils::getVarName(const ExternalTool *tool) {
+    SAFE_POINT(!tool->isModule(),
+               "Bad external tool id",
+               "__UGENE_BAD_EXTERNAL_TOOL_TYPE__");
+    QString id = tool->getId();
 
+// TODO: workaround while id(s) are not yet committed
+#ifndef __ichebyki__
+    id = id.toUpper().replace(QRegularExpression("[^A-Z0-9_]"), "_");
+#endif
 
-bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QString &toolKey) {
-    QString value = specialTools.value(toolKey);
-    if (!value.isNull() && !value.isEmpty()) {
-        QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + value + "%"));
+    SAFE_POINT((id.indexOf(QRegularExpression("[^A-Z0-9_]")) < 0),
+               "Bad external tool id",
+               "__UGENE_BAD_EXTERNAL_TOOL_ID__");
+
+    return "UGENE_" + id;
+}
+
+bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QString toolName) {
+    ExternalTool *tool = AppContext::getExternalToolRegistry()->getByName(toolName);
+    if (tool) {
+        QString varName = getVarName(tool);
+        QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + varName + "%"));
         return cmd.indexOf(regex1) >= 0;
     }
     return false;
 }
 
-bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const QString &toolKey) {
+bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const ExternalTool *tool) {
+    QString varName = getVarName(tool);
+    QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + varName + "%"));
+    return cmd.indexOf(regex1) >= 0;
+}
+
+bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const QString varName, const QString path) {
     bool result = false;
-    QString value = specialTools.value(toolKey);
-    if (!value.isNull() && !value.isEmpty()) {
-        QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + value + "%"));
-        while (cmd.indexOf(regex1) >= 0) {
-            ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName(toolKey);
-            CHECK(tool, false);
-            cmd.replace(regex1, "\\1\"" + tool->getPath() + "\"");
-            result |= true;
-        }
+    QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + varName + "%"));
+    while (cmd.indexOf(regex1) >= 0) {
+        cmd.replace(regex1, "\\1\"" + path + "\"");
+        result |= true;
     }
+
     return result;
 }
 
-void CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(QString &cmd) {
-    for (auto key : specialTools.keys()) {
-        commandReplaceSpecialByUgenePath(cmd, key);
+bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const ExternalTool *tool) {
+    bool result = false;
+    QString varName = getVarName(tool);
+    QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + varName + "%"));
+    while (cmd.indexOf(regex1) >= 0) {
+        cmd.replace(regex1, "\\1\"" + tool->getPath() + "\"");
+        result |= true;
+    }
+
+    return result;
+}
+
+void CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(QString &cmd, ExternalProcessConfig *cfg) {
+    commandReplaceSpecialByUgenePath(cmd, "TOOL_PATH", cfg->customToolPath);
+
+    QList<ExternalTool *> all = AppContext::getExternalToolRegistry()->getAllEntries();
+    for (auto tool : all) {
+        if (!tool->isModule()) {
+            commandReplaceSpecialByUgenePath(cmd, tool);
+        }
     }
 }
 

@@ -24,6 +24,9 @@
 
 #include <QObject>
 
+#include <U2Lang/ExternalToolCfg.h>
+#include "U2Core/ExternalToolRegistry.h"
+
 namespace U2 {
 namespace Workflow {
 
@@ -32,12 +35,14 @@ namespace Workflow {
 class CustomWorkerUtils {
 
 public:
-    static bool commandContainsSpecialTool(const QString &cmd, const QString &toolKey);
-    static bool commandReplaceSpecialByUgenePath(QString &cmd, const QString &toolKey);
-    static void commandReplaceAllSpecialByUgenePath(QString &cmd);
+    static QString getVarName(const ExternalTool *tool);
 
-protected:
-    static QMap<QString, QString> specialTools;
+    static bool commandContainsSpecialTool(const QString &cmd, const ExternalTool *tool);
+    static bool commandContainsSpecialTool(const QString &cmd, const QString toolName);
+
+    static bool commandReplaceSpecialByUgenePath(QString &cmd, const ExternalTool *tool);
+    static bool commandReplaceSpecialByUgenePath(QString &cmd, const QString varName, const QString path);
+    static void commandReplaceAllSpecialByUgenePath(QString &cmd, ExternalProcessConfig *cfg);
 
 };
 
