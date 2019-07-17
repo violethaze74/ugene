@@ -39,7 +39,7 @@ ImportExternalToolDialog::ImportExternalToolDialog(QWidget *_parent)
 {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, HelpButton::INVALID_VALUE);
+    new HelpButton(this, buttonBox, "24742946");
 
     connect(lePath, SIGNAL(textChanged(const QString &)), SLOT(sl_pathChanged()));
     connect(tbBrowse, SIGNAL(clicked()), SLOT(sl_browse()));

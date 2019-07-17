@@ -80,7 +80,7 @@ const Descriptor BaseActorCategories::CATEGORY_SCRIPT() {
 }
 
 const Descriptor BaseActorCategories::CATEGORY_EXTERNAL() {
-    return Descriptor("ex", tr("Custom Elements with CMD Tools"),"");
+    return Descriptor("ex", tr("Custom Elements with External Tools"),"");
 }
 
 const Descriptor BaseActorCategories::CATEGORY_DATAFLOW() {

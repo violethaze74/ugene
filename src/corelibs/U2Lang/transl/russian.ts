@@ -1548,7 +1548,7 @@
     </message>
     <message>
         <location filename="../src/library/BaseActorCategories.cpp" line="83"/>
-        <source>Custom Elements with CMD Tools</source>
+        <source>Custom Elements with External Tools</source>
         <translation>Элементы пользователя с внешними утилитами</translation>
     </message>
     <message>

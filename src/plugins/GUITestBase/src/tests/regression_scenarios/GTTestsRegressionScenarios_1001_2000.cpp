@@ -3783,8 +3783,8 @@ GUI_TEST_CLASS_DEFINITION(test_1347) {
 
 GUI_TEST_CLASS_DEFINITION(test_1348) {
 //    1) Create "Element with command line tool" with name "test" and any slots.
-//    2) Use context menu on "test" element in "Custom Elements with CMD Tools" in "Elements", click "Remove"
-//    3) Use context menu on WD main window, add element -> "Custom Elements with CMD Tools". Select "test", UGENE DOES NOT crash.
+//    2) Use context menu on "test" element in "Custom Elements with External Tools" in "Elements", click "Remove"
+//    3) Use context menu on WD main window, add element -> "Custom Elements with External Tools". Select "test", UGENE DOES NOT crash.
 
 //    Expected state: There shouldn't be "test" element on the step 3 after removing it
 
@@ -3819,7 +3819,7 @@ GUI_TEST_CLASS_DEFINITION(test_1348) {
 
     GTGlobals::sleep(4000);
 
-    const QString groupName = "Custom Elements with CMD Tools";
+    const QString groupName = "Custom Elements with External Tools";
     const QStringList groups = GTUtilsWorkflowDesigner::getPaletteGroupNames(os);
     if (groups.contains(groupName)) {
         CHECK_SET_ERR(!GTUtilsWorkflowDesigner::getPaletteGroupEntriesNames(os, groupName).contains(settings.elementName), "Element was not removed");
