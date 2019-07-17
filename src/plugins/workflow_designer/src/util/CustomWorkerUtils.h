@@ -35,10 +35,12 @@ namespace Workflow {
 class CustomWorkerUtils {
 
 public:
+    static const QString TOOL_PATH_VAR_NAME;
+
     static QString getVarName(const ExternalTool *tool);
 
     static bool commandContainsSpecialTool(const QString &cmd, const ExternalTool *tool);
-    static bool commandContainsSpecialTool(const QString &cmd, const QString toolName);
+    static bool commandContainsSpecialTool(const QString &cmd, const QString toolId);
 
     static bool commandReplaceSpecialByUgenePath(QString &cmd, const ExternalTool *tool);
     static bool commandReplaceSpecialByUgenePath(QString &cmd, const QString varName, const QString path);

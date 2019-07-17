@@ -29,17 +29,13 @@
 namespace U2 {
 namespace Workflow {
 
+const QString CustomWorkerUtils::TOOL_PATH_VAR_NAME = "TOOL_PATH";
+
 QString CustomWorkerUtils::getVarName(const ExternalTool *tool) {
     SAFE_POINT(!tool->isModule(),
-               "Bad external tool id",
+               "Bad external tool type",
                "__UGENE_BAD_EXTERNAL_TOOL_TYPE__");
     QString id = tool->getId();
-
-// TODO: workaround while id(s) are not yet committed
-#ifndef __ichebyki__
-    id = id.toUpper().replace(QRegularExpression("[^A-Z0-9_]"), "_");
-#endif
-
     SAFE_POINT((id.indexOf(QRegularExpression("[^A-Z0-9_]")) < 0),
                "Bad external tool id",
                "__UGENE_BAD_EXTERNAL_TOOL_ID__");
@@ -47,12 +43,10 @@ QString CustomWorkerUtils::getVarName(const ExternalTool *tool) {
     return "UGENE_" + id;
 }
 
-bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QString toolName) {
-    ExternalTool *tool = AppContext::getExternalToolRegistry()->getByName(toolName);
+bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QString toolId) {
+    ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(toolId);
     if (tool) {
-        QString varName = getVarName(tool);
-        QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + varName + "%"));
-        return cmd.indexOf(regex1) >= 0;
+        return commandContainsSpecialTool(cmd, tool);
     }
     return false;
 }
@@ -64,6 +58,9 @@ bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const Ext
 }
 
 bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const QString varName, const QString path) {
+    SAFE_POINT(!(varName.isNull() || varName.isEmpty()),
+               "Bad varName",
+               "__UGENE_BAD_VAR_NAME__");
     bool result = false;
     QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + varName + "%"));
     while (cmd.indexOf(regex1) >= 0) {
@@ -75,19 +72,12 @@ bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const QSt
 }
 
 bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const ExternalTool *tool) {
-    bool result = false;
     QString varName = getVarName(tool);
-    QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + varName + "%"));
-    while (cmd.indexOf(regex1) >= 0) {
-        cmd.replace(regex1, "\\1\"" + tool->getPath() + "\"");
-        result |= true;
-    }
-
-    return result;
+    return commandReplaceSpecialByUgenePath(cmd, varName, tool->getPath());
 }
 
 void CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(QString &cmd, ExternalProcessConfig *cfg) {
-    commandReplaceSpecialByUgenePath(cmd, "TOOL_PATH", cfg->customToolPath);
+    commandReplaceSpecialByUgenePath(cmd, TOOL_PATH_VAR_NAME, cfg->customToolPath);
 
     QList<ExternalTool *> all = AppContext::getExternalToolRegistry()->getAllEntries();
     for (auto tool : all) {

@@ -168,7 +168,7 @@ bool validateExternalTools(Actor *a, NotificationsList &infoList) {
     StrStrMap tools = a->getProto()->getExternalTools();
     foreach (const QString &toolId, tools.keys()) {
         Attribute *attr = a->getParameter(tools[toolId]);
-        ExternalTool *tool = AppContext::getExternalToolRegistry()->getByName(toolId);
+        ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(toolId);
         SAFE_POINT(NULL != tool, "NULL tool", false);
 
         bool fromAttr = (NULL != attr) && !attr->isDefaultValue();
