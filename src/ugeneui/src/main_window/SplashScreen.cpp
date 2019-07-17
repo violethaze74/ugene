@@ -86,6 +86,9 @@ SplashScreenWidget::SplashScreenWidget(){
 
     Version v = Version::appVersion();
     version = v.text;
+    if (version.right(version.indexOf(".")).toInt() == 0) {
+        version = version.left(version.indexOf("."));
+    }
 
     QImage image(":ugene/images/ugene_splash.png");
     QSize widgetSize = image.size();
