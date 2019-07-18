@@ -53,7 +53,7 @@ private:
         INTERNAL_ERROR
     };
 
-    void applySpecialInternalEnvvars(QString &execString);
+    void applySpecialInternalEnvvars(QString &execString, ExternalProcessConfig *cfg);
     void applyAttributes(QString &execString);
     void applyEscapedSymbols(QString &execString);
     QStringList applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os);

@@ -105,6 +105,7 @@ signals:
     void si_toolValidationStatusChanged(bool isValid);
 
 protected:
+    QString     id;                     // id
     QString     name;                   // tool name
     QString     path;                   // tool path
     QIcon       icon;                   // valid tool icon
@@ -207,7 +208,8 @@ public:
     ExternalToolRegistry();
     ~ExternalToolRegistry();
 
-    ExternalTool* getByName(const QString& id);
+    ExternalTool* getById(const QString& id);
+    ExternalTool* getByName(const QString& name);
 
     bool registerEntry(ExternalTool* t);
     void unregisterEntry(const QString& id);

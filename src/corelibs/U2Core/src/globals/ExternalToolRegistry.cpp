@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "ExternalToolRegistry.h"
 
 #include <U2Core/AppContext.h>
@@ -46,6 +48,11 @@ ExternalTool::ExternalTool(QString _name, QString _path)
       isCustomTool(false),
     isRunnerTool(false)
 {
+    // TODO: workaround while id(s) are not yet committed
+    #ifndef __ichebyki__
+        id = QString(name.toUpper().replace(QRegularExpression("[^A-Z0-9_]"), "_"));
+    #endif
+
     if (NULL != AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
@@ -54,7 +61,7 @@ ExternalTool::ExternalTool(QString _name, QString _path)
 }
 
 const QString &ExternalTool::getId() const {
-    return name;
+    return id;
 }
 
 const QString &ExternalTool::getName() const {
@@ -236,17 +243,28 @@ ExternalToolRegistry::~ExternalToolRegistry() {
     qDeleteAll(registry.values());
 }
 
-ExternalTool* ExternalToolRegistry::getByName(const QString& id)
+ExternalTool* ExternalToolRegistry::getById(const QString& id)
 {
     return registry.value(id, NULL);
 }
 
+ExternalTool* ExternalToolRegistry::getByName(const QString& name)
+{
+    QList<ExternalTool*> valuesList = registry.values(); // get a list of all the values
+    foreach (ExternalTool* value, valuesList) {
+        if (value->getName() == name) {
+            return value;
+        }
+    }
+    return nullptr;
+}
+
 bool ExternalToolRegistry::registerEntry(ExternalTool *t){
-    if (registry.contains(t->getName())) {
+    if (registry.contains(t->getId())) {
         return false;
     } else {
         registryOrder.append(t);
-        registry.insert(t->getName(), t);
+        registry.insert(t->getId(), t);
         emit si_toolAdded(t->getId());
         return true;
     }
