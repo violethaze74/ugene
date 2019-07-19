@@ -56,7 +56,7 @@ void XmlTest::checkAttribute(const QDomElement &element, const QString &attribut
 }
 
 void XmlTest::checkBooleanAttribute(const QDomElement &element, const QString &attribute, bool isNecessary) {
-    checkAttribute(element, attribute, { TRUE_VALUE, FALSE_VALUE }, isNecessary);
+    checkAttribute(element, attribute, QStringList( { TRUE_VALUE, FALSE_VALUE } ), isNecessary);
 }
 
 const QString XMLTestUtils::TMP_DATA_DIR_PREFIX  = "!tmp_data_dir!";
