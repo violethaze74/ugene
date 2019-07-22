@@ -2868,11 +2868,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0007);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0008);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1, 600000);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005, 600000);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0006, 600000);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0007, 600000);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0008, 600000);
 
 
     /////////////////////////////////////////////////////////////////////////

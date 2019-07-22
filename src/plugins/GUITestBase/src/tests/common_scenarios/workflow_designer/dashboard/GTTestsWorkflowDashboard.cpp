@@ -3450,7 +3450,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
 //          - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 2" and "Align sequence with MUSCLE 1".
 //          - The "Align sequence with MUSCLE 2" dashboard is active.
 //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
 
     viewSwitchButton = qobject_cast<QAbstractButton *>(
                 GTToolbar::getWidgetForActionTooltip(os,
@@ -3770,7 +3770,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
 //                            "Align sequence with MUSCLE 1".
 //          - The "Align sequence with MUSCLE 2" dashboard is active.
 //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
 
     viewSwitchButton = qobject_cast<QAbstractButton *>(
                 GTToolbar::getWidgetForActionTooltip(os,
@@ -4097,7 +4097,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
 //                            "Align sequence with MUSCLE 1".
 //          - The "Align sequence with MUSCLE 2" dashboard is active.
 //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
 
     viewSwitchButton = qobject_cast<QAbstractButton *>(
                 GTToolbar::getWidgetForActionTooltip(os,
@@ -4423,7 +4423,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
 //                            "Align sequence with MUSCLE 1".
 //          - The "Align sequence with MUSCLE 2" dashboard is active.
 //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
 
     viewSwitchButton = qobject_cast<QAbstractButton *>(
                 GTToolbar::getWidgetForActionTooltip(os,
