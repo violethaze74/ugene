@@ -512,8 +512,8 @@ void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString& n
         propDelegate = new PropertyDelegate();
     } else if (newType == AttributeConfig::INTEGER_TYPE) {
         QVariantMap integerValues;
-        integerValues["minimum"] = QVariant(INT_MIN);
-        integerValues["maximum"] = QVariant(INT_MAX);
+        integerValues["minimum"] = QVariant(std::numeric_limits<int>::min());
+        integerValues["maximum"] = QVariant(std::numeric_limits<int>::max());
         propDelegate = new SpinBoxDelegate(integerValues);
         defaultValue = QVariant(0);
     } else if (newType == AttributeConfig::DOUBLE_TYPE) {

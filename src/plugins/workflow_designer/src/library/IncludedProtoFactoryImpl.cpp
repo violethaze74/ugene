@@ -152,27 +152,44 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
     foreach(const AttributeConfig& acfg, cfg->attrs) {
         DataTypePtr type;
         QString descr = acfg.description.isEmpty() ? acfg.type : acfg.description;
-        if(acfg.isFile()) {
+        if (acfg.type == AttributeConfig::INPUT_FILE_URL_TYPE) {
             type = BaseTypes::STRING_TYPE();
-            delegates[acfg.attributeId] = new URLDelegate("All Files(*.*)","");
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, false, false);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
-        } else if (acfg.isFolder()) {
-            //TODO: UGENE-6484
+        } else if (acfg.type == AttributeConfig::OUTPUT_FILE_URL_TYPE) {
             type = BaseTypes::STRING_TYPE();
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, false);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::INPUT_FOLDER_URL_TYPE) {
+            type = BaseTypes::STRING_TYPE();
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, true, false);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::OUTPUT_FOLDER_URL_TYPE) {
+            type = BaseTypes::STRING_TYPE();
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, true, false);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::STRING_TYPE) {
             type = BaseTypes::STRING_TYPE();
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::BOOLEAN_TYPE) {
             type = BaseTypes::BOOL_TYPE();
+            delegates[acfg.attributeId] = new ComboBoxWithBoolsDelegate();
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, (acfg.defaultValue == "true" ? QVariant(true) : QVariant(false)));
         } else if (acfg.type == AttributeConfig::INTEGER_TYPE) {
-            //TODO: UGENE-6484
             type = BaseTypes::NUM_TYPE();
+            QVariantMap integerValues;
+            integerValues["minimum"] = QVariant(std::numeric_limits<int>::min());
+            integerValues["maximum"] = QVariant(std::numeric_limits<int>::max());
+            delegates[acfg.attributeId] = new SpinBoxDelegate(integerValues);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::DOUBLE_TYPE) {
-            //TODO: UGENE-6484
             type = BaseTypes::NUM_TYPE();
+            QVariantMap doubleValues;
+            doubleValues["singleStep"] = 0.1;
+            doubleValues["minimum"] = QVariant(std::numeric_limits<double>::lowest());
+            doubleValues["maximum"] = QVariant(std::numeric_limits<double>::max());
+            doubleValues["decimals"] = 6;
+            delegates[acfg.attributeId] = new DoubleSpinBoxDelegate(doubleValues);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         }
     }
