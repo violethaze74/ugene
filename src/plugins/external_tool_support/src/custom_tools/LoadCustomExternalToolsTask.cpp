@@ -55,15 +55,7 @@ void LoadCustomExternalToolsTask::prepare() {
     QFileInfoList fileList = dir.entryInfoList();
 
     foreach (const QFileInfo &fileInfo, fileList) {
-        QString url = fileInfo.filePath();
-        QFile file(url);
-        file.open(QIODevice::ReadOnly);
-
-        QDomDocument doc;
-        doc.setContent(&file);
-        addSubTask(new RegisterCustomToolTask(doc, url));
-
-        file.close();
+        addSubTask(new RegisterCustomToolTask(fileInfo.filePath()));
     }
 }
 

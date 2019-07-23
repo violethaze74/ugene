@@ -36,7 +36,7 @@ class CustomToolConfigParser {
     Q_DECLARE_TR_FUNCTIONS(CustomToolConfigParser)
 public:
 
-    static CustomExternalTool *parse(U2OpStatus &os, const QDomDocument &doc);
+    static CustomExternalTool *parse(U2OpStatus &os, const QString& url);
     static QDomDocument serialize(CustomExternalTool *tool);
 
 private:
