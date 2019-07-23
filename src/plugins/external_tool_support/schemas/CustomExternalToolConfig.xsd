@@ -1,20 +1,18 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <xs:schema xmlns:xs = "http://www.w3.org/2001/XMLSchema">
-
-<xs:element name = "ugeneExternalToolConfig">
-    <xs:complexType>
-        <xs:sequence>
-            <xs:element name = "name" type = "xs:string" />
-            <xs:element name = "path" type = "xs:string" />                         <!-- There should be a path, relative to the tool base folder, where the config file is supposed to be stored -->
-            <xs:element name = "description" type = "xs:string" />
-            <xs:element name = "toolkitName" type = "xs:string" />                  <!-- Several tools can be grouped by the toolkit -->
-            <xs:element name = "version" type = "xs:string" />                      <!-- The tool's version. The value can be overwritten during the tool validation, if "validation version regexp" is defined -->
-            <xs:element name = "launcherId" type = "xs:string" />                   <!-- There should be a tool id. UGENE has the following launchers: 'java', 'perl', 'python', 'Rscript' -->
-            <xs:element name = "dependencies" type = "xs:string" />                 <!-- Comma-separated list of tool IDs this tool is dependent from -->
-            <xs:element name = "binaryName" type = "xs:string" />                   <!-- The "path" filed can point to another executable, but it is not recommended -->
-        </xs:sequence>
-        <xs:attribute name = "version" type = "xs:string" use="required" />
-    </xs:complexType>
-</xs:element>
+    <xs:element name = "ugeneExternalToolConfig">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name = "name" type = "xs:string" />
+                <xs:element name = "executableName" type = "xs:string" />
+                <xs:element name = "executableFullPath" type = "xs:string" minOccurs ="0" />
+                <xs:element name = "description" type = "xs:string" minOccurs ="0" />
+                <xs:element name = "version" type = "xs:string" minOccurs ="0" />
+                <xs:element name = "launcherId" type = "xs:string" minOccurs ="0" />
+                <xs:element name = "dependencies" type = "xs:string" minOccurs ="0" />
+            </xs:sequence>
+            <xs:attribute name = "version" type = "xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
 
 </xs:schema>

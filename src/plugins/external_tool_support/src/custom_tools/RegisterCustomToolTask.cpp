@@ -31,9 +31,8 @@
 
 namespace U2 {
 
-RegisterCustomToolTask::RegisterCustomToolTask(const QDomDocument &_config, const QString &_url)
+RegisterCustomToolTask::RegisterCustomToolTask(const QString &_url)
     : Task(tr("Register custom external tool"), TaskFlag_None),
-      config(_config),
       url(_url),
       registeredTool(nullptr)
 {
@@ -45,7 +44,7 @@ CustomExternalTool *RegisterCustomToolTask::getTool() const {
 }
 
 void RegisterCustomToolTask::run() {
-    QScopedPointer<CustomExternalTool> tool(CustomToolConfigParser::parse(stateInfo, config));
+    QScopedPointer<CustomExternalTool> tool(CustomToolConfigParser::parse(stateInfo, url));
     CHECK_OP(stateInfo, );
 
     tool->setConfigFilePath(url);

@@ -20,6 +20,9 @@
  */
 
 #include <QDomDocument>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
 
 #include <U2Core/CustomExternalTool.h>
 #include <U2Core/U2OpStatus.h>
@@ -34,15 +37,22 @@ const QString CustomToolConfigParser::ATTRIBUTE_VERSION = "version";
 const QString CustomToolConfigParser::HARDCODED_EXPECTED_VERSION = "1.0";
 
 const QString CustomToolConfigParser::NAME = "name";
-const QString CustomToolConfigParser::PATH = "path";
+const QString CustomToolConfigParser::PATH = "executableFullPath";
 const QString CustomToolConfigParser::DESCRIPTION = "description";
 const QString CustomToolConfigParser::TOOLKIT_NAME = "toolkitName";
 const QString CustomToolConfigParser::TOOL_VERSION = "version";
 const QString CustomToolConfigParser::LAUNCHER_ID = "launcherId";
 const QString CustomToolConfigParser::DEPENDENCIES = "dependencies";
-const QString CustomToolConfigParser::BINARY_NAME = "binaryName";
+const QString CustomToolConfigParser::BINARY_NAME = "executableName";
 
-CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QDomDocument &doc) {
+CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString &url) {
+    QFile file(url);
+    CHECK_EXT(file.open(QIODevice::ReadOnly), os.setError(tr("Invalid config file format: file %1 cann not be opened").arg(url)), nullptr);
+
+    QDomDocument doc;
+    doc.setContent(&file);
+    file.close();
+
     QScopedPointer<CustomExternalTool> tool(new CustomExternalTool());
 
     const QDomNodeList nodesList = doc.elementsByTagName(ELEMENT_CONFIG);
@@ -56,6 +66,7 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QDomDocu
     CHECK_EXT(HARDCODED_EXPECTED_VERSION == version, os.setError(tr("Can't parse config with version %1").arg(version)), nullptr);
 
     const QDomNodeList toolConfigElements = configElement.childNodes();
+    QFileInfo urlFi(url);
     for (int i = 0, n = toolConfigElements.count(); i < n; ++i) {
         const QDomElement element = toolConfigElements.item(i).toElement();
         CHECK_CONTINUE(!element.isNull());
@@ -64,7 +75,16 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QDomDocu
         if (NAME == tagName) {
             tool->setName(element.text());
         } else if (PATH == tagName) {
-            tool->setPath(element.text());
+            if (!element.text().isEmpty()) {
+                QString text = element.text();
+                QFileInfo pathFi(element.text());
+                QString absPath;
+                if (pathFi.isRelative()) {
+                    pathFi = QFileInfo(urlFi.dir().absolutePath() + "/" + element.text());
+                }
+                absPath = pathFi.absolutePath();
+                tool->setPath(absPath);
+            }
         } else if (DESCRIPTION == tagName) {
             tool->setDescription(element.text());
         } else if (TOOLKIT_NAME == tagName) {
@@ -84,6 +104,18 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QDomDocu
         } else {
             os.addWarning(tr("Unknown element: '%1', skipping").arg(tagName));
         }
+    }
+
+    if (tool->getPath().isEmpty()) {
+        QString expectedExecutableUrl = urlFi.absoluteDir().absolutePath() + "/" + tool->getExecutableFileName();
+        QFile expectedExecutable(expectedExecutableUrl);
+        if (expectedExecutable.exists()) {
+            tool->setPath(expectedExecutableUrl);
+        }
+    }
+
+    if (tool->getToolKitName().isEmpty()) {
+        tool->setToolkitName(tool->getName());
     }
 
     const bool valid = validate(os, tool.data());
