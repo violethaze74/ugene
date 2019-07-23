@@ -80,9 +80,10 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString 
                 QFileInfo pathFi(element.text());
                 QString absPath;
                 if (pathFi.isRelative()) {
-                    pathFi = QFileInfo(urlFi.dir().absolutePath() + "/" + element.text());
+                    QString newPath = urlFi.absoluteFilePath() + "/" + element.text();
+                    pathFi = QFileInfo(newPath);
                 }
-                absPath = pathFi.absolutePath();
+                absPath = pathFi.absoluteFilePath();
                 tool->setPath(absPath);
             }
         } else if (DESCRIPTION == tagName) {
