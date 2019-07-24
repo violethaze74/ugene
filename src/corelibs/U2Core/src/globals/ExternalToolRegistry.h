@@ -98,6 +98,7 @@ public:
     bool isMuted() const;
     bool isModule() const;
     bool isCustom() const;
+    bool isRunner() const;
 
 signals:
     void si_pathChanged();
@@ -128,6 +129,7 @@ protected:
     bool        muted;                  // a muted tool doesn't write its validation error to the log
     bool        isModuleTool;           // a module tool is a part of another external tool
     bool        isCustomTool;           // the tool is described in a user-written config file and imported to UGENE
+    bool        isRunnerTool;           // the tool could be used as script-runner
 
 }; // ExternalTool
 

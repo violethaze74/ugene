@@ -19,31 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GROUPED_COMBOBOX_DELEGATE_H_
-#define _U2_GROUPED_COMBOBOX_DELEGATE_H_
+#ifndef _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_COLORED_FACTORY_H_
+#define _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_COLORED_FACTORY_H_
 
-#include <QItemDelegate>
-#include <QPainter>
-
-#include <U2Core/global.h>
-
-class QStandardItemModel;
+#include "../../MsaColorSchemePercentageIdentity.h"
 
 namespace U2 {
 
-class U2GUI_EXPORT GroupedComboBoxDelegate : public QItemDelegate {
+class MsaColorSchemePercentageIdententityColoredFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    explicit GroupedComboBoxDelegate(QObject *parent = 0);
+    MsaColorSchemePercentageIdententityColoredFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
 
-    static void addParentItem(QStandardItemModel * model, const QString& text, bool setItalic = true, bool setBold = true);
-    static void addChildItem(QStandardItemModel * model, const QString& text, const QVariant& data);
-    static void addUngroupedItem(QStandardItemModel* model, const QString& text, const QVariant& data);
-protected:
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    MsaColorScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };
 
-}
+}   // namespace U2
 
-#endif // _U2_GROUPED_COMBOBOX_DELEGATE_H_
+#endif // _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_COLORED_FACTORY_H_

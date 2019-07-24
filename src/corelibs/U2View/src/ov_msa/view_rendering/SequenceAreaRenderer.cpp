@@ -117,6 +117,7 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     MultipleAlignmentRow row = ma->getRow(rowIndex);
     const int rowHeight = ui->getRowHeightController()->getSequenceHeight();
     const int baseWidth = ui->getBaseWidthController()->getBaseWidth();
+    const QPen backupPen = painter.pen();
     for (int pos = region.startPos; pos <= regionEnd; pos++) {
         if (!drawLeadingAndTrailingGaps
                 && (pos < row->getCoreStart() || pos > row->getCoreStart() + row->getCoreLength() - 1)) {
@@ -128,26 +129,29 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
         char c = ma->charAt(rowIndex, pos);
 
         bool highlight = false;
-        QColor color = seqAreaWgt->getCurrentColorScheme()->getColor(rowIndex, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
+        QColor backgroundColor = seqAreaWgt->getCurrentColorScheme()->getBackgroundColor(rowIndex, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
+        QColor fontColor = seqAreaWgt->getCurrentColorScheme()->getFontColor(rowIndex, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
         if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
             const char refChar = '\n';
-            highlightingScheme->process(refChar, c, color, highlight, pos, rowIndex);
+            highlightingScheme->process(refChar, c, backgroundColor, highlight, pos, rowIndex);
         } else if (rowIndex == refSeq || refSeqName.isEmpty()) {
             highlight = true;
         } else {
             const char refChar = editor->getReferenceCharAt(pos);
-            highlightingScheme->process(refChar, c, color, highlight, pos, rowIndex);
+            highlightingScheme->process(refChar, c, backgroundColor, highlight, pos, rowIndex);
         }
 
-        if (color.isValid() && highlight) {
-            painter.fillRect(charRect, color);
+        if (backgroundColor.isValid() && highlight) {
+            painter.fillRect(charRect, backgroundColor);
         }
         if (isResizeMode) {
+            painter.setPen(fontColor);
             painter.drawText(charRect, Qt::AlignCenter, QString(c));
         }
 
         xStart += baseWidth;
     }
+    painter.setPen(backupPen);
     return rowHeight;
 }
 

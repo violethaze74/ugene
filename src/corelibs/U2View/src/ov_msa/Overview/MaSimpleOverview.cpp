@@ -160,7 +160,7 @@ void MaSimpleOverview::drawOverview(QPainter &p) {
             rect.setWidth(qRound(xRange.length / stepX));
             rect.setHeight(qRound(yRange.length / stepY));
 
-            QColor color = sequenceArea->getCurrentColorScheme()->getColor(seq, pos, mAlignmentObj->charAt(seq, pos));
+            QColor color = sequenceArea->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
             if (MaHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
                 color = Qt::gray;
             }

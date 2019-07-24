@@ -696,7 +696,7 @@ QMap<QString, DataConfig> LaunchExternalToolTask::takeOutputUrls() {
 QString ExternalProcessWorkerPrompter::composeRichDoc() {
     ExternalProcessConfig *cfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(target->getProto()->getId());
     assert(cfg);
-    QString doc = cfg->templateDescription;
+    QString doc = cfg->templateDescription.replace("\n", "<br>");
 
     foreach(const DataConfig& dataCfg, cfg->inputs) {
         QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));

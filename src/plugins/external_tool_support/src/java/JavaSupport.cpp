@@ -58,6 +58,7 @@ JavaSupport::JavaSupport(const QString& id, const QString &name, const QString &
     toolKitName="Java";
 
     muted = true;
+    isRunnerTool = true;
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 }

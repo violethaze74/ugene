@@ -44,7 +44,8 @@ ExternalTool::ExternalTool(QString _id, QString _name, QString _path)
       toolKitName(_name),
       muted(false),
       isModuleTool(false),
-      isCustomTool(false)
+      isCustomTool(false),
+    isRunnerTool(false)
 {
     if (NULL != AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -201,6 +202,10 @@ bool ExternalTool::isModule() const {
 
 bool ExternalTool::isCustom() const {
     return isCustomTool;
+}
+
+bool ExternalTool::isRunner() const {
+    return isRunnerTool;
 }
 
 ////////////////////////////////////////

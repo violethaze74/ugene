@@ -30,8 +30,19 @@ MsaColorSchemeStatic::MsaColorSchemeStatic(QObject *parent, const MsaColorScheme
 
 }
 
-QColor MsaColorSchemeStatic::getColor(int /*seq*/, int /*pos*/, char c) const {
+QColor MsaColorSchemeStatic::getBackgroundColor(int seq, int pos, char c) const {
+    Q_UNUSED(seq);
+    Q_UNUSED(pos);
+
     return colorsPerChar[(quint8)c];
+}
+
+QColor MsaColorSchemeStatic::getFontColor(int seq, int pos, char c) const {
+    Q_UNUSED(seq);
+    Q_UNUSED(pos);
+    Q_UNUSED(c);
+
+    return QColor();
 }
 
 MsaColorSchemeStaticFactory::MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets, const QVector<QColor> &colorsPerChar)

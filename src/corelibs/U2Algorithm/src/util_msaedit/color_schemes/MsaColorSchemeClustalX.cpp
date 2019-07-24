@@ -45,7 +45,7 @@ MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSc
     connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
 }
 
-QColor MsaColorSchemeClustalX::getColor(int seq, int pos, char) const {
+QColor MsaColorSchemeClustalX::getBackgroundColor(int seq, int pos, char) const {
     if (cacheVersion != objVersion) {
         updateCache();
     }
@@ -53,6 +53,14 @@ QColor MsaColorSchemeClustalX::getColor(int seq, int pos, char) const {
     int idx = getColorIdx(seq, pos);
     assert(idx >=0 && idx < ClustalColor_NUM_COLORS);
     return colorByIdx[idx];
+}
+
+QColor MsaColorSchemeClustalX::getFontColor(int seq, int pos, char c) const {
+    Q_UNUSED(seq);
+    Q_UNUSED(pos);
+    Q_UNUSED(c);
+
+    return QColor();
 }
 
 void MsaColorSchemeClustalX::sl_alignmentChanged() {

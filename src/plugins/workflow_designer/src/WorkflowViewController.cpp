@@ -164,18 +164,6 @@ static void addToggleDashboardAction(QToolBar *toolBar, QAction *action) {
 #endif
 }
 
-static QToolButton * styleMenu(WorkflowView *parent, const QList<QAction*> &actions) {
-    QToolButton *tt = new QToolButton(parent);
-    tt->setObjectName("Element style");
-    QMenu *ttMenu = new QMenu( QObject::tr("Element style"), parent );
-    foreach(QAction *a, actions) {
-        ttMenu->addAction( a );
-    }
-    tt->setDefaultAction(ttMenu->menuAction());
-    tt->setPopupMode(QToolButton::InstantPopup);
-    return tt;
-}
-
 static QToolButton * scriptMenu(WorkflowView *parent, const QList<QAction*> &scriptingActions) {
     QToolButton *scriptingModeButton = new QToolButton(parent);
     QMenu *scriptingModeMenu = new QMenu( QObject::tr( "Scripting mode" ), parent );
@@ -1147,8 +1135,6 @@ void WorkflowView::setupMDIToolbar(QToolBar* tb) {
     runSep = tb->addSeparator();
     tb->addAction(configureParameterAliasesAction);
     confSep = tb->addSeparator();
-    tb->addAction(createScriptAction);
-    tb->addAction(editScriptAction);
     scriptSep = tb->addSeparator();
     tb->addAction(createCmdlineBasedWorkerAction);
     tb->addAction(appendExternalTool);
@@ -1157,7 +1143,6 @@ void WorkflowView::setupMDIToolbar(QToolBar* tb) {
     scaleSep = tb->addSeparator();
     scaleAction = tb->addWidget(scaleComboBox);
     scaleSep = tb->addSeparator();
-    styleAction = tb->addWidget(styleMenu(this, styleActions));
     scriptAction = tb->addWidget(scriptMenu(this, scriptingActions));
     tb->addAction(dmAction);
 
@@ -1203,7 +1188,6 @@ void WorkflowView::setupActions() {
     scaleAction->setVisible(!dashboard);
     scaleSep->setVisible(!dashboard);
 
-    styleAction->setVisible(!dashboard);
     scriptAction->setVisible(editMode);
 }
 

@@ -88,6 +88,7 @@ RSupport::RSupport(const QString& id, const QString& name, const QString& path) 
     toolKitName = "R";
 
     muted = true;
+    isRunnerTool = true;
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 }

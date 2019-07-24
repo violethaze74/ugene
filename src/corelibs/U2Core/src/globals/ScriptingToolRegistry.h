@@ -62,6 +62,7 @@ public:
     void unregisterEntry(const QString& id);
 
     QList<ScriptingTool*> getAllEntries() const;
+    QStringList getAllNames() const;
 
 protected:
     QMap<QString, ScriptingTool*>    registry;
