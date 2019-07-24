@@ -19,12 +19,14 @@ DESTDIR = ../../$$out_dir()
         TARGET = QSpecd
         DEFINES += _DEBUG
         CONFIG +=console
+        MOC_DIR=_tmp/moc/debug
         OBJECTS_DIR=_tmp/obj/debug
     }
 
     CONFIG(release, debug|release) {
         TARGET = QSpec
         DEFINES+=NDEBUG
+        MOC_DIR=_tmp/moc/release
         OBJECTS_DIR=_tmp/obj/release
     }
 }
