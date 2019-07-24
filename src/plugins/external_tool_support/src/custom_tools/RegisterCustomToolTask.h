@@ -33,7 +33,7 @@ class CustomExternalTool;
 class RegisterCustomToolTask : public Task {
     Q_OBJECT
 public:
-    RegisterCustomToolTask(const QDomDocument &config, const QString &url);
+    RegisterCustomToolTask(const QString &url);
 
     CustomExternalTool *getTool() const;
 

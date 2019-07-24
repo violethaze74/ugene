@@ -62,18 +62,9 @@ void ImportCustomToolsTask::run() {
 }
 
 void ImportCustomToolsTask::parseConfigFile() {
-    QFile file(url);
-    file.open(QIODevice::ReadOnly);
-
-    QDomDocument doc;
-    doc.setContent(&file);
-
-    tool.reset(CustomToolConfigParser::parse(stateInfo, doc));
+    tool.reset(CustomToolConfigParser::parse(stateInfo, url));
     CHECK_OP(stateInfo, );
     SAFE_POINT_EXT(nullptr != tool, setError("The imported tool is nullptr"), );
-    if (!QFileInfo(tool->getPath()).isAbsolute()) {
-        tool->setPath(GUrl(QFileInfo(url).absoluteDir().path() + "/" + tool->getPath()).getURLString());
-    }
 }
 
 bool ImportCustomToolsTask::registerTool(CustomExternalTool *tool) {
