@@ -38,8 +38,10 @@
 namespace U2 {
 
 SnpEffDatabaseListModel* SnpEffSupport::databaseModel = new SnpEffDatabaseListModel();
+const QString SnpEffSupport::ET_SNPEFF = "SnpEff";
+const QString SnpEffSupport::ET_SNPEFF_ID = "SNPEFF";
 
-SnpEffSupport::SnpEffSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+SnpEffSupport::SnpEffSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -56,8 +58,8 @@ SnpEffSupport::SnpEffSupport(const QString& name, const QString& path) : Externa
     validationArguments << "-h";
     toolKitName = "SnpEff";
 
-    toolRunnerProgram = ET_JAVA;
-    dependencies << ET_JAVA;
+    toolRunnerProgram = JavaSupport::ET_JAVA_ID;
+    dependencies << JavaSupport::ET_JAVA_ID;
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
 }
@@ -70,7 +72,7 @@ QStringList SnpEffSupport::getToolRunnerAdditionalOptions() const {
     int memSize = s->getMaxMemorySizeInMB();
 #if (defined(Q_OS_WIN) || defined(Q_OS_LINUX))
     ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
-    JavaSupport* java =  qobject_cast<JavaSupport*>(etRegistry->getByName(ET_JAVA));
+    JavaSupport* java =  qobject_cast<JavaSupport*>(etRegistry->getById(JavaSupport::ET_JAVA_ID));
     CHECK(java != NULL, result);
     if (java->getArchitecture() == JavaSupport::x32) {
         memSize = memSize > 1212 ? 1212 : memSize;

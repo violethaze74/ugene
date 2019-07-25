@@ -52,7 +52,7 @@ public:
     /**
      * Don't delete logParser, it will be deleted automatically.
      */
-    ExternalToolRunTask(const QString& toolName, const QStringList& arguments, ExternalToolLogParser* logParser,
+    ExternalToolRunTask(const QString& toolId, const QStringList& arguments, ExternalToolLogParser* logParser,
         const QString& workingDirectory = "", const QStringList& additionalPaths = QStringList(),
         const QString &additionalProcessToKill = QString(), bool parseOutputFile = false);
     ~ExternalToolRunTask();
@@ -73,6 +73,7 @@ private:
 
     QStringList             arguments;
     ExternalToolLogParser*  logParser;
+    const QString           toolId;
     QString                 toolName;
     QString                 workingDirectory;
     QString                 inputFile;
@@ -106,7 +107,6 @@ private:
 /** Part of ExternalToolRunTask that belongs to task run  thread -> get signals from that thread directly */
 class U2CORE_EXPORT ExternalToolRunTaskHelper : public QObject {
     Q_OBJECT
-
 public:
     ExternalToolRunTaskHelper(ExternalToolRunTask* t);
     ExternalToolRunTaskHelper(QProcess *process, ExternalToolLogParser *logParser, U2OpStatus &os);

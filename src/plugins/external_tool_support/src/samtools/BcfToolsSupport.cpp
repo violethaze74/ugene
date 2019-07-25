@@ -25,8 +25,11 @@
 
 namespace U2 {
 
-BcfToolsSupport::BcfToolsSupport(const QString &name)
-: ExternalTool(name)
+const QString BcfToolsSupport::ET_BCFTOOLS = "BCFtools";
+const QString BcfToolsSupport::ET_BCFTOOLS_ID = "BCFTOOLS";
+
+BcfToolsSupport::BcfToolsSupport(const QString& id, const QString &name)
+: ExternalTool(id, name, "")
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");

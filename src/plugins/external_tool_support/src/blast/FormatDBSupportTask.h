@@ -94,7 +94,7 @@ public:
 class FormatDBSupportTask : public Task {
     Q_OBJECT
 public:
-    FormatDBSupportTask(const QString& name, const FormatDBSupportTaskSettings& settings);
+    FormatDBSupportTask(const QString& id, const FormatDBSupportTaskSettings& settings);
 
 private:
     void prepare();
@@ -109,7 +109,7 @@ private:
     QString                     externalToolLog;
     PrepareInputFastaFilesTask *prepareTask;
     ExternalToolRunTask*        formatDBTask;
-    QString                     toolName;
+    QString                     toolId;
     FormatDBSupportTaskSettings settings;
 
     QStringList                 inputFastaFiles;

@@ -24,7 +24,7 @@
 namespace U2{
 
 CreatePhyTreeSettings::CreatePhyTreeSettings() :
-    algorithmId(""),
+    algorithm(""),
     matrixId(""),
     displayWithAlignmentEditor(true),
     syncAlignmentWithTree(true),

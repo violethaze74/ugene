@@ -29,15 +29,16 @@
 
 #include <U2View/CreatePhyTreeDialogController.h>
 
-#define ET_MRBAYES "MrBayes"
-#define MRBAYES_TMP_DIR "mrbayes"
-
 namespace U2 {
 
 class MrBayesSupport : public ExternalTool {
     Q_OBJECT
 public:
-    MrBayesSupport(const QString& name, const QString& path = "");
+    MrBayesSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_MRBAYES;
+    static const QString ET_MRBAYES_ID;
+    static const QString MRBAYES_TMP_DIR;
 };
 
 class MrBayesAdapter : public PhyTreeGenerator{

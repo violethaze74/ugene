@@ -39,16 +39,16 @@ namespace U2 {
 class ExternalToolSearchTask : public Task {
     Q_OBJECT
 public:
-    ExternalToolSearchTask(const QString& toolName);
+    ExternalToolSearchTask(const QString& toolId);
 
     virtual void run();
-    QString getToolName() const { return toolName; }
+    QString getToolId() const { return toolId; }
     QStringList getPaths() const { return toolPaths; }
 
 private:
     QString getExeName(ExternalTool *tool);
 
-    QString toolName;
+    QString toolId;
     QStringList toolPaths;
 
     static const QString TOOLS;

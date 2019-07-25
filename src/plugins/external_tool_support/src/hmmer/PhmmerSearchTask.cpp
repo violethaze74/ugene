@@ -228,8 +228,7 @@ void PhmmerSearchTask::prepareSequenceSaveTask() {
 }
 
 void PhmmerSearchTask::preparePhmmerTask() {
-    //phmmerTask = new ExternalToolRunTask(HmmerSupport::PHMMER_TOOL, getArguments(), new Hmmer3LogParser());
-    phmmerTask = new ExternalToolRunTask(HmmerSupport::PHMMER_TOOL, getArguments(), new ExternalToolLogParser());
+    phmmerTask = new ExternalToolRunTask(HmmerSupport::PHMMER_TOOL_ID, getArguments(), new ExternalToolLogParser());
     setListenerForTask(phmmerTask);
     phmmerTask->setSubtaskProgressWeight(85);
 }

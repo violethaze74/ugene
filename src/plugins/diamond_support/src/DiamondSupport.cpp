@@ -24,9 +24,10 @@
 namespace U2 {
 
 const QString DiamondSupport::TOOL_NAME = "DIAMOND";
+const QString DiamondSupport::TOOL_ID = "DIAMOND";
 
-DiamondSupport::DiamondSupport(const QString &name)
-    : ExternalTool(name)
+DiamondSupport::DiamondSupport(const QString& id, const QString &name)
+    : ExternalTool(id, name, "")
 {
     validationArguments << "--version";
     validMessage = "diamond version ";

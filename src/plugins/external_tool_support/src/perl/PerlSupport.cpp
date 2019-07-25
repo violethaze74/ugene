@@ -26,8 +26,11 @@
 
 namespace U2 {
 
-PerlSupport::PerlSupport(const QString &name, const QString &path)
-: ExternalTool(name, path)
+const QString PerlSupport::ET_PERL = "perl";
+const QString PerlSupport::ET_PERL_ID = "PERL";
+
+PerlSupport::PerlSupport(const QString& id, const QString &name, const QString &path)
+: ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/perl.png");

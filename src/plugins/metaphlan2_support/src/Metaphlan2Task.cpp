@@ -140,7 +140,7 @@ QStringList Metaphlan2ClassifyTask::getArguments() {
 
 
 void Metaphlan2ClassifyTask::prepareClassifyTask() {
-    classifyTask = new ExternalToolRunTask(Metaphlan2Support::TOOL_NAME,
+    classifyTask = new ExternalToolRunTask(Metaphlan2Support::TOOL_ID,
                                             getArguments(),
                                             new Metaphlan2LogParser(),
                                             QString(),

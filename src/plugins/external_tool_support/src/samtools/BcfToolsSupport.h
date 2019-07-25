@@ -24,14 +24,15 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_BCFTOOLS "BCFtools"
-
 namespace U2 {
 
 class BcfToolsSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BcfToolsSupport(const QString &name);
+    BcfToolsSupport(const QString& id, const QString &name);
+
+    static const QString ET_BCFTOOLS;
+    static const QString ET_BCFTOOLS_ID;
 };
 
 } // U2

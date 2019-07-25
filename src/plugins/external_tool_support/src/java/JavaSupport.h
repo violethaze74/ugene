@@ -24,8 +24,6 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_JAVA "java"
-
 namespace U2 {
 
 class JavaSupport : public ExternalTool {
@@ -35,9 +33,12 @@ public:
         x32,
         x64
     };
-    JavaSupport(const QString &name, const QString &path = "");
+    JavaSupport(const QString& id, const QString &name, const QString &path = "");
     void extractAdditionalParameters(const QString& output);
     Architecture getArchitecture() const;
+
+    static const QString ET_JAVA;
+    static const QString ET_JAVA_ID;
 
 private slots:
     void sl_toolValidationStatusChanged(bool isValid);

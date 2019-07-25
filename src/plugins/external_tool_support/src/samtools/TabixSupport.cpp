@@ -26,8 +26,11 @@
 
 namespace U2 {
 
-TabixSupport::TabixSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
+const QString TabixSupport::ET_TABIX = "Tabix";
+const QString TabixSupport::ET_TABIX_ID = "TABIX";
+
+TabixSupport::TabixSupport(const QString& id, const QString &name, const QString &path)
+    : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow() != NULL) {
         icon = QIcon(":external_tool_support/images/cmdline.png");

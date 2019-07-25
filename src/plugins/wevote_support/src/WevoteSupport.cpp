@@ -24,9 +24,10 @@
 namespace U2 {
 
 const QString WevoteSupport::TOOL_NAME = "WEVOTE";
+const QString WevoteSupport::TOOL_ID = "WEVOTE";
 
 WevoteSupport::WevoteSupport()
-    : ExternalTool(TOOL_NAME)
+    : ExternalTool(TOOL_ID, TOOL_NAME, "")
 {
     validMessage = "less than the required minimum number of options";
     executableFileName = "WEVOTE";

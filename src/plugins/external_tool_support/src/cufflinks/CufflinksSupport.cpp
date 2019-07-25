@@ -25,11 +25,25 @@
 
 #include <U2Gui/MainWindow.h>
 
-
 namespace U2 {
 
-CufflinksSupport::CufflinksSupport(const QString& name, const QString& path)
-    : ExternalTool(name, path)
+const QString  CufflinksSupport::ET_CUFFCOMPARE = "Cuffcompare";
+const QString  CufflinksSupport::ET_CUFFCOMPARE_ID = "CUFFCOMPARE";
+const QString  CufflinksSupport::ET_CUFFDIFF = "Cuffdiff";
+const QString  CufflinksSupport::ET_CUFFDIFF_ID = "CUFFDIFF";
+const QString  CufflinksSupport::ET_CUFFLINKS = "Cufflinks";
+const QString  CufflinksSupport::ET_CUFFLINKS_ID = "CUFFLINKS";
+const QString  CufflinksSupport::ET_CUFFMERGE = "Cuffmerge";
+const QString  CufflinksSupport::ET_CUFFMERGE_ID = "CUFFMERGE";
+const QString  CufflinksSupport::ET_GFFREAD = "Gffread";
+const QString  CufflinksSupport::ET_GFFREAD_ID = "GFFREAD";
+
+const QString  CufflinksSupport::CUFFLINKS_TMP_DIR = "cufflinks";
+const QString  CufflinksSupport::CUFFDIFF_TMP_DIR = "cuffdiff";
+const QString  CufflinksSupport::CUFFMERGE_TMP_DIR = "cuffmerge";
+
+CufflinksSupport::CufflinksSupport(const QString& id,  const QString& name, const QString& path)
+    : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");

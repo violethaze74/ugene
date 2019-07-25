@@ -58,7 +58,7 @@ protected:
     bool requiredToolsAreOk() const;
 
     QStringList indexSuffixes;
-    QStringList requiredExtToolNames;
+    QStringList requiredExtToolIds;
 };
 
 class U2VIEW_EXPORT DnaAssemblyAlgorithmBuildIndexWidget : public DnaAssemblyAlgorithmBaseWidget {

@@ -36,6 +36,7 @@ const QString CustomToolConfigParser::ELEMENT_CONFIG = "ugeneExternalToolConfig"
 const QString CustomToolConfigParser::ATTRIBUTE_VERSION = "version";
 const QString CustomToolConfigParser::HARDCODED_EXPECTED_VERSION = "1.0";
 
+const QString CustomToolConfigParser::ID = "id";
 const QString CustomToolConfigParser::NAME = "name";
 const QString CustomToolConfigParser::PATH = "executableFullPath";
 const QString CustomToolConfigParser::DESCRIPTION = "description";
@@ -72,7 +73,9 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString 
         CHECK_CONTINUE(!element.isNull());
         const QString tagName = element.tagName();
 
-        if (NAME == tagName) {
+        if (ID == tagName) {
+            tool->setId(element.text());
+        } else if (NAME == tagName) {
             tool->setName(element.text());
         } else if (PATH == tagName) {
             if (!element.text().isEmpty()) {
@@ -132,12 +135,13 @@ QDomDocument CustomToolConfigParser::serialize(CustomExternalTool *tool) {
 
     QDomElement configElement = doc.createElement(ELEMENT_CONFIG);
     configElement.setAttribute(ATTRIBUTE_VERSION, HARDCODED_EXPECTED_VERSION);
+    configElement.appendChild(addChildElement(doc, ID, tool->getId()));
     configElement.appendChild(addChildElement(doc, NAME, tool->getName()));
     configElement.appendChild(addChildElement(doc, PATH, tool->getPath()));
     configElement.appendChild(addChildElement(doc, DESCRIPTION, tool->getDescription()));
     configElement.appendChild(addChildElement(doc, TOOLKIT_NAME, tool->getToolKitName()));
     configElement.appendChild(addChildElement(doc, TOOL_VERSION, tool->getPredefinedVersion()));
-    configElement.appendChild(addChildElement(doc, LAUNCHER_ID, tool->getToolRunnerProgram()));
+    configElement.appendChild(addChildElement(doc, LAUNCHER_ID, tool->getToolRunnerProgramId()));
     configElement.appendChild(addChildElement(doc, DEPENDENCIES, tool->getDependencies().join(",")));
     configElement.appendChild(addChildElement(doc, BINARY_NAME, tool->getExecutableFileName()));
     doc.appendChild(configElement);

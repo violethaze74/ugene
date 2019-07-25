@@ -157,8 +157,8 @@ void CuffmergeWorkerFactory::init()
     proto->setPrompter(new CuffmergePrompter());
 
     { // external tools
-        proto->addExternalTool(ET_CUFFMERGE, EXT_TOOL_PATH);
-        proto->addExternalTool(ET_CUFFCOMPARE, CUFFCOMPARE_TOOL_PATH);
+        proto->addExternalTool(CufflinksSupport::ET_CUFFMERGE_ID, EXT_TOOL_PATH);
+        proto->addExternalTool(CufflinksSupport::ET_CUFFCOMPARE_ID, CUFFCOMPARE_TOOL_PATH);
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(
@@ -199,8 +199,8 @@ CuffmergeWorker::CuffmergeWorker(Actor* actor)
 }
 
 void CuffmergeWorker::init() {
-    WorkflowUtils::updateExternalToolPath(ET_CUFFMERGE, getValue<QString>(EXT_TOOL_PATH));
-    WorkflowUtils::updateExternalToolPath(ET_CUFFCOMPARE, getValue<QString>(CUFFCOMPARE_TOOL_PATH));
+    WorkflowUtils::updateExternalToolPath(CufflinksSupport::ET_CUFFMERGE_ID, getValue<QString>(EXT_TOOL_PATH));
+    WorkflowUtils::updateExternalToolPath(CufflinksSupport::ET_CUFFCOMPARE_ID, getValue<QString>(CUFFCOMPARE_TOOL_PATH));
 
     input = ports[BasePorts::IN_ANNOTATIONS_PORT_ID()];
     output = ports[BasePorts::OUT_ANNOTATIONS_PORT_ID()];

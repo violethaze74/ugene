@@ -27,10 +27,11 @@
 
 namespace U2 {
 
-const QString VcfutilsSupport::TOOL_NAME("vcfutils");
+const QString VcfutilsSupport::VCF_UTILS("vcfutils");
+const QString VcfutilsSupport::VCF_UTILS_ID("VCF_UTILS");
 
-VcfutilsSupport::VcfutilsSupport(const QString &name)
-: ExternalTool(name)
+VcfutilsSupport::VcfutilsSupport(const QString& id, const QString &name)
+: ExternalTool(id, name, "")
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -41,8 +42,8 @@ VcfutilsSupport::VcfutilsSupport(const QString &name)
     executableFileName = "vcfutils.pl";
     description = "The set of utilities for VCF format operations";
 
-    toolRunnerProgram = ET_PERL;
-    dependencies << ET_PERL;
+    toolRunnerProgram = PerlSupport::ET_PERL_ID;
+    dependencies << PerlSupport::ET_PERL_ID;
 
     validMessage = "varFilter";
     toolKitName = "SAMtools";

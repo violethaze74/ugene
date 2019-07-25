@@ -26,13 +26,13 @@
 
 namespace U2 {
 
-#define ET_GO_ANALYSIS "go_analysis"
-
 class ConductGOSupport : public ExternalTool {
     Q_OBJECT
 public:
-    ConductGOSupport(const QString &name);
+    ConductGOSupport(const QString& id, const QString &name);
 
+    static const QString ET_GO_ANALYSIS;
+    static const QString ET_GO_ANALYSIS_ID;
 private:
     void initialize();
 };

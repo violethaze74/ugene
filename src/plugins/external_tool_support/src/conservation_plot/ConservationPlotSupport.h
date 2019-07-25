@@ -26,15 +26,15 @@
 
 namespace U2 {
 
-#define ET_CONSERVATION_PLOT "conservation_plot"
-#define CONSERVATION_DIR_NAME "phastCons"
-#define CONSERVATION_DATA_NAME "conservation_data"
-
 class ConservationPlotSupport : public ExternalTool {
     Q_OBJECT
 public:
-    ConservationPlotSupport(const QString &name);
+    ConservationPlotSupport(const QString& id, const QString &name);
 
+    static const QString ET_CONSERVATION_PLOT;
+    static const QString ET_CONSERVATION_PLOT_ID;
+    static const QString CONSERVATION_DIR_NAME;
+    static const QString CONSERVATION_DATA_NAME;
 private:
     void initialize();
 };

@@ -26,13 +26,15 @@
 
 namespace U2 {
 
-#define ET_BOWTIE "Bowtie aligner"
-#define ET_BOWTIE_BUILD "Bowtie build indexer"
-
 class BowtieSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BowtieSupport(const QString &name, const QString &path = "");
+    BowtieSupport(const QString& id, const QString &name, const QString &path = "");
+
+    static const QString ET_BOWTIE;
+    static const QString ET_BOWTIE_BUILD;
+    static const QString ET_BOWTIE_BUILD_ID;
+    static const QString ET_BOWTIE_ID;
 };
 
 } // namespace U2

@@ -111,7 +111,7 @@ void DiamondClassifyTask::run() {
 }
 
 void DiamondClassifyTask::prepare() {
-    ExternalToolRunTask *classifyTask = new ExternalToolRunTask(DiamondSupport::TOOL_NAME, getArguments(), new ExternalToolLogParser());
+    ExternalToolRunTask *classifyTask = new ExternalToolRunTask(DiamondSupport::TOOL_ID, getArguments(), new ExternalToolLogParser());
     setListenerForTask(classifyTask);
     addSubTask(classifyTask);
 }

@@ -211,7 +211,7 @@ void KrakenClassifyWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new KrakenClassifyPrompter(NULL));
-    proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL);
+    proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL_ID);
     proto->setValidator(new KrakenClassifyValidator());
     proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);

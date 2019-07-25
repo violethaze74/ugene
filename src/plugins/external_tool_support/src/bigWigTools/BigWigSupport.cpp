@@ -31,8 +31,12 @@
 
 namespace U2 {
 
+const QString BigWigSupport::ET_BIGWIG = "bigwig";
+const QString BigWigSupport::ET_BIGWIG_ID = "BED_GRAPH_TO_BIG_WIG";
+const QString BigWigSupport::GENOMES_DATA_NAME = "Genome files";
+const QString BigWigSupport::GENOMES_DIR_NAME = "genome_lengths";
 
-BigWigSupport::BigWigSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+BigWigSupport::BigWigSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");

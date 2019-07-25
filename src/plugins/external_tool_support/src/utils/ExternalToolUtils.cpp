@@ -39,11 +39,11 @@ namespace U2 {
 
 const QString ExternalToolUtils::CISTROME_DATA_DIR = "CISTROME_DATA_DIR";
 
-void ExternalToolUtils::checkExtToolsPath(const QStringList &names) {
+void ExternalToolUtils::checkExtToolsPath(const QStringList &ids) {
     QStringList missingTools;
-    foreach (QString name, names) {
-        if (AppContext::getExternalToolRegistry()->getByName(name)->getPath().isEmpty()) {
-            missingTools << name;
+    foreach (QString id, ids) {
+        if (AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
+            missingTools << AppContext::getExternalToolRegistry()->getById(id)->getName();
         }
     }
     if (!missingTools.isEmpty()){
