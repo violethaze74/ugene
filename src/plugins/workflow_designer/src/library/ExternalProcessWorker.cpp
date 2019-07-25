@@ -230,13 +230,13 @@ void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString,
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
-        QRegularExpression regex = QRegularExpression("(([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$"
+        QRegularExpression regex = QRegularExpression("(?=([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$"
                                                       + a->getDisplayName()
-                                                      + "(\\W|$)");
+                                                      + "(?=(\\W|$))");
         if (execString.indexOf(regex) >= 0) {
             //set parameters in command line with attributes values
             QString value = getValue<QString>(a->getId());
-            execString.replace(regex, "\\1" + value + "\\6");
+            execString.replace(regex, value);
 
             foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
                 if (attributeConfig.attributeId == a->getId() && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
