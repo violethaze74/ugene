@@ -33,6 +33,7 @@ const QString CustomToolConfigParser::ELEMENT_CONFIG = "ugeneExternalToolConfig"
 const QString CustomToolConfigParser::ATTRIBUTE_VERSION = "version";
 const QString CustomToolConfigParser::HARDCODED_EXPECTED_VERSION = "1.0";
 
+const QString CustomToolConfigParser::ID = "id";
 const QString CustomToolConfigParser::NAME = "name";
 const QString CustomToolConfigParser::PATH = "path";
 const QString CustomToolConfigParser::DESCRIPTION = "description";
@@ -61,7 +62,9 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QDomDocu
         CHECK_CONTINUE(!element.isNull());
         const QString tagName = element.tagName();
 
-        if (NAME == tagName) {
+        if (ID == tagName) {
+            tool->setId(element.text());
+        } else if (NAME == tagName) {
             tool->setName(element.text());
         } else if (PATH == tagName) {
             tool->setPath(element.text());
@@ -99,6 +102,7 @@ QDomDocument CustomToolConfigParser::serialize(CustomExternalTool *tool) {
 
     QDomElement configElement = doc.createElement(ELEMENT_CONFIG);
     configElement.setAttribute(ATTRIBUTE_VERSION, HARDCODED_EXPECTED_VERSION);
+    configElement.appendChild(addChildElement(doc, ID, tool->getId()));
     configElement.appendChild(addChildElement(doc, NAME, tool->getName()));
     configElement.appendChild(addChildElement(doc, PATH, tool->getPath()));
     configElement.appendChild(addChildElement(doc, DESCRIPTION, tool->getDescription()));

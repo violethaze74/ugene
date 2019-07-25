@@ -29,6 +29,10 @@ CustomExternalTool::CustomExternalTool()
     isCustomTool = true;
 }
 
+void CustomExternalTool::setId(const QString& _id) {
+    id = _id;
+}
+
 void CustomExternalTool::setName(const QString &_name) {
     name = _name;
 }

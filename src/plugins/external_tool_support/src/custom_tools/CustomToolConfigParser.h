@@ -47,6 +47,7 @@ private:
     static const QString ATTRIBUTE_VERSION;
     static const QString HARDCODED_EXPECTED_VERSION;
 
+    static const QString ID;
     static const QString NAME;
     static const QString PATH;
     static const QString DESCRIPTION;

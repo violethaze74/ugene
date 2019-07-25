@@ -31,6 +31,7 @@ class U2CORE_EXPORT CustomExternalTool : public ExternalTool {
 public:
     CustomExternalTool();
 
+    void setId(const QString& id);
     void setName(const QString &name);
     void setIcon(const QIcon &icon);
     void setGrayIcon(const QIcon &icon);
