@@ -49,11 +49,6 @@ ExternalTool::ExternalTool(QString _id, QString _name, QString _path)
       isCustomTool(false),
     isRunnerTool(false)
 {
-    // TODO: workaround while id(s) are not yet committed
-    #ifndef __ichebyki__
-        id = QString(name.toUpper().replace(QRegularExpression("[^A-Z0-9_]"), "_"));
-    #endif
-
     if (NULL != AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
