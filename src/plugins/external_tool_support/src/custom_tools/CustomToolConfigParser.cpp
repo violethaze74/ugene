@@ -150,6 +150,7 @@ QDomDocument CustomToolConfigParser::serialize(CustomExternalTool *tool) {
 
 bool CustomToolConfigParser::validate(U2OpStatus &os, CustomExternalTool *tool) {
     CHECK(nullptr != tool, false);
+    CHECK_EXT(!tool->getId().isEmpty(), os.setError(tr("The tool id is not specified in the config file")), false);
     CHECK_EXT(!tool->getName().isEmpty(), os.setError(tr("The tool name is not specified in the config file")), false);
     CHECK_EXT(!tool->getExecutableFileName().isEmpty(), os.setError(tr("The tool's binary name is not specified in the config file")), false);
     return true;
