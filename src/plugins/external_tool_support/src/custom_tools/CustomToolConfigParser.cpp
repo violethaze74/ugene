@@ -23,6 +23,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QRegularExpression>
 
 #include <U2Core/CustomExternalTool.h>
 #include <U2Core/U2OpStatus.h>
@@ -151,8 +152,9 @@ QDomDocument CustomToolConfigParser::serialize(CustomExternalTool *tool) {
 bool CustomToolConfigParser::validate(U2OpStatus &os, CustomExternalTool *tool) {
     CHECK(nullptr != tool, false);
     CHECK_EXT(!tool->getId().isEmpty(), os.setError(tr("The tool id is not specified in the config file")), false);
+    CHECK_EXT(!tool->getId().contains(QRegularExpression("[^A-Za-z0-9_\\-]")), os.setError(tr("The tool id contains unexpected characters, the only letters, numbers, underlines and dashes are allowed")), false);
     CHECK_EXT(!tool->getName().isEmpty(), os.setError(tr("The tool name is not specified in the config file")), false);
-    CHECK_EXT(!tool->getExecutableFileName().isEmpty(), os.setError(tr("The tool's binary name is not specified in the config file")), false);
+    CHECK_EXT(!tool->getExecutableFileName().isEmpty(), os.setError(tr("The tool's executable file name is not specified in the config file")), false);
     return true;
 }
 
