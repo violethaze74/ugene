@@ -415,7 +415,7 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::addSupportedToolsPopupMe
 
     cbDelegate->addParentItem(model, tr("Supported tools"), false);
     QList<QString> keys = supportedTools.keys();
-    std::sort(keys.begin(), keys.end(), [](QString& a, QString& b) {return a.compare(b, Qt::CaseInsensitive) < 0; });
+    std::sort(keys.begin(), keys.end(), [](const QString& a, const QString& b) {return a.compare(b, Qt::CaseInsensitive) < 0; });
     foreach(const QString & toolKitName, keys) {
         QList<ExternalTool*> currentToolKitTools = supportedTools.value(toolKitName);
         if (currentToolKitTools.size() == 1) {
@@ -495,7 +495,7 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initFirstClickableRow() 
         firstClickableRowData = customTools.first()->getId();
     } else {
         QStringList keys = supportedTools.keys();
-        std::sort(keys.begin(), keys.end(), [](QString& a, QString& b) {return a.compare(b, Qt::CaseInsensitive) < 0; });
+        std::sort(keys.begin(), keys.end(), [](const QString& a, const QString& b) {return a.compare(b, Qt::CaseInsensitive) < 0; });
         QList<ExternalTool*> tools = supportedTools.value(keys.first());
         firstClickableRowData = tools.first()->getId();
     }
