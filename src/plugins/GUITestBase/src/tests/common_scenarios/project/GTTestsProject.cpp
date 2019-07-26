@@ -621,12 +621,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038){
     //check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
     GTThread::waitForMainThread();
+    GTGlobals::sleep();
     title1 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title1 == "BL060C3 [m] Contig1", "unexpected title for doc1: " + title1);
 
     //check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     GTThread::waitForMainThread();
+    GTGlobals::sleep();
     title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "BL060C3 [m] Contig2", "unexpected title for doc2: " + title2);
 }
