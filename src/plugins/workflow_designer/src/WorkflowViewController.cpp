@@ -1135,7 +1135,6 @@ void WorkflowView::setupMDIToolbar(QToolBar* tb) {
     runSep = tb->addSeparator();
     tb->addAction(configureParameterAliasesAction);
     confSep = tb->addSeparator();
-    scriptSep = tb->addSeparator();
     tb->addAction(createCmdlineBasedWorkerAction);
     tb->addAction(appendExternalTool);
     extSep = tb->addSeparator();
@@ -1174,7 +1173,6 @@ void WorkflowView::setupActions() {
 
     createScriptAction->setVisible(editMode);
     editScriptAction->setVisible(editMode);
-    scriptSep->setVisible(editMode);
 
     createCmdlineBasedWorkerAction->setVisible(editMode);
     appendExternalTool->setVisible(editMode);
@@ -1216,7 +1214,6 @@ void WorkflowView::setupViewMenu(QMenu* m) {
     m->addAction(createGalaxyConfigAction);
     m->addAction(configurePortAliasesAction);
     m->addAction(importSchemaToElement);
-    m->addSeparator();
     m->addSeparator();
     m->addAction(createScriptAction);
     m->addAction(editScriptAction);
