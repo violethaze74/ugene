@@ -248,7 +248,7 @@ void ExternalToolSupportSettingsPageWidget::sl_externalToolAdded(const QString &
     info.valid = tool->isValid();
     info.version = tool->getVersion();
     info.isModule = tool->isModule();
-    externalToolsInfo.insert(info.name, info);
+    externalToolsInfo.insert(info.id, info);
 
     connect(tool, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 
