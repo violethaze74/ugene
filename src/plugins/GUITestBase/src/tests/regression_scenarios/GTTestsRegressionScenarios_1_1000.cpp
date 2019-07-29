@@ -1350,7 +1350,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTGlobals::sleep(500);
 
-
+   
     QTreeWidget* w = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os,"WorkflowPaletteElements"));
     CHECK_SET_ERR(w != NULL,"WorkflowPaletteElements is null");
 
@@ -1381,7 +1381,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
     }
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "test_0768"));
-    GTWidget::click(os, GTAction::button(os, "createScriptAction"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Create element with script...", GTGlobals::UseMouse);
 
     //    4. Select created worker. Press toolbar button "Edit script text".
     //    Expected state: Script editor dialog appears.
@@ -1392,8 +1392,8 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "test_0768"));
     GTMouseDriver::click();
 
-    GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "xyz", "Syntax is OK!"));
-    GTWidget::click(os, GTAction::button(os, "editScriptAction"));
+    GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "xyz", "Syntax is OK!"));   
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit script of the element...", GTGlobals::UseMouse);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0774) {
