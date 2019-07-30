@@ -4408,12 +4408,8 @@ GUI_TEST_CLASS_DEFINITION(test_2640){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Select "tuxedo" sample
 //    3. Set proper input data
-    QString expected;
-#ifdef Q_OS_MAC
-    expected = "tophat-2.0.9/tophat -p 94 --output-dir";
-#else
-    expected = "tophat-2.0.8b/tophat -p 94 --output-dir";
-#endif
+    QString expected = "tophat-2.1.1/tophat -p 94 --output-dir";;
+
     GTLogTracer l(expected);
     QMap<QString, QVariant> map;
     map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
