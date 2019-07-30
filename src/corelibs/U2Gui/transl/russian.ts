@@ -2330,8 +2330,8 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::FileLineEdit</name>
     <message>
-        <location filename="../src/util/DialogUtils.cpp" line="89"/>
-        <location filename="../src/util/DialogUtils.cpp" line="95"/>
+        <location filename="../src/util/DialogUtils.cpp" line="90"/>
+        <location filename="../src/util/DialogUtils.cpp" line="96"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>

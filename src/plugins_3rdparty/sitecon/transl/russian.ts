@@ -943,7 +943,6 @@
     </message>
     <message>
         <location filename="../src/SiteconIOWorkers.cpp" line="63"/>
-        <location filename="../src/SiteconIOWorkers.cpp" line="69"/>
         <location filename="../src/SiteconIOWorkers.cpp" line="139"/>
         <location filename="../src/SiteconIOWorkers.cpp" line="148"/>
         <source>Sitecon model</source>

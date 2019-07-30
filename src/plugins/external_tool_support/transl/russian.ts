@@ -1859,6 +1859,49 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>CustomToolConfigParser</name>
+    <message>
+        <location filename="../src/custom_tools/CustomToolConfigParser.cpp" line="50"/>
+        <source>Invalid config file format: file %1 cann not be opened</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/CustomToolConfigParser.cpp" line="59"/>
+        <source>Invalid config file format: custom tool description not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/CustomToolConfigParser.cpp" line="60"/>
+        <source>Invalid config file format: there are too many entities in the file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/CustomToolConfigParser.cpp" line="63"/>
+        <source>Can&apos;t parse the config file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/CustomToolConfigParser.cpp" line="66"/>
+        <source>Can&apos;t parse config with version %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/CustomToolConfigParser.cpp" line="106"/>
+        <source>Unknown element: &apos;%1&apos;, skipping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/CustomToolConfigParser.cpp" line="149"/>
+        <source>The tool name is not specified in the config file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/CustomToolConfigParser.cpp" line="150"/>
+        <source>The tool&apos;s binary name is not specified in the config file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ETSSettingsWidget</name>
     <message>
         <location filename="../src/ETSSettingsWidget.ui" line="26"/>
@@ -1882,38 +1925,53 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Открыть...</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="67"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="131"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="83"/>
         <source>Supported tools</source>
-        <translation>Поддерживаемые программы</translation>
+        <translation type="vanished">Поддерживаемые программы</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="99"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="104"/>
+        <source>Download link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ETSSettingsWidget.ui" line="151"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="226"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="104"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="156"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="231"/>
         <source>Path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="139"/>
-        <source>Additional information</source>
-        <translation>Дополнительная информация</translation>
+        <location filename="../src/ETSSettingsWidget.ui" line="267"/>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="174"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="277"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ETSSettingsWidget.ui" line="379"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Select an external tool to view more information about it.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;.SF NS Text&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Select an external tool to view more information about it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Additional information</source>
+        <translation type="vanished">Дополнительная информация</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1928,12 +1986,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Выберите внешний инструмент, чтобы просмотреть дополнительную информацию о нем.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="194"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="399"/>
         <source>Binary path:</source>
         <translation>Путь:</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="204"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="409"/>
         <source>Version info</source>
         <translation>Информация о версии</translation>
     </message>
@@ -2428,6 +2486,24 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="191"/>
         <source>Optional...</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportExternalToolDialog</name>
+    <message>
+        <location filename="../src/custom_tools/ImportExternalToolDialog.ui" line="14"/>
+        <source>Import External Tool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/ImportExternalToolDialog.ui" line="25"/>
+        <source>External tool config</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/ImportExternalToolDialog.ui" line="40"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
     </message>
 </context>
 <context>
@@ -3006,17 +3082,17 @@ Uncheck to get the maximum likelihood estimate.</source>
         <translation>извлекает последовательности транскриптов из геномных последовательностей при помощи gffread.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="66"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="79"/>
         <source>Installed</source>
         <translation>Установлено</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="67"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="80"/>
         <source>Not installed</source>
         <translation>Не установлено</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="68"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="81"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download &lt;a href=&quot;http://ugene.net/download-all_html#en_data_analysis_tools&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#1866af;&quot;&gt;tools executables&lt;/span&gt;&lt;/a&gt; and configure the tools paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Скачать &lt;a href=&quot;http://ugene.net/ru/download-all_html#ru_data_analysis_tools&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#1866af;&quot;&gt;инструменты&lt;/span&gt;&lt;/a&gt; и сконфигурировать пути до файлов. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5434,7 +5510,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSearchAndValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="360"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="363"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -5607,7 +5683,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportSettingsPageController</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="42"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="51"/>
         <source>External Tools</source>
         <translation>Внешние инструменты</translation>
     </message>
@@ -5615,7 +5691,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportSettingsPageWidget</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="467"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="624"/>
         <source>Select an external tool to view more information about it.</source>
         <translation>Выберите инструмент, чтобы увидеть дополнительную информацию о нем.</translation>
     </message>
@@ -5640,32 +5716,52 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">&lt;i&gt;Cistrome&lt;/i&gt; это версия UGENE пайплайна Cistrome, который включает некоторые инструменты, используемые в ChIP-seq анализе.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="361"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="493"/>
         <source>No description</source>
         <translation>Нет описания</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="320"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="448"/>
         <source>External tool &apos;%1&apos; cannot be validated as it depends on other tools, some of which are not valid. The list of tools is the following: </source>
         <translation>Инструмент &apos;%1&apos; не может быть проверен, т.к. он зависит от других инструментов, которые не проверены. Это следующие инструменты: </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="344"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="93"/>
+        <source>Supported tools</source>
+        <translation type="unfinished">Поддерживаемые программы</translation>
+    </message>
+    <message>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="96"/>
+        <source>Custom tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="99"/>
+        <source>Additional information</source>
+        <translation type="unfinished">Дополнительная информация</translation>
+    </message>
+    <message>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="235"/>
+        <source>Can&apos;t remove custom external tool config file from the storage folder: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="472"/>
         <source>&apos;%1&apos; is %2 module and it is not installed. Install it and restart UGENE or set another %2 with already installed &apos;%1&apos; module.</source>
         <translation>&apos;%1&apos; это %2 модуль и он не установлен. Установите его и перезапустите UGENE или выберите другой %2 с уже установленным модулем &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="371"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="503"/>
         <source>&lt;br&gt;&lt;br&gt;Version: </source>
         <translation>&lt;br&gt;&lt;br&gt;Версия: </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="375"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="507"/>
         <source>unknown</source>
         <translation>неизвестный</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="380"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="512"/>
         <source>&lt;br&gt;&lt;br&gt;Binary path: </source>
         <translation>&lt;br&gt;&lt;br&gt;Путь: </translation>
     </message>
@@ -5674,17 +5770,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="509"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="668"/>
         <source>Choose Folder With Executables</source>
         <translation>Выберите папку с исполняемыми файлами</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="564"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="723"/>
         <source>Choose Folder With External Tools Pack</source>
         <translation>Выберите папку пакетом внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="618"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="777"/>
         <source>Not a valid external tools folder</source>
         <translation>Нет подходящей папки внешних инструментов</translation>
     </message>
@@ -5713,12 +5809,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsInstallTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="404"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="407"/>
         <source>Installing external tools</source>
         <translation>Installing external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="409"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="412"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -5740,13 +5836,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="375"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="378"/>
         <source>Checking external tools</source>
         <translation>Checking external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="393"/>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="395"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="396"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="398"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -5754,12 +5850,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::FastQCParser</name>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="73"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="78"/>
         <source>FastQC: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="75"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="80"/>
         <source>FastQC failed to process input file &apos;%1&apos;. Make sure each read takes exactly four lines.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5775,27 +5871,27 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::FastQCTask</name>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="119"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="124"/>
         <source>No input URL</source>
         <translation>No input URL</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="124"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="129"/>
         <source>The input file &apos;%1&apos; is empty.</source>
         <translation>The input file &apos;%1&apos; is empty.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="130"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="135"/>
         <source>Folder does not exist: %1</source>
         <translation>Folder does not exist: %1</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="147"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="152"/>
         <source>Result file does not exist: %1. See the log for details.</source>
         <translation>Result file does not exist: %1. See the log for details.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="159"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="164"/>
         <source>Unable to move result file from temporary directory to desired location: %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6412,11 +6508,40 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
 </context>
 <context>
+    <name>U2::ImportCustomToolsTask</name>
+    <message>
+        <location filename="../src/custom_tools/ImportCustomToolsTask.cpp" line="46"/>
+        <source>Import custom external tools configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/ImportCustomToolsTask.cpp" line="72"/>
+        <source>Can&apos;t register the tool &apos;%1&apos;: there is another tool with the same name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::ImportExternalToolDialog</name>
+    <message>
+        <location filename="../src/custom_tools/ImportExternalToolDialog.cpp" line="53"/>
+        <source>Select configuration file to import</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::JavaSupport</name>
     <message>
         <location filename="../src/java/JavaSupport.cpp" line="52"/>
         <source>Java Platform lets you develop and deploy Java applications on desktops and servers.&lt;br&gt;&lt;i&gt;(Requires Java 1.7 or higher)&lt;/i&gt;.&lt;br&gt;Java can be freely downloaded on the official web-site: https://www.java.com/en/download/</source>
         <translation>Java позволяет разрабатывать приложения Java на компьютерах и серверах &lt;br&gt; &lt;i&gt; (Требуется Java 1.7 или выше) &lt;/i&gt; &lt;br&gt; Java можно свободно скачать на официальном веб-сайте:. HTTPS: / /www.java.com/en/download/</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LoadCustomExternalToolsTask</name>
+    <message>
+        <location filename="../src/custom_tools/LoadCustomExternalToolsTask.cpp" line="37"/>
+        <source>Load custom external tools</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12729,12 +12854,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::LocalWorkflow::TrimmomaticWorker</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="110"/>
+        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="118"/>
         <source>Copy adapters to working folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="140"/>
+        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="149"/>
         <source>Process &quot;Trimmomatic&quot; with one dataset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13095,8 +13220,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PathLineEdit</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="638"/>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="640"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="797"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="799"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
@@ -13392,7 +13517,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleBioSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="123"/>
+        <location filename="../src/python/PythonSupport.cpp" line="124"/>
         <source> (or biopython) is a python module for biological computations.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13400,7 +13525,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleDjangoSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="101"/>
+        <location filename="../src/python/PythonSupport.cpp" line="102"/>
         <source>: Python module for the %1 tool</source>
         <translation>: Python модуль для инструмента %1</translation>
     </message>
@@ -13408,7 +13533,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleNumpySupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="110"/>
+        <location filename="../src/python/PythonSupport.cpp" line="111"/>
         <source>: Python module for the %1 tool</source>
         <translation>: Python модуль для инструмента %1</translation>
     </message>
@@ -13416,7 +13541,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="90"/>
+        <location filename="../src/python/PythonSupport.cpp" line="91"/>
         <source>Python module is not installed. Install module or set path to another Python scripts interpreter with installed module in the External Tools settings</source>
         <translation>Python модуль не установлен. Установите модель или укажите другой путь с установленным модулем в настройках внешних инструментов</translation>
     </message>
@@ -13432,7 +13557,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleCelegansdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="147"/>
+        <location filename="../src/R/RSupport.cpp" line="148"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13440,7 +13565,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleDrosophila2dbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="153"/>
+        <location filename="../src/R/RSupport.cpp" line="154"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13448,7 +13573,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleGodbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="111"/>
+        <location filename="../src/R/RSupport.cpp" line="112"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13456,7 +13581,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleGostatsSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="105"/>
+        <location filename="../src/R/RSupport.cpp" line="106"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13464,7 +13589,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleHgu133adbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="117"/>
+        <location filename="../src/R/RSupport.cpp" line="118"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13472,7 +13597,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleHgu133bdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="123"/>
+        <location filename="../src/R/RSupport.cpp" line="124"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13480,7 +13605,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleHgu133plus2dbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="129"/>
+        <location filename="../src/R/RSupport.cpp" line="130"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13488,7 +13613,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleHgu95av2dbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="135"/>
+        <location filename="../src/R/RSupport.cpp" line="136"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13496,7 +13621,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleMouse430a2dbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="141"/>
+        <location filename="../src/R/RSupport.cpp" line="142"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13504,7 +13629,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleOrgceegdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="171"/>
+        <location filename="../src/R/RSupport.cpp" line="172"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13512,7 +13637,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleOrgdmegdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="177"/>
+        <location filename="../src/R/RSupport.cpp" line="178"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13520,7 +13645,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleOrghsegdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="159"/>
+        <location filename="../src/R/RSupport.cpp" line="160"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13528,7 +13653,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleOrgmmegdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="165"/>
+        <location filename="../src/R/RSupport.cpp" line="166"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13536,7 +13661,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleSeqlogoSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="183"/>
+        <location filename="../src/R/RSupport.cpp" line="184"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13544,7 +13669,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="91"/>
+        <location filename="../src/R/RSupport.cpp" line="92"/>
         <source>R module is not installed. Install module or set path to another R scripts interpreter with installed module in the External Tools settings</source>
         <translation>R модуль не установлен. Установите модель или укажите другой путь с установленным модулем в настройках внешних инструментов</translation>
     </message>
@@ -13555,6 +13680,19 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <location filename="../src/R/RSupport.cpp" line="55"/>
         <source>Rscript interpreter</source>
         <translation>Rscript интерпретатор</translation>
+    </message>
+</context>
+<context>
+    <name>U2::RegisterCustomToolTask</name>
+    <message>
+        <location filename="../src/custom_tools/RegisterCustomToolTask.cpp" line="35"/>
+        <source>Register custom external tool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/custom_tools/RegisterCustomToolTask.cpp" line="56"/>
+        <source>Can&apos;t register a custom external tool &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

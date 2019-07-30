@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru">
+<TS version="2.1" language="ru">
 <context>
     <name>QObject</name>
     <message>
@@ -100,15 +100,15 @@
     </message>
     <message>
         <source>The document is created not by UGENE</source>
-        <translation>Документ создан не в UGENE</translation>
+        <translation type="vanished">Документ создан не в UGENE</translation>
     </message>
     <message>
         <source>Document sequences were merged</source>
-        <translation>Последовательности из документа были соединены</translation>
+        <translation type="vanished">Последовательности из документа были соединены</translation>
     </message>
     <message>
         <source>UGENE public database</source>
-        <translation>Публичная база данных UGENE</translation>
+        <translation type="vanished">Публичная база данных UGENE</translation>
     </message>
     <message>
         <location filename="../src/util/GenbankFeatures.cpp" line="75"/>
@@ -1498,7 +1498,7 @@ The session database file is removed after closing of UGENE.</source>
     </message>
     <message>
         <source>Launching %1 tool: %2 %3</source>
-        <translation>Запуск инструмента %1: %2 %3</translation>
+        <translation type="vanished">Запуск инструмента %1: %2 %3</translation>
     </message>
 </context>
 <context>
@@ -2305,7 +2305,7 @@ The session database file is removed after closing of UGENE.</source>
     <name>U2::MsaDbiUtils</name>
     <message>
         <source>Can&apos;t rename an alignment to an empty name!</source>
-        <translation>Невозможно переименовать выравнивание, т.к. имя пустое!</translation>
+        <translation type="vanished">Невозможно переименовать выравнивание, т.к. имя пустое!</translation>
     </message>
     <message>
         <location filename="../src/util/MsaDbiUtils.cpp" line="914"/>
@@ -2324,7 +2324,7 @@ The session database file is removed after closing of UGENE.</source>
     </message>
     <message>
         <source>Can&apos;t rename a row to an empty name!</source>
-        <translation>Не удалось переименовать строку, т.к. имя пустое!</translation>
+        <translation type="vanished">Не удалось переименовать строку, т.к. имя пустое!</translation>
     </message>
 </context>
 <context>
@@ -2803,7 +2803,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/globals/UserApplicationsSettings.cpp" line="71"/>
+        <location filename="../src/globals/UserApplicationsSettings.cpp" line="72"/>
         <source>Cleaning temp dir: %1</source>
         <translation>Очистка временной папки: %1</translation>
     </message>

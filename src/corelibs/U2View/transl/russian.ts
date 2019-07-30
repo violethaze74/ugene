@@ -5068,6 +5068,12 @@ Please, check external tools in the settings.</source>
         <translation>Папка для сохранения не указана!</translation>
     </message>
     <message>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="267"/>
+        <source>Unable to create output folder for result assembly.
+Directory Path: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>No reads. Please, add file(s) with short reads.</source>
         <translation type="vanished">Нет ридов. Добавьте файл(ы) с короткими ридами.</translation>
     </message>
@@ -5084,12 +5090,6 @@ Please, check external tools in the settings.</source>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="258"/>
         <source>File format of %1 is %2. Supported file formats of reads: %3.</source>
         <translation>Формат %1 файла %2. Поддерживаемые форматы для пидов: %3.</translation>
-    </message>
-    <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="267"/>
-        <source>Unable to create output folder for result assembly.
-Directory Path: %1</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="332"/>
@@ -5673,49 +5673,54 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MSAHighlightingTab</name>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="94"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="77"/>
+        <source>Threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="120"/>
         <source>Use dots</source>
         <translation>Использовать точки</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="98"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="124"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="108"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="134"/>
         <source>Highlight characters with conservation level:</source>
         <translation>Подсветить символы с уровнем сохранения:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="111"/>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="112"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="137"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="138"/>
         <source> threshold</source>
         <translation> порог</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="123"/>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="269"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="149"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="346"/>
         <source>Threshold: %1%</source>
         <translation>Порог: %1%</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="151"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="177"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="154"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="180"/>
         <source>Highlighting</source>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="243"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="278"/>
         <source>Info: set a reference sequence.</source>
         <translation>Инфо: укажите референсную последовательность.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="252"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="287"/>
         <source>Info: export is not available for the selected highlighting.</source>
         <translation>Инфо: экспорт невозможен для выбранного режима подсветки.</translation>
     </message>
