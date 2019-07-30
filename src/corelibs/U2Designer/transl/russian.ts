@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru">
+<TS version="2.1" language="ru">
 <context>
     <name>AnnsActionDialog</name>
     <message>
@@ -58,11 +58,11 @@ this merge sequence slot:</source>
     <name>CreateDirectoryDialog</name>
     <message>
         <source>Create a folder</source>
-        <translation>Создание папки</translation>
+        <translation type="vanished">Создание папки</translation>
     </message>
     <message>
         <source>Parent folder:</source>
-        <translation>Родительская папка:</translation>
+        <translation type="vanished">Родительская папка:</translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="14"/>
@@ -94,7 +94,7 @@ this merge sequence slot:</source>
     </message>
     <message>
         <source>Add folder</source>
-        <translation>Добавить папку</translation>
+        <translation type="vanished">Добавить папку</translation>
     </message>
     <message>
         <location filename="../src/DatasetWidget.ui" line="62"/>
@@ -455,11 +455,11 @@ this merge sequence slot:</source>
     <name>OutputFileDialog</name>
     <message>
         <source>Save file/folder</source>
-        <translation>Сохранить файл/папку</translation>
+        <translation type="vanished">Сохранить файл/папку</translation>
     </message>
     <message>
         <source>Create folder</source>
-        <translation>Создать папку</translation>
+        <translation type="vanished">Создать папку</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="14"/>
@@ -484,7 +484,7 @@ this merge sequence slot:</source>
     </message>
     <message>
         <source>Folder:</source>
-        <translation>Папка:</translation>
+        <translation type="vanished">Папка:</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="146"/>
@@ -589,7 +589,7 @@ this merge sequence slot:</source>
         <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subfolder of the folder is created for each run of a workflow.
 
 Set up the folder:</source>
-        <translation>Выходная папка для схемы это общая папка, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная папка.
+        <translation type="vanished">Выходная папка для схемы это общая папка, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная папка.
 
 Установить папку:</translation>
     </message>
@@ -597,7 +597,7 @@ Set up the folder:</source>
         <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subdirectory of the folder is created for each run of a workflow.
 
 Set up the folder:</source>
-        <translation>Выходная директория для схемы это общая директория, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная директория.
+        <translation type="vanished">Выходная директория для схемы это общая директория, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная директория.
 
 Установить директорию:</translation>
     </message>
@@ -683,7 +683,7 @@ Set up the folder:</source>
     </message>
     <message>
         <source>&lt;Don&apos;t shift&gt;</source>
-        <translation>&lt;Don&apos;t shift&gt;</translation>
+        <translation type="vanished">&lt;Don&apos;t shift&gt;</translation>
     </message>
 </context>
 <context>
@@ -770,27 +770,27 @@ bowtie index file</source>
     <name>U2::Dashboard</name>
     <message>
         <source>Output Files</source>
-        <translation>Выходные файлы</translation>
+        <translation type="vanished">Выходные файлы</translation>
     </message>
     <message>
         <source>Workflow Task</source>
-        <translation>Задача схемы</translation>
+        <translation type="vanished">Задача схемы</translation>
     </message>
     <message>
         <source>Common Statistics</source>
-        <translation>Общая статистика</translation>
+        <translation type="vanished">Общая статистика</translation>
     </message>
     <message>
         <source>Parameters</source>
-        <translation>Параметры</translation>
+        <translation type="vanished">Параметры</translation>
     </message>
     <message>
         <source>External Tools</source>
-        <translation>Внешние инструменты</translation>
+        <translation type="vanished">Внешние инструменты</translation>
     </message>
     <message>
         <source>Problems</source>
-        <translation>Проблемы</translation>
+        <translation type="vanished">Проблемы</translation>
     </message>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="188"/>
@@ -799,7 +799,7 @@ bowtie index file</source>
     </message>
     <message>
         <source>Can not open a file for writing: </source>
-        <translation>Невозможно открыть файл для записи: </translation>
+        <translation type="vanished">Невозможно открыть файл для записи: </translation>
     </message>
 </context>
 <context>
@@ -1025,7 +1025,7 @@ bowtie index file</source>
     </message>
     <message>
         <source> parameters</source>
-        <translation> параметры</translation>
+        <translation type="vanished"> параметры</translation>
     </message>
 </context>
 <context>
@@ -1068,11 +1068,11 @@ bowtie index file</source>
     <name>U2::JavascriptAgent</name>
     <message>
         <source>Error</source>
-        <translation>Ошибка</translation>
+        <translation type="vanished">Ошибка</translation>
     </message>
     <message>
         <source>The file does not exist</source>
-        <translation>Файл не существует</translation>
+        <translation type="vanished">Файл не существует</translation>
     </message>
 </context>
 <context>
@@ -1232,50 +1232,50 @@ Set up the folder:</source>
     <name>U2::OutputFilesWidget</name>
     <message>
         <source>File</source>
-        <translation>Файл</translation>
+        <translation type="vanished">Файл</translation>
     </message>
     <message>
         <source>Producer</source>
-        <translation>Производитель</translation>
+        <translation type="vanished">Производитель</translation>
     </message>
     <message>
         <source>Open containing folder</source>
-        <translation>Открыть содержащую папку</translation>
+        <translation type="vanished">Открыть содержащую папку</translation>
     </message>
     <message>
         <source>Open by operating system</source>
-        <translation>Открыть при помощи операционной системы</translation>
+        <translation type="vanished">Открыть при помощи операционной системы</translation>
     </message>
     <message>
         <source>files</source>
-        <translation>файлы</translation>
+        <translation type="vanished">файлы</translation>
     </message>
 </context>
 <context>
     <name>U2::ProblemsWidget</name>
     <message>
         <source>Error</source>
-        <translation>Ошибка</translation>
+        <translation type="vanished">Ошибка</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation>Ожидание</translation>
+        <translation type="vanished">Ожидание</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation>Информация</translation>
+        <translation type="vanished">Информация</translation>
     </message>
     <message>
         <source>Element</source>
-        <translation>Элемент</translation>
+        <translation type="vanished">Элемент</translation>
     </message>
     <message>
         <source>Message</source>
-        <translation>Сообщение</translation>
+        <translation type="vanished">Сообщение</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Тип</translation>
+        <translation type="vanished">Тип</translation>
     </message>
 </context>
 <context>
@@ -1360,31 +1360,31 @@ Set up the folder:</source>
     <name>U2::ResourcesWidget</name>
     <message>
         <source>Time</source>
-        <translation>Время</translation>
+        <translation type="vanished">Время</translation>
     </message>
     <message>
         <source>The workflow task is in progress...</source>
-        <translation>Задача выполнения схемы в процессе...</translation>
+        <translation type="vanished">Задача выполнения схемы в процессе...</translation>
     </message>
     <message>
         <source>The workflow task is in progress. There are problems...</source>
-        <translation>Задача выполнения схемы в процессе. Есть проблемы...</translation>
+        <translation type="vanished">Задача выполнения схемы в процессе. Есть проблемы...</translation>
     </message>
     <message>
         <source>The workflow task has been finished with warnings!</source>
-        <translation>Задача выполнения схемы завершилась с предупреждениями!</translation>
+        <translation type="vanished">Задача выполнения схемы завершилась с предупреждениями!</translation>
     </message>
     <message>
         <source>The workflow task has been finished with errors!</source>
-        <translation>Задача выполнения схемы завершилась с ошибками!</translation>
+        <translation type="vanished">Задача выполнения схемы завершилась с ошибками!</translation>
     </message>
     <message>
         <source>The workflow task has been finished successfully!</source>
-        <translation>Задача выполнения схемы завершилась без ошибок!</translation>
+        <translation type="vanished">Задача выполнения схемы завершилась без ошибок!</translation>
     </message>
     <message>
         <source>The workflow task has been canceled!</source>
-        <translation>Задача выполнения схемы была отменена!</translation>
+        <translation type="vanished">Задача выполнения схемы была отменена!</translation>
     </message>
 </context>
 <context>
@@ -1425,15 +1425,15 @@ Set up the folder:</source>
     <name>U2::StatisticsWidget</name>
     <message>
         <source>Element</source>
-        <translation>Элемент</translation>
+        <translation type="vanished">Элемент</translation>
     </message>
     <message>
         <source>Elapsed time</source>
-        <translation>Прошедшее время</translation>
+        <translation type="vanished">Прошедшее время</translation>
     </message>
     <message>
         <source>Output messages</source>
-        <translation>Выходные сообщения</translation>
+        <translation type="vanished">Выходные сообщения</translation>
     </message>
 </context>
 <context>
@@ -1554,11 +1554,11 @@ Set up the folder:</source>
     </message>
     <message>
         <source>File Not Found</source>
-        <translation>Файл не найден</translation>
+        <translation type="vanished">Файл не найден</translation>
     </message>
     <message>
         <source>File not found: &quot;%1&quot;</source>
-        <translation>Файл не найден: &quot;%1&quot;</translation>
+        <translation type="vanished">Файл не найден: &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
