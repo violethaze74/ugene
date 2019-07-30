@@ -2491,7 +2491,7 @@ GUI_TEST_CLASS_DEFINITION(test_6474_1) {
 
     //3. Select the "Percentage Identity (colored)" color scheme
     QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
-    GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage Identity (colored)    ");
+    GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage Identity (colored)    ", GTGlobals::UseMouse);
 
     QStringList backgroundColors = { "#ffff00", "#00ffff", "#00ffff", "#00ff00", "#00ff00", "#ffffff", "#ffffff", "#ffffff", "#ffffff" };
     QStringList fontColors = { "#ff0000", "#0000ff", "#0000ff", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000" };
@@ -2523,7 +2523,7 @@ GUI_TEST_CLASS_DEFINITION(test_6474_2) {
 
     //3. Select the "Percentage Identity (colored)" color scheme
     QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
-    GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage Identity (colored)    ");
+    GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage Identity (colored)    ", GTGlobals::UseMouse);
 
     //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
