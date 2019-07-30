@@ -47,6 +47,12 @@ const QString CustomToolConfigParser::LAUNCHER_ID = "launcherId";
 const QString CustomToolConfigParser::DEPENDENCIES = "dependencies";
 const QString CustomToolConfigParser::BINARY_NAME = "executableName";
 
+namespace {
+bool compareCaseInsensetive(const QString& first, const QString& second) {
+    return QString::compare(first, second, Qt::CaseInsensitive) == 0;
+}
+}
+
 CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString &url) {
     QFile file(url);
     CHECK_EXT(file.open(QIODevice::ReadOnly), os.setError(tr("Invalid config file format: file %1 cann not be opened").arg(url)), nullptr);
@@ -74,11 +80,11 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString 
         CHECK_CONTINUE(!element.isNull());
         const QString tagName = element.tagName();
 
-        if (ID == tagName) {
+        if (compareCaseInsensetive(ID, tagName)) {
             tool->setId(element.text());
-        } else if (NAME == tagName) {
+        } else if (compareCaseInsensetive(NAME, tagName)) {
             tool->setName(element.text());
-        } else if (PATH == tagName) {
+        } else if (compareCaseInsensetive(PATH, tagName)) {
             if (!element.text().isEmpty()) {
                 QString text = element.text();
                 QFileInfo pathFi(element.text());
@@ -90,21 +96,21 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString 
                 absPath = pathFi.absoluteFilePath();
                 tool->setPath(absPath);
             }
-        } else if (DESCRIPTION == tagName) {
+        } else if (compareCaseInsensetive(DESCRIPTION, tagName)) {
             tool->setDescription(element.text());
-        } else if (TOOLKIT_NAME == tagName) {
+        } else if (compareCaseInsensetive(TOOLKIT_NAME, tagName)) {
             tool->setToolkitName(element.text());
-        } else if (TOOL_VERSION == tagName) {
+        } else if (compareCaseInsensetive(TOOL_VERSION, tagName)) {
             tool->setPredefinedVersion(element.text());
-        } else if (LAUNCHER_ID == tagName) {
+        } else if (compareCaseInsensetive(LAUNCHER_ID, tagName)) {
             tool->setLauncher(element.text());
-        } else if (DEPENDENCIES == tagName) {
+        } else if (compareCaseInsensetive(DEPENDENCIES, tagName)) {
             QStringList dependencies;
             foreach (const QString &dependency, element.text().split(",", QString::SkipEmptyParts)) {
                 dependencies << dependency.trimmed();
             }
             tool->setDependencies(dependencies);
-        } else if (BINARY_NAME == tagName) {
+        } else if (compareCaseInsensetive(BINARY_NAME, tagName)) {
             tool->setBinaryName(element.text());
         } else {
             os.addWarning(tr("Unknown element: '%1', skipping").arg(tagName));
