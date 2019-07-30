@@ -177,7 +177,7 @@ void BuildIndexDialog::accept()
         QString externalToolId;
         
         if (getAlgorithmName() == "Bowtie2") {
-            externalToolId = "BBOWTIE_BUILD";
+            externalToolId = "BOWTIE2_BUILD";
         } 
         if (getAlgorithmName() == "Bowtie"){
             externalToolId = "BOWTIE_BUILD";
