@@ -3949,8 +3949,7 @@ GUI_TEST_CLASS_DEFINITION( test_2570 ) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_BLAST_SUBMENU << ACTION_BLAST_FORMAT_DB));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "BLAST" << "FormatDB..."));
     FormatDBSupportRunDialogFiller::Parameters p;
     p.justCancel = true;
     p.checkAlphabetType = true;
