@@ -2432,7 +2432,7 @@ GUI_TEST_CLASS_DEFINITION(test_6481_3) {
 
 //    4. Create a valid workflow with the new element.
     GTUtilsWorkflowDesigner::click(os, "test_6481_3");
-    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
 
 //    5. Launch the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -2469,7 +2469,7 @@ GUI_TEST_CLASS_DEFINITION(test_6481_4) {
 
     //    4. Create a valid workflow with the new element.
     GTUtilsWorkflowDesigner::click(os, "test_6481_4");
-    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", sandBoxDir, GTUtilsWorkflowDesigner::textValue);
 
     //    5. Launch the workflow.
