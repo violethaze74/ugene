@@ -284,6 +284,7 @@ CreateCmdlineBasedWorkerWizardGeneralSettingsPage::CreateCmdlineBasedWorkerWizar
     connect(rbIntegratedTool, SIGNAL(toggled(bool)), SIGNAL(completeChanged()));
     connect(rbIntegratedTool, SIGNAL(toggled(bool)), SLOT(sl_integratedToolChanged()));
     connect(rbIntegratedTool, SIGNAL(toggled(bool)), cbIntegratedTools, SLOT(setEnabled(bool)));
+    connect(cbIntegratedTools, SIGNAL(currentIndexChanged(int)), SLOT(sl_integratedToolChanged()));
 
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD + "*", leName);
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_ID_FIELD, this, WORKER_ID_PROPERTY);
@@ -864,7 +865,7 @@ void ExternalToolSelectComboBox::hidePopup() {
             cbDelegate->addUngroupedItem(standardModel, tr("Show all tools"), SHOW_ALL_TOOLS);
             setCurrentIndex(findData(firstClickableRowData));
         }
-        showPopup();
+        QComboBox::showPopup();
     } else {
         QComboBox::hidePopup();
     }
@@ -957,15 +958,17 @@ void ExternalToolSelectComboBox::sortCustomToolsList() {
 }
 
 void ExternalToolSelectComboBox::sortSupportedToolsMap() {
+    QMap<QString, QList<ExternalTool*> > resultMap;
     foreach(const QString & toolKitName, supportedTools.keys()) {
         QList<ExternalTool*> currentToolKitTools = supportedTools.value(toolKitName);
         if (currentToolKitTools.size() == 1) {
-            supportedTools.insert(currentToolKitTools.first()->getName(), currentToolKitTools);
+            resultMap.insert(currentToolKitTools.first()->getName(), currentToolKitTools);
         } else {
             std::sort(currentToolKitTools.begin(), currentToolKitTools.end(), [](ExternalTool* a, ExternalTool* b) {return a->getName().compare(b->getName(), Qt::CaseInsensitive) < 0; });
-            supportedTools.insert(toolKitName, currentToolKitTools);
+            resultMap.insert(toolKitName, currentToolKitTools);
         }
     }
+    supportedTools = resultMap;
 }
 
 void ExternalToolSelectComboBox::initFirstClickableRow() {
