@@ -99,14 +99,6 @@
         <translation>Неверное число символов: %1</translation>
     </message>
     <message>
-        <source>The document is created not by UGENE</source>
-        <translation type="vanished">Документ создан не в UGENE</translation>
-    </message>
-    <message>
-        <source>Document sequences were merged</source>
-        <translation type="vanished">Последовательности из документа были соединены</translation>
-    </message>
-    <message>
         <source>UGENE public database</source>
         <translation type="vanished">Публичная база данных UGENE</translation>
     </message>
