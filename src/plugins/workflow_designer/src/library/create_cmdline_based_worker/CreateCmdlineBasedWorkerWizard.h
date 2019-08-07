@@ -237,6 +237,9 @@ public:
     ExternalToolSelectComboBox(QWidget* parent = nullptr);
 
     virtual void hidePopup() override;
+
+    void modifyMenuAccordingToData(const QString& data);
+    void setDefaultMenuValue(const QString& defaultValue);
 private:
     void addSupportedToolsPopupMenu();
     void initExternalTools();

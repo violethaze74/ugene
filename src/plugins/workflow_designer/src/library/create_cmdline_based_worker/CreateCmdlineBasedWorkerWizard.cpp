@@ -279,7 +279,7 @@ CreateCmdlineBasedWorkerWizardGeneralSettingsPage::CreateCmdlineBasedWorkerWizar
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
     leName->setValidator(new QRegularExpressionValidator(WorkflowEntityValidator::ACCEPTABLE_NAME, leName));
 
-    connect(leToolPath, SIGNAL(textChanged(const QString &)), SIGNAL(completeChanged()));
+    connect(leToolPath, SIGNAL(textChanged(const QString&)), SIGNAL(completeChanged()));
     connect(tbBrowse, SIGNAL(clicked()), SLOT(sl_browse()));
     connect(rbIntegratedTool, SIGNAL(toggled(bool)), SIGNAL(completeChanged()));
     connect(rbIntegratedTool, SIGNAL(toggled(bool)), SLOT(sl_integratedToolChanged()));
@@ -298,9 +298,16 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initializePage() {
         leName->setText(initialConfig->name);
         rbIntegratedTool->setChecked(initialConfig->useIntegratedTool);
         leToolPath->setText(QDir::toNativeSeparators(initialConfig->customToolPath));
-        const int index = cbIntegratedTools->findData(initialConfig->integratedToolId);
-        if (-1 != index) {
-            cbIntegratedTools->setCurrentIndex(index);
+        if (AppContext::getExternalToolRegistry()->getById(initialConfig->integratedToolId) == nullptr && rbIntegratedTool->isChecked()) {
+            QObjectScopedPointer<QMessageBox> warningBox(new QMessageBox(
+                QMessageBox::Warning,
+                initialConfig->name,
+                tr("UGENE can't find the tool specified in this element. Please specify another tool."),
+                QMessageBox::Close));
+            warningBox->exec();
+            rbCustomTool->setChecked(true);
+        } else {
+            cbIntegratedTools->setDefaultMenuValue(initialConfig->integratedToolId);
         }
     } else {
         QString name = "Custom Element";
@@ -847,27 +854,31 @@ ExternalToolSelectComboBox::ExternalToolSelectComboBox(QWidget* parent)
 void ExternalToolSelectComboBox::hidePopup() {
     QString data = model()->data(view()->currentIndex(), Qt::UserRole).toString();
     if (data == SHOW_ALL_TOOLS || data == SHOW_CUSTOM_TOOLS) {
-        GroupedComboBoxDelegate* cbDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
-        SAFE_POINT(nullptr != cbDelegate, "GroupedComboBoxDelegate not found", );
-
-        QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
-        SAFE_POINT(nullptr != standardModel, "Can't cast combobox model to a QStandardItemModel", );
-
-        if (data == SHOW_ALL_TOOLS) {
-            model()->removeRows(model()->rowCount() - 2, 2);
-            addSupportedToolsPopupMenu();
-            insertSeparator(model()->rowCount() + 1);
-            cbDelegate->addUngroupedItem(standardModel, tr("Show customs tools only"), SHOW_CUSTOM_TOOLS);
-            setCurrentIndex(findData(firstClickableRowData));
-        } else if (data == SHOW_CUSTOM_TOOLS) {
-            model()->removeRows(customTools.size() + 1, model()->rowCount() - customTools.size() - 1);
-            insertSeparator(customTools.size() + 1);
-            cbDelegate->addUngroupedItem(standardModel, tr("Show all tools"), SHOW_ALL_TOOLS);
-            setCurrentIndex(findData(firstClickableRowData));
-        }
+        modifyMenuAccordingToData(data);
         QComboBox::showPopup();
     } else {
         QComboBox::hidePopup();
+    }
+}
+
+void ExternalToolSelectComboBox::modifyMenuAccordingToData(const QString& data) {
+    GroupedComboBoxDelegate* cbDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
+    SAFE_POINT(nullptr != cbDelegate, "GroupedComboBoxDelegate not found", );
+
+    QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
+    SAFE_POINT(nullptr != standardModel, "Can't cast combobox model to a QStandardItemModel", );
+
+    if (data == SHOW_ALL_TOOLS) {
+        model()->removeRows(model()->rowCount() - 2, 2);
+        addSupportedToolsPopupMenu();
+        insertSeparator(model()->rowCount() + 1);
+        cbDelegate->addUngroupedItem(standardModel, tr("Show customs tools only"), SHOW_CUSTOM_TOOLS);
+        setCurrentIndex(findData(firstClickableRowData));
+    } else if (data == SHOW_CUSTOM_TOOLS) {
+        model()->removeRows(customTools.size() + 1, model()->rowCount() - customTools.size() - 1);
+        insertSeparator(customTools.size() + 1);
+        cbDelegate->addUngroupedItem(standardModel, tr("Show all tools"), SHOW_ALL_TOOLS);
+        setCurrentIndex(findData(firstClickableRowData));
     }
 }
 
@@ -979,6 +990,18 @@ void ExternalToolSelectComboBox::initFirstClickableRow() {
         std::sort(keys.begin(), keys.end(), [](const QString& a, const QString& b) {return a.compare(b, Qt::CaseInsensitive) < 0; });
         QList<ExternalTool*> tools = supportedTools.value(keys.first());
         firstClickableRowData = tools.first()->getId();
+    }
+}
+
+void ExternalToolSelectComboBox::setDefaultMenuValue(const QString& defaultValue) {
+    int index = findData(defaultValue);
+    if (index > -1) {
+        setCurrentIndex(index);
+    } else {
+        modifyMenuAccordingToData(SHOW_ALL_TOOLS);
+        index = findData(defaultValue);
+        SAFE_POINT(index != -1, "Unable to find external tool by given id", )
+        setCurrentIndex(index);
     }
 }
 
