@@ -260,6 +260,8 @@ void MaEditorConsensusArea::setupFontAndHeight() {
     consensusSettings.font = ui->getEditor()->getFont();
     consensusSettings.setRulerFont(ui->getEditor()->getFont());
     setFixedHeight(renderer->getHeight());
+    completeRedraw = true;
+    update();
 }
 
 void MaEditorConsensusArea::sl_zoomOperationPerformed( bool resizeModeChanged ) {

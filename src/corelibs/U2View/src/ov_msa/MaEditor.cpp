@@ -437,6 +437,7 @@ void MaEditor::setFont(const QFont& f) {
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, f.pointSize());
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_ITALIC, f.italic());
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_BOLD, f.bold());
+    widget->update();
 }
 
 void MaEditor::calcFontPixelToPointSizeCoef() {
