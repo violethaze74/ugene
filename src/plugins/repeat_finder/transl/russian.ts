@@ -186,42 +186,42 @@
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="17"/>
         <source>Find Tandem Repeats</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск тандемов</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="31"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Основные</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="37"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="55"/>
         <source>Preset settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Предустановки</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="69"/>
         <source>Min length of repeated sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальная длина повторяемой последовательности</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="76"/>
         <source>Max length of repeated sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная длина повторяемой последовательности</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="83"/>
         <source>Min length of tandem repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальная длина тандема</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="90"/>
         <source>Min number of repeats</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальное число повторов</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="308"/>
@@ -236,12 +236,12 @@
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="340"/>
         <source>Search in</source>
-        <translation type="unfinished"></translation>
+        <translation>Искать в</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="366"/>
         <source>Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение</translation>
     </message>
     <message>
         <source>Region to process</source>
@@ -1012,7 +1012,7 @@
     <message>
         <location filename="../src/RepeatFinderPlugin.cpp" line="104"/>
         <source>Find tandem repeats...</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск тандемов...</translation>
     </message>
     <message>
         <source>Find tandems...</source>

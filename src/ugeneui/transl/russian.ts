@@ -1793,12 +1793,12 @@ Do you want view online documentation?</source>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="107"/>
         <source>Open from clipboard...</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть из буфера обмена...</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="124"/>
         <source>Connect to UGENE shared database...</source>
-        <translation type="unfinished"></translation>
+        <translation>Подключиться к базе данных UGENE...</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="845"/>
