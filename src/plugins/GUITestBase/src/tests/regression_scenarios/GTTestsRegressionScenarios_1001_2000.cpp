@@ -7666,11 +7666,12 @@ GUI_TEST_CLASS_DEFINITION(test_1734){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1735){
-//    1) Run UGENE
-//    2) Open Workflow Designer
+//    1. Open Workflow Designer.
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    3) Open Call variant pipeline scheme from samples
+
+//    2. Open﻿"Call variants with SAMtools" sample.
+//    Expected state: the sample is opened, a wizard appears.
 
     class custom : public CustomScenario {
     public:
@@ -7679,31 +7680,37 @@ GUI_TEST_CLASS_DEFINITION(test_1735){
             QWizard* wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
+//    3. Set "_common_data/cmdline/call-variations/chrM.fa" as reference; "_common_data/bam/chrM.sorted.bam" as input assembly.
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/cmdline/call-variations/chrM.fa"));
             GTWidget::click(os, GTWidget::findWidget(os, "browseButton", GTWidget::findWidget(os, "Reference sequence file labeledWidget", dialog)));
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/bam/chrM.sorted.bam"));
             GTWidget::click(os, GTWidget::findWidget(os, "addFileButton", wizard->currentPage()));
 
+//    4. Go to the fourth page of the wizard.
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
+//    Expected state: the page title is "SAMtools vcfutils varFilter parameters".
             QString title = GTUtilsWizard::getPageTitle(os);
             CHECK_SET_ERR(title == "SAMtools <i>vcfutils varFilter</i> parameters", "unexpected title: " + title);
 
+//    5. Go to the last page of the wizard, click to the "Run" button.
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
 
+    GTUtilsDialog::waitForDialog(os, new EscapeClicker(os, "Call Variants Wizard"));
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
-//    4) Click on "Show wizard" at the top of WD window yo specify vcfutils.pl parameters (page #4 of Call Variants Wizard)
-//    5) Run scheme at last page (if you specify all parameters: SAM/BAM file for Read Assembly and sequence file for Read Sequence)
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new custom()));
-    GTWidget::click(os, GTAction::button(os, "Show wizard"));
+    GTGlobals::sleep(500);
 
-//    Expected state: there are no errors when this pipeline scheme is running
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new custom()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, "mwtoolbar_activemdi", "Show wizard");
+    GTGlobals::sleep(500);
+
+//    Expected state: there are no errors when this pipeline scheme is running.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
 }

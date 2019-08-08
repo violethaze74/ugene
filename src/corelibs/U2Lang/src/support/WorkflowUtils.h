@@ -231,6 +231,7 @@ template <typename T>
 class PrompterBase : public PrompterBaseImpl {
 public:
     PrompterBase(Actor* p = 0, bool listenInputs = true) : PrompterBaseImpl(p), listenInputs(listenInputs) {}
+    virtual ~PrompterBase() = default;
     virtual ActorDocument* createDescription(Actor* a) {
         T* doc = new T(a);
         doc->connect(a, SIGNAL(si_labelChanged()), SLOT(sl_actorModified()));

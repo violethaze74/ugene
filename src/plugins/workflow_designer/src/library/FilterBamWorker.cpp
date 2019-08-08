@@ -368,6 +368,8 @@ QStringList BamFilterSetting::getSamtoolsArguments() const{
 
 ////////////////////////////////////////////////////////
 //SamtoolsViewFilterTask
+const QString SamtoolsViewFilterTask::SAMTOOLS_ID = "SAMTOOLS";
+
 SamtoolsViewFilterTask::SamtoolsViewFilterTask(const BamFilterSetting &settings)
 :ExternalToolSupportTask(tr("Samtool view (filter) for %1 ").arg(settings.inputUrl), TaskFlags(TaskFlag_None)),settings(settings),resultUrl(""){
 
@@ -393,7 +395,7 @@ void SamtoolsViewFilterTask::prepare(){
 void SamtoolsViewFilterTask::run(){
     CHECK_OP(stateInfo, );
 
-    ProcessRun samtools = ExternalToolSupportUtils::prepareProcess("SAMtools", settings.getSamtoolsArguments(), "", QStringList(), stateInfo, getListener(0));
+    ProcessRun samtools = ExternalToolSupportUtils::prepareProcess(SAMTOOLS_ID, settings.getSamtoolsArguments(), "", QStringList(), stateInfo, getListener(0));
     CHECK_OP(stateInfo, );
     QScopedPointer<QProcess> sp(samtools.process);
     QScopedPointer<ExternalToolRunTaskHelper> sh(new ExternalToolRunTaskHelper(samtools.process, new ExternalToolLogParser(), stateInfo));
