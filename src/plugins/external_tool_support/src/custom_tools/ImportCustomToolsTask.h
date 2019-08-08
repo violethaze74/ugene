@@ -30,6 +30,7 @@
 namespace U2 {
 
 class CustomExternalTool;
+class RegisterCustomToolTask;
 
 class ImportCustomToolsTask : public Task {
 public:
@@ -38,13 +39,13 @@ public:
     static const QString SETTINGS_PATH;
 
 private:
+    void prepare() override;
     void run() override;
 
-    void parseConfigFile();
-    bool registerTool(CustomExternalTool *tool);
+    void saveToolConfig(CustomExternalTool *tool);
 
     const QString url;
-    QScopedPointer<CustomExternalTool> tool;
+    RegisterCustomToolTask *registerTask;
 };
 
 }   // namespace U2

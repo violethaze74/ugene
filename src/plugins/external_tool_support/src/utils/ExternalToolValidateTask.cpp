@@ -138,9 +138,10 @@ void ExternalToolJustValidateTask::run() {
         }
 
         int elapsedTime = 0;
+        const int timeout = tool->isCustom() ? 0 : TIMEOUT_MS;      // Custom tools can't be validated properly now, there is no need to wait them
         while (!externalToolProcess->waitForFinished(CHECK_PERIOD_MS)) {
             elapsedTime += CHECK_PERIOD_MS;
-            if (isCanceled() || elapsedTime >= TIMEOUT_MS) {
+            if (isCanceled() || elapsedTime >= timeout) {
                 cancelProcess();
             }
         }
