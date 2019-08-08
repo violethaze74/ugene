@@ -85,7 +85,7 @@ BlastAllSupport::BlastAllSupport(const QString& id, const QString& name, const Q
 
 void BlastAllSupport::sl_runWithExtFileSpecify(){
     //Check that blastall and tempory folder path defined
-    ExternalToolUtils::checkExtToolsPath(QStringList() << ET_BLASTALL);
+    ExternalToolUtils::checkExtToolsPath(QStringList() << ET_BLASTALL_ID);
 
     if (path.isEmpty()){
         return;
