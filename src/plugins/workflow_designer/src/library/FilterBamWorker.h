@@ -105,6 +105,8 @@ private:
 private:
     BamFilterSetting settings;
     QString resultUrl;
+
+   static const QString SAMTOOLS_ID;
 };
 
 } //LocalWorkflow

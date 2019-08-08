@@ -111,6 +111,11 @@ private:
 
 private:
     CallVariantsTaskSettings settings;
+
+    // The following constants are taken from the appropriate files in external_tool_support plugin
+    static const QString SAMTOOLS_ID;
+    static const QString BCFTOOLS_ID;
+    static const QString VCFUTILS_ID;
 };
 
 class CallVariantsTask : public ExternalToolSupportTask {
