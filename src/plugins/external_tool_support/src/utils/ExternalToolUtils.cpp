@@ -41,9 +41,11 @@ const QString ExternalToolUtils::CISTROME_DATA_DIR = "CISTROME_DATA_DIR";
 
 void ExternalToolUtils::checkExtToolsPath(const QStringList &ids) {
     QStringList missingTools;
-    foreach (QString id, ids) {
-        if (AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
-            missingTools << AppContext::getExternalToolRegistry()->getById(id)->getName();
+    foreach (const QString &id, ids) {
+        ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(id);
+        SAFE_POINT(nullptr != tool, QString("External tool with ID '%1' not found in the registry").arg(id), );
+        if (tool->getPath().isEmpty()) {
+            missingTools << tool->getName();
         }
     }
     if (!missingTools.isEmpty()){
