@@ -221,7 +221,9 @@ void ExternalToolSupportSettingsPageWidget::sl_importCustomToolButtonClicked() {
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_deleteCustomToolButtonClicked() {
-    const QString toolId = externalToolsItems.key(twCustomTools->currentItem());
+    QList<QTreeWidgetItem *> selectedItems = twCustomTools->selectedItems();
+    CHECK(!selectedItems.isEmpty(), );
+    const QString toolId = externalToolsItems.key(selectedItems.first());
     CHECK(!toolId.isEmpty(), );
 
     CustomExternalTool *tool = qobject_cast<CustomExternalTool *>(AppContext::getExternalToolRegistry()->getById(toolId));
@@ -527,10 +529,15 @@ bool ExternalToolSupportSettingsPageWidget::eventFilter(QObject *watched, QEvent
     CHECK(QEvent::FocusIn == event->type(), false);
 
     QTreeWidgetItem *item = nullptr;
+    QList<QTreeWidgetItem *> selectedItems;
     if (twIntegratedTools == watched) {
-        item = twIntegratedTools->currentItem();
+        selectedItems = twIntegratedTools->selectedItems();
     } else if (twCustomTools == watched) {
-        item = twCustomTools->currentItem();
+        selectedItems = twCustomTools->selectedItems();
+    }
+
+    if (!selectedItems.isEmpty()) {
+        item = selectedItems.first();
     }
 
     const bool itemSelected = (nullptr != item);
