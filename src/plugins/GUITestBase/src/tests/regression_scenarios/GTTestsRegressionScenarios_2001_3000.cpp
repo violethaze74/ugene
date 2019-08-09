@@ -3929,16 +3929,16 @@ GUI_TEST_CLASS_DEFINITION( test_2569 ){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    4. Click "External Tools" on the appeared Dashboard.
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
-//    5. Expand "SAMtools run 1"
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "SAMtools run 1"));
-//    6. Right click on the child element of the "Arguments" element.
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "Arguments"), Qt::RightButton);
+//    5. Expand "SAMtools run"
+    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "SAMtools run"));
+//    6. Right click on the child element of the "Command" element.
+    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "Command"), Qt::RightButton);
 //    7. Click "Copy element content".
     GTUtilsDashboard::click(os, GTUtilsDashboard::findContextMenuElement(os, "Copy element content"));
 //    8. Check the clipboard.
     QString clipboardText = GTClipboard::text(os);
 //    Expected state: the clipboard content is the same to the element content.
-    CHECK_SET_ERR(clipboardText == "Arguments", "copy element content works wrong " + clipboardText);
+    CHECK_SET_ERR(clipboardText == "Command", "copy element content works wrong " + clipboardText);
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2570 ) {
@@ -4558,7 +4558,9 @@ GUI_TEST_CLASS_DEFINITION( test_2662 ){
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
 //    Expected state: vcfTools executible file is /usr/bin/perl path/to/vcfutils.pl
 //    Actual: vcfTools executible file is /usr/bin/perl
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "vcfutils run 1", "*", true));
+    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "vcfutils run"));
+    //GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "vcfutils run", "*", true));
+  
 #ifdef Q_OS_WIN
     GTUtilsDashboard::findElement(os, "samtools-0.1.19\\vcfutils.pl", "SPAN");
 #else
