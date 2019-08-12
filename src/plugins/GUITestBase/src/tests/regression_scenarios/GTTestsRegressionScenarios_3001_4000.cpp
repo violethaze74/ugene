@@ -1087,7 +1087,7 @@ class test_3165_messageBoxDialogFiller: public MessageBoxDialogFiller{
 public:
     test_3165_messageBoxDialogFiller(HI::GUITestOpStatus &os, QMessageBox::StandardButton _b):
         MessageBoxDialogFiller(os, _b){}
-    virtual void run(){
+    virtual void run() override {
         QWidget* activeModal = QApplication::activeModalWidget();
         QMessageBox *messageBox = qobject_cast<QMessageBox*>(activeModal);
         CHECK_SET_ERR(messageBox != NULL, "messageBox is NULL");
@@ -2714,7 +2714,7 @@ GUI_TEST_CLASS_DEFINITION(test_3402){
         }
         QList<Task*> innertList;
         foreach (Task* t, tList) {
-            innertList.append(t->getSubtasks());
+            innertList.append(t->getPureSubtasks());
         }
         foreach (Task* t, innertList) {
             if(t->getTaskName().contains("Opening view")){

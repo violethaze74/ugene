@@ -69,7 +69,7 @@ QString GTUtilsTaskTreeView::getTasksInfo(QList<Task *> tasks, int level){
             result.append("  ");
         }
         result.append(QString("%1:  %2\n").arg(t->getTaskName()).arg(stateMap.value(t->getState())));
-        result.append(getTasksInfo(t->getSubtasks(),level+1));
+        result.append(getTasksInfo(t->getPureSubtasks(),level+1));
     }
     return result;
 }

@@ -269,8 +269,8 @@ void SiteconSearchWorker::sl_taskFinished(Task *t) {
     if (t->isCanceled()) {
         return;
     }
-    foreach (Task* sub, t->getSubtasks()) {
-        SiteconSearchTask *sst = qobject_cast<SiteconSearchTask *>(sub);
+    foreach (const QPointer<Task> &sub, t->getSubtasks()) {
+        SiteconSearchTask *sst = qobject_cast<SiteconSearchTask *>(sub.data());
         res += SiteconSearchResult::toTable(sst->takeResults(), resultName);
         sst->cleanup();
     }
