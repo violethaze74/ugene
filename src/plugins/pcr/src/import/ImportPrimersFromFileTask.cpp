@@ -74,8 +74,8 @@ QString ImportPrimersFromFileTask::generateReport() const {
 
     int tasksWithError = 0;
     int primersImported = 0;
-    foreach (Task *subTask, getSubtasks()) {
-        if (Q_UNLIKELY(loadTask == subTask)) {
+    foreach (const QPointer<Task> &subTask, getSubtasks()) {
+        if (Q_UNLIKELY(loadTask == subTask.data())) {
             continue;
         }
 

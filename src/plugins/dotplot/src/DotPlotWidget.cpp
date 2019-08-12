@@ -429,8 +429,8 @@ void DotPlotWidget::cancelRepeatFinderTask() {
     MultiTask *mTask = qobject_cast<MultiTask*>(dotPlotTask);
     if (mTask) {
         mTask->cancel();
-        foreach(Task *t, mTask->getSubtasks()) {
-            factory->setRFResultsListener(t, NULL);
+        foreach(const QPointer<Task> &t, mTask->getSubtasks()) {
+            factory->setRFResultsListener(t.data(), NULL);
         }
     }
 }

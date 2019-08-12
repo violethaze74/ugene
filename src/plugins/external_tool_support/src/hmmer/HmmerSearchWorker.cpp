@@ -309,8 +309,8 @@ void HmmerSearchWorker::sl_taskFinished(Task *task) {
     if (NULL != output) {
         QList<SharedAnnotationData> list;
 
-        foreach(Task *sub, task->getSubtasks()) {
-            HmmerSearchTask *searchTask = qobject_cast<HmmerSearchTask *>(sub);
+        foreach(const QPointer<Task> &sub, task->getSubtasks()) {
+            HmmerSearchTask *searchTask = qobject_cast<HmmerSearchTask *>(sub.data());
             if (searchTask == NULL){
                 continue;
             }

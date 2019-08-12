@@ -245,8 +245,8 @@ void HMMSearchWorker::sl_taskFinished(Task *t) {
     }
     if (NULL != output) {
         QList<SharedAnnotationData> list;
-        foreach (Task *sub, t->getSubtasks()) {
-            HMMSearchTask *hst = qobject_cast<HMMSearchTask *>(sub);
+        foreach (const QPointer<Task> &sub, t->getSubtasks()) {
+            HMMSearchTask *hst = qobject_cast<HMMSearchTask *>(sub.data());
             list += hst->getResultsAsAnnotations(U2FeatureTypes::MiscSignal, resultName);
         }
 

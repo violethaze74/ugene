@@ -238,9 +238,8 @@ void ExternalToolManagerImpl::sl_checkTaskStateChanged() {
         if (listener) {
             listeners.remove(masterTask);
 
-            QList<Task*> subTasks = masterTask->getSubtasks();
-            foreach(Task* subTask, subTasks) {
-                ExternalToolValidateTask* task = qobject_cast<ExternalToolValidateTask*>(subTask);
+            foreach(const QPointer<Task> &subTask, masterTask->getSubtasks()) {
+                ExternalToolValidateTask* task = qobject_cast<ExternalToolValidateTask*>(subTask.data());
                 SAFE_POINT(task, "Unexpected task", );
 
                 listener->setToolState(task->getToolId(), task->isValidTool());

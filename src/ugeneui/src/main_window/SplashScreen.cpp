@@ -117,7 +117,7 @@ void SplashScreenWidget::getTask(){
         Task* topLevelTask = tasks.at(0);
         task = topLevelTask->getTaskName();
 
-        QList<Task*> subtasks = topLevelTask->getSubtasks();
+        QList<QPointer<Task> > subtasks = topLevelTask->getSubtasks();
         if(subtasks.size() > 0){
             task = subtasks.at(0)->getTaskName();
         }
