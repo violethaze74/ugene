@@ -43,8 +43,8 @@ class ExternalToolSelectComboBox;
 class CreateCmdlineBasedWorkerWizard : public QWizard {
     Q_OBJECT
 public:
-    explicit CreateCmdlineBasedWorkerWizard(QWidget* parent = nullptr);
-    explicit CreateCmdlineBasedWorkerWizard(ExternalProcessConfig* initialConfig, QWidget* parent = nullptr);
+    explicit CreateCmdlineBasedWorkerWizard(SchemaConfig *schemaConfig, QWidget* parent = nullptr);
+    explicit CreateCmdlineBasedWorkerWizard(SchemaConfig* schemaConfig, ExternalProcessConfig* initialConfig, QWidget* parent = nullptr);
     ~CreateCmdlineBasedWorkerWizard() override;
 
     ExternalProcessConfig* takeConfig();
@@ -80,6 +80,7 @@ private:
 
     ExternalProcessConfig* initialConfig;
     ExternalProcessConfig* config;
+    SchemaConfig* schemaConfig;
 };
 
 class CreateCmdlineBasedWorkerWizardGeneralSettingsPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardGeneralSettingsPage {
@@ -137,7 +138,7 @@ private:
 class CreateCmdlineBasedWorkerWizardParametersPage : public QWizardPage, private Ui_CreateCmdlineBasedWorkerWizardParametersPage {
     Q_OBJECT
 public:
-    CreateCmdlineBasedWorkerWizardParametersPage(ExternalProcessConfig* initialConfig);
+    CreateCmdlineBasedWorkerWizardParametersPage(ExternalProcessConfig* initialConfig, SchemaConfig* schemaConfig);
 
     void initializePage() override;
     bool isComplete() const override;

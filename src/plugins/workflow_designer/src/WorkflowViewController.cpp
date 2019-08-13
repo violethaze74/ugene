@@ -319,7 +319,7 @@ void WorkflowView::setupScene() {
 }
 
 void WorkflowView::setupPalette() {
-    palette = new WorkflowPalette(WorkflowEnv::getProtoRegistry());
+    palette = new WorkflowPalette(WorkflowEnv::getProtoRegistry(), this);
     palette->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored));
     connect(palette, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SLOT(sl_selectPrototype(Workflow::ActorPrototype*, bool)));
     connect(palette, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)));

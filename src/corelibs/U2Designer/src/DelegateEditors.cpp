@@ -542,7 +542,7 @@ URLWidget *URLDelegate::createWidget(QWidget *parent) const {
                                tags(),
                                parent);
     }
-    if (options.testFlag(SelectFileToSave) && !options.testFlag(DoNotUseWorkflowOutputFolder)) {
+    if (!options.testFlag(DoNotUseWorkflowOutputFolder)) {
         result->setSchemaConfig(schemaConfig);
     }
     return result;

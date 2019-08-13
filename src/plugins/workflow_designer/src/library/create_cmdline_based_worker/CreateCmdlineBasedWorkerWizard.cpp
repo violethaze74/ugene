@@ -77,19 +77,21 @@ const QString CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD = "worker
 const QString CreateCmdlineBasedWorkerWizard::WORKER_ID_FIELD = "worker-id";
 const QString CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD = "worker-name";
 
-CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(QWidget *_parent)
+CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(SchemaConfig* _schemaConfig, QWidget *_parent)
     : QWizard(_parent),
-      initialConfig(nullptr),
-      config(nullptr)
+    initialConfig(nullptr),
+    config(nullptr),
+    schemaConfig(_schemaConfig)
 {
     GCOUNTER(cvar, tvar, "\"Configure Element with External Tool\" dialog is opened for creating");
     init();
 }
 
-CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(ExternalProcessConfig *_initialConfig, QWidget *_parent)
+CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(SchemaConfig* _schemaConfig, ExternalProcessConfig *_initialConfig, QWidget *_parent)
     : QWizard(_parent),
-      initialConfig(nullptr),
-      config(nullptr)
+    initialConfig(nullptr),
+    config(nullptr),
+    schemaConfig(_schemaConfig)
 {
     SAFE_POINT(nullptr != _initialConfig, "Initial config of the element to edit is nullptr", );
     GCOUNTER(cvar, tvar, "\"Configure Element with External Tool\" dialog is opened for editing");
@@ -224,7 +226,7 @@ void CreateCmdlineBasedWorkerWizard::accept() {
 void CreateCmdlineBasedWorkerWizard::init() {
     addPage(new CreateCmdlineBasedWorkerWizardGeneralSettingsPage(initialConfig));
     addPage(new CreateCmdlineBasedWorkerWizardInputDataPage(initialConfig));
-    addPage(new CreateCmdlineBasedWorkerWizardParametersPage(initialConfig));
+    addPage(new CreateCmdlineBasedWorkerWizardParametersPage(initialConfig, schemaConfig));
     addPage(new CreateCmdlineBasedWorkerWizardOutputDataPage(initialConfig));
     addPage(new CreateCmdlineBasedWorkerWizardCommandPage(initialConfig));
     addPage(new CreateCmdlineBasedWorkerWizardElementAppearancePage(initialConfig));
@@ -467,9 +469,9 @@ char const * const CreateCmdlineBasedWorkerWizardParametersPage::ATTRIBUTES_DATA
 char const * const CreateCmdlineBasedWorkerWizardParametersPage::ATTRIBUTES_IDS_PROPERTY = "attributes-ids-property";
 char const * const CreateCmdlineBasedWorkerWizardParametersPage::ATTRIBUTES_NAMES_PROPERTY = "attributes-names-property";
 
-CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardParametersPage(ExternalProcessConfig *_initialConfig)
+CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardParametersPage(ExternalProcessConfig *_initialConfig, SchemaConfig *_schemaConfig)
     : QWizardPage(nullptr),
-      initialConfig(_initialConfig)
+    initialConfig(_initialConfig)
 {
     setupUi(this);
 
@@ -479,7 +481,7 @@ CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardPara
     connect(pbDelete, SIGNAL(clicked()), SLOT(sl_deleteAttribute()));
     connect(this, SIGNAL(si_attributesChanged()), SIGNAL(completeChanged()));
 
-    model = new CfgExternalToolModelAttributes();
+    model = new CfgExternalToolModelAttributes(_schemaConfig);
     connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(sl_updateAttributes()));
     connect(model, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), SLOT(sl_updateAttributes()));
     connect(model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), SLOT(sl_updateAttributes()));

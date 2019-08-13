@@ -482,8 +482,9 @@ void AttributeItem::setDescription(const QString &_description) {
 /// CfgExternalToolModelAttributes
 //////////////////////////////////////////////////////////////////////////
 
-CfgExternalToolModelAttributes::CfgExternalToolModelAttributes(QObject *_parent)
-    : QAbstractTableModel(_parent)
+CfgExternalToolModelAttributes::CfgExternalToolModelAttributes(SchemaConfig* _schemaConfig, QObject *_parent)
+    : QAbstractTableModel(_parent),
+    schemaConfig(_schemaConfig)
 {
     types.append(QPair<QString, QVariant>(tr("Boolean"), AttributeConfig::BOOLEAN_TYPE));
     types.append(QPair<QString, QVariant>(tr("Integer"), AttributeConfig::INTEGER_TYPE));
@@ -527,7 +528,7 @@ void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString& n
     } else if (newType == AttributeConfig::INPUT_FILE_URL_TYPE) {
         propDelegate = new URLDelegate("", "", false, false, false);
     } else if (newType == AttributeConfig::OUTPUT_FILE_URL_TYPE) {
-        propDelegate = new URLDelegate("", "", false, false);
+        propDelegate = new URLDelegate("", "", false, false, false);
     } else if (newType == AttributeConfig::INPUT_FOLDER_URL_TYPE) {
         propDelegate = new URLDelegate("", "", false, true, false);
     } else if (newType == AttributeConfig::OUTPUT_FOLDER_URL_TYPE) {
@@ -536,6 +537,7 @@ void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString& n
         return;
     }
 
+    propDelegate->setSchemaConfig(schemaConfig);
     item->setDefaultValue(defaultValue);
     delete item->delegateForDefaultValues;
     item->delegateForDefaultValues = propDelegate;

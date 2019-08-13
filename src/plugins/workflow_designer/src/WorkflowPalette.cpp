@@ -40,12 +40,12 @@ namespace U2 {
 
 const QString WorkflowPalette::MIME_TYPE("application/x-ugene-workflow-id");
 
-WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry* reg, QWidget *parent)
+WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget *parent)
 : QWidget(parent)
 {
     setupUi(this);
     nameFilter = new NameFilterLayout(NULL);
-    elementsList = new WorkflowPaletteElements(reg, this);
+    elementsList = new WorkflowPaletteElements(reg, schemaConfig, this);
     setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true);
 
@@ -195,8 +195,8 @@ QSize PaletteDelegate::sizeHint(const QStyleOptionViewItem &opt, const QModelInd
 /************************************************************************/
 /* WorkflowPaletteElements */
 /************************************************************************/
-WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, QWidget *parent)
-: QTreeWidget(parent), overItem(NULL), currentAction(NULL), protoRegistry(reg)
+WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, SchemaConfig* _schemaConfig, QWidget *parent)
+: QTreeWidget(parent), overItem(NULL), currentAction(NULL), protoRegistry(reg), schemaConfig(_schemaConfig)
 {
     setFocusPolicy(Qt::NoFocus);
     setSelectionMode(QAbstractItemView::NoSelection);
@@ -455,7 +455,7 @@ void WorkflowPaletteElements::restoreState(const QVariant& v) {
 }
 
 QString WorkflowPaletteElements::createPrototype() {
-    QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(this);
+    QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(schemaConfig,  this);
     dlg->exec();
     CHECK(!dlg.isNull(), QString());
 
@@ -473,7 +473,7 @@ QString WorkflowPaletteElements::createPrototype() {
 
 bool WorkflowPaletteElements::editPrototype(ActorPrototype *proto) {
     ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(proto->getId());
-    QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(oldCfg, this);
+    QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(schemaConfig, oldCfg, this);
     dlg->exec();
     CHECK(!dlg.isNull(), false);
 

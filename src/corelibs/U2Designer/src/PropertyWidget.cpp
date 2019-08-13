@@ -551,11 +551,6 @@ void URLWidget::activate() {
 }
 
 void URLWidget::sl_browse() {
-    if (!urlLine->saveFile) {
-        urlLine->sl_onBrowse();
-        return;
-    }
-
     RunFileSystem *rfs = getRFS();
     if (NULL == rfs) {
         urlLine->sl_onBrowse();

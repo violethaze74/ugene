@@ -44,7 +44,7 @@ class WorkflowPalette : public QWidget, Ui_PaletteWidget
 public:
     static const QString MIME_TYPE;
 
-    WorkflowPalette(ActorPrototypeRegistry* reg, QWidget *parent = 0);
+    WorkflowPalette(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget *parent = 0);
     QMenu * createMenu(const QString &name);
     void createMenu(QMenu *menu);
 
@@ -73,7 +73,7 @@ class WorkflowPaletteElements : public QTreeWidget {
 
 public:
 
-    WorkflowPaletteElements(ActorPrototypeRegistry* reg, QWidget *parent = 0);
+    WorkflowPaletteElements(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget *parent = 0);
     QMenu * createMenu(const QString &name);
     void createMenu(QMenu *menu);
 
@@ -127,6 +127,7 @@ private:
 
     ActorPrototypeRegistry *protoRegistry;
     QVariantMap expandState;
+    SchemaConfig* schemaConfig;
 
     friend class PaletteDelegate;
 };

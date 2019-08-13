@@ -160,7 +160,7 @@ public:
         COLUMNS_COUNT = COLUMN_DESCRIPTION + 1   // elements count
     };
 
-    CfgExternalToolModelAttributes(QObject *parent = nullptr);
+    CfgExternalToolModelAttributes(SchemaConfig* schemaConfig, QObject *parent = nullptr);
     ~CfgExternalToolModelAttributes();
 
     void changeDefaultValueDelegate(const QString& newType, AttributeItem* item);
@@ -179,6 +179,7 @@ private:
     QList<AttributeItem*> items;
     PropertyDelegate *typesDelegate;
     QList<ComboItem> types;
+    SchemaConfig *schemaConfig;
 };
 
 } // U2
