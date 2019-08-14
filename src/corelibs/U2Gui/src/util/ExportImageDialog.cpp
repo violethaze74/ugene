@@ -26,6 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
@@ -99,6 +100,8 @@ void ExportImageDialog::accept() {
         return;
     }
 
+    U2OpStatusImpl os;
+    GUrlUtils::prepareFileLocation(filename, os);
     if (!GUrlUtils::canWriteFile(filename)) {
         QMessageBox::warning(this, tr(DIALOG_ACCEPT_ERROR_TITLE), tr("The image file cannot be created. No write permissions."));
         return;
