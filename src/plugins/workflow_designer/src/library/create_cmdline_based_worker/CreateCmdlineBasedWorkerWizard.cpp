@@ -300,9 +300,7 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initializePage() {
         leName->setText(initialConfig->name);
         rbIntegratedTool->setChecked(initialConfig->useIntegratedTool);
         leToolPath->setText(QDir::toNativeSeparators(initialConfig->customToolPath));
-        if (initialConfig->integratedToolId == nullptr || 
-            initialConfig->integratedToolId.isEmpty() || 
-            (AppContext::getExternalToolRegistry()->getById(initialConfig->integratedToolId) == nullptr && rbIntegratedTool->isChecked())) {
+        if (AppContext::getExternalToolRegistry()->getById(initialConfig->integratedToolId) == nullptr && rbIntegratedTool->isChecked()) {
             QObjectScopedPointer<QMessageBox> warningBox(new QMessageBox(
                 QMessageBox::Warning,
                 initialConfig->name,
@@ -310,7 +308,7 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initializePage() {
                 QMessageBox::Close));
             warningBox->exec();
             rbCustomTool->setChecked(true);
-        } else {
+        } else if (!initialConfig->integratedToolId.isEmpty()) { 
             cbIntegratedTools->setDefaultMenuValue(initialConfig->integratedToolId);
         }
     } else {
