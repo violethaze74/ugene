@@ -2353,19 +2353,10 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     QAbstractButton* button = GTAction::button(os, "AddElementWithCommandLineTool");
     GTWidget::click(os, button);
     GTGlobals::sleep(200);
-    //WorkflowProcessItem *cmdlineWorker = GTUtilsWorkflowDesigner::getWorker(os, "test_4295");
 
     GTUtilsWorkflowDesigner::click(os, "test_4295");
 
-    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
-    settings.command = "echo $in > $out";
-
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
-    GTUtilsWorkflowDesigner::click(os, "test_4295",QPoint(0,0),Qt::RightButton);
-    GTGlobals::sleep();
-
-    WorkflowProcessItem* element = GTUtilsWorkflowDesigner::addElement(os, "test_4295");
+    WorkflowProcessItem* element = GTUtilsWorkflowDesigner::getWorker(os, "test_4295");
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"), element);
     GTGlobals::sleep(200);
     GTUtilsWorkflowDesigner::connect(os, element, GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
@@ -2379,7 +2370,6 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsLog::check(os, logTracer);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4302_1) {
