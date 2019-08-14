@@ -496,7 +496,7 @@ URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, const O
     *tags() = _tags;
 }
 
-URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi, bool isPath, bool saveFile, QObject *parent, const QString &format, bool noFilesMode)
+URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi, bool isPath, bool saveFile, QObject *parent, const QString &format, bool noFilesMode, bool doNotUseWorkflowOutputFolder)
     : PropertyDelegate(parent), lastDirType(type)
 {
     tags()->set(DelegateTags::FILTER, filter);
@@ -506,9 +506,10 @@ URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi,
     options |= isPath ? AllowSelectOnlyExistingDir : None;
     options |= saveFile ? SelectFileToSave : None;
     options |= noFilesMode ? SelectParentDirInsteadSelectedFile : None;
+    options |= doNotUseWorkflowOutputFolder ? DoNotUseWorkflowOutputFolder : None;
 }
 
-URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool multi, bool isPath, bool saveFile, QObject *parent, bool noFilesMode) :
+URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool multi, bool isPath, bool saveFile, QObject *parent, bool noFilesMode, bool doNotUseWorkflowOutputFolder) :
     PropertyDelegate(parent),
     lastDirType(type)
 {
@@ -518,6 +519,7 @@ URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool mu
     options |= isPath ? AllowSelectOnlyExistingDir : None;
     options |= saveFile ? SelectFileToSave : None;
     options |= noFilesMode ? SelectParentDirInsteadSelectedFile : None;
+    options |= doNotUseWorkflowOutputFolder ? DoNotUseWorkflowOutputFolder : None;
 }
 
 QVariant URLDelegate::getDisplayValue(const QVariant &v) const {

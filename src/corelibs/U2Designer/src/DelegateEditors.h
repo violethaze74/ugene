@@ -96,8 +96,8 @@ public:
 
     URLDelegate(const QString& filter, const QString &type, const Options &options, QObject *parent = 0, const QString &format = "");
     URLDelegate(const DelegateTags& tags, const QString &type, const Options &options, QObject *parent = 0);
-    URLDelegate(const QString& filter, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = 0, const QString &format = "", bool noFilesMode = false);
-    URLDelegate(const DelegateTags& tags, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = 0, bool noFilesMode = false);
+    URLDelegate(const QString& filter, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = 0, const QString &format = "", bool noFilesMode = false, bool doNotUseWorkflowOutputFolder = false);
+    URLDelegate(const DelegateTags& tags, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = 0, bool noFilesMode = false, bool doNotUseWorkflowOutputFolder = false);
 
     QVariant getDisplayValue(const QVariant &v) const;
 
