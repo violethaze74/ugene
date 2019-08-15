@@ -104,13 +104,13 @@ public:
     bool isViewCollapsed() const;
     void updateViewButtonState();
 
-    void setPanViewCollapsed(bool v);
+    void setPanViewCollapsed(bool collapsed);
     bool isPanViewCollapsed() const;
 
-    void setDetViewCollapsed(bool v);
+    void setDetViewCollapsed(bool collapsed);
     bool isDetViewCollapsed() const;
 
-    void setOverviewCollapsed(bool v);
+    void setOverviewCollapsed(bool collapsed);
     bool isOverviewCollapsed() const;
 
     virtual void updateState(const QVariantMap& m);
@@ -139,10 +139,10 @@ signals:
 protected slots:
     void sl_onViewDestroyed(QObject*);
 
-    void sl_toggleView();
-    void sl_togglePanView();
-    void sl_toggleDetView();
-    void sl_toggleOverview();
+    void sl_toggleAllSubViews();
+    void sl_togglePanView(bool checked);
+    void sl_toggleDetView(bool checked);
+    void sl_toggleOverview(bool checked);
     void sl_onSelectRange();
     void sl_onSelectInRange();
     void sl_onSelectOutRange();

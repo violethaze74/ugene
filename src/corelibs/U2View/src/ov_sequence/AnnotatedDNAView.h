@@ -288,6 +288,11 @@ private:
     ADVSequenceWidget*          replacedSeqWidget;     // not NULL when any sequence widget is dragging to the new place.
 
     int                         timerId;
+
+    // Used to detect 'expandable sequences' <-> 'fixed sequences' transition event for the mainSplitter.
+    bool hadExpandableSequenceWidgetsLastResize;
+    // Used to restore mainSplitter state on 'fixed sequences'-> 'expandable sequences' transition.
+    QList<int> savedMainSplitterSizes;
 };
 
 } // namespace U2

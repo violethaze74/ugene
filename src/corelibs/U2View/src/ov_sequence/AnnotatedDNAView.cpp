@@ -32,7 +32,6 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AutoAnnotationsSupport.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -52,7 +51,6 @@
 #include <U2Core/U2SequenceUtils.h>
 
 #include <U2Gui/CreateObjectRelationDialogController.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/EditSequenceDialogController.h>
 #include <U2Gui/EditSettingsDialog.h>
 #include <U2Gui/GUIUtils.h>
@@ -92,6 +90,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
 : GObjectView(AnnotatedDNAViewFactory::ID, viewName)
 {
     timerId = 0;
+    hadExpandableSequenceWidgetsLastResize = false;
 
     annotationSelection = new AnnotationSelection(this);
     annotationGroupSelection = new AnnotationGroupSelection(this);
@@ -325,21 +324,18 @@ void AnnotatedDNAView::updateScrollAreaHeight() {
         return;
     }
 
-    int maxH = 0;
+    int newScrollAreaMaxHeight = 0;
     foreach(ADVSequenceWidget* v, seqViews) {
-        maxH += v->maximumHeight();
+        int widgetMaxHeight = v->maximumHeight();
+        if (widgetMaxHeight == QWIDGETSIZE_MAX) {
+            scrollArea->setMaximumHeight(QWIDGETSIZE_MAX);
+            return;
+        }
+        newScrollAreaMaxHeight += v->maximumHeight();
     }
-
-    if (scrollArea->size().height() >= maxH) {
-        scrollArea->setMaximumHeight(maxH + 2); // magic '+2' is for the borders, without it unneccessary scroll bar will appear
-
-        QList<int> mainSplitterSizes = mainSplitter->sizes();
-        int idx = mainSplitter->indexOf(scrollArea);
-        SAFE_POINT(0 <= idx  && idx < mainSplitterSizes.size(), "Invalid position of the widget in the splitter",);
-        mainSplitterSizes[ mainSplitter->indexOf(scrollArea) ] = maxH;
-        mainSplitter->setSizes(mainSplitterSizes);
-    } else {
-        scrollArea->setMaximumHeight(QWIDGETSIZE_MAX);
+    newScrollAreaMaxHeight += 2;  // magic '+2' is for the borders, without it unneccessary scroll bar will appear
+    if (newScrollAreaMaxHeight <= scrollArea->height()) {
+        scrollArea->setMaximumHeight(newScrollAreaMaxHeight);
     }
 }
 
@@ -377,6 +373,28 @@ bool AnnotatedDNAView::eventFilter(QObject* o, QEvent* e) {
             QMouseEvent* event = dynamic_cast<QMouseEvent*>(e);
             if (event->buttons() == Qt::LeftButton) {
                 finishSeqWidgetMove();
+            }
+        }
+        // try to restore mainSplitter state on sequence views fixed <-> expandable state transition. Usually this happens when user toggles sequence views.
+        if (e->type() == QEvent::Resize) {
+            QResizeEvent* event = dynamic_cast<QResizeEvent*>(e);
+            bool hasExpandableSequenceWidgetsNow = false; // expandable state: any of the sequence view widgets has unlimited height.
+            foreach (const ADVSequenceWidget* w, getSequenceWidgets()){
+                if (w->maximumHeight() == QWIDGETSIZE_MAX) {
+                    hasExpandableSequenceWidgetsNow = true;
+                    break;
+                }
+            }
+            if (hasExpandableSequenceWidgetsNow != hadExpandableSequenceWidgetsLastResize) { // transition from fixed <-> expandable state
+                if (hasExpandableSequenceWidgetsNow) { // try restore state from the saved sizes if possible.
+                    if (savedMainSplitterSizes.size() > 0 && savedMainSplitterSizes.size() == mainSplitter->sizes().size()) {
+                        mainSplitter->setSizes(savedMainSplitterSizes);
+                    }
+                }
+                hadExpandableSequenceWidgetsLastResize = hasExpandableSequenceWidgetsNow;
+            }
+            if (hasExpandableSequenceWidgetsNow) { // update saved sizes for a future use.
+                savedMainSplitterSizes = mainSplitter->sizes();
             }
         }
         return false;
