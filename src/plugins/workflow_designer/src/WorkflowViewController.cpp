@@ -530,16 +530,9 @@ static void updateComboBox(QComboBox *scaleComboBox, int scalePercent) {
 
 void WorkflowView::rescale(bool updateGui) {
     double newScale = meta.scalePercent / 100.0;
-    QMatrix oldMatrix = scene->views().at(0)->matrix();
-    scene->views().at(0)->resetMatrix();
-    scene->views().at(0)->translate(oldMatrix.dx(), oldMatrix.dy());
-    scene->views().at(0)->scale(newScale, newScale);
-    QRectF rect = scene->sceneRect();
-    qreal w = rect.width()/newScale;
-    qreal h = rect.height()/newScale;
-    rect.setWidth(w);
-    rect.setHeight(h);
-    scene->setSceneRect(rect);
+    QGraphicsView* elementsView = scene->views().at(0);
+    elementsView->resetMatrix();
+    elementsView->scale(newScale, newScale);
     if (updateGui) {
         updateComboBox(scaleComboBox, meta.scalePercent);
     }
