@@ -526,13 +526,13 @@ void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString& n
         propDelegate = new DoubleSpinBoxDelegate(doubleValues);
         defaultValue = QVariant(0.0);
     } else if (newType == AttributeConfig::INPUT_FILE_URL_TYPE) {
-        propDelegate = new URLDelegate("", "", false, false, false, nullptr, false, false, true);
+        propDelegate = new URLDelegate("", "", false, false, false, nullptr, "", false, true);
     } else if (newType == AttributeConfig::OUTPUT_FILE_URL_TYPE) {
-        propDelegate = new URLDelegate("", "", false, false, true, nullptr, false, false, false);
+        propDelegate = new URLDelegate("", "", false, false, true, nullptr, "", false, false);
     } else if (newType == AttributeConfig::INPUT_FOLDER_URL_TYPE) {
-        propDelegate = new URLDelegate("", "", false, true, false, nullptr, false, false, true);
+        propDelegate = new URLDelegate("", "", false, true, false, nullptr, "", false, true);
     } else if (newType == AttributeConfig::OUTPUT_FOLDER_URL_TYPE) {
-        propDelegate = new URLDelegate("", "", false, true, true, nullptr, false, false, false);
+        propDelegate = new URLDelegate("", "", false, true, true, nullptr, "", false, false);
     } else {
         return;
     }

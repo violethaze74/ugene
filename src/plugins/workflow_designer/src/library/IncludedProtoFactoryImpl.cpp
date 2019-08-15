@@ -154,19 +154,19 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
         QString descr = acfg.description.isEmpty() ? acfg.type : acfg.description;
         if (acfg.type == AttributeConfig::INPUT_FILE_URL_TYPE) {
             type = BaseTypes::STRING_TYPE();
-            delegates[acfg.attributeId] = new URLDelegate("", "", false, false, false, nullptr, false, false, true);
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, false, false, nullptr, "", false, true);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::OUTPUT_FILE_URL_TYPE) {
             type = BaseTypes::STRING_TYPE();
-            delegates[acfg.attributeId] = new URLDelegate("", "", false, false, true, nullptr, false, false, false);
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, false, true, nullptr, "", false, false);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::INPUT_FOLDER_URL_TYPE) {
             type = BaseTypes::STRING_TYPE();
-            delegates[acfg.attributeId] = new URLDelegate("", "", false, true, false, nullptr, false, false, true);
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, true, false, nullptr, "", false, true);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::OUTPUT_FOLDER_URL_TYPE) {
             type = BaseTypes::STRING_TYPE();
-            delegates[acfg.attributeId] = new URLDelegate("", "", false, true, true, nullptr, false, false, false);
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, true, true, nullptr, "", false, false);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::STRING_TYPE) {
             type = BaseTypes::STRING_TYPE();
