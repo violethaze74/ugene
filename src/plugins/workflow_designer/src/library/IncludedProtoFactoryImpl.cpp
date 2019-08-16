@@ -202,25 +202,13 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
     proto->setPrompter( new LocalWorkflow::ExternalProcessWorkerPrompter() );
     proto->setNonStandard(cfg->filePath);
 
-    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "java")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById("JAVA");
-        CHECK(tool, nullptr);
-        proto->addExternalTool(tool->getId());
-    }
-    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "python")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById("PYTHON2");
-        CHECK(tool, nullptr);
-        proto->addExternalTool(tool->getId());
-    }
-    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "Rscript")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById("RSCRIPT");
-        CHECK(tool, nullptr);
-        proto->addExternalTool(tool->getId());
-    }
-    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "perl")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById("PERL");
-        CHECK(tool, nullptr);
-        proto->addExternalTool(tool->getId());
+    QList<ExternalTool*> all = AppContext::getExternalToolRegistry()->getAllEntries();
+    for (auto tool : all) {
+        if (!tool->isModule()) {
+            if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, tool)) {
+                proto->addExternalTool(tool->getId());
+            }
+        }
     }
 
     return proto;
