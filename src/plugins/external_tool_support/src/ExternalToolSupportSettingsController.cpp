@@ -575,12 +575,13 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
     QString path = s->text();
     s->setModified(false);
 
-    QList<QTreeWidgetItem*> listOfItems = twIntegratedTools->findItems("", Qt::MatchContains | Qt::MatchRecursive);
+    QList<QTreeWidgetItem*> listOfItems = twIntegratedTools->findItems("", Qt::MatchContains | Qt::MatchRecursive) <<
+                                            twCustomTools->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     SAFE_POINT(listOfItems.length() != 0, "ExternalToolSupportSettings, NO items are selected", );
 
     twIntegratedTools->clearSelection();
     foreach(QTreeWidgetItem* item, listOfItems) {
-        QWidget* itemWid = twIntegratedTools->itemWidget(item, 1);
+        QWidget* itemWid = item->treeWidget()->itemWidget(item, 1);
         if (par == itemWid) {       //may be no good method for check QTreeWidgetItem
             emit si_setLockState(true);
             QString toolId = item->data(0, Qt::ItemDataRole::UserRole).toString();

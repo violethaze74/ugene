@@ -36,7 +36,7 @@ QString CustomWorkerUtils::getVarName(const ExternalTool *tool) {
                "Bad external tool type",
                "__UGENE_BAD_EXTERNAL_TOOL_TYPE__");
     QString id = tool->getId();
-    SAFE_POINT((id.indexOf(QRegularExpression("[^A-Z0-9_]")) < 0),
+    SAFE_POINT((id.indexOf(QRegularExpression("[^A-Z0-9_-]")) < 0),
                "Bad external tool id",
                "__UGENE_BAD_EXTERNAL_TOOL_ID__");
 
