@@ -133,11 +133,7 @@ void GSequenceLineViewAnnotated::sl_onAnnotationSelectionChanged(AnnotationSelec
     if (1 == added.size()) {
         Annotation *a = added.first();
         if (aos.contains(a->getGObject())) {
-            const AnnotationSelectionData *asd = as->getAnnotationData(a);
-            SAFE_POINT(asd != NULL, "AnnotationSelectionData are NULL",);
-            foreach (int loc, asd->locationIdxList) {
-                ensureVisible(a, loc);
-            }
+            ensureVisible(a, 0);
             changed = true;
         }
     }
@@ -205,7 +201,8 @@ QList<AnnotationSelectionData> GSequenceLineViewAnnotated::selectAnnotationByCoo
                         AnnotationSettings *as = asr->getAnnotationSettings(aData);
                         if (as->visible) {
                             if (ra->isPosOnAnnotationYRange(p, a, i, as)) {
-                                res.append(AnnotationSelectionData(a, i));
+                                res.append(AnnotationSelectionData(a)); // select whole annotation (all regions)
+                                break;
                             }
                         }
                     }

@@ -493,7 +493,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& 
 
     AnnotationTableObject *ao = selection.first().annotation->getGObject();
     ADVSequenceObjectContext* commonSeq = view->getSequenceContext(ao);
-    int maxLen = commonSeq->getSequenceLength();
+    qint64 maxLen = commonSeq->getSequenceLength();
     ma->setAlphabet(commonSeq->getAlphabet());
     QSet<QString> names;
     int rowIdx = 0;
@@ -562,7 +562,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, b
             al = al->getMap().count(true) >= al2->getMap().count(true) ? al : al2;
         }
     }
-    int maxLen = 0;
+    qint64 maxLen = 0;
     ma->setAlphabet(al);
     QSet<QString> names;
     foreach (const AnnotationSelectionData& a, selection) {

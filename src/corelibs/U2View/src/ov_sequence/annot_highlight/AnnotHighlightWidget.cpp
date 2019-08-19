@@ -192,7 +192,7 @@ void AnnotHighlightWidget::selectNextAnnotation(bool isForward) const {
 
     if (isAnnRegionValid) {
         as->clear();
-        as->addToSelection(annRegion.annotation, annRegion.regionIdx);
+        as->addToSelection(annRegion.annotation);
     }
     return;
 }
@@ -263,7 +263,7 @@ bool AnnotHighlightWidget::findNextUnselectedAnnotatedRegion(AnnotatedRegion &an
     // find the next unselected
     for (int i = 0; i < regionsAtTheSamePosition.size(); i++) {
         int idx = fromTheBeginning ? regionsAtTheSamePosition.size() - 1 - i : i;
-        if (as->contains(regionsAtTheSamePosition[idx].annotation, regionsAtTheSamePosition[idx].regionIdx)) {
+        if (as->contains(regionsAtTheSamePosition[idx].annotation)) {
             idx += (fromTheBeginning ? 1 : -1);
             if (idx < 0 || idx == regionsAtTheSamePosition.size()) {
                 break;

@@ -192,7 +192,7 @@ private:
     void finishDragAndDrop(Qt::DropAction dndAction);
 
     void annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotations, const QList<U2Region>& selectedRegions = QList<U2Region>());
-    void annotationDoubleClicked(AVAnnotationItem* item, const QList<U2Region>& selectedRegions, const int numOfClickedRegion = -1);
+    void annotationDoubleClicked(AVAnnotationItem* item, const QList<U2Region>& selectedRegions);
     void clearSelectedNotAnnotations();
 
     AnnotationsTreeWidget* tree;

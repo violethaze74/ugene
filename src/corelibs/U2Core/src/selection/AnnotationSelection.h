@@ -36,36 +36,16 @@ class U2OpStatus;
 
 class U2CORE_EXPORT AnnotationSelectionData {
 public:
-    AnnotationSelectionData(Annotation *a, int lIdx);
-    AnnotationSelectionData(Annotation *a, const QList<int> &listIdx);
+    AnnotationSelectionData(Annotation *a);
 
-    bool                operator ==(const AnnotationSelectionData &d) const;
-    int                 getSelectedRegionsLen() const;
-    /**
-     * Returns all regions from selected annotations locations without any modification
-     */
+    bool operator ==(const AnnotationSelectionData &d) const;
+
     QVector<U2Region>   getSelectedRegions() const;
 
-    bool contains(int locIndx) const;
-    bool contains(const AnnotationSelectionData& other) const;
+    qint64 getSelectedRegionsLen() const;
 
-    /**
-     * Returns true if the selection is empty after the deletion
-     * MUST CHECK result after using this method
-     */
-    bool deselectLocation(int locIndx);
-
-    void addLocation(int locIdx);
-
-    /**
-     * The annotation selected
-     */
-    Annotation *        annotation;
-    /**
-     * List of Location idx that is preferable for visualization
-     * 0..N == idx of U2Region in 'location' field
-     */
-    QList<int>          locationIdxList;
+    /** Selected annotation. */
+    Annotation* annotation;
 };
 
 class  U2CORE_EXPORT AnnotationSelection : public GSelection {
@@ -75,16 +55,15 @@ public:
 
     const QList<AnnotationSelectionData> &  getSelection() const;
 
-    const AnnotationSelectionData *         getAnnotationData(Annotation *a) const;
     /**
      * Adds annotation to selection.
      * If annotation is already in selection and have a different locationIdx
      * -> removes the old annotaiton selection data
      * and adds the annotation again with updated locationIdx
      */
-    void                                    addToSelection(Annotation *a, int locationIdx = -1);
+    void                                    addToSelection(Annotation *a);
 
-    void                                    removeFromSelection(Annotation *a, int locationIdx = -1);
+    void                                    removeFromSelection(Annotation *a);
 
     bool                                    isEmpty() const;
 
@@ -92,16 +71,10 @@ public:
 
     void                                    removeObjectAnnotations(AnnotationTableObject *obj);
 
-    bool                                    contains(Annotation *a) const;
-    bool                                    contains(Annotation *a, int locationIdx) const;
-    bool                                    contains(const AnnotationSelectionData &selData) const;
+    bool                                    contains(const Annotation *a) const;
 
     static void                             getAnnotationSequence(QByteArray &res, const AnnotationSelectionData &ad, char gapSym,
                                                 const U2EntityRef &ref, const DNATranslation *complTT, const DNATranslation *aminoTT, U2OpStatus &os);
-    /**
-     * Returns list of locations of all selected annotations that belongs to the objects in list
-     */
-    QVector<U2Region>                       getSelectedLocations(const QSet<AnnotationTableObject *> &objects) const;
 
 signals:
     void si_selectionChanged(AnnotationSelection *thiz, const QList<Annotation *> &added, const QList<Annotation *> &removed);
@@ -127,8 +100,6 @@ public:
     bool                                isEmpty() const;
 
     void                                clear();
-
-    void                                removeObjectGroups(AnnotationTableObject *obj);
 
     bool                                contains(AnnotationGroup *g) const;
 

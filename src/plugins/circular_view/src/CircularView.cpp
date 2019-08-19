@@ -220,13 +220,7 @@ QList<AnnotationSelectionData> CircularView::selectAnnotationByCoord(const QPoin
         CircularAnnotationRegionItem* regItem = item->getContainingRegion(cp);
         int region = item->containsRegion(cp);
         if(region != -1) {
-            QList<int> indx;
-            indx << region;
-            if (regItem != NULL && regItem->hasJoinedRegion()) {
-                indx << item->getAnnotation()->getRegions().indexOf(regItem->getJoinedRegion());
-            }
-
-            res.append(AnnotationSelectionData(item->getAnnotation(), indx));
+            res.append(AnnotationSelectionData(item->getAnnotation()));
             if (item->getAnnotation()->getType() != U2FeatureTypes::RestrictionSite) {
                 // only restriction sites can intersect
                 return res;
@@ -237,13 +231,8 @@ QList<AnnotationSelectionData> CircularView::selectAnnotationByCoord(const QPoin
         foreach(CircularAnnotationRegionItem* r, item->getRegions()) {
             CircularAnnotationLabel* lbl = r->getLabel();
             SAFE_POINT(lbl != NULL, "NULL annotation label item!", res);
-            if(lbl->isVisible() && lbl->contains(cp)) {
-                QList <int> indx;
-                indx << r->getNumber();
-                if (r->hasJoinedRegion()) {
-                    indx << item->getAnnotation()->getRegions().indexOf(r->getJoinedRegion());
-                }
-                res.append(AnnotationSelectionData(item->getAnnotation(), indx));
+            if (lbl->isVisible() && lbl->contains(cp)) {
+                res.append(AnnotationSelectionData(item->getAnnotation()));
                 return res;
             }
         }

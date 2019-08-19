@@ -1686,53 +1686,24 @@ void AnnotationsTreeView::sl_annotationClicked(AnnotationSelectionData* asd) {
     CHECK(annotationItems.size() == 1, );
     AVAnnotationItem* item = annotationItems.first();
 
-    const qint64 seqLength = ctx->getSequenceContext(asd->annotation->getGObject())->getSequenceLength();
-    SAFE_POINT(asd->locationIdxList.size() == 1 || U1AnnotationUtils::isAnnotationAroundJunctionPoint(asd, seqLength), tr("Wrong annotation selection"), );
-
-    bool setSelected = true;
     const ADVSequenceObjectContext* advctx = qobject_cast<ADVSequenceObjectContext*>(sender());
     SAFE_POINT(advctx != NULL, "Incorrect sender", );
 
     QList<AnnotationTableObject*> annotationObjects = advctx->getAnnotationObjects().toList();
     QMap<AVAnnotationItem*, QList<U2Region> > sortedAnnotationSelections = sortAnnotationSelection(annotationObjects);
-    const QVector<U2Region> selectedRegions = asd->getSelectedRegions();
-
-    //In case of joined annotation, we need to check "Did we click to this region of annotation already?"
-    //If yes - remove this selected region
-    //If no - we have no need to do smth, because if this click continue as double-click, we will expand selected regions of this annotation for current region too
-    //Check "selectedAnnotation.value(item).size() == 1" here because we need to know - if we want to remove the last selected region of current annotation, we need also to remove annotation selection too
-    const bool removeLastRegion = (sortedAnnotationSelections.value(item).size() == 1) &&
-                                  (sortedAnnotationSelections.value(item).contains(selectedRegions.first())) &&
-                                  (sortedAnnotationSelections.value(item).contains(selectedRegions.last()));
-
-    if (removeLastRegion) {
-        foreach(int loc, asd->locationIdxList) {
-            if (annotationSelection->contains(asd->annotation, loc)) {
-                annotationSelection->removeFromSelection(asd->annotation);
-                setSelected = false;
-            }
-        }
-    }
 
     expandItemRecursevly(item->parent());
-    SAFE_POINT(asd->locationIdxList.size() == 1 || U1AnnotationUtils::isAnnotationAroundJunctionPoint(asd, seqLength), tr("Wrong  annotation selection"), );
 
-    annotationSelection->addToSelection(item->annotation, asd->locationIdxList.first());
-    if (2 == asd->locationIdxList.size()) {
-        annotationSelection->addToSelection(item->annotation, asd->locationIdxList.last());
-    }
-    annotationClicked(item, sortedAnnotationSelections, selectedRegions.toList());
+    annotationSelection->addToSelection(item->annotation);
+    annotationClicked(item, sortedAnnotationSelections, item->annotation->getRegions().toList());
 }
 
 //TODO: refactor this method
 //UTI-155
 //See review of UGENE-5936 for details
 void AnnotationsTreeView::sl_annotationDoubleClicked(AnnotationSelectionData* asd) {
-    if (!ctx->getAnnotationsSelection()->contains(asd->annotation)) {
-        foreach(int loc, asd->locationIdxList) {
-            ctx->getAnnotationsSelection()->addToSelection(asd->annotation, loc);
-        }
-    }
+    ctx->getAnnotationsSelection()->addToSelection(asd->annotation);
+
     QList<AVAnnotationItem*> annotationItems = findAnnotationItems(asd->annotation);
     foreach(AVAnnotationItem* item, annotationItems) {
         expandItemRecursevly(item->parent());
@@ -1740,7 +1711,7 @@ void AnnotationsTreeView::sl_annotationDoubleClicked(AnnotationSelectionData* as
             SignalBlocker blocker(tree);
             item->setSelected(true);
         }
-        annotationDoubleClicked(item, asd->getSelectedRegions().toList(), asd->locationIdxList.first());
+        annotationDoubleClicked(item, asd->getSelectedRegions().toList());
     }
 }
 
@@ -1837,7 +1808,7 @@ void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnot
     }
 }
 
-void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const QList<U2Region>& selectedRegions, const int numOfClickedRegion) {
+void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const QList<U2Region>& selectedRegions) {
     selectedAnnotation[item] << selectedRegions;
 
     ADVSequenceObjectContext* seqObjCtx = ctx->getSequenceContext(item->getAnnotationTableObject());
@@ -1849,7 +1820,7 @@ void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const 
     AnnotationSelection* annotationSelection = seqObjCtx->getAnnotationsSelection();
     SAFE_POINT(annotationSelection != NULL, "AnnotationSelection is NULL", );
 
-    annotationSelection->addToSelection(item->annotation, numOfClickedRegion);
+    annotationSelection->addToSelection(item->annotation);
 
     QList<U2Region> regionsToSelect = selectedRegions;
     const QVector<U2Region> regions = sequenceSelection->getSelectedRegions();
