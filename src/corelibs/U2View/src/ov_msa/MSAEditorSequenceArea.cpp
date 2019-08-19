@@ -687,7 +687,7 @@ void MSAEditorSequenceArea::sl_pasteFinished(Task* _pasteTask){
     }
     const QList<Document*>& docs = pasteTask->getDocuments();
 
-    AddSequencesFromDocumentsToAlignmentTask *task = new AddSequencesFromDocumentsToAlignmentTask(msaObject, docs);
+    AddSequencesFromDocumentsToAlignmentTask *task = new AddSequencesFromDocumentsToAlignmentTask(msaObject, docs, true);
     task->setErrorNotificationSuppression(true); // we manually show warning message if needed when task is finished.
     connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_addSequencesToAlignmentFinished(Task*)));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
