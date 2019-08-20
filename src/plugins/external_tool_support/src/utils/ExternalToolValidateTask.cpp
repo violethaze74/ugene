@@ -74,9 +74,9 @@ void ExternalToolJustValidateTask::run() {
 
     if (!originalValidation.toolRunnerProgram.isEmpty()) {
         ScriptingToolRegistry* stRegistry = AppContext::getScriptingToolRegistry();
-        SAFE_POINT_EXT(stRegistry, setError(tr("Scripting tool registry is NULL")), );
+        SAFE_POINT_EXT(nullptr != stRegistry, setError(tr("Scripting tool registry is NULL")), );
         ScriptingTool* stool = stRegistry->getById(originalValidation.toolRunnerProgram);
-        SAFE_POINT_EXT(stool, setError(tr("Scripting tool '%1' isn't found in the registry")), );
+        CHECK_EXT(nullptr != stool, setError(tr("Scripting tool '%1' isn't found in the registry")), );
 
         if(stool->getPath().isEmpty()) {
             stateInfo.setError(QString("The tool %1 that runs %2 is not installed. "

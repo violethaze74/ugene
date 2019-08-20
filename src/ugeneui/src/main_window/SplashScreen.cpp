@@ -86,9 +86,6 @@ SplashScreenWidget::SplashScreenWidget(){
 
     Version v = Version::appVersion();
     version = v.text;
-    if (version.right(version.indexOf(".")).toInt() == 0) {
-        version = version.left(version.indexOf("."));
-    }
 
     QImage image(":ugene/images/ugene_splash.png");
     QSize widgetSize = image.size();
@@ -163,7 +160,8 @@ void SplashScreenWidget::drawInfo(){
     font.setPixelSize(VERSION_HEIGHT_PX);
     p.setFont( font );
     p.setPen(QColor(0, 46, 59));
-    QString text = tr("Version ") + version + tr(" is loading");
+    QString versionSign = version.right(version.indexOf(".")).toInt() == 0 ? version.left(version.indexOf(".")) : version;
+    QString text = tr("Version ") + versionSign + tr(" is loading");
     for (int i = 0; i < dots_number; i++) {
         text.append(".");
     }

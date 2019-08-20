@@ -384,7 +384,12 @@ void ExternalToolManagerImpl::sl_customToolRemoved(const QString &toolId) {
 
 bool ExternalToolManagerImpl::dependenciesAreOk(const QString& toolId) {
     bool result = true;
-    foreach(const QString& masterId, dependencies.keys(toolId)) {
+    QStringList dependencyList = dependencies.keys(toolId);
+    foreach(const QString& masterId, dependencyList) {
+        CHECK_OPERATIONS(toolStates.keys().contains(masterId),
+                         coreLog.details(tr("A dependency tool isn't represented in the general tool list. Skip dependency \"%1\"").arg(masterId)),
+                         continue);
+
         result &= (Valid == toolStates.value(masterId, NotDefined));
     }
     return result;
