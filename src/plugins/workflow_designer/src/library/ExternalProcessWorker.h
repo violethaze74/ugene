@@ -96,11 +96,11 @@ public:
     void run();
 
     QMap<QString, DataConfig> takeOutputUrls();
-
+    void addListeners(const QList<ExternalToolListener*>& listenersToAdd);
 private:
     QMap<QString, DataConfig> outputUrls;
-
     QString execString;
+    QList<ExternalToolListener*> listeners;
 };
 
 
