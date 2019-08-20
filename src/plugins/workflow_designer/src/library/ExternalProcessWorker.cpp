@@ -258,7 +258,7 @@ void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
 
 QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
     QStringList urls;
-    QRegularExpression regex = QRegularExpression(QString("((\\\\\\\\)+)\\$%1([^%2]|$)|(^)\\$%1([^%2]|$)|([^\\\\])\\$%1([^%2]|$)")
+    QRegularExpression regex = QRegularExpression(QString("(?!((\\\\\\\\)+))\\$%1((?!(%2))|$)|(^)\\$%1((?!(%2))|$)|(?<!\\\\)\\$%1((?!(%2))|$)")
                                                   .arg(dataCfg.attributeId)
                                                   .arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
     int ind = execString.indexOf(regex);
@@ -282,12 +282,12 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
         paramValue = "\"" + d->getURLString() + "\"";
     }
 
-    execString.replace(regex, "\\1" + paramValue);
+    execString.replace(regex, paramValue);
     return urls;
 }
 
 QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os) {
-    QRegularExpression regex = QRegularExpression(QString("((\\\\\\\\)+)\\$%1([^%2]|$)|(^)\\$%1([^%2]|$)|([^\\\\])\\$%1([^%2]|$)")
+    QRegularExpression regex = QRegularExpression(QString("(?!((\\\\\\\\)+))\\$%1((?!(%2))|$)|(^)\\$%1((?!(%2))|$)|(?<!\\\\)\\$%1((?!(%2))|$)")
                                                   .arg(dataCfg.attributeId)
                                                   .arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
     int ind = execString.indexOf(regex);
@@ -302,7 +302,7 @@ QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConf
         extension = f->getSupportedDocumentFileExtensions().first();
     }
     QString url = generateAndCreateURL(extension, dataCfg.attrName);
-    execString.replace(regex, "\\1\"" + url + "\"");
+    execString.replace(regex, "\"" + url + "\"");
 
     return url;
 }
@@ -371,6 +371,10 @@ bool ExternalProcessWorker::finishWorkIfInputEnded(QString &error) {
         return true;
     case NOT_ALL_INPUTS_HAVE_MESSAGE:
         return false;
+    default:
+        error = tr("Unexpected result");
+        finish();
+        return true;
     }
 }
 
