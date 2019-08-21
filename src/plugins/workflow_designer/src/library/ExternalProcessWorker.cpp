@@ -353,7 +353,6 @@ Task * ExternalProcessWorker::tick() {
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinishied()));
     if (listeners[0] != nullptr) {
         listeners[0]->setToolName(cfg->name);
-        listeners[0]->addNewLogMessage(execString, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     }
     return task;
 }
@@ -688,7 +687,7 @@ void LaunchExternalToolTask::run() {
         stateInfo.setError(tr("Can't launch %1").arg(execString));
         return;
     }
-
+    listeners[0]->addNewLogMessage(execString, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     while(!externalProcess->waitForFinished(1000)) {
         if(isCanceled()) {
             CmdlineTaskRunner::killProcessTree(externalProcess);
