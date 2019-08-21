@@ -89,8 +89,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
     GTUtilsProjectTreeView::click(os, "tub");
     GTUtilsMdi::activateWindow(os, "3000_sequences [m] 3000_sequences");
 
-    QAbstractButton *align = GTAction::button( os, "Align sequence to this alignment" );
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button( os, "Align sequence(s) to this alignment" );
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click( os, align);
 
     GTUtilsProjectTreeView::click(os, "tub1.txt");
@@ -120,8 +120,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002){
     GTUtilsProjectTreeView::click(os, "tub");
     GTUtilsMdi::activateWindow(os, "3000_sequences [m] 3000_sequences");
 
-    QAbstractButton *align = GTAction::button( os, "Align sequence to this alignment" );
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button( os, "Align sequence(s) to this alignment" );
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click( os, align);
 
     GTUtilsProjectTreeView::click(os, "3000_sequences.aln");
@@ -151,8 +151,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/cmdline/primers/", "primers.fa");
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button( os, "Align sequence to this alignment" );
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button( os, "Align sequence(s) to this alignment" );
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click( os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -184,8 +184,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/cmdline/primers/", "primers.fa");
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button( os, "Align sequence to this alignment" );
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button( os, "Align sequence(s) to this alignment" );
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click( os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -211,8 +211,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005){
     GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", fileList);
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button( os, "Align sequence to this alignment" );
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button( os, "Align sequence(s) to this alignment" );
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click( os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -254,8 +254,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006){
     GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", fileList);
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button( os, "Align sequence to this alignment" );
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button( os, "Align sequence(s) to this alignment" );
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click( os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -296,8 +296,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007){
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "CVU55762.gb");
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button( os, "Align sequence to this alignment" );
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button( os, "Align sequence(s) to this alignment" );
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click( os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -317,8 +317,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008){
     GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, testDir + "_common_data/abif/", fileList);
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button( os, "Align sequence to this alignment" );
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button( os, "Align sequence(s) to this alignment" );
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click( os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -336,8 +336,8 @@ GUI_TEST_CLASS_DEFINITION(test_0009){
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/clustal/", "COI na.aln");
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button( os, "Align sequence to this alignment" );
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button( os, "Align sequence(s) to this alignment" );
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click( os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -351,10 +351,10 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Click "Align sequence to this alignment" button on the toolbar.
+    //3. Click "Align sequence(s) to this alignment" button on the toolbar.
     //4. Select "data/samples/FASTQ/eas.fastq".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
-    GTWidget::click(os, GTAction::button(os, "Align sequence to this alignment"));
+    GTWidget::click(os, GTAction::button(os, "Align sequence(s) to this alignment"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: three sequences are added to the msa.
@@ -373,10 +373,10 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
-//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    3. Click "Align sequence(s) to this alignment" button on the toolbar.
 //    4. Select "_common_data/scenarios/add_and_align/add_and_align_1.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_1.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
 //    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
     const QStringList expectedMsaData = QStringList() << "----TAAGACTTCTAA------------"
@@ -415,10 +415,10 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
-//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    3. Click "Align sequence(s) to this alignment" button on the toolbar.
 //    4. Select "_common_data/scenarios/add_and_align/add_and_align_2.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_2.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
 //    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
     const QStringList expectedMsaData = QStringList() << "------TAAGACTTCTAA"
@@ -457,10 +457,10 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
-//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    3. Click "Align sequence(s) to this alignment" button on the toolbar.
 //    4. Select "_common_data/scenarios/add_and_align/add_and_align_1.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_1.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
 //    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row, columns with gaps were removed
     const QStringList expectedMsaData = QStringList() << "-----AAGCTTCTTTTAA----------"
@@ -491,10 +491,10 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
-//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    3. Click "Align sequence(s) to this alignment" button on the toolbar.
 //    4. Select "_common_data/scenarios/add_and_align/add_and_align_3.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_3.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
 //    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
     const QStringList expectedMsaData = QStringList() << "AAGCTTCTTTTAA"
@@ -523,9 +523,9 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    3. Click "Align sequence(s) to this alignment" button on the toolbar.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_3.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
 //    4. Select "_common_data/scenarios/add_and_align/add_and_align_3.fa" in the dialog.
 //    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
@@ -556,10 +556,10 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    2. Click "Align sequence to this alignment" button on the toolbar.
+//    2. Click "Align sequence(s) to this alignment" button on the toolbar.
 //    3. Select "_common_data/scenarios/add_and_align/seq1.fa" as sequence to align.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/seq1.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -580,10 +580,10 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    2. Click "Align sequence to this alignment" button on the toolbar.
+//    2. Click "Align sequence(s) to this alignment" button on the toolbar.
 //    3. Select "_common_data/scenarios/add_and_align/seq2.fa" as sequence to align.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/seq2.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -606,10 +606,10 @@ GUI_TEST_CLASS_DEFINITION(test_0016_3) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    2. Click "Align sequence to this alignment" button on the toolbar.
+//    2. Click "Align sequence(s) to this alignment" button on the toolbar.
 //    3. Select "_common_data/scenarios/add_and_align/two_seqs.aln" as input data.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/two_seqs.aln"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
