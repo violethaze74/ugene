@@ -141,7 +141,7 @@ SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* seqCtx, bool 
     ca_m.sequenceLen = dnaso->getSequenceLength();
     ca_c = new CreateAnnotationWidgetController(ca_m, this);
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331165");
+    new HelpButton(this, buttonBox, "24742553");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
