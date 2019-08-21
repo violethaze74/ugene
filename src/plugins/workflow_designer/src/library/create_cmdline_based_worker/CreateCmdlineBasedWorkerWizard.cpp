@@ -240,7 +240,7 @@ void CreateCmdlineBasedWorkerWizard::init() {
     setOption(QWizard::HaveHelpButton, true);
     new U2::HelpButton(this, this->button(QWizard::HelpButton), "24740125");
 
-    DialogUtils::setWizardMinimumSize(this, QSize(780, 470));
+    DialogUtils::setWizardMinimumSize(this, QSize(780, 350));
 }
 
 ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() const {
