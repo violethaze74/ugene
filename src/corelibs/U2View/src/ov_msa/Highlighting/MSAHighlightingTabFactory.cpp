@@ -31,7 +31,7 @@ namespace U2 {
 
 const QString MSAHighlightingFactory::GROUP_ID = "OP_MSA_HIGHLIGHTING";
 const QString MSAHighlightingFactory::GROUP_ICON_STR = ":core/images/highlight.png";
-const QString MSAHighlightingFactory::GROUP_DOC_PAGE = "23331064";
+const QString MSAHighlightingFactory::GROUP_DOC_PAGE = "24742452";
 
 MSAHighlightingFactory::MSAHighlightingFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;

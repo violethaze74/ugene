@@ -47,7 +47,7 @@ DashboardsManagerDialog::DashboardsManagerDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331370");
+    new HelpButton(this, buttonBox, "24740116");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
 
