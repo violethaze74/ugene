@@ -36,7 +36,7 @@
 namespace U2 {
 
 const QString FastQCSupport::ET_FASTQC = "FastQC";
-const QString FastQCSupport::ET_FASTQC_ID = "FASTQC";
+const QString FastQCSupport::ET_FASTQC_ID = "UGENE_FASTQC";
 
 FastQCSupport::FastQCSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {

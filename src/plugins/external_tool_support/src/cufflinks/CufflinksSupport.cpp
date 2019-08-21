@@ -28,15 +28,15 @@
 namespace U2 {
 
 const QString  CufflinksSupport::ET_CUFFCOMPARE = "Cuffcompare";
-const QString  CufflinksSupport::ET_CUFFCOMPARE_ID = "CUFFCOMPARE";
+const QString  CufflinksSupport::ET_CUFFCOMPARE_ID = "UGENE_CUFFCOMPARE";
 const QString  CufflinksSupport::ET_CUFFDIFF = "Cuffdiff";
-const QString  CufflinksSupport::ET_CUFFDIFF_ID = "CUFFDIFF";
+const QString  CufflinksSupport::ET_CUFFDIFF_ID = "UGENE_CUFFDIFF";
 const QString  CufflinksSupport::ET_CUFFLINKS = "Cufflinks";
-const QString  CufflinksSupport::ET_CUFFLINKS_ID = "CUFFLINKS";
+const QString  CufflinksSupport::ET_CUFFLINKS_ID = "UGENE_CUFFLINKS";
 const QString  CufflinksSupport::ET_CUFFMERGE = "Cuffmerge";
-const QString  CufflinksSupport::ET_CUFFMERGE_ID = "CUFFMERGE";
+const QString  CufflinksSupport::ET_CUFFMERGE_ID = "UGENE_CUFFMERGE";
 const QString  CufflinksSupport::ET_GFFREAD = "Gffread";
-const QString  CufflinksSupport::ET_GFFREAD_ID = "GFFREAD";
+const QString  CufflinksSupport::ET_GFFREAD_ID = "UGENE_GFFREAD";
 
 const QString  CufflinksSupport::CUFFLINKS_TMP_DIR = "cufflinks";
 const QString  CufflinksSupport::CUFFDIFF_TMP_DIR = "cuffdiff";

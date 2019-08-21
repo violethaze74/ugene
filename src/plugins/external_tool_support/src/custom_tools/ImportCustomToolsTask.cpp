@@ -44,7 +44,7 @@ namespace U2 {
 const QString ImportCustomToolsTask::SETTINGS_PATH = "external_tools/custom_tool_configs";
 
 ImportCustomToolsTask::ImportCustomToolsTask(const QString &_url)
-    : Task(tr("Import custom external tools configuration"), TaskFlag_None),
+    : Task(tr("Import custom external tools configuration"), TaskFlags_FOSE_COSC),
       url(_url),
       registerTask(nullptr)
 {

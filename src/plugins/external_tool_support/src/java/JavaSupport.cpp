@@ -28,7 +28,7 @@
 namespace U2 {
 
 const QString JavaSupport::ET_JAVA = "java";
-const QString JavaSupport::ET_JAVA_ID = "JAVA";
+const QString JavaSupport::ET_JAVA_ID = "UGENE_JAVA";
 
 const QString JavaSupport::ARCHITECTURE = "architecture";
 const QString JavaSupport::ARCHITECTURE_X32 = "x32";

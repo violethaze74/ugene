@@ -27,13 +27,13 @@
 
 namespace U2 {
 
-const QString Metaphlan2Support::TOOL_ID = "METAPHLAN2";
+const QString Metaphlan2Support::TOOL_ID = "UGENE_METAPHLAN2";
 const QString Metaphlan2Support::TOOL_NAME = "MetaPhlAn2";
 const QString Metaphlan2Support::UTIL_SCRIPT = "utils/read_fastx.py";
 
 //These constants are taken from the 'external_tool_support' project
-const QString Metaphlan2Support::ET_BOWTIE_2_ALIGNER_ID = "BOWTIE";
-const QString Metaphlan2Support::ET_PYTHON_ID = "PYTHON2";
+const QString Metaphlan2Support::ET_BOWTIE_2_ALIGNER_ID = "UGENE_BOWTIE";
+const QString Metaphlan2Support::ET_PYTHON_ID = "UGENE_PYTHON2";
 const QString Metaphlan2Support::ET_PYTHON_BIO_ID = "BIO";
 const QString Metaphlan2Support::ET_PYTHON_NUMPY_ID = "NUMPY";
 

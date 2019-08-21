@@ -33,17 +33,17 @@ namespace U2 {
 
 const QString ClarkSupport::CLARK_GROUP = "CLARK";
 const QString ClarkSupport::ET_CLARK = "CLARK";
-const QString ClarkSupport::ET_CLARK_ID = "CLARK";
+const QString ClarkSupport::ET_CLARK_ID = "UGENE_CLARK";
 const QString ClarkSupport::ET_CLARK_L = "CLARK-l";
-const QString ClarkSupport::ET_CLARK_L_ID = "CLARK_L";
+const QString ClarkSupport::ET_CLARK_L_ID = "UGENE_CLARK_L";
 const QString ClarkSupport::ET_CLARK_BUILD_SCRIPT = "builddb.sh";
-const QString ClarkSupport::ET_CLARK_BUILD_SCRIPT_ID = "CLARK_BUILD_DB";
+const QString ClarkSupport::ET_CLARK_BUILD_SCRIPT_ID = "UGENE_CLARK_BUILD_DB";
 const QString ClarkSupport::ET_CLARK_GET_ACCSSN_TAX_ID = "getAccssnTaxID";
-const QString ClarkSupport::ET_CLARK_GET_ACCSSN_TAX_ID_ID = "CLARK_GET_ACCSSN_TAX_ID";
+const QString ClarkSupport::ET_CLARK_GET_ACCSSN_TAX_ID_ID = "UGENE_CLARK_GET_ACCSSN_TAX_ID";
 const QString ClarkSupport::ET_CLARK_GET_TARGETS_DEF = "getTargetsDef";
-const QString ClarkSupport::ET_CLARK_GET_TARGETS_DEF_ID = "CLARK_GET_TARGETS_DEF";
+const QString ClarkSupport::ET_CLARK_GET_TARGETS_DEF_ID = "UGENE_CLARK_GET_TARGETS_DEF";
 const QString ClarkSupport::ET_CLARK_GET_FILES_TO_TAX_NODES = "getfilesToTaxNodes";
-const QString ClarkSupport::ET_CLARK_GET_FILES_TO_TAX_NODES_ID = "CLARK_GET_FILES_TO_TAX_NODES";
+const QString ClarkSupport::ET_CLARK_GET_FILES_TO_TAX_NODES_ID = "UGENE_CLARK_GET_FILES_TO_TAX_NODES";
 
 ClarkSupport::ClarkSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {

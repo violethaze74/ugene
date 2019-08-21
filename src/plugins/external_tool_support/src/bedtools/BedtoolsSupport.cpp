@@ -33,7 +33,7 @@
 namespace U2 {
 
 const QString BedtoolsSupport::ET_BEDTOOLS = "bedtools";
-const QString BedtoolsSupport::ET_BEDTOOLS_ID = "BEDTOOLS";
+const QString BedtoolsSupport::ET_BEDTOOLS_ID = "UGENE_BEDTOOLS";
 const QString BedtoolsSupport::GENOMES_DIR_NAME = "genome_lengths";
 const QString BedtoolsSupport::GENOMES_DATA_NAME = "Genome files";
 

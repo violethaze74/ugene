@@ -29,7 +29,7 @@
 namespace U2 {
 
 const QString TopHatSupport::ET_TOPHAT = "TopHat";
-const QString TopHatSupport::ET_TOPHAT_ID ="TOPHAT";
+const QString TopHatSupport::ET_TOPHAT_ID ="UGENE_TOPHAT";
 const QString TopHatSupport::TOPHAT_TMP_DIR = "tophat";
 
 TopHatSupport::TopHatSupport(const QString& id, const QString& name, const QString& path)

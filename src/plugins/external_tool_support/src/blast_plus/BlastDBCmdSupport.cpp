@@ -45,7 +45,7 @@
 namespace U2 {
 
 const QString BlastDbCmdSupport::ET_BLASTDBCMD = "BlastDBCmd";
-const QString BlastDbCmdSupport::ET_BLASTDBCMD_ID = "BLAST_DB_CMD";
+const QString BlastDbCmdSupport::ET_BLASTDBCMD_ID = "UGENE_BLAST_DB_CMD";
 
 BlastDbCmdSupport::BlastDbCmdSupport(const QString& path) : ExternalTool(ET_BLASTDBCMD_ID, ET_BLASTDBCMD, path)
 {
