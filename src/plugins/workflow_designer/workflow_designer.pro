@@ -44,6 +44,7 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/library/BaseDocWriter.h \
            src/library/CDSearchWorker.h \
            src/library/CfgExternalToolModel.h \
+           src/library/CmdlineBasedWorkerValidator.h \
            src/library/ConvertFilesFormatWorker.h \
            src/library/ConvertSnpeffVariationsToAnnotationsWorker.h \
            src/library/CoreLib.h \
@@ -165,6 +166,7 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/library/BaseDocWriter.cpp \
            src/library/CDSearchWorker.cpp \
            src/library/CfgExternalToolModel.cpp \
+           src/library/CmdlineBasedWorkerValidator.cpp \
            src/library/ConvertFilesFormatWorker.cpp \
            src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp \
            src/library/CoreLib.cpp \
