@@ -351,10 +351,9 @@ Task * ExternalProcessWorker::tick() {
     QList<ExternalToolListener*> listeners(createLogListeners());
     task->addListeners(listeners);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinishied()));
-    const QString commandWithArguments = GUrlUtils::getQuotedString(execString);// +ExternalToolSupportUtils::prepareArgumentsForCmdLine(execStringArgs);
     if (listeners[0] != nullptr) {
         listeners[0]->setToolName(cfg->name);
-        listeners[0]->addNewLogMessage(commandWithArguments, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
+        listeners[0]->addNewLogMessage(execString, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     }
     return task;
 }
