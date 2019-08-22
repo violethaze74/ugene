@@ -32,8 +32,7 @@ namespace Workflow {
 
 bool CmdlineBasedWorkerValidator::validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const {
     ExternalProcessConfig* config = WorkflowEnv::getExternalCfgRegistry()->getConfigById(actor->getId());
-    QRegularExpression regexp(QString("((?<!(\\\\))%%1%)").arg(CustomWorkerUtils::TOOL_PATH_VAR_NAME));
-    if (config->cmdLine.contains(regexp)) {
+    if (CustomWorkerUtils::commandContainsVarName(config->cmdLine, CustomWorkerUtils::TOOL_PATH_VAR_NAME)) {
         CHECK_EXT(QFile(config->customToolPath).exists(),
                   notificationList << WorkflowNotification(tr("The element specifies a nonexistent path to an external tool executable."), actor->getId()),
                   false);

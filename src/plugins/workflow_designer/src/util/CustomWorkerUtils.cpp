@@ -53,6 +53,10 @@ bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QSt
 
 bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const ExternalTool *tool) {
     QString varName = getVarName(tool);
+    return commandContainsVarName(cmd, varName);
+}
+
+bool CustomWorkerUtils::commandContainsVarName(const QString& cmd, const QString& varName) {
     QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + varName + "%"));
     return cmd.indexOf(regex1) >= 0;
 }
