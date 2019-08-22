@@ -45,11 +45,11 @@
 namespace U2 {
 
 const QString FormatDBSupport::ET_FORMATDB = "FormatDB";
-const QString FormatDBSupport::ET_FORMATDB_ID = "FORMAT_DB";
+const QString FormatDBSupport::ET_FORMATDB_ID = "UGENE_FORMAT_DB";
 const QString FormatDBSupport::ET_MAKEBLASTDB = "MakeBLASTDB";
-const QString FormatDBSupport::ET_MAKEBLASTDB_ID = "MAKE_BLAST_DB";
+const QString FormatDBSupport::ET_MAKEBLASTDB_ID = "UGENE_MAKE_BLAST_DB";
 const QString FormatDBSupport::ET_GPU_MAKEBLASTDB = "GPU-MakeBLASTDB";
-const QString FormatDBSupport::ET_GPU_MAKEBLASTDB_ID = "GPU_MAKE_BLAST_DB";
+const QString FormatDBSupport::ET_GPU_MAKEBLASTDB_ID = "UGENE_GPU_MAKE_BLAST_DB";
 const QString FormatDBSupport::FORMATDB_TMP_DIR = "FormatDB";
 
 FormatDBSupport::FormatDBSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)

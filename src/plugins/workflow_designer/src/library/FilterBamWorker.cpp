@@ -213,7 +213,7 @@ void FilterBamWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new FilterBamPrompter());
     //no way to include tool support files, so ids passed to functions manually
-    proto->addExternalTool("SAMTOOLS");//SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID
+    proto->addExternalTool("UGENE_SAMTOOLS");//SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -368,7 +368,7 @@ QStringList BamFilterSetting::getSamtoolsArguments() const{
 
 ////////////////////////////////////////////////////////
 //SamtoolsViewFilterTask
-const QString SamtoolsViewFilterTask::SAMTOOLS_ID = "SAMTOOLS";
+const QString SamtoolsViewFilterTask::SAMTOOLS_ID = "UGENE_SAMTOOLS";
 
 SamtoolsViewFilterTask::SamtoolsViewFilterTask(const BamFilterSetting &settings)
 :ExternalToolSupportTask(tr("Samtool view (filter) for %1 ").arg(settings.inputUrl), TaskFlags(TaskFlag_None)),settings(settings),resultUrl(""){

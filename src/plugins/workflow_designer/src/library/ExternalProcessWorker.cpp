@@ -348,7 +348,12 @@ Task * ExternalProcessWorker::tick() {
     applyEscapedSymbols(execString);
 
     LaunchExternalToolTask *task = new LaunchExternalToolTask(execString, outputUrls);
+    QList<ExternalToolListener*> listeners(createLogListeners());
+    task->addListeners(listeners);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinishied()));
+    if (listeners[0] != nullptr) {
+        listeners[0]->setToolName(cfg->name);
+    }
     return task;
 }
 
@@ -667,32 +672,37 @@ void LaunchExternalToolTask::run() {
         execString = execString.split(">").first();
         externalProcess->setStandardOutputFile(output);
     }
-
+    QScopedPointer<ExternalToolRunTaskHelper> helper(new ExternalToolRunTaskHelper(externalProcess, new ExternalToolLogParser(), stateInfo));
+    CHECK(listeners.size() > 0, );
+    helper->addOutputListener(listeners[0]);
     QStringList execStringArgs = ExternalToolSupportUtils::splitCmdLineArguments(execString);
     QString execStringProg = execStringArgs.takeAt(0);
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     externalProcess->setProcessEnvironment(env);
     taskLog.details(tr("Running external process: %1").arg(execString));
-
     bool startOk = WorkflowUtils::startExternalProcess(externalProcess, execStringProg, execStringArgs);
 
     if(!startOk) {
         stateInfo.setError(tr("Can't launch %1").arg(execString));
         return;
     }
-
+    listeners[0]->addNewLogMessage(execString, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     while(!externalProcess->waitForFinished(1000)) {
         if(isCanceled()) {
             CmdlineTaskRunner::killProcessTree(externalProcess);
         }
-    }
+    }    
 }
 
 QMap<QString, DataConfig> LaunchExternalToolTask::takeOutputUrls() {
     QMap<QString, DataConfig> result = outputUrls;
     outputUrls.clear();
     return result;
+}
+
+void LaunchExternalToolTask::addListeners(const QList<ExternalToolListener*>& listenersToAdd) {
+    listeners.append(listenersToAdd);
 }
 
 /************************************************************************/

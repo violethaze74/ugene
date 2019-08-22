@@ -30,7 +30,7 @@
 namespace U2 {
 
 const QString SeqPosSupport::ET_SEQPOS = "seqpos";
-const QString SeqPosSupport::ET_SEQPOS_ID = "SEQPOS";
+const QString SeqPosSupport::ET_SEQPOS_ID = "UGENE_SEQPOS";
 const QString SeqPosSupport::ASSEMBLY_DIR_NAME = "genomes";
 const QString SeqPosSupport::ASSEMBLY_DIR = "Assembly dir";
 

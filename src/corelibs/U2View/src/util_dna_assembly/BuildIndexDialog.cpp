@@ -48,12 +48,12 @@ BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry* registry, QWidg
 {
     setupUi(this);
     QMap<QString,QString> helpPagesMap;
-    helpPagesMap.insert("BWA","23331217");
-    helpPagesMap.insert("BWA-MEM","23331251");
-    helpPagesMap.insert("BWA-SW","23331245");
-    helpPagesMap.insert("Bowtie","23331214");
-    helpPagesMap.insert("Bowtie2","23331242");
-    helpPagesMap.insert("UGENE Genome Aligner","23331220");
+    helpPagesMap.insert("BWA","24742605");
+    helpPagesMap.insert("BWA-MEM","24742639");
+    helpPagesMap.insert("BWA-SW","24742633");
+    helpPagesMap.insert("Bowtie","24742602");
+    helpPagesMap.insert("Bowtie2","24742630");
+    helpPagesMap.insert("UGENE Genome Aligner","24742608");
     new ComboboxDependentHelpButton(this, buttonBox, methodNamesBox, helpPagesMap);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -177,13 +177,13 @@ void BuildIndexDialog::accept()
         QString externalToolId;
         
         if (getAlgorithmName() == "Bowtie2") {
-            externalToolId = "BOWTIE2_BUILD";
+            externalToolId = "UGENE_BOWTIE2_BUILD";
         } 
         if (getAlgorithmName() == "Bowtie"){
-            externalToolId = "BOWTIE_BUILD";
+            externalToolId = "UGENE_BOWTIE_BUILD";
         }
         if ((getAlgorithmName() == "BWA") || (getAlgorithmName() == "BWA-MEM") || (getAlgorithmName() == "BWA-SW")){
-            externalToolId = "BWA";
+            externalToolId = "UGENE_BWA";
         }
         if(AppContext::getExternalToolRegistry()->getById(externalToolId)->getPath().isEmpty()) {
             QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);

@@ -48,7 +48,7 @@
 namespace U2 {
 
 const QString MAFFTSupport::ET_MAFFT = "MAFFT";
-const QString MAFFTSupport::ET_MAFFT_ID = "MAFFT";
+const QString MAFFTSupport::ET_MAFFT_ID = "UGENE_MAFFT";
 const QString MAFFTSupport::MAFFT_TMP_DIR = "mafft";
 
 MAFFTSupport::MAFFTSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)

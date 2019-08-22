@@ -49,11 +49,11 @@
 namespace U2 {
 
 const QString HmmerSupport::BUILD_TOOL = "HMMER build";
-const QString HmmerSupport::BUILD_TOOL_ID = "HMMBUILD";
+const QString HmmerSupport::BUILD_TOOL_ID = "UGENE_HMMBUILD";
 const QString HmmerSupport::SEARCH_TOOL = "HMMER search";
-const QString HmmerSupport::SEARCH_TOOL_ID = "HMMSEARCH";
+const QString HmmerSupport::SEARCH_TOOL_ID = "UGENE_HMMSEARCH";
 const QString HmmerSupport::PHMMER_TOOL = "PHMMER search";
-const QString HmmerSupport::PHMMER_TOOL_ID = "PHMMER";
+const QString HmmerSupport::PHMMER_TOOL_ID = "UGENE_PHMMER";
 
 HmmerSupport::HmmerSupport(const QString& id, const QString &name)
     : ExternalTool(id, name, "")

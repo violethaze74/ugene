@@ -47,7 +47,7 @@
 namespace U2 {
 
 const QString CAP3Support::ET_CAP3 = "CAP3";
-const QString CAP3Support::ET_CAP3_ID = "CAP3";
+const QString CAP3Support::ET_CAP3_ID = "UGENE_CAP3";
 const QString CAP3Support::CAP3_TMP_DIR = "cap3";
 
 CAP3Support::CAP3Support(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)

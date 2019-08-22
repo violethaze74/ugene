@@ -28,7 +28,7 @@
 namespace U2 {
 
 const QString PhyMLSupport::PHYML("PhyML Maximum Likelihood");
-const QString PhyMLSupport::PHYML_ID("PHYML");
+const QString PhyMLSupport::PHYML_ID("UGENE_PHYML");
 const QString PhyMLSupport::PHYML_TEMP_DIR("phyml");
 
 PhyMLSupport::PhyMLSupport(const QString& id, const QString& name) : ExternalTool(id, name, "")

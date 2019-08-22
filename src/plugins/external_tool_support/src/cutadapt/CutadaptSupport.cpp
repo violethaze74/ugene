@@ -31,7 +31,7 @@
 namespace U2 {
 
 const QString CutadaptSupport::ET_CUTADAPT = "cutadapt";
-const QString CutadaptSupport::ET_CUTADAPT_ID = "CUTADAPT";
+const QString CutadaptSupport::ET_CUTADAPT_ID = "UGENE_CUTADAPT";
 const QString CutadaptSupport::ADAPTERS_DIR_NAME = "adapters";
 const QString CutadaptSupport::ADAPTERS_DATA_NAME = "Adapters file";
 

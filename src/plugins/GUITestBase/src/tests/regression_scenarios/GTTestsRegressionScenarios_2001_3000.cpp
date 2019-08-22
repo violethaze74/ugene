@@ -1733,7 +1733,7 @@ GUI_TEST_CLASS_DEFINITION( test_2268 ) {
     GTGlobals::sleep();
     ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     CHECK_SET_ERR(etRegistry, "External tool registry is NULL");
-    ExternalTool* tCoffee = etRegistry->getById("T_COFFEE");
+    ExternalTool* tCoffee = etRegistry->getById("UGENE_T_COFFEE");
     CHECK_SET_ERR(tCoffee, "T-coffee tool is NULL");
     QFileInfo toolPath(tCoffee->getPath());
     CHECK_SET_ERR(toolPath.exists(), "T-coffee tool is not set");

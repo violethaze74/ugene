@@ -261,7 +261,7 @@ const QString IlluminaClipAdditionalSettingsDialog::KEEP_BOTH_READS = "keepBothR
 IlluminaClipAdditionalSettingsDialog::IlluminaClipAdditionalSettingsDialog(const QVariantMap &widgetState, QWidget* parent) : QDialog(parent) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "23331522");
+    new HelpButton(this, buttonBox, "24740268");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
 

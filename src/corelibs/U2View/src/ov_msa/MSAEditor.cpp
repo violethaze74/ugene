@@ -197,8 +197,8 @@ QWidget* MSAEditor::createWidget() {
     alignAction->setObjectName("Align");
     connect(alignAction, SIGNAL(triggered()), this, SLOT(sl_align()));
 
-    alignSequencesToAlignmentAction = new QAction(QIcon(":/core/images/add_to_alignment.png"), tr("Align sequence to this alignment"), this);
-    alignSequencesToAlignmentAction->setObjectName("Align sequence to this alignment");
+    alignSequencesToAlignmentAction = new QAction(QIcon(":/core/images/add_to_alignment.png"), tr("Align sequence(s) to this alignment"), this);
+    alignSequencesToAlignmentAction->setObjectName("Align sequence(s) to this alignment");
     connect(alignSequencesToAlignmentAction, SIGNAL(triggered()), this, SLOT(sl_addToAlignment()));
 
     setAsReferenceSequenceAction = new QAction(tr("Set this sequence as reference"), this);
