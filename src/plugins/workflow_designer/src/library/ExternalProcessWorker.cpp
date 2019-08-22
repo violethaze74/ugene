@@ -692,7 +692,21 @@ void LaunchExternalToolTask::run() {
         if(isCanceled()) {
             CmdlineTaskRunner::killProcessTree(externalProcess);
         }
-    }    
+    }
+
+    QProcess::ExitStatus status = externalProcess->exitStatus();
+    int exitCode = externalProcess->exitCode();
+    if (status == QProcess::CrashExit && !hasError()) {
+        setError(tr("External process %1 exited with the following error: %2 (Code: %3)")
+                    .arg(execString)
+                    .arg(externalProcess->errorString())
+                    .arg(exitCode));
+    } else if (status == QProcess::NormalExit && exitCode != EXIT_SUCCESS && !hasError()) {
+        setError(tr("External process %1 exited with code %2").arg(execString).arg(exitCode) );
+    } else if (status == QProcess::NormalExit && exitCode == EXIT_SUCCESS && !hasError()) {
+        algoLog.details(tr("External process \"%1\" finished successfully").arg(execString));
+    }
+
 }
 
 QMap<QString, DataConfig> LaunchExternalToolTask::takeOutputUrls() {

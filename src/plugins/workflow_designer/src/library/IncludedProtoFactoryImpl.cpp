@@ -36,6 +36,7 @@
 
 #include "util/CustomWorkerUtils.h"
 
+#include "CmdlineBasedWorkerValidator.h"
 #include "IncludedProtoFactoryImpl.h"
 
 
@@ -201,6 +202,7 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
 
     proto->setPrompter( new LocalWorkflow::ExternalProcessWorkerPrompter() );
     proto->setNonStandard(cfg->filePath);
+    proto->setValidator(new CmdlineBasedWorkerValidator());
 
     QList<ExternalTool*> all = AppContext::getExternalToolRegistry()->getAllEntries();
     for (auto tool : all) {

@@ -41,6 +41,7 @@ public:
 
     static bool commandContainsSpecialTool(const QString &cmd, const ExternalTool *tool);
     static bool commandContainsSpecialTool(const QString &cmd, const QString toolId);
+    static bool commandContainsVarName(const QString& cmd, const QString& varName);
 
     static bool commandReplaceSpecialByUgenePath(QString &cmd, const ExternalTool *tool);
     static bool commandReplaceSpecialByUgenePath(QString &cmd, const QString varName, const QString path);
