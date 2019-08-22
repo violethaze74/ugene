@@ -223,7 +223,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001){
     CHECK_SET_ERR(c == "#70f970", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 //    4. Check colors for all symbols
-//    (branches: check Jalview, Percentage Identity, Percentage Identity(gray), UGENE color schemes)
+//    (branches: check Jalview, Percentage identity, Percentage identity(gray), UGENE color schemes)
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_1){
@@ -246,7 +246,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_1){
     CHECK_SET_ERR(c == "#ffffff", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 //    4. Check colors for all symbols
-//    (branches: check Jalview, Percentage Identity, Percentage Identity(gray), UGENE color schemes)
+//    (branches: check Jalview, Percentage identity, Percentage identity(gray), UGENE color schemes)
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_2){
@@ -269,7 +269,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_2){
     CHECK_SET_ERR(c == "#ffb340", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 //    4. Check colors for all symbols
-//    (branches: check Jalview, Percentage Identity, Percentage Identity(gray), UGENE color schemes)
+//    (branches: check Jalview, Percentage identity, Percentage identity(gray), UGENE color schemes)
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_3){
@@ -278,9 +278,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_3){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-//    3. Select "Percentage Identity" color scheme
+//    3. Select "Percentage identity" color scheme
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme,"Percentage Identity");
+    GTComboBox::setIndexWithText(os, colorScheme,"Percentage identity");
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0,0));
     QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0,2));
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2,0));
@@ -292,7 +292,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_3){
     CHECK_SET_ERR(c == "#9999ff", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 //    4. Check colors for all symbols
-//    (branches: check Jalview, Percentage Identity, Percentage Identity(gray), UGENE color schemes)
+//    (branches: check Jalview, Percentage identity, Percentage identity(gray), UGENE color schemes)
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_4){
@@ -301,9 +301,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_4){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-//    3. Select "Percentage Identity (gray)" color scheme
+//    3. Select "Percentage identity (gray)" color scheme
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme,"Percentage Identity (gray)");
+    GTComboBox::setIndexWithText(os, colorScheme,"Percentage identity (gray)");
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0,0));
     QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0,2));
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2,0));
@@ -315,7 +315,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_4){
     CHECK_SET_ERR(c == "#999999", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 //    4. Check colors for all symbols
-//    (branches: check Jalview, Percentage Identity, Percentage Identity(gray), UGENE color schemes)
+//    (branches: check Jalview, Percentage identity, Percentage identity(gray), UGENE color schemes)
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0002){
