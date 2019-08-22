@@ -27,9 +27,9 @@ namespace U2 {
 
 // BowtieSupport
 const QString BowtieSupport::ET_BOWTIE = "Bowtie aligner";
-const QString BowtieSupport::ET_BOWTIE_ID = "BOWTIE";
+const QString BowtieSupport::ET_BOWTIE_ID = "UGENE_BOWTIE";
 const QString BowtieSupport::ET_BOWTIE_BUILD = "Bowtie build indexer";
-const QString BowtieSupport::ET_BOWTIE_BUILD_ID = "BOWTIE_BUILD";
+const QString BowtieSupport::ET_BOWTIE_BUILD_ID = "UGENE_BOWTIE_BUILD";
 
 BowtieSupport::BowtieSupport(const QString& id, const QString &name, const QString &path):
     ExternalTool(id, name, path)

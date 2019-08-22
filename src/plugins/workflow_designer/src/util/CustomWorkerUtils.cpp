@@ -40,7 +40,7 @@ QString CustomWorkerUtils::getVarName(const ExternalTool *tool) {
                "Bad external tool id",
                "__UGENE_BAD_EXTERNAL_TOOL_ID__");
 
-    return "UGENE_" + id;
+    return tool->isCustom() ? "UGENE_" + id : id;
 }
 
 bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QString toolId) {

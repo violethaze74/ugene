@@ -30,7 +30,7 @@
 namespace U2 {
 
 const QString ConservationPlotSupport::ET_CONSERVATION_PLOT = "conservation_plot";
-const QString ConservationPlotSupport::ET_CONSERVATION_PLOT_ID = "CONSERVATION_PLOT";
+const QString ConservationPlotSupport::ET_CONSERVATION_PLOT_ID = "UGENE_CONSERVATION_PLOT";
 const QString ConservationPlotSupport::CONSERVATION_DIR_NAME = "phastCons";
 const QString ConservationPlotSupport::CONSERVATION_DATA_NAME = "conservation_data";
 

@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QApplication>
 #include <QStatusBar>
 #include <QTextBrowser>
 #include <QTime>
@@ -308,15 +309,16 @@ void NotificationStack::addNotification(Notification *t) {
         }
     }
 
+    bool isModalWidgetActive = nullptr != QApplication::activeModalWidget() && QApplication::activeModalWidget()->isActiveWindow();
     bool onScreen = AppContext::getMainWindow()->getQMainWindow()->isActiveWindow();
     notifications.append(t);
-    if (onScreen) {
+    if (onScreen || isModalWidgetActive) {
         notificationsOnScreen.append(t);
     }
     emit si_changed();
     
     connect(t, SIGNAL(si_delete()), this, SLOT(sl_delete()), Qt::DirectConnection);
-    if (onScreen) {
+    if (onScreen || isModalWidgetActive) {
         QPoint pos = getBottomRightOfMainWindow();
         t->showNotification(pos.x() - TT_WIDTH, pos.y() - 50 - notificationPosition);
         notificationNumber++;

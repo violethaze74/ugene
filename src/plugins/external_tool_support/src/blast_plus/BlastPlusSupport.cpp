@@ -63,19 +63,19 @@
 namespace U2 {
 
 const QString BlastPlusSupport::ET_BLASTN = "BlastN";
-const QString BlastPlusSupport::ET_BLASTN_ID = "TBLASTN";
+const QString BlastPlusSupport::ET_BLASTN_ID = "UGENE_BLASTN";
 const QString BlastPlusSupport::ET_BLASTP = "BlastP";
-const QString BlastPlusSupport::ET_BLASTP_ID = "BLASTP";
+const QString BlastPlusSupport::ET_BLASTP_ID = "UGENE_BLASTP";
 const QString BlastPlusSupport::ET_GPU_BLASTP = "GPU-BlastP";
-const QString BlastPlusSupport::ET_GPU_BLASTP_ID = "GPU_BLASTP";
+const QString BlastPlusSupport::ET_GPU_BLASTP_ID = "UGENE_GPU_BLASTP";
 const QString BlastPlusSupport::ET_BLASTX = "BlastX";
-const QString BlastPlusSupport::ET_BLASTX_ID = "BLASTX";
+const QString BlastPlusSupport::ET_BLASTX_ID = "UGENE_BLASTX";
 const QString BlastPlusSupport::ET_TBLASTN = "TBlastN";
-const QString BlastPlusSupport::ET_TBLASTN_ID = "TBLASTN";
+const QString BlastPlusSupport::ET_TBLASTN_ID = "UGENE_TBLASTN";
 const QString BlastPlusSupport::ET_TBLASTX = "TBlastX";
-const QString BlastPlusSupport::ET_TBLASTX_ID = "TBLASTX";
+const QString BlastPlusSupport::ET_TBLASTX_ID = "UGENE_TBLASTX";
 const QString BlastPlusSupport::ET_RPSBLAST = "RPSBlast";
-const QString BlastPlusSupport::ET_RPSBLAST_ID = "RPS_BLAST";
+const QString BlastPlusSupport::ET_RPSBLAST_ID = "UGENE_RPS_BLAST";
 const QString BlastPlusSupport::BLASTPLUS_TMP_DIR = "blast_plus";
 
 BlastPlusSupport::BlastPlusSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)

@@ -2644,7 +2644,7 @@ GUI_TEST_CLASS_DEFINITION(test_0896) {
             QWidget *w = QApplication::activeWindow();
             CHECK(NULL != w, );
 
-            ExternalTool *samtools = AppContext::getExternalToolRegistry()->getById("SAMTOOLS");
+            ExternalTool *samtools = AppContext::getExternalToolRegistry()->getById("UGENE_SAMTOOLS");
             QLineEdit *ed = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "templateLineEdit", w));
             GTLineEdit::setText(os, ed, "'" + samtools->getPath() + "' view -b -S -o '" + QDir(sandBoxDir).absolutePath() + "/test_0896out.bam' $sam", false, true);
 

@@ -29,7 +29,7 @@ namespace U2 {
 
 // SpadesSupport
 const QString SpadesSupport::ET_SPADES = "SPAdes";
-const QString SpadesSupport::ET_SPADES_ID = "SPADES";
+const QString SpadesSupport::ET_SPADES_ID = "UGENE_SPADES";
 
 SpadesSupport::SpadesSupport(const QString& id, const QString &name, const QString &path):
     ExternalTool(id, name, path)
