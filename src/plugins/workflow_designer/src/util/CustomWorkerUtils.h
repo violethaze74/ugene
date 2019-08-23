@@ -30,7 +30,7 @@
 namespace U2 {
 namespace Workflow {
 
-#define CMDTOOL_SPECIAL_REGEX "([^\\\\](\\\\\\\\)*|^)"
+#define CMDTOOL_SPECIAL_REGEX "((?<!(\\\\))(\\\\\\\\)*|^)"
 
 class CustomWorkerUtils {
 
