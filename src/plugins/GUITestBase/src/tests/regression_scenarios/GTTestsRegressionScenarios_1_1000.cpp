@@ -2139,8 +2139,8 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
     }
 
     const QStringList groupNames = GTUtilsWorkflowDesigner::getPaletteGroupNames(os);
-    const int customElementsCount = groupNames.contains("Custom Elements with CMD Tools") ?
-                GTUtilsWorkflowDesigner::getPaletteGroupEntries(os, "Custom Elements with CMD Tools").size() : 0;
+    const int customElementsCount = groupNames.contains("Custom Elements with External Tools") ?
+                GTUtilsWorkflowDesigner::getPaletteGroupEntries(os, "Custom Elements with External Tools").size() : 0;
 
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "test";
@@ -2167,7 +2167,7 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
     GTGlobals::sleep(5000);//added to ensure that crash is not here or to fix this crash
 
 //    Expected state: There are no custom workers on the palette now
-    const QList<QTreeWidgetItem *> customElements = GTUtilsWorkflowDesigner::getPaletteGroupEntries(os, "Custom Elements with CMD Tools");
+    const QList<QTreeWidgetItem *> customElements = GTUtilsWorkflowDesigner::getPaletteGroupEntries(os, "Custom Elements with External Tools");
     CHECK_SET_ERR(customElementsCount + 1 == customElements.size(), QString("Unexpected custom elements count: expect %1, got %2")
                   .arg(customElementsCount + 1).arg(customElements.size()));
 
