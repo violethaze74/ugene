@@ -64,7 +64,7 @@ public:
         ArgumentName,
         Type,
         Value,
-        Descroption
+        Description
     };
 
     enum InOutType {
@@ -150,7 +150,8 @@ private:
         GTThread::waitForMainThread();
 
         QComboBox* box = qobject_cast<QComboBox*>(QApplication::focusWidget());
-        GTComboBox::setIndexWithText(os, box, dataTypeToString(type));
+        QString dataType = dataTypeToString(type);
+        GTComboBox::setIndexWithText(os, box, dataType);
 #ifdef Q_OS_WIN
         GTKeyboardDriver::keyClick( Qt::Key_Enter);
 #endif
@@ -176,7 +177,7 @@ private:
             processDataType(table, row, rowData.type);
 
             if (!rowData.description.isEmpty()) {
-                processStringType(table, row, ColumnName::Descroption, rowData.description);
+                processStringType(table, row, ColumnName::Description, rowData.description);
             }
             row++;
         }

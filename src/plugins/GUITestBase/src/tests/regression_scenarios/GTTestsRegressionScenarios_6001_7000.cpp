@@ -2337,7 +2337,6 @@ GUI_TEST_CLASS_DEFINITION(test_6481_1) {
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "test_6481_1";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
-    settings.tool = "python";
     settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_file_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFileUrl, QString()));
     settings.command = "%UGENE_JAVA% -help $output_file_url";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
@@ -2346,7 +2345,7 @@ GUI_TEST_CLASS_DEFINITION(test_6481_1) {
 
 //    5. Create a valid workflow with the new element.
     GTUtilsWorkflowDesigner::click(os, "test_6481_1");
-    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
 
 //    6. Launch the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -2386,7 +2385,6 @@ GUI_TEST_CLASS_DEFINITION(test_6481_2) {
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "test_6481_2";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
-    settings.tool = "python";
     settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_folder_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFolderUrl, QString()));
     settings.command = "%UGENE_JAVA% -help $output_folder_url";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
@@ -2395,7 +2393,7 @@ GUI_TEST_CLASS_DEFINITION(test_6481_2) {
 
 //    5. Create a valid workflow with the new element.
     GTUtilsWorkflowDesigner::click(os, "test_6481_2");
-    GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", sandBoxDir, GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", QFileInfo(sandBoxDir).absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
 
 //    6. Launch the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -2606,7 +2604,6 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "UGENE-6488 test element 1";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
-    settings.tool = "python";
     settings.command = "just a command";
     settings.description = "detailed element description";
     settings.prompter = "description on the scene";
@@ -2699,7 +2696,6 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "UGENE-6488 test element 2";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
-    settings.tool = "python";
     settings.command = "just a command";
     settings.description = "detailed element description";
     settings.prompter = "description on the scene";
