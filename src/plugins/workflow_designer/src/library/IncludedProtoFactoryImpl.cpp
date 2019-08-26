@@ -142,7 +142,7 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
         DataTypeRegistry * dr = WorkflowEnv::getDataTypeRegistry();
         assert(dr);
         dr->registerEntry( outSet );
-        Descriptor outDesc( OUT_PORT_ID, LocalWorkflow::ExternalProcessWorker::tr("output data"), LocalWorkflow::ExternalProcessWorker::tr("output data") );
+        Descriptor outDesc( OUT_PORT_ID, LocalWorkflow::ExternalProcessWorker::tr("Output data"), LocalWorkflow::ExternalProcessWorker::tr("Output data") );
         portDescs << new PortDescriptor( outDesc, outSet, false, true );
     }
 
