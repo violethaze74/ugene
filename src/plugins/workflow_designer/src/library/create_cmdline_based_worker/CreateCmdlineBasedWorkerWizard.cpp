@@ -276,6 +276,7 @@ CreateCmdlineBasedWorkerWizardGeneralSettingsPage::CreateCmdlineBasedWorkerWizar
 
     cbIntegratedTools = new ExternalToolSelectComboBox(gbTool);
     cbIntegratedTools->setEnabled(false);
+    cbIntegratedTools->setObjectName("cbIntegratedTools");
     containerLayout->addWidget(cbIntegratedTools);
 
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);

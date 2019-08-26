@@ -2620,6 +2620,7 @@ GUI_TEST_CLASS_DEFINITION(test_0889) {
 
 GUI_TEST_CLASS_DEFINITION(test_0896) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "SAMtools");
 
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/896/_input", "SAMtools.etc");
     GTGlobals::sleep();
@@ -2635,31 +2636,23 @@ GUI_TEST_CLASS_DEFINITION(test_0896) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QString outputFile = QDir(sandBoxDir).absolutePath() + "/test_0896out.bam";
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.tool = "SAMtools";
+    settings.command = "%UGENE_SAMTOOLS% view -b -S -o '" + QDir(sandBoxDir).absolutePath() + "/test_0896out.bam' $sam";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
 
-    class OkClicker : public Filler {
-    public:
-        OkClicker(HI::GUITestOpStatus& _os) : Filler(_os, "CreateExternalProcessWorkerDialog"){}
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
-
-            ExternalTool *samtools = AppContext::getExternalToolRegistry()->getById("UGENE_SAMTOOLS");
-            QLineEdit *ed = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "templateLineEdit", w));
-            GTLineEdit::setText(os, ed, "'" + samtools->getPath() + "' view -b -S -o '" + QDir(sandBoxDir).absolutePath() + "/test_0896out.bam' $sam", false, true);
-
-            QAbstractButton *button = GTWidget::findButtonByText(os, "Finish");
-            CHECK(NULL != button, );
-            GTWidget::click(os, button);
-        }
-    };
-
-    GTUtilsDialog::waitForDialog(os, new OkClicker(os));
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "SAMtools"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
+
+    WorkflowProcessItem* samtools = GTUtilsWorkflowDesigner::addElement(os, "SAMtools", true);
+    WorkflowProcessItem* fileList = GTUtilsWorkflowDesigner::getWorker(os, "File List");
+    GTUtilsWorkflowDesigner::connect(os, fileList, samtools);
+    GTUtilsWorkflowDesigner::click(os, samtools);
+    QTableWidget* table = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+    GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by File List)", GTUtilsWorkflowDesigner::comboValue, table);
 
     GTUtilsWorkflowDesigner::click(os, "File List");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bowtie/pattern/e_coli_1000.sam");

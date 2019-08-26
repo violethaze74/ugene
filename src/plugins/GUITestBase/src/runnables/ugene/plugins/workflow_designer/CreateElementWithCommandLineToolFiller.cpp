@@ -74,49 +74,8 @@ void CreateElementWithCommandLineToolFiller::commonScenario() {
     bool seventhPageResult = processSeventhPage(dialog, errorMessage);
     GT_CHECK(seventhPageResult, errorMessage);
 
-/*
-    // page 1
-
-    // page 2
-    QWidget* addInputButton = GTWidget::findWidget(os, "addInputButton", dialog);
-    GT_CHECK(addInputButton != NULL, "addInputButton not found");
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"inputTableView"));
-    GT_CHECK(table != NULL, "inputTable not found");
-    fillTheTable(table, addInputButton, settings.input);
-
-    QWidget* addOutputButton = GTWidget::findWidget(os, "addOutputButton", dialog);
-    GT_CHECK(addOutputButton != NULL, "addOutputButton not found");
-    table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"outputTableView"));
-    GT_CHECK(table != NULL, "outputTable not found");
-    fillTheTable(table, addOutputButton, settings.output);
-
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-
-    // page 3
-    QWidget* addAttributeButton = GTWidget::findWidget(os, "addAttributeButton", dialog);
-    GT_CHECK(addAttributeButton != NULL, "addAttributeButton not found");
-    table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"attributesTableView"));
-    GT_CHECK(table != NULL, "attributesTable not found");
-    fillTheTable(table, addAttributeButton, settings.parameters);
-
-    nextButton = GTWidget::findWidget(os, "__qt__passive_wizardbutton1", dialog);
-    GTWidget::click(os, nextButton);
-
-    // page 4
-    QLineEdit* execLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "templateLineEdit", dialog));
-    GT_CHECK(nameEdit, "templateLineEdit not found");
-    GTLineEdit::setText(os, execLineEdit, settings.executionString);
-
-    QTextEdit* prompterTextEdit = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "prompterTextEdit", dialog));
-    GT_CHECK(prompterTextEdit, "templateLineEdit not found");
-    GTTextEdit::setText(os, prompterTextEdit, settings.parameterizedDescription);
-
-    QWidget* finishButton = GTWidget::findButtonByText(os, "Finish");
-    GTWidget::click(os, finizshButton);
-    */
 }
 #undef GT_METHOD_NAME
-#undef GT_CLASS_NAME
 
 QString CreateElementWithCommandLineToolFiller::dataTypeToString(const InOutType &type) const {
     switch (type) {
@@ -171,8 +130,10 @@ QString CreateElementWithCommandLineToolFiller::formatToArgumentValue(const QStr
 }
 
 void CreateElementWithCommandLineToolFiller::processStringType(QTableView* table, int row, const ColumnName columnName, const QString& value) {
+    CHECK(!value.isEmpty(), );
+
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, static_cast<int>(columnName), row));
-    GTMouseDriver::click();
+    GTMouseDriver::doubleClick();
     GTKeyboardDriver::keySequence(value);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
@@ -226,7 +187,11 @@ bool CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog, Q
             QComboBox* cbIntegratedTools = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "cbIntegratedTools", dialog));
             CHECK_EXT(nullptr != cbIntegratedTools, errorMessage = "cbIntegratedTools not found", false);
 
-            GTComboBox::setIndexWithText(os, cbIntegratedTools, settings.tool);
+            if (cbIntegratedTools->findText(settings.tool) == -1) {
+                GTComboBox::setIndexWithText(os, cbIntegratedTools, "Show all tools", false);
+                GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            }
+            GTComboBox::setIndexWithText(os, cbIntegratedTools, settings.tool, false, HI::GTGlobals::UseKeyBoard);
         }
         break;
     }
@@ -306,11 +271,16 @@ bool CreateElementWithCommandLineToolFiller::processSixthPage(QWidget* dialog, Q
     QTextEdit* teDescription = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "teDescription", dialog));
     CHECK_EXT(nullptr != teDescription, errorMessage = "teCommand not found", false);
 
-    GTTextEdit::setText(os, teDescription, settings.description);
+    if (teDescription->toPlainText().isEmpty()) {
+        GTTextEdit::setText(os, teDescription, settings.description);
+    }
+
     QTextEdit* tePrompter = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "tePrompter", dialog));
     CHECK_EXT(nullptr != tePrompter, errorMessage = "teCommand not found", false);
 
-    GTTextEdit::setText(os, tePrompter, settings.prompter);
+    if (tePrompter->toPlainText().isEmpty()) {
+        GTTextEdit::setText(os, tePrompter, settings.prompter);
+    }
 
     //GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -328,5 +298,7 @@ bool CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget* dialog,
 
     return true;
 }
+
+#undef GT_CLASS_NAME
 
 }
