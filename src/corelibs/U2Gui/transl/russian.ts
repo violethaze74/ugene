@@ -2284,37 +2284,37 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ExportImageDialog</name>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="71"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="72"/>
         <source>Image export task factory is NULL</source>
         <translation>Image export task factory is NULL</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="98"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="99"/>
         <source>The image file path is empty.</source>
         <translation>Путь до изображения пуст.</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="103"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="106"/>
         <source>The image file cannot be created. No write permissions.</source>
         <translation>Файл не может быть создан. Недостаточно прав.</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="111"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="114"/>
         <source>Saving image to &apos;%1&apos;...</source>
         <translation>Сохранение изображения в &apos;%1&apos;...</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="149"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="152"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="231"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="234"/>
         <source>Save Image As</source>
         <translation>Сохранить изображение как</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="148"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="151"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
