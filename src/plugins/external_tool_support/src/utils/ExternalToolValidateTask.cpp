@@ -240,6 +240,10 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
         }
     }
 
+    if (errLog.isEmpty() && log.isEmpty() && validation.expectedMsg.isEmpty()) {
+        isValid = true;
+    }
+
     return true;
 }
 
