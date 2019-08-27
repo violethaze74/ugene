@@ -6512,12 +6512,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/custom_tools/ImportCustomToolsTask.cpp" line="46"/>
         <source>Import custom external tools configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт конфигурации внешних инструментов</translation>
     </message>
     <message>
         <location filename="../src/custom_tools/ImportCustomToolsTask.cpp" line="72"/>
         <source>Can&apos;t register the tool &apos;%1&apos;: there is another tool with the same name</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно зарегистрировать инструмент &apos;%1&apos;: существует другой инструмент с таким же названием</translation>
     </message>
 </context>
 <context>
@@ -6525,7 +6525,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/custom_tools/ImportExternalToolDialog.cpp" line="53"/>
         <source>Select configuration file to import</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите файл для импорта</translation>
     </message>
 </context>
 <context>
@@ -6541,7 +6541,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/custom_tools/LoadCustomExternalToolsTask.cpp" line="37"/>
         <source>Load custom external tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузить внешние инструменты</translation>
     </message>
 </context>
 <context>

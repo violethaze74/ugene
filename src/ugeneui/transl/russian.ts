@@ -1255,17 +1255,17 @@ Note that reloading may cause closing of some views associated with objects from
         <location filename="../src/main_window/MDIManagerImpl.cpp" line="75"/>
         <location filename="../src/main_window/MDIManagerImpl.cpp" line="77"/>
         <source>Window layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Расположение окон</translation>
     </message>
     <message>
         <location filename="../src/main_window/MDIManagerImpl.cpp" line="80"/>
         <source>Multiple documents</source>
-        <translation type="unfinished">Несколько документов</translation>
+        <translation>Несколько документов</translation>
     </message>
     <message>
         <location filename="../src/main_window/MDIManagerImpl.cpp" line="85"/>
         <source>Tabbed documents</source>
-        <translation type="unfinished">Режим вкладок</translation>
+        <translation>Режим вкладок</translation>
     </message>
     <message>
         <location filename="../src/main_window/MDIManagerImpl.cpp" line="90"/>

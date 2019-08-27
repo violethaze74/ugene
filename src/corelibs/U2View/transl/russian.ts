@@ -2245,52 +2245,52 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::ADVSingleSequenceHeaderWidget</name>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="943"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="935"/>
         <source>Alphabet: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Алфавит: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="944"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="936"/>
         <source> Sequence size: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation> Размер последовательности: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="945"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="937"/>
         <source> File:&amp;nbsp;&lt;b&gt;%1&lt;/b&gt;</source>
         <translation> Файл:&amp;nbsp;&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1028"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1020"/>
         <source>raw</source>
         <translation>raw</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1032"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1024"/>
         <source>amino ext</source>
         <translation>amino ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1034"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1026"/>
         <source>amino</source>
         <translation>амино</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1039"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1031"/>
         <source>dna</source>
         <translation>днк</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1041"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1033"/>
         <source>dna ext</source>
         <translation>dna ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1045"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1037"/>
         <source>rna ext</source>
         <translation>rna ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1043"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1035"/>
         <source>rna</source>
         <translation>rna</translation>
     </message>
@@ -2298,12 +2298,12 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::ADVSingleSequenceWidget</name>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="432"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="428"/>
         <source>Zoom</source>
         <translation>Масштаб</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="686"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="682"/>
         <source>Zoom to range</source>
         <translation>Выбор масштаба</translation>
     </message>
@@ -2313,12 +2313,12 @@ Double-click to collapse the branch</source>
         <translation>Создать новую шкалу...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="524"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="520"/>
         <source>Rulers...</source>
         <translation>Шкала обзора...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="535"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="531"/>
         <source>Remove &apos;%1&apos;</source>
         <translation>Удалить &quot;%1&quot;</translation>
     </message>
@@ -2358,53 +2358,53 @@ Double-click to collapse the branch</source>
         <translation>Удалить последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="509"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="505"/>
         <source>Select</source>
         <translation>Выделить</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="301"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="293"/>
         <source>Show all views</source>
         <translation>Показать всё</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="301"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="293"/>
         <source>Hide all views</source>
         <translation>Скрыть всё</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="233"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="897"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="303"/>
         <source>Show zoom view</source>
         <translation>Показать масштабируемое представление</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="233"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="897"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="303"/>
         <source>Hide zoom view</source>
         <translation>Скрыть масштабируемое представление</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="234"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="902"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="323"/>
         <source>Show details view</source>
         <translation>Показать детали</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="234"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="902"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="323"/>
         <source>Hide details view</source>
         <translation>Скрыть детали</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="235"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="907"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="334"/>
         <source>Show overview</source>
         <translation>Показать панораму</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="235"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="907"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="334"/>
         <source>Hide overview</source>
         <translation>Скрыть панораму</translation>
     </message>
@@ -2597,12 +2597,12 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AnnotatedDNAView</name>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="134"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="133"/>
         <source>Find pattern...</source>
         <translation>Поиск подстроки...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="115"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="114"/>
         <source>Go to position...</source>
         <translation>Перейти...</translation>
     </message>
@@ -2611,72 +2611,72 @@ Double-click to collapse the branch</source>
         <translation type="vanished">Изменение аннотаций при редактировании последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="143"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="142"/>
         <source>Insert subsequence...</source>
         <translation>Вставить подпоследовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="148"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="147"/>
         <source>Remove subsequence...</source>
         <translation>Удалить подпоследовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="152"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="151"/>
         <source>Replace subsequence...</source>
         <translation>Заменить подпоследовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="157"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="156"/>
         <source>Selected sequence from view</source>
         <translation>Удалить выделенную последовательность из отображения</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="161"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="160"/>
         <source>Reverse-complement sequence</source>
         <translation>Заменить на обратно-комплементарную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="170"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="169"/>
         <source>Complement sequence</source>
         <translation>Заменить на комплементарную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="364"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="360"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="546"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="564"/>
         <source>Analyze</source>
         <translation>Анализ</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="556"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="574"/>
         <source>Add</source>
         <translation>Аннотация</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="562"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="580"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="568"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="586"/>
         <source>Align</source>
         <translation>Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="574"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="592"/>
         <source>Remove</source>
         <translation>Удаление</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="587"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="605"/>
         <source>Edit</source>
         <translation>Редактирование</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1120"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1138"/>
         <source>Show codon table</source>
         <translation>Показать таблицу кодонов</translation>
     </message>
@@ -2685,37 +2685,37 @@ Double-click to collapse the branch</source>
         <translation type="vanished">No sequence in focus</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="166"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="165"/>
         <source>Reverse sequence</source>
         <translation>Заменить на обратную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="840"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="858"/>
         <source>Select sequence to associate annotations with:</source>
         <translation>Установить связь аннотаций с последовательностью:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="858"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="876"/>
         <source>No sequence object found for annotations</source>
         <translation>Не найдена связанная с аннотациями последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="788"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="806"/>
         <source>Disable &apos;%1&apos; highlighting</source>
         <translation>Не использовать подсветку для &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="139"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="138"/>
         <source>Annotations settings on sequence editing...</source>
         <translation>Настройка аннотаций при редактировании последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="790"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="808"/>
         <source>Enable &apos;%1&apos; highlighting</source>
         <translation>Задействовать подсветку для &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="928"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="946"/>
         <source>Go To</source>
         <translation>Выбор позиции</translation>
     </message>
@@ -2798,17 +2798,17 @@ Double-click to collapse the branch</source>
         <translation>Аннотация</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2056"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2027"/>
         <source>Edit Group</source>
         <translation>Редактировать группу</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2103"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2074"/>
         <source>Edit Annotation</source>
         <translation>Редактирование аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2103"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2074"/>
         <source>Edit</source>
         <translation>Редактирование</translation>
     </message>
@@ -2889,17 +2889,7 @@ Double-click to collapse the branch</source>
         <translation>Добавить столбец &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1690"/>
-        <source>Wrong annotation selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1718"/>
-        <source>Wrong  annotation selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2253"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2224"/>
         <source>Create Permanent Annotation</source>
         <translation>Создать постоянную аннотацию</translation>
     </message>
@@ -4938,7 +4928,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::FindQualifierTask</name>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2614"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2585"/>
         <source>Searching for a qualifier</source>
         <translation>Поиск квалификатора</translation>
     </message>
@@ -5030,7 +5020,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::GSequenceLineViewAnnotated</name>
     <message>
-        <location filename="../src/ov_sequence/GSequenceLineViewAnnotated.cpp" line="440"/>
+        <location filename="../src/ov_sequence/GSequenceLineViewAnnotated.cpp" line="437"/>
         <source>etc ...</source>
         <translation>Прочие ...</translation>
     </message>
@@ -5068,12 +5058,6 @@ Please, check external tools in the settings.</source>
         <translation>Папка для сохранения не указана!</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="267"/>
-        <source>Unable to create output folder for result assembly.
-Directory Path: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No reads. Please, add file(s) with short reads.</source>
         <translation type="vanished">Нет ридов. Добавьте файл(ы) с короткими ридами.</translation>
     </message>
@@ -5090,6 +5074,12 @@ Directory Path: %1</source>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="258"/>
         <source>File format of %1 is %2. Supported file formats of reads: %3.</source>
         <translation>Формат %1 файла %2. Поддерживаемые форматы для пидов: %3.</translation>
+    </message>
+    <message>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="267"/>
+        <source>Unable to create output folder for result assembly.
+Directory Path: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="332"/>
