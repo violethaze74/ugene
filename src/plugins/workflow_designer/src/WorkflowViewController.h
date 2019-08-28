@@ -115,6 +115,9 @@ protected:
     void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
     void dragMoveEvent(QGraphicsSceneDragDropEvent * event);
     void dropEvent(QGraphicsSceneDragDropEvent * event);
+    void keyPressEvent (QKeyEvent* event);
+    void keyReleaseEvent (QKeyEvent* event);
+
 
     void drawBackground(QPainter * painter, const QRectF & rect );
 

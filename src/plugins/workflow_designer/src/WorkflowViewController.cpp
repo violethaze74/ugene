@@ -1598,7 +1598,6 @@ void WorkflowView::paintEvent(QPaintEvent *event) {
     }
     MWMDIWindow::paintEvent(event);
 }
-
 void WorkflowView::sl_configureParameterAliases() {
     QObjectScopedPointer<SchemaAliasesConfigurationDialogImpl> dlg = new SchemaAliasesConfigurationDialogImpl(*schema, this );
     int ret = QDialog::Accepted;
@@ -2582,6 +2581,21 @@ void WorkflowScene::dropEvent(QGraphicsSceneDragDropEvent * event) {
         }
     }
     QGraphicsScene::dropEvent(event);
+}
+
+void WorkflowScene::keyPressEvent (QKeyEvent* event) {
+    if (event->key() == Qt::Key_Shift) {
+        views().at(0)->setDragMode(QGraphicsView::ScrollHandDrag);
+    }
+    QGraphicsScene::keyPressEvent(event);
+}
+
+void WorkflowScene::keyReleaseEvent (QKeyEvent* event) {
+    QGraphicsView* v = views().at(0);
+    if (v->dragMode() == QGraphicsView::ScrollHandDrag) {
+        v->setDragMode(QGraphicsView::RubberBandDrag);
+    }
+    QGraphicsScene::keyReleaseEvent(event);
 }
 
 void WorkflowScene::clearScene() {
