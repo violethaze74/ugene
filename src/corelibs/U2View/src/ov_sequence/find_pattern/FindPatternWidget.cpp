@@ -61,6 +61,7 @@
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/DetView.h>
+#include <U2Core/U2AlphabetUtils.h>
 
 #include "FindPatternWidget.h"
 
@@ -484,7 +485,7 @@ void FindPatternWidget::connectSlots()
     connect(prevPushButton, SIGNAL(clicked()), SLOT(sl_prevButtonClicked()));
     connect(nextPushButton, SIGNAL(clicked()), SLOT(sl_nextButtonClicked()));
 
-    connect(useAmbiguousBasesBox, SIGNAL(toggled(bool)), SLOT(sl_activateNewSearch()));
+    connect(useAmbiguousBasesBox, SIGNAL(toggled(bool)), SLOT(sl_toggleExtendedAlphabet()));
     connect(spinMatch, SIGNAL(valueChanged(int)), SLOT(sl_activateNewSearch()));
 }
 
@@ -1286,14 +1287,23 @@ bool FindPatternWidget::checkAlphabet( const QString& pattern ){
 
         alphabet = translation->getDstAlphabet();
     }
-
-    bool alphabetIsOk = (TextUtils::fits(alphabet->getMap(),
-        pattern.toLocal8Bit().data(),
-        pattern.size()))    ||
-        (useAmbiguousBasesBox->isChecked())   ||
-        (FindAlgorithmPatternSettings_RegExp == selectedAlgorithm);
-
-    return alphabetIsOk;
+    if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
+        return true;
+    }
+    bool patternFitsIntoAlphabet = TextUtils::fits(alphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());
+    if (patternFitsIntoAlphabet) {
+        return true;
+    }
+    if (useAmbiguousBasesBox->isChecked() && !alphabet->isExtended()) {
+        const DNAAlphabet* extAlphabet = U2AlphabetUtils::getExtendedAlphabet(alphabet);
+        if (extAlphabet != NULL) {
+            bool patternFitsIntoExtAlphabet = TextUtils::fits(extAlphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());
+            if (patternFitsIntoExtAlphabet) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 bool FindPatternWidget::checkPatternRegion( const QString& pattern ){
@@ -1403,6 +1413,11 @@ void FindPatternWidget::validateCheckBoxSize(QCheckBox* checkBox, int requiredWi
         }
     }
     checkBox->setText(text);
+}
+
+void FindPatternWidget::sl_toggleExtendedAlphabet() {
+    verifyPatternAlphabet();
+    sl_activateNewSearch(true);
 }
 
 void FindPatternWidget::sl_activateNewSearch(bool forcedSearch){
