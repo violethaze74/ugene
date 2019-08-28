@@ -78,6 +78,7 @@ public:
     const StrStrMap&    getErrorDescriptions() const;
     const StrStrMap&    getAdditionalInfo() const;
     virtual QStringList getAdditionalPaths() const;
+    virtual QStringList getRunParameters() const;
 
     virtual void        extractAdditionalParameters(const QString& output);
     virtual void        performAdditionalChecks(const QString& toolPath);

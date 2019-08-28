@@ -23,19 +23,19 @@
 #define _U2_R_SUPPORT_H_
 
 #include <U2Core/ExternalToolRegistry.h>
+
+#include "RunnerTool.h"
 #include "utils/ExternalToolSupportAction.h"
 
 namespace U2 {
 
-class RSupport : public ExternalTool {
+class RSupport : public RunnerTool {
     Q_OBJECT
 public:
     RSupport(const QString& id, const QString& name, const QString& path = "");
 
     static const QString ET_R;
     static const QString ET_R_ID;
-private slots:
-    void sl_toolValidationStatusChanged(bool isValid);
 };
 
 class RModuleSupport : public ExternalToolModule {

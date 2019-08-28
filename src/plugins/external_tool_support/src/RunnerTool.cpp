@@ -19,37 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/AppContext.h>
 #include <U2Core/ScriptingToolRegistry.h>
 
-#include "PerlSupport.h"
+#include "RunnerTool.h"
 
 namespace U2 {
 
-const QString PerlSupport::ET_PERL = "perl";
-const QString PerlSupport::ET_PERL_ID = "UGENE_PERL";
-
-PerlSupport::PerlSupport(const QString& id, const QString &name, const QString &path)
-: RunnerTool(QStringList(), id, name, path)
+RunnerTool::RunnerTool(const QStringList& _runParameters, const QString& id, const QString& name, const QString& path)
+    : ExternalTool(id, name, path), runParameters(_runParameters)
 {
-    if (AppContext::getMainWindow()) {
-        icon = QIcon(":external_tool_support/images/perl.png");
-        grayIcon = QIcon(":external_tool_support/images/perl_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/perl_warn.png");
-    }
-#ifdef Q_OS_WIN
-    executableFileName = "perl.exe";
-#elif defined(Q_OS_UNIX)
-    executableFileName = "perl";
-#endif
-    validMessage = "This is perl";
-    validationArguments << "--version";
-
-    description += tr("Perl scripts interpreter");
-    versionRegExp = QRegExp("(\\d+.\\d+.\\d+)");
-    toolKitName="perl";
-
-    muted = true;
+    isRunnerTool = true;
+    connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 }
 
-} // U2
+QStringList RunnerTool::getRunParameters() const {
+    return runParameters;
+}
+
+void RunnerTool::sl_toolValidationStatusChanged(bool isValid) {
+    Q_UNUSED(isValid);
+    ScriptingTool::onPathChanged(this, runParameters);
+}
+
+}
