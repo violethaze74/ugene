@@ -216,8 +216,16 @@ void ExternalToolSupportSettingsPageWidget::sl_onClickLink(const QUrl& url) {
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_importCustomToolButtonClicked() {
-    QObjectScopedPointer<ImportExternalToolDialog> dialog = new ImportExternalToolDialog(this);
-    dialog->exec();
+    //UGENE-6553 temporary removed
+    //QObjectScopedPointer<ImportExternalToolDialog> dialog = new ImportExternalToolDialog(this);
+    //dialog->exec();
+
+    LastUsedDirHelper lod("import external tool");
+    const QString filter = DialogUtils::prepareFileFilter("UGENE external tool config file", { "xml" }, true, {});
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Select configuration file to import"), lod.dir, filter);
+    if (!lod.url.isEmpty()) {
+        AppContext::getTaskScheduler()->registerTopLevelTask(new ImportCustomToolsTask(QDir::toNativeSeparators(lod.url)));
+    }
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_deleteCustomToolButtonClicked() {
