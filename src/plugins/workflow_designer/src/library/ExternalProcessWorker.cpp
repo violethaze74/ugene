@@ -31,6 +31,7 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
@@ -347,7 +348,13 @@ Task * ExternalProcessWorker::tick() {
     //     4) this function: this call replaces escaped symbols: '\$', '\%', '\\' by the '$', '%', '\'
     applyEscapedSymbols(execString);
 
-    LaunchExternalToolTask *task = new LaunchExternalToolTask(execString, outputUrls);
+    const QString workingDirectory = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+    QString externalProcessFolder = GUrlUtils::fixFileName(cfg->name.replace(' ', '_'));
+    U2OpStatusImpl os;
+    const QString externalProcessWorkingDir = GUrlUtils::createDirectory(workingDirectory + externalProcessFolder, "_", os);
+    CHECK_OP(os, new FailTask(os.getError()));
+
+    LaunchExternalToolTask *task = new LaunchExternalToolTask(execString, externalProcessWorkingDir, outputUrls);
     QList<ExternalToolListener*> listeners(createLogListeners());
     task->addListeners(listeners);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinishied()));
@@ -643,8 +650,8 @@ void ExternalProcessWorker::cleanup() {
 /************************************************************************/
 /* LaunchExternalToolTask */
 /************************************************************************/
-LaunchExternalToolTask::LaunchExternalToolTask(const QString &execString, const QMap<QString, DataConfig> &outputUrls)
-: Task(tr("Launch external process task"), TaskFlag_None), outputUrls(outputUrls), execString(execString)
+LaunchExternalToolTask::LaunchExternalToolTask(const QString &_execString, const QString& _workingDir, const QMap<QString, DataConfig> &_outputUrls)
+: Task(tr("Launch external process task"), TaskFlag_None), execString(_execString), workingDir(_workingDir), outputUrls(_outputUrls)
 {
 
 }
@@ -663,6 +670,7 @@ LaunchExternalToolTask::~LaunchExternalToolTask() {
 void LaunchExternalToolTask::run() {
     GCOUNTER(cvar, tvar, "A task for an element with external tool is launched");
     QProcess *externalProcess = new QProcess();
+    externalProcess->setWorkingDirectory(workingDir);
     if(execString.contains(">")) {
         QString output = execString.split(">").last();
         output = output.trimmed();
