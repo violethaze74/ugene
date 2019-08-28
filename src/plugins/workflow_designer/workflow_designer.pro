@@ -48,6 +48,8 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/library/ConvertFilesFormatWorker.h \
            src/library/ConvertSnpeffVariationsToAnnotationsWorker.h \
            src/library/CoreLib.h \
+           src/library/CustomExternalToolLogParser.h \
+           src/library/CustomExternalToolRunTaskHelper.h \
            src/library/DocActors.h \
            src/library/DocWorkers.h \
            src/library/ExternalProcessWorker.h \

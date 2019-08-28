@@ -257,15 +257,19 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
         }
         numberReadChars = process->read(logData.data(), logData.size());
     }
-    QString lastErr = logParser->getLastError();
-    if (!lastErr.isEmpty()) {
-        os.setError(lastErr);
-    }
+    processErrorToLog();
     os.setProgress(logParser->getProgress());
 }
 
 void ExternalToolRunTaskHelper::addOutputListener(ExternalToolListener* _listener) {
     listener = _listener;
+}
+
+void ExternalToolRunTaskHelper::processErrorToLog() {
+    QString lastErr = logParser->getLastError();
+    if (!lastErr.isEmpty()) {
+        os.setError(lastErr);
+    }
 }
 
 ////////////////////////////////////////

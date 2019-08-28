@@ -53,6 +53,8 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "CustomExternalToolLogParser.h"
+#include "CustomExternalToolRunTaskHelper.h"
 #include "ExternalProcessWorker.h"
 #include "util/CustomWorkerUtils.h"
 
@@ -672,7 +674,8 @@ void LaunchExternalToolTask::run() {
         execString = execString.split(">").first();
         externalProcess->setStandardOutputFile(output);
     }
-    QScopedPointer<ExternalToolRunTaskHelper> helper(new ExternalToolRunTaskHelper(externalProcess, new ExternalToolLogParser(), stateInfo));
+    QScopedPointer<CustomExternalToolLogParser> logParser(new CustomExternalToolLogParser());
+    QScopedPointer<ExternalToolRunTaskHelper> helper(new CustomExternalToolRunTaskHelper(externalProcess, logParser.data(), stateInfo));
     CHECK(listeners.size() > 0, );
     helper->addOutputListener(listeners[0]);
     QStringList execStringArgs = ExternalToolSupportUtils::splitCmdLineArguments(execString);
