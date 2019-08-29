@@ -31,6 +31,7 @@ public:
     CustomExternalToolLogParser() : ExternalToolLogParser() {};
 
 private:
+    bool isError(const QString& line) const override { return false;};
     void parseErrOutput(const QString& partOfLog) override {};
 };
 
