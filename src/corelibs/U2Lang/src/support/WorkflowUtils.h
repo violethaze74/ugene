@@ -123,6 +123,7 @@ public:
     static QString getExternalToolPath(const QString &toolId);
     static QString externalToolError(const QString &toolName);
     static QString externalToolInvalidError(const QString &toolName);
+    static QString customExternalToolInvalidError(const QString &toolName, const QString& elementName);
 
     static void schemaFromFile(const QString &url, Schema *schema, Metadata *meta, U2OpStatus &os);
 

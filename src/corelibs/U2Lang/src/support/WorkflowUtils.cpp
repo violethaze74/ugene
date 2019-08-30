@@ -179,9 +179,16 @@ bool validateExternalTools(Actor *a, NotificationsList &infoList) {
                                 a->getId(),
                                 WorkflowNotification::U2_ERROR);
         } else if (!fromAttr && !tool->isValid()) {
-            infoList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
-                                a->getId(),
-                                WorkflowNotification::U2_WARNING);
+            if (tool->isCustom()) {
+                infoList << WorkflowNotification(WorkflowUtils::customExternalToolInvalidError(tool->getName(), a->getLabel()),
+                    a->getProto()->getId(),
+                    WorkflowNotification::U2_ERROR);
+                good = false;
+            } else {
+                infoList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
+                    a->getProto()->getId(),
+                    WorkflowNotification::U2_WARNING);
+            }
         }
     }
     return good;
@@ -891,6 +898,10 @@ QString WorkflowUtils::externalToolError(const QString &toolName) {
 
 QString WorkflowUtils::externalToolInvalidError(const QString &toolName) {
     return tr("External tool \"%1\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected").arg(toolName);
+}
+
+QString WorkflowUtils::customExternalToolInvalidError(const QString& toolName, const QString& elementName) {
+    return tr("Custom tool \"%1\", specified for the \"%2\" element, didn't pass validation.").arg(toolName).arg(elementName);
 }
 
 void WorkflowUtils::schemaFromFile(const QString &url, Schema *schema, Metadata *meta, U2OpStatus &os) {
