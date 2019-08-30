@@ -32,6 +32,7 @@
 
 namespace U2 {
 using namespace Workflow;
+class ExternalProcessConfig;
 class NameFilterLayout;
 class WorkflowView;
 class WorkflowScene;
@@ -115,6 +116,10 @@ private:
     void sortTree();
     QVariant changeState(const QVariant& v);
     void removePrototype(Workflow::ActorPrototype *proto);
+    bool editPrototypeWithoutElementRemoving(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig);
+    void replaceConfigFiles(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig);
+    void replaceOldConfigWithNewConfig(ExternalProcessConfig* oldConfig, ExternalProcessConfig* newConfig);
+
 
 private:
     QMap<QString,QList<QAction*> > categoryMap;

@@ -26,6 +26,7 @@
 #include <U2Lang/Port.h>
 
 #include <QMimeData>
+#include <QObject>
 
 namespace U2 {
     class Attribute;
@@ -41,7 +42,8 @@ class Prompter;
  * and can be configured via set of template-specific parameters
  * ActorPrototype is such a template
  */
-class U2LANG_EXPORT ActorPrototype : public VisualDescriptor {
+class U2LANG_EXPORT ActorPrototype : public QObject, public VisualDescriptor {
+    Q_OBJECT
 public:
     ActorPrototype(const Descriptor& desc,
         const QList<PortDescriptor*>& ports = QList<PortDescriptor*>(),
@@ -74,9 +76,12 @@ public:
 
     virtual Actor* createInstance(const ActorId &actorId, AttributeScript *script = NULL, const QVariantMap& params = QVariantMap());
 
+    void setDisplayName(const QString& n) override;
+
+    void setDocumentation(const QString& d) override;
+
     void setScriptFlag(bool flag = true);
     bool isScriptFlagSet() {return isScript;}
-
     void setSchema(const QString &path);
     void setNonStandard(const QString &path);
     bool isStandardFlagSet() {return isStandard;}
@@ -92,6 +97,11 @@ public:
 
     void addExternalTool(const QString &toolId, const QString &paramId = "");
     const StrStrMap & getExternalTools() const;
+
+signals:
+    void si_nameChanged();
+    void si_descriptionChanged();
+
 protected:
     // create port and sets p as owner of new port
     // caller should add created port to actor's ports see createInstance

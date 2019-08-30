@@ -129,6 +129,17 @@ void CreateCmdlineBasedWorkerWizard::saveConfig(ExternalProcessConfig *config) {
     file.close();
 }
 
+bool CreateCmdlineBasedWorkerWizard::isRequiredToRemoveElementFromScene(ExternalProcessConfig* actualConfig, ExternalProcessConfig* newConfig) {
+    CHECK(nullptr != actualConfig, false)
+        CHECK(nullptr != newConfig, false);
+
+    bool result = (newConfig->inputs != actualConfig->inputs)
+        || (newConfig->outputs != actualConfig->outputs)
+        || (newConfig->attrs != actualConfig->attrs);
+
+    return result;
+}
+
 namespace {
 
 static const int UNNECCESSARY_ARGUMENT = 0;
@@ -199,7 +210,7 @@ void CreateCmdlineBasedWorkerWizard::accept() {
     QScopedPointer<ExternalProcessConfig> actualConfig(createActualConfig());
     CHECK(!actualConfig.isNull(), );
 
-    if (nullptr != initialConfig && *initialConfig != *actualConfig) {
+    if (isRequiredToRemoveElementFromScene(initialConfig, actualConfig.data())) {
         int res = QMessageBox::question(this,
                                         tr("Warning"),
                                         tr("You have changed the structure of the element (name, slots, parameters' names and types). "

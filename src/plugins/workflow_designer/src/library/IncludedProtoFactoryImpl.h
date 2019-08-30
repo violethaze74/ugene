@@ -37,6 +37,7 @@ public:
     virtual bool _registerExternalToolWorker(ExternalProcessConfig *cfg);
     virtual void _registerScriptWorker(const QString &actorName);
 
+    virtual ExternalProcessConfig* _getExternalToolWorker(const QString& id) override;
     virtual ExternalProcessConfig *_unregisterExternalToolWorker(const QString &id);
 
 private:
