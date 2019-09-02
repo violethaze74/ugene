@@ -2772,6 +2772,40 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     GTGlobals::sleep();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6490) {
+//    Test to check that element with external tool will
+//    successfully create and run the command: `%TOOL_PATH% $oooo $oooo$oooo $oooo $oooo$oooo$oooo`.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Create element with external tool" button on the toolbar.
+//    3. Fill the wizard with the following values (not mentioned values can be set with any value):
+//        Parameters page: a parameter with a type "Output file URL".
+//    4. Accept the wizard.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "test_6490";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("oooo",
+                                                                                 qMakePair(CreateElementWithCommandLineToolFiller::ParameterString, QString("-version")));
+    settings.command = "%UGENE_JAVA% $oooo $oooo$oooo $oooo $oooo$oooo$oooo";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
+
+//    5. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6490");
+
+//    6. Launch the workflow.
+    GTLogTracer logTracer;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an log string `-version -version-version -version -version-version-version`.
+    bool desiredMessage = logTracer.checkMessage("-version -version-version -version -version-version-version");
+    CHECK_SET_ERR(desiredMessage, "No expected message in the log");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
