@@ -90,7 +90,7 @@ class LaunchExternalToolTask: public Task {
     Q_OBJECT
     Q_DISABLE_COPY(LaunchExternalToolTask)
 public:
-    LaunchExternalToolTask(const QString &execString, const QMap<QString, DataConfig> &outputUrls);
+    LaunchExternalToolTask(const QString &execString, const QString& workingDir, const QMap<QString, DataConfig> &outputUrls);
     ~LaunchExternalToolTask();
 
     void run();
@@ -100,6 +100,7 @@ public:
 private:
     QMap<QString, DataConfig> outputUrls;
     QString execString;
+    QString workingDir;
     QList<ExternalToolListener*> listeners;
 };
 
