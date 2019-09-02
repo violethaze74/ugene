@@ -23,19 +23,17 @@
 #define _U2_PERLSUPPORT_H_
 
 #include <U2Core/ExternalToolRegistry.h>
+#include "RunnerTool.h"
 
 namespace U2 {
 
-class PerlSupport : public ExternalTool {
+class PerlSupport : public RunnerTool {
     Q_OBJECT
 public:
     PerlSupport(const QString& id, const QString &name, const QString &path = "");
 
     static const QString ET_PERL;
     static const QString ET_PERL_ID;
-
-private slots:
-    void sl_toolValidationStatusChanged(bool isValid);
 };
 
 } // U2

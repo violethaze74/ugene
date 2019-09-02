@@ -724,7 +724,19 @@ void CreateCmdlineBasedWorkerWizardCommandPage::initializePage() {
             QString integatedToolId = field(CreateCmdlineBasedWorkerWizard::INTEGRATED_TOOL_ID_FIELD).toString();
             ExternalTool * tool = AppContext::getExternalToolRegistry()->getById(integatedToolId);
             if (tool) {
-                commandTemplate = "%" + CustomWorkerUtils::getVarName(tool) + "%";
+                QString toolRunnerProgramId = tool->getToolRunnerProgramId();
+                if (!toolRunnerProgramId.isEmpty()) {
+                    ExternalTool* toolRunnerProgram = AppContext::getExternalToolRegistry()->getById(toolRunnerProgramId);
+                    SAFE_POINT(nullptr != toolRunnerProgram, "ExternalTool is empty", );
+
+                    commandTemplate = "%" + CustomWorkerUtils::getVarName(toolRunnerProgram) + "% ";
+                    foreach(const QString& param, toolRunnerProgram->getRunParameters()) {
+                        commandTemplate += param + " ";
+                    }
+                } else {
+                    commandTemplate = "";
+                }
+                commandTemplate +=  "%" + CustomWorkerUtils::getVarName(tool) + "%";
             }
         }
 

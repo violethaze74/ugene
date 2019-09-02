@@ -132,6 +132,10 @@ QStringList ExternalTool::getAdditionalPaths() const {
     return QStringList();
 }
 
+QStringList ExternalTool::getRunParameters() const {
+    return QStringList();
+}
+
 void ExternalTool::extractAdditionalParameters(const QString & /*output*/) {
     // do nothing
 }

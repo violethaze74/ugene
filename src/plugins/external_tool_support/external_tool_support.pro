@@ -8,6 +8,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/ExternalToolSupportSettings.h \
            src/ExternalToolSupportSettingsController.h \
            src/RnaSeqCommon.h \
+           src/RunnerTool.h \
            src/TaskLocalStorage.h \
            src/bedtools/BedtoolsIntersectTask.h \
            src/bedtools/BedToolsWorkersLibrary.h \
@@ -271,6 +272,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/ExternalToolSupportSettings.cpp \
            src/ExternalToolSupportSettingsController.cpp \
            src/RnaSeqCommon.cpp \
+           src/RunnerTool.cpp \
            src/TaskLocalStorage.cpp \
            src/bedtools/BedtoolsIntersectTask.cpp \
            src/bedtools/BedToolsWorkersLibrary.cpp \

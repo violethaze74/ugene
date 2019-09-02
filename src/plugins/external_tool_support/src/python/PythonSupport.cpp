@@ -43,7 +43,8 @@ const QString PythonModuleNumpySupport::ET_PYTHON_NUMPY_ID = "NUMPY";
 const QString PythonModuleBioSupport::ET_PYTHON_BIO = "Bio";
 const QString PythonModuleBioSupport::ET_PYTHON_BIO_ID = "BIO";
 
-PythonSupport::PythonSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
+PythonSupport::PythonSupport(const QString& id, const QString& name, const QString& path)
+    : RunnerTool(QStringList(), id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/python.png");
@@ -65,16 +66,7 @@ PythonSupport::PythonSupport(const QString& id, const QString& name, const QStri
     toolKitName = "python";
 
     muted = true;
-    isRunnerTool = true;
-
-    connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 }
-
-void PythonSupport::sl_toolValidationStatusChanged(bool isValid) {
-    Q_UNUSED(isValid);
-    ScriptingTool::onPathChanged(this);
-}
-
 
 PythonModuleSupport::PythonModuleSupport(const QString& id, const QString &name) :
     ExternalToolModule(id, name) {

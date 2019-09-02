@@ -66,7 +66,9 @@ const QString RModuleOrgdmegdbSupport::ET_R_ORG_DM_EG_DB_ID = "UGENE_ORG_DM_EG_D
 const QString RModuleSeqlogoSupport::ET_R_SEQLOGO = "seqLogo";
 const QString RModuleSeqlogoSupport::ET_R_SEQLOGO_ID = "UGENE_SEQLOGO";
 
-RSupport::RSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path) {
+RSupport::RSupport(const QString& id, const QString& name, const QString& path)
+    : RunnerTool(QStringList(), id, name, path)
+{
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/R.png");
         grayIcon = QIcon(":external_tool_support/images/R_gray.png");
@@ -88,14 +90,6 @@ RSupport::RSupport(const QString& id, const QString& name, const QString& path) 
     toolKitName = "R";
 
     muted = true;
-    isRunnerTool = true;
-
-    connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
-}
-
-void RSupport::sl_toolValidationStatusChanged(bool isValid) {
-    Q_UNUSED(isValid);
-    ScriptingTool::onPathChanged(this);
 }
 
 RModuleSupport::RModuleSupport(const QString& id, const QString& name) : ExternalToolModule(id, name) {

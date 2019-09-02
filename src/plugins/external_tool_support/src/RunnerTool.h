@@ -19,39 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_JAVASUPPORT_H_
-#define _U2_JAVASUPPORT_H_
+
+#ifndef _U2_RUNNER_TOOL_H_
+#define _U2_RUNNER_TOOL_H_
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#include "RunnerTool.h"
-
 namespace U2 {
 
-class JavaSupport : public RunnerTool {
+class RunnerTool : public ExternalTool {
     Q_OBJECT
 public:
-    enum Architecture {
-        x32,
-        x64
-    };
-    JavaSupport(const QString& id, const QString &name, const QString &path = "");
-    void extractAdditionalParameters(const QString& output);
-    Architecture getArchitecture() const;
+    RunnerTool(const QStringList& runParameters, const QString& id, const QString& name, const QString& path);
 
-    static const QString ET_JAVA;
-    static const QString ET_JAVA_ID;
+    QStringList getRunParameters() const override;
+
+protected slots:
+    void sl_toolValidationStatusChanged(bool isValid);
 
 private:
-    static QString architecture2string(Architecture architecture);
-    static Architecture string2architecture(const QString &string);
-
-    static const QString ARCHITECTURE;
-    static const QString ARCHITECTURE_X32;
-    static const QString ARCHITECTURE_X64;
-    static const QStringList RUN_PARAMETERS;
+    QStringList runParameters;
 };
 
-} // U2
-
-#endif // _U2_JAVASUPPORT_H_
+}
+#endif

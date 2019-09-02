@@ -23,19 +23,19 @@
 #define _U2_PYTHON_SUPPORT_H_
 
 #include <U2Core/ExternalToolRegistry.h>
+
+#include "RunnerTool.h"
 #include "utils/ExternalToolSupportAction.h"
 
 namespace U2 {
 
-class PythonSupport : public ExternalTool {
+class PythonSupport : public RunnerTool {
     Q_OBJECT
 public:
     PythonSupport(const QString& id, const QString& name, const QString& path = "");
 
     static const QString ET_PYTHON;
     static const QString ET_PYTHON_ID;
-private slots:
-    void sl_toolValidationStatusChanged(bool isValid);
 };
 
 class PythonModuleSupport : public ExternalToolModule {
