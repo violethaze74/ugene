@@ -3444,6 +3444,12 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
     setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
+    // SoSome workaround for mac: after changing workflow output dir the active tab is `Start Page`
+    // Don't sure that this issue exists (or will not exist in the future) on other OS(s)
+    // So just switch back to last tab which is tabIndex2
+    GTUtilsMdi::clickTab(os, tabIndex2);
+
+
 //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
 //        Expected result:
 //          - The Workflow Designer is in the dashboards view mode.
