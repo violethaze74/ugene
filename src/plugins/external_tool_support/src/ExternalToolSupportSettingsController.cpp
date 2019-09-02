@@ -52,9 +52,7 @@ ExternalToolSupportSettingsPageController::ExternalToolSupportSettingsPageContro
 
 
 AppSettingsGUIPageState* ExternalToolSupportSettingsPageController::getSavedState() {
-    ExternalToolSupportSettingsPageState* state = new ExternalToolSupportSettingsPageState();
-    state->externalTools = AppContext::getExternalToolRegistry()->getAllEntries();
-    return state;
+    return new ExternalToolSupportSettingsPageState(AppContext::getExternalToolRegistry()->getAllEntries());
 }
 
 void ExternalToolSupportSettingsPageController::saveState(AppSettingsGUIPageState* s) {
@@ -74,11 +72,26 @@ const QString &ExternalToolSupportSettingsPageController::getHelpPageId() const 
 
 const QString ExternalToolSupportSettingsPageController::helpPageId = QString("");
 
+//////////////////////////////////////////////
+////ExternalToolSupportSettingsPageState
+
+ExternalToolSupportSettingsPageState::ExternalToolSupportSettingsPageState(const QList<ExternalTool*>& ets) :
+    externalTools(ets) {}
+
+QList<ExternalTool*> ExternalToolSupportSettingsPageState::getExternalTools() const {
+    return externalTools;
+}
+
 /////////////////////////////////////////////
 ////ExternalToolSupportSettingsPageWidget
+
 const QString ExternalToolSupportSettingsPageWidget::INSTALLED = QObject::tr("Installed");
 const QString ExternalToolSupportSettingsPageWidget::NOT_INSTALLED = QObject::tr("Not installed");
 const QString ExternalToolSupportSettingsPageWidget::ET_DOWNLOAD_INFO = QObject::tr("<html><head/><body><p>Download <a href=\"http://ugene.net/download-all_html#en_data_analysis_tools\"><span style=\" text-decoration: underline; color:#1866af;\">tools executables</span></a> and configure the tools paths. </p></body></html>");
+
+const QString ExternalToolSupportSettingsPageWidget::SUPPORTED_ID = "integrated tools";
+const QString ExternalToolSupportSettingsPageWidget::CUSTOM_ID = "custom tools";
+const QString ExternalToolSupportSettingsPageWidget::INFORMATION_ID = "info";
 
 ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(ExternalToolSupportSettingsPageController* ctrl) {
     Q_UNUSED(ctrl);
@@ -89,14 +102,14 @@ ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(Ext
     selectToolPackLabel->setText(ET_DOWNLOAD_INFO);
     versionLabel->hide();
     binaryPathLabel->hide();
-    
-    ShowHideSubgroupWidget *integratedToolsShowHideWidget = new ShowHideSubgroupWidget("integrated tools", tr("Supported tools"), integratedToolsInnerWidget, true);
-    integratedToolsContainerWidget->layout()->addWidget(integratedToolsShowHideWidget);
 
-    ShowHideSubgroupWidget *customToolsShowHideWidget = new ShowHideSubgroupWidget("custom tools", tr("Custom tools"), customToolsInnerWidget, false);
+    supportedToolsShowHideWidget = new ShowHideSubgroupWidget(SUPPORTED_ID, tr("Supported tools"), integratedToolsInnerWidget, true);
+    integratedToolsContainerWidget->layout()->addWidget(supportedToolsShowHideWidget);
+
+    customToolsShowHideWidget = new ShowHideSubgroupWidget(CUSTOM_ID, tr("Custom tools"), customToolsInnerWidget, false);
     customToolsContainerWidget->layout()->addWidget(customToolsShowHideWidget);
 
-    ShowHideSubgroupWidget *infoShowHideWidget = new ShowHideSubgroupWidget("info", tr("Additional information"), infoInnerWidget, true);
+    infoShowHideWidget = new ShowHideSubgroupWidget(INFORMATION_ID, tr("Additional information"), infoInnerWidget, true);
     infoContainerWidget->layout()->addWidget(infoShowHideWidget);
 
     twIntegratedTools->setColumnWidth(0, this->geometry().width() / 3);
@@ -115,6 +128,10 @@ ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(Ext
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     connect(etRegistry, SIGNAL(si_toolAdded(const QString &)), SLOT(sl_externalToolAdded(const QString &)));
     connect(etRegistry, SIGNAL(si_toolIsAboutToBeRemoved(const QString &)), SLOT(sl_externalToolIsAboutToBeRemoved(const QString &)));
+}
+
+ExternalToolSupportSettingsPageWidget::~ExternalToolSupportSettingsPageWidget() {
+    saveShowHideSubgroupsState();
 }
 
 QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent, const QString& path) const {
@@ -311,8 +328,9 @@ void extractCustomTools(QList<QList<ExternalTool *> > &toolkits, QList<ExternalT
 
 void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
     ExternalToolSupportSettingsPageState* state = qobject_cast<ExternalToolSupportSettingsPageState*>(s);
+    SAFE_POINT(nullptr != state, "ExternalToolSupportSettingsPageState is absent", );
 
-    foreach(ExternalTool* tool, state->externalTools) {
+    foreach(ExternalTool* tool, state->getExternalTools()) {
         ExternalToolInfo info;
         info.id = tool->getId();
         info.name = tool->getName();
@@ -358,6 +376,10 @@ void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState* s)
     foreach (ExternalTool *tool, customTools) {
         insertChild(twCustomTools->invisibleRootItem(), { tool->getId() }, twCustomTools->invisibleRootItem()->childCount());
     }
+
+    supportedToolsShowHideWidget->setSubgroupOpened(AppContext::getSettings()->getValue(ExternalToolSupportSettingsPageWidget::SUPPORTED_ID, QVariant(true)).toBool());
+    customToolsShowHideWidget->setSubgroupOpened(AppContext::getSettings()->getValue(ExternalToolSupportSettingsPageWidget::CUSTOM_ID, QVariant(false)).toBool());
+    infoShowHideWidget->setSubgroupOpened(AppContext::getSettings()->getValue(ExternalToolSupportSettingsPageWidget::INFORMATION_ID, QVariant(true)).toBool());
 }
 
 QTreeWidgetItem* ExternalToolSupportSettingsPageWidget::insertChild(QTreeWidgetItem* rootItem, const QString& id, int pos, bool isModule) {
@@ -559,16 +581,24 @@ bool ExternalToolSupportSettingsPageWidget::eventFilter(QObject *watched, QEvent
     return false;
 }
 
+void ExternalToolSupportSettingsPageWidget::saveShowHideSubgroupsState() const {
+    Settings* settings = AppContext::getSettings();
+    settings->setValue(ExternalToolSupportSettingsPageWidget::SUPPORTED_ID, QVariant(supportedToolsShowHideWidget->isSubgroupOpened()));
+    settings->setValue(ExternalToolSupportSettingsPageWidget::CUSTOM_ID, QVariant(customToolsShowHideWidget->isSubgroupOpened()));
+    settings->setValue(ExternalToolSupportSettingsPageWidget::INFORMATION_ID, QVariant(infoShowHideWidget->isSubgroupOpened()));
+}
+
 AppSettingsGUIPageState* ExternalToolSupportSettingsPageWidget::getState(QString& err) const {
     Q_UNUSED(err);
 
-    ExternalToolSupportSettingsPageState* state = new ExternalToolSupportSettingsPageState();
+    QList<ExternalTool*> externalTools;
     foreach(ExternalToolInfo info, externalToolsInfo) {
         ExternalTool* externalTool = new ExternalTool(info.id, info.name, info.path);
         externalTool->setValid(info.valid);
         externalTool->setVersion(info.version);
-        state->externalTools.append(externalTool);
+        externalTools.append(externalTool);
     }
+    ExternalToolSupportSettingsPageState* state = new ExternalToolSupportSettingsPageState(externalTools);
     return state;
 }
 
