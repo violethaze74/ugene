@@ -66,21 +66,6 @@ void ExternalToolManagerImpl::innerStart() {
     searchList.clear();
     toolStates.clear();
 
-    // Read settings
-    ExternalToolSupportSettings::getExternalTools();
-
-    QList<ExternalTool*> toolsList = etRegistry->getAllEntries();
-    StrStrMap toolPaths;
-    foreach(ExternalTool* tool, toolsList) {
-        SAFE_POINT(tool, "Tool is NULL", );
-        QString toolPath = addTool(tool);
-        if (!toolPath.isEmpty()) {
-            toolPaths.insert(tool->getId(), toolPath);
-        }
-    }
-
-    validateTools(toolPaths);
-
     loadCustomTools();
 }
 
@@ -344,11 +329,14 @@ void ExternalToolManagerImpl::sl_pluginsLoaded() {
 void ExternalToolManagerImpl::sl_customToolsLoaded(Task *task) {
     LoadCustomExternalToolsTask *loadTask = qobject_cast<LoadCustomExternalToolsTask *>(task);
     SAFE_POINT(nullptr != loadTask, "Unexpected task, can't cast it to LoadCustomExternalToolsTask *", );
-    const QList<CustomExternalTool *> toolsList = loadTask->getTools();
+
+    ExternalToolSupportSettings::loadExternalTools();
+
+    QList<ExternalTool*> toolsList = etRegistry->getAllEntries();
     StrStrMap toolPaths;
-    foreach(CustomExternalTool* tool, toolsList) {
-        SAFE_POINT(nullptr != tool, "Tool is nullptr", );
-        const QString toolPath = addTool(tool);
+    foreach(ExternalTool * tool, toolsList) {
+        SAFE_POINT(tool, "Tool is NULL", );
+        QString toolPath = addTool(tool);
         if (!toolPath.isEmpty()) {
             toolPaths.insert(tool->getId(), toolPath);
         }

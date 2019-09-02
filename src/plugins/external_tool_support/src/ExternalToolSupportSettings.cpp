@@ -63,7 +63,7 @@ void ExternalToolSupportSettings::setNumberExternalTools( int v ) {
     emit watcher->changed();
 }
 
-bool ExternalToolSupportSettings::getExternalTools() {
+void ExternalToolSupportSettings::loadExternalTools() {
     int numberExternalTools = getNumberExternalTools();
     QString id;
     QString name;
@@ -94,7 +94,6 @@ bool ExternalToolSupportSettings::getExternalTools() {
     }
     prevNumberExternalTools = numberExternalTools;
     ExternalToolSupportSettings::setExternalTools();
-    return true;//bad code
 }
 
 void ExternalToolSupportSettings::setExternalTools() {
