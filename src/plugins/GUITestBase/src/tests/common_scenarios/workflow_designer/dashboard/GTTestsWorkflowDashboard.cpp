@@ -3492,7 +3492,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -3587,7 +3587,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -3670,7 +3670,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -3817,7 +3817,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -3924,7 +3924,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -4149,7 +4149,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -4256,7 +4256,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -4480,7 +4480,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -4587,7 +4587,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -4667,7 +4667,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
