@@ -146,7 +146,7 @@ void McaEditorNameList::moveSelection(int dy) {
     MaEditorNameList::moveSelection(dy);
     MaEditorSequenceArea* seqArea = ui->getSequenceArea();
     seqArea->sl_cancelSelection();
-    updateSelection(nextSequenceToSelect);
+    setSelection(nextSequenceToSelect, 1);
 }
 
 }   // namespace U2
