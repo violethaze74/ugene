@@ -64,7 +64,6 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     scribbling = false;
     shifting = false;
     curRowNumber = 0;
-    nextSequenceToSelect = 0;
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
 
     editSequenceNameAction = new QAction(tr("Edit sequence name"), this);
@@ -303,45 +302,34 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
     switch(key) {
     case Qt::Key_Up: {
-        bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect - 1);
-        const U2Region sel = getSelection();
+        U2Region sel = getSelection();
         if (sel.isEmpty()) {
             break;
         }
-        int selStart = sel.length != 0 ? getSelection().startPos : nextSequenceToSelect;
-        if (isSeqInRange && isShiftPressed) {
-            nextSequenceToSelect--;
-            moveSelection(0);
-            int seqAreaHeight = ui->getSequenceArea()->height();
-            ui->getScrollController()->scrollToRowByNumber(nextSequenceToSelect, seqAreaHeight);
-        } else if (!isShiftPressed && selStart > 0) {
-            if (0 <= curRowNumber - 1) {
-                curRowNumber--;
+        if (isShiftPressed) {
+            if (sel.startPos > 0) {
+                setSelection(sel.startPos - 1, sel.length + 1);
+                moveSelection(0);
             }
-            nextSequenceToSelect--;
+        } else {
             moveSelection(-1);
         }
         break;
     }
     case Qt::Key_Down: {
-        bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect + 1);
-        const U2Region sel = getSelection();
+        U2Region sel = getSelection();
         if (sel.isEmpty()) {
             break;
         }
-        int selEnd = sel.endPos() - 1;
-        int rowNum = ui->getSequenceArea()->getNumDisplayableSequences() - 1;
-        if (isSeqInRange && isShiftPressed) {
-            nextSequenceToSelect++;
+        int maxRows = ui->getSequenceArea()->getNumDisplayableSequences() - 1;
+        if (isShiftPressed) {
             moveSelection(0);
-            int seqAreaHeight = ui->getSequenceArea()->height();
-            ui->getScrollController()->scrollToRowByNumber(nextSequenceToSelect, seqAreaHeight);
-        } else if (!isShiftPressed && selEnd < rowNum) {
-            int numDisplayableSequences = ui->getSequenceArea()->getNumDisplayableSequences();
-            if (numDisplayableSequences > curRowNumber + 1) {
-                curRowNumber++;
+            if (sel.endPos() < maxRows) {
+                setSelection(sel.startPos, sel.length + 1);
+                moveSelection(0);
             }
-            nextSequenceToSelect++;
+
+        } else {
             moveSelection(1);
         }
         break;
@@ -398,12 +386,10 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
         }
         selectionStartPoint = e->pos();
         curRowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(e->y());
-        nextSequenceToSelect = curRowNumber;
         if (ui->isCollapsibleMode()) {
             MSACollapsibleItemModel* m = ui->getCollapseModel();
             if (curRowNumber >= m->getDisplayableRowsCount()) {
                 curRowNumber = m->getDisplayableRowsCount() - 1;
-                nextSequenceToSelect = curRowNumber;
             }
             if (m->isTopLevel(curRowNumber)) {
                 const U2Region yRange = ui->getRowHeightController()->getRowScreenRangeByNumber(curRowNumber);
@@ -474,7 +460,6 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
     rubberBand->hide();
     if (scribbling) {
         int newRowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(qMax(e->y(), 0));
-        nextSequenceToSelect = newRowNumber;
         if (!ui->getSequenceArea()->isSeqInRange(newRowNumber)) {
             if (e->y() < selectionStartPoint.y()) {
                 newRowNumber = 0;

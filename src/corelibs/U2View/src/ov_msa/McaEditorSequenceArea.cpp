@@ -195,8 +195,8 @@ void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newH
         return;
     }
 
-    if (getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(sel.y(), sel.x())) {
-        // clear selection
+    if (sel.width() == 1 && getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(sel.y(), sel.x())) {
+        // clear selection if gap is clicked
         emit si_clearReferenceSelection();
         MaEditorSequenceArea::setSelection(MaEditorSelection(), newHighlightSelection);
         return;

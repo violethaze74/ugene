@@ -141,7 +141,6 @@ protected:
     MaEditorWgt*        ui;
     QScrollBar*         nhBar;
     int                 curRowNumber;
-    int                 nextSequenceToSelect;
     QPoint              selectionStartPoint;
     bool                scribbling;
     bool                shifting;
