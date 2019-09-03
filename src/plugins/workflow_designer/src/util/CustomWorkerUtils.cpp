@@ -36,11 +36,11 @@ QString CustomWorkerUtils::getVarName(const ExternalTool *tool) {
                "Bad external tool type",
                "__UGENE_BAD_EXTERNAL_TOOL_TYPE__");
     QString id = tool->getId();
-    SAFE_POINT((id.indexOf(QRegularExpression("[^A-Z0-9_-]")) < 0),
+    SAFE_POINT((id.indexOf(QRegularExpression("[^A-Za-z0-9_-]")) < 0),
                "Bad external tool id",
                "__UGENE_BAD_EXTERNAL_TOOL_ID__");
 
-    return tool->isCustom() ? "UGENE_" + id : id;
+    return (tool->isCustom() ? "UGENE_" + id : id).toUpper();
 }
 
 bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QString toolId) {
@@ -64,7 +64,7 @@ bool CustomWorkerUtils::commandContainsVarName(const QString& cmd, const QString
 bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const QString varName, const QString path) {
     SAFE_POINT(!(varName.isNull() || varName.isEmpty()),
                "Bad varName",
-               "__UGENE_BAD_VAR_NAME__");
+               false);
     bool result = false;
     QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + ("%" + varName + "%"));
     while (cmd.indexOf(regex1) >= 0) {
