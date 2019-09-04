@@ -131,6 +131,8 @@ protected:
 
     virtual void drawRefSequence(QPainter &p, QRect r);
 
+    void clearSelection();
+
     QFont getFont(bool selected) const;
     QRect calculateTextRect(const U2Region& yRange, bool selected) const;
     QRect calculateButtonRect(const QRect& itemRect) const;
@@ -140,7 +142,8 @@ protected:
     QObject*            labels; // used in GUI tests
     MaEditorWgt*        ui;
     QScrollBar*         nhBar;
-    int                 curRowNumber;
+    // Index of the focused (current) row.
+    int                 currentRow;
     QPoint              selectionStartPoint;
     bool                scribbling;
     bool                shifting;
