@@ -474,41 +474,43 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
         } else {
             bool selectionContainsSeqs = mouseReleaseRow <= lastVisibleRow;
             if (selectionContainsSeqs) {
+                int newSelectionStart = -1;
+                int newSelectionLen = -1;
                 if (hasShiftModifier && isClick) { // append region between current selection & mouseReleaseRow to the selection.
                     if (mouseReleaseRow < selection.startPos) {
-                        int newSelectionStart = qBound(0, mouseReleaseRow, (int) selection.startPos);
-                        int newSelectionLen = (int) (selection.length + (selection.startPos - mouseReleaseRow));
-                        setSelection(newSelectionStart, newSelectionLen);
+                        newSelectionStart = qBound(0, mouseReleaseRow, (int) selection.startPos);
+                        newSelectionLen = (int) (selection.length + (selection.startPos - mouseReleaseRow));
                     } else if (mouseReleaseRow >= selection.endPos()) {
-                        int newSelectionEnd = qMin(mouseReleaseRow + 1, maxRows);
-                        int newSelectionLen = newSelectionEnd - (int) selection.startPos;
-                        setSelection((int) selection.startPos, newSelectionLen);
+                        newSelectionStart = (int) selection.startPos;
+                        newSelectionLen = qMin(mouseReleaseRow + 1, maxRows) - (int) selection.startPos;
                     }
                 } else {
                     bool overflowAction = mouseReleaseRow != mouseReleaseRowExt && mousePressRow != mousePressRowExt; // 'true' if selection started & finished outside of any row.
                     if (overflowAction) {
                         clearSelection();
                     } else {
-                        int startPos = qMin(mousePressRow, mouseReleaseRow);
-                        int count = qAbs(mousePressRow - mouseReleaseRow) + 1;
+                        newSelectionStart = qMin(mousePressRow, mouseReleaseRow);
+                        newSelectionLen = qAbs(mousePressRow - mouseReleaseRow) + 1;
                         if (selection.length > 0 && hasShiftModifier) { // Add region to the selection when Shift is used and there is an intersection.
-                            U2Region selectionExt(startPos - 1, count + 2); // Region to test intersection. Extended to +1 both sides so we track 'touches' too.
+                            U2Region selectionExt(newSelectionStart - 1, newSelectionLen + 2); // Region to test intersection. Extended to +1 both sides so we track 'touches' too.
                             if (selectionExt.intersect(selection).length > 0) {
-                                if (selection.startPos < startPos) {
-                                    count += startPos - selection.startPos;
-                                    startPos = selection.startPos;
+                                if (selection.startPos < newSelectionStart) {
+                                    newSelectionLen += newSelectionStart - selection.startPos;
+                                    newSelectionStart = selection.startPos;
                                 }
-                                if (startPos + count < selection.endPos()) {
-                                    count = selection.endPos() - startPos;
+                                if (newSelectionStart + newSelectionLen < selection.endPos()) {
+                                    newSelectionLen = selection.endPos() - newSelectionStart;
                                 }
                             }
                         }
-                        if (hasCtrlModifier && selection.length > 0) { // with Ctrl we copy X range to the new selection.
-                            const MaEditorSelection& maSelection = ui->getSequenceArea()->getSelection();
-                            ui->getSequenceArea()->setSelection(MaEditorSelection(maSelection.x(), startPos, maSelection.width(), count));
-                        } else {
-                            setSelection(startPos, count);
-                        }
+                    }
+                }
+                if (newSelectionLen > 0) {
+                    if (hasCtrlModifier && selection.length > 0) { // with Ctrl we copy X range to the new selection.
+                        const MaEditorSelection& maSelection = ui->getSequenceArea()->getSelection();
+                        ui->getSequenceArea()->setSelection(MaEditorSelection(maSelection.x(), newSelectionStart, maSelection.width(), newSelectionLen));
+                    } else {
+                        setSelection(newSelectionStart, newSelectionLen);
                     }
                 }
             } else {
