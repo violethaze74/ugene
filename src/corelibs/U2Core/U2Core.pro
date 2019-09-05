@@ -217,6 +217,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/AnnotationCreationPattern.h \
            src/util/AssemblyImporter.h \
            src/util/ChromatogramUtils.h \
+           src/util/CoreExternalToolsUtils.h \
            src/util/DatatypeSerializeUtils.h \
            src/util/FileAndDirectoryUtils.h \
            src/util/FilesIterator.h \
@@ -443,6 +444,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/AnnotationCreationPattern.cpp \
            src/util/AssemblyImporter.cpp \
            src/util/ChromatogramUtils.cpp \
+           src/util/CoreExternalToolsUtils.cpp \
            src/util/DatatypeSerializeUtils.cpp \
            src/util/FileAndDirectoryUtils.cpp \
            src/util/FilesIterator.cpp \

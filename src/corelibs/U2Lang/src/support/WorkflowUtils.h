@@ -99,8 +99,6 @@ public:
 
     static void applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pathMap);
 
-    static bool startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments);
-
     static QStringList getDatasetsUrls(const QList<Dataset> &sets);
 
     static QStringList getAttributeUrls(Attribute *attr);

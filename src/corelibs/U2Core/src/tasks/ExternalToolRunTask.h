@@ -139,7 +139,7 @@ public:
      */
     static QString createTmpDir(const QString &prePath, const QString &domain, U2OpStatus &os);
     static void appendExistingFile(const QString &path, QStringList &files);
-    static bool startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments);
+    static bool startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments, bool tryLaunchWithCmd = true);
     static ProcessRun prepareProcess(const QString &toolName, const QStringList &arguments, const QString &workingDirectory, const QStringList &additionalPaths, U2OpStatus &os, ExternalToolListener* listener);
     static QString prepareArgumentsForCmdLine(const QStringList &arguments);
     static QStringList splitCmdLineArguments(const QString &execString);

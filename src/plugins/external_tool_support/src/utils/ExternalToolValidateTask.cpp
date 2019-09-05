@@ -19,12 +19,15 @@
  * MA 02110-1301, USA.
  */
 
+#include <QStandardPaths>
 #include <QString>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/CmdlineTaskRunner.h>
+#include <U2Core/CoreExternalToolsUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
@@ -87,7 +90,7 @@ void ExternalToolJustValidateTask::run() {
                                .arg(toolName));
         } else {
             originalValidation.arguments.prepend(originalValidation.executableFile);
-            for (int i = stool->getRunParameters().size() - 1; i >= 0; i--){
+            for (int i = stool->getRunParameters().size() - 1; i >= 0; i--) {
                 originalValidation.arguments.prepend(stool->getRunParameters().at(i));
             }
             originalValidation.executableFile = stool->getPath();
@@ -117,26 +120,22 @@ void ExternalToolJustValidateTask::run() {
         externalToolProcess = new QProcess();
         setEnvironment(tool);
 
-        externalToolProcess->start(validation.executableFile, validation.arguments);
-        bool started = externalToolProcess->waitForStarted(3000);
-
-        if (!started) {
+        if (!ExternalToolSupportUtils::startExternalProcess(externalToolProcess, validation.executableFile, validation.arguments, false)) {
             errorMsg = validation.possibleErrorsDescr.value(ExternalToolValidation::DEFAULT_DESCR_KEY, "");
             if (!errorMsg.isEmpty()) {
                 stateInfo.setError(errorMsg);
             } else {
                 stateInfo.setError(tr("Tool does not start.<br>"
-                                      "It is possible that the specified executable file "
-                                      "<i>%1</i> for %2 tool is invalid. You can change "
-                                      "the path to the executable file in the external "
-                                      "tool settings in the global preferences.")
-                                   .arg(toolPath)
-                                   .arg(toolName));
+                    "It is possible that the specified executable file "
+                    "<i>%1</i> for %2 tool is invalid. You can change "
+                    "the path to the executable file in the external "
+                    "tool settings in the global preferences.")
+                    .arg(toolPath)
+                    .arg(toolName));
             }
             isValid = false;
             return;
         }
-
         int elapsedTime = 0;
         const int timeout = tool->isCustom() ? 0 : TIMEOUT_MS;      // Custom tools can't be validated properly now, there is no need to wait them
         while (!externalToolProcess->waitForFinished(CHECK_PERIOD_MS)) {
