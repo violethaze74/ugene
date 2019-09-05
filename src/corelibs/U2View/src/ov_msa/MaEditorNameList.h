@@ -144,10 +144,8 @@ protected:
     QScrollBar*         nhBar;
     // Index of the focused (current) row.
     int                 currentRow;
-    QPoint              selectionStartPoint;
-    bool                scribbling;
-    bool                shifting;
-    bool                singleSelecting;
+    QPoint              mousePressPoint;
+    bool                dragging;
     GroupColorSchema    groupColors;
 
     QRubberBand*        rubberBand;
