@@ -315,6 +315,7 @@ void WorkflowView::setupScene() {
     connect(scene, SIGNAL(selectionChanged()), SLOT(sl_editItem()));
     connect(scene, SIGNAL(selectionChanged()), SLOT(sl_onSelectionChanged()));
     connect(scene, SIGNAL(configurationChanged()), SLOT(sl_refreshActorDocs()));
+    connect(scene, SIGNAL(configurationChanged()), SLOT(sl_editItem()));
     connect(WorkflowSettings::watcher, SIGNAL(changed()), scene, SLOT(update()));
 }
 

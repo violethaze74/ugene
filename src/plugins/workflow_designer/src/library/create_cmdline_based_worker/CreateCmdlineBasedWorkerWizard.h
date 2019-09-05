@@ -50,6 +50,7 @@ public:
     ExternalProcessConfig* takeConfig();
 
     static void saveConfig(ExternalProcessConfig* config);
+    static bool isRequiredToRemoveElementFromScene(ExternalProcessConfig* actualConfig, ExternalProcessConfig* newConfig);
 
     static const QString PAGE_TITLE_STYLE_SHEET;
 

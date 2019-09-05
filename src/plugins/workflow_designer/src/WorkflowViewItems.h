@@ -134,6 +134,9 @@ protected:
 public slots:
     void sl_update();
 
+private slots:
+    void sl_descriptionChanged();
+
 private:
     void createPorts();
     QMap<StyleId, ItemViewStyle*> styles;

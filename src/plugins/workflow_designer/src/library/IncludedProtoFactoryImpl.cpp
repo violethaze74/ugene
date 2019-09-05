@@ -284,6 +284,10 @@ void IncludedProtoFactoryImpl::_registerScriptWorker(const QString &actorName) {
     localDomain->registerEntry(new LocalWorkflow::ScriptWorkerFactory(actorName));
 }
 
+ExternalProcessConfig* IncludedProtoFactoryImpl::_getExternalToolWorker(const QString& id) {
+    return WorkflowEnv::getExternalCfgRegistry()->getConfigById(id);
+}
+
 ExternalProcessConfig *IncludedProtoFactoryImpl::_unregisterExternalToolWorker(const QString &id) {
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalWorkflow::LocalDomainFactory::ID);
     delete localDomain->unregisterEntry(id);

@@ -74,6 +74,14 @@ void IncludedProtoFactory::registerScriptWorker(const QString &actorName) {
     }
 }
 
+ExternalProcessConfig* IncludedProtoFactory::getExternalToolWorker(const QString& id) {
+    if (nullptr != instance) {
+        return instance->_getExternalToolWorker(id);
+    } else {
+        return nullptr;
+    }
+}
+
 ExternalProcessConfig *IncludedProtoFactory::unregisterExternalToolWorker(const QString &id) {
     if (nullptr != instance) {
         return instance->_unregisterExternalToolWorker(id);

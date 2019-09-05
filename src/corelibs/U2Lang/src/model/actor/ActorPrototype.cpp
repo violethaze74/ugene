@@ -123,6 +123,15 @@ Actor* ActorPrototype::createInstance(const ActorId &actorId, AttributeScript *s
     return proc;
 }
 
+void ActorPrototype::setDisplayName(const QString& n) {
+    VisualDescriptor::setDisplayName(n);
+    emit si_nameChanged();
+}
+
+void ActorPrototype::setDocumentation(const QString& d) {
+    VisualDescriptor::setDocumentation(d);
+    emit si_descriptionChanged();
+}
 
 Attribute * ActorPrototype::getAttribute( const QString & id ) const {
     Attribute * res = NULL;
@@ -161,7 +170,7 @@ const StrStrMap & ActorPrototype::getExternalTools() const {
 ActorPrototype::ActorPrototype(const Descriptor& d,
                                const QList<PortDescriptor*>& ports,
                                const QList<Attribute*>& attrs)
-: VisualDescriptor(d), attrs(attrs), ports(ports), ed(NULL), val(NULL), prompter(NULL),
+: VisualDescriptor(d), QObject(nullptr), attrs(attrs), ports(ports), ed(NULL), val(NULL), prompter(NULL),
 isScript(false), isStandard(true), isSchema(false), allowsEmptyPorts(false), influenceOnPathFlag(false) {
 }
 
