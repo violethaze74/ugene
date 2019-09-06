@@ -120,6 +120,9 @@ Actor* ActorPrototype::createInstance(const ActorId &actorId, AttributeScript *s
     }
     proc->updateItemsAvailability();
 
+    usageCounter++;
+    connect(proc, SIGNAL(destroyed()), SLOT(sl_onActorDestruction()));
+
     return proc;
 }
 
@@ -171,17 +174,24 @@ ActorPrototype::ActorPrototype(const Descriptor& d,
                                const QList<PortDescriptor*>& ports,
                                const QList<Attribute*>& attrs)
 : VisualDescriptor(d), QObject(nullptr), attrs(attrs), ports(ports), ed(NULL), val(NULL), prompter(NULL),
-isScript(false), isStandard(true), isSchema(false), allowsEmptyPorts(false), influenceOnPathFlag(false) {
+isScript(false), isStandard(true), isSchema(false), allowsEmptyPorts(false), influenceOnPathFlag(false), usageCounter(0) {
 }
 
-ActorPrototype::~ActorPrototype()
-{
+ActorPrototype::~ActorPrototype() {
     qDeleteAll(attrs);
     qDeleteAll(ports);
     delete ed;
     delete val;
     delete prompter;
     qDeleteAll(portValidators);
+}
+
+void ActorPrototype::sl_onActorDestruction() {
+    usageCounter--;
+}
+
+int ActorPrototype::getUsageCounter() const {
+    return usageCounter;
 }
 
 } // Workflow

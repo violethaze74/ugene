@@ -35,6 +35,7 @@
 #include "CreateScriptWorker.h"
 #include "WorkflowPalette.h"
 #include "WorkflowSamples.h"
+#include "WorkflowViewController.h"
 #include "library/ExternalProcessWorker.h"
 #include "library/IncludedProtoFactoryImpl.h"
 #include "library/ScriptWorker.h"
@@ -476,6 +477,22 @@ QString WorkflowPaletteElements::createPrototype() {
 }
 
 bool WorkflowPaletteElements::editPrototype(ActorPrototype *proto) {
+    WorkflowView *wv = dynamic_cast<WorkflowView*>(schemaConfig);
+    CHECK(wv != nullptr, false);
+    int actorWithCurrentProtoCounter = 0;
+    for (auto actor: wv->getSchema()->getProcesses()) {
+        if (actor->getProto() == proto) {
+            actorWithCurrentProtoCounter++;
+        }
+    }
+    if (proto->getUsageCounter() != actorWithCurrentProtoCounter) {
+        QMessageBox::warning(this,
+            tr("Unable to Edit Element"),
+            tr("The element with external tool is used in other Workflow Designer window(s). "
+            "Please remove these instances to be able to edit the element configuration."),
+            QMessageBox::Yes);
+        return false;
+    }
     ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(proto->getId());
     QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(schemaConfig, oldCfg, this);
     dlg->exec();
@@ -702,6 +719,22 @@ QVariant WorkflowPaletteElements::changeState(const QVariant& savedState){
 }
 
 void WorkflowPaletteElements::removePrototype(ActorPrototype *proto) {
+    WorkflowView* wv = dynamic_cast<WorkflowView*>(schemaConfig);
+    CHECK(wv != nullptr, );
+    int actorWithCurrentProtoCounter = 0;
+    for (auto actor : wv->getSchema()->getProcesses()) {
+        if (actor->getProto() == proto) {
+            actorWithCurrentProtoCounter++;
+        }
+    }
+    if (proto->getUsageCounter() != actorWithCurrentProtoCounter) {
+        QMessageBox::warning(this,
+            tr("Unable to Remove Element"),
+            tr("The element with external tool is used in other Workflow Designer window(s). "
+                "Please remove these instances to be able to remove the element configuration."),
+            QMessageBox::Yes);
+        return;
+    }
     emit si_prototypeIsAboutToBeRemoved(proto);
 
     if (!QFile::remove(proto->getFilePath())) {

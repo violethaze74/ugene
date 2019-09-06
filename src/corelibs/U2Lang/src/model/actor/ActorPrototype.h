@@ -97,6 +97,7 @@ public:
 
     void addExternalTool(const QString &toolId, const QString &paramId = "");
     const StrStrMap & getExternalTools() const;
+    int getUsageCounter() const;
 
 signals:
     void si_nameChanged();
@@ -142,6 +143,11 @@ protected:
     // Also the path to a tool can be set in a parameter. In this case the value of map is the parameter's id;
     // otherwise the value is empty string.
     StrStrMap externalTools;
+
+private slots:
+    void sl_onActorDestruction();
+private:
+    int usageCounter;
 }; // ActorPrototype
 
 } // Workflow
