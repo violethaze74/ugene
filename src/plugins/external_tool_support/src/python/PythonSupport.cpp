@@ -35,7 +35,7 @@
 namespace U2 {
 
 const QString PythonSupport::ET_PYTHON = "python";
-const QString PythonSupport::ET_PYTHON_ID = "UGENE_PYTHON2";
+const QString PythonSupport::ET_PYTHON_ID = "USUPP_PYTHON2";
 const QString PythonModuleDjangoSupport::ET_PYTHON_DJANGO = "django";
 const QString PythonModuleDjangoSupport::ET_PYTHON_DJANGO_ID = "DJANGO";
 const QString PythonModuleNumpySupport::ET_PYTHON_NUMPY = "numpy";

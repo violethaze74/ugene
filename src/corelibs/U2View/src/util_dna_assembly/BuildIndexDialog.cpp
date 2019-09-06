@@ -177,13 +177,13 @@ void BuildIndexDialog::accept()
         QString externalToolId;
         
         if (getAlgorithmName() == "Bowtie2") {
-            externalToolId = "UGENE_BOWTIE2_BUILD";
+            externalToolId = "USUPP_BOWTIE2_BUILD";
         } 
         if (getAlgorithmName() == "Bowtie"){
-            externalToolId = "UGENE_BOWTIE_BUILD";
+            externalToolId = "USUPP_BOWTIE_BUILD";
         }
         if ((getAlgorithmName() == "BWA") || (getAlgorithmName() == "BWA-MEM") || (getAlgorithmName() == "BWA-SW")){
-            externalToolId = "UGENE_BWA";
+            externalToolId = "USUPP_BWA";
         }
         if(AppContext::getExternalToolRegistry()->getById(externalToolId)->getPath().isEmpty()) {
             QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);

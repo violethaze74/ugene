@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString BigWigSupport::ET_BIGWIG = "bigwig";
-const QString BigWigSupport::ET_BIGWIG_ID = "UGENE_BED_GRAPH_TO_BIG_WIG";
+const QString BigWigSupport::ET_BIGWIG_ID = "USUPP_BED_GRAPH_TO_BIG_WIG";
 const QString BigWigSupport::GENOMES_DATA_NAME = "Genome files";
 const QString BigWigSupport::GENOMES_DIR_NAME = "genome_lengths";
 

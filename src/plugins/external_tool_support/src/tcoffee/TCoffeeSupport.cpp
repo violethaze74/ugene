@@ -47,7 +47,7 @@
 namespace U2 {
 
 const QString TCoffeeSupport::ET_TCOFFEE = "T-Coffee";
-const QString TCoffeeSupport::ET_TCOFFEE_ID = "UGENE_T_COFFEE";
+const QString TCoffeeSupport::ET_TCOFFEE_ID = "USUPP_T_COFFEE";
 const QString TCoffeeSupport::TCOFFEE_TMP_DIR = "tcoffee";
 
 TCoffeeSupport::TCoffeeSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)

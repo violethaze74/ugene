@@ -2338,7 +2338,7 @@ GUI_TEST_CLASS_DEFINITION(test_6481_1) {
     settings.elementName = "test_6481_1";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
     settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_file_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFileUrl, QString()));
-    settings.command = "%UGENE_JAVA% -help $output_file_url";
+    settings.command = "%USUPP_JAVA% -help $output_file_url";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
     GTGlobals::sleep();
@@ -2386,7 +2386,7 @@ GUI_TEST_CLASS_DEFINITION(test_6481_2) {
     settings.elementName = "test_6481_2";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
     settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_folder_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFolderUrl, QString()));
-    settings.command = "%UGENE_JAVA% -help $output_folder_url";
+    settings.command = "%USUPP_JAVA% -help $output_folder_url";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
     GTGlobals::sleep();
@@ -2788,7 +2788,7 @@ GUI_TEST_CLASS_DEFINITION(test_6490) {
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
     settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("oooo",
                                                                                  qMakePair(CreateElementWithCommandLineToolFiller::ParameterString, QString("-version")));
-    settings.command = "%UGENE_JAVA% $oooo $oooo$oooo $oooo $oooo$oooo$oooo";
+    settings.command = "%USUPP_JAVA% $oooo $oooo$oooo $oooo $oooo$oooo$oooo";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
     GTGlobals::sleep();

@@ -48,7 +48,7 @@
 namespace U2 {
 
 const QString ClustalWSupport::ET_CLUSTAL = "ClustalW";
-const QString ClustalWSupport::ET_CLUSTAL_ID = "UGENE_CLUSTALW";
+const QString ClustalWSupport::ET_CLUSTAL_ID = "USUPP_CLUSTALW";
 const QString ClustalWSupport::CLUSTAL_TMP_DIR = "clustal";
 
 ClustalWSupport::ClustalWSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)

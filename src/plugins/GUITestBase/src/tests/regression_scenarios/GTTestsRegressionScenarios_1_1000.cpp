@@ -2638,7 +2638,7 @@ GUI_TEST_CLASS_DEFINITION(test_0896) {
 
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.tool = "SAMtools";
-    settings.command = "%UGENE_SAMTOOLS% view -b -S -o '" + QDir(sandBoxDir).absolutePath() + "/test_0896out.bam' $sam";
+    settings.command = "%USUPP_SAMTOOLS% view -b -S -o '" + QDir(sandBoxDir).absolutePath() + "/test_0896out.bam' $sam";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "SAMtools"));

@@ -53,7 +53,7 @@
 namespace U2 {
 
  const QString BlastAllSupport::ET_BLASTALL = "BlastAll";
- const QString BlastAllSupport::ET_BLASTALL_ID = "UGENE_BLAST_ALL";
+ const QString BlastAllSupport::ET_BLASTALL_ID = "USUPP_BLAST_ALL";
  const QString BlastAllSupport::BLASTALL_TMP_DIR = "blast_all";
 
 BlastAllSupport::BlastAllSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)

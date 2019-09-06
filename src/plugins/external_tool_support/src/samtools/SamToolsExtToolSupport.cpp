@@ -29,7 +29,7 @@
 namespace U2 {
 
 const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT = "SAMtools";
-const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID = "UGENE_SAMTOOLS";
+const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID = "USUPP_SAMTOOLS";
 
 SamToolsExtToolSupport::SamToolsExtToolSupport(const QString& id, const QString& name, const QString& path)
     : ExternalTool(id, name, path)

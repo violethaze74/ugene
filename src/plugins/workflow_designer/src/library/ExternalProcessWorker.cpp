@@ -254,7 +254,7 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
 void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
     // Replace escaped symbols
     // Example:
-    // "%UGENE_JAVA% \\%UGENE_JAVA% -version \\\$\%\\\\\%\\$"   ─┐
+    // "%USUPP_JAVA% \\%USUPP_JAVA% -version \\\$\%\\\\\%\\$"   ─┐
     // "/usr/bin/java \/usr/bin/java -version $%\\%\$"         <─┘
     execString.replace(QRegularExpression("\\\\([\\\\\\%\\$])"), "\\1");
 }

@@ -27,7 +27,7 @@
 namespace U2 {
 
 const QString PerlSupport::ET_PERL = "perl";
-const QString PerlSupport::ET_PERL_ID = "UGENE_PERL";
+const QString PerlSupport::ET_PERL_ID = "USUPP_PERL";
 
 PerlSupport::PerlSupport(const QString& id, const QString &name, const QString &path)
 : RunnerTool(QStringList(), id, name, path)

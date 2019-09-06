@@ -139,7 +139,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002){
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     //Align short sequences with default settings(on platforms with MAFFT)
     //Expected state: MAFFT alignment started and finished successfully with using option --addfragments
-    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("UGENE_MAFFT");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("USUPP_MAFFT");
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
@@ -198,7 +198,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005){
-    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("UGENE_MAFFT");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("USUPP_MAFFT");
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
@@ -369,7 +369,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Ensure that MAFFT tool is set.
-    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("UGENE_MAFFT");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("USUPP_MAFFT");
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
@@ -411,7 +411,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Ensure that MAFFT tool is set.
-    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("UGENE_MAFFT");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("USUPP_MAFFT");
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
@@ -453,7 +453,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Ensure that MAFFT tool is set.
-    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("UGENE_MAFFT");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("USUPP_MAFFT");
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
@@ -487,7 +487,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Ensure that MAFFT tool is set.
-    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("UGENE_MAFFT");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("USUPP_MAFFT");
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
@@ -548,7 +548,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 //    Sequences with length less or equal than 50 should be aligned without gaps, even the result alignment is worse in this case.
 
-    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("UGENE_MAFFT");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("USUPP_MAFFT");
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
@@ -572,7 +572,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 GUI_TEST_CLASS_DEFINITION(test_0016_2) {
 //    Sequences with length greater than 50 should be aligned with gaps
 
-    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("UGENE_MAFFT");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("USUPP_MAFFT");
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
@@ -598,7 +598,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_3) {
 //    Sequences with length less or equal than 50 should be aligned without gaps, even the result alignment is worse in this case.
 //    This behaviour should be applied, even if input data is alignment
 
-    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("UGENE_MAFFT");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getById("USUPP_MAFFT");
     CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 

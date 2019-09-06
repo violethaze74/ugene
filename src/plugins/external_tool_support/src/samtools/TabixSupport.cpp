@@ -27,7 +27,7 @@
 namespace U2 {
 
 const QString TabixSupport::ET_TABIX = "Tabix";
-const QString TabixSupport::ET_TABIX_ID = "UGENE_TABIX";
+const QString TabixSupport::ET_TABIX_ID = "USUPP_TABIX";
 
 TabixSupport::TabixSupport(const QString& id, const QString &name, const QString &path)
     : ExternalTool(id, name, path)

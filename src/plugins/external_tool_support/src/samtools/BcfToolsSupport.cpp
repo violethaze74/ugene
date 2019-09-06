@@ -26,7 +26,7 @@
 namespace U2 {
 
 const QString BcfToolsSupport::ET_BCFTOOLS = "BCFtools";
-const QString BcfToolsSupport::ET_BCFTOOLS_ID = "UGENE_BCFTOOLS";
+const QString BcfToolsSupport::ET_BCFTOOLS_ID = "USUPP_BCFTOOLS";
 
 BcfToolsSupport::BcfToolsSupport(const QString& id, const QString &name)
 : ExternalTool(id, name, "")

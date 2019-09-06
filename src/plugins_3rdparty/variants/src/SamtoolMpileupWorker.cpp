@@ -674,10 +674,10 @@ void CallVariantsWorkerFactory::init() {
     proto->setPortValidator(BasePorts::IN_ASSEMBLY_PORT_ID(), new EmptySlotValidator(BaseSlots::URL_SLOT().getId()));
     proto->setPortValidator(BasePorts::IN_SEQ_PORT_ID(), new EmptySlotValidator(BaseSlots::URL_SLOT().getId()));
     //no way to include tool support files, so ids passed to functions manually
-    proto->addExternalTool("UGENE_SAMTOOLS");//SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID
-    proto->addExternalTool("UGENE_BCFTOOLS");//BcfToolsSupport::ET_BCFTOOLS_ID
-    proto->addExternalTool("UGENE_PERL");//PerlSupport::ET_PERL_ID
-    proto->addExternalTool("UGENE_VCF_CONSENSUS");//VcfConsensusSupport::ET_VCF_CONSENSUS_ID
+    proto->addExternalTool("USUPP_SAMTOOLS");//SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID
+    proto->addExternalTool("USUPP_BCFTOOLS");//BcfToolsSupport::ET_BCFTOOLS_ID
+    proto->addExternalTool("USUPP_PERL");//PerlSupport::ET_PERL_ID
+    proto->addExternalTool("USUPP_VCF_CONSENSUS");//VcfConsensusSupport::ET_VCF_CONSENSUS_ID
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_VARIATION_ANALYSIS(), proto);
 

@@ -159,9 +159,9 @@ QString CallVariantsTask::tmpFilePath(const QString &baseName, const QString &ex
 /* SamtoolsMpileupTask */
 /************************************************************************/
 
-const QString SamtoolsMpileupTask::SAMTOOLS_ID = "UGENE_SAMTOOLS";
-const QString SamtoolsMpileupTask::BCFTOOLS_ID = "UGENE_BCFTOOLS";
-const QString SamtoolsMpileupTask::VCFUTILS_ID = "UGENE_VCFUTILS";
+const QString SamtoolsMpileupTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
+const QString SamtoolsMpileupTask::BCFTOOLS_ID = "USUPP_BCFTOOLS";
+const QString SamtoolsMpileupTask::VCFUTILS_ID = "USUPP_VCFUTILS";
 
 SamtoolsMpileupTask::SamtoolsMpileupTask(const CallVariantsTaskSettings &_settings)
 :ExternalToolSupportTask(tr("Samtool mpileup for %1 ").arg(_settings.refSeqUrl), TaskFlags(TaskFlag_None)),settings(_settings)

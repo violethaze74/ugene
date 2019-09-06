@@ -45,9 +45,9 @@
 namespace U2 {
 
 const QString FormatDBSupport::ET_FORMATDB = "FormatDB";
-const QString FormatDBSupport::ET_FORMATDB_ID = "UGENE_FORMAT_DB";
+const QString FormatDBSupport::ET_FORMATDB_ID = "USUPP_FORMAT_DB";
 const QString FormatDBSupport::ET_MAKEBLASTDB = "MakeBLASTDB";
-const QString FormatDBSupport::ET_MAKEBLASTDB_ID = "UGENE_MAKE_BLAST_DB";
+const QString FormatDBSupport::ET_MAKEBLASTDB_ID = "USUPP_MAKE_BLAST_DB";
 const QString FormatDBSupport::ET_GPU_MAKEBLASTDB = "GPU-MakeBLASTDB";
 const QString FormatDBSupport::ET_GPU_MAKEBLASTDB_ID = "UGENE_GPU_MAKE_BLAST_DB";
 const QString FormatDBSupport::FORMATDB_TMP_DIR = "FormatDB";

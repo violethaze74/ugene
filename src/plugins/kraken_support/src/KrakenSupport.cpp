@@ -29,9 +29,9 @@
 namespace U2 {
 
 const QString KrakenSupport::BUILD_TOOL = "kraken-build";
-const QString KrakenSupport::BUILD_TOOL_ID = "UGENE_KRAKEN_BUILD";
+const QString KrakenSupport::BUILD_TOOL_ID = "USUPP_KRAKEN_BUILD";
 const QString KrakenSupport::CLASSIFY_TOOL = "kraken";
-const QString KrakenSupport::CLASSIFY_TOOL_ID = "UGENE_KRAKEN";
+const QString KrakenSupport::CLASSIFY_TOOL_ID = "USUPP_KRAKEN";
 const QString KrakenSupport::GROUP_NAME = "Kraken";
 
 KrakenSupport::KrakenSupport(const QString& id, const QString &name)
@@ -42,8 +42,8 @@ KrakenSupport::KrakenSupport(const QString& id, const QString &name)
     validationArguments << "--version";
     validMessage = "Kraken version ";
     versionRegExp = QRegExp("Kraken version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");
-    dependencies << "UGENE_PERL";
-    toolRunnerProgram = "UGENE_PERL";
+    dependencies << "USUPP_PERL";
+    toolRunnerProgram = "USUPP_PERL";
 
     if (BUILD_TOOL == name) {
         initBuild();

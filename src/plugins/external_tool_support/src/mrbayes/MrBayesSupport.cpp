@@ -39,7 +39,7 @@
 namespace U2 {
 
 const QString MrBayesSupport::ET_MRBAYES = "MrBayes";
-const QString MrBayesSupport::ET_MRBAYES_ID = "UGENE_MRBAYES";
+const QString MrBayesSupport::ET_MRBAYES_ID = "USUPP_MRBAYES";
 const QString MrBayesSupport::MRBAYES_TMP_DIR ="mrbayes";
 
 MrBayesSupport::MrBayesSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)

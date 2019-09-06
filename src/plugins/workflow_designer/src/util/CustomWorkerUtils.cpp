@@ -22,6 +22,7 @@
 #include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "CustomWorkerUtils.h"
@@ -40,7 +41,9 @@ QString CustomWorkerUtils::getVarName(const ExternalTool *tool) {
                "Bad external tool id",
                "__UGENE_BAD_EXTERNAL_TOOL_ID__");
 
-    return (tool->isCustom() ? "UGENE_" + id : id).toUpper();
+    QString virtId = (tool->isCustom() ? "UCUST_" + id : id).toUpper();
+
+    return virtId;
 }
 
 bool CustomWorkerUtils::commandContainsSpecialTool(const QString &cmd, const QString toolId) {

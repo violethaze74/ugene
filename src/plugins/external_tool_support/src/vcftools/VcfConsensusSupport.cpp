@@ -29,7 +29,7 @@
 namespace U2 {
 
 const QString VcfConsensusSupport::ET_VCF_CONSENSUS = "vcf-consensus";
-const QString VcfConsensusSupport::ET_VCF_CONSENSUS_ID = "UGENE_VCF_CONSENSUS";
+const QString VcfConsensusSupport::ET_VCF_CONSENSUS_ID = "USUPP_VCF_CONSENSUS";
 const QString VcfConsensusSupport::VCF_CONSENSUS_TMP_DIR = "vcf-consensus";
 
 VcfConsensusSupport::VcfConsensusSupport(const QString& id, const QString &name, const QString &path)

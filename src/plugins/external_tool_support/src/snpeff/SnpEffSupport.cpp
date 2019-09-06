@@ -39,7 +39,7 @@ namespace U2 {
 
 SnpEffDatabaseListModel* SnpEffSupport::databaseModel = new SnpEffDatabaseListModel();
 const QString SnpEffSupport::ET_SNPEFF = "SnpEff";
-const QString SnpEffSupport::ET_SNPEFF_ID = "UGENE_SNPEFF";
+const QString SnpEffSupport::ET_SNPEFF_ID = "USUPP_SNPEFF";
 
 SnpEffSupport::SnpEffSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {

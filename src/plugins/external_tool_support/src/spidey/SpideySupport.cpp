@@ -55,7 +55,7 @@
 namespace U2 {
 
 const QString SpideySupport::ET_SPIDEY = "Spidey";
-const QString SpideySupport::ET_SPIDEY_ID = "UGENE_SPIDEY";
+const QString SpideySupport::ET_SPIDEY_ID = "USUPP_SPIDEY";
 const QString SpideySupport::SPIDEY_TMP_DIR = "spidey";
 
 SpideySupport::SpideySupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)

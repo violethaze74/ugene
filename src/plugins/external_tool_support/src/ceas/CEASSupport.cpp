@@ -30,7 +30,7 @@
 namespace U2 {
 
 const QString CEASSupport::ET_CEAS = "CEAS Tools";
-const QString CEASSupport::ET_CEAS_ID = "UGENE_CEAS";
+const QString CEASSupport::ET_CEAS_ID = "USUPP_CEAS";
 const QString CEASSupport::REFGENE_DIR_NAME = "refGene";
 const QString CEASSupport::REF_GENES_DATA_NAME = "Gene annotation table";
 

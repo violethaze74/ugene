@@ -28,7 +28,7 @@
 namespace U2 {
 
 const QString VcfutilsSupport::VCF_UTILS("vcfutils");
-const QString VcfutilsSupport::VCF_UTILS_ID("UGENE_VCFUTILS");
+const QString VcfutilsSupport::VCF_UTILS_ID("USUPP_VCFUTILS");
 
 VcfutilsSupport::VcfutilsSupport(const QString& id, const QString &name)
 : ExternalTool(id, name, "")

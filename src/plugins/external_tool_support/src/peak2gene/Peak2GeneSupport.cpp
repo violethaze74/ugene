@@ -29,7 +29,7 @@
 namespace U2 {
 
 const QString Peak2GeneSupport::ET_PEAK2GENE = "peak2gene";
-const QString Peak2GeneSupport::ET_PEAK2GENE_ID = "UGENE_PEAK2GENE";
+const QString Peak2GeneSupport::ET_PEAK2GENE_ID = "USUPP_PEAK2GENE";
 const QString Peak2GeneSupport::REFGENE_DIR_NAME = "refGene";
 const QString Peak2GeneSupport::REF_GENES_DATA_NAME = "Gene annotation table";
 const QString Peak2GeneSupport::TRANSLATIONS_DIR_NAME = "geneIdTranslations";

@@ -291,7 +291,7 @@ QStringList BamRmdupSetting::getSamtoolsArguments() const{
 ////////////////////////////////////////////////////////
 //SamtoolsRmdupTask
 
-const QString SamtoolsRmdupTask::SAMTOOLS_ID = "UGENE_SAMTOOLS";
+const QString SamtoolsRmdupTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
 
 SamtoolsRmdupTask::SamtoolsRmdupTask(const BamRmdupSetting &settings)
 :ExternalToolSupportTask(tr("Samtool rmdup for %1 ").arg(settings.inputUrl), TaskFlags(TaskFlag_None)),settings(settings),resultUrl(""){

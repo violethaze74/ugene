@@ -26,7 +26,7 @@
 namespace U2 {
 
 const QString BwaSupport::ET_BWA = "BWA";
-const QString BwaSupport::ET_BWA_ID = "UGENE_BWA";
+const QString BwaSupport::ET_BWA_ID = "USUPP_BWA";
 
 // BwaSupport
 
