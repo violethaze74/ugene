@@ -315,7 +315,6 @@ void WorkflowView::setupScene() {
     connect(scene, SIGNAL(selectionChanged()), SLOT(sl_editItem()));
     connect(scene, SIGNAL(selectionChanged()), SLOT(sl_onSelectionChanged()));
     connect(scene, SIGNAL(configurationChanged()), SLOT(sl_refreshActorDocs()));
-    connect(scene, SIGNAL(configurationChanged()), SLOT(sl_editItem()));
     connect(WorkflowSettings::watcher, SIGNAL(changed()), scene, SLOT(update()));
 }
 
@@ -325,6 +324,7 @@ void WorkflowView::setupPalette() {
     connect(palette, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SLOT(sl_selectPrototype(Workflow::ActorPrototype*, bool)));
     connect(palette, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)));
     connect(palette, SIGNAL(si_protoListModified()), SLOT(sl_protoListModified()));
+    connect(palette, SIGNAL(si_protoChanged()), SLOT(sl_editItem()));
     connect(palette, SIGNAL(si_protoChanged()), scene, SLOT(sl_updateDocs()));
 
     tabs = new QTabWidget(this);
