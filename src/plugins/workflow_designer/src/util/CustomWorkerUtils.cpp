@@ -61,6 +61,22 @@ bool CustomWorkerUtils::commandContainsVarName(const QString& cmd, const QString
     return cmd.indexOf(regex1) >= 0;
 }
 
+QStringList CustomWorkerUtils::getToolIdsFromCommand(const QString& cmd) {
+    QRegularExpression regex1 = QRegularExpression(CMDTOOL_SPECIAL_REGEX + QString("%([A-Za-z0-9_-]+)%"));
+    QRegularExpressionMatchIterator match = regex1.globalMatch(cmd);
+    QStringList result;
+    while (match.hasNext()) {
+        QString id = match.next().captured().remove(QRegularExpression("([^A-Za-z0-9_-]*)"));
+        CHECK_CONTINUE(id.startsWith("USUPP_") || id.startsWith("UCUST_"));
+
+        if (id.startsWith("UCUST_")) {
+            id = id.right(id.size() - 6);
+        }
+        result << id;
+    }
+    return result;
+}
+
 bool CustomWorkerUtils::commandReplaceSpecialByUgenePath(QString &cmd, const QString varName, const QString path) {
     SAFE_POINT(!(varName.isNull() || varName.isEmpty()),
                "Bad varName",

@@ -169,7 +169,13 @@ bool validateExternalTools(Actor *a, NotificationsList &infoList) {
     foreach (const QString &toolId, tools.keys()) {
         Attribute *attr = a->getParameter(tools[toolId]);
         ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(toolId);
-        SAFE_POINT(NULL != tool, "NULL tool", false);
+        if (nullptr == tool) {
+            good = false;
+            infoList << WorkflowNotification(WorkflowUtils::externalToolIsAbsentError(toolId),
+                                             a->getId(),
+                                             WorkflowNotification::U2_ERROR);
+            continue;
+        }
 
         bool fromAttr = (NULL != attr) && !attr->isDefaultValue();
         bool valid = fromAttr ? !attr->isEmpty() : !tool->getPath().isEmpty();
@@ -886,6 +892,10 @@ QString WorkflowUtils::getExternalToolPath(const QString &toolId) {
     SAFE_POINT(NULL != tool, QString("Unknown tool (id): %1").arg(toolId), "");
 
     return tool->getPath();
+}
+
+QString WorkflowUtils::externalToolIsAbsentError(const QString& toolName) {
+    return tr("Specified variable \"%%1%\" does not exist, please check the command again.").arg(toolName);
 }
 
 QString WorkflowUtils::externalToolError(const QString &toolName) {

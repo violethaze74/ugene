@@ -119,6 +119,7 @@ public:
     static QString updateExternalToolPath(const QString &id, const QString &path);
 
     static QString getExternalToolPath(const QString &toolId);
+    static QString externalToolIsAbsentError(const QString& toolName);
     static QString externalToolError(const QString &toolName);
     static QString externalToolInvalidError(const QString &toolName);
     static QString customExternalToolInvalidError(const QString &toolName, const QString& elementName);
