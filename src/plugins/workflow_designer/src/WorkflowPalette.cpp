@@ -498,6 +498,7 @@ bool WorkflowPaletteElements::editPrototype(ActorPrototype *proto) {
     dlg->exec();
     CHECK(!dlg.isNull(), false);
 
+    bool result = false;
     if (dlg->result() == QDialog::Accepted) {
         QScopedPointer<ExternalProcessConfig> newCfg(dlg->takeConfig());
 
@@ -506,13 +507,17 @@ bool WorkflowPaletteElements::editPrototype(ActorPrototype *proto) {
             CreateCmdlineBasedWorkerWizard::saveConfig(newCfg.data());
             if (LocalWorkflow::ExternalProcessWorkerFactory::init(newCfg.data())) {
                 newCfg.take();
-                return true;
+                result = true;
             }
         } else {
-            return editPrototypeWithoutElementRemoving(proto, newCfg.take());
+            result = editPrototypeWithoutElementRemoving(proto, newCfg.take());
         }
     }
-    return false;
+    if (result) {
+        emit si_protoChanged();
+    }
+
+    return result;
 }
 
 void WorkflowPaletteElements::handleItemAction() {
@@ -576,10 +581,7 @@ void WorkflowPaletteElements::editElement() {
             LocalWorkflow::ScriptWorkerFactory::init(input, output, attrs, name, desc, dlg->getActorFilePath());
         }
     } else { //External process category
-        const bool edited = editPrototype(proto);
-        if (edited) {
-            emit si_protoChanged();
-        }
+            editPrototype(proto);
     }
 }
 
