@@ -70,7 +70,7 @@ const QString &ExternalToolSupportSettingsPageController::getHelpPageId() const 
     return helpPageId;
 }
 
-const QString ExternalToolSupportSettingsPageController::helpPageId = QString("");
+const QString ExternalToolSupportSettingsPageController::helpPageId = QString("24742348");
 
 //////////////////////////////////////////////
 ////ExternalToolSupportSettingsPageState
