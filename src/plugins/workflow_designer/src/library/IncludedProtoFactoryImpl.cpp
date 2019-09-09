@@ -204,13 +204,9 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
     proto->setNonStandard(cfg->filePath);
     proto->setValidator(new CmdlineBasedWorkerValidator());
 
-    QList<ExternalTool*> all = AppContext::getExternalToolRegistry()->getAllEntries();
-    for (auto tool : all) {
-        if (!tool->isModule()) {
-            if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, tool)) {
-                proto->addExternalTool(tool->getId());
-            }
-        }
+    QStringList commandIdList = CustomWorkerUtils::getToolIdsFromCommand(cfg->cmdLine);
+    foreach(const QString& id, commandIdList) {
+        proto->addExternalTool(id);
     }
 
     return proto;
