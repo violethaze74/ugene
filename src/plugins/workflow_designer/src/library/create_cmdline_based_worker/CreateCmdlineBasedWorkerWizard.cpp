@@ -738,11 +738,13 @@ void CreateCmdlineBasedWorkerWizardCommandPage::initializePage() {
                 QString toolRunnerProgramId = tool->getToolRunnerProgramId();
                 if (!toolRunnerProgramId.isEmpty()) {
                     ExternalTool* toolRunnerProgram = AppContext::getExternalToolRegistry()->getById(toolRunnerProgramId);
-                    SAFE_POINT(nullptr != toolRunnerProgram, "ExternalTool is empty", );
-
-                    commandTemplate = "%" + CustomWorkerUtils::getVarName(toolRunnerProgram) + "% ";
-                    foreach(const QString& param, toolRunnerProgram->getRunParameters()) {
-                        commandTemplate += param + " ";
+                    if (nullptr != toolRunnerProgram) {
+                        commandTemplate = "%" + CustomWorkerUtils::getVarName(toolRunnerProgram) + "% ";
+                        foreach(const QString & param, toolRunnerProgram->getRunParameters()) {
+                            commandTemplate += param + " ";
+                        }
+                    } else {
+                        commandTemplate = "";
                     }
                 } else {
                     commandTemplate = "";
