@@ -31,7 +31,7 @@ namespace U2 {
 
 class U2CORE_EXPORT CoreExternalToolsUtils {
 public:
-    static const QString& detectLauncherExeByExtension(const QString& toolPath);
+    static QString detectLauncherExeByExtension(const QString& toolPath);
 
 private:
     static const QMap<QString, QString> extToExeFileMap;

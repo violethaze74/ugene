@@ -28,12 +28,14 @@ namespace U2 {
 
 const QMap<QString, QString> CoreExternalToolsUtils::extToExeFileMap = { {"py", "python"}, {"pl", "perl"} };
 
-const QString& CoreExternalToolsUtils::detectLauncherExeByExtension(const QString& toolPath) {
+QString CoreExternalToolsUtils::detectLauncherExeByExtension(const QString& toolPath) {
     QFileInfo path(toolPath);
-    if (extToExeFileMap[path.suffix()].isEmpty()) {
-        return "";
+    QString suffix = path.suffix();
+    if (extToExeFileMap[suffix].isEmpty()) {
+        return QString();
     }
-    return QStandardPaths::findExecutable(extToExeFileMap[path.suffix()]);
+    QString executableToFind = extToExeFileMap[suffix];
+    return QStandardPaths::findExecutable(executableToFind);
 }
 
 }

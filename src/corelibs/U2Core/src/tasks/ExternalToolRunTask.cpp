@@ -383,7 +383,7 @@ bool ExternalToolSupportUtils::startExternalProcess(QProcess *process, const QSt
     if (!started) {
         QStringList extendedArgs(arguments);
         QString execFileName = CoreExternalToolsUtils::detectLauncherExeByExtension(program);
-        if (execFileName.isEmpty()) {
+        if (!execFileName.isEmpty()) {
             extendedArgs.prepend(execFileName);
             process->start(execFileName, extendedArgs);
             started = process->waitForStarted(START_WAIT_MSEC);

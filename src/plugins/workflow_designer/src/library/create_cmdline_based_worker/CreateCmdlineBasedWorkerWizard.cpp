@@ -213,12 +213,13 @@ void CreateCmdlineBasedWorkerWizard::accept() {
     if (isRequiredToRemoveElementFromScene(initialConfig, actualConfig.data())) {
         int res = QMessageBox::question(this,
                                         tr("Warning"),
-                                        tr("You have changed the structure of the element (name, slots, parameters' names and types). "
-                                           "All elements on the scene would be removed. Do you really want to change it?\n"
-                                           "You could also reset the dialog to the initial state."),
-                                        QMessageBox::Yes | QMessageBox::No | QMessageBox::Reset,
-                                        QMessageBox::No);
-        if (QMessageBox::No == res) {
+                                        tr("You've changed the element structure (input data, parameters, or output data).\n\n"
+                                           "If you apply the changes, all elements of this type will be removed from the scene."
+                                           "You can then add a new such element to the scene by dragging it from the \"Custom Elements with External Tools\" group of the \"Elements\" palette.\n\n"
+                                           "Would you like to apply the changes ? "),
+                                        QMessageBox::Apply | QMessageBox::Cancel | QMessageBox::Reset,
+                                        QMessageBox::Cancel);
+        if (QMessageBox::Cancel == res) {
             return;
         } else if (QMessageBox::Reset == res) {
             restart();
