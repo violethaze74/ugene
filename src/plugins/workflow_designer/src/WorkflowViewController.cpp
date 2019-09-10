@@ -299,6 +299,8 @@ WorkflowView::~WorkflowView() {
         AppContext::getProjectService()->enableSaveAction(true);
     }
     WorkflowSettings::setScriptingMode(scriptingMode);
+    delete currentActor;
+    delete schema;
 }
 
 void WorkflowView::setupScene() {
