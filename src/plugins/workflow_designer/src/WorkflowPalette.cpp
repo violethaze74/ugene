@@ -477,15 +477,7 @@ QString WorkflowPaletteElements::createPrototype() {
 }
 
 bool WorkflowPaletteElements::editPrototype(ActorPrototype *proto) {
-    WorkflowView *wv = dynamic_cast<WorkflowView*>(schemaConfig);
-    CHECK(wv != nullptr, false);
-    int actorWithCurrentProtoCounter = 0;
-    for (auto actor: wv->getSchema()->getProcesses()) {
-        if (actor->getProto() == proto) {
-            actorWithCurrentProtoCounter++;
-        }
-    }
-    if (proto->getUsageCounter() != actorWithCurrentProtoCounter) {
+    if (!isExclusivePrototypeUsage(proto)) {
         QMessageBox::warning(this,
             tr("Unable to Edit Element"),
             tr("The element with external tool is used in other Workflow Designer window(s). "
@@ -721,15 +713,7 @@ QVariant WorkflowPaletteElements::changeState(const QVariant& savedState){
 }
 
 void WorkflowPaletteElements::removePrototype(ActorPrototype *proto) {
-    WorkflowView* wv = dynamic_cast<WorkflowView*>(schemaConfig);
-    CHECK(wv != nullptr, );
-    int actorWithCurrentProtoCounter = 0;
-    for (auto actor : wv->getSchema()->getProcesses()) {
-        if (actor->getProto() == proto) {
-            actorWithCurrentProtoCounter++;
-        }
-    }
-    if (proto->getUsageCounter() != actorWithCurrentProtoCounter) {
+    if (!isExclusivePrototypeUsage(proto)) {
         QMessageBox::warning(this,
             tr("Unable to Remove Element"),
             tr("The element with external tool is used in other Workflow Designer window(s). "
@@ -780,6 +764,23 @@ void WorkflowPaletteElements::replaceOldConfigWithNewConfig(ExternalProcessConfi
     oldConfig->useIntegratedTool = newConfig->useIntegratedTool;
     oldConfig->customToolPath = newConfig->customToolPath;
     oldConfig->integratedToolId = newConfig->integratedToolId;
+}
+
+bool WorkflowPaletteElements::isExclusivePrototypeUsage(ActorPrototype* proto) const {
+    WorkflowView* wv = dynamic_cast<WorkflowView*>(schemaConfig);
+    CHECK(wv != nullptr, false);
+    int actorWithCurrentProtoCounter = 0;
+    for (auto actor : wv->getSchema()->getProcesses()) {
+        if (actor->getProto() == proto) {
+            actorWithCurrentProtoCounter++;
+        }
+    }
+    Actor* currentActor = wv->getActor();
+    if (currentActor != nullptr && currentActor->getProto() == proto) {
+        actorWithCurrentProtoCounter++;
+    }
+    bool result = actorWithCurrentProtoCounter == proto->getUsageCounter();
+    return result;
 }
 
 void WorkflowPaletteElements::sl_nameFilterChanged(const QString &filter) {

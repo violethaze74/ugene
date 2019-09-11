@@ -300,6 +300,7 @@ WorkflowView::~WorkflowView() {
     }
     WorkflowSettings::setScriptingMode(scriptingMode);
     delete currentActor;
+    delete scene;
     delete schema;
 }
 

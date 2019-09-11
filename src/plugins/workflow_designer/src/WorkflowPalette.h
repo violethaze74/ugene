@@ -96,7 +96,8 @@ signals:
 
 protected:
     void contextMenuEvent(QContextMenuEvent *e);
-    void mouseMoveEvent ( QMouseEvent * event );
+
+    void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent ( QMouseEvent * event );
     void leaveEvent ( QEvent * event );
 
@@ -119,7 +120,7 @@ private:
     bool editPrototypeWithoutElementRemoving(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig);
     void replaceConfigFiles(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig);
     void replaceOldConfigWithNewConfig(ExternalProcessConfig* oldConfig, ExternalProcessConfig* newConfig);
-
+    bool isExclusivePrototypeUsage(ActorPrototype* proto) const;
 
 private:
     QMap<QString,QList<QAction*> > categoryMap;
