@@ -351,7 +351,7 @@ Task * ExternalProcessWorker::tick() {
     applyEscapedSymbols(execString);
 
     const QString workingDirectory = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
-    QString externalProcessFolder = GUrlUtils::fixFileName(cfg->name.replace(' ', '_'));
+    QString externalProcessFolder = GUrlUtils::fixFileName(cfg->name).replace(' ', '_');
     U2OpStatusImpl os;
     const QString externalProcessWorkingDir = GUrlUtils::createDirectory(workingDirectory + externalProcessFolder, "_", os);
     CHECK_OP(os, new FailTask(os.getError()));
