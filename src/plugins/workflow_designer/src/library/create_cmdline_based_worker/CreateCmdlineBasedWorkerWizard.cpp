@@ -218,7 +218,7 @@ void CreateCmdlineBasedWorkerWizard::accept() {
                                            "You can then add a new such element to the scene by dragging it from the \"Custom Elements with External Tools\" group of the \"Elements\" palette.\n\n"
                                            "Would you like to apply the changes ? "),
                                         QMessageBox::Apply | QMessageBox::Cancel | QMessageBox::Reset,
-                                        QMessageBox::Cancel);
+                                        QMessageBox::Apply);
         if (QMessageBox::Cancel == res) {
             return;
         } else if (QMessageBox::Reset == res) {
