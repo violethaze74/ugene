@@ -2637,13 +2637,12 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
             GTWidget::click(os, wizard->button(QWizard::NextButton));
             GTWidget::click(os, wizard->button(QWizard::NextButton));
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTWidget::click(os, wizard->button(QWizard::FinishButton));
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1", QPoint(), Qt::RightButton);
 
 //    11. Edit the element again.
@@ -2670,10 +2669,11 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
         }
     };
 
+    GTUtilsWorkflowDesigner::removeItem(os, "UGENE-6488 test element 1");
     GTUtilsWorkflowDesigner::addElement(os, "UGENE-6488 test element 1");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1", QPoint(), Qt::RightButton);
 
     GTGlobals::sleep();
@@ -2729,7 +2729,6 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
 
             GTWidget::click(os, wizard->button(QWizard::NextButton));
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTWidget::click(os, wizard->button(QWizard::FinishButton));
         }
     };
@@ -2763,6 +2762,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
         }
     };
 
+    GTUtilsWorkflowDesigner::removeItem(os, "UGENE-6488 test element 2");
     GTUtilsWorkflowDesigner::addElement(os, "UGENE-6488 test element 2");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
