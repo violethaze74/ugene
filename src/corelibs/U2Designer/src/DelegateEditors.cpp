@@ -924,28 +924,28 @@ void StringSelectorDelegate::setModelData(QWidget *, QAbstractItemModel *model, 
  * CharacterDelegate
  ********************************/
 PropertyWidget * CharacterDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
-    return new DefaultPropertyWidget(1, parent);
+    return new IgnoreUpDownPropertyWidget(1, parent);
 }
 
 QWidget * CharacterDelegate::createEditor(QWidget *parent,
                                    const QStyleOptionViewItem &/* option */,
                                    const QModelIndex &/* index */) const
 {
-    return new DefaultPropertyWidget(1, parent);
+    return new IgnoreUpDownPropertyWidget(1, parent);
 }
 
 void CharacterDelegate::setEditorData(QWidget *editor,
                                 const QModelIndex &index) const
 {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    DefaultPropertyWidget *lineEdit = dynamic_cast<DefaultPropertyWidget*>(editor);
+    IgnoreUpDownPropertyWidget *lineEdit = dynamic_cast<IgnoreUpDownPropertyWidget*>(editor);
     lineEdit->setValue(val);
 }
 
 void CharacterDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                const QModelIndex &index) const
 {
-    DefaultPropertyWidget *lineEdit = dynamic_cast<DefaultPropertyWidget*>(editor);
+    IgnoreUpDownPropertyWidget *lineEdit = dynamic_cast<IgnoreUpDownPropertyWidget*>(editor);
     model->setData(index, lineEdit->value().toString(), ConfigurationEditor::ItemValueRole);
 }
 
@@ -957,7 +957,7 @@ LineEditWithValidatorDelegate::LineEditWithValidatorDelegate(const QRegularExpre
 }
 
 QWidget *LineEditWithValidatorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const {
-    QScopedPointer<DefaultPropertyWidget> editor(new DefaultPropertyWidget(NO_LIMIT, parent));
+    QScopedPointer<IgnoreUpDownPropertyWidget> editor(new IgnoreUpDownPropertyWidget(NO_LIMIT, parent));
     QLineEdit *lineEdit = editor->findChild<QLineEdit *>("mainWidget");
     SAFE_POINT(nullptr != lineEdit, "Line edit is nullptr", nullptr);
 
@@ -968,12 +968,12 @@ QWidget *LineEditWithValidatorDelegate::createEditor(QWidget *parent, const QSty
 
 void LineEditWithValidatorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    DefaultPropertyWidget *lineEdit = qobject_cast<DefaultPropertyWidget *>(editor);
+    IgnoreUpDownPropertyWidget *lineEdit = qobject_cast<IgnoreUpDownPropertyWidget *>(editor);
     lineEdit->setValue(val);
 }
 
 void LineEditWithValidatorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
-    DefaultPropertyWidget *lineEdit = qobject_cast<DefaultPropertyWidget *>(editor);
+    IgnoreUpDownPropertyWidget *lineEdit = qobject_cast<IgnoreUpDownPropertyWidget *>(editor);
     model->setData(index, lineEdit->value().toString(), ConfigurationEditor::ItemValueRole);
 }
 
@@ -982,7 +982,7 @@ LineEditWithValidatorDelegate *LineEditWithValidatorDelegate::clone() {
 }
 
 void LineEditWithValidatorDelegate::sl_valueChanged() {
-    DefaultPropertyWidget* editor = qobject_cast<DefaultPropertyWidget *>(sender());
+    IgnoreUpDownPropertyWidget* editor = qobject_cast<IgnoreUpDownPropertyWidget *>(sender());
     CHECK(editor != NULL, );
     emit commitData(editor);
 }
