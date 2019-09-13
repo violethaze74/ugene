@@ -832,6 +832,9 @@ CreateCmdlineBasedWorkerWizardElementAppearancePage::CreateCmdlineBasedWorkerWiz
 
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
 
+    new CommandValidator(tePrompter);
+    new CommandValidator(teDescription);
+
     registerField(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_DESCRIPTION_FIELD, tePrompter, "plainText", SIGNAL(textChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD, teDescription, "plainText", SIGNAL(textChanged()));
 }
