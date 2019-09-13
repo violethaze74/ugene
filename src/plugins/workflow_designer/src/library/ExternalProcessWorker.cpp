@@ -234,7 +234,7 @@ void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString,
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
         QRegularExpression regex = QRegularExpression("(?=([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$"
-                                                      + a->getDisplayName()
+                                                      + a->getId()
                                                       + "(?=(\\W|$))");
         if (execString.indexOf(regex) >= 0) {
             //set parameters in command line with attributes values
