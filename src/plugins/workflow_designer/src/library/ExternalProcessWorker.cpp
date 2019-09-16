@@ -259,7 +259,7 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
 		    foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
                 if (attributeConfig.attributeId == a->getId()
                         && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
-                    urlsForDashboard.insert(value, !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
+                    urlsForDashboard.insert(attrValue, !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
                     break;
                 }
             }
