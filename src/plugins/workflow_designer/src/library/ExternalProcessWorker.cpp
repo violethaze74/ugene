@@ -236,6 +236,9 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
         QRegularExpression regex = QRegularExpression(QString("((([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$)")
                                                       + QString("(") + a->getId() + QString(")")
                                                       + QString("(?=(\\W|$))"));
+        bool wasReplaced = false;
+        QString attrValue = a->getAttributePureValue().toString();
+		
         // Replace the params one-by-one
         QRegularExpressionMatchIterator iter = regex.globalMatch(execString);
         while (iter.hasNext()) {
@@ -244,14 +247,23 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
                 QString m1 = match.captured(1);
                 int start = match.capturedStart(0);
                 int len = match.capturedLength();
-
-                QString attrValue = a->getAttributePureValue().toString();
                 execString.replace(start + m1.length() - 1, len - m1.length() + 1, attrValue);
+                wasReplaced = true;
 
                 // We need to re-iterate as the string was changed
                 iter = regex.globalMatch(execString);
             }
         }
+		
+		if (wasReplaced) {
+		    foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
+                if (attributeConfig.attributeId == a->getId()
+                        && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
+                    urlsForDashboard.insert(value, !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
+                    break;
+                }
+            }
+		}
     }
 }
 
