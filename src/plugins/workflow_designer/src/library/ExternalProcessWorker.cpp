@@ -254,16 +254,16 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
                 iter = regex.globalMatch(execString);
             }
         }
-		
-		if (wasReplaced) {
-		    foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
+
+        if (wasReplaced) {
+            foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
                 if (attributeConfig.attributeId == a->getId()
                         && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
                     urlsForDashboard.insert(attrValue, !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
                     break;
                 }
             }
-		}
+        }
     }
 }
 
