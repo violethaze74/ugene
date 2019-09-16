@@ -233,19 +233,23 @@ void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString,
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
-        QRegularExpression regex = QRegularExpression("(?=([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$"
-                                                      + a->getId()
-                                                      + "(?=(\\W|$))");
-        if (execString.indexOf(regex) >= 0) {
-            //set parameters in command line with attributes values
-            QString value = getValue<QString>(a->getId());
-            execString.replace(regex, value);
+        QRegularExpression regex = QRegularExpression(QString("((([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$)")
+                                                      + QString("(") + a->getId() + QString(")")
+                                                      + QString("(?=(\\W|$))"));
+        // Replace the params one-by-one
+        QRegularExpressionMatchIterator iter = regex.globalMatch(execString);
+        while (iter.hasNext()) {
+            QRegularExpressionMatch match = iter.next();
+            if (match.hasMatch()) {
+                QString m1 = match.captured(1);
+                int start = match.capturedStart(0);
+                int len = match.capturedLength();
 
-            foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
-                if (attributeConfig.attributeId == a->getId() && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
-                    urlsForDashboard.insert(value, !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
-                    break;
-                }
+                QString attrValue = a->getAttributePureValue().toString();
+                execString.replace(start + m1.length() - 1, len - m1.length() + 1, attrValue);
+
+                // We need to re-iterate as the string was changed
+                iter = regex.globalMatch(execString);
             }
         }
     }
