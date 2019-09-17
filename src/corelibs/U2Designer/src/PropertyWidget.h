@@ -42,23 +42,58 @@ namespace U2 {
 typedef QPair<QString, QVariant> ComboItem;
 
 /************************************************************************/
-/* DefaultPropertyWidget */
+/* BaseDefaultPropertyWidget */
 /************************************************************************/
+
 static const int NO_LIMIT = -1;
 
-class DefaultPropertyWidget : public PropertyWidget {
+class BaseDefaultPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    DefaultPropertyWidget(int maxLength = NO_LIMIT, QWidget *parent = NULL);
+    BaseDefaultPropertyWidget(int maxLength, QWidget *parent);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
     virtual void setRequired();
 
-private:
+protected:
+    void configureLineEdit(const int maxLength);
+
     QLineEdit *lineEdit;
 
 private slots:
     void sl_valueChanged(const QString &value);
+};
+
+/************************************************************************/
+/* DefaultPropertyWidget */
+/************************************************************************/
+
+class DefaultPropertyWidget : public BaseDefaultPropertyWidget {
+    Q_OBJECT
+public:
+    DefaultPropertyWidget(int maxLength = NO_LIMIT, QWidget* parent = nullptr);
+};
+
+/************************************************************************/
+/* IgnoreUpDownPropertyWidget */
+/************************************************************************/
+
+class IgnoreUpDownPropertyWidget : public BaseDefaultPropertyWidget {
+    Q_OBJECT
+public:
+    IgnoreUpDownPropertyWidget(int maxLength = NO_LIMIT, QWidget* parent = nullptr);
+};
+
+/************************************************************************/
+/* LineEditSkipUpDown */
+/************************************************************************/
+
+class LineEditIgnoreUpDown : public QLineEdit {
+public:
+    LineEditIgnoreUpDown(QWidget* parent = nullptr);
+
+private:
+    void keyPressEvent(QKeyEvent* e) override;
 };
 
 /************************************************************************/
