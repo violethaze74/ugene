@@ -1032,8 +1032,7 @@ void ExternalToolSelectComboBox::setDefaultMenuValue(const QString& defaultValue
     } else {
         modifyMenuAccordingToData(SHOW_ALL_TOOLS);
         index = findData(defaultValue);
-        SAFE_POINT(index != -1, "Unable to find external tool by given id", )
-        setCurrentIndex(index);
+        setCurrentIndex(index != -1 ? index : 1);
     }
 }
 
