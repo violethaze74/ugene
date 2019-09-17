@@ -233,38 +233,47 @@ void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString,
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
-        QRegularExpression regex = QRegularExpression(QString("((([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$)")
-                                                      + QString("(") + a->getId() + QString(")")
-                                                      + QString("(?=(\\W|$))"));
-        bool wasReplaced = false;
         QString attrValue = a->getAttributePureValue().toString();
-		
-        // Replace the params one-by-one
-        QRegularExpressionMatchIterator iter = regex.globalMatch(execString);
-        while (iter.hasNext()) {
-            QRegularExpressionMatch match = iter.next();
-            if (match.hasMatch()) {
-                QString m1 = match.captured(1);
-                int start = match.capturedStart(0);
-                int len = match.capturedLength();
-                execString.replace(start + m1.length() - 1, len - m1.length() + 1, attrValue);
-                wasReplaced = true;
-
-                // We need to re-iterate as the string was changed
-                iter = regex.globalMatch(execString);
-            }
-        }
+        bool wasReplaced = applyParamsToExecString(execString,
+                                                   a->getId(),
+                                                   attrValue);
 
         if (wasReplaced) {
             foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
                 if (attributeConfig.attributeId == a->getId()
                         && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
-                    urlsForDashboard.insert(attrValue, !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
+                    urlsForDashboard.insert(attrValue,
+                                            !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
                     break;
                 }
             }
         }
     }
+}
+
+bool ExternalProcessWorker::applyParamsToExecString(QString &execString, QString parName, QString parValue) {
+    QRegularExpression regex = QRegularExpression(QString("((([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$)")
+                                                  + QString("(") + parName + QString(")")
+                                                  + QString("(?=(\\W|$))"));
+    bool wasReplaced = false;
+
+    // Replace the params one-by-one
+    QRegularExpressionMatchIterator iter = regex.globalMatch(execString);
+    while (iter.hasNext()) {
+        QRegularExpressionMatch match = iter.next();
+        if (match.hasMatch()) {
+            QString m1 = match.captured(1);
+            int start = match.capturedStart(0);
+            int len = match.capturedLength();
+            execString.replace(start + m1.length() - 1, len - m1.length() + 1, parValue);
+            wasReplaced = true;
+
+            // We need to re-iterate as the string was changed
+            iter = regex.globalMatch(execString);
+        }
+    }
+
+    return wasReplaced;
 }
 
 void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
@@ -277,13 +286,8 @@ void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
 
 QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
     QStringList urls;
-    QRegularExpression regex = QRegularExpression(QString("(?!((\\\\\\\\)+))\\$%1((?!(%2))|$)|(^)\\$%1((?!(%2))|$)|(?<!\\\\)\\$%1((?!(%2))|$)")
-                                                  .arg(dataCfg.attributeId)
-                                                  .arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
-    int ind = execString.indexOf(regex);
-    CHECK(-1 != ind, urls);
-
     QString paramValue;
+
     if (dataCfg.isStringValue()) {
         paramValue = toStringValue(data, os);
         CHECK_OP(os, urls);
@@ -301,27 +305,23 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
         paramValue = "\"" + d->getURLString() + "\"";
     }
 
-    execString.replace(regex, paramValue);
+    applyParamsToExecString(execString, dataCfg.attributeId, paramValue);
     return urls;
 }
 
 QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os) {
-    QRegularExpression regex = QRegularExpression(QString("(?!((\\\\\\\\)+))\\$%1((?!(%2))|$)|(^)\\$%1((?!(%2))|$)|(?<!\\\\)\\$%1((?!(%2))|$)")
-                                                  .arg(dataCfg.attributeId)
-                                                  .arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
-    int ind = execString.indexOf(regex);
-    CHECK(-1 != ind, "");
-
     QString extension;
+
     if (dataCfg.isFileUrl()) {
         extension = "tmp";
     } else {
         DocumentFormat *f = getFormat(dataCfg, os);
-        CHECK_OP(os, "");
+        CHECK_OP(os, "")
         extension = f->getSupportedDocumentFileExtensions().first();
     }
     QString url = generateAndCreateURL(extension, dataCfg.attrName);
-    execString.replace(regex, "\"" + url + "\"");
+    bool replaced = applyParamsToExecString(execString, dataCfg.attributeId, "\"" + url + "\"");
+    CHECK(replaced, "")
 
     return url;
 }

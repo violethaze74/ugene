@@ -55,6 +55,7 @@ private:
 
     void applySpecialInternalEnvvars(QString &execString, ExternalProcessConfig *cfg);
     void applyAttributes(QString &execString);
+    static bool applyParamsToExecString(QString &execString, QString parName, QString parValue);
     void applyEscapedSymbols(QString &execString);
     QStringList applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os);
     QString prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os);
