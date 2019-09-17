@@ -254,7 +254,9 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
 bool ExternalProcessWorker::applyParamsToExecString(QString &execString, QString parName, QString parValue) {
     QRegularExpression regex = QRegularExpression(QString("((([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$)")
                                                   + QString("(") + parName + QString(")")
-                                                  + QString("(?=(\\W|$))"));
+                                                  + (QString("(?=([^") +
+                                                     WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE +
+                                                     QString("]|$))")));
     bool wasReplaced = false;
 
     // Replace the params one-by-one
