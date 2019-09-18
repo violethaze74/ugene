@@ -296,7 +296,7 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
     QString paramValue;
 
     if (dataCfg.isStringValue()) {
-        paramValue = toStringValue(data, os);
+        paramValue = GUrlUtils::getQuotedString(toStringValue(data, os));
         CHECK_OP(os, urls);
     } else {
         QScopedPointer<Document> d(createDocument(dataCfg, os));
@@ -309,7 +309,7 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
         f->storeDocument(d.data(), os);
         CHECK_OP(os, urls);
         urls << d->getURLString();
-        paramValue = "\"" + d->getURLString() + "\"";
+        paramValue = GUrlUtils::getQuotedString(d->getURLString());
     }
 
     applyParamsToExecString(execString, dataCfg.attributeId, paramValue);
@@ -327,7 +327,7 @@ QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConf
         extension = f->getSupportedDocumentFileExtensions().first();
     }
     QString url = generateAndCreateURL(extension, dataCfg.attrName);
-    bool replaced = applyParamsToExecString(execString, dataCfg.attributeId, "\"" + url + "\"");
+    bool replaced = applyParamsToExecString(execString, dataCfg.attributeId, GUrlUtils::getQuotedString(url));
     CHECK(replaced, "")
 
     return url;
