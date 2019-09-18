@@ -52,6 +52,7 @@ Bowtie2Support::Bowtie2Support(const QString& id, const QString& name, const QSt
 
     if (id == ET_BOWTIE2_ALIGN_ID) { // Bowtie2-align
         toolRunnerProgram = PerlSupport::ET_PERL_ID;
+        dependencies << PerlSupport::ET_PERL_ID;
         executableFileName = "bowtie2";
         validationArguments << "--help";
         validMessage = "bowtie2";
@@ -59,6 +60,7 @@ Bowtie2Support::Bowtie2Support(const QString& id, const QString& name, const QSt
                          " and a set of sequencing read files and outputs a set of alignments.");
     } else if (id == ET_BOWTIE2_BUILD_ID) { // Bowtie2-build
         toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
+        dependencies << PythonSupport::ET_PYTHON_ID;
         executableFileName = "bowtie2-build";
         validationArguments << "--version";
         validMessage = "bowtie2-build";
@@ -71,6 +73,7 @@ Bowtie2Support::Bowtie2Support(const QString& id, const QString& name, const QSt
                          " once the index is built.");
     } else if (id == ET_BOWTIE2_INSPECT_ID) { // Bowtie2-inspect
         toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
+        dependencies << PythonSupport::ET_PYTHON_ID;
         executableFileName = "bowtie2-inspect";
         validationArguments << "--version";
         validMessage = "bowtie2-inspect";
