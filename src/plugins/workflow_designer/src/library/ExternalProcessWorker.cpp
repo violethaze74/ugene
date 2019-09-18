@@ -21,6 +21,7 @@
 
 #include <QDateTime>
 #include <QFile>
+#include <QUuid>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -148,7 +149,7 @@ namespace {
         if (!dir.exists()) {
             dir.mkpath(path);
         }
-        url = path + "/tmp" + GUrlUtils::fixFileName(name) + QString::number(QDateTime::currentDateTime().toTime_t()) +  "." + extention;
+        url = path + "/tmp" + GUrlUtils::fixFileName(name + "_" + QUuid::createUuid().toString()) +  "." + extention;
         return url;
     }
 
@@ -234,6 +235,10 @@ void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString,
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
         QString attrValue = a->getAttributePureValue().toString();
+        DataTypePtr attrType = a->getAttributeType();
+        if (attrType == BaseTypes::STRING_TYPE()) {
+            attrValue = "\"" + attrValue + "\"";
+        }
         bool wasReplaced = applyParamsToExecString(execString,
                                                    a->getId(),
                                                    attrValue);
@@ -711,7 +716,7 @@ void LaunchExternalToolTask::run() {
     externalProcess->setProcessEnvironment(env);
     taskLog.details(tr("Running external process: %1").arg(execString));
     bool startOk = ExternalToolSupportUtils::startExternalProcess(externalProcess, execStringProg, execStringArgs);
-    
+
     if(!startOk) {
         stateInfo.setError(tr("Can't launch %1").arg(execString));
         return;
