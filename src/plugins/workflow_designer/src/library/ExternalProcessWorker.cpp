@@ -237,7 +237,7 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
         QString attrValue = a->getAttributePureValue().toString();
         DataTypePtr attrType = a->getAttributeType();
         if (attrType == BaseTypes::STRING_TYPE()) {
-            attrValue = "\"" + attrValue + "\"";
+            attrValue = GUrlUtils::getQuotedString(attrValue);
         }
         bool wasReplaced = applyParamsToExecString(execString,
                                                    a->getId(),
