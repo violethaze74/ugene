@@ -97,6 +97,7 @@ public:
 
     void addExternalTool(const QString &toolId, const QString &paramId = "");
     const StrStrMap & getExternalTools() const;
+    void clearExternalTools();
     int getUsageCounter() const;
 
 signals:
