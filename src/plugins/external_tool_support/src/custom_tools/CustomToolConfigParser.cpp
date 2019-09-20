@@ -162,7 +162,18 @@ bool CustomToolConfigParser::validate(U2OpStatus &os, CustomExternalTool *tool) 
     CHECK_EXT(!tool->getId().startsWith("USUPP_"), os.setError(tr("The custom tool's ID shouldn't start with \"USUPP_\", this is a distinguishing feature of the supported tools.")), false);
     CHECK_EXT(!tool->getId().startsWith("UCUST_"), os.setError(tr("The custom tool's ID shouldn't start with \"UCUST_\", this is a distinguishing feature of the supported tools.")), false);
     CHECK_EXT(!tool->getName().isEmpty(), os.setError(tr("The tool name is not specified in the config file.")), false);
-    CHECK_EXT(!tool->getExecutableFileName().isEmpty(), os.setError(tr("The tool's executable file name is not specified in the config file.")), false);
+
+    if (tool->getExecutableFileName().isEmpty()) {
+        os.addWarning(tr("The imported custom tool `%1` does not have an executable file. Make sure to set up a valid executable file before you use the tool.").arg(tool->getName()));
+    } else if (tool->getPath().isEmpty()) {
+        os.addWarning(tr("The imported custom tool `%1` does not have an executable file. Make sure to set up a valid executable file before you use the tool.").arg(tool->getName()));
+    } else {
+        QFileInfo pathFi(tool->getPath());
+        if (!pathFi.exists()) {
+            os.addWarning(tr("The executable file `%1` specified for the imported custom tool `%2` doesn't exist. Make sure to set up a valid executable file before you use the tool.").arg(tool->getPath()).arg(tool->getName()));
+        }
+    }
+
     return true;
 }
 
