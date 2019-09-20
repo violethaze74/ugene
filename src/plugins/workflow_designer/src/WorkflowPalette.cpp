@@ -40,6 +40,7 @@
 #include "library/IncludedProtoFactoryImpl.h"
 #include "library/ScriptWorker.h"
 #include "library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.h"
+#include "util/CustomWorkerUtils.h"
 
 namespace U2 {
 
@@ -741,6 +742,12 @@ bool WorkflowPaletteElements::editPrototypeWithoutElementRemoving(Workflow::Acto
 
     proto->setDisplayName(currentConfig->name);
     proto->setDocumentation(currentConfig->description);
+
+    QStringList commandIdList = CustomWorkerUtils::getToolIdsFromCommand(currentConfig->cmdLine);
+    proto->clearExternalTools();
+    foreach(const QString & id, commandIdList) {
+        proto->addExternalTool(id);
+    }
 
     rebuild();
 
