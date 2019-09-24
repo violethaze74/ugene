@@ -482,7 +482,7 @@ bool WorkflowPaletteElements::editPrototype(ActorPrototype *proto) {
             tr("Unable to Edit Element"),
             tr("The element with external tool is used in other Workflow Designer window(s). "
             "Please remove these instances to be able to edit the element configuration."),
-            QMessageBox::Yes);
+            QMessageBox::Ok);
         return false;
     }
     ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(proto->getId());
