@@ -198,12 +198,15 @@ QString ExternalToolManagerImpl::addTool(ExternalTool* tool) {
                 SAFE_POINT(masterTool, QString("An external tool '%1' isn't found in the registry").arg(masterId), "");
 
                 toolPath = masterTool->getPath();
+            } else {
+                toolPath = tool->getPath();
             }
             validateList << tool->getId();
         }
     } else {
         if (!tool->isValid()) {
             validateList << tool->getId();
+            toolPath = tool->getPath();
         }
     }
 

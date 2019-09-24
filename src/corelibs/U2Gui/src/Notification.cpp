@@ -249,7 +249,7 @@ void Notification::sl_timeout() {
         }
     } else {        
         move(rect.topLeft().x(), rect.topLeft().y() - 10);
-        resize(TT_WIDTH, rect.height() + 10);
+        resize(TT_WIDTH, rect.height() + 10 > TT_HEIGHT ? TT_HEIGHT : rect.height() + 10);
     }
 }
 

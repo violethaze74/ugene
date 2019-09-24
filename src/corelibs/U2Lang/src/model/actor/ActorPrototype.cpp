@@ -170,6 +170,10 @@ const StrStrMap & ActorPrototype::getExternalTools() const {
     return externalTools;
 }
 
+void ActorPrototype::clearExternalTools() {
+    externalTools.clear();
+}
+
 ActorPrototype::ActorPrototype(const Descriptor& d,
                                const QList<PortDescriptor*>& ports,
                                const QList<Attribute*>& attrs)
