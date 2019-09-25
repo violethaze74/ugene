@@ -758,6 +758,10 @@ void WorkflowUtils::applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pat
     }
 }
 
+bool WorkflowUtils::startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments) {
+    return ExternalToolSupportUtils::startExternalProcess(process, program, arguments);
+}
+
 QStringList WorkflowUtils::getDatasetsUrls(const QList<Dataset> &sets) {
     QStringList result;
     foreach (const Dataset &dSet, sets) {
