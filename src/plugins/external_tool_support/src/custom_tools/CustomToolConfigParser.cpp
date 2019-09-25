@@ -97,7 +97,7 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString 
                 tool->setPath(absPath);
             }
         } else if (compareCaseInsensetive(DESCRIPTION, tagName)) {
-            tool->setDescription(element.text());
+            tool->setDescription(element.text().replace(QRegularExpression("\\r?\\n"), "<br>"));
         } else if (compareCaseInsensetive(TOOLKIT_NAME, tagName)) {
             tool->setToolkitName(element.text());
         } else if (compareCaseInsensetive(TOOL_VERSION, tagName)) {
