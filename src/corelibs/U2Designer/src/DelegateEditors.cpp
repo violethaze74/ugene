@@ -984,7 +984,15 @@ LineEditWithValidatorDelegate *LineEditWithValidatorDelegate::clone() {
 void LineEditWithValidatorDelegate::sl_valueChanged() {
     IgnoreUpDownPropertyWidget* editor = qobject_cast<IgnoreUpDownPropertyWidget *>(sender());
     CHECK(editor != NULL, );
+
+    QLineEdit* lineEdit = editor->findChild<QLineEdit*>("mainWidget");
+    SAFE_POINT(nullptr != lineEdit, "Line edit is nullptr", );
+
+    const int cursorPos = lineEdit->cursorPosition();
+
     emit commitData(editor);
+
+    lineEdit->setCursorPosition(cursorPos);
 }
 
 }   // namespace U2
