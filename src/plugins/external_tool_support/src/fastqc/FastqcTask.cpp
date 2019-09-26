@@ -50,7 +50,7 @@ const QMap<FastQCParser::ErrorType, QString> FastQCParser::initWellKnownErrors()
 const QMap<FastQCParser::ErrorType, QString> FastQCParser::WELL_KNOWN_ERRORS = initWellKnownErrors();
 
 FastQCParser::FastQCParser(const QString& _inputFile)
-    : ExternalToolLogParser(),
+    : ExternalToolLogParser(false),
       inputFile(_inputFile),
       progress(-1)
 {

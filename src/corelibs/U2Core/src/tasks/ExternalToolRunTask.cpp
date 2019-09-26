@@ -274,11 +274,12 @@ void ExternalToolRunTaskHelper::processErrorToLog() {
 
 ////////////////////////////////////////
 //ExternalToolLogParser
-ExternalToolLogParser::ExternalToolLogParser() {
+ExternalToolLogParser::ExternalToolLogParser(bool _writeErrorsToLog) {
     progress = -1;
     lastLine = "";
     lastErrLine = "";
     lastError = "";
+    writeErrorsToLog = _writeErrorsToLog;
 }
 
 void ExternalToolLogParser::parseOutput(const QString &partOfLog) {
@@ -322,7 +323,7 @@ bool ExternalToolLogParser::isError(const QString &line) const {
 }
 
 void ExternalToolLogParser::setLastError(const QString &value) {
-    if (!value.isEmpty()) {
+    if (!value.isEmpty() && writeErrorsToLog) {
         ioLog.error(value);
     }
     lastError = value;
