@@ -2047,7 +2047,7 @@ static QString attributesDefinition(const QList<AttributeConfig> &attrs) {
         res += Constants::TAB + Constants::TAB + Constants::TAB + "name:\"" + cfg.attrName + "\";\n";
         res += Constants::TAB + Constants::TAB + Constants::TAB + "type:" + cfg.type + ";\n";
         if (!cfg.defaultValue.isEmpty()) {
-            res += Constants::TAB + Constants::TAB + Constants::TAB + Constants::DEFAULT_VALUE + ":" + cfg.defaultValue + ";\n";
+            res += Constants::TAB + Constants::TAB + Constants::TAB + Constants::DEFAULT_VALUE + ":\"" + cfg.defaultValue + "\";\n";
         }
         if (!cfg.description.isEmpty()) {
             res += Constants::TAB + Constants::TAB + Constants::TAB + Constants::DESCRIPTION + Constants::COLON + Constants::QUOTE + cfg.description + Constants::QUOTE + Constants::SEMICOLON + Constants::NEW_LINE;

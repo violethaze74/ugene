@@ -510,7 +510,7 @@ void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString& n
         propDelegate = new ComboBoxWithBoolsDelegate();
         defaultValue = true;
     } else if (newType == AttributeConfig::STRING_TYPE) {
-        propDelegate = new PropertyDelegate();
+        propDelegate = new LineEditWithValidatorDelegate(QRegularExpression("([^\"]*)"));
     } else if (newType == AttributeConfig::INTEGER_TYPE) {
         QVariantMap integerValues;
         integerValues["minimum"] = QVariant(std::numeric_limits<int>::min());
