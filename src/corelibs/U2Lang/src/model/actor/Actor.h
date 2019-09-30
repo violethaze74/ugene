@@ -116,6 +116,7 @@ public:
 signals:
     void si_labelChanged();
     void si_modified();
+    void si_descriptionChanged();
 
 protected:
     friend class ActorPrototype;
@@ -149,6 +150,9 @@ protected:
     // an actor could be a subactor of some another
     ActorId owner;
     QList<ValidatorDesc> customValidators;
+
+private slots:
+    void sl_labelChanged();
 
 private:
     // setups variables for script

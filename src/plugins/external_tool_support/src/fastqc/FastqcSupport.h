@@ -24,16 +24,17 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_FASTQC "FastQC"
-
 namespace U2 {
 
 class FastQCSupport : public ExternalTool {
     Q_OBJECT
 public:
-    FastQCSupport(const QString& name, const QString& path = "");
+    FastQCSupport(const QString& id, const QString& name, const QString& path = "");
 
     static ExternalTool * getJava();
+
+    static const QString ET_FASTQC;
+    static const QString ET_FASTQC_ID;
 
 private slots:
     void sl_javaPathChanged();

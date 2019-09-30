@@ -568,9 +568,9 @@ void MsaColorSchemeRegistry::initBuiltInSchemes() {
     addJalviewNucleotide(colorsPerChar);
     addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::JALVIEW_NUCL, tr("Jalview"), DNAAlphabet_NUCL | DNAAlphabet_RAW, colorsPerChar));
 
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_NUCL, tr("Percentage Identity"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityColoredFactory(this, MsaColorScheme::IDENTPERC_NUCL_COLORED, tr("Percentage Identity (colored)"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_NUCL_GRAY, tr("Percentage Identity (gray)"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_NUCL, tr("Percentage identity"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityColoredFactory(this, MsaColorScheme::IDENTPERC_NUCL_COLORED, tr("Percentage identity (colored)"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_NUCL_GRAY, tr("Percentage identity (gray)"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
 
     //amino
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
@@ -607,8 +607,8 @@ void MsaColorSchemeRegistry::initBuiltInSchemes() {
     addBuriedAmino(colorsPerChar);
     addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::BURIED_AMINO, tr("Buried index"), DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_AMINO, tr("Percentage Identity"), DNAAlphabet_AMINO | DNAAlphabet_RAW));
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_AMINO_GRAY, tr("Percentage Identity (gray)"), DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_AMINO, tr("Percentage identity"), DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_AMINO_GRAY, tr("Percentage identity (gray)"), DNAAlphabet_AMINO | DNAAlphabet_RAW));
 
     addMsaColorSchemeFactory(new MsaColorSchemeClustalXFactory(this, MsaColorScheme::CLUSTALX_AMINO, tr("Clustal X"), DNAAlphabet_AMINO | DNAAlphabet_RAW));
 }

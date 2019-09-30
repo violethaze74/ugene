@@ -166,7 +166,7 @@ QList<Task*> MafftAddToAlignmentTask::onSubTaskFinished(Task* subTask) {
         QString outputUrl = resultFilePath + ".out.fa";
 
         logParser = new MAFFTLogParser(inputMsa->getNumRows(), 1, outputUrl);
-        mafftTask = new ExternalToolRunTask(ET_MAFFT, arguments, logParser);
+        mafftTask = new ExternalToolRunTask(MAFFTSupport::ET_MAFFT_ID, arguments, logParser);
         mafftTask->setStandartOutputFile(resultFilePath);
         mafftTask->setSubtaskProgressWeight(65);
         subTasks.append(mafftTask);
@@ -174,12 +174,12 @@ QList<Task*> MafftAddToAlignmentTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(logParser != NULL, "logParser is null", subTasks);
         logParser->cleanup();
         if (!QFileInfo(resultFilePath).exists()) {
-            if (AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->isValid()){
+            if (AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->isValid()){
                 stateInfo.setError(tr("Output file '%1' not found").arg(resultFilePath));
             } else {
                 stateInfo.setError(tr("Output file '%3' not found. May be %1 tool path '%2' not valid?")
-                    .arg(AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->getName())
-                    .arg(AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->getPath())
+                    .arg(AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->getName())
+                    .arg(AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->getPath())
                     .arg(resultFilePath));
             }
             return subTasks;
@@ -301,7 +301,7 @@ AlignmentAlgorithm(AddToAlignment, BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_T
 }
 
 bool MafftAddToAligmnentAlgorithm::isAlgorithmAvailable() const {
-    return AppContext::getExternalToolRegistry()->getByName("MAFFT")->isValid();
+    return AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->isValid();
 }
 
 }

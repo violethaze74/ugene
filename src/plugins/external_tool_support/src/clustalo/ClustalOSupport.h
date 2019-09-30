@@ -28,17 +28,17 @@
 
 #include "utils/AlignMsaAction.h"
 
-#define ET_CLUSTALO "ClustalO"
-#define CLUSTALO_TMP_DIR "clustalo"
-
 namespace U2 {
 
 class ClustalOSupport : public ExternalTool {
     Q_OBJECT
 public:
-    ClustalOSupport(const QString& name, const QString& path = "");
+    ClustalOSupport(const QString& id, const QString& name, const QString& path = "");
     GObjectViewWindowContext* getViewContext(){ return viewCtx; }
 
+    static const QString ET_CLUSTALO;
+    static const QString ET_CLUSTALO_ID;
+    static const QString CLUSTALO_TMP_DIR;
 public slots:
     void sl_runWithExtFileSpecify();
 private:

@@ -63,8 +63,8 @@ void GTest_CalculateTreeFromAligment::init(XMLTestFormat *tf, const QDomElement&
         return;
     }
 
-    algName = el.attribute(ALGORITHM_ATTR);
-    if (algName.isEmpty()) {
+    algId = el.attribute(ALGORITHM_ATTR);
+    if (algId.isEmpty()) {
         failMissingValue(ALGORITHM_ATTR);
         return;
     }
@@ -85,7 +85,7 @@ void GTest_CalculateTreeFromAligment::prepare() {
     }
 
     CreatePhyTreeSettings settings;
-    settings.algorithmId = algName;
+    settings.algorithm = algId;
     settings.mb_ngen = 1000;
     settings.mrBayesSettingsScript = QString("Begin MrBayes;\n"
         "lset Nst=2 rates=gamma ngammacat=4;\n"
@@ -97,7 +97,7 @@ void GTest_CalculateTreeFromAligment::prepare() {
     task = new PhyTreeGeneratorLauncherTask(maObj->getMultipleAlignment(), settings);
 
     if (task == NULL) {
-        stateInfo.setError(QString("Algorithm %1 not found").arg(algName));
+        stateInfo.setError(QString("Algorithm %1 not found").arg(algId));
         return;
     }
     addSubTask(task);

@@ -174,24 +174,24 @@ void BuildIndexDialog::accept()
 {
 
     if ((getAlgorithmName() == "Bowtie") || (getAlgorithmName() == "Bowtie2") || (getAlgorithmName() == "BWA") || (getAlgorithmName() == "BWA-MEM") || (getAlgorithmName() == "BWA-SW")) {
-        QString externalToolName;
+        QString externalToolId;
         
         if (getAlgorithmName() == "Bowtie2") {
-            externalToolName = "Bowtie 2 build indexer";
+            externalToolId = "USUPP_BOWTIE2_BUILD";
         } 
         if (getAlgorithmName() == "Bowtie"){
-            externalToolName = "Bowtie build indexer";
+            externalToolId = "USUPP_BOWTIE_BUILD";
         }
         if ((getAlgorithmName() == "BWA") || (getAlgorithmName() == "BWA-MEM") || (getAlgorithmName() == "BWA-SW")){
-            externalToolName = "BWA";
+            externalToolId = "USUPP_BWA";
         }
-        if(AppContext::getExternalToolRegistry()->getByName(externalToolName)->getPath().isEmpty()) {
+        if(AppContext::getExternalToolRegistry()->getById(externalToolId)->getPath().isEmpty()) {
             QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
             msgBox->setWindowTitle(tr("DNA Assembly"));
             msgBox->setInformativeText(tr("Do you want to select it now?"));
             msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox->setDefaultButton(QMessageBox::Yes);
-            msgBox->setText(tr(QString("Path for <i>" + externalToolName + "</i> tool is not selected.").toLatin1().data()));
+            msgBox->setText(tr(QString("Path for <i>" + AppContext::getExternalToolRegistry()->getToolNameById(externalToolId) + "</i> tool is not selected.").toLatin1().data()));
             const int ret = msgBox->exec();
             CHECK(!msgBox.isNull(), );
 
@@ -206,7 +206,7 @@ void BuildIndexDialog::accept()
                 assert(false);
                 break;
             }
-            if(AppContext::getExternalToolRegistry()->getByName(externalToolName)->getPath().isEmpty()) {
+            if(AppContext::getExternalToolRegistry()->getById(externalToolId)->getPath().isEmpty()) {
                 return;
             }
         }

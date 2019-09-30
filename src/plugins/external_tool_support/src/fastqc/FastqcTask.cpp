@@ -138,7 +138,7 @@ void FastQCTask::prepare(){
 
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, );
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_FASTQC, args, new FastQCParser(settings.inputUrl), temporaryDir.path());
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(FastQCSupport::ET_FASTQC_ID, args, new FastQCParser(settings.inputUrl), temporaryDir.path());
     setListenerForTask(etTask);
     addSubTask(etTask);
 }

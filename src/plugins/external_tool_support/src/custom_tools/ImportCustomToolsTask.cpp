@@ -35,54 +35,47 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include "ImportCustomToolsTask.h"
 #include "CustomToolConfigParser.h"
+#include "ImportCustomToolsTask.h"
+#include "RegisterCustomToolTask.h"
 
 namespace U2 {
 
 const QString ImportCustomToolsTask::SETTINGS_PATH = "external_tools/custom_tool_configs";
 
 ImportCustomToolsTask::ImportCustomToolsTask(const QString &_url)
-    : Task(tr("Import custom external tools configuration"), TaskFlag_None),
-      url(_url)
+    : Task(tr("Import custom external tools configuration"), TaskFlags_FOSE_COSC|TaskFlag_CollectChildrenWarnings),
+      url(_url),
+      registerTask(nullptr)
 {
+    GCOUNTER(cvar, tvar, "ImportCustomToolsTask");
+}
 
+void ImportCustomToolsTask::prepare() {
+    registerTask = new RegisterCustomToolTask(url);
+    addSubTask(registerTask);
 }
 
 void ImportCustomToolsTask::run() {
-    GCOUNTER(cvar, tvar, "ImportCustomToolsTask");
-
-    parseConfigFile();
-    CHECK_OP(stateInfo, );
-
-    const bool registered = registerTool(tool.data());
-    if (registered) {
-        tool.take();
-    }
+    CustomExternalTool *tool = registerTask->getTool();
+    CHECK(nullptr != tool, );
+    saveToolConfig(tool);
 }
 
-void ImportCustomToolsTask::parseConfigFile() {
-    tool.reset(CustomToolConfigParser::parse(stateInfo, url));
-    CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(nullptr != tool, setError("The imported tool is nullptr"), );
-}
-
-bool ImportCustomToolsTask::registerTool(CustomExternalTool *tool) {
-    const bool registered = AppContext::getExternalToolRegistry()->registerEntry(tool);
-    CHECK_EXT(registered, setError(tr("Can't register the tool '%1': there is another tool with the same name").arg(tool->getName())), false);
-
+void ImportCustomToolsTask::saveToolConfig(CustomExternalTool *tool) {
     QDomDocument doc = CustomToolConfigParser::serialize(tool);
 
     const QString storagePath = AppContext::getAppSettings()->getUserAppsSettings()->getCustomToolsConfigsDirPath();
     QDir().mkpath(storagePath);
 
-    QFile configFile(GUrlUtils::rollFileName(storagePath + "/" + GUrlUtils::fixFileName(tool->getId()) + ".xml", "_"));
+    const QString url = GUrlUtils::rollFileName(storagePath + "/" + GUrlUtils::fixFileName(tool->getId()) + ".xml", "_");
+    QFile configFile(url);
     configFile.open(QIODevice::WriteOnly);
     QTextStream stream(&configFile);
     stream << doc.toString(4);
     configFile.close();
 
-    return true;
+    tool->setConfigFilePath(url);
 }
 
 }   // namespace U2

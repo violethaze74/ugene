@@ -299,6 +299,9 @@ WorkflowView::~WorkflowView() {
         AppContext::getProjectService()->enableSaveAction(true);
     }
     WorkflowSettings::setScriptingMode(scriptingMode);
+    delete currentActor;
+    delete scene;
+    delete schema;
 }
 
 void WorkflowView::setupScene() {
@@ -319,11 +322,12 @@ void WorkflowView::setupScene() {
 }
 
 void WorkflowView::setupPalette() {
-    palette = new WorkflowPalette(WorkflowEnv::getProtoRegistry());
+    palette = new WorkflowPalette(WorkflowEnv::getProtoRegistry(), this);
     palette->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored));
     connect(palette, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SLOT(sl_selectPrototype(Workflow::ActorPrototype*, bool)));
     connect(palette, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)));
     connect(palette, SIGNAL(si_protoListModified()), SLOT(sl_protoListModified()));
+    connect(palette, SIGNAL(si_protoChanged()), SLOT(sl_editItem()));
     connect(palette, SIGNAL(si_protoChanged()), scene, SLOT(sl_updateDocs()));
 
     tabs = new QTabWidget(this);
@@ -955,11 +959,6 @@ void WorkflowView::addProcess(Actor *proc, const QPointF &pos) {
     if (NULL != editor) {
         connect(editor, SIGNAL(si_configurationChanged()), scene, SIGNAL(configurationChanged()));
     }
-    GrouperEditor *g = dynamic_cast<GrouperEditor*>(editor);
-    MarkerEditor *m = dynamic_cast<MarkerEditor*>(editor);
-    if (NULL != g || NULL != m) {
-        connect(editor, SIGNAL(si_configurationChanged()), scene, SLOT(sl_refreshBindings()));
-    }
     procItemAdded();
     ActorPrototype *addedProto = it->getProcess()->getProto();
     uiLog.trace(addedProto->getDisplayName() + " added");
@@ -1128,7 +1127,6 @@ void WorkflowView::setupMDIToolbar(QToolBar* tb) {
     runSep = tb->addSeparator();
     tb->addAction(configureParameterAliasesAction);
     confSep = tb->addSeparator();
-    scriptSep = tb->addSeparator();
     tb->addAction(createCmdlineBasedWorkerAction);
     tb->addAction(appendExternalTool);
     extSep = tb->addSeparator();
@@ -1167,7 +1165,6 @@ void WorkflowView::setupActions() {
 
     createScriptAction->setVisible(editMode);
     editScriptAction->setVisible(editMode);
-    scriptSep->setVisible(editMode);
 
     createCmdlineBasedWorkerAction->setVisible(editMode);
     appendExternalTool->setVisible(editMode);
@@ -1209,7 +1206,6 @@ void WorkflowView::setupViewMenu(QMenu* m) {
     m->addAction(createGalaxyConfigAction);
     m->addAction(configurePortAliasesAction);
     m->addAction(importSchemaToElement);
-    m->addSeparator();
     m->addSeparator();
     m->addAction(createScriptAction);
     m->addAction(editScriptAction);

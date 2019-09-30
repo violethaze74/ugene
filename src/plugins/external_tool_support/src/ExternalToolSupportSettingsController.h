@@ -29,8 +29,12 @@
 #include <QLineEdit>
 
 namespace U2 {
+
+class ShowHideSubgroupWidget;
+
 #define ExternalToolSupportSettingsPageId QString("ets")
 struct ExternalToolInfo {
+    QString id;
     QString name;
     QString path;
     QString description;
@@ -56,6 +60,11 @@ private:
 class ExternalToolSupportSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
+    ExternalToolSupportSettingsPageState(const QList<ExternalTool*>& ets);
+
+    QList<ExternalTool*> getExternalTools() const;
+
+private:
     QList<ExternalTool *> externalTools;
 };
 
@@ -63,6 +72,7 @@ class ExternalToolSupportSettingsPageWidget : public AppSettingsGUIPageWidget, p
     Q_OBJECT
 public:
     ExternalToolSupportSettingsPageWidget(ExternalToolSupportSettingsPageController* ctrl);
+    ~ExternalToolSupportSettingsPageWidget() override;
 
     virtual void setState(AppSettingsGUIPageState* state) override;
 
@@ -72,7 +82,7 @@ private:
     QWidget* createPathEditor(QWidget *parent, const QString& path) const;
     QTreeWidgetItem *findToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName);
     QTreeWidgetItem *createToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName, const QIcon &icon);
-    QTreeWidgetItem* insertChild(QTreeWidgetItem* rootItem, const QString& name, int pos, bool isModule = false);
+    QTreeWidgetItem* insertChild(QTreeWidgetItem* rootItem, const QString& id, int pos, bool isModule = false);
     static ExternalTool* isMasterWithModules(const QList<ExternalTool*>& toolsList);
     void setToolState(ExternalTool* tool);
     QString getToolStateDescription(ExternalTool* tool) const;
@@ -80,6 +90,7 @@ private:
     void setDescription(ExternalTool* tool);
     QString warn(const QString& text) const;
     bool eventFilter(QObject *watched, QEvent *event) override;
+    void saveShowHideSubgroupsState() const;
 
 private slots:
     void sl_toolPathChanged();
@@ -102,10 +113,16 @@ private:
     QString getToolLink(const QString &toolName) const;
     mutable int buttonsWidth;
     QString defaultDescriptionText;
+    ShowHideSubgroupWidget* supportedToolsShowHideWidget;
+    ShowHideSubgroupWidget* customToolsShowHideWidget;
+    ShowHideSubgroupWidget* infoShowHideWidget;
 
     static const QString INSTALLED;
     static const QString NOT_INSTALLED;
     static const QString ET_DOWNLOAD_INFO;
+    static const QString SUPPORTED_ID;
+    static const QString CUSTOM_ID;
+    static const QString INFORMATION_ID;
 };
 
 class PathLineEdit : public QLineEdit {

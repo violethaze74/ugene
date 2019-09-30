@@ -24,15 +24,15 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_TABIX "Tabix"
-
-
 namespace U2 {
 
 class TabixSupport : public ExternalTool {
     Q_OBJECT
 public:
-    TabixSupport(const QString& name, const QString& path = "");
+    TabixSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_TABIX;
+    static const QString ET_TABIX_ID;
 };
 
 } // namespace

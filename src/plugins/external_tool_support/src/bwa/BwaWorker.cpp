@@ -294,7 +294,7 @@ void BwaWorkerFactory::init() {
     proto->setPrompter(new ShortReadsAlignerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator());
-    proto->addExternalTool(ET_BWA);
+    proto->addExternalTool(BwaSupport::ET_BWA_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new BwaWorkerFactory());
 }

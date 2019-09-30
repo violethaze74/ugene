@@ -26,12 +26,13 @@
 
 namespace U2 {
 
-#define ET_BWA "BWA"
-
 class BwaSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BwaSupport(const QString &name, const QString &path = "");
+    BwaSupport(const QString& id, const QString &name, const QString &path = "");
+
+    static const QString ET_BWA;
+    static const QString ET_BWA_ID;
 };
 
 } // namespace U2

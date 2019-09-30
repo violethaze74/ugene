@@ -2337,16 +2337,15 @@ GUI_TEST_CLASS_DEFINITION(test_6481_1) {
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "test_6481_1";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
-    settings.tool = "python";
     settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_file_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFileUrl, QString()));
-    settings.command = "%UGENE_JAVA% -help $output_file_url";
+    settings.command = "%USUPP_JAVA% -help $output_file_url";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
     GTGlobals::sleep();
 
 //    5. Create a valid workflow with the new element.
     GTUtilsWorkflowDesigner::click(os, "test_6481_1");
-    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
 
 //    6. Launch the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -2386,16 +2385,15 @@ GUI_TEST_CLASS_DEFINITION(test_6481_2) {
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "test_6481_2";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
-    settings.tool = "python";
     settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_folder_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFolderUrl, QString()));
-    settings.command = "%UGENE_JAVA% -help $output_folder_url";
+    settings.command = "%USUPP_JAVA% -help $output_folder_url";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
     GTGlobals::sleep();
 
 //    5. Create a valid workflow with the new element.
     GTUtilsWorkflowDesigner::click(os, "test_6481_2");
-    GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", sandBoxDir, GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", QFileInfo(sandBoxDir).absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
 
 //    6. Launch the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -2432,7 +2430,7 @@ GUI_TEST_CLASS_DEFINITION(test_6481_3) {
 
 //    4. Create a valid workflow with the new element.
     GTUtilsWorkflowDesigner::click(os, "test_6481_3");
-    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
 
 //    5. Launch the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -2469,8 +2467,8 @@ GUI_TEST_CLASS_DEFINITION(test_6481_4) {
 
     //    4. Create a valid workflow with the new element.
     GTUtilsWorkflowDesigner::click(os, "test_6481_4");
-    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", sandBoxDir, GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
 
     //    5. Launch the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -2489,9 +2487,9 @@ GUI_TEST_CLASS_DEFINITION(test_6474_1) {
     //2. Open the highlighting tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //3. Select the "Percentage Identity (colored)" color scheme
+    //3. Select the "Percentage identity (colored)" color scheme
     QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
-    GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage Identity (colored)    ");
+    GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
 
     QStringList backgroundColors = { "#ffff00", "#00ffff", "#00ffff", "#00ff00", "#00ff00", "#ffffff", "#ffffff", "#ffffff", "#ffffff" };
     QStringList fontColors = { "#ff0000", "#0000ff", "#0000ff", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000" };
@@ -2521,9 +2519,9 @@ GUI_TEST_CLASS_DEFINITION(test_6474_2) {
     //2. Open the highlighting tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //3. Select the "Percentage Identity (colored)" color scheme
+    //3. Select the "Percentage identity (colored)" color scheme
     QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
-    GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage Identity (colored)    ");
+    GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
 
     //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
@@ -2606,7 +2604,6 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "UGENE-6488 test element 1";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
-    settings.tool = "python";
     settings.command = "just a command";
     settings.description = "detailed element description";
     settings.prompter = "description on the scene";
@@ -2640,13 +2637,12 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
             GTWidget::click(os, wizard->button(QWizard::NextButton));
             GTWidget::click(os, wizard->button(QWizard::NextButton));
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTWidget::click(os, wizard->button(QWizard::FinishButton));
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1", QPoint(), Qt::RightButton);
 
 //    11. Edit the element again.
@@ -2673,10 +2669,11 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
         }
     };
 
+    GTUtilsWorkflowDesigner::removeItem(os, "UGENE-6488 test element 1");
     GTUtilsWorkflowDesigner::addElement(os, "UGENE-6488 test element 1");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1", QPoint(), Qt::RightButton);
 
     GTGlobals::sleep();
@@ -2699,7 +2696,6 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "UGENE-6488 test element 2";
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
-    settings.tool = "python";
     settings.command = "just a command";
     settings.description = "detailed element description";
     settings.prompter = "description on the scene";
@@ -2733,7 +2729,6 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
 
             GTWidget::click(os, wizard->button(QWizard::NextButton));
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTWidget::click(os, wizard->button(QWizard::FinishButton));
         }
     };
@@ -2767,6 +2762,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
         }
     };
 
+    GTUtilsWorkflowDesigner::removeItem(os, "UGENE-6488 test element 2");
     GTUtilsWorkflowDesigner::addElement(os, "UGENE-6488 test element 2");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
@@ -2774,6 +2770,76 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", QPoint(), Qt::RightButton);
 
     GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6490) {
+//    Test to check that element with external tool will
+//    successfully create and run the command: `%TOOL_PATH% $oooo $oooo$oooo $oooo $oooo$oooo$oooo`.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Create element with external tool" button on the toolbar.
+//    3. Fill the wizard with the following values (not mentioned values can be set with any value):
+//        Parameters page: a parameter with a type "Output file URL".
+//    4. Accept the wizard.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "test_6490";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("oooo",
+                                                                                 qMakePair(CreateElementWithCommandLineToolFiller::ParameterString, QString("-version")), QString("Desc-version"), QString("OoOoO"));
+
+    settings.command = "%USUPP_JAVA% $oooo $oooo$oooo $oooo $oooo$oooo$oooo";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
+
+//    5. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6490");
+
+//    6. Launch the workflow.
+    GTLogTracer logTracer;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an log string `-version -version-version -version -version-version-version`.
+    bool desiredMessage = logTracer.checkMessage("$oooo $oooo$oooo $oooo $oooo$oooo$oooo");
+    CHECK_SET_ERR(desiredMessage, "No expected message in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6580) {
+//    Test to check that element with external tool will
+//    successfully create and run the command: `%TOOL_PATH% $oooo $oooo$oooo $oooo $oooo$oooo$oooo`.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Create element with external tool" button on the toolbar.
+//    3. Fill the wizard with the following values (not mentioned values can be set with any value):
+//        Parameters page: a parameter with a type "Output file URL".
+//    4. Accept the wizard.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "test_6580";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("oooo",
+                                                                                 qMakePair(CreateElementWithCommandLineToolFiller::ParameterString, QString("-version")), QString("Desc-version"), QString("OoOoO"));
+
+    settings.command = "%USUPP_JAVA% $OoOoO $OoOoO$OoOoO $OoOoO $OoOoO$OoOoO$OoOoO";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
+
+//    5. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6580");
+
+//    6. Launch the workflow.
+    GTLogTracer logTracer;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an log string `-version -version-version -version -version-version-version`.
+    bool desiredMessage = logTracer.checkMessage("-version -version-version -version -version-version-version");
+    CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
 } // namespace GUITest_regression_scenarios

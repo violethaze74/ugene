@@ -52,7 +52,7 @@ void ImportPrimersFromFolderTask::prepare() {
 
 QString ImportPrimersFromFolderTask::generateReport() const {
     QString report;
-    foreach (Task *subtask, getSubtasks()) {
+    foreach (const QPointer<Task> &subtask, getSubtasks()) {
         report += subtask->generateReport() + "<br>";
     }
     return report;

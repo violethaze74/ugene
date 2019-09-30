@@ -36,7 +36,7 @@ ExternalToolRunTask* RPSBlastSupportTask::createBlastPlusTask() {
 
     algoLog.trace("RPSBlast arguments: "+arguments.join(" "));
     QString workingDirectory = QFileInfo(url).absolutePath();
-    ExternalToolRunTask* runTask = new ExternalToolRunTask(ET_RPSBLAST, arguments, new ExternalToolLogParser(), workingDirectory);
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(BlastPlusSupport::ET_RPSBLAST_ID, arguments, new ExternalToolLogParser(), workingDirectory);
     setListenerForTask(runTask);
     return runTask;
 }

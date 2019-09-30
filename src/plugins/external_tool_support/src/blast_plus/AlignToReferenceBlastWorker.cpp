@@ -137,8 +137,8 @@ void AlignToReferenceBlastWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new AlignToReferenceBlastPrompter(NULL));
-    proto->addExternalTool(ET_BLASTN);
-    proto->addExternalTool(ET_MAKEBLASTDB);
+    proto->addExternalTool(BlastPlusSupport::ET_BLASTN_ID);
+    proto->addExternalTool(FormatDBSupport::ET_MAKEBLASTDB_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

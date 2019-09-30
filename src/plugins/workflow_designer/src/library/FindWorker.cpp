@@ -551,8 +551,8 @@ void FindAllRegionsTask::prepare() {
 
 QList<FindAlgorithmResult> FindAllRegionsTask::getResult() {
     QList<FindAlgorithmResult> lst;
-    foreach(Task* t, getSubtasks()) {
-        FindAlgorithmTask* ft = qobject_cast<FindAlgorithmTask*>(t);
+    foreach(const QPointer<Task> &t, getSubtasks()) {
+        FindAlgorithmTask* ft = qobject_cast<FindAlgorithmTask*>(t.data());
         lst += ft->popResults();
     }
     return lst;

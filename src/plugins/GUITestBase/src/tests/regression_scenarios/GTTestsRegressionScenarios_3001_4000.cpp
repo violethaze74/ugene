@@ -1087,7 +1087,7 @@ class test_3165_messageBoxDialogFiller: public MessageBoxDialogFiller{
 public:
     test_3165_messageBoxDialogFiller(HI::GUITestOpStatus &os, QMessageBox::StandardButton _b):
         MessageBoxDialogFiller(os, _b){}
-    virtual void run(){
+    virtual void run() override {
         QWidget* activeModal = QApplication::activeModalWidget();
         QMessageBox *messageBox = qobject_cast<QMessageBox*>(activeModal);
         CHECK_SET_ERR(messageBox != NULL, "messageBox is NULL");
@@ -2714,7 +2714,7 @@ GUI_TEST_CLASS_DEFINITION(test_3402){
         }
         QList<Task*> innertList;
         foreach (Task* t, tList) {
-            innertList.append(t->getSubtasks());
+            innertList.append(t->getPureSubtasks());
         }
         foreach (Task* t, innertList) {
             if(t->getTaskName().contains("Opening view")){
@@ -3217,7 +3217,7 @@ GUI_TEST_CLASS_DEFINITION(test_3478) {
     FormatDBSupportRunDialogFiller::Parameters p;
     p.justCancel = true;
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, p));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "BLAST" << "FormatDB"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "BLAST" << "FormatDB..."));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsLog::check(os, l);
@@ -3548,7 +3548,7 @@ GUI_TEST_CLASS_DEFINITION(test_3551){
     FormatDBSupportRunDialogFiller::Parameters p;
     p.customFiller_3551 = true;
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, p));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "BLAST" << "FormatDB"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "BLAST" << "FormatDB..."));
     GTMouseDriver::click(Qt::RightButton);
 }
 

@@ -105,7 +105,7 @@ void SpadesTask::prepare() {
     //it uses system call gzip. it might not be installed
     arguments.append("--disable-gzip-output");
 
-    assemblyTask = new ExternalToolRunTask(ET_SPADES, arguments, new SpadesLogParser(), settings.outDir.getURLString());
+    assemblyTask = new ExternalToolRunTask(SpadesSupport::ET_SPADES_ID, arguments, new SpadesLogParser(), settings.outDir.getURLString());
     if (!settings.listeners.isEmpty()) {
         assemblyTask->addOutputListener(settings.listeners.first());
     }

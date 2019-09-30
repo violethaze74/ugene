@@ -24,17 +24,6 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_CUFFCOMPARE   "Cuffcompare"
-#define ET_CUFFDIFF      "Cuffdiff"
-#define ET_CUFFLINKS     "Cufflinks"
-#define ET_CUFFMERGE     "Cuffmerge"
-#define ET_GFFREAD       "Gffread"
-
-#define CUFFLINKS_TMP_DIR       "cufflinks"
-#define CUFFDIFF_TMP_DIR        "cuffdiff"
-#define CUFFMERGE_TMP_DIR       "cuffmerge"
-
-
 namespace U2 {
 
 class CufflinksSupport : public ExternalTool
@@ -42,7 +31,22 @@ class CufflinksSupport : public ExternalTool
     Q_OBJECT
 
 public:
-    CufflinksSupport(const QString& name, const QString& path = "");
+    CufflinksSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString  ET_CUFFCOMPARE;
+    static const QString  ET_CUFFCOMPARE_ID;
+    static const QString  ET_CUFFDIFF;
+    static const QString  ET_CUFFDIFF_ID;
+    static const QString  ET_CUFFLINKS;
+    static const QString  ET_CUFFLINKS_ID;
+    static const QString  ET_CUFFMERGE;
+    static const QString  ET_CUFFMERGE_ID;
+    static const QString  ET_GFFREAD;
+    static const QString  ET_GFFREAD_ID;
+
+    static const QString  CUFFLINKS_TMP_DIR;
+    static const QString  CUFFDIFF_TMP_DIR;
+    static const QString  CUFFMERGE_TMP_DIR;
 };
 
 

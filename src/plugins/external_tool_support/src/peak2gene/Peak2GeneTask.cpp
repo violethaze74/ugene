@@ -132,7 +132,7 @@ QList<Task*> Peak2GeneTask::onSubTaskFinished(Task* subTask) {
     if (treatTask == subTask) {
             QStringList args = settings.getArguments(treatDoc->getURLString());
 
-            etTask = new ExternalToolRunTask(ET_PEAK2GENE, args, new ExternalToolLogParser(), workingDir);
+            etTask = new ExternalToolRunTask(Peak2GeneSupport::ET_PEAK2GENE_ID, args, new ExternalToolLogParser(), workingDir);
             setListenerForTask(etTask);
             result << etTask;
     }

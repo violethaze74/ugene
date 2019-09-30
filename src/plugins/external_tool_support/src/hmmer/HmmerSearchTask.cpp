@@ -239,7 +239,7 @@ static bool isHmm2Profile(const QString& url) {
 }
 
 void HmmerSearchTask::prepareHmmerTask() {
-    hmmerTask = new ExternalToolRunTask(HmmerSupport::SEARCH_TOOL, getArguments(), new Hmmer3LogParser());
+    hmmerTask = new ExternalToolRunTask(HmmerSupport::SEARCH_TOOL_ID, getArguments(), new Hmmer3LogParser());
     setListenerForTask(hmmerTask);
     hmmerTask->setSubtaskProgressWeight(85);
     hmm2Mode = isHmm2Profile(settings.hmmProfileUrl);

@@ -24,20 +24,29 @@
 
 #include <QObject>
 
+#include <U2Lang/ExternalToolCfg.h>
+#include "U2Core/ExternalToolRegistry.h"
+
 namespace U2 {
 namespace Workflow {
 
-#define CMDTOOL_SPECIAL_REGEX "([^\\\\](\\\\\\\\)*|^)"
+#define CMDTOOL_SPECIAL_REGEX "((?<!(\\\\))(\\\\\\\\)*|^)"
 
 class CustomWorkerUtils {
 
 public:
-    static bool commandContainsSpecialTool(const QString &cmd, const QString &toolKey);
-    static bool commandReplaceSpecialByUgenePath(QString &cmd, const QString &toolKey);
-    static void commandReplaceAllSpecialByUgenePath(QString &cmd);
+    static const QString TOOL_PATH_VAR_NAME;
 
-protected:
-    static QMap<QString, QString> specialTools;
+    static QString getVarName(const ExternalTool *tool);
+
+    static bool commandContainsSpecialTool(const QString &cmd, const ExternalTool *tool);
+    static bool commandContainsSpecialTool(const QString &cmd, const QString toolId);
+    static bool commandContainsVarName(const QString& cmd, const QString& varName);
+    static QStringList getToolIdsFromCommand(const QString& cmd);
+
+    static bool commandReplaceSpecialByUgenePath(QString &cmd, const ExternalTool *tool);
+    static bool commandReplaceSpecialByUgenePath(QString &cmd, const QString varName, const QString path);
+    static void commandReplaceAllSpecialByUgenePath(QString &cmd, ExternalProcessConfig *cfg);
 
 };
 

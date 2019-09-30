@@ -65,6 +65,7 @@ WorkflowProcessItem::WorkflowProcessItem(Actor* prc) : process(prc), hasBreakpoi
     currentStyle = getStyleByIdSafe(WorkflowSettings::defaultStyle());
     currentStyle->setVisible(true);
     createPorts();
+    connect(prc, SIGNAL(si_descriptionChanged()), SLOT(sl_descriptionChanged()));
 }
 
 WorkflowProcessItem::~WorkflowProcessItem()
@@ -140,6 +141,10 @@ void WorkflowProcessItem::sl_update() {
         pit->adaptOwnerShape();
     }
     update();
+}
+
+void WorkflowProcessItem::sl_descriptionChanged() {
+    setToolTip(process->getProto()->getDocumentation());
 }
 
 void WorkflowProcessItem::setStyle(StyleId s) {

@@ -168,8 +168,14 @@ bool validateExternalTools(Actor *a, NotificationsList &infoList) {
     StrStrMap tools = a->getProto()->getExternalTools();
     foreach (const QString &toolId, tools.keys()) {
         Attribute *attr = a->getParameter(tools[toolId]);
-        ExternalTool *tool = AppContext::getExternalToolRegistry()->getByName(toolId);
-        SAFE_POINT(NULL != tool, "NULL tool", false);
+        ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(toolId);
+        if (nullptr == tool) {
+            good = false;
+            infoList << WorkflowNotification(WorkflowUtils::externalToolIsAbsentError(toolId),
+                                             a->getId(),
+                                             WorkflowNotification::U2_ERROR);
+            continue;
+        }
 
         bool fromAttr = (NULL != attr) && !attr->isDefaultValue();
         bool valid = fromAttr ? !attr->isEmpty() : !tool->getPath().isEmpty();
@@ -179,9 +185,16 @@ bool validateExternalTools(Actor *a, NotificationsList &infoList) {
                                 a->getId(),
                                 WorkflowNotification::U2_ERROR);
         } else if (!fromAttr && !tool->isValid()) {
-            infoList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
-                                a->getId(),
-                                WorkflowNotification::U2_WARNING);
+            if (tool->isCustom()) {
+                infoList << WorkflowNotification(WorkflowUtils::customExternalToolInvalidError(tool->getName(), a->getLabel()),
+                    a->getProto()->getId(),
+                    WorkflowNotification::U2_ERROR);
+                good = false;
+            } else {
+                infoList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
+                    a->getProto()->getId(),
+                    WorkflowNotification::U2_WARNING);
+            }
         }
     }
     return good;
@@ -863,11 +876,11 @@ QString WorkflowUtils::createUniqueString(const QString &str, const QString &sep
     return result;
 }
 
-QString WorkflowUtils::updateExternalToolPath(const QString &toolName, const QString &path) {
+QString WorkflowUtils::updateExternalToolPath(const QString &id, const QString &path) {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
     SAFE_POINT(NULL != registry, "NULL external tool registry", "");
-    ExternalTool *tool = registry->getByName(toolName);
-    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(toolName), "");
+    ExternalTool *tool = registry->getById(id);
+    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(id), "");
 
     if (QString::compare(path, "default", Qt::CaseInsensitive) != 0) {
         tool->setPath(path);
@@ -875,14 +888,18 @@ QString WorkflowUtils::updateExternalToolPath(const QString &toolName, const QSt
     return tool->getPath();
 }
 
-QString WorkflowUtils::getExternalToolPath(const QString &toolName) {
+QString WorkflowUtils::getExternalToolPath(const QString &toolId) {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
     SAFE_POINT(NULL != registry, "NULL external tool registry", "");
 
-    ExternalTool *tool = registry->getByName(toolName);
-    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(toolName), "");
+    ExternalTool *tool = registry->getById(toolId);
+    SAFE_POINT(NULL != tool, QString("Unknown tool (id): %1").arg(toolId), "");
 
     return tool->getPath();
+}
+
+QString WorkflowUtils::externalToolIsAbsentError(const QString& toolName) {
+    return tr("Specified variable \"%%1%\" does not exist, please check the command again.").arg(toolName);
 }
 
 QString WorkflowUtils::externalToolError(const QString &toolName) {
@@ -891,6 +908,10 @@ QString WorkflowUtils::externalToolError(const QString &toolName) {
 
 QString WorkflowUtils::externalToolInvalidError(const QString &toolName) {
     return tr("External tool \"%1\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected").arg(toolName);
+}
+
+QString WorkflowUtils::customExternalToolInvalidError(const QString& toolName, const QString& elementName) {
+    return tr("Custom tool \"%1\", specified for the \"%2\" element, didn't pass validation.").arg(toolName).arg(elementName);
 }
 
 void WorkflowUtils::schemaFromFile(const QString &url, Schema *schema, Metadata *meta, U2OpStatus &os) {

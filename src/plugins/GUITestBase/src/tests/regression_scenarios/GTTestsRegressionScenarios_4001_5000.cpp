@@ -2353,19 +2353,10 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     QAbstractButton* button = GTAction::button(os, "AddElementWithCommandLineTool");
     GTWidget::click(os, button);
     GTGlobals::sleep(200);
-    //WorkflowProcessItem *cmdlineWorker = GTUtilsWorkflowDesigner::getWorker(os, "test_4295");
 
     GTUtilsWorkflowDesigner::click(os, "test_4295");
 
-    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
-    settings.command = "echo $in > $out";
-
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
-    GTUtilsWorkflowDesigner::click(os, "test_4295",QPoint(0,0),Qt::RightButton);
-    GTGlobals::sleep();
-
-    WorkflowProcessItem* element = GTUtilsWorkflowDesigner::addElement(os, "test_4295");
+    WorkflowProcessItem* element = GTUtilsWorkflowDesigner::getWorker(os, "test_4295");
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"), element);
     GTGlobals::sleep(200);
     GTUtilsWorkflowDesigner::connect(os, element, GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
@@ -2379,7 +2370,6 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsLog::check(os, logTracer);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4302_1) {
@@ -2556,9 +2546,9 @@ GUI_TEST_CLASS_DEFINITION(test_4323_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    2. Click "Align sequence to this alignment" and select "_common_data/database.ini".
+//    2. Click "Align sequence(s) to this alignment" and select "_common_data/database.ini".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/database.ini"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
 //    Expected state: load task fails, safe point doesn't trigger.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2571,9 +2561,9 @@ GUI_TEST_CLASS_DEFINITION(test_4323_2) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    2. Click "Align sequence to this alignment" button on the toolbar, select "samples/PDB/1CF7.pdb".
+//    2. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/PDB/1CF7.pdb".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2598,9 +2588,9 @@ GUI_TEST_CLASS_DEFINITION(test_4323_3) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    2. Click "Align sequence to this alignment" button on the toolbar, select "samples/PDB/1CF7.pdb".
+//    2. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/PDB/1CF7.pdb".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2619,15 +2609,15 @@ GUI_TEST_CLASS_DEFINITION(test_4323_4) {
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Phaneroptera_falcata", "1");
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "1");
 
-//    3. Click "Align sequence to this alignment" button on the toolbar, select "samples/FASTQ/eas.fastq".
+//    3. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/FASTQ/eas.fastq".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    4. Do it again.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2687,8 +2677,8 @@ GUI_TEST_CLASS_DEFINITION(test_4334) {
     //    2. Add human_t1.fa sequence throu context menu {Add->Sequence from file}
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsDialog::waitForDialog(os, ob);
-    QAbstractButton *align = GTAction::button(os, "Align sequence to this alignment");
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click(os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!lt.hasError(), "log should not contain errors");
@@ -2954,12 +2944,12 @@ GUI_TEST_CLASS_DEFINITION(test_4386_1) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    4. Select some sequences in project view and click "Align sequence to this alignment".
+    //    4. Select some sequences in project view and click "Align sequence(s) to this alignment".
     GTUtilsProject::openMultiSequenceFileAsSequences(os, dataDir + "samples/FASTQ/eas.fastq");
     GTUtilsMdi::activateWindow(os, "COI [m] COI");
 
     GTUtilsProjectTreeView::click(os, "EAS54_6_R1_2_1_413_324");
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2976,9 +2966,9 @@ GUI_TEST_CLASS_DEFINITION(test_4386_2) {
 //    2. Rename the alignment, a new name should contain spaces.
     GTUtilsProjectTreeView::rename(os, "COI", "C O I");
 
-//    3. Click "Align sequence to this alignment" and select any file with sequence.
+//    3. Click "Align sequence(s) to this alignment" and select any file with sequence.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4020,8 +4010,8 @@ GUI_TEST_CLASS_DEFINITION(test_4674_1) {
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button( os, "Align sequence to this alignment" );
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button( os, "Align sequence(s) to this alignment" );
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click( os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4190,12 +4180,12 @@ GUI_TEST_CLASS_DEFINITION(test_4687) {
     GTGlobals::sleep(500);
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 
-    //3. Press "Align sequence to this alignment" and add next sequence _common_data/fasta/amino_ext.fa
+    //3. Press "Align sequence(s) to this alignment" and add next sequence _common_data/fasta/amino_ext.fa
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "amino_ext.fa");
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button(os, "Align sequence to this alignment");
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click(os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4675,9 +4665,9 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    3. Click "Align sequence to this alignment" and select "_common_data/fasta/amino_ext.fa".
+    //    3. Click "Align sequence(s) to this alignment" and select "_common_data/fasta/amino_ext.fa".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/amino_ext.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
@@ -4707,9 +4697,9 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    3. Click "Align sequence to this alignment" and select "_common_data/fasta/amino_ext.fa".
+    //    3. Click "Align sequence(s) to this alignment" and select "_common_data/fasta/amino_ext.fa".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/fa1.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: "UGENE" color scheme is selected, "UGENE" highlight scheme is selected
@@ -4735,9 +4725,9 @@ GUI_TEST_CLASS_DEFINITION(test_4719_3) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence to this alignment" and select "data/samples/Genbank/PBR322.gb".
+    //    2. Click "Align sequence(s) to this alignment" and select "data/samples/Genbank/PBR322.gb".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/PBR322.gb"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    3. Open/close highlighting option panel tab
@@ -5389,15 +5379,15 @@ GUI_TEST_CLASS_DEFINITION(test_4804_4) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_dna.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Check what MAFFT tool is set up
-    //    3. Use 'Align sequence to this alignment' toolbar button to align Extended rna sequence to alignment
+    //    3. Use 'Align sequence(s) to this alignment' toolbar button to align Extended rna sequence to alignment
     //Expected state: corresponding notification message has appeared
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_rna.fa");
     GTUtilsDialog::waitForDialog(os, ob);
 
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");
 
-    QAbstractButton *align = GTAction::button(os, "Align sequence to this alignment");
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click(os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -5407,7 +5397,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_5) {
     //    2. Open _common_data/scenarios/_regression/4804/standard_rna.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_rna.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    3. Use 'Align sequence to this alignment' toolbar button to align Extended rna sequence to alignment
+    //    3. Use 'Align sequence(s) to this alignment' toolbar button to align Extended rna sequence to alignment
     //Expected state: corresponding notification message has appeared
     GTUtilsExternalTools::removeTool(os, "MAFFT");
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_dna.fa");
@@ -5415,8 +5405,8 @@ GUI_TEST_CLASS_DEFINITION(test_4804_5) {
 
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard RNA\" to \"Raw\". Use \"Undo\", if you'd like to restore the original alignment.");
 
-    QAbstractButton *align = GTAction::button(os, "Align sequence to this alignment");
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click(os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }

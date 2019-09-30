@@ -353,7 +353,6 @@ private:
     QAction* loadSep;
     QAction* runSep;
     QAction* confSep;
-    QAction* scriptSep;
     QAction* extSep;
     QAction* scaleSep;
     QAction* scaleAction;

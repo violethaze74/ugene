@@ -44,6 +44,7 @@
 
 #include "CreateCmdlineBasedWorkerWizard.h"
 #include "WorkflowEditorDelegates.h"
+#include "util/CustomWorkerUtils.h"
 #include "util/WorkerNameValidator.h"
 
 namespace U2 {
@@ -76,19 +77,21 @@ const QString CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD = "worker
 const QString CreateCmdlineBasedWorkerWizard::WORKER_ID_FIELD = "worker-id";
 const QString CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD = "worker-name";
 
-CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(QWidget *_parent)
+CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(SchemaConfig* _schemaConfig, QWidget *_parent)
     : QWizard(_parent),
-      initialConfig(nullptr),
-      config(nullptr)
+    initialConfig(nullptr),
+    config(nullptr),
+    schemaConfig(_schemaConfig)
 {
     GCOUNTER(cvar, tvar, "\"Configure Element with External Tool\" dialog is opened for creating");
     init();
 }
 
-CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(ExternalProcessConfig *_initialConfig, QWidget *_parent)
+CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(SchemaConfig* _schemaConfig, ExternalProcessConfig *_initialConfig, QWidget *_parent)
     : QWizard(_parent),
-      initialConfig(nullptr),
-      config(nullptr)
+    initialConfig(nullptr),
+    config(nullptr),
+    schemaConfig(_schemaConfig)
 {
     SAFE_POINT(nullptr != _initialConfig, "Initial config of the element to edit is nullptr", );
     GCOUNTER(cvar, tvar, "\"Configure Element with External Tool\" dialog is opened for editing");
@@ -124,6 +127,17 @@ void CreateCmdlineBasedWorkerWizard::saveConfig(ExternalProcessConfig *config) {
     file.open(QIODevice::WriteOnly);
     file.write(serializedConfig.toLatin1());
     file.close();
+}
+
+bool CreateCmdlineBasedWorkerWizard::isRequiredToRemoveElementFromScene(ExternalProcessConfig* actualConfig, ExternalProcessConfig* newConfig) {
+    CHECK(nullptr != actualConfig, false)
+        CHECK(nullptr != newConfig, false);
+
+    bool result = (newConfig->inputs != actualConfig->inputs)
+        || (newConfig->outputs != actualConfig->outputs)
+        || (newConfig->attrs != actualConfig->attrs);
+
+    return result;
 }
 
 namespace {
@@ -196,15 +210,16 @@ void CreateCmdlineBasedWorkerWizard::accept() {
     QScopedPointer<ExternalProcessConfig> actualConfig(createActualConfig());
     CHECK(!actualConfig.isNull(), );
 
-    if (nullptr != initialConfig && *initialConfig != *actualConfig) {
+    if (isRequiredToRemoveElementFromScene(initialConfig, actualConfig.data())) {
         int res = QMessageBox::question(this,
                                         tr("Warning"),
-                                        tr("You have changed the structure of the element (name, slots, parameters' names and types). "
-                                           "All elements on the scene would be removed. Do you really want to change it?\n"
-                                           "You could also reset the dialog to the initial state."),
-                                        QMessageBox::Yes | QMessageBox::No | QMessageBox::Reset,
-                                        QMessageBox::No);
-        if (QMessageBox::No == res) {
+                                        tr("You've changed the element structure (input data, parameters, or output data).\n\n"
+                                           "If you apply the changes, all elements of this type will be removed from the scene."
+                                           "You can then add a new such element to the scene by dragging it from the \"Custom Elements with External Tools\" group of the \"Elements\" palette.\n\n"
+                                           "Would you like to apply the changes ? "),
+                                        QMessageBox::Apply | QMessageBox::Cancel | QMessageBox::Reset,
+                                        QMessageBox::Apply);
+        if (QMessageBox::Cancel == res) {
             return;
         } else if (QMessageBox::Reset == res) {
             restart();
@@ -223,7 +238,7 @@ void CreateCmdlineBasedWorkerWizard::accept() {
 void CreateCmdlineBasedWorkerWizard::init() {
     addPage(new CreateCmdlineBasedWorkerWizardGeneralSettingsPage(initialConfig));
     addPage(new CreateCmdlineBasedWorkerWizardInputDataPage(initialConfig));
-    addPage(new CreateCmdlineBasedWorkerWizardParametersPage(initialConfig));
+    addPage(new CreateCmdlineBasedWorkerWizardParametersPage(initialConfig, schemaConfig));
     addPage(new CreateCmdlineBasedWorkerWizardOutputDataPage(initialConfig));
     addPage(new CreateCmdlineBasedWorkerWizardCommandPage(initialConfig));
     addPage(new CreateCmdlineBasedWorkerWizardElementAppearancePage(initialConfig));
@@ -237,7 +252,7 @@ void CreateCmdlineBasedWorkerWizard::init() {
     setOption(QWizard::HaveHelpButton, true);
     new U2::HelpButton(this, this->button(QWizard::HelpButton), "24740125");
 
-    DialogUtils::setWizardMinimumSize(this, QSize(780, 470));
+    DialogUtils::setWizardMinimumSize(this, QSize(780, 350));
 }
 
 ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() const {
@@ -271,16 +286,19 @@ CreateCmdlineBasedWorkerWizardGeneralSettingsPage::CreateCmdlineBasedWorkerWizar
 {
     setupUi(this);
 
+    cbIntegratedTools = new ExternalToolSelectComboBox(gbTool);
+    cbIntegratedTools->setEnabled(false);
+    cbIntegratedTools->setObjectName("cbIntegratedTools");
+    containerLayout->addWidget(cbIntegratedTools);
+
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
     leName->setValidator(new QRegularExpressionValidator(WorkflowEntityValidator::ACCEPTABLE_NAME, leName));
 
-    initExternalTools();
-    initPopupMenu();
-
-    connect(leToolPath, SIGNAL(textChanged(const QString &)), SIGNAL(completeChanged()));
+    connect(leToolPath, SIGNAL(textChanged(const QString&)), SIGNAL(completeChanged()));
     connect(tbBrowse, SIGNAL(clicked()), SLOT(sl_browse()));
     connect(rbIntegratedTool, SIGNAL(toggled(bool)), SIGNAL(completeChanged()));
     connect(rbIntegratedTool, SIGNAL(toggled(bool)), SLOT(sl_integratedToolChanged()));
+    connect(rbIntegratedTool, SIGNAL(toggled(bool)), cbIntegratedTools, SLOT(setEnabled(bool)));
     connect(cbIntegratedTools, SIGNAL(currentIndexChanged(int)), SLOT(sl_integratedToolChanged()));
 
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD + "*", leName);
@@ -295,9 +313,16 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initializePage() {
         leName->setText(initialConfig->name);
         rbIntegratedTool->setChecked(initialConfig->useIntegratedTool);
         leToolPath->setText(QDir::toNativeSeparators(initialConfig->customToolPath));
-        const int index = cbIntegratedTools->findData(initialConfig->integratedToolId);
-        if (-1 != index) {
-            cbIntegratedTools->setCurrentIndex(index);
+        if (AppContext::getExternalToolRegistry()->getById(initialConfig->integratedToolId) == nullptr && rbIntegratedTool->isChecked()) {
+            QObjectScopedPointer<QMessageBox> warningBox(new QMessageBox(
+                QMessageBox::Warning,
+                initialConfig->name,
+                tr("UGENE can't find the tool specified in this element. Please specify another tool."),
+                QMessageBox::Close));
+            warningBox->exec();
+            rbCustomTool->setChecked(true);
+        } else if (!initialConfig->integratedToolId.isEmpty()) { 
+            cbIntegratedTools->setDefaultMenuValue(initialConfig->integratedToolId);
         }
     } else {
         QString name = "Custom Element";
@@ -356,79 +381,6 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::sl_integratedToolChanged
     emit si_integratedToolChanged();
 }
 
-void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::sl_cbIntegratedToolsIndexChanged(int index) {
-    GroupedComboBoxDelegate* cbDelegate = qobject_cast<GroupedComboBoxDelegate*>(cbIntegratedTools->itemDelegate());
-    SAFE_POINT(nullptr != cbDelegate, "GroupedComboBoxDelegate not found", );
-
-    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(cbIntegratedTools->model());
-    SAFE_POINT(nullptr != model, "Can't cast combobox model to a QStandardItemModel", );
-
-    QString data = cbIntegratedTools->itemData(index).toString();
-    if (data == "Show all tools") {
-        model->removeRows(model->rowCount() - 2, 2);
-        addSupportedToolsPopupMenu();
-        cbIntegratedTools->insertSeparator(model->rowCount() + 1);
-        cbDelegate->addUngroupedItem(model, tr("Show customs tools only"), "Show customs tools only");
-        cbIntegratedTools->setCurrentIndex(cbIntegratedTools->findData(firstClickableRowData));
-    } else if (data == "Show customs tools only") {
-        model->removeRows(customTools.size() + 1, model->rowCount() - customTools.size() - 1);
-        cbIntegratedTools->insertSeparator(customTools.size() + 1);
-        cbDelegate->addUngroupedItem(model, tr("Show all tools"), "Show all tools");
-        cbIntegratedTools->setCurrentIndex(cbIntegratedTools->findData(firstClickableRowData));
-    }
-}
-
-void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initExternalTools() {
-    QList<ExternalTool*> tools = AppContext::getExternalToolRegistry()->getAllEntries();
-    excludeNotSuitableTools(tools);
-    separateSupportedAndCustomTools(tools);
-}
-
-void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initPopupMenu() {
-    GroupedComboBoxDelegate* cbDelegate = new GroupedComboBoxDelegate();
-    cbIntegratedTools->setItemDelegate(cbDelegate);
-
-    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(cbIntegratedTools->model());
-    SAFE_POINT(nullptr != model, "Can't cast combobox model to a QStandardItemModel", );
-
-    if (!customTools.isEmpty()) {
-        cbDelegate->addParentItem(model, tr("Custom tools"), false);
-        foreach(ExternalTool * tool, customTools) {
-            cbDelegate->addUngroupedItem(model, tool->getName(), tool->getId());
-        }
-        cbIntegratedTools->insertSeparator(customTools.size() + 1);
-        cbDelegate->addUngroupedItem(model, tr("Show all tools"), "Show all tools");
-        connect(cbIntegratedTools, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_cbIntegratedToolsIndexChanged(int)));
-    } else {
-        addSupportedToolsPopupMenu();
-    }
-    cbIntegratedTools->setCurrentIndex(cbIntegratedTools->findData(firstClickableRowData));
-}
-
-void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::addSupportedToolsPopupMenu() {
-    GroupedComboBoxDelegate* cbDelegate = qobject_cast<GroupedComboBoxDelegate*>(cbIntegratedTools->itemDelegate());
-    SAFE_POINT(nullptr != cbDelegate, "GroupedComboBoxDelegate not found", );
-
-    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(cbIntegratedTools->model());
-    SAFE_POINT(nullptr != model, "Can't cast combobox model to a QStandardItemModel", );
-
-    cbDelegate->addParentItem(model, tr("Supported tools"), false);
-    QList<QString> keys = supportedTools.keys();
-    std::sort(keys.begin(), keys.end(), [](QString& a, QString& b) {return a.compare(b, Qt::CaseInsensitive) < 0; });
-    foreach(const QString & toolKitName, keys) {
-        QList<ExternalTool*> currentToolKitTools = supportedTools.value(toolKitName);
-        if (currentToolKitTools.size() == 1) {
-            ExternalTool* tool = currentToolKitTools.first();
-            cbDelegate->addUngroupedItem(model, tool->getName(), tool->getId());
-        } else {
-            cbDelegate->addParentItem(model, toolKitName, false, false);
-            foreach(ExternalTool * tool, currentToolKitTools) {
-                cbDelegate->addChildItem(model, tool->getName(), tool->getId());
-            }
-        }
-    }
-}
-
 void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::makeUniqueWorkerName(QString& name) {
     const QMap<Descriptor, QList<ActorPrototype *> > groups = Workflow::WorkflowEnv::getProtoRegistry()->getProtos();
     QStringList reservedNames;
@@ -438,66 +390,6 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::makeUniqueWorkerName(QSt
         }
     }
     name = WorkflowUtils::createUniqueString(name, " ", reservedNames);
-}
-
-void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::excludeNotSuitableTools(QList<ExternalTool*>& tools) {
-    foreach(ExternalTool * tool, tools) {
-        CHECK_CONTINUE(tool->isModule() || tool->isRunner());
-
-        tools.removeOne(tool);
-    }
-}
-
-void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::separateSupportedAndCustomTools(const QList<ExternalTool*>& tools) {
-    customTools.clear();
-    supportedTools.clear();
-    QList<ExternalTool*> supportedToolsList;
-    foreach(ExternalTool * tool, tools) {
-        if (tool->isCustom()) {
-            customTools << tool;
-        } else {
-            supportedToolsList << tool;
-        }
-    }
-    makeSupportedToolsMapFromList(supportedToolsList);
-    sortCustomToolsList();
-    sortSupportedToolsMap();
-    initFirstClickableRow();
-}
-
-void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::makeSupportedToolsMapFromList(const QList<ExternalTool*>& tools) {
-    foreach(ExternalTool * tool, tools) {
-        const QString toolKitName = tool->getToolKitName();
-        QList<ExternalTool*>& currentToolKitTools = supportedTools[toolKitName];
-        currentToolKitTools << tool;
-    }
-}
-
-void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::sortCustomToolsList() {
-    std::sort(customTools.begin(), customTools.end(), [](ExternalTool* a, ExternalTool* b) {return a->getName().compare(b->getName(), Qt::CaseInsensitive) < 0; });
-}
-
-void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::sortSupportedToolsMap() {
-    foreach(const QString & toolKitName, supportedTools.keys()) {
-        QList<ExternalTool*> currentToolKitTools = supportedTools.value(toolKitName);
-        if (currentToolKitTools.size() == 1) {
-            supportedTools.insert(currentToolKitTools.first()->getName(), currentToolKitTools);
-        } else {
-            std::sort(currentToolKitTools.begin(), currentToolKitTools.end(), [](ExternalTool* a, ExternalTool* b) {return a->getName().compare(b->getName(), Qt::CaseInsensitive) < 0; });
-            supportedTools.insert(toolKitName, currentToolKitTools);
-        }
-    }
-}
-
-void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initFirstClickableRow() {
-    if (!customTools.isEmpty()) {
-        firstClickableRowData = customTools.first()->getId();
-    } else {
-        QStringList keys = supportedTools.keys();
-        std::sort(keys.begin(), keys.end(), [](QString& a, QString& b) {return a.compare(b, Qt::CaseInsensitive) < 0; });
-        QList<ExternalTool*> tools = supportedTools.value(keys.first());
-        firstClickableRowData = tools.first()->getId();
-    }
 }
 
 /**********************************************/
@@ -590,9 +482,9 @@ char const * const CreateCmdlineBasedWorkerWizardParametersPage::ATTRIBUTES_DATA
 char const * const CreateCmdlineBasedWorkerWizardParametersPage::ATTRIBUTES_IDS_PROPERTY = "attributes-ids-property";
 char const * const CreateCmdlineBasedWorkerWizardParametersPage::ATTRIBUTES_NAMES_PROPERTY = "attributes-names-property";
 
-CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardParametersPage(ExternalProcessConfig *_initialConfig)
+CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardParametersPage(ExternalProcessConfig *_initialConfig, SchemaConfig *_schemaConfig)
     : QWizardPage(nullptr),
-      initialConfig(_initialConfig)
+    initialConfig(_initialConfig)
 {
     setupUi(this);
 
@@ -602,7 +494,7 @@ CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardPara
     connect(pbDelete, SIGNAL(clicked()), SLOT(sl_deleteAttribute()));
     connect(this, SIGNAL(si_attributesChanged()), SIGNAL(completeChanged()));
 
-    model = new CfgExternalToolModelAttributes();
+    model = new CfgExternalToolModelAttributes(_schemaConfig);
     connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(sl_updateAttributes()));
     connect(model, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), SLOT(sl_updateAttributes()));
     connect(model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), SLOT(sl_updateAttributes()));
@@ -837,6 +729,30 @@ void CreateCmdlineBasedWorkerWizardCommandPage::initializePage() {
         teCommand->setText(initialConfig->cmdLine);
     } else {
         QString commandTemplate = "<My tool>";
+        bool isIntegratedTool = field(CreateCmdlineBasedWorkerWizard::USE_INTEGRATED_TOOL_FIELD).toBool();
+        if (!isIntegratedTool) {
+            commandTemplate = "%" + CustomWorkerUtils::TOOL_PATH_VAR_NAME + "%";
+        } else {
+            QString integatedToolId = field(CreateCmdlineBasedWorkerWizard::INTEGRATED_TOOL_ID_FIELD).toString();
+            ExternalTool * tool = AppContext::getExternalToolRegistry()->getById(integatedToolId);
+            if (tool) {
+                QString toolRunnerProgramId = tool->getToolRunnerProgramId();
+                if (!toolRunnerProgramId.isEmpty()) {
+                    ExternalTool* toolRunnerProgram = AppContext::getExternalToolRegistry()->getById(toolRunnerProgramId);
+                    if (nullptr != toolRunnerProgram) {
+                        commandTemplate = "%" + CustomWorkerUtils::getVarName(toolRunnerProgram) + "% ";
+                        foreach(const QString & param, toolRunnerProgram->getRunParameters()) {
+                            commandTemplate += param + " ";
+                        }
+                    } else {
+                        commandTemplate = "";
+                    }
+                } else {
+                    commandTemplate = "";
+                }
+                commandTemplate +=  "%" + CustomWorkerUtils::getVarName(tool) + "%";
+            }
+        }
 
         const QStringList inputsNames = field(CreateCmdlineBasedWorkerWizard::INPUTS_IDS_FIELD).toStringList();
         foreach (const QString &name, inputsNames) {
@@ -916,6 +832,9 @@ CreateCmdlineBasedWorkerWizardElementAppearancePage::CreateCmdlineBasedWorkerWiz
 
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
 
+    new CommandValidator(tePrompter);
+    new CommandValidator(teDescription);
+
     registerField(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_DESCRIPTION_FIELD, tePrompter, "plainText", SIGNAL(textChanged()));
     registerField(CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD, teDescription, "plainText", SIGNAL(textChanged()));
 }
@@ -926,9 +845,9 @@ void CreateCmdlineBasedWorkerWizardElementAppearancePage::initializePage() {
     tePrompter->setPlainText(initialConfig->templateDescription);
 }
 
-/**********************************************/
+/*********************************************/
 /* CreateCmdlineBasedWorkerWizardSummaryPage */
-/**********************************************/
+/*********************************************/
 
 CreateCmdlineBasedWorkerWizardSummaryPage::CreateCmdlineBasedWorkerWizardSummaryPage()
     : QWizardPage(nullptr)
@@ -948,6 +867,173 @@ void CreateCmdlineBasedWorkerWizardSummaryPage::showEvent(QShowEvent * /*event*/
     lblPrompterValue->setText(field(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_DESCRIPTION_FIELD).toString());
     lblDescriptionValue->setText(field(CreateCmdlineBasedWorkerWizard::WORKER_DESCRIPTION_FIELD).toString());
     lblCommandValue->setText(field(CreateCmdlineBasedWorkerWizard::COMMAND_TEMPLATE_FIELD).toString());
+}
+
+
+/******************************/
+/* ExternalToolSelectComboBox */
+/******************************/
+
+const QString ExternalToolSelectComboBox::SHOW_ALL_TOOLS = "SHOW_ALL";
+const QString ExternalToolSelectComboBox::SHOW_CUSTOM_TOOLS = "SHOW_CUSTOM";
+
+ExternalToolSelectComboBox::ExternalToolSelectComboBox(QWidget* parent) 
+    : QComboBox(parent) {
+    initExternalTools();
+    initPopupMenu();
+};
+
+void ExternalToolSelectComboBox::hidePopup() {
+    QString data = model()->data(view()->currentIndex(), Qt::UserRole).toString();
+    if (data == SHOW_ALL_TOOLS || data == SHOW_CUSTOM_TOOLS) {
+        modifyMenuAccordingToData(data);
+        QComboBox::showPopup();
+    } else {
+        QComboBox::hidePopup();
+    }
+}
+
+void ExternalToolSelectComboBox::modifyMenuAccordingToData(const QString& data) {
+    GroupedComboBoxDelegate* cbDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
+    SAFE_POINT(nullptr != cbDelegate, "GroupedComboBoxDelegate not found", );
+
+    QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
+    SAFE_POINT(nullptr != standardModel, "Can't cast combobox model to a QStandardItemModel", );
+
+    if (data == SHOW_ALL_TOOLS) {
+        model()->removeRows(model()->rowCount() - 2, 2);
+        addSupportedToolsPopupMenu();
+        insertSeparator(model()->rowCount() + 1);
+        cbDelegate->addUngroupedItem(standardModel, tr("Show customs tools only"), SHOW_CUSTOM_TOOLS);
+        setCurrentIndex(findData(firstClickableRowData));
+    } else if (data == SHOW_CUSTOM_TOOLS) {
+        model()->removeRows(customTools.size() + 1, model()->rowCount() - customTools.size() - 1);
+        insertSeparator(customTools.size() + 1);
+        cbDelegate->addUngroupedItem(standardModel, tr("Show all tools"), SHOW_ALL_TOOLS);
+        setCurrentIndex(findData(firstClickableRowData));
+    }
+}
+
+void ExternalToolSelectComboBox::addSupportedToolsPopupMenu() {
+    GroupedComboBoxDelegate* cbDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
+    SAFE_POINT(nullptr != cbDelegate, "GroupedComboBoxDelegate not found", );
+
+    QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
+    SAFE_POINT(nullptr != standardModel, "Can't cast combobox model to a QStandardItemModel", );
+
+    cbDelegate->addParentItem(standardModel, tr("Supported tools"), false);
+    QList<QString> keys = supportedTools.keys();
+    std::sort(keys.begin(), keys.end(), [](const QString& a, const QString& b) {return a.compare(b, Qt::CaseInsensitive) < 0; });
+    foreach(const QString & toolKitName, keys) {
+        QList<ExternalTool*> currentToolKitTools = supportedTools.value(toolKitName);
+        if (currentToolKitTools.size() == 1) {
+            ExternalTool* tool = currentToolKitTools.first();
+            cbDelegate->addUngroupedItem(standardModel, tool->getName(), tool->getId());
+        } else {
+            cbDelegate->addParentItem(standardModel, toolKitName, false, false);
+            foreach(ExternalTool * tool, currentToolKitTools) {
+                cbDelegate->addChildItem(standardModel, tool->getName(), tool->getId());
+            }
+        }
+    }
+}
+
+void ExternalToolSelectComboBox::initExternalTools() {
+    QList<ExternalTool*> tools = AppContext::getExternalToolRegistry()->getAllEntries();
+    excludeNotSuitableTools(tools);
+    separateSupportedAndCustomTools(tools);
+}
+
+void ExternalToolSelectComboBox::initPopupMenu() {
+    GroupedComboBoxDelegate* cbDelegate = new GroupedComboBoxDelegate();
+    setItemDelegate(cbDelegate);
+
+    QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
+    SAFE_POINT(nullptr != standardModel, "Can't cast combobox model to a QStandardItemModel", );
+
+    if (!customTools.isEmpty()) {
+        cbDelegate->addParentItem(standardModel, tr("Custom tools"), false);
+        foreach(ExternalTool * tool, customTools) {
+            cbDelegate->addUngroupedItem(standardModel, tool->getName(), tool->getId());
+        }
+        insertSeparator(customTools.size() + 1);
+        cbDelegate->addUngroupedItem(standardModel, tr("Show all tools"), SHOW_ALL_TOOLS);
+    } else {
+        addSupportedToolsPopupMenu();
+    }
+    setCurrentIndex(findData(firstClickableRowData));
+}
+
+void ExternalToolSelectComboBox::excludeNotSuitableTools(QList<ExternalTool*>& tools) {
+    foreach(ExternalTool * tool, tools) {
+        CHECK_CONTINUE(tool->isModule() || tool->isRunner());
+        tools.removeOne(tool);
+    }
+}
+
+void ExternalToolSelectComboBox::separateSupportedAndCustomTools(const QList<ExternalTool*>& tools) {
+    customTools.clear();
+    supportedTools.clear();
+    QList<ExternalTool*> supportedToolsList;
+    foreach(ExternalTool * tool, tools) {
+        if (tool->isCustom()) {
+            customTools << tool;
+        } else {
+            supportedToolsList << tool;
+        }
+    }
+    makeSupportedToolsMapFromList(supportedToolsList);
+    sortCustomToolsList();
+    sortSupportedToolsMap();
+    initFirstClickableRow();
+}
+
+void ExternalToolSelectComboBox::makeSupportedToolsMapFromList(const QList<ExternalTool*>& tools) {
+    foreach(ExternalTool * tool, tools) {
+        const QString toolKitName = tool->getToolKitName();
+        QList<ExternalTool*>& currentToolKitTools = supportedTools[toolKitName];
+        currentToolKitTools << tool;
+    }
+}
+
+void ExternalToolSelectComboBox::sortCustomToolsList() {
+    std::sort(customTools.begin(), customTools.end(), [](ExternalTool* a, ExternalTool* b) {return a->getName().compare(b->getName(), Qt::CaseInsensitive) < 0; });
+}
+
+void ExternalToolSelectComboBox::sortSupportedToolsMap() {
+    QMap<QString, QList<ExternalTool*> > resultMap;
+    foreach(const QString & toolKitName, supportedTools.keys()) {
+        QList<ExternalTool*> currentToolKitTools = supportedTools.value(toolKitName);
+        if (currentToolKitTools.size() == 1) {
+            resultMap.insert(currentToolKitTools.first()->getName(), currentToolKitTools);
+        } else {
+            std::sort(currentToolKitTools.begin(), currentToolKitTools.end(), [](ExternalTool* a, ExternalTool* b) {return a->getName().compare(b->getName(), Qt::CaseInsensitive) < 0; });
+            resultMap.insert(toolKitName, currentToolKitTools);
+        }
+    }
+    supportedTools = resultMap;
+}
+
+void ExternalToolSelectComboBox::initFirstClickableRow() {
+    if (!customTools.isEmpty()) {
+        firstClickableRowData = customTools.first()->getId();
+    } else {
+        QStringList keys = supportedTools.keys();
+        std::sort(keys.begin(), keys.end(), [](const QString& a, const QString& b) {return a.compare(b, Qt::CaseInsensitive) < 0; });
+        QList<ExternalTool*> tools = supportedTools.value(keys.first());
+        firstClickableRowData = tools.first()->getId();
+    }
+}
+
+void ExternalToolSelectComboBox::setDefaultMenuValue(const QString& defaultValue) {
+    int index = findData(defaultValue);
+    if (index > -1) {
+        setCurrentIndex(index);
+    } else {
+        modifyMenuAccordingToData(SHOW_ALL_TOOLS);
+        index = findData(defaultValue);
+        setCurrentIndex(index != -1 ? index : 1);
+    }
 }
 
 }   // namespace U2

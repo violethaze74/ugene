@@ -21,6 +21,7 @@
 
 #include <QDateTime>
 #include <QFile>
+#include <QUuid>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -31,6 +32,7 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
@@ -53,6 +55,8 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "CustomExternalToolLogParser.h"
+#include "CustomExternalToolRunTaskHelper.h"
 #include "ExternalProcessWorker.h"
 #include "util/CustomWorkerUtils.h"
 
@@ -145,7 +149,7 @@ namespace {
         if (!dir.exists()) {
             dir.mkpath(path);
         }
-        url = path + "/tmp" + GUrlUtils::fixFileName(name) + QString::number(QDateTime::currentDateTime().toTime_t()) +  "." + extention;
+        url = path + "/tmp" + GUrlUtils::fixFileName(name + "_" + QUuid::createUuid().toString()) +  "." + extention;
         return url;
     }
 
@@ -223,23 +227,28 @@ ExternalProcessWorker::ExternalProcessWorker(Actor *a)
     cfg = reg->getConfigById(actor->getProto()->getId());
 }
 
-void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString) {
-    CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(execString);
+void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString,
+                                                        ExternalProcessConfig *cfg) {
+    CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(execString, cfg);
 }
 
 void ExternalProcessWorker::applyAttributes(QString &execString) {
     foreach(Attribute *a, actor->getAttributes()) {
-        QRegularExpression regex = QRegularExpression("(([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$"
-                                                      + a->getDisplayName()
-                                                      + "(\\W|$)");
-        if (execString.indexOf(regex) >= 0) {
-            //set parameters in command line with attributes values
-            QString value = getValue<QString>(a->getId());
-            execString.replace(regex, "\\1" + value + "\\6");
+        QString attrValue = a->getAttributePureValue().toString();
+        DataTypePtr attrType = a->getAttributeType();
+        if (attrType == BaseTypes::STRING_TYPE()) {
+            attrValue = GUrlUtils::getQuotedString(attrValue);
+        }
+        bool wasReplaced = applyParamsToExecString(execString,
+                                                   a->getId(),
+                                                   attrValue);
 
+        if (wasReplaced) {
             foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
-                if (attributeConfig.attributeId == a->getId() && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
-                    urlsForDashboard.insert(value, !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
+                if (attributeConfig.attributeId == a->getId()
+                        && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
+                    urlsForDashboard.insert(attrValue,
+                                            !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
                     break;
                 }
             }
@@ -247,25 +256,47 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
     }
 }
 
+bool ExternalProcessWorker::applyParamsToExecString(QString &execString, QString parName, QString parValue) {
+    QRegularExpression regex = QRegularExpression(QString("((([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$)")
+                                                  + QString("(") + parName + QString(")")
+                                                  + (QString("(?=([^") +
+                                                     WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE +
+                                                     QString("]|$))")));
+    bool wasReplaced = false;
+
+    // Replace the params one-by-one
+    QRegularExpressionMatchIterator iter = regex.globalMatch(execString);
+    while (iter.hasNext()) {
+        QRegularExpressionMatch match = iter.next();
+        if (match.hasMatch()) {
+            QString m1 = match.captured(1);
+            int start = match.capturedStart(0);
+            int len = match.capturedLength();
+            execString.replace(start + m1.length() - 1, len - m1.length() + 1, parValue);
+            wasReplaced = true;
+
+            // We need to re-iterate as the string was changed
+            iter = regex.globalMatch(execString);
+        }
+    }
+
+    return wasReplaced;
+}
+
 void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
     // Replace escaped symbols
     // Example:
-    // "%UGENE_JAVA% \\%UGENE_JAVA% -version \\\$\%\\\\\%\\$"   ─┐
+    // "%USUPP_JAVA% \\%USUPP_JAVA% -version \\\$\%\\\\\%\\$"   ─┐
     // "/usr/bin/java \/usr/bin/java -version $%\\%\$"         <─┘
     execString.replace(QRegularExpression("\\\\([\\\\\\%\\$])"), "\\1");
 }
 
 QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
     QStringList urls;
-    QRegularExpression regex = QRegularExpression(QString("((\\\\\\\\)+)\\$%1([^%2]|$)|(^)\\$%1([^%2]|$)|([^\\\\])\\$%1([^%2]|$)")
-                                                  .arg(dataCfg.attributeId)
-                                                  .arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
-    int ind = execString.indexOf(regex);
-    CHECK(-1 != ind, urls);
-
     QString paramValue;
+
     if (dataCfg.isStringValue()) {
-        paramValue = toStringValue(data, os);
+        paramValue = GUrlUtils::getQuotedString(toStringValue(data, os));
         CHECK_OP(os, urls);
     } else {
         QScopedPointer<Document> d(createDocument(dataCfg, os));
@@ -278,30 +309,26 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
         f->storeDocument(d.data(), os);
         CHECK_OP(os, urls);
         urls << d->getURLString();
-        paramValue = "\"" + d->getURLString() + "\"";
+        paramValue = GUrlUtils::getQuotedString(d->getURLString());
     }
 
-    execString.replace(regex, "\\1" + paramValue);
+    applyParamsToExecString(execString, dataCfg.attributeId, paramValue);
     return urls;
 }
 
 QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os) {
-    QRegularExpression regex = QRegularExpression(QString("((\\\\\\\\)+)\\$%1([^%2]|$)|(^)\\$%1([^%2]|$)|([^\\\\])\\$%1([^%2]|$)")
-                                                  .arg(dataCfg.attributeId)
-                                                  .arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
-    int ind = execString.indexOf(regex);
-    CHECK(-1 != ind, "");
-
     QString extension;
+
     if (dataCfg.isFileUrl()) {
         extension = "tmp";
     } else {
         DocumentFormat *f = getFormat(dataCfg, os);
-        CHECK_OP(os, "");
+        CHECK_OP(os, "")
         extension = f->getSupportedDocumentFileExtensions().first();
     }
     QString url = generateAndCreateURL(extension, dataCfg.attrName);
-    execString.replace(regex, "\\1\"" + url + "\"");
+    bool replaced = applyParamsToExecString(execString, dataCfg.attributeId, GUrlUtils::getQuotedString(url));
+    CHECK(replaced, "")
 
     return url;
 }
@@ -346,8 +373,19 @@ Task * ExternalProcessWorker::tick() {
     //     4) this function: this call replaces escaped symbols: '\$', '\%', '\\' by the '$', '%', '\'
     applyEscapedSymbols(execString);
 
-    LaunchExternalToolTask *task = new LaunchExternalToolTask(execString, outputUrls);
+    const QString workingDirectory = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+    QString externalProcessFolder = GUrlUtils::fixFileName(cfg->name).replace(' ', '_');
+    U2OpStatusImpl os;
+    const QString externalProcessWorkingDir = GUrlUtils::createDirectory(workingDirectory + externalProcessFolder, "_", os);
+    CHECK_OP(os, new FailTask(os.getError()));
+
+    LaunchExternalToolTask *task = new LaunchExternalToolTask(execString, externalProcessWorkingDir, outputUrls);
+    QList<ExternalToolListener*> listeners(createLogListeners());
+    task->addListeners(listeners);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinishied()));
+    if (listeners[0] != nullptr) {
+        listeners[0]->setToolName(cfg->name);
+    }
     return task;
 }
 
@@ -370,6 +408,10 @@ bool ExternalProcessWorker::finishWorkIfInputEnded(QString &error) {
         return true;
     case NOT_ALL_INPUTS_HAVE_MESSAGE:
         return false;
+    default:
+        error = tr("Unexpected result");
+        finish();
+        return true;
     }
 }
 
@@ -563,7 +605,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
 
 void ExternalProcessWorker::init() {
     commandLine = cfg->cmdLine;
-    applySpecialInternalEnvvars(commandLine);
+    applySpecialInternalEnvvars(commandLine, cfg);
     applyAttributes(commandLine);
 
     output = ports.value(OUT_PORT_ID);
@@ -633,8 +675,8 @@ void ExternalProcessWorker::cleanup() {
 /************************************************************************/
 /* LaunchExternalToolTask */
 /************************************************************************/
-LaunchExternalToolTask::LaunchExternalToolTask(const QString &execString, const QMap<QString, DataConfig> &outputUrls)
-: Task(tr("Launch external process task"), TaskFlag_None), outputUrls(outputUrls), execString(execString)
+LaunchExternalToolTask::LaunchExternalToolTask(const QString &_execString, const QString& _workingDir, const QMap<QString, DataConfig> &_outputUrls)
+: Task(tr("Launch external process task"), TaskFlag_None), execString(_execString), workingDir(_workingDir), outputUrls(_outputUrls)
 {
 
 }
@@ -653,6 +695,7 @@ LaunchExternalToolTask::~LaunchExternalToolTask() {
 void LaunchExternalToolTask::run() {
     GCOUNTER(cvar, tvar, "A task for an element with external tool is launched");
     QProcess *externalProcess = new QProcess();
+    externalProcess->setWorkingDirectory(workingDir);
     if(execString.contains(">")) {
         QString output = execString.split(">").last();
         output = output.trimmed();
@@ -662,32 +705,52 @@ void LaunchExternalToolTask::run() {
         execString = execString.split(">").first();
         externalProcess->setStandardOutputFile(output);
     }
-
+    QScopedPointer<CustomExternalToolLogParser> logParser(new CustomExternalToolLogParser());
+    QScopedPointer<ExternalToolRunTaskHelper> helper(new CustomExternalToolRunTaskHelper(externalProcess, logParser.data(), stateInfo));
+    CHECK(listeners.size() > 0, );
+    helper->addOutputListener(listeners[0]);
     QStringList execStringArgs = ExternalToolSupportUtils::splitCmdLineArguments(execString);
     QString execStringProg = execStringArgs.takeAt(0);
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     externalProcess->setProcessEnvironment(env);
     taskLog.details(tr("Running external process: %1").arg(execString));
-
     bool startOk = WorkflowUtils::startExternalProcess(externalProcess, execStringProg, execStringArgs);
 
     if(!startOk) {
         stateInfo.setError(tr("Can't launch %1").arg(execString));
         return;
     }
-
+    listeners[0]->addNewLogMessage(execString, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     while(!externalProcess->waitForFinished(1000)) {
         if(isCanceled()) {
             CmdlineTaskRunner::killProcessTree(externalProcess);
         }
     }
+
+    QProcess::ExitStatus status = externalProcess->exitStatus();
+    int exitCode = externalProcess->exitCode();
+    if (status == QProcess::CrashExit && !hasError()) {
+        setError(tr("External process %1 exited with the following error: %2 (Code: %3)")
+                    .arg(execString)
+                    .arg(externalProcess->errorString())
+                    .arg(exitCode));
+    } else if (status == QProcess::NormalExit && exitCode != EXIT_SUCCESS && !hasError()) {
+        setError(tr("External process %1 exited with code %2").arg(execString).arg(exitCode) );
+    } else if (status == QProcess::NormalExit && exitCode == EXIT_SUCCESS && !hasError()) {
+        algoLog.details(tr("External process \"%1\" finished successfully").arg(execString));
+    }
+
 }
 
 QMap<QString, DataConfig> LaunchExternalToolTask::takeOutputUrls() {
     QMap<QString, DataConfig> result = outputUrls;
     outputUrls.clear();
     return result;
+}
+
+void LaunchExternalToolTask::addListeners(const QList<ExternalToolListener*>& listenersToAdd) {
+    listeners.append(listenersToAdd);
 }
 
 /************************************************************************/

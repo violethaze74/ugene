@@ -1053,8 +1053,8 @@ void AnnotatedDNAView::cancelAutoAnnotationUpdates(AutoAnnotationObject* aa, boo
                 aaUpdateTask->cancel();
                 if(removeTaskExist){
                     *removeTaskExist = false;
-                    foreach(Task* subTask, aaUpdateTask->getSubtasks()){
-                        RemoveAnnotationsTask* rTask = qobject_cast<RemoveAnnotationsTask*> (subTask);
+                    foreach(const QPointer<Task> &subTask, aaUpdateTask->getSubtasks()){
+                        RemoveAnnotationsTask* rTask = qobject_cast<RemoveAnnotationsTask*> (subTask.data());
                         if(rTask && !rTask->isFinished()){*removeTaskExist = true;}
                     }
                 }

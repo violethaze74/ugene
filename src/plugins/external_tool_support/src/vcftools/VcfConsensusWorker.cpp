@@ -157,8 +157,8 @@ void VcfConsensusWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attrs);
     proto->setPrompter(new VcfConsensusPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->addExternalTool(ET_VCF_CONSENSUS);
-    proto->addExternalTool(ET_TABIX);
+    proto->addExternalTool(VcfConsensusSupport::ET_VCF_CONSENSUS_ID);
+    proto->addExternalTool(TabixSupport::ET_TABIX_ID);
 
 
     SAFE_POINT(WorkflowEnv::getProtoRegistry() != NULL, "Workflow proto registry is NULL", );

@@ -32,6 +32,7 @@
 
 namespace U2 {
 using namespace Workflow;
+class ExternalProcessConfig;
 class NameFilterLayout;
 class WorkflowView;
 class WorkflowScene;
@@ -44,7 +45,7 @@ class WorkflowPalette : public QWidget, Ui_PaletteWidget
 public:
     static const QString MIME_TYPE;
 
-    WorkflowPalette(ActorPrototypeRegistry* reg, QWidget *parent = 0);
+    WorkflowPalette(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget *parent = 0);
     QMenu * createMenu(const QString &name);
     void createMenu(QMenu *menu);
 
@@ -73,7 +74,7 @@ class WorkflowPaletteElements : public QTreeWidget {
 
 public:
 
-    WorkflowPaletteElements(ActorPrototypeRegistry* reg, QWidget *parent = 0);
+    WorkflowPaletteElements(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget *parent = 0);
     QMenu * createMenu(const QString &name);
     void createMenu(QMenu *menu);
 
@@ -95,7 +96,8 @@ signals:
 
 protected:
     void contextMenuEvent(QContextMenuEvent *e);
-    void mouseMoveEvent ( QMouseEvent * event );
+
+    void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent ( QMouseEvent * event );
     void leaveEvent ( QEvent * event );
 
@@ -115,6 +117,10 @@ private:
     void sortTree();
     QVariant changeState(const QVariant& v);
     void removePrototype(Workflow::ActorPrototype *proto);
+    bool editPrototypeWithoutElementRemoving(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig);
+    void replaceConfigFiles(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig);
+    void replaceOldConfigWithNewConfig(ExternalProcessConfig* oldConfig, ExternalProcessConfig* newConfig);
+    bool isExclusivePrototypeUsage(ActorPrototype* proto) const;
 
 private:
     QMap<QString,QList<QAction*> > categoryMap;
@@ -127,6 +133,7 @@ private:
 
     ActorPrototypeRegistry *protoRegistry;
     QVariantMap expandState;
+    SchemaConfig* schemaConfig;
 
     friend class PaletteDelegate;
 };

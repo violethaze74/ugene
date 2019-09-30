@@ -293,7 +293,7 @@ void DiamondClassifyWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new DiamondClassifyPrompter(NULL));
-    proto->addExternalTool(DiamondSupport::TOOL_NAME);
+    proto->addExternalTool(DiamondSupport::TOOL_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

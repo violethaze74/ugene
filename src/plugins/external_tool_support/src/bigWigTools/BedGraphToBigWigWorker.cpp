@@ -90,7 +90,7 @@ void BedGraphToBigWigFactory::init() {
     U2DataPath* dataPath = NULL;
     U2DataPathRegistry* dpr =  AppContext::getDataPathRegistry();
     if (dpr){
-        U2DataPath* dp = dpr->getDataPathByName(GENOMES_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(BigWigSupport::GENOMES_DATA_NAME);
         if (dp && dp->isValid()){
             dataPath = dp;
         }
@@ -192,7 +192,7 @@ void BedGraphToBigWigFactory::init() {
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new BedGraphToBigWigPrompter());
-    proto->addExternalTool(ET_BIGWIG);
+    proto->addExternalTool(BigWigSupport::ET_BIGWIG_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_CONVERTERS(), proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

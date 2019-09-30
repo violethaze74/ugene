@@ -31,8 +31,8 @@ class MSAEditor;
 class AlignMsaAction : public ExternalToolSupportAction {
     Q_OBJECT
 public:
-    AlignMsaAction(QObject *parent, const QString &toolName, GObjectView *view, const QString &text, int order) :
-        ExternalToolSupportAction(parent, view, text, order, QStringList(toolName)) {}
+    AlignMsaAction(QObject *parent, const QString &toolId, GObjectView *view, const QString &text, int order) :
+        ExternalToolSupportAction(parent, view, text, order, QStringList(toolId)) {}
 
     MSAEditor* getMsaEditor() const;
 

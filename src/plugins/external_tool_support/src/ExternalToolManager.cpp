@@ -66,21 +66,6 @@ void ExternalToolManagerImpl::innerStart() {
     searchList.clear();
     toolStates.clear();
 
-    // Read settings
-    ExternalToolSupportSettings::getExternalTools();
-
-    QList<ExternalTool*> toolsList = etRegistry->getAllEntries();
-    StrStrMap toolPaths;
-    foreach(ExternalTool* tool, toolsList) {
-        SAFE_POINT(tool, "Tool is NULL", );
-        QString toolPath = addTool(tool);
-        if (!toolPath.isEmpty()) {
-            toolPaths.insert(tool->getName(), toolPath);
-        }
-    }
-
-    validateTools(toolPaths);
-
     loadCustomTools();
 }
 
@@ -105,25 +90,25 @@ void ExternalToolManagerImpl::stop() {
     disconnect(etRegistry, SIGNAL(si_toolIsAboutToBeRemoved(const QString &)), this, SLOT(sl_customToolRemoved(const QString &)));
 }
 
-void ExternalToolManagerImpl::check(const QString& toolName, const QString& toolPath, ExternalToolValidationListener* listener) {
+void ExternalToolManagerImpl::check(const QString& toolId, const QString& toolPath, ExternalToolValidationListener* listener) {
     StrStrMap toolPaths;
-    toolPaths.insert(toolName, toolPath);
-    check(QStringList() << toolName, toolPaths, listener);
+    toolPaths.insert(toolId, toolPath);
+    check(QStringList() << toolId, toolPaths, listener);
 }
 
-void ExternalToolManagerImpl::check(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
+void ExternalToolManagerImpl::check(const QStringList& toolIds, const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
     SAFE_POINT(etRegistry, "The external tool registry is NULL", );
     SAFE_POINT(listener, "Listener is NULL", );
 
     QList<Task*> taskList;
 
-    foreach(const QString& toolName, toolNames) {
-        QString toolPath = toolPaths.value(toolName);
-        if (dependenciesAreOk(toolName) && !toolPath.isEmpty()) {
-            ExternalToolValidateTask* task = new ExternalToolJustValidateTask(toolName, toolPath);
+    foreach(const QString& toolId, toolIds) {
+        QString toolPath = toolPaths.value(toolId);
+        if (dependenciesAreOk(toolId) && !toolPath.isEmpty()) {
+            ExternalToolValidateTask* task = new ExternalToolJustValidateTask(toolId, AppContext::getExternalToolRegistry()->getToolNameById(toolId), toolPath);
             taskList << task;
         } else {
-            listener->setToolState(toolName, false);
+            listener->setToolState(toolId, false);
         }
     }
 
@@ -140,31 +125,31 @@ void ExternalToolManagerImpl::check(const QStringList& toolNames, const StrStrMa
     }
 }
 
-void ExternalToolManagerImpl::validate(const QString& toolName, ExternalToolValidationListener* listener) {
-    validate(QStringList() << toolName, listener);
+void ExternalToolManagerImpl::validate(const QString& toolId, ExternalToolValidationListener* listener) {
+    validate(QStringList() << toolId, listener);
 }
 
-void ExternalToolManagerImpl::validate(const QString& toolName, const QString& path, ExternalToolValidationListener* listener) {
+void ExternalToolManagerImpl::validate(const QString& toolId, const QString& path, ExternalToolValidationListener* listener) {
     StrStrMap toolPaths;
-    toolPaths.insert(toolName, path);
-    validate(QStringList() << toolName, toolPaths, listener);
+    toolPaths.insert(toolId, path);
+    validate(QStringList() << toolId, toolPaths, listener);
 }
 
-void ExternalToolManagerImpl::validate(const QStringList& toolNames, ExternalToolValidationListener* listener) {
-    validate(toolNames, StrStrMap(), listener);
+void ExternalToolManagerImpl::validate(const QStringList& toolIds, ExternalToolValidationListener* listener) {
+    validate(toolIds, StrStrMap(), listener);
 }
 
-void ExternalToolManagerImpl::validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
+void ExternalToolManagerImpl::validate(const QStringList& toolIds, const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
     SAFE_POINT(etRegistry, "The external tool registry is NULL", );
 
-    foreach(const QString& toolName, toolNames) {
-        etRegistry->getByName(toolName)->setAdditionalErrorMessage(QString());
-        if (dependenciesAreOk(toolName)) {
-            validateList << toolName;
+    foreach(const QString& toolId, toolIds) {
+        etRegistry->getById(toolId)->setAdditionalErrorMessage(QString());
+        if (dependenciesAreOk(toolId)) {
+            validateList << toolId;
         } else {
-            toolStates.insert(toolName, NotValidByDependency);
-            if (toolPaths.contains(toolName)) {
-                setToolPath(toolName, toolPaths.value(toolName));
+            toolStates.insert(toolId, NotValidByDependency);
+            if (toolPaths.contains(toolId)) {
+                setToolPath(toolId, toolPaths.value(toolId));
             }
         }
     }
@@ -176,14 +161,14 @@ void ExternalToolManagerImpl::validate(const QStringList& toolNames, const StrSt
     validateTools(toolPaths, listener);
 }
 
-bool ExternalToolManagerImpl::isValid(const QString& toolName) const {
+bool ExternalToolManagerImpl::isValid(const QString& toolId) const {
     SAFE_POINT(etRegistry, "The external tool registry is NULL", false);
 
-    return (Valid == toolStates.value(toolName, NotDefined));
+    return (Valid == toolStates.value(toolId, NotDefined));
 }
 
-ExternalToolManager::ExternalToolState ExternalToolManagerImpl::getToolState(const QString& toolName) const {
-    return toolStates.value(toolName, NotDefined);
+ExternalToolManager::ExternalToolState ExternalToolManagerImpl::getToolState(const QString& toolId) const {
+    return toolStates.value(toolId, NotDefined);
 }
 
 QString ExternalToolManagerImpl::addTool(ExternalTool* tool) {
@@ -191,9 +176,9 @@ QString ExternalToolManagerImpl::addTool(ExternalTool* tool) {
     QString toolPath;
 
     if (tool->isValid()) {
-        toolStates.insert(tool->getName(), Valid);
+        toolStates.insert(tool->getId(), Valid);
     } else {
-        toolStates.insert(tool->getName(), NotDefined);
+        toolStates.insert(tool->getId(), NotDefined);
     }
 
     connect(tool,
@@ -203,27 +188,30 @@ QString ExternalToolManagerImpl::addTool(ExternalTool* tool) {
     QStringList toolDependencies = tool->getDependencies();
     if (!toolDependencies.isEmpty()) {
         foreach(const QString& dependency, toolDependencies) {
-            dependencies.insertMulti(dependency, tool->getName());
+            dependencies.insertMulti(dependency, tool->getId());
         }
 
-        if (dependenciesAreOk(tool->getName()) && !tool->isValid()) {
+        if (dependenciesAreOk(tool->getId()) && !tool->isValid()) {
             if (tool->isModule()) {
-                QString masterName = tool->getDependencies().first();
-                ExternalTool* masterTool = etRegistry->getByName(masterName);
-                SAFE_POINT(masterTool, QString("An external tool '%1' isn't found in the registry").arg(masterName), "");
+                QString masterId = tool->getDependencies().first();
+                ExternalTool* masterTool = etRegistry->getById(masterId);
+                SAFE_POINT(masterTool, QString("An external tool '%1' isn't found in the registry").arg(masterId), "");
 
                 toolPath = masterTool->getPath();
+            } else {
+                toolPath = tool->getPath();
             }
-            validateList << tool->getName();
+            validateList << tool->getId();
         }
     } else {
         if (!tool->isValid()) {
-            validateList << tool->getName();
+            validateList << tool->getId();
+            toolPath = tool->getPath();
         }
     }
 
-    if (!validateList.contains(tool->getName()) && !tool->isModule() && !tool->isValid()) {
-        searchList << tool->getName();
+    if (!validateList.contains(tool->getId()) && !tool->isModule() && !tool->isValid()) {
+        searchList << tool->getId();
     }
 
     return toolPath;
@@ -238,12 +226,11 @@ void ExternalToolManagerImpl::sl_checkTaskStateChanged() {
         if (listener) {
             listeners.remove(masterTask);
 
-            QList<Task*> subTasks = masterTask->getSubtasks();
-            foreach(Task* subTask, subTasks) {
-                ExternalToolValidateTask* task = qobject_cast<ExternalToolValidateTask*>(subTask);
+            foreach(const QPointer<Task> &subTask, masterTask->getSubtasks()) {
+                ExternalToolValidateTask* task = qobject_cast<ExternalToolValidateTask*>(subTask.data());
                 SAFE_POINT(task, "Unexpected task", );
 
-                listener->setToolState(task->getToolName(), task->isValidTool());
+                listener->setToolState(task->getToolId(), task->isValidTool());
             }
             listener->validationFinished();
         }
@@ -257,20 +244,20 @@ void ExternalToolManagerImpl::sl_validationTaskStateChanged() {
 
     if (task->isFinished()) {
         if (task->isValidTool()) {
-            toolStates.insert(task->getToolName(), Valid);
+            toolStates.insert(task->getToolId(), Valid);
         } else {
-            toolStates.insert(task->getToolName(), NotValid);
+            toolStates.insert(task->getToolId(), NotValid);
         }
 
-        ExternalTool* tool = etRegistry->getByName(task->getToolName());
+        ExternalTool* tool = etRegistry->getById(task->getToolId());
         SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(task->getToolName()), );
         if (tool->isModule()) {
             QStringList toolDependencies = tool->getDependencies();
             SAFE_POINT(!toolDependencies.isEmpty(), QString("Tool's dependencies list is unexpectedly empty: "
-                "a master tool for the module '%1' is not defined").arg(tool->getName()), );
-            QString masterName = toolDependencies.first();
-            ExternalTool* masterTool = etRegistry->getByName(masterName);
-            SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(masterName), );
+                "a master tool for the module '%1' is not defined").arg(tool->getId()), );
+            QString masterId = toolDependencies.first();
+            ExternalTool* masterTool = etRegistry->getById(masterId);
+            SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(masterId), );
             SAFE_POINT(masterTool->getPath() == task->getToolPath(), "Module tool should have the same path as it's master tool", );
         }
 
@@ -293,10 +280,10 @@ void ExternalToolManagerImpl::sl_searchTaskStateChanged() {
     if (task->isFinished()) {
         QStringList toolPaths = task->getPaths();
         if (!toolPaths.isEmpty()) {
-            setToolPath(task->getToolName(), toolPaths.first());
-            toolStates.insert(task->getToolName(), dependenciesAreOk(task->getToolName()) ? NotValidByDependency : NotValid);
+            setToolPath(task->getToolId(), toolPaths.first());
+            toolStates.insert(task->getToolId(), dependenciesAreOk(task->getToolId()) ? NotValidByDependency : NotValid);
         } else {
-            toolStates.insert(task->getToolName(), NotValid);
+            toolStates.insert(task->getToolId(), NotValid);
         }
     }
 
@@ -309,29 +296,29 @@ void ExternalToolManagerImpl::sl_toolValidationStatusChanged(bool isValid) {
     SAFE_POINT(tool, "Unexpected message sender", );
 
     if (isValid) {
-        toolStates.insert(tool->getName(), Valid);
+        toolStates.insert(tool->getId(), Valid);
     } else {
-        toolStates.insert(tool->getName(), NotValid);
+        toolStates.insert(tool->getId(), NotValid);
     }
 
     StrStrMap toolPaths;
-    foreach(const QString& vassalName, dependencies.values(tool->getName())) {
-        ExternalTool* vassalTool = etRegistry->getByName(vassalName);
-        SAFE_POINT(vassalTool, QString("An external tool '%1' isn't found in the registry").arg(vassalName), );
+    foreach(const QString& vassalId, dependencies.values(tool->getId())) {
+        ExternalTool* vassalTool = etRegistry->getById(vassalId);
+        SAFE_POINT(vassalTool, QString("An external tool '%1' isn't found in the registry").arg(vassalId), );
 
         if (vassalTool->isModule()) {
-            toolPaths.insert(vassalName, tool->getPath());
-            setToolPath(vassalName, tool->getPath());
+            toolPaths.insert(vassalId, tool->getPath());
+            setToolPath(vassalId, tool->getPath());
         }
 
         if (isValid &&
-            dependenciesAreOk(vassalName) &&
-            ValidationIsInProcess != toolStates.value(vassalName, NotDefined)) {
-            validateList << vassalName;
-            searchList.removeAll(vassalName);
-        } else if (ValidationIsInProcess != toolStates.value(vassalName, NotDefined)) {
+            dependenciesAreOk(vassalId) &&
+            ValidationIsInProcess != toolStates.value(vassalId, NotDefined)) {
+            validateList << vassalId;
+            searchList.removeAll(vassalId);
+        } else if (ValidationIsInProcess != toolStates.value(vassalId, NotDefined)) {
             vassalTool->setValid(false);
-            toolStates.insert(vassalName, NotValidByDependency);
+            toolStates.insert(vassalId, NotValidByDependency);
         }
     }
 
@@ -345,13 +332,16 @@ void ExternalToolManagerImpl::sl_pluginsLoaded() {
 void ExternalToolManagerImpl::sl_customToolsLoaded(Task *task) {
     LoadCustomExternalToolsTask *loadTask = qobject_cast<LoadCustomExternalToolsTask *>(task);
     SAFE_POINT(nullptr != loadTask, "Unexpected task, can't cast it to LoadCustomExternalToolsTask *", );
-    const QList<CustomExternalTool *> toolsList = loadTask->getTools();
+
+    ExternalToolSupportSettings::loadExternalTools();
+
+    QList<ExternalTool*> toolsList = etRegistry->getAllEntries();
     StrStrMap toolPaths;
-    foreach(CustomExternalTool* tool, toolsList) {
-        SAFE_POINT(nullptr != tool, "Tool is nullptr", );
-        const QString toolPath = addTool(tool);
+    foreach(ExternalTool * tool, toolsList) {
+        SAFE_POINT(tool, "Tool is NULL", );
+        QString toolPath = addTool(tool);
         if (!toolPath.isEmpty()) {
-            toolPaths.insert(tool->getName(), toolPath);
+            toolPaths.insert(tool->getId(), toolPath);
         }
     }
 
@@ -360,13 +350,13 @@ void ExternalToolManagerImpl::sl_customToolsLoaded(Task *task) {
 
 void ExternalToolManagerImpl::sl_customToolImported(const QString &toolId) {
     SAFE_POINT(nullptr != etRegistry, "The external tool registry is nullptr", );
-    ExternalTool *tool = etRegistry->getByName(toolId);
+    ExternalTool *tool = etRegistry->getById(toolId);
     SAFE_POINT(nullptr != tool, "Tool is nullptr", );
 
     StrStrMap toolPaths;
     const QString toolPath = addTool(tool);
     if (!toolPath.isEmpty()) {
-        toolPaths.insert(tool->getName(), toolPath);
+        toolPaths.insert(tool->getId(), toolPath);
     }
 
     validateTools(toolPaths);
@@ -383,40 +373,45 @@ void ExternalToolManagerImpl::sl_customToolRemoved(const QString &toolId) {
     }
 }
 
-bool ExternalToolManagerImpl::dependenciesAreOk(const QString& toolName) {
+bool ExternalToolManagerImpl::dependenciesAreOk(const QString& toolId) {
     bool result = true;
-    foreach(const QString& masterName, dependencies.keys(toolName)) {
-        result &= (Valid == toolStates.value(masterName, NotDefined));
+    QStringList dependencyList = dependencies.keys(toolId);
+    foreach(const QString& masterId, dependencyList) {
+        CHECK_OPERATIONS(toolStates.keys().contains(masterId),
+                         coreLog.details(tr("A dependency tool isn't represented in the general tool list. Skip dependency \"%1\"").arg(masterId)),
+                         continue);
+
+        result &= (Valid == toolStates.value(masterId, NotDefined));
     }
     return result;
 }
 
 void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
     QList<Task*> taskList;
-    foreach(QString toolName, validateList) {
-        validateList.removeAll(toolName);
-        toolStates.insert(toolName, ValidationIsInProcess);
+    foreach(QString toolId, validateList) {
+        validateList.removeAll(toolId);
+        toolStates.insert(toolId, ValidationIsInProcess);
 
         QString toolPath;
-        bool pathSpecified = toolPaths.contains(toolName);
+        bool pathSpecified = toolPaths.contains(toolId);
         if (pathSpecified) {
-            toolPath = toolPaths.value(toolName);
+            toolPath = toolPaths.value(toolId);
             if (toolPath.isEmpty()) {
-                toolStates.insert(toolName, NotValid);
-                setToolPath(toolName, toolPath);
+                toolStates.insert(toolId, NotValid);
+                setToolPath(toolId, toolPath);
                 if (listener) {
-                    listener->setToolState(toolName, false);
+                    listener->setToolState(toolId, false);
                 }
-                setToolValid(toolName, false);
+                setToolValid(toolId, false);
                 continue;
             }
         }
 
         ExternalToolValidateTask* task;
         if (pathSpecified) {
-            task = new ExternalToolJustValidateTask(toolName, toolPath);
+            task = new ExternalToolJustValidateTask(toolId, AppContext::getExternalToolRegistry()->getToolNameById(toolId), toolPath);
         } else {
-            task = new ExternalToolSearchAndValidateTask(toolName);
+            task = new ExternalToolSearchAndValidateTask(toolId, AppContext::getExternalToolRegistry()->getToolNameById(toolId));
         }
         connect(task,
             SIGNAL(si_stateChanged()),
@@ -452,10 +447,10 @@ void ExternalToolManagerImpl::loadCustomTools() {
 void ExternalToolManagerImpl::searchTools() {
     QList<Task*> taskList;
 
-    foreach(const QString& toolName, searchList) {
-        searchList.removeAll(toolName);
-        toolStates.insert(toolName, SearchingIsInProcess);
-        ExternalToolSearchTask* task = new ExternalToolSearchTask(toolName);
+    foreach(const QString& toolId, searchList) {
+        searchList.removeAll(toolId);
+        toolStates.insert(toolId, SearchingIsInProcess);
+        ExternalToolSearchTask* task = new ExternalToolSearchTask(toolId);
         connect(task,
             SIGNAL(si_stateChanged()),
             SLOT(sl_searchTaskStateChanged()));
@@ -472,17 +467,17 @@ void ExternalToolManagerImpl::searchTools() {
     checkStartupTasksState();
 }
 
-void ExternalToolManagerImpl::setToolPath(const QString& toolName, const QString& toolPath) {
+void ExternalToolManagerImpl::setToolPath(const QString& toolId, const QString& toolPath) {
     SAFE_POINT(etRegistry, "The external tool registry is NULL", );
-    ExternalTool* tool = etRegistry->getByName(toolName);
-    SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(toolName), );
+    ExternalTool* tool = etRegistry->getById(toolId);
+    SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(toolId), );
     tool->setPath(toolPath);
 }
 
-void ExternalToolManagerImpl::setToolValid(const QString& toolName, bool isValid) {
+void ExternalToolManagerImpl::setToolValid(const QString& toolId, bool isValid) {
     SAFE_POINT(etRegistry, "The external tool registry is NULL", );
-    ExternalTool* tool = etRegistry->getByName(toolName);
-    SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(toolName), );
+    ExternalTool* tool = etRegistry->getById(toolId);
+    SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(toolId), );
     tool->setValid(isValid);
 }
 

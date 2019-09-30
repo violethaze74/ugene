@@ -24,23 +24,23 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_JAVA "java"
+#include "RunnerTool.h"
 
 namespace U2 {
 
-class JavaSupport : public ExternalTool {
+class JavaSupport : public RunnerTool {
     Q_OBJECT
 public:
     enum Architecture {
         x32,
         x64
     };
-    JavaSupport(const QString &name, const QString &path = "");
+    JavaSupport(const QString& id, const QString &name, const QString &path = "");
     void extractAdditionalParameters(const QString& output);
     Architecture getArchitecture() const;
 
-private slots:
-    void sl_toolValidationStatusChanged(bool isValid);
+    static const QString ET_JAVA;
+    static const QString ET_JAVA_ID;
 
 private:
     static QString architecture2string(Architecture architecture);
@@ -49,6 +49,7 @@ private:
     static const QString ARCHITECTURE;
     static const QString ARCHITECTURE_X32;
     static const QString ARCHITECTURE_X64;
+    static const QStringList RUN_PARAMETERS;
 };
 
 } // U2

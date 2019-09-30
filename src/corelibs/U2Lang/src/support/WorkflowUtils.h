@@ -118,11 +118,13 @@ public:
     static QString createUniqueString(const QString &str, const QString &sep, const QStringList &uniqueStrs);
 
     /** if path == "default" then nothing is changed. Returns the new path */
-    static QString updateExternalToolPath(const QString &toolName, const QString &path);
+    static QString updateExternalToolPath(const QString &id, const QString &path);
 
-    static QString getExternalToolPath(const QString &toolName);
+    static QString getExternalToolPath(const QString &toolId);
+    static QString externalToolIsAbsentError(const QString& toolName);
     static QString externalToolError(const QString &toolName);
     static QString externalToolInvalidError(const QString &toolName);
+    static QString customExternalToolInvalidError(const QString &toolName, const QString& elementName);
 
     static void schemaFromFile(const QString &url, Schema *schema, Metadata *meta, U2OpStatus &os);
 
@@ -231,6 +233,7 @@ template <typename T>
 class PrompterBase : public PrompterBaseImpl {
 public:
     PrompterBase(Actor* p = 0, bool listenInputs = true) : PrompterBaseImpl(p), listenInputs(listenInputs) {}
+    virtual ~PrompterBase() = default;
     virtual ActorDocument* createDescription(Actor* a) {
         T* doc = new T(a);
         doc->connect(a, SIGNAL(si_labelChanged()), SLOT(sl_actorModified()));

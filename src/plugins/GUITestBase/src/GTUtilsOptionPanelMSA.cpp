@@ -167,9 +167,9 @@ int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus &os){
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setColorScheme"
-void GTUtilsOptionPanelMsa::setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName) {
+void GTUtilsOptionPanelMsa::setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName, GTGlobals::UseMethod method) {
     openTab(os, Highlighting);
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "colorScheme"), colorSchemeName);
+    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "colorScheme"), colorSchemeName, true, method);
 }
 #undef GT_METHOD_NAME
 

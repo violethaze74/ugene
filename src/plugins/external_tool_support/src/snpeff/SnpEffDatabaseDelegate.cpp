@@ -113,8 +113,8 @@ void SnpEffDatabasePropertyWidget::setValue(const QVariant &value) {
 
 void SnpEffDatabasePropertyWidget::sl_showDialog() {
     // snpEff database list is available only if there is a valid tool!
-    ExternalTool *java = AppContext::getExternalToolRegistry()->getByName(ET_JAVA);
-    ExternalTool *snpEff = AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF);
+    ExternalTool *java = AppContext::getExternalToolRegistry()->getById(JavaSupport::ET_JAVA_ID);
+    ExternalTool *snpEff = AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID);
     CHECK(java != NULL, );
     CHECK(snpEff != NULL, );
     if (!(java->isValid() && snpEff->isValid())) {

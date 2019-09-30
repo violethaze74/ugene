@@ -27,12 +27,17 @@
 
 namespace U2 {
 
+const QString JavaSupport::ET_JAVA = "java";
+const QString JavaSupport::ET_JAVA_ID = "USUPP_JAVA";
+
 const QString JavaSupport::ARCHITECTURE = "architecture";
 const QString JavaSupport::ARCHITECTURE_X32 = "x32";
 const QString JavaSupport::ARCHITECTURE_X64 = "x64";
+const QStringList JavaSupport::RUN_PARAMETERS = { "-jar" };
 
-JavaSupport::JavaSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
+
+JavaSupport::JavaSupport(const QString& id, const QString &name, const QString &path)
+    : RunnerTool(RUN_PARAMETERS, id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -55,9 +60,6 @@ JavaSupport::JavaSupport(const QString &name, const QString &path)
     toolKitName="Java";
 
     muted = true;
-    isRunnerTool = true;
-
-    connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 }
 
 void JavaSupport::extractAdditionalParameters(const QString& output) {
@@ -70,11 +72,6 @@ void JavaSupport::extractAdditionalParameters(const QString& output) {
 
 JavaSupport::Architecture JavaSupport::getArchitecture() const {
     return string2architecture(additionalInfo.value(ARCHITECTURE));
-}
-
-void JavaSupport::sl_toolValidationStatusChanged(bool isValid) {
-    Q_UNUSED(isValid);
-    ScriptingTool::onPathChanged(this, QStringList() << "-jar");
 }
 
 QString JavaSupport::architecture2string(Architecture architecture) {

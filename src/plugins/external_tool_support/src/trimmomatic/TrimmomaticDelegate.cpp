@@ -240,6 +240,7 @@ void TrimmomaticPropertyDialog::sl_currentRowChanged() {
     const int currentStepNumber = listSteps->currentRow();
     CHECK(-1 != currentStepNumber, );
     SAFE_POINT(0 <= currentStepNumber && currentStepNumber < listSteps->count(), "Unexpected selected item", );
+    SAFE_POINT(currentStepNumber < steps.size(), "Unexpected selected row", );
 
     TrimmomaticStep *selectedStep = steps[currentStepNumber];
 

@@ -44,6 +44,8 @@ mkdir "${TARGET_EXE_DIR}/plugins"
 
 echo copying icons
 cp ${SOURCE_DIR}/src/ugeneui/images/ugene-doc.icns "$TARGET_APP_DIR/Contents/Resources"
+cp ${SOURCE_DIR}/src/ugeneui/images/ugeneui.icns "$TARGET_APP_DIR/Contents/Resources"
+cp ${SOURCE_DIR}/installer/macosx/Info.plist "$TARGET_APP_DIR/Contents"
 
 echo copying translations
 cp $RELEASE_DIR/transl_*.qm "$TARGET_EXE_DIR"

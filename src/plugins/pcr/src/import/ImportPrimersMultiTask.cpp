@@ -32,7 +32,7 @@ ImportPrimersMultiTask::ImportPrimersMultiTask(const QList<Task *> &importSubtas
 
 QString ImportPrimersMultiTask::generateReport() const {
     QString report = "<hr><br>";
-    foreach (Task *subtask, getSubtasks()) {
+    foreach (const QPointer<Task> &subtask, getSubtasks()) {
         report += subtask->generateReport() + "<br>";
     }
     return report;

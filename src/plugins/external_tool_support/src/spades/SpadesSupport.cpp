@@ -28,9 +28,11 @@
 namespace U2 {
 
 // SpadesSupport
+const QString SpadesSupport::ET_SPADES = "SPAdes";
+const QString SpadesSupport::ET_SPADES_ID = "USUPP_SPADES";
 
-SpadesSupport::SpadesSupport(const QString &name, const QString &path):
-    ExternalTool(name, path)
+SpadesSupport::SpadesSupport(const QString& id, const QString &name, const QString &path):
+    ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -45,8 +47,8 @@ SpadesSupport::SpadesSupport(const QString &name, const QString &path):
     versionRegExp = QRegExp("SPAdes v(\\d+.\\d+.\\d+)");
     toolKitName = "SPAdes";
 
-    toolRunnerProgram = ET_PYTHON;
-    dependencies << ET_PYTHON;
+    toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
+    dependencies << PythonSupport::ET_PYTHON_ID;
 }
 
 } // namespace U2

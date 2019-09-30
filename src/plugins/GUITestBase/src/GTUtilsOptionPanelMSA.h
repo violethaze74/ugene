@@ -68,7 +68,7 @@ public:
     static int getLength(HI::GUITestOpStatus &os);
     static int getHeight(HI::GUITestOpStatus &os);
 
-    static void setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName);
+    static void setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName, GTGlobals::UseMethod method = GTGlobals::UseKeyBoard);
     static QString getColorScheme(HI::GUITestOpStatus &os);
 
     static void setHighlightingScheme(HI::GUITestOpStatus &os, const QString &highlightingSchemeName);

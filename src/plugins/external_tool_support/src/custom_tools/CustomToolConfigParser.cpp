@@ -23,6 +23,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QRegularExpression>
 
 #include <U2Core/CustomExternalTool.h>
 #include <U2Core/U2OpStatus.h>
@@ -36,6 +37,7 @@ const QString CustomToolConfigParser::ELEMENT_CONFIG = "ugeneExternalToolConfig"
 const QString CustomToolConfigParser::ATTRIBUTE_VERSION = "version";
 const QString CustomToolConfigParser::HARDCODED_EXPECTED_VERSION = "1.0";
 
+const QString CustomToolConfigParser::ID = "id";
 const QString CustomToolConfigParser::NAME = "name";
 const QString CustomToolConfigParser::PATH = "executableFullPath";
 const QString CustomToolConfigParser::DESCRIPTION = "description";
@@ -44,6 +46,12 @@ const QString CustomToolConfigParser::TOOL_VERSION = "version";
 const QString CustomToolConfigParser::LAUNCHER_ID = "launcherId";
 const QString CustomToolConfigParser::DEPENDENCIES = "dependencies";
 const QString CustomToolConfigParser::BINARY_NAME = "executableName";
+
+namespace {
+bool compareCaseInsensetive(const QString& first, const QString& second) {
+    return QString::compare(first, second, Qt::CaseInsensitive) == 0;
+}
+}
 
 CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString &url) {
     QFile file(url);
@@ -72,35 +80,37 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString 
         CHECK_CONTINUE(!element.isNull());
         const QString tagName = element.tagName();
 
-        if (NAME == tagName) {
+        if (compareCaseInsensetive(ID, tagName)) {
+            tool->setId(element.text());
+        } else if (compareCaseInsensetive(NAME, tagName)) {
             tool->setName(element.text());
-        } else if (PATH == tagName) {
+        } else if (compareCaseInsensetive(PATH, tagName)) {
             if (!element.text().isEmpty()) {
                 QString text = element.text();
                 QFileInfo pathFi(element.text());
                 QString absPath;
                 if (pathFi.isRelative()) {
-                    QString newPath = urlFi.absoluteFilePath() + "/" + element.text();
+                    QString newPath = urlFi.absoluteDir().absolutePath() + "/" + element.text();
                     pathFi = QFileInfo(newPath);
                 }
                 absPath = pathFi.absoluteFilePath();
                 tool->setPath(absPath);
             }
-        } else if (DESCRIPTION == tagName) {
-            tool->setDescription(element.text());
-        } else if (TOOLKIT_NAME == tagName) {
+        } else if (compareCaseInsensetive(DESCRIPTION, tagName)) {
+            tool->setDescription(element.text().replace(QRegularExpression("\\r?\\n"), "<br>"));
+        } else if (compareCaseInsensetive(TOOLKIT_NAME, tagName)) {
             tool->setToolkitName(element.text());
-        } else if (TOOL_VERSION == tagName) {
+        } else if (compareCaseInsensetive(TOOL_VERSION, tagName)) {
             tool->setPredefinedVersion(element.text());
-        } else if (LAUNCHER_ID == tagName) {
+        } else if (compareCaseInsensetive(LAUNCHER_ID, tagName)) {
             tool->setLauncher(element.text());
-        } else if (DEPENDENCIES == tagName) {
+        } else if (compareCaseInsensetive(DEPENDENCIES, tagName)) {
             QStringList dependencies;
             foreach (const QString &dependency, element.text().split(",", QString::SkipEmptyParts)) {
                 dependencies << dependency.trimmed();
             }
             tool->setDependencies(dependencies);
-        } else if (BINARY_NAME == tagName) {
+        } else if (compareCaseInsensetive(BINARY_NAME, tagName)) {
             tool->setBinaryName(element.text());
         } else {
             os.addWarning(tr("Unknown element: '%1', skipping").arg(tagName));
@@ -132,12 +142,13 @@ QDomDocument CustomToolConfigParser::serialize(CustomExternalTool *tool) {
 
     QDomElement configElement = doc.createElement(ELEMENT_CONFIG);
     configElement.setAttribute(ATTRIBUTE_VERSION, HARDCODED_EXPECTED_VERSION);
+    configElement.appendChild(addChildElement(doc, ID, tool->getId()));
     configElement.appendChild(addChildElement(doc, NAME, tool->getName()));
     configElement.appendChild(addChildElement(doc, PATH, tool->getPath()));
     configElement.appendChild(addChildElement(doc, DESCRIPTION, tool->getDescription()));
     configElement.appendChild(addChildElement(doc, TOOLKIT_NAME, tool->getToolKitName()));
     configElement.appendChild(addChildElement(doc, TOOL_VERSION, tool->getPredefinedVersion()));
-    configElement.appendChild(addChildElement(doc, LAUNCHER_ID, tool->getToolRunnerProgram()));
+    configElement.appendChild(addChildElement(doc, LAUNCHER_ID, tool->getToolRunnerProgramId()));
     configElement.appendChild(addChildElement(doc, DEPENDENCIES, tool->getDependencies().join(",")));
     configElement.appendChild(addChildElement(doc, BINARY_NAME, tool->getExecutableFileName()));
     doc.appendChild(configElement);
@@ -146,8 +157,22 @@ QDomDocument CustomToolConfigParser::serialize(CustomExternalTool *tool) {
 
 bool CustomToolConfigParser::validate(U2OpStatus &os, CustomExternalTool *tool) {
     CHECK(nullptr != tool, false);
-    CHECK_EXT(!tool->getName().isEmpty(), os.setError(tr("The tool name is not specified in the config file")), false);
-    CHECK_EXT(!tool->getExecutableFileName().isEmpty(), os.setError(tr("The tool's binary name is not specified in the config file")), false);
+    CHECK_EXT(!tool->getId().isEmpty(), os.setError(tr("The tool id is not specified in the config file.")), false);
+    CHECK_EXT(!tool->getId().contains(QRegularExpression("[^A-Za-z0-9_\\-]")), os.setError(tr("The tool id contains unexpected characters, the only letters, numbers, underlines and dashes are allowed.")), false);
+    CHECK_EXT(!tool->getId().startsWith("USUPP_"), os.setError(tr("The custom tool's ID shouldn't start with \"USUPP_\", this is a distinguishing feature of the supported tools.")), false);
+    CHECK_EXT(!tool->getId().startsWith("UCUST_"), os.setError(tr("The custom tool's ID shouldn't start with \"UCUST_\", this is a distinguishing feature of the supported tools.")), false);
+    CHECK_EXT(!tool->getName().isEmpty(), os.setError(tr("The tool name is not specified in the config file.")), false);
+
+    CHECK_EXT(!tool->getExecutableFileName().isEmpty(), os.setError(tr("The imported custom tool \"%1\" does not have an executable file. Make sure to set up a valid executable file before you use the tool.").arg(tool->getName())), false)
+    if (tool->getPath().isEmpty()) {
+        os.addWarning(tr("The imported custom tool \"%1\" does not have an executable file. Make sure to set up a valid executable file before you use the tool.").arg(tool->getName()));
+    } else {
+        QFileInfo pathFi(tool->getPath());
+        if (!pathFi.exists()) {
+            os.addWarning(tr("The executable file \"%1\" specified for the imported custom tool \"%2\" doesn't exist. Make sure to set up a valid executable file before you use the tool.").arg(tool->getPath()).arg(tool->getName()));
+        }
+    }
+
     return true;
 }
 

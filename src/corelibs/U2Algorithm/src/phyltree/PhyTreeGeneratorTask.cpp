@@ -46,7 +46,7 @@ PhyTreeGeneratorLauncherTask::PhyTreeGeneratorLauncherTask(const MultipleSequenc
     tpm = Task::Progress_SubTasksBased;
 }
 void PhyTreeGeneratorLauncherTask::prepare(){
-    QString algId = settings.algorithmId;
+    QString algId = settings.algorithm;
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     PhyTreeGenerator* generator = registry->getGenerator(algId);
     assert(generator!=NULL);

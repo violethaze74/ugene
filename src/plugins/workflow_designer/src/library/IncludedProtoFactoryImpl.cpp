@@ -36,6 +36,7 @@
 
 #include "util/CustomWorkerUtils.h"
 
+#include "CmdlineBasedWorkerValidator.h"
 #include "IncludedProtoFactoryImpl.h"
 
 
@@ -141,7 +142,7 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
         DataTypeRegistry * dr = WorkflowEnv::getDataTypeRegistry();
         assert(dr);
         dr->registerEntry( outSet );
-        Descriptor outDesc( OUT_PORT_ID, LocalWorkflow::ExternalProcessWorker::tr("output data"), LocalWorkflow::ExternalProcessWorker::tr("output data") );
+        Descriptor outDesc( OUT_PORT_ID, LocalWorkflow::ExternalProcessWorker::tr("Output data"), LocalWorkflow::ExternalProcessWorker::tr("Output data") );
         portDescs << new PortDescriptor( outDesc, outSet, false, true );
     }
 
@@ -152,27 +153,44 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
     foreach(const AttributeConfig& acfg, cfg->attrs) {
         DataTypePtr type;
         QString descr = acfg.description.isEmpty() ? acfg.type : acfg.description;
-        if(acfg.isFile()) {
+        if (acfg.type == AttributeConfig::INPUT_FILE_URL_TYPE) {
             type = BaseTypes::STRING_TYPE();
-            delegates[acfg.attributeId] = new URLDelegate("All Files(*.*)","");
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, false, false, nullptr, "", false, true);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
-        } else if (acfg.isFolder()) {
-            //TODO: UGENE-6484
+        } else if (acfg.type == AttributeConfig::OUTPUT_FILE_URL_TYPE) {
             type = BaseTypes::STRING_TYPE();
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, false, true, nullptr, "", false, false);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::INPUT_FOLDER_URL_TYPE) {
+            type = BaseTypes::STRING_TYPE();
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, true, false, nullptr, "", false, true);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::OUTPUT_FOLDER_URL_TYPE) {
+            type = BaseTypes::STRING_TYPE();
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, true, true, nullptr, "", false, false);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::STRING_TYPE) {
             type = BaseTypes::STRING_TYPE();
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::BOOLEAN_TYPE) {
             type = BaseTypes::BOOL_TYPE();
+            delegates[acfg.attributeId] = new ComboBoxWithBoolsDelegate();
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, (acfg.defaultValue == "true" ? QVariant(true) : QVariant(false)));
         } else if (acfg.type == AttributeConfig::INTEGER_TYPE) {
-            //TODO: UGENE-6484
             type = BaseTypes::NUM_TYPE();
+            QVariantMap integerValues;
+            integerValues["minimum"] = QVariant(std::numeric_limits<int>::min());
+            integerValues["maximum"] = QVariant(std::numeric_limits<int>::max());
+            delegates[acfg.attributeId] = new SpinBoxDelegate(integerValues);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         } else if (acfg.type == AttributeConfig::DOUBLE_TYPE) {
-            //TODO: UGENE-6484
             type = BaseTypes::NUM_TYPE();
+            QVariantMap doubleValues;
+            doubleValues["singleStep"] = 0.1;
+            doubleValues["minimum"] = QVariant(std::numeric_limits<double>::lowest());
+            doubleValues["maximum"] = QVariant(std::numeric_limits<double>::max());
+            doubleValues["decimals"] = 6;
+            delegates[acfg.attributeId] = new DoubleSpinBoxDelegate(doubleValues);
             attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         }
     }
@@ -184,26 +202,11 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
 
     proto->setPrompter( new LocalWorkflow::ExternalProcessWorkerPrompter() );
     proto->setNonStandard(cfg->filePath);
+    proto->setValidator(new CmdlineBasedWorkerValidator());
 
-    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "java")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("java");
-        CHECK(tool, nullptr);
-        proto->addExternalTool(tool->getId());
-    }
-    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "python")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("python");
-        CHECK(tool, nullptr);
-        proto->addExternalTool(tool->getId());
-    }
-    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "Rscript")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("Rscript");
-        CHECK(tool, nullptr);
-        proto->addExternalTool(tool->getId());
-    }
-    if (CustomWorkerUtils::commandContainsSpecialTool(cfg->cmdLine, "perl")) {
-        ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName("perl");
-        CHECK(tool, nullptr);
-        proto->addExternalTool(tool->getId());
+    QStringList commandIdList = CustomWorkerUtils::getToolIdsFromCommand(cfg->cmdLine);
+    foreach(const QString& id, commandIdList) {
+        proto->addExternalTool(id);
     }
 
     return proto;
@@ -275,6 +278,10 @@ bool IncludedProtoFactoryImpl::_registerExternalToolWorker(ExternalProcessConfig
 void IncludedProtoFactoryImpl::_registerScriptWorker(const QString &actorName) {
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalWorkflow::LocalDomainFactory::ID);
     localDomain->registerEntry(new LocalWorkflow::ScriptWorkerFactory(actorName));
+}
+
+ExternalProcessConfig* IncludedProtoFactoryImpl::_getExternalToolWorker(const QString& id) {
+    return WorkflowEnv::getExternalCfgRegistry()->getConfigById(id);
 }
 
 ExternalProcessConfig *IncludedProtoFactoryImpl::_unregisterExternalToolWorker(const QString &id) {

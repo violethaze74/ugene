@@ -24,9 +24,13 @@
 namespace U2 {
 
 CustomExternalTool::CustomExternalTool()
-    : ExternalTool(QString(), QString())
+    : ExternalTool(QString(), QString(), QString())
 {
     isCustomTool = true;
+}
+
+void CustomExternalTool::setId(const QString& _id) {
+    id = _id;
 }
 
 void CustomExternalTool::setName(const QString &_name) {

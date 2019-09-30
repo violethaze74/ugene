@@ -24,18 +24,16 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_TOPHAT    "TopHat"
-#define TOPHAT_TMP_DIR      "tophat"
-
-
 namespace U2 {
 
-class TopHatSupport : public ExternalTool
-{
+class TopHatSupport : public ExternalTool {
     Q_OBJECT
-
 public:
-    TopHatSupport(const QString& name, const QString& path = "");
+    TopHatSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_TOPHAT;
+    static const QString ET_TOPHAT_ID;
+    static const QString TOPHAT_TMP_DIR;
 };
 
 

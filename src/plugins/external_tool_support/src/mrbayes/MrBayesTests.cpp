@@ -121,7 +121,7 @@ void GTest_MrBayes::prepare() {
     assert( obj != NULL);
 
     CreatePhyTreeSettings settings;
-    settings.algorithmId = ET_MRBAYES;
+    settings.algorithm = MrBayesSupport::ET_MRBAYES;
     settings.mb_ngen = 1000;
     settings.mrBayesSettingsScript = QString("Begin MrBayes;\n"
         "lset Nst=2 rates=gamma ngammacat=4;\n"

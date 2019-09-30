@@ -24,23 +24,30 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define CLARK_GROUP "CLARK"
-#define ET_CLARK "CLARK"
-#define ET_CLARK_L "CLARK-l"
-#define ET_CLARK_getAccssnTaxID "getAccssnTaxID"
-#define ET_CLARK_getfilesToTaxNodes "getfilesToTaxNodes"
-#define ET_CLARK_getTargetsDef "getTargetsDef"
-#define ET_CLARK_buildScript "builddb.sh"
-
 namespace U2 {
 
 class ClarkSupport : public ExternalTool {
     Q_OBJECT
 public:
-    ClarkSupport(const QString& name, const QString& path = "");
+    ClarkSupport(const QString& id, const QString& name, const QString& path = "");
 
     static void registerTools(ExternalToolRegistry *etRegistry);
     static void unregisterTools(ExternalToolRegistry *etRegistry);
+
+    static const QString CLARK_GROUP;
+    static const QString ET_CLARK;
+    static const QString ET_CLARK_ID;
+    static const QString ET_CLARK_L;
+    static const QString ET_CLARK_L_ID;
+    static const QString ET_CLARK_BUILD_SCRIPT;
+    static const QString ET_CLARK_BUILD_SCRIPT_ID;
+    static const QString ET_CLARK_GET_ACCSSN_TAX_ID;
+    static const QString ET_CLARK_GET_ACCSSN_TAX_ID_ID;
+    static const QString ET_CLARK_GET_TARGETS_DEF;
+    static const QString ET_CLARK_GET_TARGETS_DEF_ID;
+    static const QString ET_CLARK_GET_FILES_TO_TAX_NODES;
+    static const QString ET_CLARK_GET_FILES_TO_TAX_NODES_ID;
+
 };
 
 }//namespace

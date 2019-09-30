@@ -24,16 +24,17 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_CUTADAPT "cutadapt"
-#define ADAPTERS_DIR_NAME "adapters"
-#define ADAPTERS_DATA_NAME "Adapters file"
-
 namespace U2 {
 
 class CutadaptSupport : public ExternalTool {
     Q_OBJECT
 public:
-    CutadaptSupport(const QString& name, const QString& path = "");
+    CutadaptSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_CUTADAPT;
+    static const QString ET_CUTADAPT_ID;
+    static const QString ADAPTERS_DIR_NAME;
+    static const QString ADAPTERS_DATA_NAME;
 };
 
 }//namespace

@@ -48,7 +48,7 @@ public:
     static int getNumberExternalTools();
     static void setNumberExternalTools(int value);
 
-    static bool getExternalTools();
+    static void loadExternalTools();
     static void setExternalTools();
 
     static void checkTemporaryDir(U2OpStatus& os);

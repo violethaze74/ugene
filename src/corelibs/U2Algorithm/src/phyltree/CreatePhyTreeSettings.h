@@ -33,7 +33,7 @@ namespace U2{
 class U2ALGORITHM_EXPORT CreatePhyTreeSettings{
 public:
     CreatePhyTreeSettings();
-    QString algorithmId;
+    QString algorithm;
     QString matrixId;
     bool    displayWithAlignmentEditor;
     bool    syncAlignmentWithTree;

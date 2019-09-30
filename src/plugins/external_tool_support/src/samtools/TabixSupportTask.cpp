@@ -96,7 +96,7 @@ void TabixSupportTask::initTabixTask() {
     QStringList arguments;
     arguments << "-f";
     arguments << bgzfUrl.getURLString();
-    tabixTask = new ExternalToolRunTask(ET_TABIX, arguments, new ExternalToolLogParser());
+    tabixTask = new ExternalToolRunTask(TabixSupport::ET_TABIX_ID, arguments, new ExternalToolLogParser());
     setListenerForTask(tabixTask);
 }
 

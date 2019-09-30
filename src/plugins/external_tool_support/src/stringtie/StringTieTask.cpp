@@ -53,7 +53,7 @@ StringTieTask::StringTieTask(const StringTieTaskSettings& settings)
 }
 
 void StringTieTask::prepare() {
-    stringTieTask = new ExternalToolRunTask(ET_STRINGTIE, getArguments(), new ExternalToolLogParser());
+    stringTieTask = new ExternalToolRunTask(StringTieSupport::ET_STRINGTIE_ID, getArguments(), new ExternalToolLogParser());
     setListenerForTask(stringTieTask);
     addSubTask(stringTieTask);
 }

@@ -71,7 +71,7 @@ void BlastAllSupportTask::prepare(){
                          QTime::currentTime().toString("hh.mm.ss.zzz")+"_"+
                          QString::number(QCoreApplication::applicationPid())+"/";
     //Check and remove subdir for temporary files
-    QString blastTmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BLASTALL_TMP_DIR);
+    QString blastTmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BlastAllSupport::BLASTALL_TMP_DIR);
     QDir tmpDir(blastTmpDir + "/"+ tmpDirName);
     if(tmpDir.exists()){
         foreach(const QString& file, tmpDir.entryList()){
@@ -199,19 +199,19 @@ QList<Task*> BlastAllSupportTask::onSubTaskFinished(Task* subTask) {
         }
 
         QString workingDirectory=QFileInfo(url).absolutePath();
-        blastAllTask = new ExternalToolRunTask(ET_BLASTALL, arguments, new ExternalToolLogParser(), workingDirectory);
+        blastAllTask = new ExternalToolRunTask(BlastAllSupport::ET_BLASTALL_ID, arguments, new ExternalToolLogParser(), workingDirectory);
         setListenerForTask(blastAllTask);
         blastAllTask->setSubtaskProgressWeight(95);
         res.append(blastAllTask);
     } else if(subTask == blastAllTask) {
         if (settings.outputType == 7 || settings.outputType == 8) {
             if (!QFileInfo(settings.outputOriginalFile).exists()) {
-                if (AppContext::getExternalToolRegistry()->getByName(ET_BLASTALL)->isValid()) {
+                if (AppContext::getExternalToolRegistry()->getById(BlastAllSupport::ET_BLASTALL_ID)->isValid()) {
                     stateInfo.setError(tr("Output file not found"));
                 } else {
                     stateInfo.setError(tr("Output file not found. May be %1 tool path '%2' not valid?")
-                                       .arg(AppContext::getExternalToolRegistry()->getByName(ET_BLASTALL)->getName())
-                                       .arg(AppContext::getExternalToolRegistry()->getByName(ET_BLASTALL)->getPath()));
+                                       .arg(AppContext::getExternalToolRegistry()->getById(BlastAllSupport::ET_BLASTALL_ID)->getName())
+                                       .arg(AppContext::getExternalToolRegistry()->getById(BlastAllSupport::ET_BLASTALL_ID)->getPath()));
                 }
                 emit si_stateChanged();
                 return res;

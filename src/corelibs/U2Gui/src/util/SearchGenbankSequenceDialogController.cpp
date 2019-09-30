@@ -147,8 +147,8 @@ QList<EntrezSummary> SearchGenbankSequenceDialogController::getSummaryResults() 
         SAFE_POINT(NULL != summaryResultHandler, L10N::nullPointerError("summary results handler"), results);
         results << summaryResultHandler->getResults();
     } else if (NULL != multiTask) {
-        foreach (Task *subtask, multiTask->getSubtasks()) {
-            EntrezQueryTask *summarySubtask = qobject_cast<EntrezQueryTask *>(subtask);
+        foreach (const QPointer<Task> &subtask, multiTask->getSubtasks()) {
+            EntrezQueryTask *summarySubtask = qobject_cast<EntrezQueryTask *>(subtask.data());
             SAFE_POINT(NULL != summarySubtask, L10N::internalError(tr("an unexpected subtask")), results);
             const ESummaryResultHandler *resultHandler = dynamic_cast<const ESummaryResultHandler *>(summarySubtask->getResultHandler());
             SAFE_POINT(NULL != resultHandler, L10N::nullPointerError("ESummaryResultHandler"), results);

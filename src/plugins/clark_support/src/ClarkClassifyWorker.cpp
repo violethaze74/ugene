@@ -406,8 +406,8 @@ void ClarkClassifyWorkerFactory::init() {
     proto->setPrompter(new ClarkClassifyPrompter());
     proto->setValidator(new ClarkClassifyValidator());
     proto->setPortValidator(ClarkClassifyWorkerFactory::INPUT_PORT, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
-    proto->addExternalTool(ET_CLARK);
-    proto->addExternalTool(ET_CLARK_L);
+    proto->addExternalTool(ClarkSupport::ET_CLARK_ID);
+    proto->addExternalTool(ClarkSupport::ET_CLARK_L_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -582,14 +582,14 @@ ClarkClassifyTask::ClarkClassifyTask(const ClarkClassifySettings &settings, cons
 }
 
 void ClarkClassifyTask::prepare() {
-    QString toolName = ET_CLARK_L;
+    QString toolId = ClarkSupport::ET_CLARK_L_ID;
     if ( QString::compare(cfg.tool, ClarkClassifySettings::TOOL_DEFAULT, Qt::CaseInsensitive) == 0) {
-        toolName = ET_CLARK;
+        toolId = ClarkSupport::ET_CLARK_ID;
     } else if (QString::compare(cfg.tool, ClarkClassifySettings::TOOL_LIGHT, Qt::CaseInsensitive) != 0) {
         stateInfo.setError(tr("Unsupported CLARK variant. Only default and light variants are supported."));
         return;
     }
-    QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkLogParser(), cfg.databaseUrl));
+    QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolId, getArguments(), new ClarkLogParser(), cfg.databaseUrl));
     CHECK_OP(stateInfo, );
 
     setListenerForTask(task.data());

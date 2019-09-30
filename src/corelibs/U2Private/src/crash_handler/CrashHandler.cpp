@@ -192,8 +192,8 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
             }
             QString progress = QString::number(t->getStateInfo().progress);
             taskList.append(t->getTaskName() + "\t" + state + "\t" + progress  + "\n");
-            foreach(Task *tt, t->getSubtasks()) {
-                getSubTasks(tt, taskList, 1);
+            foreach(const QPointer<Task> &tt, t->getSubtasks()) {
+                getSubTasks(tt.data(), taskList, 1);
             }
         }
     }
@@ -245,8 +245,8 @@ void CrashHandler::getSubTasks(Task *t, QString& list, int lvl) {
         }
         QString progress = QString::number(t->getStateInfo().progress);
         list.append(prefix + t->getTaskName() + "\t" + state + "\t" + progress  + "\n");
-        foreach(Task *tt, t->getSubtasks()) {
-            getSubTasks(tt, list, lvl + 1);
+        foreach(const QPointer<Task> &tt, t->getSubtasks()) {
+            getSubTasks(tt.data(), list, lvl + 1);
         }
     }
 }

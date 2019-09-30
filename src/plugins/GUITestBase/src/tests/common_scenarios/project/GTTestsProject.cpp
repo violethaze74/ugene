@@ -311,9 +311,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine_copy1.gb"));
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
     GTGlobals::sleep();
 
-    GTGlobals::sleep(2000);
     GTUtilsToolTip::checkExistingToolTip(os, ".dir");
 }
 

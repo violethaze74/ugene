@@ -28,9 +28,12 @@
 
 namespace U2 {
 
+const QString TopHatSupport::ET_TOPHAT = "TopHat";
+const QString TopHatSupport::ET_TOPHAT_ID ="USUPP_TOPHAT";
+const QString TopHatSupport::TOPHAT_TMP_DIR = "tophat";
 
-TopHatSupport::TopHatSupport(const QString& name, const QString& path)
-    : ExternalTool(name, path)
+TopHatSupport::TopHatSupport(const QString& id, const QString& name, const QString& path)
+    : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -47,7 +50,7 @@ TopHatSupport::TopHatSupport(const QString& name, const QString& path)
 #endif
     validationArguments << "--version";
 
-    dependencies << ET_PYTHON;
+    dependencies << PythonSupport::ET_PYTHON_ID;
 
     validMessage = "TopHat ";
     description = "<i>TopHat</i> is a program that aligns RNA-Seq reads to a genome"

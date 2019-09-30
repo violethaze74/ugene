@@ -89,7 +89,7 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, co
 }
 
 void CreatePhyTreeDialogController::accept() {
-    settings.algorithmId = ui->algorithmBox->currentText();
+    settings.algorithm = ui->algorithmBox->currentText();
 
     CHECK(checkFileName(), );
     SAFE_POINT(NULL != settingsWidget, "Settings widget is NULL", );

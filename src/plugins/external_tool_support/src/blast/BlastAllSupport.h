@@ -25,17 +25,17 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Gui/ObjectViewModel.h>
 
-#define ET_BLASTALL "BlastAll"
-#define BLASTALL_TMP_DIR    "blast_all"
-
 namespace U2 {
 
 class BlastAllSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BlastAllSupport(const QString& name, const QString& path = "");
+    BlastAllSupport(const QString& id, const QString& name, const QString& path = "");
     GObjectViewWindowContext* getViewContext(){ return viewCtx; }
 
+    static const QString ET_BLASTALL;
+    static const QString ET_BLASTALL_ID;
+    static const QString BLASTALL_TMP_DIR;
 private slots:
     void sl_runWithExtFileSpecify();
 

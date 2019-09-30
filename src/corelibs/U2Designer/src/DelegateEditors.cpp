@@ -496,7 +496,7 @@ URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, const O
     *tags() = _tags;
 }
 
-URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi, bool isPath, bool saveFile, QObject *parent, const QString &format, bool noFilesMode)
+URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi, bool isPath, bool saveFile, QObject *parent, const QString &format, bool noFilesMode, bool doNotUseWorkflowOutputFolder)
     : PropertyDelegate(parent), lastDirType(type)
 {
     tags()->set(DelegateTags::FILTER, filter);
@@ -506,9 +506,10 @@ URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi,
     options |= isPath ? AllowSelectOnlyExistingDir : None;
     options |= saveFile ? SelectFileToSave : None;
     options |= noFilesMode ? SelectParentDirInsteadSelectedFile : None;
+    options |= doNotUseWorkflowOutputFolder ? DoNotUseWorkflowOutputFolder : None;
 }
 
-URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool multi, bool isPath, bool saveFile, QObject *parent, bool noFilesMode) :
+URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool multi, bool isPath, bool saveFile, QObject *parent, bool noFilesMode, bool doNotUseWorkflowOutputFolder) :
     PropertyDelegate(parent),
     lastDirType(type)
 {
@@ -518,6 +519,7 @@ URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool mu
     options |= isPath ? AllowSelectOnlyExistingDir : None;
     options |= saveFile ? SelectFileToSave : None;
     options |= noFilesMode ? SelectParentDirInsteadSelectedFile : None;
+    options |= doNotUseWorkflowOutputFolder ? DoNotUseWorkflowOutputFolder : None;
 }
 
 QVariant URLDelegate::getDisplayValue(const QVariant &v) const {
@@ -542,7 +544,7 @@ URLWidget *URLDelegate::createWidget(QWidget *parent) const {
                                tags(),
                                parent);
     }
-    if (options.testFlag(SelectFileToSave) && !options.testFlag(DoNotUseWorkflowOutputFolder)) {
+    if (!options.testFlag(DoNotUseWorkflowOutputFolder)) {
         result->setSchemaConfig(schemaConfig);
     }
     return result;
@@ -922,28 +924,28 @@ void StringSelectorDelegate::setModelData(QWidget *, QAbstractItemModel *model, 
  * CharacterDelegate
  ********************************/
 PropertyWidget * CharacterDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
-    return new DefaultPropertyWidget(1, parent);
+    return new IgnoreUpDownPropertyWidget(1, parent);
 }
 
 QWidget * CharacterDelegate::createEditor(QWidget *parent,
                                    const QStyleOptionViewItem &/* option */,
                                    const QModelIndex &/* index */) const
 {
-    return new DefaultPropertyWidget(1, parent);
+    return new IgnoreUpDownPropertyWidget(1, parent);
 }
 
 void CharacterDelegate::setEditorData(QWidget *editor,
                                 const QModelIndex &index) const
 {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    DefaultPropertyWidget *lineEdit = dynamic_cast<DefaultPropertyWidget*>(editor);
+    IgnoreUpDownPropertyWidget *lineEdit = dynamic_cast<IgnoreUpDownPropertyWidget*>(editor);
     lineEdit->setValue(val);
 }
 
 void CharacterDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                const QModelIndex &index) const
 {
-    DefaultPropertyWidget *lineEdit = dynamic_cast<DefaultPropertyWidget*>(editor);
+    IgnoreUpDownPropertyWidget *lineEdit = dynamic_cast<IgnoreUpDownPropertyWidget*>(editor);
     model->setData(index, lineEdit->value().toString(), ConfigurationEditor::ItemValueRole);
 }
 
@@ -955,7 +957,7 @@ LineEditWithValidatorDelegate::LineEditWithValidatorDelegate(const QRegularExpre
 }
 
 QWidget *LineEditWithValidatorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const {
-    QScopedPointer<DefaultPropertyWidget> editor(new DefaultPropertyWidget(NO_LIMIT, parent));
+    QScopedPointer<IgnoreUpDownPropertyWidget> editor(new IgnoreUpDownPropertyWidget(NO_LIMIT, parent));
     QLineEdit *lineEdit = editor->findChild<QLineEdit *>("mainWidget");
     SAFE_POINT(nullptr != lineEdit, "Line edit is nullptr", nullptr);
 
@@ -966,12 +968,12 @@ QWidget *LineEditWithValidatorDelegate::createEditor(QWidget *parent, const QSty
 
 void LineEditWithValidatorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    DefaultPropertyWidget *lineEdit = qobject_cast<DefaultPropertyWidget *>(editor);
+    IgnoreUpDownPropertyWidget *lineEdit = qobject_cast<IgnoreUpDownPropertyWidget *>(editor);
     lineEdit->setValue(val);
 }
 
 void LineEditWithValidatorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
-    DefaultPropertyWidget *lineEdit = qobject_cast<DefaultPropertyWidget *>(editor);
+    IgnoreUpDownPropertyWidget *lineEdit = qobject_cast<IgnoreUpDownPropertyWidget *>(editor);
     model->setData(index, lineEdit->value().toString(), ConfigurationEditor::ItemValueRole);
 }
 
@@ -980,7 +982,7 @@ LineEditWithValidatorDelegate *LineEditWithValidatorDelegate::clone() {
 }
 
 void LineEditWithValidatorDelegate::sl_valueChanged() {
-    DefaultPropertyWidget* editor = qobject_cast<DefaultPropertyWidget *>(sender());
+    IgnoreUpDownPropertyWidget* editor = qobject_cast<IgnoreUpDownPropertyWidget *>(sender());
     CHECK(editor != NULL, );
     emit commitData(editor);
 }

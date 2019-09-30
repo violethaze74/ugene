@@ -94,28 +94,25 @@ Set up the element name. Select either a local executable file, an external tool
       <string>External command-line tool</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="rbIntegratedTool">
-        <property name="text">
-         <string>Integrated external tool</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="rbCustomTool">
-        <property name="text">
-         <string>Executable path</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbIntegratedTools">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+       <widget class="QWidget" name="container" native="true">
+        <layout class="QVBoxLayout" name="containerLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+        </layout>
        </widget>
       </item>
       <item row="0" column="1">
@@ -147,6 +144,23 @@ Set up the element name. Select either a local executable file, an external tool
           </widget>
          </item>
         </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="rbIntegratedTool">
+        <property name="text">
+         <string>Integrated external tool</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="rbCustomTool">
+        <property name="text">
+         <string>Executable path</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
@@ -185,22 +199,6 @@ Set up the element name. Select either a local executable file, an external tool
     <hint type="destinationlabel">
      <x>264</x>
      <y>100</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rbIntegratedTool</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>cbIntegratedTools</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>93</x>
-     <y>136</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>264</x>
-     <y>131</y>
     </hint>
    </hints>
   </connection>

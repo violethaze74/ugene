@@ -237,9 +237,9 @@ void Bowtie2WorkerFactory::init() {
     proto->setPrompter(new ShortReadsAlignerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator());
-    proto->addExternalTool(ET_BOWTIE2_ALIGN);
-    proto->addExternalTool(ET_PYTHON);
-    proto->addExternalTool(ET_PERL);
+    proto->addExternalTool(Bowtie2Support::ET_BOWTIE2_ALIGN_ID);
+    proto->addExternalTool(PythonSupport::ET_PYTHON_ID);
+    proto->addExternalTool(PerlSupport::ET_PERL_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new Bowtie2WorkerFactory());
 }

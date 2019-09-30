@@ -100,7 +100,7 @@ void DiamondBuildWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new DiamondBuildPrompter(NULL));
-    proto->addExternalTool(DiamondSupport::TOOL_NAME);
+    proto->addExternalTool(DiamondSupport::TOOL_ID);
     proto->setValidator(new DiamondBuildValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 

@@ -53,8 +53,9 @@ private:
         INTERNAL_ERROR
     };
 
-    void applySpecialInternalEnvvars(QString &execString);
+    void applySpecialInternalEnvvars(QString &execString, ExternalProcessConfig *cfg);
     void applyAttributes(QString &execString);
+    static bool applyParamsToExecString(QString &execString, QString parName, QString parValue);
     void applyEscapedSymbols(QString &execString);
     QStringList applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os);
     QString prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os);
@@ -90,17 +91,18 @@ class LaunchExternalToolTask: public Task {
     Q_OBJECT
     Q_DISABLE_COPY(LaunchExternalToolTask)
 public:
-    LaunchExternalToolTask(const QString &execString, const QMap<QString, DataConfig> &outputUrls);
+    LaunchExternalToolTask(const QString &execString, const QString& workingDir, const QMap<QString, DataConfig> &outputUrls);
     ~LaunchExternalToolTask();
 
     void run();
 
     QMap<QString, DataConfig> takeOutputUrls();
-
+    void addListeners(const QList<ExternalToolListener*>& listenersToAdd);
 private:
     QMap<QString, DataConfig> outputUrls;
-
     QString execString;
+    QString workingDir;
+    QList<ExternalToolListener*> listeners;
 };
 
 

@@ -482,8 +482,9 @@ void AttributeItem::setDescription(const QString &_description) {
 /// CfgExternalToolModelAttributes
 //////////////////////////////////////////////////////////////////////////
 
-CfgExternalToolModelAttributes::CfgExternalToolModelAttributes(QObject *_parent)
-    : QAbstractTableModel(_parent)
+CfgExternalToolModelAttributes::CfgExternalToolModelAttributes(SchemaConfig* _schemaConfig, QObject *_parent)
+    : QAbstractTableModel(_parent),
+    schemaConfig(_schemaConfig)
 {
     types.append(QPair<QString, QVariant>(tr("Boolean"), AttributeConfig::BOOLEAN_TYPE));
     types.append(QPair<QString, QVariant>(tr("Integer"), AttributeConfig::INTEGER_TYPE));
@@ -509,11 +510,11 @@ void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString& n
         propDelegate = new ComboBoxWithBoolsDelegate();
         defaultValue = true;
     } else if (newType == AttributeConfig::STRING_TYPE) {
-        propDelegate = new PropertyDelegate();
+        propDelegate = new LineEditWithValidatorDelegate(QRegularExpression("([^\"]*)"));
     } else if (newType == AttributeConfig::INTEGER_TYPE) {
         QVariantMap integerValues;
-        integerValues["minimum"] = QVariant(INT_MIN);
-        integerValues["maximum"] = QVariant(INT_MAX);
+        integerValues["minimum"] = QVariant(std::numeric_limits<int>::min());
+        integerValues["maximum"] = QVariant(std::numeric_limits<int>::max());
         propDelegate = new SpinBoxDelegate(integerValues);
         defaultValue = QVariant(0);
     } else if (newType == AttributeConfig::DOUBLE_TYPE) {
@@ -525,17 +526,18 @@ void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString& n
         propDelegate = new DoubleSpinBoxDelegate(doubleValues);
         defaultValue = QVariant(0.0);
     } else if (newType == AttributeConfig::INPUT_FILE_URL_TYPE) {
-        propDelegate = new URLDelegate("", "", false, false, false);
+        propDelegate = new URLDelegate("", "", false, false, false, nullptr, "", false, true);
     } else if (newType == AttributeConfig::OUTPUT_FILE_URL_TYPE) {
-        propDelegate = new URLDelegate("", "", false, false);
+        propDelegate = new URLDelegate("", "", false, false, true, nullptr, "", false, false);
     } else if (newType == AttributeConfig::INPUT_FOLDER_URL_TYPE) {
-        propDelegate = new URLDelegate("", "", false, true, false);
+        propDelegate = new URLDelegate("", "", false, true, false, nullptr, "", false, true);
     } else if (newType == AttributeConfig::OUTPUT_FOLDER_URL_TYPE) {
-        propDelegate = new URLDelegate("", "", false, true, false);
+        propDelegate = new URLDelegate("", "", false, true, true, nullptr, "", false, false);
     } else {
         return;
     }
 
+    propDelegate->setSchemaConfig(schemaConfig);
     item->setDefaultValue(defaultValue);
     delete item->delegateForDefaultValues;
     item->delegateForDefaultValues = propDelegate;
