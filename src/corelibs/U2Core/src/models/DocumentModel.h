@@ -521,5 +521,8 @@ public:
 };
 
 } //namespace
+
 Q_DECLARE_METATYPE(U2::Document*)
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::DocumentFormatFlags)
+
 #endif

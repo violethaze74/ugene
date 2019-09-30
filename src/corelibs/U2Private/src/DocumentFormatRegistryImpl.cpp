@@ -65,6 +65,10 @@
 
 namespace U2 {
 
+DocumentFormatRegistryImpl::~DocumentFormatRegistryImpl() {
+    qDeleteAll(formats);
+}
+
 bool DocumentFormatRegistryImpl::registerFormat(DocumentFormat* f) {
     SAFE_POINT(getFormatById(f->getFormatId()) == NULL, "Existing format", false);
     formats.push_back(f);
