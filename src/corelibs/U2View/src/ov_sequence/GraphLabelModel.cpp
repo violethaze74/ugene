@@ -143,6 +143,11 @@ void GraphLabel::hide() {
     text->hide();
     text->setMouseTracking(false);
 }
+
+bool GraphLabel::isHidden() const {
+    return text->isHidden();
+}
+
 void GraphLabel::raise() {
     text->raise();
 }

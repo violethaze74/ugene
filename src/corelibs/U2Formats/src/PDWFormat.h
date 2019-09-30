@@ -40,10 +40,6 @@ class U2FORMATS_EXPORT PDWFormat : public TextDocumentFormat {
 public:
                                     PDWFormat(QObject *p);
 
-    virtual DocumentFormatId        getFormatId() const { return BaseDocumentFormats::PDW; }
-
-    virtual const QString &         getFormatName() const { return formatName; }
-
 protected:
     virtual FormatCheckResult       checkRawTextData(const QByteArray &rawData,
                                         const GUrl & = GUrl()) const;
@@ -60,8 +56,6 @@ private:
 
     void                            load(IOAdapter *io, const U2DbiRef &ref, const QVariantMap &fs, const GUrl &docUrl, QList<GObject *> &objects,
                                         U2OpStatus &ti, U2SequenceObject *&dnaObj, AnnotationTableObject *&aObj);
-
-    QString                         formatName;
 };
 
 }//namespace

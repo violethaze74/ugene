@@ -45,7 +45,7 @@ DiamondSupportPlugin::DiamondSupportPlugin()
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
 
-    etRegistry->registerEntry(new DiamondSupport(DiamondSupport::TOOL_NAME));
+    etRegistry->registerEntry(new DiamondSupport(DiamondSupport::TOOL_ID, DiamondSupport::TOOL_NAME));
 
     LocalWorkflow::DiamondBuildWorkerFactory::init();
     LocalWorkflow::DiamondClassifyWorkerFactory::init();
@@ -54,7 +54,7 @@ DiamondSupportPlugin::DiamondSupportPlugin()
 DiamondSupportPlugin::~DiamondSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
-    etRegistry->unregisterEntry(DiamondSupport::TOOL_NAME);
+    etRegistry->unregisterEntry(DiamondSupport::TOOL_ID);
 }
 
 }   // namespace U2

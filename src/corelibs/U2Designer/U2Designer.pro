@@ -27,6 +27,7 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/WorkflowGUIUtils.h \
            src/dashboard/Dashboard.h \
            src/dashboard/DashboardInfo.h \
+           src/dashboard/DashboardInfoRegistry.h \
            src/dashboard/DashboardJsAgent.h \
            src/dashboard/DashboardPageController.h \
            src/dashboard/RemoveDashboardsTask.h \
@@ -94,6 +95,7 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/WorkflowGUIUtils.cpp \
            src/dashboard/Dashboard.cpp \
            src/dashboard/DashboardInfo.cpp \
+           src/dashboard/DashboardInfoRegistry.cpp \
            src/dashboard/DashboardJsAgent.cpp \
            src/dashboard/DashboardPageController.cpp \
            src/dashboard/RemoveDashboardsTask.cpp \

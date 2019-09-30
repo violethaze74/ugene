@@ -181,7 +181,7 @@ const QString TrimmomaticPropertyDialog::DEFAULT_SETTINGS_TEXT = QObject::tr("Ad
 TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
                                       QWidget *parent) : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331522");
+    new HelpButton(this, buttonBox, "24740268");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
 
@@ -240,6 +240,7 @@ void TrimmomaticPropertyDialog::sl_currentRowChanged() {
     const int currentStepNumber = listSteps->currentRow();
     CHECK(-1 != currentStepNumber, );
     SAFE_POINT(0 <= currentStepNumber && currentStepNumber < listSteps->count(), "Unexpected selected item", );
+    SAFE_POINT(currentStepNumber < steps.size(), "Unexpected selected row", );
 
     TrimmomaticStep *selectedStep = steps[currentStepNumber];
 

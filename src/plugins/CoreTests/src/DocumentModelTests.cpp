@@ -131,7 +131,7 @@ void GTest_LoadDocument::cleanup() {
     if (contextAdded) {
         removeContext(docContextName);
     }
-    if(!hasError() && tempFile){
+    if(!XMLTestUtils::parentTasksHaveError(this) && tempFile){
         taskLog.trace(QString("Temporary file removed: %1").arg(url));
         QFile::remove(url);
     }
@@ -282,7 +282,7 @@ Task::ReportResult GTest_LoadBrokenDocument::report() {
 }
 
 void GTest_LoadBrokenDocument::cleanup() {
-    if (!hasError() && tempFile) {
+    if (!XMLTestUtils::parentTasksHaveError(this) && tempFile) {
         QFile::remove(url);
     }
 
@@ -362,7 +362,7 @@ void GTest_ImportDocument::cleanup() {
         removeContext(docContextName);
     }
 
-    if (!hasError()) {
+    if (!XMLTestUtils::parentTasksHaveError(this)) {
         if (tempFile) {
             QFile::remove(url);
         }
@@ -471,7 +471,7 @@ Task::ReportResult GTest_ImportBrokenDocument::report() {
 }
 
 void GTest_ImportBrokenDocument::cleanup() {
-    if (!hasError()) {
+    if (!XMLTestUtils::parentTasksHaveError(this)) {
         if (tempFile) {
             QFile::remove(url);
         }

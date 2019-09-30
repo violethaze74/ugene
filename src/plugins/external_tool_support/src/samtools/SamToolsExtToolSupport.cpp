@@ -28,8 +28,11 @@
 
 namespace U2 {
 
-SamToolsExtToolSupport::SamToolsExtToolSupport(const QString& name, const QString& path)
-    : ExternalTool(name, path)
+const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT = "SAMtools";
+const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID = "USUPP_SAMTOOLS";
+
+SamToolsExtToolSupport::SamToolsExtToolSupport(const QString& id, const QString& name, const QString& path)
+    : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");

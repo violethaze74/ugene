@@ -547,7 +547,6 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     //Expected state: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded1Sv = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(sv != reloaded1Sv, "File is not reloaded 1");
-    GTGlobals::sleep(100);
 
     //4. Change the annotations file outside UGENE (e.g. change annotation region).
     //Expected state:: dialog about file modification appeared.
@@ -579,6 +578,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
 
     //Expected state: document reloaded without errors/warnings.
     CHECK_SET_ERR(!l.hasError(), "Errors in log");
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3086) {
@@ -1087,7 +1087,7 @@ class test_3165_messageBoxDialogFiller: public MessageBoxDialogFiller{
 public:
     test_3165_messageBoxDialogFiller(HI::GUITestOpStatus &os, QMessageBox::StandardButton _b):
         MessageBoxDialogFiller(os, _b){}
-    virtual void run(){
+    virtual void run() override {
         QWidget* activeModal = QApplication::activeModalWidget();
         QMessageBox *messageBox = qobject_cast<QMessageBox*>(activeModal);
         CHECK_SET_ERR(messageBox != NULL, "messageBox is NULL");
@@ -1473,20 +1473,21 @@ GUI_TEST_CLASS_DEFINITION(test_3226) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read File URL(s)");
 
-    ////2. Setup alias 'in' for input path.
+    //2. Setup alias 'in' for input path.
     QMap<QPoint*, QString> map;
     QPoint p(1, 0);
     map[&p] = "in";
     GTUtilsDialog::waitForDialog(os, new AliasesDialogFiller(os, map));
     GTWidget::click(os, GTAction::button(os, "Set parameter aliases"));
 
-    ////3. Copy and paste the 'Read File URL(s)' element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
-    //GTKeyboardUtils::copy(os);
-    GTWidget::click(os, GTAction::button(os, "Copy action"));
-    GTKeyboardUtils::paste(os);
 
-    ////4. Save the workflow.
+    //3. Copy and paste the 'Read File URL(s)' element.
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTKeyboardUtils::copy(os);
+    //GTWidget::click(os, GTAction::button(os, "Copy action"));
+    GTKeyboardUtils::paste(os);
+   
+    //4. Save the workflow.
     QString path = sandBoxDir + "test_3226_workflow.uwl";
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, path, ""));
     GTWidget::click(os, GTAction::button(os, "Save workflow action"));
@@ -1599,7 +1600,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253) {
     GTFileDialog::openFile(os, dataDir + "/samples/ABIF/", "A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
-    QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle*>(GTWidget::findWidget(os, "qt_splithandle_"));
+    QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle*>(GTWidget::findWidget(os, "qt_splithandle_", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR( NULL != splitterHandle, "splitterHandle is not present" );
 
     QWidget *chromaView = GTWidget::findWidget( os, "chromatogram_view_A1#berezikov");
@@ -2563,7 +2564,8 @@ GUI_TEST_CLASS_DEFINITION(test_3384){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_EDIT"
                                                       << "action_edit_insert_sub_sequences"));
     GTUtilsDialog::waitForDialog(os, new InsertSequenceFiller(os, "A"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getDetViewByNumber(os));
+
 
 //    Select an area on CV that contains zero position
     QWidget* cv = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");
@@ -2712,7 +2714,7 @@ GUI_TEST_CLASS_DEFINITION(test_3402){
         }
         QList<Task*> innertList;
         foreach (Task* t, tList) {
-            innertList.append(t->getSubtasks());
+            innertList.append(t->getPureSubtasks());
         }
         foreach (Task* t, innertList) {
             if(t->getTaskName().contains("Opening view")){
@@ -2822,7 +2824,7 @@ GUI_TEST_CLASS_DEFINITION(test_3439){
     GTGlobals::sleep();
     //there is should be 2 errors
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Write Alignment") == 1, "Errors count dont match, should be 2 validation errors");
-    //set paramter "Data storage" to "Shared UGENE database"
+    //set parameter "Data storage" to "Shared UGENE database"
     GTUtilsWorkflowDesigner::click(os, "Write Alignment", QPoint(-30,-30));
     GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setParameter(os, "Data storage", 1, GTUtilsWorkflowDesigner::comboValue);
@@ -3215,7 +3217,7 @@ GUI_TEST_CLASS_DEFINITION(test_3478) {
     FormatDBSupportRunDialogFiller::Parameters p;
     p.justCancel = true;
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, p));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "BLAST" << "FormatDB"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "BLAST" << "FormatDB..."));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsLog::check(os, l);
@@ -3546,7 +3548,7 @@ GUI_TEST_CLASS_DEFINITION(test_3551){
     FormatDBSupportRunDialogFiller::Parameters p;
     p.customFiller_3551 = true;
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, p));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "BLAST" << "FormatDB"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "BLAST" << "FormatDB..."));
     GTMouseDriver::click(Qt::RightButton);
 }
 
@@ -6258,7 +6260,7 @@ GUI_TEST_CLASS_DEFINITION(test_3998){
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep();
 
-//    Current state: error occured, sequence disappeared from the display
+//    Current state: error occurred, sequence disappeared from the display
     GTUtilsLog::check(os, l);
 }
 

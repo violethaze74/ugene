@@ -36,8 +36,9 @@ class ExportSequencesDialog : public QDialog, Ui_ExportSequencesDialog {
     Q_OBJECT
 public:
     ExportSequencesDialog(bool multiMode, bool allowComplement, bool allowTranslation,
-        bool allowBackTranslation, const QString &defaultFileName, const QString &sourceFileBaseName,
-        const DocumentFormatId &f, QWidget *p);
+                          bool allowBackTranslation, const QString &defaultFileName,
+                          const QString &sourceFileBaseName,
+                          const DocumentFormatId &f, QWidget *p);
 
     void updateModel();
     bool multiMode;

@@ -7,11 +7,9 @@ echo Source: $SOURCE_DIR
 
 VERSION_MAJOR=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_MAJOR=' | awk -F'=' '{print $2}'`
 VERSION_MINOR=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_MINOR=' | awk -F'=' '{print $2}'`
-VERSION_PATCH=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_PATCH=' | awk -F'=' '{print $2}'`
 UGENE_VERSION=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}' | \
                sed -e 's/$${UGENE_VER_MAJOR}/'"$VERSION_MAJOR"'/g' \
-                   -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g' \
-                   -e 's/$${UGENE_VER_PATCH}/'"$VERSION_PATCH"'/g'`
+                   -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g'`
 
 ARCHITECTURE=`uname -m`
 BUILD_DIR=./release_bundle
@@ -35,14 +33,19 @@ rm -f "${SYMBOLS_DIR}.tar.gz"
 mkdir "${SYMBOLS_DIR}"
 
 echo
-echo copying UGENE bundle 
-cp -R $RELEASE_DIR/ugeneui.app/ "$TARGET_APP_DIR"
+echo creating UGENE bundle
+
+mkdir "${TARGET_APP_DIR}"
+mkdir "${TARGET_APP_DIR}/Contents"
+mkdir "${TARGET_APP_DIR}/Contents/Frameworks"
+mkdir "${TARGET_APP_DIR}/Contents/MacOS"
+mkdir "${TARGET_APP_DIR}/Contents/Resources"
+mkdir "${TARGET_EXE_DIR}/plugins"
 
 echo copying icons
 cp ${SOURCE_DIR}/src/ugeneui/images/ugene-doc.icns "$TARGET_APP_DIR/Contents/Resources"
-
-mkdir "${TARGET_EXE_DIR}/../Frameworks"
-mkdir "${TARGET_EXE_DIR}/plugins"
+cp ${SOURCE_DIR}/src/ugeneui/images/ugeneui.icns "$TARGET_APP_DIR/Contents/Resources"
+cp ${SOURCE_DIR}/installer/macosx/Info.plist "$TARGET_APP_DIR/Contents"
 
 echo copying translations
 cp $RELEASE_DIR/transl_*.qm "$TARGET_EXE_DIR"

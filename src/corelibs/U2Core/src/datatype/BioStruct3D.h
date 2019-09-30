@@ -202,7 +202,7 @@ public:
     // Theese three methods need to solve confusion between model ids (same as in PDB)
     // and internal model indexes, both  are used in UGENE
     // model ids should be used for user interface, and one fine day may become a strings
-    // model index numbers used by internal UGENE parts, and shoud be consequent int values from 0
+    // model index numbers used by internal UGENE parts, and should be consequent int values from 0
     /** @returns list of model ids (same as in PDB), that can be not consequent */
     const QList<int> getModelsNames() const;
 

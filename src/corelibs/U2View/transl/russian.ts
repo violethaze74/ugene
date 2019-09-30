@@ -184,9 +184,13 @@ Probably, the data are too big.</source>
         <translation>Выберите метод выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="42"/>
         <source>Align short reads method</source>
-        <translation>Метод выравнивания</translation>
+        <translation type="vanished">Метод выравнивания</translation>
+    </message>
+    <message>
+        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="42"/>
+        <source>Map short reads method</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="76"/>
@@ -1507,17 +1511,16 @@ Double-click to collapse the branch</source>
         <translation>Настройки дерева</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="178"/>
         <source>Default color</source>
-        <translation>Цвет по умолчанию</translation>
+        <translation type="vanished">Цвет по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightTree.cpp" line="53"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightTree.cpp" line="52"/>
         <source>Annotation</source>
         <translation>Аннотация</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightTree.cpp" line="53"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightTree.cpp" line="52"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
@@ -1578,24 +1581,10 @@ Double-click to collapse the branch</source>
         <translation>Сайт рестрикции</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="111"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="162"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="168"/>
         <source>none</source>
         <translation>нет</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="42"/>
-        <source>Data are outdated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="43"/>
-        <source>Data are valid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="44"/>
-        <source>Data are being updated</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2169,19 +2158,16 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2</name>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="121"/>
         <source>All alphabets</source>
-        <translation type="unfinished">Все алфавиты</translation>
+        <translation type="obsolete">Все алфавиты</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="122"/>
         <source>Amino acid alphabet</source>
-        <translation type="unfinished">Аминокислотный алфавит</translation>
+        <translation type="obsolete">Аминокислотный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="123"/>
         <source>Nucleotide alphabet</source>
-        <translation type="unfinished">Нуклеотидный алфавит</translation>
+        <translation type="obsolete">Нуклеотидный алфавит</translation>
     </message>
 </context>
 <context>
@@ -2259,52 +2245,52 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::ADVSingleSequenceHeaderWidget</name>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="942"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="935"/>
         <source>Alphabet: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Алфавит: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="943"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="936"/>
         <source> Sequence size: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation> Размер последовательности: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="944"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="937"/>
         <source> File:&amp;nbsp;&lt;b&gt;%1&lt;/b&gt;</source>
         <translation> Файл:&amp;nbsp;&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1027"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1020"/>
         <source>raw</source>
         <translation>raw</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1031"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1024"/>
         <source>amino ext</source>
         <translation>amino ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1033"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1026"/>
         <source>amino</source>
         <translation>амино</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1038"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1031"/>
         <source>dna</source>
         <translation>днк</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1040"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1033"/>
         <source>dna ext</source>
         <translation>dna ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1044"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1037"/>
         <source>rna ext</source>
         <translation>rna ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1042"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1035"/>
         <source>rna</source>
         <translation>rna</translation>
     </message>
@@ -2312,12 +2298,12 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::ADVSingleSequenceWidget</name>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="431"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="428"/>
         <source>Zoom</source>
         <translation>Масштаб</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="685"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="682"/>
         <source>Zoom to range</source>
         <translation>Выбор масштаба</translation>
     </message>
@@ -2327,12 +2313,12 @@ Double-click to collapse the branch</source>
         <translation>Создать новую шкалу...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="523"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="520"/>
         <source>Rulers...</source>
         <translation>Шкала обзора...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="534"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="531"/>
         <source>Remove &apos;%1&apos;</source>
         <translation>Удалить &quot;%1&quot;</translation>
     </message>
@@ -2362,63 +2348,63 @@ Double-click to collapse the branch</source>
         <translation>Выбрать масштаб...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="198"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="199"/>
         <source>Export image</source>
         <translation>Экспорт изображения</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="214"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="215"/>
         <source>Remove sequence</source>
         <translation>Удалить последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="508"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="505"/>
         <source>Select</source>
         <translation>Выделить</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="300"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="293"/>
         <source>Show all views</source>
         <translation>Показать всё</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="300"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="293"/>
         <source>Hide all views</source>
         <translation>Скрыть всё</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="232"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="896"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="233"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="303"/>
         <source>Show zoom view</source>
         <translation>Показать масштабируемое представление</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="232"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="896"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="233"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="303"/>
         <source>Hide zoom view</source>
         <translation>Скрыть масштабируемое представление</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="233"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="901"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="234"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="323"/>
         <source>Show details view</source>
         <translation>Показать детали</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="233"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="901"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="234"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="323"/>
         <source>Hide details view</source>
         <translation>Скрыть детали</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="234"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="906"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="235"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="334"/>
         <source>Show overview</source>
         <translation>Показать панораму</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="234"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="906"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="235"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="334"/>
         <source>Hide overview</source>
         <translation>Скрыть панораму</translation>
     </message>
@@ -2611,12 +2597,12 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AnnotatedDNAView</name>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="134"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="133"/>
         <source>Find pattern...</source>
         <translation>Поиск подстроки...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="115"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="114"/>
         <source>Go to position...</source>
         <translation>Перейти...</translation>
     </message>
@@ -2625,72 +2611,72 @@ Double-click to collapse the branch</source>
         <translation type="vanished">Изменение аннотаций при редактировании последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="143"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="142"/>
         <source>Insert subsequence...</source>
         <translation>Вставить подпоследовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="148"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="147"/>
         <source>Remove subsequence...</source>
         <translation>Удалить подпоследовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="152"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="151"/>
         <source>Replace subsequence...</source>
         <translation>Заменить подпоследовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="157"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="156"/>
         <source>Selected sequence from view</source>
         <translation>Удалить выделенную последовательность из отображения</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="161"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="160"/>
         <source>Reverse-complement sequence</source>
         <translation>Заменить на обратно-комплементарную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="170"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="169"/>
         <source>Complement sequence</source>
         <translation>Заменить на комплементарную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="364"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="360"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="546"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="564"/>
         <source>Analyze</source>
         <translation>Анализ</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="556"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="574"/>
         <source>Add</source>
         <translation>Аннотация</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="562"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="580"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="568"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="586"/>
         <source>Align</source>
         <translation>Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="574"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="592"/>
         <source>Remove</source>
         <translation>Удаление</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="587"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="605"/>
         <source>Edit</source>
         <translation>Редактирование</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1120"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1138"/>
         <source>Show codon table</source>
         <translation>Показать таблицу кодонов</translation>
     </message>
@@ -2699,37 +2685,37 @@ Double-click to collapse the branch</source>
         <translation type="vanished">No sequence in focus</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="166"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="165"/>
         <source>Reverse sequence</source>
         <translation>Заменить на обратную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="840"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="858"/>
         <source>Select sequence to associate annotations with:</source>
         <translation>Установить связь аннотаций с последовательностью:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="858"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="876"/>
         <source>No sequence object found for annotations</source>
         <translation>Не найдена связанная с аннотациями последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="788"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="806"/>
         <source>Disable &apos;%1&apos; highlighting</source>
         <translation>Не использовать подсветку для &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="139"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="138"/>
         <source>Annotations settings on sequence editing...</source>
         <translation>Настройка аннотаций при редактировании последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="790"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="808"/>
         <source>Enable &apos;%1&apos; highlighting</source>
         <translation>Задействовать подсветку для &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="928"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="946"/>
         <source>Go To</source>
         <translation>Выбор позиции</translation>
     </message>
@@ -2761,19 +2747,19 @@ Double-click to collapse the branch</source>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="202"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1190"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
         <source>Copy qualifier text</source>
         <translation>Копировать значение квалификатора</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="205"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1198"/>
         <source>Copy qualifier URL</source>
         <translation>Копировать ссылку</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="208"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1199"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1203"/>
         <source>Toggle column</source>
         <translation>Переключить столбец</translation>
     </message>
@@ -2812,17 +2798,17 @@ Double-click to collapse the branch</source>
         <translation>Аннотация</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2035"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2027"/>
         <source>Edit Group</source>
         <translation>Редактировать группу</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2082"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2074"/>
         <source>Edit Annotation</source>
         <translation>Редактирование аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2082"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2074"/>
         <source>Edit</source>
         <translation>Редактирование</translation>
     </message>
@@ -2883,27 +2869,27 @@ Double-click to collapse the branch</source>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="895"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1200"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1204"/>
         <source>Hide &apos;%1&apos; column</source>
         <translation>Скрыть столбец &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1190"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
         <source>Copy qualifier &apos;%1&apos; value</source>
         <translation>Копировать значение &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1198"/>
         <source>Copy qualifier &apos;%1&apos; URL</source>
         <translation>Копировать ссылку &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1200"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1204"/>
         <source>Add &apos;%1&apos; column</source>
         <translation>Добавить столбец &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2232"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2224"/>
         <source>Create Permanent Annotation</source>
         <translation>Создать постоянную аннотацию</translation>
     </message>
@@ -2911,32 +2897,37 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AssemblyBrowser</name>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="209"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="210"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="153"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="154"/>
         <source>Failed to open assembly browser for %1, assembly %2: model length should be &gt; 0</source>
         <translation>Failed to open assembly browser for %1, assembly %2: model length should be &gt; 0</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="143"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="144"/>
         <source>Error opening open assembly browser for %1, assembly %2</source>
         <translation>Error opening open assembly browser for %1, assembly %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="220"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="221"/>
         <source>Internal error: only object with document can be added to browser</source>
         <translation>Internal error: only object with document can be added to browser</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="224"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="223"/>
+        <source>Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="227"/>
         <source>Internal error: broken sequence object</source>
         <translation>Internal error: broken sequence object</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="225"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="228"/>
         <source>Internal error: empty document format</source>
         <translation>Internal error: empty document format</translation>
     </message>
@@ -2957,7 +2948,7 @@ Double-click to collapse the branch</source>
         <translation type="vanished">Internal error: database is busy</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="267"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="274"/>
         <source>Internal error: broken variant track object</source>
         <translation>Internal error: broken variant track object</translation>
     </message>
@@ -2966,102 +2957,97 @@ Double-click to collapse the branch</source>
         <translation type="vanished">Только последовательности или вариации могут быть добавлены в браузер сборок</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="231"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="238"/>
         <source>Internal error: database is locked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="273"/>
-        <source>Only sequence or variant track objects can be added to assembly browser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="282"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="289"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="283"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="290"/>
         <source>This action requires changing the assembly object that is locked for editing</source>
         <translation>Это действие требует изменения объекта сборки, который заблокирован для редактирования</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="630"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="637"/>
         <source>Zoom in</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="633"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="640"/>
         <source>Zoom out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="636"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="643"/>
         <source>Linear</source>
         <translation>Линейная</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="638"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="645"/>
         <source>Logarithmic</source>
         <translation>Логарифмическая</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="644"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="651"/>
         <source>Show coordinates on ruler</source>
         <translation>Показывать координаты на шкале</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="648"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="655"/>
         <source>Show coverage under ruler cursor</source>
         <translation>Показывать покрытие под шкалой курсора</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="652"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="659"/>
         <source>Show information about read under cursor in pop-up hint</source>
         <translation>Показывать информацию о риде в сплывающей подсказке под курсором</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="657"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="664"/>
         <source>Export as image</source>
         <translation>Экспорт изображения</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="660"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="667"/>
         <source>Export assembly to SAM format</source>
         <translation>Экспортировать сборку в формат SAM</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="663"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="670"/>
         <source>Set reference</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="667"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="674"/>
         <source>Export assembly region</source>
         <translation>Экспорт региона сборки</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="984"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="991"/>
         <source>Open file with a sequence</source>
         <translation>Открыть файл с последовательностью</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="995"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1002"/>
         <source>An error occurred while setting reference to &quot;%1&quot; assembly. The selected file &quot;%2&quot; does not contain sequences.</source>
         <translation>Возникла ошибка при попытке установить референсную последовтельность для сборки &quot;%1&quot;. Выбранный файл &quot;%2&quot; не содержит последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="997"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1004"/>
         <source>An error occurred while setting reference to &quot;%1&quot; assembly. There are more than one sequence in file &quot;%2&quot;. Please select the required sequence object in the Project View and click &quot;Set reference&quot; again.</source>
         <translation>Возникла ошибка при попытке установить референсную последовтельность для сборки &quot;%1&quot;. В файле &quot;%2&quot; содержится более одной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1058"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1065"/>
         <source>An error occurred while setting reference to &quot;%1&quot;. You have more than one sequence object selected in the Project View. Please select only one object and try again.</source>
         <translation>Возникла ошибка при попытке установить референсную последовтельность для сборки &quot;%1&quot;. В проекте выделено более одной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1057"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1064"/>
         <source>Choose Reference Sequence</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
@@ -3082,7 +3068,7 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AssemblyBrowserUi</name>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1178"/>
+        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="1185"/>
         <source>Assembly has no mapped reads. Nothing to visualize.</source>
         <translation>Сборка не имеет ридов.</translation>
     </message>
@@ -3264,8 +3250,8 @@ Try to open another file with a reference sequence and associate it with the ass
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="332"/>
-        <source>Unexected object is set as reference</source>
-        <translation>Unexected object is set as reference</translation>
+        <source>Unexpected object is set as reference</source>
+        <translation>Unexpected object is set as reference</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="367"/>
@@ -3671,7 +3657,7 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::CalculatePointsTask</name>
     <message>
-        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="857"/>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="858"/>
         <source>Calculate graph points</source>
         <translation>Calculate graph points</translation>
     </message>
@@ -3697,12 +3683,12 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::ColorSchemaDialogController</name>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="52"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="51"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="53"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="52"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -3718,7 +3704,7 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::ColorSchemaSettingsPageWidget</name>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="370"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="369"/>
         <source>Choose Folder</source>
         <translation>Выбрать папку</translation>
     </message>
@@ -3783,53 +3769,53 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::CreateColorSchemaDialog</name>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="182"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="181"/>
         <source>Create</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="183"/>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="197"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="182"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="196"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="185"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="184"/>
         <source>Amino acid</source>
         <translation>Аминокислота</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="186"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="185"/>
         <source>Nucleotide</source>
         <translation>Нуклеотиды</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="196"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="195"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="223"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="222"/>
         <source>Name of scheme is empty.</source>
         <translation>Имя схемы путо.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="233"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="232"/>
         <source>Name can&apos;t contain only spaces.</source>
         <translation>Имя не может содержать только пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="238"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="237"/>
         <source>Name has to consist of letters, digits, spaces</source>
         <translation>Имя может состоять только из букв, цифр, пробелов</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="239"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="238"/>
         <source>or underscore symbols only.</source>
         <translation>или символов подчеркивания.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="244"/>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="243"/>
         <source>Color scheme with the same name already exists.</source>
         <translation>Цветовая схема с таким именем уже существует.</translation>
     </message>
@@ -3837,7 +3823,7 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::CreateDistanceMatrixTask</name>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="170"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="166"/>
         <source>Generate distance matrix</source>
         <translation>Рассчитать матрицу расстояний</translation>
     </message>
@@ -4671,12 +4657,12 @@ Please, check external tools in the settings.</source>
         <translation type="vanished">Экспортировать консенсус в MSA</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorTasks.cpp" line="335"/>
+        <location filename="../src/ov_msa/MaEditorTasks.cpp" line="339"/>
         <source>Extract consensus</source>
         <translation>Извлечь консенсус</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorTasks.cpp" line="359"/>
+        <location filename="../src/ov_msa/MaEditorTasks.cpp" line="363"/>
         <source>No sequences in alignment</source>
         <translation>No sequences in alignment</translation>
     </message>
@@ -4942,7 +4928,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::FindQualifierTask</name>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2593"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2585"/>
         <source>Searching for a qualifier</source>
         <translation>Поиск квалификатора</translation>
     </message>
@@ -4973,12 +4959,17 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::GSequenceGraphDrawer</name>
     <message>
-        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="448"/>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="184"/>
+        <source>Default color</source>
+        <translation type="unfinished">Цвет по умолчанию</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="449"/>
         <source>Graph is rendering...</source>
         <translation>График рассчитывается...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="450"/>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="451"/>
         <source>Graph is not available. Try to change calculation settings.</source>
         <translation>График недоступен. Измените настройки вычисления.</translation>
     </message>
@@ -5011,17 +5002,17 @@ Please, check external tools in the settings.</source>
         <translation>График</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="359"/>
+        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="362"/>
         <source>%1 [%2, %3], Window: %4, Step %5</source>
         <translation>%1 [%2, %3], окно: %4, шаг: %5</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="631"/>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="632"/>
         <source>[%2, max:%3, min:%4]</source>
         <translation>[%2, макс:%3, мин:%4]</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="625"/>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="626"/>
         <source>[%2, %3]</source>
         <translation>[%2, %3]</translation>
     </message>
@@ -5029,7 +5020,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::GSequenceLineViewAnnotated</name>
     <message>
-        <location filename="../src/ov_sequence/GSequenceLineViewAnnotated.cpp" line="433"/>
+        <location filename="../src/ov_sequence/GSequenceLineViewAnnotated.cpp" line="437"/>
         <source>etc ...</source>
         <translation>Прочие ...</translation>
     </message>
@@ -5065,12 +5056,6 @@ Please, check external tools in the settings.</source>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="204"/>
         <source>Result assembly folder is not set!</source>
         <translation>Папка для сохранения не указана!</translation>
-    </message>
-    <message>
-        <source>Unable to create output folder for result assembly.
-Directory Path: %1</source>
-        <translation type="obsolete">Невозможно создать выходную папку.
-Путь до папки: %1</translation>
     </message>
     <message>
         <source>No reads. Please, add file(s) with short reads.</source>
@@ -5120,7 +5105,7 @@ Directory Path: %1</source>
         <translation>Assembly has zero length</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.h" line="45"/>
+        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.h" line="46"/>
         <source>Get length of Assembly</source>
         <translation>Get length of Assembly</translation>
     </message>
@@ -5139,9 +5124,17 @@ Directory Path: %1</source>
     </message>
 </context>
 <context>
+    <name>U2::GraphAction</name>
+    <message>
+        <location filename="../src/ov_sequence/GraphMenu.cpp" line="74"/>
+        <source>Sequence size is too large to calculate graphs!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::GraphLabel</name>
     <message>
-        <location filename="../src/ov_sequence/GraphLabelModel.cpp" line="156"/>
+        <location filename="../src/ov_sequence/GraphLabelModel.cpp" line="161"/>
         <source>QLabel {color : %1; }</source>
         <translation>QLabel {color : %1; }</translation>
     </message>
@@ -5167,12 +5160,12 @@ Directory Path: %1</source>
 <context>
     <name>U2::GraphMenuAction</name>
     <message>
-        <location filename="../src/ov_sequence/GraphMenu.cpp" line="117"/>
+        <location filename="../src/ov_sequence/GraphMenu.cpp" line="126"/>
         <source>Graphs</source>
         <translation>Графики</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/GraphMenu.cpp" line="125"/>
+        <location filename="../src/ov_sequence/GraphMenu.cpp" line="134"/>
         <source>Close all graphs</source>
         <translation>Закрыть все графики</translation>
     </message>
@@ -5670,49 +5663,54 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MSAHighlightingTab</name>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="94"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="77"/>
+        <source>Threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="120"/>
         <source>Use dots</source>
         <translation>Использовать точки</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="98"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="124"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="108"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="134"/>
         <source>Highlight characters with conservation level:</source>
         <translation>Подсветить символы с уровнем сохранения:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="111"/>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="112"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="137"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="138"/>
         <source> threshold</source>
         <translation> порог</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="123"/>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="269"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="149"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="346"/>
         <source>Threshold: %1%</source>
         <translation>Порог: %1%</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="151"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="177"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="154"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="180"/>
         <source>Highlighting</source>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="243"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="278"/>
         <source>Info: set a reference sequence.</source>
         <translation>Инфо: укажите референсную последовательность.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="252"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="287"/>
         <source>Info: export is not available for the selected highlighting.</source>
         <translation>Инфо: экспорт невозможен для выбранного режима подсветки.</translation>
     </message>
@@ -6215,12 +6213,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation>Размеры выделения %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="134"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="132"/>
         <source>Alignment object is locked</source>
         <translation>Объект выравнивания заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="134"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="132"/>
         <source>Alignment object is not locked</source>
         <translation>Объект выравнивания разблокирован</translation>
     </message>
@@ -6270,12 +6268,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaExportConsensusWidget</name>
     <message>
-        <location filename="../src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp" line="92"/>
+        <location filename="../src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp" line="94"/>
         <source>A problem occurred during export consensus. The multiple alignment is no more available.</source>
         <translation>A problem occurred during export consensus. The multiple alignment is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp" line="139"/>
+        <location filename="../src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp" line="151"/>
         <source>Save file</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -6731,16 +6729,34 @@ Simple overview is unavailable.</source>
     </message>
 </context>
 <context>
+    <name>U2::MsaEditorAlignmentDependentWidget</name>
+    <message>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="202"/>
+        <source>Data are outdated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="203"/>
+        <source>Data are valid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="204"/>
+        <source>Data are being updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::MsaEditorSimilarityColumn</name>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="64"/>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="70"/>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="78"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="60"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="66"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="74"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="123"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="119"/>
         <source>score</source>
         <translation>счет</translation>
     </message>
@@ -7116,7 +7132,7 @@ Simple overview is unavailable.</source>
         <translation>Изменён видимый диапазон: [%1, %2]</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="421"/>
+        <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="422"/>
         <source>empty</source>
         <translation>&lt;пусто&gt;</translation>
     </message>
@@ -7156,16 +7172,19 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::Registry</name>
     <message>
+        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="121"/>
         <source>All alphabets</source>
-        <translation type="vanished">Все алфавиты</translation>
+        <translation>Все алфавиты</translation>
     </message>
     <message>
+        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="122"/>
         <source>Amino acid alphabet</source>
-        <translation type="vanished">Аминокислотный алфавит</translation>
+        <translation>Аминокислотный алфавит</translation>
     </message>
     <message>
+        <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="123"/>
         <source>Nucleotide alphabet</source>
-        <translation type="vanished">Нуклеотидный алфавит</translation>
+        <translation>Нуклеотидный алфавит</translation>
     </message>
 </context>
 <context>

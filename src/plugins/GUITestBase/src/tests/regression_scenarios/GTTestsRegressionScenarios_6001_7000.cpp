@@ -21,10 +21,12 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QGroupBox>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QSpinBox>
 #include <QTableWidget>
+#include <QWizard>
 
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -32,12 +34,17 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
+#include "primitives/GTMainWindow.h"
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTSlider.h>
+#include <primitives/GTSpinBox.h>
 #include <primitives/GTTableView.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -83,23 +90,29 @@
 #include "GTUtilsWorkflowDesigner.h"
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 
 namespace U2 {
 
@@ -796,7 +809,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
             GTGlobals::sleep(500);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
-            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
             GTGlobals::sleep(500);
 
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
@@ -806,7 +819,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
             GTGlobals::sleep(500);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1022,6 +1035,40 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
     CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6207) {
+    //1. Open the WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    //2. Compose scheme read fastq with PE reads -> Filter by Classification
+    GTUtilsWorkflowDesigner::addElement(os, "Read FASTQ File with SE Reads", true);
+    GTUtilsWorkflowDesigner::addElement(os, "Filter by Classification", true);
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read FASTQ File with SE Reads"),
+                                         GTUtilsWorkflowDesigner::getWorker(os, "Filter by Classification"));
+    //3. Set eas.fastq as input data
+    //GTUtilsWorkflowDesigner::click(os, "Read FASTQ File with PE Reads");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ File with SE Reads", dataDir + "samples/FASTQ/eas.fastq");
+
+    //4. Validate scheme. Count errors
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    int errorCount = GTUtilsWorkflowDesigner::getErrors(os).size();
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTUtilsWorkflowDesigner::click(os, "Filter by Classification");
+    GTWidget::click(os, GTWidget::findExactWidget<QGroupBox*>(os, "inputPortBox"), Qt::LeftButton, QPoint(7,7));
+
+    //6. In the Property Editor change value of the "Input URL 1" slot to empty. Don't change focus.
+    QTableWidget* table1 = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+    //GTUtilsWorkflowDesigner::setTableValue(os, "Source URL", "<empty>", GTUtilsWorkflowDesigner::comboValue, table1);
+    GTUtilsWorkflowDesigner::setTableValue(os, "Input URL 1", "<empty>", GTUtilsWorkflowDesigner::comboValue, table1);
+
+    //7. Validate workflow, count errors
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+
+    //Expected state: error counter contains 1 error more
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::getErrors(os).size() == 1 + errorCount, QString("Workflow validation error count doesn't match. Expected error count %1, actual %2.")
+                  .arg(QString::number(1 + errorCount)).arg(QString::number(GTUtilsWorkflowDesigner::getErrors(os).size())));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6212) {
     //1. Open the WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -1063,7 +1110,9 @@ GUI_TEST_CLASS_DEFINITION(test_6212) {
     GTGlobals::sleep();
 
     //5. Click "Validate workflow".
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTGlobals::sleep();
 
     //Expected state: Validation doesn't pass, there is an error about absent steps.
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
@@ -1119,6 +1168,40 @@ GUI_TEST_CLASS_DEFINITION(test_6229) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6230) {
+
+    //    2. Select "Tools" -> Sanger data analysis" -> "Map reads to reference...".
+    //    3. Set "_common_data/sanger/reference.gb" as reference, "_common_data/sanger/sanger_*.ab1" as reads. Accept the dialog.
+    //    Expected state: the task fails.
+    //    4. After the task finish open the report.
+    //    Expected state: there is an error message in the report: "The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the "Temporary files" parameter on the "Directories" tab of the UGENE Application Settings.".
+        class Scenario : public CustomScenario {
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+                AlignToReferenceBlastDialogFiller::setReference(os, testDir + "_common_data/sanger/reference.gb", dialog);
+
+                QStringList reads;
+                for (int i = 1; i < 21; i++) {
+                    reads << QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+                }
+                AlignToReferenceBlastDialogFiller::setReads(os, reads, dialog);
+                AlignToReferenceBlastDialogFiller::setDestination(os, sandBoxDir + "test_6230/test_6230.ugenedb", dialog);
+
+                GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+            }
+        };
+
+        GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+        GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        GTUtilsProjectTreeView::checkItem(os, "test_6230.ugenedb");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6232_1) {
@@ -1513,8 +1596,6 @@ GUI_TEST_CLASS_DEFINITION(test_6238) {
 
 GUI_TEST_CLASS_DEFINITION(test_6240) {
     //1. Open WD. This step allows us to prevent a bad case, when, at the first opening of WD, the dialog "Choose output directory" appears and the filler below is catching it
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) {
@@ -1527,6 +1608,7 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     };
     //2. Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
     //3. Choose "samples/Assembly/chrM.sam" as input and click "Run"
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads quality control...");
     GTGlobals::sleep();
@@ -1723,6 +1805,54 @@ GUI_TEST_CLASS_DEFINITION(test_6256) {
     GTFile::setReadWrite(os, tempDir);
 
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getErrors(os).size() == 2, "Unexpected number of errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6262) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Add "Filter Annotations by Name", "Filter Annotations by Name" and connect them
+    WorkflowProcessItem* element1 = GTUtilsWorkflowDesigner::addElement(os, "Filter Annotations by Name");
+    WorkflowProcessItem* element2 = GTUtilsWorkflowDesigner::addElement(os, "Filter Annotations by Name");
+
+    //3. Check Input port.
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+    GTGroupBox::setChecked(os, "inputPortBox", true);
+   /* GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
+
+    //4. Check Input port.
+    GTGroupBox::setChecked(os, "inputPortBox", false);
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
+
+    //5. Check Output port.
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
+    GTGroupBox::setChecked(os, "outputPortBox", true);
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, element2);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't opened");
+
+    //6. Check Output port.
+    GTGroupBox::setChecked(os, "outputPortBox", false);
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, element2);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
+    GTUtilsWorkflowDesigner::click(os, element1);
+    CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
+    */
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6277) {
@@ -2001,6 +2131,32 @@ GUI_TEST_CLASS_DEFINITION(test_6334) {
     CHECK_SET_ERR(errors.contains("Classify Sequences with MetaPhlAn2: The mandatory \"Input URL 2\" slot is not connected."), "Expected error isn't found");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6350) {
+    //1. Open "human_T1.fa"
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Mark the sequence as circular
+    GTUtilsProjectTreeView::markSequenceAsCircular(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+
+    //3. Select a joined region, which contains a part in the end and a part in the beginning
+    GTUtilsSequenceView::selectSeveralRegionsByDialog(os, "150000..199950,1..50000");
+
+    //4. Export selected region as sequence
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir + "human_T1_reg.fa", QString()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Export" << "Export selected sequence region...", GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: there is the only sequence in the exported file
+    QStringList list = GTUtilsProjectTreeView::getDocuments(os).value("human_T1_reg.fa");
+    CHECK_SET_ERR(list.size() == 1,
+                  QString("Unexpected sequence number, expected: 1, current: %1")
+                          .arg(list.size()));
+    CHECK_SET_ERR(list.first() == "[s] region [150000 199950]",
+                  QString("Unexpected sequence name, expected: [s] region [150000 199950], current %1")
+                          .arg(list.first()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6378) {
     //1. Remove Python from external tools
     class Custom : public CustomScenario {
@@ -2016,13 +2172,13 @@ GUI_TEST_CLASS_DEFINITION(test_6378) {
     //1. Open "UGENE Application Settings", select "External Tools" tab.
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
-    
+
     //2. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    
+
     //3. Place Metaphlan worker on scene
     GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
-    
+
     //4. Validate scheme
     GTUtilsWorkflowDesigner::validateWorkflow(os);
     GTGlobals::sleep();
@@ -2030,6 +2186,660 @@ GUI_TEST_CLASS_DEFINITION(test_6378) {
     GTGlobals::sleep();
     //Expected state: validation contains message: Classify Sequences with MetaPhlAn2: External tool "Bio" is not set
     GTUtilsWorkflowDesigner::checkErrorList(os, "Classify Sequences with MetaPhlAn2: External tool \"Bio\" is not set");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6397) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Place repeat worker
+    GTUtilsWorkflowDesigner::addElement(os, "Find Repeats");
+
+    //Expected state: default value for "Apply 'Max distance' attribute" is True
+    GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Find Repeats"));
+    QString defaultAttr = GTUtilsWorkflowDesigner::getParameter(os,  "Apply 'Max distance' attribute");
+    CHECK_SET_ERR(defaultAttr == "True","Attribute value isn't 'True'");
+
+    //3. Set "Max distance" parameter to 0
+    GTUtilsWorkflowDesigner::setParameter(os, "Max distance", "0", GTUtilsWorkflowDesigner::spinValue, GTGlobals::UseKey);
+    GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Find Repeats"));
+    GTGlobals::sleep();
+    GTUtilsWorkflowDesigner::clickParameter(os, "Max distance");
+
+    QList<QWidget*> list;
+    foreach(QWidget *w, GTMainWindow::getMainWindowsAsWidget(os)) {
+        list.append(w);
+    }
+
+    QSpinBox *qsb = nullptr;
+    foreach (QWidget *w, list) {
+        foreach (QObject *o, w->findChildren<QObject*>()) {
+            qsb = qobject_cast<QSpinBox*>(o);
+            if (qsb != nullptr) {
+                break;
+            }
+        }
+        if (qsb != nullptr) {
+            break;
+        }
+    }
+
+    //Expected state: it set successfully, ensure that 0 is minimum value
+    QString maxDistance = GTUtilsWorkflowDesigner::getParameter(os,  "Max distance", true);
+    CHECK_SET_ERR(maxDistance == "0 bp", "Attribute value isn't 0 bp");
+    CHECK_SET_ERR(qsb->minimum() == 0, "Minimum value isn't 0");
+
+    //4. Open human_t1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os){
+            GTGlobals::sleep(1000);
+            QWidget* dialog = QApplication::activeModalWidget();
+
+            QSpinBox *maxDistanceBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "maxDistBox", dialog));
+            GTSpinBox::checkLimits(os, maxDistanceBox, 0, 1000000);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    //5. Open repeat finder dialog
+    //Expected state: minimum value for max distance combobox is 0
+    GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find repeats...", GTGlobals::UseMouse);
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6398) {
+    //1. Open "_common_data/regression/6398/6398.gtf" file
+    //Expected: 5 similarity points of the 'GTF" format
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF", 5, 1));
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6398/6398.gtf");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6459) {
+    //1. Open "data/samples/Genbank/human_T1.fa".
+    //2. Open "Search in Sequence" options panel tab.
+    //3. Set "Substitute" algorithm.Check "Search with ambiguous bases" checkbox.
+    //4. Ensure that the search is performed on both strands(it is the default value).
+    //5. Enter the following pattern : "YYYGYY".
+    //Expected result: 2738 results are found.
+
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    SchedulerListener listener;
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Substitute");
+    GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases(os);
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "YYYGYY");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2738"), "Results string not match");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6475_1) {
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on "Add element with external tool" button on the toolbar.
+//    3. Select "_common_data/scenarios/_regression/6475/test_6475_1.etc" file.
+//    Expected state: there is "test_6475_1" element on the scene.
+    GTUtilsWorkflowDesigner::importCmdlineBasedElement(os, testDir + "_common_data/scenarios/_regression/6475/test_6475_1.etc");
+
+//    4. Run the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+//    Expected state: the workflow finishes soon.
+    GTUtilsTaskTreeView::waitTaskFinished(os, 30000);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6475_2) {
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on "Add element with external tool" button on the toolbar.
+//    3. Select "_common_data/scenarios/_regression/6475/test_6475_2.etc" file.
+    GTUtilsWorkflowDesigner::importCmdlineBasedElement(os, testDir + "_common_data/scenarios/_regression/6475/test_6475_2.etc");
+
+//    4. Open "_common_data/scenarios/_regression/6475/test_6475_2.uwl".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6475/test_6475_2.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    5. Click on "Read File URL(s)" element.
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+
+//    6. Add "_common_data/fasta/fa2.fa" and "_common_data/fasta/fa3.fa" to "Dataset 1".
+    GTUtilsWorkflowDesigner::setDatasetInputFiles(os, QStringList({testDir + "_common_data/fasta/fa2.fa", testDir + "_common_data/fasta/fa3.fa"}));
+
+//    4. Run the workflow.
+    GTLogTracer logTracer;
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+//    Expected state: the workflow finishes soon without errors.
+    GTUtilsTaskTreeView::waitTaskFinished(os, 30000);
+    GTUtilsLog::check(os, logTracer);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6481_1) {
+//    Test to check that element with external tool will add to dashboard an URL to file that is set as parameter with type "Output file URL" and it will be opened by UGENE by default.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Create element with external tool" button on the toolbar.
+//    3. Fill the wizard with the following values (not mentioned values can be set with any value):
+//        Parameters page: a parameter with a type "Output file URL".
+//    4. Accept the wizard.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "test_6481_1";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_file_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFileUrl, QString()));
+    settings.command = "%USUPP_JAVA% -help $output_file_url";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
+
+//    5. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6481_1");
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
+
+//    6. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an output file on the dashboard.
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "There are no output files on the dashboard");
+    const int expectedCount = 1;
+    CHECK_SET_ERR(expectedCount == outputFiles.size(), QString("There are too many output files on the dashboard: expected %1, got %2").arg(expectedCount).arg(outputFiles.size()));
+    const QString expectedName = "human_T1_cutted.fa";
+    CHECK_SET_ERR(expectedName == outputFiles.first(), QString("An unexpected output file name: expected '%1', got '%2'").arg(expectedName).arg(outputFiles.first()));
+
+//    7. Open a menu on the output item on the dashboard.
+//    Expected state: there are two options in the menu: "Open containing folder" and "Open by operating system".
+    // It is not trivial to get the menu items. It is not implemented yet.
+
+//    8. Click on the file on the dashboard.
+    GTUtilsDashboard::clickOutputFile(os, outputFiles.first());
+
+//    Expected state: UGENE tries to open the file.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDocument::checkDocument(os, "human_T1_cutted.fa", "AnnotatedDNAView");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6481_2) {
+//    Test to check that element with external tool will add to dashboard an URL to folder that is set as parameter with type "Output folder URL" and it doesn't have an option to be opened by UGENE.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Create element with external tool" button on the toolbar.
+//    3. Fill the wizard with the following values (not mentioned values can be set with any value):
+//        Parameters page: a parameter with a type "Output folder URL".
+//    4. Accept the wizard.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "test_6481_2";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_folder_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFolderUrl, QString()));
+    settings.command = "%USUPP_JAVA% -help $output_folder_url";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
+
+//    5. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6481_2");
+    GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", QFileInfo(sandBoxDir).absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
+
+//    6. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an output folder on the dashboard.
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "There are no output files on the dashboard");
+    const int expectedCount = 1;
+    CHECK_SET_ERR(expectedCount == outputFiles.size(), QString("There are too many output files on the dashboard: expected %1, got %2").arg(expectedCount).arg(outputFiles.size()));
+    const QString expectedName = "sandbox";
+    CHECK_SET_ERR(expectedName == outputFiles.first(), QString("An unexpected output file name: expected '%1', got '%2'").arg(expectedName).arg(outputFiles.first()));
+
+//    7. Open a menu on the output item on the dashboard.
+//    Expected state: there is the only option "Open containing folder" in the menu.
+    // It is not trivial to get the menu items. It is not implemented yet.
+
+//    8. Click on the output item.
+//    Expected state: a system file manager opens the folder.
+    // It is impossible to check that the file manager is opened on the item clicking.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6481_3) {
+//    Test to check that it is possible to forbid to open by UGENE an URL to file that is added to a dashboard by element with external tool.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Add element with external tool" button on the toolbar.
+//    3. Select "_common_data/scenarios/_regression/6481/test_6481_3.etc". Accept the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6481/test_6481_3.etc"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Add element with external tool");
+    GTGlobals::sleep();
+
+//    4. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6481_3");
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
+
+//    5. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an output file on the dashboard.
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "There are no output files on the dashboard");
+    const int expectedCount = 1;
+    CHECK_SET_ERR(expectedCount == outputFiles.size(), QString("There are too many output files on the dashboard: expected %1, got %2").arg(expectedCount).arg(outputFiles.size()));
+    const QString expectedName = "human_T1_cutted.fa";
+    CHECK_SET_ERR(expectedName == outputFiles.first(), QString("An unexpected output file name: expected '%1', got '%2'").arg(expectedName).arg(outputFiles.first()));
+
+//    7. Open a menu on the output item on the dashboard.
+//    Expected state: there is the only option in the menu: "Open containing folder".
+    // It is not trivial to get the menu items. It is not implemented yet.
+
+//    8. Click on the output item.
+//    Expected state: the file is opened with some other application.
+    // It is impossible to check that some other application is opened on the item clicking.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6481_4) {
+    //    Test to check that it is possible to forbid to add to dashboard URLs to file that is set in parameters with types "Output file URL" or "Output folder URL" in element with external tool.
+
+    //    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //    2. Click on the "Add element with external tool" button on the toolbar.
+    //    3. Select "_common_data/scenarios/_regression/6481/test_6481_4.etc". Accept the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6481/test_6481_4.etc"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Add element with external tool");
+    GTGlobals::sleep();
+
+    //    4. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6481_4");
+    GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+
+    //    5. Launch the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //    Expected state: the workflow execution finishes, there are no entries in the output widget on the dashboard.
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    const int expectedCount = 0;
+    CHECK_SET_ERR(expectedCount == outputFiles.size(), QString("There are too many output files on the dashboard: expected %1, got %2").arg(expectedCount).arg(outputFiles.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6474_1) {
+    //1. Open "_common_data/scenarios/_regression/6474/6474.aln"
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6474/6474.aln");
+
+    //2. Open the highlighting tab
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+
+    //3. Select the "Percentage identity (colored)" color scheme
+    QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
+    GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
+
+    QStringList backgroundColors = { "#ffff00", "#00ffff", "#00ffff", "#00ff00", "#00ff00", "#ffffff", "#ffffff", "#ffffff", "#ffffff" };
+    QStringList fontColors = { "#ff0000", "#0000ff", "#0000ff", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000" };
+
+    //Expected colors:
+    //background - #ffff00, #00ffff, #00ffff, #00ff00, #00ff00, #ffffff, #ffffff, #ffffff, #ffffff
+    //font - #ff0000, #0000ff, #0000ff, #000000, #000000, #000000, #000000, #000000, #000000
+    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
+    GTUtilsMSAEditorSequenceArea::zoomToMax(os);
+    for (int i = 0; i < 9; i++) {
+        QPoint p(i, 0);
+        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
+        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
+        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
+        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
+        QString expectedBackgroundColor = backgroundColors[i];
+        QString expectedFontColor = fontColors[i];
+        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
+        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6474_2) {
+    //1. Open "_common_data/scenarios/_regression/6474/6474.aln"
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6474/6474.aln");
+
+    //2. Open the highlighting tab
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+
+    //3. Select the "Percentage identity (colored)" color scheme
+    QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
+    GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
+
+    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
+    GTUtilsMSAEditorSequenceArea::zoomToMax(os);
+    QStringList backgroundColors = { "#00ffff", "#ffffff" };
+    QStringList fontColors = { "#0000ff", "#000000" };
+    QList<int> columns = { 1, 2, 5, 6 };
+    //Expected colors:
+    //background - 2, 3 column: #00ffff; 6, 7 column: #ffffff
+    //font - 2, 3 column: #0000ff; 6, 7 column: #000000
+    foreach(const int i, columns) {
+        QPoint p(i, 0);
+        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
+        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
+        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
+        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
+        int num = 1;
+        if (i == 1 || i == 2) {
+            num = 0;
+        }
+        QString expectedBackgroundColor = backgroundColors[num];
+        QString expectedFontColor = fontColors[num];
+        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
+        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+    }
+
+    //4. Set Threshold to 900
+    QSlider* colorThresholdSlider = qobject_cast<QSlider*>(GTWidget::findWidget(os, "colorThresholdSlider"));
+    CHECK_SET_ERR(nullptr != colorThresholdSlider, "Can't find colorThresholdSlider");
+
+    GTSlider::setValue(os, colorThresholdSlider, 900);
+    GTGlobals::sleep();
+    //Expected colors:
+    //background - all columns #ffffff
+    //font - all columns ##000000
+    foreach(const int i, columns) {
+        QPoint p(i, 0);
+        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
+        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
+        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
+        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
+        QString expectedBackgroundColor = backgroundColors[1];
+        QString expectedFontColor = fontColors[1];
+        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
+        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+    }
+
+    //5. Set Threshold to 100
+    GTSlider::setValue(os, colorThresholdSlider, 100);
+    GTGlobals::sleep();
+    //Expected colors:
+    //background - all columns #00ffff
+    //font - all columns ##0000ff
+    foreach(const int i, columns) {
+        QPoint p(i, 0);
+        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
+        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
+        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
+        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
+        QString expectedBackgroundColor = backgroundColors[0];
+        QString expectedFontColor = fontColors[0];
+        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
+        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6488_1) {
+//    1. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click "Create element with external tool" button on the toolbar.
+//    3. Fill the dialog with the following data:
+//        Element name: "UGENE-6488 test element 1"
+//        Command line tool: Integrated external tool "python"
+//        No inputs, parameters and outputs
+//        Command: "just a command"
+//        Element description on the scene: "description on the scene"
+//        Detailed element description: "detailed element description"
+//    4. Accept the dialog.
+//    Expected state: the element was created and put on the scene.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "UGENE-6488 test element 1";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.command = "just a command";
+    settings.description = "detailed element description";
+    settings.prompter = "description on the scene";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
+
+//    5. Click on the element on the scene.
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1");
+
+//    6. Call a context menu on the element on the scene.
+//    7. Select "Edit configuration..." menu item.
+//    8. Go to the "Command" page in the wizard.
+//    9. Set "a modified command" text as command.
+//    10. Go to the last page, accept the dialog.
+    class ModifyScenario : public CustomScenario {
+        void run(GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QWizard *wizard = qobject_cast<QWizard *>(dialog);
+            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teCommand", dialog), "a modified command");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            GTWidget::click(os, wizard->button(QWizard::FinishButton));
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1", QPoint(), Qt::RightButton);
+
+//    11. Edit the element again.
+//    12. Go to the "Command" page in the wizard.
+//    Expected state: the command is "a modified command".
+    class CheckScenario : public CustomScenario {
+        void run(GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QWizard *wizard = qobject_cast<QWizard *>(dialog);
+            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            const QString expectedText = "a modified command";
+            const QString actualText = GTTextEdit::getText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teCommand", dialog));
+            CHECK_SET_ERR(actualText == expectedText, QString("Unexpected command text: expected '%1', got '%2'").arg(expectedText).arg(actualText));
+
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::removeItem(os, "UGENE-6488 test element 1");
+    GTUtilsWorkflowDesigner::addElement(os, "UGENE-6488 test element 1");
+
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1", QPoint(), Qt::RightButton);
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6488_2) {
+//    1. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click "Create element with external tool" button on the toolbar.
+//    3. Fill the dialog with the following data:
+//        Element name: "UGENE-6488 test element"
+//        Command line tool: Integrated external tool "python"
+//        No inputs, parameters and outputs
+//        Command: "just a command"
+//        Element description on the scene: "description on the scene"
+//        Detailed element description: "detailed element description"
+//    4. Accept the dialog.
+//    Expected state: the element was created and put on the scene.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "UGENE-6488 test element 2";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.command = "just a command";
+    settings.description = "detailed element description";
+    settings.prompter = "description on the scene";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+
+//    5. Click on the element on the scene.
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2");
+    GTGlobals::sleep();
+
+//    6. Call a context menu on the element on the scene.
+//    7. Select "Edit configuration..." menu item.
+//    8. Go to the "Element appearance" page in the wizard.
+//    9. Set "a modified description on the scene" text as element description on the scene.
+//    10. Go to the last page, accept the dialog.
+    class ModifyScenario : public CustomScenario {
+        void run(GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QWizard *wizard = qobject_cast<QWizard *>(dialog);
+            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "tePrompter", dialog), "a modified description on the scene");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            GTWidget::click(os, wizard->button(QWizard::FinishButton));
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", QPoint(), Qt::RightButton);
+
+//    11. Edit the element again.
+//    12. Go to the "Element appearance" page in the wizard.
+//    Expected state: the element description on the scene is "a modified description on the scene".
+    class CheckScenario : public CustomScenario {
+        void run(GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QWizard *wizard = qobject_cast<QWizard *>(dialog);
+            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+            GTWidget::click(os, wizard->button(QWizard::NextButton));
+
+            const QString expectedText = "a modified description on the scene";
+            const QString actualText = GTTextEdit::getText(os, GTWidget::findExactWidget<QTextEdit *>(os, "tePrompter", dialog));
+            CHECK_SET_ERR(actualText == expectedText, QString("Unexpected command text: expected '%1', got '%2'").arg(expectedText).arg(actualText));
+
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::removeItem(os, "UGENE-6488 test element 2");
+    GTUtilsWorkflowDesigner::addElement(os, "UGENE-6488 test element 2");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Edit configuration..." }));
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", QPoint(), Qt::RightButton);
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6490) {
+//    Test to check that element with external tool will
+//    successfully create and run the command: `%TOOL_PATH% $oooo $oooo$oooo $oooo $oooo$oooo$oooo`.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Create element with external tool" button on the toolbar.
+//    3. Fill the wizard with the following values (not mentioned values can be set with any value):
+//        Parameters page: a parameter with a type "Output file URL".
+//    4. Accept the wizard.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "test_6490";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("oooo",
+                                                                                 qMakePair(CreateElementWithCommandLineToolFiller::ParameterString, QString("-version")), QString("Desc-version"), QString("OoOoO"));
+
+    settings.command = "%USUPP_JAVA% $oooo $oooo$oooo $oooo $oooo$oooo$oooo";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
+
+//    5. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6490");
+
+//    6. Launch the workflow.
+    GTLogTracer logTracer;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an log string `-version -version-version -version -version-version-version`.
+    bool desiredMessage = logTracer.checkMessage("$oooo $oooo$oooo $oooo $oooo$oooo$oooo");
+    CHECK_SET_ERR(desiredMessage, "No expected message in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6580) {
+//    Test to check that element with external tool will
+//    successfully create and run the command: `%TOOL_PATH% $oooo $oooo$oooo $oooo $oooo$oooo$oooo`.
+
+//    1. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+//    2. Click on the "Create element with external tool" button on the toolbar.
+//    3. Fill the wizard with the following values (not mentioned values can be set with any value):
+//        Parameters page: a parameter with a type "Output file URL".
+//    4. Accept the wizard.
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.elementName = "test_6580";
+    settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
+    settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("oooo",
+                                                                                 qMakePair(CreateElementWithCommandLineToolFiller::ParameterString, QString("-version")), QString("Desc-version"), QString("OoOoO"));
+
+    settings.command = "%USUPP_JAVA% $OoOoO $OoOoO$OoOoO $OoOoO $OoOoO$OoOoO$OoOoO";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTGlobals::sleep();
+
+//    5. Create a valid workflow with the new element.
+    GTUtilsWorkflowDesigner::click(os, "test_6580");
+
+//    6. Launch the workflow.
+    GTLogTracer logTracer;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the workflow execution finishes, there is an log string `-version -version-version -version -version-version-version`.
+    bool desiredMessage = logTracer.checkMessage("-version -version-version -version -version-version-version");
+    CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
 } // namespace GUITest_regression_scenarios

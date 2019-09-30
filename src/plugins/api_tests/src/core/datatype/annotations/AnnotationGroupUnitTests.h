@@ -22,8 +22,6 @@
 #ifndef _U2_ANNOTATION_GROUP_TESTS_H_
 #define _U2_ANNOTATION_GROUP_TESTS_H_
 
-#include <core/dbi/DbiTest.h>
-
 #include <unittest.h>
 
 namespace U2 {

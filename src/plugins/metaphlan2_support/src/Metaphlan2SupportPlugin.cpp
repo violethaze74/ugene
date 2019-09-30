@@ -41,7 +41,7 @@ MetaphlanSupportPlugin::MetaphlanSupportPlugin()
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(nullptr != etRegistry, );
 
-    etRegistry->registerEntry(new Metaphlan2Support(Metaphlan2Support::TOOL_NAME));
+    etRegistry->registerEntry(new Metaphlan2Support(Metaphlan2Support::TOOL_ID, Metaphlan2Support::TOOL_NAME));
 
     LocalWorkflow::Metaphlan2WorkerFactory::init();
 }
@@ -50,7 +50,7 @@ MetaphlanSupportPlugin::~MetaphlanSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(nullptr != etRegistry, );
 
-    etRegistry->unregisterEntry(Metaphlan2Support::TOOL_NAME);
+    etRegistry->unregisterEntry(Metaphlan2Support::TOOL_ID);
 }
 
 

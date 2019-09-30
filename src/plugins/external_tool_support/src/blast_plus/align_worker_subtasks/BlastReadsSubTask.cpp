@@ -264,6 +264,7 @@ BlastNPlusSupportTask *BlastAndSwReadTask::getBlastTask() {
 
     settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequence", "gb", stateInfo);
     settings.outputType = 5;
+    settings.strandSource = BlastTaskSettings::HitFrame;
 
     return new BlastNPlusSupportTask(settings);
 }

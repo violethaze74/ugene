@@ -52,7 +52,7 @@ const char FastaFormat::FASTA_HEADER_START_SYMBOL = '>';
 const char FastaFormat::FASTA_COMMENT_START_SYMBOL = ';';
 
 FastaFormat::FastaFormat(QObject* p)
-: TextDocumentFormat(p, DocumentFormatFlags_SW, QStringList()<<"fa"<<"mpfa"<<"fna"<<"fsa"<<"fas"<<"fasta"<<"sef"<<"seq"<<"seqs")
+: TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW, QStringList()<<"fa"<<"mpfa"<<"fna"<<"fsa"<<"fas"<<"fasta"<<"sef"<<"seq"<<"seqs")
 {
     formatName = tr("FASTA");
     supportedObjectTypes+=GObjectTypes::SEQUENCE;
@@ -300,7 +300,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
     objects << new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id));
     objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence( sequenceRef, dbiRef, headers, mergedMapping, fs );
     if (headers.size() > 1) {
-        writeLockReason = DocumentFormat::MERGED_SEQ_LOCK;
+        writeLockReason = QObject::tr("Document sequences were merged");
     }
 }
 

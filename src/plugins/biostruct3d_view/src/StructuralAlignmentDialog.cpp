@@ -58,7 +58,7 @@ StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject *fi
         : QDialog(parent), task(0)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331033");
+    new HelpButton(this, buttonBox, "24742421");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
 
@@ -141,7 +141,7 @@ void StructuralAlignmentDialog::accept() {
 int StructuralAlignmentDialog::execIfAlgorithmAvailable() {
     StructuralAlignmentAlgorithmRegistry *reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
     if (reg->getFactoriesIds().isEmpty()) {
-        QMessageBox::warning(this, "Error", "No available algorithms, make sure that apropriate plugin loaded (for ex. PTools)");
+        QMessageBox::warning(this, "Error", "No available algorithms, make sure that appropriate plugin loaded (for ex. PTools)");
         return Rejected;
     }
     else {

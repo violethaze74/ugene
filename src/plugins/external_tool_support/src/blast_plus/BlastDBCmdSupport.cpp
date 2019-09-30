@@ -44,7 +44,10 @@
 
 namespace U2 {
 
-BlastDbCmdSupport::BlastDbCmdSupport(const QString& path) : ExternalTool(ET_BLASTDBCMD, path)
+const QString BlastDbCmdSupport::ET_BLASTDBCMD = "BlastDBCmd";
+const QString BlastDbCmdSupport::ET_BLASTDBCMD_ID = "USUPP_BLAST_DB_CMD";
+
+BlastDbCmdSupport::BlastDbCmdSupport(const QString& path) : ExternalTool(ET_BLASTDBCMD_ID, ET_BLASTDBCMD, path)
 {
     if (AppContext::getMainWindow() != NULL) {
         icon = QIcon(":external_tool_support/images/ncbi.png");

@@ -151,7 +151,7 @@
       <item>
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Directory for custom elements with command line tools</string>
+         <string>Directory for custom elements with external tools</string>
         </property>
        </widget>
       </item>

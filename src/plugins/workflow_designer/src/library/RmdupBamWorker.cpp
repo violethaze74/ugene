@@ -114,7 +114,7 @@ void RmdupBamWorkerFactory::init() {
             RmdupBamWorker::tr("Select the custom output folder."));
 
         Descriptor outName(OUT_NAME_ID, RmdupBamWorker::tr("Output BAM name"),
-            RmdupBamWorker::tr("A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .nodup.bam extention."));
+            RmdupBamWorker::tr("A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .nodup.bam extension."));
 
         Descriptor removeSE(REMOVE_SINGLE_END_ID, RmdupBamWorker::tr("Remove for single-end reads"),
             RmdupBamWorker::tr("Remove duplicate for single-end reads. By default, the command works for paired-end reads only (-s)."));
@@ -290,6 +290,9 @@ QStringList BamRmdupSetting::getSamtoolsArguments() const{
 
 ////////////////////////////////////////////////////////
 //SamtoolsRmdupTask
+
+const QString SamtoolsRmdupTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
+
 SamtoolsRmdupTask::SamtoolsRmdupTask(const BamRmdupSetting &settings)
 :ExternalToolSupportTask(tr("Samtool rmdup for %1 ").arg(settings.inputUrl), TaskFlags(TaskFlag_None)),settings(settings),resultUrl(""){
 
@@ -312,7 +315,7 @@ void SamtoolsRmdupTask::prepare(){
 void SamtoolsRmdupTask::run(){
     CHECK_OP(stateInfo, );
 
-    ProcessRun samtools = ExternalToolSupportUtils::prepareProcess("SAMtools", settings.getSamtoolsArguments(), "", QStringList(), stateInfo, getListener(0));
+    ProcessRun samtools = ExternalToolSupportUtils::prepareProcess(SAMTOOLS_ID, settings.getSamtoolsArguments(), "", QStringList(), stateInfo, getListener(0));
     CHECK_OP(stateInfo, );
     QScopedPointer<QProcess> sp(samtools.process);
     QScopedPointer<ExternalToolRunTaskHelper> sh(new ExternalToolRunTaskHelper(samtools.process, new ExternalToolLogParser(), stateInfo));

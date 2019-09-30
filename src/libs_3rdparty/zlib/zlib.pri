@@ -1,5 +1,4 @@
 include( ../../ugene_globals.pri )
-UGENE_RELATIVE_DESTDIR = ''
 
 TEMPLATE = lib
 CONFIG +=thread debug_and_release staticlib
@@ -7,7 +6,7 @@ DEFINES+= _CRT_SECURE_NO_WARNINGS
 INCLUDEPATH += src
 
 TARGET = zlib
-DESTDIR=../../_release
+DESTDIR = ../../$$out_dir()
 
 !debug_and_release|build_pass {
 
@@ -15,7 +14,6 @@ DESTDIR=../../_release
         TARGET = zlibd
         DEFINES+=_DEBUG
         CONFIG +=console
-        DESTDIR=../../_debug
         OBJECTS_DIR=_tmp/obj/debug
         MOC_DIR=_tmp/moc/debug
     }
@@ -48,6 +46,6 @@ macx {
 }
 
 #unix {
-#    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+#    target.path = $$UGENE_INSTALL_DIR/
 #    INSTALLS += target
 #}

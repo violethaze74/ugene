@@ -226,6 +226,7 @@ void GTest_TaskAddSubtaskTest::init(U2::XMLTestFormat *tf, const QDomElement &el
         return;
     }
 }
+
 Task::ReportResult GTest_TaskAddSubtaskTest::report() {
     Task *task= getContext<Task>(this, taskContextName);
     if(task==NULL) {
@@ -240,7 +241,7 @@ Task::ReportResult GTest_TaskAddSubtaskTest::report() {
     }
     task->addSubTask(subtask);
 
-    if(!task->getSubtasks().contains(subtask)) {
+    if(!task->getPureSubtasks().contains(subtask)) {
         stateInfo.setError(QString("subtask not add"));
         return ReportResult_Finished;
     }

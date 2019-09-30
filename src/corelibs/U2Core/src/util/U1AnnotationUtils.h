@@ -22,8 +22,9 @@
 #ifndef _U1_ANNOTATION_UTILS_H_
 #define _U1_ANNOTATION_UTILS_H_
 
-#include <U2Core/AnnotationData.h>
 #include <U2Core/Annotation.h>
+#include <U2Core/AnnotationData.h>
+#include <U2Core/AnnotationSelection.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/GUrl.h>
 
@@ -93,6 +94,13 @@ public:
         AnnotationTableObject *annotationsObject , const QVariantMap &hints);
 
     static QList<U2Region> getRelatedLowerCaseRegions(const U2SequenceObject *so, const QList<GObject *> &anns);
+
+    /**
+    * Check if it's the selection of the circular view, which contains the junction point
+    * Return true if the "Annotation Selection Data" argument contains two selected regions and two location IDs,
+    * And if one of these regions has start point equals to zero, and another one has end pos equals to sequence length
+    */
+    static bool isAnnotationAroundJunctionPoint(AnnotationSelectionData* asd, const qint64 sequenceLength);
 
     static char * applyLowerCaseRegions(char *seq, qint64 first, qint64 len, qint64 globalOffset, const QList<U2Region> &regs);
 

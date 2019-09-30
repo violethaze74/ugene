@@ -1,11 +1,10 @@
 include( ../../ugene_globals.pri )
-UGENE_RELATIVE_DESTDIR = ''
 
 TEMPLATE = lib
 CONFIG += thread debug_and_release warn_off
 INCLUDEPATH += src
 TARGET = breakpad
-DESTDIR = ../../_release
+DESTDIR = ../../$$out_dir()
 QT -= gui
 
 !debug_and_release|build_pass {
@@ -13,7 +12,6 @@ QT -= gui
         TARGET = breakpadd
         DEFINES += _DEBUG
         CONFIG += console
-        DESTDIR = ../../_debug
         OBJECTS_DIR = _tmp/obj/debug
     }
 
@@ -24,7 +22,7 @@ QT -= gui
 }
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
+    target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
 }
 

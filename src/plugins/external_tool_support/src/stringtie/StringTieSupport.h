@@ -24,14 +24,15 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_STRINGTIE "StringTie"
-
 namespace U2 {
 
 class StringTieSupport : public ExternalTool {
     Q_OBJECT
 public:
-    StringTieSupport(const QString& name, const QString& path = "");
+    StringTieSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_STRINGTIE;
+    static const QString ET_STRINGTIE_ID;
 };
 
 } // namespace

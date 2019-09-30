@@ -125,7 +125,7 @@ void AssemblyImporter::finalizeAssembly() {
     SAFE_POINT_OP(innerOs, );
 
     if (connection.dbi->isTransactionActive()) {
-        coreLog.trace("Assembly finalization inside a transaction occured: there can be some troubles");
+        coreLog.trace("Assembly finalization inside a transaction occurred: there can be some troubles");
         Q_ASSERT(false);
     }
 

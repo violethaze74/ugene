@@ -104,7 +104,7 @@ AutoAnnotationObject::AutoAnnotationObject(U2SequenceObject *obj, DNATranslation
     : QObject(parent), dnaObj(obj), aminoTT(aminoTT) {
     QVariantMap hints;
     hints.insert(AUTO_ANNOTATION_HINT, true);
-    const QString tableName = AutoAnnotationsSupport::tr("Auto-annotations [%1 | %2]")
+    QString tableName = AutoAnnotationsSupport::tr("Auto-annotations [%1 | %2]")
         .arg(obj->getDocument()->getName()).arg(obj->getGObjectName());
 
     U2OpStatusImpl os;

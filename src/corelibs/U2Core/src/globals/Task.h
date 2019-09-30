@@ -224,7 +224,8 @@ public:
     bool isCanceled() const {return stateInfo.cancelFlag;}
 
     // Returns subtasks of the task. Task must prepare it's subtask on prepare() call and can't change them latter.
-    QList<Task*> getSubtasks() const;
+    const QList<QPointer<Task> > &getSubtasks() const;
+    QList<Task *> getPureSubtasks() const;
 
     QString getTaskName() const {return taskName;}
 

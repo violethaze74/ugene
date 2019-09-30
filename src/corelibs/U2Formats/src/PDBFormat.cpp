@@ -51,7 +51,7 @@ namespace U2 {
 QHash<QByteArray,int> PDBFormat::atomNumMap = createAtomNumMap();
 QHash<QByteArray, char> PDBFormat::acronymNameMap;
 
-PDBFormat::PDBFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlag(0), QStringList("pdb"))
+PDBFormat::PDBFormat(QObject* p) : TextDocumentFormat(p, BaseDocumentFormats::PLAIN_PDB, DocumentFormatFlag(0), QStringList("pdb"))
 {
     formatName = tr("PDB");
     formatDescription = tr("The Protein Data Bank (PDB) format provides a standard representation for macromolecular structure data derived from X-ray diffraction and NMR studies.");
@@ -525,7 +525,7 @@ void PDBFormat::PDBParser::parseSequence(BioStruct3D& biostruct, U2OpStatus& ti)
 
     if (currentPDBLine.length() < 24 /* at least one residue */)
     {
-        ti.setError(U2::PDBFormat::tr("Invalid SEQRES: less then 24 charachters"));
+        ti.setError(U2::PDBFormat::tr("Invalid SEQRES: less then 24 characters"));
         return;
     }
 

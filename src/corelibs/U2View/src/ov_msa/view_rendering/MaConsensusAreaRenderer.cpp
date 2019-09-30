@@ -233,7 +233,7 @@ void MaConsensusAreaRenderer::drawConsensusChar(QPainter &painter, const Consens
     }
 
     if (settings.highlightMismatches && charData.isMismatch) {
-        color = settings.colorScheme->getColor(0, 0, charData.consensusChar);
+        color = settings.colorScheme->getBackgroundColor(0, 0, charData.consensusChar);
         if (!color.isValid()) {
             color = DEFAULT_MISMATCH_COLOR;
         }

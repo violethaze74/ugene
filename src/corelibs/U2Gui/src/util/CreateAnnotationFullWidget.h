@@ -95,6 +95,7 @@ private:
 
     void initLayout();
     void init();
+    void initOsDependingLayoutSettings();
     void connectSignals();
 
     FormatType formatType;

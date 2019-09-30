@@ -49,7 +49,7 @@ public:
 
     virtual ExternalToolRunTask* createBlastPlusTask() = 0;
 
-    static QString toolNameByProgram(const QString &program);
+    static QString toolIdByProgram(const QString &program);
 
 protected:
     BlastTaskSettings               settings;

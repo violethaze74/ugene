@@ -42,12 +42,15 @@ namespace Monitor {
     public:
         FileInfo( );
         FileInfo(const QString &url, const QString &producer, bool openBySystem = false);
+
         QString url;
         QString actor;
         bool    openBySystem;
+        bool    isDir;
 
         bool operator== (const FileInfo &other) const;
     };
+
     class U2LANG_EXPORT WorkerInfo {
     public:
         WorkerInfo();
@@ -109,6 +112,7 @@ public:
     bool containsOutputFile(const QString &url) const;
 
     void addOutputFile(const QString &url, const QString &producer, bool openBySystem = false);
+    void addOutputFolder(const QString &url, const QString &producer);
     void addInfo(const QString &message, const QString &actor, const QString &type = WorkflowNotification::U2_INFO);
     void addError(const QString &message, const QString &actor, const QString &type = WorkflowNotification::U2_ERROR);
     /** Can be called only one time for the task */

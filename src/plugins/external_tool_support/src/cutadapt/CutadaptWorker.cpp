@@ -86,7 +86,7 @@ void CutAdaptFastqWorkerFactory::init() {
     U2DataPath* dataPath = NULL;
     U2DataPathRegistry* dpr =  AppContext::getDataPathRegistry();
     if (dpr){
-        U2DataPath* dp = dpr->getDataPathByName(ADAPTERS_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(CutadaptSupport::ADAPTERS_DATA_NAME);
         if (dp && dp->isValid()){
             dataPath = dp;
         }
@@ -122,7 +122,7 @@ void CutAdaptFastqWorkerFactory::init() {
             CutAdaptFastqWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, CutAdaptFastqWorker::tr("Output file name"),
-            CutAdaptFastqWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));
+            CutAdaptFastqWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension."));
 
         Descriptor adapters(ADAPTERS_URL, CutAdaptFastqWorker::tr("FASTA file with 3' adapters"),
             CutAdaptFastqWorker::tr("A FASTA file with one or multiple sequences of adapter that were ligated to the 3' end. "
@@ -192,7 +192,7 @@ void CutAdaptFastqWorkerFactory::init() {
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new CutAdaptFastqPrompter());
-    proto->addExternalTool(ET_CUTADAPT);
+    proto->addExternalTool(CutadaptSupport::ET_CUTADAPT_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -247,7 +247,7 @@ void CutAdaptFastqTask::prepareStep(){
             algoLog.error(tr("Can not copy the result file to: %1").arg(settings.outDir + settings.outName));
         }
     }else{
-        ExternalToolRunTask* etTask = getExternalToolTask(ET_CUTADAPT, new CutAdaptParser());
+        ExternalToolRunTask* etTask = getExternalToolTask(CutadaptSupport::ET_CUTADAPT_ID, new CutAdaptParser());
         CHECK(etTask != NULL, );
 
         addSubTask(etTask);

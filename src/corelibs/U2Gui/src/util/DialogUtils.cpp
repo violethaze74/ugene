@@ -62,14 +62,15 @@ QString DialogUtils::prepareDocumentsFileFilterByObjType(const GObjectType& t, b
     return FormatUtils::prepareDocumentsFileFilterByObjType(t, any);
 }
 
-void DialogUtils::setWizardMinimumSize(QWizard *wizard) {
-    QSize bestSize;
+void DialogUtils::setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize) {
+    QSize bestSize = minimumSize;
     foreach (int pageId, wizard->pageIds()) {
         QWizardPage *page = wizard->page(pageId);
         page->adjustSize();
         bestSize = bestSize.expandedTo(page->size());
     }
     wizard->setMinimumSize(bestSize);
+    wizard->adjustSize();
 }
 
 

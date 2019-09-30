@@ -38,6 +38,10 @@ DashboardInfo::DashboardInfo(const QString &dirPath, bool opened)
     dirName = QDir(path).dirName();
 }
 
+const QString &DashboardInfo::getId() const {
+    return path;
+}
+
 bool DashboardInfo::operator==(const DashboardInfo &other) const {
     return path == other.path;
 }

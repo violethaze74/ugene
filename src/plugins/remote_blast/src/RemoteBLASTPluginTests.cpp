@@ -234,7 +234,7 @@ Task::ReportResult GTest_RemoteBLAST::report() {
 
     if (simple) {
         if (result.isEmpty()) {
-            stateInfo.setError(QString("Simplified test retuns empty result"));
+            stateInfo.setError(QString("Simplified test returns empty result"));
         }
         return ReportResult_Finished;
     }

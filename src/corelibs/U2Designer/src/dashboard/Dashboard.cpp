@@ -38,6 +38,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include <U2Designer/DashboardInfoRegistry.h>
+
 #include <U2Gui/MainWindow.h>
 
 #include <U2Lang/URLAttribute.h>
@@ -103,6 +105,7 @@ Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
     saveSettings();
 
     connect(dashboardPageController, SIGNAL(si_pageReady()), SLOT(sl_pageReady()));
+    setObjectName("Dashboard");
 }
 
 void Dashboard::onShow() {
@@ -117,9 +120,14 @@ const QPointer<const WorkflowMonitor> &Dashboard::getMonitor() const {
 void Dashboard::setClosed() {
     opened = false;
     saveSettings();
+    updateDashboard();
 }
 
 const QString &Dashboard::directory() const {
+    return dir;
+}
+
+const QString &Dashboard::getDashboardId() const {
     return dir;
 }
 
@@ -130,6 +138,7 @@ const QString &Dashboard::getName() const {
 void Dashboard::setName(const QString &value) {
     name = value;
     saveSettings();
+    updateDashboard();
 }
 
 QString Dashboard::getPageFilePath() const {
@@ -185,12 +194,15 @@ void Dashboard::sl_serialize() {
 void Dashboard::sl_setDirectory(const QString &value) {
     dir = value;
     saveSettings();
+    reserveName();
 }
 
 void Dashboard::sl_workflowStateChanged(Monitor::TaskState state) {
     workflowInProgress = (state == Monitor::RUNNING) || (state == Monitor::RUNNING_WITH_PROBLEMS);
     if (!workflowInProgress) {
         emit si_workflowStateChanged(workflowInProgress);
+        registerDashboard();
+        AppContext::getDashboardInfoRegistry()->releaseReservedName(getDashboardId());
     }
 }
 
@@ -214,6 +226,24 @@ void Dashboard::loadSettings() {
     QSettings settings(dir + REPORT_SUB_DIR + SETTINGS_FILE_NAME, QSettings::IniFormat);
     opened = true;
     name = settings.value(NAME_SETTING).toString();
+}
+
+void Dashboard::registerDashboard() const {
+    DashboardInfo dashboardInfo(directory());
+    dashboardInfo.name = name;
+    const bool registered = AppContext::getDashboardInfoRegistry()->registerEntry(dashboardInfo);
+    Q_ASSERT(registered);
+    Q_UNUSED(registered);
+}
+
+void Dashboard::updateDashboard() const {
+    DashboardInfo info(dir, opened);
+    info.name = name;
+    AppContext::getDashboardInfoRegistry()->updateDashboardInfo(info);
+}
+
+void Dashboard::reserveName() const {
+    AppContext::getDashboardInfoRegistry()->reserveName(getDashboardId(), name);
 }
 
 }   // namespace U2

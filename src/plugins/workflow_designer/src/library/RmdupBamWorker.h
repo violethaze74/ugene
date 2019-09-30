@@ -99,6 +99,8 @@ private:
 private:
     BamRmdupSetting settings;
     QString resultUrl;
+
+    static const QString SAMTOOLS_ID;       // this constant is taken from the appropriate file in external_tool_support plugin
 };
 
 

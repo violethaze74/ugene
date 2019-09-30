@@ -41,7 +41,7 @@ private:
     void registerAdditionalActions(UGUITestBase *guiTestBase);
 
     QAction*        openGUITestRunnerAction;
-    GUITestRunner*  view;
+    QPointer<GUITestRunner> view;
 };
 
 } //namespace

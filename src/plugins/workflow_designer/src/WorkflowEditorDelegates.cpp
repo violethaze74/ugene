@@ -32,7 +32,7 @@ QWidget *ProxyDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem
     //if (owner->custom)
     QWidget* editor;
     {
-        QItemDelegate* itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
+        PropertyDelegate* itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
         if (itemDelegate) {
             connect(itemDelegate, SIGNAL(commitData(QWidget*)), SIGNAL(commitData(QWidget*)));
             editor = itemDelegate->createEditor(parent, option, index);
@@ -47,7 +47,7 @@ QWidget *ProxyDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem
 void ProxyDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     //if (owner->custom)
     {
-        QItemDelegate* itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
+        PropertyDelegate* itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
         if (itemDelegate) {
             itemDelegate->setEditorData(editor, index);
             return;

@@ -30,13 +30,12 @@ class QTreeWidget;
 namespace U2 {
 using namespace HI;
 
-class GTBaseCompleter
-{
+class GTBaseCompleter {
 public:
-    static void click(HI::GUITestOpStatus &os, QTreeWidget* tree, const QString &seqName);
-    static QStringList getNames(HI::GUITestOpStatus &os, QTreeWidget* tree = NULL);
-    static bool isEmpty(HI::GUITestOpStatus &os, QTreeWidget* tree = NULL);
-    static QTreeWidget* getCompleter(HI::GUITestOpStatus &os);
+    static void click(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor, const QString &seqName);
+    static QStringList getNames(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor);
+    static bool isEmpty(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor);
+    static QTreeWidget* getCompleter(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor);
 };
 
 }

@@ -45,7 +45,7 @@ namespace LocalWorkflow {
 SnpEffDatabaseDialog::SnpEffDatabaseDialog(QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331498");
+    new HelpButton(this, buttonBox, "24740244");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -113,8 +113,8 @@ void SnpEffDatabasePropertyWidget::setValue(const QVariant &value) {
 
 void SnpEffDatabasePropertyWidget::sl_showDialog() {
     // snpEff database list is available only if there is a valid tool!
-    ExternalTool *java = AppContext::getExternalToolRegistry()->getByName(ET_JAVA);
-    ExternalTool *snpEff = AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF);
+    ExternalTool *java = AppContext::getExternalToolRegistry()->getById(JavaSupport::ET_JAVA_ID);
+    ExternalTool *snpEff = AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID);
     CHECK(java != NULL, );
     CHECK(snpEff != NULL, );
     if (!(java->isValid() && snpEff->isValid())) {

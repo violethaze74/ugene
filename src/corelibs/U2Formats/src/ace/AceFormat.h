@@ -38,15 +38,11 @@ class U2FORMATS_EXPORT ACEFormat : public TextDocumentFormat {
 public:
     ACEFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::ACE; }
-    virtual const QString& getFormatName() const { return formatName; }
-
 protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
-    QString formatName;
     void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap &hints, U2OpStatus& ti);
 
     static const QString CO;

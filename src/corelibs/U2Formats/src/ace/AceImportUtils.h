@@ -91,7 +91,6 @@ private:
     int getClearRangeStart(const QByteArray &cur_line);
     int getClearRangeEnd(const QByteArray &cur_line);
     void formatSequence(QByteArray& data);
-    QString tr(const char * text) const { return QObject::tr(text); }
 
     IOAdapter *io;
     U2OpStatus *os;

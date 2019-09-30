@@ -70,8 +70,8 @@ const QString TrimmomaticWorkerFactory::GENERATE_LOG_ATTR_ID = "generate-log";
 const QString TrimmomaticWorkerFactory::LOG_URL_ATTR_ID = "log-url";
 const QString TrimmomaticWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
 
-const QString TrimmomaticWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads");
-const QString TrimmomaticWorkerFactory::PAIRED_END_TEXT = QObject::tr("PE reads");
+const QString TrimmomaticWorkerFactory::SINGLE_END_TEXT = "SE reads";
+const QString TrimmomaticWorkerFactory::PAIRED_END_TEXT = "PE reads";
 
 TrimmomaticWorkerFactory::TrimmomaticWorkerFactory()
     : DomainFactory(ACTOR_ID)
@@ -266,8 +266,8 @@ void TrimmomaticWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new TrimmomaticPrompter(NULL));
-    proto->addExternalTool(ET_JAVA);
-    proto->addExternalTool(ET_TRIMMOMATIC);
+    proto->addExternalTool(JavaSupport::ET_JAVA_ID);
+    proto->addExternalTool(TrimmomaticSupport::ET_TRIMMOMATIC_ID);
     proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
 

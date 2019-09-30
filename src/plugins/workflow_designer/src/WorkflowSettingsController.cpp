@@ -26,6 +26,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Version.h>
 
+#include <U2Designer/DashboardInfoRegistry.h>
+
 #include <U2Lang/WorkflowSettings.h>
 
 #include "WorkflowSettingsController.h"
@@ -66,7 +68,13 @@ void WorkflowSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     WorkflowSettings::setBGColor(state->color);
     WorkflowSettings::setExternalToolDirectory(state->externalToolCfgDir);
     WorkflowSettings::setIncludedElementsDirectory(state->includedElementsDir);
+
+    const QString previousWWorkflowOutputDirectory = WorkflowSettings::getWorkflowOutputDirectory();
     WorkflowSettings::setWorkflowOutputDirectory(state->workflowOutputDir);
+
+    if (previousWWorkflowOutputDirectory != state->workflowOutputDir) {
+        AppContext::getDashboardInfoRegistry()->scanDashboardsDir();
+    }
 }
 
 AppSettingsGUIPageWidget* WorkflowSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
@@ -75,7 +83,7 @@ AppSettingsGUIPageWidget* WorkflowSettingsPageController::createWidget(AppSettin
     return r;
 }
 
-const QString WorkflowSettingsPageController::helpPageId = QString("23330959");
+const QString WorkflowSettingsPageController::helpPageId = QString("24742347");
 
 WorkflowSettingsPageWidget::WorkflowSettingsPageWidget(WorkflowSettingsPageController* ) {
     setupUi(this);

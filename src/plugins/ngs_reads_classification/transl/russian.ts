@@ -381,6 +381,10 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <source>Not enough classified data in the port &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Auto</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::GenomicLibraryDialog</name>
@@ -467,6 +471,10 @@ See also the &quot;Input data&quot; parameter of the element.</source>
     </message>
     <message>
         <source>RefSeq release bacterial data from NCBI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MetaPhlAn2 database</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

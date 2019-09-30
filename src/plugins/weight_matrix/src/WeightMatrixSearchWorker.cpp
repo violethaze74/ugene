@@ -238,8 +238,8 @@ void PWMatrixSearchWorker::sl_taskFinished(Task *t) {
     if (t->isCanceled()) {
         return;
     }
-    foreach (Task *sub, t->getSubtasks()) {
-        WeightMatrixSingleSearchTask *sst = qobject_cast<WeightMatrixSingleSearchTask *>(sub);
+    foreach (const QPointer<Task> &sub, t->getSubtasks()) {
+        WeightMatrixSingleSearchTask *sst = qobject_cast<WeightMatrixSingleSearchTask *>(sub.data());
         res += WeightMatrixSearchResult::toTable(sst->takeResults(), U2FeatureTypes::MiscFeature, resultName);
     }
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(res);

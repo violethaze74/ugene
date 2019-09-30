@@ -287,7 +287,7 @@ void ClarkClassifyWorkerFactory::init() {
         Descriptor db2ram(DB_TO_RAM, ClarkClassifyWorker::tr("Load database into memory"),
             ClarkClassifyWorker::tr("Request the loading of database file by memory mapped-file (--ldm).<br><br>"
                                     "This option accelerates the loading time but it will require an additional amount of RAM significant. "
-                                    "This option also allows to load the database in multithreaded-task (see also the \"Number of threads\" parameter)."));
+                                    "This option also allows one to load the database in multithreaded-task (see also the \"Number of threads\" parameter)."));
 
         Descriptor numThreads(NUM_THREADS, ClarkClassifyWorker::tr("Number of threads"),
             ClarkClassifyWorker::tr("Use multiple threads for the classification and, with the \"Load database into memory\" option enabled, for the loading of the database into RAM (-n)."));
@@ -406,8 +406,8 @@ void ClarkClassifyWorkerFactory::init() {
     proto->setPrompter(new ClarkClassifyPrompter());
     proto->setValidator(new ClarkClassifyValidator());
     proto->setPortValidator(ClarkClassifyWorkerFactory::INPUT_PORT, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
-    proto->addExternalTool(ET_CLARK);
-    proto->addExternalTool(ET_CLARK_L);
+    proto->addExternalTool(ClarkSupport::ET_CLARK_ID);
+    proto->addExternalTool(ClarkSupport::ET_CLARK_L_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -468,7 +468,7 @@ Task * ClarkClassifyWorker::tick() {
 
         U2OpStatusImpl os;
         QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
-        tmpDir = GUrlUtils::createDirectory(tmpDir + "clark", "_", os);
+        tmpDir = GUrlUtils::createDirectory(tmpDir + "CLARK", "_", os);
         CHECK_OP(os, new FailTask(os.getError()));
 
         QString reportUrl = getValue<QString>(ClarkClassifyWorkerFactory::OUTPUT_URL);
@@ -582,14 +582,14 @@ ClarkClassifyTask::ClarkClassifyTask(const ClarkClassifySettings &settings, cons
 }
 
 void ClarkClassifyTask::prepare() {
-    QString toolName = ET_CLARK_L;
+    QString toolId = ClarkSupport::ET_CLARK_L_ID;
     if ( QString::compare(cfg.tool, ClarkClassifySettings::TOOL_DEFAULT, Qt::CaseInsensitive) == 0) {
-        toolName = ET_CLARK;
+        toolId = ClarkSupport::ET_CLARK_ID;
     } else if (QString::compare(cfg.tool, ClarkClassifySettings::TOOL_LIGHT, Qt::CaseInsensitive) != 0) {
         stateInfo.setError(tr("Unsupported CLARK variant. Only default and light variants are supported."));
         return;
     }
-    QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkLogParser(), cfg.databaseUrl));
+    QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolId, getArguments(), new ClarkLogParser(), cfg.databaseUrl));
     CHECK_OP(stateInfo, );
 
     setListenerForTask(task.data());

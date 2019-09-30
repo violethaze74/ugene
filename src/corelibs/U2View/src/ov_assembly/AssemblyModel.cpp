@@ -329,7 +329,7 @@ void AssemblyModel::setAssembly(U2AssemblyDbi * dbi, const U2Assembly & assm) {
 
             default: {
                 dissociateReference();
-                FAIL(tr("Unexected object is set as reference"), );
+                FAIL(tr("Unexpected object is set as reference"), );
             }
         }
     }

@@ -266,7 +266,7 @@ void CufflinksWorkerFactory::init()
     proto->setPortValidator(BasePorts::IN_ASSEMBLY_PORT_ID(), new InputSlotValidator());
 
     { // external tools
-        proto->addExternalTool(ET_CUFFLINKS, EXT_TOOL_PATH);
+        proto->addExternalTool(CufflinksSupport::ET_CUFFLINKS_ID, EXT_TOOL_PATH);
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(
@@ -322,7 +322,7 @@ void CufflinksWorker::init() {
     settingsAreCorrect = true;
     QString extToolPath = getValue<QString>(CufflinksWorkerFactory::EXT_TOOL_PATH);
     if (QString::compare(extToolPath, "default", Qt::CaseInsensitive) != 0) {
-        AppContext::getExternalToolRegistry()->getByName(ET_CUFFLINKS)->setPath(extToolPath);
+        AppContext::getExternalToolRegistry()->getById(CufflinksSupport::ET_CUFFLINKS_ID)->setPath(extToolPath);
     }
 
     QString tmpDirPath = getValue<QString>(CufflinksWorkerFactory::TMP_DIR_PATH);

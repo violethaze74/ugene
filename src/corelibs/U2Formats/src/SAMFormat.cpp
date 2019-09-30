@@ -87,7 +87,7 @@ bool SAMFormat::validateField(int num, QByteArray &field, U2OpStatus *ti) {
     return true;
 }
 
-SAMFormat::SAMFormat( QObject* p ): TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed), QStringList()<< "sam")
+SAMFormat::SAMFormat( QObject* p ): TextDocumentFormat(p, BaseDocumentFormats::SAM, DocumentFormatFlags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed), QStringList()<< "sam")
 {
     formatName = tr("SAM");
     formatDescription = tr("The Sequence Alignment/Map (SAM) format is a generic alignment format for"

@@ -459,7 +459,7 @@ void GTest_PDBFormatStressTest::init(XMLTestFormat *tf, const QDomElement& el) {
 Task::ReportResult GTest_PDBFormatStressTest::report()
 {
 
-    foreach (Task* task, getSubtasks()) {
+    foreach (const QPointer<Task> &task, getSubtasks()) {
         if (task->hasError()) {
             stateInfo.setError(stateInfo.getError()+fileNames.value(task) + "(" + task->getError() + ");   ");
         }
@@ -523,7 +523,7 @@ void GTest_ASNFormatStressTest::init(XMLTestFormat *tf, const QDomElement& el) {
 Task::ReportResult GTest_ASNFormatStressTest::report()
 {
 
-    foreach (Task* task, getSubtasks()) {
+    foreach (const QPointer<Task> &task, getSubtasks()) {
         if (task->hasError()) {
             stateInfo.setError(stateInfo.getError()+fileNames.value(task) + "(" + task->getError() + ");   ");
         }

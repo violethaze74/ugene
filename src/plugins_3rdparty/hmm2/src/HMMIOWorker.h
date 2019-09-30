@@ -30,11 +30,13 @@
 namespace U2 {
 namespace LocalWorkflow {
 
+#define HMM2_SLOT_ID QString("hmm2-profile")
+
 class HMMLib : public QObject {
     Q_OBJECT
 public:
     static const Descriptor HMM_CATEGORY();
-    static const Descriptor HMM2_SLOT;
+    static const Descriptor HMM2_SLOT();
     static DataTypePtr HMM_PROFILE_TYPE();
     static const QString HMM_PROFILE_TYPE_ID;
     static void init();

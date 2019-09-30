@@ -38,7 +38,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString DiamondClassifyWorker::DIAMOND_DIR = "diamond";
+const QString DiamondClassifyWorker::DIAMOND_DIR = "DIAMOND";
 
 DiamondClassifyWorker::DiamondClassifyWorker(Actor *actor)
     : BaseWorker(actor, false),

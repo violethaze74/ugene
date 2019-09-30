@@ -39,10 +39,6 @@
 namespace U2
 {
 
-const QString MsaEditorAlignmentDependentWidget::DataIsOutdatedMessage(QString("<FONT COLOR=#FF0000>%1</FONT>").arg(QObject::tr("Data are outdated")));
-const QString MsaEditorAlignmentDependentWidget::DataIsValidMessage(QString("<FONT COLOR=#00FF00>%1</FONT>").arg(QObject::tr("Data are valid")));
-const QString MsaEditorAlignmentDependentWidget::DataIsBeingUpdatedMessage(QString("<FONT COLOR=#0000FF>%1</FONT>").arg(QObject::tr("Data are being updated")));
-
 MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MsaEditorWgt* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings)
     : MaEditorNameList(ui, nhBar),
       matrix(NULL),
@@ -198,9 +194,15 @@ QList<Task*> CreateDistanceMatrixTask::onSubTaskFinished(Task* subTask){
     resMatrix = new MSADistanceMatrix(algo->getMatrix());
     return res;
 }
+
 MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(UpdatedWidgetInterface* _contentWidget)
 : contentWidget(_contentWidget), automaticUpdating(true){
     SAFE_POINT(NULL != _contentWidget, QString("Argument is NULL in constructor MsaEditorAlignmentDependentWidget()"),);
+
+    DataIsOutdatedMessage = QString("<FONT COLOR=#FF0000>%1</FONT>").arg(tr("Data are outdated"));
+    DataIsValidMessage = QString("<FONT COLOR=#00FF00>%1</FONT>").arg(tr("Data are valid"));
+    DataIsBeingUpdatedMessage = QString("<FONT COLOR=#0000FF>%1</FONT>").arg(tr("Data are being updated"));
+
 
     settings = &contentWidget->getSettings();
     connect(settings->ma, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),

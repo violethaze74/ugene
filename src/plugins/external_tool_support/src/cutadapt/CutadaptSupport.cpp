@@ -30,8 +30,13 @@
 
 namespace U2 {
 
-CutadaptSupport::CutadaptSupport(const QString& name, const QString& path)
-    : ExternalTool(name, path)
+const QString CutadaptSupport::ET_CUTADAPT = "cutadapt";
+const QString CutadaptSupport::ET_CUTADAPT_ID = "USUPP_CUTADAPT";
+const QString CutadaptSupport::ADAPTERS_DIR_NAME = "adapters";
+const QString CutadaptSupport::ADAPTERS_DATA_NAME = "Adapters file";
+
+CutadaptSupport::CutadaptSupport(const QString& id, const QString& name, const QString& path)
+    : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -52,8 +57,8 @@ CutadaptSupport::CutadaptSupport(const QString& name, const QString& path)
         dpr->registerEntry(dp);
     }
 
-    toolRunnerProgramm = ET_PYTHON;
-    dependencies << ET_PYTHON;
+    toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
+    dependencies << PythonSupport::ET_PYTHON_ID;
 }
 
 } //namespace U2

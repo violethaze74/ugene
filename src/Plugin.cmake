@@ -1,7 +1,5 @@
 project(${UGENE_PLUGIN_NAME})
 
-cmake_minimum_required(VERSION 3.4)
-
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)

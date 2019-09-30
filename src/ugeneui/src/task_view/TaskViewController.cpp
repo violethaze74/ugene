@@ -391,11 +391,11 @@ void TaskViewDockWidget::sl_itemExpanded(QTreeWidgetItem* qi) {
         return;
     }
 
-    const QList<Task*>& subs = ti->task->getSubtasks();
+    const QList<QPointer<Task> >& subs = ti->task->getSubtasks();
     assert(!subs.isEmpty());
     QList<QTreeWidgetItem*> newSubtaskItems;
-    foreach(Task* sub, subs) {
-        newSubtaskItems.append(createTaskItem(sub));
+    foreach(const QPointer<Task> &sub, subs) {
+        newSubtaskItems.append(createTaskItem(sub.data()));
     }
     ti->addChildren(newSubtaskItems);
     ti->updateVisual();
@@ -603,10 +603,10 @@ void TVTreeItem::detachFromTask() {
         taskReport = TVReportWindow::prepareReportHTML(task);
     }
     if (childCount() == 0) {
-        const QList<Task*>& subs = task->getSubtasks();
+        const QList<QPointer<Task> >& subs = task->getSubtasks();
         QList<QTreeWidgetItem*> newSubtaskItems;
-        foreach(Task* sub, subs) {
-            newSubtaskItems.append(new TVTreeItem(w, sub));
+        foreach(const QPointer<Task> &sub, subs) {
+            newSubtaskItems.append(new TVTreeItem(w, sub.data()));
         }
         addChildren(newSubtaskItems);
     }

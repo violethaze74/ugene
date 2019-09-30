@@ -65,7 +65,7 @@ const LocalWorkflow::TaxonomyClassificationResult & KrakenClassifyTask::getParse
 }
 
 void KrakenClassifyTask::prepare() {
-    classifyTask = new ExternalToolRunTask(KrakenSupport::CLASSIFY_TOOL, getArguments(), new KrakenClassifyLogParser());
+    classifyTask = new ExternalToolRunTask(KrakenSupport::CLASSIFY_TOOL_ID, getArguments(), new KrakenClassifyLogParser());
     setListenerForTask(classifyTask);
     addSubTask(classifyTask);
 }

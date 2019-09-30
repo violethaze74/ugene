@@ -40,6 +40,7 @@ CreateAnnotationFullWidget::CreateAnnotationFullWidget(QWidget *parent) :
     setupUi(this);
     initLayout();
     init();
+    initOsDependingLayoutSettings();
     connectSignals();
 }
 
@@ -55,53 +56,6 @@ void CreateAnnotationFullWidget::setGroupNameVisible(bool visible) {
 
 void CreateAnnotationFullWidget::setLocationVisible(bool visible) {
     gbLocation->setVisible(visible);
-
-    if (visible) {
-        mainLayout->addWidget(gbSaveAnnotationsInnerWidget);
-
-        saveAnnotationsLayout->removeWidget(rbExistingTable);
-        saveAnnotationsLayout->removeWidget(cbExistingTable);
-        saveAnnotationsLayout->removeWidget(tbBrowseExistingTable);
-
-        saveAnnotationsLayout->removeWidget(rbCreateNewTable);
-        saveAnnotationsLayout->removeWidget(leNewTablePath);
-        saveAnnotationsLayout->removeWidget(tbBrowseNewTable);
-
-        saveAnnotationsLayout->removeWidget(rbUseAutoTable);
-
-        saveAnnotationsLayout->addWidget(rbExistingTable, 0, 0);
-        saveAnnotationsLayout->addWidget(cbExistingTable, 0, 1);
-        saveAnnotationsLayout->addWidget(tbBrowseExistingTable, 0, 2);
-
-        saveAnnotationsLayout->addWidget(rbCreateNewTable, 1, 0);
-        saveAnnotationsLayout->addWidget(leNewTablePath, 1, 1);
-        saveAnnotationsLayout->addWidget(tbBrowseNewTable, 1, 2);
-
-        saveAnnotationsLayout->addWidget(rbUseAutoTable, 2, 0);
-    } else {
-        parametersLayout->addWidget(gbSaveAnnotationsInnerWidget);
-
-        saveAnnotationsLayout->removeWidget(rbExistingTable);
-        saveAnnotationsLayout->removeWidget(cbExistingTable);
-        saveAnnotationsLayout->removeWidget(tbBrowseExistingTable);
-
-        saveAnnotationsLayout->removeWidget(rbCreateNewTable);
-        saveAnnotationsLayout->removeWidget(leNewTablePath);
-        saveAnnotationsLayout->removeWidget(tbBrowseNewTable);
-
-        saveAnnotationsLayout->removeWidget(rbUseAutoTable);
-
-        saveAnnotationsLayout->addWidget(rbExistingTable, 0, 0, 1, 2);
-        saveAnnotationsLayout->addWidget(cbExistingTable, 1, 0);
-        saveAnnotationsLayout->addWidget(tbBrowseExistingTable, 1, 1);
-
-        saveAnnotationsLayout->addWidget(rbCreateNewTable, 2, 0, 1, 2);
-        saveAnnotationsLayout->addWidget(leNewTablePath, 3, 0);
-        saveAnnotationsLayout->addWidget(tbBrowseNewTable, 3, 1);
-
-        saveAnnotationsLayout->addWidget(rbUseAutoTable, 4, 0, 1, 2);
-        parametersLayout->addStretch();
-    }
 }
 
 void CreateAnnotationFullWidget::setAnnotationParametersVisible(bool /*visible*/) {
@@ -133,7 +87,6 @@ void CreateAnnotationFullWidget::setUsePatternNamesVisible(bool visible) {
 
 void CreateAnnotationFullWidget::setAnnotationTableOptionVisible(bool visible) {
     gbSaveAnnotationsInnerWidget->setVisible(visible);
-    saveAnnotationsInnerWidget->setVisible(visible);
 }
 
 void CreateAnnotationFullWidget::setAnnotationNameEnabled(bool enable) {
@@ -312,6 +265,22 @@ void CreateAnnotationFullWidget::initLayout() {
 
 void CreateAnnotationFullWidget::init() {
     useAminoAnnotationTypes(false);
+}
+
+void CreateAnnotationFullWidget::initOsDependingLayoutSettings() {
+//macOS as default
+#ifdef Q_OS_WIN
+    verticalLayout_6->setSpacing(6);
+    horizontalLayout_10->setSpacing(2);
+    gbSaveAnnotationsInnerWidget->layout()->setContentsMargins(9, 0, 9, 6);
+#elif !defined(Q_OS_OSX)
+    verticalLayout_6->setSpacing(6);
+    this->layout()->setSpacing(10);
+    gbSaveAnnotationsInnerWidget->layout()->setContentsMargins(9, 6, 9, 6);
+    horizontalLayout_8->setSpacing(5);
+    horizontalLayout_9->setSpacing(8);
+    horizontalLayout_10->setSpacing(8);
+#endif
 }
 
 void CreateAnnotationFullWidget::connectSignals() {

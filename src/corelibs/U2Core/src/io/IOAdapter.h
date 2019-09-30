@@ -116,7 +116,7 @@ public:
     /* Percent values in range 0..100, negative if unknown. */
     virtual int getProgress() const = 0;
 
-    bool isEof();
+    virtual bool isEof();
 
     virtual qint64 bytesRead() const { return -1; }
 

@@ -38,10 +38,6 @@ public:
 
     MSFFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::MSF; }
-
-    virtual const QString& getFormatName() const { return formatName; }
-
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
@@ -54,8 +50,6 @@ protected:
 private:
     void save(IOAdapter* io, Document* doc, U2OpStatus& ti);
     void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap &hints, U2OpStatus& ti);
-
-    QString formatName;
 
     static int  getCheckSum(const QByteArray& seq);
 

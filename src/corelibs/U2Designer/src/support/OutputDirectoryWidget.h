@@ -41,8 +41,6 @@ public:
 
     QString getChoosenDir(){return pathEdit->text();}
     void commit();
-    static const QString INFO;
-
 signals:
     void si_browsed();
 

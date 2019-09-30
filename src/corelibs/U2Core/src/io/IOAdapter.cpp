@@ -87,7 +87,7 @@ qint64 IOAdapter::readUntil(char* buf, qint64 maxSize,
 
 bool IOAdapter::isEof() {
     char ch;
-    int ret = readBlock( &ch, 1 );
+    qint64 ret = readBlock( &ch, 1 );
     if (ret == 1) {
         skip( -ret );
     }

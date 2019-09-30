@@ -89,7 +89,7 @@ void HMMBuildWorkerFactory::init() {
         inM[BaseSlots::MULTIPLE_ALIGNMENT_SLOT()] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
         p << new PortDescriptor(id, DataTypePtr(new MapDataType("hmm.build.in", inM)), true /*input*/);
         QMap<Descriptor, DataTypePtr> outM;
-        outM[HMMLib::HMM2_SLOT] = HMMLib::HMM_PROFILE_TYPE();
+        outM[HMMLib::HMM2_SLOT()] = HMMLib::HMM_PROFILE_TYPE();
         p << new PortDescriptor(od, DataTypePtr(new MapDataType("hmm.build", outM)), false /*input*/, true /*multi*/);
     }
 

@@ -30,10 +30,13 @@ namespace U2 {
 
 class OutputCollector : public ExternalToolListener {
 public:
-    OutputCollector();
+    OutputCollector(bool skipMessageWithCommand = true);
+
     void addNewLogMessage(const QString& message, int messageType);
     const QString& getLog() const;
+
 private:
+    const bool skipMessageWithCommand;
     bool firstLineSkipped;
     QString collectedLog;
 };

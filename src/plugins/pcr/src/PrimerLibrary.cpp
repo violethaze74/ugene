@@ -62,7 +62,7 @@ PrimerLibrary * PrimerLibrary::getInstance(U2OpStatus &os) {
     // open DBI connection
     const QString path = settings->getFileStorageDir() + "/" + libraryName;
 
-    U2DbiRef dbiRef(DEFAULT_DBI_ID, path.toLocal8Bit());
+    U2DbiRef dbiRef(DEFAULT_DBI_ID, path);
     QHash<QString, QString> properties;
     properties[U2DbiOptions::U2_DBI_LOCKING_MODE] = "normal";
 

@@ -23,6 +23,7 @@
 #include <QScopedPointer>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentUtils.h>
@@ -52,12 +53,12 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
     fragments(fragmentList),
     saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331182");
+    new HelpButton(this, buttonBox, "24742570");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     tabWidget->setCurrentIndex(0);
-    const QString coreLengthStr = ConstructMoleculeDialog::tr("core length");
+    QString coreLengthStr = ConstructMoleculeDialog::tr("core length");
 
     foreach(const DNAFragment& frag, fragments) {
         QString fragItem = QString("%1 (%2) %3 [%4 - %5 bp]")
@@ -90,14 +91,6 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
     molConstructWidget->installEventFilter(this);
 }
 
-static bool is32BitOs() {
-    bool result = false;
-#ifdef Q_PROCESSOR_X86_32
-    result = true;
-#endif
-    return result;
-}
-
 void ConstructMoleculeDialog::accept()
 {
     if (selected.isEmpty()) {
@@ -114,7 +107,7 @@ void ConstructMoleculeDialog::accept()
         }
         toLigate.append(fragment);
     }
-    if (is32BitOs() && resultSequenceSize > MAX_MOLECULE_SEQUENCE_LENGTH_32_BIT_OS) {
+    if (AppResourcePool::is32BitBuild() && resultSequenceSize > MAX_MOLECULE_SEQUENCE_LENGTH_32_BIT_OS) {
         QMessageBox::warning(this->window(), L10N::warningTitle(),  tr("Selected region is too large to proceed!"));
         return;
     }

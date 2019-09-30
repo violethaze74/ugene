@@ -97,9 +97,9 @@ void CuffdiffSupportTask::prepare() {
 
 void CuffdiffSupportTask::setupWorkingDir() {
     if (0 == QString::compare(settings.workingDir, "default", Qt::CaseInsensitive)) {
-        workingDir = ExternalToolSupportUtils::createTmpDir(CUFFDIFF_TMP_DIR, stateInfo);
+        workingDir = ExternalToolSupportUtils::createTmpDir(CufflinksSupport::CUFFDIFF_TMP_DIR, stateInfo);
     } else {
-        workingDir = ExternalToolSupportUtils::createTmpDir(settings.workingDir, CUFFDIFF_TMP_DIR, stateInfo);
+        workingDir = ExternalToolSupportUtils::createTmpDir(settings.workingDir, CufflinksSupport::CUFFDIFF_TMP_DIR, stateInfo);
     }
 }
 
@@ -179,7 +179,7 @@ Task * CuffdiffSupportTask::createCuffdiffTask() {
     arguments << prepareAssemblyUrlsArgs(settings.groupBySamples, settings.assemblyUrls);
 
     // create task
-    diffTask = new ExternalToolRunTask(ET_CUFFDIFF,
+    diffTask = new ExternalToolRunTask(CufflinksSupport::ET_CUFFDIFF_ID,
         arguments,
         new LogParser(),
         workingDir);

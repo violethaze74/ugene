@@ -30,22 +30,6 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Build</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shrink</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SE reads or contigs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PE reads</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Kraken external tool support</source>
         <translation type="unfinished"></translation>
     </message>
@@ -107,6 +91,18 @@
         <source>Classify reads with Kraken</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cannot open classification report: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate sequence name &apos;%1&apos; have been detected in the classification output.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Broken Kraken report : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::KrakenSupport</name>
@@ -120,6 +116,14 @@
     </message>
     <message>
         <source>The &quot;&lt;i&gt;kraken-translate&lt;/i&gt;&quot; executable is used to translate the Kraken classification to make it more readable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Build</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shrink</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -392,18 +396,6 @@ See also the &quot;Input data&quot; parameter of the element.</source>
 </context>
 <context>
     <name>U2::LocalWorkflow::KrakenClassifyWorker</name>
-    <message>
-        <source>Cannot open classification report: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate sequence name &apos;%1&apos; have been detected in the classification output.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Broken Kraken report : %1</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>There were %1 input reads, %2 reads were classified.</source>
         <translation type="unfinished"></translation>

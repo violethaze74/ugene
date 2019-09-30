@@ -57,6 +57,10 @@ public:
     QString getDownloadDirPath() const;
     void setDownloadDirPath(const QString& newPath) const;
 
+    // storage dir for custom external tool config files
+    QString getCustomToolsConfigsDirPath() const;
+    void setCustomToolsConfigsDirPath(const QString& newPath) const;
+
     // recently downloaded file names
     QStringList getRecentlyDownloadedFileNames() const;
     void setRecentlyDownloadedFileNames(const QStringList& fileNames) const;

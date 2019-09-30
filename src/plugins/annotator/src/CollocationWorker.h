@@ -22,10 +22,9 @@
 #ifndef _U2_ANNOTATOR_WORKER_H_
 #define _U2_ANNOTATOR_WORKER_H_
 
-#include <QSet>
-
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
+
 #include "CollocationsSearchAlgorithm.h"
 
 namespace U2 {

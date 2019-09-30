@@ -158,7 +158,7 @@ void GTest_PhyML::prepare() {
     assert( obj != NULL);
 
 
-    settings.algorithmId = PhyMLSupport::PhyMlRegistryId;
+    settings.algorithm = PhyMLSupport::PHYML;
 
     task = new PhyTreeGeneratorLauncherTask(input->getMultipleAlignment(), settings);
     addSubTask(task);

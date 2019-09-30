@@ -155,7 +155,7 @@
         <translation type="vanished">Представить выравнивание в виде таблицы частот</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatPlugin.cpp" line="71"/>
+        <location filename="../src/DNAStatPlugin.cpp" line="70"/>
         <source>Generate grid profile...</source>
         <translation>Представить выравнивание в виде таблицы частот...</translation>
     </message>
@@ -287,12 +287,12 @@
 <context>
     <name>U2::DNAStatPlugin</name>
     <message>
-        <location filename="../src/DNAStatPlugin.cpp" line="52"/>
+        <location filename="../src/DNAStatPlugin.cpp" line="51"/>
         <source>DNA Statistics</source>
         <translation>ДНК статистика</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatPlugin.cpp" line="52"/>
+        <location filename="../src/DNAStatPlugin.cpp" line="51"/>
         <source>Provides statistical reports for sequences and alignments</source>
         <translation>Набор статистических отчетов</translation>
     </message>
@@ -378,9 +378,8 @@
 <context>
     <name>U2::DNAStatsWindow</name>
     <message>
-        <location filename="../src/DNAStatsWindow.cpp" line="37"/>
         <source>Statistics for %1</source>
-        <translation>Статистика для %1</translation>
+        <translation type="vanished">Статистика для %1</translation>
     </message>
 </context>
 <context>
@@ -390,7 +389,7 @@
         <translation type="vanished">Рассчитать матрицу расстояний</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatPlugin.cpp" line="108"/>
+        <location filename="../src/DNAStatPlugin.cpp" line="107"/>
         <source>Generate distance matrix...</source>
         <translation>Рассчитать матрицу расстояний...</translation>
     </message>

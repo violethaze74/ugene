@@ -24,6 +24,7 @@
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
+
 #include "FindRepeatsTask.h"
 
 namespace U2 {
@@ -64,6 +65,8 @@ class RepeatWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
     static void init();
+    static FindRepeatsTaskSettings defaultSettings();
+
     RepeatWorkerFactory() : DomainFactory(ACTOR_ID) {}
     virtual Worker* createWorker(Actor* a) {return new RepeatWorker(a);}
 };

@@ -60,7 +60,7 @@ DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatD
 : QDialog(p), formatDetectionResults(results)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23330932");
+    new HelpButton(this, buttonBox, "24742320");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -106,6 +106,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, QByteArray& 
         rb->setChecked(i == 0);
 
         QLabel* label = new QLabel(text);
+        label->setObjectName(QString("label_%1").arg(i + 1));
         label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         label->setSizePolicy(QSizePolicy::Expanding, label->sizePolicy().verticalPolicy());
         label->installEventFilter(new LabelClickProvider(label, rb));

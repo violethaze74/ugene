@@ -161,7 +161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 //    Expected state: Background of the symbol  with the highest number of matches in the column is painted over.
 //    Intensity of colour depends on the frequency of appearance in the column.
     QWidget* seq=GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Colors"<<"Percentage Identity"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Colors"<<"Percentage identity"));
     GTMenu::showContextMenu(os,seq);
 //    Symbols and columns at the descending order
 //    1. A,G,T at 2,3,9

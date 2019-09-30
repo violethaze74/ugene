@@ -46,19 +46,8 @@ public:
     static const QByteArray COLUMN_ANNOTATION_RF;
     static const QByteArray UNI_ANNOTATION_MARK;
 
-private:
-    QString format_name;
-
 public:
     StockholmFormat( QObject* obj );
-
-    virtual DocumentFormatId getFormatId() const {
-        return BaseDocumentFormats::STOCKHOLM;
-    }
-
-    virtual const QString& getFormatName() const {
-        return format_name;
-    }
 
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 

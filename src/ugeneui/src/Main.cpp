@@ -19,10 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+#include <qglobal.h>
+
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <tchar.h>
 #endif // Q_OS_WIN
+
+#ifdef Q_OS_MAC
+#include "app_settings/ResetSettingsMac.h"
+#endif
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -85,6 +91,8 @@
 #include <U2Core/UserActionsWriter.h>
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/VirtualFileSystem.h>
+
+#include <U2Designer/DashboardInfoRegistry.h>
 
 #include <U2Formats/ConvertFileTask.h>
 #include <U2Formats/DocumentFormatUtils.h>
@@ -506,38 +514,45 @@ int main(int argc, char **argv)
     LogCache::setAppGlobalInstance(&logsCache);
     app.installEventFilter(new UserActionsWriter());
     coreLog.details(UserAppsSettings::tr("UGENE initialization started"));
-    GCOUNTER( cvar, tvar, "ugeneui" );
-
+    
+    GReportableCounter ugeneArchCounter("UGENE architecture", "", 1);
+    ++ugeneArchCounter.totalCount;
 #if defined UGENE_X86_64
-    GCOUNTER(cvar1, tvar1, "Ugene x64");
+    ugeneArchCounter.suffix = "Ugene 64-bit";
 #elif defined UGENE_X86
-    GCOUNTER(cvar1, tvar1, "Ugene x86");
+    ugeneArchCounter.suffix = "Ugene 32-bit";
 #else
-    GCOUNTER(cvar1, tvar1, "Undetected architecture");
+    ugeneArchCounter.suffix = "Undetected architecture";
 #endif
 
+    GReportableCounter sysArchCounter("OS architecture", "", 1);
+    ++sysArchCounter.totalCount;
 #if defined Q_OS_WIN
-    if (IsWow64()) {
-        GCOUNTER(cvar2, tvar2, "Windows x64");
+    if (ugeneArchCounter.suffix == "Ugene 64-bit") {
+        sysArchCounter.suffix = "Windows 64-bit";
     } else {
-        GCOUNTER(cvar3, tvar3, "Windows x86");
+        if (IsWow64()) {
+            sysArchCounter.suffix = "Windows 64-bit";
+        } else {
+            sysArchCounter.suffix = "Windows 32-bit";
+        }
     }
 #elif defined Q_OS_MAC
-    GCOUNTER(cvar2, tvar2, "MacOS x64");
+    sysArchCounter.suffix = "MacOS 64-bit";
 #elif defined Q_OS_LINUX
     if(QSysInfo::currentCpuArchitecture().contains("64")) {
-        GCOUNTER(cvar2, tvar2, "Linux x64");
+        sysArchCounter.suffix = "Linux 64-bit";
     } else {
-        GCOUNTER(cvar3, tvar3, "Linux x86");
+        sysArchCounter.suffix = "Linux 32-bit";
     }
 #elif defined Q_OS_UNIX
     if(QSysInfo::currentCpuArchitecture().contains("64")) {
-        GCOUNTER(cvar2, tvar2, "Unix x64");
+        sysArchCounter.suffix = "Unix 64-bit";
     } else {
-        GCOUNTER(cvar3, tvar3, "Unix x86");
+        sysArchCounter.suffix = "Unix 32-bit";
     }
 #else
-    GCOUNTER(cvar2, tvar2, "Undetected OS");
+    sysArchCounter.suffix = "Undetected OS";
 #endif
     coreLog.trace(QString("UGENE run at dir %1 with parameters %2").arg(AppContext::getWorkingDirectoryPath()).arg(app.arguments().join(" ")));
 
@@ -743,6 +758,9 @@ int main(int argc, char **argv)
     PasteFactory *pasteFactory = new PasteFactoryImpl;
     appContext->setPasteFactory(pasteFactory);
 
+    DashboardInfoRegistry *dashboardInfoRegistry = new DashboardInfoRegistry;
+    appContext->setDashboardInfoRegistry(dashboardInfoRegistry);
+
     Workflow::WorkflowEnv::init(new Workflow::WorkflowEnvImpl());
     Workflow::WorkflowEnv::getDomainRegistry()->registerEntry(new LocalWorkflow::LocalDomainFactory());
 
@@ -848,6 +866,9 @@ int main(int argc, char **argv)
     }
 
     delete wpc;
+
+    appContext->setDashboardInfoRegistry(nullptr);
+    delete dashboardInfoRegistry;
 
     appContext->setPasteFactory(NULL);
     delete pasteFactory;
@@ -1039,8 +1060,12 @@ int main(int argc, char **argv)
     delete globalSettings;
 
     if (deleteSettingsFile){
+#ifndef Q_OS_MAC
         QFile ff;
         ff.remove(iniFile);
+#else
+        ResetSettingsMac::reset();
+#endif // !Q_OS_MAC        
     }
 
     UgeneUpdater::onClose();

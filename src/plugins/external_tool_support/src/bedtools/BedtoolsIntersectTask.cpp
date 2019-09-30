@@ -78,7 +78,7 @@ void BedtoolsIntersectTask::prepare() {
     }
 
     const QStringList args = getParameters();
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_BEDTOOLS, args, new BedtoolsIntersectLogParser(settings.out));
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(BedtoolsSupport::ET_BEDTOOLS_ID, args, new BedtoolsIntersectLogParser(settings.out));
     setListenerForTask(etTask);
     addSubTask(etTask);
 }

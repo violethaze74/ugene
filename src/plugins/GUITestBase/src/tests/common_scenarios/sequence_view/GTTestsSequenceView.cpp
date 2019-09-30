@@ -756,7 +756,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     settings.start = 560;
     settings.end = 180;
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, wgt, Qt::RightButton);
+    GTWidget::click(os, GTWidget::findWidget(os, "det_view_Primers_DNA"), Qt::RightButton);
 
     GTGlobals::sleep();
 
@@ -2494,7 +2494,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     // Expected state: the line edits are red
     // 4. Click Ok
     // Expected state: message box appears
-    // 5. Set start search postion back to 1
+    // 5. Set start search position back to 1
     // 6. Check the exclude checkbox
     // 7. Click Ok
     // Expected state: message box appears

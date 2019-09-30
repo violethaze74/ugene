@@ -39,7 +39,7 @@ public:
     virtual ~ActorPrototypeRegistry();
 
     // standard registry
-    void registerProto(const Descriptor& group, ActorPrototype* proto);
+    bool registerProto(const Descriptor& group, ActorPrototype* proto);
     ActorPrototype* unregisterProto(const QString& id);
     const QMap<Descriptor, QList<ActorPrototype*> >& getProtos() const {return groups;}
     ActorPrototype* getProto(const QString& id) const;

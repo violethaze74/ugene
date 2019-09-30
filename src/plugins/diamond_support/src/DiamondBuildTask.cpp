@@ -51,7 +51,7 @@ QList<Task *> DiamondBuildTask::onSubTaskFinished(Task *subTask) {
     CHECK_OP(stateInfo, newSubTasks);
 
     if (genomesPreparationTask == subTask) {
-        ExternalToolRunTask *buildTask = new ExternalToolRunTask(DiamondSupport::TOOL_NAME, getArguments(genomesPreparationTask->getPreparedGenomesFileUrl()), new ExternalToolLogParser);
+        ExternalToolRunTask *buildTask = new ExternalToolRunTask(DiamondSupport::TOOL_ID, getArguments(genomesPreparationTask->getPreparedGenomesFileUrl()), new ExternalToolLogParser);
         setListenerForTask(buildTask);
         newSubTasks << buildTask;
     }

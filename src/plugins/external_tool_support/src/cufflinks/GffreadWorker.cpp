@@ -221,7 +221,7 @@ void GffreadWorkerFactory::init() {
     proto->setPrompter(new GffreadPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_ID, new GffreadInputSlotsValidator());
-    proto->addExternalTool(ET_GFFREAD);
+    proto->addExternalTool(CufflinksSupport::ET_GFFREAD_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_RNA_SEQ(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

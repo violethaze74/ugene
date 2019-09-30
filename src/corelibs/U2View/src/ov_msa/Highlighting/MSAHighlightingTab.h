@@ -31,6 +31,7 @@
 
 class QCheckBox;
 class QComboBox;
+class QDoubleSpinBox;
 class QGroupBox;
 class QLabel;
 class QRadioButton;
@@ -52,11 +53,16 @@ class U2VIEW_EXPORT MSAHighlightingTab : public QWidget
 public:
     MSAHighlightingTab(MSAEditor* msa);
 
+signals:
+    void si_colorSchemeChanged();
+
 private slots:
     void sl_sync();
 
     void sl_updateHint();
+    void sl_updateColorSchemeWidgets();
     void sl_exportHighlightningClicked();
+    void sl_colorParametersChanged();
     void sl_highlightingParametersChanged();
     void sl_refreshSchemes();
 
@@ -71,8 +77,13 @@ private:
     QLabel *hint;
     QCheckBox *useDots;
     QToolButton *exportHighlightning;
+
+    QLabel* colorThresholdLabel;
+    QSlider* colorThresholdSlider;
+    QDoubleSpinBox* colorSpinBox;
+
     QLabel *thresholdLabel;
-    QSlider *thresholdSlider;
+    QSlider *highlightingThresholdSlider;
     QLabel *lessMoreLabel;
     QRadioButton *thresholdLessRb;
     QRadioButton *thresholdMoreRb;

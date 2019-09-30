@@ -31,37 +31,6 @@
 
 #include <assert.h>
 
-namespace {
-
-using namespace U2;
-
-// used in GZipIndex building
-void setIfYouCan( bool what, bool* to ) {
-    if( NULL != to ) {
-        *to = what;
-    }
-}
-// used in GZipIndex building
-void addAccessPoint( GZipIndex& index, int bits, qint64 in, qint64 out, quint32 left, char* wnd ) {
-    assert( NULL != wnd );
-
-    QByteArray window;
-    GZipIndexAccessPoint next;
-    next.bits = bits;
-    next.in = in;
-    next.out = out;
-    if (left) {
-        window.append( QByteArray( wnd + GZipIndex::WINSIZE - left, left ) );
-    }
-    if (left < quint32(GZipIndex::WINSIZE)) {
-        window.append( QByteArray( wnd, GZipIndex::WINSIZE - left ) );
-    }
-    next.window = qCompress( window ).toBase64();
-    index.points.append( next );
-}
-
-} // anonymous namespace
-
 namespace U2 {
 
 class GzipUtil {
@@ -172,7 +141,7 @@ qint64 GzipUtil::uncompress(char* outBuff, qint64 outSize)
 
 qint64 GzipUtil::compress(const char* inBuff, qint64 inSize, bool finish)
 {
-    int ret; Q_UNUSED(ret);
+    int ret = Z_OK; Q_UNUSED(ret);
     /* Based on gun.c (example from zlib, copyrighted (C) 2003, 2005 Mark Adler) */
     strm.avail_in = inSize;
     strm.next_in = (Bytef*)inBuff;
@@ -207,14 +176,13 @@ bool GzipUtil::skip( const GZipIndexAccessPoint& here, qint64 offset ) {
         return false;
     }
     int ret = 0;
-    bool ok = false;
     char discard[GZipIndex::WINSIZE];
 
     LocalFileAdapter* localIO = qobject_cast< LocalFileAdapter* >( io );
     if( NULL == localIO ) {
         return false;
     }
-    ok = localIO->skip( here.in - ( here.bits ? 1 : 0 ) );
+    bool ok = localIO->skip( here.in - ( here.bits ? 1 : 0 ) );
     if ( !ok ) {
         return false;
     }
@@ -235,13 +203,13 @@ bool GzipUtil::skip( const GZipIndexAccessPoint& here, qint64 offset ) {
     do {
         /* define where to put uncompressed data, and how much */
         qint64 howMany = 0;
-        if ( 0 == offset ) {          /* at offset now */
+        if ( offset == 0) {          /* at offset now */
             break;                    /* all that we want */
         }
         if ( offset > GZipIndex::WINSIZE ) {             /* skip WINSIZE bytes */
             howMany = GZipIndex::WINSIZE;
         }
-        else if ( 0 != offset ) {             /* last skip */
+        else {             /* last skip */
             howMany = offset;
         }
         offset -= howMany;
@@ -294,7 +262,8 @@ bool ZlibAdapter::open(const GUrl& url, IOAdapterMode m ) {
 qint64 ZlibAdapter::readBlock(char* data, qint64 size)
 {
     if (!isOpen() || z->isCompressing()) {
-        assert(0 && "not ready to read");
+        qCritical("not ready to read");
+        Q_ASSERT(false);
         return false;
     }
     // first use data put back to buffer if any
@@ -327,7 +296,8 @@ qint64 ZlibAdapter::readBlock(char* data, qint64 size)
 
 qint64 ZlibAdapter::writeBlock(const char* data, qint64 size) {
     if (!isOpen() || !z->isCompressing()) {
-        assert(0 && "not ready to write");
+        qCritical("not ready to write");
+        Q_ASSERT(false);
         return false;
     }
     qint64 l = z->compress(data, size);
@@ -336,7 +306,8 @@ qint64 ZlibAdapter::writeBlock(const char* data, qint64 size) {
 
 bool ZlibAdapter::skip(qint64 nBytes) {
     if (!isOpen() || z->isCompressing()) {
-        assert(0 && "not ready to seek");
+        qCritical("not ready to seek");
+        Q_ASSERT(false);
         return false;
     }
     assert(buf);
@@ -376,90 +347,6 @@ int ZlibAdapter::getProgress() const {
 
 qint64 ZlibAdapter::bytesRead() const {
     return z->getPos() - rewinded;
-}
-
-// based on zran.c ( example from zlib Copyright (C) 2005 Mark Adler )
-GZipIndex ZlibAdapter::buildGzipIndex( IOAdapter* io, qint64 span, bool* ok ) {
-    assert( NULL != io && io->isOpen() );
-
-    int ret = 0;
-    qint64 totin  = 0;        // our own total counters
-    qint64 totout = 0;        // to avoid 4GB limit
-    qint64 last = 0;          // totout value of last access point
-
-    GZipIndex index;          // index being generated
-    z_stream strm;
-
-    char input[GZipIndex::CHUNK];
-    char window[GZipIndex::WINSIZE];
-
-    /* initialize inflate */
-    strm.zalloc = Z_NULL;
-    strm.zfree = Z_NULL;
-    strm.opaque = Z_NULL;
-    strm.avail_in = 0;
-    strm.next_in = Z_NULL;
-    ret = inflateInit2(&strm, 47);      /* automatic zlib or gzip decoding */
-    if (ret != Z_OK) {
-        setIfYouCan( false, ok );
-        return GZipIndex();
-    }
-
-    /* inflate the input, maintain a sliding window, and build an index -- this
-    also validates the integrity of the compressed data using the check
-    information at the end of the gzip or zlib stream */
-    totin = totout = last = 0;
-    strm.avail_out = 0;
-    do {
-        /* get some compressed data from input file */
-        strm.avail_in = io->readBlock( input, GZipIndex::CHUNK );
-        if ( -1 == int(strm.avail_in) || 0 == strm.avail_in ) {
-            setIfYouCan( false, ok );
-            return GZipIndex();
-        }
-        strm.next_in = ( Bytef* )&input[0];
-
-        /* process all of that, or until end of stream */
-        do {
-            /* reset sliding window if necessary */
-            if (strm.avail_out == 0) {
-                strm.avail_out = GZipIndex::WINSIZE;
-                strm.next_out = (Bytef*)window;
-            }
-
-            /* inflate until out of input, output, or at end of block --
-            update the total input and output counters */
-            totin  += strm.avail_in;
-            totout += strm.avail_out;
-            ret = inflate(&strm, Z_BLOCK);      /* return at end of block */
-            totin  -= strm.avail_in;
-            totout -= strm.avail_out;
-            if (ret == Z_MEM_ERROR || ret == Z_DATA_ERROR || ret == Z_NEED_DICT ) {
-                setIfYouCan( false, ok );
-                return GZipIndex();
-            }
-            if (ret == Z_STREAM_END) {
-                break;
-            }
-            /* if at end of block, consider adding an index entry (note that if
-            data_type indicates an end-of-block, then all of the
-            uncompressed data from that block has been delivered, and none
-            of the compressed data after that block has been consumed,
-            except for up to seven bits) -- the totout == 0 provides an
-            entry point after the zlib or gzip header, and assures that the
-            index always has at least one access point; we avoid creating an
-            access point after the last block by checking bit 6 of data_type
-            */
-            if ((strm.data_type & 128) && !(strm.data_type & 64) && (totout == 0 || totout - last > span)) {
-                addAccessPoint(index, strm.data_type & 7, totin, totout, strm.avail_out, window);
-                last = totout;
-            }
-        } while (strm.avail_in != 0);
-    } while (ret != Z_STREAM_END);
-
-    (void)inflateEnd(&strm);
-    setIfYouCan( true, ok );
-    return index;
 }
 
 qint64 ZlibAdapter::getUncompressedFileSizeInBytes(const GUrl &url) {

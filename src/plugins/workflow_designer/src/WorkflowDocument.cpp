@@ -78,8 +78,8 @@ GObject* WorkflowGObject::clone(const U2DbiRef&, U2OpStatus&, const QVariantMap 
 /// Workflow document format
 
 WorkflowDocFormat::WorkflowDocFormat(QObject* p)
-: TextDocumentFormat(p, DocumentFormatFlags_W1, QStringList(WorkflowUtils::WD_FILE_EXTENSIONS) << WorkflowUtils::WD_XML_FORMAT_EXTENSION),
-  formatName(tr("Workflow")) {
+: TextDocumentFormat(p, WorkflowDocFormat::FORMAT_ID, DocumentFormatFlags_W1, QStringList(WorkflowUtils::WD_FILE_EXTENSIONS) << WorkflowUtils::WD_XML_FORMAT_EXTENSION) {
+    formatName = tr("Workflow");
     supportedObjectTypes += WorkflowGObject::TYPE;
     formatDescription = tr("WorkflowDoc is a format used for creating/editing/storing/retrieving"
         "workflow with the text file");

@@ -22,10 +22,9 @@
 #include <QBitArray>
 
 #include <U2Core/AnnotationData.h>
-#include <U2Core/AnnotationTableObject.h>
-#include <U2Core/U2FeatureDbi.h>
 #include <U2Core/U2FeatureUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "../../gobjects/FeaturesTableObjectUnitTest.h"
 #include "AnnotationGroupUnitTests.h"

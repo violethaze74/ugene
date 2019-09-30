@@ -34,10 +34,6 @@ class U2FORMATS_EXPORT PlainTextFormat : public TextDocumentFormat {
 public:
     PlainTextFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PLAIN_TEXT;}
-
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
     static void storeRawData(const QByteArray& data, U2OpStatus& ts, IOAdapter* io);
@@ -45,9 +41,6 @@ protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
-
-private:
-    QString formatName;
 };
 
 }//namespace

@@ -226,7 +226,7 @@ void BaseWorker::restoreActualChannelsState() {
     }
 }
 
-QList<ExternalToolListener*> BaseWorker::createLogListeners(int listenersNumber) {
+QList<ExternalToolListener*> BaseWorker::createLogListeners(int listenersNumber) const {
     return context->getMonitor()->createWorkflowListeners(actor->getId(), actor->getLabel(), listenersNumber);
 }
 

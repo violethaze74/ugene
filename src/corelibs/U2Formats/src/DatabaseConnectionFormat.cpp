@@ -38,7 +38,7 @@
 namespace U2 {
 
 DatabaseConnectionFormat::DatabaseConnectionFormat(QObject *p) :
-    DocumentFormat(p,
+    DocumentFormat(p, BaseDocumentFormats::DATABASE_CONNECTION,
                    DocumentFormatFlags(DocumentFormatFlag_NoPack)
                    | DocumentFormatFlag_NoFullMemoryLoad
                    | DocumentFormatFlag_Hidden
@@ -63,10 +63,6 @@ DatabaseConnectionFormat::DatabaseConnectionFormat(QObject *p) :
                          << GObjectTypes::PHYLOGENETIC_TREE
                          << GObjectTypes::BIOSTRUCTURE_3D
                          << GObjectTypes::ASSEMBLY;
-}
-
-DocumentFormatId DatabaseConnectionFormat::getFormatId() const {
-    return BaseDocumentFormats::DATABASE_CONNECTION;
 }
 
 const QString& DatabaseConnectionFormat::getFormatName() const {

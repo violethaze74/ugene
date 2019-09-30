@@ -138,6 +138,10 @@ qint64 MultipleAlignmentObject::getNumRows() const {
     return getMultipleAlignment()->getNumRows();
 }
 
+const QList<MultipleAlignmentRow>& MultipleAlignmentObject::getRows() const {
+    return getMultipleAlignment()->getRows();
+}
+
 const MultipleAlignmentRow MultipleAlignmentObject::getRow(int row) const {
     return getMultipleAlignment()->getRow(row);
 }

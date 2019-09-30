@@ -57,7 +57,7 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _b
       sourceUrl(_sourceUrl),
       bamInfo(_bamInfo) {
     ui.setupUi(this);
-    new HelpButton(this, ui.buttonBox, "23331107");
+    new HelpButton(this, ui.buttonBox, "24742495");
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     ui.buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -253,8 +253,6 @@ void ConvertToSQLiteDialog::sl_refUrlButtonClicked() {
     GUrl currentUrl = ui.refUrlEdit->text();
     if (ui.refUrlEdit->text().isEmpty()) {
         currentUrl = sourceUrl;
-    } else {
-        currentUrl = ui.refUrlEdit->text();
     }
     QString dir = currentUrl.dirPath() + "/" + currentUrl.baseFileName();
     QString value;

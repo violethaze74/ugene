@@ -45,7 +45,7 @@
 
 namespace U2 {
 
-SCFFormat::SCFFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlag_SupportStreaming, QStringList("scf")) {
+SCFFormat::SCFFormat(QObject* p) : DocumentFormat(p, BaseDocumentFormats::SCF, DocumentFormatFlag_SupportStreaming, QStringList("scf")) {
     formatName = tr("SCF");
     formatDescription = tr ("It is Standard Chromatogram Format");
     supportedObjectTypes+=GObjectTypes::SEQUENCE;

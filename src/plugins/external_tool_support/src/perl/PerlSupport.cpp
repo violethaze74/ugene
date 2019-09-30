@@ -26,8 +26,11 @@
 
 namespace U2 {
 
-PerlSupport::PerlSupport(const QString &name, const QString &path)
-: ExternalTool(name, path)
+const QString PerlSupport::ET_PERL = "perl";
+const QString PerlSupport::ET_PERL_ID = "USUPP_PERL";
+
+PerlSupport::PerlSupport(const QString& id, const QString &name, const QString &path)
+: RunnerTool(QStringList(), id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/perl.png");
@@ -47,13 +50,6 @@ PerlSupport::PerlSupport(const QString &name, const QString &path)
     toolKitName="perl";
 
     muted = true;
-
-    connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
-}
-
-void PerlSupport::sl_toolValidationStatusChanged(bool isValid) {
-    Q_UNUSED(isValid);
-    ScriptingTool::onPathChanged(this);
 }
 
 } // U2

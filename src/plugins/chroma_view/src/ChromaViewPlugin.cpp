@@ -22,13 +22,11 @@
 #include "ChromaViewPlugin.h"
 #include "ChromatogramView.h"
 
+#include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNAChromatogramObject.h>
-#include <U2Core/DocumentSelection.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
@@ -39,9 +37,6 @@
 #include <U2View/ADVSequenceObjectContext.h>
 
 #include <U2Gui/GUIUtils.h>
-
-#include <QMessageBox>
-#include <QMenu>
 
 namespace U2 {
 
@@ -61,9 +56,6 @@ ChromaViewPlugin::ChromaViewPlugin() : Plugin(tr("Chromatogram View"), tr("Chrom
 
 ChromaViewPlugin::~ChromaViewPlugin() {
 }
-
-#define CHROMA_ACTION_NAME   "CHROMA_ACTION"
-#define CHROMA_VIEW_NAME     "CHROMA_VIEW"
 
 ChromaViewContext::ChromaViewContext(QObject* p) : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
@@ -142,7 +134,7 @@ bool ChromaViewContext::canHandle(GObjectView* v, GObject* o) {
     return qobject_cast<DNAChromatogramObject*>(o) != NULL;
 }
 
-ChromaViewAction::ChromaViewAction() : ADVSequenceWidgetAction(CHROMA_ACTION_NAME, tr("Show chromatogram")), view(NULL)
+ChromaViewAction::ChromaViewAction() : ADVSequenceWidgetAction("CHROMA_ACTION", tr("Show chromatogram")), view(NULL)
 {
 }
 

@@ -6,7 +6,6 @@ DEFINES+=U2_DISTRIBUTION_INFO=$${U2_DISTRIBUTION_INFO}
 DEFINES+=UGENE_VERSION=$${UGENE_VERSION}
 DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
 DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
-DEFINES+=UGENE_VER_PATCH=$${UGENE_VER_PATCH}
 
 CONFIG += c++11
 
@@ -18,18 +17,18 @@ contains(_UGENE_NGS, 1) : DEFINES += UGENE_NGS
 win32 : QMAKE_CXXFLAGS += /MP # use parallel build with nmake
 win32 : DEFINES+= _WINDOWS
 win32-msvc2013 : DEFINES += _SCL_SECURE_NO_WARNINGS
-win32-msvc2015|win32-msvc2017 {
-	DEFINES += _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS _XKEYCHECK_H
-	QMAKE_CXXFLAGS-=-Zc:strictStrings
-	QMAKE_CXXFLAGS-=Zc:strictStrings
-	QMAKE_CFLAGS-=-Zc:strictStrings
-	QMAKE_CFLAGS-=Zc:strictStrings
-	QMAKE_CXXFLAGS-=-g
-	QMAKE_CFLAGS-=-g
+win32-msvc2015|greaterThan(QMAKE_MSC_VER, 1909) {
+    DEFINES += _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS _XKEYCHECK_H
+    QMAKE_CXXFLAGS-=-Zc:strictStrings
+    QMAKE_CXXFLAGS-=Zc:strictStrings
+    QMAKE_CFLAGS-=-Zc:strictStrings
+    QMAKE_CFLAGS-=Zc:strictStrings
+    QMAKE_CXXFLAGS-=-g
+    QMAKE_CFLAGS-=-g
 }
 
-win32-msvc2017 {
-	DEFINES += _ALLOW_KEYWORD_MACROS __STDC_LIMIT_MACROS
+greaterThan(QMAKE_MSC_VER, 1909) {
+    DEFINES += _ALLOW_KEYWORD_MACROS __STDC_LIMIT_MACROS
 }
 
 win32 : QMAKE_CFLAGS_RELEASE += -O2 -Oy- -MD -Zi
@@ -50,9 +49,9 @@ linux-g++ {
     
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {
-	message("Build with gcov support. See gcov/lcov doc for generating coverage info")
-	QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
-	QMAKE_LFLAGS += -lgcov --coverage
+    message("Build with gcov support. See gcov/lcov doc for generating coverage info")
+    QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
+    QMAKE_LFLAGS += -lgcov --coverage
     }
 }
 
@@ -168,6 +167,82 @@ use_bundled_zlib() {
     DEFINES+=UGENE_USE_BUNDLED_ZLIB
 }
 
+# A function to add SQLite library to the list of libraries
+defineReplace(add_z_lib) {
+    use_bundled_zlib() {
+        !debug_and_release|build_pass {
+            CONFIG(debug, debug|release) {
+                RES = -lzlibd
+            } else {
+                RES = -lzlib
+            }
+        }
+    } else {
+        RES = -lz
+    }
+    return ($$RES)
+}
+
+
+# By default, UGENE uses bundled sqlite library built with special flags (see sqlite3.pri)
+# To use locally installed sqlite library use UGENE_USE_BUNDLED_SQLITE = 0
+
+defineTest( use_bundled_sqlite ) {
+    contains( UGENE_USE_BUNDLED_SQLITE, 0 ) : return (false)
+    return (true)
+}
+
+use_bundled_sqlite() {
+    DEFINES += UGENE_USE_BUNDLED_SQLITE
+}
+
+# A function to add SQLite library to the list of libraries
+defineReplace(add_sqlite_lib) {
+    use_bundled_sqlite() {
+        !debug_and_release|build_pass {
+            CONFIG(debug, debug|release) {
+                RES = -lugenedbd
+            } else {
+                RES = -lugenedb
+            }
+        }
+    } else {
+        RES = -lsqlite3
+    }
+    return ($$RES)
+}
+
+# Returns active UGENE output dir name for core libs and executables used by build process: _debug or _release.
+defineReplace(out_dir) {
+    !debug_and_release|build_pass {
+        CONFIG(debug, debug|release) {
+            RES = _debug
+        } else {
+            RES = _release
+        }
+    }
+    return ($$RES)
+}
+
+# Returns active UGENE output dir name for core libs and executables used by build process: _debug or _release.
+defineTest(is_debug_build) {
+    !debug_and_release|build_pass {
+        CONFIG(debug, debug|release) {
+            RES = true
+        } else {
+            RES = false
+        }
+    }
+    return ($$RES)
+}
+
+# Common library suffix for all libraries that depends on build mode: 'd' for debug and '' for release.
+# Example: 'libCore$$D.so' will result to the 'libCored.so' in debug mode and to the 'libCore.so' in release mode.
+D=
+is_debug_build() {
+    D=d
+}
+
 #Variable enabling exclude list for ugene modules
 #UGENE_EXCLUDE_LIST_ENABLED = 1
 defineTest( exclude_list_enabled ) {
@@ -275,6 +350,6 @@ defineTest(useWebKit) {
     return(false)
 }
 
-if (exclude_list_enabled() | !exists( ./libs_3rdparty/QSpec/QSpec.pro ) | !useWebKit()) {
+if (exclude_list_enabled() | !useWebKit()) {
     DEFINES += HI_EXCLUDED
 }

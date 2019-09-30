@@ -25,6 +25,7 @@
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -53,7 +54,11 @@
 
 namespace U2 {
 
-SpideySupport::SpideySupport(const QString& name, const QString& path) : ExternalTool(name, path)
+const QString SpideySupport::ET_SPIDEY = "Spidey";
+const QString SpideySupport::ET_SPIDEY_ID = "USUPP_SPIDEY";
+const QString SpideySupport::SPIDEY_TMP_DIR = "spidey";
+
+SpideySupport::SpideySupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         viewCtx = new SpideySupportContext(this);
@@ -88,11 +93,11 @@ void SpideySupport::sl_validationStatusChanged( bool isValid )
     SplicedAlignmentTaskRegistry* registry = AppContext::getSplicedAlignmentTaskRegistry();
     if (isValid)
     {
-        if (!registry->hadRegistered(ET_SPIDEY)) {
-            registry->registerTaskFactory(new SpideyAlignmentTaskFactory, ET_SPIDEY);
+        if (!registry->hadRegistered(ET_SPIDEY_ID)) {
+            registry->registerTaskFactory(new SpideyAlignmentTaskFactory, ET_SPIDEY_ID);
         }
     } else {
-        registry->unregisterTaskFactory(ET_SPIDEY);
+        registry->unregisterTaskFactory(ET_SPIDEY_ID);
     }
 }
 
@@ -130,15 +135,6 @@ void SpideySupportContext::buildMenu(GObjectView* view, QMenu* m) {
         }
 }
 
-//TODO: move this function to global utils package. For example to AppContext class.
-static bool is32BitOs() {
-    bool result = false;
-#ifdef Q_PROCESSOR_X86_32
-    result = true;
-#endif
-    return result;
-}
-
 // This is maximum sequence size we allow to use with Spidey task on 32-bit OSes
 // 100Mb sequence size will result to ~1.5Gb memory usage by Spidey process.
 #define MAX_SPIDEY_SEQUENCE_LENGTH_32_BIT_OS (100 * 1000 * 1000)
@@ -149,10 +145,10 @@ void SpideySupportContext::sl_align_with_Spidey() {
     QWidget* parent = QApplication::activeWindow();
 
     //Check that Spidey and tempory folder path defined
-    if (AppContext::getExternalToolRegistry()->getByName(ET_SPIDEY)->getPath().isEmpty()){
+    if (AppContext::getExternalToolRegistry()->getById(SpideySupport::ET_SPIDEY_ID)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(parent);
-        msgBox->setWindowTitle(ET_SPIDEY);
-        msgBox->setText(tr("Path for %1 tool not selected.").arg(ET_SPIDEY));
+        msgBox->setWindowTitle(SpideySupport::ET_SPIDEY);
+        msgBox->setText(tr("Path for %1 tool not selected.").arg(SpideySupport::ET_SPIDEY));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
@@ -169,7 +165,7 @@ void SpideySupportContext::sl_align_with_Spidey() {
     settings.allowMultipleSelection = false;
     settings.objectTypesToShow.insert(GObjectTypes::SEQUENCE);
     QScopedPointer<U2SequenceObjectConstraints> seqConstraints(new U2SequenceObjectConstraints());
-    if (is32BitOs()) {
+    if (AppResourcePool::is32BitBuild()) {
         seqConstraints->sequenceSize = MAX_SPIDEY_SEQUENCE_LENGTH_32_BIT_OS;
     }
     seqConstraints->alphabetType = DNAAlphabet_NUCL;

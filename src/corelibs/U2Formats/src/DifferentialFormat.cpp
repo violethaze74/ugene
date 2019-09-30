@@ -39,21 +39,13 @@ static const QString CHROMOSOME("chromosome");
 static const QString UNKNOWN_CHR("unknown");
 
 DifferentialFormat::DifferentialFormat(QObject *parent)
-: TextDocumentFormat(parent, DocumentFormatFlags_W1, QStringList()<<"diff")
+: TextDocumentFormat(parent, BaseDocumentFormats::DIFF, DocumentFormatFlags_W1, QStringList()<<"diff")
 {
     formatName = tr("Differential");
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
     formatDescription = tr("Differential format is a text-based format for"
         " representing Cuffdiff differential output files: expression,"
         " splicing, promoters and cds.");
-}
-
-DocumentFormatId DifferentialFormat::getFormatId() const {
-    return BaseDocumentFormats::DIFF;
-}
-
-const QString & DifferentialFormat::getFormatName() const {
-    return formatName;
 }
 
 QList<ColumnDataParser::Column> DifferentialFormat::getColumns() const {

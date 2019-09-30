@@ -371,7 +371,7 @@ void PairAlign::sl_alignButtonPressed() {
     firstSequenceSelectionOn = false;
     secondSequenceSelectionOn = false;
     checkState();
-    SAFE_POINT(true == canDoAlign, "Invalide state of PairAlign options panel widget. startAlignButton is not disabled.", );
+    SAFE_POINT(true == canDoAlign, "Invalid state of PairAlign options panel widget. startAlignButton is not disabled.", );
 
     U2OpStatus2Log os;
     U2EntityRef msaRef = msa->getMaObject()->getEntityRef();

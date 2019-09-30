@@ -157,7 +157,11 @@ ADVExportContext::ADVExportContext(AnnotatedDNAView* v) : view(v) {
 
     connect(view->getAnnotationsSelection(),
         SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)),
-        SLOT(sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)));
+        SLOT(updateActions()));
+
+    connect(view->getAnnotationsGroupSelection(),
+            SIGNAL(si_selectionChanged(AnnotationGroupSelection *, const QList<AnnotationGroup *> &, const QList<AnnotationGroup *> &)),
+            SLOT(updateActions()));
 
     connect(view, SIGNAL(si_sequenceAdded(ADVSequenceObjectContext*)), SLOT(sl_onSequenceContextAdded(ADVSequenceObjectContext*)));
     connect(view, SIGNAL(si_sequenceRemoved(ADVSequenceObjectContext*)), SLOT(sl_onSequenceContextRemoved(ADVSequenceObjectContext*)));
@@ -169,24 +173,15 @@ ADVExportContext::ADVExportContext(AnnotatedDNAView* v) : view(v) {
 void ADVExportContext::sl_onSequenceContextAdded(ADVSequenceObjectContext* c) {
     connect(c->getSequenceSelection(),
         SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)),
-        SLOT(sl_onSequenceSelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)));
+        SLOT(updateActions()));
 
     updateActions();
 }
 
 void ADVExportContext::sl_onSequenceContextRemoved(ADVSequenceObjectContext* c) {
-    c->disconnect(this);
+    c->getSequenceSelection()->disconnect(this);
     updateActions();
 }
-
-void ADVExportContext::sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &) {
-    updateActions();
-}
-
-void ADVExportContext::sl_onSequenceSelectionChanged(LRegionsSelection* , const QVector<U2Region>& , const QVector<U2Region>&) {
-    updateActions();
-}
-
 
 static bool allNucleic(const QList<ADVSequenceObjectContext*>& seqs) {
     foreach(const ADVSequenceObjectContext* s, seqs) {
@@ -199,7 +194,7 @@ static bool allNucleic(const QList<ADVSequenceObjectContext*>& seqs) {
 
 void ADVExportContext::updateActions() {
     bool hasSelectedAnnotations = !view->getAnnotationsSelection()->isEmpty();
-    bool hasSelectedGroups = view->getAnnotationsGroupSelection();
+    bool hasSelectedGroups = !view->getAnnotationsGroupSelection()->isEmpty();
     int nSequenceSelections = 0;
     foreach(ADVSequenceObjectContext* c, view->getSequenceContexts()) {
         nSequenceSelections += c->getSequenceSelection()->getSelectedRegions().count();
@@ -312,6 +307,7 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
         if (seqCtx == NULL) {
             continue;
         }
+
         QList<SharedAnnotationData> &annsPerSeq = annotationsPerSeq[seqCtx];
         annsPerSeq.append(a->getData());
         if (annsPerSeq.size() > 1) {
@@ -337,9 +333,14 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
     GUrlUtils::getLocalPathFromUrl(seqUrl, view->getSequenceInFocus()->getSequenceGObject()->getGObjectName(), dirPath, fileBaseName);
     GUrl defaultUrl = GUrlUtils::rollFileName(dirPath + QDir::separator() + fileBaseName + "_annotation." + fileExt, DocumentUtils::getNewDocFileNameExcludesHint());
 
-    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(true, allowComplement, allowTranslation, allowBackTranslation,
-        defaultUrl.getURLString(), fileBaseName, BaseDocumentFormats::FASTA,
-        AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(true,
+                                                                              allowComplement,
+                                                                              allowTranslation,
+                                                                              allowBackTranslation,
+                                                                              defaultUrl.getURLString(),
+                                                                              fileBaseName,
+                                                                              BaseDocumentFormats::FASTA,
+                                                                              AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle("Export Sequence of Selected Annotations");
     d->disableAllFramesOption(true); // only 1 frame is suitable
     d->disableStrandOption(true);    // strand is already recorded in annotation
@@ -394,11 +395,16 @@ void ADVExportContext::sl_saveSelectedSequences() {
 
     GUrl seqUrl = seqCtx->getSequenceGObject()->getDocument()->getURL();
     GUrlUtils::getLocalPathFromUrl(seqUrl, seqCtx->getSequenceGObject()->getGObjectName(), dirPath, fileBaseName);
-
     GUrl defaultUrl = GUrlUtils::rollFileName(dirPath + QDir::separator() + fileBaseName + "_region." + fileExt, DocumentUtils::getNewDocFileNameExcludesHint());
 
-    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(merge, complement, amino, nucleic, defaultUrl.getURLString(), fileBaseName, BaseDocumentFormats::FASTA,
-        AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(merge,
+                                                                              complement,
+                                                                              amino,
+                                                                              nucleic,
+                                                                              defaultUrl.getURLString(),
+                                                                              fileBaseName,
+                                                                              BaseDocumentFormats::FASTA,
+                                                                              AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle("Export Selected Sequence Region");
     const int rc = d->exec();
     CHECK(!d.isNull(), );

@@ -44,6 +44,8 @@ DatasetsListWidget::DatasetsListWidget(DatasetsController *_ctrl)
     tabs = new DatasetsTabWidget(this);
     l->addWidget(tabs);
 
+    setObjectName("DatasetsListWidget");
+
     QToolButton *newTabButton = new QToolButton(this);
     tabs->setCornerWidget(newTabButton, Qt::TopRightCorner);
     newTabButton->setCursor(Qt::ArrowCursor);
@@ -53,6 +55,7 @@ DatasetsListWidget::DatasetsListWidget(DatasetsController *_ctrl)
     newTabButton->setToolTip(tr("Add dataset"));
     QIcon addIcon = QIcon(QString(":U2Designer/images/add.png"));
     newTabButton->setIcon(addIcon);
+
     connect(newTabButton, SIGNAL(clicked()), SLOT(sl_newDataset()));
     connect(tabs, SIGNAL(tabCloseRequested(int)), SLOT(sl_deleteDataset(int)));
     connect(tabs, SIGNAL(si_contextMenu(const QPoint &, int)), SLOT(sl_contextMenu(const QPoint &, int)));
@@ -158,6 +161,7 @@ void DatasetsListWidget::sl_contextMenu(const QPoint &p, int idx) {
 DatasetsTabWidget::DatasetsTabWidget(QWidget *parent)
 : QTabWidget(parent)
 {
+    setObjectName("DatasetsTabWidget");
     setUsesScrollButtons(true);
     setTabsClosable(true);
     tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);

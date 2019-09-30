@@ -20,6 +20,8 @@
  */
 
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
+
 #include "SchemeSimilarityUtils.h"
 
 #include "CInterfaceManualTests.h"
@@ -1055,6 +1057,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, tuxedo_main_paired ) {
     CHECK_U2_ERROR( error );
     error = addSchemeActorsBinding( scheme, getFileList2, L"url", filesConversion2,
         L"in-file.url" );
+    CHECK_U2_ERROR( error );
     error = addSchemeActorsBinding( scheme, getFileList1, L"dataset", topHat,
         L"in-sequence.dataset" );
     CHECK_U2_ERROR( error );

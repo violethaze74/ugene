@@ -161,7 +161,6 @@ GUITestBasePlugin::GUITestBasePlugin() : Plugin(tr("GUITestBase"), tr("GUI Test 
     openGUITestRunnerAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
     openGUITestRunnerAction->setObjectName("GUI_TEST_RUNNER");
     openGUITestRunnerAction->setIcon(QIcon(":gui_test/images/open_gui_test_runner.png"));
-    view = NULL;
     connect(openGUITestRunnerAction, SIGNAL(triggered()), SLOT(sl_showWindow()));
     ToolsMenu::addAction(ToolsMenu::TOOLS, openGUITestRunnerAction);
 }
@@ -169,8 +168,10 @@ GUITestBasePlugin::GUITestBasePlugin() : Plugin(tr("GUITestBase"), tr("GUI Test 
 void GUITestBasePlugin::sl_showWindow() {
     if (view == NULL) {
         view = new GUITestRunner(AppContext::getGUITestBase());
+        view->show();
+    } else {
+        view->raise();
     }
-    view->show();
 }
 
 void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
@@ -237,7 +238,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_0808);
     REGISTER_TEST(GUITest_regression_scenarios::test_0812);
     REGISTER_TEST(GUITest_regression_scenarios::test_0814);
-    REGISTER_TEST(GUITest_regression_scenarios::test_0818);
     REGISTER_TEST(GUITest_regression_scenarios::test_0821);
     REGISTER_TEST(GUITest_regression_scenarios::test_0828);
     REGISTER_TEST(GUITest_regression_scenarios::test_0829);
@@ -574,7 +574,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1756);
     REGISTER_TEST(GUITest_regression_scenarios::test_1759);
     REGISTER_TEST(GUITest_regression_scenarios::test_1763_1);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1763_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_1764);
     REGISTER_TEST(GUITest_regression_scenarios::test_1771);
     REGISTER_TEST(GUITest_regression_scenarios::test_1784);
@@ -1438,10 +1437,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6167);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_6204);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6207);
     REGISTER_TEST(GUITest_regression_scenarios::test_6212);
     REGISTER_TEST(GUITest_regression_scenarios::test_6225);
     REGISTER_TEST(GUITest_regression_scenarios::test_6226);
     REGISTER_TEST(GUITest_regression_scenarios::test_6229);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6230);
     REGISTER_TEST(GUITest_regression_scenarios::test_6232_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6232_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_6232_3);
@@ -1461,15 +1462,36 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6249_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_6249_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_6256);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6262);
     REGISTER_TEST(GUITest_regression_scenarios::test_6277);
     REGISTER_TEST(GUITest_regression_scenarios::test_6279);
     REGISTER_TEST(GUITest_regression_scenarios::test_6283);
     REGISTER_TEST(GUITest_regression_scenarios::test_6291);
+
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6301);
     REGISTER_TEST(GUITest_regression_scenarios::test_6309);
     REGISTER_TEST(GUITest_regression_scenarios::test_6314);
     REGISTER_TEST(GUITest_regression_scenarios::test_6334);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6350);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6378);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6397);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6398);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_6459);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6475_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6475_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6481_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6481_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6481_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6481_4);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6474_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6474_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6488_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6488_2);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_6490);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6580);
+
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
     //////////////////////////////////////////////////////////////////////////
@@ -1876,6 +1898,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0002);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0003);
@@ -2779,8 +2802,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002)
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002_1)
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002_1);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0003);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0005)
     REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);
@@ -2838,6 +2860,22 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0016);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0017);
+
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0004);
+
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0007);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0008);
+
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer/Estimating

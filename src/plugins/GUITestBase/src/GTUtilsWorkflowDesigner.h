@@ -78,7 +78,7 @@ public:
     static QList<QTreeWidgetItem*> getVisibleSamples(HI::GUITestOpStatus &os);
 
     //expands samples/Elements tabwidget if collapsed
-    static void expandTabs(HI::GUITestOpStatus &os);
+    static void expandTabs(HI::GUITestOpStatus &os, QWidget const * const parentWidget = NULL);
 
     static void findByNameFilter(HI::GUITestOpStatus& os, const QString& elementName);
 
@@ -94,7 +94,7 @@ public:
     static QStringList getPaletteGroupEntriesNames(HI::GUITestOpStatus &os, const QString &groupName);
 
     //add to scene
-    static void addSample(HI::GUITestOpStatus &os, const QString &sampName);
+    static void addSample(HI::GUITestOpStatus &os, const QString &sampName, QWidget const * const parentWidget = NULL);
     static void addAlgorithm(HI::GUITestOpStatus &os, QString algName, bool exactMatch = false, bool useDragAndDrop = false);
     static WorkflowProcessItem * addElement(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch = false);
     static WorkflowProcessItem * addElementByUsingNameFilter(HI::GUITestOpStatus &os, const QString &elementName, bool exactMatch = false);
@@ -133,6 +133,9 @@ public:
     //returns all workers placed on workflow scene
     static QList<WorkflowProcessItem*> getWorkers(HI::GUITestOpStatus &os);
 
+    static QWidget *getDatasetsListWidget(HI::GUITestOpStatus& os);
+    static QWidget *getCurrentDatasetWidget(HI::GUITestOpStatus& os);
+
     static void createDataset(HI::GUITestOpStatus& os, QString datasetName = "");
     //sets input file with path "filePath" to the current dataset
     //this method should be called after selecting worker which contains dataset on scene
@@ -152,9 +155,15 @@ public:
     static void setCellValue(HI::GUITestOpStatus& os, QWidget* parent, QVariant value, valueType type, GTGlobals::UseMethod method);
     static QStringList getAllParameters(HI::GUITestOpStatus& os);
     static QStringList getComboBoxParameterValues(HI::GUITestOpStatus& os, QString parameter);
+    static QList<QPair<QString, bool> > getCheckableComboboxValuesFromInputPortTable(HI::GUITestOpStatus &os, int tableIndex, const QString &slotName);
 
     static QTableWidget* getInputPortsTable(HI::GUITestOpStatus &os, int index);
     static QTableWidget* getOutputPortsTable(HI::GUITestOpStatus &os, int index);
+
+    static void scrollInputPortsWidgetToTableRow(HI::GUITestOpStatus &os, int tableIndex, const QString &slotName);
+
+    static bool getGroupBoxChecked(HI::GUITestOpStatus &os, QWidget *box);
+    static bool setGroupBoxChecked(HI::GUITestOpStatus &os, QWidget *box, bool newCheckStatus);
 
     //gets oneparameter worker parameter
     static QString getParameter(HI::GUITestOpStatus& os, QString parameter, bool exactMatch = false);
@@ -185,9 +194,12 @@ public:
 
     static void changeInputPortBoxHeight(HI::GUITestOpStatus &os, const int offset);
 
+    // custom elements
+    static void importCmdlineBasedElement(HI::GUITestOpStatus &os, const QString &path);
+
 private:
     static void selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem *algorithm);
-    static void selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample);
+    static void selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget const * const parentWidget = NULL);
     static QRect getItemRect(HI::GUITestOpStatus &os,QString itemName);
     static QTreeWidget * getCurrentTabTreeWidget(HI::GUITestOpStatus &os);
 

@@ -34,7 +34,8 @@ class U2ALGORITHM_EXPORT MsaColorSchemePercentageIdentity : public MsaColorSchem
 public:
     MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
-    QColor getColor(int seq, int pos, char c) const;
+    QColor getBackgroundColor(int seq, int pos, char c) const override;
+    QColor getFontColor(int seq, int pos, char c) const override;
 
 private slots:
     void sl_alignmentChanged();

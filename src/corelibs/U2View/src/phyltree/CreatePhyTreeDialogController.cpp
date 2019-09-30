@@ -62,9 +62,9 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, co
     ui->setupUi(this);
 
     QMap<QString, QString> helpPagesMap;
-    helpPagesMap.insert("PHYLIP Neighbor Joining","23331100");
-    helpPagesMap.insert("MrBayes","23331101");
-    helpPagesMap.insert("PhyML Maximum Likelihood","23331099");
+    helpPagesMap.insert("PHYLIP Neighbor Joining","24742488");
+    helpPagesMap.insert("MrBayes","24742489");
+    helpPagesMap.insert("PhyML Maximum Likelihood","24742487");
     new ComboboxDependentHelpButton(this, ui->buttonBox, ui->algorithmBox, helpPagesMap);
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
@@ -89,7 +89,7 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, co
 }
 
 void CreatePhyTreeDialogController::accept() {
-    settings.algorithmId = ui->algorithmBox->currentText();
+    settings.algorithm = ui->algorithmBox->currentText();
 
     CHECK(checkFileName(), );
     SAFE_POINT(NULL != settingsWidget, "Settings widget is NULL", );

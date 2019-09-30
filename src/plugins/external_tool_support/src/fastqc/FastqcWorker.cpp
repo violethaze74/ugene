@@ -117,7 +117,7 @@ void FastQCFactory::init() {
             FastQCWorker::tr("Select the custom output folder."));
 
         Descriptor adapters(FastQCWorker::ADAPTERS, FastQCWorker::tr("List of adapters"),
-            FastQCWorker::tr("Specifies a non-default file which contains the list of adapter sequences which will be explicity searched against "
+            FastQCWorker::tr("Specifies a non-default file which contains the list of adapter sequences which will be explicitly searched against "
                                              "the library. The file must contain sets of named adapters "
                                              "in the form name[tab]sequence.  Lines prefixed with a hash "
                                              "will be ignored."));
@@ -165,9 +165,9 @@ void FastQCFactory::init() {
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new FastQCPrompter());
-    proto->addExternalTool(ET_JAVA);
-    proto->addExternalTool(ET_FASTQC);
-    proto->addExternalTool(ET_PERL);
+    proto->addExternalTool(JavaSupport::ET_JAVA_ID);
+    proto->addExternalTool(FastQCSupport::ET_FASTQC_ID);
+    proto->addExternalTool(PerlSupport::ET_PERL_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

@@ -25,6 +25,8 @@
 #include <QWebFrame>
 #include <QWebView>
 
+#include <GTUtilsMdi.h>
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
 
@@ -97,17 +99,21 @@ const QString GTUtilsDashboard::TITLE = "title";
 const QString GTUtilsDashboard::COLLAPSED_NODE_TITLE = "Expand this branch";
 const QString GTUtilsDashboard::ON_CLICK = "onclick";
 
-QWebView* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os){
-    return GTWidget::findExactWidget<QWebView*>(os, "Dashboard");
+QWebView* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os) {
+    return qobject_cast<QWebView *>(getTabWidget(os)->currentWidget());
 }
 
 QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus &os){
-    return GTWidget::findExactWidget<QTabWidget*>(os, "WorkflowTabView");
+    return GTWidget::findExactWidget<QTabWidget *>(os, "WorkflowTabView", GTUtilsMdi::activeWindow(os));
+}
+
+const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashboardNumber) {
+    return GTTabWidget::getTabName(os, getTabWidget(os), dashboardNumber);
 }
 
 QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os) {
-    const QString selector = "button.btn.full-width.long-text";
-    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector);
+    const QString selector = "div#outputWidget button.btn.full-width.long-text";
+    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector, GTGlobals::FindOptions(false));
     QStringList outputFilesNames;
     foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
         const QString outputFileName = outputFilesButton.toPlainText();
@@ -120,7 +126,7 @@ QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "clickOutputFile"
 void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outputFileName) {
-    const QString selector = "button.btn.full-width.long-text";
+    const QString selector = "div#outputWidget button.btn.full-width.long-text";
     const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector);
     foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
         QString buttonText = outputFilesButton.toPlainText();

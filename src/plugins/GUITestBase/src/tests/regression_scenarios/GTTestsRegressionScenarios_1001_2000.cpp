@@ -1452,7 +1452,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/regression/1080", "blast+marker_new.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2681,7 +2681,7 @@ GUI_TEST_CLASS_DEFINITION(test_1245){
 
                 QLineEdit* lineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit"));
                 CHECK_SET_ERR(lineEdit != NULL, "fileNameEdit not found");
-                CHECK_SET_ERR(GTLineEdit::copyText(os, lineEdit).endsWith(".fa"), "Wrong extention");
+                CHECK_SET_ERR(GTLineEdit::copyText(os, lineEdit).endsWith(".fa"), "Wrong extension");
 
                 QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
                 CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
@@ -2882,31 +2882,17 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
 
     // Excepted state : Input "Annotations" slot of WS is not empty and contains annotations from ORF Finder
     GTUtilsWorkflowDesigner::click(os, "Write Sequence");
-    GTUtilsWorkflowDesigner::changeInputPortBoxHeight(os, 100);
 
-    QTableWidget* tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-    CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");
-
-    QRect visibleArea = tw->visualItemRect(tw->item(0, 1));
-    const QPoint globalVisibleArea = tw->viewport()->mapToGlobal(visibleArea.center());
-    GTMouseDriver::moveTo(globalVisibleArea);
-    GTMouseDriver::scroll(-5);
-    GTGlobals::sleep();
-
-    QRect rect = tw->visualItemRect(tw->item(2, 1));
-    QPoint globalP = tw->viewport()->mapToGlobal(rect.center()/* - QPoint(0, 3)*/);
-    GTMouseDriver::moveTo(globalP);
-    GTGlobals::sleep();
-    GTMouseDriver::click();
-    GTGlobals::sleep(500);
-    QComboBox* box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
-
-    QStandardItemModel *checkBoxModel = qobject_cast<QStandardItemModel *>(box->model());
-    CHECK_SET_ERR(checkBoxModel != NULL, "Unexpected checkbox model");
-
-    QStandardItem *firstItem = checkBoxModel->item(0);
-    CHECK_SET_ERR(firstItem->data(Qt::DisplayRole).toString() == "Set of annotations (by ORF Marker)", "Unexpected port");
-    CHECK_SET_ERR(Qt::Checked == firstItem->checkState(), "Unexpected check state");
+    const QList<QPair<QString, bool> > items = GTUtilsWorkflowDesigner::getCheckableComboboxValuesFromInputPortTable(os, 0, "Set of annotations");
+    bool found = false;
+    const QString expectedText = "Set of annotations (by ORF Marker)";
+    foreach (const auto &item, items) {
+        if (expectedText == item.first) {
+            found = true;
+            CHECK_SET_ERR(item.second, QString("'%1' is not checked").arg(expectedText));
+        }
+    }
+    CHECK_SET_ERR(found, QString("'%1' is not found among the values").arg(expectedText));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1253){
@@ -3797,8 +3783,8 @@ GUI_TEST_CLASS_DEFINITION(test_1347) {
 
 GUI_TEST_CLASS_DEFINITION(test_1348) {
 //    1) Create "Element with command line tool" with name "test" and any slots.
-//    2) Use context menu on "test" element in "Custom Elements with CMD Tools" in "Elements", click "Remove"
-//    3) Use context menu on WD main window, add element -> "Custom Elements with CMD Tools". Select "test", UGENE DOES NOT crash.
+//    2) Use context menu on "test" element in "Custom Elements with External Tools" in "Elements", click "Remove"
+//    3) Use context menu on WD main window, add element -> "Custom Elements with External Tools". Select "test", UGENE DOES NOT crash.
 
 //    Expected state: There shouldn't be "test" element on the step 3 after removing it
 
@@ -3814,7 +3800,7 @@ GUI_TEST_CLASS_DEFINITION(test_1348) {
     input << CreateElementWithCommandLineToolFiller::InOutData("in1",
                                                                inOutDataType);
     settings.input = input;
-    settings.executionString = "./ugenem $in1";
+    settings.command = "./ugenem $in1";
 
     GTGlobals::sleep();
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
@@ -3833,7 +3819,7 @@ GUI_TEST_CLASS_DEFINITION(test_1348) {
 
     GTGlobals::sleep(4000);
 
-    const QString groupName = "Custom Elements with CMD Tools";
+    const QString groupName = "Custom Elements with External Tools";
     const QStringList groups = GTUtilsWorkflowDesigner::getPaletteGroupNames(os);
     if (groups.contains(groupName)) {
         CHECK_SET_ERR(!GTUtilsWorkflowDesigner::getPaletteGroupEntriesNames(os, groupName).contains(settings.elementName), "Element was not removed");
@@ -4691,7 +4677,7 @@ GUI_TEST_CLASS_DEFINITION(test_1435) {
                                                                 inOutDataType);
     settings.output = output;
 
-    settings.executionString = "./ugenem $in1 $in2 $out1 $out2";
+    settings.command = "./ugenem $in1 $in2 $out1 $out2";
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     QAbstractButton *createElement = GTAction::button(os, "createElementWithCommandLineTool");
@@ -5079,8 +5065,8 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
     const QStringList msaSequences1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(msaSequences1 != msaSequences0, "MSA is not changed");
     GTGlobals::sleep(5000);
-    QWidget* qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button",
-                                                          GTWidget::findWidget(os, "COI [m] COI"), GTGlobals::FindOptions(false));
+    QWidget *parent = GTWidget::findWidget(os, "COI [m] COI", GTWidget::findWidget(os, "COI [m] COI_SubWindow"));
+    QWidget* qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", parent, GTGlobals::FindOptions(false));
     if(qt_toolbar_ext_button != NULL && qt_toolbar_ext_button->isVisible()){
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Sort Alignment"));
         GTWidget::click(os, qt_toolbar_ext_button);
@@ -7680,11 +7666,12 @@ GUI_TEST_CLASS_DEFINITION(test_1734){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1735){
-//    1) Run UGENE
-//    2) Open Workflow Designer
+//    1. Open Workflow Designer.
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    3) Open Call variant pipeline scheme from samples
+
+//    2. Open﻿"Call variants with SAMtools" sample.
+//    Expected state: the sample is opened, a wizard appears.
 
     class custom : public CustomScenario {
     public:
@@ -7693,31 +7680,37 @@ GUI_TEST_CLASS_DEFINITION(test_1735){
             QWizard* wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
+//    3. Set "_common_data/cmdline/call-variations/chrM.fa" as reference; "_common_data/bam/chrM.sorted.bam" as input assembly.
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/cmdline/call-variations/chrM.fa"));
             GTWidget::click(os, GTWidget::findWidget(os, "browseButton", GTWidget::findWidget(os, "Reference sequence file labeledWidget", dialog)));
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/bam/chrM.sorted.bam"));
             GTWidget::click(os, GTWidget::findWidget(os, "addFileButton", wizard->currentPage()));
 
+//    4. Go to the fourth page of the wizard.
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
+//    Expected state: the page title is "SAMtools vcfutils varFilter parameters".
             QString title = GTUtilsWizard::getPageTitle(os);
             CHECK_SET_ERR(title == "SAMtools <i>vcfutils varFilter</i> parameters", "unexpected title: " + title);
 
+//    5. Go to the last page of the wizard, click to the "Run" button.
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
 
+    GTUtilsDialog::waitForDialog(os, new EscapeClicker(os, "Call Variants Wizard"));
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
-//    4) Click on "Show wizard" at the top of WD window yo specify vcfutils.pl parameters (page #4 of Call Variants Wizard)
-//    5) Run scheme at last page (if you specify all parameters: SAM/BAM file for Read Assembly and sequence file for Read Sequence)
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new custom()));
-    GTWidget::click(os, GTAction::button(os, "Show wizard"));
+    GTGlobals::sleep(500);
 
-//    Expected state: there are no errors when this pipeline scheme is running
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new custom()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, "mwtoolbar_activemdi", "Show wizard");
+    GTGlobals::sleep(500);
+
+//    Expected state: there are no errors when this pipeline scheme is running.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
 }
@@ -7864,35 +7857,6 @@ GUI_TEST_CLASS_DEFINITION(test_1763_1){
     QString newName = GTTabWidget::getTabName(os, tabView, tabView->currentIndex());
     CHECK_SET_ERR(newName == "new_name", "unexpected tab name: " + newName);
     GTGlobals::sleep(500);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_1763_2){
-//    Improve dashboards: If a workflow contains an element with an external tool, the log or parameters list of the tool run should be added to the dashboard.
-
-//    1. Create Read alignment->Align with ClustalO->Write alignment workflow.
-//    2. Set COI.aln as input file
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Alignment");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-
-    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Alignment");
-    WorkflowProcessItem* align = GTUtilsWorkflowDesigner::addElement(os, "Align with ClustalO");
-    GTUtilsWorkflowDesigner::connect(os, read, align);
-    GTUtilsWorkflowDesigner::connect(os, align, write);
-
-//    3. Start workflow
-    GTUtilsWorkflowDesigner::runWorkflow(os);
-//    Expected state: Workflow dasboard opened and dashboard has External Tools tab
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-//    4. Click on External Tools tab
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
-//    Expected state: Showed tree "Align with ClustalO"
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "ClustalO run 1"));
-    GTGlobals::sleep(500);
-//    5. Click on "ClustalO run 1" item
-//    Expected state: Showed "Run info" and "Output log"
-    GTUtilsDashboard::findTreeElement(os, "Run info");
-    GTUtilsDashboard::findTreeElement(os, "Output log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1764){

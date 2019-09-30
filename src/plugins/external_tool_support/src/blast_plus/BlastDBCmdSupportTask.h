@@ -55,7 +55,7 @@ public:
 private:
     ExternalToolRunTask*        blastDBCmdTask;
     BlastDBCmdSupportTaskSettings settings;
-    QString toolName;
+    QString toolId;
 };
 
 

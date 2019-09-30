@@ -208,7 +208,7 @@ void RichTextMsaClipboardTask::run(){
         for (int pos = window.startPos; pos < window.endPos(); pos++){
             char c = row->charAt(pos);
             bool highlight = false;
-            QColor color = colorScheme->getColor(seq, pos, c);
+            QColor color = colorScheme->getBackgroundColor(seq, pos, c);
             if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
                 const char refChar = '\n';
                 highlightingScheme->process(refChar, c, color, highlight, pos, seq);

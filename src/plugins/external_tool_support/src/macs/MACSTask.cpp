@@ -95,7 +95,7 @@ void MACSTask::prepare() {
 
     QStringList args = settings.getArguments(treatUrl.getURLString(), conUrl.isEmpty() ? "" : conUrl.getURLString());
 
-    etTask = new ExternalToolRunTask(ET_MACS, args, new MACSLogParser(), getSettings().outDir);
+    etTask = new ExternalToolRunTask(MACSSupport::ET_MACS_ID, args, new MACSLogParser(), getSettings().outDir);
     setListenerForTask(etTask);
     addSubTask(etTask);
 }

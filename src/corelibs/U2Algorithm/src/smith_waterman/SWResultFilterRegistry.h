@@ -48,7 +48,7 @@ public:
 
 private:
     QMutex mutex;
-    QHash<QString, SmithWatermanResultFilter*> filters;
+    QMap<QString, SmithWatermanResultFilter*> filters;
     QString defaultFilterId;
 };
 

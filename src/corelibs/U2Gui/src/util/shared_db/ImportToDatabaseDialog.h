@@ -115,9 +115,9 @@ private:
     QMap<QTreeWidgetItem*, Document*> treeItem2Document;
     QMap<QTreeWidgetItem*, GObject*> treeItem2Object;
 
-    static const QString DIR_HELPER_NAME;
-    static const QString FILES_AND_FOLDERS;
-    static const QString OBJECTS_AND_DOCUMENTS;
+    QString DIR_HELPER_NAME;
+    QString FILES_AND_FOLDERS;
+    QString OBJECTS_AND_DOCUMENTS;
 
     static const int COLUMN_ITEM_TEXT = 0;
     static const int COLUMN_FOLDER = 1;

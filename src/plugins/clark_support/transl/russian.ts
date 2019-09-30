@@ -197,6 +197,22 @@ NCBI taxonomy data are used to map the accession number found in each reference 
         <source>Unsupported CLARK variant. Only default and light variants are supported.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cannot open classification report: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to recognize CLARK report format: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Broken CLARK report: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate sequence name &apos;%1&apos; have been detected in the classification output.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::ClarkClassifyWorker</name>
@@ -323,7 +339,7 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Request the loading of database file by memory mapped-file (--ldm).&lt;br&gt;&lt;br&gt;This option accelerates the loading time but it will require an additional amount of RAM significant. This option also allows to load the database in multithreaded-task (see also the &quot;Number of threads&quot; parameter).</source>
+        <source>Request the loading of database file by memory mapped-file (--ldm).&lt;br&gt;&lt;br&gt;This option accelerates the loading time but it will require an additional amount of RAM significant. This option also allows one to load the database in multithreaded-task (see also the &quot;Number of threads&quot; parameter).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -355,23 +371,18 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot open classification report: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to recognize CLARK report format: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Broken CLARK report: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate sequence name &apos;%1&apos; have been detected in the classification output.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>There were %1 input reads, %2 reads were classified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::ClarkLogParser</name>
+    <message>
+        <source>There is not enough memory (RAM) to execute CLARK.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CLARK process crashed. It might happened because there is not enough memory (RAM) to complete the CLARK execution.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

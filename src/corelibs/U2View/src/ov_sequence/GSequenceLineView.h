@@ -134,7 +134,6 @@ protected:
     void focusInEvent(QFocusEvent* fe);
     void focusOutEvent(QFocusEvent* fe);
     void keyPressEvent(QKeyEvent *e);
-
     virtual void onVisibleRangeChanged(bool signal = true);
 
 public slots:
@@ -150,7 +149,7 @@ protected slots:
     void completeUpdate();
 
 protected:
-    QPoint toRenderAreaPoint(const QPoint& p);
+    QPoint toRenderAreaPoint(const QPoint& p) const;
     virtual void updateScrollBar();
     void setSelection(const U2Region& r);
     void addSelection(const U2Region& r);

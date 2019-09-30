@@ -170,7 +170,7 @@ int MrBayesWidget::getRandomSeed(){
 bool MrBayesWidget::checkSettings(QString &messsage, const CreatePhyTreeSettings &settings) {
     //Check that MrBayes and tempory folder path defined
     ExternalToolRegistry* reg = AppContext::getExternalToolRegistry();
-    ExternalTool* mb= reg->getByName(ET_MRBAYES);
+    ExternalTool* mb= reg->getById(MrBayesSupport::ET_MRBAYES_ID);
     assert(mb);
     const QString& path = mb->getPath();
     const QString& name = mb->getName();

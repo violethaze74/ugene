@@ -23,10 +23,8 @@
 #define _U2_ANNOTATION_COLLOCATOR_PLUGIN_H_
 
 #include <U2Core/PluginModel.h>
-#include <U2Gui/ObjectViewModel.h>
 
-#include <QMap>
-#include <QAction>
+#include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
 
