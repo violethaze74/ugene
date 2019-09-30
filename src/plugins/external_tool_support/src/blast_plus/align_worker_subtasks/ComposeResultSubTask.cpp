@@ -166,7 +166,7 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
         DNAChromatogram readChromatogram = getReadChromatogram(i);
         CHECK_OP(stateInfo, );
 
-        result->addRow(subTask->getReadName(), readChromatogram, readSeq.seq);
+        result->addRow(subTask->getReadName(), readChromatogram, readSeq, U2MsaRowGapModel(), stateInfo);
         CHECK_OP(stateInfo, );
 
         if (subTask->isComplement()) {

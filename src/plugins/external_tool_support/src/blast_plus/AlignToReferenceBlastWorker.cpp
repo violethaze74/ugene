@@ -92,6 +92,9 @@ void AlignToReferenceBlastWorkerFactory::init() {
         QMap<Descriptor, DataTypePtr> outType;
         outType[BaseSlots::DNA_SEQUENCE_SLOT()] = BaseTypes::DNA_SEQUENCE_TYPE();
         outType[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
+        outType[Descriptor(BaseSlots::URL_SLOT().getId(),
+                           AlignToReferenceBlastPrompter::tr("Multiple Chromatogram Alignment URL"),
+                           AlignToReferenceBlastPrompter::tr("Location of a result file with a Multiple Chromatogram Alignment."))] = BaseTypes::STRING_TYPE();
 
         ports << new PortDescriptor(inDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
         ports << new PortDescriptor(outDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
@@ -233,6 +236,9 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
     QVariantMap result;
     result[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(reference);
     result[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(alignTask->getAnnotations());
+    if (QFileInfo(resultUrl).exists()) {
+        result[BaseSlots::URL_SLOT().getId()] = resultUrl;
+    }
     return result;
 }
 
