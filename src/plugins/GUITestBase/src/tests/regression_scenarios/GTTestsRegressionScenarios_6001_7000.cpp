@@ -2807,6 +2807,27 @@ GUI_TEST_CLASS_DEFINITION(test_6490) {
     CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6546){
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
+
+    // Hold Ctrl key (or Cmd on macOS) and click on a sequence name.
+    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::click();
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 1, QString("Expected selection height: 1, actual: %1").arg(selection.height()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6580) {
 //    Test to check that element with external tool will
 //    successfully create and run the command: `%TOOL_PATH% $oooo $oooo$oooo $oooo $oooo$oooo$oooo`.
