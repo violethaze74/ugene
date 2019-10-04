@@ -527,7 +527,16 @@ void VerifyPluginTask::run() {
         elapsedTime += 1000;
     }
     QString errorMessage = proc->readAllStandardError();
-    if (proc->exitStatus() == QProcess::NormalExit && errorMessage.isEmpty()) {
+    // In the following check we removed ` && errorMessage.isEmpty()` check,
+    // as we don't check the actual message
+    // Moreover, there is a non-empy string on Windows 10 (printed by Qt):
+    //     `Untested OS version Windows 10!`
+    // See UTI-325:
+    //     https://ugene.dev/tracker/browse/UTI-325?filter=14051
+    // The issue was initiated by UGENE blog user.
+    // See blog thread:
+    //     http://ugene.net/forum/YaBB.pl?num=1569395370/2#2
+    if (proc->exitStatus() == QProcess::NormalExit) {
         pluginIsCorrect = true;
     }
 }
