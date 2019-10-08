@@ -2828,6 +2828,260 @@ GUI_TEST_CLASS_DEFINITION(test_6546){
     CHECK_SET_ERR(selection.height() == 1, QString("Expected selection height: 1, actual: %1").arg(selection.height()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6546_1){
+    
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));
+
+    // Hold Ctrl key (or Cmd on macOS) and click on a sequence name.
+    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::click();
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 1, QString("Expected selection height: 1, actual: %1").arg(selection.height()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6546_2){
+    
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 4), QPoint(4, 4));
+
+    // Hold Ctrl key (or Cmd on macOS) and click on a sequence name.
+    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::click();
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 4, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 1, QString("Expected selection height: 1, actual: %1").arg(selection.height()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6546_3){
+    
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
+
+    // Hold Ctrl key (or Cmd on macOS) and click on a sequence name.
+    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::click();
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 1, QString("Expected selection height: 1, actual: %1").arg(selection.height()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6546_4){
+    
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));
+    
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTUtilsMsaEditor::clickSequenceName(os, "Montana_montana");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 5, QString("Expected selection height: 5, actual: %1").arg(selection.height()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6546_5){
+    
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));
+    
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTUtilsMsaEditor::clickSequenceName(os, "Isophya_altaica_EF540820");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 8, QString("Expected selection height: 8, actual: %1").arg(selection.height()));
+    
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6546_6){
+    
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
+    
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 8, QString("Expected selection height: 8, actual: %1").arg(selection.height()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6546_7){
+            
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
+    
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 2, QString("Expected selection y: 2, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 7, QString("Expected selection height: 7, actual: %1").arg(selection.height()));
+    
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6546_8){
+    
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));
+
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMsaEditor::clickSequenceName(os, "Montana_montana");
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 8, QString("Expected selection height: 8, actual: %1").arg(selection.height()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6546_9){
+    
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));
+
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMsaEditor::clickSequenceName(os, "Isophya_altaica_EF540820");
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 8, QString("Expected selection height: 8, actual: %1").arg(selection.height()));
+    
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6546_10){
+    
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
+    
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 8, QString("Expected selection height: 8, actual: %1").arg(selection.height()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6546_11){
+            
+    //1. Open an alignment in the Alignment Editor.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select a region with more than one character.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
+    
+    GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const QRect& selection = msaEditor->getCurrentSelection();
+    CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.y() == 2, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 7, QString("Expected selection height: 8, actual: %1").arg(selection.height()));
+    
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6580) {
 //    Test to check that element with external tool will
 //    successfully create and run the command: `%TOOL_PATH% $oooo $oooo$oooo $oooo $oooo$oooo$oooo`.
