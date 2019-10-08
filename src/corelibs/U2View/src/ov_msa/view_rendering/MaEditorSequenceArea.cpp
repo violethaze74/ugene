@@ -354,7 +354,9 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     CHECK(!selection.isNull(), );
 
     assert(isInRange(selection.topLeft()));
-    assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
+    // Selection width may be equal to 0 (for example in MCA) -> this means that the whole row is selected.
+    int effectiveWidth = selection.x() == 0 && selection.width() == 0 ? editor->getAlignmentLen() : selection.width();
+    assert(isInRange(QPoint(selection.x() + effectiveWidth - 1, selection.y() + selection.height() - 1)));
     MultipleAlignmentObject* maObj = getEditor()->getMaObject();
     if (maObj == NULL || maObj->isStateLocked()) {
         return;
@@ -381,7 +383,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
 
     const U2Region& sel = getSelectedRows();
     const bool isGap = maObj->getRow(selection.topLeft().y())->isGap(selection.topLeft().x());
-    maObj->removeRegion(selection.x(), sel.startPos, selection.width(), sel.length, true);
+    maObj->removeRegion(selection.x(), sel.startPos, effectiveWidth, sel.length, true);
     GRUNTIME_NAMED_COUNTER(cvar, tvar, "Delete current selection", editor->getFactoryId());
 
     if (selection.height() == 1 && selection.width() == 1) {
@@ -392,7 +394,13 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
             return;
         }
     }
-    sl_cancelSelection();
+    bool wholeRowRemoved = effectiveWidth == editor->getAlignmentLen();
+    if (wholeRowRemoved) { // Select previous row.
+        int newSelectionY = qBound(0, selection.y(), getNumDisplayableSequences() - 1);
+        setSelection(MaEditorSelection(selection.x(), newSelectionY, selection.width(), 1));
+    } else {
+        sl_cancelSelection();
+    }
 }
 
 bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {

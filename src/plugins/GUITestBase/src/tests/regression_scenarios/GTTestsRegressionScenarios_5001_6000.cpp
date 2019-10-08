@@ -3673,7 +3673,7 @@ GUI_TEST_CLASS_DEFINITION(test_5769_1) {
 
     //Expected: selected read "SZYD_Cas9_CR51"
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
-    CHECK_SET_ERR(name.size() == 1, QString("Unexpected selection? expected sel == 1< cerrent sel == %1").arg(QString::number(name.size())));
+    CHECK_SET_ERR(name.size() == 1, QString("1. Unexpected selection! Expected selection size == 1, actual selection size == %1").arg(QString::number(name.size())));
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
 
     //7. Remove selected read
@@ -3689,7 +3689,7 @@ GUI_TEST_CLASS_DEFINITION(test_5769_1) {
 
     //Expected: selected read "SZYD_Cas9_CR54"
     name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
-    CHECK_SET_ERR(name.size() == 1, QString("Unexpected selection? expected sel == 1< cerrent sel == %1").arg(QString::number(name.size())));
+    CHECK_SET_ERR(name.size() == 1, QString("2. Unexpected selection! Expected selection size == 1, actual selection size == %1").arg(QString::number(name.size())));
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR54", QString("Unexpected selected read, expected: SZYD_Cas9_CR54, current: %1").arg(name[0]));
 }
 
