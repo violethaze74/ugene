@@ -6118,6 +6118,45 @@ GUI_TEST_CLASS_DEFINITION(test_4990) {
     qDebug()<<QString("");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4996) {
+    // 1. Open "_common_data/fasta/fa1.fa".
+    // 2. Open "Search in sequence" options panel tab. Select "RegExp" algorithm.
+    // 3. Enter next regexp: (
+
+   
+
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "fa1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
+    GTGlobals::sleep();
+
+    GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Regular expression");
+
+    QWidget *textPattern = GTWidget::findWidget(os, "textPattern");
+    GTWidget::click(os, textPattern);
+    GTKeyboardDriver::keyClick( '(');
+    GTGlobals::sleep();
+    
+   // Expected state: the pattern enter field becomes red.
+    
+    QTextEdit* editPatterns = GTWidget::findExactWidget<QTextEdit*>(os, "textPattern");
+    QString style0 = editPatterns->styleSheet();
+    CHECK_SET_ERR(style0 == "background-color: rgb(255, 152, 142);", "unexpected styleSheet: " + style0);
+        
+    //Remove entered pattern, enter a valid pattern:
+    //.
+    
+    QWidget *textPattern1 = GTWidget::findWidget(os, "textPattern");
+    GTWidget::click(os, textPattern1);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTKeyboardDriver::keyClick( '.');
+    GTGlobals::sleep();
+    
+    QString style1 = editPatterns->styleSheet();
+    CHECK_SET_ERR(style1 == "background-color: white;", "unexpected styleSheet: " + style1);
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
