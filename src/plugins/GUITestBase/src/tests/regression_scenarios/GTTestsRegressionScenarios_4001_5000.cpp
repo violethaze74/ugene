@@ -6121,9 +6121,7 @@ GUI_TEST_CLASS_DEFINITION(test_4990) {
 GUI_TEST_CLASS_DEFINITION(test_4996) {
     // 1. Open "_common_data/fasta/fa1.fa".
     // 2. Open "Search in sequence" options panel tab. Select "RegExp" algorithm.
-    // 3. Enter next regexp: (
-
-   
+    // 3. Enter next regexp: (   
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "fa1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);

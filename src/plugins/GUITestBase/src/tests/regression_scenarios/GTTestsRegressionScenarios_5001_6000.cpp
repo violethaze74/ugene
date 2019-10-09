@@ -40,11 +40,14 @@
 #include <U2View/DetView.h>
 #include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaGraphOverview.h>
+#include <U2View/MaEditorNameList.h>
+#include <U2View/MaEditorConsensusArea.h>
 
 #include "api/GTMSAEditorStatusWidget.h"
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
+#include <base_dialogs/FontDialogFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
@@ -541,6 +544,39 @@ GUI_TEST_CLASS_DEFINITION(test_5128) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5130) {
+    //    1. open document samples/CLUSTALW/COI.aln
+        GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        QWidget* msaEditorView = GTWidget::findWidget(os,"msa_editor_COI");
+        MsaEditorWgt* msaWidget = qobject_cast<MsaEditorWgt*>(msaEditorView);
+        MaEditorNameList* nameListWidget = msaWidget->getEditorNameList();
+        MaEditorConsensusArea* consWidget = msaWidget->getConsensusArea();
+        MaEditorSequenceArea* seqAreaWidget = msaWidget->getSequenceArea();
+        
+        QFont nameListFontBefore = nameListWidget->getFont(false);
+        nameListFontBefore.setItalic(false);
+       // QFont consFontBefore = consWidget->getFont();
+       // QFont seqAreaFontBefore = seqAreaWidget->getFont();
+        
+        //    2. press "change font button" on toolbar
+        GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
+        QAbstractButton* change_font = GTAction::button(os,"Change Font");
+        GTWidget::click(os,change_font);
+        GTGlobals::sleep(500);
+        
+        QFont nameListFontAfter = nameListWidget->getFont(false);
+        nameListFontAfter.setItalic(false);
+        QFont consFontAfter = consWidget->getDrawSettings().font;
+        QFont seqAreaFontAfter = seqAreaWidget->getFont();
+   
+        CHECK_SET_ERR(nameListFontBefore != nameListFontAfter,"Expected fonts to be NOT equal");
+        CHECK_SET_ERR(nameListFontAfter == consFontAfter && consFontAfter == seqAreaFontAfter,
+                      "Expected fonts to be equal: NameList: "+nameListFontAfter.toString() + 
+                      ", Cons: " + consFontAfter.toString() + ", SeqArea: " + seqAreaFontAfter.toString());
+
+}
 
 
 GUI_TEST_CLASS_DEFINITION(test_5137) {

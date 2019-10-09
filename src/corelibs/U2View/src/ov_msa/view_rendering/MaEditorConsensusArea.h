@@ -64,6 +64,7 @@ public:
     QSharedPointer<MSAEditorConsensusCache> getConsensusCache();
 
     U2Region getRullerLineYRange() const;
+    
 
     void setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algo);
     void setConsensusAlgorithmConsensusThreshold(int val);

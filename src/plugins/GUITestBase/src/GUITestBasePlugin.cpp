@@ -1291,6 +1291,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5110);
     REGISTER_TEST(GUITest_regression_scenarios::test_5128);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5130);
     REGISTER_TEST(GUITest_regression_scenarios::test_5137);
     if (QSysInfo::WordSize == 32) {
         REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);

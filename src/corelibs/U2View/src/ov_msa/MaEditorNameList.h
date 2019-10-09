@@ -102,6 +102,7 @@ public:
     void clearGroupsSelections();
 
     virtual U2Region getSelection() const;
+    QFont getFont(bool selected) const;
 
 signals:
     void si_sequenceNameChanged(QString prevName, QString newName);
@@ -133,7 +134,6 @@ protected:
 
     void clearSelection();
 
-    QFont getFont(bool selected) const;
     QRect calculateTextRect(const U2Region& yRange, bool selected) const;
     QRect calculateButtonRect(const QRect& itemRect) const;
 

@@ -209,6 +209,10 @@ const MaEditorSelection & MaEditorSequenceArea::getSelection() const {
     return selection;
 }
 
+QFont MaEditorSequenceArea::getFont() const {
+    return editor->getFont();
+}
+
 void MaEditorSequenceArea::updateSelection(const QPoint& newPos) {
     const int width = qAbs(newPos.x() - cursorPos.x()) + 1;
     const int height = qAbs(newPos.y() - cursorPos.y()) + 1;

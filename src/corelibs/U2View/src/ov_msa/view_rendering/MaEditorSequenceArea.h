@@ -128,7 +128,7 @@ public:
     void centerPos(const QPoint &point);
     void centerPos(int pos);
 
-    void setFont(const QFont& f);
+    QFont getFont() const;
 
     void onVisibleRangeChanged();
 
