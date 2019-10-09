@@ -112,6 +112,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
@@ -557,8 +558,6 @@ GUI_TEST_CLASS_DEFINITION(test_5130) {
         
         QFont nameListFontBefore = nameListWidget->getFont(false);
         nameListFontBefore.setItalic(false);
-       // QFont consFontBefore = consWidget->getFont();
-       // QFont seqAreaFontBefore = seqAreaWidget->getFont();
         
         //    2. press "change font button" on toolbar
         GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
@@ -1394,6 +1393,21 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
     GTGlobals::sleep();
 
     CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5382) {
+    //1. Open an alignment.
+    GTLogTracer l;
+    
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<< MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_5382/test_5382.png"));
+
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os,"msa_editor_sequence_area"));
+    CHECK_SET_ERR(!l.hasError(), "There is error in the log");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5412) {
