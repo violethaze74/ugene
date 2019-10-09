@@ -229,7 +229,7 @@ const DNAAlphabet* MSAUtils::deriveCommonAlphabet(const QList<U2SequenceObject*>
 const DNAAlphabet* MSAUtils::deriveCommonAlphabet(const QList<const DNAAlphabet*>& alphabetList) {
     const DNAAlphabet* result = NULL;
     foreach(const DNAAlphabet* alphabet, alphabetList) {
-        result = result == NULL ? result : U2AlphabetUtils::deriveCommonAlphabet(result, alphabet);
+        result = result == NULL ? alphabet : U2AlphabetUtils::deriveCommonAlphabet(result, alphabet);
     }
     return result == NULL ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::RAW()) : result;
 }
