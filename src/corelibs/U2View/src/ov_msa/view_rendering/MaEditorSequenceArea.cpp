@@ -366,6 +366,11 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
         return;
     }
 
+    bool wholeRowRemoved = effectiveWidth == editor->getAlignmentLen();
+    if (wholeRowRemoved && maObj->getNumRows() == selection.height()) { // do not allow to remove all data and make MA empty.
+        return;
+    }
+
     const QRect areaBeforeSelection(0, 0, selection.x(), selection.height());
     const QRect areaAfterSelection(selection.x() + selection.width(), selection.y(),
         maObj->getLength() - selection.x() - selection.width(), selection.height());
@@ -398,7 +403,6 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
             return;
         }
     }
-    bool wholeRowRemoved = effectiveWidth == editor->getAlignmentLen();
     if (wholeRowRemoved) { // Select previous row.
         int newSelectionY = qBound(0, selection.y(), getNumDisplayableSequences() - 1);
         setSelection(MaEditorSelection(selection.x(), newSelectionY, selection.width(), 1));

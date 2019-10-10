@@ -321,7 +321,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         int maxRows = ui->getSequenceArea()->getNumDisplayableSequences() - 1;
         if (isShiftPressed) {
             moveSelection(0);
-            if (sel.endPos() < maxRows) {
+            if (sel.endPos() <= maxRows) {
                 setSelection(sel.startPos, sel.length + 1);
                 moveSelection(0);
             }
