@@ -32,6 +32,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
@@ -3115,6 +3116,25 @@ GUI_TEST_CLASS_DEFINITION(test_6580) {
 //    Expected state: the workflow execution finishes, there is an log string `-version -version-version -version -version-version-version`.
     bool desiredMessage = logTracer.checkMessage("-version -version-version -version -version-version-version");
     CHECK_SET_ERR(desiredMessage, "No expected message in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6581) {
+    // 1. Open "test/general/_common_data/scenarios/_regression/6581/COI_modified_one_char_sequence.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6581", "COI_modified_one_char_sequence.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Click "Align sequence to this alignment" button on the toolbarand select attached sequence "Sequence.txt".
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6581/Sequence.txt"));
+    QAbstractButton* align = GTAction::button(os, "Align sequence(s) to this alignment");
+    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
+
+    GTWidget::click(os, align);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected result: the sequence has been aligned to the alignment.
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 18, QString("Unexpected name list size, expected: 18, current: %1").arg(names.size()));
+    CHECK_SET_ERR(names[17] == "F", QString("Unexpected name ¹18, expected: \"F\", current: %1").arg(names[17]));
 }
 
 } // namespace GUITest_regression_scenarios
