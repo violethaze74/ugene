@@ -133,7 +133,7 @@ void GSequenceLineViewAnnotated::sl_onAnnotationSelectionChanged(AnnotationSelec
     if (1 == added.size()) {
         Annotation *a = added.first();
         if (aos.contains(a->getGObject())) {
-            ensureVisible(a, 0);
+            ensureVisible(a, -1);
             changed = true;
         }
     }
