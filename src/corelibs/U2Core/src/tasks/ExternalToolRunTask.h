@@ -150,7 +150,7 @@ public:
 class U2CORE_EXPORT ExternalToolLogParser : public QObject {
     Q_OBJECT
 public:
-    ExternalToolLogParser();
+    ExternalToolLogParser(bool writeErrorsToLog = true);
     virtual int getProgress(){ return progress; }
     virtual void parseOutput(const QString& partOfLog);
     virtual void parseErrOutput(const QString& partOfLog);
@@ -171,6 +171,8 @@ private:
     QString     lastLine;
     /* Last line printed to stderr */
     QString     lastErrLine;
+    /* The error will be written to log if true. Default - true */
+    bool        writeErrorsToLog;
 
 protected:
     QStringList lastPartOfLog;
