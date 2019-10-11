@@ -4869,6 +4869,35 @@ GUI_TEST_CLASS_DEFINITION(test_5950) {
 
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5970) {
+    
+    //1. Open "_common_data/clustal/amino_from_wikipedia.aln".
+    
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/amino_from_wikipedia.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    //2. Expected state: it has the "Standard amino acid alphabet" (see the "General" OP tab).
+    const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
+    CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not Amino!");
+    
+    //3. Select (8; 1) (8; 3) rectangle.
+    
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 0), QPoint(7, 2));
+    
+    //4. Press Ctrl + C.
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    
+    //5. Press Ctrl + V.
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
+
+    //6. Expected state: the alphabet is "Standard amino acid"
+    const bool isAlphabetAminoAfter = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
+    CHECK_SET_ERR(isAlphabetAminoAfter, "Alphabet is not Amino!");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5972_1) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
