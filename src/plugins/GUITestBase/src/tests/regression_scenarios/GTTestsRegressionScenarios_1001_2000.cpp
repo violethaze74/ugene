@@ -3629,10 +3629,10 @@ GUI_TEST_CLASS_DEFINITION(test_1324) {
     GTMouseDriver::click();
     QString val;
 
-#if defined(Q_OS_LINUX)
-    val = "0.00010";
-#else
+#ifdef Q_OS_WIN
     val = "0,00010";
+#else
+    val = "0.00010";
 #endif
     GTUtilsWorkflowDesigner::setParameter(os, "Min Err1", val, GTUtilsWorkflowDesigner::textValue);
 
