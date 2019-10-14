@@ -31,6 +31,7 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ExportDocumentDialogController.h>
 #include <U2Gui/ExportObjectUtils.h>
@@ -60,6 +61,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
       resizeMode(ResizeMode_FontAndContent),
       zoomFactor(0),
       cachedColumnWidth(0),
+      cursorPosition(QPoint(0, 0)),
       exportHighlightedAction(NULL)
 {
     maObject = qobject_cast<MultipleAlignmentObject*>(obj);
@@ -466,6 +468,19 @@ void MaEditor::updateActions() {
     zoomToSelectionAction->setEnabled( font.pointSize() < MOBJECT_MAX_FONT_SIZE);
     changeFontAction->setEnabled( resizeMode == ResizeMode_FontAndContent);
     emit si_updateActions();
+}
+
+const QPoint& MaEditor::getCursorPosition() const {
+    return cursorPosition;
+}
+
+void MaEditor::setCursorPosition(const QPoint &newCursorPosition) {
+    CHECK(cursorPosition != newCursorPosition,);
+    int x = newCursorPosition.x(), y = newCursorPosition.y();
+    SAFE_POINT(x >= 0 && y >= 0 && x < getAlignmentLen() && y < getNumSequences(),
+               QString("Illegal cursor position: x: %1, y: %2").arg(x).arg(y),);
+    cursorPosition = newCursorPosition;
+    emit si_cursorPositionChanged(cursorPosition);
 }
 
 } // namespace

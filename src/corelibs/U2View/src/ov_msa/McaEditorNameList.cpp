@@ -68,10 +68,11 @@ void McaEditorNameList::sl_updateActions() {
     removeSequenceAction->setShortcut(isWholeReadSelected ? QKeySequence::Delete : QKeySequence());
 }
 
-void McaEditorNameList::drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool selected, bool collapsed, bool isReference) {
+void McaEditorNameList::drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect,
+                                                     bool selected, bool focused, bool collapsed, bool isReference) {
     const bool isReversed = isRowReversed(rowIndex);
     const QRectF arrowRect = calculateArrowRect(U2Region(rect.y(), rect.height()));
-    MaEditorNameList::drawCollapsibileSequenceItem(painter, rowIndex, name, rect, selected, collapsed, isReference);
+    MaEditorNameList::drawCollapsibileSequenceItem(painter, rowIndex, name, rect, selected, focused, collapsed, isReference);
     drawArrow(painter, isReversed, arrowRect);
 }
 

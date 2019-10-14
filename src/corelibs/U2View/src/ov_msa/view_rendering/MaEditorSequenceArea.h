@@ -208,10 +208,6 @@ signals:
     void si_copyFormattedChanging(bool enabled);
 
 protected:
-    void setCursorPos(const QPoint& p);
-    void setCursorPos(int x, int y);
-    void setCursorPos(int pos);
-
     void resizeEvent(QResizeEvent *event);
     void paintEvent(QPaintEvent *event);
     void wheelEvent(QWheelEvent *event);
@@ -319,7 +315,6 @@ protected:
     bool                selecting;
     Qt::MouseButton     prevPressedButton;
     QPoint              rubberBandOrigin; // global window coordinates
-    QPoint              cursorPos; // mouse cursor position in alignment coordinates
     MaEditorSelection   selection; // selection with rows indexes in collapsible model coordinates
     MaEditorSelection   baseSelection; // selection with rows indexes in absolute coordinates
 

@@ -224,6 +224,8 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     QPoint newSelectedPoint(selection.x() + dx, nextRowToSelect);
     MaEditorSelection newSelection(newSelectedPoint, selection.width(), selection.height());
     setSelection(newSelection);
+    const QPoint& cursorPosition = editor->getCursorPosition();
+    editor->setCursorPosition(QPoint(cursorPosition.x() + dx, nextRowToSelect));
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 

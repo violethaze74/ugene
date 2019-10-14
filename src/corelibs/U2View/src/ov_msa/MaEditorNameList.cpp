@@ -60,7 +60,6 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     cachedView = new QPixmap();
     completeRedraw = true;
     dragging = false;
-    currentRow = 0;
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
 
     editSequenceNameAction = new QAction(tr("Edit sequence name"), this);
@@ -98,11 +97,12 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     }
     connect(ui->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeRedraw()));
+    connect(editor, SIGNAL(si_cursorPositionChanged(const QPoint&)), SLOT(sl_completeRedraw()));
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_updateActions()), SLOT(sl_updateActions()));
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_completeRedraw()));
-    connect(ui->getScrollController()->getVerticalScrollBar(), SIGNAL(actionTriggered(int)), SLOT(sl_vScrollBarActionPerfermed()));
+    connect(ui->getScrollController()->getVerticalScrollBar(), SIGNAL(actionTriggered(int)), SLOT(sl_vScrollBarActionPerformed()));
 
     nhBar->setParent(this);
     nhBar->setVisible(false);
@@ -144,14 +144,16 @@ void MaEditorNameList::drawNames(QPainter &painter, const QList<int> &seqIdx, bo
     MultipleAlignmentObject* maObj = editor->getMaObject();
     SAFE_POINT(NULL != maObj, tr("MSA Object is NULL"), );
     const MultipleAlignment ma = maObj->getMultipleAlignment();
+    const QPoint& cursorPosition = editor->getCursorPosition();
 
     const QStringList seqNames = ma->getRowNames();
     for (int number = 0; number < seqIdx.size(); number++) {
         const int index = seqIdx[number];
         SAFE_POINT(index < seqNames.size(), tr("Invalid sequence index"), );
         const bool isSelected = drawSelection && isRowInSelection(index);
+        const bool isFocused = cursorPosition.y() == index;
         const U2Region yRange = ui->getRowHeightController()->getRowGlobalRange(index, seqIdx);
-        drawSequenceItem(painter, index, yRange, getTextForRow(index), isSelected);
+        drawSequenceItem(painter, index, yRange, getTextForRow(index), isSelected, isFocused);
     }
 }
 
@@ -297,6 +299,7 @@ void MaEditorNameList::paintEvent(QPaintEvent*) {
 void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     int key = e->key();
     bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
+    int cursorRow =  editor->getCursorPosition().y();
     switch(key) {
     case Qt::Key_Up: {
         U2Region sel = getSelection();
@@ -304,10 +307,15 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
             break;
         }
         if (isShiftPressed) {
-            if (sel.startPos > 0) {
-                setSelection(sel.startPos - 1, sel.length + 1);
-                moveSelection(0);
+            bool grow = sel.length == 1 || sel.startPos < cursorRow;
+            if (grow) {
+                if (sel.startPos > 0) {
+                    setSelection(sel.startPos - 1, sel.length + 1);
+                }
+            } else { // shrink
+                setSelection(sel.startPos, sel.length - 1);
             }
+            scrollSelectionToView(true);
         } else {
             moveSelection(-1);
         }
@@ -319,13 +327,16 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
             break;
         }
         if (isShiftPressed) {
-            moveSelection(0);
-            int numSeqeuences = ui->getSequenceArea()->getNumDisplayableSequences();
-            if (sel.endPos() < numSeqeuences) {
-                setSelection(sel.startPos, sel.length + 1);
-                moveSelection(0);
+            bool grow = sel.length == 1 || cursorRow < sel.endPos() - 1;
+            int numSequences = ui->getSequenceArea()->getNumDisplayableSequences();
+            if (grow) {
+                if (sel.endPos() < numSequences) {
+                    setSelection(sel.startPos, sel.length + 1);
+                }
+            } else { // shrink
+                setSelection(sel.startPos + 1, sel.length - 1);
             }
-
+            scrollSelectionToView(false);
         } else {
             moveSelection(1);
         }
@@ -351,7 +362,6 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         break;
     case Qt::Key_Escape:
         ui->getSequenceArea()->sl_cancelSelection();
-            currentRow = 0;
         break;
     case Qt::Key_Delete:
         if (removeSequenceAction->isEnabled()) {
@@ -374,30 +384,38 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     }
 
     emit si_startMaChanging();
-
+    bool hasShiftModifier = e->modifiers().testFlag(Qt::ShiftModifier);
     mousePressPoint = e->pos();
-    currentRow = ui->getRowHeightController()->screenYPositionToRowNumber(e->y());
+    int rowIndex = ui->getRowHeightController()->screenYPositionToRowNumber(e->y());
+    int cursorX = editor->getCursorPosition().x();
+    // Do not update cursor position on clicks with Shift. Clicks with Shift update selection only.
+    bool updateCursorPos = !hasShiftModifier;
     if (ui->isCollapsibleMode()) {
         MSACollapsibleItemModel* m = ui->getCollapseModel();
-        if (currentRow >= m->getDisplayableRowsCount()) {
-            currentRow = m->getDisplayableRowsCount() - 1;
+        if (rowIndex >= m->getDisplayableRowsCount()) {
+            rowIndex = m->getDisplayableRowsCount() - 1;
         }
-        if (m->isTopLevel(currentRow)) {
-            const U2Region yRange = ui->getRowHeightController()->getRowScreenRangeByNumber(currentRow);
-            bool selected = isRowInSelection(currentRow);
+        if (updateCursorPos) {
+            editor->setCursorPosition(QPoint(cursorX, rowIndex));
+        }
+        if (m->isTopLevel(rowIndex)) {
+            const U2Region yRange = ui->getRowHeightController()->getRowScreenRangeByNumber(rowIndex);
+            bool selected = isRowInSelection(rowIndex);
             QRect textRect = calculateTextRect(yRange, selected);
             QRect buttonRect = calculateButtonRect(textRect);
             if (buttonRect.contains(mousePressPoint)) {
-                m->toggle(currentRow);
+                m->toggle(rowIndex);
                 sl_completeRedraw();
                 QWidget::mousePressEvent(e);
                 return;
             }
         }
     }
-
+    if (updateCursorPos) {
+        editor->setCursorPosition(QPoint(cursorX, rowIndex));
+    }
     U2Region s = getSelection();
-    if (s.contains(currentRow)) {
+    if (s.contains(rowIndex)) {
         dragging = !ui->isCollapsibleMode() || ui->getCollapseModel()->isFakeModel();
     } else {
         rubberBand->setGeometry(QRect(mousePressPoint, QSize()));
@@ -426,7 +444,7 @@ void MaEditorNameList::mouseMoveEvent(QMouseEvent* e) {
 
         if (dragging) {
             assert(!ui->isCollapsibleMode() || ui->getCollapseModel()->isFakeModel());
-            moveSelectedRegion(mouseRow - currentRow);
+            moveSelectedRegion(mouseRow - editor->getCursorPosition().y());
         } else {
             rubberBand->setGeometry(QRect(mousePressPoint, e->pos()).normalized());
         }
@@ -468,7 +486,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
             } else if (mouseReleaseRow == maxRows - 1) {
                 shift = maxRows - (selection.startPos + selection.length);
             } else {
-                shift = mouseReleaseRow - currentRow;
+                shift = mouseReleaseRow - editor->getCursorPosition().y();
             }
             moveSelectedRegion(shift);
         } else {
@@ -562,7 +580,8 @@ void MaEditorNameList::sl_updateActions() {
     }
 }
 
-void MaEditorNameList::sl_vScrollBarActionPerfermed() {
+//todo: yalgaer ask about use-case for this method
+void MaEditorNameList::sl_vScrollBarActionPerformed() {
     CHECK(dragging,);
     assert(!ui->isCollapsibleMode() || ui->getCollapseModel()->isFakeModel());
 
@@ -574,7 +593,7 @@ void MaEditorNameList::sl_vScrollBarActionPerfermed() {
 
     const QPoint localPoint = mapFromGlobal(QCursor::pos());
     const int newSeqNum = ui->getRowHeightController()->screenYPositionToRowNumber(localPoint.y());
-    moveSelectedRegion(newSeqNum - currentRow);
+    moveSelectedRegion(newSeqNum - editor->getCursorPosition().y());
 }
 
 void MaEditorNameList::focusInEvent(QFocusEvent* fe) {
@@ -679,6 +698,7 @@ void MaEditorNameList::drawContent(QPainter& painter) {
                                                                                        : ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
     SAFE_POINT_OP(os, );
 
+    const QPoint& cursorPosition = editor->getCursorPosition();
     if (ui->isCollapsibleMode()) {
         MSACollapsibleItemModel* collapsibleModel = ui->getCollapseModel();
         const QVector<U2Region> groupedRowsToDraw = ui->getDrawHelper()->getGroupedVisibleRowsIndexes(height());
@@ -688,10 +708,11 @@ void MaEditorNameList::drawContent(QPainter& painter) {
                 const int rowNumber = collapsibleModel->rowToMap(rowIndex, true);
                 const bool isSelected = isRowInSelection(rowNumber);
                 const bool isReference = (rowIndex == referenceIndex);
+                const bool isFocused = rowIndex == cursorPosition.y();
 
                 if (!collapsibleModel->isRowInGroup(rowNumber)) {
                     painter.translate(CROSS_SIZE * 2, 0);
-                    drawSequenceItem(painter, getTextForRow(rowIndex), yRange, isSelected, isReference);
+                    drawSequenceItem(painter, getTextForRow(rowIndex), yRange, isSelected, isFocused, isReference);
                     painter.translate(-CROSS_SIZE * 2, 0);
                 } else {
                     const MSACollapsableItem &item = collapsibleModel->getItemByRowIndex(rowIndex);
@@ -699,9 +720,9 @@ void MaEditorNameList::drawContent(QPainter& painter) {
                     const QRect rect = calculateTextRect(yRange, isSelected);
                     // SANGER_TODO: check reference
                     if (collapsibleModel->isTopLevel(rowNumber)) {
-                        drawCollapsibileSequenceItem(painter, rowIndex, getTextForRow(rowIndex), rect, isSelected, item.isCollapsed, isReference);
+                        drawCollapsibileSequenceItem(painter, rowIndex, getTextForRow(rowIndex), rect, isSelected, isFocused, item.isCollapsed, isReference);
                     } else {
-                        drawChildSequenceItem(painter, getTextForRow(rowIndex), rect, isSelected, isReference);
+                        drawChildSequenceItem(painter, getTextForRow(rowIndex), rect, isSelected, isFocused, isReference);
                     }
                 }
             }
@@ -710,38 +731,45 @@ void MaEditorNameList::drawContent(QPainter& painter) {
         const QList<int> rowsToDrow = ui->getDrawHelper()->getVisibleRowsIndexes(height());
         foreach (const int rowToDrow, rowsToDrow) {
             const bool isSelected = isRowInSelection(rowToDrow);
-            drawSequenceItem(painter, rowToDrow, ui->getRowHeightController()->getRowScreenRange(rowToDrow), getTextForRow(rowToDrow), isSelected);
+            const bool isFocused = rowToDrow == cursorPosition.y() ;
+            drawSequenceItem(painter, rowToDrow, ui->getRowHeightController()->getRowScreenRange(rowToDrow), getTextForRow(rowToDrow), isSelected, isFocused);
         }
     }
 }
 
-void MaEditorNameList::drawSequenceItem(QPainter& painter, const QString& text, const U2Region& yRange, bool selected, bool isReference) {
+void MaEditorNameList::drawSequenceItem(QPainter& painter, const QString& text, const U2Region& yRange, bool selected, bool focused, bool isReference) {
     QRect rect = calculateTextRect(yRange, selected);
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
     CHECK(maObj != NULL, );
     drawBackground(painter, text, rect, isReference);
     drawText(painter, text, rect, selected);
+    if (focused) {
+        drawCursorFrame(painter, rect);
+    }
 }
 
-void MaEditorNameList::drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected) {
+void MaEditorNameList::drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected, bool focused) {
     // SANGER_TODO: simplify getting the reference status - no reference here!
     MultipleAlignmentObject* maObj = editor->getMaObject();
     CHECK(maObj != NULL, );
     U2OpStatusImpl os;
     bool isReference = (rowIndex == maObj->getMultipleAlignment()->getRowIndexByRowId(editor->getReferenceRowId(), os));
-    drawSequenceItem(painter, text, yRange, selected, isReference);
+    drawSequenceItem(painter, text, yRange, selected, focused, isReference);
 }
 
 void MaEditorNameList::drawCollapsibileSequenceItem(QPainter &painter, int /*rowIndex*/, const QString &name, const QRect &rect,
-                                                    bool selected, bool collapsed, bool isReference) {
+                                                    bool selected, bool focused, bool collapsed, bool isReference) {
     drawBackground(painter, name, rect, isReference);
     drawCollapsePrimitive(painter, collapsed, rect);
     drawText(painter, name, rect.adjusted(CROSS_SIZE * 2, 0, 0, 0), selected);
+    if (focused) {
+        drawCursorFrame(painter, rect);
+    }
 }
 
 void MaEditorNameList::drawChildSequenceItem(QPainter &painter, const QString &name, const QRect &rect,
-                                             bool selected, bool isReference) {
+                                             bool selected, bool focused, bool isReference) {
     drawBackground(painter, name, rect, isReference);
     painter.translate(CROSS_SIZE * 2 + CHILDREN_OFFSET, 0);
     drawText(painter, name, rect, selected);
@@ -792,7 +820,8 @@ QString MaEditorNameList::getSeqName(int s) {
 
 void MaEditorNameList::drawSelection(QPainter &painter) {
     const U2Region selection = getSelection();
-    CHECK(!selection.isEmpty(), );
+
+    CHECK(selection.length > 0, );
 
     const U2Region yRange = ui->getRowHeightController()->getRowsScreenRangeByNumbers(selection);
     const QRect selectionRect(0, yRange.startPos, width() - 1, yRange.length - 1);
@@ -800,6 +829,19 @@ void MaEditorNameList::drawSelection(QPainter &painter) {
 
     painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
     painter.drawRect(selectionRect);
+}
+
+
+/** Used to visualize cursor position. Used for debugging only today. */
+#define SHOW_CURSOR_FRAME true
+
+void MaEditorNameList::drawCursorFrame(QPainter& painter, const QRect& rect) {
+#ifdef SHOW_FOCUS_FRAME
+    QPen penBefore = painter.pen();
+    painter.setPen(QPen(Qt::blue, 1, Qt::DotLine));
+    painter.drawRect(rect);
+    painter.setPen(penBefore);
+#endif
 }
 
 void MaEditorNameList::sl_editSequenceName() {
@@ -832,6 +874,8 @@ void MaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
 
 void MaEditorNameList::moveSelectedRegion(int shift) {
     CHECK(shift != 0, );
+    MultipleAlignmentObject* maObj = editor->getMaObject();
+    CHECK(!maObj->isStateLocked(),);
 
     U2Region selection = getSelection();
     int numRowsInSelection = selection.length;
@@ -845,25 +889,18 @@ void MaEditorNameList::moveSelectedRegion(int shift) {
     {
         return;
     }
-    MultipleAlignmentObject* maObj = editor->getMaObject();
-    if (!maObj->isStateLocked()) {
-        maObj->moveRowsBlock(firstRowInSelection, numRowsInSelection, shift);
-        currentRow += shift;
-        setSelection(firstRowInSelection + shift, numRowsInSelection);
-    }
+    maObj->moveRowsBlock(firstRowInSelection, numRowsInSelection, shift);
+    const QPoint& cursorPosition = editor->getCursorPosition();
+    editor->setCursorPosition(QPoint(cursorPosition.x(), cursorPosition.y() + shift));
+    setSelection(firstRowInSelection + shift, numRowsInSelection);
 }
 
 qint64 MaEditorNameList::sequenceIdAtPos(const QPoint &p) {
-    qint64 result = U2MsaRow::INVALID_ROW_ID;
-    currentRow = ui->getRowHeightController()->screenYPositionToRowNumber(p.y());
-    if (!ui->getSequenceArea()->isSeqInRange(currentRow)) {
-        return result;
-    }
-    if (currentRow != -1) {
-        MultipleAlignmentObject* maObj = editor->getMaObject();
-        result = maObj->getMultipleAlignment()->getRow(ui->getCollapseModel()->mapToRow(currentRow))->getRowId();
-    }
-    return result;
+    int rowIndex = ui->getRowHeightController()->screenYPositionToRowNumber(p.y());
+    CHECK(ui->getSequenceArea()->isSeqInRange(rowIndex), U2MsaRow::INVALID_ROW_ID);
+    CHECK(rowIndex >= 0, U2MsaRow::INVALID_ROW_ID);
+    MultipleAlignmentObject* maObj = editor->getMaObject();
+    return maObj->getMultipleAlignment()->getRow(ui->getCollapseModel()->mapToRow(rowIndex))->getRowId();
 }
 
 void MaEditorNameList::clearGroupsSelections() {
@@ -871,15 +908,25 @@ void MaEditorNameList::clearGroupsSelections() {
 }
 
 void MaEditorNameList::moveSelection(int offset) {
+    const QPoint& cursorPosition = editor->getCursorPosition();
+    int rowCount = ui->getSequenceArea()->getNumDisplayableSequences();
+    if (offset != 0) {
+        QPoint newCursorPosition = QPoint(cursorPosition.x(), qBound(0, cursorPosition.y() + offset, rowCount - 1));
+        editor->setCursorPosition(newCursorPosition);
+    }
     U2Region oldSelection = getSelection();
-    int maxSelectoinStart = ui->getSequenceArea()->getNumDisplayableSequences() - (int) oldSelection.length;
-    int newSelectionStart = qBound(0, (int) oldSelection.startPos + offset, maxSelectoinStart);
+    int maxSelectionStart = rowCount - (int) oldSelection.length;
+    int newSelectionStart = qBound(0, (int) oldSelection.startPos + offset, maxSelectionStart);
     ui->getSequenceArea()->moveSelection(newSelectionStart, oldSelection.length);
     setSelection(newSelectionStart, oldSelection.length);
 
-    U2Region newSelection = getSelection();
+    scrollSelectionToView(offset >= 0);
+}
+
+void MaEditorNameList::scrollSelectionToView(bool fromStart) {
+    U2Region selection = getSelection();
     int height = ui->getSequenceArea()->height();
-    ui->getScrollController()->scrollToRowByNumber(offset <= 0 ? newSelection.startPos : newSelection.endPos() - 1, height);
+    ui->getScrollController()->scrollToRowByNumber(fromStart ? selection.startPos : selection.endPos() - 1, height);
 }
 
 } // namespace U2

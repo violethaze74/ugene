@@ -234,7 +234,7 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
 }
 
 void MSAEditorSequenceArea::moveCursor(int dx, int dy) {
-    const QPoint newCursorPos = cursorPos + QPoint(dx, dy);
+    const QPoint newCursorPos = editor->getCursorPosition() + QPoint(dx, dy);
     CHECK(isInRange(newCursorPos), );
 
     // Move only one cell selection?
@@ -243,7 +243,7 @@ void MSAEditorSequenceArea::moveCursor(int dx, int dy) {
     CHECK(selectionSize == 1, );
 
     ui->getScrollController()->scrollToPoint(newCursorPos, size());
-    setCursorPos(newCursorPos);
+    editor->setCursorPosition(newCursorPos);
 
     // SANGER_TODO: why is it under comment
     //setSelection(MSAEditorSelection(p, 1,1));

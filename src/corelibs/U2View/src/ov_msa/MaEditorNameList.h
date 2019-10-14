@@ -65,7 +65,7 @@ private slots:
     void sl_removeSequence();
     void sl_selectReferenceSequence();
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
-    void sl_vScrollBarActionPerfermed();
+    void sl_vScrollBarActionPerformed();
     void sl_completeUpdate();
     void sl_onGroupColorsChanged(const GroupColorSchema&);
 
@@ -91,7 +91,8 @@ protected:
     int getSelectedRow() const;
     virtual QString getTextForRow(int s);
     virtual QString getSeqName(int s);
-    virtual void moveSelection(int offset);
+    void moveSelection(int offset);
+    void scrollSelectionToView(bool fromStart);
 
     bool                completeRedraw;
 
@@ -117,13 +118,14 @@ protected:
     void drawAll();
 
     void drawSelection(QPainter& p);
-    void drawSequenceItem(QPainter &painter, const QString &text, const U2Region &yRange, bool selected, bool isReference);
-    virtual void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected);
+    void drawCursorFrame(QPainter& p, const QRect& rect);
+    void drawSequenceItem(QPainter &painter, const QString &text, const U2Region &yRange, bool selected, bool focused, bool isReference);
+    virtual void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected, bool focused);
 
     virtual void drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect,
-                                      bool selected, bool collapsed, bool isReference);
+                                      bool selected, bool focused, bool collapsed, bool isReference);
     void drawChildSequenceItem(QPainter &painter, const QString &name, const QRect &rect,
-                                        bool selected, bool isReference);
+                                        bool selected, bool focused, bool isReference);
 
     // SANGER_TODO: drawSequenceItem should use these methods
     void drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReferece);
@@ -142,8 +144,6 @@ protected:
     QObject*            labels; // used in GUI tests
     MaEditorWgt*        ui;
     QScrollBar*         nhBar;
-    // Index of the focused (current) row.
-    int                 currentRow;
     QPoint              mousePressPoint;
     bool                dragging;
     GroupColorSchema    groupColors;

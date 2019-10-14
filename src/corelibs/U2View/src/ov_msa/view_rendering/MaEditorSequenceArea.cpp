@@ -214,6 +214,7 @@ QFont MaEditorSequenceArea::getFont() const {
 }
 
 void MaEditorSequenceArea::updateSelection(const QPoint& newPos) {
+    QPoint cursorPos = editor->getCursorPosition();
     const int width = qAbs(newPos.x() - cursorPos.x()) + 1;
     const int height = qAbs(newPos.y() - cursorPos.y()) + 1;
     const int left = qMin(newPos.x(), cursorPos.x());
@@ -337,6 +338,8 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
 
     MaEditorSelection newSelection(newTopLeft, selection.width(), selection.height());
     setSelection(newSelection);
+    const QPoint& cursorPosition = editor->getCursorPosition();
+    editor->setCursorPosition(QPoint(cursorPosition.x() + dx, cursorPosition.y() + dy));
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
@@ -433,8 +436,9 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
             U2OpStatus2Log os;
             adjustReferenceLength(os);
 
+            const QPoint& cursorPos = editor->getCursorPosition();
             int newCursorPosX = (cursorPos.x() + resultShift >= 0) ? cursorPos.x() + resultShift : 0;
-            setCursorPos(newCursorPosX);
+            editor->setCursorPosition(QPoint(newCursorPosX, cursorPos.y()));
 
             const MaEditorSelection newSelection(selectionBackup.x() + resultShift, selectionBackup.y(),
                                                  selectionBackup.width(), selectionBackup.height());
@@ -1016,30 +1020,12 @@ void MaEditorSequenceArea::sl_hScrollBarActionPerfermed() {
     const QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(localPoint);
 
     if (shifting && editingEnabled) {
+        const QPoint& cursorPos = editor->getCursorPosition();
         shiftSelectedRegion(newCurPos.x() - cursorPos.x());
     } else if (selecting) {
         // There the correct geometry can be set
 //        rubberBand->setGeometry(QRect(rubberBandOrigin, localPoint).normalized());
     }
-}
-
-void MaEditorSequenceArea::setCursorPos(const QPoint& p) {
-    CHECK(!isAlignmentEmpty(), )
-    SAFE_POINT(isInRange(p), tr("Cursor position is out of range"), );
-    CHECK(p != cursorPos, );
-
-    cursorPos = p;
-
-    highlightSelection = false;
-    sl_updateActions();
-}
-
-void MaEditorSequenceArea::setCursorPos(int x, int y) {
-    setCursorPos(QPoint(x, y));
-}
-
-void MaEditorSequenceArea::setCursorPos(int pos) {
-    setCursorPos(QPoint(pos, cursorPos.y()));
 }
 
 void MaEditorSequenceArea::resizeEvent(QResizeEvent *e) {
@@ -1083,7 +1069,8 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
 
         rubberBandOrigin = e->pos();
         const QPoint p = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
-        setCursorPos(boundWithVisibleRange(p));
+        QPoint cursorPos = boundWithVisibleRange(p);
+        editor->setCursorPosition(cursorPos);
         if (isInRange(p)) {
             const MaEditorSelection &s = getSelection();
             if (s.getRect().contains(cursorPos) && !isAlignmentLocked() && editingEnabled) {
@@ -1183,7 +1170,7 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
         if (shape != Qt::ArrowCursor) {
             moveBorder(p);
         } else if (shifting && editingEnabled) {
-            shiftSelectedRegion(newCurPos.x() - cursorPos.x());
+            shiftSelectedRegion(newCurPos.x() - editor->getCursorPosition().x());
         } else if (selecting) {
             rubberBand->setGeometry(QRect(rubberBandOrigin, p).normalized());
         }
@@ -1277,7 +1264,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                     int startSeq = selection.y();
                     int height = selection.height();
                     if (selection.isNull()) {
-                        startSeq = cursorPos.y();
+                        startSeq = editor->getCursorPosition().y();
                         height = 1;
                     }
                     MaEditorSelection _selection(firstColumn, startSeq, selectionWidth, height);
@@ -1304,7 +1291,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                     int startSeq = selection.y();
                     int height = selection.height();
                     if (selection.isNull()) {
-                        startSeq = cursorPos.y();
+                        startSeq = editor->getCursorPosition().y();
                         height = 1;
                     }
                     MaEditorSelection _selection(firstColumn, startSeq, selectionWidth, height);
@@ -1330,7 +1317,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                     int firstColumn = selection.x();
                     int width = selection.width();
                     if (selection.isNull()) {
-                        firstColumn = cursorPos.x();
+                        firstColumn = editor->getCursorPosition().x();
                         width = 1;
                     }
                     MaEditorSelection _selection(firstColumn, startSeq, width, height);
@@ -1356,7 +1343,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                     int firstColumn = selection.x();
                     int width = selection.width();
                     if (selection.isNull()) {
-                        firstColumn = cursorPos.x();
+                        firstColumn = editor->getCursorPosition().x();
                         width = 1;
                     }
                     MaEditorSelection _selection(firstColumn, startSeq, width, height);
@@ -1375,22 +1362,22 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
             if (shift) {
                 // vertical scrolling
                 ui->getScrollController()->scrollToEnd(ScrollController::Up);
-                setCursorPos(QPoint(cursorPos.x(), 0));
+                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), 0));
             } else {
                 // horizontal scrolling
                 ui->getScrollController()->scrollToEnd(ScrollController::Left);
-                setCursorPos(QPoint(0, cursorPos.y()));
+                editor->setCursorPosition(QPoint(0, editor->getCursorPosition().y()));
             }
             break;
         case Qt::Key_End:
             if (shift) {
                 // vertical scrolling
                 ui->getScrollController()->scrollToEnd(ScrollController::Down);
-                setCursorPos(QPoint(cursorPos.x(), getNumDisplayableSequences() - 1));
+                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), getNumDisplayableSequences() - 1));
             } else {
                 // horizontal scrolling
                 ui->getScrollController()->scrollToEnd(ScrollController::Right);
-                setCursorPos(QPoint(editor->getAlignmentLen() - 1, cursorPos.y()));
+                editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1, editor->getCursorPosition().y()));
             }
             break;
         case Qt::Key_PageUp:
@@ -1427,8 +1414,8 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 selectionStart = selection.topLeft();
                 selectionEnd = selection.getRect().bottomRight();
             } else {
-                selectionStart = cursorPos;
-                selectionEnd = cursorPos;
+                selectionStart = editor->getCursorPosition();
+                selectionEnd = editor->getCursorPosition();
             }
             break;
     }

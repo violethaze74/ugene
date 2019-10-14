@@ -126,6 +126,12 @@ public:
 
     void exportHighlighted(){ sl_exportHighlighted(); }
 
+    /** Returns current cursor position. */
+    const QPoint& getCursorPosition() const;
+
+    /** Sets new cursor position. Emits si_cursorPositionChanged() signal. */
+    void setCursorPosition(const QPoint& cursorPosition);
+
 signals:
     void si_fontChanged(const QFont& f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -133,6 +139,7 @@ signals:
     void si_sizeChanged(int newHeight, bool isMinimumSize, bool isMaximumSize);
     void si_completeUpdate();
     void si_updateActions();
+    void si_cursorPositionChanged(const QPoint& cursorPosition);
 
 protected slots:
     virtual void sl_onContextMenuRequested(const QPoint & pos) = 0;
@@ -184,6 +191,9 @@ protected:
     double      zoomFactor;
     double      fontPixelToPointSize;
     mutable int cachedColumnWidth;
+
+    /** Current cursor position: 'x' is offset in alignment (0...len) and 'y' is a sequence index in the aligment. */
+    QPoint cursorPosition;
 
     QAction*          saveAlignmentAction;
     QAction*          saveAlignmentAsAction;

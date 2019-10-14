@@ -44,7 +44,8 @@ signals:
     void si_selectionChanged();
 
 protected:
-    void drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool selected, bool collapsed, bool isReference);
+    void drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect,
+                                      bool selected, bool focused, bool collapsed, bool isReference);
 
     void setSelection(int startSeq, int count);
 
