@@ -39,7 +39,7 @@ public:
     const MultipleSequenceAlignment getMsaCopy() const;
 
     /** GObject methods */
-    virtual GObject * clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
+    virtual MultipleSequenceAlignmentObject* clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 
     /** Const getters */
     char charAt(int seqNum, qint64 position) const;

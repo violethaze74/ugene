@@ -226,6 +226,10 @@ void MultipleAlignmentObject::moveRowsBlock(int firstRow, int numRows, int shift
     updateCachedMultipleAlignment();
 }
 
+QList<qint64> MultipleAlignmentObject::getRowsOrder(U2OpStatus& os) const {
+    return getMultipleAlignment()->getRowsIds();
+}
+
 void MultipleAlignmentObject::updateRowsOrder(U2OpStatus &os, const QList<qint64> &rowIds) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 

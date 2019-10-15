@@ -80,6 +80,7 @@ public:
 
     bool isRegionEmpty(int x, int y, int width, int height) const;
 
+    QList<qint64> getRowsOrder(U2OpStatus& os) const;
     /**
      * Updates the rows order.
      * There must be one-to-one correspondence between the specified rows IDs

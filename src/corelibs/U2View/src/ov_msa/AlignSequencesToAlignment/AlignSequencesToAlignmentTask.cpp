@@ -252,11 +252,12 @@ void AlignSequencesToAlignmentTask::prepare()
         return;
     }
     Document* document =  maObj->getDocument();
-    SAFE_POINT(NULL != document, "MSA object is NULL.", );
-    docStateLock = new StateLock("Lock MSA for align sequences to alignment", StateLockFlag_LiveLock);
-    document->lockState(docStateLock);
-    foreach(Document* curDoc, usedDocuments) {
-        curDoc->lockState(docStateLock);
+    if (document != nullptr) {
+        docStateLock = new StateLock("Lock MSA for align sequences to alignment", StateLockFlag_LiveLock);
+        document->lockState(docStateLock);
+        foreach(Document * curDoc, usedDocuments) {
+            curDoc->lockState(docStateLock);
+        }
     }
 
     stateLock = new StateLock("Align sequences to alignment", StateLockFlag_LiveLock);

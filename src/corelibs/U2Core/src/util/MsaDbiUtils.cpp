@@ -177,6 +177,17 @@ void MaDbiUtils::updateRowGapModel(const U2EntityRef& msaRef, qint64 rowId, cons
     msaDbi->updateGapModel(msaRef.entityId, rowId, gaps, os);
 }
 
+QList<qint64> MaDbiUtils::getRowsOrder(const U2EntityRef& meRef, U2OpStatus& os) {
+    // Prepare the connection
+    DbiConnection con(meRef.dbiRef, os);
+    CHECK_OP(os, QList<qint64>());
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", QList<qint64>());
+
+    return msaDbi->getRowsOrder(meRef.entityId, os);
+}
+
 void MaDbiUtils::updateRowsOrder(const U2EntityRef& meRef, const QList<qint64>& rowsOrder, U2OpStatus& os) {
     // Prepare the connection
     DbiConnection con(meRef.dbiRef, os);

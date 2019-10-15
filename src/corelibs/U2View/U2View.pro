@@ -114,6 +114,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/PhyTrees/MSAEditorTreeManager.h \
            src/ov_msa/PhyTrees/MsaEditorTreeTabArea.h \
            src/ov_msa/PhyTrees/MSAEditorTreeViewer.h \
+           src/ov_msa/RealignSequencesInAlignment/RealignSequencesInAlignmentTask.h \
            src/ov_msa/SaveSelectedSequenceFromMSADialogController.h \
            src/ov_msa/SeqStatistics/SeqStatisticsWidget.h \
            src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.h \
@@ -383,6 +384,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp \
            src/ov_msa/PhyTrees/MsaEditorTreeTabArea.cpp \
            src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp \
+           src/ov_msa/RealignSequencesInAlignment/RealignSequencesInAlignmentTask.cpp \
            src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidget.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.cpp \

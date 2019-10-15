@@ -51,7 +51,7 @@ const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() co
     return getMsa()->getExplicitCopy();
 }
 
-GObject * MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
+MultipleSequenceAlignmentObject* MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     Q_UNUSED(opBlock);
     CHECK_OP(os, NULL);

@@ -102,6 +102,7 @@ protected slots:
     void sl_buildTree();
     void sl_align();
     void sl_addToAlignment();
+    void sl_realignSomeSequences();
     void sl_setSeqAsReference();
     void sl_unsetReferenceSeq();
 
@@ -109,6 +110,7 @@ protected slots:
     void sl_showTreeOP();
     void sl_hideTreeOP();
     void sl_rowsRemoved(const QList<qint64> &rowIds);
+    void sl_updateRealignAction();
 
 protected:
     QWidget* createWidget();
@@ -132,6 +134,7 @@ private:
     QAction*          buildTreeAction;
     QAction*          alignAction;
     QAction*          alignSequencesToAlignmentAction;
+    QAction*          realignSomeSequenceAction;
     QAction*          setAsReferenceSequenceAction;
     QAction*          unsetReferenceSequenceAction;
 
