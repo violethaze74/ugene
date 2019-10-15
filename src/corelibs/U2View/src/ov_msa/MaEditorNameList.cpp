@@ -494,13 +494,14 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
             if (selectionContainsSeqs) {
                 int newSelectionStart = -1;
                 int newSelectionLen = -1;
+                QPoint cursorPos = editor->getCursorPosition();
                 if (hasShiftModifier && isClick) { // append region between current selection & mouseReleaseRow to the selection.
-                    if (mouseReleaseRow < selection.startPos) {
-                        newSelectionStart = qBound(0, mouseReleaseRow, (int) selection.startPos);
-                        newSelectionLen = (int) (selection.length + (selection.startPos - mouseReleaseRow));
-                    } else if (mouseReleaseRow >= selection.endPos()) {
-                        newSelectionStart = (int) selection.startPos;
-                        newSelectionLen = qMin(mouseReleaseRow + 1, maxRows) - (int) selection.startPos;
+                    if (mouseReleaseRow < cursorPos.y()) {
+                        newSelectionStart = mouseReleaseRow;
+                        newSelectionLen = cursorPos.y() - mousePressRow + 1;
+                    } else if (mouseReleaseRow > cursorPos.y()) {
+                        newSelectionStart = cursorPos.y();
+                        newSelectionLen = mousePressRow - cursorPos.y() + 1;
                     }
                 } else {
                     bool overflowAction = mouseReleaseRow != mouseReleaseRowExt && mousePressRow != mousePressRowExt; // 'true' if selection started & finished outside of any row.
