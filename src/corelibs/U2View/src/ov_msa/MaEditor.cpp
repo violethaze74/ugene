@@ -477,8 +477,7 @@ const QPoint& MaEditor::getCursorPosition() const {
 void MaEditor::setCursorPosition(const QPoint &newCursorPosition) {
     CHECK(cursorPosition != newCursorPosition,);
     int x = newCursorPosition.x(), y = newCursorPosition.y();
-    SAFE_POINT(x >= 0 && y >= 0 && x < getAlignmentLen() && y < getNumSequences(),
-               QString("Illegal cursor position: x: %1, y: %2").arg(x).arg(y),);
+    CHECK(x >= 0 && y >= 0 && x < getAlignmentLen() && y < getNumSequences(),);
     cursorPosition = newCursorPosition;
     emit si_cursorPositionChanged(cursorPosition);
 }
