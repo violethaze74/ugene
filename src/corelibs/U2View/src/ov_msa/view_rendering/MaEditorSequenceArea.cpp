@@ -393,24 +393,31 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    const U2Region& sel = getSelectedRows();
-    const bool isGap = maObj->getRow(selection.topLeft().y())->isGap(selection.topLeft().x());
-    maObj->removeRegion(selection.x(), sel.startPos, effectiveWidth, sel.length, true);
+    U2Region selectedRows = getSelectedRows();
+
+    // Save a copy of the selection before alignment modification: it will be used to restore selection later.
+    const MaEditorSelection selectionBefore = selection;
+    // Cancel selection, so it will never be larger than the alignment after region removal.
+    sl_cancelSelection();
+
+    const bool isGap = maObj->getRow(selectionBefore.topLeft().y())->isGap(selectionBefore.topLeft().x());
+    maObj->removeRegion(selectionBefore.x(), selectedRows.startPos, effectiveWidth, selectedRows.length, true);
     GRUNTIME_NAMED_COUNTER(cvar, tvar, "Delete current selection", editor->getFactoryId());
 
-    if (selection.height() == 1 && selection.width() == 1) {
+    if (selectionBefore.height() == 1 && selectionBefore.width() == 1) {
         GRUNTIME_NAMED_CONDITION_COUNTER(cvar2, tvar2, isGap, "Remove gap", editor->getFactoryId());
         GRUNTIME_NAMED_CONDITION_COUNTER(cvar3, tvar3, !isGap, "Remove character", editor->getFactoryId());
 
-        if (isInRange(selection.topLeft())) {
+        if (isInRange(selectionBefore.topLeft())) {
+            setSelection(selectionBefore); // restore selection on the top-left position
             return;
         }
     }
-    if (wholeRowRemoved) { // Select previous row.
-        int newSelectionY = qBound(0, selection.y(), getNumDisplayableSequences() - 1);
-        setSelection(MaEditorSelection(selection.x(), newSelectionY, selection.width(), 1));
-    } else {
-        sl_cancelSelection();
+    if (wholeRowRemoved) { // Restore selection: select previous row.
+        int newSelectionY = qBound(0, selectionBefore.y(), getNumDisplayableSequences() - 1);
+        setSelection(MaEditorSelection(selectionBefore.x(), newSelectionY, selectionBefore.width(), 1));
+    } else if (isInRange(selectionBefore.topLeft())) { // select 1 character on the top-left position of the old selection
+        setSelection(MaEditorSelection(selectionBefore.x(), selectionBefore.y(), 1, 1));
     }
 }
 
