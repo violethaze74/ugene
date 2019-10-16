@@ -1216,8 +1216,8 @@ GUI_TEST_CLASS_DEFINITION( test_2138 )
 
     GTGlobals::sleep(1000);
     //Expected state: alignment has been opened and whole msa alphabet is amino
-    const bool isAlphabetAminoAfter = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
-    CHECK_SET_ERR(isAlphabetAminoAfter, "Alphabet is not Amino!");
+    bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(os);
+    CHECK_SET_ERR(false == isAmino, "Aligment has wrong alphabet type");
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2140 )
