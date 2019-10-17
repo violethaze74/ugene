@@ -460,7 +460,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
         RowHeightController* rowsController = ui->getRowHeightController();
         int maxRows = ui->getSequenceArea()->getNumDisplayableSequences();
         int lastVisibleRow = scrollController->getLastVisibleRowNumber(height(), true);
-        int lastVisibleRowY = rowsController->getRowScreenRange(lastVisibleRow).endPos();
+        int lastVisibleRowY = rowsController->getRowScreenRangeByNumber(lastVisibleRow).endPos();
 
         U2Region selection = getSelection(); // current selection.
 
@@ -504,7 +504,9 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
                         newSelectionLen = mousePressRow - cursorPos.y() + 1;
                     }
                 } else {
-                    bool overflowAction = mouseReleaseRow != mouseReleaseRowExt && mousePressRow != mousePressRowExt; // 'true' if selection started & finished outside of any row.
+                    // overflowAction is 'true' if selection started & finished outside of any row.
+                    bool overflowAction = (mousePressRow < 0 && mouseReleaseRow < 0)
+                            || (mousePressRow >= maxRows && mouseReleaseRow >= maxRows);
                     if (overflowAction) {
                         clearSelection();
                     } else {
