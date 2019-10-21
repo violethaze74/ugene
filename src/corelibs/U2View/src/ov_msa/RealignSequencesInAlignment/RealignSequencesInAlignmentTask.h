@@ -32,7 +32,7 @@ namespace U2 {
 class MultipleSequenceAlignmentObject;
 class StateLocker;
 
-class RealignSequencesInAlignmentTask : public Task {
+class U2VIEW_EXPORT RealignSequencesInAlignmentTask : public Task {
     Q_OBJECT
 public:
     RealignSequencesInAlignmentTask(MultipleSequenceAlignmentObject* msaObject, const QSet<qint64>& sequencesToAlignIds);

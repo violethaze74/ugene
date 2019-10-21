@@ -47,6 +47,7 @@
 #include "MsaObjectTests.h"
 #include "PWMatrixTests.h"
 #include "PhyTreeObjectTests.h"
+#include "RealignSequencesInAlignmentTaskTest.h"
 #include "SMatrixTests.h"
 #include "SecStructPredictTests.h"
 #include "SequenceWalkerTests.h"
@@ -160,6 +161,8 @@ void CoreTests::registerFactories() {
 
     // Some utility actions to use them in tests
     registerFactory<UtilTestActions>(xmlTestFormat);
+
+    registerFactory<RealignTests>(xmlTestFormat);
 }
 
 }//namespace
