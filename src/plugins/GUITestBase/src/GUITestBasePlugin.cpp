@@ -1507,7 +1507,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6546_10);
     REGISTER_TEST(GUITest_regression_scenarios::test_6546_11);
     REGISTER_TEST(GUITest_regression_scenarios::test_6580);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6581);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6581,"old MAFFT version for Windows32");
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
