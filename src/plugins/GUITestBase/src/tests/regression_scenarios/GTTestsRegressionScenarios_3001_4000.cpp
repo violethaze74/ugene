@@ -552,8 +552,13 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     //Expected state:: dialog about file modification appeared.
     //5. Click Yes.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    QFile(sandBoxDir + "murine_3085_1.gb").rename(sandBoxDir + "murine_3085_1_2.gb");
-    QFile(testDir + "_common_data/regression/3085/murine_2.gb").copy(sandBoxDir + "murine_3085_1.gb");
+    QByteArray data = GTFile::readAll(os, testDir + "_common_data/regression/3085/murine_2.gb");
+
+    QFile file(sandBoxDir + "murine_3085_1.gb");
+    file.open(QIODevice::WriteOnly);
+    file.write(data);
+    file.close();
+
     GTGlobals::sleep(6000);
 
     //Expected state:: file was updated, the sequence view with annotations is opened and updated.
@@ -572,8 +577,13 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
     //2. Append another sequence to the file outside of UGENE.
     //3. Click "Yes" in the appeared dialog in UGENE.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    QFile(sandBoxDir + "murine_3085_2.gb").rename(sandBoxDir + "murine_3085_2_1.gb");
-    QFile(testDir + "_common_data/regression/3085/test_1.gb").copy(sandBoxDir + "murine_3085_2.gb");
+    QByteArray data = GTFile::readAll(os, testDir + "_common_data/regression/3085/test_1.gb");
+
+    QFile file(sandBoxDir + "murine_3085_2.gb");
+    file.open(QIODevice::WriteOnly);
+    file.write(data);
+    file.close();
+
     GTGlobals::sleep(6000);
 
     //Expected state: document reloaded without errors/warnings.
