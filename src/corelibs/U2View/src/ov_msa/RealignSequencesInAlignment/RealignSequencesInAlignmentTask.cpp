@@ -97,7 +97,7 @@ U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
     DbiConnection con(msaObject->getEntityRef().dbiRef, stateInfo);
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
     CHECK(con.dbi->getFeatures().contains(U2DbiFeature_RemoveObjects), Task::ReportResult_Finished);
-    con.dbi->getObjectDbi()->removeObject(msaObject->getEntityRef().entityId, true, stateInfo);   
+    con.dbi->getObjectDbi()->removeObject(msaObject->getEntityRef().entityId, true, stateInfo);
 
     return Task::ReportResult_Finished;
 }

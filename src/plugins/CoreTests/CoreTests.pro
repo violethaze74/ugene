@@ -20,6 +20,7 @@ HEADERS += src/AnnotationTableObjectTest.h \
            src/MsaObjectTests.h \
            src/PWMatrixTests.h \
            src/PhyTreeObjectTests.h \
+           src/RealignSequencesInAlignmentTaskTest.h \
            src/SMatrixTests.h \
            src/SecStructPredictTests.h \
            src/SequenceWalkerTests.h \
@@ -47,6 +48,7 @@ SOURCES += src/AnnotationTableObjectTest.cpp \
            src/MsaObjectTests.cpp \
            src/PWMatrixTests.cpp \
            src/PhyTreeObjectTests.cpp \
+           src/RealignSequencesInAlignmentTaskTest.cpp \
            src/SMatrixTests.cpp \
            src/SecStructPredictTests.cpp \
            src/SequenceWalkerTests.cpp \
