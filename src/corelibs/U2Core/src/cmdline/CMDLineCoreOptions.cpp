@@ -46,7 +46,11 @@ const QString CMDLineCoreOptions::LAUNCH_GUI_TEST_BATCH         = "gui-test-batc
 const QString CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE         = "gui-test-suite";
 const QString CMDLineCoreOptions::LAUNCH_GUI_TEST_CRAZY_USER    = "gui-test-crazy-user";
 const QString CMDLineCoreOptions::USAGE                         = "usage";
+const QString CMDLineCoreOptions::DOWNLOAD_DIR                  = "download-dir";
+const QString CMDLineCoreOptions::CUSTOM_TOOLS_CONFIG_DIR       = "custom-external-tool-config-dir";
 const QString CMDLineCoreOptions::TMP_DIR                       = "tmp-dir";
+const QString CMDLineCoreOptions::DEFAULT_DATA_DIR              = "default-data-dir";
+const QString CMDLineCoreOptions::FILE_STORAGE_DIR              = "file-storage-dir";
 const QString CMDLineCoreOptions::SESSION_DB                    = "session-db";
 const QString CMDLineCoreOptions::USE_SAME_INI_FOR_TESTS        = "use-same-ini-for-tests";
 

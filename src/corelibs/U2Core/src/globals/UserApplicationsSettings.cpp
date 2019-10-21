@@ -160,7 +160,7 @@ void UserAppsSettings::setCustomToolsConfigsDirPath(const QString &newPath) cons
     const QString oldPath = getCustomToolsConfigsDirPath();
 
     Settings *s = AppContext::getSettings();
-    s->setValue(SETTINGS_ROOT + CUSTOM_EXTERNAL_TOOL_CONFIGS_DIR, newPath, true);
+    s->setValue(SETTINGS_ROOT + CUSTOM_EXTERNAL_TOOL_CONFIGS_DIR, newPath);
 
     if(oldPath != newPath) {
         QDir dir(oldPath);
