@@ -2897,6 +2897,42 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably enabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6544){
+    
+    // 1. Open a DNA sequence in the SV.    
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    // 2. Open the "Search in Sequence" tab on the options panel.
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
+    GTGlobals::sleep();
+    
+    // 3. Input a pattern that contains a character of the extended DNA alphabet, e.g. "ACWT".
+    
+    QWidget *patternInputLine = QApplication::focusWidget();
+    CHECK_SET_ERR(NULL != patternInputLine && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
+
+    GTKeyboardDriver::keySequence("ACWT");
+    GTGlobals::sleep(1000);    
+    
+    // 4. Set algorithm to "Substitute" in the "Search algorithm" group.
+    GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Substitute");
+    
+    // 5. Expected/current result: the search field background is red.
+    QTextEdit* editPatterns = GTWidget::findExactWidget<QTextEdit*>(os, "textPattern");
+    QString style0 = editPatterns->styleSheet();
+    CHECK_SET_ERR(style0 == "background-color: rgb(255, 152, 142);", "unexpected styleSheet: " + style0);
+    
+    // 6. Make the "Search with ambiguous bases" option checked.
+    
+    GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases(os);
+    GTGlobals::sleep(200);
+    
+    // 7. Expected result: the search field should have white background.
+    QString style1 = editPatterns->styleSheet();
+    CHECK_SET_ERR(style1 == "background-color: white;", "unexpected styleSheet: " + style1);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6546){
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -3223,7 +3259,7 @@ GUI_TEST_CLASS_DEFINITION(test_6581) {
     // Expected result: the sequence has been aligned to the alignment.
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(names.size() == 18, QString("Unexpected name list size, expected: 18, current: %1").arg(names.size()));
-    CHECK_SET_ERR(names[17] == "F", QString("Unexpected name ¹18, expected: \"F\", current: %1").arg(names[17]));
+    CHECK_SET_ERR(names[17] == "F", QString("Unexpected name, expected: \"F\", current: %1").arg(names[17]));
 }
 
 } // namespace GUITest_regression_scenarios
