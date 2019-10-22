@@ -30,9 +30,12 @@ namespace U2 {
 
 #define IN_OBJECT_NAME_ATTR "in"
 #define ROWS_LIST_ATTR "rows"
+#define FORCE_USE_UGENE_ALIGNER_ATTR "useUgeneAligner"
 
 void GTest_Realign::init(XMLTestFormat* tf, const QDomElement& el) {
     Q_UNUSED(tf);
+
+    forceUseUgeneAligner = false;
 
     inputObjectName = el.attribute(IN_OBJECT_NAME_ATTR);
     if (inputObjectName.isEmpty()) {
@@ -55,6 +58,11 @@ void GTest_Realign::init(XMLTestFormat* tf, const QDomElement& el) {
             return;
         }
         rowsIndexesToAlign.append(rowIndex);
+    }
+
+    QString forceUseUgeneAlignerStr = el.attribute(FORCE_USE_UGENE_ALIGNER_ATTR);
+    if (!forceUseUgeneAlignerStr.isEmpty() && forceUseUgeneAlignerStr == "true") {
+        forceUseUgeneAligner = true;
     }
 }
 

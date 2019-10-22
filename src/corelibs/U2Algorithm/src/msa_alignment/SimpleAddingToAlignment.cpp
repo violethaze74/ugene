@@ -123,6 +123,7 @@ BestPositionFindTask::BestPositionFindTask(const MultipleSequenceAlignment& alig
 void BestPositionFindTask::run() {
     U2SequenceObject dnaSeq("sequence", sequenceRef);
     QByteArray sequence = dnaSeq.getWholeSequenceData(stateInfo);
+    sequence.replace(U2Msa::GAP_CHAR, "");
     CHECK_OP(stateInfo, );
 
     if(sequence.isEmpty()) {

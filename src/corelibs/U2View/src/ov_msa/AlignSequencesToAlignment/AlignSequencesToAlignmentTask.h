@@ -104,7 +104,7 @@ private:
 class AlignSequencesToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const SequenceObjectsExtractor& extractor);
+    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const SequenceObjectsExtractor& extractor, bool forceUseUgeneNativeAligner = false);
     void prepare();
     ReportResult report();
 private:
@@ -124,13 +124,14 @@ private:
 class LoadSequencesAndAlignToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls);
+    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls, bool forceUseUgeneNativeAligner = false);
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
     QStringList                 urls;
     QPointer<MultipleSequenceAlignmentObject>  maObj;
     LoadSequencesTask*  loadSequencesTask;
+    bool forceUseUgeneNativeAligner;
 };
 
 }// namespace

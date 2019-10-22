@@ -35,7 +35,7 @@ class StateLocker;
 class U2VIEW_EXPORT RealignSequencesInAlignmentTask : public Task {
     Q_OBJECT
 public:
-    RealignSequencesInAlignmentTask(MultipleSequenceAlignmentObject* msaObject, const QSet<qint64>& sequencesToAlignIds);
+    RealignSequencesInAlignmentTask(MultipleSequenceAlignmentObject* msaObject, const QSet<qint64>& sequencesToAlignIds, bool forceUseUgeneNativeAligner = false);
     ~RealignSequencesInAlignmentTask();
 
     Task::ReportResult report();

@@ -227,10 +227,13 @@ const SequenceObjectsExtractor& LoadSequencesTask::getExtractor() const {
 /************************************************************************/
 /* AlignSequencesToAlignmentTask */
 /************************************************************************/
-AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const SequenceObjectsExtractor& extractor)
+AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const SequenceObjectsExtractor& extractor, bool _forceUseUgeneNativeAligner)
     : Task(tr("Align sequences to alignment task"), TaskFlags_NR_FOSE_COSC), maObj(obj), stateLock(NULL), docStateLock(NULL),
     sequencesMaxLength(extractor.getMaxSequencesLength()), extr(extractor)
 {
+    if (_forceUseUgeneNativeAligner) {
+        settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
+    }
     fillSettingsByDefault();
     settings.addedSequencesRefs = extractor.getSequenceRefs();
     settings.addedSequencesNames = extractor.getSequenceNames();
@@ -273,12 +276,14 @@ void AlignSequencesToAlignmentTask::prepare()
 void AlignSequencesToAlignmentTask::fillSettingsByDefault() {
     AlignmentAlgorithmsRegistry* alignmentRegistry = AppContext::getAlignmentAlgorithmsRegistry();
     SAFE_POINT(NULL != alignmentRegistry, "AlignmentAlgorithmsRegistry is NULL.", );
-    if(alignmentRegistry->getAvailableAlgorithmIds(AddToAlignment).contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT)
-        && maObj->getMultipleAlignment()->getNumRows() != 0) {
-        settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
-    } else {
-        settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
-    }
+    if (settings.algorithmName.isEmpty()) {
+        if (alignmentRegistry->getAvailableAlgorithmIds(AddToAlignment).contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT)
+            && maObj->getMultipleAlignment()->getNumRows() != 0) {
+            settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
+        } else {
+            settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
+        }
+    }    
     settings.addAsFragments = sequencesMaxLength < 100 && maObj->getLength() / sequencesMaxLength > 3;
     settings.msaRef = maObj->getEntityRef();
     settings.inNewWindow = false;
@@ -313,8 +318,8 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
 /************************************************************************/
 /* LoadSequencesAndAlignToAlignmentTask */
 /************************************************************************/
-LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls)
-: Task(tr("Load sequences and add to alignment task"), TaskFlag_NoRun), urls(urls), maObj(obj), loadSequencesTask(NULL) {
+LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls, bool _forceUseUgeneNativeAligner)
+: Task(tr("Load sequences and add to alignment task"), TaskFlag_NoRun), urls(urls), maObj(obj), loadSequencesTask(NULL), forceUseUgeneNativeAligner(_forceUseUgeneNativeAligner) {
     SAFE_POINT_EXT(obj != NULL, setError("MultipleSequenceAlignmentObject is null"), );
     loadSequencesTask = new LoadSequencesTask(obj->getAlphabet(), urls);
     loadSequencesTask->setSubtaskProgressWeight(5);
@@ -325,7 +330,7 @@ QList<Task*> LoadSequencesAndAlignToAlignmentTask::onSubTaskFinished(Task* subTa
     QList<Task*> subTasks;
     propagateSubtaskError();
     if(subTask == loadSequencesTask && !loadSequencesTask->hasError() && !loadSequencesTask->isCanceled()) {
-        AlignSequencesToAlignmentTask* alignSequencesToAlignmentTask = new AlignSequencesToAlignmentTask(maObj, loadSequencesTask->getExtractor());
+        AlignSequencesToAlignmentTask* alignSequencesToAlignmentTask = new AlignSequencesToAlignmentTask(maObj, loadSequencesTask->getExtractor(), forceUseUgeneNativeAligner);
         alignSequencesToAlignmentTask->setSubtaskProgressWeight(95);
         subTasks << alignSequencesToAlignmentTask;
     }

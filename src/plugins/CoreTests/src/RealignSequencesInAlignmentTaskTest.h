@@ -49,6 +49,7 @@ private:
     QList<qint64> rowsIndexesToAlign;
     Document* doc;
     RealignSequencesInAlignmentTask *realignTask;
+    bool forceUseUgeneAligner;
 };
 
 class RealignTests {
