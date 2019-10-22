@@ -2808,6 +2808,95 @@ GUI_TEST_CLASS_DEFINITION(test_6490) {
     CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6541_1) {
+//  1. Open “COI_SHORT_21x88.aln”.
+    GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x70.aln");
+    QAbstractButton* realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
+//         Expected result : no sequences are selected.
+//         Expected result : the "Realign sequence(s) to other sequences" button is disabled.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect());
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
+
+//         Select all sequences in the alignment.
+//         Expected result : the "Realign sequence(s) to other sequences" button is disabled.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(69,20));
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
+
+//         Select none sequences.
+//         Expected result : the "Realign sequence(s) to other sequences" button is disabled.
+    GTUtilsMSAEditorSequenceArea::cancelSelection(os);
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
+
+//         Select 3 sequences in the alignment.
+//         Expected result : the "Realign sequence(s) to other sequences" button is enabled.
+    GTUtilsMsaEditor::selectRows(os, 18, 20);
+    CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably disabled");
+//         Click "Realign sequence(s) to other sequences".
+//         Expected result : the sequences are realigned.
+    GTWidget::click(os, realignButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+//         Open “empty2.fa”.
+//         Expected result : there are no sequences in the Realignment Editor.The "Realign sequence(s) to other sequences" button is disabled.
+    GTUtilsProject::closeProject(os);
+    GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "empty.fa");
+    realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6541_2) {
+//  Open “COI_SHORT_21x88_russian_letters.msf”.
+//  Select ”æææ ÆÆÆÆ    æÆæÆ”, “øø øø øÏÏÏ üüü”, “Ýýýç   üááá ÁÁÁÁ ÔÔÔôô” sequences.
+//  Expected result : "Realign sequence(s) to other sequences" button is enabled.
+    GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x88_russian_letters.msf");
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 17), QPoint(1, 20));
+    QAbstractButton* realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
+    CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
+//  Click "Realign sequence(s) to other sequences".
+//  Expected result : sequences realigned.
+    GTWidget::click(os, realignButton);
+    QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo"); 
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6541_3) {
+//     Open “amino_ext.aln”.
+//     Select “FOSB_MOUSE” sequence.
+//     Expected result : "Realign sequence(s) to other sequences" button is enabled.
+//     Click "Realign sequence(s) to other sequences".
+//     Expected result : sequences realigned.
+    GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "amino_ext.aln");
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(1, 0));
+    QAbstractButton* realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
+    CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
+    GTWidget::click(os, realignButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+    GTUtilsProject::closeProject(os);
+//     Open “protein.aln”.
+//     Select “Loach”, “Frog”, "Human" sequences.
+//     Expected result : "Realign sequence(s) to other sequences" button is enabled.
+//     Click "Realign sequence(s) to other sequences".
+//     Expected result : sequences realigned.
+    GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "protein.aln");
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 3), QPoint(0, 5));
+    realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
+    CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
+    GTWidget::click(os, realignButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    undoButton = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+    GTUtilsProject::closeProject(os);
+//     Open “RAW.aln”.Select any sequence.
+//     Expected result : "Realign sequence(s) to other sequences" button is disabled.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "RAW.aln");
+    realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably enabled");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6546){
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
