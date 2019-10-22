@@ -63,6 +63,7 @@ public:
     DNATranslation* getAminoTT() const;
     int getSymbolsPerLine() const;
 
+    void setWrapSequence(bool v);
     void setShowComplement(bool t);
     void setShowTranslation(bool t);
 
@@ -127,11 +128,17 @@ private:
     QPoint getRenderAreaPointAfterAutoScroll(const QPoint& pos);
     void moveBorder(const QPoint& p);
     void setBorderCursor(const QPoint& p);
+    void setDefaultState();
 
     void uncheckAllTranslations();
     void updateTranslationsState();
     void updateTranslationsState(const U2Strand::Direction direction);
     void updateSelectedTranslations(const SequenceObjectContext::TranslationState& state);
+
+    static const QString SEQUENCE_SETTINGS;
+    static const QString SEQUENCE_WRAPPED;
+    static const QString COMPLEMENTARY_STRAND_SHOWN;
+    static const QString TRANSLATION_STATE;
 };
 
 class U2VIEW_EXPORT DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
