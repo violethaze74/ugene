@@ -263,29 +263,24 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
 }
 
 void GSequenceLineViewAnnotated::mouseDoubleClickEvent(QMouseEvent* me) {
-    const QPoint p = toRenderAreaPoint(me->pos());
-    QList<AnnotationSelectionData> selected = selectAnnotationByCoord(p);
-    if (!selected.isEmpty()) {
-        AnnotationSelectionData *asd = &selected.first();
-        CHECK(asd != NULL, );
-
-        const QVector<U2Region> selRegions = asd->getSelectedRegions();
-        CHECK(selRegions.size() == 1 || U1AnnotationUtils::isAnnotationAroundJunctionPoint(asd, seqLen), );
-
-        const qint64 currentPos = renderArea->coordToPos(toRenderAreaPoint(me->pos()));
-        bool containsCurrentPoint = false;
-        foreach(const U2Region& reg, selRegions) {
-            CHECK_CONTINUE(reg.contains(currentPos));
-
-            containsCurrentPoint = true;
-            break;
-        }
-        if (containsCurrentPoint) {
-            ctx->emitAnnotationSequenceSelection(asd);
-        }
-        lastPressPos = currentPos;
-    } else {
+    const QPoint renderAreaPoint = toRenderAreaPoint(me->pos());
+    lastPressPos = renderArea->coordToPos(renderAreaPoint);
+    QList<AnnotationSelectionData> selection = selectAnnotationByCoord(renderAreaPoint);
+    if (selection.isEmpty()) {
         GSequenceLineView::mouseDoubleClickEvent(me);
+        return;
+    }
+    AnnotationSelectionData *asd = &selection.first();
+    ctx->emitAnnotationSequenceSelection(asd);
+    const QVector<U2Region> selectionRegions = asd->getSelectedRegions();
+    if (selectionRegions.size() > 1 && !U1AnnotationUtils::isAnnotationAroundJunctionPoint(asd, seqLen)) {
+        // Set sequence selection to the clicked region only.
+        foreach(const U2Region &region, selectionRegions) {
+            if (region.contains(lastPressPos)) {
+                ctx->getSequenceSelection()->setRegion(region);
+                break;
+            }
+        }
     }
 }
 
