@@ -133,6 +133,7 @@ GUI_TEST_CLASS_DEFINITION(test_6031) {
     }
 }
 
+
 GUI_TEST_CLASS_DEFINITION(test_6033) {
     //    1. Open 'human_T1.fa'
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
@@ -2005,6 +2006,32 @@ GUI_TEST_CLASS_DEFINITION(test_6291) {
     CHECK_SET_ERR(actualValue == qValue, QString("Qualifier text %1 differs with expected %2.").arg(actualValue).arg(qValue));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6298) {
+    // 1. Open _common_data/scenarios/_regression/6298/small_with_one_char.fa
+    // 2. Press "Join sequences into alignment..." radio button
+    // 3. Press "OK" button
+    // 4. Expected state: the alignment alphabet is "Standard amino acid"
+    
+#ifdef Q_OS_MAC
+    //hack for mac
+    MainWindow *mw = AppContext::getMainWindow();
+    CHECK_SET_ERR(mw != NULL, "MainWindow is NULL");
+    QMainWindow *mainWindow = mw->getQMainWindow();
+    CHECK_SET_ERR(mainWindow != NULL, "QMainWindow is NULL");
+    QWidget* w = qobject_cast<QWidget*>(mainWindow);
+    GTWidget::click(os, w, Qt::LeftButton, QPoint(5,5));
+    GTGlobals::sleep(500);
+#endif
+
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
+    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/6298/small_with_one_char.fa");
+
+    GTGlobals::sleep(1000);
+    //Expected state: alignment has been opened and whole msa alphabet is amino
+    bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(os);
+    CHECK_SET_ERR(isAmino, "Aligment has wrong alphabet type");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6301) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os){
@@ -2809,7 +2836,7 @@ GUI_TEST_CLASS_DEFINITION(test_6490) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_1) {
-//  1. Open “COI_SHORT_21x88.aln”.
+//  1. Open ï¿½COI_SHORT_21x88.alnï¿½.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x70.aln");
     QAbstractButton* realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
 //         Expected result : no sequences are selected.
@@ -2837,7 +2864,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
-//         Open “empty2.fa”.
+//         Open ï¿½empty2.faï¿½.
 //         Expected result : there are no sequences in the Realignment Editor.The "Realign sequence(s) to other sequences" button is disabled.
     GTUtilsProject::closeProject(os);
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "empty.fa");
@@ -2846,8 +2873,8 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_2) {
-//  Open “COI_SHORT_21x88_russian_letters.msf”.
-//  Select ”æææ ÆÆÆÆ    æÆæÆ”, “øø øø øÏÏÏ üüü”, “Ýýýç   üááá ÁÁÁÁ ÔÔÔôô” sequences.
+//  Open ï¿½COI_SHORT_21x88_russian_letters.msfï¿½.
+//  Select ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½Æ”, ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½   ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ sequences.
 //  Expected result : "Realign sequence(s) to other sequences" button is enabled.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x88_russian_letters.msf");
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 17), QPoint(1, 20));
@@ -2862,8 +2889,8 @@ GUI_TEST_CLASS_DEFINITION(test_6541_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_3) {
-//     Open “amino_ext.aln”.
-//     Select “FOSB_MOUSE” sequence.
+//     Open ï¿½amino_ext.alnï¿½.
+//     Select ï¿½FOSB_MOUSEï¿½ sequence.
 //     Expected result : "Realign sequence(s) to other sequences" button is enabled.
 //     Click "Realign sequence(s) to other sequences".
 //     Expected result : sequences realigned.
@@ -2876,8 +2903,8 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
     GTUtilsProject::closeProject(os);
-//     Open “protein.aln”.
-//     Select “Loach”, “Frog”, "Human" sequences.
+//     Open ï¿½protein.alnï¿½.
+//     Select ï¿½Loachï¿½, ï¿½Frogï¿½, "Human" sequences.
 //     Expected result : "Realign sequence(s) to other sequences" button is enabled.
 //     Click "Realign sequence(s) to other sequences".
 //     Expected result : sequences realigned.
@@ -2890,7 +2917,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
     GTUtilsProject::closeProject(os);
-//     Open “RAW.aln”.Select any sequence.
+//     Open ï¿½RAW.alnï¿½.Select any sequence.
 //     Expected result : "Realign sequence(s) to other sequences" button is disabled.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "RAW.aln");
     realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
