@@ -106,9 +106,15 @@ QList<Task*> RealignSequencesInAlignmentTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     CHECK_OP(stateInfo, res);
     
+    QList<int> indexesToRemove;
     if (subTask == extractSequences) {
         foreach(qint64 idToRemove, rowsToAlignIds) {
-            msaObject->removeRow(msaObject->getRowPosById(idToRemove));
+            indexesToRemove.append(originalMsaObject->getRowPosById(idToRemove));
+        }
+        qSort(indexesToRemove);
+        std::reverse(indexesToRemove.begin(), indexesToRemove.end());
+        foreach(int rowPos, indexesToRemove) {
+            msaObject->removeRow(rowPos);
         }
         QStringList sequenceFilesToAlign;
         QDirIterator it(extractedSequencesDirUrl, QStringList() << "*.fa", QDir::Files, QDirIterator::Subdirectories);

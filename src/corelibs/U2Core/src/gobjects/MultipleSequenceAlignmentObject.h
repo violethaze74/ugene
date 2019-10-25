@@ -39,6 +39,7 @@ public:
     const MultipleSequenceAlignment getMsaCopy() const;
 
     /** GObject methods */
+    //Actually this method doesn't exactly clone MSA database rows, row ID will be generated for each copied row again
     virtual MultipleSequenceAlignmentObject* clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 
     /** Const getters */
