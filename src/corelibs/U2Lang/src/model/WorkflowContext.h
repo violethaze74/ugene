@@ -94,6 +94,8 @@ public:
     static bool useOutputDir();
     static bool useSubDirs();
     static void saveRunInfo(const QString &dir);
+
+    static const QString WORKING_DIR;
 };
 
 } // Workflow

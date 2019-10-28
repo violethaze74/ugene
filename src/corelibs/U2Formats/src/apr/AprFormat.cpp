@@ -62,8 +62,8 @@ static QString getLine(IOAdapter* io, char* buff, const QString& pattern, U2OpSt
             line = QString();
             finishedReading = true;
         }
-        QString bufferString(buff);
-        QTextStream bufferStream(&bufferString);
+        QByteArray buffQB(buff);
+        QTextStream bufferStream(buffQB);
         line = bufferStream.readLine();
         if (line.contains(pattern)) {
             finishedReading = true;

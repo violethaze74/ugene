@@ -1217,7 +1217,7 @@ GUI_TEST_CLASS_DEFINITION( test_2138 )
     GTGlobals::sleep(1000);
     //Expected state: alignment has been opened and whole msa alphabet is amino
     bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(os);
-    CHECK_SET_ERR(false == isAmino, "Aligment has wrong alphabet type");
+    CHECK_SET_ERR(isAmino, "Aligment has wrong alphabet type");
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2140 )
@@ -4635,17 +4635,10 @@ GUI_TEST_CLASS_DEFINITION(test_2690){
     QWidget* nextAnnotationButton = GTWidget::findWidget(os, "nextAnnotationButton");
     GTWidget::click(os, nextAnnotationButton);
     GTGlobals::sleep(500);
-//    Expected state: the first location of the second annotation is selected.
+//    Expected state: the second annotation is selected.
     QString str = GTUtilsAnnotationsTreeView::getSelectedItem(os);
-    CHECK_SET_ERR(str == "ann2", "unexpected selected annotation: " + str);
-    CHECK_SET_ERR(nextAnnotationButton->isEnabled(), "nextAnnotationButton is unexpectidly disabled")
-//    7. Click the "next annotation" button.
-    GTWidget::click(os, nextAnnotationButton);
-    GTGlobals::sleep(500);
-    str = GTUtilsAnnotationsTreeView::getSelectedItem(os);
     CHECK_SET_ERR(str == "ann2", "unexpected selected annotation after click: " + str);
-    CHECK_SET_ERR(!nextAnnotationButton->isEnabled(), "nextAnnotationButton is unexpectidly enabled");
-//    Expected state: the second location of the second annotation is selected, "next" button is disabled.
+    CHECK_SET_ERR(!nextAnnotationButton->isEnabled(), "nextAnnotationButton is unexpectedly enabled");
 
 }
 
@@ -6280,15 +6273,15 @@ GUI_TEST_CLASS_DEFINITION(test_2972){
 
 GUI_TEST_CLASS_DEFINITION(test_2975) {
 //    1. Open "_common_data/fasta/all_alphabet.fa" as multiple alignment.
-    GTUtilsProject::openMultiSequenceFileAsMalignment(os, testDir + "_common_data/fasta", "all_alphabet.fa");
+    GTUtilsProject::openMultiSequenceFileAsMalignment(os, testDir + "_common_data/fasta", "all_and_raw_alphabets.fa");
 
 //    2. Open the "Pairwise alignment" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 
 //    3. Set the first sequence as the first sequence and the second sequence as the second sequence, select the "Smith-Waterman" algorithm.
 //    Expected state: align button is blocked
-    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "SEQUENCE_1");
-    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "SEQUENCE_2");
+    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Dna");
+    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Raw");
     GTUtilsOptionPanelMsa::setPairwiseAlignmentAlgorithm(os, "Smith-Waterman");
 
     QPushButton *alignButton = GTUtilsOptionPanelMsa::getAlignButton(os);

@@ -188,12 +188,21 @@ bool WorkflowContext::initWorkingDir() {
 /************************************************************************/
 /* WorkflowContextCMDLine */
 /************************************************************************/
+
+const QString WorkflowContextCMDLine::WORKING_DIR = "working-dir";
+
 QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
     // 1. Detect folder
     QString root;
+
+    CMDLineRegistry* cmdlineReg = AppContext::getCMDLineRegistry();
+    assert(cmdlineReg != nullptr);
+
     if (useOutputDir()) {
         root = WorkflowSettings::getWorkflowOutputDirectory();
-    } else {
+    } else if (cmdlineReg != nullptr && cmdlineReg->hasParameter(WORKING_DIR)) {
+        root = cmdlineReg->getParameterValue(WORKING_DIR);
+    } else{
         root = QProcess().workingDirectory();
     }
 
