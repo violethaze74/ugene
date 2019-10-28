@@ -4635,17 +4635,10 @@ GUI_TEST_CLASS_DEFINITION(test_2690){
     QWidget* nextAnnotationButton = GTWidget::findWidget(os, "nextAnnotationButton");
     GTWidget::click(os, nextAnnotationButton);
     GTGlobals::sleep(500);
-//    Expected state: the first location of the second annotation is selected.
+//    Expected state: the second annotation is selected.
     QString str = GTUtilsAnnotationsTreeView::getSelectedItem(os);
-    CHECK_SET_ERR(str == "ann2", "unexpected selected annotation: " + str);
-    CHECK_SET_ERR(nextAnnotationButton->isEnabled(), "nextAnnotationButton is unexpectidly disabled")
-//    7. Click the "next annotation" button.
-    GTWidget::click(os, nextAnnotationButton);
-    GTGlobals::sleep(500);
-    str = GTUtilsAnnotationsTreeView::getSelectedItem(os);
     CHECK_SET_ERR(str == "ann2", "unexpected selected annotation after click: " + str);
-    CHECK_SET_ERR(!nextAnnotationButton->isEnabled(), "nextAnnotationButton is unexpectidly enabled");
-//    Expected state: the second location of the second annotation is selected, "next" button is disabled.
+    CHECK_SET_ERR(!nextAnnotationButton->isEnabled(), "nextAnnotationButton is unexpectedly enabled");
 
 }
 
