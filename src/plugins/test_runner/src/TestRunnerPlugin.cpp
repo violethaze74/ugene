@@ -81,7 +81,7 @@ void TestRunnerPlugin::sl_startTestRunner() {
 
     foreach(const QString &param, suiteUrls) {
         QString dir;
-        if(param.contains(":")||param[0]=='.') {
+        if(param.contains(":")||param[0]=='.'||param[0]=='/') {
             dir = param;
         }
         else {
