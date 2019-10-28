@@ -590,12 +590,12 @@ void PanView::sl_updateRows(){
 
 const U2Region PanView::getRegionToZoom() const {
     const QVector<U2Region>& sel = ctx->getSequenceSelection()->getSelectedRegions();
-    const QList<AnnotationSelectionData> annotationSel = getSequenceContext()->getAnnotationsSelection()->getSelection();
+    const QList<Annotation*> annotationSel = getSequenceContext()->getAnnotationsSelection()->getAnnotations();
     U2Region selRegion;
     if (!sel.isEmpty()) {
         selRegion = sel.first();
     } else if (!annotationSel.isEmpty()) {
-        selRegion = U2Region::containingRegion(annotationSel.first().annotation->getRegions());
+        selRegion = U2Region::containingRegion(annotationSel.first()->getRegions());
     }
 
     return selRegion;

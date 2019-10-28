@@ -170,6 +170,14 @@ QVector<U2Region> Annotation::getRegions() const {
     return data->getRegions();
 }
 
+qint64 Annotation::getRegionsLen() const {
+    qint64 len = 0;
+    foreach(const U2Region& region, getRegions()) {
+        len += region.length;
+    }
+    return len;
+}
+
 void Annotation::updateRegions(const QVector<U2Region> &regions) {
     SAFE_POINT(!regions.isEmpty(), "Attempting to assign the annotation to an empty region!",);
     CHECK(regions != data->location->regions, );

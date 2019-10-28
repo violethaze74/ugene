@@ -192,7 +192,7 @@ void AnnotHighlightWidget::selectNextAnnotation(bool isForward) const {
 
     if (isAnnRegionValid) {
         as->clear();
-        as->addToSelection(annRegion.annotation);
+        as->add(annRegion.annotation);
     }
     return;
 }
@@ -245,10 +245,10 @@ bool AnnotHighlightWidget::findNextUnselectedAnnotatedRegion(AnnotatedRegion &an
     CHECK(!as->isEmpty(), false);
 
     // detect the most right/left start position in selection
-    const QList<AnnotationSelectionData> selectionData = as->getSelection();
+    const QList<Annotation*> selectionData = as->getAnnotations();
     int start = -1;
-    foreach (AnnotationSelectionData selectionItem, selectionData) {
-        foreach (U2Region region, selectionItem.getSelectedRegions()) {
+    foreach (Annotation* selectionItem, selectionData) {
+        foreach (U2Region region, selectionItem->getRegions()) {
             if (start == -1) {
                 start = region.startPos;
             } else {
@@ -304,9 +304,8 @@ void AnnotHighlightWidget::sl_onAnnotationSelectionChanged() {
         prevAnnotationButton->setDisabled(false);
 
         // find first or last annotation region
-        foreach (AnnotationSelectionData selData, as->getSelection()) {
-            Annotation *a = selData.annotation;
-            foreach (U2Region region, selData.getSelectedRegions()) {
+        foreach (Annotation* a, as->getAnnotations()) {
+            foreach (U2Region region, a->getRegions()) {
                 if (isFirstAnnotatedRegion(a, region, false)) {
                     nextAnnotationButton->setDisabled(true);
                 }

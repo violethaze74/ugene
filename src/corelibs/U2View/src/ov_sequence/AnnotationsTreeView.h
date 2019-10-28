@@ -44,7 +44,6 @@ class AnnotationGroup;
 class AnnotationGroupSelection;
 class AnnotationModification;
 class AnnotationSelection;
-class AnnotationSelectionData;
 class AnnotationTableObject;
 class AVAnnotationItem;
 class AVGroupItem;
@@ -142,8 +141,8 @@ private slots:
     void sl_itemExpanded(QTreeWidgetItem *);
 
     void sl_sortTree();
-    void sl_annotationClicked(AnnotationSelectionData* aad);
-    void sl_annotationDoubleClicked(AnnotationSelectionData* asd);
+    void sl_annotationClicked(Annotation* aad);
+    void sl_annotationDoubleClicked(Annotation* asd);
     void sl_clearSelectedAnnotations();
     void sl_sequenceAdded(ADVSequenceObjectContext* advContext);
     void sl_sequenceRemoved(ADVSequenceObjectContext* advContext);

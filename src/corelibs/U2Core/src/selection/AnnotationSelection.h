@@ -34,77 +34,63 @@ class DNATranslation;
 class U2EntityRef;
 class U2OpStatus;
 
-class U2CORE_EXPORT AnnotationSelectionData {
+class U2CORE_EXPORT AnnotationSelection : public GSelection {
+Q_OBJECT
 public:
-    AnnotationSelectionData(Annotation *a);
+    AnnotationSelection(QObject *p = NULL);
 
-    bool operator ==(const AnnotationSelectionData &d) const;
+    const QList<Annotation*>& getAnnotations() const;
 
-    QVector<U2Region>   getSelectedRegions() const;
+    /** Adds annotation to selection. Does nothing if annotation is already in the selection. */
+    void add(Annotation *a);
 
-    qint64 getSelectedRegionsLen() const;
+    void remove(Annotation *a);
 
-    /** Selected annotation. */
-    Annotation* annotation;
-};
+    bool isEmpty() const;
 
-class  U2CORE_EXPORT AnnotationSelection : public GSelection {
-    Q_OBJECT
-public:
-                                            AnnotationSelection(QObject *p = NULL);
+    void clear();
 
-    const QList<AnnotationSelectionData> &  getSelection() const;
+    void removeObjectAnnotations(const AnnotationTableObject *obj);
 
-    /**
-     * Adds annotation to selection.
-     * If annotation is already in selection and have a different locationIdx
-     * -> removes the old annotaiton selection data
-     * and adds the annotation again with updated locationIdx
-     */
-    void                                    addToSelection(Annotation *a);
+    bool contains(Annotation *a) const;
 
-    void                                    removeFromSelection(Annotation *a);
-
-    bool                                    isEmpty() const;
-
-    void                                    clear();
-
-    void                                    removeObjectAnnotations(AnnotationTableObject *obj);
-
-    bool                                    contains(const Annotation *a) const;
-
-    static void                             getAnnotationSequence(QByteArray &res, const AnnotationSelectionData &ad, char gapSym,
-                                                const U2EntityRef &ref, const DNATranslation *complTT, const DNATranslation *aminoTT, U2OpStatus &os);
+    static void getAnnotationSequence(QByteArray &res, const Annotation* annotation, char gapSym,
+                                      const U2EntityRef &ref, const DNATranslation *complTT,
+                                      const DNATranslation *aminoTT, U2OpStatus &os);
 
 signals:
-    void si_selectionChanged(AnnotationSelection *thiz, const QList<Annotation *> &added, const QList<Annotation *> &removed);
+
+    void si_selectionChanged(AnnotationSelection *thiz, const QList<Annotation *> &added,
+                             const QList<Annotation *> &removed);
 
 private:
-    QList<AnnotationSelectionData> selection;
+    QList<Annotation*> selection;
 };
 
 //////////////////////////////////////////////////////////////////////////
 // AnnotationGroupSelection
 
-class  U2CORE_EXPORT AnnotationGroupSelection : public GSelection {
-    Q_OBJECT
+class U2CORE_EXPORT AnnotationGroupSelection : public GSelection {
+Q_OBJECT
 public:
-                                        AnnotationGroupSelection(QObject *p = NULL);
+    AnnotationGroupSelection(QObject *p = NULL);
 
-    const QList<AnnotationGroup *> &    getSelection() const;
+    const QList<AnnotationGroup *> &getSelection() const;
 
-    void                                addToSelection(AnnotationGroup *g);
+    void addToSelection(AnnotationGroup *g);
 
-    void                                removeFromSelection(AnnotationGroup *g);
+    void removeFromSelection(AnnotationGroup *g);
 
-    bool                                isEmpty() const;
+    bool isEmpty() const;
 
-    void                                clear();
+    void clear();
 
-    bool                                contains(AnnotationGroup *g) const;
+    bool contains(AnnotationGroup *g) const;
 
 signals:
-    void si_selectionChanged(AnnotationGroupSelection *thiz, const QList<AnnotationGroup *> &added, const QList<AnnotationGroup *> &removed);
+
+    void si_selectionChanged(AnnotationGroupSelection *thiz, const QList<AnnotationGroup *> &added,
+                             const QList<AnnotationGroup *> &removed);
 
 private:
     QList<AnnotationGroup *> selection;

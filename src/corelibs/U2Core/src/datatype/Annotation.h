@@ -71,6 +71,9 @@ public:
     void                            setLocation(const U2Location &location);
 
     QVector<U2Region>               getRegions() const;
+
+    qint64                          getRegionsLen() const;
+
     /**
      * Replaces existing annotation region(s) with supplied @regions
      */

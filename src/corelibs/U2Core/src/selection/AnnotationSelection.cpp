@@ -34,30 +34,12 @@ namespace U2 {
 
 static QList<Annotation *> emptyAnnotations;
 
-AnnotationSelectionData::AnnotationSelectionData(Annotation *a) : annotation(a) {
-}
-
-bool AnnotationSelectionData::operator ==(const AnnotationSelectionData &d) const {
-    return d.annotation == annotation;
-}
-
-QVector<U2Region> AnnotationSelectionData::getSelectedRegions() const {
-    return annotation->getRegions();
-}
-
-qint64 AnnotationSelectionData::getSelectedRegionsLen() const {
-    qint64 len = 0;
-    foreach(const U2Region& region, annotation->getRegions()) {
-        len += region.length;
-    }
-    return len;
-}
 
 AnnotationSelection::AnnotationSelection(QObject *p) : GSelection(GSelectionTypes::ANNOTATIONS, p) {
     connect(this, SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)), SLOT(sl_selectionChanged()));
 }
 
-const QList<AnnotationSelectionData> & AnnotationSelection::getSelection() const {
+const QList<Annotation*>& AnnotationSelection::getAnnotations() const {
     return selection;
 }
 
@@ -69,42 +51,39 @@ void AnnotationSelection::clear() {
     if (selection.isEmpty()) {
         return;
     }
-    QList<Annotation *> tmpRemoved;
-    foreach(const AnnotationSelectionData &asd, selection) {
-        tmpRemoved.push_back(asd.annotation);
-    }
+    QList<Annotation*> tmpRemoved = selection;
     selection.clear();
     emit si_selectionChanged(this, emptyAnnotations, tmpRemoved);
 }
 
-void AnnotationSelection::removeObjectAnnotations(AnnotationTableObject *obj) {
+void AnnotationSelection::removeObjectAnnotations(const AnnotationTableObject *obj) {
     QList<Annotation *> removed;
     foreach(Annotation *a, obj->getAnnotations()) {
         for (int i = 0; i < selection.size(); i++) {
-            if (selection[i].annotation == a) {
+            if (selection[i] == a) {
                 removed.append(a);
                 selection.removeAt(i);
                 --i;
             }
         }
     }
-    emit si_selectionChanged(this, emptyAnnotations, removed);
+    if (!removed.isEmpty()) {
+        emit si_selectionChanged(this, emptyAnnotations, removed);
+    }
 }
 
-void AnnotationSelection::addToSelection(Annotation *a) {
-    for (int i = 0; i < selection.size(); i++) {
-        if (selection[i].annotation == a) {
-            return; //nothing changed
-        }
+void AnnotationSelection::add(Annotation *a) {
+    if (selection.contains(a)) {
+        return; //nothing changed
     }
-    selection.append(AnnotationSelectionData(a));
+    selection.append(a);
     emit si_selectionChanged(this, QList<Annotation*>() << a, emptyAnnotations);
 }
 
-void AnnotationSelection::removeFromSelection(Annotation *a) {
+void AnnotationSelection::remove(Annotation *a) {
     bool removed = false;
     for (int i = 0; i < selection.size(); i++) {
-        if (selection[i].annotation == a) {
+        if (selection[i] == a) {
             selection.removeAt(i);
             removed = true;
             break;
@@ -115,9 +94,9 @@ void AnnotationSelection::removeFromSelection(Annotation *a) {
     }
 }
 
-void AnnotationSelection::getAnnotationSequence(QByteArray &res, const AnnotationSelectionData &ad, char gapSym, const U2EntityRef &seqRef,
+void AnnotationSelection::getAnnotationSequence(QByteArray &res, const Annotation* annotation, char gapSym, const U2EntityRef &seqRef,
     const DNATranslation *complTT, const DNATranslation *aminoTT, U2OpStatus &os) {
-    QVector<U2Region> regions = ad.annotation->getRegions();
+    QVector<U2Region> regions = annotation->getRegions();
     QList<QByteArray> parts = U2SequenceUtils::extractRegions(seqRef, regions, complTT, aminoTT, false, os);
     CHECK_OP(os, )
     qint64 resLen = 0;
@@ -133,13 +112,8 @@ void AnnotationSelection::getAnnotationSequence(QByteArray &res, const Annotatio
     }
 }
 
-bool AnnotationSelection::contains(const Annotation *a) const {
-    foreach(const AnnotationSelectionData &asd, selection) {
-        if (asd.annotation == a) {
-            return true;
-        }
-    }
-    return false;
+bool AnnotationSelection::contains(Annotation *a) const {
+    return selection.contains(a);
 }
 
 

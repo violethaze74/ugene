@@ -611,7 +611,7 @@ void AnnotatedDNAView::addEditMenu(QMenu* m) {
     };
     rm->menuAction()->setObjectName(ADV_MENU_EDIT);
 
-    if (annotationSelection->getSelection().size() == 1 && annotationsView->editAction->isEnabled()) {
+    if (annotationSelection->getAnnotations().size() == 1 && annotationsView->editAction->isEnabled()) {
         rm->addAction(annotationsView->editAction);
     }
 
@@ -797,8 +797,8 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
     addRemoveMenu(&m);
     m.addSeparator()->setObjectName(ADV_MENU_SECTION2_SEP);
 
-    if (annotationSelection->getSelection().size() == 1) {
-        Annotation *a = annotationSelection->getSelection().first().annotation;
+    if (annotationSelection->getAnnotations().size() == 1) {
+        Annotation *a = annotationSelection->getAnnotations().first();
         const SharedAnnotationData &aData = a->getData();
         AnnotationSettingsRegistry *registry = AppContext::getAnnotationsSettingsRegistry();
         AnnotationSettings *as = registry->getAnnotationSettings(aData);
@@ -836,7 +836,7 @@ void AnnotatedDNAView::sl_toggleHL() {
     if (annotationSelection->isEmpty()) {
         return;
     }
-    const Annotation *a = annotationSelection->getSelection().first().annotation;
+    const Annotation *a = annotationSelection->getAnnotations().first();
     AnnotationSettingsRegistry *registry = AppContext::getAnnotationsSettingsRegistry();
     AnnotationSettings *as = registry->getAnnotationSettings(a->getData());
     as->visible = !as->visible;

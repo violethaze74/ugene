@@ -622,14 +622,14 @@ void ADVSingleSequenceWidget::sl_onSelectRange() {
 
 QVector<U2Region> ADVSingleSequenceWidget::getSelectedAnnotationRegions(int max) {
     ADVSequenceObjectContext* seqCtx = getSequenceContext();
-    const QList<AnnotationSelectionData> selection = seqCtx->getAnnotatedDNAView()->getAnnotationsSelection()->getSelection();
+    const QList<Annotation*> selection = seqCtx->getAnnotatedDNAView()->getAnnotationsSelection()->getAnnotations();
     const QSet<AnnotationTableObject *> myAnns = seqCtx->getAnnotationObjects(true);
 
     QVector<U2Region> res;
-    foreach(const AnnotationSelectionData& sel, selection) {
-        AnnotationTableObject *aObj = sel.annotation->getGObject();
+    foreach(const Annotation* annotation, selection) {
+        AnnotationTableObject *aObj = annotation->getGObject();
         if (myAnns.contains(aObj)) {
-            res << U2Region::containingRegion(sel.getSelectedRegions());
+            res << U2Region::containingRegion(annotation->getRegions());
             if (max > 0 && res.size() >= max) {
                 break;
             }
@@ -835,15 +835,14 @@ void ADVSingleSequenceWidget::sl_createCustomRuler() {
     AnnotationSelection *annSelection = getDetGSLView()->getSequenceContext()->getAnnotationsSelection();
     U2SequenceObject *seqObj = getSequenceObject();
     int annOffset = INT_MAX;
-    foreach (const AnnotationSelectionData &selectionData, annSelection->getSelection()) {
-        Annotation *ann = selectionData.annotation;
+    foreach (const Annotation* ann, annSelection->getAnnotations()) {
         AnnotationTableObject *annObj = ann->getGObject();
         if(!annObj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
             continue;
         }
 
         // find minimum of start positions of selected annotations
-        foreach (const U2Region &region, selectionData.getSelectedRegions()) {
+        foreach (const U2Region &region, ann->getRegions()) {
             annOffset = annOffset > region.startPos ? region.startPos : annOffset;
         }
     }

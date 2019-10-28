@@ -190,11 +190,11 @@ void ADVClipboard::sl_copyComplementTranslation() {
 
 void ADVClipboard::sl_copyAnnotationSequence() {
     QByteArray res;
-    const QList<AnnotationSelectionData>& as = ctx->getAnnotationsSelection()->getSelection();
+    const QList<Annotation*>& as = ctx->getAnnotationsSelection()->getAnnotations();
 #ifdef UGENE_X86
-    int totalLen = 0;
-    foreach (const AnnotationSelectionData& data, as) {
-        totalLen += data.getSelectedRegionsLen();
+    qint64 totalLen = 0;
+    foreach (const Annotation* annotation, as) {
+        totalLen += annotation->getRegionsLen();
     }
     if (totalLen > MAX_COPY_SIZE_FOR_X86) {
         QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), COPY_FAILED_MESSAGE);
@@ -206,18 +206,18 @@ void ADVClipboard::sl_copyAnnotationSequence() {
     const char gapSym = '-';
     const int size = as.size();
     for (int i = 0; i < size; i++) {
-        const AnnotationSelectionData& sd = as.at(i);
+        const Annotation* annotation = as.at(i);
         if (i!=0) {
             res.append('\n');
         }
-        ADVSequenceObjectContext* seqCtx = ctx->getSequenceContext(sd.annotation->getGObject());
+        ADVSequenceObjectContext* seqCtx = ctx->getSequenceContext(annotation->getGObject());
         if (seqCtx == NULL) {
             res.append(gapSym);//?? generate sequence with len == region-len using default sym?
             continue;
         }
-        DNATranslation* complTT = sd.annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : NULL;
+        DNATranslation* complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : NULL;
         U2OpStatus2Log os;
-        AnnotationSelection::getAnnotationSequence(res, sd, gapSym, seqCtx->getSequenceRef(), complTT, NULL, os);
+        AnnotationSelection::getAnnotationSequence(res, annotation, gapSym, seqCtx->getSequenceRef(), complTT, NULL, os);
         CHECK_OP(os,);
     }
     putIntoClipboard(res);
@@ -226,12 +226,12 @@ void ADVClipboard::sl_copyAnnotationSequence() {
 
 void ADVClipboard::sl_copyAnnotationSequenceTranslation() {
     QByteArray res;
-    const QList<AnnotationSelectionData>& as = ctx->getAnnotationsSelection()->getSelection();
+    const QList<Annotation*>& as = ctx->getAnnotationsSelection()->getAnnotations();
 
 #ifdef UGENE_X86
-    int totalLen = 0;
-    foreach (const AnnotationSelectionData& data, as) {
-        totalLen += data.getSelectedRegionsLen();
+    qint64 totalLen = 0;
+    foreach (const Annotation* a, as) {
+        totalLen += a->getRegionsLen();
     }
     if (totalLen > MAX_COPY_SIZE_FOR_X86) {
         QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), COPY_FAILED_MESSAGE);
@@ -244,23 +244,23 @@ void ADVClipboard::sl_copyAnnotationSequenceTranslation() {
     const char gapSym = '-';
     const int size = as.size();
     for (int i = 0; i < size; i++) {
-        const AnnotationSelectionData& sd = as.at(i);
+        const Annotation* annotation = as.at(i);
         if (i != 0) {
             res.append('\n');
         }
-        ADVSequenceObjectContext* seqCtx = ctx->getSequenceContext(sd.annotation->getGObject());
+        ADVSequenceObjectContext* seqCtx = ctx->getSequenceContext(annotation->getGObject());
         if (seqCtx == NULL) {
             res.append(gapSym);//?? generate sequence with len == region-len using default sym?
             continue;
         }
-        DNATranslation *complTT = sd.annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : NULL;
+        DNATranslation *complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : NULL;
         DNATranslation *aminoTT = seqCtx->getAminoTT();
         if (aminoTT == NULL) {
             continue;
         }
         U2OpStatus2Log os;
-        QList<QByteArray> parts = U2SequenceUtils::extractRegions(seqCtx->getSequenceRef(), sd.annotation->getRegions(), complTT,
-            aminoTT, sd.annotation->isJoin(), os);
+        QList<QByteArray> parts = U2SequenceUtils::extractRegions(seqCtx->getSequenceRef(), annotation->getRegions(), complTT,
+            aminoTT, annotation->isJoin(), os);
         CHECK_OP(os,);
         res += U1SequenceUtils::joinRegions(parts);
     }
@@ -285,9 +285,9 @@ void ADVClipboard::updateActions() {
     bool hasSequenceForAnnotations = false;
     bool hasTranslationForAnnotations = false;
     if (hasAnnotationSelection) {
-        const QList<AnnotationSelectionData>& as = ctx->getAnnotationsSelection()->getSelection();
-        foreach(const AnnotationSelectionData& sd, as) {
-            ADVSequenceObjectContext* asCtx = ctx->getSequenceContext(sd.annotation->getGObject());
+        const QList<Annotation*>& as = ctx->getAnnotationsSelection()->getAnnotations();
+        foreach(const Annotation* annotation, as) {
+            ADVSequenceObjectContext* asCtx = ctx->getSequenceContext(annotation->getGObject());
             if (asCtx == NULL) {
                 continue;
             }

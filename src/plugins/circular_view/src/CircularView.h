@@ -68,7 +68,7 @@ public:
     void wheelEvent(QWheelEvent* we);
     virtual QSize sizeHint() const;
 
-    virtual QList<AnnotationSelectionData> selectAnnotationByCoord(const QPoint& coord) const;
+    virtual QList<Annotation*> findAnnotationsByCoord(const QPoint& coord) const;
 
     static qreal coordToAngle(const QPoint point);
 

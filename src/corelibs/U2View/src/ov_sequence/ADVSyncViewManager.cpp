@@ -376,11 +376,11 @@ int ADVSyncViewManager::offsetByAnnSel(ADVSingleSequenceWidget* w) const {
 int ADVSyncViewManager::findSelectedAnnotationPos(ADVSingleSequenceWidget* w) const {
     AnnotationSelection* as = w->getSequenceContext()->getAnnotationsSelection();
     const QSet<AnnotationTableObject *> &objs = w->getSequenceContext()->getAnnotationObjects(true);
-    foreach(const AnnotationSelectionData& d , as->getSelection()) {
-        AnnotationTableObject *obj = d.annotation->getGObject();
+    foreach(const Annotation* annotation , as->getAnnotations()) {
+        AnnotationTableObject *obj = annotation->getGObject();
         if (objs.contains(obj)) {
-            return d.annotation->getStrand().isCompementary()
-                ? d.getSelectedRegions().last().endPos() : d.getSelectedRegions().first().startPos;
+            return annotation->getStrand().isCompementary()
+                ? annotation->getRegions().last().endPos() : annotation->getRegions().first().startPos;
         }
     }
     return -1;

@@ -307,14 +307,14 @@ void BlastPlusSupportContext::buildMenu(GObjectView* view, QMenu* m) {
     bool isBlastResult = false, isShowId = false;
 
     QString name;
-    if (!dnaView->getAnnotationsSelection()->getSelection().isEmpty()) {
-        name = dnaView->getAnnotationsSelection()->getSelection().first().annotation->getName();
+    if (!dnaView->getAnnotationsSelection()->getAnnotations().isEmpty()) {
+        name = dnaView->getAnnotationsSelection()->getAnnotations().first()->getName();
     }
-    selectedId = ADVSelectionUtils::getSequenceIdsFromSelection(dnaView->getAnnotationsSelection()->getSelection(), true);
+    selectedId = ADVSelectionUtils::getSequenceIdsFromSelection(dnaView->getAnnotationsSelection()->getAnnotations(), true);
     isShowId = !selectedId.isEmpty();
 
-    foreach(const AnnotationSelectionData &sel, dnaView->getAnnotationsSelection()->getSelection()) {
-        if(name != sel.annotation->getName()) {
+    foreach(const Annotation* annotation, dnaView->getAnnotationsSelection()->getAnnotations()) {
+        if(name != annotation->getName()) {
             name = "";
         }
         isBlastResult = name == BLAST_ANNOTATION_NAME;

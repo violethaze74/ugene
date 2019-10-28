@@ -33,7 +33,7 @@ namespace U2 {
 
 class ADVSequenceWidget;
 class AnnotatedDNAView;
-class AnnotationSelectionData;
+class Annotation;
 
 enum ADVGlobalActionFlag {
     ADVGlobalActionFlag_AddToToolbar        = 1 << 1,
@@ -70,7 +70,7 @@ private:
 
 class U2VIEW_EXPORT ADVSelectionUtils {
 public:
-    static QString getSequenceIdsFromSelection(const QList<AnnotationSelectionData> &selection, bool localBase = false);
+    static QString getSequenceIdsFromSelection(const QList<Annotation*> &selection, bool localBase = false);
 };
 
 } //namespace

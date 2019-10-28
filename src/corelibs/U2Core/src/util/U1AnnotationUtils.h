@@ -100,7 +100,7 @@ public:
     * Return true if the "Annotation Selection Data" argument contains two selected regions and two location IDs,
     * And if one of these regions has start point equals to zero, and another one has end pos equals to sequence length
     */
-    static bool isAnnotationAroundJunctionPoint(AnnotationSelectionData* asd, const qint64 sequenceLength);
+    static bool isAnnotationAroundJunctionPoint(const Annotation* annotation, const qint64 sequenceLength);
 
     static char * applyLowerCaseRegions(char *seq, qint64 first, qint64 len, qint64 globalOffset, const QList<U2Region> &regs);
 
