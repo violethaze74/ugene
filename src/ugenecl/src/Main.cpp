@@ -465,11 +465,22 @@ int main(int argc, char **argv)
         QObject::connect(psp, SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(new DumpVersionTask()), SLOT(registerTask()));
     }
 
-    bool hasNewTmpDir = cmdLineRegistry->hasParameter(CMDLineCoreOptions::TMP_DIR);
-    if (hasNewTmpDir) {
-        QString newTmpDir = cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TMP_DIR);
-        AppContext::getAppSettings()->getUserAppsSettings()->setUserTemporaryDirPath(newTmpDir);
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::DOWNLOAD_DIR)) {
+        AppContext::getAppSettings()->getUserAppsSettings()->setDownloadDirPath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DOWNLOAD_DIR));
     }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::CUSTOM_TOOLS_CONFIG_DIR)) {
+        AppContext::getAppSettings()->getUserAppsSettings()->setCustomToolsConfigsDirPath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::CUSTOM_TOOLS_CONFIG_DIR));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::TMP_DIR)) {
+        AppContext::getAppSettings()->getUserAppsSettings()->setUserTemporaryDirPath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TMP_DIR));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::DEFAULT_DATA_DIR)) {
+        AppContext::getAppSettings()->getUserAppsSettings()->setUserTemporaryDirPath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DEFAULT_DATA_DIR));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::FILE_STORAGE_DIR)) {
+        AppContext::getAppSettings()->getUserAppsSettings()->setUserTemporaryDirPath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::FILE_STORAGE_DIR));
+    }
+
 
     if (!showHelp && !showLicense && !showVersion) {
         QObject::connect(psp, SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(new TmpDirChecker()), SLOT(registerTask()));

@@ -23,10 +23,12 @@
 
 #include <U2Algorithm/OpenCLGpuRegistry.h>
 
+#include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/ConsoleShutdownTask.h>
 #include <U2Core/ResourceTracker.h>
 #include <U2Core/Timer.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Lang/LocalDomain.h>
 
@@ -90,6 +92,24 @@ int main(int argc, char **argv)
 
     AppSettings* appSettings = new AppSettingsImpl();
     appContext->setAppSettings(appSettings);
+
+    UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
+
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::DOWNLOAD_DIR)) {
+        userAppSettings->setDownloadDirPath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DOWNLOAD_DIR));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::CUSTOM_TOOLS_CONFIG_DIR)) {
+        userAppSettings->setCustomToolsConfigsDirPath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::CUSTOM_TOOLS_CONFIG_DIR));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::TMP_DIR)) {
+        userAppSettings->setUserTemporaryDirPath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TMP_DIR));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::DEFAULT_DATA_DIR)) {
+        userAppSettings->setUserTemporaryDirPath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DEFAULT_DATA_DIR));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::FILE_STORAGE_DIR)) {
+        userAppSettings->setUserTemporaryDirPath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::FILE_STORAGE_DIR));
+    }
 
     // 2 create functional components of ugene
 
