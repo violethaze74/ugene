@@ -41,6 +41,7 @@
 
 #include <U2Lang/IncludedProtoFactory.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowTasksRegistry.h>
 
 #include <U2Test/GTest.h>
@@ -69,9 +70,13 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
 
 #define PLUGIN_SETTINGS QString("workflowview/")
 
-const QString WorkflowDesignerPlugin::RUN_WORKFLOW              = "task";
-const QString WorkflowDesignerPlugin::REMOTE_MACHINE            = "task-remote-machine";
-const QString WorkflowDesignerPlugin::PRINT                     = "print";
+const QString WorkflowDesignerPlugin::RUN_WORKFLOW               = "task";
+const QString WorkflowDesignerPlugin::REMOTE_MACHINE             = "task-remote-machine";
+const QString WorkflowDesignerPlugin::PRINT                      = "print";
+const QString WorkflowDesignerPlugin::CUSTOM_EL_WITH_SCRIPTS_DIR = "custom-element-script-dir";
+const QString WorkflowDesignerPlugin::CUSTOM_EXTERNAL_TOOL_DIR   = "custom-element-external-tool-dir";
+const QString WorkflowDesignerPlugin::INCLUDED_ELEMENTS_DIR      = "imported-workflow-element-dir";
+const QString WorkflowDesignerPlugin::WORKFLOW_OUTPUT_DIR        = "workfow-output-dir";
 
 WorkflowDesignerPlugin::WorkflowDesignerPlugin()
 : Plugin(tr("Workflow Designer"), tr("Workflow Designer allows one to create complex computational workflows.")){
@@ -113,20 +118,32 @@ WorkflowDesignerPlugin::WorkflowDesignerPlugin()
 
 void WorkflowDesignerPlugin::processCMDLineOptions() {
     CMDLineRegistry * cmdlineReg = AppContext::getCMDLineRegistry();
-    assert(cmdlineReg != NULL);
+    assert(cmdlineReg != nullptr);
+
+    if (cmdlineReg->hasParameter(CUSTOM_EL_WITH_SCRIPTS_DIR)) {
+        WorkflowSettings::setUserDirectory(cmdlineReg->getParameterValue(CUSTOM_EL_WITH_SCRIPTS_DIR));
+    }
+    if (cmdlineReg->hasParameter(CUSTOM_EXTERNAL_TOOL_DIR)) {
+        WorkflowSettings::setExternalToolDirectory(cmdlineReg->getParameterValue(CUSTOM_EXTERNAL_TOOL_DIR));
+    }
+    if (cmdlineReg->hasParameter(INCLUDED_ELEMENTS_DIR)) {
+        WorkflowSettings::setIncludedElementsDirectory(cmdlineReg->getParameterValue(INCLUDED_ELEMENTS_DIR));
+    }
+    if (cmdlineReg->hasParameter(WORKFLOW_OUTPUT_DIR)) {
+        WorkflowSettings::setWorkflowOutputDirectory(cmdlineReg->getParameterValue(WORKFLOW_OUTPUT_DIR));
+    }
 
     bool consoleMode = !AppContext::isGUIMode(); // only in console mode we run workflows by default. Otherwise we show them
     if (cmdlineReg->hasParameter( RUN_WORKFLOW ) || (consoleMode && !CMDLineRegistryUtils::getPureValues().isEmpty()) ) {
         Task * t = new WorkflowRunFromCMDLineTask();
         connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
-    }
-    else{
+    } else {
         if( cmdlineReg->hasParameter(GalaxyConfigTask::GALAXY_CONFIG_OPTION) && consoleMode ) {
-            Task *t = NULL;
+            Task *t = nullptr;
             const QString schemePath =  cmdlineReg->getParameterValue( GalaxyConfigTask::GALAXY_CONFIG_OPTION );
             const QString ugenePath = cmdlineReg->getParameterValue( GalaxyConfigTask::UGENE_PATH_OPTION );
             const QString galaxyPath = cmdlineReg->getParameterValue( GalaxyConfigTask::GALAXY_PATH_OPTION );
-            const QString destinationPath = NULL;
+            const QString destinationPath = nullptr;
             t = new GalaxyConfigTask( schemePath, ugenePath, galaxyPath, destinationPath );
             connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
         }

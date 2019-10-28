@@ -41,6 +41,10 @@ public:
     static const QString RUN_WORKFLOW;
     static const QString REMOTE_MACHINE;
     static const QString PRINT;
+    static const QString CUSTOM_EL_WITH_SCRIPTS_DIR;
+    static const QString CUSTOM_EXTERNAL_TOOL_DIR;
+    static const QString INCLUDED_ELEMENTS_DIR;
+    static const QString WORKFLOW_OUTPUT_DIR;
 
 public:
     WorkflowDesignerPlugin ();
