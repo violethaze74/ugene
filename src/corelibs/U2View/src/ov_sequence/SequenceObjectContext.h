@@ -76,7 +76,7 @@ public:
     void addAutoAnnotationObject(AnnotationTableObject *obj);
     void removeAnnotationObject(AnnotationTableObject *obj);
     void emitAnnotationSelection(Annotation* annotation);
-    void emitAnnotationSequenceSelection(Annotation* annotation);
+    void emitAnnotationDoubleClicked(Annotation* annotation, int regionIndex);
     void emitClearSelectedAnnotationRegions();
 
     // temporary virtual
@@ -118,7 +118,7 @@ signals:
     void si_annotationObjectAdded(AnnotationTableObject *obj);
     void si_annotationObjectRemoved(AnnotationTableObject *obj);
     void si_annotationSelection(Annotation* annotation);
-    void si_annotationSequenceSelection(Annotation* annotation);
+    void si_annotationDoubleClicked(Annotation* annotation, int regionIndex);
     void si_clearSelectedAnnotationRegions();
     void si_translationRowsChanged();
 

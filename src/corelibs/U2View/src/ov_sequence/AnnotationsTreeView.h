@@ -141,8 +141,15 @@ private slots:
     void sl_itemExpanded(QTreeWidgetItem *);
 
     void sl_sortTree();
-    void sl_annotationClicked(Annotation* aad);
-    void sl_annotationDoubleClicked(Annotation* asd);
+    void sl_annotationClicked(Annotation* annotation);
+
+    /*
+     * Called when annotation is double clicked anywhere in the view.
+     * 'regionIndex' indicates which region was clicked.
+     * A special '-1' value is supported when region is undefined or all regions should be processed.
+     */
+    void sl_annotationDoubleClicked(Annotation *annotation, int regionIndex);
+
     void sl_clearSelectedAnnotations();
     void sl_sequenceAdded(ADVSequenceObjectContext* advContext);
     void sl_sequenceRemoved(ADVSequenceObjectContext* advContext);

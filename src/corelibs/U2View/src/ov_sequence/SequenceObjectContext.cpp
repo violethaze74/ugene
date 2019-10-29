@@ -362,8 +362,8 @@ void SequenceObjectContext::emitAnnotationSelection(Annotation* annotation) {
     emit si_annotationSelection(annotation);
 }
 
-void SequenceObjectContext::emitAnnotationSequenceSelection(Annotation* annotation) {
-    emit si_annotationSequenceSelection(annotation);
+void SequenceObjectContext::emitAnnotationDoubleClicked(Annotation* annotation, int regionIndex) {
+    emit si_annotationDoubleClicked(annotation, regionIndex);
 }
 
 void SequenceObjectContext::emitClearSelectedAnnotationRegions() {

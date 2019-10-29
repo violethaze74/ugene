@@ -395,7 +395,7 @@ void AnnotationsTreeView::removeGroupAnnotationsFromCache(const AVGroupItem *gro
 
 void AnnotationsTreeView::onSequenceAdded(ADVSequenceObjectContext* advContext) {
     connect(advContext, SIGNAL(si_annotationSelection(Annotation*)), SLOT(sl_annotationClicked(Annotation*)));
-    connect(advContext, SIGNAL(si_annotationSequenceSelection(Annotation*)), SLOT(sl_annotationDoubleClicked(Annotation*)));
+    connect(advContext, SIGNAL(si_annotationDoubleClicked(Annotation*, int)), SLOT(sl_annotationDoubleClicked(Annotation*, int)));
     connect(advContext, SIGNAL(si_clearSelectedAnnotationRegions()), SLOT(sl_clearSelectedAnnotations()));
 }
 
@@ -1701,9 +1701,14 @@ void AnnotationsTreeView::sl_annotationClicked(Annotation* annotation) {
 //TODO: refactor this method
 //UTI-155
 //See review of UGENE-5936 for details
-void AnnotationsTreeView::sl_annotationDoubleClicked(Annotation* annotation) {
-    ctx->getAnnotationsSelection()->add(annotation);
-
+void AnnotationsTreeView::sl_annotationDoubleClicked(Annotation* annotation, int regionIndex) {
+    QList<U2Region> annotationRegions = annotation->getRegions().toList();
+    QList<U2Region> regionsToSelect;
+    if (regionIndex < 0) {
+        regionsToSelect.append(annotationRegions);
+    } else {
+        regionsToSelect.append(annotationRegions[regionIndex]);
+    }
     QList<AVAnnotationItem*> annotationItems = findAnnotationItems(annotation);
     foreach(AVAnnotationItem* item, annotationItems) {
         expandItemRecursevly(item->parent());
@@ -1711,7 +1716,7 @@ void AnnotationsTreeView::sl_annotationDoubleClicked(Annotation* annotation) {
             SignalBlocker blocker(tree);
             item->setSelected(true);
         }
-        annotationDoubleClicked(item, annotation->getRegions().toList());
+        annotationDoubleClicked(item, regionsToSelect);
     }
 }
 
@@ -1755,7 +1760,7 @@ void AnnotationsTreeView::sl_sequenceAdded(ADVSequenceObjectContext* advContext)
 
 void AnnotationsTreeView::sl_sequenceRemoved(ADVSequenceObjectContext* advContext) {
     disconnect(advContext, SIGNAL(si_annotationSelection(Annotation*)), this, SLOT(sl_annotationClicked(Annotation*)));
-    disconnect(advContext, SIGNAL(si_annotationSequenceSelection(Annotation*)), this, SLOT(sl_annotationDoubleClicked(Annotation*)));
+    disconnect(advContext, SIGNAL(si_annotationDoubleClicked(Annotation*, int)), this, SLOT(sl_annotationDoubleClicked(Annotation*, int)));
     disconnect(advContext, SIGNAL(si_clearSelectedAnnotationRegions()), this, SLOT(sl_clearSelectedAnnotations()));
 }
 

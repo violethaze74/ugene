@@ -270,15 +270,21 @@ void GSequenceLineViewAnnotated::mouseDoubleClickEvent(QMouseEvent* me) {
         GSequenceLineView::mouseDoubleClickEvent(me);
         return;
     }
-    Annotation *asd = selection.first();
-    ctx->emitAnnotationSequenceSelection(asd);
-    const QVector<U2Region> selectionRegions = asd->getRegions();
-    if (selectionRegions.size() > 1 && !U1AnnotationUtils::isAnnotationAroundJunctionPoint(asd, seqLen)) {
-        // Set sequence selection to the clicked region only.
-        foreach(const U2Region &region, selectionRegions) {
+    Annotation *annotation = selection.first();
+    // Using any of modifiers (compatibility with older UGENE behavior).
+    bool expandSelection = me->modifiers() == Qt::ControlModifier || me->modifiers() == Qt::ShiftModifier;
+    if (!expandSelection) {
+        ctx->emitClearSelectedAnnotationRegions();
+    }
+    const QVector<U2Region> annotationRegions = annotation->getRegions();
+    bool processAllRegions = U1AnnotationUtils::isAnnotationAroundJunctionPoint(annotation, seqLen);
+    if (processAllRegions) {
+        ctx->emitAnnotationDoubleClicked(annotation, -1);
+    } else {
+        for (int i = 0; i < annotationRegions.size(); i++) {
+            const U2Region &region = annotationRegions[i];
             if (region.contains(lastPressPos)) {
-                ctx->getSequenceSelection()->setRegion(region);
-                break;
+                ctx->emitAnnotationDoubleClicked(annotation, i);
             }
         }
     }
