@@ -315,7 +315,7 @@ void MSAImageExportController::initSettingsWidget() {
         MSACollapsibleItemModel* model = ui->getCollapseModel();
         SAFE_POINT(model != NULL, tr("MSA Collapsible Model is NULL"), );
         for (qint64 i = selection.y(); i < selection.height() + selection.y(); i++) {
-                msaSettings.seqIdx.append(model->mapToRow(i));
+                msaSettings.seqIdx.append(model->viewRowToMsaRow(i));
         }
     }
 }
@@ -400,7 +400,7 @@ void MSAImageExportController::updateSeqIdx() const {
     SAFE_POINT(model != NULL, tr("MSA Collapsible Model is NULL"), );
     msaSettings.seqIdx.clear();
     for (qint64 i = 0; i < ui->getEditor()->getNumSequences(); i++) {
-        if (model->rowToMap(i, true) != -1) {
+        if (model->msaRowToViewRow(i, true) != -1) {
             msaSettings.seqIdx.append(i);
         }
     }

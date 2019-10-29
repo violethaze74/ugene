@@ -33,7 +33,7 @@ MsaRowHeightController::MsaRowHeightController(MsaEditorWgt *msaEditortWgt) :
 }
 
 int MsaRowHeightController::getRowHeight(int rowIndex) const {
-    const bool isVisible = ui->getCollapseModel()->isRowVisible(rowIndex);
+    const bool isVisible = ui->getCollapseModel()->isMsaRowVisible(rowIndex);
     return isVisible ? getSequenceHeight() : 0;
 }
 

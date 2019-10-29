@@ -220,7 +220,7 @@ int MaEditorNameList::getSelectedRow() const {
 
     int n = sel.startPos;
     if (ui->isCollapsibleMode()) {
-        n = ui->getCollapseModel()->mapToRow(n);
+        n = ui->getCollapseModel()->viewRowToMsaRow(n);
     }
     return n;
 }
@@ -260,10 +260,10 @@ void MaEditorNameList::sl_removeSequence() {
 
     setSelection(0, 0);
 
-    U2Region mappedSelection = ui->getCollapseModel()->mapSelectionRegionToRows(sel);
+    U2Region mappedSelection = ui->getCollapseModel()->viewRowsToMsaRows(sel);
     maObj->removeRegion(0, mappedSelection.startPos, maObj->getLength(), mappedSelection.length, true);
 
-    qint64 numRows = editor->getUI()->getCollapseModel()->getDisplayableRowsCount();
+    qint64 numRows = editor->getUI()->getCollapseModel()->getVisibleRowCount();
     if (sel.startPos < numRows) {
         int count = qMin(sel.length, numRows - sel.startPos);
         setSelection(sel.startPos, count);
@@ -392,13 +392,13 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     bool updateCursorPos = !hasShiftModifier;
     if (ui->isCollapsibleMode()) {
         MSACollapsibleItemModel* m = ui->getCollapseModel();
-        if (rowIndex >= m->getDisplayableRowsCount()) {
-            rowIndex = m->getDisplayableRowsCount() - 1;
+        if (rowIndex >= m->getVisibleRowCount()) {
+            rowIndex = m->getVisibleRowCount() - 1;
         }
         if (updateCursorPos) {
             editor->setCursorPosition(QPoint(cursorX, rowIndex));
         }
-        if (m->isTopLevel(rowIndex)) {
+        if (m->isFirstRowOfCollapsibleGroup(rowIndex)) {
             const U2Region yRange = ui->getRowHeightController()->getRowScreenRangeByNumber(rowIndex);
             bool selected = isRowInSelection(rowIndex);
             QRect textRect = calculateTextRect(yRange, selected);
@@ -708,21 +708,21 @@ void MaEditorNameList::drawContent(QPainter& painter) {
         foreach (const U2Region &group, groupedRowsToDraw) {
             for (int rowIndex = group.startPos; rowIndex < group.endPos(); rowIndex++) {
                 const U2Region yRange = ui->getRowHeightController()->getRowScreenRange(rowIndex);
-                const int rowNumber = collapsibleModel->rowToMap(rowIndex, true);
+                const int rowNumber = collapsibleModel->msaRowToViewRow(rowIndex, true);
                 const bool isSelected = isRowInSelection(rowNumber);
                 const bool isReference = (rowIndex == referenceIndex);
                 const bool isFocused = rowIndex == cursorPosition.y();
 
-                if (!collapsibleModel->isRowInGroup(rowNumber)) {
+                if (!collapsibleModel->isInCollapsibleGroup(rowNumber)) {
                     painter.translate(CROSS_SIZE * 2, 0);
                     drawSequenceItem(painter, getTextForRow(rowIndex), yRange, isSelected, isFocused, isReference);
                     painter.translate(-CROSS_SIZE * 2, 0);
                 } else {
-                    const MSACollapsableItem &item = collapsibleModel->getItemByRowIndex(rowIndex);
+                    const MSACollapsibleItem &item = collapsibleModel->getItemByMsaRowIndex(rowIndex);
                     SAFE_POINT(item.isValid(), QString("Collapsible item was nof found for row number %1").arg(rowIndex), );
                     const QRect rect = calculateTextRect(yRange, isSelected);
                     // SANGER_TODO: check reference
-                    if (collapsibleModel->isTopLevel(rowNumber)) {
+                    if (collapsibleModel->isFirstRowOfCollapsibleGroup(rowNumber)) {
                         drawCollapsibileSequenceItem(painter, rowIndex, getTextForRow(rowIndex), rect, isSelected, isFocused, item.isCollapsed, isReference);
                     } else {
                         drawChildSequenceItem(painter, getTextForRow(rowIndex), rect, isSelected, isFocused, isReference);
@@ -903,7 +903,7 @@ qint64 MaEditorNameList::sequenceIdAtPos(const QPoint &p) {
     CHECK(ui->getSequenceArea()->isSeqInRange(rowIndex), U2MsaRow::INVALID_ROW_ID);
     CHECK(rowIndex >= 0, U2MsaRow::INVALID_ROW_ID);
     MultipleAlignmentObject* maObj = editor->getMaObject();
-    return maObj->getMultipleAlignment()->getRow(ui->getCollapseModel()->mapToRow(rowIndex))->getRowId();
+    return maObj->getMultipleAlignment()->getRow(ui->getCollapseModel()->viewRowToMsaRow(rowIndex))->getRowId();
 }
 
 void MaEditorNameList::clearGroupsSelections() {

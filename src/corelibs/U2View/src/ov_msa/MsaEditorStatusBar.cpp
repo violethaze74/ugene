@@ -132,7 +132,7 @@ void MsaEditorStatusBar::sl_findNext( ) {
         selectionTopLeft.setX( selectionTopLeft.x( ) + 1 );
     }
     for (int s = selectionTopLeft.y(); s < nSeq; s++) {
-        const int rowIndex = seqArea->getEditor()->getUI()->getCollapseModel()->mapToRow(s);
+        const int rowIndex = seqArea->getEditor()->getUI()->getCollapseModel()->viewRowToMsaRow(s);
         const MultipleAlignmentRow row = msa->getRow(rowIndex);
         // if s == pos.y -> search from the current base, otherwise search from the seq start
         int p = ( s == selectionTopLeft.y( ) ) ? selectionTopLeft.x( ) : 0;
@@ -170,7 +170,7 @@ void MsaEditorStatusBar::sl_findPrev( ) {
         pos.setX( pos.x( ) - 1 );
     }
     for ( int s = pos.y( ); 0 <= s; s-- ) {
-        const int rowIndex = seqArea->getEditor()->getUI()->getCollapseModel()->mapToRow(s);
+        const int rowIndex = seqArea->getEditor()->getUI()->getCollapseModel()->viewRowToMsaRow(s);
         const MultipleAlignmentRow row = msa->getRow(rowIndex);
         //if s == pos.y -> search from the current base, otherwise search from the seq end
         int p = ( s == pos.y( ) ? pos.x( ) : ( aliLen - pat.length( ) + 1) );

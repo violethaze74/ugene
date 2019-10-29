@@ -137,7 +137,7 @@ void ScrollController::setFirstVisibleBase(int firstVisibleBase) {
 }
 
 void ScrollController::setFirstVisibleRowByNumber(int firstVisibleRowNumber) {
-    const int firstVisibleRowIndex = ui->getCollapseModel()->mapToRow(firstVisibleRowNumber);
+    const int firstVisibleRowIndex = ui->getCollapseModel()->viewRowToMsaRow(firstVisibleRowNumber);
     setFirstVisibleRowByIndex(firstVisibleRowIndex);
 }
 
@@ -322,17 +322,17 @@ int ScrollController::getFirstVisibleRowIndex(bool countClipped) const {
 }
 
 int ScrollController::getFirstVisibleRowNumber(bool countClipped) const {
-    return collapsibleModel->rowToMap(getFirstVisibleRowIndex(countClipped));
+    return collapsibleModel->msaRowToViewRow(getFirstVisibleRowIndex(countClipped));
 }
 
 int ScrollController::getLastVisibleRowIndex(int widgetHeight, bool countClipped) const {
-    return collapsibleModel->mapToRow(getLastVisibleRowNumber(widgetHeight, countClipped));
+    return collapsibleModel->viewRowToMsaRow(getLastVisibleRowNumber(widgetHeight, countClipped));
 }
 
 int ScrollController::getLastVisibleRowNumber(int widgetHeight, bool countClipped) const {
     int lastVisibleRowNumber = ui->getRowHeightController()->globalYPositionToRowNumber(vScrollBar->value() + widgetHeight);
     if (lastVisibleRowNumber < 0) {
-        lastVisibleRowNumber = collapsibleModel->getDisplayableRowsCount() - 1;
+        lastVisibleRowNumber = collapsibleModel->getVisibleRowCount() - 1;
     }
     const U2Region lastRowScreenRegion = ui->getRowHeightController()->getRowScreenRangeByNumber(lastVisibleRowNumber);
     const bool removeClippedRow = !countClipped && lastRowScreenRegion.endPos() > widgetHeight;
@@ -343,7 +343,7 @@ QPoint ScrollController::getMaPointByScreenPoint(const QPoint &point) const {
     const int columnNumber = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
     int rowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(point.y());
     if (-1 == rowNumber) {
-        rowNumber = ui->getCollapseModel()->getDisplayableRowsCount();
+        rowNumber = ui->getCollapseModel()->getVisibleRowCount();
     }
     return QPoint(columnNumber, rowNumber);
 }
@@ -374,7 +374,7 @@ void ScrollController::sl_collapsibleModelIsAboutToBeChanged() {
 }
 
 void ScrollController::sl_collapsibleModelChanged() {
-    const int newFirstVisibleRowIndex = collapsibleModel->rowToMap(savedFirstVisibleRowIndex);
+    const int newFirstVisibleRowIndex = collapsibleModel->msaRowToViewRow(savedFirstVisibleRowIndex);
     const int newFirstVisibleRowOffset = ui->getRowHeightController()->getRowGlobalOffset(newFirstVisibleRowIndex);
     setVScrollbarValue(newFirstVisibleRowOffset + savedFirstVisibleRowAdditionalOffset);
 }

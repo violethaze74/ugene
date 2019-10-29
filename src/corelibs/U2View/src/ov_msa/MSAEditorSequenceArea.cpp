@@ -259,8 +259,8 @@ void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modI
         foreach (qint64 modifiedSeqId, modInfo.modifiedRowIds) {
             int modifiedRowPos = editor->getMaObject()->getRowPosById(modifiedSeqId);
             const MultipleSequenceAlignmentRow &modifiedRowRef = editor->getMaObject()->getRow(modifiedRowPos);
-            modifiedRowPos = ui->getCollapseModel()->rowToMap(modifiedRowPos);
-            const U2Region rowsCollapsibleGroup = ui->getCollapseModel()->mapSelectionRegionToRows(U2Region(modifiedRowPos, 1));
+            modifiedRowPos = ui->getCollapseModel()->msaRowToViewRow(modifiedRowPos);
+            const U2Region rowsCollapsibleGroup = ui->getCollapseModel()->viewRowsToMsaRows(U2Region(modifiedRowPos, 1));
             if (updatedRegions.contains(rowsCollapsibleGroup)) {
                 continue;
             }
@@ -600,7 +600,7 @@ void MSAEditorSequenceArea::sl_saveSequence(){
     const MultipleAlignment& ma = editor->getMaObject()->getMultipleAlignment();
     QSet<qint64> seqIds;
     for (int i = startSeq; i <= endSeq; i++) {
-        seqIds.insert(ma->getRow(model->mapToRow(i))->getRowId());
+        seqIds.insert(ma->getRow(model->viewRowToMsaRow(i))->getRowId());
     }
     ExportSequencesTask* exportTask = new ExportSequencesTask(getEditor()->getMaObject()->getMsa(), seqIds, d->getTrimGapsFlag(),
                                                               d->getAddToProjectFlag(), d->getUrl(), d->getFormat(), extension,
@@ -634,12 +634,13 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
     }
 
     MSACollapsibleItemModel* m = ui->getCollapseModel();
-    U2Region sel(m->mapToRow(selection.y()), m->mapToRow(selection.y() + selection.height()) - m->mapToRow(selection.y()));
+    U2Region sel(m->viewRowToMsaRow(selection.y()), m->viewRowToMsaRow(selection.y() + selection.height()) -
+                                                    m->viewRowToMsaRow(selection.y()));
 
     QString selText;
     U2OpStatus2Log os;
     for (int i = sel.startPos; i < sel.endPos(); ++i) {
-        if (ui->getCollapseModel()->rowToMap(i, true) < 0) {
+        if (ui->getCollapseModel()->msaRowToViewRow(i, true) < 0) {
             continue;
         }
         int len = selection.width();

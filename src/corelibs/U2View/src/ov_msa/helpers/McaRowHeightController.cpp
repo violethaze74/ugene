@@ -35,7 +35,7 @@ int McaRowHeightController::getRowHeight(int rowIndex) const {
     const int fontHeight = QFontMetrics(ui->getEditor()->getFont(), ui).height();
 
     int rowHeigth = fontHeight;
-    if (!ui->getCollapseModel()->isItemCollapsed(rowIndex)) {
+    if (!ui->getCollapseModel()->isGroupWithMsaRowCollapsed(rowIndex)) {
         rowHeigth += SequenceWithChromatogramAreaRenderer::CHROMATOGRAM_MAX_HEIGHT;
     }
     rowHeigth = qRound(rowHeigth * ui->getEditor()->zoomMult);

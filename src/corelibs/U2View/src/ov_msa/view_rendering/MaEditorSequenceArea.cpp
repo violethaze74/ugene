@@ -162,14 +162,14 @@ int MaEditorSequenceArea::getNumDisplayableSequences() const {
     CHECK(!isAlignmentEmpty(), 0);
     MSACollapsibleItemModel *model = ui->getCollapseModel();
     SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
-    return model->getDisplayableRowsCount();
+    return model->getVisibleRowCount();
 }
 
 int MaEditorSequenceArea::getRowIndex(const int num) const {
     CHECK(!isAlignmentEmpty(), -1);
     MSACollapsibleItemModel *model = ui->getCollapseModel();
     SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
-    return model->mapToRow(num);
+    return model->viewRowToMsaRow(num);
 }
 
 bool MaEditorSequenceArea::isAlignmentEmpty() const {
@@ -189,7 +189,8 @@ bool MaEditorSequenceArea::isInRange(const QPoint &point) const {
 }
 
 QPoint MaEditorSequenceArea::boundWithVisibleRange(const QPoint &point) const {
-    return QPoint(qBound(0, point.x(), editor->getAlignmentLen() - 1), qBound(0, point.y(), ui->getCollapseModel()->getDisplayableRowsCount() - 1));
+    return QPoint(qBound(0, point.x(), editor->getAlignmentLen() - 1), qBound(0, point.y(),
+                                                                              ui->getCollapseModel()->getVisibleRowCount() - 1));
 }
 
 bool MaEditorSequenceArea::isVisible(const QPoint& p, bool countClipped) const {
@@ -201,7 +202,7 @@ bool MaEditorSequenceArea::isPositionVisible(int position, bool countClipped) co
 }
 
 bool MaEditorSequenceArea::isRowVisible(int rowNumber, bool countClipped) const {
-    const int rowIndex = ui->getCollapseModel()->mapToRow(rowNumber);
+    const int rowIndex = ui->getCollapseModel()->viewRowToMsaRow(rowNumber);
     return ui->getDrawHelper()->getVisibleRowsIndexes(height(), countClipped, countClipped).contains(rowIndex);
 }
 
@@ -247,21 +248,21 @@ void MaEditorSequenceArea::updateSelection() {
     int endPos = startPos + baseSelection.height();
 
     // convert selected rows indexes to indexes of selected collapsible items
-    int newStart = m->rowToMap(startPos);
-    int newEnd = m->rowToMap(endPos);
+    int newStart = m->msaRowToViewRow(startPos);
+    int newEnd = m->msaRowToViewRow(endPos);
 
     SAFE_POINT_EXT(newStart >= 0 && newEnd >= 0, sl_cancelSelection(), );
 
     int selectionHeight = newEnd - newStart;
     // accounting of collapsing children items
-    int itemIndex = m->itemForRow(newEnd);
+    int itemIndex = m->viewRowToGroupIndex(newEnd);
     if (selectionHeight <= 1 && itemIndex >= 0) {
-        const MSACollapsableItem& collapsibleItem = m->getItem(itemIndex);
-        if(newEnd == collapsibleItem.row && !collapsibleItem.isCollapsed) {
+        const MSACollapsibleItem& collapsibleItem = m->getItem(itemIndex);
+        if(newEnd == collapsibleItem.msaRowIndex && !collapsibleItem.isCollapsed) {
             selectionHeight = qMax(selectionHeight, endPos - newStart + collapsibleItem.numRows);
         }
     }
-    if(selectionHeight > 0 && newStart + selectionHeight <= m->getDisplayableRowsCount()) {
+    if(selectionHeight > 0 && newStart + selectionHeight <= m->getVisibleRowCount()) {
         MaEditorSelection s(selection.topLeft().x(), newStart, selection.width(), selectionHeight);
         setSelection(s);
     } else {
@@ -344,7 +345,7 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
 }
 
 U2Region MaEditorSequenceArea::getSelectedRows() const {
-    return ui->getCollapseModel()->mapSelectionRegionToRows(U2Region(selection.y(), selection.height()));
+    return ui->getCollapseModel()->viewRowsToMsaRows(U2Region(selection.y(), selection.height()));
 }
 
 QString MaEditorSequenceArea::getCopyFormatedAlgorithmId() const{
@@ -674,7 +675,7 @@ bool MaEditorSequenceArea::drawContent(QPainter &painter, const QRect &area) {
 bool MaEditorSequenceArea::drawContent(QPainter &painter, const QRect &area, int xStart, int yStart) {
     QList<int> seqIdx;
     for (int rowNumber = 0; rowNumber < area.height(); rowNumber++) {
-        seqIdx << ui->getCollapseModel()->mapToRow(rowNumber);
+        seqIdx << ui->getCollapseModel()->viewRowToMsaRow(rowNumber);
     }
     bool ok = renderer->drawContent(painter, U2Region(area.x(), area.width()), seqIdx, xStart, yStart);
     emit si_visibleRangeChanged();
@@ -693,7 +694,7 @@ bool MaEditorSequenceArea::drawContent(QPainter &painter, const U2Region &region
 }
 
 bool MaEditorSequenceArea::drawContent(QPainter &painter) {
-    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getDisplayableRowsCount());
+    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getVisibleRowCount());
     return drawContent(painter, areaToDraw);
 }
 
@@ -705,7 +706,7 @@ bool MaEditorSequenceArea::drawContent(QPixmap &pixmap) {
     pixmap = QPixmap(totalAlignmentWidth, totalAlignmentHeight);
     QPainter p(&pixmap);
 
-    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getDisplayableRowsCount());
+    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getVisibleRowCount());
     return drawContent(p, areaToDraw, 0, 0);
 }
 
@@ -1338,7 +1339,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 moveSelection(0, 1);
                 break;
             }
-            if (selectionEnd.y() >= (ui->getCollapseModel()->getDisplayableRowsCount() - 1)) {
+            if (selectionEnd.y() >= (ui->getCollapseModel()->getVisibleRowCount() - 1)) {
                 break;
             }
             selectionEnd.setY(selectionEnd.y() + 1);

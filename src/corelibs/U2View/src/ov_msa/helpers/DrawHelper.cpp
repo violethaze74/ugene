@@ -64,7 +64,7 @@ QVector<U2Region> DrawHelper::getGroupedVisibleRowsIndexes(int widgetHeight, boo
     const int firstVisibleRowNumber = scrollController->getFirstVisibleRowNumber(countFirstClippedRow);
     const int lastVisibleRowNumber = scrollController->getLastVisibleRowNumber(widgetHeight, countLastClippedRow);
     QVector<U2Region> groupedRowsIndexes;
-    collapsibleModel->getVisibleRows(firstVisibleRowNumber, lastVisibleRowNumber, groupedRowsIndexes);
+    collapsibleModel->getVisibleMsaRows(firstVisibleRowNumber, lastVisibleRowNumber, groupedRowsIndexes);
     return groupedRowsIndexes;
 }
 

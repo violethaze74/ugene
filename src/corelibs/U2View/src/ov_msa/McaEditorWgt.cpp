@@ -80,7 +80,6 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
         itemRegions << U2Region(i, 1);
     }
 
-    collapseModel->setTrivialGroupsPolicy(MSACollapsibleItemModel::Allow);
     collapseModel->reset(itemRegions);
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
@@ -102,7 +101,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
 void McaEditorWgt::sl_alignmentChanged() {
     int size = editor->getNumSequences();
-    int collapseSize = collapseModel->getItemSize();
+    int collapseSize = collapseModel->getCollapsibleItemCount();
     if (size > collapseSize) {
         QVector<U2Region> itemRegions;
         for (int i = 0; i < size; i++) {
