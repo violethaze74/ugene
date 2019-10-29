@@ -312,10 +312,10 @@ void MSAImageExportController::initSettingsWidget() {
             msaSettings.seqIdx.append( i );
         }
     } else {
-        MSACollapsibleItemModel* model = ui->getCollapseModel();
+        MaCollapseModel* model = ui->getCollapseModel();
         SAFE_POINT(model != NULL, tr("MSA Collapsible Model is NULL"), );
         for (qint64 i = selection.y(); i < selection.height() + selection.y(); i++) {
-                msaSettings.seqIdx.append(model->viewRowToMsaRow(i));
+                msaSettings.seqIdx.append(model->viewRowToMaRow(i));
         }
     }
 }
@@ -396,11 +396,11 @@ void MSAImageExportController::updateSeqIdx() const {
 
     CHECK(ui->isCollapsibleMode(), );
 
-    MSACollapsibleItemModel* model = ui->getCollapseModel();
+    MaCollapseModel* model = ui->getCollapseModel();
     SAFE_POINT(model != NULL, tr("MSA Collapsible Model is NULL"), );
     msaSettings.seqIdx.clear();
     for (qint64 i = 0; i < ui->getEditor()->getNumSequences(); i++) {
-        if (model->msaRowToViewRow(i, true) != -1) {
+        if (model->maRowToViewRow(i, true) != -1) {
             msaSettings.seqIdx.append(i);
         }
     }

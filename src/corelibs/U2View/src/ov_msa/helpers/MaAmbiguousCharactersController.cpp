@@ -32,7 +32,7 @@
 #include "MaAmbiguousCharactersController.h"
 #include "ScrollController.h"
 #include "ov_msa/MaEditor.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
@@ -145,7 +145,7 @@ void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direct
     if (NULL == cachedIterator) {
         cachedIterator.reset(new MaIterator(maEditor->getMaObject()->getMultipleAlignment(),
                                             direction,
-                                            maEditorWgt->getCollapseModel()->getVisibleMsaRows()));
+                                            maEditorWgt->getCollapseModel()->getVisibleMaRows()));
         cachedIterator->setCircular(true);
         cachedIterator->setIterateInCoreRegionsOnly(true);
     }

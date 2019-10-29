@@ -27,13 +27,13 @@
 #include "RowHeightController.h"
 #include "ScrollController.h"
 #include "ov_msa/MaEditor.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
-ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi, MSACollapsibleItemModel *collapsibleModel)
+ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi, MaCollapseModel *collapsibleModel)
     : QObject(maEditorUi),
       maEditor(maEditor),
       ui(maEditorUi),
@@ -137,7 +137,7 @@ void ScrollController::setFirstVisibleBase(int firstVisibleBase) {
 }
 
 void ScrollController::setFirstVisibleRowByNumber(int firstVisibleRowNumber) {
-    const int firstVisibleRowIndex = ui->getCollapseModel()->viewRowToMsaRow(firstVisibleRowNumber);
+    const int firstVisibleRowIndex = ui->getCollapseModel()->viewRowToMaRow(firstVisibleRowNumber);
     setFirstVisibleRowByIndex(firstVisibleRowIndex);
 }
 
@@ -322,11 +322,11 @@ int ScrollController::getFirstVisibleRowIndex(bool countClipped) const {
 }
 
 int ScrollController::getFirstVisibleRowNumber(bool countClipped) const {
-    return collapsibleModel->msaRowToViewRow(getFirstVisibleRowIndex(countClipped));
+    return collapsibleModel->maRowToViewRow(getFirstVisibleRowIndex(countClipped));
 }
 
 int ScrollController::getLastVisibleRowIndex(int widgetHeight, bool countClipped) const {
-    return collapsibleModel->viewRowToMsaRow(getLastVisibleRowNumber(widgetHeight, countClipped));
+    return collapsibleModel->viewRowToMaRow(getLastVisibleRowNumber(widgetHeight, countClipped));
 }
 
 int ScrollController::getLastVisibleRowNumber(int widgetHeight, bool countClipped) const {
@@ -374,7 +374,7 @@ void ScrollController::sl_collapsibleModelIsAboutToBeChanged() {
 }
 
 void ScrollController::sl_collapsibleModelChanged() {
-    const int newFirstVisibleRowIndex = collapsibleModel->msaRowToViewRow(savedFirstVisibleRowIndex);
+    const int newFirstVisibleRowIndex = collapsibleModel->maRowToViewRow(savedFirstVisibleRowIndex);
     const int newFirstVisibleRowOffset = ui->getRowHeightController()->getRowGlobalOffset(newFirstVisibleRowIndex);
     setVScrollbarValue(newFirstVisibleRowOffset + savedFirstVisibleRowAdditionalOffset);
 }

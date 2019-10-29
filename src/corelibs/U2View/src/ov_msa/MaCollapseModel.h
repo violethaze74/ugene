@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_COLLAPSIBLE_MODEL_H_
-#define _U2_MSA_COLLAPSIBLE_MODEL_H_
+#ifndef _U2_MA_COLLAPSE_MODEL_H_
+#define _U2_MA_COLLAPSE_MODEL_H_
 
 #include <QObject>
 #include <QVector>
@@ -29,19 +29,19 @@
 
 namespace U2 {
 
-class MSACollapsibleItem {
+class MaCollapsibleGroup {
 public:
     /* Creates new collapsible group item in invalid state. */
-    MSACollapsibleItem();
+    MaCollapsibleGroup();
 
-    /* Creates new collapsible group item that starts with msaRowIndex and has numRows inside. */
-    MSACollapsibleItem(int msaRowIndex, int numRows);
+    /* Creates new collapsible group item that starts with maRowIndex and has numRows inside. */
+    MaCollapsibleGroup(int maRowIndex, int numRows);
 
     /* Returns true if the collapsible item values (rowIndex & numRows) are valid. */
     bool isValid() const;
 
-    /* First collapsible row index in MSA model. */
-    int msaRowIndex;
+    /* First collapsible row index in MA model. */
+    int maRowIndex;
 
     /* Number of collapsible rows in the group. */
     int numRows;
@@ -54,44 +54,46 @@ class MaEditorWgt;
 class MaModificationInfo;
 class U2Region;
 
-class U2VIEW_EXPORT MSACollapsibleItemModel : public QObject {
+class U2VIEW_EXPORT MaCollapseModel : public QObject {
     Q_OBJECT
 public:
-    MSACollapsibleItemModel(MaEditorWgt *p);
+    MaCollapseModel(MaEditorWgt *p);
 
-    // Updates model to the given regions with every item collapsed.
-    // 'collapsibleItemRegions' must be a sorted list of non-intersecting regions.
-    void reset(const QVector<U2Region> &collapsibleItemRegions);
+    /*
+    * Updates model to the given regions with every group collapsed.
+    * 'collapsibleGroupRegions' must be a sorted list of non-intersecting regions.
+    */
+    void update(const QVector<U2Region> &collapsibleGroupRegions);
 
-    /* Removes all collapsible items from the model. */
-    void reset();
+    /* Removes all collapsible groups from the model. */
+    void clear();
 
-    /* Toggle 'isCollapsed' state for the item at the given row. */
+    /* Toggle 'isCollapsed' state for the group at the given row. */
     void toggle(int viewRowIndex);
 
     /* Collapse all groups in the view. */
     void collapseAll(bool collapse);
 
-    /* Converts view row index to msa row index. */
-    int viewRowToMsaRow(int viewRowIndex) const;
+    /* Converts view row index to MA row index. */
+    int viewRowToMaRow(int viewRowIndex) const;
 
-    /* Converts view rows region to msa rows region. */
-    U2Region viewRowsToMsaRows(const U2Region &viewRowsRegion) const;
+    /* Converts view rows region to MA rows region. */
+    U2Region viewRowsToMaRows(const U2Region &viewRowsRegion) const;
 
-    /* Returns list of visible msa row indexes. Invisible rows are not included to the result. */
-    QList<int> visibleViewRowsToMsaRows(const U2Region &viewRowsRegion);
+    /* Returns list of visible (not hidden by collapsing) MA row indexes. Invisible rows are not included to the result. */
+    QList<int> visibleViewRowsToMaRows(const U2Region &viewRowsRegion);
 
-    /* Returns list of all visible MSA row indexes. */
-    QList<int> getVisibleMsaRows() const;
+    /* Returns list of all visible (not hidden by collapsing) MA row indexes. */
+    QList<int> getVisibleMaRows() const;
+
+    /* Returns all visible (not hidden by collapsing) MA regions between start & end (inclusive) view rows. */
+    QList<U2Region> getVisibleMaRows(int startViewRowIndex, int endViewRowIndex) const;
 
     /*
-    * Converts msa row index into its view position (i.e. the row position that takes into account collapsed items).
-    * Returns -1 if the row is inside of collapsed item and @failIfNotVisible is true.
+    * Converts MA row index into its view position (i.e. the row position that takes into account collapsed groups).
+    * Returns -1 if the row is inside of collapsed group and @failIfNotVisible is true.
     */
-    int msaRowToViewRow(int msaRowIndex, bool failIfNotVisible = false) const;
-
-    /* Adds all visible MSA regions between start & end (inclusive) view rows to the 'visibleRowsResult'. */
-    void getVisibleMsaRows(int startViewRowIndex, int endViewRowIndex, QVector<U2Region> &visibleMsaRows) const;
+    int maRowToViewRow(int maRowIndex, bool failIfNotVisible = false) const;
 
     /* Returns 'true' if the view row index is the first row in some collapsible group. */
     bool isFirstRowOfCollapsibleGroup(int viewRowIndex) const;
@@ -99,19 +101,19 @@ public:
     /* Returns 'true' if the view row index is inside of some collapsible group. */
     bool isInCollapsibleGroup(int viewRowIndex) const;
 
-    /* Returns 'true' if the MSA row is inside of some collapsible group and the group is collapsed. */
-    bool isGroupWithMsaRowCollapsed(int msaRowIndex) const;
+    /* Returns 'true' if the MA row is inside of some collapsible group and the group is collapsed. */
+    bool isGroupWithMaRowCollapsed(int maRowIndex) const;
 
-    /** Returns true if MSA row is visible (not inside of collapsed block). */
-    bool isMsaRowVisible(int msaRowIndex) const;
+    /* Returns true if MA row is visible (not inside of collapsed block). */
+    bool isMaRowVisible(int maRowIndex) const;
 
     /* Returns the collapsible group index with the row or -1, if the row is not in a collapsible group. */
     int viewRowToGroupIndex(int viewRowIndex) const;
 
-    MSACollapsibleItem getItem(int collapsibleItemIndex) const;
+    MaCollapsibleGroup getCollapsibleGroup(int collapsibleGroupIndex) const;
 
-    /* Returns collapsible group item by msa row index. */
-    MSACollapsibleItem getItemByMsaRowIndex(int msaRowIndex) const;
+    /* Returns collapsible group item by MA row index. */
+    MaCollapsibleGroup getItemByMaRowIndex(int maRowIndex) const;
 
     /* Returns number of visible rows. Every collapsible group has at least one (the first) row visible. */
     int getVisibleRowCount() const;
@@ -124,7 +126,7 @@ public:
     bool isFakeModel() const;
 
     /* Returns count of collapsible groups in the view. */
-    int getCollapsibleItemCount() const;
+    int getCollapsibleGroupCount() const;
 
 signals:
     void si_aboutToBeToggled();
@@ -132,11 +134,11 @@ signals:
 
 private:
     void triggerItem(int collapsibleGroupIndex);
-    int mapToMsaRow(int collapsibleGroupIndex, int viewRowIndex) const;
+    int mapToMaRow(int collapsibleGroupIndex, int viewRowIndex) const;
 
 private:
     MaEditorWgt* ui;
-    QVector<MSACollapsibleItem> items;
+    QVector<MaCollapsibleGroup> groups;
     QVector<int> positions;
     bool fakeModel;
 };

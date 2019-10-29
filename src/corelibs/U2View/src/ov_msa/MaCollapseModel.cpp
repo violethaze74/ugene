@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSACollapsibleModel.h"
+#include "MaCollapseModel.h"
 #include "MSAEditor.h"
 
 #include <U2Core/MultipleSequenceAlignmentObject.h>
@@ -31,27 +31,27 @@ namespace U2 {
 /// MSACollapsableItem
 //////////////////////////////////////////////////////////////////////////
 
-MSACollapsibleItem::MSACollapsibleItem()
-    : msaRowIndex(-1), numRows(-1), isCollapsed(false)
+MaCollapsibleGroup::MaCollapsibleGroup()
+    : maRowIndex(-1), numRows(-1), isCollapsed(false)
 {
 
 }
 
-MSACollapsibleItem::MSACollapsibleItem(int msaRowIndex, int numRows)
-    : msaRowIndex(msaRowIndex), numRows(numRows), isCollapsed(false)
+MaCollapsibleGroup::MaCollapsibleGroup(int maRowIndex, int numRows)
+    : maRowIndex(maRowIndex), numRows(numRows), isCollapsed(false)
 {
 
 }
 
-bool MSACollapsibleItem::isValid() const {
-    return msaRowIndex != -1 && numRows != -1;
+bool MaCollapsibleGroup::isValid() const {
+    return maRowIndex != -1 && numRows != -1;
 }
 
 //////////////////////////////////////////////////////////////////////////
 /// MSACollapsibleItemModel
 //////////////////////////////////////////////////////////////////////////
 
-MSACollapsibleItemModel::MSACollapsibleItemModel(MaEditorWgt *p)
+MaCollapseModel::MaCollapseModel(MaEditorWgt *p)
     : QObject(p),
       ui(p),
       fakeModel(false)
@@ -59,35 +59,35 @@ MSACollapsibleItemModel::MSACollapsibleItemModel(MaEditorWgt *p)
 
 }
 
-void MSACollapsibleItemModel::reset(const QVector<U2Region>& collapsibleItemRegions) {
-    items.clear();
+void MaCollapseModel::update(const QVector<U2Region>& collapsibleGroupRegions) {
+    groups.clear();
     positions.clear();
-    foreach(const U2Region& r, collapsibleItemRegions) {
+    foreach(const U2Region& r, collapsibleGroupRegions) {
         if (r.length < 1) {
             continue;
         }
-        items.append(MSACollapsibleItem(r.startPos, r.length));
+        groups.append(MaCollapsibleGroup(r.startPos, r.length));
         positions.append(r.startPos);
     }
     collapseAll(true);
 }
 
-void MSACollapsibleItemModel::reset() {
-    const bool modelExists = ( !items.isEmpty( ) || !positions.isEmpty( ) );
+void MaCollapseModel::clear() {
+    const bool modelExists = (!groups.isEmpty( ) || !positions.isEmpty( ) );
     if ( modelExists ) {
         emit si_aboutToBeToggled();
-        items.clear( );
+        groups.clear( );
         positions.clear( );
         emit si_toggled( );
     }
 }
 
-void MSACollapsibleItemModel::collapseAll(bool collapse) {
+void MaCollapseModel::collapseAll(bool collapse) {
     emit si_aboutToBeToggled();
     int delta = 0;
-    for (int i=0; i < items.size(); i++) {
-        MSACollapsibleItem& item = items[i];
-        positions[i] = item.msaRowIndex - delta;
+    for (int i=0; i < groups.size(); i++) {
+        MaCollapsibleGroup& item = groups[i];
+        positions[i] = item.maRowIndex - delta;
         item.isCollapsed = collapse;
         if (collapse) {
             delta += item.numRows - 1;
@@ -96,7 +96,7 @@ void MSACollapsibleItemModel::collapseAll(bool collapse) {
     emit si_toggled();
 }
 
-void MSACollapsibleItemModel::toggle(int viewRowIndex) {
+void MaCollapseModel::toggle(int viewRowIndex) {
     emit si_aboutToBeToggled();
     QVector<int>::ConstIterator i = qBinaryFind(positions, viewRowIndex);
     assert(i != positions.constEnd());
@@ -105,8 +105,8 @@ void MSACollapsibleItemModel::toggle(int viewRowIndex) {
     emit si_toggled();
 }
 
-void MSACollapsibleItemModel::triggerItem(int collapsibleGroupIndex) {
-    MSACollapsibleItem& item = items[collapsibleGroupIndex];
+void MaCollapseModel::triggerItem(int collapsibleGroupIndex) {
+    MaCollapsibleGroup& item = groups[collapsibleGroupIndex];
     item.isCollapsed = !item.isCollapsed;
     int delta = item.numRows - 1;
     CHECK(delta != 0, );
@@ -114,31 +114,31 @@ void MSACollapsibleItemModel::triggerItem(int collapsibleGroupIndex) {
     if (item.isCollapsed) {
         delta *= -1;
     }
-    for (int j = collapsibleGroupIndex + 1; j < items.size(); j++ ) {
+    for (int j = collapsibleGroupIndex + 1; j < groups.size(); j++ ) {
         positions[j] += delta;
     }
 }
 
-int MSACollapsibleItemModel::mapToMsaRow(int collapsibleGroupIndex, int viewRowIndex) const {
-    const MSACollapsibleItem& item = items.at(collapsibleGroupIndex);
-    int row = item.msaRowIndex + viewRowIndex - positions.at(collapsibleGroupIndex);
+int MaCollapseModel::mapToMaRow(int collapsibleGroupIndex, int viewRowIndex) const {
+    const MaCollapsibleGroup& item = groups.at(collapsibleGroupIndex);
+    int row = item.maRowIndex + viewRowIndex - positions.at(collapsibleGroupIndex);
     if (item.isCollapsed) {
         row += item.numRows - 1;
     }
     return row;
 }
 
-int MSACollapsibleItemModel::viewRowToMsaRow(int viewRowIndex) const {
+int MaCollapseModel::viewRowToMaRow(int viewRowIndex) const {
     QVector<int>::ConstIterator i = qLowerBound(positions, viewRowIndex);
     int collapsibleGroupIndex = i - positions.constBegin() - 1;
     if (collapsibleGroupIndex < 0) {
         return viewRowIndex;
     } else {
-        return mapToMsaRow(collapsibleGroupIndex, viewRowIndex);
+        return mapToMaRow(collapsibleGroupIndex, viewRowIndex);
     }
 }
 
-U2Region MSACollapsibleItemModel::viewRowsToMsaRows(const U2Region& viewRowsRegion) const {
+U2Region MaCollapseModel::viewRowsToMaRows(const U2Region& viewRowsRegion) const {
     if (viewRowsRegion.isEmpty()) {
         return U2Region();
     }
@@ -156,58 +156,59 @@ U2Region MSACollapsibleItemModel::viewRowsToMsaRows(const U2Region& viewRowsRegi
     int startItemIdx = viewRowToGroupIndex(startPos);
 
     if (startItemIdx >= 0) {
-        const MSACollapsibleItem& startItem = getItem(startItemIdx);
-        startSeq = startItem.msaRowIndex;
+        const MaCollapsibleGroup& startItem = getCollapsibleGroup(startItemIdx);
+        startSeq = startItem.maRowIndex;
     } else {
-        startSeq = viewRowToMsaRow(startPos);
+        startSeq = viewRowToMaRow(startPos);
     }
 
     int endItemIdx = viewRowToGroupIndex(endPos);
 
     if (endItemIdx >= 0) {
-        const MSACollapsibleItem& endItem = getItem(endItemIdx);
-        endSeq = endItem.msaRowIndex + endItem.numRows;
+        const MaCollapsibleGroup& endItem = getCollapsibleGroup(endItemIdx);
+        endSeq = endItem.maRowIndex + endItem.numRows;
     } else {
-        endSeq = viewRowToMsaRow(endPos) + 1;
+        endSeq = viewRowToMaRow(endPos) + 1;
     }
 
     return U2Region(startSeq, endSeq - startSeq);
 }
 
-QList<int> MSACollapsibleItemModel::visibleViewRowsToMsaRows(const U2Region &viewRowsRegion) {
-    QList<int> rowsIndexes;
+QList<int> MaCollapseModel::visibleViewRowsToMaRows(const U2Region &viewRowsRegion) {
+    QList<int> msaRowIndexes;
     for (int i = viewRowsRegion.startPos; i < viewRowsRegion.endPos(); i++) {
-        rowsIndexes << viewRowToMsaRow(i);
+        msaRowIndexes << viewRowToMaRow(i);
     }
-    return rowsIndexes;
+    return msaRowIndexes;
 }
 
-QList<int> MSACollapsibleItemModel::getVisibleMsaRows() const {
+QList<int> MaCollapseModel::getVisibleMaRows() const {
     QList<int> visibleMsaRowIndexes;
     for (int rowNumber = 0; rowNumber < getVisibleRowCount(); rowNumber++) {
-        visibleMsaRowIndexes << viewRowToMsaRow(rowNumber);
+        visibleMsaRowIndexes << viewRowToMaRow(rowNumber);
     }
     return visibleMsaRowIndexes;
 }
 
-int MSACollapsibleItemModel::msaRowToViewRow(int msaRowIndex, bool failIfNotVisible) const {
+int MaCollapseModel::maRowToViewRow(int maRowIndex, bool failIfNotVisible) const {
     int invisibleRows = 0;
-    for (QVector<MSACollapsibleItem>::ConstIterator it = items.constBegin(); it < items.constEnd() && it->msaRowIndex < msaRowIndex; it++) {
+    for (QVector<MaCollapsibleGroup>::ConstIterator it = groups.constBegin(); it < groups.constEnd() && it->maRowIndex < maRowIndex; it++) {
         if (it->isCollapsed) {
-            if (it->msaRowIndex + it->numRows > msaRowIndex && failIfNotVisible) {
+            if (it->maRowIndex + it->numRows > maRowIndex && failIfNotVisible) {
                 return -1;
             }
-            invisibleRows += (it->msaRowIndex + it->numRows <= msaRowIndex) ? it->numRows - 1 : msaRowIndex - it->msaRowIndex;
+            invisibleRows += (it->maRowIndex + it->numRows <= maRowIndex) ? it->numRows - 1 : maRowIndex - it->maRowIndex;
         }
     }
-    return msaRowIndex - invisibleRows;
+    return maRowIndex - invisibleRows;
 }
 
-void MSACollapsibleItemModel::getVisibleMsaRows(int startViewRowIndex, int endViewRowIndex, QVector<U2Region>& visibleMsaRows) const {
-    if (items.isEmpty()) {
-        CHECK(0 <= startViewRowIndex && 0 <= endViewRowIndex && startViewRowIndex <= endViewRowIndex, );
+QList<U2Region> MaCollapseModel::getVisibleMaRows(int startViewRowIndex, int endViewRowIndex) const {
+    QList<U2Region> visibleMsaRows;
+    if (groups.isEmpty()) {
+        CHECK(0 <= startViewRowIndex && 0 <= endViewRowIndex && startViewRowIndex <= endViewRowIndex, visibleMsaRows);
         visibleMsaRows.append(U2Region(startViewRowIndex, endViewRowIndex - startViewRowIndex + 1));
-        return;
+        return visibleMsaRows;
     }
     QVector<int>::ConstIterator i = qLowerBound(positions, startViewRowIndex);
     int idx = i - positions.constBegin() - 1;
@@ -215,17 +216,17 @@ void MSACollapsibleItemModel::getVisibleMsaRows(int startViewRowIndex, int endVi
     if (idx < 0) {
         start = startViewRowIndex;
     } else {
-        start = mapToMsaRow(idx, startViewRowIndex);
+        start = mapToMaRow(idx, startViewRowIndex);
     }
 
     int j = i - positions.constBegin();
-    for (; j < items.size(); j++) {
-        const MSACollapsibleItem& item = items.at(j);
+    for (; j < groups.size(); j++) {
+        const MaCollapsibleGroup& item = groups.at(j);
         if (positions[j] > endViewRowIndex)
             break;
         if (item.isCollapsed) {
-            visibleMsaRows.append(U2Region(start, item.msaRowIndex - start + 1));
-            start = item.msaRowIndex + item.numRows;
+            visibleMsaRows.append(U2Region(start, item.maRowIndex - start + 1));
+            start = item.maRowIndex + item.numRows;
         }
     }
 
@@ -233,7 +234,7 @@ void MSACollapsibleItemModel::getVisibleMsaRows(int startViewRowIndex, int endVi
     if (j - 1 < 0) {
         lastRow = endViewRowIndex;
     } else {
-        lastRow = mapToMsaRow(j - 1, endViewRowIndex);
+        lastRow = mapToMaRow(j - 1, endViewRowIndex);
     }
 
     MaEditor* ed = ui->getEditor();
@@ -244,29 +245,30 @@ void MSACollapsibleItemModel::getVisibleMsaRows(int startViewRowIndex, int endVi
     if (len>0) {
         visibleMsaRows.append(U2Region(start, len));
     }
+    return visibleMsaRows;
 }
 
 
-bool MSACollapsibleItemModel::isFirstRowOfCollapsibleGroup(int viewRowIndex) const {
+bool MaCollapseModel::isFirstRowOfCollapsibleGroup(int viewRowIndex) const {
     QVector<int>::ConstIterator i = qBinaryFind(positions, viewRowIndex);
     return i != positions.constEnd();
 }
 
-bool MSACollapsibleItemModel::isInCollapsibleGroup(int viewRowIndex) const {
+bool MaCollapseModel::isInCollapsibleGroup(int viewRowIndex) const {
     return viewRowToGroupIndex(viewRowIndex) >= 0;
 }
 
-bool MSACollapsibleItemModel::isGroupWithMsaRowCollapsed(int msaRowIndex) const {
-    const MSACollapsibleItem item = ui->getCollapseModel()->getItemByMsaRowIndex(msaRowIndex);
+bool MaCollapseModel::isGroupWithMaRowCollapsed(int maRowIndex) const {
+    const MaCollapsibleGroup item = ui->getCollapseModel()->getItemByMaRowIndex(maRowIndex);
     return item.isValid() && item.isCollapsed;
 }
 
-bool MSACollapsibleItemModel::isMsaRowVisible(int msaRowIndex) const {
-    int viewRowIndex = msaRowToViewRow(msaRowIndex, true);
-    return isFirstRowOfCollapsibleGroup(viewRowIndex) || !isGroupWithMsaRowCollapsed(msaRowIndex);
+bool MaCollapseModel::isMaRowVisible(int maRowIndex) const {
+    int viewRowIndex = maRowToViewRow(maRowIndex, true);
+    return isFirstRowOfCollapsibleGroup(viewRowIndex) || !isGroupWithMaRowCollapsed(maRowIndex);
 }
 
-int MSACollapsibleItemModel::viewRowToGroupIndex(int viewRowIndex) const {
+int MaCollapseModel::viewRowToGroupIndex(int viewRowIndex) const {
     QVector<int>::ConstIterator i = qLowerBound(positions, viewRowIndex);
 
     if (i < positions.constEnd() && *i == viewRowIndex) {
@@ -278,7 +280,7 @@ int MSACollapsibleItemModel::viewRowToGroupIndex(int viewRowIndex) const {
         return -1;
     }
 
-    const MSACollapsibleItem& item = items.at(closestItem);
+    const MaCollapsibleGroup& item = groups.at(closestItem);
     if (item.isCollapsed) {
         return -1;
     } else {
@@ -290,22 +292,22 @@ int MSACollapsibleItemModel::viewRowToGroupIndex(int viewRowIndex) const {
     }
 }
 
-MSACollapsibleItem MSACollapsibleItemModel::getItem(int collapsibleItemIndex) const {
-    return items.at(collapsibleItemIndex);
+MaCollapsibleGroup MaCollapseModel::getCollapsibleGroup(int collapsibleGroupIndex) const {
+    return groups.at(collapsibleGroupIndex);
 }
 
-MSACollapsibleItem MSACollapsibleItemModel::getItemByMsaRowIndex(int msaRowIndex) const {
-    int viewRowIndex = msaRowToViewRow(msaRowIndex);
+MaCollapsibleGroup MaCollapseModel::getItemByMaRowIndex(int maRowIndex) const {
+    int viewRowIndex = maRowToViewRow(maRowIndex);
     const int collapsibleItemIndex = viewRowToGroupIndex(viewRowIndex);
-    CHECK(0 <= collapsibleItemIndex && collapsibleItemIndex < items.size(), MSACollapsibleItem());
-    return items[collapsibleItemIndex];
+    CHECK(0 <= collapsibleItemIndex && collapsibleItemIndex < groups.size(), MaCollapsibleGroup());
+    return groups[collapsibleItemIndex];
 }
 
-int MSACollapsibleItemModel::getVisibleRowCount() const {
+int MaCollapseModel::getVisibleRowCount() const {
     MaEditor *ed = ui->getEditor();
     MultipleAlignmentObject *o = ed->getMaObject();
     int size = o->getNumRows();
-    foreach (const MSACollapsibleItem &item, items) {
+    foreach (const MaCollapsibleGroup &item, groups) {
         if (item.isCollapsed) {
             size -= item.numRows - 1;
         }
@@ -313,20 +315,20 @@ int MSACollapsibleItemModel::getVisibleRowCount() const {
     return size;
 }
 
-bool MSACollapsibleItemModel::isEmpty() const {
-    return items.isEmpty();
+bool MaCollapseModel::isEmpty() const {
+    return groups.isEmpty();
 }
 
-void MSACollapsibleItemModel::setFakeCollapsibleModel(bool fakeModelStatus) {
+void MaCollapseModel::setFakeCollapsibleModel(bool fakeModelStatus) {
     fakeModel = fakeModelStatus;
 }
 
-bool MSACollapsibleItemModel::isFakeModel() const {
+bool MaCollapseModel::isFakeModel() const {
     return fakeModel;
 }
 
-int MSACollapsibleItemModel::getCollapsibleItemCount() const {
-    return items.size();
+int MaCollapseModel::getCollapsibleGroupCount() const {
+    return groups.size();
 }
 
 } // namespace U2

@@ -20,7 +20,7 @@
  */
 
 #include "MsaRowHeightController.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MSAEditor.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
@@ -33,7 +33,7 @@ MsaRowHeightController::MsaRowHeightController(MsaEditorWgt *msaEditortWgt) :
 }
 
 int MsaRowHeightController::getRowHeight(int rowIndex) const {
-    const bool isVisible = ui->getCollapseModel()->isMsaRowVisible(rowIndex);
+    const bool isVisible = ui->getCollapseModel()->isMaRowVisible(rowIndex);
     return isVisible ? getSequenceHeight() : 0;
 }
 

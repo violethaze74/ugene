@@ -31,7 +31,7 @@
 #include "MaSangerOverview.h"
 #include "ov_msa/McaEditor.h"
 #include "ov_msa/McaReferenceCharController.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
@@ -265,7 +265,7 @@ void MaSangerOverview::drawReads() {
     yOffset += (yStep - READ_HEIGHT) / 2;
 
     for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++) {
-        const MultipleChromatogramAlignmentRow row = mca->getMcaRow(ui->getCollapseModel()->viewRowToMsaRow(rowNumber));
+        const MultipleChromatogramAlignmentRow row = mca->getMcaRow(ui->getCollapseModel()->viewRowToMaRow(rowNumber));
         const U2Region coreRegion = row->getCoreRegion();
         const U2Region positionRegion = editor->getUI()->getBaseWidthController()->getBasesGlobalRange(coreRegion);
 

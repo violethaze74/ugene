@@ -29,7 +29,7 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
-#include "MSACollapsibleModel.h"
+#include "MaCollapseModel.h"
 #include "PhyTrees/MSAEditorTreeViewer.h"
 
 namespace U2 {

@@ -28,7 +28,7 @@
 #include <U2Gui/GUIUtils.h>
 
 #include "UndoRedoFramework.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 
 namespace U2 {
 

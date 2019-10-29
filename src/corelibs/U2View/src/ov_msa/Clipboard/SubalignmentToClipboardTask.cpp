@@ -47,7 +47,7 @@
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "SubalignmentToClipboardTask.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MSAEditorSequenceArea.h"
 
 namespace U2{
@@ -79,12 +79,12 @@ U2Region MsaClipboardDataTaskFactory::getWindowBySelection(const QRect &selectio
 
 QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MaEditor *context, const QRect &selection){
     QStringList names;
-    MSACollapsibleItemModel* m = context->getUI()->getCollapseModel();
-    U2Region sel(m->viewRowToMsaRow(selection.y()), m->viewRowToMsaRow(selection.y() + selection.height()) -
-                                                    m->viewRowToMsaRow(selection.y()));
+    MaCollapseModel* m = context->getUI()->getCollapseModel();
+    U2Region sel(m->viewRowToMaRow(selection.y()), m->viewRowToMaRow(selection.y() + selection.height()) -
+                                                   m->viewRowToMaRow(selection.y()));
     MultipleAlignmentObject* msaObj = context->getMaObject();
     for (int i = sel.startPos; i < sel.endPos(); ++i) {
-        if (m->msaRowToViewRow(i, true) < 0) {
+        if (m->maRowToViewRow(i, true) < 0) {
             continue;
         }
         names.append(msaObj->getMultipleAlignment()->getRow(i)->getName());

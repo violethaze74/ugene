@@ -52,7 +52,7 @@
 #include "SequenceAreaRenderer.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/McaEditorWgt.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/RowHeightController.h"
@@ -160,16 +160,16 @@ int MaEditorSequenceArea::getNumVisibleBases() const {
 
 int MaEditorSequenceArea::getNumDisplayableSequences() const {
     CHECK(!isAlignmentEmpty(), 0);
-    MSACollapsibleItemModel *model = ui->getCollapseModel();
+    MaCollapseModel *model = ui->getCollapseModel();
     SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
     return model->getVisibleRowCount();
 }
 
 int MaEditorSequenceArea::getRowIndex(const int num) const {
     CHECK(!isAlignmentEmpty(), -1);
-    MSACollapsibleItemModel *model = ui->getCollapseModel();
+    MaCollapseModel *model = ui->getCollapseModel();
     SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
-    return model->viewRowToMsaRow(num);
+    return model->viewRowToMaRow(num);
 }
 
 bool MaEditorSequenceArea::isAlignmentEmpty() const {
@@ -202,7 +202,7 @@ bool MaEditorSequenceArea::isPositionVisible(int position, bool countClipped) co
 }
 
 bool MaEditorSequenceArea::isRowVisible(int rowNumber, bool countClipped) const {
-    const int rowIndex = ui->getCollapseModel()->viewRowToMsaRow(rowNumber);
+    const int rowIndex = ui->getCollapseModel()->viewRowToMaRow(rowNumber);
     return ui->getDrawHelper()->getVisibleRowsIndexes(height(), countClipped, countClipped).contains(rowIndex);
 }
 
@@ -241,15 +241,15 @@ void MaEditorSequenceArea::updateSelection() {
         setSelection(baseSelection);
         return;
     }
-    MSACollapsibleItemModel* m = ui->getCollapseModel();
+    MaCollapseModel* m = ui->getCollapseModel();
     CHECK_EXT(NULL != m, sl_cancelSelection(), );
 
     int startPos = baseSelection.y();
     int endPos = startPos + baseSelection.height();
 
     // convert selected rows indexes to indexes of selected collapsible items
-    int newStart = m->msaRowToViewRow(startPos);
-    int newEnd = m->msaRowToViewRow(endPos);
+    int newStart = m->maRowToViewRow(startPos);
+    int newEnd = m->maRowToViewRow(endPos);
 
     SAFE_POINT_EXT(newStart >= 0 && newEnd >= 0, sl_cancelSelection(), );
 
@@ -257,8 +257,8 @@ void MaEditorSequenceArea::updateSelection() {
     // accounting of collapsing children items
     int itemIndex = m->viewRowToGroupIndex(newEnd);
     if (selectionHeight <= 1 && itemIndex >= 0) {
-        const MSACollapsibleItem& collapsibleItem = m->getItem(itemIndex);
-        if(newEnd == collapsibleItem.msaRowIndex && !collapsibleItem.isCollapsed) {
+        const MaCollapsibleGroup& collapsibleItem = m->getCollapsibleGroup(itemIndex);
+        if(newEnd == collapsibleItem.maRowIndex && !collapsibleItem.isCollapsed) {
             selectionHeight = qMax(selectionHeight, endPos - newStart + collapsibleItem.numRows);
         }
     }
@@ -345,7 +345,7 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
 }
 
 U2Region MaEditorSequenceArea::getSelectedRows() const {
-    return ui->getCollapseModel()->viewRowsToMsaRows(U2Region(selection.y(), selection.height()));
+    return ui->getCollapseModel()->viewRowsToMaRows(U2Region(selection.y(), selection.height()));
 }
 
 QString MaEditorSequenceArea::getCopyFormatedAlgorithmId() const{
@@ -675,7 +675,7 @@ bool MaEditorSequenceArea::drawContent(QPainter &painter, const QRect &area) {
 bool MaEditorSequenceArea::drawContent(QPainter &painter, const QRect &area, int xStart, int yStart) {
     QList<int> seqIdx;
     for (int rowNumber = 0; rowNumber < area.height(); rowNumber++) {
-        seqIdx << ui->getCollapseModel()->viewRowToMsaRow(rowNumber);
+        seqIdx << ui->getCollapseModel()->viewRowToMaRow(rowNumber);
     }
     bool ok = renderer->drawContent(painter, U2Region(area.x(), area.width()), seqIdx, xStart, yStart);
     emit si_visibleRangeChanged();
