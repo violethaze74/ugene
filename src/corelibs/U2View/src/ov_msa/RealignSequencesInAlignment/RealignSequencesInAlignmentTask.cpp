@@ -49,18 +49,24 @@ RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenc
     msaObject = msaObjectToClone->clone(msaObjectToClone->getEntityRef().dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
 
-    foreach(const MultipleAlignmentRow& row, msaObject->getRows()) {
-        originalRowOrder.append(row->getName());
+    for (int index = 0; index < msaObject->getNumRows(); index++) {
+        const QString name = QString::number(index);
+        msaObject->renameRow(index, name);
+        originalRowOrder.append(name);
     }
 
     CreateSubalignmentSettings settings;
     settings.window = U2Region(0, msaObject->getLength());
     
-    QList<qint64> sequencesToKeepIds = msaObject->getMultipleAlignment()->getRowsIds();
+    QList<qint64> rowsToKeepIds = msaObject->getMultipleAlignment()->getRowsIds();
+    QSet<qint64> clonedObjectRowsToAlignIds;
     foreach(const qint64 idToRemove, rowsToAlignIds) {
-        sequencesToKeepIds.removeAll(idToRemove);
+        int rowPos = msaObjectToClone->getRowPosById(idToRemove);
+        qint64 id = msaObject->getRow(rowPos)->getRowId();
+        rowsToKeepIds.removeAll(id);
+        clonedObjectRowsToAlignIds.insert(id);
     }
-    settings.rowIds = sequencesToKeepIds;
+    settings.rowIds = rowsToKeepIds;
 
     QString url;
     QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
@@ -73,7 +79,7 @@ RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenc
     dir = QDir(extractedSequencesDirUrl);    
     dir.mkpath(extractedSequencesDirUrl);
 
-    extractSequences = new ExportSequencesTask(msaObject->getMsa(), rowsToAlignIds, false, false, extractedSequencesDirUrl, BaseDocumentFormats::FASTA, "fa");
+    extractSequences = new ExportSequencesTask(msaObject->getMsa(), clonedObjectRowsToAlignIds, false, false, extractedSequencesDirUrl, BaseDocumentFormats::FASTA, "fa");
     addSubTask(extractSequences);
 }
 
@@ -106,14 +112,14 @@ QList<Task*> RealignSequencesInAlignmentTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     CHECK_OP(stateInfo, res);
     
-    QList<int> indexesToRemove;
     if (subTask == extractSequences) {
+        QList<int> rowPosToRemove;
         foreach(qint64 idToRemove, rowsToAlignIds) {
-            indexesToRemove.append(originalMsaObject->getRowPosById(idToRemove));
+            rowPosToRemove.append(originalMsaObject->getRowPosById(idToRemove));
         }
-        qSort(indexesToRemove);
-        std::reverse(indexesToRemove.begin(), indexesToRemove.end());
-        foreach(int rowPos, indexesToRemove) {
+        qSort(rowPosToRemove);
+        std::reverse(rowPosToRemove.begin(), rowPosToRemove.end());
+        foreach(int rowPos, rowPosToRemove) {
             msaObject->removeRow(rowPos);
         }
         QStringList sequenceFilesToAlign;
