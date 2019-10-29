@@ -45,8 +45,6 @@ public:
     int getStart() const;
     int getEnd() const;
 
-    //QVector<U2Region> getSelection() const;
-
 signals:
     void si_rangeChanged(int startPos, int endPos);
 

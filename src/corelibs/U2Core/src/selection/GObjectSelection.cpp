@@ -122,7 +122,7 @@ void GDocumentObjectSelection::_remove(GObject* o) {
 }
 
 void GDocumentObjectSelection::sl_onObjectRemoved(GObject* o) {
-    removeFromSelection(o);
+    remove(o);
 }
 
 //////////////////////////////////////////////////////////////////////////

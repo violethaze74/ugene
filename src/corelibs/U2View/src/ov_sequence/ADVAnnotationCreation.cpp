@@ -69,7 +69,7 @@ Task::ReportResult ADVCreateAnnotationsTask::report() {
             AnnotationSelection *annSelection = ctx->getAnnotationsSelection();
             CHECK(annSelection != NULL, ReportResult_Finished);
             foreach (Annotation *a, t->getResultAnnotations()) {
-                annSelection->addToSelection(a);
+                    annSelection->add(a);
             }
         }
     }

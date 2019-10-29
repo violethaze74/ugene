@@ -42,9 +42,9 @@ public:
 
                                             GSequenceLineViewAnnotated(QWidget *p, SequenceObjectContext *ctx);
 
-    bool                                    isAnnotationVisible(Annotation *a) const;
+    bool                                    isAnnotationVisible(const Annotation *a) const;
 
-    virtual QList<AnnotationSelectionData>  selectAnnotationByCoord(const QPoint &coord) const;
+    virtual QList<Annotation*>              findAnnotationsByCoord(const QPoint &coord) const;
 
     static QString                          prepareAnnotationText(const SharedAnnotationData &a, const AnnotationSettings *as);
 

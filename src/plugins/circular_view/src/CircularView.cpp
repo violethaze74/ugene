@@ -212,15 +212,15 @@ void CircularView::sl_onDNASelectionChanged(LRegionsSelection *thiz, const QVect
     renderArea->update();
 }
 
-QList<AnnotationSelectionData> CircularView::selectAnnotationByCoord(const QPoint& coord) const {
-    QList<AnnotationSelectionData> res;
+QList<Annotation*> CircularView::findAnnotationsByCoord(const QPoint& coord) const {
+    QList<Annotation*> res;
     CircularViewRenderArea* renderArea = qobject_cast<CircularViewRenderArea*>(this->renderArea);
     QPoint cp(coord - QPoint(width()/2, renderArea->getCenterY()));
     foreach (CircularAnnotationItem* item, renderArea->circItems) {
         CircularAnnotationRegionItem* regItem = item->getContainingRegion(cp);
         int region = item->containsRegion(cp);
         if(region != -1) {
-            res.append(AnnotationSelectionData(item->getAnnotation()));
+            res.append(item->getAnnotation());
             if (item->getAnnotation()->getType() != U2FeatureTypes::RestrictionSite) {
                 // only restriction sites can intersect
                 return res;
@@ -232,7 +232,7 @@ QList<AnnotationSelectionData> CircularView::selectAnnotationByCoord(const QPoin
             CircularAnnotationLabel* lbl = r->getLabel();
             SAFE_POINT(lbl != NULL, "NULL annotation label item!", res);
             if (lbl->isVisible() && lbl->contains(cp)) {
-                res.append(AnnotationSelectionData(item->getAnnotation()));
+                res.append(item->getAnnotation());
                 return res;
             }
         }
@@ -596,18 +596,18 @@ void CircularViewRenderArea::drawAll(QPaintDevice* pd) {
 void CircularViewRenderArea::drawAnnotationsSelection(QPainter& p) {
     SequenceObjectContext* ctx = view->getSequenceContext();
 
-    if(ctx->getAnnotationsSelection()->getSelection().isEmpty()) {
+    if(ctx->getAnnotationsSelection()->getAnnotations().isEmpty()) {
         return;
     }
 
     foreach(CircularAnnotationItem* item, circItems.values()) {
         item->setSelected(false);
     }
-    foreach(const AnnotationSelectionData& asd, ctx->getAnnotationsSelection()->getSelection()) {
-        AnnotationTableObject *o = asd.annotation->getGObject();
+    foreach(Annotation* annotation, ctx->getAnnotationsSelection()->getAnnotations()) {
+        AnnotationTableObject *o = annotation->getGObject();
         if (ctx->getAnnotationObjects(true).contains(o)) {
-            if(circItems.contains(asd.annotation)) {
-                CircularAnnotationItem* item = circItems[asd.annotation];
+            if(circItems.contains(annotation)) {
+                CircularAnnotationItem* item = circItems[annotation];
                 item->setSelected(true);
                 item->paint(&p, NULL, this);
                 foreach(const CircularAnnotationRegionItem* r, item->getRegions()) {
