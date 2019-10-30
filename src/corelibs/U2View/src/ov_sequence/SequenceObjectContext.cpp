@@ -358,8 +358,8 @@ void SequenceObjectContext::removeAnnotationObject(AnnotationTableObject *obj) {
     emit si_annotationObjectRemoved(obj);
 }
 
-void SequenceObjectContext::emitAnnotationSelection(Annotation* annotation) {
-    emit si_annotationSelection(annotation);
+void SequenceObjectContext::emitAnnotationActivated(Annotation* annotation, int regionIndex) {
+    emit si_annotationActivated(annotation, regionIndex);
 }
 
 void SequenceObjectContext::emitAnnotationDoubleClicked(Annotation* annotation, int regionIndex) {
