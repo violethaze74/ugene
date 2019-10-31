@@ -95,9 +95,6 @@ void ChromaViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
 
     sw->addADVSequenceWidgetActionToViewsToolbar(action);
 
-    // if chromatogram is enabled detailed sequence view is hidden
-    sw->setDetViewCollapsed(true);
-
     action->trigger();
 }
 
