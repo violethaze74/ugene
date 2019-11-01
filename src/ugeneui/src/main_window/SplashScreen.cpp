@@ -161,6 +161,9 @@ void SplashScreenWidget::drawInfo(){
     p.setFont( font );
     p.setPen(QColor(0, 46, 59));
     QString versionSign = version.right(version.indexOf(".")).toInt() == 0 ? version.left(version.indexOf(".")) : version;
+    if (version.contains("-dev")) {
+        versionSign += "-dev";
+    }
     QString text = tr("Version ") + versionSign + tr(" is loading");
     for (int i = 0; i < dots_number; i++) {
         text.append(".");
