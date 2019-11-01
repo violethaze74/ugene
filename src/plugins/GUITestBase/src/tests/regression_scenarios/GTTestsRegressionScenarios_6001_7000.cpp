@@ -3315,6 +3315,24 @@ GUI_TEST_CLASS_DEFINITION(test_6581) {
     CHECK_SET_ERR(names[17] == "F", QString("Unexpected name, expected: \"F\", current: %1").arg(names[17]));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6620) {
+    // 1. Open "test/general/_common_data/sanger/sanger_01.ab1".
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "sanger_01.ab1");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: Details view is visible
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_SZYD_Cas9_5B70");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_SZYD_Cas9_5B70");
+
+    QWidget* widget = GTWidget::findWidget(os, "show_hide_details_view", toolbar);
+    CHECK_SET_ERR(widget != nullptr, "Cannot find show_hide_details_view widget");
+
+    QToolButton* button = qobject_cast<QToolButton*>(widget);
+    CHECK_SET_ERR(button != nullptr, "Cannot find show_hide_details_view QToolButton");
+    CHECK_SET_ERR(button->isChecked(), "show_hide_details_view QToolButton should bew checked");
+}
+
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
