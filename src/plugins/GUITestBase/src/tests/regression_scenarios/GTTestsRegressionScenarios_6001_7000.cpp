@@ -3261,6 +3261,18 @@ GUI_TEST_CLASS_DEFINITION(test_6564){
 
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6569) {
+    //1. Open the WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Find the "Grouper" element on the palette, click on it and click on the scene.
+    WorkflowProcessItem* grouperElement = GTUtilsWorkflowDesigner::addElement(os, "Grouper");
+    GTUtilsWorkflowDesigner::click(os, grouperElement);
+
+    //Expected: No crash
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6580) {
 //    Test to check that element with external tool will
 //    successfully create and run the command: `%TOOL_PATH% $oooo $oooo$oooo $oooo $oooo$oooo$oooo`.
