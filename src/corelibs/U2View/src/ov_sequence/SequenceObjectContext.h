@@ -161,6 +161,9 @@ protected:
 
     // SANGER_TODO:
     AnnotationSelection* annSelection;
+
+    static const QString MANUAL_FRAMES;
+    static const QVariantList DEFAULT_TRANSLATIONS;
 };
 
 } // namespace U2

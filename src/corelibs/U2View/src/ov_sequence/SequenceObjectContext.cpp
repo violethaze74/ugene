@@ -21,7 +21,9 @@
 
 #include "SequenceObjectContext.h"
 
+#include "ADVSingleSequenceWidget.h"
 #include "AnnotatedDNAView.h"
+
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -32,13 +34,18 @@
 #include <U2Core/GHints.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
+#include "U2Core/Settings.h"
 #include <U2Core/U2SafePoints.h>
+
 #include <U2Gui/MultiClickMenu.h>
+
 #include <U2View/CodonTable.h>
 
 
 namespace U2 {
 
+const QString SequenceObjectContext::MANUAL_FRAMES = "sequenceViewSettings/manualFrames";
+const QVariantList SequenceObjectContext::DEFAULT_TRANSLATIONS = { 0, 1, 2, 3, 4, 5 };
 
 SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* parent)
     : QObject(parent),
@@ -73,12 +80,13 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
             }
             visibleFrames = new QActionGroup(this);
             visibleFrames->setExclusive(false);
-            for(int i = 0; i < 6; i++) {
+            QVariantList translationStates = AppContext::getSettings()->getValue(MANUAL_FRAMES, QVariant(DEFAULT_TRANSLATIONS)).toList();
+            for (int i = 0; i < 6; i++) {
                 QAction* a;
                 if( i < 3) {
-                    a = visibleFrames->addAction(tr("Frame +%1").arg(i+1));
-                }else{
-                    a = visibleFrames->addAction(tr("Frame -%1").arg(i+1-3));
+                    a = visibleFrames->addAction(tr("Frame +%1").arg(i + 1));
+                } else {
+                    a = visibleFrames->addAction(tr("Frame -%1").arg(i + 1 - 3));
                 }
                 a->setCheckable(true);
                 a->setChecked(false);
@@ -86,7 +94,9 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
                 //set row id
                 a->setData(i);
                 //save status
-                translationRowsStatus.append(a);
+                if (translationStates.contains(i)) {
+                    translationRowsStatus.append(a);
+                }
                 connect(a, SIGNAL(triggered()), SLOT(sl_toggleTranslations()));
             }
         }
@@ -401,12 +411,20 @@ QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(bool i
 
 void SequenceObjectContext::sl_toggleTranslations() {
     QAction* a = qobject_cast<QAction*>(QObject::sender());
-    CHECK(a != NULL, );
+    CHECK(a != nullptr, );
+
     if (a->isChecked()) {
         translationRowsStatus.append(a);
     } else {
         translationRowsStatus.removeOne(a);
     }
+
+    QVariantList translationStates;
+    foreach(QAction* act, translationRowsStatus) {
+        translationStates.append(act->data().toInt());
+    }
+    AppContext::getSettings()->setValue(MANUAL_FRAMES, translationStates);
+
     rowChoosed = true;
     emit si_translationRowsChanged();
     rowChoosed = false;
