@@ -3505,7 +3505,24 @@ GUI_TEST_CLASS_DEFINITION(test_6616_5) {
     CHECK_SET_ERR(destGraph->isChecked(), "\"Toggle annotation density graph\" is unchecked, but should be");
 }
 
-    GUI_TEST_CLASS_DEFINITION(test_6620) {
+GUI_TEST_CLASS_DEFINITION(test_6619) {
+    // 1. Open "_common_data/scenarios/_regression/6619/murine2.gb".
+    GTLogTracer lt;
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6619", "murine2.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Click on the "NP 597742.2" in the Zoom view.
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970);
+
+    // 3. Click on the 3000th character in the Details view.
+    GTUtilsSequenceView::setCursor(os, 3000, true);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    //Expected: No errors
+    CHECK_SET_ERR(!lt.hasError(), "Unexpected errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6620) {
     // 1. Open "test/general/_common_data/sanger/sanger_01.ab1".
     GTFileDialog::openFile(os, testDir + "_common_data/sanger", "sanger_01.ab1");
     GTUtilsTaskTreeView::waitTaskFinished(os);
