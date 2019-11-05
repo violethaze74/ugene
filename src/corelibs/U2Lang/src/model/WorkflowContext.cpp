@@ -28,6 +28,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppFileStorage.h>
 #include <U2Core/CMDLineRegistry.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -201,7 +202,7 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
     if (useOutputDir()) {
         root = WorkflowSettings::getWorkflowOutputDirectory();
     } else if (cmdlineReg != nullptr && cmdlineReg->hasParameter(WORKING_DIR)) {
-        root = cmdlineReg->getParameterValue(WORKING_DIR);
+        root = FileAndDirectoryUtils::getAbsoluteDir(cmdlineReg->getParameterValue(WORKING_DIR));
     } else{
         root = QProcess().workingDirectory();
     }

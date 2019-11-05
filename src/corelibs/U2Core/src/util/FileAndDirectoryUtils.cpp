@@ -29,7 +29,13 @@ static const QString OUTPUT_SUBDIR = "run";
 
 namespace U2 {
 
-int FileAndDirectoryUtils::minLengthToWrite = 32768;
+int FileAndDirectoryUtils::MIN_LENGTH_TO_WRITE = 32768;
+
+#if defined(Q_OS_LINUX) | defined (Q_OS_MAC)
+const QString FileAndDirectoryUtils::HOME_DIR_IDENTIFIER = "~/";
+#else
+const QString FileAndDirectoryUtils::HOME_DIR_IDENTIFIER = "%UserProfile%/";
+#endif
 
 QString FileAndDirectoryUtils::getFormatId(const FormatDetectionResult &r) {
     if (NULL != r.format) {
@@ -119,11 +125,20 @@ bool FileAndDirectoryUtils::isFileEmpty(const QString& url){
 }
 
 void FileAndDirectoryUtils::dumpStringToFile(QFile *f, QString &str) {
-    if (Q_LIKELY(f == NULL || str.length() <= minLengthToWrite)) {
+    if (Q_LIKELY(f == NULL || str.length() <= MIN_LENGTH_TO_WRITE)) {
         return;
     }
     f->write(str.toLocal8Bit());
     str.clear();
+}
+
+QString FileAndDirectoryUtils::getAbsoluteDir(const QString& filePath) {
+    QString result = QDir::fromNativeSeparators(filePath);
+    if (result.startsWith(HOME_DIR_IDENTIFIER, Qt::CaseInsensitive)) {
+        result.remove(0, HOME_DIR_IDENTIFIER.length() - 1);
+        result.prepend(QDir::homePath());
+    }
+    return QDir(result).absolutePath();
 }
 
 } // U2
