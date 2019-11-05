@@ -230,6 +230,8 @@ void SequenceObjectContext::sl_showShowAll() {
 }
 
 void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState state) {
+    CHECK(nullptr != visibleFrames, );
+
     bool needUpdate = false;
 
     const bool enableActions = state == SequenceObjectContext::TS_SetUpFramesManually;
@@ -464,6 +466,8 @@ void SequenceObjectContext::setTranslationsVisible(bool visible) {
 }
 
 void SequenceObjectContext::showComplementActions(bool show) {
+    CHECK(nullptr != visibleFrames, );
+
     QList<QAction*> actions = visibleFrames->actions();
     for (int i = 3; i < 6; i++) {
         actions[i]->setVisible(show);
