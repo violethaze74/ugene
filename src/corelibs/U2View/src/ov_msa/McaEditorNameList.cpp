@@ -110,7 +110,7 @@ QRectF McaEditorNameList::calculateArrowRect(const U2Region &yRange) const {
     const qreal arrowWidth = ARROW_LENGTH;
     const qreal arrowHeight = ARROW_HEAD_LENGTH;
     const qreal arrowX = widgetWidth - arrowWidth - MARGIN_ARROW_RIGHT;
-    const qreal arrowY = yRange.startPos + (qreal)(ui->getRowHeightController()->getSequenceHeight() - arrowHeight) / 2;
+    const qreal arrowY = yRange.startPos + (qreal)(ui->getRowHeightController()->getSingleRowHeight() - arrowHeight) / 2;
     return QRectF(arrowX, arrowY, arrowWidth, arrowHeight);
 }
 

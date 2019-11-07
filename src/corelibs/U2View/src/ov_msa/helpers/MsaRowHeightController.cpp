@@ -29,12 +29,11 @@ namespace U2 {
 MsaRowHeightController::MsaRowHeightController(MsaEditorWgt *msaEditortWgt) :
     RowHeightController(msaEditortWgt)
 {
-
 }
 
-int MsaRowHeightController::getRowHeight(int rowIndex) const {
-    const bool isVisible = ui->getCollapseModel()->isMaRowVisible(rowIndex);
-    return isVisible ? getSequenceHeight() : 0;
+int MsaRowHeightController::getRowHeightByMaIndex(int maRowIndex) const {
+    const bool isVisible = ui->getCollapseModel()->isMaRowHasViewRowIndex(maRowIndex);
+    return isVisible ? getSingleRowHeight() : 0;
 }
 
 }   // namespace U2

@@ -95,7 +95,7 @@ QPair<U2Region, U2Region> GTUtilsMSAEditorSequenceArea::convertCoordinatesToRegi
     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", res);
 
     U2Region regX = msaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x());
-    U2Region regY = msaEditArea->getEditor()->getUI()->getRowHeightController()->getRowGlobalRangeByNumber(p.y());
+    U2Region regY = msaEditArea->getEditor()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y());
 
     QPoint leftTop(regX.startPos, regY.startPos);
     QPoint rightBot(regX.endPos(), regY.endPos());
@@ -118,7 +118,7 @@ QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(GUITestOpStatus &os, con
     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found",QPoint());
 
     const int posX = static_cast<int>(msaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
-    const int posY = static_cast<int>(msaEditArea->getEditor()->getUI()->getRowHeightController()->getRowGlobalRangeByNumber(p.y()).center());
+    const int posY = static_cast<int>(msaEditArea->getEditor()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
     return msaEditArea->mapToGlobal(QPoint(posX, posY));
 }
 #undef GT_METHOD_NAME
@@ -250,7 +250,7 @@ void GTUtilsMSAEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
 
     scrollToPosition(os, globalMaPosition);
     const QPoint positionCenter(msaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
-                                    msaSeqArea->getEditor()->getUI()->getRowHeightController()->getRowScreenRangeByNumber(globalMaPosition.y()).center());
+                                    msaSeqArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
     GT_CHECK(msaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
 
     GTMouseDriver::moveTo(msaSeqArea->mapToGlobal(positionCenter));
@@ -344,7 +344,7 @@ void GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus &os, QS
     int rowNum = getVisibleNames(os).indexOf(seqName);
     GT_CHECK(rowNum != -1, "sequence not found in nameList");
     QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
-    QPoint localCoord = QPoint(15, msaEditArea->getEditor()->getUI()->getRowHeightController()->getRowScreenCenterByNumber(rowNum));
+    QPoint localCoord = QPoint(15, msaEditArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNum).startPos + 7);
     QPoint globalCoord = nameList->mapToGlobal(localCoord);
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
@@ -690,7 +690,7 @@ int GTUtilsMSAEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumbe
     QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     GT_CHECK_RESULT(activeWindow != NULL, "active mdi window is NULL", 0);
     MsaEditorWgt* ui = GTUtilsMdi::activeWindow(os)->findChild<MsaEditorWgt*>();
-    return ui->getRowHeightController()->getRowHeightByNumber(rowNumber);
+    return ui->getRowHeightController()->getRowHeightByViewRowIndex(rowNumber);
 }
 #undef GT_METHOD_NAME
 
@@ -760,7 +760,7 @@ void GTUtilsMSAEditorSequenceArea::expandSelectedRegion(GUITestOpStatus &os, con
     MsaEditorWgt* ui = GTUtilsMsaEditor::getEditorUi(os);
     CHECK_SET_ERR(ui != NULL, "MsaEditorWgt not found");
 
-    const int height = ui->getRowHeightController()->getSequenceHeight();
+    const int height = ui->getRowHeightController()->getSingleRowHeight();
     const int width = ui->getBaseWidthController()->getBaseWidth();
     const QRect selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
 

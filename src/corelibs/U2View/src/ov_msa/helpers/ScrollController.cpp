@@ -77,7 +77,7 @@ void ScrollController::updateVerticalScrollBar() {
 }
 
 void ScrollController::scrollToRowByNumber(int rowNumber, int widgetHeight) {
-    const U2Region rowRegion = ui->getRowHeightController()->getRowGlobalRangeByNumber(rowNumber);
+    const U2Region rowRegion = ui->getRowHeightController()->getGlobalYRegionByViewRowIndex(rowNumber);
     const U2Region visibleRegion = getVerticalRangeToDrawIn(widgetHeight);
     if (rowRegion.startPos < visibleRegion.startPos) {
         vScrollBar->setValue(static_cast<int>(rowRegion.startPos));
@@ -113,7 +113,7 @@ void ScrollController::centerBase(int baseNumber, int widgetWidth) {
 }
 
 void ScrollController::centerRow(int rowNumber, int widgetHeight) {
-    const U2Region rowGlobalRange = ui->getRowHeightController()->getRowGlobalRangeByNumber(rowNumber);
+    const U2Region rowGlobalRange = ui->getRowHeightController()->getGlobalYRegionByViewRowIndex(rowNumber);
     const U2Region visibleRange = getVerticalRangeToDrawIn(widgetHeight);
     const int newScreenYOffset = rowGlobalRange.startPos - visibleRange.length / 2;
     vScrollBar->setValue(newScreenYOffset);
@@ -137,12 +137,12 @@ void ScrollController::setFirstVisibleBase(int firstVisibleBase) {
 }
 
 void ScrollController::setFirstVisibleRowByNumber(int firstVisibleRowNumber) {
-    const int firstVisibleRowIndex = ui->getCollapseModel()->viewRowToMaRow(firstVisibleRowNumber);
+    const int firstVisibleRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(firstVisibleRowNumber);
     setFirstVisibleRowByIndex(firstVisibleRowIndex);
 }
 
 void ScrollController::setFirstVisibleRowByIndex(int firstVisibleRowIndex) {
-    vScrollBar->setValue(ui->getRowHeightController()->getRowGlobalOffset(firstVisibleRowIndex));
+    vScrollBar->setValue(ui->getRowHeightController()->getGlobalYPositionByMaRowIndex(firstVisibleRowIndex));
 }
 
 void ScrollController::scrollSmoothly(const Directions &directions) {
@@ -318,32 +318,34 @@ int ScrollController::getLastVisibleBase(int widgetWidth, bool countClipped) con
 
 int ScrollController::getFirstVisibleRowIndex(bool countClipped) const {
     const bool removeClippedRow = !(countClipped || getAdditionalYOffset() == 0);
-    return ui->getRowHeightController()->globalYPositionToRowIndex(vScrollBar->value()) + (removeClippedRow ? 1 : 0);
+    return ui->getRowHeightController()->getMaRowIndexByGlobalYPosition(vScrollBar->value()) + (removeClippedRow ? 1 : 0);
 }
 
 int ScrollController::getFirstVisibleRowNumber(bool countClipped) const {
-    return collapsibleModel->maRowToViewRow(getFirstVisibleRowIndex(countClipped));
+    return collapsibleModel->getViewRowIndexByMaRowIndex(getFirstVisibleRowIndex(countClipped));
 }
 
 int ScrollController::getLastVisibleRowIndex(int widgetHeight, bool countClipped) const {
-    return collapsibleModel->viewRowToMaRow(getLastVisibleRowNumber(widgetHeight, countClipped));
+    return collapsibleModel->getMaRowIndexByViewRowIndex(getLastVisibleRowNumber(widgetHeight, countClipped));
 }
 
 int ScrollController::getLastVisibleRowNumber(int widgetHeight, bool countClipped) const {
-    int lastVisibleRowNumber = ui->getRowHeightController()->globalYPositionToRowNumber(vScrollBar->value() + widgetHeight);
+    int lastVisibleRowNumber = ui->getRowHeightController()->getViewRowIndexByGlobalYPosition(
+            vScrollBar->value() + widgetHeight);
     if (lastVisibleRowNumber < 0) {
-        lastVisibleRowNumber = collapsibleModel->getVisibleRowCount() - 1;
+        lastVisibleRowNumber = collapsibleModel->getViewRowCount() - 1;
     }
-    const U2Region lastRowScreenRegion = ui->getRowHeightController()->getRowScreenRangeByNumber(lastVisibleRowNumber);
+    const U2Region lastRowScreenRegion = ui->getRowHeightController()->getScreenYRegionByViewRowIndex(
+            lastVisibleRowNumber);
     const bool removeClippedRow = !countClipped && lastRowScreenRegion.endPos() > widgetHeight;
     return lastVisibleRowNumber - (removeClippedRow ? 1 : 0);
 }
 
 QPoint ScrollController::getMaPointByScreenPoint(const QPoint &point) const {
     const int columnNumber = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
-    int rowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(point.y());
+    int rowNumber = ui->getRowHeightController()->getViewRowIndexByScreenYPosition(point.y());
     if (-1 == rowNumber) {
-        rowNumber = ui->getCollapseModel()->getVisibleRowCount();
+        rowNumber = ui->getCollapseModel()->getViewRowCount();
     }
     return QPoint(columnNumber, rowNumber);
 }
@@ -370,12 +372,14 @@ void ScrollController::sl_updateScrollBars() {
 
 void ScrollController::sl_collapsibleModelIsAboutToBeChanged() {
     savedFirstVisibleRowIndex = getFirstVisibleRowIndex(true);
-    savedFirstVisibleRowAdditionalOffset = getScreenPosition().y() - ui->getRowHeightController()->getRowGlobalOffset(savedFirstVisibleRowIndex);
+    savedFirstVisibleRowAdditionalOffset = getScreenPosition().y() -
+            ui->getRowHeightController()->getGlobalYPositionByMaRowIndex(savedFirstVisibleRowIndex);
 }
 
 void ScrollController::sl_collapsibleModelChanged() {
-    const int newFirstVisibleRowIndex = collapsibleModel->maRowToViewRow(savedFirstVisibleRowIndex);
-    const int newFirstVisibleRowOffset = ui->getRowHeightController()->getRowGlobalOffset(newFirstVisibleRowIndex);
+    const int newFirstVisibleRowIndex = collapsibleModel->getViewRowIndexByMaRowIndex(savedFirstVisibleRowIndex);
+    const int newFirstVisibleRowOffset = ui->getRowHeightController()->getGlobalYPositionByMaRowIndex(
+            newFirstVisibleRowIndex);
     setVScrollbarValue(newFirstVisibleRowOffset + savedFirstVisibleRowAdditionalOffset);
 }
 
@@ -384,8 +388,8 @@ int ScrollController::getAdditionalXOffset() const {
 }
 
 int ScrollController::getAdditionalYOffset() const {
-    const int firstVisibleRowIndex = ui->getRowHeightController()->globalYPositionToRowIndex(vScrollBar->value());
-    const int firstVisibleRowOffset = ui->getRowHeightController()->getRowGlobalOffset(firstVisibleRowIndex);
+    const int firstVisibleRowIndex = ui->getRowHeightController()->getMaRowIndexByGlobalYPosition(vScrollBar->value());
+    const int firstVisibleRowOffset = ui->getRowHeightController()->getGlobalYPositionByMaRowIndex(firstVisibleRowIndex);
     return vScrollBar->value() - firstVisibleRowOffset;
 }
 
@@ -453,7 +457,7 @@ void ScrollController::updateVerticalScrollBarPrivate() {
 
     vScrollBar->setMinimum(0);
     vScrollBar->setMaximum(qMax(0, totalAlignmentHeight - sequenceAreaHeight));
-    vScrollBar->setSingleStep(ui->getRowHeightController()->getSequenceHeight());
+    vScrollBar->setSingleStep(ui->getRowHeightController()->getSingleRowHeight());
     vScrollBar->setPageStep(sequenceAreaHeight);
 
     const int numVisibleSequences = getLastVisibleRowNumber(sequenceAreaHeight) - getFirstVisibleRowNumber() + 1;
