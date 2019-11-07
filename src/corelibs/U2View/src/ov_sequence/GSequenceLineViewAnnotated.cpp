@@ -216,8 +216,6 @@ QList<Annotation*> GSequenceLineViewAnnotated::findAnnotationsByCoord(const QPoi
 void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
     setFocus();
     const QPoint renderAreaPoint = toRenderAreaPoint(me->pos());
-    lastPressPos = renderArea->coordToPos(renderAreaPoint);
-
     const QPoint p = toRenderAreaPoint(me->pos());
     const Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     const bool singleBaseSelectionMode = km.testFlag(Qt::AltModifier);
@@ -259,9 +257,10 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
                 if (processAllRegions) {
                     ctx->emitAnnotationActivated(annotation, -1);
                 } else {
+                    int mousePressPos = renderArea->coordToPos(renderAreaPoint);
                     for (int i = 0; i < annotationRegions.size(); i++) {
                         const U2Region &region = annotationRegions[i];
-                        if (region.contains(lastPressPos)) {
+                        if (region.contains(mousePressPos)) {
                             ctx->emitAnnotationActivated(annotation, i);
                         }
                     }
