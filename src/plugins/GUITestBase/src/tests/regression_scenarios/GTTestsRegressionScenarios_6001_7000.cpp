@@ -3327,6 +3327,69 @@ GUI_TEST_CLASS_DEFINITION(test_6581) {
     CHECK_SET_ERR(names[17] == "F", QString("Unexpected name, expected: \"F\", current: %1").arg(names[17]));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6586) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "activeModalWidget is missed");
+
+            //3. Skip the first page
+            QRadioButton* rbIntegratedTool = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbIntegratedTool", dialog));
+            CHECK_SET_ERR(nullptr != rbIntegratedTool, "rbIntegratedTool not found");
+
+            GTRadioButton::click(os, rbIntegratedTool);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            QStringList addButtonNames = { "pbAddInput", "pbAdd", "pbAddOutput" };
+            QStringList dataTableNames = { "tvInput", "tvAttributes", "tvOutput" };
+            QStringList deleteButtonNames = { "pbDeleteInput", "pbDelete", "pbDeleteOutput" };
+
+            for (int i = 0; i < addButtonNames.size(); i++) {
+                //4. Add two rows and text "name"
+                QWidget* add = GTWidget::findWidget(os, addButtonNames[i], dialog);
+                CHECK_SET_ERR(nullptr != add, "Add button not found");
+
+                QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, dataTableNames[i]));
+                CHECK_SET_ERR(nullptr != table, "QTableView not found");
+
+                GTWidget::click(os, add);
+                GTWidget::click(os, add);
+
+                //Expected: focus on the table view, the first column of the second row was selected
+                CHECK_SET_ERR(table->hasFocus(), "QTableView doesn't have focus");
+
+                GTKeyboardDriver::keySequence("name");
+                QAbstractItemModel* baseModel = table->model();
+                CHECK_SET_ERR(nullptr != baseModel, "QItemSelectionModel not found");
+
+                QString expectedString = baseModel->data(baseModel->index(1, 0)).toString();
+                CHECK_SET_ERR(expectedString == "name", QString("Expected string not found, expected: name, current: %1").arg(expectedString));
+
+                QWidget* del = GTWidget::findWidget(os, deleteButtonNames[i], dialog);
+                CHECK_SET_ERR(nullptr != del, "Delete button not found");
+
+                GTWidget::click(os, del);
+                GTWidget::click(os, del);
+
+                //5. Go to the nex page and process 4 again
+                GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+                //6. 4-5 should be done 3 times in general
+            }
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+
+        }
+    };
+
+    //2. Open "Create Cmdline Based Worker Wizard"
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new Scenario));
+    QAbstractButton* createElement = GTAction::button(os, "createElementWithCommandLineTool");
+    GTWidget::click(os, createElement);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6616_1) {
     // 1. Open "samples/Genbank/murine.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");

@@ -409,6 +409,7 @@ CreateCmdlineBasedWorkerWizardInputDataPage::CreateCmdlineBasedWorkerWizardInput
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
 
     connect(pbAddInput, SIGNAL(clicked()), SLOT(sl_addInput()));
+    connect(pbAddInput, SIGNAL(clicked()), tvInput, SLOT(setFocus()));
     connect(pbDeleteInput, SIGNAL(clicked()), SLOT(sl_deleteInput()));
     connect(this, SIGNAL(si_inputsChanged()), SIGNAL(completeChanged()));
 
@@ -491,6 +492,7 @@ CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardPara
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
 
     connect(pbAdd, SIGNAL(clicked()), SLOT(sl_addAttribute()));
+    connect(pbAdd, SIGNAL(clicked()), tvAttributes, SLOT(setFocus()));
     connect(pbDelete, SIGNAL(clicked()), SLOT(sl_deleteAttribute()));
     connect(this, SIGNAL(si_attributesChanged()), SIGNAL(completeChanged()));
 
@@ -612,6 +614,7 @@ CreateCmdlineBasedWorkerWizardOutputDataPage::CreateCmdlineBasedWorkerWizardOutp
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
 
     connect(pbAddOutput, SIGNAL(clicked()), SLOT(sl_addOutput()));
+    connect(pbAddOutput, SIGNAL(clicked()), tvOutput, SLOT(setFocus()));
     connect(pbDeleteOutput, SIGNAL(clicked()), SLOT(sl_deleteOutput()));
     connect(this, SIGNAL(si_outputsChanged()), SIGNAL(completeChanged()));
 
