@@ -75,25 +75,25 @@ public:
     void collapseAll(bool collapse);
 
     /* Converts view row index to MA row index. */
-    int viewRowToMaRow(int viewRowIndex) const;
+    int getMaRowIndexByViewRowIndex(int viewRowIndex) const;
 
     /* Converts view rows region to MA rows region. */
-    U2Region viewRowsToMaRows(const U2Region &viewRowsRegion) const;
+    U2Region getMaRowIndexRegionByViewRowIndexRegion(const U2Region &viewRowIndexRegion) const;
 
-    /* Returns list of visible (not hidden by collapsing) MA row indexes. Invisible rows are not included to the result. */
-    QList<int> visibleViewRowsToMaRows(const U2Region &viewRowsRegion);
+    /* Returns list of view rows indexes to MA row indexes. Invisible (MA rows with no view index) rows are not included to the result. */
+    QList<int> getMaRowIndexesByViewRowIndexes(const U2Region &viewRowIndexesRegion);
 
-    /* Returns list of all visible (not hidden by collapsing) MA row indexes. */
-    QList<int> getVisibleMaRows() const;
+    /* Returns list of all MA row indexes that have valid view row index (not hidden by collapsing). */
+    QList<int> getMaRowsIndexesWithViewRowIndexes() const;
 
-    /* Returns all visible (not hidden by collapsing) MA regions between start & end (inclusive) view rows. */
-    QList<U2Region> getVisibleMaRows(int startViewRowIndex, int endViewRowIndex) const;
+    /* Returns list of all MA row index regions that have valid view row index (not hidden by collapsing) in the given range. */
+    QList<U2Region> getGroupedMaRowIndexesWithViewRowIndexes(int startViewRowIndex, int endViewRowIndex) const;
 
     /*
-    * Converts MA row index into its view position (i.e. the row position that takes into account collapsed groups).
+    * Converts MA row index to the view row index.
     * Returns -1 if the row is inside of collapsed group and @failIfNotVisible is true.
     */
-    int maRowToViewRow(int maRowIndex, bool failIfNotVisible = false) const;
+    int getViewRowIndexByMaRowIndex(int maRowIndex, bool failIfNotVisible = false) const;
 
     /* Returns 'true' if the view row index is the first row in some collapsible group. */
     bool isFirstRowOfCollapsibleGroup(int viewRowIndex) const;
@@ -102,21 +102,24 @@ public:
     bool isInCollapsibleGroup(int viewRowIndex) const;
 
     /* Returns 'true' if the MA row is inside of some collapsible group and the group is collapsed. */
-    bool isGroupWithMaRowCollapsed(int maRowIndex) const;
+    bool isGroupWithMaRowIndexCollapsed(int maRowIndex) const;
 
-    /* Returns true if MA row is visible (not inside of collapsed block). */
-    bool isMaRowVisible(int maRowIndex) const;
+    /* Returns true if MA row has view row index: not inside of a collapsed group. */
+    bool isMaRowHasViewRowIndex(int maRowIndex) const;
 
     /* Returns the collapsible group index with the row or -1, if the row is not in a collapsible group. */
-    int viewRowToGroupIndex(int viewRowIndex) const;
+    int getCollapsibleGroupIndexByViewRowIndex(int viewRowIndex) const;
 
     MaCollapsibleGroup getCollapsibleGroup(int collapsibleGroupIndex) const;
 
-    /* Returns collapsible group item by MA row index. */
-    MaCollapsibleGroup getItemByMaRowIndex(int maRowIndex) const;
+    /*
+     * Finds collapsible group by MA row index.
+     * Returns invalid group if there is no collapsible group for the given MA index.
+     * */
+    MaCollapsibleGroup findCollapsibleGroupByMaRowIndex(int maRowIndex) const;
 
-    /* Returns number of visible rows. Every collapsible group has at least one (the first) row visible. */
-    int getVisibleRowCount() const;
+    /* Returns number of view rows. Every collapsible group has at least one (the first) row counted. */
+    int getViewRowCount() const;
 
     /* Returns true if there are no collapsible groups in the model. */
     bool isEmpty() const;

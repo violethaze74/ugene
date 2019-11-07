@@ -60,7 +60,7 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &region
 
     foreach (const int rowIndex, seqIdx) {
         drawRow(painter, ma, rowIndex, region, xStart, yStart);
-        yStart += ui->getRowHeightController()->getRowHeight(rowIndex);
+        yStart += ui->getRowHeightController()->getRowHeightByMaIndex(rowIndex);
     }
 
     return true;
@@ -115,7 +115,7 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
 
     qint64 regionEnd = region.endPos() - (int)(region.endPos() == editor->getAlignmentLen());
     MultipleAlignmentRow row = ma->getRow(rowIndex);
-    const int rowHeight = ui->getRowHeightController()->getSequenceHeight();
+    const int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     const int baseWidth = ui->getBaseWidthController()->getBaseWidth();
     const QPen backupPen = painter.pen();
     for (int pos = region.startPos; pos <= regionEnd; pos++) {

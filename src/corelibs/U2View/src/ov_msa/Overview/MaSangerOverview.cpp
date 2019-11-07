@@ -158,7 +158,7 @@ int MaSangerOverview::getContentWidgetHeight() const {
 }
 
 int MaSangerOverview::getReadsHeight() const {
-    const int rowsCount = ui->getCollapseModel()->getVisibleRowCount();
+    const int rowsCount = ui->getCollapseModel()->getViewRowCount();
     return rowsCount * READ_HEIGHT;
 }
 
@@ -258,14 +258,15 @@ void MaSangerOverview::drawReads() {
     MultipleChromatogramAlignmentObject const * const mcaObject = getEditor()->getMaObject();
     SAFE_POINT(NULL != mcaObject, tr("Incorrect multiple chromatogram alignment object"), );
     const MultipleChromatogramAlignment mca = mcaObject->getMultipleAlignment();
-    const int rowsCount = editor->getUI()->getCollapseModel()->getVisibleRowCount();
+    const int rowsCount = editor->getUI()->getCollapseModel()->getViewRowCount();
 
     double yOffset = 0;
     const double yStep = qMax(static_cast<double>(READ_HEIGHT), static_cast<double>(cachedReadsView.height()) / rowsCount);
     yOffset += (yStep - READ_HEIGHT) / 2;
 
     for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++) {
-        const MultipleChromatogramAlignmentRow row = mca->getMcaRow(ui->getCollapseModel()->viewRowToMaRow(rowNumber));
+        const MultipleChromatogramAlignmentRow row = mca->getMcaRow(
+                ui->getCollapseModel()->getMaRowIndexByViewRowIndex(rowNumber));
         const U2Region coreRegion = row->getCoreRegion();
         const U2Region positionRegion = editor->getUI()->getBaseWidthController()->getBasesGlobalRange(coreRegion);
 

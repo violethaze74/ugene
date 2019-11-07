@@ -206,7 +206,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     const int refSeq = alignment->getRowIndexByRowId(editor->getReferenceRowId(), os);
 
     foreach (const int rowNumber, visibleRows) {
-        const U2Region yRange = ui->getRowHeightController()->getRowScreenRange(rowNumber);
+        const U2Region yRange = ui->getRowHeightController()->getScreenYRegionByMaRowIndex(rowNumber);
         int offs = getBaseCounts(rowNumber, pos, !showStartPos);
         int seqSize = getBaseCounts(rowNumber, alignmentLength - 1, true);
         QString offset = offs + 1 > seqSize ? QString::number(seqSize) : QString::number(offs + 1);

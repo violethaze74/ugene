@@ -145,7 +145,7 @@ void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direct
     if (NULL == cachedIterator) {
         cachedIterator.reset(new MaIterator(maEditor->getMaObject()->getMultipleAlignment(),
                                             direction,
-                                            maEditorWgt->getCollapseModel()->getVisibleMaRows()));
+                                            maEditorWgt->getCollapseModel()->getMaRowsIndexesWithViewRowIndexes()));
         cachedIterator->setCircular(true);
         cachedIterator->setIterateInCoreRegionsOnly(true);
     }
