@@ -2836,7 +2836,7 @@ GUI_TEST_CLASS_DEFINITION(test_6490) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_1) {
-//  1. Open �COI_SHORT_21x88.aln�.
+//  1. Open "COI_SHORT_21x88.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x70.aln");
     QAbstractButton* realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
 //         Expected result : no sequences are selected.
@@ -2864,16 +2864,16 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
-//         Open �empty2.fa�.
+//         Open "empty_mult_seq.fa".
 //         Expected result : there are no sequences in the Realignment Editor.The "Realign sequence(s) to other sequences" button is disabled.
     GTUtilsProject::closeProject(os);
-    GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "empty.fa");
+    GTFileDialog::openFile(os, testDir + "_common_data/empty_sequences/", "empty_mult_seq.fa");
     realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_2) {
-//  Open �COI_SHORT_21x88_russian_letters.msf�.
+//  Open "COI_SHORT_21x88_russian_letters.msf".
 //  Select ���� ����    ���Ɣ, ��� �� ���� ����, �����   ���� ���� ������ sequences.
 //  Expected result : "Realign sequence(s) to other sequences" button is enabled.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x88_russian_letters.msf");
@@ -2889,8 +2889,8 @@ GUI_TEST_CLASS_DEFINITION(test_6541_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_3) {
-//     Open �amino_ext.aln�.
-//     Select �FOSB_MOUSE� sequence.
+//     Open "amino_ext.aln".
+//     Select "FOSB_MOUSE" sequence.
 //     Expected result : "Realign sequence(s) to other sequences" button is enabled.
 //     Click "Realign sequence(s) to other sequences".
 //     Expected result : sequences realigned.
