@@ -3903,6 +3903,7 @@ GUI_TEST_CLASS_DEFINITION( test_2568 ){
             GTWidget::click(os, GTWidget::findWidget(os, "addFileButton"));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+            GTGlobals::sleep(100);
         }
     };
 
