@@ -5,7 +5,7 @@ CONFIG +=thread debug_and_release staticlib
 DEFINES+= _CRT_SECURE_NO_WARNINGS
 INCLUDEPATH += src
 
-TARGET = zlib
+TARGET = zlib$$D
 DESTDIR = ../../$$out_dir()
 
 !debug_and_release|build_pass {

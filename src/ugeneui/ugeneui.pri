@@ -32,6 +32,7 @@ if (contains(DEFINES, HI_EXCLUDED)) {
 
 DESTDIR = ../$$out_dir()
 TARGET = ugeneui$$D
+QMAKE_PROJECT_NAME = ugeneui
 
 !debug_and_release|build_pass {
 
