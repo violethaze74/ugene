@@ -167,16 +167,10 @@ use_bundled_zlib() {
     DEFINES+=UGENE_USE_BUNDLED_ZLIB
 }
 
-# A function to add SQLite library to the list of libraries
+# A function to add zlib library to the list of libraries
 defineReplace(add_z_lib) {
     use_bundled_zlib() {
-        !debug_and_release|build_pass {
-            CONFIG(debug, debug|release) {
-                RES = -lzlibd
-            } else {
-                RES = -lzlib
-            }
-        }
+        RES = -lzlib$$D
     } else {
         RES = -lz
     }
@@ -199,13 +193,7 @@ use_bundled_sqlite() {
 # A function to add SQLite library to the list of libraries
 defineReplace(add_sqlite_lib) {
     use_bundled_sqlite() {
-        !debug_and_release|build_pass {
-            CONFIG(debug, debug|release) {
-                RES = -lugenedbd
-            } else {
-                RES = -lugenedb
-            }
-        }
+        RES = -lugenedb$$D
     } else {
         RES = -lsqlite3
     }

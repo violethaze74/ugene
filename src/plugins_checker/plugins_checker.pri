@@ -19,6 +19,7 @@ LIBS += $$add_sqlite_lib()
 
 DESTDIR = ../$$out_dir()
 TARGET = plugins_checker$$D
+QMAKE_PROJECT_NAME = plugins_checker
 
 !debug_and_release|build_pass {
 

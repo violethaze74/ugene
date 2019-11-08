@@ -23,6 +23,7 @@ if (contains(DEFINES, HI_EXCLUDED)) {
 
 DESTDIR = ../$$out_dir()
 TARGET = ugenecl$$D
+QMAKE_PROJECT_NAME = ugenecl
 
 !debug_and_release|build_pass {
 
