@@ -1069,6 +1069,7 @@ GUI_TEST_CLASS_DEFINITION(test_6207) {
     //Expected state: error counter contains 1 error more
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getErrors(os).size() == 1 + errorCount, QString("Workflow validation error count doesn't match. Expected error count %1, actual %2.")
                   .arg(QString::number(1 + errorCount)).arg(QString::number(GTUtilsWorkflowDesigner::getErrors(os).size())));
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6212) {
