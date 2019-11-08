@@ -29,6 +29,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
@@ -99,12 +100,6 @@ QString SaveDocumentController::SimpleFormatsInfo::getFirstExtensionByName(const
     return extensions.first();
 }
 
-#if defined(Q_OS_LINUX) | defined (Q_OS_MAC)
-const QString SaveDocumentController::HOME_DIR_IDENTIFIER = "~/";
-#else
-const QString SaveDocumentController::HOME_DIR_IDENTIFIER = "%UserProfile%/";
-#endif
-
 SaveDocumentController::SaveDocumentController(const SaveDocumentControllerConfig &config,
                                                const DocumentFormatConstraints &formatCnstr,
                                                QObject *parent)
@@ -141,12 +136,7 @@ void SaveDocumentController::addFormat(const QString &id, const QString &name, c
 }
 
 QString SaveDocumentController::getSaveFileName() const {
-    QString filePath = conf.fileNameEdit->text();
-    if (QDir::fromNativeSeparators(filePath).startsWith(HOME_DIR_IDENTIFIER, Qt::CaseInsensitive)) {
-        filePath.remove(0, HOME_DIR_IDENTIFIER.length() - 1);
-        filePath.prepend(QDir::homePath());
-    }
-    return filePath;
+    return FileAndDirectoryUtils::getAbsoluteDir(conf.fileNameEdit->text());
 }
 
 DocumentFormatId SaveDocumentController::getFormatIdToSave() const {

@@ -517,7 +517,8 @@ void VerifyPluginTask::run() {
     proc = new QProcess();
     proc->start(pluginCheckerPath, QStringList()
                 << QString("--%1=%2").arg(CMDLineRegistry::PLUGINS_ARG).arg(desc.id)
-                << "--" + CMDLineRegistry::VERIFY_ARG);
+                << "--" + CMDLineRegistry::VERIFY_ARG
+                << QString("--ini-file=\"%1\"").arg(AppContext::getSettings()->fileName()));
 
     int elapsedTime = 0;
     while(!proc->waitForFinished(1000) && elapsedTime < timeOut) {
