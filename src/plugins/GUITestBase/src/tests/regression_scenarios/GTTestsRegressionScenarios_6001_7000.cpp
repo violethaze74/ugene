@@ -1821,7 +1821,7 @@ GUI_TEST_CLASS_DEFINITION(test_6262) {
     //3. Check Input port.
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
     GTGroupBox::setChecked(os, "inputPortBox", true);
-   /* GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
     CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
     GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
     CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
@@ -1855,7 +1855,7 @@ GUI_TEST_CLASS_DEFINITION(test_6262) {
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
     GTUtilsWorkflowDesigner::click(os, element1);
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
-    */
+    
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6277) {
