@@ -22,6 +22,7 @@
 #include <QDir>
 
 #include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "FileAndDirectoryUtils.h"
 
@@ -132,13 +133,14 @@ void FileAndDirectoryUtils::dumpStringToFile(QFile *f, QString &str) {
     str.clear();
 }
 
-QString FileAndDirectoryUtils::getAbsoluteDir(const QString& filePath) {
+QString FileAndDirectoryUtils::getAbsolutePath(const QString& filePath) {
+    CHECK(!filePath.isEmpty(), filePath);
     QString result = QDir::fromNativeSeparators(filePath);
     if (result.startsWith(HOME_DIR_IDENTIFIER, Qt::CaseInsensitive)) {
         result.remove(0, HOME_DIR_IDENTIFIER.length() - 1);
         result.prepend(QDir::homePath());
     }
-    return QDir(result).absolutePath();
+    return QFileInfo(result).absoluteFilePath();
 }
 
 } // U2
