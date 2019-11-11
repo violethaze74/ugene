@@ -377,7 +377,6 @@ bool AnnotatedDNAView::eventFilter(QObject* o, QEvent* e) {
         }
         // try to restore mainSplitter state on sequence views fixed <-> expandable state transition. Usually this happens when user toggles sequence views.
         if (e->type() == QEvent::Resize) {
-            QResizeEvent* event = dynamic_cast<QResizeEvent*>(e);
             bool hasExpandableSequenceWidgetsNow = false; // expandable state: any of the sequence view widgets has unlimited height.
             foreach (const ADVSequenceWidget* w, getSequenceWidgets()){
                 if (w->maximumHeight() == QWIDGETSIZE_MAX) {

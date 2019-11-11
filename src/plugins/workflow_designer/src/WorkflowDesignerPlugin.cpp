@@ -122,16 +122,16 @@ void WorkflowDesignerPlugin::processCMDLineOptions() {
     assert(cmdlineReg != nullptr);
 
     if (cmdlineReg->hasParameter(CUSTOM_EL_WITH_SCRIPTS_DIR)) {
-        WorkflowSettings::setUserDirectory(FileAndDirectoryUtils::getAbsoluteDir(cmdlineReg->getParameterValue(CUSTOM_EL_WITH_SCRIPTS_DIR)));
+        WorkflowSettings::setUserDirectory(FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(CUSTOM_EL_WITH_SCRIPTS_DIR)));
     }
     if (cmdlineReg->hasParameter(CUSTOM_EXTERNAL_TOOL_DIR)) {
-        WorkflowSettings::setExternalToolDirectory(FileAndDirectoryUtils::getAbsoluteDir(cmdlineReg->getParameterValue(CUSTOM_EXTERNAL_TOOL_DIR)));
+        WorkflowSettings::setExternalToolDirectory(FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(CUSTOM_EXTERNAL_TOOL_DIR)));
     }
     if (cmdlineReg->hasParameter(INCLUDED_ELEMENTS_DIR)) {
-        WorkflowSettings::setIncludedElementsDirectory(FileAndDirectoryUtils::getAbsoluteDir(cmdlineReg->getParameterValue(INCLUDED_ELEMENTS_DIR)));
+        WorkflowSettings::setIncludedElementsDirectory(FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(INCLUDED_ELEMENTS_DIR)));
     }
     if (cmdlineReg->hasParameter(WORKFLOW_OUTPUT_DIR)) {
-        WorkflowSettings::setWorkflowOutputDirectory(FileAndDirectoryUtils::getAbsoluteDir(cmdlineReg->getParameterValue(WORKFLOW_OUTPUT_DIR)));
+        WorkflowSettings::setWorkflowOutputDirectory(FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(WORKFLOW_OUTPUT_DIR)));
     }
 
     bool consoleMode = !AppContext::isGUIMode(); // only in console mode we run workflows by default. Otherwise we show them

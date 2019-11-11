@@ -43,7 +43,7 @@ public:
     static QString detectFormat(const QString &url);
     static bool isFileEmpty(const QString& url);
     static void dumpStringToFile(QFile *f, QString &str); //Be aware: string will be cleared after dumping
-    static QString getAbsoluteDir(const QString& filePath);
+    static QString getAbsolutePath(const QString& filePath);
 
 
 private:
