@@ -154,13 +154,17 @@ void DNAStatMSAProfileTask::run() {
         int maxVal = s.usePercents ? 100 : s.ma->getNumRows();
         QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
 
+        // Using subset of the supported HTML features: https://doc.qt.io/qt-5/richtext-html-subset.html
         try {
+            resultText = "<!DOCTYPE html>\n<html>\n<head>\n";
+
             //setup style
-            resultText = "<STYLE TYPE=\"text/css\"><!-- \n";
-            resultText += "table.tbl   {\n border-width: 1px;\n border-style: solid;\n border-spacing: 0;\n border-collapse: collapse;\n}\n";
-            resultText += "table.tbl td{\n max-width: 200px;\n min-width: 20px;\n text-align: center;\n border-width: 1px;\n ";
-            resultText += "border-style: solid;\n padding: 0 10px;\n}\n";
-            resultText += "--></STYLE>\n";
+            resultText += "<style>\n";
+            resultText += ".tbl {border-width: 1px; border-style: solid; border-color: #777777}";
+            resultText += ".tbl td {min-width: 30px; text-align: center; padding: 0 10px; white-space:nowrap;}";
+            resultText += "</style>\n";
+
+            resultText +="</head>\n<body>\n";
 
             //header
             resultText += "<h2>" + tr("Multiple Sequence Alignment Grid Profile") + "</h2><br>\n";
@@ -171,7 +175,9 @@ void DNAStatMSAProfileTask::run() {
             resultText += "</table>\n";
             resultText += "<br><br>\n";
 
-            resultText += "<table class=tbl>";
+            // Use of -1 for the cellspacing hides cell's border and makes
+            // the border style compatible with a standard CSS 'border-collapse: collapse' mode.
+            resultText += "<table class=tbl cellspacing=-1 cellpadding=0>";
 
             //consensus numbers line
             resultText += "<tr><td></td>";
@@ -182,7 +188,7 @@ void DNAStatMSAProfileTask::run() {
                 bool nums = s.countGapsInConsensusNumbering || cs.consChar != U2Msa::GAP_CHAR;
                 posStr = nums ? QString::number(pos++) : QString("&nbsp;");
                 //            while(posStr.length() < maxLenLen) {posStr = (nums ? "0" : "&nbsp;") + posStr;}
-                resultText += "<td width=20>" + posStr + "</td>";
+                resultText += "<td>" + posStr + "</td>";
                 FileAndDirectoryUtils::dumpStringToFile(f, resultText);
             }
             resultText += "</tr>\n";
@@ -233,13 +239,14 @@ void DNAStatMSAProfileTask::run() {
 
             //legend:
             resultText += "<br><br>\n";
-            resultText += "<table><tr><td><b>" + tr("Legend:") + "&nbsp;&nbsp;</b>\n";
+            resultText += "<table cellspacing=7 cellpadding=2><tr><td><b>" + tr("Legend:") + "&nbsp;&nbsp;</b>\n";
             resultText += "<td bgcolor=" + colors[4] + ">10%</td>\n";
             resultText += "<td bgcolor=" + colors[3] + ">25%</td>\n";
             resultText += "<td bgcolor=" + colors[2] + ">50%</td>\n";
             resultText += "<td bgcolor=" + colors[1] + ">70%</td>\n";
             resultText += "<td bgcolor=" + colors[0] + ">90%</td>\n";
             resultText += "</tr></table><br>\n";
+            resultText +="</body>\n<html>\n";
         } catch (std::bad_alloc &e) {
             Q_UNUSED(e);
             verticalColumnNames.clear();
@@ -304,7 +311,6 @@ QString DNAStatMSAProfileTask::generateReport() const {
 bool DNAStatMSAProfileTask::isReportingEnabled() const {
     return !hasError() && !isCanceled() && s.outFormat != DNAStatMSAProfileOutputFormat_Show;
 }
-
 
 Task::ReportResult DNAStatMSAProfileTask::report() {
     if (hasError() || isCanceled() || s.outFormat != DNAStatMSAProfileOutputFormat_Show) {

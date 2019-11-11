@@ -27,10 +27,15 @@
 
 namespace U2 {
 
+/**
+ * A window with a simple HTML content.
+ * Note: HTML support is limited to the features supported by QTextBrowser component.
+ * https://doc.qt.io/qt-5/richtext-html-subset.html
+ */
 class U2VIEW_EXPORT WebWindow : public MWMDIWindow {
     Q_OBJECT
 public:
-    WebWindow(const QString& title, const QString& content);
+    WebWindow(const QString& title, const QString& htmlContent);
 };
 
 }//namespace
