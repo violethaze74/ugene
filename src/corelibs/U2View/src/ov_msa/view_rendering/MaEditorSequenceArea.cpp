@@ -190,8 +190,10 @@ bool MaEditorSequenceArea::isInRange(const QPoint &point) const {
 }
 
 QPoint MaEditorSequenceArea::boundWithVisibleRange(const QPoint &point) const {
-    return QPoint(qBound(0, point.x(), editor->getAlignmentLen() - 1), qBound(0, point.y(),
-                                                                              ui->getCollapseModel()->getViewRowCount() - 1));
+    return QPoint(
+            qBound(0, point.x(), editor->getAlignmentLen() - 1),
+            qBound(0, point.y(), ui->getCollapseModel()->getViewRowCount() - 1)
+    );
 }
 
 bool MaEditorSequenceArea::isVisible(const QPoint& p, bool countClipped) const {
@@ -273,47 +275,34 @@ void MaEditorSequenceArea::updateSelection() {
 
 void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHighlightSelection) {
     CHECK(!isAlignmentEmpty() || s.isEmpty(), );
-    // TODO: assert(isInRange(s));
-    exitFromEditCharacterMode();
-    if (highlightSelection != newHighlightSelection) {
-        highlightSelection = newHighlightSelection;
-        update();
+    if (s == selection && newHighlightSelection == highlightSelection) {
+        return;
     }
+    exitFromEditCharacterMode();
 
     MaEditorSelection prevSelection = selection;
-    selection = s;
+    selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(s.topLeft()),
+                                  MaEditorSequenceArea::boundWithVisibleRange(s.bottomRight()));
+    highlightSelection = newHighlightSelection;
 
-    if (!selection.isEmpty()) {
-        Q_ASSERT(isInRange(selection.topLeft()));
-        Q_ASSERT(isInRange(selection.bottomRight()));
-        selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(selection.topLeft()),
-                                      MaEditorSequenceArea::boundWithVisibleRange(selection.bottomRight()));
+    U2Region selectedRowsRegion = getSelectedRows();
+    baseSelection = MaEditorSelection(selection.topLeft().x(), selectedRowsRegion.startPos, selection.width(), selectedRowsRegion.length);
+
+    QStringList selectedRowNames;
+    for (qint64 x = selectedRowsRegion.startPos; x < selectedRowsRegion.endPos(); x++) {
+        selectedRowNames.append(editor->getMaObject()->getRow((int) x)->getName());
     }
+    emit si_selectionChanged(selectedRowNames);
+    emit si_selectionChanged(selection, prevSelection);
+    update();
 
-    int selEndPos = s.x() + s.width() - 1;
-    int ofRange = selEndPos - editor->getAlignmentLen();
-    if (ofRange >= 0) {
-        selection = MaEditorSelection(s.topLeft(), s.width() - ofRange - 1, s.height());
-    }
-
+    //TODO: the code below can be moved to the sl_updateActions().
     bool selectionExists = !selection.isNull();
     ui->getCopySelectionAction()->setEnabled(selectionExists);
     ui->getCopyFormattedSelectionAction()->setEnabled(selectionExists);
     emit si_copyFormattedChanging(selectionExists);
 
-    U2Region selectedRowsRegion = getSelectedRows();
-    baseSelection = MaEditorSelection(selection.topLeft().x(), getSelectedRows().startPos, selection.width(), selectedRowsRegion.length);
-
-    QStringList selectedRowNames;
-    for (int x = selectedRowsRegion.startPos; x < selectedRowsRegion.endPos(); x++) {
-        selectedRowNames.append(editor->getMaObject()->getRow(x)->getName());
-    }
-    emit si_selectionChanged(selectedRowNames);
-    emit si_selectionChanged(selection, prevSelection);
-    update();
     sl_updateActions();
-
-    CHECK(!selection.isNull(), );
 }
 
 void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResize) {
