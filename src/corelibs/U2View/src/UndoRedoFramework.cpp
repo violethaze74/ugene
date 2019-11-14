@@ -56,9 +56,9 @@ MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *
     checkUndoRedoEnabled();
 
     connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
-                   SLOT(sl_alignmentChanged()));
+                   SLOT(sl_updateUndoRedoState()));
     connect(maObj, SIGNAL(si_completeStateChanged(bool)), SLOT(sl_completeStateChanged(bool)));
-    connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
+    connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateUndoRedoState()));
     connect(undoAction, SIGNAL(triggered()), this, SLOT(sl_undo()));
     connect(redoAction, SIGNAL(triggered()), this, SLOT(sl_redo()));
 }
@@ -67,11 +67,7 @@ void MsaUndoRedoFramework::sl_completeStateChanged(bool _stateComplete) {
     stateComplete = _stateComplete;
 }
 
-void MsaUndoRedoFramework::sl_lockedStateChanged() {
-    checkUndoRedoEnabled();
-}
-
-void MsaUndoRedoFramework::sl_alignmentChanged() {
+void MsaUndoRedoFramework::sl_updateUndoRedoState() {
     checkUndoRedoEnabled();
 }
 

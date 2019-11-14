@@ -88,6 +88,7 @@ public:
     MaCollapseModel* getCollapseModel() const { return collapseModel; }
 
     QWidget* getHeaderWidget() const { return seqAreaHeader; }
+    MsaUndoRedoFramework* getUndoRedoFramework() { return undoFWK; }
 
 signals:
     void si_startMaChanging();

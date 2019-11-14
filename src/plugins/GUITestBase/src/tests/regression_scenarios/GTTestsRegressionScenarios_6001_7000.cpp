@@ -3603,6 +3603,19 @@ GUI_TEST_CLASS_DEFINITION(test_6620) {
     CHECK_SET_ERR(button->isChecked(), "show_hide_details_view QToolButton should bew checked");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6636) {
+    // 1. Open "test/general/_common_data/sanger/sanger_01.ab1".
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI_and_short.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Select "clipboard16" sequence. Drag and drop this sequence a bit.
+    //Expected state: "Undo" button is enabled
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 18), QPoint(19, 18));
+    GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, QPoint(9, 18), QPoint(18,18));
+
+    QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+}
 
 } // namespace GUITest_regression_scenarios
 

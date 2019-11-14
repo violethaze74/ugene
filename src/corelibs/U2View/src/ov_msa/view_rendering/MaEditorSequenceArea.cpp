@@ -45,19 +45,19 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OptionsPanel.h>
 
-#include <U2View/MSAHighlightingTabFactory.h>
-
 #include "MaEditorSequenceArea.h"
 #include "MaEditorWgt.h"
 #include "SequenceAreaRenderer.h"
+#include "UndoRedoFramework.h"
+#include "ov_msa/Highlighting/MSAHighlightingTabFactory.h"
+#include "ov_msa/Highlighting/MsaSchemesMenuBuilder.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/McaEditorWgt.h"
-#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
-#include "ov_msa/Highlighting/MsaSchemesMenuBuilder.h"
 
 namespace U2 {
 
@@ -129,6 +129,9 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
 
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
         SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
+
+    connect(this, SIGNAL(si_startMaChanging()), ui->getUndoRedoFramework(), SLOT(sl_updateUndoRedoState()));
+    connect(this, SIGNAL(si_stopMaChanging(bool)), ui->getUndoRedoFramework(), SLOT(sl_updateUndoRedoState()));
 }
 
 MaEditorSequenceArea::~MaEditorSequenceArea() {

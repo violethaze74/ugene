@@ -40,8 +40,7 @@ public:
     QAction* getRedoAction() const { return redoAction; }
 
 private slots:
-    void sl_alignmentChanged();
-    void sl_lockedStateChanged();
+    void sl_updateUndoRedoState();
     void sl_completeStateChanged(bool _stateComplete);
 
     void sl_undo();
