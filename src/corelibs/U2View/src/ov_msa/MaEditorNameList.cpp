@@ -315,7 +315,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
             } else { // shrink
                 setSelection(sel.startPos, sel.length - 1);
             }
-            scrollSelectionToView(true);
+            scrollSelectionToView(grow);
         } else {
             moveSelection(-1);
         }
@@ -336,7 +336,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
             } else { // shrink
                 setSelection(sel.startPos + 1, sel.length - 1);
             }
-            scrollSelectionToView(false);
+            scrollSelectionToView(!grow);
         } else {
             moveSelection(1);
         }
