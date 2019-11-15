@@ -25,6 +25,8 @@
 #include <U2Core/global.h>
 #include <U2Gui/MainWindow.h>
 
+class QTextBrowser;
+
 namespace U2 {
 
 /**
@@ -36,6 +38,7 @@ class U2VIEW_EXPORT WebWindow : public MWMDIWindow {
     Q_OBJECT
 public:
     WebWindow(const QString& title, const QString& htmlContent);
+    QTextBrowser* textBrowser;
 };
 
 }//namespace

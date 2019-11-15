@@ -33,9 +33,9 @@ WebWindow::WebWindow(const QString& title, const QString& htmlContent)
     layout->setMargin(0);
     setLayout(layout);
 
-    QTextBrowser *textBrowser = new QTextBrowser(this);
+    textBrowser = new QTextBrowser(this);
+    textBrowser->setOpenExternalLinks(true);
     textBrowser->setHtml(htmlContent);
-
     layout->addWidget(textBrowser);
 }
 
