@@ -84,6 +84,7 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorNameList.h>
+#include <QtWidgets/QTextBrowser>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "api/GTGraphicsItem.h"
@@ -967,9 +968,9 @@ GUI_TEST_CLASS_DEFINITION(test_1049){
 //    Expected state: the "Generate Distance matrix" dialog appeared.
 
     GTGlobals::sleep();
-//    Expeceted state: Statistics View opened, it contains two tables: full statistics and additional group statistics.
-    QWebView* v = GTUtilsMdi::activeWindow(os)->findChild<QWebView*>();
-    QString text = v->page()->currentFrame()->toHtml();
+//    Expected state: Statistics View opened, it contains two tables: full statistics and additional group statistics.
+    QTextBrowser* v = GTUtilsMdi::activeWindow(os)->findChild<QTextBrowser*>();
+    QString text = v->toHtml();
     CHECK_SET_ERR(text.contains("Group statistics of multiple alignment"), text);
 }
 
