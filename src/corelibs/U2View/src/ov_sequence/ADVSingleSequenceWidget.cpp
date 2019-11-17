@@ -33,10 +33,11 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GObjectRelationRoles.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
@@ -62,6 +63,11 @@ namespace U2 {
 #define ADV_HEADER_TOOLBAR_SPACING 6
 #define ADV_HEADER_TOP_BOTTOM_INDENT 2
 #define IMAGE_DIR   "image"
+
+const QString ADVSingleSequenceWidget::SEQUENCE_SETTINGS = "sequenceViewSettings";
+const QString ADVSingleSequenceWidget::DET_VIEW_COLLAPSED = SEQUENCE_SETTINGS + "/detViewCollapsed";
+const QString ADVSingleSequenceWidget::ZOOM_VIEW_COLLAPSED = SEQUENCE_SETTINGS + "/zoomViewState";
+const QString ADVSingleSequenceWidget::OVERVIEW_COLLAPSED = SEQUENCE_SETTINGS + "/overviewState";
 
 ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCtx, AnnotatedDNAView* ctx)
     : ADVSequenceWidget(ctx),
@@ -154,6 +160,9 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
 
     init();
     updateMinMaxHeight();
+    setDetViewCollapsed(AppContext::getSettings()->getValue(DET_VIEW_COLLAPSED, QVariant(false)).toBool());
+    setPanViewCollapsed(AppContext::getSettings()->getValue(ZOOM_VIEW_COLLAPSED, QVariant(false)).toBool());
+    setOverviewCollapsed(AppContext::getSettings()->getValue(OVERVIEW_COLLAPSED, QVariant(false)).toBool());
 }
 
 void ADVSingleSequenceWidget::init() {
@@ -175,14 +184,12 @@ void ADVSingleSequenceWidget::init() {
     addSequenceView(detView, panView);
 
     panView->setFrameView(detView);
-
     overview = new Overview(this, seqCtx);
     overview->setObjectName("overview_" + objName);
     overview->setMouseTracking(true);
     overview->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     lineViews.append(overview);
     linesLayout->addWidget(overview);
-
 
     buttonTabOrederedNames = new QList<QString>;
 
@@ -298,6 +305,9 @@ void ADVSingleSequenceWidget::setPanViewCollapsed(bool collapsed) {
     if (collapsed == panView->isHidden()) {
         return;
     }
+
+    AppContext::getSettings()->setValue(ZOOM_VIEW_COLLAPSED, QVariant(collapsed));
+
     panView->setHidden(collapsed);
     togglePanViewAction->setChecked(!collapsed);
     togglePanViewAction->setText(collapsed ? tr("Show zoom view") : tr("Hide zoom view"));
@@ -317,6 +327,9 @@ void ADVSingleSequenceWidget::setDetViewCollapsed(bool collapsed) {
     if (collapsed == detView->isHidden()) {
         return;
     }
+
+    AppContext::getSettings()->setValue(DET_VIEW_COLLAPSED, QVariant(collapsed));
+
     detView->setHidden(collapsed);
     detView->setDisabledDetViewActions(collapsed);
     toggleDetViewAction->setChecked(!collapsed);
@@ -329,6 +342,9 @@ void ADVSingleSequenceWidget::setOverviewCollapsed(bool collapsed) {
     if (collapsed == overview->isHidden()) {
         return;
     }
+
+    AppContext::getSettings()->setValue(OVERVIEW_COLLAPSED, QVariant(collapsed));
+
     overview->setHidden(collapsed);
     toggleOverviewAction->setChecked(!collapsed);
     toggleOverviewAction->setText(collapsed ? tr("Show overview") : tr("Hide overview"));

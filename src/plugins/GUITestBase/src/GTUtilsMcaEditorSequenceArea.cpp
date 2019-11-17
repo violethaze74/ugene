@@ -92,7 +92,7 @@ int GTUtilsMcaEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumbe
     QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     GT_CHECK_RESULT(activeWindow != NULL, "active mdi window is NULL", 0);
     McaEditorWgt* ui = GTUtilsMdi::activeWindow(os)->findChild<McaEditorWgt*>();
-    return ui->getRowHeightController()->getRowHeightByNumber(rowNumber);
+    return ui->getRowHeightController()->getRowHeightByViewRowIndex(rowNumber);
 }
 #undef GT_METHOD_NAME
 
@@ -109,7 +109,7 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
     GTGlobals::sleep();
 
     const QPoint positionCenter(mcaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
-        mcaSeqArea->getEditor()->getUI()->getRowHeightController()->getRowScreenRangeByNumber(globalMaPosition.y()).center());
+        mcaSeqArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
     GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
 
     GTMouseDriver::moveTo(mcaSeqArea->mapToGlobal(positionCenter));
@@ -162,7 +162,7 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus &os, QS
     int rowNum = getVisibleNames(os).indexOf(rowName);
     GT_CHECK(rowNum != -1, "sequence not found in nameList");
     QWidget* nameList = GTWidget::findWidget(os, "mca_editor_name_list");
-    int yPos = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowScreenCenterByNumber(rowNum);
+    int yPos = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNum).startPos + 7;
     if (showChromatogram) {
         yPos -= 65;
     }
@@ -179,7 +179,7 @@ bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(GUITestOpStatus &os, QStr
     GT_CHECK_RESULT(mcaEditArea != NULL, "McaEditorSequenceArea not found", false);
     int rowNum = GTUtilsMcaEditor::getReadsNames(os).indexOf(rowName);
     GT_CHECK_RESULT(rowNum != -1, "sequence not found in nameList", false);
-    int rowHeight = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowHeight(rowNum);
+    int rowHeight = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
     bool isCollapsed = rowHeight > 100;
     return isCollapsed;
 }
@@ -224,7 +224,7 @@ QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(GUITestOpStatus &os, con
     GT_CHECK_RESULT(mcaEditArea != NULL, "McaEditorSequenceArea not found", QPoint());
 
     const int posX = static_cast<int>(mcaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
-    const int posY = static_cast<int>(mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowGlobalRangeByNumber(p.y()).center());
+    const int posY = static_cast<int>(mcaEditArea->getEditor()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
     return mcaEditArea->mapToGlobal(QPoint(posX, posY));
 }
 #undef GT_METHOD_NAME

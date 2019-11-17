@@ -92,11 +92,13 @@ void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &paint
     SAFE_POINT(nameList != NULL, "MaEditorNameList is NULL", );
     U2Region selection = nameList->getSelection();
     CHECK(!selection.isEmpty(), );
-    U2Region selectionPxl = ui->getRowHeightController()->getRowsScreenRangeByNumbers(selection);
+    U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowIndexes(selection);
+    painter.save();
 
     painter.fillRect(0, selectionPxl.startPos,
                      seqAreaWgt->width(), selectionPxl.length,
                      Theme::selectionBackgroundColor());
+
     painter.restore();
 }
 
@@ -127,7 +129,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &painter, const Multi
 
     SAFE_POINT(getSeqArea() != NULL, "seqAreaWgt is NULL", -1);
     const int width = getSeqArea()->width();
-    const int seqRowHeight = editor->getUI()->getRowHeightController()->getSequenceHeight();
+    const int seqRowHeight = editor->getUI()->getRowHeightController()->getSingleRowHeight();
     if (editor->isChromVisible(rowIndex)) {
         painter.save();
         painter.translate(0, yStart + seqRowHeight);

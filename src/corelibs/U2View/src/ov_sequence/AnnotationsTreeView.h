@@ -141,8 +141,21 @@ private slots:
     void sl_itemExpanded(QTreeWidgetItem *);
 
     void sl_sortTree();
-    void sl_annotationClicked(Annotation* aad);
-    void sl_annotationDoubleClicked(Annotation* asd);
+    void sl_annotationClicked(Annotation* annotation);
+
+    /*
+     * Called when annotation activated by some external action.
+     * Makes the annotation current and adds it into selection.
+     */
+    void sl_annotationActivated(Annotation* annotation, int regionIndex);
+
+    /*
+     * Called when annotation is double clicked anywhere in the view.
+     * 'regionIndex' indicates which region was clicked.
+     * A special '-1' value is supported when region is undefined or all regions should be processed.
+     */
+    void sl_annotationDoubleClicked(Annotation *annotation, int regionIndex);
+
     void sl_clearSelectedAnnotations();
     void sl_sequenceAdded(ADVSequenceObjectContext* advContext);
     void sl_sequenceRemoved(ADVSequenceObjectContext* advContext);
@@ -178,7 +191,8 @@ private:
     QList<AVAnnotationItem *> findAnnotationItems(const AVGroupItem *gi) const;
     void removeGroupAnnotationsFromCache(const AVGroupItem *groupItem);
 
-    void onSequenceAdded(ADVSequenceObjectContext* advContext);
+    void connectSequenceObjectContext(ADVSequenceObjectContext* advContext);
+    void disconnectSequenceObjectContext(ADVSequenceObjectContext* advContext);
 
     void connectAnnotationSelection();
     void connectAnnotationGroupSelection();
@@ -193,6 +207,7 @@ private:
     void annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotations, const QList<U2Region>& selectedRegions = QList<U2Region>());
     void annotationDoubleClicked(AVAnnotationItem* item, const QList<U2Region>& selectedRegions);
     void clearSelectedNotAnnotations();
+    void emitAnnotationActivated(Annotation *annotation);
 
     AnnotationsTreeWidget* tree;
 
@@ -222,7 +237,6 @@ private:
     QIcon               removeColumnIcon;
     QTimer              sortTimer;
     QPoint              dragStartPos;
-    QMenu*              highlightAutoAnnotationsMenu;
     QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotation;
     // drag&drop related data
     bool                isDragging;

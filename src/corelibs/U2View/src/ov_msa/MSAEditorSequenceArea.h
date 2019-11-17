@@ -32,7 +32,7 @@
 
 #include "DeleteGapsDialog.h"
 #include "ExportHighlightedDialogController.h"
-#include "MSACollapsibleModel.h"
+#include "MaCollapseModel.h"
 #include "MsaEditorUserModStepController.h"
 #include "SaveSelectedSequenceFromMSADialogController.h"
 

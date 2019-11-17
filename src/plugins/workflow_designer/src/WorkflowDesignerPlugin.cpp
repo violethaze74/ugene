@@ -27,6 +27,7 @@
 #include <U2Core/CMDLineHelpProvider.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ServiceTypes.h>
@@ -121,16 +122,16 @@ void WorkflowDesignerPlugin::processCMDLineOptions() {
     assert(cmdlineReg != nullptr);
 
     if (cmdlineReg->hasParameter(CUSTOM_EL_WITH_SCRIPTS_DIR)) {
-        WorkflowSettings::setUserDirectory(cmdlineReg->getParameterValue(CUSTOM_EL_WITH_SCRIPTS_DIR));
+        WorkflowSettings::setUserDirectory(FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(CUSTOM_EL_WITH_SCRIPTS_DIR)));
     }
     if (cmdlineReg->hasParameter(CUSTOM_EXTERNAL_TOOL_DIR)) {
-        WorkflowSettings::setExternalToolDirectory(cmdlineReg->getParameterValue(CUSTOM_EXTERNAL_TOOL_DIR));
+        WorkflowSettings::setExternalToolDirectory(FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(CUSTOM_EXTERNAL_TOOL_DIR)));
     }
     if (cmdlineReg->hasParameter(INCLUDED_ELEMENTS_DIR)) {
-        WorkflowSettings::setIncludedElementsDirectory(cmdlineReg->getParameterValue(INCLUDED_ELEMENTS_DIR));
+        WorkflowSettings::setIncludedElementsDirectory(FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(INCLUDED_ELEMENTS_DIR)));
     }
     if (cmdlineReg->hasParameter(WORKFLOW_OUTPUT_DIR)) {
-        WorkflowSettings::setWorkflowOutputDirectory(cmdlineReg->getParameterValue(WORKFLOW_OUTPUT_DIR));
+        WorkflowSettings::setWorkflowOutputDirectory(FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(WORKFLOW_OUTPUT_DIR)));
     }
 
     bool consoleMode = !AppContext::isGUIMode(); // only in console mode we run workflows by default. Otherwise we show them

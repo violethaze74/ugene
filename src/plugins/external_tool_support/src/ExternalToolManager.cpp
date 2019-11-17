@@ -440,7 +440,7 @@ void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, External
 
 void ExternalToolManagerImpl::loadCustomTools() {
     LoadCustomExternalToolsTask *loadTask = new LoadCustomExternalToolsTask();
-    connect(new TaskSignalMapper(loadTask), SIGNAL(si_taskSucceeded(Task *)), SLOT(sl_customToolsLoaded(Task *)));
+    connect(new TaskSignalMapper(loadTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_customToolsLoaded(Task *)));
     AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
 }
 

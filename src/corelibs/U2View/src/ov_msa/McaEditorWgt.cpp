@@ -40,7 +40,7 @@
 #include "McaEditorStatusBar.h"
 #include "McaEditorWgt.h"
 #include "McaReferenceCharController.h"
-#include "MSACollapsibleModel.h"
+#include "MaCollapseModel.h"
 #include "MSAEditorOffsetsView.h"
 #include "helpers/McaRowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -80,8 +80,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
         itemRegions << U2Region(i, 1);
     }
 
-    collapseModel->setTrivialGroupsPolicy(MSACollapsibleItemModel::Allow);
-    collapseModel->reset(itemRegions);
+    collapseModel->update(itemRegions);
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
     bool showChromatograms = s->getValue(editor->getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool();
@@ -102,13 +101,13 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
 void McaEditorWgt::sl_alignmentChanged() {
     int size = editor->getNumSequences();
-    int collapseSize = collapseModel->getItemSize();
+    int collapseSize = collapseModel->getCollapsibleGroupCount();
     if (size > collapseSize) {
         QVector<U2Region> itemRegions;
         for (int i = 0; i < size; i++) {
             itemRegions << U2Region(i, 1);
         }
-        collapseModel->reset(itemRegions);
+        collapseModel->update(itemRegions);
         McaEditor* mcaEditor = getEditor();
         bool isButtonChecked = mcaEditor->isChromatogramButtonChecked();
         collapseModel->collapseAll(!isButtonChecked);

@@ -107,7 +107,7 @@ bool MSAEditor::onCloseEvent() {
 
 const MultipleSequenceAlignmentRow MSAEditor::getRowByLineNumber(int lineNumber) const {
     if (ui->isCollapsibleMode()) {
-        lineNumber = ui->getCollapseModel()->mapToRow(lineNumber);
+        lineNumber = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(lineNumber);
     }
     return getMaObject()->getMsaRow(lineNumber);
 }
@@ -439,11 +439,11 @@ void MSAEditor::sl_realignSomeSequences() {
     const QRect& selection = ui->getEditor()->getCurrentSelection();
     int startSeq = selection.y();
     int endSeq = selection.y() + selection.height() - 1;
-    MSACollapsibleItemModel* model = ui->getCollapseModel();
+    MaCollapseModel* model = ui->getCollapseModel();
     const MultipleAlignment& ma = ui->getEditor()->getMaObject()->getMultipleAlignment();
     QSet<qint64> rowIds;
     for (int i = startSeq; i <= endSeq; i++) {
-        rowIds.insert(ma->getRow(model->mapToRow(i))->getRowId());
+        rowIds.insert(ma->getRow(model->getMaRowIndexByViewRowIndex(i))->getRowId());
     }
     Task* realignTask = new RealignSequencesInAlignmentTask(getMaObject(), rowIds);
     TaskWatchdog::trackResourceExistence(ui->getEditor()->getMaObject(), realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));

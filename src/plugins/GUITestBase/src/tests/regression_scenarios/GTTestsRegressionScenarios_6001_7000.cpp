@@ -1069,6 +1069,7 @@ GUI_TEST_CLASS_DEFINITION(test_6207) {
     //Expected state: error counter contains 1 error more
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getErrors(os).size() == 1 + errorCount, QString("Workflow validation error count doesn't match. Expected error count %1, actual %2.")
                   .arg(QString::number(1 + errorCount)).arg(QString::number(GTUtilsWorkflowDesigner::getErrors(os).size())));
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6212) {
@@ -1820,7 +1821,7 @@ GUI_TEST_CLASS_DEFINITION(test_6262) {
     //3. Check Input port.
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't closed");
     GTGroupBox::setChecked(os, "inputPortBox", true);
-   /* GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
+    GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name");
     CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
     GTUtilsWorkflowDesigner::click(os, "Filter Annotations by Name 1");
     CHECK_SET_ERR(GTGroupBox::getChecked(os, "inputPortBox"), "Input Ports table isn't opened");
@@ -1854,7 +1855,7 @@ GUI_TEST_CLASS_DEFINITION(test_6262) {
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
     GTUtilsWorkflowDesigner::click(os, element1);
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
-    */
+    
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6277) {
@@ -2836,7 +2837,7 @@ GUI_TEST_CLASS_DEFINITION(test_6490) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_1) {
-//  1. Open �COI_SHORT_21x88.aln�.
+//  1. Open "COI_SHORT_21x88.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x70.aln");
     QAbstractButton* realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
 //         Expected result : no sequences are selected.
@@ -2864,16 +2865,16 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
-//         Open �empty2.fa�.
+//         Open "empty_mult_seq.fa".
 //         Expected result : there are no sequences in the Realignment Editor.The "Realign sequence(s) to other sequences" button is disabled.
     GTUtilsProject::closeProject(os);
-    GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "empty.fa");
+    GTFileDialog::openFile(os, testDir + "_common_data/empty_sequences/", "empty_mult_seq.fa");
     realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_2) {
-//  Open �COI_SHORT_21x88_russian_letters.msf�.
+//  Open "COI_SHORT_21x88_russian_letters.msf".
 //  Select ���� ����    ���Ɣ, ��� �� ���� ����, �����   ���� ���� ������ sequences.
 //  Expected result : "Realign sequence(s) to other sequences" button is enabled.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x88_russian_letters.msf");
@@ -2889,8 +2890,8 @@ GUI_TEST_CLASS_DEFINITION(test_6541_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_3) {
-//     Open �amino_ext.aln�.
-//     Select �FOSB_MOUSE� sequence.
+//     Open "amino_ext.aln".
+//     Select "FOSB_MOUSE" sequence.
 //     Expected result : "Realign sequence(s) to other sequences" button is enabled.
 //     Click "Realign sequence(s) to other sequences".
 //     Expected result : sequences realigned.
@@ -2982,7 +2983,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_1){
-    
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3004,7 +3005,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_1){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_2){
-    
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3026,7 +3027,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_2){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_3){
-    
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3048,14 +3049,14 @@ GUI_TEST_CLASS_DEFINITION(test_6546_3){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_4){
-    
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select a region with more than one character.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));
-    
+
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsMsaEditor::clickSequenceName(os, "Montana_montana");
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
@@ -3072,14 +3073,14 @@ GUI_TEST_CLASS_DEFINITION(test_6546_4){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_5){
-    
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select a region with more than one character.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));
-    
+
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsMsaEditor::clickSequenceName(os, "Isophya_altaica_EF540820");
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
@@ -3093,21 +3094,21 @@ GUI_TEST_CLASS_DEFINITION(test_6546_5){
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
     CHECK_SET_ERR(selection.height() == 8, QString("Expected selection height: 8, actual: %1").arg(selection.height()));
-    
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_6){
-    
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select a region with more than one character.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
-    
+
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    
+
     GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -3121,14 +3122,14 @@ GUI_TEST_CLASS_DEFINITION(test_6546_6){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_7){
-            
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select a region with more than one character.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
-    
+
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
@@ -3142,11 +3143,11 @@ GUI_TEST_CLASS_DEFINITION(test_6546_7){
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 2, QString("Expected selection y: 2, actual: %1").arg(selection.y()));
     CHECK_SET_ERR(selection.height() == 7, QString("Expected selection height: 7, actual: %1").arg(selection.height()));
-    
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_8){
-    
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3168,7 +3169,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_8){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_9){
-    
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3187,20 +3188,20 @@ GUI_TEST_CLASS_DEFINITION(test_6546_9){
     CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
     CHECK_SET_ERR(selection.height() == 8, QString("Expected selection height: 8, actual: %1").arg(selection.height()));
-    
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_10){
-    
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select a region with more than one character.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
-    
+
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    
+
     GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
@@ -3213,14 +3214,14 @@ GUI_TEST_CLASS_DEFINITION(test_6546_10){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546_11){
-            
+
     //1. Open an alignment in the Alignment Editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select a region with more than one character.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
-    
+
     GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
@@ -3232,7 +3233,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_11){
     CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 2, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
     CHECK_SET_ERR(selection.height() == 7, QString("Expected selection height: 8, actual: %1").arg(selection.height()));
-    
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6564){
@@ -3258,6 +3259,18 @@ GUI_TEST_CLASS_DEFINITION(test_6564){
     CHECK_SET_ERR(selection.width() == 14, QString("Expected selection width: 14, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 6, QString("Expected selection y: 6, actual: %1").arg(selection.y()));
     CHECK_SET_ERR(selection.height() == 2, QString("Expected selection height: 2, actual: %1").arg(selection.height()));
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6569) {
+    //1. Open the WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Find the "Grouper" element on the palette, click on it and click on the scene.
+    WorkflowProcessItem* grouperElement = GTUtilsWorkflowDesigner::addElement(os, "Grouper");
+    GTUtilsWorkflowDesigner::click(os, grouperElement);
+
+    //Expected: No crash
 
 }
 
@@ -3313,6 +3326,295 @@ GUI_TEST_CLASS_DEFINITION(test_6581) {
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(names.size() == 18, QString("Unexpected name list size, expected: 18, current: %1").arg(names.size()));
     CHECK_SET_ERR(names[17] == "F", QString("Unexpected name, expected: \"F\", current: %1").arg(names[17]));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6586) {
+    //1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "activeModalWidget is missed");
+
+            //3. Skip the first page
+            QRadioButton* rbIntegratedTool = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbIntegratedTool", dialog));
+            CHECK_SET_ERR(nullptr != rbIntegratedTool, "rbIntegratedTool not found");
+
+            GTRadioButton::click(os, rbIntegratedTool);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            QStringList addButtonNames = { "pbAddInput", "pbAdd", "pbAddOutput" };
+            QStringList dataTableNames = { "tvInput", "tvAttributes", "tvOutput" };
+            QStringList deleteButtonNames = { "pbDeleteInput", "pbDelete", "pbDeleteOutput" };
+
+            for (int i = 0; i < addButtonNames.size(); i++) {
+                //4. Add two rows and text "name"
+                QWidget* add = GTWidget::findWidget(os, addButtonNames[i], dialog);
+                CHECK_SET_ERR(nullptr != add, "Add button not found");
+
+                QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, dataTableNames[i]));
+                CHECK_SET_ERR(nullptr != table, "QTableView not found");
+
+                GTWidget::click(os, add);
+                GTWidget::click(os, add);
+
+                //Expected: focus on the table view, the first column of the second row was selected
+                CHECK_SET_ERR(table->hasFocus(), "QTableView doesn't have focus");
+
+                GTKeyboardDriver::keySequence("name");
+                QAbstractItemModel* baseModel = table->model();
+                CHECK_SET_ERR(nullptr != baseModel, "QItemSelectionModel not found");
+
+                QString expectedString = baseModel->data(baseModel->index(1, 0)).toString();
+                CHECK_SET_ERR(expectedString == "name", QString("Expected string not found, expected: name, current: %1").arg(expectedString));
+
+                QWidget* del = GTWidget::findWidget(os, deleteButtonNames[i], dialog);
+                CHECK_SET_ERR(nullptr != del, "Delete button not found");
+
+                GTWidget::click(os, del);
+                GTWidget::click(os, del);
+
+                //5. Go to the nex page and process 4 again
+                GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+                //6. 4-5 should be done 3 times in general
+            }
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+
+        }
+    };
+
+    //2. Open "Create Cmdline Based Worker Wizard"
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new Scenario));
+    QAbstractButton* createElement = GTAction::button(os, "createElementWithCommandLineTool");
+    GTWidget::click(os, createElement);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6616_1) {
+    // 1. Open "samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Click "Hide overview", "Hide zoom view" and "Hide details view"
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
+
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
+    GTGlobals::sleep();
+
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
+    GTGlobals::sleep();
+
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    GTGlobals::sleep();
+
+    // 3. Close the project and open it again
+    GTUtilsProject::closeProject(os);
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: Overiview, Details view and Zoom view are invisible
+    toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
+
+    QStringList views = { "show_hide_overview" , "show_hide_details_view", "show_hide_zoom_view", };
+    foreach(const QString& v, views) {
+        QWidget* widget = GTWidget::findWidget(os, v, toolbar);
+        CHECK_SET_ERR(widget != nullptr, QString("Cannot find %1 widget").arg(v));
+
+        QToolButton* button = qobject_cast<QToolButton*>(widget);
+        CHECK_SET_ERR(button != nullptr, QString("Cannot find %1 QToolButton").arg(v));
+        CHECK_SET_ERR(!button->isChecked(), QString("%1 QToolButton should bew unchecked").arg(v));
+
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6616_2) {
+    // 1. Open "samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Disable "Wrap sequence", "Show complementary strand"
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
+    if (wrapMode->isChecked()) {
+        GTWidget::click(os, GTAction::button(os, wrapMode));
+    }
+
+    QAction* compStrand = GTAction::findActionByText(os, "Show complementary strand");
+    CHECK_SET_ERR(compStrand != nullptr, "Cannot find \"Show complementary strand\" action");
+
+    GTWidget::click(os, GTAction::button(os, compStrand));
+
+    // 3. Choose "Translate selection" mode
+    QWidget* translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
+    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "translate_selection_radiobutton"));
+    GTWidget::click(os, translationsMenuToolbarButton);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    // 4. Close the project and open it again
+    GTUtilsProject::closeProject(os);
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: "Wrap sequence", "Show complementary strand" are disabled, all graphs are visible
+    wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(!wrapMode->isChecked(), "Wrap sequence mode should be disabled");
+
+    compStrand = GTAction::findActionByText(os, "Show complementary strand");
+    CHECK_SET_ERR(compStrand != nullptr, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(!compStrand->isChecked(), "Show complementary strand mode should be disabled");
+
+    translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
+    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translate_selection_radiobutton", PopupChecker::IsChecked));
+    GTWidget::click(os, translationsMenuToolbarButton);
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6616_3) {
+    // 1. Open "samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Choose "Set up frames manually" mode and disable the all frames
+    QWidget* translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
+    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "set_up_frames_manually_radiobutton"));
+    GTWidget::click(os, translationsMenuToolbarButton);
+    GTGlobals::sleep();
+
+    QStringList frames = { "Frame +1", "Frame +2", "Frame +3", "Frame -1", "Frame -2", "Frame -3" };
+    foreach(const QString & frame, frames) {
+        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << frame));
+    }
+    GTWidget::click(os, translationsMenuToolbarButton);
+
+    // 3. Close the project and open it again
+    GTUtilsProject::closeProject(os);
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: "Set up frames manually" mode is choosen and the all frames are disable
+    translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
+    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "set_up_frames_manually_radiobutton", PopupChecker::IsChecked));
+    GTWidget::click(os, translationsMenuToolbarButton);
+    GTGlobals::sleep();
+
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), frames));
+    GTWidget::click(os, translationsMenuToolbarButton);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6616_4) {
+    // 1. Open "samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Choose "Show all frames" mode
+    QWidget* translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
+    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
+    GTWidget::click(os, translationsMenuToolbarButton);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    // 3. Close the project and open it again
+    GTUtilsProject::closeProject(os);
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: "Show all frames" mode is choosen
+    translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
+    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "show_all_frames_radiobutton", PopupChecker::IsChecked));
+    GTWidget::click(os, translationsMenuToolbarButton);
+    GTGlobals::sleep();
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6616_5) {
+    // 1. Open "samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Click "Toggle annotation density graph"
+    QAction* destGraph = GTAction::findAction(os, "density_graph_action");
+    CHECK_SET_ERR(destGraph != nullptr, "Cannot find \"Toggle annotation density graph\" action");
+
+    GTWidget::click(os, GTAction::button(os, destGraph));
+
+    // 3. Close the project and open it again
+    GTUtilsProject::closeProject(os);
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: "Toggle annotation density graph" is turned on
+
+    destGraph = GTAction::findAction(os, "density_graph_action");
+    CHECK_SET_ERR(destGraph != nullptr, "Cannot find \"Toggle annotation density graph\" action");
+    CHECK_SET_ERR(destGraph->isChecked(), "\"Toggle annotation density graph\" is unchecked, but should be");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6619) {
+    // 1. Open "_common_data/scenarios/_regression/6619/murine2.gb".
+    GTLogTracer lt;
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6619", "murine2.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Click on the "NP 597742.2" in the Zoom view.
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970);
+
+    // 3. Click on the 3000th character in the Details view.
+    GTUtilsSequenceView::setCursor(os, 3000, true);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    //Expected: No errors
+    CHECK_SET_ERR(!lt.hasError(), "Unexpected errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6620) {
+    // 1. Open "test/general/_common_data/sanger/sanger_01.ab1".
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "sanger_01.ab1");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: Details view is visible
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_SZYD_Cas9_5B70");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_SZYD_Cas9_5B70");
+
+    QWidget* widget = GTWidget::findWidget(os, "show_hide_details_view", toolbar);
+    CHECK_SET_ERR(widget != nullptr, "Cannot find show_hide_details_view widget");
+
+    QToolButton* button = qobject_cast<QToolButton*>(widget);
+    CHECK_SET_ERR(button != nullptr, "Cannot find show_hide_details_view QToolButton");
+    CHECK_SET_ERR(button->isChecked(), "show_hide_details_view QToolButton should bew checked");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6636) {
+    // 1. Open "test/general/_common_data/sanger/COI_and_short.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI_and_short.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Select "clipboard16" sequence. Drag and drop this sequence a bit.
+    //Expected state: "Undo" button is enabled
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 18), QPoint(19, 18));
+    GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, QPoint(9, 18), QPoint(18,18));
+
+    QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
 }
 
 } // namespace GUITest_regression_scenarios

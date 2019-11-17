@@ -32,7 +32,7 @@ class McaRowHeightController : public RowHeightController {
 public:
     McaRowHeightController(McaEditorWgt *mcaEditorWgt);
 
-    int getRowHeight(int rowIndex) const;
+    int getRowHeightByMaIndex(int maRowIndex) const;
 };
 
 }   // namespace U2

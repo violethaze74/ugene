@@ -111,7 +111,7 @@ bool McaEditor::isChromVisible(qint64 rowId) const {
 }
 
 bool McaEditor::isChromVisible(int rowIndex) const {
-    return !ui->getCollapseModel()->isItemCollapsed(rowIndex);
+    return !ui->getCollapseModel()->isGroupWithMaRowIndexCollapsed(rowIndex);
 }
 
 bool McaEditor::isChromatogramButtonChecked() const {

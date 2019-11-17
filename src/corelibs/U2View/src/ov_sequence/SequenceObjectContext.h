@@ -75,8 +75,14 @@ public:
     void addAnnotationObject(AnnotationTableObject *obj);
     void addAutoAnnotationObject(AnnotationTableObject *obj);
     void removeAnnotationObject(AnnotationTableObject *obj);
-    void emitAnnotationSelection(Annotation* annotation);
-    void emitAnnotationSequenceSelection(Annotation* annotation);
+
+    /*
+     * Emits 'si_annotationActivated' signal that triggers 'activation' logic for the annotation.
+     * See signal docs for the details.
+     */
+    void emitAnnotationActivated(Annotation* annotation, int regionIndex);
+
+    void emitAnnotationDoubleClicked(Annotation* annotation, int regionIndex);
     void emitClearSelectedAnnotationRegions();
 
     // temporary virtual
@@ -117,8 +123,14 @@ signals:
     void si_aminoTranslationChanged();
     void si_annotationObjectAdded(AnnotationTableObject *obj);
     void si_annotationObjectRemoved(AnnotationTableObject *obj);
-    void si_annotationSelection(Annotation* annotation);
-    void si_annotationSequenceSelection(Annotation* annotation);
+
+    /*
+     * Emitted when annotation is 'activated' by some action: pressed, double clicked, etc..
+     * For the all views it means that the annotation should be brought to the view area and made 'current'.
+     */
+    void si_annotationActivated(Annotation *annotation, int regionIndex);
+
+    void si_annotationDoubleClicked(Annotation* annotation, int regionIndex);
     void si_clearSelectedAnnotationRegions();
     void si_translationRowsChanged();
 
@@ -149,6 +161,9 @@ protected:
 
     // SANGER_TODO:
     AnnotationSelection* annSelection;
+
+    static const QString MANUAL_FRAMES;
+    static const QVariantList DEFAULT_TRANSLATIONS;
 };
 
 } // namespace U2

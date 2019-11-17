@@ -23,7 +23,7 @@
 #include "DrawHelper.h"
 #include "RowHeightController.h"
 #include "ScrollController.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
@@ -50,7 +50,7 @@ U2Region DrawHelper::getVisibleRowsNumbers(int widgetHeight, bool countFirstClip
 }
 
 QList<int> DrawHelper::getVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    QVector<U2Region> groupedRowsIndexes = getGroupedVisibleRowsIndexes(widgetHeight, countFirstClippedRow, countLastClippedRow);
+    QList<U2Region> groupedRowsIndexes = getGroupedVisibleRowsIndexes(widgetHeight, countFirstClippedRow, countLastClippedRow);
     QList<int> rowsIndexes;
     foreach (const U2Region &group, groupedRowsIndexes) {
         for (qint64 rowIndex = group.startPos; rowIndex < group.endPos(); rowIndex++) {
@@ -60,12 +60,10 @@ QList<int> DrawHelper::getVisibleRowsIndexes(int widgetHeight, bool countFirstCl
     return rowsIndexes;
 }
 
-QVector<U2Region> DrawHelper::getGroupedVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
+QList<U2Region> DrawHelper::getGroupedVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
     const int firstVisibleRowNumber = scrollController->getFirstVisibleRowNumber(countFirstClippedRow);
     const int lastVisibleRowNumber = scrollController->getLastVisibleRowNumber(widgetHeight, countLastClippedRow);
-    QVector<U2Region> groupedRowsIndexes;
-    collapsibleModel->getVisibleRows(firstVisibleRowNumber, lastVisibleRowNumber, groupedRowsIndexes);
-    return groupedRowsIndexes;
+    return collapsibleModel->getGroupedMaRowIndexesWithViewRowIndexes(firstVisibleRowNumber, lastVisibleRowNumber);
 }
 
 int DrawHelper::getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase, bool countLastClippedBase) const {
@@ -82,7 +80,7 @@ QRect DrawHelper::getSelectionScreenRect(const MaEditorSelection &selection) con
     const U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(selection.getXRegion());
     CHECK(!xRange.isEmpty(), QRect());
 
-    const U2Region yRange = ui->getRowHeightController()->getRowsScreenRangeByNumbers(selection.getYRegion());
+    const U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowIndexes(selection.getYRegion());
     CHECK(!yRange.isEmpty(), QRect());
 
     return QRect(xRange.startPos, yRange.startPos, xRange.length, yRange.length);

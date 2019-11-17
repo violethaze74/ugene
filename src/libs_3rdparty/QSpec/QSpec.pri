@@ -2,7 +2,8 @@
 
 include( ../../ugene_globals.pri )
 
-TARGET = QSpec
+TARGET = QSpec$$D
+QMAKE_PROJECT_NAME = QSpec
 TEMPLATE = lib
 CONFIG += thread debug_and_release warn_off qt dll
 INCLUDEPATH += src _tmp
@@ -16,7 +17,6 @@ DESTDIR = ../../$$out_dir()
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        TARGET = QSpecd
         DEFINES += _DEBUG
         CONFIG +=console
         MOC_DIR=_tmp/moc/debug
@@ -24,7 +24,6 @@ DESTDIR = ../../$$out_dir()
     }
 
     CONFIG(release, debug|release) {
-        TARGET = QSpec
         DEFINES+=NDEBUG
         MOC_DIR=_tmp/moc/release
         OBJECTS_DIR=_tmp/obj/release

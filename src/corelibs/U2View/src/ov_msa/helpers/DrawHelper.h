@@ -28,7 +28,7 @@ namespace U2 {
 
 class MaEditorWgt;
 class MaEditorSelection;
-class MSACollapsibleItemModel;
+class MaCollapseModel;
 class ScrollController;
 
 class U2VIEW_EXPORT DrawHelper {
@@ -38,7 +38,7 @@ public:
     U2Region getVisibleBases(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
     U2Region getVisibleRowsNumbers(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
     QList<int> getVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
-    QVector<U2Region> getGroupedVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
+    QList<U2Region> getGroupedVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
 
     int getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
     int getVisibleRowsCount(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
@@ -48,7 +48,7 @@ public:
 private:
     MaEditorWgt *ui;
     ScrollController *scrollController;
-    MSACollapsibleItemModel *collapsibleModel;
+    MaCollapseModel *collapsibleModel;
 };
 
 }   // namespace U2

@@ -196,9 +196,9 @@ void MaEditor::updateReference(){
 }
 
 void MaEditor::resetCollapsibleModel() {
-    MSACollapsibleItemModel *collapsibleModel = ui->getCollapseModel();
+    MaCollapseModel *collapsibleModel = ui->getCollapseModel();
     SAFE_POINT(NULL != collapsibleModel, "NULL collapsible model!", );
-    collapsibleModel->reset();
+    collapsibleModel->clear();
 }
 
 void MaEditor::sl_zoomIn() {

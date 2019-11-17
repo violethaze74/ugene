@@ -59,6 +59,7 @@ GSequenceLineViewAnnotated::GSequenceLineViewAnnotated(QWidget* p, SequenceObjec
 
     connect(ctx, SIGNAL(si_annotationObjectAdded(AnnotationTableObject *)), SLOT(sl_onAnnotationObjectAdded(AnnotationTableObject *)));
     connect(ctx, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject *)), SLOT(sl_onAnnotationObjectRemoved(AnnotationTableObject *)));
+    connect(ctx, SIGNAL(si_annotationActivated(Annotation*, int)), SLOT(sl_onAnnotationActivated(Annotation*, int)));
 
     connect(AppContext::getAnnotationsSettingsRegistry(), SIGNAL(si_annotationSettingsChanged(const QStringList &)),
         SLOT(sl_onAnnotationSettingsChanged(const QStringList &)));
@@ -123,20 +124,19 @@ Task::ReportResult ClearAnnotationsTask::report() {
     return ReportResult_Finished;
 }
 
+void GSequenceLineViewAnnotated::sl_onAnnotationActivated(U2::Annotation *annotation, int regionIndex) {
+    const QSet<AnnotationTableObject *> aos = ctx->getAnnotationObjects(true);
+    if (aos.contains(annotation->getGObject())) {
+        ensureVisible(annotation, regionIndex);
+    }
+}
+
 void GSequenceLineViewAnnotated::sl_onAnnotationSelectionChanged(AnnotationSelection *as, const QList<Annotation *> &_added, const QList<Annotation *> &_removed) {
     const QSet<AnnotationTableObject *> aos = ctx->getAnnotationObjects(true);
 
     bool changed = false;
     const QList<Annotation *> added = ctx->selectRelatedAnnotations(_added);
     const QList<Annotation *> removed = ctx->selectRelatedAnnotations(_removed);
-
-    if (1 == added.size()) {
-        Annotation *a = added.first();
-        if (aos.contains(a->getGObject())) {
-            ensureVisible(a, -1);
-            changed = true;
-        }
-    }
 
     if (!changed) {
         foreach (Annotation *a, added) {
@@ -215,6 +215,7 @@ QList<Annotation*> GSequenceLineViewAnnotated::findAnnotationsByCoord(const QPoi
 
 void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
     setFocus();
+    const QPoint renderAreaPoint = toRenderAreaPoint(me->pos());
     const QPoint p = toRenderAreaPoint(me->pos());
     const Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     const bool singleBaseSelectionMode = km.testFlag(Qt::AltModifier);
@@ -222,21 +223,20 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
     if (renderArea->rect().contains(p) && me->button() == Qt::LeftButton && !singleBaseSelectionMode) {
         const Qt::KeyboardModifiers km = me->modifiers();
         const bool controlOrShiftPressed = km.testFlag(Qt::ControlModifier) || km.testFlag(Qt::ShiftModifier);
-        QList<Annotation*> selected = findAnnotationsByCoord(p);
-        annotationEvent = !selected.isEmpty();
+        QList<Annotation*> annotations = findAnnotationsByCoord(p);
+        annotationEvent = !annotations.isEmpty();
         if ((!controlOrShiftPressed || !annotationEvent) && cursor().shape() == Qt::ArrowCursor) {
             ctx->getAnnotationsSelection()->clear();
             ctx->getSequenceSelection()->clear();
             ctx->emitClearSelectedAnnotationRegions();
         }
         if (annotationEvent && cursor().shape() == Qt::ArrowCursor) {
-            Annotation *asd = selected.first();
-            if (selected.size() > 1) {
+            Annotation *annotation = annotations.first();
+            if (annotations.size() > 1) {
                 AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
                 QMenu popup;
-                foreach (const Annotation* as, selected) {
+                foreach (const Annotation* as, annotations) {
                     const SharedAnnotationData &aData = as->getData();
-                    SAFE_POINT(as->getRegions().size() == 1, "Invalid selection: only one region is possible!",);
                     const U2Region r = as->getRegions().first();
                     const QString text = aData->name + QString(" [%1, %2]").arg(r.startPos + 1).arg(r.endPos());
                     AnnotationSettings *asettings = asr->getAnnotationSettings(aData);
@@ -245,14 +245,26 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
                 }
                 QAction *a = popup.exec(QCursor::pos());
                 if (NULL == a) {
-                    asd = NULL;
+                    annotation = NULL;
                 } else {
                     int idx = popup.actions().indexOf(a);
-                    asd = selected[idx];
+                    annotation = annotations[idx];
                 }
             }
-            if (NULL != asd) {
-                ctx->emitAnnotationSelection(asd);
+            if (NULL != annotation) {
+                QVector<U2Region> annotationRegions = annotation->getRegions();
+                bool processAllRegions = U1AnnotationUtils::isAnnotationAroundJunctionPoint(annotation, seqLen);
+                if (processAllRegions) {
+                    ctx->emitAnnotationActivated(annotation, -1);
+                } else {
+                    int mousePressPos = renderArea->coordToPos(renderAreaPoint);
+                    for (int i = 0; i < annotationRegions.size(); i++) {
+                        const U2Region &region = annotationRegions[i];
+                        if (region.contains(mousePressPos)) {
+                            ctx->emitAnnotationActivated(annotation, i);
+                        }
+                    }
+                }
             }
         }
     }
@@ -270,15 +282,21 @@ void GSequenceLineViewAnnotated::mouseDoubleClickEvent(QMouseEvent* me) {
         GSequenceLineView::mouseDoubleClickEvent(me);
         return;
     }
-    Annotation *asd = selection.first();
-    ctx->emitAnnotationSequenceSelection(asd);
-    const QVector<U2Region> selectionRegions = asd->getRegions();
-    if (selectionRegions.size() > 1 && !U1AnnotationUtils::isAnnotationAroundJunctionPoint(asd, seqLen)) {
-        // Set sequence selection to the clicked region only.
-        foreach(const U2Region &region, selectionRegions) {
+    Annotation *annotation = selection.first();
+    // Using any of modifiers (compatibility with older UGENE behavior).
+    bool expandSelection = me->modifiers() == Qt::ControlModifier || me->modifiers() == Qt::ShiftModifier;
+    if (!expandSelection) {
+        ctx->emitClearSelectedAnnotationRegions();
+    }
+    const QVector<U2Region> annotationRegions = annotation->getRegions();
+    bool processAllRegions = U1AnnotationUtils::isAnnotationAroundJunctionPoint(annotation, seqLen);
+    if (processAllRegions) {
+        ctx->emitAnnotationDoubleClicked(annotation, -1);
+    } else {
+        for (int i = 0; i < annotationRegions.size(); i++) {
+            const U2Region &region = annotationRegions[i];
             if (region.contains(lastPressPos)) {
-                ctx->getSequenceSelection()->setRegion(region);
-                break;
+                ctx->emitAnnotationDoubleClicked(annotation, i);
             }
         }
     }

@@ -157,7 +157,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx) : ctx(_ctx), dn
     }
     const QList<ADVSequenceObjectContext*> seqContexts = ctx->getSequenceContexts();
     foreach(ADVSequenceObjectContext* context, seqContexts) {
-        onSequenceAdded(context);
+       connectSequenceObjectContext(context);
     }
     connectAnnotationSelection();
     connectAnnotationGroupSelection();
@@ -393,10 +393,14 @@ void AnnotationsTreeView::removeGroupAnnotationsFromCache(const AVGroupItem *gro
     }
 }
 
-void AnnotationsTreeView::onSequenceAdded(ADVSequenceObjectContext* advContext) {
-    connect(advContext, SIGNAL(si_annotationSelection(Annotation*)), SLOT(sl_annotationClicked(Annotation*)));
-    connect(advContext, SIGNAL(si_annotationSequenceSelection(Annotation*)), SLOT(sl_annotationDoubleClicked(Annotation*)));
+void AnnotationsTreeView::connectSequenceObjectContext(ADVSequenceObjectContext* advContext) {
+    connect(advContext, SIGNAL(si_annotationActivated(Annotation*, int)), SLOT(sl_annotationActivated(Annotation*, int)));
+    connect(advContext, SIGNAL(si_annotationDoubleClicked(Annotation*, int)), SLOT(sl_annotationDoubleClicked(Annotation*, int)));
     connect(advContext, SIGNAL(si_clearSelectedAnnotationRegions()), SLOT(sl_clearSelectedAnnotations()));
+}
+
+void AnnotationsTreeView::disconnectSequenceObjectContext(ADVSequenceObjectContext* advContext) {
+    advContext->disconnect(this);
 }
 
 void AnnotationsTreeView::connectAnnotationSelection() {
@@ -412,31 +416,38 @@ void AnnotationsTreeView::connectAnnotationGroupSelection() {
 }
 
 void AnnotationsTreeView::sl_onItemSelectionChanged() {
-    AnnotationSelection* as = ctx->getAnnotationsSelection();
-    as->disconnect(this);
-    as->clear();
+    AnnotationSelection* annotationsSelection = ctx->getAnnotationsSelection();
+    QList<Annotation*> selectedAnnotationsBefore = annotationsSelection->getAnnotations();
+    annotationsSelection->disconnect(this);
+    annotationsSelection->clear();
 
-    AnnotationGroupSelection* ags = ctx->getAnnotationsGroupSelection();
-    ags->disconnect(this);
-    ags->clear();
+    AnnotationGroupSelection* annotationsGroupSelection = ctx->getAnnotationsGroupSelection();
+    annotationsGroupSelection->disconnect(this);
+    annotationsGroupSelection->clear();
 
-
-    QList<QTreeWidgetItem*> items = tree->selectedItems();
-    foreach(QTreeWidgetItem* i, items) {
+    bool annotationActivated = false;
+    QList<QTreeWidgetItem*> selectedTreeItems = tree->selectedItems();
+    foreach(QTreeWidgetItem* i, selectedTreeItems) {
         AVItem* item = static_cast<AVItem*>(i);
         if (item->type == AVItemType_Annotation) {
-            AVAnnotationItem* aItem = static_cast<AVAnnotationItem*>(item);
-            SAFE_POINT(NULL != aItem->annotation->getGObject(), "Invalid annotation table!", );
-            as->add(aItem->annotation);
+            AVAnnotationItem* annotationItem = static_cast<AVAnnotationItem*>(item);
+            Annotation* annotation = annotationItem->annotation;
+            SAFE_POINT(NULL != annotation->getGObject(), "Invalid annotation table!", );
+            // Activate the first new annotation from the selected tree items.
+            if (!annotationActivated && !selectedAnnotationsBefore.contains(annotation)) {
+                emitAnnotationActivated(annotation);
+                annotationActivated = true;
+            }
+            annotationsSelection->add(annotation);
         } else if (item->type == AVItemType_Group) {
-            AVGroupItem* gItem = static_cast<AVGroupItem*>(item);
-            ags->addToSelection(gItem->group);
+            AVGroupItem* groupItem = static_cast<AVGroupItem*>(item);
+            annotationsGroupSelection->addToSelection(groupItem->group);
         }
     }
 
     // make the text of Edit action correct
-    if (items.size() == 1) {
-        switch (static_cast<AVItem*>(items.last())->type) {
+    if (selectedTreeItems.size() == 1) {
+        switch (static_cast<AVItem*>(selectedTreeItems.last())->type) {
         case AVItemType_Group:
             editAction->setText(tr("Group"));
             break;
@@ -1677,6 +1688,11 @@ void AnnotationsTreeView::sl_itemExpanded(QTreeWidgetItem *qi) {
     }
 }
 
+void AnnotationsTreeView::sl_annotationActivated(Annotation* annotation, int regionIndex) {
+    Q_UNUSED(regionIndex);
+    sl_annotationClicked(annotation);
+}
+
 //TODO: refactor this method
 //UTI-155
 void AnnotationsTreeView::sl_annotationClicked(Annotation* annotation) {
@@ -1701,9 +1717,14 @@ void AnnotationsTreeView::sl_annotationClicked(Annotation* annotation) {
 //TODO: refactor this method
 //UTI-155
 //See review of UGENE-5936 for details
-void AnnotationsTreeView::sl_annotationDoubleClicked(Annotation* annotation) {
-    ctx->getAnnotationsSelection()->add(annotation);
-
+void AnnotationsTreeView::sl_annotationDoubleClicked(Annotation* annotation, int regionIndex) {
+    QList<U2Region> annotationRegions = annotation->getRegions().toList();
+    QList<U2Region> regionsToSelect;
+    if (regionIndex < 0) {
+        regionsToSelect.append(annotationRegions);
+    } else {
+        regionsToSelect.append(annotationRegions[regionIndex]);
+    }
     QList<AVAnnotationItem*> annotationItems = findAnnotationItems(annotation);
     foreach(AVAnnotationItem* item, annotationItems) {
         expandItemRecursevly(item->parent());
@@ -1711,7 +1732,7 @@ void AnnotationsTreeView::sl_annotationDoubleClicked(Annotation* annotation) {
             SignalBlocker blocker(tree);
             item->setSelected(true);
         }
-        annotationDoubleClicked(item, annotation->getRegions().toList());
+        annotationDoubleClicked(item, regionsToSelect);
     }
 }
 
@@ -1750,13 +1771,11 @@ void AnnotationsTreeView::sl_clearSelectedAnnotations() {
 }
 
 void AnnotationsTreeView::sl_sequenceAdded(ADVSequenceObjectContext* advContext) {
-    onSequenceAdded(advContext);
+    connectSequenceObjectContext(advContext);
 }
 
 void AnnotationsTreeView::sl_sequenceRemoved(ADVSequenceObjectContext* advContext) {
-    disconnect(advContext, SIGNAL(si_annotationSelection(Annotation*)), this, SLOT(sl_annotationClicked(Annotation*)));
-    disconnect(advContext, SIGNAL(si_annotationSequenceSelection(Annotation*)), this, SLOT(sl_annotationDoubleClicked(Annotation*)));
-    disconnect(advContext, SIGNAL(si_clearSelectedAnnotationRegions()), this, SLOT(sl_clearSelectedAnnotations()));
+    disconnectSequenceObjectContext(advContext);
 }
 
 //TODO: refactoring of annotationClicked and annotationDoubleClicked methods.
@@ -1765,6 +1784,7 @@ void AnnotationsTreeView::sl_sequenceRemoved(ADVSequenceObjectContext* advContex
 void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotations, const QList<U2Region>& selectedRegions) {
     ADVSequenceObjectContext* seqObjCtx = ctx->getSequenceContext(item->getAnnotationTableObject());
     SAFE_POINT(seqObjCtx != NULL, "ADVSequenceObjectContext is NULL", );
+    emitAnnotationActivated(item->annotation);
 
     DNASequenceSelection* sequenceSelection = seqObjCtx->getSequenceSelection();
     SAFE_POINT(sequenceSelection != NULL, "DNASequenceSelection is NULL", );
@@ -1813,6 +1833,7 @@ void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const 
 
     ADVSequenceObjectContext* seqObjCtx = ctx->getSequenceContext(item->getAnnotationTableObject());
     SAFE_POINT(seqObjCtx != NULL, "ADVSequenceObjectContext is NULL", );
+    emitAnnotationActivated(item->annotation);
 
     DNASequenceSelection* sequenceSelection = seqObjCtx->getSequenceSelection();
     SAFE_POINT(sequenceSelection != NULL, "DNASequenceSelection is NULL", );
@@ -1836,6 +1857,13 @@ void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const 
     foreach(const U2Region& reg, regionsToSelect) {
         sequenceSelection->addRegion(reg);
     }
+}
+
+void AnnotationsTreeView::emitAnnotationActivated(Annotation *annotation) {
+    ADVSequenceObjectContext *seqObjCtx = ctx->getSequenceContext(annotation->getGObject());
+    disconnectSequenceObjectContext(seqObjCtx);
+    seqObjCtx->emitAnnotationActivated(annotation, -1);
+    connectSequenceObjectContext(seqObjCtx);
 }
 
 void AnnotationsTreeView::clearSelectedNotAnnotations() {

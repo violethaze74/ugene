@@ -207,6 +207,11 @@ private:
 
     PanView::ZoomUseObject zoomUseObject;
 
+    static const QString SEQUENCE_SETTINGS;
+    static const QString DET_VIEW_COLLAPSED;
+    static const QString ZOOM_VIEW_COLLAPSED;
+    static const QString OVERVIEW_COLLAPSED;
+
     friend class ADVSingleSequenceHeaderWidget;
 };
 

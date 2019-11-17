@@ -43,11 +43,14 @@ public:
     static QString detectFormat(const QString &url);
     static bool isFileEmpty(const QString& url);
     static void dumpStringToFile(QFile *f, QString &str); //Be aware: string will be cleared after dumping
+    static QString getAbsolutePath(const QString& filePath);
+
 
 private:
     static QString getFormatId(const FormatDetectionResult &r);
 
-    static int minLengthToWrite;
+    static int MIN_LENGTH_TO_WRITE;
+    static const QString HOME_DIR_IDENTIFIER;
 };
 
 } // U2

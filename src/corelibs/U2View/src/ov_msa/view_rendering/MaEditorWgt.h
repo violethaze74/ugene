@@ -37,7 +37,7 @@ namespace U2 {
 class BaseWidthController;
 class DrawHelper;
 class GScrollBar;
-class MSACollapsibleItemModel;
+class MaCollapseModel;
 class MaEditorConsensusArea;
 class MSAEditorOffsetsViewController;
 class MaEditorStatusBar;
@@ -85,9 +85,10 @@ public:
     // the best is to store it in the MCA widget, of course
     bool isCollapsibleMode() const { return collapsibleMode; }
     void setCollapsibleMode(bool collapse) { collapsibleMode = collapse; }
-    MSACollapsibleItemModel* getCollapseModel() const { return collapseModel; }
+    MaCollapseModel* getCollapseModel() const { return collapseModel; }
 
     QWidget* getHeaderWidget() const { return seqAreaHeader; }
+    MsaUndoRedoFramework* getUndoRedoFramework() { return undoFWK; }
 
 signals:
     void si_startMaChanging();
@@ -130,7 +131,7 @@ protected:
 
     MsaUndoRedoFramework*           undoFWK;
 
-    MSACollapsibleItemModel*        collapseModel;
+    MaCollapseModel*        collapseModel;
     bool                            collapsibleMode;
     ScrollController *              scrollController;
     BaseWidthController *           baseWidthController;

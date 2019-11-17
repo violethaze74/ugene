@@ -120,8 +120,6 @@ private:
     SimpleFormatsInfo               formatsInfo;
     QString                         currentFormat;
     bool                            overwritingConfirmed;
-
-    static const QString HOME_DIR_IDENTIFIER;
 };
 
 }   // namespace U2
