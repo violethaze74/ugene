@@ -28,9 +28,9 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TaskWatchdog.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2IdTypes.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -60,7 +60,7 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget *parent)
 {
     setupUi(this);
 
-    hintLabel->setStyleSheet(L10N::infoHintStyleSheet());
+    hintLabel->setStyleSheet(Theme::infoHintStyleSheet());
 
     initSaveController();
 

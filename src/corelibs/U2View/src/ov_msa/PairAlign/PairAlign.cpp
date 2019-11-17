@@ -38,9 +38,9 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2Msa.h>
@@ -168,7 +168,7 @@ void PairAlign::initParameters() {
     sl_algorithmSelected(pairwiseAlignmentWidgetsSettings->algorithmName);
 
     lblMessage->setStyleSheet(
-        "color: " + L10N::errorColorLabelStr() + ";"
+        "color: " + Theme::errorColorLabelStr() + ";"
         "font: bold;"
         "padding-top: 15px;");
 

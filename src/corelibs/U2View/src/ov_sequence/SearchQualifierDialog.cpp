@@ -30,6 +30,8 @@
 
 #include <U2Gui/HelpButton.h>
 
+#include <U2View/AnnotationsTreeView.h>
+
 #include "SearchQualifierDialog.h"
 #include "ui_SearchQualifierDialog.h"
 

@@ -26,8 +26,6 @@
 
 #include <U2Core/global.h>
 
-#include <U2View/AnnotationsTreeView.h>
-
 class Ui_SearchQualifierDialog;
 
 namespace U2 {

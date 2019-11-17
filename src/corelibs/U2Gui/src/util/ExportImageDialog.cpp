@@ -25,7 +25,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -184,7 +184,7 @@ void ExportImageDialog::init() {
     ui->dpiWidget->setVisible(source == DotPlot);
 
     // set tip color
-    QString style = "QLabel { color: " + L10N::errorColorLabelStr() + "; font: bold;}";
+    QString style = "QLabel { color: " + Theme::errorColorLabelStr() + "; font: bold;}";
     ui->hintLabel->setStyleSheet(style);
     ui->hintLabel->hide();
 

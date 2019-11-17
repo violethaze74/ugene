@@ -36,10 +36,10 @@
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GenbankFeatures.h>
-#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
@@ -539,7 +539,7 @@ void FindPatternWidget::sl_onRegionOptionChanged(int index)
 
 
 void highlightBackground(QWidget* widget) {
-    widget->setStyleSheet("background-color: " + L10N::errorColorTextFieldStr() + ";");
+    widget->setStyleSheet("background-color: " + Theme::errorColorTextFieldStr() + ";");
 }
 
 
@@ -701,14 +701,14 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
                     {
                     const QString message = tr("The value is longer than the search region."
                                                " Please input a shorter value or select another region!");
-                    text = tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                    text = tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     break;
                     }
                 case PatternAlphabetDoNotMatch:
                     {
                     const QString message = tr("Warning: input value contains characters that"
                                                " do not match the active alphabet!");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::warningColorLabelHtmlStr()).arg(message);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
                     highlightBackground(textPattern);
                     break;
                     }
@@ -716,68 +716,68 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
                     {
                     const QString message = tr("Warning: file contains patterns that"
                                                " do not match the active alphabet! Those patterns were ignored ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::warningColorLabelHtmlStr()).arg(message);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
                     break;
                     }
                 case PatternsWithBadRegionInFile:
                     {
                     const QString message = tr("Warning: file contains patterns that"
                                                " longer than the search region! Those patterns were ignored. Please input a shorter value or select another region! ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::warningColorLabelHtmlStr()).arg(message);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
                     break;
                     }
                 case UseMultiplePatternsTip:
                     {
                     const QString message = tr("Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.").arg(lineBreakShortcut);
-                    text = tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::infoColorLabelHtmlStr()).arg(message);
+                    text = tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::infoColorLabelHtmlStr()).arg(message);
                     break;
                     }
                 case AnnotationNotValidName:
                     {
                     const QString message = tr("Warning: annotation name or annotation group name are invalid. ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     if (!additionalMsg.isEmpty()){
                         const QString message = tr("Reason: ");
-                        text += tr("<b><font color=%1>%2</font></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
-                        text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(additionalMsg);
+                        text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                        text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(additionalMsg);
                     }
                     const QString msg = tr(" Please input valid annotation names. ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(msg);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
                     break;
                     }
                 case AnnotationNotValidFastaParsedName:
                     {
                     const QString message = tr("Warning: annotation names are invalid. ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     if (!additionalMsg.isEmpty()){
                         const QString message = tr("Reason: ");
-                        text += tr("<b><font color=%1>%2</font></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
-                        text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(additionalMsg);
+                        text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                        text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(additionalMsg);
                     }
                     const QString msg = tr(" It will be automatically changed to acceptable name if 'Get annotations' button is pressed. ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(msg);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
                     break;
                     }
                 case NoPatternToSearch:
                     {
                     const QString message = tr("Warning: there is no pattern to search. ");
-                    text += tr("<b><font color=%1>%2</font></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                    text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     const QString msg = tr(" Please input a valid pattern or choose a file with patterns ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(msg);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
                     break;
                     }
                 case SearchRegionIncorrect:
                     {
                     const QString message = tr("Warning: there is no pattern to search. ");
-                    text += tr("<b><font color=%1>%2</font></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                    text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     const QString msg = tr(" Please input a valid pattern or choose a file with patterns ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(msg);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
                     break;
                     }
                 case PatternWrongRegExp:
                     {
                     const QString message = tr("Warning: invalid regexp. ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     highlightBackground(textPattern);
                     break;
                     }
@@ -785,7 +785,7 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
                     {
                     text.clear(); // the search is blocked at all -- any other messages are meaningless
                     const QString message = tr("Warning: current sequence is too long to search in.");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     break;
                     }
                 default:

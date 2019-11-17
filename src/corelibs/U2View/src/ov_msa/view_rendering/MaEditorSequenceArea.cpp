@@ -115,6 +115,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     addAction(undoAction);
     addAction(redoAction);
 
+    connect(this, SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)), SLOT(sl_completeRedraw()));
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_updateActions()), SLOT(sl_updateActions()));

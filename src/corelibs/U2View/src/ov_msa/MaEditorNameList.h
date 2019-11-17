@@ -127,7 +127,6 @@ protected:
     void drawChildSequenceItem(QPainter &painter, const QString &name, const QRect &rect,
                                         bool selected, bool focused, bool isReference);
 
-    // SANGER_TODO: drawSequenceItem should use these methods
     void drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReferece);
     virtual void drawText(QPainter& p, const QString& name, const QRect& rect, bool selected);
     void drawCollapsePrimitive(QPainter& p, bool collapsed, const QRect& rect);

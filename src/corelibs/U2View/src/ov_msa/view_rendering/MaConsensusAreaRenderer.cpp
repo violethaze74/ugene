@@ -23,6 +23,7 @@
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/Theme.h>
 
 #include <U2Gui/GraphUtils.h>
 
@@ -228,8 +229,7 @@ void MaConsensusAreaRenderer::drawConsensusChar(QPainter &painter, const Consens
 
     QColor color;
     if (charData.isSelected) {
-        color = Qt::lightGray;
-        color = color.lighter(115);
+        color = Theme::selectionBackgroundColor();
     }
 
     if (settings.highlightMismatches && charData.isMismatch) {
