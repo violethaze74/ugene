@@ -229,7 +229,8 @@ void MaConsensusAreaRenderer::drawConsensusChar(QPainter &painter, const Consens
 
     QColor color;
     if (charData.isSelected) {
-        color = Theme::selectionBackgroundColor();
+        color = Qt::lightGray;
+        color = color.lighter(115);
     }
 
     if (settings.highlightMismatches && charData.isMismatch) {
