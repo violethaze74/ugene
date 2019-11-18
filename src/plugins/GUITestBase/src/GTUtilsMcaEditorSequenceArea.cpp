@@ -159,10 +159,12 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus &os, QS
     McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
     GT_CHECK(mcaEditArea != NULL, "McaEditorSequenceArea not found");
 
-    int rowNum = getVisibleNames(os).indexOf(rowName);
-    GT_CHECK(rowNum != -1, "sequence not found in nameList");
+    int viewRowIndex = getVisibleNames(os).indexOf(rowName);
+    GT_CHECK(viewRowIndex != -1, "sequence not found in nameList");
     QWidget* nameList = GTWidget::findWidget(os, "mca_editor_name_list");
-    int yPos = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNum).startPos + 7;
+    RowHeightController *rowHeightController = mcaEditArea->getEditor()->getUI()->getRowHeightController();
+    int yPos = rowHeightController->getScreenYRegionByViewRowIndex(viewRowIndex).startPos
+               + rowHeightController->getRowHeightByViewRowIndex(viewRowIndex) / 2;
     if (showChromatogram) {
         yPos -= 65;
     }
