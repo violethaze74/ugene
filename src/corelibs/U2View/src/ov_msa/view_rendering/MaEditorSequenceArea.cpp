@@ -285,8 +285,12 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHigh
     exitFromEditCharacterMode();
 
     MaEditorSelection prevSelection = selection;
-    selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(s.topLeft()),
-                                  MaEditorSequenceArea::boundWithVisibleRange(s.bottomRight()));
+    if (s.isEmpty()) {
+        selection = s;
+    } else {
+        selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(s.topLeft()),
+                                      MaEditorSequenceArea::boundWithVisibleRange(s.bottomRight()));
+    }
     highlightSelection = newHighlightSelection;
 
     U2Region selectedRowsRegion = getSelectedRows();
