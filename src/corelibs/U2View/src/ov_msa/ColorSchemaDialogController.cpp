@@ -25,8 +25,8 @@
 #include <U2Algorithm/ColorSchemeUtils.h>
 
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
@@ -186,7 +186,7 @@ CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData* _newSchema, QS
 
     connect(alphabetComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_alphabetChanged(int)));
     extendedModeBox->setVisible( false );
-    validLabel->setStyleSheet( "color: " + L10N::errorColorLabelStr( ) + "; font: bold;" );
+    validLabel->setStyleSheet( "color: " + Theme::errorColorLabelStr( ) + "; font: bold;" );
     validLabel->setVisible( false );
     adjustSize( );
 

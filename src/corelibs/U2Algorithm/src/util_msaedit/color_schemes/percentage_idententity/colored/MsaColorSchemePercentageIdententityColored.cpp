@@ -30,16 +30,11 @@ const QList<char> MsaColorSchemePercentageIdententityColored::NUCLEOTIDE_LIST   
 const QList<QColor> MsaColorSchemePercentageIdententityColored::BACKGROUND_COLORS = { Qt::white, Qt::yellow, Qt::green, Qt::cyan };
 const QList<QColor> MsaColorSchemePercentageIdententityColored::FONT_COLORS       = { Qt::black, Qt::red,    Qt::black, Qt::blue };
 
-//const QString MsaColorSchemePercentageIdententityColored::LIGHT_GREEN = "#00CC99";
-//const QList<QColor> MsaColorSchemePercentageIdententityColored::WEAK_SIMILARITIES_BACKGROUND_COLORS = { QColor(LIGHT_GREEN),
-//                                                                                                        QColor(Qt::cyan),
-//                                                                                                        QColor(Qt::white),
-//                                                                                                        QColor(Qt::darkGray) };
-
 MsaColorSchemePercentageIdententityColored::MsaColorSchemePercentageIdententityColored(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
                                             : MsaColorScheme(parent, factory, maObj),
                                               alignmentChanged(false),
-                                              threshold(50.0) {
+                                              threshold(50.0)
+{
     connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), this, SLOT(sl_alignmentChanged()));
 }
 
@@ -51,15 +46,6 @@ QColor MsaColorSchemePercentageIdententityColored::getBackgroundColor(int rowNum
 
     int backgroundColorIndex = getColorIndex(columnNum, c);
     QColor backgroundColor = BACKGROUND_COLORS.value(backgroundColorIndex, QColor());
-
-    /*if (showWeakSimilarities) {
-        const int charIndex = currentColumnData.getIndexOfNucleotideWithCharacter(c);
-        SAFE_POINT(charIndex != -1, "Unexpected character", QColor());
-
-        const bool hasEqualPercentage = currentColumnData.hasEqualPercentage();
-        int colorIndex = getWeakSimilaritiesColorIndex(charIndex, hasEqualPercentage);
-        resultColor = WEAK_SIMILARITIES_BACKGROUND_COLORS.value(colorIndex, QColor());
-    }*/
 
     return backgroundColor;
 }
@@ -131,32 +117,5 @@ int MsaColorSchemePercentageIdententityColored::getColorIndex(const int columnNu
 
     return index;
 }
-
-//int MsaColorSchemePercentageIdententityColored::getWeakSimilaritiesColorIndex(const int indexOf, const bool equalPercentage) const {
-//    int colorIndex = -1;
-//    switch (indexOf) {
-//    case 0:
-//        if (equalPercentage) {
-//            colorIndex = 0;
-//        } else {
-//            colorIndex = 1;
-//        }
-//        break;
-//    case 1:
-//    case 2:
-//        colorIndex = 2;
-//        break;
-//    case 3:
-//        colorIndex = 3;
-//        break;
-//    case 4:
-//    default:
-//        colorIndex = 2;
-//        break;
-//    }
-//
-//    return colorIndex;
-//}
-
 
 }   // namespace U2

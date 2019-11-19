@@ -83,7 +83,7 @@ QRect DrawHelper::getSelectionScreenRect(const MaEditorSelection &selection) con
     const U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowIndexes(selection.getYRegion());
     CHECK(!yRange.isEmpty(), QRect());
 
-    return QRect(xRange.startPos, yRange.startPos, xRange.length - 1, yRange.length - 1);
+    return QRect(xRange.startPos, yRange.startPos, xRange.length, yRange.length);
 }
 
 }   // namespace U2

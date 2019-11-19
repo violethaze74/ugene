@@ -24,7 +24,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include <U2Core/L10n.h>
+#include <U2Core/Theme.h>
 
 #include <U2Gui/HelpButton.h>
 
@@ -38,7 +38,7 @@ StartupDialog::StartupDialog(QWidget *parent)
     setupUi(this);
     new HelpButton(this, buttonBox, "24740087");
 
-    label->setStyleSheet(L10N::infoHintStyleSheet());
+    label->setStyleSheet(Theme::infoHintStyleSheet());
 
     outDirWidget = new OutputDirectoryWidget(this, false /*don't commitOnHide*/);
     QVBoxLayout *l = new QVBoxLayout(box);

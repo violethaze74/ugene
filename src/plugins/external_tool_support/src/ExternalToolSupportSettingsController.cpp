@@ -28,6 +28,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -552,7 +553,7 @@ void ExternalToolSupportSettingsPageWidget::setDescription(ExternalTool* tool) {
 }
 
 QString ExternalToolSupportSettingsPageWidget::warn(const QString& text) const {
-    return "<span style=\"color:" + L10N::errorColorLabelStr() + "; font:bold;\">" + text + "</span>";
+    return "<span style=\"color:" + Theme::errorColorLabelStr() + "; font:bold;\">" + text + "</span>";
 }
 
 bool ExternalToolSupportSettingsPageWidget::eventFilter(QObject *watched, QEvent *event) {

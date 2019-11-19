@@ -28,9 +28,9 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -255,7 +255,7 @@ void DigestSequenceDialog::updateAvailableEnzymeWidget()
     bool empty = availableEnzymes.isEmpty();
     setUiEnabled(!empty);
     if (empty) {
-        QString style = "QLabel { color: " + L10N::infoHintColor().name() + "; font: bold; }";
+        QString style = "QLabel { color: " + Theme::infoHintColor().name() + "; font: bold; }";
         hintLabel->setStyleSheet(style);
         hintLabel->setText(HINT_MESSAGE);
     }

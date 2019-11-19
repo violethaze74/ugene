@@ -48,6 +48,8 @@ protected:
     MaEditorSequenceArea* seqAreaWgt;
 
     bool drawLeadingAndTrailingGaps;
+
+    static const int SELECTION_SATURATION_INCREASE;
 };
 
 } // namespace

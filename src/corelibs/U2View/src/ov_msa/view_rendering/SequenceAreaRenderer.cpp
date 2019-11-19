@@ -34,6 +34,12 @@
 
 namespace U2 {
 
+/*
+ * Saturation of all colors in a selected region in the alignment
+ * is increased by this value, if possible.
+ */
+const int SequenceAreaRenderer::SELECTION_SATURATION_INCREASE = 40;
+
 SequenceAreaRenderer::SequenceAreaRenderer(MaEditorWgt *ui, MaEditorSequenceArea *seqAreaWgt)
     : QObject(seqAreaWgt),
       ui(ui),
@@ -71,13 +77,11 @@ void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
 
     const QRect selectionRect = ui->getDrawHelper()->getSelectionScreenRect(selection);
 
-    QPen pen(seqAreaWgt->highlightSelection || seqAreaWgt->hasFocus()
-             ? seqAreaWgt->selectionColor
-             : Qt::gray);
+    QPen pen(seqAreaWgt->selectionColor);
     if (seqAreaWgt->maMode == MaEditorSequenceArea::ViewMode) {
         pen.setStyle(Qt::DashLine);
     }
-    pen.setWidth(seqAreaWgt->highlightSelection ? 2 : 1);
+    pen.setWidth(2);
     painter.setPen(pen);
 
     switch (seqAreaWgt->maMode) {
@@ -117,6 +121,11 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     MultipleAlignmentRow row = ma->getRow(rowIndex);
     const int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     const int baseWidth = ui->getBaseWidthController()->getBaseWidth();
+
+    MaEditorSelection selection = seqAreaWgt->getSelection();
+    U2Region selectionXRegion = selection.getXRegion();
+    U2Region selectionYRegion = selection.getYRegion();
+
     const QPen backupPen = painter.pen();
     for (int pos = region.startPos; pos <= regionEnd; pos++) {
         if (!drawLeadingAndTrailingGaps
@@ -129,7 +138,21 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
         char c = ma->charAt(rowIndex, pos);
 
         bool highlight = false;
+
         QColor backgroundColor = seqAreaWgt->getCurrentColorScheme()->getBackgroundColor(rowIndex, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
+        if (backgroundColor.isValid() &&
+            rowIndex >= selectionYRegion.startPos && rowIndex < selectionYRegion.endPos() &&
+            pos >= selectionXRegion.startPos && pos < selectionXRegion.endPos())
+        {
+            backgroundColor = backgroundColor.convertTo(QColor::Hsv);
+            int modifiedSaturation = backgroundColor.saturation() + SELECTION_SATURATION_INCREASE;
+            if (modifiedSaturation > 255) {
+                modifiedSaturation = 255;
+            }
+
+            backgroundColor.setHsv(backgroundColor.hue(), modifiedSaturation, backgroundColor.value());
+        }
+
         QColor fontColor = seqAreaWgt->getCurrentColorScheme()->getFontColor(rowIndex, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
         if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
             const char refChar = '\n';

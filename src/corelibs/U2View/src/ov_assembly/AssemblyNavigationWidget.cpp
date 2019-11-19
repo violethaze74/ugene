@@ -23,7 +23,7 @@
 #include <QVBoxLayout>
 
 #include <U2Core/FormatUtils.h>
-#include <U2Core/L10n.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -93,7 +93,7 @@ void CoveredRegionsLabel::setAdditionalText(QString prefix_, QString postfix_) {
 }
 
 void CoveredRegionsLabel::sl_updateContent() {
-    QString text = "<style>a:link { color: " + L10N::linkColorLabelStr() + " }</style>";
+    QString text = "<style>a:link { color: " + Theme::linkColorLabelStr() + " }</style>";
     text += prefix;
 
     QList<CoveredRegion> coveredRegions = browser->getCoveredRegions();

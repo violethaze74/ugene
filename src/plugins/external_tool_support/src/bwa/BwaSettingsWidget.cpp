@@ -22,9 +22,9 @@
 #include <QFile>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/AppResources.h>
-#include <U2Core/L10n.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/Theme.h>
 
 #include "BwaSettingsWidget.h"
 #include "BwaSupport.h"
@@ -100,7 +100,7 @@ void BwaIndexAlgorithmWarningReporter::setReportLabelStyle( ) {
     using namespace U2;
     SAFE_POINT( NULL != reportLabel, "Trying to access null pointer data", );
     QString infoLabelStyleSheet = reportLabel->styleSheet( );
-    setStylesheetAttributeValue( STYLE_SHEET_COLOR_ATTRIBUTE, U2::L10N::errorColorLabelStr( ),
+    setStylesheetAttributeValue( STYLE_SHEET_COLOR_ATTRIBUTE, U2::Theme::errorColorLabelStr( ),
         infoLabelStyleSheet );
     setStylesheetAttributeValue( STYLE_SHEET_FONT_WEIGHT_ATTRIBUTE, INFO_MESSAGE_FONT,
         infoLabelStyleSheet );
@@ -223,7 +223,7 @@ BwaSwSettingsWidget::BwaSwSettingsWidget(QWidget *parent):
     numThreadsSpinbox->setMaximum(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
     numThreadsSpinbox->setValue(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
-    label->setStyleSheet(QString("color: %1; font: bold;").arg(L10N::successColorLabelStr()));
+    label->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::successColorLabelStr()));
     label->setText(tr("NOTE: bwa-sw performs alignment of long sequencing reads (Sanger or 454). It accepts reads only in FASTA or FASTQ format. "
         "Reads should be compiled into single file."));
 
@@ -291,7 +291,7 @@ BwaMemSettingsWidget::BwaMemSettingsWidget(QWidget *parent):
     numThreadsSpinbox->setMaximum(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
     numThreadsSpinbox->setValue(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
-    label->setStyleSheet(QString("color: %1; font: bold;").arg(L10N::successColorLabelStr()));
+    label->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::successColorLabelStr()));
     label->setText(tr("NOTE: bwa mem accepts reads only in FASTA or FASTQ format. Reads should be compiled into a single file for each mate end."));
 
     adjustSize();

@@ -28,10 +28,10 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
+#include <U2Core/Theme.h>
 #include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -68,7 +68,7 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _b
     }
     this->setObjectName("Import BAM File");
 
-    const QString warningMessageStyleSheet( "color: " + L10N::successColorLabelStr( )
+    const QString warningMessageStyleSheet( "color: " + Theme::successColorLabelStr()
         + "; font: bold;" );
     ui.indexNotAvailableLabel->setStyleSheet( warningMessageStyleSheet );
     ui.referenceWarningLabel->setStyleSheet( warningMessageStyleSheet );
