@@ -23,7 +23,6 @@
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/Theme.h>
 
 #include <U2Gui/GraphUtils.h>
 
