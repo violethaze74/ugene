@@ -77,7 +77,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     removeSequenceAction = new QAction(tr("Remove sequence(s)"), this);
     removeSequenceAction->setObjectName("Remove sequence");
     removeSequenceAction->setShortcutContext(Qt::WidgetShortcut);
-    connect(removeSequenceAction, SIGNAL(triggered()), SLOT(sl_removeSequence()));
+    connect(removeSequenceAction, SIGNAL(triggered()), SLOT(sl_removeSelectedRows()));
     addAction(removeSequenceAction);
 
     if (editor->getMaObject()) {
@@ -246,13 +246,17 @@ void MaEditorNameList::sl_alignmentChanged(const MultipleAlignment&, const MaMod
     }
 }
 
-void MaEditorNameList::sl_removeSequence() {
+void MaEditorNameList::sl_removeSelectedRows() {
     GRUNTIME_NAMED_COUNTER(cvat, tvar, "Remove row", editor->getFactoryId());
-    U2Region sel = getSelection();
-    CHECK(!sel.isEmpty(), );
+    U2Region viewSelection = getSelection();
+    CHECK(!viewSelection.isEmpty(), );
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
-    CHECK(maObj->getNumRows() > sel.length, );
+    CHECK(!maObj->isStateLocked(), );
+
+    // Selection translated to MSA coordinates (with collapsed details removed).
+    U2Region msaSelection = ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(viewSelection);
+    CHECK(maObj->getNumRows() > msaSelection.length, );
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
@@ -261,25 +265,12 @@ void MaEditorNameList::sl_removeSequence() {
 
     setSelection(0, 0);
 
-    U2Region mappedSelection = ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(sel);
-    maObj->removeRegion(0, mappedSelection.startPos, maObj->getLength(), mappedSelection.length, true);
+    maObj->removeRegion(0, msaSelection.startPos, maObj->getLength(), msaSelection.length, true);
 
     qint64 numRows = editor->getUI()->getCollapseModel()->getViewRowCount();
-    if (sel.startPos < numRows) {
-        int count = qMin(sel.length, numRows - sel.startPos);
-        setSelection(sel.startPos, count);
-    }
-}
-
-void MaEditorNameList::sl_selectReferenceSequence() {
-    MultipleAlignmentObject* maObj = editor->getMaObject();
-    if (maObj) {
-        int n = getSelectedRow();
-        if (n < 0) {
-            return;
-        }
-        assert(!maObj->isStateLocked());
-        editor->setReference(maObj->getRow(n)->getRowId());
+    if (viewSelection.startPos < numRows) {
+        int count = qMin(viewSelection.length, numRows - viewSelection.startPos);
+        setSelection(viewSelection.startPos, count);
     }
 }
 
@@ -366,7 +357,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         break;
     case Qt::Key_Delete:
         if (removeSequenceAction->isEnabled()) {
-            sl_removeSequence();
+            sl_removeSelectedRows();
         }
         break;
     }

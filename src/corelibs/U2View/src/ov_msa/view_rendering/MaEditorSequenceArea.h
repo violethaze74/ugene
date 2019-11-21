@@ -34,7 +34,6 @@
 #include <U2Gui/SelectionModificationHelper.h>
 
 #include "MaEditorSelection.h"
-#include "../MaEditor.h"
 #include "../MsaEditorUserModStepController.h"
 
 class QRubberBand;

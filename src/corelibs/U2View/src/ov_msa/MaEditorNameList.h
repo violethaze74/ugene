@@ -55,6 +55,10 @@ public:
     QAction *getEditSequenceNameAction() const;
     QAction *getRemoveSequenceAction() const;
 
+
+public slots:
+    void sl_removeSelectedRows();
+
 protected slots:
     void sl_completeRedraw();
 
@@ -62,8 +66,6 @@ private slots:
     void sl_copyCurrentSequence();
     void sl_editSequenceName();
     void sl_lockedStateChanged();
-    void sl_removeSequence();
-    void sl_selectReferenceSequence();
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
     void sl_vScrollBarActionPerformed();
     void sl_completeUpdate();

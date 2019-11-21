@@ -53,6 +53,7 @@
 #include "ov_msa/Highlighting/MsaSchemesMenuBuilder.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/MaEditorNameList.h"
 #include "ov_msa/McaEditorWgt.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
@@ -360,64 +361,67 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     CHECK(getEditor() != NULL, );
     CHECK(!selection.isNull(), );
 
-    assert(isInRange(selection.topLeft()));
-    // Selection width may be equal to 0 (for example in MCA) -> this means that the whole row is selected.
-    int effectiveWidth = selection.x() == 0 && selection.width() == 0 ? editor->getAlignmentLen() : selection.width();
-    assert(isInRange(QPoint(selection.x() + effectiveWidth - 1, selection.y() + selection.height() - 1)));
     MultipleAlignmentObject* maObj = getEditor()->getMaObject();
-    if (maObj == NULL || maObj->isStateLocked()) {
-        return;
-    }
+    CHECK (!maObj->isStateLocked(),);
 
-    bool wholeRowRemoved = effectiveWidth == editor->getAlignmentLen();
-    if (wholeRowRemoved && maObj->getNumRows() == selection.height()) { // do not allow to remove all data and make MA empty.
-        return;
-    }
-
-    const QRect areaBeforeSelection(0, 0, selection.x(), selection.height());
-    const QRect areaAfterSelection(selection.x() + selection.width(), selection.y(),
-        maObj->getLength() - selection.x() - selection.width(), selection.height());
-    if (maObj->isRegionEmpty(areaBeforeSelection.x(), areaBeforeSelection.y(), areaBeforeSelection.width(), areaBeforeSelection.height())
-        && maObj->isRegionEmpty(areaAfterSelection.x(), areaAfterSelection.y(), areaAfterSelection.width(), areaAfterSelection.height())
-        && selection.height() == maObj->getNumRows())
-    {
-        return;
-    }
+    Q_ASSERT(isInRange(selection.topLeft()));
 
     // if this method was invoked during a region shifting
     // then shifting should be canceled
     cancelShiftTracking();
+
+    // Selection width may be equal to 0 (for example in MCA) -> this means that the whole row is selected.
+    int effectiveWidth = selection.x() == 0 && selection.width() == 0 ? editor->getAlignmentLen() : selection.width();
+    bool wholeRowRemoved = effectiveWidth == editor->getAlignmentLen();
+
+    if (wholeRowRemoved) {
+        // Reuse code of the name list.
+        ui->getEditorNameList()->sl_removeSelectedRows();
+        return;
+    }
+
+    Q_ASSERT(isInRange(QPoint(selection.x() + effectiveWidth - 1, selection.y() + selection.height() - 1)));
+
+    // Save a copy of the selection before alignment modification: it will be used to restore selection later.
+    const MaEditorSelection viewSelection = selection;
+    // Convert selection view to MSA coordinates (handle collapsing).
+    U2Region selectedMaRows = getSelectedRows();
+    const MaEditorSelection msaSelection(viewSelection.x(), selectedMaRows.startPos, viewSelection.width(), selectedMaRows.length);
+
+    // TODO: the logic below that computes final 'empty' selection state is incomplete!
+    const QRect areaBeforeSelection(0, 0, msaSelection.x(), msaSelection.height());
+    const QRect areaAfterSelection(msaSelection.x() + msaSelection.width(), msaSelection.y(),
+        maObj->getLength() - msaSelection.x() - msaSelection.width(), msaSelection.height());
+    if (maObj->isRegionEmpty(areaBeforeSelection.x(), areaBeforeSelection.y(), areaBeforeSelection.width(), areaBeforeSelection.height())
+        && maObj->isRegionEmpty(areaAfterSelection.x(), areaAfterSelection.y(), areaAfterSelection.width(), areaAfterSelection.height())
+        && msaSelection.height() == maObj->getNumRows())
+    {
+        return;
+    }
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    U2Region selectedRows = getSelectedRows();
-
-    // Save a copy of the selection before alignment modification: it will be used to restore selection later.
-    const MaEditorSelection selectionBefore = selection;
     // Cancel selection, so it will never be larger than the alignment after region removal.
     sl_cancelSelection();
 
-    const bool isGap = maObj->getRow(selectionBefore.topLeft().y())->isGap(selectionBefore.topLeft().x());
-    maObj->removeRegion(selectionBefore.x(), selectedRows.startPos, effectiveWidth, selectedRows.length, true);
+    const bool isGap = maObj->getRow(msaSelection.y())->isGap(msaSelection.x());
+    maObj->removeRegion(msaSelection.x(), msaSelection.y(), effectiveWidth, msaSelection.height(), true);
     GRUNTIME_NAMED_COUNTER(cvar, tvar, "Delete current selection", editor->getFactoryId());
 
-    if (selectionBefore.height() == 1 && selectionBefore.width() == 1) {
+    if (viewSelection.height() == 1 && viewSelection.width() == 1) {
         GRUNTIME_NAMED_CONDITION_COUNTER(cvar2, tvar2, isGap, "Remove gap", editor->getFactoryId());
         GRUNTIME_NAMED_CONDITION_COUNTER(cvar3, tvar3, !isGap, "Remove character", editor->getFactoryId());
 
-        if (isInRange(selectionBefore.topLeft())) {
-            setSelection(selectionBefore); // restore selection on the top-left position
+        if (isInRange(viewSelection.topLeft())) {
+            setSelection(viewSelection); // restore selection on the top-left position
             return;
         }
     }
-    if (wholeRowRemoved) { // Restore selection: select previous row.
-        int newSelectionY = qBound(0, selectionBefore.y(), getNumDisplayableSequences() - 1);
-        setSelection(MaEditorSelection(selectionBefore.x(), newSelectionY, selectionBefore.width(), 1));
-    } else if (isInRange(selectionBefore.topLeft())) { // select 1 character on the top-left position of the old selection
-        setSelection(MaEditorSelection(selectionBefore.x(), selectionBefore.y(), 1, 1));
+    if (isInRange(viewSelection.topLeft())) { // select 1 character on the top-left position of the old selection
+        setSelection(MaEditorSelection(viewSelection.x(), viewSelection.y(), 1, 1));
     }
 }
 

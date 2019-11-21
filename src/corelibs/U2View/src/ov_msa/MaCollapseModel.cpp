@@ -147,31 +147,19 @@ U2Region MaCollapseModel::getMaRowIndexRegionByViewRowIndexRegion(const U2Region
         return viewRowIndexRegion;
     }
 
-    int startPos = viewRowIndexRegion.startPos;
-    int endPos = startPos + viewRowIndexRegion.length - 1;
+    int viewStartIndex = viewRowIndexRegion.startPos;
+    int viewEndIndex = viewStartIndex + (int) viewRowIndexRegion.length - 1;
 
-    int startSeq = 0;
-    int endSeq = 0;
+    int msaStartIndex = getMaRowIndexByViewRowIndex(viewStartIndex);
+    int msaEndIndex = getMaRowIndexByViewRowIndex(viewEndIndex) + 1;
 
-    int startItemIdx = getCollapsibleGroupIndexByViewRowIndex(startPos);
-
-    if (startItemIdx >= 0) {
-        const MaCollapsibleGroup& startItem = getCollapsibleGroup(startItemIdx);
-        startSeq = startItem.maRowIndex;
-    } else {
-        startSeq = getMaRowIndexByViewRowIndex(startPos);
+    // If the end position is a header of the collapsing group then use the whole group.
+    int endGroupIndex = getCollapsibleGroupIndexByViewRowIndex(viewEndIndex);
+    if (endGroupIndex >= 0) {
+        const MaCollapsibleGroup& group = getCollapsibleGroup(endGroupIndex);
+        msaEndIndex = group.maRowIndex + group.numRows;
     }
-
-    int endItemIdx = getCollapsibleGroupIndexByViewRowIndex(endPos);
-
-    if (endItemIdx >= 0) {
-        const MaCollapsibleGroup& endItem = getCollapsibleGroup(endItemIdx);
-        endSeq = endItem.maRowIndex + endItem.numRows;
-    } else {
-        endSeq = getMaRowIndexByViewRowIndex(endPos) + 1;
-    }
-
-    return U2Region(startSeq, endSeq - startSeq);
+    return U2Region(msaStartIndex, msaEndIndex - msaStartIndex);
 }
 
 QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region &viewRowIndexesRegion) {
