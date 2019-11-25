@@ -50,9 +50,6 @@ public:
     virtual void setupMDIToolbar(QToolBar* tb);
     virtual void setupViewMenu(QMenu* n);
 
-    void killAllChildForms();
-    void reporterFormClosedOutside(){reporterForm=NULL;}
-
 private slots:
 
     void sl_treeCustomContextMenuRequested(const QPoint & pos);
@@ -127,7 +124,6 @@ private:
     QAction* saveSelectedSuitesAction;
 
     TestRunnerTask* task;
-    TestViewReporter* reporterForm;
     QTime startRunTime;
     QTime endRunTime;
     int time;

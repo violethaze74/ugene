@@ -130,9 +130,6 @@ void TestRunnerPlugin::sl_startTestRunner() {
 
     TestViewController *view = new TestViewController(srv,true);
     AppContext::getMainWindow()->getMDIManager()->addMDIWindow(view);
-    //AppContext::getMainWindow()->getMDIManager()->activateWindow(view);
-    //view->addTestSuite(suite);
-    //view->reporterForm = new TestViewReporter(view,view->tree,view->time);
     view->sl_runAllSuitesAction();
 }
 
@@ -195,7 +192,6 @@ void TestRunnerService::serviceStateChangedCallback(ServiceState oldState, bool 
 
 
         if (view!=NULL) {
-            view->killAllChildForms();
             AppContext::getMainWindow()->getMDIManager()->closeMDIWindow(view);
             assert(view == NULL);
         }
@@ -216,7 +212,6 @@ void TestRunnerService::sl_showWindow() {
 
 bool TestRunnerService::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::Close && obj == view) {
-        view->killAllChildForms();
         view = NULL;
     }
     return QObject::eventFilter(obj, event);
