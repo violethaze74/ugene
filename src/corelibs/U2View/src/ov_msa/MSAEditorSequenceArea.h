@@ -119,13 +119,7 @@ public:
 
     MSAEditor *getEditor() const;
 
-    QStringList getAvailableHighlightingSchemes() const;
-
     bool hasAminoAlphabet();
-
-private:
-    // emulating cursor mode with
-    void moveCursor(int dx, int dy);
 
 public:
     QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);

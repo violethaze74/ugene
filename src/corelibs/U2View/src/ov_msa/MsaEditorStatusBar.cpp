@@ -142,7 +142,7 @@ void MsaEditorStatusBar::sl_findNext( ) {
             if ( U2Msa::GAP_CHAR != c && MSAUtils::equalsIgnoreGaps(row, p, pat, selLength) ) {
                 // select the result now
                 MaEditorSelection sel( p, s, selLength, 1 );
-                seqArea->setSelection(sel, true);
+                seqArea->setSelection(sel);
                 seqArea->centerPos(sel.topLeft());
                 lastSearchPos = seqArea->getSelection().topLeft();
                 return;
@@ -181,7 +181,7 @@ void MsaEditorStatusBar::sl_findPrev( ) {
             {
                 // select the result now
                 MaEditorSelection sel( p, s, selectionLength, 1 );
-                seqArea->setSelection( sel, true );
+                seqArea->setSelection(sel);
                 seqArea->centerPos( sel.topLeft( ) );
                 lastSearchPos = seqArea->getSelection( ).topLeft( );
                 return;

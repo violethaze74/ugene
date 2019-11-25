@@ -29,7 +29,6 @@
 #include <QWidgetAction>
 
 #include <U2Algorithm/CreateSubalignmentTask.h>
-#include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
@@ -39,19 +38,13 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/Settings.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -62,9 +55,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
-#include <U2Formats/DocumentFormatUtils.h>
-
-#include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -84,10 +74,8 @@
 #include "MSAEditorSequenceArea.h"
 #include "Highlighting/MsaSchemesMenuBuilder.h"
 
-#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Clipboard/SubalignmentToClipboardTask.h"
 #include "helpers/ScrollController.h"
-#include "Highlighting/MSAHighlightingTabFactory.h"
 #include "view_rendering/SequenceAreaRenderer.h"
 
 namespace U2 {
@@ -206,14 +194,6 @@ MSAEditor *MSAEditorSequenceArea::getEditor() const {
     return qobject_cast<MSAEditor*>(editor);
 }
 
-QStringList MSAEditorSequenceArea::getAvailableHighlightingSchemes() const{
-    QStringList allSchemas;
-    foreach(QAction *a, highlightingSchemeMenuActions){
-        allSchemas.append(a->text());
-    }
-    return allSchemas;
-}
-
 bool MSAEditorSequenceArea::hasAminoAlphabet() {
     MultipleAlignmentObject* maObj = editor->getMaObject();
     SAFE_POINT(NULL != maObj, tr("MultipleAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()"), false);
@@ -231,22 +211,6 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
     QWidget::focusOutEvent(fe);
     exitFromEditCharacterMode();
     update();
-}
-
-void MSAEditorSequenceArea::moveCursor(int dx, int dy) {
-    const QPoint newCursorPos = editor->getCursorPosition() + QPoint(dx, dy);
-    CHECK(isInRange(newCursorPos), );
-
-    // Move only one cell selection?
-    // TODO: consider selection movement
-    const int selectionSize = selection.width() * selection.height();
-    CHECK(selectionSize == 1, );
-
-    ui->getScrollController()->scrollToPoint(newCursorPos, size());
-    editor->setCursorPosition(newCursorPos);
-
-    // SANGER_TODO: why is it under comment
-    //setSelection(MSAEditorSelection(p, 1,1));
 }
 
 void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modInfo) {
@@ -1025,7 +989,7 @@ Task::ReportResult ExportHighligtningTask::report() {
 QString ExportHighligtningTask::generateReport() const {
     QString res;
     if(!isCanceled() && !hasError()){
-        res += "<b>" + tr("Export highligtning finished successfully") + "</b><br><b>" + tr("Result file:") + "</b> " + url.getURLString();
+        res += "<b>" + tr("Export highlighting finished successfully") + "</b><br><b>" + tr("Result file:") + "</b> " + url.getURLString();
     }
     return res;
 }

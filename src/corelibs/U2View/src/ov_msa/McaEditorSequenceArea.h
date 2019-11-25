@@ -55,7 +55,7 @@ public:
     const ChromatogramViewSettings&  getSettings() const { return settings; }
     bool getShowQA() const {return showQVAction->isChecked(); }
 
-    void setSelection(const MaEditorSelection& sel, bool newHighlightSelection = false);
+    void setSelection(const MaEditorSelection& sel);
 
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 

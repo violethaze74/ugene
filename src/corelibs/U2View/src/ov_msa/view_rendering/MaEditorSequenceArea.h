@@ -102,7 +102,7 @@ public:
     // update selection when collapsible model changed
     void updateSelection();
 
-    virtual void setSelection(const MaEditorSelection& sel, bool newHighlightSelection = false);
+    virtual void setSelection(const MaEditorSelection& sel);
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
@@ -143,8 +143,6 @@ public:
     bool drawContent(QPainter &painter);
     bool drawContent(QPixmap &pixmap);
     bool drawContent(QPixmap &pixmap, const U2Region &region, const QList<int> &seqIdx);
-
-    void highlightCurrentSelection();
 
     QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
@@ -294,7 +292,6 @@ protected:
 
     MsaColorScheme*         colorScheme;
     MsaHighlightingScheme*  highlightingScheme;
-    bool                    highlightSelection;
 
     GScrollBar*     shBar;
     GScrollBar*     svBar;

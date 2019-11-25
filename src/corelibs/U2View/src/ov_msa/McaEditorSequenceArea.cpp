@@ -189,16 +189,16 @@ QAction *McaEditorSequenceArea::getTrimRightEndAction() const {
     return trimRightEndAction;
 }
 
-void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newHighlightSelection) {
+void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel) {
     // Its only possible to select 1 character (width = 1) or multiple rows with no character (width = 0).
     CHECK((sel.width() == 1 && sel.height() == 1) || sel.width() == 0,);
     if (sel.width() == 1 && getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(sel.y(), sel.x())) {
         // clear selection if gap is clicked
         emit si_clearReferenceSelection();
-        MaEditorSequenceArea::setSelection(MaEditorSelection(), newHighlightSelection);
+        MaEditorSequenceArea::setSelection(MaEditorSelection());
         return;
     }
-    MaEditorSequenceArea::setSelection(sel, newHighlightSelection);
+    MaEditorSequenceArea::setSelection(sel);
 }
 
 void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
@@ -299,7 +299,6 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView * /*v*/, QToolBar 
 void McaEditorSequenceArea::sl_addInsertion() {
     maMode = InsertCharMode;
     editModeAnimationTimer.start(500);
-    highlightCurrentSelection();
     sl_updateActions();
 }
 

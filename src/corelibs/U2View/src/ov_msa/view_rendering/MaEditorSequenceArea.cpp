@@ -83,7 +83,6 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     setMinimumSize(100, 100);
-    highlightSelection = false;
     selecting = false;
     shifting = false;
     editingEnabled = false;
@@ -278,9 +277,9 @@ void MaEditorSequenceArea::updateSelection() {
     }
 }
 
-void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHighlightSelection) {
+void MaEditorSequenceArea::setSelection(const MaEditorSelection& s) {
     CHECK(!isAlignmentEmpty() || s.isEmpty(), );
-    if (s == selection && newHighlightSelection == highlightSelection) {
+    if (s == selection) {
         return;
     }
     exitFromEditCharacterMode();
@@ -292,7 +291,6 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHigh
         selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(s.topLeft()),
                                       MaEditorSequenceArea::boundWithVisibleRange(s.bottomRight()));
     }
-    highlightSelection = newHighlightSelection;
 
     U2Region selectedRowsRegion = getSelectedRows();
     baseSelection = MaEditorSelection(selection.topLeft().x(), selectedRowsRegion.startPos, selection.width(), selectedRowsRegion.length);
@@ -729,11 +727,6 @@ bool MaEditorSequenceArea::drawContent(QPixmap &pixmap,
     return drawContent(p, region, seqIdx, 0, 0);
 }
 
-void MaEditorSequenceArea::highlightCurrentSelection()  {
-    highlightSelection = true;
-    update();
-}
-
 QString MaEditorSequenceArea::exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
     CHECK(getEditor() != NULL, QString());
     CHECK(qobject_cast<MSAEditor*>(editor) != NULL, QString());
@@ -1006,7 +999,6 @@ void MaEditorSequenceArea::sl_changeHighlightScheme(){
 void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
     maMode = ReplaceCharMode;
     editModeAnimationTimer.start(500);
-    highlightCurrentSelection();
     sl_updateActions();
 }
 
@@ -1802,7 +1794,6 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
 void MaEditorSequenceArea::exitFromEditCharacterMode() {
     if (maMode != ViewMode) {
         editModeAnimationTimer.stop();
-        highlightSelection = false;
         selectionColor = Qt::black;
         maMode = ViewMode;
         sl_updateActions();
