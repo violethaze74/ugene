@@ -202,6 +202,7 @@ void MaEditorWgt::initWidgets() {
     nameAreaContainer->setLayout(nameAreaLayout);
     nameAreaContainer->setStyleSheet("background-color: white;");
 
+    nameAreaContainer->setMinimumWidth(15); // splitter uses min-size to collapse a widget
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
     maSplitter.addWidget(seqAreaContainer, 1, 3);
 
