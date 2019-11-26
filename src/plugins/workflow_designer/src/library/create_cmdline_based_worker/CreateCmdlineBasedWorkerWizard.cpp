@@ -411,6 +411,7 @@ CreateCmdlineBasedWorkerWizardInputDataPage::CreateCmdlineBasedWorkerWizardInput
     connect(pbAddInput, SIGNAL(clicked()), SLOT(sl_addInput()));
     connect(pbAddInput, SIGNAL(clicked()), tvInput, SLOT(setFocus()));
     connect(pbDeleteInput, SIGNAL(clicked()), SLOT(sl_deleteInput()));
+    connect(pbDeleteInput, SIGNAL(clicked()), tvInput, SLOT(setFocus()));
     connect(this, SIGNAL(si_inputsChanged()), SIGNAL(completeChanged()));
 
     inputsModel = new CfgExternalToolModel(CfgExternalToolModel::Input, tvInput);
@@ -494,6 +495,7 @@ CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardPara
     connect(pbAdd, SIGNAL(clicked()), SLOT(sl_addAttribute()));
     connect(pbAdd, SIGNAL(clicked()), tvAttributes, SLOT(setFocus()));
     connect(pbDelete, SIGNAL(clicked()), SLOT(sl_deleteAttribute()));
+    connect(pbDelete, SIGNAL(clicked()), tvAttributes, SLOT(setFocus()));
     connect(this, SIGNAL(si_attributesChanged()), SIGNAL(completeChanged()));
 
     model = new CfgExternalToolModelAttributes(_schemaConfig);
@@ -616,6 +618,7 @@ CreateCmdlineBasedWorkerWizardOutputDataPage::CreateCmdlineBasedWorkerWizardOutp
     connect(pbAddOutput, SIGNAL(clicked()), SLOT(sl_addOutput()));
     connect(pbAddOutput, SIGNAL(clicked()), tvOutput, SLOT(setFocus()));
     connect(pbDeleteOutput, SIGNAL(clicked()), SLOT(sl_deleteOutput()));
+    connect(pbDeleteOutput, SIGNAL(clicked()), tvOutput, SLOT(setFocus()));
     connect(this, SIGNAL(si_outputsChanged()), SIGNAL(completeChanged()));
 
     outputsModel = new CfgExternalToolModel(CfgExternalToolModel::Output);
