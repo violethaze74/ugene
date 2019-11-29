@@ -296,6 +296,23 @@ QStringList GTUtilsMSAEditorSequenceArea::getNameList(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "hasSequencesWithNames"
+bool GTUtilsMSAEditorSequenceArea::hasSequencesWithNames(GUITestOpStatus& os, const QStringList& names) {
+    QStringList nameList = getNameList(os);
+    QStringList absentNames;
+    foreach(const QString & name, names) {
+        CHECK_CONTINUE(!nameList.contains(name));
+
+        absentNames << name;
+    }
+    CHECK_SET_ERR_RESULT(absentNames.isEmpty(),
+                         QString("Sequences with the following names are't presented in the alignment: \"%1\".")
+                                    .arg(absentNames.join("\", \"")), false);
+
+    return true;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getVisibleNames"
 QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(GUITestOpStatus &os){
     Q_UNUSED(os);
