@@ -133,6 +133,7 @@ public:
     static const QString DBI_REF_HINT;
     static const QString DBI_FOLDER_HINT;
     static const QString DEEP_COPY_OBJECT;
+    static const QString STRONG_FORMAT_ACCORDANCE;
 
     static const int READ_BUFF_SIZE;
 

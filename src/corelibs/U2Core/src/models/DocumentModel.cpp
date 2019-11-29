@@ -50,6 +50,7 @@ namespace U2 {
 const QString DocumentFormat::DBI_REF_HINT("dbi_alias");
 const QString DocumentFormat::DBI_FOLDER_HINT("dbi_folder");
 const QString DocumentFormat::DEEP_COPY_OBJECT("deep_copy_object");
+const QString DocumentFormat::STRONG_FORMAT_ACCORDANCE("strong_format_accordance");
 const QString DocumentMimeData::MIME_TYPE("application/x-ugene-document-mime");
 
 const int DocumentFormat::READ_BUFF_SIZE = 4194304; //4Mb optimal buffer size for reading from network drives
