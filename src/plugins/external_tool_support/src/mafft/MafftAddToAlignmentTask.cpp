@@ -219,12 +219,14 @@ void MafftAddToAlignmentTask::run() {
     }
 
     bool additionalModificationPerformed = false;
+    QStringList unalignedSequences;
     foreach(GObject* object, tmpDoc->getObjects()) {
         if (hasError() || isCanceled()) {
             return;
         }
         stateInfo.setProgress(70 + 30 * posInMsa / objectsCount);
         U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(object);
+        bool rowWasAdded = true;
         if (!rowNames.contains(sequenceObject->getSequenceName())) {
             //inserting new rows
             sequenceObject->setGObjectName(uniqueIdsToNames[sequenceObject->getGObjectName()]);
@@ -232,6 +234,7 @@ void MafftAddToAlignmentTask::run() {
 
             U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
 
+            rowWasAdded = row.length != 0;
             if (row.length - MsaRowUtils::getGapsLength(row.gaps) <= UNBREAKABLE_SEQUENCE_LENGTH_LIMIT) {
                 if (MsaRowUtils::hasLeadingGaps(row.gaps)) {
                     row.gaps = row.gaps.mid(0, 1);
@@ -241,13 +244,17 @@ void MafftAddToAlignmentTask::run() {
                 additionalModificationPerformed = true;
             }
 
-            dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
-            CHECK_OP(stateInfo, );
+            if (rowWasAdded) {
+                dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
+                CHECK_OP(stateInfo, );
+            } else {
+                unalignedSequences << object->getGObjectName();
+            }
         } else {
             //maybe need add leading gaps to original rows
             U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
             qint64 rowId = uniqueNamesToIds.value(sequenceObject->getSequenceName(), -1);
-            if (rowId == -1){
+            if (rowId == -1) {
                 stateInfo.setError(tr("Row for updating doesn't found"));
                 CHECK_OP(stateInfo, );
             }
@@ -260,7 +267,14 @@ void MafftAddToAlignmentTask::run() {
             algoLog.info(tr("Additional enhancement of short sequences alignment performed"));
         }
 
-        posInMsa++;
+        if (rowWasAdded) {
+            posInMsa++;
+        }
+    }
+
+    if (!unalignedSequences.isEmpty()) {
+        stateInfo.addWarning(tr("The following sequence(s) were not aligned as they do not contain meaningful characters: \"%1\".")
+                                .arg(unalignedSequences.join("\", \"")));
     }
 
     MsaDbiUtils::trim(settings.msaRef, stateInfo);

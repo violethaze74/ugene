@@ -88,21 +88,32 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
         CHECK_OP(stateInfo, ReportResult_Finished);
     }
 
+    QStringList unalignedSequences;
     foreach(const U2EntityRef& sequence, settings.addedSequencesRefs) {
         QString seqName = namesIterator.peekNext();
         U2SequenceObject seqObject(seqName, sequence);
         U2MsaRow row = MSAUtils::copyRowFromSequence(&seqObject, settings.msaRef.dbiRef, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
-        dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
-        CHECK_OP(stateInfo, ReportResult_Finished);
-        posInMsa++;
 
-        if(sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
-            QList<U2MsaGap> gapModel;
-            gapModel << U2MsaGap(0, sequencePositions[seqName]);
-            dbi->updateGapModel(settings.msaRef.entityId, row.rowId, gapModel, stateInfo);
+        if (row.length != 0) {
+            dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
+            CHECK_OP(stateInfo, ReportResult_Finished);
+            posInMsa++;
+
+            if (sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
+                QList<U2MsaGap> gapModel;
+                gapModel << U2MsaGap(0, sequencePositions[seqName]);
+                dbi->updateGapModel(settings.msaRef.entityId, row.rowId, gapModel, stateInfo);
+            }
+        } else {
+            unalignedSequences << seqName;
         }
         namesIterator.next();
+    }
+
+    if (!unalignedSequences.isEmpty()) {
+        stateInfo.addWarning(tr("The following sequence(s) were not aligned as they do not contain meaningful characters: \"%1\".")
+                                .arg(unalignedSequences.join("\", \"")));
     }
 
     MsaDbiUtils::trim(settings.msaRef, stateInfo);

@@ -44,6 +44,7 @@ public:
 
     // MSAEditorNameList
     static QStringList getNameList(GUITestOpStatus &os);
+    static bool hasSequencesWithNames(GUITestOpStatus& os, const QStringList& names);
     static QStringList getVisibleNames(GUITestOpStatus &os);
     static QString getSimilarityValue(GUITestOpStatus &os, int row);
     static void clickCollapseTriangle(GUITestOpStatus &os, QString seqName);

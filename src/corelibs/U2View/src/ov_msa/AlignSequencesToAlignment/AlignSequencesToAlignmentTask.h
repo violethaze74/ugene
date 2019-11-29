@@ -91,7 +91,7 @@ public:
     const SequenceObjectsExtractor& getExtractor() const;
 
 private:
-    const DNAAlphabet* msaAlphabet;
+    const DNAAlphabet*          msaAlphabet;
     QStringList                 urls;
 
     SequenceObjectsExtractor    extractor;
@@ -126,7 +126,10 @@ class LoadSequencesAndAlignToAlignmentTask : public Task {
 public:
     LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls, bool forceUseUgeneNativeAligner = false);
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    bool propagateSubtaskError() override;
+
 private:
     QStringList                 urls;
     QPointer<MultipleSequenceAlignmentObject>  maObj;

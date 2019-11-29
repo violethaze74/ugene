@@ -29,6 +29,7 @@ namespace U2 {
 class GTUtilsExternalTools {
 public:
     static void removeTool(HI::GUITestOpStatus &os, const QString &toolName);
+    static void checkValidation(HI::GUITestOpStatus& os, const QString& toolName);
     static void setToolUrl(HI::GUITestOpStatus &os, const QString &toolName, const QString &url);
 };
 

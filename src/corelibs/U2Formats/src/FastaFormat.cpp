@@ -272,7 +272,11 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
         }
         sequenceStart += sequenceLen;
         sequenceNumber++;
-        ioLog.trace(QString("Sequence #%1 is processed").arg(sequenceNumber));
+        ioLog.trace(FastaFormat::tr("Sequence #%1 is processed").arg(sequenceNumber));
+    }
+
+    if (fs.value(DocumentFormat::STRONG_FORMAT_ACCORDANCE, QVariant(false)).toBool() && !emptySeqNames.isEmpty()) {
+        os.setError(FastaFormat::tr("The file format is invalid."));
     }
 
     CHECK_OP_EXT(os, qDeleteAll(objects); objects.clear(), );
@@ -282,9 +286,9 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
 
     if (!emptySeqNames.isEmpty()) {
         QString warningMessage;
-        warningMessage.append(FastaFormat::tr("Loaded sequences: %1.\n").arg(sequenceNumber));
-        warningMessage.append(FastaFormat::tr("Skipped sequences: %1.\n").arg(emptySeqNames.size()));
-        warningMessage.append(FastaFormat::tr("The following sequences are empty:\n%1").arg(emptySeqNames.join(",\n")));
+        warningMessage.append(FastaFormat::tr("Loaded sequences: %1. \n").arg(sequenceNumber));
+        warningMessage.append(FastaFormat::tr("Skipped sequences: %1. \n").arg(emptySeqNames.size()));
+        warningMessage.append(FastaFormat::tr("The following sequences are empty: \n%1").arg(emptySeqNames.join(", \n")));
         os.addWarning(warningMessage);
     }
 
