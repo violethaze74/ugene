@@ -420,6 +420,7 @@ public:
 
 signals:
     void si_noTasksInScheduler();
+    void si_ugeneIsReadyToWork();
 
 protected:
 

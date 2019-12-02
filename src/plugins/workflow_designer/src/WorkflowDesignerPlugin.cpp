@@ -137,7 +137,7 @@ void WorkflowDesignerPlugin::processCMDLineOptions() {
     bool consoleMode = !AppContext::isGUIMode(); // only in console mode we run workflows by default. Otherwise we show them
     if (cmdlineReg->hasParameter( RUN_WORKFLOW ) || (consoleMode && !CMDLineRegistryUtils::getPureValues().isEmpty()) ) {
         Task * t = new WorkflowRunFromCMDLineTask();
-        connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
+        connect(AppContext::getTaskScheduler(), SIGNAL(si_ugeneIsReadyToWork()), new TaskStarter(t), SLOT(registerTask()));
     } else {
         if( cmdlineReg->hasParameter(GalaxyConfigTask::GALAXY_CONFIG_OPTION) && consoleMode ) {
             Task *t = nullptr;
