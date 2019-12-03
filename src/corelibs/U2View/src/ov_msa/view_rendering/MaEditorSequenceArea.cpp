@@ -873,8 +873,8 @@ void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const 
     int aliLen = editor->getAlignmentLen();
 
     if (ui->isCollapsibleMode()) {
-        nSeq = getNumDisplayableSequences();
         updateCollapsedGroups(modInfo);
+        nSeq = getNumDisplayableSequences();
     }
 
     editor->updateReference();

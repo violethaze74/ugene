@@ -214,35 +214,44 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
 }
 
 void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modInfo) {
-    U2OpStatus2Log os;
-    if(modInfo.rowContentChanged) {
-        QList<qint64> updatedRows;
-        bool isModelChanged = false;
-        QMap<qint64, QList<U2MsaGap> > curGapModel = getEditor()->getMaObject()->getMapGapModel();
-        QList<U2Region> updatedRegions;
-        foreach (qint64 modifiedSeqId, modInfo.modifiedRowIds) {
-            int modifiedRowPos = editor->getMaObject()->getRowPosById(modifiedSeqId);
-            const MultipleSequenceAlignmentRow &modifiedRowRef = editor->getMaObject()->getRow(modifiedRowPos);
-            modifiedRowPos = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(modifiedRowPos);
-            const U2Region rowsCollapsibleGroup = ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(
-                    U2Region(modifiedRowPos, 1));
-            if (updatedRegions.contains(rowsCollapsibleGroup)) {
-                continue;
-            }
-            for(int i = rowsCollapsibleGroup.startPos; i < rowsCollapsibleGroup.endPos(); i++) {
-                qint64 identicalRowId = editor->getMaObject()->getRow(i)->getRowId();
-                if(!updatedRows.contains(identicalRowId) && !modInfo.modifiedRowIds.contains(identicalRowId)) {
-                    isModelChanged = isModelChanged || modifiedRowRef->getGapModel() != curGapModel[identicalRowId];
-                    curGapModel[identicalRowId] = modifiedRowRef->getGapModel();
-                    updatedRows.append(identicalRowId);
-                }
-            }
-            updatedRegions.append(rowsCollapsibleGroup);
+    if (!modInfo.rowContentChanged || !ui->isCollapsibleMode()) {
+        return;
+    }
+    // Align collapse model with the current alignment state. Do not modify the alignment.
+    MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
+    MultipleSequenceAlignment tmpMsaCopy = msaObject->getMultipleAlignmentCopy();
+    QVector<U2Region> unitedRows;
+    tmpMsaCopy->getRowsSortedBySimilarity(unitedRows);
+    MaCollapseModel* collapseModel = ui->getCollapseModel();
+    collapseModel->update(unitedRows);
+
+    // Fix gap models for all sequences inside collapsed groups.
+    QList<qint64> updatedRows;
+    bool isModelChanged = false;
+    QMap<qint64, QList<U2MsaGap> > curGapModel = msaObject->getMapGapModel();
+    QList<U2Region> updatedRegions;
+    foreach (qint64 modifiedSeqId, modInfo.modifiedRowIds) {
+        int modifiedRowPos = editor->getMaObject()->getRowPosById(modifiedSeqId);
+        const MultipleSequenceAlignmentRow &modifiedRowRef = editor->getMaObject()->getRow(modifiedRowPos);
+        modifiedRowPos = collapseModel->getViewRowIndexByMaRowIndex(modifiedRowPos);
+        const U2Region rowsCollapsibleGroup = collapseModel->getMaRowIndexRegionByViewRowIndexRegion(
+                U2Region(modifiedRowPos, 1));
+        if (updatedRegions.contains(rowsCollapsibleGroup)) {
+            continue;
         }
-        if(isModelChanged) {
-            getEditor()->getMaObject()->updateGapModel(os, curGapModel);
-            return;
+        for(int i = rowsCollapsibleGroup.startPos; i < rowsCollapsibleGroup.endPos(); i++) {
+            qint64 identicalRowId = editor->getMaObject()->getRow(i)->getRowId();
+            if(!updatedRows.contains(identicalRowId) && !modInfo.modifiedRowIds.contains(identicalRowId)) {
+                isModelChanged = isModelChanged || modifiedRowRef->getGapModel() != curGapModel[identicalRowId];
+                curGapModel[identicalRowId] = modifiedRowRef->getGapModel();
+                updatedRows.append(identicalRowId);
+            }
         }
+        updatedRegions.append(rowsCollapsibleGroup);
+    }
+    if (isModelChanged) {
+        U2OpStatus2Log os;
+        msaObject->updateGapModel(os, curGapModel);
     }
 }
 
@@ -782,25 +791,17 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     SAFE_POINT(NULL != msaObject, tr("NULL Msa Object!"), );
 
-    MaCollapseModel *collapsibleModel = ui->getCollapseModel();
-
-    Document *doc = msaObject->getDocument();
-    SAFE_POINT(NULL != doc, tr("NULL document!"), );
-
-    MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
+    MultipleSequenceAlignment tmpMsaCopy = msaObject->getMultipleAlignmentCopy();
     QVector<U2Region> unitedRows;
-    bool sorted = msa->sortRowsBySimilarity(unitedRows);
-    collapsibleModel->update(unitedRows);
-
-    U2OpStatusImpl os;
-    if (sorted) {
-        msaObject->updateRowsOrder(os, msa->getRowsIds());
+    bool rowsOrderChanged = tmpMsaCopy->sortRowsBySimilarity(unitedRows);
+    if (rowsOrderChanged) {
+        U2OpStatusImpl os;
+        msaObject->updateRowsOrder(os, tmpMsaCopy->getRowsIds()); // updates row order & cached MSA.
         SAFE_POINT_OP(os, );
     }
-
     MaModificationInfo mi;
     mi.alignmentLengthChanged = false;
-    msaObject->updateCachedMultipleAlignment(mi);
+    updateCollapsedGroups(mi);
 }
 
 void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type) {

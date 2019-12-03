@@ -178,7 +178,6 @@ private:
 
     void updateCollapsedGroups(const MaModificationInfo& modInfo);
 
-    QAction*        copySelectionAction;
     QAction*        delColAction;
     QAction*        removeAllGapsAction;
     QAction*        gotoAction;

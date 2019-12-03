@@ -97,10 +97,13 @@ public:
     bool simplify();
 
     /**
-     * Sorts rows by similarity making identical rows sequential.
-     * Returns 'true' if the rows were resorted, and 'false' otherwise.
+     * Sorts rows by similarity making identical rows sequential. Sets MSA rows to the sorted rows.
+     * Returns 'true' if the rows were resorted and MSA is changed, and 'false' otherwise.
      */
     bool sortRowsBySimilarity(QVector<U2Region> &united);
+
+    /** Returns rows sorted by similarity. Does not update MSA. */
+    QList<MultipleSequenceAlignmentRow> getRowsSortedBySimilarity(QVector<U2Region> &united) const;
 
     /** Returns row of the alignment */
     inline MultipleSequenceAlignmentRow getMsaRow(int row);

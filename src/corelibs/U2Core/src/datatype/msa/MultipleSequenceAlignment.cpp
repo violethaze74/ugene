@@ -515,6 +515,15 @@ void MultipleSequenceAlignmentData::toUpperCase() {
 }
 
 bool MultipleSequenceAlignmentData::sortRowsBySimilarity(QVector<U2Region> &united) {
+    QList<MultipleSequenceAlignmentRow> sortedRows = getRowsSortedBySimilarity(united);
+    if (getMsaRows() == sortedRows) {
+        return false;
+    }
+    setRows(sortedRows);
+    return true;
+}
+
+QList<MultipleSequenceAlignmentRow> MultipleSequenceAlignmentData::getRowsSortedBySimilarity(QVector<U2Region> &united) const {
     QList<MultipleSequenceAlignmentRow> oldRows = getMsaRows();
     QList<MultipleSequenceAlignmentRow> sortedRows;
     while (!oldRows.isEmpty()) {
@@ -535,11 +544,7 @@ bool MultipleSequenceAlignmentData::sortRowsBySimilarity(QVector<U2Region> &unit
             united.append(U2Region(start, len));
         }
     }
-    if (getMsaRows() != sortedRows) {
-        setRows(sortedRows);
-        return true;
-    }
-    return false;
+    return sortedRows;
 }
 
 const QList<MultipleSequenceAlignmentRow> MultipleSequenceAlignmentData::getMsaRows() const {
