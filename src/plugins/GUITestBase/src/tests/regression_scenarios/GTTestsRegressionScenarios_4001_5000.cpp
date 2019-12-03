@@ -2553,7 +2553,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_1) {
 //    Expected state: load task fails, safe point doesn't trigger.
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::checkContainsError(os, logTracer, "Task {Load sequences and add to alignment task} finished with error: There are no sequences to align in the document(s)");
+    GTUtilsLog::checkContainsError(os, logTracer, "Task {Load sequences and add to alignment task} finished with error: Data from the \"database.ini\" file can't be alignment to the \"COI\" alignment - there are no sequences to align in the document(s)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4323_2) {
