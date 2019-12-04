@@ -849,11 +849,11 @@ int main(int argc, char **argv)
     coreLog.info( QObject::tr( "UGENE version: %1 %2-bit").arg( v.text ).arg( Version::appArchitecture ) );
     coreLog.info( QObject::tr( "UGENE distribution: %1").arg( v.distributionInfo ));
 
-    QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), splashScreen, SLOT(sl_close()));
-    QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), mw, SLOT(sl_show()));
+    QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), splashScreen, SLOT(sl_close()));
+    QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), mw, SLOT(sl_show()));
 
     WelcomePageMdiController *wpc = new WelcomePageMdiController();
-    QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), wpc, SLOT(sl_showPage()));
+    QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), wpc, SLOT(sl_showPage()));
     QObject::connect(mw, SIGNAL(si_showWelcomePage()), wpc, SLOT(sl_showPage()));
     QObject::connect(pli, SIGNAL(si_recentListChanged()), wpc, SLOT(sl_onRecentChanged()));
 
