@@ -271,6 +271,9 @@ void MaEditorNameList::sl_removeSelectedRows() {
     if (viewSelection.startPos < numRows) {
         int count = qMin(viewSelection.length, numRows - viewSelection.startPos);
         setSelection(viewSelection.startPos, count);
+    } else if (numRows > 0) {
+        // Select the last sequence. This sequence was right before the removed selection.
+        setSelection(numRows - 1, 1);
     }
 }
 
