@@ -110,6 +110,16 @@ public:
 
     U2Region getSelectedRows() const;
 
+    /*
+     * Returns range of MA rows extended up to the bounds of collapsible group.
+     *
+     * For example if viewRowsRegion starts or ends inside of some group, the whole group is added to
+     * the result region.
+     *
+     * Notice: this method accept view rows as an input and returns MA rows.
+     */
+    U2Region getMaRowsExtendedToCollapsibleGroups(const U2Region& viewRowsRegion) const;
+
     QString getCopyFormatedAlgorithmId() const;
     void setCopyFormatedAlgorithmId(const QString& algoId);
 

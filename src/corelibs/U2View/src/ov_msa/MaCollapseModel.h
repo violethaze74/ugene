@@ -37,6 +37,9 @@ public:
     /* Creates new collapsible group item that starts with maRowIndex and has numRows inside. */
     MaCollapsibleGroup(int maRowIndex, int numRows);
 
+    /* Compares this group with another group. Returns true if groups are equal. */
+    bool operator== (const MaCollapsibleGroup &other) const;
+
     /* Returns true if the collapsible item values (rowIndex & numRows) are valid. */
     bool isValid() const;
 

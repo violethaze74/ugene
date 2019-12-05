@@ -346,6 +346,24 @@ U2Region MaEditorSequenceArea::getSelectedRows() const {
             U2Region(selection.y(), selection.height()));
 }
 
+U2Region MaEditorSequenceArea::getMaRowsExtendedToCollapsibleGroups(const U2Region& viewRowsRegion) const {
+    if (!ui->isCollapsibleMode()) {
+        return viewRowsRegion;
+    }
+    MaCollapseModel* collapseModel = ui->getCollapseModel();
+    int startPos = viewRowsRegion.startPos;
+    int endPos = viewRowsRegion.endPos();
+    int viewRowCount = collapseModel->getViewRowCount();
+    while (startPos > 0 && !collapseModel->isFirstRowOfCollapsibleGroup(startPos)) {
+        startPos--;
+    }
+    while (endPos < viewRowCount && !collapseModel->isFirstRowOfCollapsibleGroup(startPos)) {
+        endPos++;
+    }
+    return ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(U2Region(startPos, endPos - startPos));
+}
+
+
 QString MaEditorSequenceArea::getCopyFormatedAlgorithmId() const{
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, BaseDocumentFormats::CLUSTAL_ALN).toString();
 }
@@ -383,7 +401,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     // Save a copy of the selection before alignment modification: it will be used to restore selection later.
     const MaEditorSelection viewSelection = selection;
     // Convert selection view to MSA coordinates (handle collapsing).
-    U2Region selectedMaRows = getSelectedRows();
+    U2Region selectedMaRows = getMaRowsExtendedToCollapsibleGroups(selection.getYRegion());
     const MaEditorSelection msaSelection(viewSelection.x(), selectedMaRows.startPos, viewSelection.width(), selectedMaRows.length);
 
     // TODO: the logic below that computes final 'empty' selection state is incomplete!
@@ -405,11 +423,11 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     // Cancel selection, so it will never be larger than the alignment after region removal.
     sl_cancelSelection();
 
-    const bool isGap = maObj->getRow(msaSelection.y())->isGap(msaSelection.x());
     maObj->removeRegion(msaSelection.x(), msaSelection.y(), effectiveWidth, msaSelection.height(), true);
     GRUNTIME_NAMED_COUNTER(cvar, tvar, "Delete current selection", editor->getFactoryId());
 
     if (viewSelection.height() == 1 && viewSelection.width() == 1) {
+        bool isGap = maObj->getRow(msaSelection.y())->isGap(msaSelection.x());
         GRUNTIME_NAMED_CONDITION_COUNTER(cvar2, tvar2, isGap, "Remove gap", editor->getFactoryId());
         GRUNTIME_NAMED_CONDITION_COUNTER(cvar3, tvar3, !isGap, "Remove character", editor->getFactoryId());
 
@@ -1782,9 +1800,8 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    // replacement is valid only for one symbol
-    const U2Region& sel = getSelectedRows();
-    for (qint64 rowIndex = sel.startPos; rowIndex < sel.endPos(); rowIndex++) {
+    U2Region maSelection = getMaRowsExtendedToCollapsibleGroups(selection.getYRegion());
+    for (qint64 rowIndex = maSelection.startPos; rowIndex < maSelection.endPos(); rowIndex++) {
         maObj->replaceCharacter(selection.x(), rowIndex, newCharacter);
     }
 

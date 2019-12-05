@@ -47,6 +47,10 @@ bool MaCollapsibleGroup::isValid() const {
     return maRowIndex != -1 && numRows != -1;
 }
 
+bool MaCollapsibleGroup::operator==(const MaCollapsibleGroup& other) const {
+    return maRowIndex == other.maRowIndex && numRows == other.numRows && isCollapsed == other.isCollapsed;
+}
+
 //////////////////////////////////////////////////////////////////////////
 /// MSACollapsibleItemModel
 //////////////////////////////////////////////////////////////////////////
@@ -60,15 +64,25 @@ MaCollapseModel::MaCollapseModel(MaEditorWgt *p)
 }
 
 void MaCollapseModel::update(const QVector<U2Region>& collapsibleGroupRegions) {
-    groups.clear();
-    positions.clear();
-    foreach(const U2Region& r, collapsibleGroupRegions) {
+    QVector<MaCollapsibleGroup> newGroups;
+    QVector<int> newPositions;
+    for (int i = 0; i < collapsibleGroupRegions.length(); i++ ) {
+        const U2Region& r = collapsibleGroupRegions[i];
         if (r.length < 1) {
             continue;
         }
-        groups.append(MaCollapsibleGroup(r.startPos, r.length));
-        positions.append(r.startPos);
+        MaCollapsibleGroup newGroup(r.startPos, r.length);
+        if (i < groups.length()) {
+            newGroup.isCollapsed = groups[i].isCollapsed;
+        }
+        newGroups.append(newGroup);
+        newPositions.append(r.startPos);
     }
+    if (newGroups == groups && newPositions == positions) {
+        return; // nothing is changed.
+    }
+    groups = newGroups;
+    positions = newPositions;
     collapseAll(true);
 }
 
