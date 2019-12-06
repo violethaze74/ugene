@@ -292,7 +292,7 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection& s) {
                                       MaEditorSequenceArea::boundWithVisibleRange(s.bottomRight()));
     }
 
-    U2Region selectedRowsRegion = getSelectedRows();
+    U2Region selectedRowsRegion = getSelectedMaRows();
     baseSelection = MaEditorSelection(selection.topLeft().x(), selectedRowsRegion.startPos, selection.width(), selectedRowsRegion.length);
 
     QStringList selectedRowNames;
@@ -341,9 +341,8 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
-U2Region MaEditorSequenceArea::getSelectedRows() const {
-    return ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(
-            U2Region(selection.y(), selection.height()));
+U2Region MaEditorSequenceArea::getSelectedMaRows() const {
+    return getMaRowsExtendedToCollapsibleGroups(selection.getYRegion());
 }
 
 U2Region MaEditorSequenceArea::getMaRowsExtendedToCollapsibleGroups(const U2Region& viewRowsRegion) const {
@@ -354,21 +353,21 @@ U2Region MaEditorSequenceArea::getMaRowsExtendedToCollapsibleGroups(const U2Regi
     int startPos = viewRowsRegion.startPos;
     int endPos = viewRowsRegion.endPos();
     int viewRowCount = collapseModel->getViewRowCount();
-    while (startPos > 0 && !collapseModel->isFirstRowOfCollapsibleGroup(startPos)) {
+    while (startPos > 0 && collapseModel->isInCollapsibleGroup(startPos - 1)) {
         startPos--;
     }
-    while (endPos < viewRowCount && !collapseModel->isFirstRowOfCollapsibleGroup(startPos)) {
+    while (endPos + 1 < viewRowCount && collapseModel->isInCollapsibleGroup(endPos + 1)) {
         endPos++;
     }
     return ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(U2Region(startPos, endPos - startPos));
 }
 
 
-QString MaEditorSequenceArea::getCopyFormatedAlgorithmId() const{
+QString MaEditorSequenceArea::getCopyFormattedAlgorithmId() const{
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, BaseDocumentFormats::CLUSTAL_ALN).toString();
 }
 
-void MaEditorSequenceArea::setCopyFormatedAlgorithmId(const QString& algoId){
+void MaEditorSequenceArea::setCopyFormattedAlgorithmId(const QString& algoId){
     AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, algoId);
 }
 
@@ -400,8 +399,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
 
     // Save a copy of the selection before alignment modification: it will be used to restore selection later.
     const MaEditorSelection viewSelection = selection;
-    // Convert selection view to MSA coordinates (handle collapsing).
-    U2Region selectedMaRows = getMaRowsExtendedToCollapsibleGroups(selection.getYRegion());
+    U2Region selectedMaRows = getSelectedMaRows();
     const MaEditorSelection msaSelection(viewSelection.x(), selectedMaRows.startPos, viewSelection.width(), selectedMaRows.length);
 
     // TODO: the logic below that computes final 'empty' selection state is incomplete!
@@ -446,49 +444,44 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
 
     // shifting of selection
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    if (!maObj->isStateLocked()) {
-        const U2Region rows = getSelectedRows();
-        const int x = selection.x();
-        const int y = rows.startPos;
-        const int selectionWidth = selection.width();
-        const int height = rows.length;
-        if (maObj->isRegionEmpty(x, y, selectionWidth, height)) {
-            return true;
-        }
-        // backup current selection for the case when selection might disappear
-        const MaEditorSelection selectionBackup = selection;
-
-        const int resultShift = shiftRegion(shift);
-        if (0 != resultShift) {
-            U2OpStatus2Log os;
-            adjustReferenceLength(os);
-
-            const QPoint& cursorPos = editor->getCursorPosition();
-            int newCursorPosX = (cursorPos.x() + resultShift >= 0) ? cursorPos.x() + resultShift : 0;
-            editor->setCursorPosition(QPoint(newCursorPosX, cursorPos.y()));
-
-            const MaEditorSelection newSelection(selectionBackup.x() + resultShift, selectionBackup.y(),
-                                                 selectionBackup.width(), selectionBackup.height());
-            setSelection(newSelection);
-            if (resultShift > 0) {
-                ui->getScrollController()->scrollToBase(static_cast<int>(newSelection.getXRegion().endPos() - 1), width());
-            } else {
-                ui->getScrollController()->scrollToBase(newSelection.x(), width());
-            }
-
-            return true;
-        } else {
-            return false;
-        }
+    if (maObj->isStateLocked()) {
+        return false;
     }
-    return false;
+    U2Region selectedMaRows = getSelectedMaRows();
+    if (maObj->isRegionEmpty(selection.x(), selectedMaRows.startPos, selection.width(), selectedMaRows.length)) {
+        return true;
+    }
+    // backup current selection for the case when selection might disappear
+    const MaEditorSelection selectionBackup = selection;
+
+    const int resultShift = shiftRegion(shift);
+    if (resultShift == 0) {
+        return false;
+    }
+    U2OpStatus2Log os;
+    adjustReferenceLength(os);
+
+    const QPoint& cursorPos = editor->getCursorPosition();
+    int newCursorPosX = (cursorPos.x() + resultShift >= 0) ? cursorPos.x() + resultShift : 0;
+    editor->setCursorPosition(QPoint(newCursorPosX, cursorPos.y()));
+
+    const MaEditorSelection newSelection(selectionBackup.x() + resultShift, selectionBackup.y(),
+                                         selectionBackup.width(), selectionBackup.height());
+    setSelection(newSelection);
+    if (resultShift > 0) {
+        ui->getScrollController()->scrollToBase(static_cast<int>(newSelection.getXRegion().endPos() - 1), width());
+    } else {
+        ui->getScrollController()->scrollToBase(newSelection.x(), width());
+    }
+
+    return true;
 }
 
 int MaEditorSequenceArea::shiftRegion(int shift) {
     int resultShift = 0;
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    const U2Region rows = getSelectedRows();
+    const U2Region rows = getSelectedMaRows();
     const int selectionWidth = selection.width();
     const int height = rows.length;
     const int y = rows.startPos;
@@ -567,7 +560,7 @@ QList<U2MsaGap> MaEditorSequenceArea::findRemovableGapColumns(int& shift) {
 }
 
 QList<U2MsaGap> MaEditorSequenceArea::findCommonGapColumns(int& numOfColumns) {
-    const U2Region rows = getSelectedRows();
+    U2Region rows = getSelectedMaRows();
     const int x = selection.x();
     const int wight = selection.width();
     const U2MsaListGapModel listGapModel = editor->getMaObject()->getGapModel();
@@ -847,7 +840,7 @@ void MaEditorSequenceArea::sl_changeColorSchemeOutside(const QString &id) {
 }
 
 void MaEditorSequenceArea::sl_changeCopyFormat(const QString& alg){
-    setCopyFormatedAlgorithmId(alg);
+    setCopyFormattedAlgorithmId(alg);
 }
 
 void MaEditorSequenceArea::sl_changeColorScheme() {
@@ -1457,10 +1450,12 @@ void MaEditorSequenceArea::drawBackground(QPainter &) {
 }
 
 void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
-    CHECK(getEditor() != NULL, );
-    if (selection.isNull() || 0 == countOfGaps || -1 > countOfGaps) {
-        return;
+    CHECK(getEditor() != NULL,);
+    CHECK(!selection.isNull(),);
+    if (countOfGaps == -1) {
+        countOfGaps = selection.width();
     }
+    CHECK(countOfGaps > 0,);
     SAFE_POINT(isInRange(selection.topLeft()), tr("Top left corner of the selection has incorrect coords"), );
     SAFE_POINT(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)),
         tr("Bottom right corner of the selection has incorrect coords"), );
@@ -1483,12 +1478,11 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
         return;
     }
 
-    const int removedRegionWidth = (-1 == countOfGaps) ? selection.width() : countOfGaps;
-    const U2Region& sequences = getSelectedRows();
-    maObj->insertGap(sequences, selection.x(), removedRegionWidth);
+    U2Region selectedMaRows = getSelectedMaRows();
+    maObj->insertGap(selectedMaRows, selection.x(), countOfGaps);
     adjustReferenceLength(os);
     CHECK_OP(os,);
-    moveSelection(removedRegionWidth, 0, true);
+    moveSelection(countOfGaps, 0, true);
     if (!getSelection().isEmpty()) {
         ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
     }
@@ -1503,11 +1497,11 @@ void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
 
     const QPoint selectionTopLeftCorner(selectionBackup.topLeft());
     // don't perform the deletion if the selection is at the alignment start
-    if (0 == selectionTopLeftCorner.x() || -1 > countOfGaps || 0 == countOfGaps) {
+    if (selectionTopLeftCorner.x() == 0 || countOfGaps < -1 || countOfGaps == 0) {
         return;
     }
 
-    int removedRegionWidth = (-1 == countOfGaps) ? selectionBackup.width() : countOfGaps;
+    int removedRegionWidth = (countOfGaps == -1) ? selectionBackup.width() : countOfGaps;
     QPoint topLeftCornerOfRemovedRegion(selectionTopLeftCorner.x() - removedRegionWidth,
         selectionTopLeftCorner.y());
     if (0 > topLeftCornerOfRemovedRegion.x()) {
@@ -1524,18 +1518,17 @@ void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     // then shifting should be canceled
     cancelShiftTracking();
 
-    const U2Region rowsContainingRemovedGaps(getSelectedRows());
     U2OpStatus2Log os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
 
-    const int countOfDeletedSymbols = maObj->deleteGap(os, rowsContainingRemovedGaps,
-        topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
+    U2Region selectedMaRows = getSelectedMaRows();
+    int countOfDeletedSymbols = maObj->deleteGap(os, selectedMaRows, topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
 
     // if some symbols were actually removed and the selection is not located
     // at the alignment end, then it's needed to move the selection
     // to the place of the removed symbols
-    if (0 < countOfDeletedSymbols) {
+    if (countOfDeletedSymbols > 0) {
         const MaEditorSelection newSelection(selectionBackup.x() - countOfDeletedSymbols,
             topLeftCornerOfRemovedRegion.y(), selectionBackup.width(),
             selectionBackup.height());
@@ -1800,8 +1793,8 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    U2Region maSelection = getMaRowsExtendedToCollapsibleGroups(selection.getYRegion());
-    for (qint64 rowIndex = maSelection.startPos; rowIndex < maSelection.endPos(); rowIndex++) {
+    U2Region selectedMaRows = getSelectedMaRows();
+    for (qint64 rowIndex = selectedMaRows.startPos; rowIndex < selectedMaRows.endPos(); rowIndex++) {
         maObj->replaceCharacter(selection.x(), rowIndex, newCharacter);
     }
 

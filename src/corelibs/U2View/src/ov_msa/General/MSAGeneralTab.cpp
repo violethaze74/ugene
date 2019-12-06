@@ -131,7 +131,7 @@ void MSAGeneralTab::initializeParameters() {
     //RTF
     copyType->addItem(QIcon(), "Rich text (HTML)", "RTF");
 
-    QString currentCopyFormattedID = msa->getUI()->getSequenceArea()->getCopyFormatedAlgorithmId();
+    QString currentCopyFormattedID = msa->getUI()->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 
 }

@@ -108,7 +108,8 @@ public:
 
     virtual void adjustReferenceLength(U2OpStatus& os) { Q_UNUSED(os); }
 
-    U2Region getSelectedRows() const;
+    /* Returns region of selected MA rows indexes extended to the collapsible groups boundaries. */
+    U2Region getSelectedMaRows() const;
 
     /*
      * Returns range of MA rows extended up to the bounds of collapsible group.
@@ -120,8 +121,8 @@ public:
      */
     U2Region getMaRowsExtendedToCollapsibleGroups(const U2Region& viewRowsRegion) const;
 
-    QString getCopyFormatedAlgorithmId() const;
-    void setCopyFormatedAlgorithmId(const QString& algoId);
+    QString getCopyFormattedAlgorithmId() const;
+    void setCopyFormattedAlgorithmId(const QString& algoId);
 
     virtual void deleteCurrentSelection();
 

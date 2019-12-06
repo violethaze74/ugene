@@ -350,7 +350,7 @@ void McaEditorSequenceArea::sl_updateActions() {
 
 void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge) {
     MultipleChromatogramAlignmentObject* mcaObj = getEditor()->getMaObject();
-    U2Region reg = getSelectedRows();
+    U2Region reg = getSelectedMaRows();
     SAFE_POINT(!reg.isEmpty() && reg.length == 1, "Incorrect selection", )
     U2OpStatus2Log os;
     U2UseCommonUserModStep userModStep(mcaObj->getEntityRef(), os);
@@ -372,7 +372,7 @@ void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
     CHECK(isEnabled, );
     CHECK(!getSelection().isEmpty(), );
 
-    U2Region reg = getSelectedRows();
+    U2Region reg = getSelectedMaRows();
     MultipleAlignmentRow row = editor->getMaObject()->getRow(reg.startPos);
     int start = row->getCoreStart();
     int end = row->getCoreEnd();

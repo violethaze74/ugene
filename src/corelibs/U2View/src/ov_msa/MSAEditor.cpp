@@ -516,7 +516,7 @@ void MSAEditor::sl_updateRealignAction() {
         return;
     }
     if (ui != nullptr) {
-        U2Region sel = ui->getSequenceArea()->getSelectedRows();
+        U2Region sel = ui->getSequenceArea()->getSelectedMaRows();
         realignSomeSequenceAction->setDisabled(sel.length == 0 || sel.length == maObject->getNumRows());
     }
 }

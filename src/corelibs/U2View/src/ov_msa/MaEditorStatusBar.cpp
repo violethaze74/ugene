@@ -117,7 +117,7 @@ QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo(const QPoint& p
     MaEditor* editor = seqArea->getEditor();
     SAFE_POINT(editor != NULL, "Editor is NULL", p);
     SAFE_POINT(editor->getMaObject(), "MaObject is NULL", p);
-    const MultipleAlignmentRow row = editor->getMaObject()->getRow(seqArea->getSelectedRows().startPos);
+    const MultipleAlignmentRow row = editor->getMaObject()->getRow(seqArea->getSelectedMaRows().startPos);
     QString len = QString::number(row->getUngappedLength());
     if (row->charAt(pos.x()) == U2Msa::GAP_CHAR) {
         return QPair<QString, QString>(GAP_MARK, len);

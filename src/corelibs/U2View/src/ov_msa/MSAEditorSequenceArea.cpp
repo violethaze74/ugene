@@ -629,7 +629,7 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
 }
 
 void MSAEditorSequenceArea::sl_copyFormattedSelection(){
-    const DocumentFormatId& formatId = getCopyFormatedAlgorithmId();
+    const DocumentFormatId& formatId = getCopyFormattedAlgorithmId();
     Task* clipboardTask = new SubalignmentToClipboardTask(getEditor(), selection.getRect(), formatId);
     AppContext::getTaskScheduler()->registerTopLevelTask(clipboardTask);
 }
@@ -836,7 +836,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
         Q_UNUSED(userModStep);
         SAFE_POINT_OP(os, );
 
-        const U2Region& sel = getSelectedRows();
+        const U2Region& sel = getSelectedMaRows();
 
         QList<qint64> modifiedRowIds;
         modifiedRowIds.reserve(sel.length);
