@@ -1085,38 +1085,16 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
         const QPoint p = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
         QPoint cursorPos = boundWithVisibleRange(p);
         editor->setCursorPosition(cursorPos);
-        if (isInRange(p)) {
-            const MaEditorSelection &s = getSelection();
-            if (s.getRect().contains(cursorPos) && !isAlignmentLocked() && editingEnabled) {
-                shifting = true;
-                maVersionBeforeShifting = editor->getMaObject()->getModificationVersion();
-                U2OpStatus2Log os;
-                changeTracker.startTracking(os);
-                CHECK_OP(os, );
-                editor->getMaObject()->saveState();
-                emit si_startMaChanging();
-            }
-        }
 
         Qt::CursorShape shape = cursor().shape();
         if (shape != Qt::ArrowCursor) {
             QPoint pos = e->pos();
             changeTracker.finishTracking();
-            shifting = false;
             QPoint globalMousePosition = ui->getScrollController()->getGlobalMousePosition(pos);
             const double baseWidth = ui->getBaseWidthController()->getBaseWidth();
             const double baseHeight = ui->getRowHeightController()->getSingleRowHeight();
             movableBorder = SelectionModificationHelper::getMovableSide(shape, globalMousePosition, selection.getRect(), QSize(baseWidth, baseHeight));
             moveBorder(pos);
-        } else if (!shifting) {
-            selecting = true;
-            rubberBandOrigin = e->pos();
-            rubberBand->setGeometry(QRect(rubberBandOrigin, QSize()));
-            const bool isMSAEditor = (qobject_cast<MSAEditor*>(getEditor()) != NULL);
-            if (isMSAEditor) {
-                rubberBand->show();
-            }
-            sl_cancelSelection();
         }
     }
 
@@ -1161,6 +1139,25 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
         const QPoint p = event->pos();
         const QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(p);
         if (isInRange(newCurPos)) {
+            const MaEditorSelection &s = getSelection();
+            if (!shifting && s.getRect().contains(newCurPos) && !isAlignmentLocked() && editingEnabled) {
+                shifting = true;
+                maVersionBeforeShifting = editor->getMaObject()->getModificationVersion();
+                U2OpStatus2Log os;
+                changeTracker.startTracking(os);
+                CHECK_OP(os, );
+                editor->getMaObject()->saveState();
+                emit si_startMaChanging();
+            }
+            if (!shifting && !selecting) {
+                selecting = true;
+                sl_cancelSelection();
+                rubberBand->setGeometry(QRect(rubberBandOrigin, QSize()));
+                bool isMSAEditor = (qobject_cast<MSAEditor*>(getEditor()) != NULL);
+                if (isMSAEditor) {
+                    rubberBand->show();
+                }
+            }
             if (isVisible(newCurPos, false)) {
                 ui->getScrollController()->stopSmoothScrolling();
             } else {
