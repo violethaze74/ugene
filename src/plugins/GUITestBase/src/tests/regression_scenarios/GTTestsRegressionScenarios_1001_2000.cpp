@@ -1469,6 +1469,10 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
     GTWidget::click(os, editButton);
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/PBR322.gb");
+
+    GTUtilsWorkflowDesigner::click(os, "Write Sequence");
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir().absoluteFilePath(sandBoxDir) + "wd_test_1080.fa", GTUtilsWorkflowDesigner::textValue);
+
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
