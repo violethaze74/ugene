@@ -8031,7 +8031,7 @@ GUI_TEST_CLASS_DEFINITION(test_1811_1) {
     GTUtilsDialog::waitForDialog(os, new SelectDocumentFormatDialogFiller(os));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
 
-    GTGlobals::sleep(10000);//some time needed for request
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::isDocumentLoaded(os, "A0N8V2.txt");
 }
 
@@ -8065,7 +8065,7 @@ GUI_TEST_CLASS_DEFINITION( test_1821 ) {
 
     //6. Open the file containing the saved scheme using "Open" button
     GTFileDialog::openFile( os, workflowOutputDirPath, "test.uwl" );
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+   
 
     //Expected state: scheme is opened in WD, its scale is 75%
     scaleCombo = dynamic_cast<QComboBox *>( GTWidget::findWidget( os, "wdScaleCombo" ) );
