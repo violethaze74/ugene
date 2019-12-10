@@ -170,8 +170,8 @@ U2Region MaCollapseModel::getMaRowIndexRegionByViewRowIndexRegion(const U2Region
     // If the end position is a header of the collapsing group then use the whole group.
     int endGroupIndex = getCollapsibleGroupIndexByViewRowIndex(viewEndIndex);
     if (endGroupIndex >= 0) {
-        const MaCollapsibleGroup& group = getCollapsibleGroup(endGroupIndex);
-        msaEndIndex = group.maRowIndex + group.numRows;
+        const MaCollapsibleGroup* group = getCollapsibleGroup(endGroupIndex);
+        msaEndIndex = group->maRowIndex + group->numRows;
     }
     return U2Region(msaStartIndex, msaEndIndex - msaStartIndex);
 }
@@ -294,8 +294,11 @@ int MaCollapseModel::getCollapsibleGroupIndexByViewRowIndex(int viewRowIndex) co
     }
 }
 
-MaCollapsibleGroup MaCollapseModel::getCollapsibleGroup(int collapsibleGroupIndex) const {
-    return groups.at(collapsibleGroupIndex);
+const MaCollapsibleGroup* MaCollapseModel::getCollapsibleGroup(int collapsibleGroupIndex) const {
+    if (collapsibleGroupIndex < 0 || collapsibleGroupIndex >= groups.length()) {
+        return NULL;
+    }
+    return &groups.constData()[collapsibleGroupIndex];
 }
 
 MaCollapsibleGroup MaCollapseModel::findCollapsibleGroupByMaRowIndex(int maRowIndex) const {

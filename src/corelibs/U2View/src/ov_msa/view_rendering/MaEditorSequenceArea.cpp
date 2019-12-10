@@ -251,52 +251,44 @@ void MaEditorSequenceArea::updateSelection() {
     MaCollapseModel* m = ui->getCollapseModel();
     CHECK_EXT(NULL != m, sl_cancelSelection(), );
 
-    int startPos = baseSelection.y();
-    int endPos = startPos + baseSelection.height();
+    int startMaIdx = baseSelection.y();
+    int endMaIdx = startMaIdx + baseSelection.height() - 1;
 
-    // convert selected rows indexes to indexes of selected collapsible items
-    int newStart = m->getViewRowIndexByMaRowIndex(startPos);
-    int newEnd = m->getViewRowIndexByMaRowIndex(endPos);
+    // convert selected MA rows indexes to row indexes.
+    int newStartRowIdx = m->getViewRowIndexByMaRowIndex(startMaIdx);
+    int newEndRowIdx = m->getViewRowIndexByMaRowIndex(endMaIdx);
 
-    SAFE_POINT_EXT(newStart >= 0 && newEnd >= 0, sl_cancelSelection(), );
+    SAFE_POINT_EXT(newStartRowIdx >= 0 && newEndRowIdx >= 0, sl_cancelSelection(), );
 
-    int selectionHeight = newEnd - newStart;
-    // accounting of collapsing children items
-    int itemIndex = m->getCollapsibleGroupIndexByViewRowIndex(newEnd);
-    if (selectionHeight <= 1 && itemIndex >= 0) {
-        const MaCollapsibleGroup& collapsibleItem = m->getCollapsibleGroup(itemIndex);
-        if(newEnd == collapsibleItem.maRowIndex && !collapsibleItem.isCollapsed) {
-            selectionHeight = qMax(selectionHeight, endPos - newStart + collapsibleItem.numRows);
-        }
-    }
-    if(selectionHeight > 0 && newStart + selectionHeight <= m->getViewRowCount()) {
-        MaEditorSelection s(selection.topLeft().x(), newStart, selection.width(), selectionHeight);
-        setSelection(s);
-    } else {
+    int selectionHeight = newEndRowIdx - newStartRowIdx + 1;
+    if (selectionHeight <= 0 || newStartRowIdx + selectionHeight > m->getViewRowCount()) {
         sl_cancelSelection();
+        return;
     }
+    MaEditorSelection newSelection(selection.topLeft().x(), newStartRowIdx, selection.width(), selectionHeight);
+    setSelection(newSelection);
 }
 
-void MaEditorSequenceArea::setSelection(const MaEditorSelection& s) {
-    CHECK(!isAlignmentEmpty() || s.isEmpty(), );
-    if (s == selection) {
+void MaEditorSequenceArea::setSelection(const MaEditorSelection& newSelection) {
+    CHECK(!isAlignmentEmpty() || newSelection.isEmpty(), );
+    if (newSelection == selection) {
         return;
     }
     exitFromEditCharacterMode();
 
     MaEditorSelection prevSelection = selection;
-    if (s.isEmpty()) {
-        selection = s;
+    if (newSelection.isEmpty()) {
+        selection = newSelection;
     } else {
-        selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(s.topLeft()),
-                                      MaEditorSequenceArea::boundWithVisibleRange(s.bottomRight()));
+        selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(newSelection.topLeft()),
+                                      MaEditorSequenceArea::boundWithVisibleRange(newSelection.bottomRight()));
     }
 
-    U2Region selectedRowsRegion = getSelectedMaRows();
-    baseSelection = MaEditorSelection(selection.topLeft().x(), selectedRowsRegion.startPos, selection.width(), selectedRowsRegion.length);
+    U2Region selectedMaRows = getSelectedMaRows();
+    baseSelection = MaEditorSelection(selection.topLeft().x(), selectedMaRows.startPos, selection.width(), selectedMaRows.length);
 
     QStringList selectedRowNames;
-    for (qint64 x = selectedRowsRegion.startPos; x < selectedRowsRegion.endPos(); x++) {
+    for (qint64 x = selectedMaRows.startPos; x < selectedMaRows.endPos(); x++) {
         selectedRowNames.append(editor->getMaObject()->getRow((int) x)->getName());
     }
     emit si_selectionChanged(selectedRowNames);
@@ -349,17 +341,23 @@ U2Region MaEditorSequenceArea::getMaRowsExtendedToCollapsibleGroups(const U2Regi
     if (!ui->isCollapsibleMode()) {
         return viewRowsRegion;
     }
+
     MaCollapseModel* collapseModel = ui->getCollapseModel();
-    int startPos = viewRowsRegion.startPos;
-    int endPos = viewRowsRegion.endPos();
+    int startIdx = viewRowsRegion.startPos;
+    int endIdx = viewRowsRegion.startPos + viewRowsRegion.length - 1;
     int viewRowCount = collapseModel->getViewRowCount();
-    while (startPos > 0 && collapseModel->isInCollapsibleGroup(startPos - 1)) {
-        startPos--;
+    const MaCollapsibleGroup* startIdxGroup = collapseModel->getCollapsibleGroup(startIdx);
+    const MaCollapsibleGroup* endIdxGroup = collapseModel->getCollapsibleGroup(endIdx);
+
+    while (startIdx > 0 && startIdxGroup != NULL &&
+           startIdxGroup == collapseModel->getCollapsibleGroup(startIdx - 1)) {
+        startIdx--;
     }
-    while (endPos + 1 < viewRowCount && collapseModel->isInCollapsibleGroup(endPos + 1)) {
-        endPos++;
+    while (endIdx < viewRowCount - 1 && endIdxGroup != NULL &&
+           endIdxGroup == collapseModel->getCollapsibleGroup(endIdx + 1)) {
+        endIdx++;
     }
-    return ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(U2Region(startPos, endPos - startPos));
+    return ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(U2Region(startIdx, endIdx - startIdx + 1));
 }
 
 

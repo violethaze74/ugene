@@ -113,7 +113,8 @@ public:
     /* Returns the collapsible group index with the row or -1, if the row is not in a collapsible group. */
     int getCollapsibleGroupIndexByViewRowIndex(int viewRowIndex) const;
 
-    MaCollapsibleGroup getCollapsibleGroup(int collapsibleGroupIndex) const;
+    /** Returns collapsible group by index or NULL if there is no group for the index. */
+    const MaCollapsibleGroup* getCollapsibleGroup(int collapsibleGroupIndex) const;
 
     /*
      * Finds collapsible group by MA row index.
