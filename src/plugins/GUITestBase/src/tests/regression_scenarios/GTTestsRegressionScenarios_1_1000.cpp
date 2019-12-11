@@ -2396,7 +2396,7 @@ GUI_TEST_CLASS_DEFINITION(test_0868){
 
 //    2. Zoom to any covered
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    for (int i = 0; i < 24; i++){
+    for (int i = 0; i < 25; i++){
         GTKeyboardDriver::keyClick( '=', Qt::ShiftModifier);
         GTGlobals::sleep(100);
     }
@@ -2405,8 +2405,9 @@ GUI_TEST_CLASS_DEFINITION(test_0868){
     GTUtilsBookmarksTreeView::addBookmark(os, GTUtilsMdi::activeWindow(os)->objectName(), "bookmark");
     GTGlobals::sleep();
     GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "bookmark"));
-    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
+    GTMouseDriver::doubleClick();
+    GTGlobals::sleep(1000);
 
     QWidget* assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
     QPixmap pixmap = GTWidget::getPixmap(os, assembly_reads_area);
