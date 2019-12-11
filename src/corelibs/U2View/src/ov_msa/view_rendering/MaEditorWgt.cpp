@@ -287,4 +287,8 @@ void MaEditorWgt::sl_countRedo() {
     GRUNTIME_NAMED_COUNTER(cvar, tvar, tr("Redo"), editor->getFactoryId());
 }
 
+bool MaEditorWgt::isCollapsibleMode() const {
+    return !collapseModel->isEmpty();
+}
+
 } // namespace

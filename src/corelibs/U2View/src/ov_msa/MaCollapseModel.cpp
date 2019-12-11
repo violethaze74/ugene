@@ -64,10 +64,12 @@ MaCollapseModel::MaCollapseModel(MaEditorWgt *p)
 }
 
 void MaCollapseModel::update(const QVector<U2Region>& collapsibleGroupRegions) {
+    QVector<U2Region> sortedCollapsibleGroupRegions = collapsibleGroupRegions;
+    qSort(sortedCollapsibleGroupRegions);
     QVector<MaCollapsibleGroup> newGroups;
     QVector<int> newPositions;
-    for (int i = 0; i < collapsibleGroupRegions.length(); i++ ) {
-        const U2Region& r = collapsibleGroupRegions[i];
+    for (int i = 0; i < sortedCollapsibleGroupRegions.length(); i++ ) {
+        const U2Region& r = sortedCollapsibleGroupRegions[i];
         if (r.length < 1) {
             continue;
         }

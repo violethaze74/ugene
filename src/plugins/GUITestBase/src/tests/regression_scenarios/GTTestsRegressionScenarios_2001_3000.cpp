@@ -1984,13 +1984,12 @@ GUI_TEST_CLASS_DEFINITION(test_2298) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    2. Build the tree and make it view together with msa
+//    2. Build and show a tree
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/2298.nwk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os,"Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    3. Collapse any node on the tree
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+//    3. Collapse any node in the tree
     QGraphicsItem* node = GTUtilsPhyTree::getNodes(os).at(1);
     QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
     treeView->ensureVisible(node);
@@ -1999,10 +1998,10 @@ GUI_TEST_CLASS_DEFINITION(test_2298) {
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
-//    Expected state: the appropriate sequences on the msa has collapsed into a group as well
+//    Expected state: the appropriate sequences in the msa view were collapsed into a group as well
     QStringList l = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     int num = l.count();
-    CHECK_SET_ERR(num == 3, QString("Unexpected visiable sequences number. Expected: 3, actual: %1").arg(num));
+    CHECK_SET_ERR(num == 3, QString("Unexpected visible sequences count. Expected: 3, actual: %1").arg(num));
     GTGlobals::sleep();
 }
 

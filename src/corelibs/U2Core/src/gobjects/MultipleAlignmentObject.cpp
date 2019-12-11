@@ -272,8 +272,7 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
     ensureDataLoaded();
     emit si_startMaUpdating();
 
-    MultipleAlignment maBefore = cachedMa->getCopy();
-    QString oldName = maBefore->getName();
+    MultipleAlignment oldCachedMa = cachedMa->getCopy();
 
     U2OpStatus2Log os;
 
@@ -313,24 +312,24 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
 
     setModified(true);
     if (!mi.middleState) {
-        emit si_alignmentChanged(maBefore, mi);
+        emit si_alignmentChanged(oldCachedMa, mi);
 
-        if (cachedMa->isEmpty() && !maBefore->isEmpty()) {
+        if (cachedMa->isEmpty() && !oldCachedMa->isEmpty()) {
             emit si_alignmentBecomesEmpty(true);
-        } else if (!cachedMa->isEmpty() && maBefore->isEmpty()) {
+        } else if (!cachedMa->isEmpty() && oldCachedMa->isEmpty()) {
             emit si_alignmentBecomesEmpty(false);
         }
 
-        const QString newName = cachedMa->getName();
-        if (oldName != newName) {
+        QString newName = cachedMa->getName();
+        if (oldCachedMa->getName() != newName) {
             setGObjectNameNotDbi(newName);
         }
     }
     if (!removedRowIds.isEmpty()) {
         emit si_rowsRemoved(removedRowIds);
     }
-    if (cachedMa->getAlphabet()->getId() != maBefore->getAlphabet()->getId()) {
-        emit si_alphabetChanged(mi, maBefore->getAlphabet());
+    if (cachedMa->getAlphabet()->getId() != oldCachedMa->getAlphabet()->getId()) {
+        emit si_alphabetChanged(mi, oldCachedMa->getAlphabet());
     }
 }
 

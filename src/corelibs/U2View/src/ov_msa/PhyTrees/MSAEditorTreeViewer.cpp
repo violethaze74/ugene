@@ -837,7 +837,8 @@ void MSAEditorTreeViewerUI::sl_onVisibleRangeChanged(QStringList visibleSeqs, in
 
 void MSAEditorTreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem* branch) {
     TreeViewerUI::sl_onBranchCollapsed(branch);
-    emit si_collapseModelChangedInTree(MSAEditorTreeViewerUtils::getCollapsedGroups(rectRoot));
+    QList<QStringList> collapsedGroups = MSAEditorTreeViewerUtils::getCollapsedGroups(rectRoot);
+    si_collapseModelChangedInTree(collapsedGroups);
 }
 
 

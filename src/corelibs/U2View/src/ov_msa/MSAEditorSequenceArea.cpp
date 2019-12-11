@@ -769,7 +769,6 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
         return;
     }
 
-    ui->setCollapsibleMode(enabled);
     collapseModeUpdateAction->setEnabled(enabled);
     if (enabled) {
         sl_updateCollapsingMode();
@@ -921,44 +920,31 @@ void MSAEditorSequenceArea::sl_resetCollapsibleModel() {
 
 void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& collapsedGroups) {
     CHECK(getEditor() != NULL, );
-    MaCollapseModel* m = ui->getCollapseModel();
-    SAFE_POINT(NULL != m, tr("Incorrect pointer to MaCollapseModel"),);
-    m->clear();
-
     MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
-    QStringList rowNames = msaObject->getMultipleAlignment()->getRowNames();
-    QVector<U2Region> collapsedRegions;
-
-    //Calculate regions of the groups
-    foreach(const QStringList& seqsGroup, collapsedGroups) {
-        int regionStart = rowNames.size(), regionEnd = 0;
-        foreach(const QString& seqName, seqsGroup) {
-            int seqPos = rowNames.indexOf(seqName);
-            regionStart = qMin(seqPos, regionStart);
-            regionEnd = qMax(seqPos, regionEnd);
-        }
-        if(regionStart > 0 && regionEnd <= rowNames.size() && regionEnd > regionStart) {
-            collapsedRegions.append(U2Region(regionStart, regionEnd - regionStart + 1));
-        }
-    }
-    //Function 'reset' in 'MaCollapseModel' work only with sorted regions
-    qSort(collapsedRegions);
-
-    if (msaObject == NULL || msaObject->isStateLocked()) {
-        if (collapseModeSwitchAction->isChecked()) {
-            collapseModeSwitchAction->setChecked(false);
-        }
+    if (msaObject->isStateLocked()) {
+        collapseModeSwitchAction->setChecked(false);
         return;
     }
 
-    ui->setCollapsibleMode(true);
+    MaCollapseModel* collapseModel = ui->getCollapseModel();
+    QStringList rowNames = msaObject->getMultipleAlignment()->getRowNames();
 
-    m->update(collapsedRegions);
-
-    MaModificationInfo mi;
-    msaObject->updateCachedMultipleAlignment(mi);
-
-    ui->getScrollController()->updateVerticalScrollBar();
+    // Calculate regions of collapsible groups
+    QVector<U2Region> collapsedRegions;
+    foreach(const QStringList& seqsGroup, collapsedGroups) {
+        int regionStartIdx = rowNames.size() - 1;
+        int regionEndIdx = 0;
+        foreach(const QString& seqName, seqsGroup) {
+            int sequenceIdx = rowNames.indexOf(seqName);
+            regionStartIdx = qMin(sequenceIdx, regionStartIdx);
+            regionEndIdx = qMax(sequenceIdx, regionEndIdx);
+        }
+        if (regionStartIdx >= 0 && regionEndIdx < rowNames.size() && regionEndIdx > regionStartIdx) {
+            U2Region collapsedGroupRegion(regionStartIdx, regionEndIdx - regionStartIdx + 1);
+            collapsedRegions.append(collapsedGroupRegion);
+        }
+    }
+    collapseModel->update(collapsedRegions);
 }
 
 ExportHighligtningTask::ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditorSequenceArea *msaese_)
