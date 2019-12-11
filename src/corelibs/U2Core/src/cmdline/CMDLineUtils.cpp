@@ -96,8 +96,10 @@ namespace {
 
     QStringList generateCandidates(const QString &prefix) {
         QStringList res;
+#ifndef Q_OS_WIN
         res << generateCandidatesWithExt(prefix + "/" + "ugene");
         res << generateCandidatesWithExt(prefix + "/" + "ugened");
+#endif // !Q_OS_WIN
         res << generateCandidatesWithExt(prefix + "/" + "ugenecl");
         res << generateCandidatesWithExt(prefix + "/" + "ugenecld");
         return res;
