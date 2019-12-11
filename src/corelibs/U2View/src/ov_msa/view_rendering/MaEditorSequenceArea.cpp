@@ -1137,8 +1137,10 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
         const QPoint p = event->pos();
         const QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(p);
         if (isInRange(newCurPos)) {
-            const MaEditorSelection &s = getSelection();
-            if (!shifting && s.getRect().contains(newCurPos) && !isAlignmentLocked() && editingEnabled) {
+            bool isDefaultCursorMode = cursor().shape() == Qt::ArrowCursor;
+            if (!shifting && selection.getRect().contains(newCurPos)
+                && !isAlignmentLocked() && editingEnabled
+                && isDefaultCursorMode) {
                 shifting = true;
                 maVersionBeforeShifting = editor->getMaObject()->getModificationVersion();
                 U2OpStatus2Log os;
@@ -1149,10 +1151,9 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
             }
             if (!shifting && !selecting) {
                 selecting = true;
-                sl_cancelSelection();
-                rubberBand->setGeometry(QRect(rubberBandOrigin, QSize()));
                 bool isMSAEditor = (qobject_cast<MSAEditor*>(getEditor()) != NULL);
                 if (isMSAEditor) {
+                    rubberBand->setGeometry(QRect(rubberBandOrigin, QSize()));
                     rubberBand->show();
                 }
             }
