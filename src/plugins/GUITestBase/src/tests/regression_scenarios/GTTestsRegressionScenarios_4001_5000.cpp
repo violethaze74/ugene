@@ -729,8 +729,10 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
-
+ 
+    //remove  longest sequence "MGLR3_Magnaporthe_grisea_AF314" for test stability      
+    GTUtilsMsaEditor::removeRows(os, 14, 14);
+   
     parent = GTWidget::findWidget(os, "fungal - all [m] fungal - all", GTWidget::findWidget(os, "fungal - all [m] fungal - all_SubWindow"));
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area for fungal-all.aln");
