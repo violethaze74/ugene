@@ -86,7 +86,7 @@ public:
     int getLastVisibleRowIndex(int widgetHeight, bool countClipped = false) const;
     int getLastVisibleRowNumber(int widgetHeight, bool countClipped = false) const;
 
-    QPoint getMaPointByScreenPoint(const QPoint &point) const;    // can be out of MA boundaries
+    QPoint getViewPosByScreenPoint(const QPoint &point) const;    // can be out of MA boundaries
 
     GScrollBar *getHorizontalScrollBar() const;
     GScrollBar *getVerticalScrollBar() const;

@@ -120,7 +120,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_updateActions()), SLOT(sl_updateActions()));
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
-    connect(hb, SIGNAL(actionTriggered(int)), SLOT(sl_hScrollBarActionPerfermed()));
+    connect(hb, SIGNAL(actionTriggered(int)), SLOT(sl_hScrollBarActionPerformed()));
 
 
     // SANGER_TODO: why is it commented?
@@ -1023,20 +1023,16 @@ void MaEditorSequenceArea::sl_modelChanged() {
     sl_completeRedraw();
 }
 
-void MaEditorSequenceArea::sl_hScrollBarActionPerfermed() {
-    CHECK((shifting && editingEnabled) || selecting, );
+void MaEditorSequenceArea::sl_hScrollBarActionPerformed() {
     const QAbstractSlider::SliderAction action = shBar->getRepeatAction();
     CHECK(QAbstractSlider::SliderSingleStepAdd == action || QAbstractSlider::SliderSingleStepSub == action, );
 
-    const QPoint localPoint = mapFromGlobal(QCursor::pos());
-    const QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(localPoint);
-
     if (shifting && editingEnabled) {
+        const QPoint localPoint = mapFromGlobal(QCursor::pos());
+        const QPoint newCurPos = ui->getScrollController()->getViewPosByScreenPoint(localPoint);
+
         const QPoint& cursorPos = editor->getCursorPosition();
         shiftSelectedRegion(newCurPos.x() - cursorPos.x());
-    } else if (selecting) {
-        // There the correct geometry can be set
-//        rubberBand->setGeometry(QRect(rubberBandOrigin, localPoint).normalized());
     }
 }
 
@@ -1069,6 +1065,9 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
         setFocus();
     }
 
+    mousePressEventPoint = e->pos();
+    mousePressViewPos = ui->getScrollController()->getViewPosByScreenPoint(mousePressEventPoint);
+
     if ((e->button() == Qt::LeftButton)) {
         if (Qt::ShiftModifier == e->modifiers()) {
             QWidget::mousePressEvent(e);
@@ -1079,9 +1078,7 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
         isCtrlPressed = km.testFlag(Qt::ControlModifier);
         lengthOnMousePress = editor->getMaObject()->getLength();
 
-        rubberBandOrigin = e->pos();
-        const QPoint p = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
-        QPoint cursorPos = boundWithVisibleRange(p);
+        QPoint cursorPos = boundWithVisibleRange(mousePressViewPos);
         editor->setCursorPosition(cursorPos);
 
         Qt::CursorShape shape = cursor().shape();
@@ -1106,7 +1103,7 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
         editor->getMaObject()->releaseState();
     }
 
-    QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
+    QPoint newCurPos = ui->getScrollController()->getViewPosByScreenPoint(e->pos());
 
     if (shifting) {
         emit si_stopMaChanging(maVersionBeforeShifting != editor->getMaObject()->getModificationVersion());
@@ -1134,11 +1131,11 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
 
 void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
     if (event->buttons() & Qt::LeftButton) {
-        const QPoint p = event->pos();
-        const QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(p);
-        if (isInRange(newCurPos)) {
+        QPoint mouseMoveEventPoint = event->pos();
+        QPoint mouseMoveViewPos = ui->getScrollController()->getViewPosByScreenPoint(mouseMoveEventPoint);
+        if (isInRange(mousePressViewPos)) {
             bool isDefaultCursorMode = cursor().shape() == Qt::ArrowCursor;
-            if (!shifting && selection.getRect().contains(newCurPos)
+            if (!shifting && selection.getRect().contains(mousePressViewPos)
                 && !isAlignmentLocked() && editingEnabled
                 && isDefaultCursorMode) {
                 shifting = true;
@@ -1153,23 +1150,23 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
                 selecting = true;
                 bool isMSAEditor = (qobject_cast<MSAEditor*>(getEditor()) != NULL);
                 if (isMSAEditor) {
-                    rubberBand->setGeometry(QRect(rubberBandOrigin, QSize()));
+                    rubberBand->setGeometry(QRect(mousePressEventPoint, QSize()));
                     rubberBand->show();
                 }
             }
-            if (isVisible(newCurPos, false)) {
+            if (isVisible(mouseMoveViewPos, false)) {
                 ui->getScrollController()->stopSmoothScrolling();
             } else {
                 ScrollController::Directions direction = ScrollController::None;
-                if (newCurPos.x() < ui->getScrollController()->getFirstVisibleBase(false)) {
+                if (mouseMoveViewPos.x() < ui->getScrollController()->getFirstVisibleBase(false)) {
                     direction |= ScrollController::Left;
-                } else if (newCurPos.x() > ui->getScrollController()->getLastVisibleBase(width(), false)) {
+                } else if (mouseMoveViewPos.x() > ui->getScrollController()->getLastVisibleBase(width(), false)) {
                     direction |= ScrollController::Right;
                 }
 
-                if (newCurPos.y() < ui->getScrollController()->getFirstVisibleRowNumber(false)) {
+                if (mouseMoveViewPos.y() < ui->getScrollController()->getFirstVisibleRowNumber(false)) {
                     direction |= ScrollController::Up;
-                } else if (newCurPos.y() > ui->getScrollController()->getLastVisibleRowNumber(height(), false)) {
+                } else if (mouseMoveViewPos.y() > ui->getScrollController()->getLastVisibleRowNumber(height(), false)) {
                     direction |= ScrollController::Down;
                 }
                 ui->getScrollController()->scrollSmoothly(direction);
@@ -1178,11 +1175,11 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
 
         Qt::CursorShape shape = cursor().shape();
         if (shape != Qt::ArrowCursor) {
-            moveBorder(p);
+            moveBorder(mouseMoveEventPoint);
         } else if (shifting && editingEnabled) {
-            shiftSelectedRegion(newCurPos.x() - editor->getCursorPosition().x());
+            shiftSelectedRegion(mouseMoveViewPos.x() - editor->getCursorPosition().x());
         } else if (selecting) {
-            rubberBand->setGeometry(QRect(rubberBandOrigin, p).normalized());
+            rubberBand->setGeometry(QRect(mousePressEventPoint, mouseMoveEventPoint).normalized());
         }
     } else {
         setBorderCursor(event->pos());

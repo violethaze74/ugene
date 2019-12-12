@@ -341,10 +341,10 @@ int ScrollController::getLastVisibleRowNumber(int widgetHeight, bool countClippe
     return lastVisibleRowNumber - (removeClippedRow ? 1 : 0);
 }
 
-QPoint ScrollController::getMaPointByScreenPoint(const QPoint &point) const {
-    const int columnNumber = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
+QPoint ScrollController::getViewPosByScreenPoint(const QPoint &point) const {
+    int columnNumber = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
     int rowNumber = ui->getRowHeightController()->getViewRowIndexByScreenYPosition(point.y());
-    if (-1 == rowNumber) {
+    if (rowNumber == -1) {
         rowNumber = ui->getCollapseModel()->getViewRowCount();
     }
     return QPoint(columnNumber, rowNumber);

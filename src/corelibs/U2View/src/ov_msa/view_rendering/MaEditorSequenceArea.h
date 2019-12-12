@@ -193,7 +193,7 @@ protected slots:
     virtual void sl_modelChanged();
 
 private slots:
-    void sl_hScrollBarActionPerfermed();
+    void sl_hScrollBarActionPerformed();
 
 private:
     void setBorderCursor(const QPoint& p);
@@ -321,9 +321,18 @@ protected:
     bool                shifting;
     bool                selecting;
     Qt::MouseButton     prevPressedButton;
-    QPoint              rubberBandOrigin; // global window coordinates
-    MaEditorSelection   selection; // selection with rows indexes in collapsible model coordinates
-    MaEditorSelection   baseSelection; // selection with rows indexes in absolute coordinates
+
+    /* Last mouse press point. Global window coordinates. */
+    QPoint              mousePressEventPoint;
+    /*
+     * Last mouse press point in view rows/columns coordinates.
+     * May be out of range if clicked out of the view/rows range.
+     */
+    QPoint              mousePressViewPos;
+    /** Current selection with view rows/column coordinates. */
+    MaEditorSelection   selection;
+    /** Current selection with MA row/column coordinates with no collapsible module info. */
+    MaEditorSelection   baseSelection;
 
     int                 maVersionBeforeShifting;
     SelectionModificationHelper::MovableSide movableBorder;
