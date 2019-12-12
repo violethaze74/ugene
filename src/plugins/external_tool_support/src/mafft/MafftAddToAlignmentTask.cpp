@@ -210,9 +210,16 @@ void MafftAddToAlignmentTask::run() {
 
     int posInMsa = 0;
     int objectsCount = tmpDoc->getObjects().count();
+    bool hasDbiUpdates = false;
 
-    dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
+    U2AlphabetId currentAlphabet = dbi->getMsaAlphabet(settings.msaRef.entityId, stateInfo);
     CHECK_OP(stateInfo, );
+
+    if (currentAlphabet != settings.alphabet) {
+        hasDbiUpdates = true;
+        dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
+        CHECK_OP(stateInfo, );
+    }
     QMap<QString, qint64> uniqueNamesToIds;
     foreach (const MultipleSequenceAlignmentRow& refRow, inputMsa->getMsaRows()) {
         uniqueNamesToIds[refRow->getName()] = refRow->getRowId();
@@ -245,6 +252,7 @@ void MafftAddToAlignmentTask::run() {
             }
 
             if (rowWasAdded) {
+                hasDbiUpdates = true;
                 dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
                 CHECK_OP(stateInfo, );
             } else {
@@ -259,8 +267,16 @@ void MafftAddToAlignmentTask::run() {
                 CHECK_OP(stateInfo, );
             }
 
-            dbi->updateGapModel(settings.msaRef.entityId, rowId, row.gaps, stateInfo);
+            U2MsaRow currentRow = dbi->getRow(settings.msaRef.entityId, rowId, stateInfo);
             CHECK_OP(stateInfo, );
+            U2MsaRowGapModel modelToChop(currentRow.gaps);
+            MsaRowUtils::chopGapModel(modelToChop, row.length);
+
+            if (modelToChop != row.gaps) {
+                hasDbiUpdates = true;
+                dbi->updateGapModel(settings.msaRef.entityId, rowId, row.gaps, stateInfo);
+                CHECK_OP(stateInfo, );
+            }
         }
 
         if (additionalModificationPerformed) {
@@ -277,8 +293,10 @@ void MafftAddToAlignmentTask::run() {
                                 .arg(unalignedSequences.join("\", \"")));
     }
 
-    MsaDbiUtils::trim(settings.msaRef, stateInfo);
-    CHECK_OP(stateInfo, );
+    if (hasDbiUpdates) {
+        MsaDbiUtils::trim(settings.msaRef, stateInfo);
+        CHECK_OP(stateInfo, );
+    }
 
     if (hasError()) {
         return;

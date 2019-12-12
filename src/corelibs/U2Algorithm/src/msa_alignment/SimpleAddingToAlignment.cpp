@@ -75,15 +75,28 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
     U2MsaDbi *dbi = modStep.getDbi()->getMsaDbi();
     int posInMsa = inputMsa->getNumRows();
+    bool hasDbiUpdates = false;
 
-
-    dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
+    U2AlphabetId currentAlphabetId = dbi->getMsaAlphabet(settings.msaRef.entityId, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
+
+    if (currentAlphabetId != settings.alphabet) {
+        hasDbiUpdates = true;
+        dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
+        CHECK_OP(stateInfo, ReportResult_Finished);
+    }
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
 
     const QList<qint64> rowsIds = inputMsa->getRowsIds();
     const U2MsaListGapModel msaGapModel = inputMsa->getGapModel();
     for (int i = 0; i < inputMsa->getNumRows(); i++) {
+        U2MsaRow row = dbi->getRow(settings.msaRef.entityId, rowsIds[i], stateInfo);
+        CHECK_OP(stateInfo, ReportResult_Finished);
+        U2MsaRowGapModel modelToChop(msaGapModel[i]);
+        MsaRowUtils::chopGapModel(modelToChop, row.length);
+        CHECK_CONTINUE(modelToChop != row.gaps);
+
+        hasDbiUpdates = true;
         MaDbiUtils::updateRowGapModel(settings.msaRef, rowsIds[i], msaGapModel[i], stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
     }
@@ -96,6 +109,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
         CHECK_OP(stateInfo, ReportResult_Finished);
 
         if (row.length != 0) {
+            hasDbiUpdates = true;
             dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
             CHECK_OP(stateInfo, ReportResult_Finished);
             posInMsa++;
@@ -103,7 +117,14 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
             if (sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
                 QList<U2MsaGap> gapModel;
                 gapModel << U2MsaGap(0, sequencePositions[seqName]);
-                dbi->updateGapModel(settings.msaRef.entityId, row.rowId, gapModel, stateInfo);
+                U2MsaRow msaRow = dbi->getRow(settings.msaRef.entityId, row.rowId, stateInfo);
+                CHECK_OP(stateInfo, ReportResult_Finished);
+
+                if (msaRow.gaps != gapModel) {
+                    hasDbiUpdates = true;
+                    dbi->updateGapModel(settings.msaRef.entityId, msaRow.rowId, gapModel, stateInfo);
+                    CHECK_OP(stateInfo, ReportResult_Finished);
+                }
             }
         } else {
             unalignedSequences << seqName;
@@ -116,7 +137,9 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
                                 .arg(unalignedSequences.join("\", \"")));
     }
 
-    MsaDbiUtils::trim(settings.msaRef, stateInfo);
+    if (hasDbiUpdates) {
+        MsaDbiUtils::trim(settings.msaRef, stateInfo);
+    }
     CHECK_OP(stateInfo, ReportResult_Finished);
 
     return ReportResult_Finished;
