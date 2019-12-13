@@ -769,7 +769,9 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
         return;
     }
 
+    ui->setCollapsibleMode(enabled);
     collapseModeUpdateAction->setEnabled(enabled);
+
     if (enabled) {
         sl_updateCollapsingMode();
     } else {

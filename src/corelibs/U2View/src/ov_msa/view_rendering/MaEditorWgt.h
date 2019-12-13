@@ -83,7 +83,8 @@ public:
 
     // SANGER_TODO: should be muted in case of chromatogram (crutch!)
     // the best is to store it in the MCA widget, of course
-    bool isCollapsibleMode() const;
+    bool isCollapsibleMode() const { return collapsibleMode; }
+    void setCollapsibleMode(bool collapse) { collapsibleMode = collapse; }
     MaCollapseModel* getCollapseModel() const { return collapseModel; }
 
     QWidget* getHeaderWidget() const { return seqAreaHeader; }
