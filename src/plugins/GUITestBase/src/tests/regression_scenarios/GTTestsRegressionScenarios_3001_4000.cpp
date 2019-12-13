@@ -1502,7 +1502,7 @@ GUI_TEST_CLASS_DEFINITION(test_3226) {
     GTKeyboardUtils::copy(os);
     //GTWidget::click(os, GTAction::button(os, "Copy action"));
     GTKeyboardUtils::paste(os);
-   
+
     //4. Save the workflow.
     QString path = sandBoxDir + "test_3226_workflow.uwl";
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, path, ""));

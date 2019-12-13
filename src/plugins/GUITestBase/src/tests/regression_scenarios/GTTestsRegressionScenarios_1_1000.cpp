@@ -1350,7 +1350,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTGlobals::sleep(500);
 
-   
+
     QTreeWidget* w = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os,"WorkflowPaletteElements"));
     CHECK_SET_ERR(w != NULL,"WorkflowPaletteElements is null");
 
@@ -1392,7 +1392,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "test_0768"));
     GTMouseDriver::click();
 
-    GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "xyz", "Syntax is OK!"));   
+    GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "xyz", "Syntax is OK!"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit script of the element...", GTGlobals::UseMouse);
 }
 

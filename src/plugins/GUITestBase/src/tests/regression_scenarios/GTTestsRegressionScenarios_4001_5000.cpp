@@ -729,10 +729,10 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
- 
-    //remove  longest sequence "MGLR3_Magnaporthe_grisea_AF314" for test stability      
+
+    //remove  longest sequence "MGLR3_Magnaporthe_grisea_AF314" for test stability
     GTUtilsMsaEditor::removeRows(os, 14, 14);
-   
+
     parent = GTWidget::findWidget(os, "fungal - all [m] fungal - all", GTWidget::findWidget(os, "fungal - all [m] fungal - all_SubWindow"));
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area for fungal-all.aln");
@@ -6123,7 +6123,7 @@ GUI_TEST_CLASS_DEFINITION(test_4990) {
 GUI_TEST_CLASS_DEFINITION(test_4996) {
     // 1. Open "_common_data/fasta/fa1.fa".
     // 2. Open "Search in sequence" options panel tab. Select "RegExp" algorithm.
-    // 3. Enter next regexp: (   
+    // 3. Enter next regexp: (
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "fa1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -6137,22 +6137,22 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
     GTWidget::click(os, textPattern);
     GTKeyboardDriver::keyClick( '(');
     GTGlobals::sleep();
-    
+
    // Expected state: the pattern enter field becomes red.
-    
+
     QTextEdit* editPatterns = GTWidget::findExactWidget<QTextEdit*>(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
     CHECK_SET_ERR(style0 == "background-color: rgb(255, 152, 142);", "unexpected styleSheet: " + style0);
-        
+
     //Remove entered pattern, enter a valid pattern:
     //.
-    
+
     QWidget *textPattern1 = GTWidget::findWidget(os, "textPattern");
     GTWidget::click(os, textPattern1);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTKeyboardDriver::keyClick( '.');
     GTGlobals::sleep();
-    
+
     QString style1 = editPatterns->styleSheet();
     CHECK_SET_ERR(style1 == "background-color: white;", "unexpected styleSheet: " + style1);
 }

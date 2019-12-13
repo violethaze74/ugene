@@ -86,7 +86,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 //    Expected state: background for symbols must be:
 //    A - yellow    G - blue    T - red    C - green    gap - no backround
     //check A
-    checkColor(os, QPoint(0, 1), "#fdff6a", 5); 
+    checkColor(os, QPoint(0, 1), "#fdff6a", 5);
 
     //check G
     checkColor(os,QPoint(2, 2), "#2aa1e1");

@@ -57,7 +57,7 @@ RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenc
 
     CreateSubalignmentSettings settings;
     settings.window = U2Region(0, msaObject->getLength());
-    
+
     QList<qint64> rowsToKeepIds = msaObject->getMultipleAlignment()->getRowsIds();
     QSet<qint64> clonedObjectRowsToAlignIds;
     foreach(const qint64 idToRemove, rowsToAlignIds) {
@@ -76,7 +76,7 @@ RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenc
     }
 
     extractedSequencesDirUrl = path + "/tmp" + GUrlUtils::fixFileName(QUuid::createUuid().toString());
-    dir = QDir(extractedSequencesDirUrl);    
+    dir = QDir(extractedSequencesDirUrl);
     dir.mkpath(extractedSequencesDirUrl);
 
     extractSequences = new ExportSequencesTask(msaObject->getMsa(), clonedObjectRowsToAlignIds, false, false, extractedSequencesDirUrl, BaseDocumentFormats::FASTA, "fa");
@@ -99,7 +99,7 @@ U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
         tmpDir.remove(file);
     }
     tmpDir.rmdir(tmpDir.absolutePath());
-    
+
     DbiConnection con(msaObject->getEntityRef().dbiRef, stateInfo);
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
     CHECK(con.dbi->getFeatures().contains(U2DbiFeature_RemoveObjects), Task::ReportResult_Finished);
@@ -111,7 +111,7 @@ U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
 QList<Task*> RealignSequencesInAlignmentTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     CHECK_OP(stateInfo, res);
-    
+
     if (subTask == extractSequences) {
         QList<int> rowPosToRemove;
         foreach(qint64 idToRemove, rowsToAlignIds) {

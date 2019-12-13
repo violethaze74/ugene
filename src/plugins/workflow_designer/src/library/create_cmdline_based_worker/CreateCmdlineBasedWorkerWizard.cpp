@@ -321,7 +321,7 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initializePage() {
                 QMessageBox::Close));
             warningBox->exec();
             rbCustomTool->setChecked(true);
-        } else if (!initialConfig->integratedToolId.isEmpty()) { 
+        } else if (!initialConfig->integratedToolId.isEmpty()) {
             cbIntegratedTools->setDefaultMenuValue(initialConfig->integratedToolId);
         }
     } else {
@@ -883,7 +883,7 @@ void CreateCmdlineBasedWorkerWizardSummaryPage::showEvent(QShowEvent * /*event*/
 const QString ExternalToolSelectComboBox::SHOW_ALL_TOOLS = "SHOW_ALL";
 const QString ExternalToolSelectComboBox::SHOW_CUSTOM_TOOLS = "SHOW_CUSTOM";
 
-ExternalToolSelectComboBox::ExternalToolSelectComboBox(QWidget* parent) 
+ExternalToolSelectComboBox::ExternalToolSelectComboBox(QWidget* parent)
     : QComboBox(parent) {
     initExternalTools();
     initPopupMenu();

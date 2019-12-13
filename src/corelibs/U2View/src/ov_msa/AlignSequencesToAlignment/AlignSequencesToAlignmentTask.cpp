@@ -287,7 +287,7 @@ void AlignSequencesToAlignmentTask::fillSettingsByDefault() {
         } else {
             settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
         }
-    }    
+    }
     settings.addAsFragments = sequencesMaxLength < 100 && maObj->getLength() / sequencesMaxLength > 3;
     settings.msaRef = maObj->getEntityRef();
     settings.inNewWindow = false;

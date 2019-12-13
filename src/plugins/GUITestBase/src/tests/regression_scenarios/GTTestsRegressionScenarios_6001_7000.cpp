@@ -1855,7 +1855,7 @@ GUI_TEST_CLASS_DEFINITION(test_6262) {
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
     GTUtilsWorkflowDesigner::click(os, element1);
     CHECK_SET_ERR(!GTGroupBox::getChecked(os, "outputPortBox"), "Output Ports table isn't closed");
-    
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6277) {

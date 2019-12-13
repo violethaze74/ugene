@@ -72,7 +72,7 @@ void GTest_Realign::prepare() {
         stateInfo.setError(QString("context not found %1").arg(inputObjectName));
         return;
     }
-    
+
     QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));

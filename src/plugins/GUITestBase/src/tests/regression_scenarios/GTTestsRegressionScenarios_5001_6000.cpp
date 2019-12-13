@@ -555,24 +555,24 @@ GUI_TEST_CLASS_DEFINITION(test_5130) {
         MaEditorNameList* nameListWidget = msaWidget->getEditorNameList();
         MaEditorConsensusArea* consWidget = msaWidget->getConsensusArea();
         MaEditorSequenceArea* seqAreaWidget = msaWidget->getSequenceArea();
-        
+
         QFont nameListFontBefore = nameListWidget->getFont(false);
         nameListFontBefore.setItalic(false);
-        
+
         //    2. press "change font button" on toolbar
         GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
         QAbstractButton* change_font = GTAction::button(os,"Change Font");
         GTWidget::click(os,change_font);
         GTGlobals::sleep(500);
-        
+
         QFont nameListFontAfter = nameListWidget->getFont(false);
         nameListFontAfter.setItalic(false);
         QFont consFontAfter = consWidget->getDrawSettings().font;
         QFont seqAreaFontAfter = seqAreaWidget->getFont();
-   
+
         CHECK_SET_ERR(nameListFontBefore != nameListFontAfter,"Expected fonts to be NOT equal");
         CHECK_SET_ERR(nameListFontAfter == consFontAfter && consFontAfter == seqAreaFontAfter,
-                      "Expected fonts to be equal: NameList: "+nameListFontAfter.toString() + 
+                      "Expected fonts to be equal: NameList: "+nameListFontAfter.toString() +
                       ", Cons: " + consFontAfter.toString() + ", SeqArea: " + seqAreaFontAfter.toString());
 
 }
@@ -1398,7 +1398,7 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
 GUI_TEST_CLASS_DEFINITION(test_5382) {
     //1. Open an alignment.
     GTLogTracer l;
-    
+
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4870,24 +4870,24 @@ GUI_TEST_CLASS_DEFINITION(test_5950) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5970) {
-    
+
     //1. Open "_common_data/clustal/amino_from_wikipedia.aln".
-    
+
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/amino_from_wikipedia.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     //2. Expected state: it has the "Standard amino acid alphabet" (see the "General" OP tab).
     const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
     CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not Amino!");
-    
+
     //3. Select (8; 1) (8; 3) rectangle.
-    
+
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 0), QPoint(7, 2));
-    
+
     //4. Press Ctrl + C.
     GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    
+
     //5. Press Ctrl + V.
     GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
