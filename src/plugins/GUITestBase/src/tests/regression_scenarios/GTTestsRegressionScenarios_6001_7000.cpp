@@ -3694,6 +3694,9 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
 
     //Also, an error it the log appears:The following sequence(s) were not aligned as they do not contain meaningful characters: "seq2", "seq4".
     GTUtilsLog::checkContainsError(os, lt, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
+
+    //The "Undo" button is enabled
+    CHECK_SET_ERR(GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is disabled, but shouldn't be");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_2) {
@@ -3724,6 +3727,9 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
 
     //Also, an error it the log appears:The following sequence(s) were not aligned as they do not contain meaningful characters: "seq2", "seq4".
     GTUtilsLog::checkContainsError(os, lt, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
+
+    //The "Undo" button is enabled
+    CHECK_SET_ERR(GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is disabled, but shouldn't be");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_3) {
@@ -3753,6 +3759,12 @@ GUI_TEST_CLASS_DEFINITION(test_6628_3) {
 
     //Also, an error it the log appears: The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".
     GTUtilsLog::checkContainsError(os, lt, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
+
+    //The "Undo" button is disabled
+    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enebled< but shouldn't be");
+
+    //The "Undo" button is enabled
+    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is disabled, but shouldn't be")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_4) {
@@ -3782,6 +3794,9 @@ GUI_TEST_CLASS_DEFINITION(test_6628_4) {
 
     //Also, an error it the log appears: The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".
     GTUtilsLog::checkContainsError(os, lt, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
+
+    //The "Undo" button is disabled
+    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enebled, but shouldn't be");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_5) {
@@ -3808,6 +3823,9 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
 
     //but the error notification is the following: Data from the "empty-file.fa" file can't be alignment to the "COI" alignment - the file is empty.
     GTUtilsLog::checkContainsError(os, lt, "Task {Load sequences and add to alignment task} finished with error: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
+
+    //The "Undo" button is disabled
+    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enebled, but shouldn't be");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_6) {
@@ -3834,6 +3852,9 @@ GUI_TEST_CLASS_DEFINITION(test_6628_6) {
 
     //but the error notification is the following: Data from the "empty-file.fa" file can't be alignment to the "COI" alignment - the file format is invalid.
     GTUtilsLog::checkContainsError(os, lt, "Task {Load sequences and add to alignment task} finished with error: Data from the \"incorrect_fasta_header_only.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
+
+    //The "Undo" button is disabled
+    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enebled, but shouldn't be");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_7) {
@@ -3860,6 +3881,9 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
 
     //but the error notification is the following: Data from the "empty-file.fa" file can't be alignment to the "COI" alignment - the file format is invalid.
     GTUtilsLog::checkContainsError(os, lt, "Task {Load sequences and add to alignment task} finished with error: Data from the \"incorrect_multifasta_with_empty_seq.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
+
+    //The "Undo" button is disabled
+    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enebled, but shouldn't be");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6636) {
