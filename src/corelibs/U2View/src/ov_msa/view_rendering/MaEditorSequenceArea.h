@@ -122,7 +122,6 @@ public:
     U2Region getMaRowsExtendedToCollapsibleGroups(const U2Region& viewRowsRegion) const;
 
     QString getCopyFormattedAlgorithmId() const;
-    void setCopyFormattedAlgorithmId(const QString& algoId);
 
     virtual void deleteCurrentSelection();
 

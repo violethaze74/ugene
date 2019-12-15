@@ -45,7 +45,7 @@ GUITestThread::GUITestThread(HI::GUITest *test, Logger &log, bool _needCleanup) 
     test(test),
     log(log),
     needCleanup(_needCleanup),
-    testResult("Not runned")
+    testResult("Not run")
 {
     SAFE_POINT(NULL != test, "GUITest is NULL", );
 }

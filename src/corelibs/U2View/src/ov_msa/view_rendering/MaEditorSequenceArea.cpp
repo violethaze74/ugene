@@ -346,15 +346,15 @@ U2Region MaEditorSequenceArea::getMaRowsExtendedToCollapsibleGroups(const U2Regi
     int startIdx = viewRowsRegion.startPos;
     int endIdx = viewRowsRegion.startPos + viewRowsRegion.length - 1;
     int viewRowCount = collapseModel->getViewRowCount();
-    const MaCollapsibleGroup* startIdxGroup = collapseModel->getCollapsibleGroup(startIdx);
-    const MaCollapsibleGroup* endIdxGroup = collapseModel->getCollapsibleGroup(endIdx);
+    int startGroupIdx = collapseModel->getCollapsibleGroupIndexByViewRowIndex(startIdx);
+    int endGroupIdx = collapseModel->getCollapsibleGroupIndexByViewRowIndex(endIdx);
 
-    while (startIdx > 0 && startIdxGroup != NULL &&
-           startIdxGroup == collapseModel->getCollapsibleGroup(startIdx - 1)) {
+    while (startIdx > 0 && startGroupIdx != -1 &&
+           startGroupIdx == collapseModel->getCollapsibleGroupIndexByViewRowIndex(startIdx - 1)) {
         startIdx--;
     }
-    while (endIdx < viewRowCount - 1 && endIdxGroup != NULL &&
-           endIdxGroup == collapseModel->getCollapsibleGroup(endIdx + 1)) {
+    while (endIdx < viewRowCount - 1 && endGroupIdx != -1 &&
+           endGroupIdx == collapseModel->getCollapsibleGroupIndexByViewRowIndex(endIdx + 1)) {
         endIdx++;
     }
     return ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(U2Region(startIdx, endIdx - startIdx + 1));
@@ -364,11 +364,6 @@ U2Region MaEditorSequenceArea::getMaRowsExtendedToCollapsibleGroups(const U2Regi
 QString MaEditorSequenceArea::getCopyFormattedAlgorithmId() const{
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, BaseDocumentFormats::CLUSTAL_ALN).toString();
 }
-
-void MaEditorSequenceArea::setCopyFormattedAlgorithmId(const QString& algoId){
-    AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, algoId);
-}
-
 
 void MaEditorSequenceArea::deleteCurrentSelection() {
     CHECK(getEditor() != NULL, );
@@ -838,7 +833,7 @@ void MaEditorSequenceArea::sl_changeColorSchemeOutside(const QString &id) {
 }
 
 void MaEditorSequenceArea::sl_changeCopyFormat(const QString& alg){
-    setCopyFormattedAlgorithmId(alg);
+    AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, alg);
 }
 
 void MaEditorSequenceArea::sl_changeColorScheme() {
