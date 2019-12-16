@@ -5862,22 +5862,21 @@ GUI_TEST_CLASS_DEFINITION(test_1588) {
 //    4. Go to dashboard, click "External tools" button
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
 //    Expected state: A tree appeared, it contains information about every tool launch including errors
-    HIWebElement topHat = GTUtilsDashboard::findElement(os, "TopHat run 1", "SPAN");
-    GTUtilsDashboard::findElement(os, "Cufflinks run 1", "SPAN");
+    HIWebElement topHat = GTUtilsDashboard::findElement(os, "TopHat run", "SPAN");
+    GTUtilsDashboard::findElement(os, "Cufflinks run", "SPAN");
 
-    GTUtilsDashboard::click(os, topHat);
-    GTUtilsDashboard::findElement(os, "Run info", "SPAN");
-    GTUtilsDashboard::findElement(os, "Executable file", "SPAN");
-    GTUtilsDashboard::findElement(os, "Arguments", "SPAN");
-    GTUtilsDashboard::findElement(os, "Error log", "SPAN");
-    GTUtilsDashboard::findElement(os, "--mate-inner-dist 50", "LI", false);
+    GTUtilsDashboard::click(os, topHat); 
+    GTUtilsDashboard::findElement(os, "Output log (stderr)", "SPAN");
+/*   
 #ifdef Q_OS_MAC
     GTUtilsDashboard::findElement(os, "tophat-2.0.9", "SPAN", false);
 #else
     GTUtilsDashboard::findElement(os, "tophat-2.0.8b", "SPAN", false);
 #endif
     GTUtilsDashboard::findElement(os, "Beginning TopHat run", "LI", false);
+*/
 }
+
 
 GUI_TEST_CLASS_DEFINITION( test_1594 ) {
 //    1. Create a WD scheme: Read Annotations -> MACS.
