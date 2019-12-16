@@ -6128,6 +6128,7 @@ GUI_TEST_CLASS_DEFINITION(test_1600_7) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 //    Expected state: New gaps have been added, collapsible item has retained
     QString seq = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Phaneroptera_falcata");
     CHECK_SET_ERR(seq == "-AAG-CTTCTTTTAA", "unexpected sequence1: " + seq);
@@ -6138,6 +6139,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_7) {
     GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, QPoint(0, 1), QPoint(1, 1));
 
 //    Expected state: New gaps have been added, collapsible item has retained
+    
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     seq = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Isophya_altaica_EF540820");
     CHECK_SET_ERR(seq == "-AAG-TTACTAA---", "unexpected sequence1: " + seq);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off 2");
@@ -6158,6 +6161,7 @@ GUI_TEST_CLASS_DEFINITION( test_1600_8 ){
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,0));
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //    Expected state: Selected area has been removed, collapsible item has retained
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     QString seq = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Phaneroptera_falcata");
     CHECK_SET_ERR(seq == "AG-CTTCTTTTAA-", "unexpected sequence1: " + seq);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off 1");
