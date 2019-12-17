@@ -40,9 +40,13 @@ win32-msvc2015 {
 	DEFINES += _XKEYCHECK_H
 }
 
-macx {
-    QMAKE_RPATHDIR += @executable_path/
-    QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+unix: {
+    macx: {
+        QMAKE_RPATHDIR += @executable_path/
+        QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+    } else {
+        QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
+    }
 }
 
 #unix {

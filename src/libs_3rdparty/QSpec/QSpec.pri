@@ -34,6 +34,7 @@ DESTDIR = ../../$$out_dir()
 unix {
     !macx {
         LIBS += -lXtst
+        QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
     }
     macx {
         QMAKE_LFLAGS += -framework ApplicationServices
