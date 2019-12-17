@@ -113,11 +113,15 @@ void MaCollapseModel::collapseAll(bool collapse) {
 }
 
 void MaCollapseModel::toggle(int viewRowIndex) {
-    emit si_aboutToBeToggled();
     QVector<int>::ConstIterator i = qBinaryFind(positions, viewRowIndex);
     assert(i != positions.constEnd());
-    int index = i - positions.constBegin();
-    triggerItem(index);
+    int groupIndex = i - positions.constBegin();
+    toggleGroup(groupIndex);
+}
+
+void MaCollapseModel::toggleGroup(int groupIndex) {
+    emit si_aboutToBeToggled();
+    triggerItem(groupIndex);
     emit si_toggled();
 }
 

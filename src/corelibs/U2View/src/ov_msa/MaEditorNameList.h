@@ -137,6 +137,13 @@ protected:
 
     void clearSelection();
 
+    /*
+     * Triggers expand collapse on the currently selected set of collapse group headers.
+     *
+     * Returns true if any group was expanded or collapsed as the result of the method call.
+     */
+    bool triggerExpandCollapseOnSelectedRow(bool expand);
+
     QRect calculateTextRect(const U2Region& yRange, bool selected) const;
     QRect calculateButtonRect(const QRect& itemRect) const;
 

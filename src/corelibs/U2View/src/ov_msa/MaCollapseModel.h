@@ -74,6 +74,9 @@ public:
     /* Toggle 'isCollapsed' state for the group at the given row. */
     void toggle(int viewRowIndex);
 
+    /* Toggle 'isCollapsed' state for the group. */
+    void toggleGroup(int collapsibleGroupIndex);
+
     /* Collapse all groups in the view. */
     void collapseAll(bool collapse);
 

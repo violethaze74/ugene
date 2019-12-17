@@ -337,12 +337,20 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         }
         break;
     }
-    case Qt::Key_Left:
-        nhBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
+    case Qt::Key_Left: {
+        // Perform expand action on the collapsed group by default and fallback to the horizontal scrolling
+        if (!triggerExpandCollapseOnSelectedRow(true)) {
+            nhBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
+        }
         break;
-    case Qt::Key_Right:
-        nhBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
+    }
+    case Qt::Key_Right: {
+        // Perform collapse action on the collapsed group by default and fallback to the horizontal scrolling
+        if (!triggerExpandCollapseOnSelectedRow(false)) {
+            nhBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
+        }
         break;
+    }
     case Qt::Key_Home:
         ui->getScrollController()->scrollToEnd(ScrollController::Up);
         break;
@@ -927,6 +935,34 @@ void MaEditorNameList::scrollSelectionToView(bool fromStart) {
     U2Region selection = getSelection();
     int height = ui->getSequenceArea()->height();
     ui->getScrollController()->scrollToRowByNumber(fromStart ? selection.startPos : selection.endPos() - 1, height);
+}
+
+bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool expand) {
+    if (!ui->isCollapsibleMode()) {
+        return false;
+    }
+    U2Region selection = getSelection();
+    if (selection.isEmpty()) {
+        return false;
+    }
+
+    MaCollapseModel* collapseModel = ui->getCollapseModel();
+    QSet<int> collapsibleGroups; // set of collapsible groups to toggle expand/collapse.
+    for (int selectedRowIndex = selection.startPos; selectedRowIndex < selection.endPos(); selectedRowIndex++) {
+        int collapsibleGroupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(selectedRowIndex);
+        if (collapsibleGroupIndex == -1) {
+            continue;
+        }
+        const MaCollapsibleGroup* collapsibleGroup = collapseModel->getCollapsibleGroup(collapsibleGroupIndex);
+        // toggle group only if it changes group state to the state we need.
+        if (collapsibleGroup->isCollapsed != expand) {
+            collapsibleGroups.insert(collapsibleGroupIndex);
+        }
+    }
+    foreach (int groupIndex, collapsibleGroups) {
+        collapseModel->toggleGroup(groupIndex);
+    }
+    return !collapsibleGroups.isEmpty();
 }
 
 } // namespace U2
