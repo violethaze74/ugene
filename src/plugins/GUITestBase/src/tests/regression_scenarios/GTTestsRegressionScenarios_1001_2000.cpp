@@ -5843,40 +5843,6 @@ GUI_TEST_CLASS_DEFINITION(test_1587) {
     CHECK_SET_ERR(outputFile.exists() && outputFile.size() > 0, "Workflow output file is invalid");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_1588) {
-//    1. Open WD
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2. Launch tuxedo pipeline with valid data
-    QMap<QString, QVariant> map;
-    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
-    map.insert("Bowtie index basename", "e_coli");
-    map.insert("Bowtie version", "Bowtie1");
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
-                                                                   "Single-sample"<<"Single-end"));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QStringList()<<testDir +
-                                                      "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq", map));
-    GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
-//    3. Wait for finishing
-    GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-//    4. Go to dashboard, click "External tools" button
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
-//    Expected state: A tree appeared, it contains information about every tool launch including errors
-    HIWebElement topHat = GTUtilsDashboard::findElement(os, "TopHat run", "SPAN");
-    GTUtilsDashboard::findElement(os, "Cufflinks run", "SPAN");
-
-    GTUtilsDashboard::click(os, topHat); 
-    GTUtilsDashboard::findElement(os, "Output log (stderr)", "SPAN");
-/*   
-#ifdef Q_OS_MAC
-    GTUtilsDashboard::findElement(os, "tophat-2.0.9", "SPAN", false);
-#else
-    GTUtilsDashboard::findElement(os, "tophat-2.0.8b", "SPAN", false);
-#endif
-    GTUtilsDashboard::findElement(os, "Beginning TopHat run", "LI", false);
-*/
-}
-
 
 GUI_TEST_CLASS_DEFINITION( test_1594 ) {
 //    1. Create a WD scheme: Read Annotations -> MACS.
