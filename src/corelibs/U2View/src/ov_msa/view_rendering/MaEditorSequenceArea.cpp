@@ -242,7 +242,7 @@ void MaEditorSequenceArea::updateSelection(const QPoint& newPos) {
 }
 
 void MaEditorSequenceArea::updateSelection() {
-    CHECK(!baseSelection.isNull(), );
+    CHECK(!baseSelection.isNull() && baseSelection.height() > 0, );
 
     if (!ui->isCollapsibleMode()) {
         setSelection(baseSelection);
