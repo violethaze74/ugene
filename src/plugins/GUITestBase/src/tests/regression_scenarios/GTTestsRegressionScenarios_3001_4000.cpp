@@ -4627,7 +4627,7 @@ GUI_TEST_CLASS_DEFINITION(test_3710){
 //    3. Select "Phaneroptera_falcata" as the reference sequence.
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
 //    4. Click the Export button.
-    GTUtilsNotifications::waitForNotification(os, false);
+    GTUtilsNotifications::waitForNotification(os, false, "Report for task: 'Export highlighting'");
     GTUtilsDialog::waitForDialog(os, new ExportHighlightedDialogFiller(os, sandBoxDir + "export_test_3710"));
 
     QComboBox* highlightingScheme = GTWidget::findExactWidget<QComboBox*>(os, "highlightingScheme");
@@ -4635,8 +4635,7 @@ GUI_TEST_CLASS_DEFINITION(test_3710){
     GTWidget::click(os, GTWidget::findWidget(os, "exportHighlightning"));
     GTGlobals::sleep();
 //    5. Export.
-//    Current: nothing happens.
-//    Solution: show the notification and report with the output file for the task.
+    CHECK_SET_ERR(GTFile::getSize(os, sandBoxDir + "export_test_3710") != 0, "Exported file is empty!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3715) {
