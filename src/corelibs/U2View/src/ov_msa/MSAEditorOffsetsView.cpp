@@ -199,7 +199,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     int rbw = fm.width(']');
     int pos = showStartPos ? ui->getScrollController()->getFirstVisibleBase(true) : ui->getScrollController()->getLastVisibleBase(seqArea->width(), true);
 
-    QList<int> visibleRows = ui->getDrawHelper()->getVisibleRowsIndexes(height());
+    QList<int> visibleRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
 
     const MultipleAlignment alignment = editor->getMaObject()->getMultipleAlignment();
     U2OpStatusImpl os;

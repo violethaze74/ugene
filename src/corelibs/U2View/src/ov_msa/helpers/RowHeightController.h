@@ -38,7 +38,7 @@ public:
 
     int getMaRowIndexByGlobalYPosition(int y) const;
     int getViewRowIndexByGlobalYPosition(int y) const;
-    int getMaRowIndexByScreenYPosition(int y) const;
+
     int getViewRowIndexByScreenYPosition(int y) const;
 
     int getGlobalYPositionOfTheFirstVisibleRow(bool countClipped) const;
@@ -52,16 +52,13 @@ public:
     U2Region getGlobalYRegionByMaRowIndex(int maRowIndex, const QList<int> &maRowIndexes) const;
     U2Region getGlobalYRegionByViewRowIndex(int viewRowIndex) const;
 
-    U2Region getGlobalYRegionByViewRowIndexRegion(int startViewRowIndex, int count) const;
-    U2Region getGlobalYRegionByMaRowIndexes(const QList<int> &maRowIndexes) const;
+    U2Region getGlobalYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const;
 
     U2Region getScreenYRegionByMaRowIndex(int maRowIndex) const;
-    U2Region getScreenYRegionByMaRowIndex(int maRowIndex, const QList<int> &maRowIndexes, int screenYOrigin) const;
+
     U2Region getScreenYRegionByMaRowIndex(int maRowIndex, int screenYOrigin) const;
 
     U2Region getScreenYRegionByViewRowIndex(int viewRowIndex) const;
-    U2Region getScreenYRegionByViewRowIndex(int viewRowIndex, int screenYOrigin) const;
-    U2Region getScreenYRegionByViewRowIndexes(const U2Region &viewRowIndexes) const;
 
     /* Returns sum of heights of the all view rows. */
     int getTotalAlignmentHeight() const;
@@ -70,6 +67,8 @@ public:
     int getSingleRowHeight() const;
 
 protected:
+    U2Region mapGlobalToScreen(const U2Region& globalRegion) const;
+
     MaEditorWgt *ui;
 };
 

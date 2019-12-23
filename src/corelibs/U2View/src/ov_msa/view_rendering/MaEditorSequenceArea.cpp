@@ -79,6 +79,8 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
       changeTracker(editor->getMaObject()->getEntityRef())
 {
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
+    // show rubber band for selection in MSA editor only
+    showRubberBandOnSelection = qobject_cast<MSAEditor*>(editor) != NULL;
     maMode = ViewMode;
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -163,11 +165,8 @@ int MaEditorSequenceArea::getNumVisibleBases() const {
     return ui->getDrawHelper()->getVisibleBasesCount(width());
 }
 
-int MaEditorSequenceArea::getNumDisplayableSequences() const {
-    CHECK(!isAlignmentEmpty(), 0);
-    MaCollapseModel *model = ui->getCollapseModel();
-    SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
-    return model->getViewRowCount();
+int MaEditorSequenceArea::getViewRowCount() const {
+    return ui->getCollapseModel()->getViewRowCount();
 }
 
 int MaEditorSequenceArea::getRowIndex(const int num) const {
@@ -186,7 +185,7 @@ bool MaEditorSequenceArea::isPosInRange(int position) const {
 }
 
 bool MaEditorSequenceArea::isSeqInRange(int rowNumber) const {
-    return rowNumber >= 0 && rowNumber < getNumDisplayableSequences();
+    return rowNumber >= 0 && rowNumber < getViewRowCount();
 }
 
 bool MaEditorSequenceArea::isInRange(const QPoint &point) const {
@@ -210,7 +209,7 @@ bool MaEditorSequenceArea::isPositionVisible(int position, bool countClipped) co
 
 bool MaEditorSequenceArea::isRowVisible(int rowNumber, bool countClipped) const {
     const int rowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(rowNumber);
-    return ui->getDrawHelper()->getVisibleRowsIndexes(height(), countClipped, countClipped).contains(rowIndex);
+    return ui->getDrawHelper()->getVisibleMaRowIndexes(height(), countClipped, countClipped).contains(rowIndex);
 }
 
 const MaEditorSelection & MaEditorSequenceArea::getSelection() const {
@@ -644,7 +643,7 @@ void MaEditorSequenceArea::onVisibleRangeChanged() {
     const QStringList rowsNames = editor->getMaObject()->getMultipleAlignment()->getRowNames();
     QStringList visibleRowsNames;
 
-    const QList<int> visibleRows =  ui->getDrawHelper()->getVisibleRowsIndexes(height());
+    const QList<int> visibleRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
     foreach (const int rowIndex, visibleRows) {
         SAFE_POINT(rowIndex < rowsNames.size(), QString("Row index is out of rowsNames boundaries: index is %1, size is %2").arg(rowIndex).arg(rowsNames.size()), );
         visibleRowsNames << rowsNames[rowIndex];
@@ -663,7 +662,7 @@ bool MaEditorSequenceArea::isAlignmentLocked() const {
 
 void MaEditorSequenceArea::drawVisibleContent(QPainter& painter) {
     const U2Region basesToDraw = ui->getDrawHelper()->getVisibleBases(width());
-    const QList<int> seqIdx = ui->getDrawHelper()->getVisibleRowsIndexes(height());
+    const QList<int> seqIdx = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
     CHECK(!basesToDraw.isEmpty(), );
     CHECK(!seqIdx.isEmpty(), );
     const int xStart = ui->getBaseWidthController()->getBaseScreenRange(basesToDraw.startPos).startPos;
@@ -878,7 +877,7 @@ void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const 
 
     if (ui->isCollapsibleMode()) {
         updateCollapsedGroups(modInfo);
-        nSeq = getNumDisplayableSequences();
+        nSeq = getViewRowCount();
     }
 
     editor->updateReference();
@@ -1125,61 +1124,60 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
 }
 
 void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
-    if (event->buttons() & Qt::LeftButton) {
-        QPoint mouseMoveEventPoint = event->pos();
-        QPoint mouseMoveViewPos = ui->getScrollController()->getViewPosByScreenPoint(mouseMoveEventPoint);
-        if (isInRange(mousePressViewPos)) {
-            bool isDefaultCursorMode = cursor().shape() == Qt::ArrowCursor;
-            if (!shifting && selection.getRect().contains(mousePressViewPos)
-                && !isAlignmentLocked() && editingEnabled
-                && isDefaultCursorMode) {
-                shifting = true;
-                maVersionBeforeShifting = editor->getMaObject()->getModificationVersion();
-                U2OpStatus2Log os;
-                changeTracker.startTracking(os);
-                CHECK_OP(os, );
-                editor->getMaObject()->saveState();
-                emit si_startMaChanging();
-            }
-            if (!shifting && !selecting) {
-                selecting = true;
-                bool isMSAEditor = (qobject_cast<MSAEditor*>(getEditor()) != NULL);
-                if (isMSAEditor) {
-                    rubberBand->setGeometry(QRect(mousePressEventPoint, QSize()));
-                    rubberBand->show();
-                }
-            }
-            if (isVisible(mouseMoveViewPos, false)) {
-                ui->getScrollController()->stopSmoothScrolling();
-            } else {
-                ScrollController::Directions direction = ScrollController::None;
-                if (mouseMoveViewPos.x() < ui->getScrollController()->getFirstVisibleBase(false)) {
-                    direction |= ScrollController::Left;
-                } else if (mouseMoveViewPos.x() > ui->getScrollController()->getLastVisibleBase(width(), false)) {
-                    direction |= ScrollController::Right;
-                }
-
-                if (mouseMoveViewPos.y() < ui->getScrollController()->getFirstVisibleRowNumber(false)) {
-                    direction |= ScrollController::Up;
-                } else if (mouseMoveViewPos.y() > ui->getScrollController()->getLastVisibleRowNumber(height(), false)) {
-                    direction |= ScrollController::Down;
-                }
-                ui->getScrollController()->scrollSmoothly(direction);
-            }
-        }
-
-        Qt::CursorShape shape = cursor().shape();
-        if (shape != Qt::ArrowCursor) {
-            moveBorder(mouseMoveEventPoint);
-        } else if (shifting && editingEnabled) {
-            shiftSelectedRegion(mouseMoveViewPos.x() - editor->getCursorPosition().x());
-        } else if (selecting) {
-            rubberBand->setGeometry(QRect(mousePressEventPoint, mouseMoveEventPoint).normalized());
-        }
-    } else {
+    if (!(event->buttons() & Qt::LeftButton)) {
         setBorderCursor(event->pos());
+        QWidget::mouseMoveEvent(event);
+        return;
     }
 
+    QPoint mouseMoveEventPoint = event->pos();
+    ScrollController* scrollController = ui->getScrollController();
+    QPoint mouseMoveViewPos = scrollController->getViewPosByScreenPoint(mouseMoveEventPoint);
+    if (isInRange(mouseMoveViewPos)) {
+        bool isDefaultCursorMode = cursor().shape() == Qt::ArrowCursor;
+        if (!shifting && selection.getRect().contains(mousePressViewPos)
+            && !isAlignmentLocked() && editingEnabled && isDefaultCursorMode) {
+            shifting = true;
+            maVersionBeforeShifting = editor->getMaObject()->getModificationVersion();
+            U2OpStatus2Log os;
+            changeTracker.startTracking(os);
+            CHECK_OP(os,);
+            editor->getMaObject()->saveState();
+            emit si_startMaChanging();
+        }
+        selecting = !shifting;
+        if (selecting && showRubberBandOnSelection && !rubberBand->isVisible()) {
+            rubberBand->setGeometry(QRect(mousePressEventPoint, QSize()));
+            rubberBand->show();
+        }
+        if (isVisible(mouseMoveViewPos, false)) {
+            scrollController->stopSmoothScrolling();
+        } else {
+            ScrollController::Directions direction = ScrollController::None;
+            if (mouseMoveViewPos.x() < scrollController->getFirstVisibleBase(false)) {
+                direction |= ScrollController::Left;
+            } else if (mouseMoveViewPos.x() > scrollController->getLastVisibleBase(width(), false)) {
+                direction |= ScrollController::Right;
+            }
+
+            if (mouseMoveViewPos.y() < scrollController->getFirstVisibleViewRowIndex(false)) {
+                direction |= ScrollController::Up;
+            } else if (mouseMoveViewPos.y() > scrollController->getLastVisibleViewRowIndex(height(), false)) {
+                direction |= ScrollController::Down;
+            }
+            scrollController->scrollSmoothly(direction);
+        }
+    }
+
+    Qt::CursorShape shape = cursor().shape();
+    if (shape != Qt::ArrowCursor) {
+        moveBorder(mouseMoveEventPoint);
+    } else if (shifting && editingEnabled) {
+        shiftSelectedRegion(mouseMoveViewPos.x() - editor->getCursorPosition().x());
+    } else if (selecting && showRubberBandOnSelection) {
+        rubberBand->setGeometry(QRect(mousePressEventPoint, mouseMoveEventPoint).normalized());
+        rubberBand->show();
+    }
     QWidget::mouseMoveEvent(event);
 }
 
@@ -1325,7 +1323,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                     }
                     MaEditorSelection _selection(firstColumn, startSeq, width, height);
                     setSelection(_selection);
-                    ui->getScrollController()->scrollToRowByNumber(endY, this->height());
+                    ui->getScrollController()->scrollToViewRow(endY, this->height());
                 }
             }
             break;
@@ -1351,7 +1349,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                     }
                     MaEditorSelection _selection(firstColumn, startSeq, width, height);
                     setSelection(_selection);
-                    ui->getScrollController()->scrollToRowByNumber(endY, this->height());
+                    ui->getScrollController()->scrollToViewRow(endY, this->height());
                 }
             }
             break;
@@ -1376,7 +1374,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
             if (shift) {
                 // vertical scrolling
                 ui->getScrollController()->scrollToEnd(ScrollController::Down);
-                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), getNumDisplayableSequences() - 1));
+                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), getViewRowCount() - 1));
             } else {
                 // horizontal scrolling
                 ui->getScrollController()->scrollToEnd(ScrollController::Right);

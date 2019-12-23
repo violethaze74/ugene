@@ -129,10 +129,10 @@ void GTUtilsMSAEditorSequenceArea::selectArea(GUITestOpStatus &os, QPoint p1, QP
     GT_CHECK(sequenceArea != NULL, "MsaEditorSequenceArea not found");
 
     p1.rx() = (p1.x() == -1 ? sequenceArea->getNumVisibleBases() - 1 : p1.x());
-    p1.ry() = (p1.y() == -1 ? sequenceArea->getNumDisplayableSequences() - 1 : p1.y());
+    p1.ry() = (p1.y() == -1 ? sequenceArea->getViewRowCount() - 1 : p1.y());
 
     p2.rx() = (p2.x() == -1 ? sequenceArea->getNumVisibleBases() - 1 : p2.x());
-    p2.ry() = (p2.y() == -1 ? sequenceArea->getNumDisplayableSequences() - 1 : p2.y());
+    p2.ry() = (p2.y() == -1 ? sequenceArea->getViewRowCount() - 1 : p2.y());
 
     switch (method) {
     case GTGlobals::UseKey:
@@ -172,7 +172,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     GT_CHECK(msaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(position.x()).arg(position.y())
-             .arg(msaSeqArea->getEditor()->getAlignmentLen()).arg(msaSeqArea->getNumDisplayableSequences()));
+             .arg(msaSeqArea->getEditor()->getAlignmentLen()).arg(msaSeqArea->getViewRowCount()));
 
     // scroll down
     GScrollBar* vBar = GTWidget::findExactWidget<GScrollBar *>(os, "vertical_sequence_scroll", GTUtilsMdi::activeWindow(os));
@@ -245,7 +245,7 @@ void GTUtilsMSAEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
     GT_CHECK(msaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(globalMaPosition.x()).arg(globalMaPosition.y())
-             .arg(msaSeqArea->getEditor()->getAlignmentLen()).arg(msaSeqArea->getNumDisplayableSequences()));
+             .arg(msaSeqArea->getEditor()->getAlignmentLen()).arg(msaSeqArea->getViewRowCount()));
 
 
     scrollToPosition(os, globalMaPosition);
@@ -323,7 +323,8 @@ QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(GUITestOpStatus &os){
     MaEditorNameList *nameListArea = GTUtilsMsaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(NULL != nameListArea, "MSA Editor name list area is NULL", QStringList());
 
-    const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleRowsIndexes(nameListArea->height());
+    const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleMaRowIndexes(
+            nameListArea->height());
 
     QStringList visibleRowNames;
     foreach (const int rowIndex, visibleRowsIndexes) {

@@ -51,23 +51,22 @@ public:
     QPoint getScreenPosition() const;       // in pixels
     QPoint getGlobalMousePosition(const QPoint& mousePos) const;
 
-    void updateHorizontalScrollBar();
     void updateVerticalScrollBar();
 
-    void scrollToRowByNumber(int rowNumber, int widgetHeight);
+    void scrollToViewRow(int viewRowIndex, int widgetHeight);
     void scrollToBase(int baseNumber, int widgetWidth);
     void scrollToPoint(const QPoint &maPoint, const QSize &screenSize);
 
     void centerBase(int baseNumber, int widgetWidth);
-    void centerRow(int rowNumber, int widgetHeight);
+    void centerViewRow(int viewRowIndex, int widgetHeight);
     void centerPoint(const QPoint &maPoint, const QSize &widgetSize);
 
     void setHScrollbarValue(int value);
     void setVScrollbarValue(int value);
 
     void setFirstVisibleBase(int firstVisibleBase);
-    void setFirstVisibleRowByNumber(int firstVisibleRowNumber);
-    void setFirstVisibleRowByIndex(int firstVisibleRowIndex);
+    void setFirstVisibleViewRow(int viewRowIndex);
+    void setFirstVisibleMaRow(int maRowIndex);
 
     void scrollSmoothly(const Directions &directions);
     void stopSmoothScrolling();
@@ -81,10 +80,9 @@ public:
 
     int getFirstVisibleBase(bool countClipped = false) const;
     int getLastVisibleBase(int widgetWidth, bool countClipped = false) const;
-    int getFirstVisibleRowIndex(bool countClipped = false) const;
-    int getFirstVisibleRowNumber(bool countClipped = false) const;
-    int getLastVisibleRowIndex(int widgetHeight, bool countClipped = false) const;
-    int getLastVisibleRowNumber(int widgetHeight, bool countClipped = false) const;
+    int getFirstVisibleMaRowIndex(bool countClipped = false) const;
+    int getFirstVisibleViewRowIndex(bool countClipped = false) const;
+    int getLastVisibleViewRowIndex(int widgetHeight, bool countClipped = false) const;
 
     QPoint getViewPosByScreenPoint(const QPoint &point) const;    // can be out of MA boundaries
 
@@ -120,8 +118,8 @@ private:
     GScrollBar *hScrollBar;
     GScrollBar *vScrollBar;
 
-    int savedFirstVisibleRowIndex;
-    int savedFirstVisibleRowAdditionalOffset;
+    int savedFirstVisibleMaRow;
+    int savedFirstVisibleMaRowOffset;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ScrollController::Directions)

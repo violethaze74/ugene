@@ -390,7 +390,7 @@ void MaEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
         selecting = true;
         int lastPos = curPos;
         curPos = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(e->x()), ui->getEditor()->getAlignmentLen() - 1);
-        const int selectionHeight = ui->getSequenceArea()->getNumDisplayableSequences();
+        const int selectionHeight = ui->getSequenceArea()->getViewRowCount();
         // select current column
         if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
             MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, selectionHeight);
@@ -434,7 +434,7 @@ void MaEditorConsensusArea::updateSelection(int newPos) {
     CHECK(newPos != curPos, );
     CHECK(newPos != -1, );
 
-    int height = ui->getSequenceArea()->getNumDisplayableSequences();
+    int height = ui->getSequenceArea()->getViewRowCount();
     int startPos = qMin(curPos, newPos);
     int width = qAbs(newPos - curPos) + 1;
     MaEditorSelection selection(startPos, 0, width, height);

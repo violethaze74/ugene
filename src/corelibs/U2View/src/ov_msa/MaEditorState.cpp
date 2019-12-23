@@ -113,7 +113,7 @@ QVariantMap MaEditorState::saveState(MaEditor* v) {
     SAFE_POINT(scrollController != NULL, "ScrollController is NULL", QVariantMap());
 
     int firstBase = scrollController->getFirstVisibleBase();
-    int firstSeq = scrollController->getFirstVisibleRowIndex();
+    int firstSeq = scrollController->getFirstVisibleMaRowIndex();
 
     ss.setFirstPos(firstBase);
     ss.setFirstSeq(firstSeq);

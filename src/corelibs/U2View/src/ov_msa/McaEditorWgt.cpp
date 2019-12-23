@@ -75,12 +75,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     nameAreaLayout->insertWidget(0, refName);
     nameAreaLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
 
-    QVector<U2Region> itemRegions;
-    for (int i = 0; i < editor->getNumSequences(); i++) {
-        itemRegions << U2Region(i, 1);
-    }
-
-    collapseModel->update(itemRegions);
+    collapseModel->reset(editor->getNumSequences());
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
     bool showChromatograms = s->getValue(editor->getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool();
@@ -100,16 +95,11 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 }
 
 void McaEditorWgt::sl_alignmentChanged() {
-    int size = editor->getNumSequences();
-    int collapseSize = collapseModel->getCollapsibleGroupCount();
-    if (size > collapseSize) {
-        QVector<U2Region> itemRegions;
-        for (int i = 0; i < size; i++) {
-            itemRegions << U2Region(i, 1);
-        }
-        collapseModel->update(itemRegions);
-        McaEditor* mcaEditor = getEditor();
-        bool isButtonChecked = mcaEditor->isChromatogramButtonChecked();
+    int sequenceCount = editor->getNumSequences();
+    int groupCount = collapseModel->getGroups().size();
+    if (sequenceCount > groupCount) {
+        collapseModel->reset(sequenceCount);
+        bool isButtonChecked = getEditor()->isChromatogramButtonChecked();
         collapseModel->collapseAll(!isButtonChecked);
     }
 }

@@ -108,7 +108,7 @@ QPoint MaAmbiguousCharactersController::getStartPosition() const {
     }
 
     return QPoint(maEditorWgt->getScrollController()->getFirstVisibleBase(),
-                  maEditorWgt->getScrollController()->getFirstVisibleRowIndex());
+                  maEditorWgt->getScrollController()->getFirstVisibleMaRowIndex());
 }
 
 namespace {

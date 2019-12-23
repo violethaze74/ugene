@@ -80,7 +80,7 @@ public:
      * Returns count of sequences that are drawn on the widget by taking into account
      * collapsed rows.
      */
-    int getNumDisplayableSequences() const;
+    int getViewRowCount() const;
 
     int getRowIndex(const int num) const;
 
@@ -306,6 +306,7 @@ protected:
     GScrollBar*     shBar;
     GScrollBar*     svBar;
     QRubberBand*    rubberBand;
+    bool            showRubberBandOnSelection;
 
     SequenceAreaRenderer*   renderer;
 

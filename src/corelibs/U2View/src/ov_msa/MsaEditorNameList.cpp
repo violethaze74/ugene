@@ -54,7 +54,7 @@ void MsaEditorNameList::buildMenu(QMenu *menu) {
     SAFE_POINT(copyMenu != NULL, "copyMenu not found", );
     copyMenu->addAction(copyCurrentSequenceAction);
 
-    copyCurrentSequenceAction->setDisabled(getSelectedRow() == -1);
+    copyCurrentSequenceAction->setDisabled(getSelectedMaRow() == -1);
     editMenu->insertAction(editMenu->actions().first(), editSequenceNameAction);
 }
 

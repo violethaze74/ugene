@@ -198,7 +198,7 @@ void MaEditor::updateReference(){
 void MaEditor::resetCollapsibleModel() {
     MaCollapseModel *collapsibleModel = ui->getCollapseModel();
     SAFE_POINT(NULL != collapsibleModel, "NULL collapsible model!", );
-    collapsibleModel->clear();
+    collapsibleModel->reset(getNumSequences());
 }
 
 void MaEditor::sl_zoomIn() {
@@ -274,7 +274,7 @@ void MaEditor::sl_zoomToSelection()
         resizeMode = ResizeMode_OnlyContent;
     }
     ui->getScrollController()->setFirstVisibleBase(selection.x());
-    ui->getScrollController()->setFirstVisibleRowByNumber(selection.y());
+    ui->getScrollController()->setFirstVisibleViewRow(selection.y());
 
     updateActions();
 
@@ -450,7 +450,7 @@ void MaEditor::calcFontPixelToPointSizeCoef() {
 void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
     if (ui->getSequenceArea()->isPosInRange(firstPos)) {
         ui->getScrollController()->setFirstVisibleBase(firstPos);
-        ui->getScrollController()->setFirstVisibleRowByIndex(firstSeq);
+        ui->getScrollController()->setFirstVisibleMaRow(firstSeq);
     }
 }
 

@@ -125,7 +125,7 @@ void MsaEditorStatusBar::sl_findNext( ) {
         pat = pat.toUpper( );
     }
     const int aliLen = msa->getLength( );
-    const int nSeq = seqArea->getNumDisplayableSequences( );
+    const int nSeq = seqArea->getViewRowCount();
     QPoint selectionTopLeft = seqArea->getSelection( ).topLeft( );
 
     if ( selectionTopLeft == lastSearchPos ) {

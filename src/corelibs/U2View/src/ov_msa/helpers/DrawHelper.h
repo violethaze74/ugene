@@ -36,12 +36,10 @@ public:
     DrawHelper(MaEditorWgt *maEditorWgt);
 
     U2Region getVisibleBases(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
-    U2Region getVisibleRowsNumbers(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
-    QList<int> getVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
-    QList<U2Region> getGroupedVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
+    U2Region getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
+    QList<int> getVisibleMaRowIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
 
     int getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
-    int getVisibleRowsCount(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
 
     QRect getSelectionScreenRect(const MaEditorSelection &selection) const;
 

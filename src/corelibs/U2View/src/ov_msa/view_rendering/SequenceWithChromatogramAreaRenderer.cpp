@@ -92,7 +92,7 @@ void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &paint
     SAFE_POINT(nameList != NULL, "MaEditorNameList is NULL", );
     U2Region selection = nameList->getSelection();
     CHECK(!selection.isEmpty(), );
-    U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowIndexes(selection);
+    U2Region selectionPxl = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(selection);
     painter.save();
 
     painter.fillRect(0, selectionPxl.startPos,

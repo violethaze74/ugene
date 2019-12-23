@@ -1071,7 +1071,8 @@ GUI_TEST_CLASS_DEFINITION(test_4106){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleRowNumber(msaEdistorSequenceArea->height());
+    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleViewRowIndex(
+            msaEdistorSequenceArea->height());
 
     GTUtilsMSAEditorSequenceArea::click( os, QPoint( -5, endPos-1 ) );
     GTGlobals::sleep(200);
@@ -2287,7 +2288,8 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
 
 //    2. Select a sequence that is two sequences above the last visible sequence in the name list area.
     MSAEditorSequenceArea *msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleRowNumber(msaEdistorSequenceArea->height());
+    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleViewRowIndex(
+            msaEdistorSequenceArea->height());
 
     GTUtilsMsaEditor::clickSequence(os, endPos - 1);
     GTGlobals::sleep(200);
@@ -2321,7 +2323,8 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
 //    Expected state: four sequences are selected, the msa is scrolled down for two lines.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, endPos - 1, 1234, 4));
 
-    const int firstVisibleSequence = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getFirstVisibleRowNumber(false);
+    const int firstVisibleSequence = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getFirstVisibleViewRowIndex(
+            false);
     CHECK_SET_ERR(firstVisibleSequence == 2, QString("MSA scrolled incorrectly: expected first fully visible sequence %1, got %2").arg(2).arg(firstVisibleSequence));
 }
 

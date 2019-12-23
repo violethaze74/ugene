@@ -77,7 +77,8 @@ QStringList GTUtilsMcaEditorSequenceArea::getVisibleNames(GUITestOpStatus &os) {
     McaEditorNameList *nameListArea = GTUtilsMcaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(NULL != nameListArea, "Mca Editor name list area is NULL", QStringList());
 
-    const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleRowsIndexes(nameListArea->height());
+    const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleMaRowIndexes(
+            nameListArea->height());
 
     QStringList visibleRowNames;
     foreach(const int rowIndex, visibleRowsIndexes) {
@@ -103,7 +104,7 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
     GT_CHECK(mcaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(globalMaPosition.x()).arg(globalMaPosition.y())
-             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
+             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getViewRowCount()));
 
     scrollToPosition(os, globalMaPosition);
     GTGlobals::sleep();
@@ -124,7 +125,7 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     GT_CHECK(mcaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(position.x()).arg(position.y())
-             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
+             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getViewRowCount()));
 
     CHECK(!mcaSeqArea->isVisible(position, false), );
 
@@ -336,7 +337,7 @@ void GTUtilsMcaEditorSequenceArea::clickToReferencePosition(GUITestOpStatus &os,
     GT_CHECK(mcaSeqArea->isInRange(selectedPoint),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(selectedPoint.x()).arg(selectedPoint.y())
-             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
+             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getViewRowCount()));
 
 
     scrollToPosition(os, selectedPoint);

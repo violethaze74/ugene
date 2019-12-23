@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "U2Core/U2SafePoints.h"
+
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
 #include "RowHeightController.h"
@@ -43,35 +45,21 @@ U2Region DrawHelper::getVisibleBases(int widgetWidth, bool countFirstClippedBase
     return U2Region(firstVisibleBase, lastVisibleBase - firstVisibleBase + 1);
 }
 
-U2Region DrawHelper::getVisibleRowsNumbers(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    const int firstVisibleRowNumber = scrollController->getFirstVisibleRowNumber(countFirstClippedRow);
-    const int lastVisibleRowNumber= scrollController->getLastVisibleRowNumber(widgetHeight, countLastClippedRow);
+U2Region DrawHelper::getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
+    const int firstVisibleRowNumber = scrollController->getFirstVisibleViewRowIndex(countFirstClippedRow);
+    const int lastVisibleRowNumber= scrollController->getLastVisibleViewRowIndex(widgetHeight, countLastClippedRow);
     return U2Region(firstVisibleRowNumber, lastVisibleRowNumber - firstVisibleRowNumber + 1);
 }
 
-QList<int> DrawHelper::getVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    QList<U2Region> groupedRowsIndexes = getGroupedVisibleRowsIndexes(widgetHeight, countFirstClippedRow, countLastClippedRow);
-    QList<int> rowsIndexes;
-    foreach (const U2Region &group, groupedRowsIndexes) {
-        for (qint64 rowIndex = group.startPos; rowIndex < group.endPos(); rowIndex++) {
-            rowsIndexes << static_cast<int>(rowIndex);
-        }
-    }
-    return rowsIndexes;
-}
-
-QList<U2Region> DrawHelper::getGroupedVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    const int firstVisibleRowNumber = scrollController->getFirstVisibleRowNumber(countFirstClippedRow);
-    const int lastVisibleRowNumber = scrollController->getLastVisibleRowNumber(widgetHeight, countLastClippedRow);
-    return collapsibleModel->getGroupedMaRowIndexesWithViewRowIndexes(firstVisibleRowNumber, lastVisibleRowNumber);
+QList<int> DrawHelper::getVisibleMaRowIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
+    int firstVisibleRowNumber = scrollController->getFirstVisibleViewRowIndex(countFirstClippedRow);
+    int lastVisibleRowNumber = scrollController->getLastVisibleViewRowIndex(widgetHeight, countLastClippedRow);
+    U2Region viewIndexRegion(firstVisibleRowNumber, lastVisibleRowNumber - firstVisibleRowNumber + 1);
+    return collapsibleModel->getMaRowIndexesByViewRowIndexes(viewIndexRegion);
 }
 
 int DrawHelper::getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase, bool countLastClippedBase) const {
     return getVisibleBases(widgetWidth, countFirstClippedBase,countLastClippedBase).length;
-}
-
-int DrawHelper::getVisibleRowsCount(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    return getVisibleRowsIndexes(widgetHeight, countFirstClippedRow,countLastClippedRow).length();
 }
 
 QRect DrawHelper::getSelectionScreenRect(const MaEditorSelection &selection) const {
@@ -80,7 +68,7 @@ QRect DrawHelper::getSelectionScreenRect(const MaEditorSelection &selection) con
     const U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(selection.getXRegion());
     CHECK(!xRange.isEmpty(), QRect());
 
-    const U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowIndexes(selection.getYRegion());
+    const U2Region yRange = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(selection.getYRegion());
     CHECK(!yRange.isEmpty(), QRect());
 
     return QRect(xRange.startPos, yRange.startPos, xRange.length, yRange.length);

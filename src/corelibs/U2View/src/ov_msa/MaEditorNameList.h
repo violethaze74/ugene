@@ -49,8 +49,7 @@ public:
 
     QSize getCanvasSize(const QList<int> &seqIdx) const;
 
-    void drawNames(QPixmap &pixmap, const QList<int> &seqIdx, bool drawSelection = false);
-    void drawNames(QPainter &painter, const QList<int> &seqIdx, bool drawSelection = false);
+    void drawNames(QPainter &painter, const QList<int> &maRows, bool drawSelection = false);
 
     QAction *getEditSequenceNameAction() const;
     QAction *getRemoveSequenceAction() const;
@@ -90,8 +89,8 @@ protected:
     void focusInEvent(QFocusEvent* fe);
     void wheelEvent (QWheelEvent * we);
     //todo context menu?
-    int getSelectedRow() const;
-    virtual QString getTextForRow(int s);
+    int getSelectedMaRow() const;
+    virtual QString getTextForRow(int maRowIndex);
     virtual QString getSeqName(int s);
     void moveSelection(int offset);
     void scrollSelectionToView(bool fromStart);
@@ -124,7 +123,7 @@ protected:
     void drawSequenceItem(QPainter &painter, const QString &text, const U2Region &yRange, bool selected, bool focused, bool isReference);
     virtual void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected, bool focused);
 
-    virtual void drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect,
+    virtual void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect,
                                       bool selected, bool focused, bool collapsed, bool isReference);
     void drawChildSequenceItem(QPainter &painter, const QString &name, const QRect &rect,
                                         bool selected, bool focused, bool isReference);
@@ -145,7 +144,7 @@ protected:
     bool triggerExpandCollapseOnSelectedRow(bool expand);
 
     QRect calculateTextRect(const U2Region& yRange, bool selected) const;
-    QRect calculateButtonRect(const QRect& itemRect) const;
+    QRect calculateExpandCollapseButtonRect(const QRect& itemRect) const;
 
     virtual int getAvailableWidth() const;
 
