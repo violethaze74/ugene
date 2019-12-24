@@ -604,21 +604,15 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
         return;
     }
 
-    MaCollapseModel* m = ui->getCollapseModel();
-    U2Region sel(m->getMaRowIndexByViewRowIndex(selection.y()),
-                 m->getMaRowIndexByViewRowIndex(selection.y() + selection.height()) -
-                                                             m->getMaRowIndexByViewRowIndex(selection.y()));
-
+    MaCollapseModel* collapseModel = ui->getCollapseModel();
     QString selText;
     U2OpStatus2Log os;
-    for (int i = sel.startPos; i < sel.endPos(); ++i) {
-        if (ui->getCollapseModel()->getViewRowIndexByMaRowIndex(i, true) < 0) {
-            continue;
-        }
-        int len = selection.width();
-        QByteArray seqPart = maObj->getMsaRow(i)->mid(selection.x(), len, os)->toByteArray(os, len);
+    int len = selection.width();
+    for (int viewRow = selection.y(); viewRow <= selection.bottom(); ++viewRow) { // bottom is inclusive
+        int maRow = collapseModel->getMaRowIndexByViewRowIndex(viewRow);
+        QByteArray seqPart = maObj->getMsaRow(maRow)->mid(selection.x(), len, os)->toByteArray(os, len);
         selText.append(seqPart);
-        if (i + 1 != sel.endPos()) { // do not add line break into the last line
+        if (viewRow != selection.bottom()) { // do not add line break into the last line
             selText.append("\n");
         }
     }

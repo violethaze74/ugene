@@ -448,4 +448,20 @@ void ScrollController::updateVerticalScrollBarPrivate() {
     vScrollBar->setVisible(numVisibleSequences < viewRowCount);
 }
 
+QPoint ScrollController::getViewPosByScreenPoint(const QPoint& point, bool reportOverflow) const {
+    int column = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
+    int row = ui->getRowHeightController()->getViewRowIndexByScreenYPosition(point.y());
+    QPoint result(column, row);
+    if (ui->getSequenceArea()->isInRange(result)) {
+        return result;
+    }
+    if (reportOverflow) {
+        row = row == -1 && point.y() > 0 ? ui->getSequenceArea()->getViewRowCount() : row;
+        column = qMin(column, maEditor->getAlignmentLen());
+        return QPoint(column, row);
+    }
+    return QPoint(-1, -1);
+}
+
+
 }   // namespace U2

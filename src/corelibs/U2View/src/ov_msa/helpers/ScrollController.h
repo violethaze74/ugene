@@ -84,6 +84,14 @@ public:
     int getFirstVisibleViewRowIndex(bool countClipped = false) const;
     int getLastVisibleViewRowIndex(int widgetHeight, bool countClipped = false) const;
 
+
+    /*
+     * Maps screen coordinates into QPoint(row, column).
+     * Returns QPoint(-1, -1) if geom. position can't be mapped to any base and reportOverflow is false.
+     * If reportOverflow is true and one of the coordinates has overflow, returns rowCount/columnsCount for it.
+     */
+    QPoint getViewPosByScreenPoint(const QPoint& point, bool reportOverflow = true) const;
+
     GScrollBar *getHorizontalScrollBar() const;
     GScrollBar *getVerticalScrollBar() const;
 

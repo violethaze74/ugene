@@ -1001,7 +1001,7 @@ void MaEditorSequenceArea::sl_hScrollBarActionPerformed() {
 
     if (shifting && editingEnabled) {
         const QPoint localPoint = mapFromGlobal(QCursor::pos());
-        const QPoint newCurPos = getViewPosByScreenPoint(localPoint);
+        const QPoint newCurPos = ui->getScrollController()->getViewPosByScreenPoint(localPoint);
 
         const QPoint& cursorPos = editor->getCursorPosition();
         shiftSelectedRegion(newCurPos.x() - cursorPos.x());
@@ -1038,7 +1038,7 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
     }
 
     mousePressEventPoint = e->pos();
-    mousePressViewPos = getViewPosByScreenPoint(mousePressEventPoint);
+    mousePressViewPos = ui->getScrollController()->getViewPosByScreenPoint(mousePressEventPoint);
 
     if ((e->button() == Qt::LeftButton)) {
         if (Qt::ShiftModifier == e->modifiers()) {
@@ -1070,20 +1070,22 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
 
 void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent* e) {
     rubberBand->hide();
-    QPoint releasePos = getViewPosByScreenPoint(e->pos());
+    QPoint releasePos = ui->getScrollController()->getViewPosByScreenPoint(e->pos());
     bool isClick = !selecting && releasePos == mousePressViewPos;
     bool isSelectionResize = movableBorder != SelectionModificationHelper::NoMovableBorder;
+    bool isShiftPressed = e->modifiers() == Qt::ShiftModifier;
     if (shifting) {
         changeTracker.finishTracking();
         editor->getMaObject()->releaseState();
         emit si_stopMaChanging(maVersionBeforeShifting != editor->getMaObject()->getModificationVersion());
     } else if (isSelectionResize) {
         // Do nothing. selection was already updated on mouse move.
-    } else if (selecting) {
-        int width = qAbs(releasePos.x() - mousePressViewPos.x()) + 1;
-        int height = qAbs(releasePos.y() - mousePressViewPos.y()) + 1;
-        int left = qMin(releasePos.x(), mousePressViewPos.x());
-        int top = qMin(releasePos.y(), mousePressViewPos.y());
+    } else if (selecting || isShiftPressed) {
+        QPoint startPos = selecting ? mousePressViewPos : editor->getCursorPosition();
+        int width = qAbs(releasePos.x() - startPos.x()) + 1;
+        int height = qAbs(releasePos.y() - startPos.y()) + 1;
+        int left = qMin(releasePos.x(), startPos.x());
+        int top = qMin(releasePos.y(), startPos.y());
         QPoint topLeft = boundWithVisibleRange(QPoint(left, top));
         QPoint bottomRight = boundWithVisibleRange(QPoint(left + width - 1, top + height - 1));
         ui->getScrollController()->scrollToPoint(releasePos, size());
@@ -1123,7 +1125,7 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
     bool isSelectionResize = movableBorder != SelectionModificationHelper::NoMovableBorder;
     QPoint mouseMoveEventPoint = event->pos();
     ScrollController* scrollController = ui->getScrollController();
-    QPoint mouseMoveViewPos = getViewPosByScreenPoint(mouseMoveEventPoint);
+    QPoint mouseMoveViewPos = ui->getScrollController()->getViewPosByScreenPoint(mouseMoveEventPoint);
     if (isInRange(mouseMoveViewPos)) {
         bool isDefaultCursorMode = cursor().shape() == Qt::ArrowCursor;
         if (!shifting && selection.toRect().contains(mousePressViewPos)
@@ -1811,19 +1813,5 @@ MaEditorSequenceArea::MaMode MaEditorSequenceArea::getModInfo() {
     return maMode;
 }
 
-QPoint MaEditorSequenceArea::getViewPosByScreenPoint(const QPoint& point, bool reportOverflow) const {
-    int column = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
-    int row = ui->getRowHeightController()->getViewRowIndexByScreenYPosition(point.y());
-    QPoint result(column, row);
-    if (isInRange(result)) {
-        return result;
-    }
-    if (reportOverflow) {
-        row = row == -1 && point.y() > 0 ? getViewRowCount() : row;
-        column = qMin(column, editor->getAlignmentLen());
-        return QPoint(column, row);
-    }
-    return QPoint(-1, -1);
-}
-
 } // namespace
+

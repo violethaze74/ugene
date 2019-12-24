@@ -482,7 +482,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
                 newSelectionStart = qMin(mousePressRow, mouseReleaseRow);
                 newSelectionLen = qAbs(mousePressRow - mouseReleaseRow) + 1;
                 // Add region to the selection when Shift is used and there is an intersection.
-                if (selection.length > 0 && newSelectionLen > 0 && hasShiftModifier) {
+                if (selection.length > 0 && hasShiftModifier) {
                     // Region to test intersection. Extended to +1 both sides so we track 'touches' too.
                     U2Region selectionExt(newSelectionStart - 1, newSelectionLen + 2);
                     if (selectionExt.intersect(selection).length > 0) {
