@@ -176,7 +176,7 @@ private:
 
     void reverseComplementModification(ModificationType& type);
 
-    void updateCollapsedGroups(const MaModificationInfo& modInfo);
+    void updateCollapseModel(const MaModificationInfo& modInfo);
 
     QAction*        delColAction;
     QAction*        removeAllGapsAction;

@@ -853,10 +853,8 @@ void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const 
     int nSeq = editor->getNumSequences();
     int aliLen = editor->getAlignmentLen();
 
-    if (ui->isCollapsibleMode()) {
-        updateCollapsedGroups(modInfo);
-        nSeq = getViewRowCount();
-    }
+    updateCollapseModel(modInfo);
+    nSeq = getViewRowCount();
 
     editor->updateReference();
 
@@ -1805,7 +1803,7 @@ void MaEditorSequenceArea::deleteOldCustomSchemes() {
     customColorSchemeMenuActions.clear();
 }
 
-void MaEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo&) {
+void MaEditorSequenceArea::updateCollapseModel(const MaModificationInfo&) {
 
 }
 

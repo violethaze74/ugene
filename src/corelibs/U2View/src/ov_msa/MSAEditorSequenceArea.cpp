@@ -213,16 +213,22 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
     update();
 }
 
-void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modInfo) {
-    if (!modInfo.rowContentChanged || !ui->isCollapsibleMode()) {
+void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInfo) {
+    if (!modInfo.rowContentChanged) {
+        return;
+    }
+    MaCollapseModel* collapseModel = ui->getCollapseModel();
+    MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
+
+    if (!ui->isCollapsibleMode()) {
+        // Synchronize collapsible model with a current alignment.
+        collapseModel->reset(msaObject->getNumRows());
         return;
     }
     // Align collapse model with the current alignment state. Do not modify the alignment.
-    MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
     MultipleSequenceAlignment tmpMsaCopy = msaObject->getMultipleAlignmentCopy();
     QVector<U2Region> unitedRows;
     tmpMsaCopy->getRowsSortedBySimilarity(unitedRows);
-    MaCollapseModel* collapseModel = ui->getCollapseModel();
     collapseModel->updateFromUnitedRows(unitedRows, editor->getNumSequences());
 
     // Fix gap models for all sequences inside collapsed groups.
@@ -742,9 +748,7 @@ void MSAEditorSequenceArea::sl_sortByName() {
         msaObject->updateRowsOrder(os, msa->getRowsIds());
         SAFE_POINT_OP(os, );
     }
-    if (ui->isCollapsibleMode()) {
-        sl_updateCollapsingMode();
-    }
+    sl_updateCollapsingMode();
 }
 
 void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
@@ -774,24 +778,9 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
 }
 
 void MSAEditorSequenceArea::sl_updateCollapsingMode() {
-    CHECK(getEditor() != NULL, );
-    GCOUNTER(cvar, tvar, "Update collapsing mode");
-
-    CHECK(ui->isCollapsibleMode(), );
-    MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-    SAFE_POINT(NULL != msaObject, tr("NULL Msa Object!"), );
-
-    MultipleSequenceAlignment tmpMsaCopy = msaObject->getMultipleAlignmentCopy();
-    QVector<U2Region> unitedRows;
-    bool rowsOrderChanged = tmpMsaCopy->sortRowsBySimilarity(unitedRows);
-    if (rowsOrderChanged) {
-        U2OpStatusImpl os;
-        msaObject->updateRowsOrder(os, tmpMsaCopy->getRowsIds()); // updates row order & cached MSA.
-        SAFE_POINT_OP(os, );
-    }
     MaModificationInfo mi;
     mi.alignmentLengthChanged = false;
-    updateCollapsedGroups(mi);
+    updateCollapseModel(mi);
 }
 
 void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type) {

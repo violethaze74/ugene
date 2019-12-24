@@ -282,7 +282,12 @@ protected:
 
     void deleteOldCustomSchemes();
 
-    virtual void updateCollapsedGroups(const MaModificationInfo &maModificationInfo);
+    /*
+     * Update collapse model on alignment modification.
+     * Note, that we have collapse model regardless if collapsing mode is enabled or not.
+     * In the disabled collapsing mode the collapse model is 'flat': 1 view row = 1 MA row.
+     */
+    virtual void updateCollapseModel(const MaModificationInfo& maModificationInfo);
 
 protected:
     enum MaMode {
