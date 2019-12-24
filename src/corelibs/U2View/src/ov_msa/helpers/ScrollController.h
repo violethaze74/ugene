@@ -84,8 +84,6 @@ public:
     int getFirstVisibleViewRowIndex(bool countClipped = false) const;
     int getLastVisibleViewRowIndex(int widgetHeight, bool countClipped = false) const;
 
-    QPoint getViewPosByScreenPoint(const QPoint &point) const;    // can be out of MA boundaries
-
     GScrollBar *getHorizontalScrollBar() const;
     GScrollBar *getVerticalScrollBar() const;
 

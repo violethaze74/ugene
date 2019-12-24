@@ -439,13 +439,15 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
         U2Region selection = getSelection(); // current selection.
 
         // mousePressRowExt has extended range: -1 (before first) to maxRows (after the last)
-        int mousePressRowExt = mousePressPoint.y() >= lastVisibleRowY ? maxRows : rowsController->getViewRowIndexByScreenYPosition(
-                mousePressPoint.y());
+        int mousePressRowExt = mousePressPoint.y() >= lastVisibleRowY
+                               ? maxRows :
+                               rowsController->getViewRowIndexByScreenYPosition(mousePressPoint.y());
         int mousePressRow = qBound(0, mousePressRowExt, maxRows - 1);
 
         // mouseReleaseRowExt has extended range: -1 (before first) to maxRows (after the last)
-        int mouseReleaseRowExt = e->y() >= lastVisibleRowY ? maxRows : rowsController->getViewRowIndexByScreenYPosition(
-                e->y());
+        int mouseReleaseRowExt = e->y() >= lastVisibleRowY
+                ? maxRows
+                : rowsController->getViewRowIndexByScreenYPosition(e->y());
         int mouseReleaseRow = qBound(0, mouseReleaseRowExt, maxRows - 1);
 
         bool isClick = e->pos() == mousePressPoint;
@@ -453,7 +455,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
             // special case: click but don't drag
             dragging = false;
         }
-
+        U2Region nameListRegion(0, maxRows);
         if (dragging) {
             int shift = 0;
             if (mouseReleaseRow == 0) {
@@ -464,54 +466,47 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
                 shift = mouseReleaseRow - editor->getCursorPosition().y();
             }
             moveSelectedRegion(shift);
-        } else {
-            bool selectionContainsSeqs = mouseReleaseRow <= lastVisibleRow;
-            if (selectionContainsSeqs) {
-                int newSelectionStart = -1;
-                int newSelectionLen = -1;
-                QPoint cursorPos = editor->getCursorPosition();
-                if (hasShiftModifier && isClick) { // append region between current selection & mouseReleaseRow to the selection.
-                    if (mouseReleaseRow < cursorPos.y()) {
-                        newSelectionStart = mouseReleaseRow;
-                        newSelectionLen = cursorPos.y() - mousePressRow + 1;
-                    } else if (mouseReleaseRow > cursorPos.y()) {
-                        newSelectionStart = cursorPos.y();
-                        newSelectionLen = mousePressRow - cursorPos.y() + 1;
-                    }
-                } else {
-                    // overflowAction is 'true' if selection started & finished outside of any row.
-                    bool overflowAction = (mousePressRow < 0 && mouseReleaseRow < 0)
-                            || (mousePressRow >= maxRows && mouseReleaseRow >= maxRows);
-                    if (overflowAction) {
-                        clearSelection();
-                    } else {
-                        newSelectionStart = qMin(mousePressRow, mouseReleaseRow);
-                        newSelectionLen = qAbs(mousePressRow - mouseReleaseRow) + 1;
-                        if (selection.length > 0 && hasShiftModifier) { // Add region to the selection when Shift is used and there is an intersection.
-                            U2Region selectionExt(newSelectionStart - 1, newSelectionLen + 2); // Region to test intersection. Extended to +1 both sides so we track 'touches' too.
-                            if (selectionExt.intersect(selection).length > 0) {
-                                if (selection.startPos < newSelectionStart) {
-                                    newSelectionLen += newSelectionStart - selection.startPos;
-                                    newSelectionStart = selection.startPos;
-                                }
-                                if (newSelectionStart + newSelectionLen < selection.endPos()) {
-                                    newSelectionLen = selection.endPos() - newSelectionStart;
-                                }
-                            }
+        } else if (nameListRegion.contains(mousePressRowExt) || nameListRegion.contains(mouseReleaseRowExt)) {
+            int newSelectionStart = -1;
+            int newSelectionLen = -1;
+            QPoint cursorPos = editor->getCursorPosition();
+            if (hasShiftModifier && isClick) { // append region between current selection & mouseReleaseRow to the selection.
+                if (mouseReleaseRow < cursorPos.y()) {
+                    newSelectionStart = mouseReleaseRow;
+                    newSelectionLen = cursorPos.y() - mousePressRow + 1;
+                } else if (mouseReleaseRow > cursorPos.y()) {
+                    newSelectionStart = cursorPos.y();
+                    newSelectionLen = mousePressRow - cursorPos.y() + 1;
+                }
+            } else {
+                newSelectionStart = qMin(mousePressRow, mouseReleaseRow);
+                newSelectionLen = qAbs(mousePressRow - mouseReleaseRow) + 1;
+                // Add region to the selection when Shift is used and there is an intersection.
+                if (selection.length > 0 && newSelectionLen > 0 && hasShiftModifier) {
+                    // Region to test intersection. Extended to +1 both sides so we track 'touches' too.
+                    U2Region selectionExt(newSelectionStart - 1, newSelectionLen + 2);
+                    if (selectionExt.intersect(selection).length > 0) {
+                        if (selection.startPos < newSelectionStart) {
+                            newSelectionLen += newSelectionStart - selection.startPos;
+                            newSelectionStart = selection.startPos;
+                        }
+                        if (newSelectionStart + newSelectionLen < selection.endPos()) {
+                            newSelectionLen = selection.endPos() - newSelectionStart;
                         }
                     }
                 }
-                if (newSelectionLen > 0) {
-                    if (hasCtrlModifier && selection.length > 0) { // with Ctrl we copy X range to the new selection.
-                        const MaEditorSelection& maSelection = ui->getSequenceArea()->getSelection();
-                        ui->getSequenceArea()->setSelection(MaEditorSelection(maSelection.x(), newSelectionStart, maSelection.width(), newSelectionLen));
-                    } else {
-                        setSelection(newSelectionStart, newSelectionLen);
-                    }
-                }
-            } else {
-                clearSelection();
             }
+            if (newSelectionLen > 0) {
+                if (hasCtrlModifier && selection.length > 0) { // with Ctrl we copy X range to the new selection.
+                    const MaEditorSelection& maSelection = ui->getSequenceArea()->getSelection();
+                    MaEditorSelection newSelection(maSelection.x(), newSelectionStart, maSelection.width(), newSelectionLen);
+                    ui->getSequenceArea()->setSelection(newSelection);
+                } else {
+                    setSelection(newSelectionStart, newSelectionLen);
+                }
+            }
+        } else {
+            clearSelection();
         }
     }
     rubberBand->hide();

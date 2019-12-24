@@ -5614,8 +5614,8 @@ GUI_TEST_CLASS_DEFINITION(test_1574) {
 //    4. Try to click to the white space under sequences.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 15));
 
-//    Expected state: Only one symbol is selected.
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(2, 13), QPoint(2, 13)));
+//    Expected state: Nothing is selected (see UGENE-6654).
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(0, 0), QPoint(-1, -1)));
 
 //    5. Try to select some area in the NameList area (selection must start from the next row under the last row).
     GTUtilsMsaEditor::selectRows(os, 14, 10, GTGlobals::UseMouse);

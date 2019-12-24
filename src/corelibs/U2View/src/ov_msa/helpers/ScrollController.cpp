@@ -333,15 +333,6 @@ int ScrollController::getLastVisibleViewRowIndex(int widgetHeight, bool countCli
     return lastVisibleViewRow - (removeClippedRow ? 1 : 0);
 }
 
-QPoint ScrollController::getViewPosByScreenPoint(const QPoint &point) const {
-    int columnNumber = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
-    int viewRow = ui->getRowHeightController()->getViewRowIndexByScreenYPosition(point.y());
-    if (viewRow == -1) {
-        viewRow = ui->getCollapseModel()->getViewRowCount();
-    }
-    return QPoint(columnNumber, viewRow);
-}
-
 GScrollBar *ScrollController::getHorizontalScrollBar() const {
     return hScrollBar;
 }
