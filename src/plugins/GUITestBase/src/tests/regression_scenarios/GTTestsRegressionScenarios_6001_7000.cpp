@@ -2975,7 +2975,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546){
     GTMouseDriver::click();
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
@@ -2997,7 +2997,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_1){
     GTMouseDriver::click();
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
@@ -3019,7 +3019,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_2){
     GTMouseDriver::click();
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 4, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
@@ -3041,7 +3041,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_3){
     GTMouseDriver::click();
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
@@ -3065,7 +3065,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_4){
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
@@ -3089,7 +3089,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_5){
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3114,7 +3114,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_6){
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3138,7 +3138,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_7){
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 2, QString("Expected selection y: 2, actual: %1").arg(selection.y()));
@@ -3161,7 +3161,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_8){
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3183,7 +3183,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_9){
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3206,7 +3206,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_10){
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3228,7 +3228,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_11){
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 2, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3254,7 +3254,7 @@ GUI_TEST_CLASS_DEFINITION(test_6564){
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const QRect& selection = msaEditor->getCurrentSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 14, QString("Expected selection width: 14, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 6, QString("Expected selection y: 6, actual: %1").arg(selection.y()));

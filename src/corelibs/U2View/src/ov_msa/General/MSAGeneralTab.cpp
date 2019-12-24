@@ -139,7 +139,7 @@ void MSAGeneralTab::initializeParameters() {
 void MSAGeneralTab::updateState() {
     consensusModeWidget->updateState();
 
-    copyButton->setEnabled(!msa->getUI()->getSequenceArea()->getSelection().isNull());
+    copyButton->setEnabled(!msa->getUI()->getSequenceArea()->getSelection().isEmpty());
 }
 
 }   // namespace

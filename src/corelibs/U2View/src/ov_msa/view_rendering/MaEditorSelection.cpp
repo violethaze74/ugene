@@ -45,12 +45,8 @@ MaEditorSelection::MaEditorSelection(const QPoint& topLeft, int width, int heigh
 
 }
 
-bool MaEditorSelection::isNull() const {
-    return selArea.isNull();
-}
-
 bool MaEditorSelection::isEmpty() const {
-    return selArea.isEmpty();
+    return selArea.width() <= 0 || selArea.height() <= 0;
 }
 
 QPoint MaEditorSelection::topLeft() const {
@@ -61,8 +57,8 @@ QPoint MaEditorSelection::bottomRight() const {
     return selArea.bottomRight();
 }
 
-const QRect& MaEditorSelection::getRect() const {
-    return selArea;
+QRect MaEditorSelection::toRect() const {
+    return isEmpty() ? QRect(0, 0, 0, 0) : selArea;
 }
 
 int MaEditorSelection::x() const {

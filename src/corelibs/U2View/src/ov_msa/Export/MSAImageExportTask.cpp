@@ -305,7 +305,7 @@ void MSAImageExportController::initSettingsWidget() {
 
     SAFE_POINT( ui->getSequenceArea() != NULL, tr("MSA sequence area is NULL"), );
     MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    CHECK( !selection.isNull(), );
+    CHECK( !selection.isEmpty(), );
     msaSettings.region = U2Region( selection.x(), selection.width());
     msaSettings.seqIdx.clear();
     if (!ui->isCollapsibleMode()) {

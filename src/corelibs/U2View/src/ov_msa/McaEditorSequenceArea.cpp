@@ -334,9 +334,9 @@ void McaEditorSequenceArea::sl_updateActions() {
 
     const bool readOnly = maObj->isStateLocked();
     const bool canEditAlignment = !readOnly && !isAlignmentEmpty();
-    const bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    const bool canEditSelectedArea = canEditAlignment && !selection.isEmpty();
     const bool isEditing = (maMode != ViewMode);
-    const bool isSingleSymbolSelected = (selection.getRect().size() == QSize(1, 1));
+    const bool isSingleSymbolSelected = (selection.width() == 1 && selection.height() == 1);
     const bool hasGapBeforeSelection = (!selection.isEmpty() && selection.x() > 0 && maObj->getMultipleAlignment()->isGap(selection.y(), selection.x() - 1));
 
     ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
@@ -414,7 +414,7 @@ QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionNam
 void McaEditorSequenceArea::insertChar(char newCharacter) {
     CHECK(maMode == InsertCharMode, );
     CHECK(getEditor() != NULL, );
-    CHECK(!selection.isNull(), );
+    CHECK(!selection.isEmpty(), );
 
     assert(isInRange(selection.topLeft()));
     assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));

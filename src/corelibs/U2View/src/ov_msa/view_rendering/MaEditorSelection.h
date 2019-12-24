@@ -38,13 +38,14 @@ public:
     MaEditorSelection(const QPoint& topLeft, const QPoint& bottomRight);
     MaEditorSelection(const QPoint& topLeft, int width, int height);
 
-    bool isNull() const;
+    /* Returns true if the selection contains no bases or gaps: have width or height <= 0. */
     bool isEmpty() const;
 
     QPoint topLeft() const;
     QPoint bottomRight() const;
 
-    const QRect& getRect() const;
+    /** Returns rect under select. This rect is always value. For the empty selection returns Rect(0, 0, 0, 0); */
+    QRect toRect() const;
 
     int x() const;
     int y() const;

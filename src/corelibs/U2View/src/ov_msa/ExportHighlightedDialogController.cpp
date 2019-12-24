@@ -52,17 +52,17 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
 
     CHECK(AppContext::getAppSettings(), );
     CHECK(AppContext::getAppSettings()->getUserAppsSettings(), );
-    CHECK(msaui->getEditor(), );
-    CHECK(msaui->getEditor()->getMaObject(), );
+    const MaEditor* editor = msaui->getEditor();
+    CHECK(editor, );
 
     initSaveController();
 
-    int alignLength = msaui->getEditor()->getMaObject()->getLength();
-    QRect selection = msaui->getSequenceArea()->getSelection().getRect();
+    int alignLength = editor->getAlignmentLen();
+    const MaEditorSelection& selection = editor->getSelection();
 
     int startPos = -1;
     int endPos = -1;
-    if (selection.isNull() || selection.width() == 1) {
+    if (selection.isEmpty() || selection.width() == 1) {
         startPos = 1;
         endPos = alignLength;
     } else {

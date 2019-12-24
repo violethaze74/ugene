@@ -325,7 +325,7 @@ QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
     McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
     GT_CHECK_RESULT(mcaEditArea != NULL, "McaEditorSequenceArea not found", QRect());
 
-    return mcaEditArea->getSelection().getRect();
+    return mcaEditArea->getSelection().toRect();
 }
 #undef GT_METHOD_NAME
 

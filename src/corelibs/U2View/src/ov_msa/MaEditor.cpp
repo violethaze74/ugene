@@ -137,8 +137,12 @@ bool MaEditor::isAlignmentEmpty() const {
     return getAlignmentLen() == 0 || getNumSequences() == 0;
 }
 
-const QRect& MaEditor::getCurrentSelection() const {
-    return ui->getSequenceArea()->getSelection().getRect();
+const MaEditorSelection& MaEditor::getSelection() const {
+    return ui->getSequenceArea()->getSelection();
+}
+
+QRect MaEditor::getSelectionRect() const {
+    return getSelection().toRect();
 }
 
 int MaEditor::getRowContentIndent(int) const {
@@ -251,7 +255,7 @@ void MaEditor::sl_zoomToSelection()
     ResizeMode oldMode = resizeMode;
     int seqAreaWidth =  ui->getSequenceArea()->width();
     MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    if (selection.isNull()) {
+    if (selection.isEmpty()) {
         return;
     }
     int selectionWidth = selection.width();

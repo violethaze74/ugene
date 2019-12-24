@@ -436,7 +436,7 @@ void MSAEditor::sl_addToAlignment() {
 }
 
 void MSAEditor::sl_realignSomeSequences() {
-    const QRect& selection = ui->getEditor()->getCurrentSelection();
+    const MaEditorSelection& selection = ui->getEditor()->getSelection();
     int startSeq = selection.y();
     int endSeq = selection.y() + selection.height() - 1;
     MaCollapseModel* model = ui->getCollapseModel();

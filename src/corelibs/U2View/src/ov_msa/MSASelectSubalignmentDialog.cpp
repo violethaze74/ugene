@@ -26,8 +26,8 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
-
 #include "MaEditor.h"
+#include "./view_rendering/MaEditorSelection.h"
 #include "MSASelectSubalignmentDialog.h"
 
 namespace U2 {
@@ -45,8 +45,8 @@ SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Reg
         int endSeq = -1;
         int startPos = -1;
         int endPos = -1;
-        QRect selection = editor->getCurrentSelection();
-        if (selection.isNull()) {
+        const MaEditorSelection& selection = editor->getSelection();
+        if (selection.isEmpty()) {
             startPos = 0;
             endPos = editor->getAlignmentLen();
             startSeq = 0;

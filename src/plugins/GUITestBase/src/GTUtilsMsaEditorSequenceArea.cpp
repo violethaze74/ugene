@@ -264,7 +264,7 @@ void GTUtilsMSAEditorSequenceArea::checkSelectedRect(GUITestOpStatus &os, const 
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(msaEditArea != NULL, "MsaEditorSequenceArea not found");
 
-    QRect msaEditRegion = msaEditArea->getSelection().getRect();
+    QRect msaEditRegion = msaEditArea->getSelection().toRect();
     CHECK_SET_ERR(expectedRect == msaEditRegion, QString("Unexpected selection region. Expected: [(%1,%2) (%3,%4)]. Actual: [(%5,%6) (%7,%8)]")
                   .arg(expectedRect.topLeft().x()).arg(expectedRect.topLeft().y()).arg(expectedRect.bottomRight().x()).arg(expectedRect.bottomRight().y())
                   .arg(msaEditRegion.topLeft().x()).arg(msaEditRegion.topLeft().y()).arg(msaEditRegion.bottomRight().x()).arg(msaEditRegion.bottomRight().y()));
@@ -440,7 +440,7 @@ QRect GTUtilsMSAEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", QRect());
 
-    return msaEditArea->getSelection().getRect();
+    return msaEditArea->getSelection().toRect();
 }
 #undef GT_METHOD_NAME
 

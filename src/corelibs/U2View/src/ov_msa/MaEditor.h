@@ -57,6 +57,7 @@ namespace U2 {
 
 class MaEditorWgt;
 class MultipleAlignmentObject;
+class MaEditorSelection;
 
 class SNPSettings {
 public:
@@ -101,7 +102,14 @@ public:
 
     bool isAlignmentEmpty() const;
 
-    const QRect& getCurrentSelection() const;
+    /* Returns current selection. */
+    const MaEditorSelection& getSelection() const;
+
+    /*
+     * Shortcut for getSelection().toRect().
+     * Note: this method is useful because we have no "MaEditorSelection" type available outside of the U2View today.
+     */
+    QRect getSelectionRect() const;
 
     virtual int getRowContentIndent(int rowId) const;
     int getSequenceRowHeight() const; // SANGER_TODO: order the methods

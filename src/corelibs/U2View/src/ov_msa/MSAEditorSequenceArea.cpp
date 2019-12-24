@@ -332,10 +332,10 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
 
     QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
     SAFE_POINT(copyMenu != NULL, "copyMenu", );
-    ui->getCopySelectionAction()->setDisabled(selection.isNull());
-    emit si_copyFormattedChanging(!selection.isNull());
+    ui->getCopySelectionAction()->setDisabled(selection.isEmpty());
+    emit si_copyFormattedChanging(!selection.isEmpty());
     copyMenu->addAction(ui->getCopySelectionAction());
-    ui->getCopyFormattedSelectionAction()->setDisabled(selection.isNull());
+    ui->getCopyFormattedSelectionAction()->setDisabled(selection.isEmpty());
     copyMenu->addAction(ui->getCopyFormattedSelectionAction());
     copyMenu->addAction(ui->getPasteAction());
 
@@ -419,7 +419,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
 
 //Update actions of "Edit" group
     bool canEditAlignment = !readOnly && !isAlignmentEmpty();
-    bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    bool canEditSelectedArea = canEditAlignment && !selection.isEmpty();
     const bool isEditing = (maMode != ViewMode);
     ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
     ui->getPasteAction()->setEnabled(!readOnly);
@@ -536,7 +536,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
 
 void MSAEditorSequenceArea::sl_createSubaligniment(){
     CHECK(getEditor() != NULL, );
-    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(getEditor()->getMaObject(), selection.getRect(), this);
+    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(getEditor()->getMaObject(), selection.toRect(), this);
     dialog->exec();
     CHECK(!dialog.isNull(), );
 
@@ -567,7 +567,7 @@ void MSAEditorSequenceArea::sl_saveSequence(){
     SAFE_POINT(df != NULL, "Unknown document format", );
     QString extension = df->getSupportedDocumentFileExtensions().first();
 
-    const QRect& selection = editor->getCurrentSelection();
+    const MaEditorSelection& selection = editor->getSelection();
     int startSeq = selection.y();
     int endSeq = selection.y() + selection.height() - 1;
     MaCollapseModel *model = editor->getUI()->getCollapseModel();
@@ -600,7 +600,7 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
     assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
 
     MultipleSequenceAlignmentObject* maObj = getEditor()->getMaObject();
-    if (selection.isNull()) {
+    if (selection.isEmpty()) {
         return;
     }
 
@@ -627,7 +627,7 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
 
 void MSAEditorSequenceArea::sl_copyFormattedSelection(){
     const DocumentFormatId& formatId = getCopyFormattedAlgorithmId();
-    Task* clipboardTask = new SubalignmentToClipboardTask(getEditor(), selection.getRect(), formatId);
+    Task* clipboardTask = new SubalignmentToClipboardTask(getEditor(), selection.toRect(), formatId);
     AppContext::getTaskScheduler()->registerTopLevelTask(clipboardTask);
 }
 
@@ -802,8 +802,9 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
 
 void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type) {
     CHECK(getEditor() != NULL, );
-    if (type == ModificationType::NoType)
+    if (type == ModificationType::NoType) {
         return;
+    }
     MultipleSequenceAlignmentObject* maObj = getEditor()->getMaObject();
     if (maObj == NULL || maObj->isStateLocked()) {
         return;
@@ -811,36 +812,35 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
     if (!maObj->getAlphabet()->isNucleic()) {
         return;
     }
-    if (selection.height() == 0) {
+    if (selection.isEmpty()) {
         return;
     }
     assert(isInRange(selection.topLeft()));
     assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
-    if (!selection.isNull()) {
-        // if this method was invoked during a region shifting
-        // then shifting should be canceled
-        cancelShiftTracking();
 
-        const MultipleSequenceAlignment ma = maObj->getMultipleAlignment();
-        DNATranslation* trans = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(ma->getAlphabet());
-        if (trans == NULL || !trans->isOne2One()) {
-            return;
-        }
+    // if this method was invoked during a region shifting
+    // then shifting should be canceled
+    cancelShiftTracking();
 
-        U2OpStatus2Log os;
-        U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-        Q_UNUSED(userModStep);
-        SAFE_POINT_OP(os, );
+    const MultipleSequenceAlignment ma = maObj->getMultipleAlignment();
+    DNATranslation* trans = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(ma->getAlphabet());
+    if (trans == NULL || !trans->isOne2One()) {
+        return;
+    }
 
-        const U2Region& sel = getSelectedMaRows();
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
+    Q_UNUSED(userModStep);
+    SAFE_POINT_OP(os,);
 
-        QList<qint64> modifiedRowIds;
-        modifiedRowIds.reserve(sel.length);
-        for (int i = sel.startPos; i < sel.endPos(); i++) {
-            const MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(i);
-            QByteArray currentRowContent = currentRow->toByteArray(os, ma->getLength());
-            switch (type.getType())
-            {
+    const U2Region& sel = getSelectedMaRows();
+
+    QList<qint64> modifiedRowIds;
+    modifiedRowIds.reserve(sel.length);
+    for (int i = sel.startPos; i < sel.endPos(); i++) {
+        const MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(i);
+        QByteArray currentRowContent = currentRow->toByteArray(os, ma->getLength());
+        switch (type.getType()) {
             case ModificationType::Reverse:
                 TextUtils::reverse(currentRowContent.data(), currentRowContent.length());
                 break;
@@ -851,22 +851,21 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
                 TextUtils::reverse(currentRowContent.data(), currentRowContent.length());
                 trans->translate(currentRowContent.data(), currentRowContent.length());
                 break;
-            }
-            QString name = currentRow->getName();
-            ModificationType oldType(ModificationType::NoType);
-            if (name.endsWith("|revcompl")) {
-                name.resize(name.length() - QString("|revcompl").length());
-                oldType = ModificationType::ReverseComplement;
-            } else if (name.endsWith("|compl")) {
-                name.resize(name.length() - QString("|compl").length());
-                oldType = ModificationType::Complement;
-            } else if (name.endsWith("|rev")) {
-                name.resize(name.length() - QString("|rev").length());
-                oldType = ModificationType::Reverse;
-            }
-            ModificationType newType = type + oldType;
-            switch (newType.getType())
-            {
+        }
+        QString name = currentRow->getName();
+        ModificationType oldType(ModificationType::NoType);
+        if (name.endsWith("|revcompl")) {
+            name.resize(name.length() - QString("|revcompl").length());
+            oldType = ModificationType::ReverseComplement;
+        } else if (name.endsWith("|compl")) {
+            name.resize(name.length() - QString("|compl").length());
+            oldType = ModificationType::Complement;
+        } else if (name.endsWith("|rev")) {
+            name.resize(name.length() - QString("|rev").length());
+            oldType = ModificationType::Reverse;
+        }
+        ModificationType newType = type + oldType;
+        switch (newType.getType()) {
             case ModificationType::NoType:
                 break;
             case ModificationType::Reverse:
@@ -878,22 +877,21 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
             case ModificationType::ReverseComplement:
                 name.append("|revcompl");
                 break;
-            }
-
-            // Split the sequence into gaps and chars
-            QByteArray seqBytes;
-            QList<U2MsaGap> gapModel;
-            MaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
-
-            maObj->updateRow(os, i, name, seqBytes, gapModel);
-            modifiedRowIds << currentRow->getRowId();
         }
 
-        MaModificationInfo modInfo;
-        modInfo.modifiedRowIds = modifiedRowIds;
-        modInfo.alignmentLengthChanged = false;
-        maObj->updateCachedMultipleAlignment(modInfo);
+        // Split the sequence into gaps and chars
+        QByteArray seqBytes;
+        QList<U2MsaGap> gapModel;
+        MaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
+
+        maObj->updateRow(os, i, name, seqBytes, gapModel);
+        modifiedRowIds << currentRow->getRowId();
     }
+
+    MaModificationInfo modInfo;
+    modInfo.modifiedRowIds = modifiedRowIds;
+    modInfo.alignmentLengthChanged = false;
+    maObj->updateCachedMultipleAlignment(modInfo);
 }
 
 void MSAEditorSequenceArea::sl_reverseComplementCurrentSelection() {

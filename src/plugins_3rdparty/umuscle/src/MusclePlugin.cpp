@@ -180,7 +180,7 @@ void MuscleMSAEditorContext::sl_align() {
     MSAEditor* ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject* obj = ed->getMaObject();
 
-    const QRect selection = action->getMSAEditor()->getCurrentSelection();
+    const QRect selection = action->getMSAEditor()->getSelectionRect();
     MuscleTaskSettings s;
     if (!selection.isNull() ) {
         int width = selection.width();

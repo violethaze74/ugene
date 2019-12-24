@@ -123,8 +123,8 @@ bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
 }
 
 void PairAlign::initParameters() {
-    if (msa->getCurrentSelection().height() == 2) {
-        int selectionPos = msa->getCurrentSelection().y();
+    if (msa->getSelection().height() == 2) {
+        int selectionPos = msa->getSelection().y();
         qint64 firstRowId = msa->getRowByLineNumber(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
         qint64 secondRowId = msa->getRowByLineNumber(selectionPos + 1)->getRowId();
