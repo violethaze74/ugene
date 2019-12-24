@@ -102,8 +102,8 @@ void SequenceAreaRenderer::drawFocus(QPainter &painter) const {
     }
 }
 
-int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma, int rowIndex, const U2Region &region, int xStart, int yStart) const {
-    // SANGER_TODO: deal with frequent handlign of editor or h/color schemes through the editor etc.
+int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma, int maRow, const U2Region &region, int xStart, int yStart) const {
+    // SANGER_TODO: deal with frequent handling of editor or h/color schemes through the editor etc.
     // move to class parameter
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
     highlightingScheme->setUseDots(seqAreaWgt->getUseDotsCheckedState());
@@ -118,13 +118,14 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     QString refSeqName = editor->getReferenceRowName();
 
     qint64 regionEnd = region.endPos() - (int)(region.endPos() == editor->getAlignmentLen());
-    MultipleAlignmentRow row = ma->getRow(rowIndex);
+    const MultipleAlignmentRow& row = ma->getRow(maRow);
     const int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     const int baseWidth = ui->getBaseWidthController()->getBaseWidth();
 
-    MaEditorSelection selection = seqAreaWgt->getSelection();
+    const MaEditorSelection& selection = seqAreaWgt->getSelection();
     U2Region selectionXRegion = selection.getXRegion();
     U2Region selectionYRegion = selection.getYRegion();
+    int viewRow = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(maRow);
 
     const QPen backupPen = painter.pen();
     for (int pos = region.startPos; pos <= regionEnd; pos++) {
@@ -135,15 +136,13 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
         }
 
         const QRect charRect(xStart, yStart, baseWidth, rowHeight);
-        char c = ma->charAt(rowIndex, pos);
+        char c = ma->charAt(maRow, pos);
 
         bool highlight = false;
 
-        QColor backgroundColor = seqAreaWgt->getCurrentColorScheme()->getBackgroundColor(rowIndex, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
-        if (backgroundColor.isValid() &&
-            rowIndex >= selectionYRegion.startPos && rowIndex < selectionYRegion.endPos() &&
-            pos >= selectionXRegion.startPos && pos < selectionXRegion.endPos())
-        {
+        QColor backgroundColor = seqAreaWgt->getCurrentColorScheme()->getBackgroundColor(maRow, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
+        bool isSelected =  selectionYRegion.contains(viewRow) && selectionXRegion.contains(pos);
+        if (backgroundColor.isValid() && isSelected) {
             backgroundColor = backgroundColor.convertTo(QColor::Hsv);
             int modifiedSaturation = backgroundColor.saturation() + SELECTION_SATURATION_INCREASE;
             if (modifiedSaturation > 255) {
@@ -153,15 +152,15 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
             backgroundColor.setHsv(backgroundColor.hue(), modifiedSaturation, backgroundColor.value());
         }
 
-        QColor fontColor = seqAreaWgt->getCurrentColorScheme()->getFontColor(rowIndex, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
+        QColor fontColor = seqAreaWgt->getCurrentColorScheme()->getFontColor(maRow, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
         if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
             const char refChar = '\n';
-            highlightingScheme->process(refChar, c, backgroundColor, highlight, pos, rowIndex);
-        } else if (rowIndex == refSeq || refSeqName.isEmpty()) {
+            highlightingScheme->process(refChar, c, backgroundColor, highlight, pos, maRow);
+        } else if (maRow == refSeq || refSeqName.isEmpty()) {
             highlight = true;
         } else {
             const char refChar = editor->getReferenceCharAt(pos);
-            highlightingScheme->process(refChar, c, backgroundColor, highlight, pos, rowIndex);
+            highlightingScheme->process(refChar, c, backgroundColor, highlight, pos, maRow);
         }
 
         if (backgroundColor.isValid() && highlight) {

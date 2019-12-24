@@ -677,11 +677,9 @@ bool MaEditorSequenceArea::drawContent(QPainter &painter, const QRect &area) {
 }
 
 bool MaEditorSequenceArea::drawContent(QPainter &painter, const QRect &area, int xStart, int yStart) {
-    QList<int> seqIdx;
-    for (int rowNumber = 0; rowNumber < area.height(); rowNumber++) {
-        seqIdx << ui->getCollapseModel()->getMaRowIndexByViewRowIndex(rowNumber);
-    }
-    bool ok = renderer->drawContent(painter, U2Region(area.x(), area.width()), seqIdx, xStart, yStart);
+    U2Region viewRowsRegion(area.y(), area.y() + area.height());
+    QList<int> maRows = ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(viewRowsRegion);
+    bool ok = renderer->drawContent(painter, U2Region(area.x(), area.width()), maRows, xStart, yStart);
     emit si_visibleRangeChanged();
     return ok;
 }
