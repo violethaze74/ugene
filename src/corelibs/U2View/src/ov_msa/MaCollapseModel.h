@@ -50,6 +50,14 @@ class MaEditorWgt;
 class MaModificationInfo;
 class U2Region;
 
+/**
+ * Collapse model for the MAEditor.
+ * Maps MA rows into View rows and used all the time regardless if "collapsible mode" is enabled or not.
+ * In "collapse-disabled mode" each MA row is mapped to a 1 View row and the order of rows is the same.
+ * In "collapse-enabled mode" a single View row may contain multiple MA rows and/or the order of View rows
+ * may not be the same with MA rows.
+ * The "collapse-enabled mode" is used to group MA rows by similarity or to mimic Tree Viewer structure.
+ */
 class U2VIEW_EXPORT MaCollapseModel : public QObject {
     Q_OBJECT
 public:
