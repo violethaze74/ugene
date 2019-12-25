@@ -70,6 +70,14 @@ int MultipleAlignmentRowData::getUngappedPosition(int pos) const {
     return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), pos);
 }
 
+DNASequence MultipleAlignmentRowData::getUngappedSequence() const {
+    return sequence;
+}
+
+U2Region MultipleAlignmentRowData::getGapped(const U2Region& region) {
+    return MsaRowUtils::getGappedRegion(gaps, region);
+}
+
 bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
     CHECK(isGap(position), false);
     if (position < getCoreStart() || position > getCoreEnd() - 1) {
@@ -80,6 +88,15 @@ bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
 
 U2Region MultipleAlignmentRowData::getCoreRegion() const {
     return U2Region(getCoreStart(), getCoreLength());
+}
+
+U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region& selection) const {
+    U2Region noTrailingGapsRegion(selection);
+
+    if (noTrailingGapsRegion.endPos() > getRowLengthWithoutTrailing()) {
+        noTrailingGapsRegion.length = getRowLengthWithoutTrailing() - noTrailingGapsRegion.startPos;
+    }
+    return MsaRowUtils::getUngappedRegion(gaps, noTrailingGapsRegion);
 }
 
 MultipleAlignmentRowData::~MultipleAlignmentRowData() {

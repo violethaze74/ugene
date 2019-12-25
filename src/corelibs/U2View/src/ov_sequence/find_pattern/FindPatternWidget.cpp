@@ -65,14 +65,6 @@
 
 #include "FindPatternWidget.h"
 
-const QString NEW_LINE_SYMBOL = "\n";
-const QString STYLESHEET_COLOR_DEFINITION = "color: ";
-const QString STYLESHEET_DEFINITIONS_SEPARATOR = ";";
-
-const int REG_EXP_MIN_RESULT_LEN = 1;
-const int REG_EXP_MAX_RESULT_LEN = 1000;
-const int REG_EXP_MAX_RESULT_SINGLE_STEP = 20;
-
 namespace U2 {
 
 class FastaPatternsWalker {
@@ -185,7 +177,6 @@ FindPatternEventFilter::FindPatternEventFilter(QObject* parent)
 {
 }
 
-
 bool FindPatternEventFilter::eventFilter(QObject* obj, QEvent* event) {
     const QEvent::Type eventType = event->type();
     if (QEvent::KeyPress == eventType) {
@@ -194,10 +185,10 @@ bool FindPatternEventFilter::eventFilter(QObject* obj, QEvent* event) {
             if(keyEvent->modifiers().testFlag(Qt::ShiftModifier)) {
                 emit si_shiftEnterPressed();
                 return true;
-            }else if(!keyEvent->modifiers().testFlag(Qt::ControlModifier)) {
+            } else if(!keyEvent->modifiers().testFlag(Qt::ControlModifier)) {
                 emit si_enterPressed();
                 return true;
-            }else{
+            } else {
                 keyEvent->setModifiers(keyEvent->modifiers() & ~Qt::ControlModifier);
                 return false;
             }
@@ -211,12 +202,17 @@ bool FindPatternEventFilter::eventFilter(QObject* obj, QEvent* event) {
     return QObject::eventFilter(obj, event);
 }
 
-
-
 const static QString SHOW_OPTIONS_LINK("show_options_link");
-
 const int FindPatternWidget::DEFAULT_RESULTS_NUM_LIMIT = 100000;
 const int FindPatternWidget::DEFAULT_REGEXP_RESULT_LENGTH_LIMIT = 10000;
+
+const QString FindPatternWidget::NEW_LINE_SYMBOL = "\n";
+const QString FindPatternWidget::STYLESHEET_COLOR_DEFINITION = "color: ";
+const QString FindPatternWidget::STYLESHEET_DEFINITIONS_SEPARATOR = ";";
+
+const int FindPatternWidget::REG_EXP_MIN_RESULT_LEN = 1;
+const int FindPatternWidget::REG_EXP_MAX_RESULT_LEN = 1000;
+const int FindPatternWidget::REG_EXP_MAX_RESULT_SINGLE_STEP = 20;
 
 FindPatternWidget::FindPatternWidget(AnnotatedDNAView* _annotatedDnaView) :
     annotatedDnaView(_annotatedDnaView),
@@ -515,7 +511,7 @@ void FindPatternWidget::sl_onRegionOptionChanged(int index)
         regionIsCorrect = true;
         checkState();
         setRegionToWholeSequence();
-    }else if (boxRegion->itemData(index).toInt() == RegionSelectionIndex_CustomRegion) {
+    } else if (boxRegion->itemData(index).toInt() == RegionSelectionIndex_CustomRegion) {
         editStart->show();
         lblStartEndConnection->show();
         editEnd->show();
@@ -526,7 +522,7 @@ void FindPatternWidget::sl_onRegionOptionChanged(int index)
         SAFE_POINT(NULL != activeContext, "Internal error: there is no sequence in focus!",);
         getCompleteSearchRegion(regionIsCorrect, activeContext->getSequenceLength());
         checkState();
-    }else if(boxRegion->itemData(index).toInt() == RegionSelectionIndex_CurrentSelectedRegion) {
+    } else if(boxRegion->itemData(index).toInt() == RegionSelectionIndex_CurrentSelectedRegion) {
         currentSelection = annotatedDnaView->getSequenceInFocus()->getSequenceSelection();
         connect(currentSelection, SIGNAL(si_selectionChanged(LRegionsSelection* , const QVector<U2Region>&, const QVector<U2Region>&)),
             this, SLOT(sl_onSelectedRegionChanged()) );
@@ -536,47 +532,34 @@ void FindPatternWidget::sl_onRegionOptionChanged(int index)
         sl_onSelectedRegionChanged();
     }
 }
-
-
-void highlightBackground(QWidget* widget) {
-    widget->setStyleSheet("background-color: " + Theme::errorColorTextFieldStr() + ";");
-}
-
-
-void doNotHighlightBackground(QWidget* widget) {
-    widget->setStyleSheet("background-color: white;");
-}
-
-
 void FindPatternWidget::sl_onRegionValueEdited()
 {
     regionIsCorrect = true;
 
     // The values are not empty
     if (editStart->text().isEmpty()) {
-        highlightBackground(editStart);
+        GUIUtils::setWidgetWarning(editStart, true);
         regionIsCorrect = false;
-    }
-    else if (editEnd->text().isEmpty()) {
-        highlightBackground(editEnd);
+    } else if (editEnd->text().isEmpty()) {
+        GUIUtils::setWidgetWarning(editEnd, true);
         regionIsCorrect = false;
     } else {
         bool ok = false;
         qint64 value1 = editStart->text().toLongLong(&ok);
         if (!ok || (value1 < 1)) {
-            highlightBackground(editStart);
+            GUIUtils::setWidgetWarning(editStart, true);
             regionIsCorrect = false;
         }
         int value2 = editEnd->text().toLongLong(&ok);
         if (!ok || value2 < 1) {
-            highlightBackground(editEnd);
+            GUIUtils::setWidgetWarning(editEnd, true);
             regionIsCorrect = false;
         }
     }
 
     if (regionIsCorrect) {
-        doNotHighlightBackground(editStart);
-        doNotHighlightBackground(editEnd);
+        GUIUtils::setWidgetWarning(editStart, false);
+        GUIUtils::setWidgetWarning(editEnd, false);
     }
 
     boxRegion->setCurrentIndex(boxRegion->findData(RegionSelectionIndex_CustomRegion));
@@ -600,8 +583,8 @@ void FindPatternWidget::sl_onFocusChanged(
 
         // Update region
         setRegionToWholeSequence();
-        doNotHighlightBackground(editStart);
-        doNotHighlightBackground(editEnd);
+        GUIUtils::setWidgetWarning(editStart, false);
+        GUIUtils::setWidgetWarning(editEnd, false);
 
         // Update available annotations table objects, etc.
         updateAnnotationsWidget();
@@ -639,8 +622,7 @@ void FindPatternWidget::updateLayout()
         spinMatch->show();
         QWidget::setTabOrder(boxAlgorithm, spinMatch);
         QWidget::setTabOrder(spinMatch, boxStrand);
-    }
-    else if (selectedAlgorithm == FindAlgorithmPatternSettings_Subst) {
+    } else if (selectedAlgorithm == FindAlgorithmPatternSettings_Subst) {
         useAmbiguousBasesContainer->show();
         useMaxResultLenContainer->hide();
         boxMaxResultLen->hide();
@@ -650,8 +632,7 @@ void FindPatternWidget::updateLayout()
         lblMatch->show();
         spinMatch->show();
         QWidget::setTabOrder(useAmbiguousBasesBox, boxStrand);
-    }
-    else if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
+    } else if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
         useAmbiguousBasesBox->setChecked(false);
         useAmbiguousBasesContainer->hide();
         useMaxResultLenContainer->show();
@@ -668,8 +649,7 @@ void FindPatternWidget::updateLayout()
         boxStrand->hide();
         lblSeqTransl->hide();
         boxSeqTransl->hide();
-    }
-    else {
+    } else {
         lblStrand->show();
         boxStrand->show();
         lblSeqTransl->show();
@@ -709,7 +689,7 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
                     const QString message = tr("Warning: input value contains characters that"
                                                " do not match the active alphabet!");
                     text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
-                    highlightBackground(textPattern);
+                    GUIUtils::setWidgetWarning(textPattern, true);
                     break;
                     }
                 case PatternsWithBadAlphabetInFile:
@@ -778,7 +758,7 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
                     {
                     const QString message = tr("Warning: invalid regexp. ");
                     text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                    highlightBackground(textPattern);
+                    GUIUtils::setWidgetWarning(textPattern, true);
                     break;
                     }
                 case SequenceIsTooBig:
@@ -793,13 +773,12 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
             }
         }
         lblErrorMessage->setText(text);
-    }
-    else {
+    } else {
         lblErrorMessage->setText("");
     }
     bool hasNoErrors = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(UseMultiplePatternsTip));
     if (hasNoErrors) {
-        doNotHighlightBackground(textPattern);
+        GUIUtils::setWidgetWarning(textPattern, true);
     }
 
 }
@@ -906,8 +885,7 @@ bool FindPatternWidget::verifyPatternAlphabet()
     bool alphabetIsOk = checkAlphabet(patterns);
     if (!alphabetIsOk) {
         showHideMessage(true, PatternAlphabetDoNotMatch);
-    }
-    else {
+    } else {
         showHideMessage(false, PatternAlphabetDoNotMatch);
     }
 
@@ -950,7 +928,7 @@ void FindPatternWidget::showTooLongSequenceError()
     showHideMessage(false, PatternsWithBadAlphabetInFile);
     showHideMessage(false, NoPatternToSearch);
     showHideMessage(false, SearchRegionIncorrect);
-    doNotHighlightBackground(textPattern);
+    GUIUtils::setWidgetWarning(textPattern, false);
 }
 
 void FindPatternWidget::checkState()
@@ -980,7 +958,7 @@ void FindPatternWidget::checkState()
     if (textPattern->toPlainText().isEmpty()
         && !loadFromFileGroupBox->isChecked()) {
         showHideMessage(false, PatternAlphabetDoNotMatch);
-        doNotHighlightBackground(textPattern);
+        GUIUtils::setWidgetWarning(textPattern, false);
         return;
     }
 
@@ -996,17 +974,16 @@ void FindPatternWidget::checkState()
             bool regionOk = checkPatternRegion(textPattern->toPlainText());
 
             if (!regionOk) {
-                highlightBackground(textPattern);
+                GUIUtils::setWidgetWarning(textPattern, true);
                 showHideMessage(true, PatternIsTooLong);
                 return;
-            }
-            else {
-                doNotHighlightBackground(textPattern);
+            } else {
+                GUIUtils::setWidgetWarning(textPattern, false);
                 showHideMessage(false, PatternIsTooLong);
             }
         }
     } else {
-        doNotHighlightBackground(textPattern);
+        GUIUtils::setWidgetWarning(textPattern, false);
         showHideMessage(false, PatternAlphabetDoNotMatch);
     }
 
@@ -1024,8 +1001,7 @@ void FindPatternWidget::enableDisableMatchSpin()
 {
     if ((textPattern->toPlainText().isEmpty() && !loadFromFileGroupBox->isChecked()) || isAminoSequenceSelected) {
         spinMatch->setEnabled(false);
-    }
-    else {
+    } else {
         spinMatch->setEnabled(true);
     }
 }
@@ -1144,8 +1120,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     // Strand
     if (isAminoSequenceSelected) {
         settings.strand = FindAlgorithmStrand_Direct;
-    }
-    else {
+    } else {
         int strandId = boxStrand->currentIndex();
         switch (strandId) {
             case FindAlgorithmStrand_Both:
@@ -1174,8 +1149,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     // Sequence/translation
     if (!isAminoSequenceSelected && (SeqTranslIndex_Translation == boxSeqTransl->currentIndex())) {
         settings.proteinTT = activeContext->getAminoTT();
-    }
-    else {
+    } else {
         settings.proteinTT = NULL;
     }
 
@@ -1196,7 +1170,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     settings.maxErr = 0;
 
     settings.useAmbiguousBases = useAmbiguousBasesBox->isChecked();
-    settings.maxRegExpResult = boxUseMaxResultLen->isChecked() ?
+    settings.maxRegExpResultLength = boxUseMaxResultLen->isChecked() ?
         boxMaxResultLen->value() :
     DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
 
@@ -1346,7 +1320,7 @@ void FindPatternWidget::sl_onSelectedRegionChanged(){
                 }
             }
         }
-    }else{
+    } else {
         SAFE_POINT(annotatedDnaView->getSequenceInFocus() != NULL, "No sequence in focus, with active search tab in options panel",);
         editStart->setText(QString::number(1));
         editEnd->setText(QString::number(annotatedDnaView->getSequenceInFocus()->getSequenceLength()));
@@ -1364,16 +1338,14 @@ void FindPatternWidget::updatePatternText(int previousAlgorithm) {
     // Save a previous state.
     if (FindAlgorithmPatternSettings_RegExp == previousAlgorithm) {
         patternRegExp = textPattern->toPlainText();
-    }
-    else {
+    } else {
         patternString = textPattern->toPlainText();
     }
 
     // Set a new state.
     if (FindAlgorithmPatternSettings_RegExp == selectedAlgorithm) {
         textPattern->setText(patternRegExp);
-    }
-    else {
+    } else {
         textPattern->setText(patternString);
     }
     setCorrectPatternsString();
@@ -1400,8 +1372,7 @@ void FindPatternWidget::validateCheckBoxSize(QCheckBox* checkBox, int requiredWi
         if(' ' == text.at(endPos) || endPos == length - 1) {
             if(endPos-1 <= startPos) {
                 wrappedText = "";
-            }
-            else {
+            } else {
                 wrappedText = text.mid(startPos, endPos - startPos - 1);
             }
             textRect = checkBoxMetrics.boundingRect(wrappedText);
@@ -1437,7 +1408,7 @@ void FindPatternWidget::sl_activateNewSearch(bool forcedSearch){
                 newPatterns[i].first = QString::number(i);
                 patternList.append(newPatterns[i].second);
             }
-        }else{
+        } else {
             checkState();
             return;
         }
@@ -1519,7 +1490,7 @@ void FindPatternWidget::sl_prevButtonClicked() {
     int resultSize = findPatternResults.size();
     if(iterPos == 1){
         iterPos = resultSize;
-    }else{
+    } else {
         iterPos--;
     }
     showCurrentResult();
@@ -1529,7 +1500,7 @@ void FindPatternWidget::sl_nextButtonClicked() {
     int resultSize = findPatternResults.size();
     if(iterPos == resultSize){
         iterPos = 1;
-    }else{
+    } else {
         iterPos++;
     }
     showCurrentResult();

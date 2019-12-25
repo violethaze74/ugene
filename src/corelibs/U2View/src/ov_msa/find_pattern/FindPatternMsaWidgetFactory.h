@@ -19,37 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_STATUS_BAR_H_
-#define _U2_MSA_EDITOR_STATUS_BAR_H_
+#ifndef _U2_FIND_PATTERN_MSA_WIDGET_FACTORY_H_
+#define _U2_FIND_PATTERN_MSA_WIDGET_FACTORY_H_
 
-#include "MaEditorStatusBar.h"
-
-#include <QRegExpValidator>
-
-class QLineEdit;
-class QPushButton;
+#include <U2Gui/OPWidgetFactory.h>
 
 namespace U2 {
 
-class DNAAlphabet;
-class MaSearchValidator;
+class GObjectView;
 
-class MsaEditorStatusBar : public MaEditorStatusBar {
+class U2VIEW_EXPORT FindPatternMsaWidgetFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
-    MsaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea);
+    FindPatternMsaWidgetFactory();
+
+    QWidget * createWidget(GObjectView* objView) override;
+    OPGroupParameters getOPGroupParameters() override;
+    static const QString & getGroupId();
 
 private:
-    void setupLayout();
-    void updateLabels();
-};
-
-class MaSearchValidator : public QRegExpValidator {
-public:
-    MaSearchValidator(const DNAAlphabet* alphabet, QObject* parent);
-    State validate(QString &input, int &pos) const;
+    static const QString GROUP_ID;
+    static const QString GROUP_ICON_STR;
+    static const QString GROUP_DOC_PAGE;
 };
 
 } // namespace
 
-#endif // _U2_MSA_EDITOR_STATUS_BAR_H_
+#endif

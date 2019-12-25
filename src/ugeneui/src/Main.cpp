@@ -130,6 +130,7 @@
 #include <U2View/AssemblySettingsWidget.h>
 #include <U2View/ColorSchemaSettingsController.h>
 #include <U2View/DnaAssemblyUtils.h>
+#include <U2View/FindPatternMsaWidgetFactory.h>
 #include <U2View/FindPatternWidgetFactory.h>
 #include <U2View/McaGeneralTabFactory.h>
 #include <U2View/MaExportConsensusTabFactory.h>
@@ -306,6 +307,7 @@ static void initOptionsPanels() {
     MSAGeneralTabFactory *msaGeneralTabFactory = new MSAGeneralTabFactory();
     QString msaGeneralId = msaGeneralTabFactory->getOPGroupParameters().getGroupId();
     opWidgetFactoryRegistry->registerFactory(msaGeneralTabFactory);
+    opWidgetFactoryRegistry->registerFactory(new FindPatternMsaWidgetFactory());
 
     MSAHighlightingFactory *msaHighlightingFactory = new MSAHighlightingFactory();
     QString msaHighlightingId = msaHighlightingFactory->getOPGroupParameters().getGroupId();

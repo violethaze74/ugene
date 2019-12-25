@@ -23,6 +23,7 @@
 #define _U2_TEXT_UTILS_H_
 
 #include <U2Core/global.h>
+#include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <assert.h>
@@ -33,6 +34,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QVector>
+#include <QWidget>
 
 namespace U2 {
 

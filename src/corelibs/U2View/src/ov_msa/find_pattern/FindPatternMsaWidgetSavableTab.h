@@ -19,37 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_STATUS_BAR_H_
-#define _U2_MSA_EDITOR_STATUS_BAR_H_
+#ifndef _U2_FIND_PATTERN_MSA_WIDGET_SAVABLE_TAB_H_
+#define _U2_FIND_PATTERN_MSA_WIDGET_SAVABLE_TAB_H_
 
-#include "MaEditorStatusBar.h"
+#include <QStringList>
 
-#include <QRegExpValidator>
-
-class QLineEdit;
-class QPushButton;
+#include <U2Gui/U2SavableWidget.h>
 
 namespace U2 {
 
-class DNAAlphabet;
-class MaSearchValidator;
-
-class MsaEditorStatusBar : public MaEditorStatusBar {
-    Q_OBJECT
+class FindPatternMsaWidgetSavableTab : public U2SavableWidget {
 public:
-    MsaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea);
+    FindPatternMsaWidgetSavableTab(QWidget *wrappedWidget, MWMDIWindow* contextWindow);
+    ~FindPatternMsaWidgetSavableTab();
 
+    void setChildValue(const QString &childId, const QVariant &value);
+    void setRegionWidgetIds(const QStringList &s);
 private:
-    void setupLayout();
-    void updateLabels();
+    QStringList regionWidgetIds;
 };
 
-class MaSearchValidator : public QRegExpValidator {
-public:
-    MaSearchValidator(const DNAAlphabet* alphabet, QObject* parent);
-    State validate(QString &input, int &pos) const;
-};
+} // namespace U2
 
-} // namespace
-
-#endif // _U2_MSA_EDITOR_STATUS_BAR_H_
+#endif

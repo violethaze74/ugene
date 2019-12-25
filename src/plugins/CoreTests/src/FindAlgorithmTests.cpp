@@ -152,7 +152,7 @@ void GTest_FindAlgorithmTest::init(XMLTestFormat *tf, const QDomElement& el){
     }
     else if(buf == "regexp"){
         settings.patternSettings = FindAlgorithmPatternSettings_RegExp;
-        settings.maxRegExpResult =  el.attribute(MAXLEN_ATTR).toInt(&ok);
+        settings.maxRegExpResultLength =  el.attribute(MAXLEN_ATTR).toInt(&ok);
         if(!ok){
             stateInfo.setError(GTest::tr("value incorrect for %1").arg(MAXLEN_ATTR));
             return;

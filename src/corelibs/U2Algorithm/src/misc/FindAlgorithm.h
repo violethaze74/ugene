@@ -110,7 +110,7 @@ public:
     int                                 maxErr;
     FindAlgorithmPatternSettings        patternSettings;
     bool                                useAmbiguousBases;
-    int                                 maxRegExpResult;
+    int                                 maxRegExpResultLength;
     int                                 maxResult2Find;
 
     static const int                    MAX_RESULT_TO_FIND_UNLIMITED = -1;
@@ -161,7 +161,7 @@ public:
                 config.pattern.constData(),
                 config.pattern.length(),
                 config.maxErr,
-                config.maxRegExpResult,
+                config.maxRegExpResultLength,
                 stopFlag,
                 percentsCompleted);
     }

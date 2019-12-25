@@ -70,7 +70,7 @@ void FindAlgorithmTask::run() {
         config.pattern.constData(),
         config.pattern.length(),
         config.maxErr,
-        config.maxRegExpResult,
+        config.maxRegExpResultLength,
         stateInfo.cancelFlag,
         stateInfo.progress);
 }

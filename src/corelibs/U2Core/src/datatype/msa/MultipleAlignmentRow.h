@@ -94,10 +94,13 @@ public:
      * Otherwise returns '-1'.
      */
     int getUngappedPosition(int pos) const;
+    U2Region getGapped(const U2Region& region);
 
     bool isTrailingOrLeadingGap(qint64 position) const;
 
     U2Region getCoreRegion() const;
+    U2Region getUngappedRegion(const U2Region& selection) const;
+    DNASequence getUngappedSequence() const;
 
     virtual ~MultipleAlignmentRowData();
 

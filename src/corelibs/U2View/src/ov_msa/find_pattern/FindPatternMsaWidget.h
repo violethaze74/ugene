@@ -19,16 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FIND_PATTERN_WIDGET_H_
-#define _U2_FIND_PATTERN_WIDGET_H_
+#ifndef _U2_FIND_PATTERN_MSA_WIDGET_H_
+#define _U2_FIND_PATTERN_MSA_WIDGET_H_
 
-#include <U2Core/AnnotationData.h>
 #include <U2Core/U2Region.h>
 
-#include "FindPatternWidgetSavableTab.h"
-
-#include "FindPatternTask.h"
-#include "ui_FindPatternForm.h"
+#include "../MSAEditor.h"
+#include "../MSAEditorSequenceArea.h"
+#include "FindPatternMsaWidgetSavableTab.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
+#include "ov_sequence/find_pattern/FindPatternTask.h"
+#include "ov_sequence/find_pattern/FindPatternWidget.h"
+#include "ui_FindPatternMsaForm.h"
 
 namespace U2 {
 
@@ -40,103 +42,69 @@ class DNASequenceSelection;
 class Task;
 class U2OpStatus;
 
-enum SeqTranslIndex {
-    SeqTranslIndex_Sequence,
-    SeqTranslIndex_Translation
-};
-
-enum RegionSelectionIndex {
-    RegionSelectionIndex_WholeSequence,
-    RegionSelectionIndex_CustomRegion,
-    RegionSelectionIndex_CurrentSelectedRegion
-};
-
-enum MessageFlag {
-    PatternIsTooLong,
-    PatternAlphabetDoNotMatch,
-    PatternsWithBadAlphabetInFile,
-    PatternsWithBadRegionInFile,
-    UseMultiplePatternsTip,
-    AnnotationNotValidName,
-    AnnotationNotValidFastaParsedName,
-    NoPatternToSearch,
-    SearchRegionIncorrect,
-    PatternWrongRegExp,
-    SequenceIsTooBig
-};
-
-
-/**
- * A workaround to listen to enter in the pattern field and
- * make a correct (almost) tab order.
- */
-class FindPatternEventFilter : public QObject
+class FindPatternMsaWidget : public QWidget, private Ui_FindPatternMsaForm
 {
     Q_OBJECT
 public:
-    FindPatternEventFilter(QObject* parent);
+    FindPatternMsaWidget(MSAEditor* msaEditor);
 
-signals:
-    void si_enterPressed();
-    void si_shiftEnterPressed();
-
-protected:
-    bool eventFilter(QObject* obj, QEvent *event);
-};
-
-class FindPatternWidget : public QWidget, private Ui_FindPatternForm
-{
-    Q_OBJECT
-public:
-    FindPatternWidget(AnnotatedDNAView*);
-    int getTargetSequnceLength() const;
+    int getTargetMsaLength() const;
 
 private slots:
     void sl_onAlgorithmChanged(int);
     void sl_onRegionOptionChanged(int);
     void sl_onRegionValueEdited();
-    void sl_onSequenceTranslationChanged(int);
     void sl_onSearchPatternChanged();
     void sl_onMaxResultChanged(int);
-
-    void sl_onFileSelectorClicked();
-    void sl_onFileSelectorToggled(bool on);
-    void sl_loadPatternTaskStateChanged();
-    void sl_findPatrernTaskStateChanged();
-
-    /** Another sequence has been selected */
-    void sl_onFocusChanged(ADVSequenceWidget*, ADVSequenceWidget*);
+    void sl_findPatternTaskStateChanged();
 
     /** A sequence part was added, removed or replaced */
-    void sl_onSequenceModified();
+    void sl_onMsaModified();
 
-    void sl_onSelectedRegionChanged();
-
-    void sl_onAnotationNameEdited();
-
+    void sl_onSelectedRegionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     void sl_activateNewSearch(bool forcedSearch = true);
     void sl_toggleExtendedAlphabet();
-    void sl_getAnnotationsButtonClicked();
     void sl_prevButtonClicked();
     void sl_nextButtonClicked();
 
     void sl_onEnterPressed();
     void sl_onShiftEnterPressed();
-    void sl_usePatternNamesCbClicked();
+
 private:
+    class ResultIterator {
+    public:
+        ResultIterator();
+        ResultIterator(const QMap<int, QList<U2Region> >& results);
+
+        U2Region currentResult() const;
+        int getGlobalPos() const;
+        int getTotalCount() const;
+        int getRow() const;
+        void goBegin();
+        void goEnd();
+        void goNextResult();
+        void goPrevResult();
+
+    private:
+        QMap<int, QList<U2Region> > results;
+
+        int totalResultsCounter;
+        int globalPos; //1-based position
+
+        QMap<int, QList<U2Region> >::const_iterator rowsIt;
+        QList<U2Region>::const_iterator regionsIt;
+    };
+
     void initLayout();
     void initAlgorithmLayout();
-    void initStrandSelection();
-    void initSeqTranslSelection();
     void initRegionSelection();
     void initResultsLimit();
-    void initUseAmbiguousBasesContainer();
     void initMaxResultLenContainer();
     void updateLayout();
     void connectSlots();
-    int getMaxError(const QString& pattern) const;
+    int  getMaxError(const QString& pattern) const;
     void showCurrentResult() const;
-    bool isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const;
+    bool isSearchPatternsDifferent(const QList<NamePattern>& newPatterns) const;
     void stopCurrentSearchTask();
     void correctSearchInCombo();
     void setUpTabOrder() const;
@@ -166,6 +134,7 @@ private:
     bool checkAlphabet(const QString& pattern);
     void showTooLongSequenceError();
 
+    void setCorrectPatternsString();
     void setRegionToWholeSequence();
 
     U2Region getCompleteSearchRegion(bool& regionIsCorrect, qint64 maxLen) const;
@@ -174,12 +143,9 @@ private:
 
     /** Checks if there are several patterns in textPattern which are separated by new line symbol,
     parse them out and returns with their names (if they're exist). */
-    QList <QPair<QString, QString> > getPatternsFromTextPatternField(U2OpStatus &os) const;
+    QList <QPair<QString, QString> > getPatternsFromTextPatternField(U2OpStatus& os) const;
 
     /** Checks whether the input string is uppercased or not. */
-    static bool hasWrongChars(const QString &input);
-
-    void setCorrectPatternsString();
 
     void changeColorOfMessageText(const QString &colorName);
     QString currentColorOfMessageText() const;
@@ -187,13 +153,9 @@ private:
     void updatePatternText(int previousAlgorithm);
 
     void validateCheckBoxSize(QCheckBox* checkBox, int requiredWidth);
-    void updateAnnotationsWidget();
 
-    AnnotatedDNAView* annotatedDnaView;
-    CreateAnnotationWidgetController* annotController;
-    bool annotModelPrepared;
-
-    bool isAminoSequenceSelected;
+    MSAEditor* msaEditor;
+    bool isAmino;
     bool regionIsCorrect;
     int selectedAlgorithm;
     QString patternString;
@@ -208,16 +170,10 @@ private:
 
     QLabel* lblMatch;
     QSpinBox* spinMatch;
-    QWidget *useAmbiguousBasesContainer;
-    QCheckBox* useAmbiguousBasesBox;
 
     QWidget *useMaxResultLenContainer;
     QCheckBox* boxUseMaxResultLen;
     QSpinBox* boxMaxResultLen;
-
-    QWidget* annotsWidget;
-
-    DNASequenceSelection *currentSelection;
 
     static const int DEFAULT_RESULTS_NUM_LIMIT;
     static const int DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
@@ -230,17 +186,16 @@ private:
     static const int REG_EXP_MAX_RESULT_LEN;
     static const int REG_EXP_MAX_RESULT_SINGLE_STEP;
 
-    QList<SharedAnnotationData> findPatternResults;
-    int iterPos;
+    QMap<int, QList<U2Region> > findPatternResults;
+    ResultIterator resultIterator;
     Task *searchTask;
     QString previousPatternString;
     int previousMaxResult;
     QStringList patternList;
     QStringList nameList;
-    bool usePatternNames;
     QMovie *progressMovie;
 
-    FindPatternWidgetSavableTab savableWidget;
+    FindPatternMsaWidgetSavableTab savableWidget;
 };
 
 } // namespace U2

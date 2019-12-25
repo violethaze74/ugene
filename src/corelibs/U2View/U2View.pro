@@ -50,6 +50,10 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/ExportConsensus/MaExportConsensusWidget.h \
            src/ov_msa/ExportHighlightedDialogController.h \
            src/ov_msa/ExportSequencesTask.h \
+           src/ov_msa/find_pattern/FindPatternMsaTask.h \
+           src/ov_msa/find_pattern/FindPatternMsaWidget.h \
+           src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.h \
+           src/ov_msa/find_pattern/FindPatternMsaWidgetSavableTab.h \
            src/ov_msa/General/MaConsensusModeWidget.h \
            src/ov_msa/General/McaGeneralTab.h \
            src/ov_msa/General/McaGeneralTabFactory.h \
@@ -241,6 +245,7 @@ FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/ov_msa/DeleteGapsDialog.ui \
          src/ov_msa/ExportConsensus/ExportConsensusWidget.ui \
          src/ov_msa/ExportHighlightedDialog.ui \
+         src/ov_msa/find_pattern/FindPatternMsaForm.ui \
          src/ov_msa/General/GeneralTabOptionsPanelWidget.ui \
          src/ov_msa/General/MaConsensusModeWidget.ui \
          src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui \
@@ -320,6 +325,10 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
            src/ov_msa/ExportSequencesTask.cpp \
+           src/ov_msa/find_pattern/FindPatternMsaTask.cpp \
+           src/ov_msa/find_pattern/FindPatternMsaWidget.cpp \
+           src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.cpp \
+           src/ov_msa/find_pattern/FindPatternMsaWidgetSavableTab.cpp \
            src/ov_msa/General/MaConsensusModeWidget.cpp \
            src/ov_msa/General/McaGeneralTab.cpp \
            src/ov_msa/General/McaGeneralTabFactory.cpp \
