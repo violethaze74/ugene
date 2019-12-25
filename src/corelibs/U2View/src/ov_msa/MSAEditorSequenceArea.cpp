@@ -214,7 +214,7 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
 }
 
 void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInfo) {
-    if (!modInfo.rowContentChanged) {
+    if (!modInfo.rowContentChanged && !modInfo.rowListChanged) {
         return;
     }
     MaCollapseModel* collapseModel = ui->getCollapseModel();

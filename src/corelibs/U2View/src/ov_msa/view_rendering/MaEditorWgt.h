@@ -81,8 +81,12 @@ public:
     QAction* getCopyFormattedSelectionAction() const { return copyFormattedSelectionAction; }
     QAction* getPasteAction() const { return pasteAction; }
 
-    // SANGER_TODO: should be muted in case of chromatogram (crutch!)
-    // the best is to store it in the MCA widget, of course
+    /* Returns if collapsible mode is enabled or not.
+     *
+     * Note: the collapsible model is used regardless if collapsible mode is enabled or not,
+     * but have different features: in the collapsible mode the model can contains group of multiple sequences
+     * or reordered rows.
+     */
     bool isCollapsibleMode() const { return collapsibleMode; }
     void setCollapsibleMode(bool collapse) { collapsibleMode = collapse; }
     MaCollapseModel* getCollapseModel() const { return collapseModel; }
