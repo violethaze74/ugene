@@ -72,26 +72,32 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &region
     return true;
 }
 
+#define SELECTION_STROKE_WIDTH  2
+
 void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
-    MaEditorSelection selection = seqAreaWgt->getSelection();
-
-    const QRect selectionRect = ui->getDrawHelper()->getSelectionScreenRect(selection);
-
+    QRect selectionRect = ui->getDrawHelper()->getSelectionScreenRect(seqAreaWgt->getSelection());
+    if (selectionRect.left() < SELECTION_STROKE_WIDTH) {
+        selectionRect.setLeft(SELECTION_STROKE_WIDTH);
+    }
+    int viewWidth = ui->getSequenceArea()->width();
+    if (selectionRect.right() > viewWidth - SELECTION_STROKE_WIDTH) {
+        selectionRect.setRight(viewWidth - SELECTION_STROKE_WIDTH);
+    }
     QPen pen(seqAreaWgt->selectionColor);
     if (seqAreaWgt->maMode == MaEditorSequenceArea::ViewMode) {
         pen.setStyle(Qt::DashLine);
     }
-    pen.setWidth(2);
+    pen.setWidth(SELECTION_STROKE_WIDTH);
     painter.setPen(pen);
 
     switch (seqAreaWgt->maMode) {
-    case MaEditorSequenceArea::ViewMode:
-    case MaEditorSequenceArea::ReplaceCharMode:
-        painter.drawRect(selectionRect);
-        break;
-    case MaEditorSequenceArea::InsertCharMode:
-        painter.drawLine(selectionRect.left(), selectionRect.top(), selectionRect.left(), selectionRect.bottom());
-        break;
+        case MaEditorSequenceArea::ViewMode:
+        case MaEditorSequenceArea::ReplaceCharMode:
+            painter.drawRect(selectionRect);
+            break;
+        case MaEditorSequenceArea::InsertCharMode:
+            painter.drawLine(selectionRect.left(), selectionRect.top(), selectionRect.left(), selectionRect.bottom());
+            break;
     }
 }
 
