@@ -24,7 +24,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
@@ -70,11 +69,6 @@ void MSAGeneralTab::sl_alignmentChanged() {
     alignmentHeight->setText(QString::number(msa->getNumSequences()));
 }
 
-void MSAGeneralTab::sl_copyFormatSelectionChanged(int index) {
-    QString selectedFormatId = copyType->itemData(index).toString();
-    emit si_copyFormatChanged(selectedFormatId);
-}
-
 void MSAGeneralTab::sl_copyFormatted(){
     emit si_copyFormatted();
 }
@@ -85,7 +79,6 @@ void MSAGeneralTab::sl_copyFormatStatusChanged(bool enabled){
 
 void MSAGeneralTab::connectSignals() {
     // Inner signals
-    connect(copyType,               SIGNAL(currentIndexChanged(int)),   SLOT(sl_copyFormatSelectionChanged(int)));
     connect(copyButton,             SIGNAL(clicked()),                  SLOT(sl_copyFormatted()));
 
     // Extern signals
@@ -99,10 +92,6 @@ void MSAGeneralTab::connectSignals() {
 
     connect(this, SIGNAL(si_copyFormatted()),
             msa->getUI()->getSequenceArea(), SLOT(sl_copyFormattedSelection()));
-
-    //in
-    connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)),
-            SLOT(sl_copyFormatStatusChanged(bool)));
 
 }
 

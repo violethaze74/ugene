@@ -339,7 +339,6 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
     SAFE_POINT(copyMenu != NULL, "copyMenu", );
     ui->getCopySelectionAction()->setDisabled(selection.isEmpty());
-    emit si_copyFormattedChanging(!selection.isEmpty());
     copyMenu->addAction(ui->getCopySelectionAction());
     ui->getCopyFormattedSelectionAction()->setDisabled(selection.isEmpty());
     copyMenu->addAction(ui->getCopyFormattedSelectionAction());
@@ -597,19 +596,15 @@ void MSAEditorSequenceArea::sl_modelChanged() {
     MaEditorSequenceArea::sl_modelChanged();
 }
 
-void MSAEditorSequenceArea::sl_copyCurrentSelection()
-{
-    CHECK(getEditor() != NULL, );
+void MSAEditorSequenceArea::sl_copyCurrentSelection() {
+    CHECK(getEditor() != NULL,);
+    CHECK(!selection.isEmpty(),);
     // TODO: probably better solution would be to export selection???
 
     assert(isInRange(selection.topLeft()));
-    assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
+    assert(isInRange(selection.bottomRight()));
 
     MultipleSequenceAlignmentObject* maObj = getEditor()->getMaObject();
-    if (selection.isEmpty()) {
-        return;
-    }
-
     MaCollapseModel* collapseModel = ui->getCollapseModel();
     QString selText;
     U2OpStatus2Log os;
@@ -627,7 +622,8 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
 
 void MSAEditorSequenceArea::sl_copyFormattedSelection(){
     const DocumentFormatId& formatId = getCopyFormattedAlgorithmId();
-    Task* clipboardTask = new SubalignmentToClipboardTask(getEditor(), selection.toRect(), formatId);
+    QRect rectToCopy = selection.isEmpty() ? QRect(0, 0, editor->getAlignmentLen(), getViewRowCount()): selection.toRect();
+    Task* clipboardTask = new SubalignmentToClipboardTask(getEditor(), rectToCopy, formatId);
     AppContext::getTaskScheduler()->registerTopLevelTask(clipboardTask);
 }
 

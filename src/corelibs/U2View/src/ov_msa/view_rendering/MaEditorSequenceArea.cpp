@@ -278,7 +278,6 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection& newSelection) {
     bool selectionExists = !selection.isEmpty();
     ui->getCopySelectionAction()->setEnabled(selectionExists);
     ui->getCopyFormattedSelectionAction()->setEnabled(selectionExists);
-    emit si_copyFormattedChanging(selectionExists);
 
     sl_updateActions();
 }
