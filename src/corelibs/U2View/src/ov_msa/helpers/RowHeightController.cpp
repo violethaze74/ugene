@@ -134,6 +134,9 @@ U2Region RowHeightController::getGlobalYRegionByMaRowIndex(int maRowIndex, const
 #define OUT_OF_RANGE_OFFSET 5
 
 U2Region RowHeightController::getGlobalYRegionByViewRowIndex(int viewRowIndex) const {
+    if (ui->getCollapseModel()->getViewRowCount() == 0) { // empty alignment.
+        return U2Region(- OUT_OF_RANGE_OFFSET, 0);
+    }
     MaCollapseModel* collapseModel = ui->getCollapseModel();
     int viewRowCount = collapseModel->getViewRowCount();
     // Return an empty region after the view for viewRowIndexes > maxRows
