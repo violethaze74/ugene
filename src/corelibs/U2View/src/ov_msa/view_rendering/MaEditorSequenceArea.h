@@ -210,6 +210,7 @@ signals:
     void si_visibleRangeChanged();
     void si_startMaChanging();
     void si_stopMaChanging(bool msaUpdated);
+    void si_copyFormattedChanging(bool enabled);
 
 protected:
     void resizeEvent(QResizeEvent *event);

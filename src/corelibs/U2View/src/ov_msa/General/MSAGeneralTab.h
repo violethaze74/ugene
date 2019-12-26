@@ -45,6 +45,7 @@ signals:
 
 public slots:
     void sl_alignmentChanged();
+    void sl_copyFormatSelectionChanged(int value);
     void sl_copyFormatted();
     void sl_copyFormatStatusChanged(bool enabled);
 

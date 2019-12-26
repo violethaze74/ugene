@@ -53,6 +53,8 @@ MSAGeneralTab::MSAGeneralTab(MSAEditor* _msa)
     initializeParameters();
     connectSignals();
 
+    copyButton->setEnabled(msa->getUI()->getCopyFormattedSelectionAction()->isEnabled());
+
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
 #ifdef Q_OS_MAC
@@ -69,6 +71,11 @@ void MSAGeneralTab::sl_alignmentChanged() {
     alignmentHeight->setText(QString::number(msa->getNumSequences()));
 }
 
+void MSAGeneralTab::sl_copyFormatSelectionChanged(int index) {
+    QString selectedFormatId = copyType->itemData(index).toString();
+    emit si_copyFormatChanged(selectedFormatId);
+}
+
 void MSAGeneralTab::sl_copyFormatted(){
     emit si_copyFormatted();
 }
@@ -79,6 +86,7 @@ void MSAGeneralTab::sl_copyFormatStatusChanged(bool enabled){
 
 void MSAGeneralTab::connectSignals() {
     // Inner signals
+    connect(copyType,               SIGNAL(currentIndexChanged(int)),   SLOT(sl_copyFormatSelectionChanged(int)));
     connect(copyButton,             SIGNAL(clicked()),                  SLOT(sl_copyFormatted()));
 
     // Extern signals
@@ -93,6 +101,9 @@ void MSAGeneralTab::connectSignals() {
     connect(this, SIGNAL(si_copyFormatted()),
             msa->getUI()->getSequenceArea(), SLOT(sl_copyFormattedSelection()));
 
+    //in
+    connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)),
+            SLOT(sl_copyFormatStatusChanged(bool)));
 }
 
 void MSAGeneralTab::initializeParameters() {
@@ -123,6 +134,9 @@ void MSAGeneralTab::initializeParameters() {
     QString currentCopyFormattedID = msa->getUI()->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 
+    //in
+    connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)),
+            SLOT(sl_copyFormatStatusChanged(bool)));
 }
 
 void MSAGeneralTab::updateState() {

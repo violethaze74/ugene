@@ -365,6 +365,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
     SAFE_POINT(copyMenu != NULL, "copyMenu", );
     ui->getCopySelectionAction()->setDisabled(selection.isEmpty());
+    emit si_copyFormattedChanging(!selection.isEmpty());
     copyMenu->addAction(ui->getCopySelectionAction());
     ui->getCopyFormattedSelectionAction()->setDisabled(selection.isEmpty());
     copyMenu->addAction(ui->getCopyFormattedSelectionAction());
