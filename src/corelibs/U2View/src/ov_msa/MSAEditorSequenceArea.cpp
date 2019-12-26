@@ -213,6 +213,29 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
     update();
 }
 
+// TODO: move this function into MSA?
+static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow>& msaRows) {
+    QList<QList<int>> rowGroups;
+    QSet<int> mappedRows; // contains indexes of the already processed rows.
+    for (int i = 0; i < msaRows.size(); i++) {
+        if (mappedRows.contains(i)) {
+            continue;
+        }
+        const MultipleAlignmentRow& row = msaRows[i];
+        QList<int> rowGroup;
+        rowGroup << i;
+        for (int j = i + 1; j < msaRows.size(); j++) {
+            const MultipleAlignmentRow& next = msaRows[j];
+            if (!mappedRows.contains(j) && next == row) {
+                rowGroup << j;
+                mappedRows.insert(j);
+            }
+        }
+        rowGroups << rowGroup;
+    }
+    return rowGroups;
+}
+
 void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInfo) {
     if (!modInfo.rowContentChanged && !modInfo.rowListChanged) {
         return;
@@ -225,11 +248,14 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
         collapseModel->reset(msaObject->getNumRows());
         return;
     }
-    // Align collapse model with the current alignment state. Do not modify the alignment.
-    MultipleSequenceAlignment tmpMsaCopy = msaObject->getMultipleAlignmentCopy();
-    QVector<U2Region> unitedRows;
-    tmpMsaCopy->getRowsSortedBySimilarity(unitedRows);
-    collapseModel->updateFromUnitedRows(unitedRows, editor->getNumSequences());
+
+    // Create row groups by similarity. Do not modify the alignment.
+    QList<QList<int>> rowGroups = groupRowsBySimilarity(msaObject->getRows());
+    QVector<MaCollapsibleGroup> collapseGroups;
+    for (int i = 0; i < rowGroups.size(); i++) {
+        collapseGroups << MaCollapsibleGroup(rowGroups[i], true);
+    }
+    collapseModel->update(collapseGroups);
 
     // Fix gap models for all sequences inside collapsed groups.
     QList<qint64> updatedRows;
