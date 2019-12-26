@@ -141,7 +141,7 @@ protected:
      *
      * Returns true if any group was expanded or collapsed as the result of the method call.
      */
-    bool triggerExpandCollapseOnSelectedRow(bool expand);
+    bool triggerExpandCollapseOnSelectedRow(bool collapse);
 
     QRect calculateTextRect(const U2Region& yRange, bool selected) const;
     QRect calculateExpandCollapseButtonRect(const QRect& itemRect) const;

@@ -312,14 +312,14 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         break;
     }
     case Qt::Key_Left: {
-        // Perform expand action on the collapsed group by default and fallback to the horizontal scrolling
+        // Perform collapse action on the collapsed group by default and fallback to the horizontal scrolling
         if (!triggerExpandCollapseOnSelectedRow(true)) {
             nhBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
         }
         break;
     }
     case Qt::Key_Right: {
-        // Perform collapse action on the collapsed group by default and fallback to the horizontal scrolling
+        // Perform expand action on the collapsed group by default and fallback to the horizontal scrolling
         if (!triggerExpandCollapseOnSelectedRow(false)) {
             nhBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
         }
@@ -894,13 +894,24 @@ void MaEditorNameList::scrollSelectionToView(bool fromStart) {
     ui->getScrollController()->scrollToViewRow(fromStart ? selection.startPos : selection.endPos() - 1, height);
 }
 
-bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool expand) {
+bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
+    if (!ui->isCollapsibleMode()) {
+        return false;
+    }
     U2Region selection = getSelection();
     MaCollapseModel* collapseModel = ui->getCollapseModel();
+    int groupsToggled = 0; // groups with only 1 item have no expand/collapse control and are not affected.
     for (int viewRow = selection.startPos; viewRow < selection.endPos(); viewRow++) {
-        collapseModel->toggle(viewRow, !expand);
+        int groupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(viewRow);
+        if (groupIndex >= 0) {
+            const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(groupIndex);
+            if (group->maRows.length() > 1 && group->isCollapsed != collapse) {
+                groupsToggled++;
+                collapseModel->toggle(viewRow, collapse);
+            }
+        }
     }
-    return !selection.isEmpty();
+    return groupsToggled > 0;
 }
 
 } // namespace U2
