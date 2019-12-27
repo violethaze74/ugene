@@ -53,6 +53,7 @@ public:
     U2Region getGlobalYRegionByViewRowIndex(int viewRowIndex) const;
 
     U2Region getGlobalYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const;
+    U2Region getScreenYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const;
 
     U2Region getScreenYRegionByMaRowIndex(int maRowIndex) const;
 

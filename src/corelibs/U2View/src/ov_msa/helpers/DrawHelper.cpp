@@ -52,10 +52,10 @@ U2Region DrawHelper::getVisibleViewRowsRegion(int widgetHeight, bool countFirstC
 }
 
 QList<int> DrawHelper::getVisibleMaRowIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    int firstVisibleRowNumber = scrollController->getFirstVisibleViewRowIndex(countFirstClippedRow);
-    int lastVisibleRowNumber = scrollController->getLastVisibleViewRowIndex(widgetHeight, countLastClippedRow);
-    U2Region viewIndexRegion(firstVisibleRowNumber, lastVisibleRowNumber - firstVisibleRowNumber + 1);
-    return collapsibleModel->getMaRowIndexesByViewRowIndexes(viewIndexRegion);
+    int firstVisibleViewRow = scrollController->getFirstVisibleViewRowIndex(countFirstClippedRow);
+    int lastVisibleViewRow = scrollController->getLastVisibleViewRowIndex(widgetHeight, countLastClippedRow);
+    U2Region viewRowsRegion(firstVisibleViewRow, lastVisibleViewRow - firstVisibleViewRow + 1);
+    return collapsibleModel->getMaRowIndexesByViewRowIndexes(viewRowsRegion);
 }
 
 int DrawHelper::getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase, bool countLastClippedBase) const {
@@ -65,12 +65,8 @@ int DrawHelper::getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase
 QRect DrawHelper::getSelectionScreenRect(const MaEditorSelection &selection) const {
     CHECK(!selection.isEmpty(), QRect());
 
-    const U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(selection.getXRegion());
-    CHECK(!xRange.isEmpty(), QRect());
-
-    const U2Region yRange = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(selection.getYRegion());
-    CHECK(!yRange.isEmpty(), QRect());
-
+    U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(selection.getXRegion());
+    U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selection.getYRegion());
     return QRect(xRange.startPos, yRange.startPos, xRange.length, yRange.length);
 }
 

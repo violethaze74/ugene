@@ -69,10 +69,10 @@ void McaEditorNameList::sl_updateActions() {
 }
 
 void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect,
-                                                     bool selected, bool focused, bool collapsed, bool isReference) {
+                                                    bool isSelected, bool isCollapsed, bool isReference) {
     const bool isReversed = isRowReversed(rowIndex);
     const QRectF arrowRect = calculateArrowRect(U2Region(rect.y(), rect.height()));
-    MaEditorNameList::drawCollapsibleSequenceItem(painter, rowIndex, name, rect, selected, focused, collapsed, isReference);
+    MaEditorNameList::drawCollapsibleSequenceItem(painter, rowIndex, name, rect, isSelected, isCollapsed, isReference);
     drawArrow(painter, isReversed, arrowRect);
 }
 

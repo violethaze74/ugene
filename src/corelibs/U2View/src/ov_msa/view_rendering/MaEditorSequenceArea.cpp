@@ -641,71 +641,17 @@ bool MaEditorSequenceArea::isAlignmentLocked() const {
 }
 
 void MaEditorSequenceArea::drawVisibleContent(QPainter& painter) {
-    const U2Region basesToDraw = ui->getDrawHelper()->getVisibleBases(width());
-    const QList<int> seqIdx = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
-    CHECK(!basesToDraw.isEmpty(), );
-    CHECK(!seqIdx.isEmpty(), );
-    const int xStart = ui->getBaseWidthController()->getBaseScreenRange(basesToDraw.startPos).startPos;
-    const int yStart = ui->getRowHeightController()->getScreenYRegionByMaRowIndex(seqIdx.first()).startPos;
-    drawContent(painter, basesToDraw, seqIdx, xStart, yStart);
+    U2Region columns = ui->getDrawHelper()->getVisibleBases(width());
+    QList<int> maRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
+    CHECK(!columns.isEmpty() || !maRows.isEmpty(), );
+    int xStart = ui->getBaseWidthController()->getBaseScreenRange(columns.startPos).startPos;
+    int yStart = ui->getRowHeightController()->getScreenYPositionOfTheFirstVisibleRow(true);
+    drawContent(painter, columns, maRows, xStart, yStart);
 }
 
-bool MaEditorSequenceArea::drawContent(QPainter &painter, const QRect &area) {
-    const int xStart = ui->getBaseWidthController()->getFirstVisibleBaseGlobalOffset(true);
-    const int yStart = ui->getRowHeightController()->getGlobalYPositionOfTheFirstVisibleRow(true);
-    return drawContent(painter, area, xStart, yStart);
-}
-
-bool MaEditorSequenceArea::drawContent(QPainter &painter, const QRect &area, int xStart, int yStart) {
-    U2Region viewRowsRegion(area.y(), area.y() + area.height());
-    QList<int> maRows = ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(viewRowsRegion);
-    bool ok = renderer->drawContent(painter, U2Region(area.x(), area.width()), maRows, xStart, yStart);
-    emit si_visibleRangeChanged();
-    return ok;
-}
-
-bool MaEditorSequenceArea::drawContent(QPainter &painter, const U2Region &region, const QList<int> &seqIdx) {
-    const int xStart = ui->getBaseWidthController()->getFirstVisibleBaseScreenOffset(true);
-    const int yStart = ui->getRowHeightController()->getScreenYPositionOfTheFirstVisibleRow(true);
-    return drawContent(painter, region, seqIdx, xStart, yStart);
-}
-
-bool MaEditorSequenceArea::drawContent(QPainter &painter, const U2Region &region, const QList<int> &seqIdx, int xStart, int yStart) {
+bool MaEditorSequenceArea::drawContent(QPainter& painter, const U2Region& columns, const QList<int>& maRows, int xStart, int yStart) {
     // SANGER_TODO: optimize
-    return renderer->drawContent(painter, region, seqIdx, xStart, yStart);
-}
-
-bool MaEditorSequenceArea::drawContent(QPainter &painter) {
-    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getViewRowCount());
-    return drawContent(painter, areaToDraw);
-}
-
-bool MaEditorSequenceArea::drawContent(QPixmap &pixmap) {
-    const int totalAlignmentWidth = ui->getBaseWidthController()->getTotalAlignmentWidth();
-    const int totalAlignmentHeight = ui->getRowHeightController()->getTotalAlignmentHeight();
-    CHECK(totalAlignmentWidth < 32768 && totalAlignmentHeight < 32768, false);
-
-    pixmap = QPixmap(totalAlignmentWidth, totalAlignmentHeight);
-    QPainter p(&pixmap);
-
-    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getViewRowCount());
-    return drawContent(p, areaToDraw, 0, 0);
-}
-
-bool MaEditorSequenceArea::drawContent(QPixmap &pixmap,
-                                       const U2Region &region,
-                                       const QList<int> &seqIdx) {
-    CHECK(!region.isEmpty(), false);
-    CHECK(!seqIdx.isEmpty(), false);
-
-    const int canvasWidth = ui->getBaseWidthController()->getBasesWidth(region);
-    const int canvasHeight = ui->getRowHeightController()->getSumOfRowHeightsByMaIndexes(seqIdx);
-
-    CHECK(canvasWidth < 32768 &&
-          canvasHeight < 32768, false);
-    pixmap = QPixmap(canvasWidth, canvasHeight);
-    QPainter p(&pixmap);
-    return drawContent(p, region, seqIdx, 0, 0);
+    return renderer->drawContent(painter, columns, maRows, xStart, yStart);
 }
 
 QString MaEditorSequenceArea::exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {

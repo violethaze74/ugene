@@ -45,14 +45,14 @@ signals:
 
 protected:
     void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect,
-                                     bool selected, bool focused, bool collapsed, bool isReference);
+                                     bool isSelected, bool isCollapsed, bool isReference) override;
 
-    void setSelection(int startSeq, int count);
+    void setSelection(int startSeq, int count) override;
 
 private:
     McaEditor* getEditor() const;
     bool isRowReversed(int rowIndex) const;
-    void drawText(QPainter &painter, const QString &text, const QRect &rect, bool selected);
+    void drawText(QPainter &painter, const QString &text, const QRect &rect, bool selected) override;
     void drawArrow(QPainter &painter, bool isReversed, const QRectF &arrowRect);
     QRectF calculateArrowRect(const U2Region &yRange) const;
 

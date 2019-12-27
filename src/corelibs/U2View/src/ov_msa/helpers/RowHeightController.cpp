@@ -158,6 +158,12 @@ U2Region RowHeightController::getGlobalYRegionByViewRowsRegion(const U2Region& v
     return U2Region::containingRegion(startPosRegion, endPosRegion);
 }
 
+U2Region RowHeightController::getScreenYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const {
+    U2Region startPosRegion = getScreenYRegionByViewRowIndex(viewRowsRegion.startPos);
+    U2Region endPosRegion = getScreenYRegionByViewRowIndex(viewRowsRegion.endPos() - 1);
+    return U2Region::containingRegion(startPosRegion, endPosRegion);
+}
+
 U2Region RowHeightController::getScreenYRegionByMaRowIndex(int maRowIndex) const {
     return getScreenYRegionByMaRowIndex(maRowIndex, ui->getScrollController()->getScreenPosition().y());
 }

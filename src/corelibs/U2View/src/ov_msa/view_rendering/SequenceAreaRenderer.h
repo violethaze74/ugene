@@ -35,14 +35,14 @@ class SequenceAreaRenderer : public QObject {
 public:
     SequenceAreaRenderer(MaEditorWgt *ui, MaEditorSequenceArea* seqAreaWgt);
 
-    bool drawContent(QPainter &painter, const U2Region& region, const QList<int> &rowNumbers, int xStart, int yStart) const;
+    bool drawContent(QPainter &painter, const U2Region& columns, const QList<int> &maRows, int xStart, int yStart) const;
 
     void drawSelection(QPainter &painter) const;
     void drawFocus(QPainter &painter) const;
 
 protected:
     // returns the height of the drawn row
-    virtual int drawRow(QPainter &painter, const MultipleAlignment &ma, int maRow, const U2Region &region, int xStart, int yStart) const;
+    virtual int drawRow(QPainter &painter, const MultipleAlignment &ma, int maRow, const U2Region &columns, int xStart, int yStart) const;
 
     MaEditorWgt *ui;
     MaEditorSequenceArea* seqAreaWgt;

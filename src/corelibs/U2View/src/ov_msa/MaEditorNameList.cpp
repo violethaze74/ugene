@@ -130,13 +130,15 @@ void MaEditorNameList::drawNames(QPainter &painter, const QList<int> &maRows, bo
 
     const QPoint& cursorPosition = editor->getCursorPosition();
     const QStringList seqNames = maObj->getMultipleAlignment()->getRowNames();
+    const MaCollapseModel* collapseModel = ui->getCollapseModel();
+    U2Region selection = getSelection();
     for (int i = 0; i < maRows.size(); i++) {
         int maIndex = maRows[i];
+        int viewIndex = collapseModel->getViewRowIndexByMaRowIndex(maIndex);
         SAFE_POINT(maIndex < seqNames.size(), tr("Invalid sequence index"), );
-        bool isSelected = drawSelection && isRowInSelection(maIndex);
-        bool isFocused = cursorPosition.y() == maIndex;
+        bool isSelected = drawSelection && selection.contains(viewIndex);
         U2Region yRange = ui->getRowHeightController()->getGlobalYRegionByMaRowIndex(maIndex, maRows);
-        drawSequenceItem(painter, maIndex, yRange, getTextForRow(maIndex), isSelected, isFocused);
+        drawSequenceItem(painter, maIndex, yRange, getTextForRow(maIndex), isSelected);
     }
 }
 
@@ -156,12 +158,6 @@ U2Region MaEditorNameList::getSelection() const {
 void MaEditorNameList::setSelection(int startSeq, int count) {
     MaEditorSelection selection(0, startSeq, editor->getAlignmentLen(), count);
     ui->getSequenceArea()->setSelection(selection);
-}
-
-bool MaEditorNameList::isRowInSelection(int seqnum) const {
-    MaEditorSelection s = ui->getSequenceArea()->getSelection();
-    int endPos = s.y() + s.height() - 1;
-    return seqnum >= s.y() && seqnum <= endPos;
 }
 
 void MaEditorNameList::updateScrollBar() {
@@ -361,24 +357,25 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     mousePressPoint = e->pos();
     MaCollapseModel* collapseModel = ui->getCollapseModel();
     RowHeightController* heightController = ui->getRowHeightController();
-    int rowIndex = qMin(heightController->getViewRowIndexByScreenYPosition(e->y()), collapseModel->getViewRowCount() - 1);
+    int viewRow = qMin(heightController->getViewRowIndexByScreenYPosition(e->y()), collapseModel->getViewRowCount() - 1);
     int cursorX = editor->getCursorPosition().x();
     
     // Do not update cursor position on clicks with Shift. Clicks with Shift update selection only.
     bool updateCursorPos = !e->modifiers().testFlag(Qt::ShiftModifier);
     if (updateCursorPos) {
-        editor->setCursorPosition(QPoint(cursorX, rowIndex));
+        editor->setCursorPosition(QPoint(cursorX, viewRow));
     }
 
-    int groupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(rowIndex);
+    int groupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(viewRow);
     const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(groupIndex);
     if (group != NULL && group->maRows.size() > 1) {
-        U2Region yRange = heightController->getScreenYRegionByViewRowIndex(rowIndex);
-        bool selected = isRowInSelection(rowIndex);
+        U2Region selection = getSelection();
+        U2Region yRange = heightController->getScreenYRegionByViewRowIndex(viewRow);
+        bool selected = selection.contains(viewRow);
         QRect textRect = calculateTextRect(yRange, selected);
         QRect buttonRect = calculateExpandCollapseButtonRect(textRect);
         if (buttonRect.contains(mousePressPoint)) {
-            collapseModel->toggle(rowIndex);
+            collapseModel->toggle(viewRow);
             sl_completeRedraw();
             QWidget::mousePressEvent(e);
             return;
@@ -386,10 +383,10 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     }
     
     if (updateCursorPos) {
-        editor->setCursorPosition(QPoint(cursorX, rowIndex));
+        editor->setCursorPosition(QPoint(cursorX, viewRow));
     }
     U2Region s = getSelection();
-    if (s.contains(rowIndex)) {
+    if (s.contains(viewRow)) {
         dragging = !ui->isCollapsibleMode() || ui->getCollapseModel()->isFakeModel();
     } else {
         rubberBand->setGeometry(QRect(mousePressPoint, QSize()));
@@ -669,75 +666,70 @@ void MaEditorNameList::drawContent(QPainter& painter) {
     SAFE_POINT_OP(os, );
 
     const QPoint& cursorPosition = editor->getCursorPosition();
-    MaCollapseModel* collapsibleModel = ui->getCollapseModel();
+    const MaCollapseModel* collapsibleModel = ui->getCollapseModel();
     int crossSpacing = ui->isCollapsibleMode() ? CROSS_SIZE * 2 : 0;
-    foreach (const MaCollapsibleGroup& group, collapsibleModel->getGroups()) {
-        for (int i = 0; i < group.maRows.size(); i++) {
-            int maRow = group.maRows[i];
-            int viewRow = collapsibleModel->getViewRowIndexByMaRowIndex(maRow, true);
-            if (viewRow == -1) { // maRow is not visible
-                continue;
+    const ScrollController* scrollController = ui->getScrollController();
+    int firstVisibleViewRow = scrollController->getFirstVisibleViewRowIndex(true);
+    int lastVisibleViewRow = scrollController->getLastVisibleViewRowIndex(height(), true);
+    U2Region selection = getSelection();
+    for (int viewRow = firstVisibleViewRow; viewRow <= lastVisibleViewRow; viewRow++) {
+        int maRow = collapsibleModel->getMaRowIndexByViewRowIndex(viewRow);
+        int groupIndex = collapsibleModel->getCollapsibleGroupIndexByViewRowIndex(viewRow);
+        const MaCollapsibleGroup* group = collapsibleModel->getCollapsibleGroup(groupIndex);
+
+        U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowIndex(viewRow);
+
+        bool isSelected = selection.contains(viewRow);
+        bool isReference = maRow == referenceIndex;
+        QString text = getTextForRow(maRow);
+        // drawing expand-collapse icon only for groups with more than 1 sequence or in MCA mode (fakeModel).
+        if (group->maRows.size() > 1 || collapsibleModel->isFakeModel()) {
+            QRect rect = calculateTextRect(yRange, isSelected);
+            // SANGER_TODO: check reference
+            if (group->maRows[0] == maRow) {
+                drawCollapsibleSequenceItem(painter, maRow, text, rect, isSelected, group->isCollapsed, isReference);
+            } else if (!group->isCollapsed) {
+                drawChildSequenceItem(painter, text, rect, isSelected, isReference);
             }
-            U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowIndex(viewRow);
-            bool isSelected = isRowInSelection(viewRow);
-            bool isReference = maRow == referenceIndex;
-            bool isFocused = maRow == cursorPosition.y();
-            QString text = getTextForRow(maRow);
-            // drawing expand-collapse icon only for groups with more than 1 sequence or in MCA mode (fakeModel).
-            if (group.maRows.size() > 1 || collapsibleModel->isFakeModel()) {
-                QRect rect = calculateTextRect(yRange, isSelected);
-                // SANGER_TODO: check reference
-                if (i == 0) {
-                    drawCollapsibleSequenceItem(painter, maRow, text, rect, isSelected, isFocused, group.isCollapsed, isReference);
-                } else if (!group.isCollapsed) {
-                    drawChildSequenceItem(painter, text, rect, isSelected, isFocused, isReference);
-                }
-            } else {
-                painter.translate(crossSpacing, 0);
-                drawSequenceItem(painter, text, yRange, isSelected, isFocused, isReference);
-                painter.translate(-crossSpacing, 0);
-            }
+        } else {
+            painter.translate(crossSpacing, 0);
+            drawSequenceItem(painter, text, yRange, isSelected, isReference);
+            painter.translate(-crossSpacing, 0);
         }
     }
 }
 
-void MaEditorNameList::drawSequenceItem(QPainter& painter, const QString& text, const U2Region& yRange, bool selected, bool focused, bool isReference) {
-    QRect rect = calculateTextRect(yRange, selected);
+void MaEditorNameList::drawSequenceItem(QPainter& painter, const QString& text, const U2Region& yRange, bool isSelected, bool isReference) {
+    QRect rect = calculateTextRect(yRange, isSelected);
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
     CHECK(maObj != NULL, );
     drawBackground(painter, text, rect, isReference);
-    drawText(painter, text, rect, selected);
-    if (focused) {
-        drawCursorFrame(painter, rect);
-    }
+    drawText(painter, text, rect, isSelected);
 }
 
-void MaEditorNameList::drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected, bool focused) {
+void MaEditorNameList::drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool isSelected) {
     // SANGER_TODO: simplify getting the reference status - no reference here!
     MultipleAlignmentObject* maObj = editor->getMaObject();
     CHECK(maObj != NULL, );
     U2OpStatusImpl os;
     bool isReference = (rowIndex == maObj->getMultipleAlignment()->getRowIndexByRowId(editor->getReferenceRowId(), os));
-    drawSequenceItem(painter, text, yRange, selected, focused, isReference);
+    drawSequenceItem(painter, text, yRange, isSelected, isReference);
 }
 
 void MaEditorNameList::drawCollapsibleSequenceItem(QPainter& painter, int /*rowIndex*/, const QString& name,
                                                    const QRect& rect,
-                                                   bool selected, bool focused, bool collapsed, bool isReference) {
+                                                   bool isSelected, bool isCollapsed, bool isReference) {
     drawBackground(painter, name, rect, isReference);
-    drawCollapsePrimitive(painter, collapsed, rect);
-    drawText(painter, name, rect.adjusted(CROSS_SIZE * 2, 0, 0, 0), selected);
-    if (focused) {
-        drawCursorFrame(painter, rect);
-    }
+    drawCollapsePrimitive(painter, isCollapsed, rect);
+    drawText(painter, name, rect.adjusted(CROSS_SIZE * 2, 0, 0, 0), isSelected);
 }
 
 void MaEditorNameList::drawChildSequenceItem(QPainter &painter, const QString &name, const QRect &rect,
-                                             bool selected, bool focused, bool isReference) {
+                                             bool isSelected, bool isReference) {
     drawBackground(painter, name, rect, isReference);
     painter.translate(CROSS_SIZE * 2 + CHILDREN_OFFSET, 0);
-    drawText(painter, name, rect, selected);
+    drawText(painter, name, rect, isSelected);
     painter.translate( - CROSS_SIZE * 2 - CHILDREN_OFFSET, 0);
 }
 
@@ -771,16 +763,8 @@ void MaEditorNameList::drawCollapsePrimitive(QPainter& p, bool collapsed, const 
     style()->drawPrimitive(QStyle::PE_IndicatorBranch, &branchOption, &p, this);
 }
 
-void MaEditorNameList::drawRefSequence(QPainter &p, QRect r){
-    p.fillRect(r, QColor("#9999CC"));
-}
-
 QString MaEditorNameList::getTextForRow(int maRowIndex) {
     return editor->getMaObject()->getRow(maRowIndex)->getName();
-}
-
-QString MaEditorNameList::getSeqName(int s) {
-    return getTextForRow(s);
 }
 
 void MaEditorNameList::drawSelection(QPainter &painter) {
@@ -788,25 +772,12 @@ void MaEditorNameList::drawSelection(QPainter &painter) {
 
     CHECK(selection.length > 0, );
 
-    const U2Region yRange = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(selection);
+    U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selection);
     const QRect selectionRect(0, yRange.startPos, width() - 1, yRange.length - 1);
     CHECK(selectionRect.isValid(), );
 
     painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
     painter.drawRect(selectionRect);
-}
-
-
-/** Used to visualize cursor position. Used for debugging only today. */
-#define SHOW_CURSOR_FRAME true
-
-void MaEditorNameList::drawCursorFrame(QPainter& painter, const QRect& rect) {
-#ifdef SHOW_FOCUS_FRAME
-    QPen penBefore = painter.pen();
-    painter.setPen(QPen(Qt::blue, 1, Qt::DotLine));
-    painter.drawRect(rect);
-    painter.setPen(penBefore);
-#endif
 }
 
 void MaEditorNameList::sl_editSequenceName() {

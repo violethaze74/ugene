@@ -91,7 +91,6 @@ protected:
     //todo context menu?
     int getSelectedMaRow() const;
     virtual QString getTextForRow(int maRowIndex);
-    virtual QString getSeqName(int s);
     void moveSelection(int offset);
     void scrollSelectionToView(bool fromStart);
 
@@ -103,7 +102,9 @@ public:
     qint64 sequenceIdAtPos(const QPoint &p);
     void clearGroupsSelections();
 
-    virtual U2Region getSelection() const;
+    /* Returns region of the selected view rows. */
+    U2Region getSelection() const;
+
     QFont getFont(bool selected) const;
 
 signals:
@@ -113,26 +114,27 @@ signals:
 
 protected:
     virtual void setSelection(int startSeq, int count);
-    virtual bool isRowInSelection(int row) const;
 
     void moveSelectedRegion( int shift );
-    void drawAll();
 
-    void drawSelection(QPainter& p);
-    void drawCursorFrame(QPainter& p, const QRect& rect);
-    void drawSequenceItem(QPainter &painter, const QString &text, const U2Region &yRange, bool selected, bool focused, bool isReference);
-    virtual void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected, bool focused);
+    virtual void drawAll();
 
-    virtual void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect,
-                                      bool selected, bool focused, bool collapsed, bool isReference);
-    void drawChildSequenceItem(QPainter &painter, const QString &name, const QRect &rect,
-                                        bool selected, bool focused, bool isReference);
+    virtual  void drawSelection(QPainter& p);
 
-    void drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReferece);
+    virtual void drawSequenceItem(QPainter& painter, const QString& text, const U2Region& yRange, bool isSelected, bool isReference);
+
+    virtual void drawSequenceItem(QPainter& painter, int rowIndex, const U2Region& yRange, const QString& text, bool isSelected);
+
+    virtual void drawCollapsibleSequenceItem(QPainter& painter, int rowIndex, const QString& name, const QRect& rect,
+                                             bool isSelected, bool isCollapsed, bool isReference);
+
+    virtual void drawChildSequenceItem(QPainter& painter, const QString& name, const QRect& rect, bool isSelected, bool isReference);
+
+    virtual void drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReference);
+
     virtual void drawText(QPainter& p, const QString& name, const QRect& rect, bool selected);
-    void drawCollapsePrimitive(QPainter& p, bool collapsed, const QRect& rect);
 
-    virtual void drawRefSequence(QPainter &p, QRect r);
+    virtual void drawCollapsePrimitive(QPainter& p, bool collapsed, const QRect& rect);
 
     void clearSelection();
 

@@ -143,14 +143,7 @@ public:
 
     void drawVisibleContent(QPainter &painter);
 
-    bool drawContent(QPainter &painter, const QRect &area);
-    bool drawContent(QPainter &painter, const QRect &area, int xStart, int yStart);
-    bool drawContent(QPainter &painter, const U2Region &region, const QList<int> &seqIdx);
-    bool drawContent(QPainter &painter, const U2Region &region, const QList<int> &seqIdx, int xStart, int yStart);
-
-    bool drawContent(QPainter &painter);
-    bool drawContent(QPixmap &pixmap);
-    bool drawContent(QPixmap &pixmap, const U2Region &region, const QList<int> &seqIdx);
+    bool drawContent(QPainter& painter, const U2Region& columns, const QList<int>& maRows, int xStart, int yStart);
 
     QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
