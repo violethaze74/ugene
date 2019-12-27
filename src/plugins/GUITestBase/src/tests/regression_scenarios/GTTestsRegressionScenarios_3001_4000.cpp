@@ -5097,33 +5097,6 @@ GUI_TEST_CLASS_DEFINITION(test_3773_1) {
     GTUtilsLog::check(os, logTracer);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3776) {
-//    1. Open file "data/samples/CLUSTALW/HIV-1.aln"
-//    2. Type "CCCCTCCCATCA" to the search field
-//    3. Click "Enter"
-//    Expected state: selected result is [CCCCTCCCATC---A]
-//    4. Click "Enter" until the found highlighted sequence doesn't change.
-//    Current state: Found sequences contain only first symbols from the pattern and the rest part of them are gaps
-//    Expected state: the last found result is selected
-
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "HIV-1.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    QLineEdit *searchPattern = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "searchEdit"));
-    CHECK_SET_ERR(searchPattern != NULL, "searchedit not found");
-    GTLineEdit::setText(os, searchPattern, "CCCCTCCCATCA");
-    GTKeyboardDriver::keyClick( Qt::Key_Enter);
-    GTGlobals::sleep();
-
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( QPoint(1029, 1), QPoint(1043, 1)));
-
-    for (int i = 0; i < 4; i++) {
-        GTKeyboardDriver::keyClick( Qt::Key_Enter);
-        GTGlobals::sleep();
-    }
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( QPoint(1029, 16), QPoint(1043, 16)));
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3778) {
     //1. Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
