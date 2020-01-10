@@ -1093,8 +1093,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseKey));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-    //GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Column range = 12-14
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(11, 0), QPoint(13, 9));
@@ -1131,8 +1130,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_1) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseKey));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-    //GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Column range = 12-14
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(11, 0), QPoint(13, 9));
@@ -1167,8 +1165,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_2) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseKey));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-    //GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Column range = 12-14
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(11, 0), QPoint(13, 9));
@@ -1202,7 +1199,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsMSAEditorSequenceArea::selectArea(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY" << "copy_selection"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 // Expected state: every sequense name is the same as its amino translation
     const QString clipboardText = GTClipboard::text(os);
@@ -1226,7 +1223,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_COPY << "copy_selection"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 // Expected state: every sequense name the same as it amino translation
     const QString clipboardText = GTClipboard::text(os);
@@ -1250,8 +1247,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     GTUtilsMSAEditorSequenceArea::selectArea(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_COPY << "copy_selection"));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-// Expected state: every sequense name the same as it amino translation
+// Expected state: every sequence name the same as it amino translation
     const QString clipboardText = GTClipboard::text(os);
     const QString expectedMSA = "L\nS\nD\nS\nP\nK";
     CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string differs");
@@ -1272,6 +1270,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "replace_selected_rows_with_reverse-complement"));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(-1, 0));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 // Expected state: sequence changed from TTG -> CAA
     GTGlobals::sleep();
