@@ -251,11 +251,17 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
 
     // Create row groups by similarity. Do not modify the alignment.
     QList<QList<int>> rowGroups = groupRowsBySimilarity(msaObject->getRows());
-    QVector<MaCollapsibleGroup> collapseGroups;
+    QVector<MaCollapsibleGroup> newCollapseGroups;
     for (int i = 0; i < rowGroups.size(); i++) {
-        collapseGroups << MaCollapsibleGroup(rowGroups[i], true);
+        const QList<int>& maRowsInGroup = rowGroups[i];
+        // Try to keep collapsed state for the groups with the same MA row as the first row (head row) .
+        int firstRowInGroup = maRowsInGroup[0];
+        int viewRow = collapseModel->getViewRowIndexByMaRowIndex(firstRowInGroup);
+        int oldCollapsibleGroupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(viewRow);
+        const MaCollapsibleGroup* oldGroup = collapseModel->getCollapsibleGroup(oldCollapsibleGroupIndex);
+        newCollapseGroups << MaCollapsibleGroup(maRowsInGroup, oldGroup == NULL || oldGroup->isCollapsed);
     }
-    collapseModel->update(collapseGroups);
+    collapseModel->update(newCollapseGroups);
 
     // Fix gap models for all sequences inside collapsed groups.
     QList<qint64> updatedRows;
