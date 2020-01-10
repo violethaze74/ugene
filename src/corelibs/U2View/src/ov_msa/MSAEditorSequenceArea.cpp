@@ -214,6 +214,19 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
 }
 
 // TODO: move this function into MSA?
+/* Compares sequences of 2 rows ignoring gaps. */
+static bool isEqualsIgnoreGaps(const MultipleAlignmentRowData* row1, const MultipleAlignmentRowData* row2) {
+    if (row1 == row2) {
+        return true;
+    }
+    if (row1->getUngappedLength() != row2->getUngappedLength()) {
+        return false;
+    }
+    return row1->getUngappedSequence().seq == row2->getUngappedSequence().seq;
+}
+
+// TODO: move this function into MSA?
+/* Groups rows by similarity. Two rows are considered equal if their sequences are equal with ignoring of gaps. */
 static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow>& msaRows) {
     QList<QList<int>> rowGroups;
     QSet<int> mappedRows; // contains indexes of the already processed rows.
@@ -226,7 +239,7 @@ static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow>
         rowGroup << i;
         for (int j = i + 1; j < msaRows.size(); j++) {
             const MultipleAlignmentRow& next = msaRows[j];
-            if (!mappedRows.contains(j) && next == row) {
+            if (!mappedRows.contains(j) && isEqualsIgnoreGaps(next.data(), row.data())) {
                 rowGroup << j;
                 mappedRows.insert(j);
             }
@@ -264,28 +277,28 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
     collapseModel->update(newCollapseGroups);
 
     // Fix gap models for all sequences inside collapsed groups.
-    QList<qint64> updatedRows;
     bool isModelChanged = false;
     QMap<qint64, QList<U2MsaGap> > curGapModel = msaObject->getMapGapModel();
-    QList<U2Region> updatedRegions;
-    foreach (qint64 modifiedSeqId, modInfo.modifiedRowIds) {
-        int modifiedRowPos = editor->getMaObject()->getRowPosById(modifiedSeqId);
-        const MultipleSequenceAlignmentRow &modifiedRowRef = editor->getMaObject()->getRow(modifiedRowPos);
-        modifiedRowPos = collapseModel->getViewRowIndexByMaRowIndex(modifiedRowPos);
-        const U2Region rowsCollapsibleGroup = collapseModel->getMaRowIndexRegionByViewRowIndexRegion(
-                U2Region(modifiedRowPos, 1));
-        if (updatedRegions.contains(rowsCollapsibleGroup)) {
+    QSet<qint64> updatedRowsIds;
+    QSet<int> updatedCollapsibleGroups;
+    foreach (qint64 modifiedRowId, modInfo.modifiedRowIds) {
+        int modifiedMaRow = editor->getMaObject()->getRowPosById(modifiedRowId);
+        const MultipleSequenceAlignmentRow &modifiedRowRef = editor->getMaObject()->getRow(modifiedMaRow);
+        int modifiedViewRow = collapseModel->getViewRowIndexByMaRowIndex(modifiedMaRow);
+        int collapsibleGroupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(modifiedViewRow);
+        const MaCollapsibleGroup* collapsibleGroup = collapseModel->getCollapsibleGroup(collapsibleGroupIndex);
+        if (updatedCollapsibleGroups.contains(collapsibleGroupIndex) || collapsibleGroup == NULL) {
             continue;
         }
-        for(int i = rowsCollapsibleGroup.startPos; i < rowsCollapsibleGroup.endPos(); i++) {
-            qint64 identicalRowId = editor->getMaObject()->getRow(i)->getRowId();
-            if(!updatedRows.contains(identicalRowId) && !modInfo.modifiedRowIds.contains(identicalRowId)) {
-                isModelChanged = isModelChanged || modifiedRowRef->getGapModel() != curGapModel[identicalRowId];
-                curGapModel[identicalRowId] = modifiedRowRef->getGapModel();
-                updatedRows.append(identicalRowId);
+        updatedCollapsibleGroups.insert(collapsibleGroupIndex);
+        foreach(int maRow , collapsibleGroup->maRows) {
+            qint64 maRowId = editor->getMaObject()->getRow(maRow)->getRowId();
+            if(!updatedRowsIds.contains(maRowId) && !modInfo.modifiedRowIds.contains(maRowId)) {
+                isModelChanged = isModelChanged || modifiedRowRef->getGapModel() != curGapModel[maRowId];
+                curGapModel[maRowId] = modifiedRowRef->getGapModel();
+                updatedRowsIds.insert(maRowId);
             }
         }
-        updatedRegions.append(rowsCollapsibleGroup);
     }
     if (isModelChanged) {
         U2OpStatus2Log os;
