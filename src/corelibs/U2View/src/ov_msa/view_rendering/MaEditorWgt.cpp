@@ -66,6 +66,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       nameAreaLayout(NULL),
       collapseModel(new MaCollapseModel(this, editor->getNumSequences())),
       collapsibleMode(false),
+      enableCollapsingOfSingleRowGroups(false),
       scrollController(new ScrollController(editor, this, collapseModel)),
       baseWidthController(new BaseWidthController(this)),
       rowHeightController(NULL),

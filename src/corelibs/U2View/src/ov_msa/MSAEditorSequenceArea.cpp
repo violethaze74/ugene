@@ -270,8 +270,7 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
         // Try to keep collapsed state for the groups with the same MA row as the first row (head row) .
         int firstRowInGroup = maRowsInGroup[0];
         int viewRow = collapseModel->getViewRowIndexByMaRowIndex(firstRowInGroup);
-        int oldCollapsibleGroupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(viewRow);
-        const MaCollapsibleGroup* oldGroup = collapseModel->getCollapsibleGroup(oldCollapsibleGroupIndex);
+        const MaCollapsibleGroup* oldGroup = collapseModel->getCollapsibleGroupByViewRow(viewRow);
         newCollapseGroups << MaCollapsibleGroup(maRowsInGroup, oldGroup == NULL || oldGroup->isCollapsed);
     }
     collapseModel->update(newCollapseGroups);

@@ -366,9 +366,9 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
         editor->setCursorPosition(QPoint(cursorX, viewRow));
     }
 
-    int groupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(viewRow);
-    const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(groupIndex);
-    if (group != NULL && group->maRows.size() > 1) {
+    const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroupByViewRow(viewRow);
+    int minRowsInGroupToExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
+    if (group != NULL && group->size() >= minRowsInGroupToExpandCollapse) {
         U2Region selection = getSelection();
         U2Region yRange = heightController->getScreenYRegionByViewRowIndex(viewRow);
         bool selected = selection.contains(viewRow);
@@ -387,7 +387,8 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     }
     U2Region s = getSelection();
     if (s.contains(viewRow)) {
-        dragging = !ui->isCollapsibleMode() || ui->getCollapseModel()->isFakeModel();
+        // We support dragging only for 'flat' mode, when there are no groups with multiple sequences.
+        dragging = !ui->getCollapseModel()->hasGroupsWithMultipleRows();
     } else {
         rubberBand->setGeometry(QRect(mousePressPoint, QSize()));
         rubberBand->show();
@@ -672,18 +673,17 @@ void MaEditorNameList::drawContent(QPainter& painter) {
     int firstVisibleViewRow = scrollController->getFirstVisibleViewRowIndex(true);
     int lastVisibleViewRow = scrollController->getLastVisibleViewRowIndex(height(), true);
     U2Region selection = getSelection();
+    int minRowsInGroupToExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
     for (int viewRow = firstVisibleViewRow; viewRow <= lastVisibleViewRow; viewRow++) {
         int maRow = collapsibleModel->getMaRowIndexByViewRowIndex(viewRow);
-        int groupIndex = collapsibleModel->getCollapsibleGroupIndexByViewRowIndex(viewRow);
-        const MaCollapsibleGroup* group = collapsibleModel->getCollapsibleGroup(groupIndex);
+        const MaCollapsibleGroup* group = collapsibleModel->getCollapsibleGroupByViewRow(viewRow);
 
         U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowIndex(viewRow);
 
         bool isSelected = selection.contains(viewRow);
         bool isReference = maRow == referenceIndex;
         QString text = getTextForRow(maRow);
-        // drawing expand-collapse icon only for groups with more than 1 sequence or in MCA mode (fakeModel).
-        if (group->maRows.size() > 1 || collapsibleModel->isFakeModel()) {
+        if (group != NULL && group->size() >= minRowsInGroupToExpandCollapse) {
             QRect rect = calculateTextRect(yRange, isSelected);
             // SANGER_TODO: check reference
             if (group->maRows[0] == maRow) {
@@ -871,15 +871,13 @@ bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
     }
     U2Region selection = getSelection();
     MaCollapseModel* collapseModel = ui->getCollapseModel();
-    int groupsToggled = 0; // groups with only 1 item have no expand/collapse control and are not affected.
+    int groupsToggled = 0;
+    int minRowsInGroupToShowExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
     for (int viewRow = selection.startPos; viewRow < selection.endPos(); viewRow++) {
-        int groupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(viewRow);
-        if (groupIndex >= 0) {
-            const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(groupIndex);
-            if (group->maRows.length() > 1 && group->isCollapsed != collapse) {
-                groupsToggled++;
-                collapseModel->toggle(viewRow, collapse);
-            }
+        const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroupByViewRow(viewRow);
+        if (group != NULL && group->size() >= minRowsInGroupToShowExpandCollapse && group->isCollapsed != collapse) {
+            groupsToggled++;
+            collapseModel->toggle(viewRow, collapse);
         }
     }
     return groupsToggled > 0;

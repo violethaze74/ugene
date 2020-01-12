@@ -75,13 +75,15 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     nameAreaLayout->insertWidget(0, refName);
     nameAreaLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
 
+    // MCA editor has "always ON" collapsible mode.
+    collapsibleMode = true;
+    enableCollapsingOfSingleRowGroups = true;
     collapseModel->reset(editor->getNumSequences());
+
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
     bool showChromatograms = s->getValue(editor->getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool();
     collapseModel->collapseAll(!showChromatograms);
-    collapseModel->setFakeCollapsibleModel(true);
-    collapsibleMode = true;
     GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, showChromatograms, "'Show chromatograms' is checked on the view opening", editor->getFactoryId());
     GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !showChromatograms, "'Show chromatograms' is unchecked on the view opening", editor->getFactoryId());
 

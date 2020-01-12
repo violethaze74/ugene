@@ -39,7 +39,10 @@ public:
     /* Compares this group with another group. Returns true if groups are equal. */
     bool operator== (const MaCollapsibleGroup &other) const;
 
-    /* Ordered set of ma rows in the group. */
+    /* Returns number of rows in the group. */
+    int size() const;
+
+    /* Ordered list of ma rows in the group. */
     QList<int> maRows;
 
     /* If group is collapsed or not. */
@@ -109,16 +112,17 @@ public:
     /* Returns the collapsible group index with the row or -1, if the row is not in a collapsible group. */
     int getCollapsibleGroupIndexByViewRowIndex(int viewRowIndex) const;
 
-    /** Returns collapsible group by index or NULL if there is no group for the index. */
+    /* Returns collapsible group by index or NULL if there is no group for the index. */
     const MaCollapsibleGroup* getCollapsibleGroup(int collapsibleGroupIndex) const;
+
+    /* Returns collapsible group by view row index or NULL if there is no group for the index. */
+    const MaCollapsibleGroup* getCollapsibleGroupByViewRow(int viewRowIndex) const;
+
+    /* Returns collapsible group by MA row index or NULL if there is no group for the index. */
+    const MaCollapsibleGroup* getCollapsibleGroupByMaRow(int maRowIndex) const;
 
     /* Returns number of view rows. Every collapsible group has at least one (the first) row counted. */
     int getViewRowCount() const;
-
-    void setFakeCollapsibleModel(bool fakeModel);
-
-    //TODO: rename!
-    bool isFakeModel() const {return fakeModel;}
 
     /* Returns current set of collapsible groups. */
     const QVector<MaCollapsibleGroup>& getGroups() const {return groups;}
@@ -138,8 +142,6 @@ private:
     QHash<int, int> maRowByViewRow;
     QHash<int, int> groupByMaRow;
     bool hasGroupsWithMultipleItems;
-
-    bool fakeModel;
 };
 
 } //namespace

@@ -37,12 +37,16 @@ bool MaCollapsibleGroup::operator==(const MaCollapsibleGroup& other) const {
     return maRows == other.maRows && isCollapsed == other.isCollapsed;
 }
 
+int MaCollapsibleGroup::size() const {
+    return maRows.size();
+}
+
 //////////////////////////////////////////////////////////////////////////
 /// MaCollapseModel
 //////////////////////////////////////////////////////////////////////////
 
 MaCollapseModel::MaCollapseModel(QObject* p, int numSequences)
-        : QObject(p), fakeModel(false), hasGroupsWithMultipleItems(false) {
+        : QObject(p), hasGroupsWithMultipleItems(false) {
     reset(numSequences);
 }
 
@@ -204,12 +208,15 @@ const MaCollapsibleGroup* MaCollapseModel::getCollapsibleGroup(int collapsibleGr
     return &groups.constData()[collapsibleGroupIndex];
 }
 
-int MaCollapseModel::getViewRowCount() const {
-    return viewRowByMaRow.size();
+const MaCollapsibleGroup* MaCollapseModel::getCollapsibleGroupByViewRow(int viewRowIndex) const {
+    return getCollapsibleGroup(getCollapsibleGroupIndexByViewRowIndex(viewRowIndex));
+}
+const MaCollapsibleGroup* MaCollapseModel::getCollapsibleGroupByMaRow(int maRowIndex) const {
+    return getCollapsibleGroupByViewRow(getViewRowIndexByMaRowIndex(maRowIndex));
 }
 
-void MaCollapseModel::setFakeCollapsibleModel(bool fakeModelStatus) {
-    fakeModel = fakeModelStatus;
+int MaCollapseModel::getViewRowCount() const {
+    return viewRowByMaRow.size();
 }
 
 void MaCollapseModel::updateIndex() {

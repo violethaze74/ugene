@@ -91,6 +91,9 @@ public:
     void setCollapsibleMode(bool collapse) { collapsibleMode = collapse; }
     MaCollapseModel* getCollapseModel() const { return collapseModel; }
 
+    /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
+    bool isCollapsingOfSingleRowGroupsEnabled() const { return enableCollapsingOfSingleRowGroups; }
+
     QWidget* getHeaderWidget() const { return seqAreaHeader; }
     MsaUndoRedoFramework* getUndoRedoFramework() { return undoFWK; }
 
@@ -135,8 +138,9 @@ protected:
 
     MsaUndoRedoFramework*           undoFWK;
 
-    MaCollapseModel*        collapseModel;
+    MaCollapseModel*                collapseModel;
     bool                            collapsibleMode;
+    bool                            enableCollapsingOfSingleRowGroups;
     ScrollController *              scrollController;
     BaseWidthController *           baseWidthController;
     RowHeightController *           rowHeightController;
