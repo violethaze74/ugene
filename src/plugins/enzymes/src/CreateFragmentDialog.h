@@ -22,6 +22,7 @@
 #ifndef _U2_CREATE_FRAGMENT_DIALOG_H_
 #define _U2_CREATE_FRAGMENT_DIALOG_H_
 
+#include <QSet>
 #include "DNAFragment.h"
 #include <U2Gui/RegionSelector.h>
 #include <ui_CreateFragmentDialog.h>
