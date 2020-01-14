@@ -48,6 +48,7 @@
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/PopupChooser.h>
+#include <primitives/GTWidget.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
@@ -3898,6 +3899,26 @@ GUI_TEST_CLASS_DEFINITION(test_6636) {
 
     QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+}
+
+
+GUI_TEST_CLASS_DEFINITION(test_6654) {
+    // 1. Open "COI.aln" sample alignment.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    
+    GTUtilsMsaEditor::moveToSequenceName(os, "Roeseliana_roeseli");
+    GTMouseDriver::click();
+
+    const MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    const MaEditorSelection& selection = msaEditor->getSelection();
+
+    CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
+
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 18));    
+    CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 0, QString("Expected selection width: 0, actual: %1").arg(selection.width()));
+    
 }
 
 } // namespace GUITest_regression_scenarios
