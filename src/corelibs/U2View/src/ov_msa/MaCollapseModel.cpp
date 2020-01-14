@@ -140,12 +140,19 @@ U2Region MaCollapseModel::getMaRowIndexRegionByViewRowIndexRegion(const U2Region
     int minMaRowIndex = INT_MAX;
     int maxMaRowIndex = 0;
     for (int viewRowIndex = viewRowIndexRegion.startPos; viewRowIndex < viewRowIndexRegion.endPos(); viewRowIndex++) {
-        int maRowIndex = maRowByViewRow.value(viewRowIndex, -1);
-        if (maRowIndex == -1) {
-            continue;
+        const MaCollapsibleGroup* group = getCollapsibleGroupByViewRow(viewRowIndex);
+        if (group != NULL) {
+            foreach(int maRowIndex, group->maRows) {
+                minMaRowIndex = qMin(minMaRowIndex, maRowIndex);
+                maxMaRowIndex = qMax(maxMaRowIndex, maRowIndex);
+            }
+        } else {
+            int maRowIndex = maRowByViewRow.value(viewRowIndex, -1);
+            if (maRowIndex != -1) {
+                minMaRowIndex = qMin(minMaRowIndex, maRowIndex);
+                maxMaRowIndex = qMax(maxMaRowIndex, maRowIndex);
+            }
         }
-        minMaRowIndex = qMin(minMaRowIndex, maRowIndex);
-        maxMaRowIndex = qMax(maxMaRowIndex, maRowIndex);
     }
     return U2Region(minMaRowIndex, maxMaRowIndex - minMaRowIndex + 1);
 }
