@@ -314,6 +314,8 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
 
     //6. Put cursor in "199 939" position and do ÑTRL + V
     GTUtilsSequenceView::setCursor(os, 199939);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(100);
     GTKeyboardUtils::paste(os);
 
     //Expected state : Sequence ends with "A,C, G,T,N,gap"
