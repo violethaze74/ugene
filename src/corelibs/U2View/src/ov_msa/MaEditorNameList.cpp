@@ -375,7 +375,11 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
         QRect textRect = calculateTextRect(yRange, selected);
         QRect buttonRect = calculateExpandCollapseButtonRect(textRect);
         if (buttonRect.contains(mousePressPoint)) {
-            collapseModel->toggle(viewRow);
+            if (!selected) {
+                collapseModel->toggle(viewRow);
+            } else {
+                triggerExpandCollapseOnSelectedRow(!group->isCollapsed);
+            }
             sl_completeRedraw();
             QWidget::mousePressEvent(e);
             return;
@@ -871,16 +875,29 @@ bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
     }
     U2Region selection = getSelection();
     MaCollapseModel* collapseModel = ui->getCollapseModel();
-    int groupsToggled = 0;
     int minRowsInGroupToShowExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
+    QList<int> groupsToToggle;
+    bool expandSelectionToChildRows = false;
     for (int viewRow = selection.startPos; viewRow < selection.endPos(); viewRow++) {
-        const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroupByViewRow(viewRow);
+        int groupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(viewRow);
+        const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(groupIndex);
         if (group != NULL && group->size() >= minRowsInGroupToShowExpandCollapse && group->isCollapsed != collapse) {
-            groupsToggled++;
-            collapseModel->toggle(viewRow, collapse);
+            groupsToToggle << groupIndex;
+            expandSelectionToChildRows = expandSelectionToChildRows || (!collapse && group->size() > 1);
         }
     }
-    return groupsToggled > 0;
+    if (groupsToToggle.isEmpty()) {
+        return false;
+    }
+    foreach(int groupIndex, groupsToToggle) {
+        collapseModel->toggleGroup(groupIndex, collapse);
+    }
+    if (expandSelectionToChildRows) {
+        const MaCollapsibleGroup* lastGroup = collapseModel->getCollapsibleGroup(groupsToToggle.last());
+        int lastViewRowInLastGroup = collapseModel->getViewRowIndexByMaRowIndex(lastGroup->maRows.last());
+        setSelection(selection.startPos, lastViewRowInLastGroup - selection.startPos + 1);
+    }
+    return true;
 }
 
 } // namespace U2
