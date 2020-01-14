@@ -1070,18 +1070,20 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
     QPoint mouseMoveEventPoint = event->pos();
     ScrollController* scrollController = ui->getScrollController();
     QPoint mouseMoveViewPos = ui->getScrollController()->getViewPosByScreenPoint(mouseMoveEventPoint);
+
+    bool isDefaultCursorMode = cursor().shape() == Qt::ArrowCursor;
+    if (!shifting && selection.toRect().contains(mousePressViewPos)
+        && !isAlignmentLocked() && editingEnabled && isDefaultCursorMode) {
+        shifting = true;
+        maVersionBeforeShifting = editor->getMaObject()->getModificationVersion();
+        U2OpStatus2Log os;
+        changeTracker.startTracking(os);
+        CHECK_OP(os,);
+        editor->getMaObject()->saveState();
+        emit si_startMaChanging();
+    }
+
     if (isInRange(mouseMoveViewPos)) {
-        bool isDefaultCursorMode = cursor().shape() == Qt::ArrowCursor;
-        if (!shifting && selection.toRect().contains(mousePressViewPos)
-            && !isAlignmentLocked() && editingEnabled && isDefaultCursorMode) {
-            shifting = true;
-            maVersionBeforeShifting = editor->getMaObject()->getModificationVersion();
-            U2OpStatus2Log os;
-            changeTracker.startTracking(os);
-            CHECK_OP(os,);
-            editor->getMaObject()->saveState();
-            emit si_startMaChanging();
-        }
         selecting = !shifting && !isSelectionResize;
         if (selecting && showRubberBandOnSelection && !rubberBand->isVisible()) {
             rubberBand->setGeometry(QRect(mousePressEventPoint, QSize()));

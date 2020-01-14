@@ -1795,34 +1795,33 @@ GUI_TEST_CLASS_DEFINITION( test_2314 ){
     GTKeyboardDriver::keyClick( 'g', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
-//    3. Move to the right last column with mouse
+//    3. Select to the whole last column by clicking consensus area.
     QWidget* consArea = GTWidget::findWidget(os, "consArea");
-    QWidget* offset = GTWidget::findWidget(os, "msa_editor_offsets_view_widget_right");
-    int w = offset->geometry().width();
-    GTWidget::click(os, consArea, Qt::LeftButton, QPoint(consArea->geometry().right() - w - 10, consArea->geometry().height()/2));
+    GTWidget::click(os, consArea, Qt::LeftButton, QPoint(consArea->geometry().right() - 1, consArea->geometry().height() / 2));
     GTGlobals::sleep(500);
 
-    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(603, 0));
+//    3.1 Move the selected column with a mouse to the right. Do not click -> it will reset the selection.
+    GTUtilsMSAEditorSequenceArea::moveMouseToPosition(os, QPoint(603, 0));
     QPoint p = GTMouseDriver::getMousePosition();
     GTMouseDriver::press();
-    GTMouseDriver::moveTo(QPoint(p.x() + w, p.y()));
+    GTMouseDriver::moveTo(QPoint(p.x() + 30, p.y()));
     GTMouseDriver::release();
 
 //    Expected state: the column was moved
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) > 604, "The length of the alignement has not changed");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) > 604, "The length of the alignment is not changed");
 
     GTUtilsMsaEditor::undo(os);
     GTGlobals::sleep();
 
-//    4. Move to the right any other region, that is close to the end of alignment
-    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(603, 5));
+//    4. Move to the right 1 base region, that is close to the end of alignment
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(600, 5));
     p = GTMouseDriver::getMousePosition();
     GTMouseDriver::press();
-    GTMouseDriver::moveTo(QPoint(GTWidget::getWidgetCenter(os, offset).x(), p.y()));
+    GTMouseDriver::moveTo(QPoint(p.x() + 30, p.y()));
     GTMouseDriver::release();
 
 //    Expected state: the region is moved if mouse goes beyond the right border of the alignment
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) > 604, "The length of the alignement has not changed");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) > 604, "The length of the alignment is not changed");
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2316 ) {

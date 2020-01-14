@@ -238,22 +238,28 @@ void GTUtilsMSAEditorSequenceArea::scrollToBottom(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickToPosition"
-void GTUtilsMSAEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition) {
+#define GT_METHOD_NAME "moveMouseToPosition"
+void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition) {
     MSAEditorSequenceArea *msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea *>(os, "msa_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != msaSeqArea, "MSA Editor sequence area is not found");
     GT_CHECK(msaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
-             .arg(globalMaPosition.x()).arg(globalMaPosition.y())
-             .arg(msaSeqArea->getEditor()->getAlignmentLen()).arg(msaSeqArea->getViewRowCount()));
+                     .arg(globalMaPosition.x()).arg(globalMaPosition.y())
+                     .arg(msaSeqArea->getEditor()->getAlignmentLen()).arg(msaSeqArea->getViewRowCount()));
 
 
     scrollToPosition(os, globalMaPosition);
     const QPoint positionCenter(msaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
-                                    msaSeqArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
+                                msaSeqArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
     GT_CHECK(msaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
 
     GTMouseDriver::moveTo(msaSeqArea->mapToGlobal(positionCenter));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickToPosition"
+void GTUtilsMSAEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition) {
+    GTUtilsMSAEditorSequenceArea::moveMouseToPosition(os, globalMaPosition);
     GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
