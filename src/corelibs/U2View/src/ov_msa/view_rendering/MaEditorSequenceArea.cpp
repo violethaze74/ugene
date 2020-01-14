@@ -1034,7 +1034,7 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent* e) {
         QPoint bottomRight = boundWithVisibleRange(QPoint(left + width - 1, top + height - 1));
         ui->getScrollController()->scrollToPoint(releasePos, size());
         setSelection(MaEditorSelection(topLeft, bottomRight));
-    } else if (isClick) {
+    } else if (isClick && e->button() == Qt::LeftButton) {
         if (isInRange(releasePos)) {
             setSelection(MaEditorSelection(releasePos, releasePos));
         } else {
