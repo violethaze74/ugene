@@ -1767,23 +1767,22 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTFile::copy(os, sandBoxDir + "ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
 //    Expected state: Dialog suggesting to reload modified document has appeared.
 // 3. Press 'Yes'.
-    GTGlobals::sleep(10000);
+    GTGlobals::sleep(1000);
 
 //    Expected state: document was reloaded, view activated.
 //    'Phaneroptera_falcata' starts with CTT.
     GTUtilsMdi::activeWindow(os);
-
     GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
-    GTGlobals::sleep(4000);
+  
 // copy to clipboard
     GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(4000);
+    GTGlobals::sleep();
 
     QString clipboardText = GTClipboard::text(os);
 
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
-    GTGlobals::sleep(3000);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_2) {
@@ -1803,11 +1802,12 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
 
 //    Expected state: Dialog suggesting to reload modified document has appeared.
 // 3. Press 'Yes'.
-    GTGlobals::sleep(10000);
+    GTGlobals::sleep(1000);
 
 //    Expected state: document was reloaded, view activated.
 //    'Phaneroptera_falcata' starts with CTT.
     GTUtilsMdi::activeWindow(os);
+    GTGlobals::sleep();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
 // copy to clipboard
@@ -1815,13 +1815,13 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTGlobals::sleep();
 
     QString clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected");
+    CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
 
 // CHANGES: select item in project tree view and press delete
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "ma2_gapped.aln"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
-    GTGlobals::sleep(5000);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
