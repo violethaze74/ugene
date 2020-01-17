@@ -1041,6 +1041,8 @@ GUI_TEST_CLASS_DEFINITION(test_3144) {
     GTUtilsProjectTreeView::findIndex(os, "regression_test_3144_2", rbIndex);
 
     // 5. Remove the folder "regression_test_3144_1".
+    GTGlobals::sleep();
+    GTGlobals::sleep();
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "regression_test_3144_1"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
