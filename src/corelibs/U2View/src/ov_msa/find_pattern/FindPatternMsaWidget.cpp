@@ -327,9 +327,9 @@ void FindPatternMsaWidget::initAlgorithmLayout()
 
 void FindPatternMsaWidget::initRegionSelection()
 {
-    boxRegion->addItem(FindPatternMsaWidget::tr("Whole sequence"), RegionSelectionIndex_WholeSequence);
-    boxRegion->addItem(FindPatternMsaWidget::tr("Custom region"), RegionSelectionIndex_CustomRegion);
-    boxRegion->addItem(FindPatternMsaWidget::tr("Selected region"), RegionSelectionIndex_CurrentSelectedRegion);
+    boxRegion->addItem(FindPatternMsaWidget::tr("Whole alignment"), RegionSelectionIndex_WholeSequence);
+    boxRegion->addItem(FindPatternMsaWidget::tr("Custom columns region"), RegionSelectionIndex_CustomRegion);
+    boxRegion->addItem(FindPatternMsaWidget::tr("Selected columns region"), RegionSelectionIndex_CurrentSelectedRegion);
     setRegionToWholeSequence();
 
     editStart->setValidator(new QIntValidator(1, msaEditor->getAlignmentLen(), editStart));
@@ -468,7 +468,7 @@ void FindPatternMsaWidget::sl_onRegionValueEdited() {
             GUIUtils::setWidgetWarning(editEnd, true);
             regionIsCorrect = false;
         }
-        if (value2 - value1 < 1) {
+        if (value2 - value1 < 0) {
             GUIUtils::setWidgetWarning(editEnd, true);
             regionIsCorrect = false;
         }
@@ -972,7 +972,7 @@ bool FindPatternMsaWidget::checkPatternRegion( const QString& pattern ){
 void FindPatternMsaWidget::sl_onSelectedRegionChanged(const MaEditorSelection& current, const MaEditorSelection& prev) {
     if(!msaEditor->getUI()->getSequenceArea()->getSelection().isEmpty()){
         QRect selection = msaEditor->getSelectionRect();
-        U2Region firstReg = U2Region(selection.topLeft().rx(), selection.topRight().rx() - selection.topLeft().rx());
+        U2Region firstReg = U2Region(selection.topLeft().rx(), selection.width());
         editStart->setText(QString::number(firstReg.startPos + 1));
         editEnd->setText(QString::number(firstReg.endPos()));
     } else {
