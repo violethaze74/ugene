@@ -133,6 +133,26 @@ void U2Region::shift(qint64 offset, QVector<U2Region>& regions) {
     }
 }
 
+QList<U2Region> U2Region::split(const U2Region& region, qint64 blockSize) {
+    if (region.length <= blockSize) {
+        return QList<U2Region>() << region;
+    }
+    QList<U2Region> result;
+    for (qint64 pos = region.startPos; pos < region.endPos(); pos += blockSize) {
+        qint64 size = qMin(region.endPos() - pos, blockSize);
+        result << U2Region(pos, size);
+    }
+    return result;
+}
+
+qint64 U2Region::sumLength(const QVector<U2Region>& regions) {
+    qint64 size = 0;
+    foreach (const U2Region& region, regions) {
+        size += region.length;
+    }
+    return size;
+}
+
 int U2Region::findIntersectedRegion(const QVector<U2Region>& rs) const {
     for (int i = 0, n = rs.size(); i < n; i++) {
         const U2Region& r = rs[i];
