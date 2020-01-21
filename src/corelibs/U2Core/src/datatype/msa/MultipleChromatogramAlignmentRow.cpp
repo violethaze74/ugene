@@ -541,14 +541,14 @@ McaRowMemoryData MultipleChromatogramAlignmentRowData::getRowMemoryData() const 
 }
 
 void MultipleChromatogramAlignmentRowData::reverse() {
-    sequence.seq = DNASequenceUtils::reverse(sequence.seq);
+    sequence = DNASequenceUtils::reverse(sequence);
     chromatogram = ChromatogramUtils::reverse(chromatogram);
     gaps = MsaRowUtils::reverseGapModel(gaps, getRowLengthWithoutTrailing());
     MultipleAlignmentRowInfo::setReversed(additionalInfo, !isReversed());
 }
 
 void MultipleChromatogramAlignmentRowData::complement() {
-    sequence.seq = DNASequenceUtils::complement(sequence.seq);
+    sequence = DNASequenceUtils::complement(sequence);
     chromatogram = ChromatogramUtils::complement(chromatogram);
     MultipleAlignmentRowInfo::setComplemented(additionalInfo, !isComplemented());
 }
