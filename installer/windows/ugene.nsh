@@ -201,7 +201,6 @@ Section "Build"
     !insertmacro AddPlugin annotator
     !insertmacro AddPlugin ball
     !insertmacro AddPlugin biostruct3d_view
-    !insertmacro AddPlugin browser_support
     !insertmacro AddPlugin chroma_view
     !insertmacro AddPlugin circular_view
     !insertmacro AddPlugin clark_support
