@@ -333,7 +333,9 @@ void BlastAndSwReadTask::createAlignment(const U2Region& refRegion) {
 
     if (readShift != 0) {
         alignment->addRow(readObject->getSequenceName(),
-                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, U2MsaRowGapModel() << U2MsaGap(0, readShift), stateInfo);
+                          complement ? DNASequenceUtils::reverseComplement(readData) : readData,
+                          U2MsaRowGapModel() << U2MsaGap(0, readShift),
+                          stateInfo);
     } else {
         alignment->addRow(readObject->getSequenceName(), complement ? DNASequenceUtils::reverseComplement(readData) : readData);
     }

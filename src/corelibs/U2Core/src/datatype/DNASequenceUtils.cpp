@@ -98,6 +98,14 @@ QByteArray DNASequenceUtils::reverse(const QByteArray &sequence) {
     return result;
 }
 
+DNASequence DNASequenceUtils::reverse(const DNASequence& dnaSequence) {
+    DNASequence newDnaSequence(dnaSequence);
+    newDnaSequence.seq = DNASequenceUtils::reverse(dnaSequence.seq);
+    newDnaSequence.quality = DNAQuality(DNASequenceUtils::reverse(dnaSequence.quality.qualCodes), dnaSequence.quality.type);
+
+    return newDnaSequence;
+}
+
 QByteArray DNASequenceUtils::complement(const QByteArray &sequence) {
     const DNAAlphabet *alphabet = U2AlphabetUtils::findBestAlphabet(sequence.data(), sequence.length());
     SAFE_POINT(NULL != alphabet, L10N::nullPointerError("DNA Alphabet"), "");
@@ -110,8 +118,19 @@ QByteArray DNASequenceUtils::complement(const QByteArray &sequence) {
     return result;
 }
 
+DNASequence DNASequenceUtils::complement(const DNASequence& dnaSequence) {
+    DNASequence newDnaSequence(dnaSequence);
+    newDnaSequence.seq = DNASequenceUtils::complement(dnaSequence.seq);
+
+    return newDnaSequence;
+}
+
 QByteArray DNASequenceUtils::reverseComplement(const QByteArray &sequence) {
     return reverse(complement(sequence));
+}
+
+DNASequence DNASequenceUtils::reverseComplement(const DNASequence& dnaSequence) {
+    return reverse(complement(dnaSequence));
 }
 
 void DNASequenceUtils::crop(DNASequence &sequence, int startPos, int length) {
