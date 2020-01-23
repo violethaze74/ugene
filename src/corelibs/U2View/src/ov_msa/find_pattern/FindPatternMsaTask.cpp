@@ -53,6 +53,7 @@ void FindPatternMsaTask::createSearchTaskForCurrentSequence() {
     //TODO: UGENE-6675
     algoSettings.maxResult2Find = FindAlgorithmSettings::MAX_RESULT_TO_FIND_UNLIMITED;
     algoSettings.useAmbiguousBases = false;
+    algoSettings.maxRegExpResultLength = settings.findSettings.maxRegExpResultLength;
     algoSettings.patternSettings = settings.findSettings.patternSettings;
     algoSettings.sequenceAlphabet = settings.msaObj->getAlphabet();
     algoSettings.searchIsCircular = false;
