@@ -62,6 +62,7 @@ void XmlTest::checkBooleanAttribute(const QDomElement &element, const QString &a
 const QString XMLTestUtils::TMP_DATA_DIR_PREFIX  = "!tmp_data_dir!";
 const QString XMLTestUtils::COMMON_DATA_DIR_PREFIX = "!common_data_dir!";
 const QString XMLTestUtils::LOCAL_DATA_DIR_PREFIX = "!input!";
+const QString XMLTestUtils::SAMPLE_DATA_DIR_PREFIX = "!sample_data_dir!";
 const QString XMLTestUtils::WORKFLOW_SAMPLES_DIR_PREFIX = "!workflow_samples!";
 const QString XMLTestUtils::WORKFLOW_OUTPUT_DIR_PREFIX = "!workflow_output!";
 const QString XMLTestUtils::EXPECTED_OUTPUT_DIR_PREFIX = "!expected!";

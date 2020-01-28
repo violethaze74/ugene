@@ -84,6 +84,7 @@ public:
     static const QString TMP_DATA_DIR_PREFIX;
     static const QString COMMON_DATA_DIR_PREFIX;
     static const QString LOCAL_DATA_DIR_PREFIX;
+    static const QString SAMPLE_DATA_DIR_PREFIX;
     static const QString WORKFLOW_SAMPLES_DIR_PREFIX;
     static const QString WORKFLOW_OUTPUT_DIR_PREFIX;
     static const QString EXPECTED_OUTPUT_DIR_PREFIX;
