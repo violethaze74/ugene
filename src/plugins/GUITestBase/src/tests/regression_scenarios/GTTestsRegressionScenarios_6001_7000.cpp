@@ -3923,6 +3923,39 @@ GUI_TEST_CLASS_DEFINITION(test_6654) {
     
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6659) {
+    // 1. Open an alignment (e.g. "_common_data/scenarios/msa/ma2_gapped.aln").
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    // 2. Open the "General" tab on the options panel.
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
+    GTGlobals::sleep(500);
+    QLineEdit *sequencelineEdit = (QLineEdit*)GTWidget::findWidget(os, "sequenceLineEdit");
+    CHECK(NULL != sequencelineEdit, );
+
+    // 3. The "Copy" button is disabled.
+    QToolButton* copyButton = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "copyButton"));
+    CHECK_SET_ERR(copyButton != NULL, "copyButton not found");
+    CHECK_SET_ERR(!copyButton->isEnabled(), "copyButton is unexpectidly enabled");
+
+    // 4. Select any region and press ctrl+c
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1,6), QPoint(1,9));
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTGlobals::sleep();
+
+    // 5. Press ctrl+v
+    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
+    GTGlobals::sleep();
+
+    // 6. Expected state: the region will appear under the main alignment
+    GTUtilsMsaEditor::selectRows(os, 0, 12);
+    int numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
+    numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
+    CHECK_SET_ERR(numSelectedSequences == 13, "There is no selection in MSA, but expected");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
