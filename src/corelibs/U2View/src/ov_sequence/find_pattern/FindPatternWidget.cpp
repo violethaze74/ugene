@@ -1160,7 +1160,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     // Region
     bool regionIsCorrectRef = false;
     U2Region region = getCompleteSearchRegion(regionIsCorrectRef, activeContext->getSequenceLength());
-    SAFE_POINT(true == regionIsCorrectRef, "Internal error: incorrect search region has been supplied."
+    SAFE_POINT(regionIsCorrectRef, "Internal error: incorrect search region has been supplied."
         " Skipping the pattern search.", );
     settings.searchRegion = region;
 
@@ -1185,7 +1185,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
         patterns,
         removeOverlaps,
         spinMatch->value());
-    connect(searchTask, SIGNAL(si_stateChanged()), SLOT(sl_findPatrernTaskStateChanged()));
+    connect(searchTask, SIGNAL(si_stateChanged()), SLOT(sl_findPatternTaskStateChanged()));
     startProgressAnimation();
     AppContext::getTaskScheduler()->registerTopLevelTask(searchTask);
 }
@@ -1214,7 +1214,7 @@ bool compareByRegionStartPos(const SharedAnnotationData &r1, const SharedAnnotat
     return r1->getRegions().first().startPos < r2->getRegions().first().startPos;
 }
 
-void FindPatternWidget::sl_findPatrernTaskStateChanged() {
+void FindPatternWidget::sl_findPatternTaskStateChanged() {
     FindPatternListTask *findTask = qobject_cast<FindPatternListTask *>(sender());
     CHECK(NULL != findTask, );
     if (findTask != searchTask){
@@ -1509,12 +1509,11 @@ void FindPatternWidget::sl_nextButtonClicked() {
 void FindPatternWidget::showCurrentResult() const {
     resultLabel->setText(tr("Results: %1/%2").arg(QString::number(iterPos)).arg(QString::number(findPatternResults.size())));
     CHECK(findPatternResults.size() >= iterPos, );
-    const SharedAnnotationData &ad = findPatternResults.at(iterPos - 1);
+    const SharedAnnotationData& findResult = findPatternResults.at(iterPos - 1);
     ADVSequenceObjectContext* activeContext = annotatedDnaView->getSequenceInFocus();
-    const QVector<U2Region> regions = ad->getRegions();
-    CHECK(activeContext->getSequenceSelection() != NULL, );
+    const QVector<U2Region>& regions = findResult->getRegions();
     CHECK(!regions.isEmpty(), );
-    activeContext->getSequenceSelection()->setRegion(regions.first());
+    activeContext->getSequenceSelection()->setSelectedRegions(regions);
     int centerPos = regions.first().center() + 1;
     annotatedDnaView->sl_onPosChangeRequest(centerPos);
 }
@@ -1587,7 +1586,7 @@ void FindPatternWidget::setUpTabOrder() const {
     QWidget::setTabOrder(annotWidget->getTaborderEntryAndExitPoints().second, getAnnotationsPushButton);
 }
 
-int FindPatternWidget::getTargetSequnceLength() const {
+int FindPatternWidget::getTargetSequenceLength() const {
     SAFE_POINT(annotatedDnaView->getSequenceInFocus() != NULL, "Sequence is NULL", 0);
     return annotatedDnaView->getSequenceInFocus()->getSequenceLength();
 }

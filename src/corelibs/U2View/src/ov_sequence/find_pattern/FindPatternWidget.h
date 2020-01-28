@@ -89,7 +89,7 @@ class FindPatternWidget : public QWidget, private Ui_FindPatternForm
     Q_OBJECT
 public:
     FindPatternWidget(AnnotatedDNAView*);
-    int getTargetSequnceLength() const;
+    int getTargetSequenceLength() const;
 
 private slots:
     void sl_onAlgorithmChanged(int);
@@ -102,7 +102,7 @@ private slots:
     void sl_onFileSelectorClicked();
     void sl_onFileSelectorToggled(bool on);
     void sl_loadPatternTaskStateChanged();
-    void sl_findPatrernTaskStateChanged();
+    void sl_findPatternTaskStateChanged();
 
     /** Another sequence has been selected */
     void sl_onFocusChanged(ADVSequenceWidget*, ADVSequenceWidget*);
