@@ -418,6 +418,9 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix& sm, const QByteArray & 
     //************end: set arguments****************
 
     clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &err);
+    if (CL_INVALID_QUEUE_PROPERTIES == err) {//device doesn't support the CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE property, so let's try to run without it
+        clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, NULL, &err);
+    }
     if (hasOPENCLError(err, "cl::CommandQueue() failed ")) return;
 
     coreLog.details(QObject::tr("OPENCL: Running CL program"));
