@@ -98,6 +98,8 @@ private:
     void initRenderer();
     void drawBackground(QPainter &p);
 
+    void updateCollapseModel(const MaModificationInfo& modInfo) override;
+
     void getColorAndHighlightingIds(QString &csid, QString &hsid);
 
     QAction* createToggleTraceAction(const QString& actionName);

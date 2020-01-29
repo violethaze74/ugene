@@ -92,18 +92,6 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
     seqAreaHeader->setStyleSheet("background-color: white;");
     connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
-    MultipleChromatogramAlignmentObject* mcaObj = editor->getMaObject();
-    connect(mcaObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
-}
-
-void McaEditorWgt::sl_alignmentChanged() {
-    int sequenceCount = editor->getNumSequences();
-    int groupCount = collapseModel->getGroups().size();
-    if (sequenceCount > groupCount) {
-        collapseModel->reset(sequenceCount);
-        bool isButtonChecked = getEditor()->isChromatogramButtonChecked();
-        collapseModel->collapseAll(!isButtonChecked);
-    }
 }
 
 McaEditor *McaEditorWgt::getEditor() const {

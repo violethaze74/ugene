@@ -85,10 +85,11 @@ void MaCollapseModel::updateFromUnitedRows(const QVector<U2Region>& unitedRows, 
     update(newGroups);
 }
 
-void MaCollapseModel::reset(int numSequences) {
+void MaCollapseModel::reset(int numSequences, const QSet<int>& expandedGroupIndexes) {
     QVector<MaCollapsibleGroup> newGroups;
     for (int maRow = 0; maRow < numSequences; maRow++) {
-        newGroups.append(MaCollapsibleGroup(QList<int>() << maRow, true));
+        bool isCollapsed = !expandedGroupIndexes.contains(maRow); // maRowIndex is the same as groupIndex here.
+        newGroups.append(MaCollapsibleGroup(QList<int>() << maRow, isCollapsed));
     }
     update(newGroups);
 }

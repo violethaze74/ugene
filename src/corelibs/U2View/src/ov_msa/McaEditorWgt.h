@@ -58,9 +58,6 @@ protected:
     void initConsensusArea();
     void initStatusBar();
 
-private slots:
-    void sl_alignmentChanged();
-
 private:
     McaEditorReferenceArea*     refArea;
     McaReferenceCharController* refCharController;

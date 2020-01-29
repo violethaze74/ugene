@@ -24,6 +24,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <QSet>
 #include <QList>
 #include <QHash>
 
@@ -73,7 +74,7 @@ public:
     void updateFromUnitedRows(const QVector<U2Region>& unitedRows, int numSequences);
 
     /* Flattens all collapsible groups: makes every group contain only 1 sequence */
-    void reset(int numSequences);
+    void reset(int numSequences, const QSet<int>& expandedGroupIndexes = QSet<int>());
 
     /* Toggle 'isCollapsed' state for the group at the given row. */
     void toggle(int viewRowIndex);
@@ -125,7 +126,7 @@ public:
     int getViewRowCount() const;
 
     /* Returns current set of collapsible groups. */
-    const QVector<MaCollapsibleGroup>& getGroups() const {return groups;}
+    int getGroupCount() const {return groups.size();}
 
     bool hasGroupsWithMultipleRows() const { return hasGroupsWithMultipleItems; }
 

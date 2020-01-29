@@ -463,4 +463,20 @@ McaEditorWgt *McaEditorSequenceArea::getMcaEditorWgt() const {
     return qobject_cast<McaEditorWgt *>(ui);
 }
 
+void McaEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInfo) {
+    if (!modInfo.rowListChanged) {
+        return;
+    }
+    MultipleAlignmentObject* maObject = getEditor()->getMaObject();
+    MaCollapseModel* collapseModel = ui->getCollapseModel();
+    QSet<int> expandedGroupIndexes;
+    for (int i = 0, n = collapseModel->getGroupCount(); i < n; i++) {
+        const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(i);
+        if (!group->isCollapsed) {
+            expandedGroupIndexes << i;
+        }
+    }
+    collapseModel->reset(maObject->getNumRows(), expandedGroupIndexes);
+}
+
 } // namespace
