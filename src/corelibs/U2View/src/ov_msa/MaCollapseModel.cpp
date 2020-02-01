@@ -29,8 +29,16 @@ namespace U2 {
 /// MaCollapsibleGroup
 //////////////////////////////////////////////////////////////////////////
 
-MaCollapsibleGroup::MaCollapsibleGroup(const QList<int>& maRows, bool isCollapsed)
-        : maRows(maRows), isCollapsed(isCollapsed) {
+MaCollapsibleGroup::MaCollapsibleGroup(int maRow, qint64 maRowId, bool isCollapsed)
+        : maRows(QList<int>() << maRow), maRowIds(QList<qint64>() << maRowId), isCollapsed(isCollapsed) {
+}
+
+MaCollapsibleGroup::MaCollapsibleGroup(const QList<int>& maRows, const QList<qint64>& maRowIds, bool isCollapsed)
+        : maRows(maRows), maRowIds(maRowIds), isCollapsed(isCollapsed) {
+}
+
+MaCollapsibleGroup::MaCollapsibleGroup()
+        : isCollapsed(true) {
 }
 
 bool MaCollapsibleGroup::operator==(const MaCollapsibleGroup& other) const {
@@ -45,9 +53,9 @@ int MaCollapsibleGroup::size() const {
 /// MaCollapseModel
 //////////////////////////////////////////////////////////////////////////
 
-MaCollapseModel::MaCollapseModel(QObject* p, int numSequences)
+MaCollapseModel::MaCollapseModel(QObject* p, const QList<qint64>& allOrderedMaRowIds)
         : QObject(p), hasGroupsWithMultipleItems(false) {
-    reset(numSequences);
+    reset(allOrderedMaRowIds);
 }
 
 void MaCollapseModel::update(const QVector<MaCollapsibleGroup>& newGroups) {
@@ -60,23 +68,26 @@ void MaCollapseModel::update(const QVector<MaCollapsibleGroup>& newGroups) {
     emit si_toggled( );
 }
 
-void MaCollapseModel::updateFromUnitedRows(const QVector<U2Region>& unitedRows, int numSequences) {
+void MaCollapseModel::updateFromUnitedRows(const QVector<U2Region>& unitedRows, const QList<qint64>& allOrderedMaRowIds) {
     QVector<U2Region> sortedRegions = unitedRows;
     qSort(sortedRegions);
     QVector<MaCollapsibleGroup> newGroups;
     int maIndex = 0;
     foreach (const U2Region region, unitedRows) {
         for (; maIndex < region.startPos; maIndex++) {
-            newGroups.append(MaCollapsibleGroup(QList<int>()<<maIndex, true));
+            newGroups.append(MaCollapsibleGroup(maIndex, allOrderedMaRowIds[maIndex], true));
         }
         QList<int> maRows;
+        QList<qint64> maRowIds;
         for (;maIndex < region.endPos(); maIndex++) {
-            maRows.append(maIndex);
+            maRows << maIndex;
+            maRowIds << allOrderedMaRowIds[maIndex];
         }
-        newGroups.append(MaCollapsibleGroup(maRows, true));
+        newGroups.append(MaCollapsibleGroup(maRows, maRowIds, true));
     }
+    int numSequences = allOrderedMaRowIds.size();
     for (; maIndex < numSequences; maIndex++) {
-        newGroups.append(MaCollapsibleGroup(QList<int>()<<maIndex, true));
+        newGroups.append(MaCollapsibleGroup(maIndex, allOrderedMaRowIds[maIndex], true));
     }
     // Copy collapse info from the current state.
     for (int i = 0, n = qMin(newGroups.size(), groups.size()); i < n; i++) {
@@ -85,11 +96,12 @@ void MaCollapseModel::updateFromUnitedRows(const QVector<U2Region>& unitedRows, 
     update(newGroups);
 }
 
-void MaCollapseModel::reset(int numSequences, const QSet<int>& expandedGroupIndexes) {
+void MaCollapseModel::reset(const QList<qint64>& allOrderedMaRowIds, const QSet<int>& expandedGroupIndexes) {
     QVector<MaCollapsibleGroup> newGroups;
+    int numSequences  = allOrderedMaRowIds.size();
     for (int maRow = 0; maRow < numSequences; maRow++) {
         bool isCollapsed = !expandedGroupIndexes.contains(maRow); // maRowIndex is the same as groupIndex here.
-        newGroups.append(MaCollapsibleGroup(QList<int>() << maRow, isCollapsed));
+        newGroups.append(MaCollapsibleGroup(maRow, allOrderedMaRowIds[maRow], isCollapsed));
     }
     update(newGroups);
 }
@@ -158,12 +170,20 @@ U2Region MaCollapseModel::getMaRowIndexRegionByViewRowIndexRegion(const U2Region
     return U2Region(minMaRowIndex, maxMaRowIndex - minMaRowIndex + 1);
 }
 
-QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region &viewRowIndexesRegion) {
+QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeGroupRows) {
     QList<int> maRows;
     for (int viewRow = viewRowIndexesRegion.startPos, n = viewRowIndexesRegion.endPos(); viewRow < n; viewRow++) {
         int maRow = getMaRowIndexByViewRowIndex(viewRow);
         if (maRow >= 0) {
             maRows << maRow;
+        }
+        if (includeGroupRows) {
+            const MaCollapsibleGroup* group = getCollapsibleGroupByViewRow(viewRow);
+            if (group->maRows.first() == maRow) {
+                for (int i = 1; i < group->maRows.length(); i++) {
+                    maRows << group->maRows[i];
+                }
+            }
         }
     }
     return maRows;
@@ -245,7 +265,7 @@ void MaCollapseModel::updateIndex() {
             }
             groupByMaRow.insert(maRow, groupIndex);
         }
-    }    
+    }
 }
 
 } // namespace U2

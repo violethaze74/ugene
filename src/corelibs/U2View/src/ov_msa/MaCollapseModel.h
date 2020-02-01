@@ -34,8 +34,14 @@ namespace U2 {
 
 class MaCollapsibleGroup {
 public:
+    /* Creates with 1 MA row inside. */
+    MaCollapsibleGroup(int maRow, qint64 maRowId, bool isCollapsed = false);
+
     /* Creates new collapsible group item that starts with maRowIndex and has numRows inside. */
-    MaCollapsibleGroup(const QList<int>& maRows = QList<int>() , bool isCollapsed = false);
+    MaCollapsibleGroup(const QList<int>& maRows, const QList<qint64>& maRowIds, bool isCollapsed = false);
+
+    /* Creates empty group. This method should not be used directly but is required by the Vector<MaCollapsibleGroup>. */
+    MaCollapsibleGroup();
 
     /* Compares this group with another group. Returns true if groups are equal. */
     bool operator== (const MaCollapsibleGroup &other) const;
@@ -45,6 +51,9 @@ public:
 
     /* Ordered list of ma rows in the group. */
     QList<int> maRows;
+
+    /* MA row ids in the group. */
+    QList<qint64> maRowIds;
 
     /* If group is collapsed or not. */
     bool isCollapsed;
@@ -65,16 +74,22 @@ class U2Region;
 class U2VIEW_EXPORT MaCollapseModel : public QObject {
     Q_OBJECT
 public:
-    MaCollapseModel(QObject *p, int numSequences);
+    MaCollapseModel(QObject *p, const QList<qint64>& allOrderedMaRowIds);
 
     /* Updates model to the given groups. */
     void update(const QVector<MaCollapsibleGroup>& groups);
 
-    /** Updates collapse model using united rows as input. */
-    void updateFromUnitedRows(const QVector<U2Region>& unitedRows, int numSequences);
+    /**
+     * Updates collapse model using united rows as input.
+     * 'allOrderedMaRowIds' is a list of all ma row ids in the alignment.
+     */
+    void updateFromUnitedRows(const QVector<U2Region>& unitedRows, const QList<qint64>& allOrderedMaRowIds);
 
-    /* Flattens all collapsible groups: makes every group contain only 1 sequence */
-    void reset(int numSequences, const QSet<int>& expandedGroupIndexes = QSet<int>());
+    /*
+     * Flattens all collapsible groups: makes every group contain only 1 sequence.
+     * 'allOrderedMaRowIds' is a list of all ma row ids in the alignment.
+     */
+    void reset(const QList<qint64>& allOrderedMaRowIds, const QSet<int>& expandedGroupIndexes = QSet<int>());
 
     /* Toggle 'isCollapsed' state for the group at the given row. */
     void toggle(int viewRowIndex);
@@ -94,8 +109,11 @@ public:
     /* Converts view rows region to MA rows region. */
     U2Region getMaRowIndexRegionByViewRowIndexRegion(const U2Region &viewRowIndexRegion) const;
 
-    /* Returns list of MA row indexes with view row indexes. Invisible (MA rows with no view index) rows are not included to the result. */
-    QList<int> getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion);
+    /*
+     * Returns list of MA row indexes for the given view row indexes.
+     * If 'includeGroupRows' is true adds all MA rows in the group for every viewRow that is a header of the group.
+     */
+    QList<int> getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeGroupRows = false);
 
     /* Returns list of all MA row indexes that have valid view row index (not hidden by collapsing). */
     QList<int> getMaRowsIndexesWithViewRowIndexes() const;

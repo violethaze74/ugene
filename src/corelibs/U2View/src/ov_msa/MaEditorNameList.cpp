@@ -224,9 +224,9 @@ void MaEditorNameList::sl_removeSelectedRows() {
     MultipleAlignmentObject* maObj = editor->getMaObject();
     CHECK(!maObj->isStateLocked(), );
 
-    // Selection translated to MSA coordinates (with collapsed details removed).
-    U2Region msaSelection = ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(viewSelection);
-    CHECK(maObj->getNumRows() > msaSelection.length, );
+    // View selection converted to MSA row indexes
+    QList<int> msaSelection = ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(viewSelection, true);
+    CHECK(maObj->getNumRows() > msaSelection.size(),); // do allow to remove all rows.
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
@@ -235,12 +235,11 @@ void MaEditorNameList::sl_removeSelectedRows() {
 
     setSelection(0, 0);
 
-    maObj->removeRegion(0, msaSelection.startPos, maObj->getLength(), msaSelection.length, true);
+    maObj->removeRows(msaSelection);
 
     qint64 numRows = editor->getUI()->getCollapseModel()->getViewRowCount();
     if (viewSelection.startPos < numRows) {
-        int count = qMin(viewSelection.length, numRows - viewSelection.startPos);
-        setSelection(viewSelection.startPos, count);
+        setSelection(viewSelection.startPos, 1);
     } else if (numRows > 0) {
         // Select the last sequence. This sequence was right before the removed selection.
         setSelection(numRows - 1, 1);

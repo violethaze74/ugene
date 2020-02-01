@@ -73,9 +73,15 @@ public:
     U2MsaMapGapModel getMapGapModel() const;
     U2MsaListGapModel getGapModel() const;
 
-    /** Methods to work with rows */
+    /** Removes single row from the alignment by row index. */
     void removeRow(int rowIdx);
-    void renameRow(int rowIdx, const QString &newName);
+
+    /** Removes all rows from the list from the alignment by row indexes. */
+    void removeRows(const QList<int>& rowIndexes);
+
+    /** Renames row with a given index. */
+    void renameRow(int rowIdx, const QString& newName);
+
     void moveRowsBlock(int firstRow, int numRows, int delta);
 
     bool isRegionEmpty(int x, int y, int width, int height) const;

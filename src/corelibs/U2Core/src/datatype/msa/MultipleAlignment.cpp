@@ -239,6 +239,15 @@ QList<qint64> MultipleAlignmentData::getRowsIds() const {
     return rowIds;
 }
 
+QList<qint64> MultipleAlignmentData::getRowIdsByRowIndexes(const QList<int>& rowIndexes) const {
+    QList<qint64> rowIds;
+    foreach (int rowIndex, rowIndexes) {
+        bool isValidRowIndex = rowIndex >= 0 && rowIndex < rows.size();
+        rowIds.append(isValidRowIndex ? rows[rowIndex]->getRowId() : -1);
+    }
+    return rowIds;
+}
+
 MultipleAlignmentRow MultipleAlignmentData::getRowByRowId(qint64 rowId, U2OpStatus &os) const {
     static MultipleAlignmentRow emptyRow = getEmptyRow();
     foreach (const MultipleAlignmentRow &row, rows) {

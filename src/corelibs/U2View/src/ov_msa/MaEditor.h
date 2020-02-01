@@ -88,6 +88,8 @@ public:
 
     virtual MultipleAlignmentObject* getMaObject() const { return maObject; }
 
+    QList<qint64> getMaRowIds() const;
+
     virtual MaEditorWgt* getUI() const { return ui; }
 
     virtual OptionsPanel* getOptionsPanel() { return optionsPanel; }

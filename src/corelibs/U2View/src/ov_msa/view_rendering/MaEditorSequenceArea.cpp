@@ -1397,12 +1397,16 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os,);
 
-    const MultipleAlignment ma = maObj->getMultipleAlignment();
+    const MultipleAlignment& ma = maObj->getMultipleAlignment();
     if (selection.width() == ma->getLength() && selection.height() == ma->getNumRows()) {
         return;
     }
 
     U2Region selectedMaRows = getSelectedMaRows();
+
+    printf("SELECTION %d\n", selectedMaRows.startPos);
+    fflush(stdout);
+
     maObj->insertGap(selectedMaRows, selection.x(), countOfGaps);
     adjustReferenceLength(os);
     CHECK_OP(os,);

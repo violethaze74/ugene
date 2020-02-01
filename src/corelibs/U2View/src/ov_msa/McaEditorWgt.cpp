@@ -78,7 +78,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     // MCA editor has "always ON" collapsible mode.
     collapsibleMode = true;
     enableCollapsingOfSingleRowGroups = true;
-    collapseModel->reset(editor->getNumSequences());
+    collapseModel->reset(editor->getMaRowIds());
 
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );

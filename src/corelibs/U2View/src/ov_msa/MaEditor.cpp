@@ -202,7 +202,7 @@ void MaEditor::updateReference(){
 void MaEditor::resetCollapsibleModel() {
     MaCollapseModel *collapsibleModel = ui->getCollapseModel();
     SAFE_POINT(NULL != collapsibleModel, "NULL collapsible model!", );
-    collapsibleModel->reset(getNumSequences());
+    collapsibleModel->reset(getMaRowIds());
 }
 
 void MaEditor::sl_zoomIn() {
@@ -484,6 +484,10 @@ void MaEditor::setCursorPosition(const QPoint &newCursorPosition) {
     CHECK(x >= 0 && y >= 0 && x < getAlignmentLen() && y < getNumSequences(),);
     cursorPosition = newCursorPosition;
     emit si_cursorPositionChanged(cursorPosition);
+}
+
+QList<qint64> MaEditor::getMaRowIds() const {
+    return maObject->getMultipleAlignment()->getRowsIds();
 }
 
 } // namespace

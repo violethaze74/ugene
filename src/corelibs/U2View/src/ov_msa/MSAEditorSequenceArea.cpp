@@ -164,10 +164,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     complementAction->setObjectName("replace_selected_rows_with_complement");
     connect(complementAction, SIGNAL(triggered()), SLOT(sl_complementCurrentSelection()));
 
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
-        SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
     connect(editor->getMaObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
-    connect(editor->getMaObject(), SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_updateCollapsingMode()));
 
     connect(this,   SIGNAL(si_startMaChanging()),
             ui,     SIGNAL(si_startMaChanging()));
@@ -258,20 +255,26 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
 
     if (!ui->isCollapsibleMode()) {
         // Synchronize collapsible model with a current alignment.
-        collapseModel->reset(msaObject->getNumRows());
+        collapseModel->reset(getEditor()->getMaRowIds());
         return;
     }
 
     // Create row groups by similarity. Do not modify the alignment.
     QList<QList<int>> rowGroups = groupRowsBySimilarity(msaObject->getRows());
     QVector<MaCollapsibleGroup> newCollapseGroups;
+
+    QSet<qint64> firstMaRowIdsOfCollapsedGroupsBefore;
+    for(int i = 0; i < collapseModel->getGroupCount(); i++) {
+        const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(i);
+        if (!group->isCollapsed) {
+            firstMaRowIdsOfCollapsedGroupsBefore << group->maRowIds[0];
+        }
+    }
     for (int i = 0; i < rowGroups.size(); i++) {
         const QList<int>& maRowsInGroup = rowGroups[i];
-        // Try to keep collapsed state for the groups with the same MA row as the first row (head row) .
-        int firstRowInGroup = maRowsInGroup[0];
-        int viewRow = collapseModel->getViewRowIndexByMaRowIndex(firstRowInGroup);
-        const MaCollapsibleGroup* oldGroup = collapseModel->getCollapsibleGroupByViewRow(viewRow);
-        newCollapseGroups << MaCollapsibleGroup(maRowsInGroup, oldGroup == NULL || oldGroup->isCollapsed);
+        QList<qint64> maRowIdsInGroup = msaObject->getMultipleAlignment()->getRowIdsByRowIndexes(maRowsInGroup);
+        bool isCollapsed = !firstMaRowIdsOfCollapsedGroupsBefore.contains(maRowIdsInGroup[0]);
+        newCollapseGroups << MaCollapsibleGroup(maRowsInGroup, maRowIdsInGroup, isCollapsed);
     }
     collapseModel->update(newCollapseGroups);
 
@@ -492,7 +495,7 @@ void MSAEditorSequenceArea::sl_delCol() {
     if (dlg->result() == QDialog::Accepted) {
         MaCollapseModel *collapsibleModel = ui->getCollapseModel();
         SAFE_POINT(NULL != collapsibleModel, tr("NULL collapsible model!"), );
-        collapsibleModel->reset(editor->getNumSequences());
+        collapsibleModel->reset(editor->getMaRowIds());
 
         DeleteMode deleteMode = dlg->getDeleteMode();
         int value = dlg->getValue();
@@ -556,7 +559,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
 
     MaCollapseModel *collapsibleModel = ui->getCollapseModel();
     SAFE_POINT(NULL != collapsibleModel, tr("NULL collapsible model!"), );
-    collapsibleModel->reset(editor->getNumSequences());
+    collapsibleModel->reset(editor->getMaRowIds());
 
     // if this method was invoked during a region shifting
     // then shifting should be canceled
@@ -811,7 +814,7 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
     if (enabled) {
         sl_updateCollapsingMode();
     } else {
-        ui->getCollapseModel()->reset(editor->getNumSequences());
+        ui->getCollapseModel()->reset(editor->getMaRowIds());
     }
 
     updateSelection();
@@ -966,7 +969,7 @@ void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& co
     }
     if (collapsedRegions.length() > 0) {
         ui->setCollapsibleMode(true);
-        collapseModel->updateFromUnitedRows(collapsedRegions, editor->getNumSequences());
+        collapseModel->updateFromUnitedRows(collapsedRegions, editor->getMaRowIds());
     }
 }
 

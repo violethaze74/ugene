@@ -64,7 +64,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       seqAreaHeaderLayout(NULL),
       seqAreaLayout(NULL),
       nameAreaLayout(NULL),
-      collapseModel(new MaCollapseModel(this, editor->getNumSequences())),
+      collapseModel(new MaCollapseModel(this, editor->getMaRowIds())),
       collapsibleMode(false),
       enableCollapsingOfSingleRowGroups(false),
       scrollController(new ScrollController(editor, this, collapseModel)),

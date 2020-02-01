@@ -179,6 +179,35 @@ void MultipleAlignmentObject::removeRow(int rowIdx) {
     updateCachedMultipleAlignment(mi, removedRowIds);
 }
 
+void MultipleAlignmentObject::removeRows(const QList<int>& rowIndexes) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    CHECK(!rowIndexes.isEmpty(),);
+
+    const MultipleAlignment& ma = getMultipleAlignment();
+    QList<qint64> rowIdsToRemove;
+    foreach(int rowIdx, rowIndexes) {
+        SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getNumRows(), "Invalid row index",);
+        qint64 rowId = ma->getRow(rowIdx)->getRowId();
+        rowIdsToRemove << rowId;
+    }
+
+    QList<qint64> removedRowIds;
+    foreach(qint64 rowId, rowIdsToRemove) {
+        U2OpStatus2Log os;
+        removeRowPrivate(os, entityRef, rowId);
+        if (!os.hasError()) {
+            removedRowIds << rowId;
+        }
+    }
+
+    MaModificationInfo mi;
+    mi.rowContentChanged = false;
+    mi.alignmentLengthChanged = false;
+    updateCachedMultipleAlignment(mi, removedRowIds);
+
+    SAFE_POINT(removedRowIds.size() == rowIndexes.size(), "Failed to remove some rows",);
+}
+
 void MultipleAlignmentObject::renameRow(int rowIdx, const QString &newName) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 

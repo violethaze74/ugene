@@ -473,10 +473,11 @@ void McaEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
     for (int i = 0, n = collapseModel->getGroupCount(); i < n; i++) {
         const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(i);
         if (!group->isCollapsed) {
-            expandedGroupIndexes << i;
+            qint64 rowId = group->maRowIds[0];
+            expandedGroupIndexes << maObject->getRowPosById(rowId);
         }
     }
-    collapseModel->reset(maObject->getNumRows(), expandedGroupIndexes);
+    collapseModel->reset(getEditor()->getMaRowIds(), expandedGroupIndexes);
 }
 
 } // namespace

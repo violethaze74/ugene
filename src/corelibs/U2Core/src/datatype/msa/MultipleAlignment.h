@@ -146,6 +146,9 @@ public:
     /** Returns IDs of the alignment rows in the database */
     QList<qint64> getRowsIds() const;
 
+    /** Returns row ids by row indexes. */
+    QList<qint64> getRowIdsByRowIndexes(const QList<int>& rowIndexes) const;
+
     MultipleAlignmentRow getRowByRowId(qint64 rowId, U2OpStatus &os) const;
 
     char charAt(int rowNumber, qint64 position) const;
