@@ -423,6 +423,11 @@ int main(int argc, char **argv)
     //QApplication app(argc, argv);
     GApplication app(argc, argv);
 
+#ifdef Q_OS_LINUX
+    QPixmap pixmap(":/ugene/images/originals/ugene_128.png");
+    app.setWindowIcon(pixmap);
+#endif
+
     QMainWindow window;
     SplashScreen *splashScreen = new SplashScreen(&window);
     splashScreen->adjustSize();
