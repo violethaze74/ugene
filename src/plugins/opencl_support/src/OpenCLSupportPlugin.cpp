@@ -54,7 +54,7 @@ extern "C" Q_DECL_EXPORT QString * U2_PLUGIN_FAIL_MASSAGE_FUNC() {
                                                <a href=\"%1\">%1</a>").arg("http://ugene.net/using-video-cards.html"));
 }
 
-const static char * RESOURCE_OPENCL_GPU_NAME = "OpenCLGpu";
+const char *OpenCLSupportPlugin::RESOURCE_OPENCL_GPU_NAME = "OpenCLGpu";
 
 OpenCLSupportPlugin::OpenCLSupportPlugin() : Plugin(tr("OpenCL Support"),
                                                     tr("Plugin provides support for OpenCL-enabled GPUs.") ) {
@@ -89,6 +89,7 @@ OpenCLSupportPlugin::OpenCLSupportPlugin() : Plugin(tr("OpenCL Support"),
 OpenCLSupportPlugin::~OpenCLSupportPlugin() {
     OpenCLGpuRegistry* registry = AppContext::getOpenCLGpuRegistry();
     CHECK(NULL != registry, );
+    registry->saveGpusSettings();
     unregisterAvailableGpus();
     AppResourcePool::instance()->unregisterResource(RESOURCE_OPENCL_GPU);
     registry->setOpenCLHelper(NULL);
@@ -243,16 +244,16 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo( QSt
             }
 
             //create OpenCL model
-            OpenCLGpuModel * openCLGpuModel = new OpenCLGpuModel( vendorName + " " + deviceName,
-                                                                  OpenCLGpuContext((long)deviceContext),
-                                                                  OpenCLGpuId((long)deviceId),
-                                                                  (qint64)platformIDs.get()[i],
-                                                                  globalMemSize,
-                                                                  maxAllocateMemorySize,
-                                                                  localMemSize,
-                                                                  maxComputeUnits,
-                                                                  maxWorkGroupSize,
-                                                                  maxClockFrequency);
+            OpenCLGpuModel *openCLGpuModel = new OpenCLGpuModel(vendorName + " " + deviceName,
+                                                                OpenCLGpuContext((long)deviceContext),
+                                                                OpenCLGpuId((long)deviceId),
+                                                                (qint64)platformIDs.get()[i],
+                                                                globalMemSize,
+                                                                maxAllocateMemorySize,
+                                                                localMemSize,
+                                                                maxComputeUnits,
+                                                                maxWorkGroupSize,
+                                                                maxClockFrequency);
             gpus.push_back(openCLGpuModel);
             coreLog.info( tr("Registering OpenCL-enabled GPU: %1, global mem: %2 Mb, \
                              local mem: %3 Kb, max compute units: %4, \
@@ -292,16 +293,19 @@ void OpenCLSupportPlugin::unregisterAvailableGpus() {
 }
 
 void OpenCLSupportPlugin::loadGpusSettings() {
-    Settings * s = AppContext::getSettings();
-    foreach( OpenCLGpuModel * m, gpus ) {
-        QString key = OPENCL_GPU_REGISTRY_SETTINGS_GPU_SPECIFIC +
-            QString::number(m->getId()) + OPENCL_GPU_SETTINGS_ENABLED;
-        QVariant enabled_v = s->getValue( key );
-        if( !enabled_v.isNull() ) {
-            m->setEnabled( enabled_v.toBool() );
-        } else {
-            m->setEnabled( true );
-        }
+    CHECK(!gpus.isEmpty(), );
+
+    Settings* s = AppContext::getSettings();
+    QString enabledGpuName = s->getValue(OPENCL_GPU_REGISTRY_SETTINGS_GPU_ENABLED, QVariant()).toString();
+    CHECK_EXT(!enabledGpuName.isEmpty(), gpus.first()->setEnabled(true), );
+
+    OpenCLGpuModel *enabledGpu = AppContext::getOpenCLGpuRegistry()->getGpuByName(enabledGpuName);
+    if (nullptr != enabledGpu) {
+        SAFE_POINT(gpus.contains(enabledGpu), "The GPU is absent", );
+
+        enabledGpu->setEnabled(true);
+    } else {
+        gpus.first()->setEnabled(true);
     }
 }
 
