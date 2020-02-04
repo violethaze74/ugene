@@ -244,8 +244,8 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo( QSt
 
             //create OpenCL model
             OpenCLGpuModel * openCLGpuModel = new OpenCLGpuModel( vendorName + " " + deviceName,
-                                                                  OpenCLGpuContext((long)deviceContext),
-                                                                  OpenCLGpuId((long)deviceId),
+                                                                  cl_context(deviceContext),
+                                                                  cl_device_id(deviceId),
                                                                   (qint64)platformIDs.get()[i],
                                                                   globalMemSize,
                                                                   maxAllocateMemorySize,
@@ -295,7 +295,7 @@ void OpenCLSupportPlugin::loadGpusSettings() {
     Settings * s = AppContext::getSettings();
     foreach( OpenCLGpuModel * m, gpus ) {
         QString key = OPENCL_GPU_REGISTRY_SETTINGS_GPU_SPECIFIC +
-            QString::number(m->getId()) + OPENCL_GPU_SETTINGS_ENABLED;
+            QString::number((qlonglong)m->getId()) + OPENCL_GPU_SETTINGS_ENABLED;
         QVariant enabled_v = s->getValue( key );
         if( !enabled_v.isNull() ) {
             m->setEnabled( enabled_v.toBool() );
