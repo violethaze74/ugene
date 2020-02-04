@@ -50,7 +50,7 @@ void OpenCLGpuRegistry::unregisterOpenCLGpu(OpenCLGpuModel * gpu) {
     delete gpus.take(gpu->getId());
 }
 
-OpenCLGpuModel * OpenCLGpuRegistry::getGpuById( OpenCLGpuId id ) const {
+OpenCLGpuModel * OpenCLGpuRegistry::getGpuById(cl_device_id id ) const {
     return gpus.value( id, 0 );
 }
 
@@ -72,7 +72,7 @@ QList<OpenCLGpuModel *> OpenCLGpuRegistry::getEnabledGpus() const {
 }
 
 OpenCLGpuModel * OpenCLGpuRegistry::getAnyEnabledGpu() const {
-    QHash<OpenCLGpuId, OpenCLGpuModel*>::const_iterator it = std::find_if( gpus.begin(), gpus.end(), std::mem_fun(&OpenCLGpuModel::isEnabled) );
+    QHash<cl_device_id, OpenCLGpuModel*>::const_iterator it = std::find_if( gpus.begin(), gpus.end(), std::mem_fun(&OpenCLGpuModel::isEnabled) );
     if( gpus.end() != it ) {
         return *it;
     }
@@ -80,7 +80,7 @@ OpenCLGpuModel * OpenCLGpuRegistry::getAnyEnabledGpu() const {
 }
 
 OpenCLGpuModel * OpenCLGpuRegistry::acquireAnyReadyGpu() {
-    QHash<OpenCLGpuId, OpenCLGpuModel*>::iterator it = std::find_if( gpus.begin(), gpus.end(), std::mem_fun(&OpenCLGpuModel::isReady) );
+    QHash<cl_device_id, OpenCLGpuModel*>::iterator it = std::find_if( gpus.begin(), gpus.end(), std::mem_fun(&OpenCLGpuModel::isReady) );
     if( gpus.end() != it ) {
         (*it)->setAcquired(true);
         return *it;
@@ -91,7 +91,7 @@ OpenCLGpuModel * OpenCLGpuRegistry::acquireAnyReadyGpu() {
 void OpenCLGpuRegistry::saveGpusSettings() const {
     Settings * s = AppContext::getSettings();
     foreach( OpenCLGpuModel * m, gpus ) {
-        QString key = OPENCL_GPU_REGISTRY_SETTINGS_GPU_SPECIFIC + QString::number(m->getId()) + OPENCL_GPU_SETTINGS_ENABLED;
+        QString key = OPENCL_GPU_REGISTRY_SETTINGS_GPU_SPECIFIC + QString::number((qlonglong)m->getId()) + OPENCL_GPU_SETTINGS_ENABLED;
         s->setValue( key, QVariant::fromValue(m->isEnabled()) );
     }
 }

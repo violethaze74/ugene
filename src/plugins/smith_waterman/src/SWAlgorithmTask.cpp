@@ -238,7 +238,7 @@ void SWAlgorithmTask::prepare() {
         if(gpuMemBytes < needMemBytes) {
             stateInfo.setError(QString("Not enough memory on OpenCL-enabled device. "
                 "The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4").
-                arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number(openClGpu->getId()), QString(openClGpu->getName())));
+                arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number((qlonglong)openClGpu->getId()), QString(openClGpu->getName())));
             return;
         } else {
             algoLog.details(QString("The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on OpenCL device").
@@ -829,7 +829,7 @@ void PairwiseAlignmentSmithWatermanTask::prepare() {
         if(gpuMemBytes < needMemBytes) {
             stateInfo.setError(QString("Not enough memory on OpenCL-enabled device. "
                 "The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4").
-                arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number(openClGpu->getId()), QString(openClGpu->getName())));
+                arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number((qlonglong)openClGpu->getId()), QString(openClGpu->getName())));
             return;
         } else {
             algoLog.details(QString("The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on OpenCL device").
