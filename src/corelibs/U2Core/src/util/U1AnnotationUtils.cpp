@@ -356,12 +356,15 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
 }
 
 bool U1AnnotationUtils::isAnnotationAroundJunctionPoint(const Annotation* annotation, const qint64 sequenceLength) {
-    const QVector<U2Region> selectedRegions = annotation->getRegions();
-    CHECK(2 == selectedRegions.size(), false);
+    return isRegionsAroundJunctionPoint(annotation->getRegions(), sequenceLength);
+}
+
+bool U1AnnotationUtils::isRegionsAroundJunctionPoint(const QVector<U2Region> &regions, const qint64 sequenceLength) {
+    CHECK(regions.size() > 1, false);
 
     bool hasCorrectStart = false;
     bool hasCorrectEnd = false;
-    foreach(const U2Region& reg, selectedRegions) {
+    foreach (const U2Region &reg, regions) {
         if (reg.startPos == 0) {
             hasCorrectStart = true;
             continue;
