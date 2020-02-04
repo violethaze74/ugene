@@ -894,7 +894,9 @@ bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
     if (expandSelectionToChildRows) {
         const MaCollapsibleGroup* lastGroup = collapseModel->getCollapsibleGroup(groupsToToggle.last());
         int lastViewRowInLastGroup = collapseModel->getViewRowIndexByMaRowIndex(lastGroup->maRows.last());
-        setSelection(selection.startPos, lastViewRowInLastGroup - selection.startPos + 1);
+        const MaEditorSelection& viewSelection = ui->getSequenceArea()->getSelection();
+        MaEditorSelection newViewSelection(viewSelection.x(), selection.startPos, viewSelection.width(), lastViewRowInLastGroup - selection.startPos + 1);
+        ui->getSequenceArea()->setSelection(newViewSelection);
     }
     return true;
 }
