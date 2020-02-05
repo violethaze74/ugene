@@ -406,8 +406,21 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
             return;
         }
     }
-    if (isInRange(viewSelection.topLeft())) { // select 1 character on the top-left position of the old selection
-        setSelection(MaEditorSelection(viewSelection.x(), viewSelection.y(), 1, 1));
+    if (isInRange(viewSelection.topLeft())) { // try to keep the same selection if possible.
+        // If new selection does not fit -> shift it left or up up to 0.
+        U2Region columns(viewSelection.x(), viewSelection.width());
+        qint64 maLength = maObj->getLength();
+        if (columns.endPos() > maLength) {
+            columns.startPos = qMax((qint64) 0, columns.startPos - (columns.endPos() - maLength));
+            columns.length = qMin(columns.length, maLength);
+        }
+        U2Region rows(viewSelection.y(), viewSelection.height());
+        qint64 numRows = maObj->getNumRows();
+        if (rows.endPos() > numRows) {
+            rows.startPos = qMax((qint64) 0, rows.startPos - (rows.endPos() - numRows));
+            rows.length = qMin(rows.length, numRows);
+        }
+        setSelection(MaEditorSelection(columns.startPos, rows.startPos, columns.length, rows.length));
     }
 }
 
