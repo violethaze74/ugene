@@ -24,7 +24,7 @@
 
 #ifdef OPENCL_SUPPORT
 
-#include <QHash>
+#include <QMap>
 
 #include <U2Algorithm/OpenCLHelper.h>
 #include <U2Core/global.h>
@@ -32,10 +32,10 @@
 
 namespace U2 {
 
-#define OPENCL_GPU_REGISTRY_SETTINGS "/opencl_gpu_registry"
-//stores settings for concrete GPU. The key for appending - textual representation of cl_device_id
-#define OPENCL_GPU_REGISTRY_SETTINGS_GPU_SPECIFIC "/opencl_gpu_registry/gpu_specific"
-#define OPENCL_GPU_SETTINGS_ENABLED "/enabled"
+typedef long OpenCLGpuId;
+typedef long OpenCLGpuContext;
+
+#define OPENCL_GPU_REGISTRY_SETTINGS_GPU_ENABLED "/opencl_gpu_registry/enabled_gpu"
 
 class U2ALGORITHM_EXPORT OpenCLGpuModel {
 public:
@@ -49,7 +49,7 @@ public:
                     quint32 _maxComputeUnits,
                     size_t _maxWorkGroupSize,
                     quint32 _maxClockFrequency,
-                    bool _enabled  = true) :
+                    bool _enabled = false) :
       name(_name),
       context(_context),
       id(_id),
@@ -104,12 +104,12 @@ public:
     void registerOpenCLGpu( OpenCLGpuModel * gpu );
     void unregisterOpenCLGpu( OpenCLGpuModel * gpu);
     OpenCLGpuModel * getGpuById(cl_device_id id ) const;
+    OpenCLGpuModel *getGpuByName(const QString &name) const;
     QList<OpenCLGpuModel*> getRegisteredGpus() const;
-    QList<OpenCLGpuModel*> getEnabledGpus() const;
+    OpenCLGpuModel* getEnabledGpu() const;
+    QString getEnabledGpuName() const;
 
-    OpenCLGpuModel * getAnyEnabledGpu() const;
-
-    OpenCLGpuModel * acquireAnyReadyGpu();
+    OpenCLGpuModel * acquireEnabledGpuIfReady();
 
     bool empty() const { return gpus.empty(); }
 
@@ -117,9 +117,10 @@ public:
 
     const OpenCLHelper* getOpenCLHelper() const {return openCLHelper;}
 
-private:
     void saveGpusSettings() const;
-    QHash< cl_device_id, OpenCLGpuModel * > gpus;
+
+private:
+    QHash<cl_device_id, OpenCLGpuModel *> gpus;
     OpenCLHelper* openCLHelper;
 };
 
