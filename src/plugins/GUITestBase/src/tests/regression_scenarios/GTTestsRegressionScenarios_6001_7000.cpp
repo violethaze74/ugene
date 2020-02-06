@@ -106,6 +106,8 @@
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
@@ -937,6 +939,84 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
         QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
         CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection primer annotation regions, expected: 1, current: %1").arg(sel.size()));
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6653_1) {
+    //UTEST-38
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
+            CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom()));
+    Runnable *filler2 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/AMINO.fa", testDir + "_common_data/fasta/AMINO.fa");
+    GTUtilsDialog::waitForDialog(os, filler2);
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Build dotplot...");
+    GTGlobals::sleep();
+    GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6653_2) {
+    //UTEST-40
+    class Custom100 : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
+            CHECK_SET_ERR(minLenBox->value() == 100, "Min lengths value doesn't match");
+
+            QCheckBox *invertedCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "invertedCheckBox", dialog));
+            CHECK_SET_ERR(invertedCheckBox->isEnabled(), "Inverted checkbox should be enabled");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    class Custom70 : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
+            CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match");
+
+            QCheckBox *invertedCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "invertedCheckBox", dialog));
+            CHECK_SET_ERR(!invertedCheckBox->isEnabled(), "Inverted checkbox should be disabled");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom100()));
+    Runnable *filler2 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa", testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa");
+    GTUtilsDialog::waitForDialog(os, filler2);
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Build dotplot...");
+    GTGlobals::sleep();
+    GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Close project");
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom70()));
+    Runnable *filler3 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa", testDir + "_common_data/fasta/AMINO.fa");
+    GTUtilsDialog::waitForDialog(os, filler3);
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Build dotplot...");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6167) {

@@ -32,6 +32,15 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 #define GT_METHOD_NAME "commonScenario"
+
+DotPlotFiller::DotPlotFiller(HI::GUITestOpStatus &_os, CustomScenario *customScenario) : 
+    Filler(_os, "DotPlotDialog", customScenario), 
+    minLen(100), 
+    identity(0), 
+    invertedRepeats(false), 
+    but1kpressed(false) {
+}
+
 void DotPlotFiller::commonScenario() {
 
     QWidget* dialog = QApplication::activeModalWidget();
