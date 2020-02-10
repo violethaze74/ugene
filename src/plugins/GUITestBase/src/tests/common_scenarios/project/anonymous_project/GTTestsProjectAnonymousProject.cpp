@@ -123,7 +123,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 //     3) File path at tooltip for "1CF7.PDB" must be "samples/PDB/1CF7.PDB"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTGlobals::sleep(2000);
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
+    GTGlobals::sleep();
     GTUtilsToolTip::checkExistingToolTip(os, "samples/PDB/1CF7.PDB");
 }
 
