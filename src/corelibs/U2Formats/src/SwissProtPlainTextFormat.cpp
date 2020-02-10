@@ -465,7 +465,7 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationNewFormat(char *cbu
     AnnotationData *a = new AnnotationData();
     SharedAnnotationData f(a);
 
-    QRegularExpression re(QString("^%1\\n(%2\\n)+").arg(ANNOTATION_HEADER_REGEXP).arg(ANNOTATION_QUALIFIERS_REGEXP));
+    QRegularExpression re(QString("^%1\\r?\\n(%2\\r?\\n)+").arg(ANNOTATION_HEADER_REGEXP).arg(ANNOTATION_QUALIFIERS_REGEXP));
     QRegularExpressionMatch match = re.match(cbuff);
     CHECK(match.hasMatch(), SharedAnnotationData());
 
