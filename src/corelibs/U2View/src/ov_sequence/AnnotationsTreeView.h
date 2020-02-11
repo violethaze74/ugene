@@ -163,6 +163,9 @@ private slots:
 protected:
     bool eventFilter(QObject *o, QEvent *e);
 
+signals:
+    void si_setCopyQualifierActionStatus(bool isEnabled, QString text);
+
 private:
     void editItem(AVItem *i);
     void editGroupItem(AVGroupItem *gi);
@@ -215,7 +218,6 @@ private:
     QAction*            addAnnotationObjectAction;
     QAction*            removeObjectsFromViewAction;
     QAction*            removeAnnsAndQsAction;
-    QAction*            copyQualifierAction;
     QAction*            copyQualifierURLAction;
     QAction*            toggleQualifierColumnAction;
     QAction*            removeColumnByHeaderClickAction;
