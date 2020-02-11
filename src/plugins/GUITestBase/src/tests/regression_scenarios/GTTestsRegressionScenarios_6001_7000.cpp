@@ -941,7 +941,7 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
     }
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6653_1) {
+GUI_TEST_CLASS_DEFINITION(test_6684) {
     //UTEST-38
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -965,7 +965,7 @@ GUI_TEST_CLASS_DEFINITION(test_6653_1) {
     GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6653_2) {
+GUI_TEST_CLASS_DEFINITION(test_6684_1) {
     //UTEST-40
     class Custom100 : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
