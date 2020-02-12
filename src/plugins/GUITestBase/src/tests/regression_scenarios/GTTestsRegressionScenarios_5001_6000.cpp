@@ -296,6 +296,32 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
     GTGlobals::sleep(5000);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5026) {
+
+    // 1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Enable the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Expand the "Mecopoda_elongata_Ishigaki_J" collapsed group.
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
+    GTGlobals::sleep(1000);
+
+    // 4. Select an inner sequence in the collapsed group. Remove the sequence
+    GTUtilsMSAEditorSequenceArea::removeSequence(os, QString("Mecopoda_elongata__Sumatra_"));
+
+    // 5. Expected result: only the selected sequence is removed.
+    QStringList modifiedNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    CHECK_SET_ERR(originalNames.length()-modifiedNames.length() == 1, "The number of sequences remained unchanged.");
+    CHECK_SET_ERR(!modifiedNames.contains("Mecopoda_elongata__Sumatra_"), "Removed sequence is present in multiple alignment.");
+    CHECK_SET_ERR(modifiedNames.contains("Mecopoda_elongata__Ishigaki__J"), "Sequence Mecopoda_elongata__Ishigaki__J is not present in multiple alignment.");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     //1. Open preferences and set memory limit per task 500000MB
     //2. Open WD and compose next scheme "Read File URL(s)" -> "SnpEff annotation and filtration"
@@ -1517,6 +1543,30 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads de novo assembly (with SPAdes)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
+
+GUI_TEST_CLASS_DEFINITION(test_5431) {
+
+    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    // 2. Remove all columns except the first one.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 0), QPoint(13, 9));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Tettigonia_viridissima"),
+                  "1 Tettigonia_viridissima is not collapsed");
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_discolor"),
+                  "2 Conocephalus_discolor is not collapsed");
+
+    GTUtilsMSAEditorSequenceArea::removeSequence(os, "Phaneroptera_falcata");
+
+}
+
 
 GUI_TEST_CLASS_DEFINITION(test_5447_1) {
 //    1. Open "data/samples/Genbank/murine.gb".
@@ -3596,6 +3646,40 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
 
     //Expected: States befor and aftef changing are different
     CHECK_SET_ERR(isShownFirstState != isShownSecondState, "Incorrect state");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5759) {
+
+    // 1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Collapse all rows except the second one.
+    GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+
+    // 3. Select the "SZYD_Cas9_5B70" sequence.
+    GTUtilsMcaEditor::clickReadName(os, QString("SZYD_Cas9_5B70"));
+    GTGlobals::sleep(1000);
+
+    // 4. Click arrow down
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTGlobals::sleep(1000);
+
+    GTKeyboardDriver::keyClick(Qt::Key_Right);
+    GTGlobals::sleep(1000);
+
+    CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, QString("SZYD_Cas9_5B71")),
+                   "Required sequence is collapsed");
+    GTKeyboardDriver::keyClick(Qt::Key_Up);
+    GTGlobals::sleep(1000);
+
+    GTUtilsMcaEditor::removeRead(os, QString("SZYD_Cas9_5B70"));
+    CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, QString("SZYD_Cas9_5B71")),
+                   "Required sequence is collapsed");
+
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5761) {

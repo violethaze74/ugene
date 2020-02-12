@@ -941,83 +941,7 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
     }
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6684) {
-    //UTEST-38
-    class Custom : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
-            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
-            CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match");
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom()));
-    Runnable *filler2 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/AMINO.fa", testDir + "_common_data/fasta/AMINO.fa");
-    GTUtilsDialog::waitForDialog(os, filler2);
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Build dotplot...");
-    GTGlobals::sleep();
-    GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_6684_1) {
-    //UTEST-40
-    class Custom100 : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
-            CHECK_SET_ERR(minLenBox->value() == 100, "Min lengths value doesn't match");
-
-            QCheckBox *invertedCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "invertedCheckBox", dialog));
-            CHECK_SET_ERR(invertedCheckBox->isEnabled(), "Inverted checkbox should be enabled");
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-    class Custom70 : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
-            CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match");
-
-            QCheckBox *invertedCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "invertedCheckBox", dialog));
-            CHECK_SET_ERR(!invertedCheckBox->isEnabled(), "Inverted checkbox should be disabled");
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
-        }
-    };
-
-    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom100()));
-    Runnable *filler2 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa", testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa");
-    GTUtilsDialog::waitForDialog(os, filler2);
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Build dotplot...");
-    GTGlobals::sleep();
-    GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
-
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
-    GTGlobals::sleep();
-
-    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom70()));
-    Runnable *filler3 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa", testDir + "_common_data/fasta/AMINO.fa");
-    GTUtilsDialog::waitForDialog(os, filler3);
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Build dotplot...");
-}
 
 GUI_TEST_CLASS_DEFINITION(test_6167) {
     //1. Change workflow designer output folder to sandbox
@@ -4003,6 +3927,41 @@ GUI_TEST_CLASS_DEFINITION(test_6654) {
     
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6655) {
+
+    // 1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Enable the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Select the "Conocephalus_percaudata" sequence.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, QString("Conocephalus_percaudata"));
+    GTGlobals::sleep(1000);
+
+    // 4. Click arrow down
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTGlobals::sleep(1000);
+    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
+                   "Required sequence is not collapsed");
+
+    // 5. Click right arrow
+    GTKeyboardDriver::keyClick(Qt::Key_Right);
+    GTGlobals::sleep(1000);
+
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
+                   "Required sequence is collapsed");
+
+    GTKeyboardDriver::keyClick(Qt::Key_Left);
+    GTGlobals::sleep(1000);
+
+    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
+                   "Required sequence is collapsed");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6659) {
     // 1. Open an alignment (e.g. "_common_data/scenarios/msa/ma2_gapped.aln").
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
@@ -4034,6 +3993,165 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
     int numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     CHECK_SET_ERR(numSelectedSequences == 13, "There is no selection in MSA, but expected");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6684) {
+    //UTEST-38
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
+            CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom()));
+    Runnable *filler2 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/AMINO.fa", testDir + "_common_data/fasta/AMINO.fa");
+    GTUtilsDialog::waitForDialog(os, filler2);
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Build dotplot...");
+    GTGlobals::sleep();
+    GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6684_1) {
+    //UTEST-40
+    class Custom100 : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
+            CHECK_SET_ERR(minLenBox->value() == 100, "Min lengths value doesn't match");
+
+            QCheckBox *invertedCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "invertedCheckBox", dialog));
+            CHECK_SET_ERR(invertedCheckBox->isEnabled(), "Inverted checkbox should be enabled");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    class Custom70 : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
+            CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match");
+
+            QCheckBox *invertedCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "invertedCheckBox", dialog));
+            CHECK_SET_ERR(!invertedCheckBox->isEnabled(), "Inverted checkbox should be disabled");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom100()));
+    Runnable *filler2 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa", testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa");
+    GTUtilsDialog::waitForDialog(os, filler2);
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Build dotplot...");
+    GTGlobals::sleep();
+    GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Close project");
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom70()));
+    Runnable *filler3 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa", testDir + "_common_data/fasta/AMINO.fa");
+    GTUtilsDialog::waitForDialog(os, filler3);
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Build dotplot...");
+}
+GUI_TEST_CLASS_DEFINITION(test_6692) {
+
+    // 1. Open "_common_data/scenarios/msa/ma.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Click to the "Switch on/off collapsing" on the toolbar.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Expected result: there are two collapsing groups one right after another: "Conocephalus_discolor" and "Mecopoda_elongata_Ishigaki_J".
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_percaudata"),
+                  "1 Conocephalus_discolor is not collapsed");
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
+                  "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
+
+    // 4. Expand "Conocephalus_discolor" group.
+    GTUtilsMsaEditor::toggleCollapsingGroup(os, "Conocephalus_discolor");
+
+    // 5. Remove the first group: select any (or all of them) sequence from the "Conocephalus_discolor" group and press Delete key on the keyboard.
+
+    GTUtilsMSAEditorSequenceArea::removeSequence(os, "Conocephalus_discolor");
+
+    // 6. Expected result: "Conocephalus_discolor" group is removed, "Mecopoda_elongata_Ishigaki_J" is still collapsed.
+    QStringList modifiedNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    CHECK_SET_ERR(originalNames.length()-modifiedNames.length() == 3, "The number of sequences remained unchanged.");
+    CHECK_SET_ERR(!modifiedNames.contains("Conocephalus_discolor"), "Removed sequence is present in multiple alignment.");
+
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
+                  "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
+
+}
+GUI_TEST_CLASS_DEFINITION(test_6692_1) {
+
+    // 1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Click "Show chromatograms" button on the toolbar.
+    GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+
+    // 3. Expand "SZYD_Cas9_CR51" row (the third).
+    GTUtilsMcaEditor::clickReadName(os, QString("SZYD_Cas9_CR51"));
+    GTKeyboardDriver::keyClick(Qt::Key_Right);
+    GTGlobals::sleep(1000);
+
+    // 4. Click to the first row name. Press Delete key on the keyboard.
+    GTUtilsMcaEditor::removeRead(os, QString("SZYD_Cas9_5B70"));
+
+    // 5. Expected result: the first row is removed. "SZYD_Cas9_CR51" row is expanded, all other rows are collapsed.
+    CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, QString("SZYD_Cas9_CR51")),
+                   "Required sequence is collapsed");
+}
+GUI_TEST_CLASS_DEFINITION(test_6697) {
+
+    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    // 2. Select the first column and press the Delete key.
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 0);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+
+    // 3. Expected state: the new first column is selected.
+
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0,0), QPoint(0,9), "A\nA\nA\nA\nA\nA\nA\nA\n-\nA");
+
+    // 4. Press the Delete key again.
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+
+    // 5. Expected state: the new first column is selected.
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0,0), QPoint(0,9), "G\nG\nG\nG\nG\nG\nG\nG\n-\nG");
+
 }
 
 } // namespace GUITest_regression_scenarios

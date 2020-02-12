@@ -1273,6 +1273,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5012_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5012_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5018);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5026);
+
     if (QSysInfo::WordSize == 64) {
         REGISTER_TEST(GUITest_regression_scenarios::test_5027_1);
     }
@@ -1322,6 +1324,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5412);
     REGISTER_TEST(GUITest_regression_scenarios::test_5417);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5431);
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_3);
@@ -1367,6 +1370,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5753);
     REGISTER_TEST(GUITest_regression_scenarios::test_5755);
     REGISTER_TEST(GUITest_regression_scenarios::test_5758);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5759);
     REGISTER_TEST(GUITest_regression_scenarios::test_5761);
     REGISTER_TEST(GUITest_regression_scenarios::test_5762);
     REGISTER_TEST(GUITest_regression_scenarios::test_5769_1);
@@ -1530,7 +1534,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6684);
     REGISTER_TEST(GUITest_regression_scenarios::test_6684_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6654);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6655);
     REGISTER_TEST(GUITest_regression_scenarios::test_6659);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6692);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6692_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6697);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/

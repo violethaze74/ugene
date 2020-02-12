@@ -1017,7 +1017,6 @@ GUI_TEST_CLASS_DEFINITION(test_2091) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint( -5, 4));
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
-
     //3. Call context menu on the name list area, select the {Edit -> Remove sequence} menu item.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "Remove sequence"));
     GTMouseDriver::click(Qt::RightButton);
