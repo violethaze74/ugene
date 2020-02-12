@@ -56,10 +56,10 @@ const QMap<QString, int> SwissProtPlainTextFormat::MONTH_STRING_2_INT = {{"JAN",
                                                                          {"OCT", 10},
                                                                          {"NOV", 11},
                                                                          {"DEC", 12}};
-const QString SwissProtPlainTextFormat::ANNOTATION_HEADER_REGEXP = "FT   ([A-Z]+) *([0-9]+)..([0-9]+)";
-const QString SwissProtPlainTextFormat::ANNOTATION_QUALIFIERS_REGEXP = "FT +\\/([a-z]+)=\\\"([a-zA-Z0-9\\:\\|\\-\\_]*)\\\"";
+const QString SwissProtPlainTextFormat::ANNOTATION_HEADER_REGEXP = "FT   ([A-Za-z0-9\\_]+) *([0-9]+)(..([0-9]+))?";
+const QString SwissProtPlainTextFormat::ANNOTATION_QUALIFIERS_REGEXP = "FT +\\/([a-z]+)=\\\"([a-zA-Z0-9\\:\\|\\-\\_\\s\\,\\;]*)\\\"";
 
-SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject * p)
+SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject *p)
     : EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_SWISS_PROT, tr("Swiss-Prot"), 80, DocumentFormatFlag_SupportStreaming, p) {
     formatDescription = tr("SwissProt is a format of the UniProtKB/Swiss-prot database used for "
                            "storing annotated protein sequence");
@@ -465,7 +465,7 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationNewFormat(char *cbu
     AnnotationData *a = new AnnotationData();
     SharedAnnotationData f(a);
 
-    QRegularExpression re(QString("^%1\\r?\\n(%2\\r?\\n)+").arg(ANNOTATION_HEADER_REGEXP).arg(ANNOTATION_QUALIFIERS_REGEXP));
+    QRegularExpression re(QString("^%1\\r?\\n?(%2\\r?\\n?)+").arg(ANNOTATION_HEADER_REGEXP).arg(ANNOTATION_QUALIFIERS_REGEXP));
     QRegularExpressionMatch match = re.match(cbuff);
     CHECK(match.hasMatch(), SharedAnnotationData());
 
@@ -485,11 +485,14 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationNewFormat(char *cbu
     int start = headerMatch.captured(2).toInt(&ok);
     CHECK_EXT(ok, si.setError(tr("The annotation start position is unexpected.")), SharedAnnotationData());
 
-    int end = headerMatch.captured(3).toInt(&ok);
-    CHECK_EXT(ok, si.setError(tr("The annotation end position is unexpected.")), SharedAnnotationData());
+    int end = start;
+    if (!headerMatch.captured(3).isEmpty()) {
+        end = headerMatch.captured(4).toInt(&ok);
+        CHECK_EXT(ok, si.setError(tr("The annotation end position is unexpected.")), SharedAnnotationData());
+    }
 
     processAnnotationRegion(a, start, end, offset);
-    foreach(const QString& string, annotationStrings) {
+    foreach (const QString &string, annotationStrings) {
         CHECK_CONTINUE(!string.isEmpty());
 
         QRegularExpression qualifierRe(ANNOTATION_QUALIFIERS_REGEXP);
@@ -502,7 +505,7 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationNewFormat(char *cbu
     return f;
 }
 
-void SwissProtPlainTextFormat::check4SecondaryStructure(AnnotationData* a) {
+void SwissProtPlainTextFormat::check4SecondaryStructure(AnnotationData *a) {
     CHECK(a->name == "STRAND" || a->name == "HELIX" || a->name == "TURN", );
 
     a->qualifiers.append(U2Qualifier(GBFeatureUtils::QUALIFIER_GROUP, "Secondary structure"));
