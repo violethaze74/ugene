@@ -495,9 +495,24 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationNewFormat(char *cbu
     foreach (const QString &string, annotationStrings) {
         CHECK_CONTINUE(!string.isEmpty());
 
+        QString stringQualifier = string.simplified();
+        if (!stringQualifier.endsWith("\"")) {
+            QString endOfQualifier;
+            do {
+                const int nextIndex = annotationStrings.indexOf(string) + 1;
+                QString nextValue = annotationStrings.value(nextIndex, QString());
+                CHECK_EXT(!nextValue.isEmpty(), si.setError(tr("Annotation qualifier is corrupted")), SharedAnnotationData());
+
+                nextValue = nextValue.mid(20).simplified();
+                endOfQualifier += nextValue;
+            } while (!endOfQualifier.endsWith("\""));
+            stringQualifier += endOfQualifier;
+        }
+
         QRegularExpression qualifierRe(ANNOTATION_QUALIFIERS_REGEXP);
-        QRegularExpressionMatch qualifierMatch = qualifierRe.match(string);
+        QRegularExpressionMatch qualifierMatch = qualifierRe.match(stringQualifier);
         QStringList texts = qualifierMatch.capturedTexts();
+        CHECK_CONTINUE(texts.size() != 0);
         CHECK_EXT(texts.size() == 3, si.setError(tr("Unexpected qulifiers values.")), SharedAnnotationData());
 
         a->qualifiers.append(U2Qualifier(texts[1], texts[2]));
