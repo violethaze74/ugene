@@ -52,10 +52,11 @@ namespace U2 {
 #define CHILDREN_OFFSET 8
 
 MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
-        : labels(NULL),
-          ui(_ui),
-          nhBar(_nhBar),
-          editor(_ui->getEditor()) {
+    : labels(NULL),
+      ui(_ui),
+      nhBar(_nhBar),
+      editor(_ui->getEditor()),
+      changeTracker(nullptr) {
     setObjectName("msa_editor_name_list");
     setFocusPolicy(Qt::WheelFocus);
     cachedView = new QPixmap();
@@ -84,6 +85,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
         connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
             SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
         connect(editor->getMaObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
+        changeTracker = new MsaEditorUserModStepController(editor->getMaObject()->getEntityRef());
     }
 
     connect(this,   SIGNAL(si_startMaChanging()),
@@ -116,6 +118,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
 
 MaEditorNameList::~MaEditorNameList() {
     delete cachedView;
+    delete changeTracker;
 }
 
 QSize MaEditorNameList::getCanvasSize(const QList<int> &seqIdx) const {
@@ -352,6 +355,8 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
         return;
     }
 
+    U2OpStatus2Log os;
+    changeTracker->startTracking(os);
     emit si_startMaChanging();
     mousePressPoint = e->pos();
     MaCollapseModel* collapseModel = ui->getCollapseModel();
@@ -513,6 +518,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
     rubberBand->hide();
     dragging = false;
     emit si_stopMaChanging(false);
+    changeTracker->finishTracking();
     scrollController->stopSmoothScrolling();
 
     QWidget::mouseReleaseEvent(e);
