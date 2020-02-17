@@ -5741,6 +5741,12 @@ GUI_TEST_CLASS_DEFINITION(test_2900) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+// Click "Hide zoom view"
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    GTGlobals::sleep();
+
 //    2. Sequence view context menu -> Analyze -> Restriction sites.
 //    3. Press "OK".
 //    Expected: the 8 regions of auto-annotations are created.
@@ -5748,6 +5754,7 @@ GUI_TEST_CLASS_DEFINITION(test_2900) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(500);
     const int firstAnnotationsCount = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "enzyme  (8, 0)").size();
