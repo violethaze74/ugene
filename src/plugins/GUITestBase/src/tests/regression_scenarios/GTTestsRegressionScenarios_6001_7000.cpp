@@ -4152,6 +4152,28 @@ GUI_TEST_CLASS_DEFINITION(test_6692_1) {
                    "Required sequence is collapsed");
 }
 
+
+GUI_TEST_CLASS_DEFINITION(test_6693) {
+
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Enable the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Select any region in "Mecopoda_elongata_Sumatra".
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,13), QPoint(5,13));
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTGlobals::sleep();
+
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( 0, 0, 0, 0));
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6697) {
 
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".

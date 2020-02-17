@@ -808,6 +808,7 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
         return;
     }
 
+    bool collapseModeChanged = ui->isCollapsibleMode() != enabled;
     ui->setCollapsibleMode(enabled);
     collapseModeUpdateAction->setEnabled(enabled);
 
@@ -817,7 +818,12 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
         ui->getCollapseModel()->reset(editor->getMaRowIds());
     }
 
-    updateSelection();
+    if (collapseModeChanged) {
+        setSelection(MaEditorSelection());
+    } else {
+        updateSelection();
+    }
+
     ui->getScrollController()->updateVerticalScrollBar();
     emit si_collapsingModeChanged();
 }
