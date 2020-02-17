@@ -289,16 +289,11 @@ void GSequenceLineViewAnnotated::mouseDoubleClickEvent(QMouseEvent* me) {
         ctx->emitClearSelectedAnnotationRegions();
     }
     const QVector<U2Region> annotationRegions = annotation->getRegions();
-    bool processAllRegions = U1AnnotationUtils::isAnnotationAroundJunctionPoint(annotation, seqLen);
-    if (processAllRegions) {
-        ctx->emitAnnotationDoubleClicked(annotation, -1);
-    } else {
-        for (int i = 0; i < annotationRegions.size(); i++) {
-            const U2Region &region = annotationRegions[i];
-            if (region.contains(lastPressPos)) {
-                ctx->emitAnnotationDoubleClicked(annotation, i);
-            }
-        }
+    foreach(const U2Region & region, annotationRegions) {
+        CHECK_CONTINUE(region.contains(lastPressPos));
+
+        ctx->emitAnnotationDoubleClicked(annotation, annotationRegions.indexOf(region));
+        break;
     }
 }
 

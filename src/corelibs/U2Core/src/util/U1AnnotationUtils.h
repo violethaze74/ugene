@@ -101,6 +101,7 @@ public:
     * And if one of these regions has start point equals to zero, and another one has end pos equals to sequence length
     */
     static bool isAnnotationAroundJunctionPoint(const Annotation* annotation, const qint64 sequenceLength);
+    static bool isRegionsAroundJunctionPoint(const QVector<U2Region>& regions, const qint64 sequenceLength);
 
     static char * applyLowerCaseRegions(char *seq, qint64 first, qint64 len, qint64 globalOffset, const QList<U2Region> &regs);
 
