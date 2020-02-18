@@ -435,8 +435,14 @@ GUI_TEST_CLASS_DEFINITION(test_4034) {
     //Check boxes are used to switch on/off an option but not to choose between options. In this dialog, you even can't switch off the check box when you click it.
     //It is a wrong behavior for this graphic primitive
     //Solution: replace the check boxes with radio buttons.
+
     GTFileDialog::openFile(os, dataDir+"samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Click "Hide zoom view"
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "exon", "annotation", "200..300",
         sandBoxDir + "ann_test_4034.gb"));
@@ -3731,6 +3737,7 @@ GUI_TEST_CLASS_DEFINITION(test_4591) {
     //1. Open a circular sequence of length N.
     GTFileDialog::openFile(os, dataDir  + "samples/Genbank/NC_014267.1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(os, 140425, 2);
     filler->setCircular(true);
@@ -3782,6 +3789,12 @@ GUI_TEST_CLASS_DEFINITION(test_4591_1) {
                 GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
             }
         };
+
+        // Click "Hide zoom view"
+        QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+        CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+        GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+
         GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
         GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
@@ -4744,7 +4757,7 @@ GUI_TEST_CLASS_DEFINITION(test_4734) {
     //    1. Open file {data/samples/FASTA/human_T1.fa}
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    2. Open {Context menu -> Analyze menu} and check menu item "Show circular view" is not present there
 
     class AllPopupChecker : public CustomScenario {
@@ -4761,6 +4774,12 @@ GUI_TEST_CLASS_DEFINITION(test_4734) {
             GTKeyboardDriver::keyClick( Qt::Key_Escape);
         }
     };
+
+    // Click "Hide zoom view"
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new AllPopupChecker));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 }
