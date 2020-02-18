@@ -174,7 +174,7 @@ void TestRunnerService::serviceStateChangedCallback(ServiceState oldState, bool 
 
         windowAction = new QAction(tr("Test runner"), this);
 #ifdef _DEBUG
-        windowAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_T));
+        windowAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_H));
 #endif
         windowAction->setObjectName("action__testrunner");
         connect(windowAction, SIGNAL(triggered()), SLOT(sl_showWindow()));
