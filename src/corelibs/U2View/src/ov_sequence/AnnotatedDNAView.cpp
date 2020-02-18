@@ -219,6 +219,9 @@ QWidget* AnnotatedDNAView::createWidget() {
     annotationsView = new AnnotationsTreeView(this);
     annotationsView->setParent(mainSplitter);
     annotationsView->setObjectName("annotations_tree_view");
+    connect(annotationsView, SIGNAL(si_setCopyQualifierActionStatus(bool, QString)), clipb, SLOT(sl_setCopyQualifierActionStatus(bool, QString)));
+    connect(clipb->getCopyQualifierAction(), SIGNAL(triggered()), annotationsView, SLOT(sl_onCopyQualifierValue()));
+
     for (int i = 0; i < seqContexts.size(); ++i) {
         ADVSequenceObjectContext* seqCtx = seqContexts[i];
         ADVSingleSequenceWidget* block = new ADVSingleSequenceWidget(seqCtx, this);
@@ -498,7 +501,10 @@ void AnnotatedDNAView::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(clipb->getCopyTranslationAction());
     tb->addAction(clipb->getCopyComplementTranslationAction());
     tb->addAction(clipb->getCopyAnnotationSequenceAction());
+    tb->addAction(clipb->getCopyComplementAnnotationSequenceAction());
     tb->addAction(clipb->getCopyAnnotationSequenceTranslationAction());
+    tb->addAction(clipb->getCopyComplementAnnotationSequenceTranslationAction());
+    tb->addAction(clipb->getCopyQualifierAction());
     tb->addAction(clipb->getPasteSequenceAction());
     tb->addSeparator();
 

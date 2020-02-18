@@ -185,11 +185,10 @@ signals:
     void si_sequenceWidgetRemoved(ADVSequenceWidget* w);
 
     void si_focusChanged(ADVSequenceWidget *from, ADVSequenceWidget *to);
-
     /** Emitted when a part was added to a sequence, or it was removed or replaced */
     void si_sequenceModified(ADVSequenceObjectContext*);
-
     void si_onClose(AnnotatedDNAView* v);
+    void si_proxyCopyQualifierActionTriggered();
 
 public slots:
     void sl_onPosChangeRequest(int pos);

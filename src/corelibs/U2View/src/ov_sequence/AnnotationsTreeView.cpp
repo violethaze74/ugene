@@ -200,9 +200,6 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView *_ctx)
     connect(removeAnnsAndQsAction, SIGNAL(triggered()), SLOT(sl_removeAnnsAndQs()));
     tree->addAction(removeAnnsAndQsAction);
 
-    copyQualifierAction = new QAction(QIcon(":/core/images/copy_qualifier.png"), tr("Copy qualifier text"), this);
-    connect(copyQualifierAction, SIGNAL(triggered()), SLOT(sl_onCopyQualifierValue()));
-
     copyQualifierURLAction = new QAction(tr("Copy qualifier URL"), this);
     connect(copyQualifierURLAction, SIGNAL(triggered()), SLOT(sl_onCopyQualifierURL()));
 
@@ -930,8 +927,8 @@ void AnnotationsTreeView::sl_onBuildPopupMenu(GObjectView *, QMenu *m) {
     contextActions << toggleQualifierColumnAction;
 
     QList<QAction *> copySubmenuActions;
-    copySubmenuActions << copyQualifierAction << copyQualifierURLAction << copyColumnTextAction
-                       << copyColumnURLAction;
+    copySubmenuActions << copyQualifierURLAction << copyColumnTextAction
+        << copyColumnURLAction;
 
     QMenu *copyMenu = GUIUtils::findSubMenu(m, ADV_MENU_COPY);
     SAFE_POINT(copyMenu != NULL, "copyMenu", );
@@ -973,10 +970,6 @@ void AnnotationsTreeView::adjustMenu(QMenu *m) const {
     SAFE_POINT(removeMenu != NULL, "removeMenu", );
     removeMenu->addAction(removeObjectsFromViewAction);
     removeMenu->addAction(removeAnnsAndQsAction);
-
-    QMenu *copyMenu = GUIUtils::findSubMenu(m, ADV_MENU_COPY);
-    SAFE_POINT(removeMenu != NULL, "copyMenu", );
-    copyMenu->addAction(copyQualifierAction);
 }
 
 void AnnotationsTreeView::sl_paste() {
@@ -1186,8 +1179,7 @@ void AnnotationsTreeView::updateState() {
     bool hasOnly1QualifierSelected = items.size() == 1 && (static_cast<AVItem *>(items.first()))->type == AVItemType_Qualifier;
     QString qName = hasOnly1QualifierSelected ? (static_cast<AVQualifierItem *>(items.first()))->qName : QString("");
 
-    copyQualifierAction->setEnabled(hasOnly1QualifierSelected);
-    copyQualifierAction->setText(hasOnly1QualifierSelected ? tr("Copy qualifier '%1' value").arg(qName) : tr("Copy qualifier text"));
+    emit si_setCopyQualifierActionStatus(hasOnly1QualifierSelected, hasOnly1QualifierSelected ? tr("Copy qualifier '%1' value").arg(qName) : tr("Copy qualifier text"));
 
     bool hasOnly1QualifierSelectedWithURL = hasOnly1QualifierSelected && (static_cast<AVItem *>(items.first()))->isColumnLinked(1);
     copyQualifierURLAction->setEnabled(hasOnly1QualifierSelectedWithURL);
