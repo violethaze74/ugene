@@ -334,7 +334,11 @@ void WorkflowDesignerService::sl_showDesignerWindow() {
 
 void WorkflowDesignerService::sl_sampleActionClicked(const SampleAction &action) {
     CHECK(checkServiceState(), );
-    WorkflowView::openWD(NULL)->sl_loadScene(QDir("data:workflow_samples").path() + "/" + action.samplePath, false);
+
+    WorkflowView *view = WorkflowView::openWD(NULL);
+    CHECK(nullptr != view, );
+
+    view->sl_loadScene(QDir("data:workflow_samples").path() + "/" + action.samplePath, false);
 }
 
 void WorkflowDesignerService::sl_showManagerWindow() {
