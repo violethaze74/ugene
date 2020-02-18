@@ -4472,6 +4472,21 @@ GUI_TEST_CLASS_DEFINITION(test_6689) {
     CHECK_SET_ERR(!undo->isEnabled(), "Undo button should be disabled");
 }
 
-}    // namespace GUITest_regression_scenarios
+GUI_TEST_CLASS_DEFINITION(test_6705) {
+    //1. Select "Tools > NGS data analysis > Reads quality control" in the main menu.
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Reads quality control...");
+
+    //Expected result: the "Choose Output Directory" dialog appears.
+
+    //2. Close the dialog with the cross button in the dialog title area.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep();
+
+    //Expected result: UGENE doesn't crash.
+}
+
+} // namespace GUITest_regression_scenarios
 
 }    // namespace U2
