@@ -927,23 +927,8 @@ GUI_TEST_CLASS_DEFINITION( test_2089 )
     GTGlobals::sleep();
 }
 
+
 GUI_TEST_CLASS_DEFINITION( test_2100_1 ){
-    //1. Open COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //2. Select Hetrodes_pupus_EF540832
-    GTUtilsMSAEditorSequenceArea::selectSequence(os, QString("Hetrodes_pupus_EF540832"));
-
-    //2. Click toolbutton "Enable collapsing"
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
-
-    //Expected state: Hetrodes_pupus_EF540832 is still selected
-    CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Hetrodes_pupus_EF540832")),
-                   "Required sequence is not selected");
-}
-
-GUI_TEST_CLASS_DEFINITION( test_2100_2 ){
     //1. Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -966,7 +951,7 @@ GUI_TEST_CLASS_DEFINITION( test_2100_2 ){
                    "Expected sequence is not selected");
 }
 
-GUI_TEST_CLASS_DEFINITION( test_2100_3 ){
+GUI_TEST_CLASS_DEFINITION( test_2100_2 ){
     //1. Open COI.aln
     GTFileDialog::openFile(os, dataDir+"samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1623,23 +1608,15 @@ GUI_TEST_CLASS_DEFINITION( test_2204 ){
 //    Expected: combobox shows "hpdi.xml,jaspar.xml"
 }
 
-GUI_TEST_CLASS_DEFINITION( test_2225_1 ){
+GUI_TEST_CLASS_DEFINITION( test_2225){
     Runnable *filler = new NCBISearchDialogFillerDeprecated(os, "rat", true);
 
     GTUtilsDialog::waitForDialog(os, filler);
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Search NCBI GenBank...", GTGlobals::UseKey);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 }
 
-GUI_TEST_CLASS_DEFINITION( test_2225_2 ){
-    Runnable *filler = new NCBISearchDialogFillerDeprecated(os, "rat", true);
-
-    GTUtilsDialog::waitForDialog(os, filler);
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Search NCBI GenBank...", GTGlobals::UseKey);
-    GTGlobals::sleep();
-}
 GUI_TEST_CLASS_DEFINITION( test_2259 ){
     MainWindow *mw = AppContext::getMainWindow();
     CHECK_SET_ERR(mw != NULL, "MainWindow is NULL");
