@@ -312,6 +312,7 @@ void ADVClipboard::updateActions() {
         copyComplementSequenceAction->setVisible(false);
         copyComplementTranslationAction->setVisible(false);
 
+        copyAnnotationSequenceAction->setText("Copy annotation");
         copyComplementAnnotationSequenceAction->setVisible(false);
         copyAnnotationSequenceTranslationAction->setVisible(false);
         copyComplementAnnotationSequenceTranslationAction->setVisible(false);

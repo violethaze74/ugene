@@ -4096,10 +4096,10 @@ GUI_TEST_CLASS_DEFINITION(test_6685_2) {
 
     //2. Click right button on the zoom view -> Copy/Paste. The all following buttons with hotkwys are disabled
     //Copy selected sequence -- Ctrl + C
-    //Copy annotation direct strand
+    //Copy annotation
     //Copy qualifier text
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy annotation direct strand", QKeySequence()}, {"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy annotation", QKeySequence()}, {"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_AMINO263"));
 
     //The all following buttons are no exist
