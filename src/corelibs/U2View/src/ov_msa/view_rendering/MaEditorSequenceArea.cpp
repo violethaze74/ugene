@@ -809,21 +809,27 @@ void MaEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
 
 void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &modInfo) {
     exitFromEditCharacterMode();
-    int nSeq = editor->getNumSequences();
-    int aliLen = editor->getAlignmentLen();
-
     updateCollapseModel(modInfo);
-    nSeq = getViewRowCount();
+
+    int columnCount = editor->getAlignmentLen();
+    int rowCount = getViewRowCount();
+
+    // Fix cursor position if it is out of range.
+    QPoint cursorPosition = editor->getCursorPosition();
+    QPoint fixedCursorPosition(qMin(cursorPosition.x(), columnCount - 1), qMin(cursorPosition.y(), rowCount - 1));
+    if (cursorPosition != fixedCursorPosition) {
+        editor->setCursorPosition(fixedCursorPosition);
+    }
 
     editor->updateReference();
 
-    if ((selection.x() > aliLen - 1) || (selection.y() > nSeq - 1)) {
+    if ((selection.x() >= columnCount) || (selection.y() >= rowCount)) {
         sl_cancelSelection();
     } else {
-        const QPoint selTopLeft(qMin(selection.x(), aliLen - 1),
-            qMin(selection.y(), nSeq - 1));
-        const QPoint selBottomRight(qMin(selection.x() + selection.width() - 1, aliLen - 1),
-            qMin(selection.y() + selection.height() - 1, nSeq -1));
+        const QPoint selTopLeft(qMin(selection.x(), columnCount - 1),
+            qMin(selection.y(), rowCount - 1));
+        const QPoint selBottomRight(qMin(selection.x() + selection.width() - 1, columnCount - 1),
+            qMin(selection.y() + selection.height() - 1, rowCount - 1));
 
         MaEditorSelection newSelection(selTopLeft, selBottomRight);
         // we don't emit "selection changed" signal to avoid redrawing
