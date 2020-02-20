@@ -172,16 +172,22 @@ U2Region MaCollapseModel::getMaRowIndexRegionByViewRowIndexRegion(const U2Region
 
 QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeGroupRows) {
     QList<int> maRows;
+    QSet<int> visitedRows;
     for (int viewRow = viewRowIndexesRegion.startPos, n = viewRowIndexesRegion.endPos(); viewRow < n; viewRow++) {
         int maRow = getMaRowIndexByViewRowIndex(viewRow);
-        if (maRow >= 0) {
+        if (maRow >= 0 && !visitedRows.contains(maRow)) {
             maRows << maRow;
+            visitedRows.insert(maRow);
         }
         if (includeGroupRows) {
             const MaCollapsibleGroup* group = getCollapsibleGroupByViewRow(viewRow);
             if (group->maRows.first() == maRow) {
                 for (int i = 1; i < group->maRows.length(); i++) {
-                    maRows << group->maRows[i];
+                    int childMaRow = group->maRows[i];
+                    if (!visitedRows.contains(childMaRow)) {
+                        maRows << childMaRow;
+                        visitedRows.insert(childMaRow);
+                    }
                 }
             }
         }
