@@ -1614,7 +1614,7 @@ GUI_TEST_CLASS_DEFINITION( test_2225){
     GTUtilsDialog::waitForDialog(os, filler);
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Search NCBI GenBank...", GTGlobals::UseKey);
-    GTGlobals::sleep(100);
+    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2259 ){
@@ -5071,20 +5071,17 @@ GUI_TEST_CLASS_DEFINITION(test_2770) {
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "New document from text...", GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(5000);
 
     GTUtilsDocument::checkDocument(os, "result");
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
 
     GTUtilsOptionPanelSequenceView::enterPattern(os, "TTTTTTTTTTTTTTTTTTTTTTTAATTTTTTTTTTTTTTTTTTTTTTT", true);
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "InsDel");
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setMatchPercentage(os, 30);
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5456,7 +5453,7 @@ GUI_TEST_CLASS_DEFINITION( test_2853 ){
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Search NCBI GenBank...", GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2863){
@@ -5919,11 +5916,17 @@ GUI_TEST_CLASS_DEFINITION(test_2910_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2923) {
-    GTUtilsMdi::click(os, GTGlobals::Close);
+
+    //GTUtilsMdi::click(os, GTGlobals::Close);
     //1. Open "samples/FASTA/human_T1.fa".
     //Expected: the sequence view is opened.
     //2. Press Ctrl+W.
     //Expected: the sequence view is closed.
+
+    //Close active view
+    GTUtilsMdi::closeActiveWindow(os);
+    GTGlobals::sleep();
+
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMdi::activeWindow(os);
