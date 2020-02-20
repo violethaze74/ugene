@@ -732,7 +732,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     // 5. Check that menu item { Edit -> Annotation } is enabled at popup menu of annotations view.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
                                                       PopupChecker::IsEnabled, GTGlobals::UseMouse));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "annotations_tree_widget"));
+    GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, "B");
     GTGlobals::sleep();
 }
 
