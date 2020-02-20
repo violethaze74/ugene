@@ -108,10 +108,10 @@ U2Location ShiftSequenceStartTask::shiftLocation(const U2Location& location, int
     int joinIdx = -1;
 
     int numRegions = location->regions.size();
-    for(int i = 0; i < numRegions; ++i) {
+    for (int i = 0; i < numRegions; ++i) {
         const U2Region& r = location->regions[i];
         if (r.endPos() == seqLength && (i + 1 < numRegions)) {
-            const U2Region& r2 = location->regions[i+1];
+            const U2Region& r2 = location->regions[i + 1];
             if (r2.startPos == 0) {
                 joinIdx = i;
             }
@@ -121,31 +121,28 @@ U2Location ShiftSequenceStartTask::shiftLocation(const U2Location& location, int
         if (newRegion.endPos() <= 0) {
             newRegion.startPos += seqLength;
         } else if (newRegion.startPos < 0) {
-            int additionStartPos = newRegion.startPos + seqLength;
-            int additionLength = seqLength - additionStartPos;
+            qint64 additionStartPos = newRegion.startPos + seqLength;
+            qint64 additionLength = seqLength - additionStartPos;
             U2Region newRegionAddition(additionStartPos, additionLength);
             newLocation->regions.append(newRegionAddition);
             newRegion.startPos = 0;
             newRegion.length = r.length - additionLength;
             newLocation->op = U2LocationOperator_Join;
+            if (joinIdx != -1) {
+                joinIdx++;
+            }
         }
         newLocation->regions.append(newRegion);
     }
 
-
     if (joinIdx != -1) {
-        if (newLocation->regions.size() > joinIdx + 1) {
-            const U2Region& r1 = newLocation->regions[joinIdx];
-            const U2Region& r2 = newLocation->regions[joinIdx + 1];
-            assert (r1.endPos() == r2.startPos);
-            U2Region joined(r1.startPos, r1.length + r2.length);
-            newLocation->regions.replace(joinIdx, joined);
-            newLocation->regions.remove(joinIdx + 1);
-
-        }
+        const U2Region& r1 = newLocation->regions[joinIdx];
+        const U2Region& r2 = newLocation->regions[joinIdx + 1];
+        Q_ASSERT (r1.endPos() == r2.startPos);
+        U2Region joined(r1.startPos, r1.length + r2.length);
+        newLocation->regions.replace(joinIdx, joined);
+        newLocation->regions.remove(joinIdx + 1);
     }
-
-
 
     return newLocation;
 }

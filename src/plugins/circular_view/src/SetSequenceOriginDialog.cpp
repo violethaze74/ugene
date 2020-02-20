@@ -32,6 +32,7 @@ SetSequenceOriginDialog::SetSequenceOriginDialog(ADVSequenceWidget* parent ) : Q
     setupUi(this);
     seqOriginBox->setMinimum(1);
     seqOriginBox->setMaximum(seqContext->getSequenceLength());
+    seqOriginBox->selectAll(); // allow user to start typing or copy-paste without cleaning default '1' first.
     const QVector<U2Region>& selectedRegions = seqContext->getSequenceSelection()->getSelectedRegions();
 
     if (selectedRegions.size() > 0) {
