@@ -263,17 +263,17 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
     QList<QList<int>> rowGroups = groupRowsBySimilarity(msaObject->getRows());
     QVector<MaCollapsibleGroup> newCollapseGroups;
 
-    QSet<qint64> firstMaRowIdsOfCollapsedGroupsBefore;
+    QSet<qint64> maRowIdsOfNonCollapsedRowsBefore;
     for(int i = 0; i < collapseModel->getGroupCount(); i++) {
         const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(i);
         if (!group->isCollapsed) {
-            firstMaRowIdsOfCollapsedGroupsBefore << group->maRowIds[0];
+            maRowIdsOfNonCollapsedRowsBefore += group->maRowIds.toSet();
         }
     }
     for (int i = 0; i < rowGroups.size(); i++) {
         const QList<int>& maRowsInGroup = rowGroups[i];
         QList<qint64> maRowIdsInGroup = msaObject->getMultipleAlignment()->getRowIdsByRowIndexes(maRowsInGroup);
-        bool isCollapsed = !firstMaRowIdsOfCollapsedGroupsBefore.contains(maRowIdsInGroup[0]);
+        bool isCollapsed = !maRowIdsOfNonCollapsedRowsBefore.contains(maRowIdsInGroup[0]);
         newCollapseGroups << MaCollapsibleGroup(maRowsInGroup, maRowIdsInGroup, isCollapsed);
     }
     collapseModel->update(newCollapseGroups);
