@@ -5916,8 +5916,6 @@ GUI_TEST_CLASS_DEFINITION(test_2910_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2923) {
-
-    //GTUtilsMdi::click(os, GTGlobals::Close);
     //1. Open "samples/FASTA/human_T1.fa".
     //Expected: the sequence view is opened.
     //2. Press Ctrl+W.
