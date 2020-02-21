@@ -4465,7 +4465,7 @@ GUI_TEST_CLASS_DEFINITION(test_6689) {
     QRect rowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 0);
     QRect destinationRowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 16);
     GTMouseDriver::dragAndDrop(rowNameRect.center(), destinationRowNameRect.center());
-    
+
     QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undo->isEnabled(), "Undo button should be enabled");
     GTWidget::click(os, undo);
@@ -4485,6 +4485,41 @@ GUI_TEST_CLASS_DEFINITION(test_6705) {
     GTGlobals::sleep();
 
     //Expected result: UGENE doesn't crash.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6707) {
+    //1. Create a folder and put any file in there.
+    QDir(sandBoxDir).mkdir("test_6707");
+    QString fileName = sandBoxDir + "/test_6707/file.txt";
+    QFile file(fileName);
+    bool wasOpened = file.open(QIODevice::ReadWrite);
+    CHECK_SET_ERR(wasOpened, QString("File %1 wasn't created").arg(fileName));
+
+    file.close();
+    //2. Open the "Alignment Color Scheme" tab of the "Application settings" dialog.
+    //3. Set "Directory to save color scheme" to the folder you created on the step 1.
+
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != nullptr, "AppSettingsDialogFiller isn't found");
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::AlignmentColorScheme);
+            QLineEdit *colorsDirEdit = GTWidget::findExactWidget<QLineEdit *>(os, "colorsDirEdit", dialog);
+            CHECK_SET_ERR(colorsDirEdit != nullptr, "colorsDirEdit isn't found");
+
+            GTLineEdit::setText(os, colorsDirEdit, sandBoxDir + "/test_6707/file.txt");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...",
+                              GTGlobals::UseMouse);
+    //Expected result: the file is still in the folder, the color schemes appear in the folder.
+    CHECK_SET_ERR(file.exists(), "the file was unexpectedly removed");
+
 }
 
 } // namespace GUITest_regression_scenarios
