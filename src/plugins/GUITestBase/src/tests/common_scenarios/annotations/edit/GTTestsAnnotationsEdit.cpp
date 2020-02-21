@@ -759,7 +759,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     // Expected state: { Edit -> Annotation } action is enabled
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
                                                       PopupChecker::IsEnabled, GTGlobals::UseMouse));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "annotations_tree_widget"));
+    //GTMenu::showContextMenu(os, GTWidget::findWidget(os, "annotations_tree_widget"));
+    GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, "CDS");
 }
 
 } // namespace GUITest_common_scenarios_annotations_edit
