@@ -48,17 +48,6 @@ enum DefaultStrategy{
     DefaultStrategy_UgeneColors
 };
 
-static void clearColorsDir() {
-    QString path = ColorSchemeUtils::getColorsDir();
-    QDir dir(path);
-    dir.setNameFilters(QStringList() << "*.*");
-    dir.setFilter(QDir::Files);
-    foreach(QString dirFile, dir.entryList())
-    {
-        dir.remove(dirFile);
-    }
-}
-
 static void setSchemaColors(const ColorSchemeData& customSchema){
     QString dirPath = ColorSchemeUtils::getColorsDir();
     QDir dir(dirPath);
@@ -112,7 +101,6 @@ void ColorSchemaSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     ColorSchemaSettingsPageState* state = qobject_cast<ColorSchemaSettingsPageState*>(s);
 
     ColorSchemeUtils::setColorsDir(state->colorsDir);
-    clearColorsDir();
     foreach(const ColorSchemeData& schema, state->customSchemas){
         setSchemaColors(schema);
     }
