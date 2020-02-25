@@ -80,10 +80,10 @@ U2Region MsaClipboardDataTaskFactory::getWindowBySelection(const QRect &selectio
 QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MaEditor *context, const QRect &selection){
     MaCollapseModel* m = context->getUI()->getCollapseModel();
     int startMaRowIndex = m->getMaRowIndexByViewRowIndex(selection.y());
-    int endMaRowIndex = m->getMaRowIndexByViewRowIndex(selection.y() + selection.height());
+    int endMaRowIndex = m->getMaRowIndexByViewRowIndex(selection.y() + selection.height() - 1);
     const MultipleAlignment &ma = context->getMaObject()->getMultipleAlignment();
     QStringList names;
-    for (int maRowIndex = startMaRowIndex; maRowIndex < endMaRowIndex; ++maRowIndex) {
+    for (int maRowIndex = startMaRowIndex; maRowIndex <= endMaRowIndex; ++maRowIndex) {
         if (m->getViewRowIndexByMaRowIndex(maRowIndex, true) >= 0) {
             names.append(ma->getRow(maRowIndex)->getName());
         }
