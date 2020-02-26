@@ -303,7 +303,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
     GTGlobals::sleep();
 
-    //6. Click "Copy sequence".
+    //6. Click "Copy selected sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selected sequence"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -503,18 +503,20 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     //    Expected state :
     //    The following items are disabled :
     //    "Copy sequence"
-    //    "Copy reverse-complement sequence"
-    //    "Copy translation"
-    //    "Copy reverse-complement translation"
+    //    "Copy selected complementary 5'-3' sequence"
+    //    "Copy amino acids"
+    //    "Copy amino acids of complementary 5'-3' strand"
     //    The following items are enabled :
-    //    "Copy annotation sequence"
-    //    "Copy annotation sequence translation"
+    //    "Copy annotation direct strand"
+    //    "Copy annotation complementary 5'-3' strand"
+    //    "Copy annotation amino acids"
+    //    "Copy annotation amino acids of complementary 5'-3' strand"
     QStringList enabledItemsNames = QStringList() << "Copy selected sequence" << "Copy selected complementary 5'-3' sequence" << "Copy amino acids" << "Copy amino acids of complementary 5'-3' strand";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", enabledItemsNames, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QStringList disabledItemsNames = QStringList() << "Copy annotation direct strand" << "Copy annotation amino acids";
+    QStringList disabledItemsNames = QStringList() << "Copy annotation direct strand" << "Copy annotation complementary 5'-3' strand" << "Copy annotation amino acids" << "Copy annotation amino acids of complementary 5'-3' strand";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", disabledItemsNames, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -535,7 +537,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     //5. Look at the SV toolbar.
     //    Expected state : the same buttons as on step 1 are disabled / enabled.
 
-    //6. Click "Copy annotation sequence".
+    //6. Click "Copy annotation direct strand".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy annotation direct strand"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -544,7 +546,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     QString text = GTClipboard::text(os);
     CHECK_SET_ERR(text.startsWith("ATGGGCCAGA"), QString("Unexpected start of the clipboard text, expected: ATGGGCCAGA, current: %1").arg(text.left(10)));
 
-    //7. Click "Copy annotation sequence translation".
+    //7. Click "Copy annotation amino acids".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy annotation amino acids"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
