@@ -2458,6 +2458,12 @@ GUI_TEST_CLASS_DEFINITION(test_0029){
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"Phaneroptera_falcata.fa"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"Phaneroptera_falcata"));
         GTGlobals::sleep();
+        
+        // Click "Hide zoom view"
+        QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_Phaneroptera_falcata");
+        CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_Phaneroptera_falcata");
+        GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+        GTGlobals::sleep();
 
         GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os,42,44));
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Select"<< "Sequence region"));
