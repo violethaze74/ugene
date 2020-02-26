@@ -19,47 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BLASTALL_SUPPORT_H
-#define _U2_BLASTALL_SUPPORT_H
+#ifndef _U2_FORMATDB_SUPPORT_H
+#define _U2_FORMATDB_SUPPORT_H
 
 #include <U2Core/ExternalToolRegistry.h>
-#include <U2Gui/ObjectViewModel.h>
+#include "utils/ExternalToolSupportAction.h"
 
 namespace U2 {
 
-class BlastAllSupport : public ExternalTool {
+class FormatDBSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BlastAllSupport(const QString& id, const QString& name, const QString& path = "");
-    GObjectViewWindowContext* getViewContext(){ return viewCtx; }
+    FormatDBSupport(const QString& id, const QString& name, const QString& path = "");
 
-    static const QString ET_BLASTALL;
-    static const QString ET_BLASTALL_ID;
-    static const QString BLASTALL_TMP_DIR;
-private slots:
+    static const QString ET_MAKEBLASTDB;
+    static const QString ET_MAKEBLASTDB_ID;
+    static const QString ET_GPU_MAKEBLASTDB;
+    static const QString ET_GPU_MAKEBLASTDB_ID;
+    static const QString FORMATDB_TMP_DIR;
+public slots:
     void sl_runWithExtFileSpecify();
-
-private:
-    GObjectViewWindowContext* viewCtx;
-    QString lastDBPath;
-    QString lastDBName;
-};
-
-class BlastAllSupportContext: public GObjectViewWindowContext {
-    Q_OBJECT
-public:
-    BlastAllSupportContext(QObject* p);
-
-protected slots:
-    void sl_showDialog();
-
-protected:
-    virtual void initViewContext(GObjectView* view);
-    virtual void buildMenu(GObjectView* view, QMenu* m);
-private:
-    QString lastDBPath;
-    QString lastDBName;
 };
 
 }//namespace
-#endif // _U2_BLASTALL_SUPPORT_H
+#endif // _U2_FORMATDB_SUPPORT_H
