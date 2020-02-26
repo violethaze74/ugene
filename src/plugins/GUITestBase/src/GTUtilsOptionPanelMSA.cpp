@@ -23,23 +23,32 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSpinBox>
+#include <QTextEdit>
 #include <QToolButton>
 #include <QTreeWidget>
 
 #include <drivers/GTKeyboardDriver.h>
+
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTSpinBox.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSlider.h>
+#include <primitives/GTTextEdit.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
+
+#include <system/GTClipboard.h>
+
 #include <utils/GTThread.h>
 
 #include <U2Core/U2IdTypes.h>
 
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsTaskTreeView.h"
 #include "api/GTBaseCompleter.h"
 
 namespace U2 {
@@ -53,6 +62,7 @@ QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::initNames() {
     result.insert(TreeSettings, "OP_MSA_ADD_TREE_WIDGET");
     result.insert(ExportConsensus, "OP_EXPORT_CONSENSUS");
     result.insert(Statistics, "OP_SEQ_STATISTICS_WIDGET");
+    result.insert(Search, "OP_MSA_FIND_PATTERN_WIDGET");
     return result;
 }
 
@@ -64,6 +74,7 @@ QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::initInnerWidge
     result.insert(TreeSettings, "AddTreeWidget");
     result.insert(ExportConsensus, "ExportConsensusWidget");
     result.insert(Statistics, "SequenceStatisticsOptionsPanelTab");
+    result.insert(Search, "FindPatternMsaWidget");
     return result;
 }
 const QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::tabsNames = initNames();
@@ -348,6 +359,65 @@ void GTUtilsOptionPanelMsa::setExportConsensusOutputFormat(GUITestOpStatus &os, 
 #define GT_METHOD_NAME "getExportConsensusOutputFormat"
 QString GTUtilsOptionPanelMsa::getExportConsensusOutputFormat(GUITestOpStatus &os) {
     return GTComboBox::getCurrentText(os, "formatCb");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "enterPattern"
+void GTUtilsOptionPanelMsa::enterPattern(HI::GUITestOpStatus &os, QString pattern, bool useCopyPaste /*= false*/) {
+    QTextEdit *patternEdit = qobject_cast<QTextEdit *>(GTWidget::findWidget(os, "textPattern"));
+    GTWidget::click(os, patternEdit);
+
+    GTTextEdit::clear(os, patternEdit);
+    if (useCopyPaste) {
+        GTClipboard::setText(os, pattern);
+        GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    } else {
+        GTTextEdit::setText(os, patternEdit, pattern);
+    }
+
+    GTGlobals::sleep(3000);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setAlgorithm"
+void GTUtilsOptionPanelMsa::setAlgorithm(HI::GUITestOpStatus &os, QString algorithm) {
+    QComboBox *algoBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
+    GT_CHECK(algoBox != NULL, "algoBox is NULL");
+
+    if (!algoBox->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
+    }
+    GTComboBox::setIndexWithText(os, algoBox, algorithm);
+    GTGlobals::sleep(2500);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setMatchPercentage"
+void GTUtilsOptionPanelMsa::setMatchPercentage(HI::GUITestOpStatus &os, int percentage) {
+    QSpinBox *spinMatchBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinBoxMatch"));
+
+    GTSpinBox::setValue(os, spinMatchBox, percentage, GTGlobals::UseKeyBoard);
+    GTGlobals::sleep(2500);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setCheckedRemoveOverlappedResults"
+void GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(HI::GUITestOpStatus &os, bool setChecked) {
+    QCheckBox *overlapsBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "removeOverlapsBox"));
+    GT_CHECK(overlapsBox != NULL, "overlapsBox is NULL");
+
+    if (!overlapsBox->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));
+    }
+    GTCheckBox::setChecked(os, "removeOverlapsBox", setChecked);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkResultsText"
+bool GTUtilsOptionPanelMsa::checkResultsText(HI::GUITestOpStatus &os, QString expectedText) {
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QLabel *label = qobject_cast<QLabel *>(GTWidget::findWidget(os, "resultLabel"));
+    return label->text() == expectedText;
 }
 #undef GT_METHOD_NAME
 

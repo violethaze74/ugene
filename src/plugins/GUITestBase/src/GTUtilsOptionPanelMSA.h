@@ -38,7 +38,8 @@ public:
         PairwiseAlignment,
         TreeSettings,
         ExportConsensus,
-        Statistics
+        Statistics,
+        Search
     };
 
     enum AddRefMethod {
@@ -96,6 +97,13 @@ public:
 
     static void setExportConsensusOutputFormat(HI::GUITestOpStatus &os, const QString &format);
     static QString getExportConsensusOutputFormat(HI::GUITestOpStatus &os);
+
+    // functions for accessing "Find pattern" options elements
+    static void enterPattern(HI::GUITestOpStatus &os, QString pattern, bool useCopyPaste = false);
+    static void setAlgorithm(HI::GUITestOpStatus &os, QString algorithm);
+    static void setMatchPercentage(HI::GUITestOpStatus &os, int percentage);
+    static void setCheckedRemoveOverlappedResults(HI::GUITestOpStatus &os, bool checkedState = true);
+    static bool checkResultsText(HI::GUITestOpStatus &os, QString expectedText);
 
 private:
     static QWidget* getWidget(HI::GUITestOpStatus &os, const QString& widgetName, int number);

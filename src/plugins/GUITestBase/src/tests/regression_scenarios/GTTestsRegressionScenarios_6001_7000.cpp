@@ -4350,6 +4350,53 @@ GUI_TEST_CLASS_DEFINITION(test_6684_1) {
                                                 << "Build dotplot...");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6691_1) {
+    //UTEST-44
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+    
+    GTGlobals::sleep(200);
+    GTUtilsOptionPanelMsa::enterPattern(os, "ACCTAT");
+    GTGlobals::sleep();
+    QRect selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selection.x() == 118, "Wrong selection");
+    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/14"), "Wrong result");
+
+    GTUtilsOptionPanelMsa::setAlgorithm(os, "Substitute");
+    GTUtilsOptionPanelMsa::setMatchPercentage(os, 65);
+    GTGlobals::sleep();
+    selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selection.x() == 4, "Wrong selection");
+    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/533"), "Wrong result");
+    
+    GTUtilsOptionPanelMsa::enterPattern(os, "TTTT");
+    GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(os, true);
+    selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    GTGlobals::sleep();
+    CHECK_SET_ERR(selection.x() == 208, "Wrong selection");
+    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/100"), "Wrong result");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6691_2) {
+    //UTEST-45
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+
+    GTGlobals::sleep(200);
+    GTUtilsOptionPanelMsa::enterPattern(os, "ACCTAT");
+    GTGlobals::sleep(500);
+    QRect selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selection.x() == 118, "Wrong selection");
+    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/14"), "Wrong result");
+
+    GTUtilsMSAEditorSequenceArea::replaceSymbol(os, QPoint(410, 1), '-');
+    selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selection.x() == 410, "Wrong selection");
+    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: -/14"), "Wrong result");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6692) {
 
     // 1. Open "_common_data/scenarios/msa/ma.aln".

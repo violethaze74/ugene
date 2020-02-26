@@ -159,6 +159,7 @@ FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor* _msaEditor)
       savableWidget(this, GObjectViewUtils::findViewByName(msaEditor->getName())),
       setSelectionToFirstValuebleResult(true) {
     setupUi(this);
+    setObjectName("FindPatternMsaWidget");
     progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
     resultLabel->setObjectName("resultLabel");
