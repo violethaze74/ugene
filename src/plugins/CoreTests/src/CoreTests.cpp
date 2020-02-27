@@ -52,6 +52,7 @@
 #include "SMatrixTests.h"
 #include "SecStructPredictTests.h"
 #include "SequenceWalkerTests.h"
+#include "AnnotationUtilsTests.h"
 #include "TaskTests.h"
 #include "TextObjectTests.h"
 #include "UtilTestActions.h"
@@ -166,6 +167,8 @@ void CoreTests::registerFactories() {
     registerFactory<RealignTests>(xmlTestFormat);
 
     registerFactory<FindPatternMsaTests>(xmlTestFormat);
+
+    registerFactory<AnnotationUtilsTests>(xmlTestFormat);
 }
 
 }//namespace

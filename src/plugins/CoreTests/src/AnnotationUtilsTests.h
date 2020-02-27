@@ -19,32 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SHIFT_SEQUENCE_START_TASK_H_
-#define _U2_SHIFT_SEQUENCE_START_TASK_H_
+#ifndef _U2_SHIFT_SEQUENCE_TESTS_H_
+#define _U2_SHIFT_SEQUENCE_TESTS_H_
 
-#include <U2Core/Task.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/U1AnnotationUtils.h>
+#include <U2Test/XMLTestUtils.h>
 
 namespace U2 {
 
-class U2SequenceObject;
-
-class ShiftSequenceStartTask : public Task {
-    Q_OBJECT
+class GTest_ShiftSequence : public XmlTest {
 public:
-    ShiftSequenceStartTask(U2SequenceObject* sequenceObject, int shift);
+SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_ShiftSequence, "check-shift-sequence", TaskFlags_NR_FOSCOE);
 
-    virtual Task::ReportResult report();
+    Task::ReportResult report();
 
 private:
-    void fixAnnotations(int shiftSize);
-    U2SequenceObject*   seqObj;
-    QList<Document*> docs;
-    int seqStart;
+    QString locationStringBefore;
+    QString locationStringAfter;
+    int shift;
+    int sequenceLength;
 };
 
+class AnnotationUtilsTests {
+public:
+    static QList<XMLTestFactory*> createTestFactories();
+};
 
-}//ns
-
+} // namespace
 #endif

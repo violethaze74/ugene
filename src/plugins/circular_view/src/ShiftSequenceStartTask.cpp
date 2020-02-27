@@ -19,14 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-
 #include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/Log.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/GObject.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SequenceUtils.h>
@@ -36,9 +32,7 @@
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ShiftSequenceStartTask.h"
@@ -97,7 +91,7 @@ void ShiftSequenceStartTask::fixAnnotations(int shiftSize) {
             if (ato->hasObjectRelation(seqObj, ObjectRole_Sequence)){
                 foreach (Annotation *an, ato->getAnnotations()) {
                     const U2Location& location = an->getLocation();
-                    U2Location newLocation = shiftLocation(location, shiftSize, seqObj->getSequenceLength());
+                    U2Location newLocation = U1AnnotationUtils::shiftLocation(location, shiftSize, seqObj->getSequenceLength());
                     an->setLocation(newLocation);
                 }
             }
@@ -105,6 +99,7 @@ void ShiftSequenceStartTask::fixAnnotations(int shiftSize) {
     }
 }
 
+<<<<<<< HEAD
 U2Location ShiftSequenceStartTask::shiftLocation(const U2Location& location, int shiftSize, int seqLength) {
 
     U2Location newLocation(location);
@@ -159,3 +154,6 @@ U2Location ShiftSequenceStartTask::shiftLocation(const U2Location& location, int
 
 
 }//ns
+=======
+} //ns
+>>>>>>> 5999a78ed... Adding xml test wrappers for shift location
