@@ -53,6 +53,7 @@
 #include <QTableWidget>
 #include <QWizard>
 
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/HttpFileAdapter.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -926,8 +927,6 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
         CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection primer annotation regions, expected: 1, current: %1").arg(sel.size()));
     }
 }
-
-
 
 GUI_TEST_CLASS_DEFINITION(test_6167) {
     //1. Change workflow designer output folder to sandbox
@@ -3979,7 +3978,6 @@ GUI_TEST_CLASS_DEFINITION(test_6654) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6655) {
-
     // 1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3996,21 +3994,20 @@ GUI_TEST_CLASS_DEFINITION(test_6655) {
     GTKeyboardDriver::keyClick(Qt::Key_Down);
     GTGlobals::sleep(1000);
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
-                   "Required sequence is not collapsed");
+                  "Required sequence is not collapsed");
 
     // 5. Click right arrow
     GTKeyboardDriver::keyClick(Qt::Key_Right);
     GTGlobals::sleep(1000);
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
-                   "Required sequence is collapsed");
+                  "Required sequence is collapsed");
 
     GTKeyboardDriver::keyClick(Qt::Key_Left);
     GTGlobals::sleep(1000);
 
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
-                   "Required sequence is collapsed");
-
+                  "Required sequence is collapsed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6659) {
@@ -4398,9 +4395,8 @@ GUI_TEST_CLASS_DEFINITION(test_6691_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6692) {
-
     // 1. Open "_common_data/scenarios/msa/ma.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -4424,16 +4420,14 @@ GUI_TEST_CLASS_DEFINITION(test_6692) {
     // 6. Expected result: "Conocephalus_discolor" group is removed, "Mecopoda_elongata_Ishigaki_J" is still collapsed.
     QStringList modifiedNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
-    CHECK_SET_ERR(originalNames.length()-modifiedNames.length() == 3, "The number of sequences remained unchanged.");
+    CHECK_SET_ERR(originalNames.length() - modifiedNames.length() == 3, "The number of sequences remained unchanged.");
     CHECK_SET_ERR(!modifiedNames.contains("Conocephalus_discolor"), "Removed sequence is present in multiple alignment.");
 
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
                   "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6692_1) {
-
     // 1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
@@ -4453,7 +4447,7 @@ GUI_TEST_CLASS_DEFINITION(test_6692_1) {
 
     // 5. Expected result: the first row is removed. "SZYD_Cas9_CR51" row is expanded, all other rows are collapsed.
     CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, QString("SZYD_Cas9_CR51")),
-                   "Required sequence is collapsed");
+                  "Required sequence is collapsed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6692_2) {
@@ -4526,7 +4520,6 @@ GUI_TEST_CLASS_DEFINITION(test_6692_3) {
                   "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
 }
 GUI_TEST_CLASS_DEFINITION(test_6693) {
-
     // 1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4536,20 +4529,18 @@ GUI_TEST_CLASS_DEFINITION(test_6693) {
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Select any region in "Mecopoda_elongata_Sumatra".
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,13), QPoint(5,13));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 13), QPoint(5, 13));
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
 
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( 0, 0, 0, 0));
-
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 0, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6697) {
-
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
@@ -4560,15 +4551,14 @@ GUI_TEST_CLASS_DEFINITION(test_6697) {
 
     // 3. Expected state: the new first column is selected.
 
-    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0,0), QPoint(0,9), "A\nA\nA\nA\nA\nA\nA\nA\n-\nA");
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 0), QPoint(0, 9), "A\nA\nA\nA\nA\nA\nA\nA\n-\nA");
 
     // 4. Press the Delete key again.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep();
 
     // 5. Expected state: the new first column is selected.
-    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0,0), QPoint(0,9), "G\nG\nG\nG\nG\nG\nG\nG\n-\nG");
-
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 0), QPoint(0, 9), "G\nG\nG\nG\nG\nG\nG\nG\n-\nG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6689) {
@@ -4635,7 +4625,39 @@ GUI_TEST_CLASS_DEFINITION(test_6707) {
                               GTGlobals::UseMouse);
     //Expected result: the file is still in the folder, the color schemes appear in the folder.
     CHECK_SET_ERR(file.exists(), "the file was unexpectedly removed");
+}
 
+GUI_TEST_CLASS_DEFINITION(test_6718) {
+    //1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select the "Hetrodes_pupus_EF540832" sequence (the last one).
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, 17);
+
+    //3. Go to the "General" tab.
+    //4. Click "Copy".
+    GTUtilsOptionPanelMsa::copySelection(os);
+    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    CHECK_SET_ERR(nullptr != treeView, "treeView is not found");
+
+    //5. Click on the Project Tree View and paste.
+    GTWidget::click(os, treeView);
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTGlobals::sleep();
+
+    QString name;
+    foreach (const QString &doc, GTUtilsProjectTreeView::getDocuments(os).keys()) {
+        CHECK_CONTINUE(doc.startsWith("clipboard"));
+
+        name = doc;
+        break;
+    }
+
+    //Expected: the file as the same as _common_data/scenarios/_regression/6718/6718.aln
+    QString url = QDir::toNativeSeparators(GUrlUtils::getDefaultDataPath() + "\\" + name);
+    bool eq = GTFile::equals(os, url, testDir + "_common_data/scenarios/_regression/6718/6718.aln");
+    CHECK_SET_ERR(eq, "files should be equal");
 }
 GUI_TEST_CLASS_DEFINITION(test_6710) {
 
@@ -4688,6 +4710,6 @@ GUI_TEST_CLASS_DEFINITION(test_6714) {
 
 }
 
-} // namespace GUITest_regression_scenarios
+}    // namespace GUITest_regression_scenarios
 
 }    // namespace U2

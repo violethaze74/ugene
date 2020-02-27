@@ -52,6 +52,18 @@ public:
         GreaterOrEqual
     };
 
+    enum class CopyFormat {
+        Fasta,
+        CLUSTALW,
+        Stocholm,
+        MSF,
+        NEXUS,
+        Mega,
+        PHYLIP_Interleaved,
+        PHYLIP_Sequential,
+        Rich_text
+    };
+
     static const QMap<Tabs, QString> tabsNames;
     static const QMap<Tabs, QString> innerWidgetNames;
 
@@ -68,6 +80,7 @@ public:
     static QString getReference(HI::GUITestOpStatus &os);
     static int getLength(HI::GUITestOpStatus &os);
     static int getHeight(HI::GUITestOpStatus &os);
+    static void copySelection(HI::GUITestOpStatus &os, const CopyFormat format = CopyFormat::CLUSTALW);
 
     static void setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName, GTGlobals::UseMethod method = GTGlobals::UseKeyBoard);
     static QString getColorScheme(HI::GUITestOpStatus &os);

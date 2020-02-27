@@ -177,6 +177,55 @@ int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus &os){
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "copySelection"
+void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus &os, const CopyFormat format) {
+    openTab(os, General);
+    QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
+    GT_CHECK_RESULT(copyType != nullptr, "copyType not found", );
+
+    QString stringFirmat;
+    switch (format) {
+    case CopyFormat::Fasta:
+        stringFirmat = "Fasta";
+        break;
+    case CopyFormat::CLUSTALW:
+        stringFirmat = "CLUSTALW";
+        break;
+    case CopyFormat::Stocholm:
+        stringFirmat = "Stocholm";
+        break;
+    case CopyFormat::MSF:
+        stringFirmat = "MSF";
+        break;
+    case CopyFormat::NEXUS:
+        stringFirmat = "NEXUS";
+        break;
+    case CopyFormat::Mega:
+        stringFirmat = "Mega";
+        break;
+    case CopyFormat::PHYLIP_Interleaved:
+        stringFirmat = "PHYLIP Interleaved";
+        break;
+    case CopyFormat::PHYLIP_Sequential:
+        stringFirmat = "PHYLIP Sequential";
+        break;
+    case CopyFormat::Rich_text:
+        stringFirmat = "Rich text (HTML)";
+        break;
+
+    default:
+        GT_CHECK_RESULT(false, "Unexpected format", );
+        break;
+    }
+    GTComboBox::setIndexWithText(os, copyType, stringFirmat);
+
+    QToolButton *copyButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "copyButton"));
+    GT_CHECK_RESULT(copyButton != nullptr, "copyType not found", );
+
+    GTWidget::click(os, copyButton);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "setColorScheme"
 void GTUtilsOptionPanelMsa::setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName, GTGlobals::UseMethod method) {
     openTab(os, Highlighting);
