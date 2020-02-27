@@ -614,21 +614,6 @@ GUI_TEST_CLASS_DEFINITION( test_2021_9 )
         QString("Unexpected MSA content has occurred: got %1").arg(finalMsaContent));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_2024){
-//    1. Open WD
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-
-//    2. Add element "Local BLAST search"
-    GTUtilsWorkflowDesigner::addAlgorithm( os, "Local BLAST search" );
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Local BLAST search"));
-    GTMouseDriver::click();
-
-//    Expected state: element has parameters "gap cost" and "match score"
-    GTUtilsWorkflowDesigner::setParameter(os, "Gap costs", 2, GTUtilsWorkflowDesigner::comboValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Match scores", 1, GTUtilsWorkflowDesigner::comboValue);
-
-}
-
 GUI_TEST_CLASS_DEFINITION( test_2026 ) {
     // 1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile( os, dataDir + "samples/CLUSTALW/", "COI.aln" );
