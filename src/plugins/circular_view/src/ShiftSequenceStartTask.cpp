@@ -19,14 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-
 #include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/Log.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/GObject.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SequenceUtils.h>
@@ -36,9 +32,7 @@
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ShiftSequenceStartTask.h"
@@ -97,7 +91,7 @@ void ShiftSequenceStartTask::fixAnnotations(int shiftSize) {
             if (ato->hasObjectRelation(seqObj, ObjectRole_Sequence)){
                 foreach (Annotation *an, ato->getAnnotations()) {
                     const U2Location& location = an->getLocation();
-                    U2Location newLocation = shiftLocation(location, shiftSize, seqObj->getSequenceLength());
+                    U2Location newLocation = U1AnnotationUtils::shiftLocation(location, shiftSize, seqObj->getSequenceLength());
                     an->setLocation(newLocation);
                 }
             }
@@ -105,54 +99,4 @@ void ShiftSequenceStartTask::fixAnnotations(int shiftSize) {
     }
 }
 
-U2Location ShiftSequenceStartTask::shiftLocation(const U2Location& location, int shiftSize, int seqLength) {
-
-    U2Location newLocation(location);
-    newLocation->regions.clear();
-
-    int joinIdx = -1;
-
-    int numRegions = location->regions.size();
-    for (int i = 0; i < numRegions; ++i) {
-        const U2Region& r = location->regions[i];
-        if (r.endPos() == seqLength && (i + 1 < numRegions)) {
-            const U2Region& r2 = location->regions[i + 1];
-            if (r2.startPos == 0) {
-                joinIdx = i;
-            }
-        }
-
-        U2Region newRegion(r.startPos - shiftSize, r.length);
-        if (newRegion.endPos() <= 0) {
-            newRegion.startPos += seqLength;
-        } else if (newRegion.startPos < 0) {
-            qint64 additionStartPos = newRegion.startPos + seqLength;
-            qint64 additionLength = seqLength - additionStartPos;
-            U2Region newRegionAddition(additionStartPos, additionLength);
-            newLocation->regions.append(newRegionAddition);
-            newRegion.startPos = 0;
-            newRegion.length = r.length - additionLength;
-            newLocation->op = U2LocationOperator_Join;
-            if (joinIdx != -1) {
-                joinIdx++;
-            }
-        }
-        newLocation->regions.append(newRegion);
-    }
-
-    if (joinIdx != -1) {
-        const U2Region& r1 = newLocation->regions[joinIdx];
-        const U2Region& r2 = newLocation->regions[joinIdx + 1];
-        Q_ASSERT (r1.endPos() == r2.startPos);
-        U2Region joined(r1.startPos, r1.length + r2.length);
-        newLocation->regions.replace(joinIdx, joined);
-        newLocation->regions.remove(joinIdx + 1);
-    }
-
-    return newLocation;
-}
-
-
-
-
-}//ns
+} //ns
