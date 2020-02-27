@@ -4456,6 +4456,75 @@ GUI_TEST_CLASS_DEFINITION(test_6692_1) {
                    "Required sequence is collapsed");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6692_2) {
+
+    // 1. Open "_common_data/scenarios/msa/ma.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Click to the "Switch on/off collapsing" on the toolbar.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Expected result: there are two collapsing groups one right after another: "Conocephalus_discolor" and "Mecopoda_elongata_Ishigaki_J".
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_percaudata"),
+                  "1 Conocephalus_discolor is not collapsed");
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
+                  "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
+
+    // 4. Expand "Conocephalus_discolor" group.
+    GTUtilsMsaEditor::toggleCollapsingGroup(os, "Conocephalus_discolor");
+
+    // 5. Select "Conocephalus_discolor" and "Conocephalus_sp." sequence.
+
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,10), QPoint(11,11));
+
+    // 6. Press the Delete key on the keyboard.
+
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+
+    // 7. Expected result: "Conocephalus_discolor" group is removed, but the third sequence from is the "Conocephalus_discolor" group is still present in the alignment. Also "Mecopoda_elongata_Ishigaki_J" is collapsed.
+
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
+                  "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
+
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Conocephalus_percaudata")),
+                   "Required sequence is removed");
+}
+GUI_TEST_CLASS_DEFINITION(test_6692_3) {
+
+    // 1. Open "_common_data/scenarios/msa/ma.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Click to the "Switch on/off collapsing" on the toolbar.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Expected result: there are two collapsing groups one right after another: "Conocephalus_discolor" and "Mecopoda_elongata_Ishigaki_J".
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_percaudata"),
+                  "1 Conocephalus_discolor is not collapsed");
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
+                  "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
+
+    // 4. Expand "Conocephalus_discolor" group.
+    GTUtilsMsaEditor::toggleCollapsingGroup(os, "Conocephalus_discolor");
+
+    // 5. Select the "Conocephalus_discolor" sequence only. Press the Delete key on the keyboard.
+    GTUtilsMSAEditorSequenceArea::removeSequence(os, "Conocephalus_discolor");
+
+    // 6. Expected result: "Conocephalus_discolor" sequence is removed. There are two collapsed groups: "Conocephalus_sp." and "Mecopoda_elongata_Ishigaki_J". The "Conocephalus_sp." group has one internal sequence "Conocephalus_percaudata" in it, the group is opened. The "Mecopoda_elongata_Ishigaki_J" is collapsed.
+    GTUtilsMsaEditor::toggleCollapsingGroup(os, "Conocephalus_sp.");
+    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Conocephalus_discolor")),
+                   "Required sequence is not removed");
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_percaudata"),
+                  "1 Conocephalus_percaudata is not collapsed");
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
+                  "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
+}
 GUI_TEST_CLASS_DEFINITION(test_6693) {
 
     // 1. Open "COI.aln".
@@ -4566,6 +4635,56 @@ GUI_TEST_CLASS_DEFINITION(test_6707) {
                               GTGlobals::UseMouse);
     //Expected result: the file is still in the folder, the color schemes appear in the folder.
     CHECK_SET_ERR(file.exists(), "the file was unexpectedly removed");
+
+}
+GUI_TEST_CLASS_DEFINITION(test_6710) {
+
+    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    // 2. Remove all data from the alignment except the first column.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 0), QPoint(13, 9));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+
+    // 3. Switch on the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 4. Switch off the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 5. Click on the "Conocephalus_sp." row in the Name List.
+    // 6. Press and hold Shift key on the keyboard.
+    // 7. Click on the "Conocephalus_percaudata" row in the Name List. Release Shift.
+    GTUtilsMsaEditor::clickSequenceName(os, "Conocephalus_sp.");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMsaEditor::clickSequenceName(os, "Conocephalus_percaudata");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    // 8. Expected result: two rows are selected: "Conocephalus_sp." and "Conocephalus_percaudata".
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 5, 1, 2));
+
+}
+GUI_TEST_CLASS_DEFINITION(test_6714) {
+
+    // 1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Click on the third row name in the Name List.
+    GTUtilsMcaEditor::clickReadName(os, QString("SZYD_Cas9_CR51"));
+
+    // 3. Scroll down a bit with a vertical scrollbar.
+    GTUtilsMcaEditor::scrollToRead(os, QString("SZYD_Cas9_CR52"));
+
+    // 4. Expected result: the highlighting rectangle match the row position: selected read "SZYD_Cas9_CR51"
+    QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
+    CHECK_SET_ERR(name.size() == 1, QString("1. Unexpected selection! Expected selection size == 1, actual selection size == %1").arg(QString::number(name.size())));
+    CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
 
 }
 
