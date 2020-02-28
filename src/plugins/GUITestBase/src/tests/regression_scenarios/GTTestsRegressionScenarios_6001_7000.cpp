@@ -4371,8 +4371,8 @@ GUI_TEST_CLASS_DEFINITION(test_6691_1) {
     GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(os, true);
     selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     GTGlobals::sleep();
-    CHECK_SET_ERR(selection.x() == 208, "Wrong selection");
-    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/100"), "Wrong result");
+    CHECK_SET_ERR(selection.x() == 6, "Wrong selection");
+    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/752"), "Wrong result");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6691_2) {
