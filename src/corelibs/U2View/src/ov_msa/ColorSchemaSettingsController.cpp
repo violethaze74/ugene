@@ -43,16 +43,12 @@
 
 namespace U2 {
 
-enum DefaultStrategy{
-    DefaultStrategy_Void,
-    DefaultStrategy_UgeneColors
-};
-
 static void setSchemaColors(const ColorSchemeData& customSchema){
     QString dirPath = ColorSchemeUtils::getColorsDir();
+
     QDir dir(dirPath);
     if(!dir.exists()){
-        dir.mkpath(dirPath);
+        dir.mkpath(".");
     }
 
     IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
@@ -101,7 +97,11 @@ void ColorSchemaSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     ColorSchemaSettingsPageState* state = qobject_cast<ColorSchemaSettingsPageState*>(s);
 
     ColorSchemeUtils::setColorsDir(state->colorsDir);
-    foreach(const ColorSchemeData& schema, state->customSchemas){
+    QDir dir(ColorSchemeUtils::getColorsDir());
+    foreach (const ColorSchemeData &schema, state->removedCustomSchemas) {
+        dir.remove(schema.name + ColorSchemeUtils::COLOR_SCHEME_NAME_FILTERS);
+    }
+    foreach (const ColorSchemeData &schema, state->customSchemas) {
         setSchemaColors(schema);
     }
     emit si_customSettingsChanged();

@@ -62,6 +62,7 @@ class ColorSchemaSettingsPageState : public AppSettingsGUIPageState {
 public:
     QString colorsDir;
     QList<ColorSchemeData> customSchemas;
+    QList<ColorSchemeData> removedCustomSchemas;
 };
 
 class ColorSchemaSettingsPageWidget: public AppSettingsGUIPageWidget, public Ui_ColorSchemaSettingsWidget {
@@ -82,6 +83,7 @@ private slots:
 
 private:
     QList<ColorSchemeData> customSchemas;
+    QList<ColorSchemeData> removedCustomSchemas;
 };
 
 
