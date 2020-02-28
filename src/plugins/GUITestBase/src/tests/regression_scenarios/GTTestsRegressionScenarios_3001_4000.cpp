@@ -1216,32 +1216,6 @@ GUI_TEST_CLASS_DEFINITION(test_3180) {
     CHECK_SET_ERR(AppContext::getTaskScheduler()->getTopLevelTasks().isEmpty(), "Task is not cancelled");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3187) {
-    FormatDBSupportRunDialogFiller::Parameters p;
-    GTFile::copy(os, dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "human_T1.fa");
-    p.inputFilePath = sandBoxDir + "human_T1.fa";
-    p.alphabetType = FormatDBSupportRunDialogFiller::Parameters::Nucleotide;
-    p.outputDirPath = sandBoxDir + "test_3187";
-    QDir().mkpath(p.outputDirPath);
-    GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, p));
-    GTUtilsNotifications::waitForNotification(os, false);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST make database...");
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget *reportWidget = GTWidget::findWidget(os, "qt_scrollarea_viewport");
-    GTMouseDriver::moveTo(reportWidget->rect().center());
-    GTMouseDriver::click();
-
-    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    QString reportText = GTClipboard::text(os);
-
-    CHECK_SET_ERR(reportText.contains("Blast database has been successfully created"), "report didn't contain expected text");
-    CHECK_SET_ERR(reportText.contains("Type: nucleotide"), "report didn't contain expected text");
-    CHECK_SET_ERR(reportText.contains("Source sequences:"), "report didn't contain expected text");
-    CHECK_SET_ERR(reportText.contains("Formatdb log file path:"), "report didn't contain expected text");
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3209_1) {
     // BLAST+ from file
     BlastAllSupportDialogFiller::Parameters blastParams;
@@ -1257,25 +1231,6 @@ GUI_TEST_CLASS_DEFINITION(test_3209_1) {
     bool found = GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(5061, 291));
     CHECK_OP(os, );
     CHECK_SET_ERR(found, "Can not find the blast result");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3209_2) {
-    // BLAST from file
-    BlastAllSupportDialogFiller::Parameters blastParams;
-    blastParams.runBlast = true;
-    blastParams.programNameText = "blastn";
-    blastParams.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
-    blastParams.withInputFile = true;
-    blastParams.inputPath = dataDir + "samples/FASTA/human_T1.fa";
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(blastParams, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST search...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTGlobals::sleep(50000);
-    bool found = GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(5061, 291));
-    CHECK_OP(os, );
-    CHECK_SET_ERR(found, "Can not find the blast result");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3211) {
