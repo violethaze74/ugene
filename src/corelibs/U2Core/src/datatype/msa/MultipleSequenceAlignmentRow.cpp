@@ -359,6 +359,10 @@ bool MultipleSequenceAlignmentRowData::isRowContentEqual(const MultipleSequenceA
     return false;
 }
 
+bool MultipleSequenceAlignmentRowData::isDefault() const {
+    return *this == MultipleSequenceAlignmentRowData();
+}
+
 bool MultipleSequenceAlignmentRowData::operator!=(const MultipleSequenceAlignmentRowData &msaRowData) const {
     return !(*this == msaRowData);
 }

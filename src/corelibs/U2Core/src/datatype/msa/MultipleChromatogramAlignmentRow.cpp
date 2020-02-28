@@ -397,6 +397,10 @@ bool MultipleChromatogramAlignmentRowData::isRowContentEqual(const MultipleChrom
     return false;
 }
 
+bool MultipleChromatogramAlignmentRowData::isDefault() const {
+    return *this == MultipleChromatogramAlignmentRowData();
+}
+
 bool MultipleChromatogramAlignmentRowData::operator!=(const MultipleChromatogramAlignmentRowData &mcaRowData) const {
     return !(*this == mcaRowData);
 }

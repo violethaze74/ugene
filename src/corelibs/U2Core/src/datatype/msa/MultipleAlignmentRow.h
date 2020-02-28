@@ -129,6 +129,8 @@ public:
 
     virtual void crop(U2OpStatus &os, qint64 startPosition, qint64 count) = 0;
 
+    virtual bool isDefault() const = 0;
+
     virtual bool operator !=(const MultipleAlignmentRowData &other) const = 0;
     virtual bool operator ==(const MultipleAlignmentRowData &other) const = 0;
 
@@ -148,12 +150,25 @@ inline int MultipleAlignmentRowData::getUngappedLength() const {
     return sequence.length();
 }
 
-inline bool	operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator!=(const MultipleAlignmentRowData *ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator==(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
-inline bool	operator==(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) { return *ptr1 == *ptr2; }
-inline bool	operator==(const MultipleAlignmentRowData *ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator==(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) {
+    return *ptr1 == *ptr2;
+}
+inline bool	operator==(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) {
+    return nullptr == ptr2 ? ptr1->isDefault() : (*ptr1 == *ptr2);
+}
+inline bool	operator==(const MultipleAlignmentRowData *ptr1, const MultipleAlignmentRow &ptr2) {
+    return nullptr == ptr1 ? ptr2->isDefault() : (*ptr1 == *ptr2);
+}
+inline bool operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) {
+    return !(ptr1 == ptr2);
+}
+inline bool operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) {
+    return !(ptr1 == ptr2);
+}
+inline bool operator!=(const MultipleAlignmentRowData *ptr1, const MultipleAlignmentRow &ptr2) {
+    return !(ptr1 == ptr2);
+}
+
 
 }   // namespace U2
 
