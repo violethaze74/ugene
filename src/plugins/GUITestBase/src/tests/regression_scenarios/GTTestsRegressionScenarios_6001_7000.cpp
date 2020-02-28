@@ -4411,10 +4411,10 @@ GUI_TEST_CLASS_DEFINITION(test_6692) {
                   "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
 
     // 4. Expand "Conocephalus_discolor" group.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Conocephalus_discolor");
     GTUtilsMsaEditor::toggleCollapsingGroup(os, "Conocephalus_discolor");
 
     // 5. Remove the first group: select any (or all of them) sequence from the "Conocephalus_discolor" group and press Delete key on the keyboard.
-
     GTUtilsMSAEditorSequenceArea::removeSequence(os, "Conocephalus_discolor");
 
     // 6. Expected result: "Conocephalus_discolor" group is removed, "Mecopoda_elongata_Ishigaki_J" is still collapsed.
