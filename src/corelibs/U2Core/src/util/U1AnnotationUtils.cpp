@@ -506,49 +506,65 @@ QString U1AnnotationUtils::buildLocationString(const QVector<U2Region> &regions)
 }
 
 
-U2Location U1AnnotationUtils::shiftLocation(const U2Location& location, int shiftSize, int seqLength) {
+U2Location U1AnnotationUtils::shiftLocation(const U2Location& location, qint64 shift, qint64 sequenceLength) {
+    const QVector<U2Region>& oldRegions = location->regions;
+    if (shift == 0 || oldRegions.isEmpty()) {
+        return location;
+    }
     U2Location newLocation(location);
-    newLocation->regions.clear();
+    QVector<U2Region>& newRegions = newLocation->regions;
+    newRegions.clear();
 
-    int joinIdx = -1;
-
-    int numRegions = location->regions.size();
-    for (int i = 0; i < numRegions; ++i) {
-        const U2Region& r = location->regions[i];
-        if (r.endPos() == seqLength && (i + 1 < numRegions)) {
-            const U2Region& r2 = location->regions[i + 1];
-            if (r2.startPos == 0) {
-                joinIdx = i;
-            }
-        }
-
-        U2Region newRegion(r.startPos - shiftSize, r.length);
-        if (newRegion.endPos() <= 0) {
-            newRegion.startPos += seqLength;
-        } else if (newRegion.startPos < 0) {
-            qint64 additionStartPos = newRegion.startPos + seqLength;
-            qint64 additionLength = seqLength - additionStartPos;
-            U2Region newRegionAddition(additionStartPos, additionLength);
-            newLocation->regions.append(newRegionAddition);
-            newRegion.startPos = 0;
-            newRegion.length = r.length - additionLength;
+    // Check merge location either with the left or the right neighbour on the overflow.
+    QVector<int> mergeCheckIndexes;
+    for (int i = 0; i < oldRegions.size(); i++) {
+        const U2Region& oldRegion = oldRegions[i];
+        U2Region shiftedRegion(oldRegion.startPos + (shift % sequenceLength), oldRegion.length);
+        if (shiftedRegion.startPos >= 0 && shiftedRegion.endPos() <= sequenceLength) { // no overflow.
+            newRegions.append(shiftedRegion);
+        } else if (shiftedRegion.endPos() <= 0) { // start overflow with no split.
+            U2Region newRegion(shiftedRegion.startPos + sequenceLength, shiftedRegion.length);
+            newRegions.append(newRegion);
+            mergeCheckIndexes << newRegions.length() - 2;
+        } else if (shiftedRegion.startPos >= sequenceLength) { // end overflow with no split.
+            U2Region newRegion(shiftedRegion.startPos - sequenceLength, shiftedRegion.length);
+            newRegions.append(newRegion);
+            mergeCheckIndexes << newRegions.length() - 1;
+        } else if (shiftedRegion.startPos < 0) { // start overflow with split.
+            U2Region newRegion1(shiftedRegion.startPos + sequenceLength,  -shiftedRegion.startPos);
+            U2Region newRegion2(0, oldRegion.length - newRegion1.length);
+            newRegions.append(newRegion1);
+            newRegions.append(newRegion2);
             newLocation->op = U2LocationOperator_Join;
-            if (joinIdx != -1) {
-                joinIdx++;
+            mergeCheckIndexes << newRegions.length() - 3;
+        } else if (shiftedRegion.endPos() > sequenceLength) { // end overflow with split.
+            U2Region newRegion1(shiftedRegion.startPos, sequenceLength - shiftedRegion.startPos);
+            U2Region newRegion2(0, oldRegion.length - newRegion1.length);
+            newRegions.append(newRegion1);
+            newRegions.append(newRegion2);
+            newLocation->op = U2LocationOperator_Join;
+            mergeCheckIndexes << newRegions.length() - 1;
+        }
+    }
+
+    // If there was an overflow: try to merge regions around overflow point if possible.
+    if (mergeCheckIndexes.size() > 0) {
+        qSort(mergeCheckIndexes);
+        for (int i = mergeCheckIndexes.size(); --i >= 0;) {
+            int mergeCheckIndex = mergeCheckIndexes[i];
+            if (i + 1 < mergeCheckIndexes.size() && mergeCheckIndex == mergeCheckIndexes[i + 1]) {
+                continue;
+            }
+            if (mergeCheckIndex >= 0 && mergeCheckIndex + 1 < newRegions.size()) {
+                U2Region& region0 = newRegions[mergeCheckIndex];
+                U2Region& region1 = newRegions[mergeCheckIndex + 1];
+                if (region0.endPos() == region1.startPos) {
+                    region0.length += region1.length;
+                    newRegions.removeAt(mergeCheckIndex + 1);
+                }
             }
         }
-        newLocation->regions.append(newRegion);
     }
-
-    if (joinIdx != -1) {
-        const U2Region& r1 = newLocation->regions[joinIdx];
-        const U2Region& r2 = newLocation->regions[joinIdx + 1];
-        Q_ASSERT (r1.endPos() == r2.startPos);
-        U2Region joined(r1.startPos, r1.length + r2.length);
-        newLocation->regions.replace(joinIdx, joined);
-        newLocation->regions.remove(joinIdx + 1);
-    }
-
     return newLocation;
 }
 

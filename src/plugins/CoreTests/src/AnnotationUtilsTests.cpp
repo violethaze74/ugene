@@ -60,7 +60,7 @@ Task::ReportResult GTest_ShiftSequence::report() {
         setError(QString("Failed to parse location before: ") + parsingResult);
         return ReportResult_Finished;
     }
-    U2Location shiftedLocation = U1AnnotationUtils::shiftLocation(locationBefore, -shift, sequenceLength);
+    U2Location shiftedLocation = U1AnnotationUtils::shiftLocation(locationBefore, shift, sequenceLength);
     QString shiftedLocationString = U1AnnotationUtils::buildLocationString(*shiftedLocation.data());
     if (locationStringAfter != shiftedLocationString) {
         setError(QString("Expected :%1, got: %2").arg(locationStringAfter).arg(shiftedLocationString));
