@@ -109,8 +109,8 @@ public:
 
     static QList<AnnotatedRegion> getAnnotatedRegionsByStartPos(QList<AnnotationTableObject*> annotationObjects, qint64 startPos);
 
-    /** Shifts annotation around the circular sequence. */
-    static U2Location shiftLocation(const U2Location& location, int shift, int sequenceLength);
+    /** Shifts annotation around the circular sequence and returns new location. */
+    static U2Location shiftLocation(const U2Location& location, qint64 shift, qint64 sequenceLength);
 
     /**
      * Adds or replaces "/note" qualifier if description is not empty.

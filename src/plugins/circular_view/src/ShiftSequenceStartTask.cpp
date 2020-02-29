@@ -39,64 +39,60 @@
 
 namespace U2 {
 
-ShiftSequenceStartTask::ShiftSequenceStartTask(U2SequenceObject *_seqObj, int _shiftSize)
-
-:Task(tr("ShiftSequenceStartTask"), TaskFlag_NoRun), seqObj(_seqObj),seqStart(_shiftSize)
-{
+ShiftSequenceStartTask::ShiftSequenceStartTask(U2SequenceObject* sequenceObject, qint64 newSequenceStartPosition)
+        : Task(tr("ShiftSequenceStartTask"), TaskFlag_NoRun), sequenceObject(sequenceObject), newSequenceStartPosition(newSequenceStartPosition) {
     GCOUNTER(cvar, tvar, "ShiftSequenceStartTask");
 }
 
 Task::ReportResult ShiftSequenceStartTask::report(){
 
-    if (seqStart == 0) {
-        setError("New sequence origin is the same as the old one");
+    if (newSequenceStartPosition == 0) {
+        setError(tr("New sequence origin is the same as the old one"));
         return ReportResult_Finished;
     }
 
-    CHECK(abs(seqStart) < seqObj->getSequenceLength(), ReportResult_Finished);
+    qint64 sequenceLength = sequenceObject->getSequenceLength();
+    if (newSequenceStartPosition < 0 || newSequenceStartPosition >= sequenceLength) {
+        setError(tr("Sequence start position is out of range"));
+        return ReportResult_Finished;
+    }
 
-    Document* curDoc = seqObj->getDocument();
-    CHECK_EXT(!curDoc->isStateLocked(), setError(tr("Document is locked")), ReportResult_Finished);
+    Document* documentWithSequence = sequenceObject->getDocument();
+    CHECK_EXT(!documentWithSequence->isStateLocked(), setError(tr("Document is locked")), ReportResult_Finished);
 
-    DNASequence dna = seqObj->getWholeSequence(stateInfo);
+    DNASequence dnaSequence = sequenceObject->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
+    dnaSequence.seq = dnaSequence.seq.mid(newSequenceStartPosition) + dnaSequence.seq.mid(0, newSequenceStartPosition);
+    sequenceObject->setWholeSequence(dnaSequence);
 
-    dna.seq = dna.seq.mid(seqStart) + dna.seq.mid(0, seqStart);
-    seqObj->setWholeSequence(dna);
-
-
+    QList<Document*> documentsToUpdate;
     Project *p = AppContext::getProject();
     if (p != NULL){
         if (p->isStateLocked()){
             return ReportResult_CallMeAgain;
         }
-        docs = p->getDocuments();
+        documentsToUpdate = p->getDocuments();
     }
 
-
-    if (!docs.contains(curDoc)){
-        docs.append(curDoc);
+    if (!documentsToUpdate.contains(documentWithSequence)){
+        documentsToUpdate.append(documentWithSequence);
     }
 
-    fixAnnotations(seqStart);
-
-    return ReportResult_Finished;
-}
-
-void ShiftSequenceStartTask::fixAnnotations(int shiftSize) {
-    foreach (Document *d, docs) {
-        QList<GObject *> annotationTablesList = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        foreach (GObject *table, annotationTablesList) {
-            AnnotationTableObject *ato = qobject_cast<AnnotationTableObject *>(table);
-            if (ato->hasObjectRelation(seqObj, ObjectRole_Sequence)){
-                foreach (Annotation *an, ato->getAnnotations()) {
-                    const U2Location& location = an->getLocation();
-                    U2Location newLocation = U1AnnotationUtils::shiftLocation(location, shiftSize, seqObj->getSequenceLength());
-                    an->setLocation(newLocation);
+    foreach (Document* document, documentsToUpdate) {
+        QList<GObject*> annotationTablesList = document->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        foreach (GObject* object, annotationTablesList) {
+            AnnotationTableObject* annotationTableObject = qobject_cast<AnnotationTableObject*>(object);
+            if (annotationTableObject->hasObjectRelation(sequenceObject, ObjectRole_Sequence)){
+                foreach (Annotation* annotation, annotationTableObject->getAnnotations()) {
+                    const U2Location& location = annotation->getLocation();
+                    U2Location newLocation = U1AnnotationUtils::shiftLocation(location, -newSequenceStartPosition, sequenceLength);
+                    annotation->setLocation(newLocation);
                 }
             }
         }
     }
+
+    return ReportResult_Finished;
 }
 
 } //ns
