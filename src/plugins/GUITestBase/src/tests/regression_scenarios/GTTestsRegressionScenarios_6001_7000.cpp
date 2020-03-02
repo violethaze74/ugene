@@ -3937,6 +3937,127 @@ GUI_TEST_CLASS_DEFINITION(test_6636) {
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6640) {
+    // 1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Press Esc key
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep();
+
+    // 3. Expected state: No any selection
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( 0, 0, 0, 0));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6640_1) {
+    // 1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Select second sequence
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Isophya_altaica_EF540820");
+
+    // 3. Press Esc key
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep();
+
+    // 4. Expected state: No any selected sequence
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( 0, 0, 0, 0));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6640_2) {
+    // 1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Select one column in consensus
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 1);
+
+    // 3. Expected state: All sequences are selected
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(1, 0, 1, 18));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6640_3) {
+    // 1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Select one sequence
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Isophya_altaica_EF540820");
+
+    // 3. Expected state: Consensus changes background color from white to grey
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6640_4) {
+
+    // 1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Select 4 reads
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR51");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B70");
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    // 3. Expected state: 4 reads are selected
+    QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
+    CHECK_SET_ERR(name.size() == 4, QString("1. Unexpected selection! Expected selection size == 4, actual selection size == %1").arg(QString::number(name.size())));
+    CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
+    CHECK_SET_ERR(name[1] == "SZYD_Cas9_5B70", QString("Unexpected selected read, expected: SZYD_Cas9_5B70, current: %1").arg(name[0]));
+    CHECK_SET_ERR(name[2] == "SZYD_Cas9_5B71", QString("Unexpected selected read, expected: SZYD_Cas9_5B71, current: %1").arg(name[0]));
+    CHECK_SET_ERR(name[3] == "SZYD_Cas9_CR50", QString("Unexpected selected read, expected: SZYD_Cas9_CR50, current: %1").arg(name[0]));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6640_5) {
+    // 1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Select second read
+    GTUtilsMcaEditor::clickReadName(os, QString("SZYD_Cas9_5B70"));
+    GTGlobals::sleep(1000);
+
+    // 3. Press Esc key
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep();
+
+    // 4. Expected state: No any selected read
+    QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
+    CHECK_SET_ERR(name.size() == 0, QString("1. Unexpected selection! Expected selection size == 0, actual selection size == %1").arg(QString::number(name.size())));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6640_6) {
+    // 1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Select second read
+    GTUtilsMcaEditor::clickReadName(os, QString("SZYD_Cas9_5B70"));
+    GTGlobals::sleep(1000);
+
+    // 3. Select any column on reference
+    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 2);
+
+    // 4. Expected state: No any selected read, selected column only
+    QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
+    CHECK_SET_ERR(name.size() == 0, QString("1. Unexpected selection! Expected selection size == 4, actual selection size == %1").arg(QString::number(name.size())));
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6649) {
     //UTEST-43
     GTFileDialog::openFile(os, testDir + "_common_data/cmdline/pcr/pET-24.gb");
@@ -3959,6 +4080,57 @@ GUI_TEST_CLASS_DEFINITION(test_6649) {
     CHECK_SET_ERR(length == 642, QString("Sequence length mismatch. Expected: %1. Actual: %2").arg(642).arg(length));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6651) {
+    // 1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Select the last sequence.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Hetrodes_pupus_EF540832");
+
+    // 3. Remove it with the Delete hotkey.
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+
+    // 4. Expected result: the new last sequence is selected.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 16, 604, 1));
+}
+GUI_TEST_CLASS_DEFINITION(test_6652) {
+    // 1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Select a region in the Sequence Area.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
+
+    // 3. Click into the middle of the region.
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(9, 5));
+
+    // 4. Expected result: only the clicked cell is selected.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(9, 5, 1, 1));
+
+}
+GUI_TEST_CLASS_DEFINITION(test_6652_1) {
+    // 1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Select a region.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
+
+    // 3. Move the mouse cursor inside the region, push the mouse left button down, drag the mouse cursor to the right.
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTGlobals::sleep(500);
+
+    const QString selection1 = GTClipboard::text(os);
+    GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, QPoint(9, 5), QPoint(10, 5));
+
+    // 4. The same region (but shifted to the right) is selected.
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(8, 3), QPoint(13, 7), selection1);
+}
 GUI_TEST_CLASS_DEFINITION(test_6654) {
     // 1. Open "COI.aln" sample alignment.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
