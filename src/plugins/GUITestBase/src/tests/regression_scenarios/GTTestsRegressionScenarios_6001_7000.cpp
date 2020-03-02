@@ -4352,7 +4352,7 @@ GUI_TEST_CLASS_DEFINITION(test_6691_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
-    
+
     GTGlobals::sleep(200);
     GTUtilsOptionPanelMsa::enterPattern(os, "ACCTAT");
     GTGlobals::sleep();
@@ -4366,7 +4366,7 @@ GUI_TEST_CLASS_DEFINITION(test_6691_1) {
     selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selection.x() == 4, "Wrong selection");
     CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/533"), "Wrong result");
-    
+
     GTUtilsOptionPanelMsa::enterPattern(os, "TTTT");
     GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(os, true);
     selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
@@ -4593,6 +4593,34 @@ GUI_TEST_CLASS_DEFINITION(test_6705) {
     //Expected result: UGENE doesn't crash.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6706) {
+    //1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Go to the "Highlighting" tab.
+    //3. Set the "Agreements" highlighting value.
+    GTUtilsOptionPanelMsa::setHighlightingScheme(os, "Agreements");
+
+    //4. Go to the "General" tab.
+    //5. Set "Phaneroptera_falcata" as "Reference sequence".
+    GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
+
+    //6. Select characters 1-3 of the "Isophya_altaica_EF540820" sequence
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 1), QPoint(2, 1));
+
+    //7. Set "Rich text (HTML)" in the "Format" popup menu on th bottom of the "General" tab.
+    //8. Click "Copy".
+    GTUtilsOptionPanelMsa::copySelection(os, GTUtilsOptionPanelMsa::CopyFormat::Rich_text);
+
+    //Expected result: the clipboard contains the data which you can see in the attached file.
+    QString url = testDir + "_common_data/scenarios/_regression/6706/6706.txt";
+    bool eq = GTFile::equals(os, url);
+
+    CHECK_SET_ERR(eq, "file should be equal to the clipboard");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6707) {
     //1. Create a folder and put any file in there.
     QDir(sandBoxDir).mkdir("test_6707");
@@ -4661,7 +4689,7 @@ GUI_TEST_CLASS_DEFINITION(test_6718) {
 
     CHECK_SET_ERR(eq, "files should be equal");
 }
-  
+
 GUI_TEST_CLASS_DEFINITION(test_6710) {
 
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
