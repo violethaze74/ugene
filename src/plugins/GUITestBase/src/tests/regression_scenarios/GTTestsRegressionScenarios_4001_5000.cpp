@@ -4987,32 +4987,6 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     CHECK_SET_ERR(NULL == murineMdi, "'murine.gb' Sequence View is not closed");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_4784_1) {
-    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_1.fa");
-
-    //1. Click the menu Tools -> BLAST-> BLAST Search...
-    //2. Select "_common_data/fasta/chr6,fa" as input file.
-    //3. Press "Select a database file".
-    //4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
-    //6. Press "Search".
-    BlastAllSupportDialogFiller::Parameters settings;
-    settings.runBlast = true;
-    settings.withInputFile = true;
-    settings.inputPath = sandBoxDir + "regression_test_4784_1.fa";
-    settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST search...");
-    GTGlobals::sleep(1000);
-
-    //5. Delete "chr6.fa" in file browser.
-    //7. Click "No" in the appeared message box.
-    //Expected result: An error notification appears - "A problem occurred during doing BLAST. The sequence is no more available".
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "was removed from"));
-    GTUtilsNotifications::waitForNotification(os, true, "The sequence is no more available");
-    QFile::remove(sandBoxDir + "regression_test_4784_1.fa");
-    GTGlobals::sleep(5000);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_4784_2) {
     QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_2.fa");
 
@@ -5041,54 +5015,6 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
     GTGlobals::sleep(5000);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_4784_3) {
-    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_3.fa");
-
-    //1. Open "_common_data/fasta/chr6.fa".
-    GTFileDialog::openFile(os, sandBoxDir + "regression_test_4784_3.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //2. Sequence context menu Analyze -> Query with local BLAST...
-    //3. Press "Select a database file".
-    //4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
-    //5. Press "Search".
-    BlastAllSupportDialogFiller::Parameters settings;
-    settings.runBlast = true;
-    settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST...", GTGlobals::UseMouse);
-
-    //6. Remove "chr6.fa" from project.
-    //Expected result: An error notification appears - "A problem occurred during doing BLAST. The sequence is no more available".
-    GTUtilsNotifications::waitForNotification(os, true, "The sequence is no more available");
-    GTUtilsDocument::removeDocument(os, "regression_test_4784_3.fa");
-    GTGlobals::sleep(5000);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4784_4) {
-    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_4.fa");
-    GTGlobals::sleep();
-    //1. Click the menu Tools -> BLAST-> BLAST+ Search...
-    //2. Select "_common_data/fasta/chr6" as input file.
-    //3. Press "Select a database file".
-    //4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
-    //5. Press "Search".
-    BlastAllSupportDialogFiller::Parameters settings;
-    settings.runBlast = true;
-    settings.withInputFile = true;
-    settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
-    settings.inputPath = sandBoxDir + "regression_test_4784_4.fa";
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST+ search...");
-    GTGlobals::sleep(5000);
-
-    //6. Remove "chr6.fa" from project.
-    //Expected result: An error notification appears - "A problem occurred during doing BLAST. The sequence is no more available".
-    GTUtilsNotifications::waitForNotification(os, true, "The sequence is no more available");
-    GTUtilsDocument::removeDocument(os, "regression_test_4784_4.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(5000);
-}
 
 GUI_TEST_CLASS_DEFINITION(test_4785_1) {
     //1. Open "COI.aln"
