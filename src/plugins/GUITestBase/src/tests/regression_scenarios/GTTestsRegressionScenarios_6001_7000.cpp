@@ -4647,7 +4647,7 @@ GUI_TEST_CLASS_DEFINITION(test_6718) {
     GTGlobals::sleep();
 
     QString name;
-    foreach (const QString &doc, GTUtilsProjectTreeView::getDocuments(os).keys()) {
+    foreach(const QString &doc, GTUtilsProjectTreeView::getDocuments(os).keys()) {
         CHECK_CONTINUE(doc.startsWith("clipboard"));
 
         name = doc;
@@ -4655,10 +4655,13 @@ GUI_TEST_CLASS_DEFINITION(test_6718) {
     }
 
     //Expected: the file as the same as _common_data/scenarios/_regression/6718/6718.aln
-    QString url = QDir::toNativeSeparators(GUrlUtils::getDefaultDataPath() + "\\" + name);
-    bool eq = GTFile::equals(os, url, testDir + "_common_data/scenarios/_regression/6718/6718.aln");
+    QString url = QDir(GUrlUtils::getDefaultDataPath() + "\\" + name).absolutePath();;
+    QString pattern = testDir + "_common_data/scenarios/_regression/6718/6718.aln";
+    bool eq = GTFile::equals(os, url, pattern);
+
     CHECK_SET_ERR(eq, "files should be equal");
 }
+  
 GUI_TEST_CLASS_DEFINITION(test_6710) {
 
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
