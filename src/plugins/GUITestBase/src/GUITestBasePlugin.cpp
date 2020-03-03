@@ -853,7 +853,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3175);
     REGISTER_TEST(GUITest_regression_scenarios::test_3180);
     REGISTER_TEST(GUITest_regression_scenarios::test_3209_1);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3211);
     REGISTER_TEST(GUITest_regression_scenarios::test_3214);
     REGISTER_TEST(GUITest_regression_scenarios::test_3216_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_3216_2);
@@ -922,7 +921,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3472);
     REGISTER_TEST(GUITest_regression_scenarios::test_3473);
     REGISTER_TEST(GUITest_regression_scenarios::test_3477);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3478);
     REGISTER_TEST(GUITest_regression_scenarios::test_3480);
     REGISTER_TEST(GUITest_regression_scenarios::test_3484);
     REGISTER_TEST(GUITest_regression_scenarios::test_3484_1);
@@ -932,7 +930,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3519_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_3519_2);
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3545, "big data");
-    REGISTER_TEST(GUITest_regression_scenarios::test_3551);
     REGISTER_TEST(GUITest_regression_scenarios::test_3552);
     REGISTER_TEST(GUITest_regression_scenarios::test_3553);
     REGISTER_TEST(GUITest_regression_scenarios::test_3555);
@@ -1003,7 +1000,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3805);
     REGISTER_TEST(GUITest_regression_scenarios::test_3809);
     REGISTER_TEST(GUITest_regression_scenarios::test_3813);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3814);
     REGISTER_TEST(GUITest_regression_scenarios::test_3815);
     REGISTER_TEST(GUITest_regression_scenarios::test_3816);
     REGISTER_TEST(GUITest_regression_scenarios::test_3817);
