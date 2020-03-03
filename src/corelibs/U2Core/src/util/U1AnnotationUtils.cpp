@@ -516,7 +516,7 @@ U2Location U1AnnotationUtils::shiftLocation(const U2Location& location, qint64 s
     newRegions.clear();
 
     // Check merge location either with the left or the right neighbour on the overflow.
-    QVector<int> mergeCheckIndexes;
+    QVector<int> mergeIndexes;
     for (int i = 0; i < oldRegions.size(); i++) {
         const U2Region& oldRegion = oldRegions[i];
         U2Region shiftedRegion(oldRegion.startPos + (shift % sequenceLength), oldRegion.length);
@@ -525,45 +525,49 @@ U2Location U1AnnotationUtils::shiftLocation(const U2Location& location, qint64 s
         } else if (shiftedRegion.endPos() <= 0) { // start overflow with no split.
             U2Region newRegion(shiftedRegion.startPos + sequenceLength, shiftedRegion.length);
             newRegions.append(newRegion);
-            mergeCheckIndexes << newRegions.length() - 2;
+            bool merge = i > 0 && oldRegions[i - 1].endPos() == sequenceLength;
+            if (merge) {
+                mergeIndexes << newRegions.length() - 2;
+            }
         } else if (shiftedRegion.startPos >= sequenceLength) { // end overflow with no split.
             U2Region newRegion(shiftedRegion.startPos - sequenceLength, shiftedRegion.length);
             newRegions.append(newRegion);
-            mergeCheckIndexes << newRegions.length() - 1;
+            bool merge = i + 1 < oldRegions.size() && oldRegions[i + 1].startPos == 0;
+            if (merge) {
+                mergeIndexes << newRegions.length() - 1;
+            }
         } else if (shiftedRegion.startPos < 0) { // start overflow with split.
             U2Region newRegion1(shiftedRegion.startPos + sequenceLength,  -shiftedRegion.startPos);
             U2Region newRegion2(0, oldRegion.length - newRegion1.length);
             newRegions.append(newRegion1);
             newRegions.append(newRegion2);
             newLocation->op = U2LocationOperator_Join;
-            mergeCheckIndexes << newRegions.length() - 3;
+            bool merge = i > 0 && oldRegions[i - 1].endPos() == sequenceLength;
+            if (merge) {
+                mergeIndexes << newRegions.length() - 3;
+            }
         } else if (shiftedRegion.endPos() > sequenceLength) { // end overflow with split.
             U2Region newRegion1(shiftedRegion.startPos, sequenceLength - shiftedRegion.startPos);
             U2Region newRegion2(0, oldRegion.length - newRegion1.length);
             newRegions.append(newRegion1);
             newRegions.append(newRegion2);
             newLocation->op = U2LocationOperator_Join;
-            mergeCheckIndexes << newRegions.length() - 1;
+            bool merge = i + 1 < oldRegions.size() && oldRegions[i + 1].startPos == 0;
+            if (merge) {
+                mergeIndexes << newRegions.length() - 1;
+            }
         }
     }
 
-    // If there was an overflow: try to merge regions around overflow point if possible.
-    if (mergeCheckIndexes.size() > 0) {
-        qSort(mergeCheckIndexes);
-        for (int i = mergeCheckIndexes.size(); --i >= 0;) {
-            int mergeCheckIndex = mergeCheckIndexes[i];
-            if (i + 1 < mergeCheckIndexes.size() && mergeCheckIndex == mergeCheckIndexes[i + 1]) {
-                continue;
-            }
-            if (mergeCheckIndex >= 0 && mergeCheckIndex + 1 < newRegions.size()) {
-                U2Region& region0 = newRegions[mergeCheckIndex];
-                U2Region& region1 = newRegions[mergeCheckIndex + 1];
-                if (region0.endPos() == region1.startPos) {
-                    region0.length += region1.length;
-                    newRegions.removeAt(mergeCheckIndex + 1);
-                }
-            }
-        }
+    // If there was an overflow: try to merge regions around overflow point.
+    for (int i = mergeIndexes.size(); --i >= 0;) {
+        int mergeIndex = mergeIndexes[i];
+        Q_ASSERT(mergeIndex + 1 < newRegions.size());
+        U2Region& region0 = newRegions[mergeIndex];
+        U2Region& region1 = newRegions[mergeIndex + 1];
+        Q_ASSERT(region0.endPos() == region1.startPos);
+        region0.length += region1.length;
+        newRegions.removeAt(mergeIndex + 1);
     }
     return newLocation;
 }
