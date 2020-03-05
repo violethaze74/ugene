@@ -77,13 +77,19 @@ bool SequenceAreaRenderer::drawContent(QPainter& painter, const U2Region& column
 
 void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
     QRect selectionRect = ui->getDrawHelper()->getSelectionScreenRect(seqAreaWgt->getSelection());
-    if (selectionRect.left() < SELECTION_STROKE_WIDTH) {
+    int viewWidth = ui->getSequenceArea()->width();
+    if (selectionRect.right() < 0 || selectionRect.left() > viewWidth) {
+        return; // Selection is out of the screen.
+    }
+
+    // Check that frame has enough space to be drawn on both sides.
+    if (selectionRect.left() >= 0 && selectionRect.left() < SELECTION_STROKE_WIDTH) {
         selectionRect.setLeft(SELECTION_STROKE_WIDTH);
     }
-    int viewWidth = ui->getSequenceArea()->width();
-    if (selectionRect.right() > viewWidth - SELECTION_STROKE_WIDTH) {
+    if (selectionRect.right() <= viewWidth && selectionRect.right() + SELECTION_STROKE_WIDTH > viewWidth) {
         selectionRect.setRight(viewWidth - SELECTION_STROKE_WIDTH);
     }
+
     QPen pen(seqAreaWgt->selectionColor);
     if (seqAreaWgt->maMode == MaEditorSequenceArea::ViewMode) {
         pen.setStyle(Qt::DashLine);
