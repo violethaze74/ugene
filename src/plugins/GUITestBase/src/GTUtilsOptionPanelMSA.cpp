@@ -428,6 +428,14 @@ void GTUtilsOptionPanelMsa::enterPattern(HI::GUITestOpStatus &os, QString patter
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getPattern"
+QString GTUtilsOptionPanelMsa::getPattern(GUITestOpStatus &os) {
+    QTextEdit *patternEdit = GTWidget::findExactWidget<QTextEdit *>(os, "textPattern");
+    GT_CHECK_RESULT(nullptr != patternEdit, "textPattern widget is nullptr", "");
+    return patternEdit->toPlainText();
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "setAlgorithm"
 void GTUtilsOptionPanelMsa::setAlgorithm(HI::GUITestOpStatus &os, QString algorithm) {
     QComboBox *algoBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
