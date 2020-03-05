@@ -113,6 +113,7 @@ public:
 
     // functions for accessing "Find pattern" options elements
     static void enterPattern(HI::GUITestOpStatus &os, QString pattern, bool useCopyPaste = false);
+    static QString getPattern(HI::GUITestOpStatus &os);
     static void setAlgorithm(HI::GUITestOpStatus &os, QString algorithm);
     static void setMatchPercentage(HI::GUITestOpStatus &os, int percentage);
     static void setCheckedRemoveOverlappedResults(HI::GUITestOpStatus &os, bool checkedState = true);

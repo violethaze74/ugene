@@ -4215,6 +4215,80 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
     CHECK_SET_ERR(numSelectedSequences == 13, "There is no selection in MSA, but expected");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6676_1) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "Search in Alignment" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+
+//    3. Enter the following pattern: "TAAGACTTCT".
+    GTUtilsOptionPanelMsa::enterPattern(os, "TAAGACTTCT");
+
+//    4. Wait for the search task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: there is 1 result: the first 10 bases of the first row are found, the result is selected.
+    QRect expectedSelection(0, 0, 10, 1);
+    QRect actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search"));
+
+    const bool resultsTextMatch = GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
+    CHECK_SET_ERR(resultsTextMatch, QString("Incorrect count of the pattern search results"));
+
+//    5. Ensure that focus is set to the pattern input widget.
+    GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
+
+//    6. Set cursor in the pattern input widget before the last symbol.
+    GTKeyboardDriver::keyClick(Qt::Key_End);
+    GTKeyboardDriver::keyClick(Qt::Key_Left);
+
+//    7. Click Delete key.
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the pattern is "TAAGACTTC". The alignment is not modified. The first 9 bases of the first row are selected.
+    const QString expectedPattern = "TAAGACTTC";
+    const QString actualPattern = GTUtilsOptionPanelMsa::getPattern(os);
+    CHECK_SET_ERR(expectedPattern == actualPattern, QString("Incorrect pattern: expected '%1', got '%2'").arg(expectedPattern).arg(actualPattern));
+
+    GTUtilsProjectTreeView::itemModificationCheck(os, "COI.aln", false);
+
+    expectedSelection = QRect(0, 0, 9, 1);
+    actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the modified pattern search"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6676_2) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "General" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+
+//    3. Enter the following reference sequence name: "TAAGACTTCT".
+    QLineEdit *sequenceLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "sequenceLineEdit");
+    GTWidget::click(os, sequenceLineEdit);
+    GTKeyboardDriver::keySequence("TAAGACTTCT");
+
+//    4. Click Left key on the keyboard.
+    GTKeyboardDriver::keyClick(Qt::Key_Left);
+
+//    5. Click Delete key.
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+//    Expected state: the reference sequence name "TAAGACTTC". The alignment is not modified.
+    const QString expectedText = "TAAGACTTC";
+    const QString actualText = sequenceLineEdit->text();
+    CHECK_SET_ERR(expectedText == actualText, QString("Incorrect sequence name: expected '%1', got '%2'").arg(expectedText).arg(actualText));
+
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    GTUtilsProjectTreeView::itemModificationCheck(os, "COI.aln", false);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6684) {
     //UTEST-38
     class Custom : public CustomScenario {
