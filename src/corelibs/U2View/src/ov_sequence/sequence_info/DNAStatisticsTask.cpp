@@ -220,7 +220,7 @@ double DNAStatisticsTask::calcPi(U2SequenceDbi* sequenceDbi) {
             const char* sequenceData = seqBlock.constData();
             for (int i = 0, n = seqBlock.size(); i < n; i++) {
                 char c = sequenceData[i];
-                if (pKaMap.contains(c)) {
+                if (pKaMap[c] != 0) {
                     countMap[c]++;
                 }
             }
@@ -237,7 +237,7 @@ double DNAStatisticsTask::calcPi(U2SequenceDbi* sequenceDbi) {
     double step = INITIAL_CUTOFF;
     double pH = 0;
     while (step > CUTOFF) {
-        if ( calcChargeState(countMap,pH) > 0 ){
+        if (calcChargeState(countMap, pH) > 0) {
             pH += step;
         } else {
             step *= 0.5;
