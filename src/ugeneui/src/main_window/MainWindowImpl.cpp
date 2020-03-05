@@ -279,14 +279,6 @@ void MainWindowImpl::createActions() {
     openManualAction->setObjectName("Open UGENE User Manual");
     connect(openManualAction, SIGNAL(triggered()),SLOT(sl_openManualAction()));
 
-    openWDManualAction = new QAction(tr("Open Workflow Designer Manual"), this);
-    openWDManualAction->setObjectName("Open Workflow Designer Manual");
-    connect(openWDManualAction, SIGNAL(triggered()),SLOT(sl_openWDManualAction()));
-
-    openQDManualAction = new QAction(tr("Open Query Designer Manual"), this);
-    openQDManualAction->setObjectName("Open Query Designer Manual");
-    connect(openQDManualAction, SIGNAL(triggered()),SLOT(sl_openQDManualAction()));
-
     welcomePageAction = new QAction(tr("Open Start Page"), this);
     welcomePageAction->setObjectName("welcome_page");
     connect(welcomePageAction, SIGNAL(triggered()), SIGNAL(si_showWelcomePage()));
