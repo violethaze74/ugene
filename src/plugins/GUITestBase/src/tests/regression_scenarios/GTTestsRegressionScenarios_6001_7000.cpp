@@ -3688,6 +3688,7 @@ GUI_TEST_CLASS_DEFINITION(test_6619) {
     // 3. Click on the 3000th character in the Details view.
     GTUtilsSequenceView::setCursor(os, 3000, true);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep();
 
     //Expected: No errors
     CHECK_SET_ERR(!lt.hasError(), "Unexpected errors");
