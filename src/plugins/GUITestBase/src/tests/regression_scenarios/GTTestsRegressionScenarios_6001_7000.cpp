@@ -4011,11 +4011,9 @@ GUI_TEST_CLASS_DEFINITION(test_6640_4) {
 
     // 3. Expected state: 4 reads are selected
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
-    CHECK_SET_ERR(name.size() == 4, QString("1. Unexpected selection! Expected selection size == 4, actual selection size == %1").arg(QString::number(name.size())));
-    CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
-    CHECK_SET_ERR(name[1] == "SZYD_Cas9_5B70", QString("Unexpected selected read, expected: SZYD_Cas9_5B70, current: %1").arg(name[0]));
-    CHECK_SET_ERR(name[2] == "SZYD_Cas9_5B71", QString("Unexpected selected read, expected: SZYD_Cas9_5B71, current: %1").arg(name[0]));
-    CHECK_SET_ERR(name[3] == "SZYD_Cas9_CR50", QString("Unexpected selected read, expected: SZYD_Cas9_CR50, current: %1").arg(name[0]));
+    CHECK_SET_ERR(name.size() == 2, QString("1. Unexpected selection! Expected selection size == 2, actual selection size == %1").arg(QString::number(name.size())));
+    CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR50", QString("Unexpected selected read, expected: SZYD_Cas9_CR50, current: %1").arg(name[0]));
+    CHECK_SET_ERR(name[1] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6640_5) {
