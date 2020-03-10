@@ -28,6 +28,7 @@
 namespace U2 {
 
 class U2FORMATS_EXPORT CalculateSequencesNumberTask : public Task {
+    Q_OBJECT
 public:
     CalculateSequencesNumberTask(const QString& url);
 

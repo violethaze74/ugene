@@ -145,6 +145,7 @@ public:
 };
 
 class ClarkLogParser : public ExternalToolLogParser {
+    Q_OBJECT
 public:
     ClarkLogParser();
 

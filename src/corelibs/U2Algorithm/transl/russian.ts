@@ -181,7 +181,7 @@
 <context>
     <name>U2::BestPositionFindTask</name>
     <message>
-        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="120"/>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="154"/>
         <source>Best position find task</source>
         <translation>Best position find task</translation>
     </message>
@@ -417,18 +417,18 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="571"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="610"/>
-        <source>Percentage Identity</source>
+        <source>Percentage identity</source>
         <translation>По процентному соотношению</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="572"/>
-        <source>Percentage Identity (colored)</source>
-        <translation type="unfinished"></translation>
+        <source>Percentage identity (colored)</source>
+        <translation>По процентному соотношению (цветное)</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="573"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="611"/>
-        <source>Percentage Identity (gray)</source>
+        <source>Percentage identity (gray)</source>
         <translation>По процентному соотношению (серый)</translation>
     </message>
     <message>
@@ -617,6 +617,11 @@ For every column selects the most rare symbol in the whole alignment with percen
         <source>Align sequences to an existing alignment by UGENE started</source>
         <translation>Align sequences to an existing alignment by UGENE started</translation>
     </message>
+    <message>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="136"/>
+        <source>The following sequence(s) were not aligned as they do not contain meaningful characters: &quot;%1&quot;.</source>
+        <translation>Следующие последовательности не были выровнены потому что не содержат символов, имеющих значение: &quot;%1&quot;.</translation>
+    </message>
 </context>
 <context>
     <name>U2::SmithWatermanReportCallbackAnnotImpl</name>
@@ -686,10 +691,6 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="372"/>
         <source>Failed to get the sequence data.</source>
         <translation>Неудачная попытка получения данных последовательности.</translation>
-    </message>
-    <message>
-        <source>Failed to add row to result msa.</source>
-        <translation type="vanished">Неудачная попытка добавления строки в результирующее выравнивание.</translation>
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="381"/>

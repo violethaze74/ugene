@@ -186,6 +186,7 @@ private:
 };
 
 class TaxonSelectionDialog : public QDialog {
+    Q_OBJECT
 public:
     TaxonSelectionDialog(const QString &value, QWidget *parent);
 

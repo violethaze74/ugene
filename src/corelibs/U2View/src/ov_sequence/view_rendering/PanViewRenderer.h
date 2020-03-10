@@ -38,6 +38,7 @@ class PVRowData;
 /* DetViewAnnotationPainter */
 /************************************************************************/
 class PanViewRenderer : public SequenceViewAnnotatedRenderer {
+    Q_OBJECT
 public:
     PanViewRenderer(PanView* panView, SequenceObjectContext* ctx);
     virtual ~PanViewRenderer() {}

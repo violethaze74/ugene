@@ -167,7 +167,7 @@ Document * PDWFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, co
 
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
 
-    QString lockReason = QObject::tr("The document is created not by UGENE");
+    QString lockReason = QObject::tr("The document is not created by UGENE");
     Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs,
         lockReason);
 

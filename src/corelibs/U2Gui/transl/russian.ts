@@ -55,25 +55,6 @@
     </message>
 </context>
 <context>
-    <name>AceImportDialog</name>
-    <message>
-        <source>Import ACE File</source>
-        <translation type="vanished">Импорт ACE файла</translation>
-    </message>
-    <message>
-        <source>Source URL:</source>
-        <translation type="vanished">Источник:</translation>
-    </message>
-    <message>
-        <source>Destination URL:</source>
-        <translation type="vanished">Назначение:</translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="vanished">...</translation>
-    </message>
-</context>
-<context>
     <name>AceImportWidget</name>
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="14"/>
@@ -316,10 +297,6 @@
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="395"/>
         <source>Save annotation(s) to</source>
         <translation>Сохранить результат(ы) в</translation>
-    </message>
-    <message>
-        <source>Choose a file to store the annotations</source>
-        <translation type="vanished">Выбрать файл для сохранения аннотаций</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="436"/>
@@ -593,10 +570,6 @@
         <translation>База данных:</translation>
     </message>
     <message>
-        <source>Save to folder:</source>
-        <translation type="vanished">Сохранить в папку:</translation>
-    </message>
-    <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="79"/>
         <source>Save to directory:</source>
         <translation>Сохранить в директорию:</translation>
@@ -809,10 +782,6 @@
         <translation>Изменение аннотаций при редактировании последовательности</translation>
     </message>
     <message>
-        <source>Expand affected annotation</source>
-        <translation type="vanished">Расширить аннотацию</translation>
-    </message>
-    <message>
         <location filename="../src/util/EditSettingsDialog.ui" line="23"/>
         <source>Expand or crop affected annotation</source>
         <translation>Расширить или уменьшить аннотацию</translation>
@@ -966,10 +935,6 @@
         <translation>Параметры файлов и папок</translation>
     </message>
     <message>
-        <source>Process folders recursively</source>
-        <translation type="vanished">Обработать папки рекурсивно</translation>
-    </message>
-    <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="40"/>
         <source>Process directories recursively</source>
         <translation>Обработать директории рекурсивно</translation>
@@ -1008,18 +973,6 @@
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="119"/>
         <source>Merge into a single sequence</source>
         <translation>Соединить в одну последовательность</translation>
-    </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Number of &apos;unknown&apos; symbols &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(&apos;N &apos;for nucleic or &apos;X&apos; for amino)&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; between parts:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Число неизвестных символов &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;(&apos;N &apos;для нуклеотидных или &apos;X&apos; для амино)&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; между частями:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {3C?} {4.0/?} {3.?} {40/?} {1&quot;?} {2&apos;?} {8.25p?} {400;?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {10p?} {10p?} {10p?}</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="158"/>
@@ -1222,38 +1175,6 @@ The items cannot be recovered once deleted.</source>
         <location filename="../src/util/project/ProjectTreeController.cpp" line="1106"/>
         <source>Some of selected objects are being used by the other users of the database. Try to remove them later.</source>
         <translation>Некоторые из выбранных объектов используются другими пользователями базы данных. Попробуйте удалить их позже.</translation>
-    </message>
-    <message>
-        <source>Files and folders</source>
-        <translation type="vanished">Файлы и папки</translation>
-    </message>
-    <message>
-        <source>Documents and objects</source>
-        <translation type="vanished">Документы и объекты</translation>
-    </message>
-    <message>
-        <source>&lt;auto&gt;</source>
-        <translation type="vanished">&lt;авто&gt;</translation>
-    </message>
-    <message>
-        <source>Format %1 is not supported by %2.</source>
-        <translation type="vanished">Формат %1 не поддерживается %2.</translation>
-    </message>
-    <message>
-        <source>Failed to export image to %1.</source>
-        <translation type="vanished">Невозможно экспортировать изображение %1.</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="vanished">Автор</translation>
-    </message>
-    <message>
-        <source>Gene name</source>
-        <translation type="vanished">Имя гена</translation>
-    </message>
-    <message>
-        <source>Organism</source>
-        <translation type="vanished">Организм</translation>
     </message>
 </context>
 <context>
@@ -1509,10 +1430,6 @@ The items cannot be recovered once deleted.</source>
         <translation>Поисковый запрос:</translation>
     </message>
     <message>
-        <source>History...</source>
-        <translation type="vanished">История...</translation>
-    </message>
-    <message>
         <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="87"/>
         <source>Results:</source>
         <translation>Результаты:</translation>
@@ -1607,59 +1524,6 @@ The items cannot be recovered once deleted.</source>
         <location filename="../src/util/shared_db/SharedConnectionsDialog.ui" line="114"/>
         <source>Disconnect</source>
         <translation>Отключиться</translation>
-    </message>
-</context>
-<context>
-    <name>U2::AceImportDialog</name>
-    <message>
-        <source>Destination UGENEDB file</source>
-        <translation type="vanished">Место назначения UGENEDB файла</translation>
-    </message>
-    <message>
-        <source>Destination URL is not specified</source>
-        <translation type="vanished">Не указан путь места назначения</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="vanished">OK</translation>
-    </message>
-    <message>
-        <source>Destination URL must point to a local file</source>
-        <translation type="vanished">Место назначения должно указывать на локальный файл</translation>
-    </message>
-    <message>
-        <source>There is opened view with destination file.
-Close it or choose different file</source>
-        <translation type="vanished">Указанный файл используется.
-Закройте его или выберите другой файл</translation>
-    </message>
-    <message>
-        <source>Destination folder &apos;%1&apos; is not writable, please choose different destination URL</source>
-        <translation type="vanished">Папка места назначения &apos;%1&apos; недоступна для записи, выберите другое место назначения</translation>
-    </message>
-    <message>
-        <source>Destination file already exists.
-To overwrite the file, press &apos;Replace&apos;.
-To append data to existing file press &apos;Append&apos;.</source>
-        <translation type="vanished">Указанный файл уже существует.
-Чтобы переписать файл нажмите &apos;Переписать&apos;.
-Для добавления данных в существующий файл нажмите &apos;Добавить&apos;.</translation>
-    </message>
-    <message>
-        <source>Replace</source>
-        <translation type="vanished">Переписать</translation>
-    </message>
-    <message>
-        <source>Append</source>
-        <translation type="vanished">Добавить</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Отмена</translation>
-    </message>
-    <message>
-        <source>Destination file &apos;%1&apos; cannot be removed</source>
-        <translation type="vanished">Файл &apos;%1&apos; не может быть удален</translation>
     </message>
 </context>
 <context>
@@ -1832,7 +1696,7 @@ To append data to existing file press &apos;Append&apos;.</source>
     <message>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="107"/>
         <source>&lt;auto&gt;</source>
-        <translation type="unfinished">&lt;авто&gt;</translation>
+        <translation>&lt;авто&gt;</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="241"/>
@@ -2447,12 +2311,12 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/imageExport/ImageExportTask.cpp" line="61"/>
         <source>Format %1 is not supported by %2.</source>
-        <translation type="unfinished">Формат %1 не поддерживается %2.</translation>
+        <translation>Формат %1 не поддерживается %2.</translation>
     </message>
     <message>
         <location filename="../src/util/imageExport/ImageExportTask.cpp" line="62"/>
         <source>Failed to export image to %1.</source>
-        <translation type="unfinished">Невозможно экспортировать изображение %1.</translation>
+        <translation>Невозможно экспортировать изображение %1.</translation>
     </message>
     <message>
         <location filename="../src/util/imageExport/ImageExportTask.cpp" line="66"/>
@@ -2478,12 +2342,12 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="62"/>
         <source>Files and folders</source>
-        <translation type="unfinished">Файлы и папки</translation>
+        <translation>Файлы и папки</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="63"/>
         <source>Documents and objects</source>
-        <translation type="unfinished">Документы и объекты</translation>
+        <translation>Документы и объекты</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="99"/>
@@ -2661,10 +2525,6 @@ Are you sure you want to open all of them?</source>
         <translation>Лог</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation type="vanished">Настройки</translation>
-    </message>
-    <message>
         <location filename="../src/util/logview/LogView.cpp" line="72"/>
         <source>Settings...</source>
         <translation>Настройки...</translation>
@@ -2716,17 +2576,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::Notification</name>
     <message>
-        <location filename="../src/Notification.cpp" line="162"/>
+        <location filename="../src/Notification.cpp" line="163"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="163"/>
+        <location filename="../src/Notification.cpp" line="164"/>
         <source>Remove notification after closing</source>
         <translation>Удалить уведомление после закрытия</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="179"/>
+        <location filename="../src/Notification.cpp" line="180"/>
         <source>Detailed message</source>
         <translation>Детальное сообщение</translation>
     </message>
@@ -3148,22 +3008,22 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/ReloadDocumentsTask.cpp" line="36"/>
         <source>Reload documents task</source>
-        <translation type="unfinished"></translation>
+        <translation>Reload documents task</translation>
     </message>
     <message>
         <location filename="../src/ReloadDocumentsTask.cpp" line="46"/>
         <source>Document &apos;%1&apos; can&apos;t be unloaded. &apos;%2&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Документ &apos;%1&apos; не может быть выгружен. &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="../src/ReloadDocumentsTask.cpp" line="65"/>
         <source>Document(s) reloading failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Document(s) reloading failed.</translation>
     </message>
     <message>
         <location filename="../src/ReloadDocumentsTask.cpp" line="72"/>
         <source>The following errors occurred during the document(s) reloading: &lt;ul&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>В процессе перезагрузки документа возникли следующие ошибки: &lt;ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -3206,14 +3066,6 @@ Are you sure you want to open all of them?</source>
 </context>
 <context>
     <name>U2::ScaleBar</name>
-    <message>
-        <source>-</source>
-        <translation type="vanished">-</translation>
-    </message>
-    <message>
-        <source>+</source>
-        <translation type="vanished">+</translation>
-    </message>
     <message>
         <location filename="../src/util/ScaleBar.cpp" line="42"/>
         <location filename="../src/util/ScaleBar.cpp" line="46"/>
@@ -3513,15 +3365,7 @@ check connection settings</translation>
     <message>
         <location filename="../src/UnloadDocumentTask.cpp" line="183"/>
         <source>The document is locked by some algorithm.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There is an active view with document content</source>
-        <translation type="vanished">Документ используется в открытых окнах</translation>
-    </message>
-    <message>
-        <source>Document is locked by some algorithm and cannot be unloaded</source>
-        <translation type="vanished">Документ был заблокирован одним из алгоритмов и не может быть выгружен</translation>
+        <translation>Документ заблокирован одним из алгоритмов.</translation>
     </message>
     <message>
         <location filename="../src/UnloadDocumentTask.cpp" line="163"/>
@@ -3534,7 +3378,7 @@ check connection settings</translation>
     <message>
         <location filename="../src/util/webview/WebViewControllerPrivate.cpp" line="42"/>
         <source>Can not open a file for writing: </source>
-        <translation type="unfinished"></translation>
+        <translation>Can not open a file for writing: </translation>
     </message>
 </context>
 <context>
@@ -3564,7 +3408,7 @@ check connection settings</translation>
     <message>
         <location filename="../src/UnloadDocumentTask.cpp" line="50"/>
         <source>There is an active view with the document content.</source>
-        <translation type="unfinished"></translation>
+        <translation>There is an active view with the document content.</translation>
     </message>
 </context>
 </TS>

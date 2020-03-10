@@ -404,12 +404,12 @@
         <translation>NULL parameters area</translation>
     </message>
     <message>
-        <location filename="../src/model/WorkflowContext.cpp" line="205"/>
+        <location filename="../src/model/WorkflowContext.cpp" line="215"/>
         <source>Can not create folder: </source>
         <translation>Невозможно создать папку: </translation>
     </message>
     <message>
-        <location filename="../src/model/WorkflowContext.cpp" line="228"/>
+        <location filename="../src/model/WorkflowContext.cpp" line="238"/>
         <source>Can not create folder %1 in the folder %2</source>
         <translation>Can not create folder %1 in the folder %2</translation>
     </message>
@@ -444,27 +444,27 @@
         <translation>The variable is already defined: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="244"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="257"/>
         <source>Empty script text</source>
         <translation>Скрипт пуст</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="252"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="265"/>
         <source>Script syntax check failed! Line: %1, error: %2</source>
         <translation>Обнаружена ошибка в скрипте! Строка: %1, ошибка: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="276"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="289"/>
         <source>The workflow contains a cycle</source>
         <translation>Схема содержит цикл</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="371"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="384"/>
         <source>&lt;empty&gt;</source>
         <translation>&lt;пустой&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="371"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="384"/>
         <source>Default value</source>
         <translation>Значение по умолчанию</translation>
     </message>
@@ -1080,10 +1080,6 @@
         <translation>Url definition does not contain dataset name</translation>
     </message>
     <message>
-        <source>Folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
-        <translation type="vanished">Folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</translation>
-    </message>
-    <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="825"/>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="838"/>
         <source>Cannot find &apos;%1&apos; port at &apos;%2&apos;</source>
@@ -1371,19 +1367,19 @@
 <context>
     <name>U2::PrompterBaseImpl</name>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1364"/>
         <location filename="../src/support/WorkflowUtils.cpp" line="1385"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1422"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1406"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1443"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1400"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1421"/>
         <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>файл(ы) рядом с исходным(и) &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1368"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1389"/>
         <source>the list of files</source>
         <translation>список файлов</translation>
     </message>
@@ -1475,7 +1471,7 @@
     <message>
         <location filename="../src/model/ActorPrototypeRegistry.cpp" line="33"/>
         <source>Can&apos;t register element config with ID &apos;%1&apos;%2. There is already registered element with this ID%3.</source>
-        <translation type="unfinished"></translation>
+        <translation>Can&apos;t register element config with ID &apos;%1&apos;%2. There is already registered element with this ID%3.</translation>
     </message>
 </context>
 <context>
@@ -1519,10 +1515,6 @@
         <location filename="../src/library/BaseActorCategories.cpp" line="59"/>
         <source>NGS: Basic Functions</source>
         <translation>NGS: основные функции</translation>
-    </message>
-    <message>
-        <source>NGS: Align Short Reads</source>
-        <translation type="vanished">NGS: выравнивание коротких прочтений</translation>
     </message>
     <message>
         <location filename="../src/library/BaseActorCategories.cpp" line="67"/>
@@ -2045,7 +2037,7 @@
 <context>
     <name>U2::WorkflowSettings</name>
     <message>
-        <location filename="../src/support/WorkflowSettings.cpp" line="253"/>
+        <location filename="../src/support/WorkflowSettings.cpp" line="256"/>
         <source>Command line UGENE path not found, a possibility to run in separate process will be disabled</source>
         <translation>Command line UGENE path not found, a possibility to run in separate process will be disabled</translation>
     </message>
@@ -2063,91 +2055,97 @@
         <translation>Необходимо указать значение для параметра &quot;%1&quot; либо связать входной слот &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="338"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="351"/>
         <source> (use --%1 option)</source>
         <translation> (используйте --%1 опцию)</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="394"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="407"/>
         <source>&lt;List of values&gt;</source>
         <translation>&lt;Список значений&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="394"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="407"/>
         <source>List of values</source>
         <translation>Список значений</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="557"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="570"/>
         <source>%1 actors in workflow have &apos;%2&apos; alias</source>
         <translation>%1 actors in workflow have &apos;%2&apos; alias</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="634"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="647"/>
         <source>The %1 element is a %2. Sorry, but current version of UGENE doesn&apos;t support of filters and groupers in the includes.</source>
         <translation>%1 элемент %2. Текущая версия UGENE не поддерживает фильтрацию и группировку.</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="642"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="655"/>
         <source>filter</source>
         <translation>filter</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="644"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="657"/>
         <source>grouper</source>
         <translation>grouper</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="652"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="665"/>
         <source>The workflow has not any aliased ports</source>
         <translation>The workflow has not any aliased ports</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="669"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="682"/>
         <source>The aliased port %1.%2 has no aliased slots</source>
         <translation>The aliased port %1.%2 has no aliased slots</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="678"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="691"/>
         <source>The free port %1.%2 is not aliased</source>
         <translation>The free port %1.%2 is not aliased</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="691"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="704"/>
         <source>The required parameter %1.%2 is empty and not aliased</source>
         <translation>The required parameter %1.%2 is empty and not aliased</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="889"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="902"/>
+        <source>Specified variable &quot;%%1%&quot; does not exist, please check the command again.</source>
+        <translation>Указанная переменная &quot;%%1%&quot; не существует, проверьте команду.</translation>
+    </message>
+    <message>
+        <location filename="../src/support/WorkflowUtils.cpp" line="906"/>
         <source>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</source>
         <translation>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="893"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="910"/>
         <source>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</source>
         <translation>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1208"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="914"/>
+        <source>Custom tool &quot;%1&quot;, specified for the &quot;%2&quot; element, didn&apos;t pass validation.</source>
+        <translation>Custom tool &quot;%1&quot;, specified for the &quot;%2&quot; element, didn&apos;t pass validation.</translation>
+    </message>
+    <message>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1229"/>
         <source>Can&apos;t access output file path: &apos;%1&apos;</source>
         <translation>Can&apos;t access output file path: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1226"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1247"/>
         <source>Workflow output folder &apos;%1&apos; can&apos;t be accessed. Check that the folder exists and you have enough permissions to write to it, or choose another folder in the UGENE Application Settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет доступа к папке &apos;%1&apos;. Проверьте, что папка существует и у вас есть права на запиьс в неё или выберите другую папку в диалоге настроек UGENE.</translation>
     </message>
     <message>
-        <source>Can&apos;t output folder path: &apos;%1&apos;, check permissions</source>
-        <translation type="vanished">Can&apos;t output folder path: &apos;%1&apos;, check permissions</translation>
-    </message>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1246"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1267"/>
         <source>Empty shared database URL specified</source>
         <translation>Empty shared database URL specified</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1318"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1339"/>
         <source>Wrong samples map string</source>
         <translation>Wrong samples map string</translation>
     </message>

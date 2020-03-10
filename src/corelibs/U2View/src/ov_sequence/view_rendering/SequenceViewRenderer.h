@@ -49,7 +49,7 @@ struct CommonSequenceViewMetrics {
 /************************************************************************/
 /* SequenceViewRenderer */
 /************************************************************************/
-class U2VIEW_EXPORT SequenceViewRenderer {
+class U2VIEW_EXPORT SequenceViewRenderer : public QObject {
 public:
     SequenceViewRenderer(SequenceObjectContext* ctx);
 

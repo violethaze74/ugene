@@ -33,6 +33,7 @@ class CustomExternalTool;
 class RegisterCustomToolTask;
 
 class ImportCustomToolsTask : public Task {
+    Q_OBJECT
 public:
     ImportCustomToolsTask(const QString &url);
 

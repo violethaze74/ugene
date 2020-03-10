@@ -31,6 +31,7 @@ class WorkflowProcess;
 }
 
 class PrepareWevoteTaxonomyDataTask : public Task {
+    Q_OBJECT
 public:
     PrepareWevoteTaxonomyDataTask(FileStorage::WorkflowProcess &workflowProcess);
 
