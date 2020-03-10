@@ -4,7 +4,7 @@
 <context>
     <name>U2::ChromaViewAction</name>
     <message>
-        <location filename="../src/ChromaViewPlugin.cpp" line="137"/>
+        <location filename="../src/ChromaViewPlugin.cpp" line="134"/>
         <source>Show chromatogram</source>
         <translation>Показать хроматограмму</translation>
     </message>
@@ -59,14 +59,6 @@
         <location filename="../src/ChromatogramView.cpp" line="356"/>
         <source>The sequence is locked</source>
         <translation>Последовательность заблокирована</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="obsolete">Ошибка</translation>
-    </message>
-    <message>
-        <source>Sequence is locked</source>
-        <translation type="obsolete">Последовательность заблокирована</translation>
     </message>
     <message>
         <location filename="../src/ChromatogramView.cpp" line="67"/>

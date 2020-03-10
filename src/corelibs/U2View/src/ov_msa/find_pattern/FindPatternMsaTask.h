@@ -42,6 +42,7 @@ struct U2VIEW_EXPORT FindPatternMsaSettings {
 };
 
 class U2VIEW_EXPORT FindPatternMsaTask : public Task {
+    Q_OBJECT
 public:
     FindPatternMsaTask(const FindPatternMsaSettings& settings);
 

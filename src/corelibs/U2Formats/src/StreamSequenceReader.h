@@ -48,6 +48,7 @@ class IOAdapter;
 */
 
 class U2FORMATS_EXPORT StreamSequenceReader : public QObject {
+    Q_OBJECT
     struct ReaderContext {
         ReaderContext() : io(NULL), format(NULL) {}
         IOAdapter* io;

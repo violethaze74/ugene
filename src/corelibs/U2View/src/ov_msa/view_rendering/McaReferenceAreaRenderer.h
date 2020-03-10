@@ -29,6 +29,7 @@ namespace U2 {
 class MaEditor;
 
 class U2VIEW_EXPORT McaReferenceAreaRenderer : public PanViewRenderer {
+    Q_OBJECT
 public:
     McaReferenceAreaRenderer(PanView *panView, SequenceObjectContext *ctx, MaEditor *maEditor);
 

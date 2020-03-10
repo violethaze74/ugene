@@ -25,8 +25,8 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
 #include <U2Core/Version.h>
+#include <QMessageBox>
 
-class QMessageBox;
 class QPushButton;
 
 namespace U2 {
@@ -49,6 +49,7 @@ private:
 };
 
 class UpdateMessage : public QObject {
+    Q_OBJECT
 public:
     UpdateMessage(const QString &newVersion);
     CheckUpdatesTask::Answer getAnswer() const;
@@ -60,6 +61,7 @@ private:
 };
 
 class VersionMessage : public QObject {
+    Q_OBJECT
 public:
     VersionMessage(const Version &newVersion);
     CheckUpdatesTask::Answer getAnswer() const;

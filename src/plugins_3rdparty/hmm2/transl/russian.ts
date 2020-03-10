@@ -457,7 +457,7 @@ The default is instead to generate sequences with a variety of different lengths
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="56"/>
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="164"/>
         <source>Close</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="77"/>
@@ -845,7 +845,7 @@ The default is instead to generate sequences with a variety of different lengths
     <message>
         <location filename="../src/HMMIO.cpp" line="219"/>
         <source>Model &quot;%1&quot; is a HMMER3 model, it can&apos;t be used with HMMER2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Модель &quot;%1&quot; это HMMER3 модель, она не может быть использована с HMMER2.</translation>
     </message>
     <message>
         <location filename="../src/HMMIO.cpp" line="385"/>
@@ -1153,10 +1153,6 @@ The default is instead to generate sequences with a variety of different lengths
         <location filename="../src/u_build/HMMBuildWorker.cpp" line="121"/>
         <source>Random seed</source>
         <translation>Затравка</translation>
-    </message>
-    <message>
-        <source>HMM Build</source>
-        <translation type="obsolete">Построение HMM профайла</translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildWorker.cpp" line="177"/>

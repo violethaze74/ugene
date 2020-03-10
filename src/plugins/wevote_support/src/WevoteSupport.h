@@ -27,6 +27,7 @@
 namespace U2 {
 
 class WevoteSupport : public ExternalTool {
+    Q_OBJECT
 public:
     WevoteSupport();
 

@@ -64,6 +64,7 @@ private:
 
 
 class FastQCParser : public ExternalToolLogParser {
+    Q_OBJECT
 public:
     FastQCParser(const QString& inputFile);
 

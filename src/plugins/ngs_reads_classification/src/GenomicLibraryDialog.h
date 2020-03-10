@@ -55,6 +55,7 @@ private:
 };
 
 class GenomicLibraryDialog : public QDialog {
+    Q_OBJECT
 public:
     GenomicLibraryDialog(const Dataset &dataset, QWidget *parent);
     ~GenomicLibraryDialog();

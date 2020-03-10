@@ -30,6 +30,7 @@
 namespace U2 {
 
 class PrepareSequenceObjectsTask : public Task {
+    Q_OBJECT
 public:
     PrepareSequenceObjectsTask(const MultipleSequenceAlignment& msa, const QSet<qint64>& rowIds, bool trimGaps);
 
@@ -44,6 +45,7 @@ private:
 };
 
 class ExportSequencesTask : public Task {
+    Q_OBJECT
 public:
     ExportSequencesTask(const MultipleSequenceAlignment& msa, const QSet<qint64>& rowIds, bool trimGaps, bool addToProjectFlag,
         const QString& dirUrl, const DocumentFormatId& format, const QString& extension, const QString& customFileName = QString());

@@ -235,6 +235,7 @@ private:
 };
 
 class ExternalToolSelectComboBox : public QComboBox {
+    Q_OBJECT
 public:
     ExternalToolSelectComboBox(QWidget* parent = nullptr);
 

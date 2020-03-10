@@ -201,25 +201,6 @@
     </message>
 </context>
 <context>
-    <name>U2::CircularViewImageExportTaskFactory</name>
-    <message>
-        <source>List of Circular Views is empty!</source>
-        <translation type="obsolete">Список круговых видов пуст!</translation>
-    </message>
-    <message>
-        <source>Sequence</source>
-        <translation type="obsolete">Последовательность</translation>
-    </message>
-    <message>
-        <source>Sequence context is NULL!</source>
-        <translation type="obsolete">Sequence context is NULL!</translation>
-    </message>
-    <message>
-        <source>Sequence Gobject is NULL</source>
-        <translation type="obsolete">Sequence Gobject is NULL</translation>
-    </message>
-</context>
-<context>
     <name>U2::CircularViewPlugin</name>
     <message>
         <location filename="../src/CircularViewPlugin.cpp" line="74"/>
@@ -396,12 +377,22 @@
 <context>
     <name>U2::ShiftSequenceStartTask</name>
     <message>
-        <location filename="../src/ShiftSequenceStartTask.cpp" line="50"/>
+        <location filename="../src/ShiftSequenceStartTask.cpp" line="43"/>
         <source>ShiftSequenceStartTask</source>
         <translation>ShiftSequenceStartTask</translation>
     </message>
     <message>
-        <location filename="../src/ShiftSequenceStartTask.cpp" line="65"/>
+        <location filename="../src/ShiftSequenceStartTask.cpp" line="50"/>
+        <source>New sequence origin is the same as the old one</source>
+        <translation>New sequence origin is the same as the old one</translation>
+    </message>
+    <message>
+        <location filename="../src/ShiftSequenceStartTask.cpp" line="56"/>
+        <source>Sequence start position is out of range</source>
+        <translation>Sequence start position is out of range</translation>
+    </message>
+    <message>
+        <location filename="../src/ShiftSequenceStartTask.cpp" line="61"/>
         <source>Document is locked</source>
         <translation>Документ заблокирован</translation>
     </message>
