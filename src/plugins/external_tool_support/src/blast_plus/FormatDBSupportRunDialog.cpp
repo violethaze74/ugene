@@ -39,7 +39,7 @@ FormatDBSupportRunDialog::FormatDBSupportRunDialog(const QString &_name, FormatD
         QDialog(_parent), name(_name), settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24742620");
+    new HelpButton(this, buttonBox, "24749011");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Format"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     formatButton = buttonBox->button(QDialogButtonBox::Ok);

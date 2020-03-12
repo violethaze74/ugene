@@ -153,28 +153,28 @@ void ExportImageDialog::init() {
 
     switch (source) {
     case WD:
-        new HelpButton(this, ui->buttonBox, "24740110");
+        new HelpButton(this, ui->buttonBox, "28966993");
         break;
     case CircularView:
-        new HelpButton(this, ui->buttonBox, "24742405");
+        new HelpButton(this, ui->buttonBox, "24748796");
         break;
     case MSA:
-        new HelpButton(this, ui->buttonBox, "24742478");
+        new HelpButton(this, ui->buttonBox, "24748869");
         break;
     case SequenceView:
-        new HelpButton(this, ui->buttonBox, "24742366");
+        new HelpButton(this, ui->buttonBox, "24748757");
         break;
     case AssemblyView:
-        new HelpButton(this, ui->buttonBox, "24742515");
+        new HelpButton(this, ui->buttonBox, "24748906");
         break;
     case PHYTreeView:
-        new HelpButton(this, ui->buttonBox, "24742543");
+        new HelpButton(this, ui->buttonBox, "24748934");
         break;
     case DotPlot:
-        new HelpButton(this, ui->buttonBox, "24742436");
+        new HelpButton(this, ui->buttonBox, "24748827");
         break;
     case MolView:
-        new HelpButton(this, ui->buttonBox, "24742419");
+        new HelpButton(this, ui->buttonBox, "24748810");
         break;
     default:
         FAIL("Can't find help Id",);

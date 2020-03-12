@@ -30,7 +30,7 @@ namespace U2 {
 
 const QString CircularViewSettingsWidgetFactory::GROUP_ID = "OP_CV_SETTINGS";
 const QString CircularViewSettingsWidgetFactory::GROUP_ICON_STR  = ":circular_view/images/circular.png";
-const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "24742406";
+const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "24748797";
 
 CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularViewContext* context)
     : ctx(context) {
