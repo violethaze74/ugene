@@ -1522,30 +1522,7 @@ GUI_TEST_CLASS_DEFINITION(test_5431) {
                   "2 Conocephalus_discolor is not collapsed");
 
     GTUtilsMSAEditorSequenceArea::removeSequence(os, "Phaneroptera_falcata");
-
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5431_1) {
-
-    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-
-    // 2. Remove all columns except the first one.
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 0), QPoint(13, 9));
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
-
-    GTUtilsMsaEditor::toggleCollapsingMode(os);
-
-    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Tettigonia_viridissima"),
-                  "1 Tettigonia_viridissima is not collapsed");
-    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_discolor"),
-                  "2 Conocephalus_discolor is not collapsed");
-
-    GTUtilsMSAEditorSequenceArea::removeSequence(os, "Phaneroptera_falcata");
-
+   
     // 3. Expected state: first group is removed
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 4, "Wrong rows number");
 
