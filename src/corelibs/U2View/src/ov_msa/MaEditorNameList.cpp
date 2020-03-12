@@ -229,7 +229,7 @@ void MaEditorNameList::sl_removeSelectedRows() {
     CHECK(!maObj->isStateLocked(), );
 
     // View selection converted to MSA row indexes
-    QList<int> msaSelection = ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(viewSelection, false);
+    QList<int> msaSelection = ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(viewSelection, true);
     CHECK(maObj->getNumRows() > msaSelection.size(),); // do allow to remove all rows.
 
     U2OpStatusImpl os;
