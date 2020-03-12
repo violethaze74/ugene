@@ -34,7 +34,7 @@ AuthenticationDialog::AuthenticationDialog(const QString &text, QWidget* parent)
     authenticationWidget(new AuthenticationWidget)
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "24742692");
+    new HelpButton(this, ui->buttonBox, "24749084");
     ui->mainLayout->insertWidget(1, authenticationWidget);
 
     if (text.isEmpty()) {

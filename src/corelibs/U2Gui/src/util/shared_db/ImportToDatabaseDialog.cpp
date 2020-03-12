@@ -62,7 +62,7 @@ ImportToDatabaseDialog::ImportToDatabaseDialog(Document *dbConnection, const QSt
     FILES_AND_FOLDERS = tr("Files and folders");
     OBJECTS_AND_DOCUMENTS = tr("Documents and objects");
     
-    new HelpButton(this, ui->buttonBox, "24742694");
+    new HelpButton(this, ui->buttonBox, "24749086");
     init();
     connectSignals();
     updateState();

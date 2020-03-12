@@ -42,7 +42,7 @@ ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget * p, ExtractAss
 , settings(settings) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "24742518");
+    new HelpButton(this, buttonBox, "24748909");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

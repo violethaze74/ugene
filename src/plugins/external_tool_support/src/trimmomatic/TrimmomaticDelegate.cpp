@@ -181,7 +181,7 @@ const QString TrimmomaticPropertyDialog::DEFAULT_SETTINGS_TEXT = QObject::tr("Ad
 TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
                                       QWidget *parent) : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24740268");
+    new HelpButton(this, buttonBox, "28967214");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
 
