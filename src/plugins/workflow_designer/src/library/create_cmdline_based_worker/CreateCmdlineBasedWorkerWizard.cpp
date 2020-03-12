@@ -250,7 +250,7 @@ void CreateCmdlineBasedWorkerWizard::init() {
     setOption(IndependentPages);
 
     setOption(QWizard::HaveHelpButton, true);
-    new U2::HelpButton(this, this->button(QWizard::HelpButton), "24740125");
+    new U2::HelpButton(this, this->button(QWizard::HelpButton), "28967044");
 
     DialogUtils::setWizardMinimumSize(this, QSize(780, 350));
 }

@@ -4799,7 +4799,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="642"/>
         <source> Please input a valid pattern </source>
-        <translation>Введите валидный паттерн</translation>
+        <translation> Введите валидный паттерн</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="648"/>
@@ -4809,7 +4809,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="650"/>
         <source> Please input a valid region to search</source>
-        <translation>Введите корректный регион поиска</translation>
+        <translation> Введите корректный регион поиска</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="656"/>
