@@ -111,9 +111,10 @@ public:
 
     /*
      * Returns list of MA row indexes for the given view row indexes.
-     * If 'includeGroupRows' is true adds all MA rows in the group for every viewRow that is a header of the group.
+     * If 'includeGroupRowsForCollapsedGroups' is true adds all MA rows in the group
+     * for every viewRow that is a header of the collapsed group.
      */
-    QList<int> getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeGroupRows = false);
+    QList<int> getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeGroupRowsForCollapsedGroups = false);
 
     /* Returns list of all MA row indexes that have valid view row index (not hidden by collapsing). */
     QList<int> getMaRowsIndexesWithViewRowIndexes() const;
