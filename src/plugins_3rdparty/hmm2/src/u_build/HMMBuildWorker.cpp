@@ -305,6 +305,8 @@ void HMMBuildWorker::sl_taskFinished(Task* t) {
     if (build) {
         assert(!nextTick);
         hmm = build->getHMM();
+        SAFE_POINT(hmm != nullptr, "HMMReadTask didn't generate \"hmm\" object, stop.", );
+
         if (calibrate) {
             if (calSettings.nThreads == 1) {
                 nextTick = new HMMCalibrateTask(hmm, calSettings);
