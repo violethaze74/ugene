@@ -506,15 +506,17 @@ void MSAEditor::sl_rowsRemoved(const QList<qint64> &rowIds) {
 }
 
 void MSAEditor::sl_updateRealignAction() {
-    if (!maObject->getAlphabet()->isRaw()) {
-        realignSomeSequenceAction->setEnabled(true);
-    } else {
+    if (maObject->isStateLocked() || maObject->getAlphabet()->isRaw()) {
         realignSomeSequenceAction->setDisabled(true);
         return;
     }
+
+    realignSomeSequenceAction->setEnabled(true);
     if (ui != nullptr) {
+        const MaEditorSelection& selection = ui->getEditor()->getSelection();
+        int length = maObject->getLength();
         U2Region sel = ui->getSequenceArea()->getSelectedMaRows();
-        realignSomeSequenceAction->setDisabled(sel.length == 0 || sel.length == maObject->getNumRows());
+        realignSomeSequenceAction->setDisabled(sel.length == 0 || sel.length == maObject->getNumRows() || length != selection.width());
     }
 }
 
