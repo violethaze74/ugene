@@ -36,7 +36,7 @@ using DinucleotidesExtinctionCoefficientsMap = QVector<QVector<int>>;
 class DNAAlphabet;
 class U2SequenceDbi;
 
-struct DNAStatistics {
+struct U2VIEW_EXPORT DNAStatistics {
     DNAStatistics();
 
     qint64 length;
