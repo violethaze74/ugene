@@ -97,9 +97,6 @@ public:
 
     const MaEditorSelection &getSelection() const;
 
-    // update selection when collapsible model changed
-    void updateSelection();
-
     virtual void setSelection(const MaEditorSelection& newSelection);
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);

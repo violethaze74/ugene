@@ -220,34 +220,6 @@ QFont MaEditorSequenceArea::getFont() const {
     return editor->getFont();
 }
 
-void MaEditorSequenceArea::updateSelection() {
-    CHECK(!baseSelection.isEmpty(), );
-
-    if (!ui->isCollapsibleMode()) {
-        setSelection(baseSelection);
-        return;
-    }
-    MaCollapseModel* m = ui->getCollapseModel();
-    CHECK_EXT(NULL != m, sl_cancelSelection(), );
-
-    int startMaIdx = baseSelection.y();
-    int endMaIdx = startMaIdx + baseSelection.height() - 1;
-
-    // convert selected MA rows indexes to row indexes.
-    int newStartRowIdx = m->getViewRowIndexByMaRowIndex(startMaIdx);
-    int newEndRowIdx = m->getViewRowIndexByMaRowIndex(endMaIdx);
-
-    SAFE_POINT_EXT(newStartRowIdx >= 0 && newEndRowIdx >= 0, sl_cancelSelection(), );
-
-    int selectionHeight = newEndRowIdx - newStartRowIdx + 1;
-    if (selectionHeight <= 0 || newStartRowIdx + selectionHeight > m->getViewRowCount()) {
-        sl_cancelSelection();
-        return;
-    }
-    MaEditorSelection newSelection(selection.topLeft().x(), newStartRowIdx, selection.width(), selectionHeight);
-    setSelection(newSelection);
-}
-
 void MaEditorSequenceArea::setSelection(const MaEditorSelection& newSelection) {
     CHECK(!isAlignmentEmpty() || newSelection.isEmpty(), );
     if (newSelection == selection) {
@@ -953,7 +925,31 @@ void MaEditorSequenceArea::sl_changeSelectionColor() {
 }
 
 void MaEditorSequenceArea::sl_modelChanged() {
-    updateSelection();
+    MaCollapseModel* m = ui->getCollapseModel();
+
+    // convert selected MA rows indexes to row indexes.
+    int newStartRowIdx = m->getViewRowIndexByMaRowIndex(baseSelection.y());
+    int newEndRowIdx = m->getViewRowIndexByMaRowIndex(baseSelection.bottom());
+    if (ui->isCollapsibleMode()) { // in the collapsible mode MA rows can be re-ordered.
+        for (int maRowIdx = baseSelection.y(); maRowIdx <= baseSelection.bottom(); maRowIdx++) {
+            int viewRowIdx = m->getViewRowIndexByMaRowIndex(maRowIdx);
+            newStartRowIdx = qMin(viewRowIdx, newStartRowIdx);
+            newEndRowIdx = qMax(viewRowIdx, newEndRowIdx);
+        }
+    }
+
+    if (newStartRowIdx >= 0 && newEndRowIdx >= 0) {
+        int selectionHeight = newEndRowIdx - newStartRowIdx + 1;
+        if (selectionHeight <= 0 || newStartRowIdx + selectionHeight > m->getViewRowCount()) {
+            sl_cancelSelection();
+        } else {
+            MaEditorSelection newSelection(selection.topLeft().x(), newStartRowIdx, selection.width(), selectionHeight);
+            setSelection(newSelection);
+        }
+    } else {
+        sl_cancelSelection();
+    }
+
     ui->getScrollController()->updateVerticalScrollBar();
     sl_completeRedraw();
 }
@@ -1422,10 +1418,6 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     }
 
     U2Region selectedMaRows = getSelectedMaRows();
-
-    printf("SELECTION %d\n", selectedMaRows.startPos);
-    fflush(stdout);
-
     maObj->insertGap(selectedMaRows, selection.x(), countOfGaps);
     adjustReferenceLength(os);
     CHECK_OP(os,);
