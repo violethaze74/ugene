@@ -887,13 +887,11 @@ bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
     MaCollapseModel* collapseModel = ui->getCollapseModel();
     int minRowsInGroupToShowExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
     QList<int> groupsToToggle;
-    bool expandSelectionToChildRows = false;
     for (int viewRow = selection.startPos; viewRow < selection.endPos(); viewRow++) {
         int groupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(viewRow);
         const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(groupIndex);
         if (group != NULL && group->size() >= minRowsInGroupToShowExpandCollapse && group->isCollapsed != collapse) {
             groupsToToggle << groupIndex;
-            expandSelectionToChildRows = expandSelectionToChildRows || (!collapse && group->size() > 1);
         }
     }
     if (groupsToToggle.isEmpty()) {
@@ -901,13 +899,6 @@ bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
     }
     foreach(int groupIndex, groupsToToggle) {
         collapseModel->toggleGroup(groupIndex, collapse);
-    }
-    if (expandSelectionToChildRows) {
-        const MaCollapsibleGroup* lastGroup = collapseModel->getCollapsibleGroup(groupsToToggle.last());
-        int lastViewRowInLastGroup = collapseModel->getViewRowIndexByMaRowIndex(lastGroup->maRows.last());
-        const MaEditorSelection& viewSelection = ui->getSequenceArea()->getSelection();
-        MaEditorSelection newViewSelection(viewSelection.x(), selection.startPos, viewSelection.width(), lastViewRowInLastGroup - selection.startPos + 1);
-        ui->getSequenceArea()->setSelection(newViewSelection);
     }
     return true;
 }

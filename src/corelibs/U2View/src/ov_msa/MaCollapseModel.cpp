@@ -65,7 +65,7 @@ void MaCollapseModel::update(const QVector<MaCollapsibleGroup>& newGroups) {
     emit si_aboutToBeToggled();
     groups = newGroups;
     updateIndex();
-    emit si_toggled( );
+    emit si_toggled();
 }
 
 void MaCollapseModel::updateFromUnitedRows(const QVector<U2Region>& unitedRows, const QList<qint64>& allOrderedMaRowIds) {

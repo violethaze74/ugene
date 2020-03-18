@@ -820,8 +820,6 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
 
     if (collapseModeChanged) {
         setSelection(MaEditorSelection());
-    } else {
-        updateSelection();
     }
 
     ui->getScrollController()->updateVerticalScrollBar();
