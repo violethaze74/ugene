@@ -2989,8 +2989,8 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_4) {
-    // Open "_common_data/clustal/fungal - all.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "fungal - all.aln");
+    // Open "_common_data/clustal/200_sequences.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "200_sequences.aln");
     QAbstractButton *alignButton = GTAction::button(os, "Align sequence(s) to this alignment");
     QAbstractButton *realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
