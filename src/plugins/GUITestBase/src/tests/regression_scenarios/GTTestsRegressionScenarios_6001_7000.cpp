@@ -5052,6 +5052,25 @@ GUI_TEST_CLASS_DEFINITION(test_6714) {
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6734) {
+    //1. Open "_common_data/scenarios/msa/ma.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    //2. Open OP and search pattern "AA"
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+    GTUtilsOptionPanelMsa::enterPattern(os, "AA");
+
+    //3. Edit alignment
+    GTUtilsMSAEditorSequenceArea::replaceSymbol(os, QPoint(2, 2), '-');
+
+    //4. Click to the "Switch on/off collapsing" on the toolbar.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    //Expected state: UGENE isn't crash
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
