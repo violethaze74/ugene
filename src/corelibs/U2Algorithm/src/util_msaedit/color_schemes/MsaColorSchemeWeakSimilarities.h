@@ -26,11 +26,11 @@
 #include <QVector>
 
 #include "MsaColorScheme.h"
+#include "percentage_idententity/colored/MsaColorSchemePercentageIdententityColored.h"
 
 namespace U2 {
 
-// 0.5 * alisize mem use, slow update
-class U2ALGORITHM_EXPORT MsaColorSchemeWeakSimilarities : public MsaColorScheme {
+class U2ALGORITHM_EXPORT MsaColorSchemeWeakSimilarities : public MsaColorSchemePercentageIdententityColored {
     Q_OBJECT
 public:
     MsaColorSchemeWeakSimilarities(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
@@ -38,13 +38,12 @@ public:
     QColor getBackgroundColor(int seq, int pos, char c) const override;
     QColor getFontColor(int seq, int pos, char c) const override;
 
-private slots:
-    void sl_alignmentChanged();
-
 private:
-
     //QPair<font, background>
     static const QList<QPair<QColor, QColor>> colorPairsByFrequence;
+    static const QPair<QColor, QColor> gapColorPair;
+
+	int getColorIndex(const int columnNum, const char c) const override;
 };
 
 class MsaColorSchemeWeakSimilaritiesFactory : public MsaColorSchemeFactory {

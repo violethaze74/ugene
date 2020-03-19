@@ -65,6 +65,7 @@ public:
     static const QString IDENTPERC_NUCL_COLORED;
     static const QString IDENTPERC_NUCL_GRAY;
     static const QString CUSTOM_NUCL;
+    static const QString WEAK_SIMILARITIES_NUCL;
 
     static const QString UGENE_AMINO;
     static const QString ZAPPO_AMINO;

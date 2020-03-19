@@ -21,6 +21,9 @@
 
 #include "MsaColorSchemeWeakSimilarities.h"
 
+#include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
 const QList<QPair<QColor, QColor>> MsaColorSchemeWeakSimilarities::colorPairsByFrequence = {QPair<QColor, QColor>(QColor("#00FFFF"), QColor("#0000FF")), 
@@ -29,21 +32,54 @@ const QList<QPair<QColor, QColor>> MsaColorSchemeWeakSimilarities::colorPairsByF
                                                                                             QPair<QColor, QColor>(QColor("#000000"), QColor("#C0C0C0")), 
                                                                                             QPair<QColor, QColor>(QColor("#FF6600"), QColor("#FFFFFF"))};
 
+const QPair<QColor, QColor> MsaColorSchemeWeakSimilarities::gapColorPair = QPair<QColor, QColor>(QColor("#000000"), QColor("#FFFFFF"));
 
- MsaColorSchemeWeakSimilarities::MsaColorSchemeWeakSimilarities(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
-    : MsaColorScheme(parent, factory, maObj) {
+MsaColorSchemeWeakSimilarities::MsaColorSchemeWeakSimilarities(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
+    : MsaColorSchemePercentageIdententityColored(parent, factory, maObj) {
  }
 
 QColor MsaColorSchemeWeakSimilarities::getBackgroundColor(int seq, int pos, char c) const {
-    return QColor();
+    Q_UNUSED(seq);
+    if (c == U2Msa::GAP_CHAR) {
+        return gapColorPair.second;
+    }
+
+    updateCache(pos);
+    SAFE_POINT(cachedData.keys().contains(pos), "Column data is absent", QColor());
+
+    int fontColorIndex = getColorIndex(pos, c);
+    return colorPairsByFrequence[fontColorIndex].second;
  }
 
 QColor MsaColorSchemeWeakSimilarities::getFontColor(int seq, int pos, char c) const {
-    return QColor();
+     Q_UNUSED(seq);
+
+     if (c == U2Msa::GAP_CHAR) {
+         return gapColorPair.first;
+     }
+
+     updateCache(pos);
+     SAFE_POINT(cachedData.keys().contains(pos), "Column data is absent", QColor());
+
+     int fontColorIndex = getColorIndex(pos, c);
+     return colorPairsByFrequence[fontColorIndex].first;
  }
 
-void MsaColorSchemeWeakSimilarities::sl_alignmentChanged() {
+int MsaColorSchemeWeakSimilarities::getColorIndex(const int columnNum, const char c) const {
+     int index = 0;
+     const ColumnCharsCounter currentColumnData = cachedData.value(columnNum);
+     QList<Nucleotide> currentNucleotideList = currentColumnData.getNucleotideList();
+     const int size = currentNucleotideList.size();
+     CHECK(size > 0, index);
+     foreach(const Nucleotide & n, currentNucleotideList) {
+         if (n.character == c || index == 4) {
+             break;
+         }
+         index++;
+     }
+     return index;
  }
+
 
  MsaColorSchemeWeakSimilaritiesFactory::MsaColorSchemeWeakSimilaritiesFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
      : MsaColorSchemeFactory(parent, id, name, supportedAlphabets) {
