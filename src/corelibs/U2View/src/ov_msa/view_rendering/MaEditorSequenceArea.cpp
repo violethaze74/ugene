@@ -235,12 +235,14 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection& newSelection) {
                                       MaEditorSequenceArea::boundWithVisibleRange(newSelection.bottomRight()));
     }
 
-    U2Region selectedMaRows = getSelectedMaRows();
-    baseSelection = MaEditorSelection(selection.topLeft().x(), selectedMaRows.startPos, selection.width(), selectedMaRows.length);
+    QList<int> selectedMaRowsIndexes = getSelectedMaRowIndexes();
+    selectedMaRowIds = editor->getMaObject()->convertMaRowIndexesToMaRowIds(selectedMaRowsIndexes);
+    selectedColumns = selection.getXRegion();
 
     QStringList selectedRowNames;
-    for (qint64 x = selectedMaRows.startPos; x < selectedMaRows.endPos(); x++) {
-        selectedRowNames.append(editor->getMaObject()->getRow((int) x)->getName());
+    for (int i = 0; i < selectedMaRowsIndexes.length(); i++) {
+        int maRow = selectedMaRowsIndexes[i];
+        selectedRowNames.append(editor->getMaObject()->getRow(maRow)->getName());
     }
     emit si_selectionChanged(selectedRowNames);
     emit si_selectionChanged(selection, prevSelection);
@@ -285,10 +287,7 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
 }
 
 U2Region MaEditorSequenceArea::getSelectedMaRows() const {
-    return getMaRowsExtendedToCollapsibleGroups(selection.getYRegion());
-}
-
-U2Region MaEditorSequenceArea::getMaRowsExtendedToCollapsibleGroups(const U2Region& viewRowsRegion) const {
+    U2Region viewRowsRegion = selection.getYRegion();
     if (!ui->isCollapsibleMode()) {
         return viewRowsRegion;
     }
@@ -311,6 +310,9 @@ U2Region MaEditorSequenceArea::getMaRowsExtendedToCollapsibleGroups(const U2Regi
     return ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(U2Region(startIdx, endIdx - startIdx + 1));
 }
 
+QList<int> MaEditorSequenceArea::getSelectedMaRowIndexes() const {
+    return ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(selection.getYRegion(), true);
+}
 
 QString MaEditorSequenceArea::getCopyFormattedAlgorithmId() const{
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, BaseDocumentFormats::CLUSTAL_ALN).toString();
@@ -346,6 +348,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     U2Region selectedMaRows = getSelectedMaRows();
     const MaEditorSelection msaSelection(viewSelection.x(), selectedMaRows.startPos, viewSelection.width(), selectedMaRows.length);
 
+    // Do not allow the deletion if the result MA will be empty.
     // TODO: the logic below that computes final 'empty' selection state is incomplete!
     const QRect areaBeforeSelection(0, 0, msaSelection.x(), msaSelection.height());
     const QRect areaAfterSelection(msaSelection.x() + msaSelection.width(), msaSelection.y(),
@@ -361,39 +364,8 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
-
-    // Cancel selection, so it will never be larger than the alignment after region removal.
-    sl_cancelSelection();
-
     maObj->removeRegion(msaSelection.x(), msaSelection.y(), effectiveWidth, msaSelection.height(), true);
     GRUNTIME_NAMED_COUNTER(cvar, tvar, "Delete current selection", editor->getFactoryId());
-
-    if (viewSelection.height() == 1 && viewSelection.width() == 1) {
-        bool isGap = maObj->getRow(msaSelection.y())->isGap(msaSelection.x());
-        GRUNTIME_NAMED_CONDITION_COUNTER(cvar2, tvar2, isGap, "Remove gap", editor->getFactoryId());
-        GRUNTIME_NAMED_CONDITION_COUNTER(cvar3, tvar3, !isGap, "Remove character", editor->getFactoryId());
-
-        if (isInRange(viewSelection.topLeft())) {
-            setSelection(viewSelection); // restore selection on the top-left position
-            return;
-        }
-    }
-    if (isInRange(viewSelection.topLeft())) { // try to keep the same selection if possible.
-        // If new selection does not fit -> shift it left or up up to 0.
-        U2Region columns(viewSelection.x(), viewSelection.width());
-        qint64 maLength = maObj->getLength();
-        if (columns.endPos() > maLength) {
-            columns.startPos = qMax((qint64) 0, columns.startPos - (columns.endPos() - maLength));
-            columns.length = qMin(columns.length, maLength);
-        }
-        U2Region rows(viewSelection.y(), viewSelection.height());
-        qint64 numRows = maObj->getNumRows();
-        if (rows.endPos() > numRows) {
-            rows.startPos = qMax((qint64) 0, rows.startPos - (rows.endPos() - numRows));
-            rows.length = qMin(rows.length, numRows);
-        }
-        setSelection(MaEditorSelection(columns.startPos, rows.startPos, columns.length, rows.length));
-    }
 }
 
 bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
@@ -782,6 +754,7 @@ void MaEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
 void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &modInfo) {
     exitFromEditCharacterMode();
     updateCollapseModel(modInfo);
+    restoreViewSelectionFromMaSelection();
 
     int columnCount = editor->getAlignmentLen();
     int rowCount = getViewRowCount();
@@ -794,25 +767,7 @@ void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const 
     }
 
     editor->updateReference();
-
-    if ((selection.x() >= columnCount) || (selection.y() >= rowCount)) {
-        sl_cancelSelection();
-    } else {
-        const QPoint selTopLeft(qMin(selection.x(), columnCount - 1),
-            qMin(selection.y(), rowCount - 1));
-        const QPoint selBottomRight(qMin(selection.x() + selection.width() - 1, columnCount - 1),
-            qMin(selection.y() + selection.height() - 1, rowCount - 1));
-
-        MaEditorSelection newSelection(selTopLeft, selBottomRight);
-        // we don't emit "selection changed" signal to avoid redrawing
-        setSelection(newSelection);
-    }
-
-    ui->getScrollController()->sl_updateScrollBars();
-
-    completeRedraw = true;
-    sl_updateActions();
-    update();
+    sl_completeUpdate();
 }
 
 void MaEditorSequenceArea::sl_completeUpdate(){
@@ -924,26 +879,36 @@ void MaEditorSequenceArea::sl_changeSelectionColor() {
     update();
 }
 
-void MaEditorSequenceArea::sl_modelChanged() {
+void MaEditorSequenceArea::restoreViewSelectionFromMaSelection() {
+    if (selectedColumns.isEmpty() || selectedMaRowIds.isEmpty()) {
+        return;
+    }
     MaCollapseModel* m = ui->getCollapseModel();
 
-    // convert selected MA rows indexes to row indexes.
-    int newStartRowIdx = m->getViewRowIndexByMaRowIndex(baseSelection.y());
-    int newEndRowIdx = m->getViewRowIndexByMaRowIndex(baseSelection.bottom());
-    if (ui->isCollapsibleMode()) { // in the collapsible mode MA rows can be re-ordered.
-        for (int maRowIdx = baseSelection.y(); maRowIdx <= baseSelection.bottom(); maRowIdx++) {
-            int viewRowIdx = m->getViewRowIndexByMaRowIndex(maRowIdx);
-            newStartRowIdx = qMin(viewRowIdx, newStartRowIdx);
-            newEndRowIdx = qMax(viewRowIdx, newEndRowIdx);
-        }
-    }
+    int columnCount = editor->getAlignmentLen();
+    int viewRowCount = m->getViewRowCount();
 
-    if (newStartRowIdx >= 0 && newEndRowIdx >= 0) {
+    // Ensure the columns region is in range.
+    U2Region columnsRegions = selectedColumns;
+    columnsRegions.startPos = qMin(columnsRegions.startPos, (qint64) editor->getAlignmentLen() - 1);
+    qint64 selectedColumnsEndPos = qMin(columnsRegions.endPos(), (qint64) columnCount);
+    columnsRegions.length = selectedColumnsEndPos - columnsRegions.startPos;
+
+    // Convert selected MA rows indexes to view row indexes.
+    QList<int> selectedMaRowIndexes = editor->getMaObject()->convertMaRowIdsToMaRowIndexes(selectedMaRowIds);
+    if (!selectedMaRowIndexes.isEmpty()) {
+        int newStartRowIdx = m->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[0]);
+        int newEndRowIdx = newStartRowIdx;
+        for (int i = 1; i < selectedMaRowIndexes.size(); i++) {
+            int viewRowIndex = m->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
+            newStartRowIdx = qMin(newStartRowIdx, viewRowIndex);
+            newEndRowIdx = qMax(newEndRowIdx, viewRowIndex);
+        }
         int selectionHeight = newEndRowIdx - newStartRowIdx + 1;
-        if (selectionHeight <= 0 || newStartRowIdx + selectionHeight > m->getViewRowCount()) {
+        if (selectionHeight <= 0 || newStartRowIdx + selectionHeight > viewRowCount) {
             sl_cancelSelection();
         } else {
-            MaEditorSelection newSelection(selection.topLeft().x(), newStartRowIdx, selection.width(), selectionHeight);
+            MaEditorSelection newSelection(columnsRegions.startPos, newStartRowIdx, columnsRegions.length, selectionHeight);
             setSelection(newSelection);
         }
     } else {
@@ -951,6 +916,10 @@ void MaEditorSequenceArea::sl_modelChanged() {
     }
 
     ui->getScrollController()->updateVerticalScrollBar();
+}
+
+void MaEditorSequenceArea::sl_modelChanged() {
+    restoreViewSelectionFromMaSelection();
     sl_completeRedraw();
 }
 

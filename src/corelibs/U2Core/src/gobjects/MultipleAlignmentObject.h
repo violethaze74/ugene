@@ -73,6 +73,18 @@ public:
     U2MsaMapGapModel getMapGapModel() const;
     U2MsaListGapModel getGapModel() const;
 
+    /**
+     * Converts MA indexes into ids.
+     * If index is out of range and 'excludeErrors' is false appends '-1' to the result list.
+     */
+    QList<qint64> convertMaRowIndexesToMaRowIds(const QList<int>& maRowIndexes, bool excludeErrors = true);
+
+    /**
+     * Converts MA ids into indexes.
+     * If id is invalid and 'excludeErrors' is false appends '-1' to the result list.
+     */
+    QList<int> convertMaRowIdsToMaRowIndexes(const QList<qint64>& maRowIds, bool excludeErrors = true);
+
     /** Removes single row from the alignment by row index. */
     void removeRow(int rowIdx);
 
