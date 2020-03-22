@@ -4360,6 +4360,25 @@ GUI_TEST_CLASS_DEFINITION(test_6676_2) {
     GTUtilsProjectTreeView::itemModificationCheck(os, "COI.aln", false);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6677) {
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // 2. Enable the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Select the second column
+    GTUtilsMsaEditor::selectColumns(os, 1, 1, GTGlobals::UseMouse);
+    GTGlobals::sleep();
+
+    // 4. Click collapse triangle:
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
+
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 2, 18));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6684) {
     //UTEST-38
     class Custom : public CustomScenario {

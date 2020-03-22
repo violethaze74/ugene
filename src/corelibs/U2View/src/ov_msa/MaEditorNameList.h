@@ -40,6 +40,7 @@ class MaEditor;
 class MaEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
+class MaCollapsibleGroup;
 
 class U2VIEW_EXPORT MaEditorNameList: public QWidget {
     Q_OBJECT
@@ -117,6 +118,12 @@ protected:
     virtual void setSelection(int startSeq, int count);
 
     void moveSelectedRegion( int shift );
+
+    /**
+     * Returns collapsible group related to the expand-collapse button located by the given screen coordinate.
+     * Returns NULL if the given coordinate is not for expand-collapse block.
+     */
+    const MaCollapsibleGroup* getCollapsibleGroupByExpandCollapsePoint(const QPoint& point) const;
 
     virtual void drawAll();
 
