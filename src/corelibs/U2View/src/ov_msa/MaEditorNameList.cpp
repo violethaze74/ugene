@@ -362,39 +362,20 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     MaCollapseModel* collapseModel = ui->getCollapseModel();
     RowHeightController* heightController = ui->getRowHeightController();
     int viewRow = qMin(heightController->getViewRowIndexByScreenYPosition(e->y()), collapseModel->getViewRowCount() - 1);
-    int cursorX = editor->getCursorPosition().x();
-    
+
     // Do not update cursor position on clicks with Shift. Clicks with Shift update selection only.
     bool updateCursorPos = !e->modifiers().testFlag(Qt::ShiftModifier);
     if (updateCursorPos) {
-        editor->setCursorPosition(QPoint(cursorX, viewRow));
+        editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), viewRow));
     }
 
-    const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroupByViewRow(viewRow);
-    int minRowsInGroupToExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
-    if (group != NULL && group->size() >= minRowsInGroupToExpandCollapse) {
-        U2Region selection = getSelection();
-        U2Region yRange = heightController->getScreenYRegionByViewRowIndex(viewRow);
-        bool selected = selection.contains(viewRow);
-        QRect textRect = calculateTextRect(yRange, selected);
-        QRect buttonRect = calculateExpandCollapseButtonRect(textRect);
-        if (buttonRect.contains(mousePressPoint)) {
-            if (!selected) {
-                collapseModel->toggle(viewRow);
-            } else {
-                triggerExpandCollapseOnSelectedRow(!group->isCollapsed);
-            }
-            sl_completeRedraw();
-            QWidget::mousePressEvent(e);
-            return;
-        }
+    const MaCollapsibleGroup* group = getCollapsibleGroupByExpandCollapsePoint(mousePressPoint);
+    if (group != NULL) {
+        collapseModel->toggle(viewRow);
+        return;
     }
-    
-    if (updateCursorPos) {
-        editor->setCursorPosition(QPoint(cursorX, viewRow));
-    }
-    U2Region s = getSelection();
-    if (s.contains(viewRow)) {
+
+    if (getSelection().contains(viewRow)) {
         // We support dragging only for 'flat' mode, when there are no groups with multiple sequences.
         dragging = !ui->getCollapseModel()->hasGroupsWithMultipleRows();
     } else {
@@ -462,7 +443,9 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
         dragging = false;
     }
     U2Region nameListRegion(0, maxRows);
-    if (dragging) {
+    if (isClick && getCollapsibleGroupByExpandCollapsePoint(mousePressPoint) != NULL) {
+        // Do nothing. Expand collapse is processed as a part of MousePress.
+    } else if (dragging) {
         int shift = 0;
         if (mouseReleaseRow == 0) {
             shift = -selection.startPos;
@@ -528,6 +511,24 @@ void MaEditorNameList::wheelEvent(QWheelEvent *we) {
     bool toMin = we->delta() > 0;
     ui->getScrollController()->scrollStep(toMin ? ScrollController::Up : ScrollController::Down);
     QWidget::wheelEvent(we);
+}
+
+const MaCollapsibleGroup* MaEditorNameList::getCollapsibleGroupByExpandCollapsePoint(const QPoint& point) const {
+    const MaCollapseModel* collapseModel = ui->getCollapseModel();
+    RowHeightController* heightController = ui->getRowHeightController();
+    int viewRow = heightController->getViewRowIndexByScreenYPosition(point.y());
+    if (viewRow < 0 || viewRow >= collapseModel->getViewRowCount()) {
+        return NULL;
+    }
+    const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroupByViewRow(viewRow);
+    int minRowsInGroupToExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
+    if (group == NULL || group->size() < minRowsInGroupToExpandCollapse) {
+        return NULL;
+    }
+    U2Region yRange = heightController->getScreenYRegionByViewRowIndex(viewRow);
+    QRect textRect = calculateTextRect(yRange, getSelection().contains(viewRow));
+    QRect buttonRect = calculateExpandCollapseButtonRect(textRect);
+    return buttonRect.contains(point) ? group : NULL;
 }
 
 void MaEditorNameList::clearSelection() {
