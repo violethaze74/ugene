@@ -1528,7 +1528,7 @@ GUI_TEST_CLASS_DEFINITION(test_5431) {
 
 }
 
-[<0;112;24MGUI_TEST_CLASS_DEFINITION(test_5447_1) {
+GUI_TEST_CLASS_DEFINITION(test_5447_1) {
 //    1. Open "data/samples/Genbank/murine.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);

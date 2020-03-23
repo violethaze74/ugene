@@ -111,9 +111,6 @@ public:
     /** Shifts annotation around the circular sequence and returns new location. */
     static U2Location shiftLocation(const U2Location &location, qint64 shift, qint64 sequenceLength);
 
-    /** Shifts annotation around the circular sequence and returns new location. */
-    static U2Location shiftLocation(const U2Location& location, qint64 shift, qint64 sequenceLength);
-
     /**
      * Adds or replaces "/note" qualifier if description is not empty.
      */
