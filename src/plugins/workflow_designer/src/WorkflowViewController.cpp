@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -534,16 +534,9 @@ static void updateComboBox(QComboBox *scaleComboBox, int scalePercent) {
 
 void WorkflowView::rescale(bool updateGui) {
     double newScale = meta.scalePercent / 100.0;
-    QMatrix oldMatrix = scene->views().at(0)->matrix();
-    scene->views().at(0)->resetMatrix();
-    scene->views().at(0)->translate(oldMatrix.dx(), oldMatrix.dy());
-    scene->views().at(0)->scale(newScale, newScale);
-    QRectF rect = scene->sceneRect();
-    qreal w = rect.width()/newScale;
-    qreal h = rect.height()/newScale;
-    rect.setWidth(w);
-    rect.setHeight(h);
-    scene->setSceneRect(rect);
+    QGraphicsView* elementsView = scene->views().at(0);
+    elementsView->resetMatrix();
+    elementsView->scale(newScale, newScale);
     if (updateGui) {
         updateComboBox(scaleComboBox, meta.scalePercent);
     }
@@ -1601,7 +1594,6 @@ void WorkflowView::paintEvent(QPaintEvent *event) {
     }
     MWMDIWindow::paintEvent(event);
 }
-
 void WorkflowView::sl_configureParameterAliases() {
     QObjectScopedPointer<SchemaAliasesConfigurationDialogImpl> dlg = new SchemaAliasesConfigurationDialogImpl(*schema, this );
     int ret = QDialog::Accepted;
@@ -2585,6 +2577,21 @@ void WorkflowScene::dropEvent(QGraphicsSceneDragDropEvent * event) {
         }
     }
     QGraphicsScene::dropEvent(event);
+}
+
+void WorkflowScene::keyPressEvent (QKeyEvent* event) {
+    if (event->key() == Qt::Key_Shift) {
+        views().at(0)->setDragMode(QGraphicsView::ScrollHandDrag);
+    }
+    QGraphicsScene::keyPressEvent(event);
+}
+
+void WorkflowScene::keyReleaseEvent (QKeyEvent* event) {
+    QGraphicsView* v = views().at(0);
+    if (v->dragMode() == QGraphicsView::ScrollHandDrag) {
+        v->setDragMode(QGraphicsView::RubberBandDrag);
+    }
+    QGraphicsScene::keyReleaseEvent(event);
 }
 
 void WorkflowScene::clearScene() {

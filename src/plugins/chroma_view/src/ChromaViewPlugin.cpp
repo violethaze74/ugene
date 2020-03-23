@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -94,9 +94,6 @@ void ChromaViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
     connect(action, SIGNAL(triggered()), SLOT(sl_showChromatogram()));
 
     sw->addADVSequenceWidgetActionToViewsToolbar(action);
-
-    // if chromatogram is enabled detailed sequence view is hidden
-    sw->setDetViewCollapsed(true);
 
     action->trigger();
 }

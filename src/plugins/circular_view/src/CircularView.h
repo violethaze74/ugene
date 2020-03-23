@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ public:
     void wheelEvent(QWheelEvent* we);
     virtual QSize sizeHint() const;
 
-    virtual QList<AnnotationSelectionData> selectAnnotationByCoord(const QPoint& coord) const;
+    virtual QList<Annotation*> findAnnotationsByCoord(const QPoint& coord) const;
 
     static qreal coordToAngle(const QPoint point);
 
@@ -193,11 +193,6 @@ private:
     QPainterPath createAnnotationArrowPath(float startAngle, float spanAngle, float dAlpha, const QRect &outerRect, const QRect &innerRect,
         const QRect &middleRect, bool complementary, bool isShort) const;
     void removeRegionsOutOfRange(QVector<U2Region> &location, int seqLen) const;
-
-    /**
-     * Returns a pair of merged regions: the second one was added to the first
-     */
-    QPair<U2Region, U2Region> mergeCircularJunctoinRegion(QVector<U2Region> &location, int seqLen) const;
 
     static const int OUTER_ELLIPSE_SIZE;
     static const int ELLIPSE_DELTA;

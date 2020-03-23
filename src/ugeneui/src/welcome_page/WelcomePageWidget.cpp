@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,8 +55,8 @@ WelcomePageWidget::WelcomePageWidget(QWidget *parent)
 }
 
 void WelcomePageWidget::updateRecent(const QStringList &recentProjects, const QStringList &recentFiles) {
-    updateRecentFilesContainer("recent_projects", recentProjects, tr("No opened projects yet"));
-    updateRecentFilesContainer("recent_files", recentFiles, tr("No opened files yet"));
+    updateRecentFilesContainer("recent_projects", recentProjects, tr("No opened projects"));
+    updateRecentFilesContainer("recent_files", recentFiles, tr("No opened files"));
     controller->runJavaScript("updateLinksVisibility()");
 }
 

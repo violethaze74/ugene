@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -250,7 +250,7 @@ void CreateCmdlineBasedWorkerWizard::init() {
     setOption(IndependentPages);
 
     setOption(QWizard::HaveHelpButton, true);
-    new U2::HelpButton(this, this->button(QWizard::HelpButton), "24740125");
+    new U2::HelpButton(this, this->button(QWizard::HelpButton), "28967044");
 
     DialogUtils::setWizardMinimumSize(this, QSize(780, 350));
 }
@@ -321,7 +321,7 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::initializePage() {
                 QMessageBox::Close));
             warningBox->exec();
             rbCustomTool->setChecked(true);
-        } else if (!initialConfig->integratedToolId.isEmpty()) { 
+        } else if (!initialConfig->integratedToolId.isEmpty()) {
             cbIntegratedTools->setDefaultMenuValue(initialConfig->integratedToolId);
         }
     } else {
@@ -409,7 +409,9 @@ CreateCmdlineBasedWorkerWizardInputDataPage::CreateCmdlineBasedWorkerWizardInput
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
 
     connect(pbAddInput, SIGNAL(clicked()), SLOT(sl_addInput()));
+    connect(pbAddInput, SIGNAL(clicked()), tvInput, SLOT(setFocus()));
     connect(pbDeleteInput, SIGNAL(clicked()), SLOT(sl_deleteInput()));
+    connect(pbDeleteInput, SIGNAL(clicked()), tvInput, SLOT(setFocus()));
     connect(this, SIGNAL(si_inputsChanged()), SIGNAL(completeChanged()));
 
     inputsModel = new CfgExternalToolModel(CfgExternalToolModel::Input, tvInput);
@@ -491,7 +493,9 @@ CreateCmdlineBasedWorkerWizardParametersPage::CreateCmdlineBasedWorkerWizardPara
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
 
     connect(pbAdd, SIGNAL(clicked()), SLOT(sl_addAttribute()));
+    connect(pbAdd, SIGNAL(clicked()), tvAttributes, SLOT(setFocus()));
     connect(pbDelete, SIGNAL(clicked()), SLOT(sl_deleteAttribute()));
+    connect(pbDelete, SIGNAL(clicked()), tvAttributes, SLOT(setFocus()));
     connect(this, SIGNAL(si_attributesChanged()), SIGNAL(completeChanged()));
 
     model = new CfgExternalToolModelAttributes(_schemaConfig);
@@ -612,7 +616,9 @@ CreateCmdlineBasedWorkerWizardOutputDataPage::CreateCmdlineBasedWorkerWizardOutp
     lblTitle->setStyleSheet(CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET);
 
     connect(pbAddOutput, SIGNAL(clicked()), SLOT(sl_addOutput()));
+    connect(pbAddOutput, SIGNAL(clicked()), tvOutput, SLOT(setFocus()));
     connect(pbDeleteOutput, SIGNAL(clicked()), SLOT(sl_deleteOutput()));
+    connect(pbDeleteOutput, SIGNAL(clicked()), tvOutput, SLOT(setFocus()));
     connect(this, SIGNAL(si_outputsChanged()), SIGNAL(completeChanged()));
 
     outputsModel = new CfgExternalToolModel(CfgExternalToolModel::Output);
@@ -877,7 +883,7 @@ void CreateCmdlineBasedWorkerWizardSummaryPage::showEvent(QShowEvent * /*event*/
 const QString ExternalToolSelectComboBox::SHOW_ALL_TOOLS = "SHOW_ALL";
 const QString ExternalToolSelectComboBox::SHOW_CUSTOM_TOOLS = "SHOW_CUSTOM";
 
-ExternalToolSelectComboBox::ExternalToolSelectComboBox(QWidget* parent) 
+ExternalToolSelectComboBox::ExternalToolSelectComboBox(QWidget* parent)
     : QComboBox(parent) {
     initExternalTools();
     initPopupMenu();

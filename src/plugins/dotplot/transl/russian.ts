@@ -4,13 +4,9 @@
 <context>
     <name>DotPlotDialog</name>
     <message>
-        <source>DotPlot</source>
-        <translation type="vanished">DotPlot</translation>
-    </message>
-    <message>
         <location filename="../src/DotPlotDialog.ui" line="20"/>
         <source>Compare sequences using Dotplot</source>
-        <translation type="unfinished"></translation>
+        <translation>Сравнение последовательностей при помощи Dotplot</translation>
     </message>
     <message>
         <location filename="../src/DotPlotDialog.ui" line="33"/>
@@ -261,17 +257,17 @@
         <translation>Диагональный</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="291"/>
+        <location filename="../src/DotPlotDialog.cpp" line="319"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="323"/>
+        <location filename="../src/DotPlotDialog.cpp" line="349"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="323"/>
+        <location filename="../src/DotPlotDialog.cpp" line="349"/>
         <source>Error opening files</source>
         <translation>Ошибка открытия файлов</translation>
     </message>
@@ -326,10 +322,6 @@
         <source>Select files</source>
         <translation>Выберите файлы</translation>
     </message>
-    <message>
-        <source>Select files first to build dotplot</source>
-        <translation type="vanished">Выберите файлы, чтобы посмотрить dotplot</translation>
-    </message>
 </context>
 <context>
     <name>U2::DotPlotFilterDialog</name>
@@ -370,13 +362,9 @@
         <translation>Dotplot widget is NULL</translation>
     </message>
     <message>
-        <source>DotPlot</source>
-        <translation type="vanished">DotPlot</translation>
-    </message>
-    <message>
         <location filename="../src/DotPlotImageExportTask.cpp" line="61"/>
         <source>Dotplot</source>
-        <translation type="unfinished">Dotplot</translation>
+        <translation>Dotplot</translation>
     </message>
     <message>
         <location filename="../src/DotPlotImageExportTask.cpp" line="78"/>
@@ -434,10 +422,6 @@
         <location filename="../src/DotPlotSplitter.cpp" line="49"/>
         <source>Filter results</source>
         <translation>Фильтрация результатов</translation>
-    </message>
-    <message>
-        <source>Keep aspect ratio</source>
-        <translation type="vanished">Сохранать соотношение сторон</translation>
     </message>
     <message>
         <location filename="../src/DotPlotSplitter.cpp" line="50"/>
@@ -583,7 +567,7 @@
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="694"/>
         <source>Sequence size is too large!</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательность слишком большая!</translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="728"/>

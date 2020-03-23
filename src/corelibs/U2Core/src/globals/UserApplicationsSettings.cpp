@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -160,7 +160,7 @@ void UserAppsSettings::setCustomToolsConfigsDirPath(const QString &newPath) cons
     const QString oldPath = getCustomToolsConfigsDirPath();
 
     Settings *s = AppContext::getSettings();
-    s->setValue(SETTINGS_ROOT + CUSTOM_EXTERNAL_TOOL_CONFIGS_DIR, newPath, true);
+    s->setValue(SETTINGS_ROOT + CUSTOM_EXTERNAL_TOOL_CONFIGS_DIR, newPath);
 
     if(oldPath != newPath) {
         QDir dir(oldPath);

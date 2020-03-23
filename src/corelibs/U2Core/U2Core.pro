@@ -99,6 +99,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/globals/DBXRefRegistry.h \
            src/globals/ExternalToolRegistry.h \
            src/globals/FormatSettings.h \
+           src/globals/Theme.h \
            src/globals/global.h \
            src/globals/GUrl.h \
            src/globals/Identifiable.h \

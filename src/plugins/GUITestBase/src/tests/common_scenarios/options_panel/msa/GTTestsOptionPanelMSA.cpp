@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -890,10 +890,10 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0007){
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
     QString c = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 0));
     QString gap = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 2));
-    CHECK_SET_ERR(a == "#fcff92", QString("a has color %1").arg(a));
+    CHECK_SET_ERR(a == "#fdff6a", QString("a has color %1").arg(a));
     CHECK_SET_ERR(t == "#ff99b1", QString("t has color %1").arg(t));
-    CHECK_SET_ERR(g == "#4eade1", QString("g has color %1").arg(g));
-    CHECK_SET_ERR(c == "#70f970", QString("c has color %1").arg(c));
+    CHECK_SET_ERR(g == "#2aa1e1", QString("g has color %1").arg(g));
+    CHECK_SET_ERR(c == "#49f949", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
  /* GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#fcff92");//yellow
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,2), "#ff99b1");//red
@@ -935,9 +935,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0008){
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
     QString gap2 = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(3, 1));
     QString gap3 = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 2));
-    CHECK_SET_ERR(a == "#fcff92", QString("a has color %1 intead of %2").arg(a).arg("#fcff92"));
+    CHECK_SET_ERR(a == "#fdff6a", QString("a has color %1 intead of %2").arg(a).arg("#fcff92"));
     CHECK_SET_ERR(gap1 == "#ffffff", QString("gap1 has color %1 intead of %2").arg(gap1).arg("#ffffff"));
-    CHECK_SET_ERR(g == "#4eade1", QString("g has color %1 intead of %2").arg(g).arg("#4eade1"));
+    CHECK_SET_ERR(g == "#2aa1e1", QString("g has color %1 intead of %2").arg(g).arg("#4eade1"));
     CHECK_SET_ERR(gap2 == "#ffffff", QString("gap2 has color%1 intead of %2").arg(gap2).arg("#ffffff"));
     CHECK_SET_ERR(gap3 == "#ffffff", QString("gap3 has color %1 intead of %2").arg(gap3).arg("#ffffff"));
     /*

@@ -2,7 +2,6 @@
 
 include( ../../ugene_globals.pri )
 
-TARGET = ugenedb
 TEMPLATE = lib
 CONFIG +=thread debug_and_release warn_off
 INCLUDEPATH += src

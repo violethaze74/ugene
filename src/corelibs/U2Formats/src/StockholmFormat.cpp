@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -738,7 +738,7 @@ Document* StockholmFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRe
         QString lockReason;
         load( io, dbiRef, objects, fs, os, uniFile);
         if ( !uniFile ) {
-            lockReason = QObject::tr("The document is created not by UGENE");
+            lockReason = QObject::tr("The document is not created by UGENE");
         }
         return new Document( this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason );
     }

@@ -832,16 +832,6 @@ Maybe model data are not enough for selected algorithm</translation>
         <translation>Выберите файл для сохранения весовой матрицы...</translation>
     </message>
     <message>
-        <source>Overwrite existing file</source>
-        <translation type="vanished">Переписать существующий файл</translation>
-    </message>
-    <message>
-        <source>File with this name already exists.
-Do you want to write over this file?</source>
-        <translation type="vanished">Файл с таким именем уже существует.
-Вы хотите переписать его?</translation>
-    </message>
-    <message>
         <location filename="../src/PWMBuildDialogController.cpp" line="208"/>
         <source>Illegal input file name</source>
         <translation>Неправильное имя входного файла</translation>
@@ -956,12 +946,6 @@ Do you want to write over this file?</source>
         <translation>Модель с такими же параметрами уже находится в очереди</translation>
     </message>
     <message>
-        <source>Zero length or corrupted model
-Maybe model data is not enough for selected algorithm</source>
-        <translation type="vanished">Zero length or corrupted model
-Maybe model data is not enough for selected algorithm</translation>
-    </message>
-    <message>
         <location filename="../src/PWMSearchDialogController.cpp" line="362"/>
         <location filename="../src/PWMSearchDialogController.cpp" line="473"/>
         <source>Model not selected</source>
@@ -1018,7 +1002,7 @@ Maybe model data is not enough for selected algorithm</translation>
         <location filename="../src/PWMSearchDialogController.cpp" line="566"/>
         <source>Zero length or corrupted model
 Maybe model data are not enough for selected algorithm</source>
-        <translation type="unfinished">Zero length or corrupted model
+        <translation>Zero length or corrupted model
 Maybe model data are not enough for selected algorithm</translation>
     </message>
     <message>
@@ -1345,17 +1329,17 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::WeightMatrixSingleSearchTask</name>
     <message>
-        <location filename="../src/WeightMatrixSearchTask.cpp" line="56"/>
+        <location filename="../src/WeightMatrixSearchTask.cpp" line="55"/>
         <source>Weight matrix search</source>
         <translation>Поиск с весовыми матрицами</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixSearchTask.cpp" line="70"/>
+        <location filename="../src/WeightMatrixSearchTask.cpp" line="69"/>
         <source>Weight matrix search parallel</source>
         <translation>Параллельный поиск с весовыми матрицами</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixSearchTask.cpp" line="90"/>
+        <location filename="../src/WeightMatrixSearchTask.cpp" line="89"/>
         <source>Internal error invalid psum: %1</source>
         <translation>Внутренняя ошибка - неверная сумма: %1</translation>
     </message>

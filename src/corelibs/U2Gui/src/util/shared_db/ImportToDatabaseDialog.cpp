@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,7 +62,7 @@ ImportToDatabaseDialog::ImportToDatabaseDialog(Document *dbConnection, const QSt
     FILES_AND_FOLDERS = tr("Files and folders");
     OBJECTS_AND_DOCUMENTS = tr("Documents and objects");
     
-    new HelpButton(this, ui->buttonBox, "24742694");
+    new HelpButton(this, ui->buttonBox, "24749086");
     init();
     connectSignals();
     updateState();

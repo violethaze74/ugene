@@ -2,45 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
-    <name>BaseContentDialog</name>
-    <message>
-        <source>Set Base Content</source>
-        <translation type="vanished">Задать состав последовательности</translation>
-    </message>
-    <message>
-        <source>Base conetnt</source>
-        <translation type="vanished">Состав</translation>
-    </message>
-    <message>
-        <source>Base content</source>
-        <translation type="vanished">Основной состав</translation>
-    </message>
-    <message>
-        <source>A</source>
-        <translation type="vanished">A</translation>
-    </message>
-    <message>
-        <source> %</source>
-        <translation type="vanished"> %</translation>
-    </message>
-    <message>
-        <source>C</source>
-        <translation type="vanished">C</translation>
-    </message>
-    <message>
-        <source>G</source>
-        <translation type="vanished">G</translation>
-    </message>
-    <message>
-        <source>T</source>
-        <translation type="vanished">T</translation>
-    </message>
-    <message>
-        <source>GC Skew</source>
-        <translation type="vanished">GC смещение</translation>
-    </message>
-</context>
-<context>
     <name>CSVColumnConfigurationDialog</name>
     <message>
         <location filename="../src/CSVColumnConfigurationDialog.ui" line="23"/>
@@ -196,14 +157,6 @@
         <location filename="../src/DNASequenceGeneratorDialog.ui" line="426"/>
         <source>GC Skew</source>
         <translation>GC смещение</translation>
-    </message>
-    <message>
-        <source>Manual</source>
-        <translation type="vanished">Вручную</translation>
-    </message>
-    <message>
-        <source>Configure...</source>
-        <translation type="vanished">Настроить...</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.ui" line="471"/>
@@ -548,83 +501,83 @@
         <translation>Загрузить по &apos;db_xref&apos; %1</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="490"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="544"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="482"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="536"/>
         <source>Illegal parameter: input alignment is not empty!</source>
         <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="502"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="494"/>
         <source>%1 is not a BLAST annotation</source>
         <translation>%1 не является BLAST аннотацией</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="507"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="499"/>
         <source>Can not export BLAST annotations from different sequences</source>
         <translation>Невозможно экспортировать BLAST аннотации из разных последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="510"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="502"/>
         <source>Can not find qualifier to set as a name for BLAST sequence</source>
         <translation>Невозможно найти квалификатор, чтобы установить в качестве имени для BLAST последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="590"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="582"/>
         <source>Illegal parameter: Input alignment is not empty!</source>
         <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="665"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="657"/>
         <source>Create alignment</source>
         <translation>Создать выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="666"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="658"/>
         <source>Save alignment to file</source>
         <translation>Сохранить выравнивание в файл</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="296"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="440"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="291"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="432"/>
         <source>No annotations selected!</source>
         <translation>Сначала выберите аннотации!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="382"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="377"/>
         <source>No sequence regions selected!</source>
         <translation>Нет выбранных участков!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="492"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="546"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="484"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="538"/>
         <source>At least 2 annotations are required</source>
         <translation>Нужно выбрать хотя бы 2 аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="561"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="553"/>
         <source>Different sequence alphabets</source>
         <translation>Несопоставимые алфавиты</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="618"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="610"/>
         <source>At least 2 sequences required</source>
         <translation>Необходимо как минимум 2 последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="506"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="554"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="498"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="546"/>
         <source>No sequence object found</source>
         <translation>Последовательность недоступна</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="516"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="575"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="632"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="508"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="567"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="624"/>
         <source>Alignment is too large</source>
         <translation>Слишком большой размер выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="612"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="604"/>
         <source>Can&apos;t derive alignment alphabet</source>
         <translation>Невозможно определить алфавит выравнивания</translation>
     </message>
@@ -640,25 +593,6 @@
         <location filename="../src/ExportTasks.cpp" line="80"/>
         <source>Can&apos;t create load task</source>
         <translation>Can&apos;t create load task</translation>
-    </message>
-</context>
-<context>
-    <name>U2::BaseContentDialog</name>
-    <message>
-        <source>Save</source>
-        <translation type="vanished">Сохранить</translation>
-    </message>
-    <message>
-        <source>Base content</source>
-        <translation type="vanished">Основной состав</translation>
-    </message>
-    <message>
-        <source>Incorrect GC Skew value</source>
-        <translation type="vanished">Некорректное значение GC смещения</translation>
-    </message>
-    <message>
-        <source>Total percentage has to be 100 %</source>
-        <translation type="vanished">Сумма должна составлять 100 %</translation>
     </message>
 </context>
 <context>
@@ -1219,12 +1153,12 @@
 <context>
     <name>U2::ExportSelectedSeqRegionsTask</name>
     <message>
-        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="182"/>
+        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="184"/>
         <source>Export selected regions from a sequence task</source>
         <translation>Export selected regions from a sequence task</translation>
     </message>
     <message>
-        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="189"/>
+        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="191"/>
         <source>Invalid annotation table detected</source>
         <translation>Invalid annotation table detected</translation>
     </message>
@@ -1348,10 +1282,6 @@
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <source>Conversion options</source>
-        <translation type="vanished">Настройки трансляции</translation>
-    </message>
-    <message>
         <location filename="../src/ExportSequencesDialog.ui" line="109"/>
         <source>Save direct strand</source>
         <translation>Прямая</translation>
@@ -1409,7 +1339,7 @@
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="103"/>
         <source>Convertion options</source>
-        <translation type="unfinished"></translation>
+        <translation>Опции конвертации</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="163"/>
@@ -1617,10 +1547,6 @@ var %2; //parsed line number</translation>
         <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="382"/>
         <source>Script is empty</source>
         <translation>Скрипт пуст</translation>
-    </message>
-    <message>
-        <source>Output file format is not set!</source>
-        <translation type="vanished">Не задан формат файла с аннотациями!</translation>
     </message>
     <message>
         <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="392"/>
@@ -2141,12 +2067,6 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
 <context>
     <name>getSequenceByIdDialog</name>
     <message>
-        <source>The sequences from selected BLAST results will be downloaded from
- NCBI Genbank by their GI identifier
-</source>
-        <translation type="vanished">Последовательности из выбранных аннотаций буду загружены из NCBI Genbank по идентификатору</translation>
-    </message>
-    <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="14"/>
         <source>Get Sequences by ID</source>
         <translation>Получить последовательность по идентификатору</translation>
@@ -2162,10 +2082,6 @@ NCBI Genbank by their GI identifier
         <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>
         <source>Save to directory:</source>
         <translation>Сохранить в:</translation>
-    </message>
-    <message>
-        <source>Save to folder:</source>
-        <translation type="vanished">Сохранить в:</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="58"/>

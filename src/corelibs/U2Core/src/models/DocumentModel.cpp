@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,6 +50,7 @@ namespace U2 {
 const QString DocumentFormat::DBI_REF_HINT("dbi_alias");
 const QString DocumentFormat::DBI_FOLDER_HINT("dbi_folder");
 const QString DocumentFormat::DEEP_COPY_OBJECT("deep_copy_object");
+const QString DocumentFormat::STRONG_FORMAT_ACCORDANCE("strong_format_accordance");
 const QString DocumentMimeData::MIME_TYPE("application/x-ugene-document-mime");
 
 const int DocumentFormat::READ_BUFF_SIZE = 4194304; //4Mb optimal buffer size for reading from network drives

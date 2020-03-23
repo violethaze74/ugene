@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,6 +77,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
+// Click "Hide zoom view"
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    GTGlobals::sleep();
+
 // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
@@ -116,6 +122,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
+// Click "Hide zoom view"
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    GTGlobals::sleep();
+
 // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
@@ -153,6 +165,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
+    GTGlobals::sleep();
+
+ // Click "Hide zoom view"
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
     GTGlobals::sleep();
 
 // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -436,6 +454,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
+// Click "Hide zoom view"
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    GTGlobals::sleep();
+
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
@@ -579,6 +603,13 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
+    GTGlobals::sleep();
+
+    
+ // Click "Hide zoom view"
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
     GTGlobals::sleep();
 
 // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -760,7 +791,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     GTUtilsDocument::removeDocument(os, "ann_test_0010_3_18.gb");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "ann_test_0010_3_19.gb");
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0010_3.gtf");
@@ -781,6 +812,12 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Click "Hide zoom view
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "exon", "annotation", "200..300",
                                                                       sandBoxDir + "ann_test_0011_1.gb"));
@@ -813,6 +850,12 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    // Click "Hide zoom view
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300",
                                                                       sandBoxDir + "ann_test_0011_1.gb"));
@@ -846,6 +889,12 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Click "Hide zoom view
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300",
                                                                       sandBoxDir + "ann_test_0011_1.gb"));
@@ -1015,7 +1064,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsDocument::removeDocument(os, "sars.gb");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "scaffold_90.gff");
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_3.gtf");

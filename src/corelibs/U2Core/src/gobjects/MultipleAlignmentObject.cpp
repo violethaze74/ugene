@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -179,6 +179,35 @@ void MultipleAlignmentObject::removeRow(int rowIdx) {
     updateCachedMultipleAlignment(mi, removedRowIds);
 }
 
+void MultipleAlignmentObject::removeRows(const QList<int>& rowIndexes) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    CHECK(!rowIndexes.isEmpty(),);
+
+    const MultipleAlignment& ma = getMultipleAlignment();
+    QList<qint64> rowIdsToRemove;
+    foreach(int rowIdx, rowIndexes) {
+        SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getNumRows(), "Invalid row index",);
+        qint64 rowId = ma->getRow(rowIdx)->getRowId();
+        rowIdsToRemove << rowId;
+    }
+
+    QList<qint64> removedRowIds;
+    foreach(qint64 rowId, rowIdsToRemove) {
+        U2OpStatus2Log os;
+        removeRowPrivate(os, entityRef, rowId);
+        if (!os.hasError()) {
+            removedRowIds << rowId;
+        }
+    }
+
+    MaModificationInfo mi;
+    mi.rowContentChanged = false;
+    mi.alignmentLengthChanged = false;
+    updateCachedMultipleAlignment(mi, removedRowIds);
+
+    SAFE_POINT(removedRowIds.size() == rowIndexes.size(), "Failed to remove some rows",);
+}
+
 void MultipleAlignmentObject::renameRow(int rowIdx, const QString &newName) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
@@ -226,6 +255,10 @@ void MultipleAlignmentObject::moveRowsBlock(int firstRow, int numRows, int shift
     updateCachedMultipleAlignment();
 }
 
+QList<qint64> MultipleAlignmentObject::getRowsOrder(U2OpStatus& os) const {
+    return getMultipleAlignment()->getRowsIds();
+}
+
 void MultipleAlignmentObject::updateRowsOrder(U2OpStatus &os, const QList<qint64> &rowIds) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
@@ -268,8 +301,7 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
     ensureDataLoaded();
     emit si_startMaUpdating();
 
-    MultipleAlignment maBefore = cachedMa->getCopy();
-    QString oldName = maBefore->getName();
+    MultipleAlignment oldCachedMa = cachedMa->getCopy();
 
     U2OpStatus2Log os;
 
@@ -309,24 +341,24 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
 
     setModified(true);
     if (!mi.middleState) {
-        emit si_alignmentChanged(maBefore, mi);
+        emit si_alignmentChanged(oldCachedMa, mi);
 
-        if (cachedMa->isEmpty() && !maBefore->isEmpty()) {
+        if (cachedMa->isEmpty() && !oldCachedMa->isEmpty()) {
             emit si_alignmentBecomesEmpty(true);
-        } else if (!cachedMa->isEmpty() && maBefore->isEmpty()) {
+        } else if (!cachedMa->isEmpty() && oldCachedMa->isEmpty()) {
             emit si_alignmentBecomesEmpty(false);
         }
 
-        const QString newName = cachedMa->getName();
-        if (oldName != newName) {
+        QString newName = cachedMa->getName();
+        if (oldCachedMa->getName() != newName) {
             setGObjectNameNotDbi(newName);
         }
     }
     if (!removedRowIds.isEmpty()) {
         emit si_rowsRemoved(removedRowIds);
     }
-    if (cachedMa->getAlphabet()->getId() != maBefore->getAlphabet()->getId()) {
-        emit si_alphabetChanged(mi, maBefore->getAlphabet());
+    if (cachedMa->getAlphabet()->getId() != oldCachedMa->getAlphabet()->getId()) {
+        emit si_alphabetChanged(mi, oldCachedMa->getAlphabet());
     }
 }
 
@@ -619,5 +651,44 @@ int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os, const U2Regi
 
     return removingGapColumnCount;
 }
+
+QList<qint64> MultipleAlignmentObject::convertMaRowIndexesToMaRowIds(const QList<int>& maRowIndexes, bool excludeErrors) {
+    QList<qint64> ids;
+    const QList<MultipleAlignmentRow>& rows = getMultipleAlignment()->getRows();
+    for (int i = 0; i < maRowIndexes.length(); i++) {
+        int index = maRowIndexes[i];
+        bool isValid = index >= 0 && index <= rows.size() - 1;
+        if (isValid) {
+            ids << rows[index]->getRowId();
+        } else if (!excludeErrors) {
+            ids << -1;
+        }
+    }
+    return ids;
+}
+
+QList<int> MultipleAlignmentObject::convertMaRowIdsToMaRowIndexes(const QList<qint64>& maRowIds, bool excludeErrors) {
+    QList<int> indexes;
+    const QList<MultipleAlignmentRow>& rows = getMultipleAlignment()->getRows();
+    for (int i = 0; i < maRowIds.length(); i++) {
+        int rowId = maRowIds[i];
+        int index = -1;
+        for (int j = 0; j < rows.size(); j++) {
+            const MultipleAlignmentRow& row = rows[j];
+            if (row->getRowId() == rowId) {
+                index = j;
+                break;
+            }
+        }
+        bool isValid = index >= 0;
+        if (isValid) {
+            indexes << index;
+        } else if (!excludeErrors) {
+            indexes << -1;
+        }
+    }
+    return indexes;
+}
+
 
 }   // namespace U2

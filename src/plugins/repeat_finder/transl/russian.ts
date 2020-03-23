@@ -141,30 +141,10 @@
 <context>
     <name>FindTandemsDialog</name>
     <message>
-        <source>Tandem preset</source>
-        <translation type="vanished">Предустановки тандемов</translation>
-    </message>
-    <message>
-        <source>Min period</source>
-        <translation type="vanished">Мин период</translation>
-    </message>
-    <message>
         <location filename="../src/FindTandemsDialog.ui" line="248"/>
         <location filename="../src/FindTandemsDialog.ui" line="267"/>
         <source> n</source>
         <translation> н</translation>
-    </message>
-    <message>
-        <source>Max period</source>
-        <translation type="vanished">Макс период</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation type="vanished">Дополнительные настройки</translation>
-    </message>
-    <message>
-        <source>Advanced parameters</source>
-        <translation type="vanished">Дополнительные параметры</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="62"/>
@@ -172,56 +152,44 @@
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <source>Minimum tandem size</source>
-        <translation type="vanished">Минимальный размер тандема</translation>
-    </message>
-    <message>
-        <source>Find Tandems</source>
-        <translation type="vanished">Поиск тандемов</translation>
-    </message>
-    <message>
-        <source>Minimum repeat count</source>
-        <translation type="vanished">Минимальное число повторений</translation>
-    </message>
-    <message>
         <location filename="../src/FindTandemsDialog.ui" line="17"/>
         <source>Find Tandem Repeats</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск тандемов</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="31"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Основные</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="37"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="55"/>
         <source>Preset settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Предустановки</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="69"/>
         <source>Min length of repeated sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальная длина повторяемой последовательности</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="76"/>
         <source>Max length of repeated sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная длина повторяемой последовательности</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="83"/>
         <source>Min length of tandem repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальная длина тандема</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="90"/>
         <source>Min number of repeats</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальное число повторов</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="308"/>
@@ -236,24 +204,12 @@
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="340"/>
         <source>Search in</source>
-        <translation type="unfinished"></translation>
+        <translation>Искать в</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="366"/>
         <source>Output</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Region to process</source>
-        <translation type="vanished">Регион поиска</translation>
-    </message>
-    <message>
-        <source>Base</source>
-        <translation type="vanished">Основные настройки</translation>
-    </message>
-    <message>
-        <source>Tandem finder parameters</source>
-        <translation type="vanished">Параметры поиска тандемов</translation>
+        <translation>Сохранение</translation>
     </message>
 </context>
 <context>
@@ -310,7 +266,7 @@
         <location filename="../src/FindRepeatsDialog.cpp" line="242"/>
         <location filename="../src/FindRepeatsDialog.cpp" line="252"/>
         <source>Sequence size is too large!</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательнос ть слишком большая!</translation>
     </message>
     <message>
         <location filename="../src/FindRepeatsDialog.cpp" line="301"/>
@@ -463,10 +419,6 @@
         <translation>Особые</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="obsolete">Проблема</translation>
-    </message>
-    <message>
         <location filename="../src/FindTandemsDialog.cpp" line="176"/>
         <source>No annotations found: %1</source>
         <translation>Аннотации не найдены: %1</translation>
@@ -474,7 +426,7 @@
     <message>
         <location filename="../src/FindTandemsDialog.cpp" line="209"/>
         <source>Sequence size is too large!</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательность слишком большая!</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.cpp" line="218"/>
@@ -672,12 +624,12 @@
     <message>
         <location filename="../src/RepeatWorker.cpp" line="100"/>
         <source>Apply &apos;Min distance&apos; attribute</source>
-        <translation>Применить опцию &apos;Макс дистанция&apos;</translation>
+        <translation>Применить опцию &apos;Мин дистанция&apos;</translation>
     </message>
     <message>
         <location filename="../src/RepeatWorker.cpp" line="100"/>
         <source>Apply &apos;Min distance&apos; attribute.</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить опцию &apos;Мин дистанция&apos;.</translation>
     </message>
     <message>
         <location filename="../src/RepeatWorker.cpp" line="129"/>
@@ -1012,19 +964,11 @@
     <message>
         <location filename="../src/RepeatFinderPlugin.cpp" line="104"/>
         <source>Find tandem repeats...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Find tandems...</source>
-        <translation type="vanished">Поиск тандемных повторов...</translation>
+        <translation>Поиск тандемов...</translation>
     </message>
 </context>
 <context>
     <name>U2::RevComplSequenceTask</name>
-    <message>
-        <source>Reverse-complement sequence</source>
-        <translation type="vanished">Перевод последовательности к комплементарной</translation>
-    </message>
     <message>
         <location filename="../src/FindRepeatsTask.cpp" line="42"/>
         <source>Reverse complement sequence</source>

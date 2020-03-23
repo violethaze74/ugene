@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -133,6 +133,7 @@ public:
     static const QString DBI_REF_HINT;
     static const QString DBI_FOLDER_HINT;
     static const QString DEEP_COPY_OBJECT;
+    static const QString STRONG_FORMAT_ACCORDANCE;
 
     static const int READ_BUFF_SIZE;
 
@@ -521,5 +522,8 @@ public:
 };
 
 } //namespace
+
 Q_DECLARE_METATYPE(U2::Document*)
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::DocumentFormatFlags)
+
 #endif

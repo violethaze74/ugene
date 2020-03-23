@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -676,7 +676,7 @@ void ExternalProcessWorker::cleanup() {
 /* LaunchExternalToolTask */
 /************************************************************************/
 LaunchExternalToolTask::LaunchExternalToolTask(const QString &_execString, const QString& _workingDir, const QMap<QString, DataConfig> &_outputUrls)
-: Task(tr("Launch external process task"), TaskFlag_None), execString(_execString), workingDir(_workingDir), outputUrls(_outputUrls)
+: Task(tr("Launch external process task"), TaskFlag_None), outputUrls(_outputUrls), execString(_execString), workingDir(_workingDir)
 {
 
 }

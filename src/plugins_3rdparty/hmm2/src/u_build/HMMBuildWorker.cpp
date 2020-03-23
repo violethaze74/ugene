@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -305,6 +305,8 @@ void HMMBuildWorker::sl_taskFinished(Task* t) {
     if (build) {
         assert(!nextTick);
         hmm = build->getHMM();
+        SAFE_POINT(hmm != nullptr, "HMMReadTask didn't generate \"hmm\" object, stop.", );
+
         if (calibrate) {
             if (calSettings.nThreads == 1) {
                 nextTick = new HMMCalibrateTask(hmm, calSettings);

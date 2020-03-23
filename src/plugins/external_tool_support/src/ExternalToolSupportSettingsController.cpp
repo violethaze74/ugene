@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -70,7 +71,7 @@ const QString &ExternalToolSupportSettingsPageController::getHelpPageId() const 
     return helpPageId;
 }
 
-const QString ExternalToolSupportSettingsPageController::helpPageId = QString("24742348");
+const QString ExternalToolSupportSettingsPageController::helpPageId = QString("24748737");
 
 //////////////////////////////////////////////
 ////ExternalToolSupportSettingsPageState
@@ -552,7 +553,7 @@ void ExternalToolSupportSettingsPageWidget::setDescription(ExternalTool* tool) {
 }
 
 QString ExternalToolSupportSettingsPageWidget::warn(const QString& text) const {
-    return "<span style=\"color:" + L10N::errorColorLabelStr() + "; font:bold;\">" + text + "</span>";
+    return "<span style=\"color:" + Theme::errorColorLabelStr() + "; font:bold;\">" + text + "</span>";
 }
 
 bool ExternalToolSupportSettingsPageWidget::eventFilter(QObject *watched, QEvent *event) {

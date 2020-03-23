@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,8 +64,9 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       seqAreaHeaderLayout(NULL),
       seqAreaLayout(NULL),
       nameAreaLayout(NULL),
-      collapseModel(new MSACollapsibleItemModel(this)),
+      collapseModel(new MaCollapseModel(this, editor->getMaRowIds())),
       collapsibleMode(false),
+      enableCollapsingOfSingleRowGroups(false),
       scrollController(new ScrollController(editor, this, collapseModel)),
       baseWidthController(new BaseWidthController(this)),
       rowHeightController(NULL),
@@ -202,6 +203,7 @@ void MaEditorWgt::initWidgets() {
     nameAreaContainer->setLayout(nameAreaLayout);
     nameAreaContainer->setStyleSheet("background-color: white;");
 
+    nameAreaContainer->setMinimumWidth(15); // splitter uses min-size to collapse a widget
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
     maSplitter.addWidget(seqAreaContainer, 1, 3);
 
@@ -247,8 +249,12 @@ void MaEditorWgt::initActions() {
     // SANGER_TODO: check why delAction is not added
     delSelectionAction = new QAction(tr("Remove selection"), this);
     delSelectionAction->setObjectName("Remove selection");
+#ifndef Q_OS_MAC
+    // Shortcut was wrapped with ifndef to workaround UGENE-6676.
+    // On Qt5.12.6 the issue cannot be reproduced, so shortcut should be restored.
     delSelectionAction->setShortcut(QKeySequence::Delete);
     delSelectionAction->setShortcutContext(Qt::WidgetShortcut);
+#endif
 
     copySelectionAction = new QAction(tr("Copy selection"), this);
     copySelectionAction->setObjectName("copy_selection");

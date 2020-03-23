@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -117,7 +117,7 @@ QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo(const QPoint& p
     MaEditor* editor = seqArea->getEditor();
     SAFE_POINT(editor != NULL, "Editor is NULL", p);
     SAFE_POINT(editor->getMaObject(), "MaObject is NULL", p);
-    const MultipleAlignmentRow row = editor->getMaObject()->getRow(seqArea->getSelectedRows().startPos);
+    const MultipleAlignmentRow row = editor->getMaObject()->getRow(seqArea->getSelectedMaRows().startPos);
     QString len = QString::number(row->getUngappedLength());
     if (row->charAt(pos.x()) == U2Msa::GAP_CHAR) {
         return QPair<QString, QString>(GAP_MARK, len);
@@ -168,6 +168,10 @@ void MaEditorStatusBar::updateSelectionLabel() {
     int nonSelLength = fm.width(selectionPattern.arg(QObject::tr("none")));
 
     selectionLabel->update(selSize, 10 + qMax(maxSelLength, nonSelLength));
+}
+
+void MaEditorStatusBar::setStatusBarStyle() {
+    setStyleSheet(QString("#%1 { background:rgb(219,219,219); border: 1px solid rgb(185,185,185); }").arg(objectName()));
 }
 
 }//namespace

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@
 #include "RPSBlastSupportTask.h"
 #include "TBlastNPlusSupportTask.h"
 #include "TBlastXPlusSupportTask.h"
-#include "blast/FormatDBSupport.h"
+#include "blast_plus/FormatDBSupport.h"
 #include "utils/ExternalToolSupportAction.h"
 #include "utils/ExternalToolUtils.h"
 
@@ -307,14 +307,14 @@ void BlastPlusSupportContext::buildMenu(GObjectView* view, QMenu* m) {
     bool isBlastResult = false, isShowId = false;
 
     QString name;
-    if (!dnaView->getAnnotationsSelection()->getSelection().isEmpty()) {
-        name = dnaView->getAnnotationsSelection()->getSelection().first().annotation->getName();
+    if (!dnaView->getAnnotationsSelection()->getAnnotations().isEmpty()) {
+        name = dnaView->getAnnotationsSelection()->getAnnotations().first()->getName();
     }
-    selectedId = ADVSelectionUtils::getSequenceIdsFromSelection(dnaView->getAnnotationsSelection()->getSelection(), true);
+    selectedId = ADVSelectionUtils::getSequenceIdsFromSelection(dnaView->getAnnotationsSelection()->getAnnotations(), true);
     isShowId = !selectedId.isEmpty();
 
-    foreach(const AnnotationSelectionData &sel, dnaView->getAnnotationsSelection()->getSelection()) {
-        if(name != sel.annotation->getName()) {
+    foreach(const Annotation* annotation, dnaView->getAnnotationsSelection()->getAnnotations()) {
+        if(name != annotation->getName()) {
             name = "";
         }
         isBlastResult = name == BLAST_ANNOTATION_NAME;

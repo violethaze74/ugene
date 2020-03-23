@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -145,6 +145,9 @@ public:
 
     /** Returns IDs of the alignment rows in the database */
     QList<qint64> getRowsIds() const;
+
+    /** Returns row ids by row indexes. */
+    QList<qint64> getRowIdsByRowIndexes(const QList<int>& rowIndexes) const;
 
     MultipleAlignmentRow getRowByRowId(qint64 rowId, U2OpStatus &os) const;
 

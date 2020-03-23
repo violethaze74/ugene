@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,13 +73,32 @@ public:
     U2MsaMapGapModel getMapGapModel() const;
     U2MsaListGapModel getGapModel() const;
 
-    /** Methods to work with rows */
+    /**
+     * Converts MA indexes into ids.
+     * If index is out of range and 'excludeErrors' is false appends '-1' to the result list.
+     */
+    QList<qint64> convertMaRowIndexesToMaRowIds(const QList<int>& maRowIndexes, bool excludeErrors = true);
+
+    /**
+     * Converts MA ids into indexes.
+     * If id is invalid and 'excludeErrors' is false appends '-1' to the result list.
+     */
+    QList<int> convertMaRowIdsToMaRowIndexes(const QList<qint64>& maRowIds, bool excludeErrors = true);
+
+    /** Removes single row from the alignment by row index. */
     void removeRow(int rowIdx);
-    void renameRow(int rowIdx, const QString &newName);
+
+    /** Removes all rows from the list from the alignment by row indexes. */
+    void removeRows(const QList<int>& rowIndexes);
+
+    /** Renames row with a given index. */
+    void renameRow(int rowIdx, const QString& newName);
+
     void moveRowsBlock(int firstRow, int numRows, int delta);
 
     bool isRegionEmpty(int x, int y, int width, int height) const;
 
+    QList<qint64> getRowsOrder(U2OpStatus& os) const;
     /**
      * Updates the rows order.
      * There must be one-to-one correspondence between the specified rows IDs

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1350,7 +1350,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTGlobals::sleep(500);
 
-   
+
     QTreeWidget* w = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os,"WorkflowPaletteElements"));
     CHECK_SET_ERR(w != NULL,"WorkflowPaletteElements is null");
 
@@ -1392,7 +1392,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "test_0768"));
     GTMouseDriver::click();
 
-    GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "xyz", "Syntax is OK!"));   
+    GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "xyz", "Syntax is OK!"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit script of the element...", GTGlobals::UseMouse);
 }
 
@@ -2396,7 +2396,7 @@ GUI_TEST_CLASS_DEFINITION(test_0868){
 
 //    2. Zoom to any covered
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    for (int i = 0; i < 24; i++){
+    for (int i = 0; i < 25; i++){
         GTKeyboardDriver::keyClick( '=', Qt::ShiftModifier);
         GTGlobals::sleep(100);
     }
@@ -2405,8 +2405,9 @@ GUI_TEST_CLASS_DEFINITION(test_0868){
     GTUtilsBookmarksTreeView::addBookmark(os, GTUtilsMdi::activeWindow(os)->objectName(), "bookmark");
     GTGlobals::sleep();
     GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "bookmark"));
-    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
+    GTMouseDriver::doubleClick();
+    GTGlobals::sleep(1000);
 
     QWidget* assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
     QPixmap pixmap = GTWidget::getPixmap(os, assembly_reads_area);

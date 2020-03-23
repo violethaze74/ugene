@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -177,7 +177,7 @@ void ActorPrototype::clearExternalTools() {
 ActorPrototype::ActorPrototype(const Descriptor& d,
                                const QList<PortDescriptor*>& ports,
                                const QList<Attribute*>& attrs)
-: VisualDescriptor(d), QObject(nullptr), attrs(attrs), ports(ports), ed(NULL), val(NULL), prompter(NULL),
+: QObject(nullptr), VisualDescriptor(d), attrs(attrs), ports(ports), ed(NULL), val(NULL), prompter(NULL),
 isScript(false), isStandard(true), isSchema(false), allowsEmptyPorts(false), influenceOnPathFlag(false), usageCounter(0) {
 }
 

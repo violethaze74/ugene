@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -207,14 +207,14 @@ ExternalToolListener* ExternalToolSupportTask::getListener(int listenerNumber) {
 ////////////////////////////////////////
 //ExternalToolRunTaskHelper
 ExternalToolRunTaskHelper::ExternalToolRunTaskHelper(ExternalToolRunTask* t)
-    : process(t->externalToolProcess), logParser(t->logParser), os(t->stateInfo), listener(NULL) {
+    : os(t->stateInfo), logParser(t->logParser), process(t->externalToolProcess), listener(NULL) {
     logData.resize(1000);
     connect(process, SIGNAL(readyReadStandardOutput()), SLOT(sl_onReadyToReadLog()));
     connect(process, SIGNAL(readyReadStandardError()), SLOT(sl_onReadyToReadErrLog()));
 }
 
 ExternalToolRunTaskHelper::ExternalToolRunTaskHelper(QProcess *_process, ExternalToolLogParser *_logParser, U2OpStatus &_os)
-    : process(_process), logParser(_logParser), os(_os), listener(NULL) {
+    : os(_os), logParser(_logParser), process(_process), listener(NULL) {
     logData.resize(1000);
     connect(process, SIGNAL(readyReadStandardOutput()), SLOT(sl_onReadyToReadLog()));
     connect(process, SIGNAL(readyReadStandardError()), SLOT(sl_onReadyToReadErrLog()));
@@ -227,7 +227,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
     if (process->readChannel() == QProcess::StandardError) {
         process->setReadChannel(QProcess::StandardOutput);
     }
-    int numberReadChars = process->read(logData.data(), logData.size());
+    int numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
     while (numberReadChars > 0) {
         //call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
@@ -235,7 +235,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
         if (NULL != listener) {
             listener->addNewLogMessage(line, ExternalToolListener::OUTPUT_LOG);
         }
-        numberReadChars = process->read(logData.data(), logData.size());
+        numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
     }
     os.setProgress(logParser->getProgress());
 }
@@ -247,7 +247,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
     if (process->readChannel() == QProcess::StandardOutput) {
         process->setReadChannel(QProcess::StandardError);
     }
-    int numberReadChars = process->read(logData.data(), logData.size());
+    int numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
     while (numberReadChars > 0) {
         //call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
@@ -255,7 +255,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
         if (NULL != listener) {
             listener->addNewLogMessage(line, ExternalToolListener::ERROR_LOG);
         }
-        numberReadChars = process->read(logData.data(), logData.size());
+        numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
     }
     processErrorToLog();
     os.setProgress(logParser->getProgress());
@@ -274,11 +274,12 @@ void ExternalToolRunTaskHelper::processErrorToLog() {
 
 ////////////////////////////////////////
 //ExternalToolLogParser
-ExternalToolLogParser::ExternalToolLogParser() {
+ExternalToolLogParser::ExternalToolLogParser(bool _writeErrorsToLog) {
     progress = -1;
     lastLine = "";
     lastErrLine = "";
     lastError = "";
+    writeErrorsToLog = _writeErrorsToLog;
 }
 
 void ExternalToolLogParser::parseOutput(const QString &partOfLog) {
@@ -322,7 +323,7 @@ bool ExternalToolLogParser::isError(const QString &line) const {
 }
 
 void ExternalToolLogParser::setLastError(const QString &value) {
-    if (!value.isEmpty()) {
+    if (!value.isEmpty() && writeErrorsToLog) {
         ioLog.error(value);
     }
     lastError = value;

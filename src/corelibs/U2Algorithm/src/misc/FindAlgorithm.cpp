@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -119,7 +119,7 @@ FindAlgorithmSettings::FindAlgorithmSettings(const QByteArray &pattern, FindAlgo
     int _maxResult2Find )
     : pattern( pattern ), strand( strand ), complementTT( complementTT ), proteinTT( proteinTT ), sequenceAlphabet(sequenceAlphabet),
     searchRegion( searchRegion ), maxErr( maxErr ), patternSettings( _patternSettings ),
-    useAmbiguousBases( ambBases ), maxRegExpResult( _maxRegExpResult ),
+    useAmbiguousBases( ambBases ), maxRegExpResultLength( _maxRegExpResult ),
     maxResult2Find( _maxResult2Find )
 {
 

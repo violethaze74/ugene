@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ const QMap<FastQCParser::ErrorType, QString> FastQCParser::initWellKnownErrors()
 const QMap<FastQCParser::ErrorType, QString> FastQCParser::WELL_KNOWN_ERRORS = initWellKnownErrors();
 
 FastQCParser::FastQCParser(const QString& _inputFile)
-    : ExternalToolLogParser(),
+    : ExternalToolLogParser(false),
       inputFile(_inputFile),
       progress(-1)
 {

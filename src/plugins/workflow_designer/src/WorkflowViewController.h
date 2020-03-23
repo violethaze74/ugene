@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -115,6 +115,9 @@ protected:
     void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
     void dragMoveEvent(QGraphicsSceneDragDropEvent * event);
     void dropEvent(QGraphicsSceneDragDropEvent * event);
+    void keyPressEvent (QKeyEvent* event);
+    void keyReleaseEvent (QKeyEvent* event);
+
 
     void drawBackground(QPainter * painter, const QRectF & rect );
 

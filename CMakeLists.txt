@@ -29,6 +29,14 @@ add_definitions(
         -DQT_FATAL_ASSERT
 )
 
+set (CMAKE_CXX_STANDARD 11)
+
+# Set a default build type for single-configuration
+# CMake generators if no build type is set.
+if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
@@ -57,7 +65,6 @@ add_subdirectory(src/ugenecl)
 add_subdirectory(src/plugins/annotator)
 add_subdirectory(src/plugins/api_tests)
 add_subdirectory(src/plugins/biostruct3d_view)
-add_subdirectory(src/plugins/browser_support)
 add_subdirectory(src/plugins/chroma_view)
 add_subdirectory(src/plugins/circular_view)
 add_subdirectory(src/plugins/CoreTests)
@@ -70,7 +77,7 @@ add_subdirectory(src/plugins/dotplot)
 add_subdirectory(src/plugins/enzymes)
 add_subdirectory(src/plugins/external_tool_support)
 add_subdirectory(src/plugins/genome_aligner)
-# never tried: add_subdirectory(src/plugins/GUITestBase)
+add_subdirectory(src/plugins/GUITestBase)
 add_subdirectory(src/plugins/linkdata_support)
 add_subdirectory(src/plugins/orf_marker)
 add_subdirectory(src/plugins/pcr)

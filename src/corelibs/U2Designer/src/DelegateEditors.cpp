@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -984,7 +984,15 @@ LineEditWithValidatorDelegate *LineEditWithValidatorDelegate::clone() {
 void LineEditWithValidatorDelegate::sl_valueChanged() {
     IgnoreUpDownPropertyWidget* editor = qobject_cast<IgnoreUpDownPropertyWidget *>(sender());
     CHECK(editor != NULL, );
+
+    QLineEdit* lineEdit = editor->findChild<QLineEdit*>("mainWidget");
+    SAFE_POINT(nullptr != lineEdit, "Line edit is nullptr", );
+
+    const int cursorPos = lineEdit->cursorPosition();
+
     emit commitData(editor);
+
+    lineEdit->setCursorPosition(cursorPos);
 }
 
 }   // namespace U2

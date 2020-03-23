@@ -32,6 +32,7 @@ if (contains(DEFINES, HI_EXCLUDED)) {
 
 DESTDIR = ../$$out_dir()
 TARGET = ugeneui$$D
+QMAKE_PROJECT_NAME = ugeneui
 
 !debug_and_release|build_pass {
 
@@ -57,7 +58,7 @@ UI_DIR=_tmp/ui
 RCC_DIR=_tmp/rcc
 
 win32 {
-    LIBS += -luser32     # to import CharToOemA with nmake build
+    LIBS += -lMinCore -lAdvapi32 -luser32     # to import CharToOemA with nmake build
     QMAKE_CXXFLAGS_WARN_ON = -W3
     QMAKE_CFLAGS_WARN_ON = -W3
     RC_FILE = ugeneui.rc

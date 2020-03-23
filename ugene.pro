@@ -59,7 +59,6 @@ SUBDIRS += \
           src/plugins/annotator \
           src/plugins/api_tests \
           src/plugins/biostruct3d_view \
-          src/plugins/browser_support \
           src/plugins/chroma_view \
           src/plugins/circular_view \
           src/plugins/clark_support \

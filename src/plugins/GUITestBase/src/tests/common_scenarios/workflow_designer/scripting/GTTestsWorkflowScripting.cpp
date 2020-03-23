@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -78,7 +78,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTGlobals::sleep(500);
 
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "wd_scripting_test_0001"));   
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "wd_scripting_test_0001"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Create element with script...", GTGlobals::UseMouse);
 //    4. Select created worker. Press toolbar button "Edit script text".
 //    Expected state: Script editor dialog appears.
@@ -161,7 +161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMouseDriver::click();
 
     const QString scriptText = "if(size(in_seq) >= 10000) {out_seq = in_seq;}";
-    GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", scriptText)); 
+    GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", scriptText));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit script of the element...", GTGlobals::UseMouse);
 
     WorkflowProcessItem *script = GTUtilsWorkflowDesigner::getWorker(os, "workflow_scripting_test_0004");

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -560,8 +560,8 @@ void ClarkLogParser::setLastError(const QString &errorKey) {
 
 QMap<QString, QString> ClarkLogParser::initWellKnownErrors() {
     QMap<QString, QString> result;
-    result.insert("std::bad_alloc", tr("There is not enough memory (RAM) to execute CLARK."));
-    result.insert("Process crashed", tr("CLARK process crashed. It might happened because there is not enough memory (RAM) to complete the CLARK execution."));
+    result.insert("std::bad_alloc", "There is not enough memory (RAM) to execute CLARK.");
+    result.insert("Process crashed", "CLARK process crashed. It might happened because there is not enough memory (RAM) to complete the CLARK execution.");
 
     return result;
 }

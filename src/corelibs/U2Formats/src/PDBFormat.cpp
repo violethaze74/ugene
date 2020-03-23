@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,13 +64,13 @@ PDBFormat::PDBFormat(QObject* p) : TextDocumentFormat(p, BaseDocumentFormats::PL
 }
 
 FormatCheckResult PDBFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
-    static QList< const char* > tags;
-    tags << "HEADER" << "ATOM" << "MODEL" << "REMARK" << "OBSLTE"
-         << "TITLE" << "SPLIT" << "CAVEAT" << "COMPND" << "SOURCE"
-         << "KEYWDS" << "EXPDTA" << "AUTHOR" << "REVDAT" << "SPRSDE" << "JRNL";
+    static QList<QByteArray> tags = QList<QByteArray>()
+        << "HEADER" << "ATOM" << "MODEL" << "REMARK" << "OBSLTE"
+        << "TITLE" << "SPLIT" << "CAVEAT" << "COMPND" << "SOURCE"
+        << "KEYWDS" << "EXPDTA" << "AUTHOR" << "REVDAT" << "SPRSDE" << "JRNL";
 
     bool ok = false;
-    foreach (const char* tag, tags) {
+    foreach (const QByteArray &tag, tags) {
         if (rawData.startsWith(tag)) {
             ok = true;
             break;

@@ -10,6 +10,7 @@ LIBS += -L../../$$out_dir()
 LIBS += -lU2Core$$D
 DESTDIR = ../../$$out_dir()
 TARGET = qscore$$D
+QMAKE_PROJECT_NAME = qscore
 
 !debug_and_release|build_pass {
 

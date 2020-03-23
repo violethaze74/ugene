@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -440,7 +440,7 @@ void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, External
 
 void ExternalToolManagerImpl::loadCustomTools() {
     LoadCustomExternalToolsTask *loadTask = new LoadCustomExternalToolsTask();
-    connect(new TaskSignalMapper(loadTask), SIGNAL(si_taskSucceeded(Task *)), SLOT(sl_customToolsLoaded(Task *)));
+    connect(new TaskSignalMapper(loadTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_customToolsLoaded(Task *)));
     AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
 }
 

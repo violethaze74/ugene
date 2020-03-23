@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,6 @@
 #include <U2Gui/SelectionModificationHelper.h>
 
 #include "MaEditorSelection.h"
-#include "../MaEditor.h"
 #include "../MsaEditorUserModStepController.h"
 
 class QRubberBand;
@@ -81,7 +80,7 @@ public:
      * Returns count of sequences that are drawn on the widget by taking into account
      * collapsed rows.
      */
-    int getNumDisplayableSequences() const;
+    int getViewRowCount() const;
 
     int getRowIndex(const int num) const;
 
@@ -98,21 +97,24 @@ public:
 
     const MaEditorSelection &getSelection() const;
 
-    void updateSelection(const QPoint &newMousePos);
-
-    // update selection when collapsible model changed
-    void updateSelection();
-
-    virtual void setSelection(const MaEditorSelection& sel, bool newHighlightSelection = false);
+    virtual void setSelection(const MaEditorSelection& newSelection);
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
     virtual void adjustReferenceLength(U2OpStatus& os) { Q_UNUSED(os); }
 
-    U2Region getSelectedRows() const;
+    /**
+     * Returns region of selected MA rows indexes extended to the collapsible groups boundaries.
+     *
+     * Warning: use getSelectedMaRowIndexes() instead: the selected region is not a single continuous
+     * region in collapsing mode!
+     */
+    U2Region getSelectedMaRows() const;
 
-    QString getCopyFormatedAlgorithmId() const;
-    void setCopyFormatedAlgorithmId(const QString& algoId);
+    /** Returns list of selected MA row indexes. */
+    QList<int> getSelectedMaRowIndexes() const;
+
+    QString getCopyFormattedAlgorithmId() const;
 
     virtual void deleteCurrentSelection();
 
@@ -128,7 +130,7 @@ public:
     void centerPos(const QPoint &point);
     void centerPos(int pos);
 
-    void setFont(const QFont& f);
+    QFont getFont() const;
 
     void onVisibleRangeChanged();
 
@@ -136,16 +138,7 @@ public:
 
     void drawVisibleContent(QPainter &painter);
 
-    bool drawContent(QPainter &painter, const QRect &area);
-    bool drawContent(QPainter &painter, const QRect &area, int xStart, int yStart);
-    bool drawContent(QPainter &painter, const U2Region &region, const QList<int> &seqIdx);
-    bool drawContent(QPainter &painter, const U2Region &region, const QList<int> &seqIdx, int xStart, int yStart);
-
-    bool drawContent(QPainter &painter);
-    bool drawContent(QPixmap &pixmap);
-    bool drawContent(QPixmap &pixmap, const U2Region &region, const QList<int> &seqIdx);
-
-    void highlightCurrentSelection();
+    bool drawContent(QPainter& painter, const U2Region& columns, const QList<int>& maRows, int xStart, int yStart);
 
     QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
@@ -185,7 +178,7 @@ protected slots:
     virtual void sl_modelChanged();
 
 private slots:
-    void sl_hScrollBarActionPerfermed();
+    void sl_hScrollBarActionPerformed();
 
 private:
     void setBorderCursor(const QPoint& p);
@@ -197,6 +190,12 @@ private:
     U2MsaGap addTrailingGapColumns(int count);
     QList<U2MsaGap> findRestorableGapColumns(const int shift);
 
+    /**
+     * Restores view selection using cached MA selection.
+     * If the original selection can't be restored moves the selection to the top-left corner of the original.
+     */
+    void restoreViewSelectionFromMaSelection();
+
 signals:
     void si_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     void si_selectionChanged(const QStringList& selectedRows);
@@ -206,12 +205,9 @@ signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool msaUpdated);
     void si_copyFormattedChanging(bool enabled);
+    void si_collapsingModeChanged();
 
 protected:
-    void setCursorPos(const QPoint& p);
-    void setCursorPos(int x, int y);
-    void setCursorPos(int pos);
-
     void resizeEvent(QResizeEvent *event);
     void paintEvent(QPaintEvent *event);
     void wheelEvent(QWheelEvent *event);
@@ -281,7 +277,12 @@ protected:
 
     void deleteOldCustomSchemes();
 
-    virtual void updateCollapsedGroups(const MaModificationInfo &maModificationInfo);
+    /*
+     * Update collapse model on alignment modification.
+     * Note, that we have collapse model regardless if collapsing mode is enabled or not.
+     * In the disabled collapsing mode the collapse model is 'flat': 1 view row = 1 MA row.
+     */
+    virtual void updateCollapseModel(const MaModificationInfo& maModificationInfo);
 
 protected:
     enum MaMode {
@@ -299,11 +300,11 @@ protected:
 
     MsaColorScheme*         colorScheme;
     MsaHighlightingScheme*  highlightingScheme;
-    bool                    highlightSelection;
 
     GScrollBar*     shBar;
     GScrollBar*     svBar;
     QRubberBand*    rubberBand;
+    bool            showRubberBandOnSelection;
 
     SequenceAreaRenderer*   renderer;
 
@@ -318,10 +319,23 @@ protected:
     bool                shifting;
     bool                selecting;
     Qt::MouseButton     prevPressedButton;
-    QPoint              rubberBandOrigin; // global window coordinates
-    QPoint              cursorPos; // mouse cursor position in alignment coordinates
-    MaEditorSelection   selection; // selection with rows indexes in collapsible model coordinates
-    MaEditorSelection   baseSelection; // selection with rows indexes in absolute coordinates
+
+    /* Last mouse press point. Global window coordinates. */
+    QPoint              mousePressEventPoint;
+    /*
+     * Last mouse press point in view rows/columns coordinates.
+     * May be out of range if clicked out of the view/rows range.
+     */
+    QPoint              mousePressViewPos;
+
+    /** Current selection with view rows/column coordinates. */
+    MaEditorSelection   selection;
+
+    /** Selected MA row ids within the current view selection. */
+    QList<qint64> selectedMaRowIds;
+
+    /** Selected MA row columns within the current view selection. */
+    U2Region selectedColumns;
 
     int                 maVersionBeforeShifting;
     SelectionModificationHelper::MovableSide movableBorder;
@@ -333,8 +347,8 @@ protected:
     QAction*            useDotsAction;
 
     QList<QAction*>     colorSchemeMenuActions;
-    QList<QAction* >    customColorSchemeMenuActions;
-    QList<QAction* >    highlightingSchemeMenuActions;
+    QList<QAction*>    customColorSchemeMenuActions;
+    QList<QAction*>    highlightingSchemeMenuActions;
 
     QAction*            replaceCharacterAction;
     QAction*            fillWithGapsinsSymAction;

@@ -3295,7 +3295,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     GTMouseDriver::click();
 
 //    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/100_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
 
 //    8. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -3313,7 +3313,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     GTMouseDriver::click();
 
 //    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/100_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
 
 //    13. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -3347,12 +3347,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
                  .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
     GTUtilsMdi::clickTab(os, tabIndex2);
 
-//    18. Launch the workflow. Wait for all tasks finish.
+//    18. Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #2");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     coreLog.info("It seems that workflow was started");
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTGlobals::sleep();
 }
@@ -3446,11 +3444,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
     setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
-    // Some workaround for mac: after changing workflow output dir the active tab is `Start Page`
-    // Don't sure that this issue exists (or will not exist in the future) on other OS(s)
-    // So just switch back to last tab which is tabIndex2
-    GTUtilsMdi::clickTab(os, tabIndex2);
-
 //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
 //        Expected result:
 //          - The Workflow Designer is in the dashboards view mode.
@@ -3492,7 +3485,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -3587,7 +3580,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -3670,7 +3663,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -3767,11 +3760,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
     setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
-    // Some workaround for mac: after changing workflow output dir the active tab is `Start Page`
-    // Don't sure that this issue exists (or will not exist in the future) on other OS(s)
-    // So just switch back to last tab which is tabIndex2
-    GTUtilsMdi::clickTab(os, tabIndex2);
-
 //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
 //        Expected result:
 //          - The Workflow Designer is in the dashboards view mode.
@@ -3817,7 +3805,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -3924,7 +3912,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -4100,11 +4088,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
     setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
-    // Some workaround for mac: after changing workflow output dir the active tab is `Start Page`
-    // Don't sure that this issue exists (or will not exist in the future) on other OS(s)
-    // So just switch back to last tab which is tabIndex2
-    GTUtilsMdi::clickTab(os, tabIndex2);
-
 //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
 //        Expected result:
 //          - The Workflow Designer is in the dashboards view mode.
@@ -4149,7 +4132,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -4256,7 +4239,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -4432,11 +4415,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
     setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
 
-    // Some workaround for mac: after changing workflow output dir the active tab is `Start Page`
-    // Don't sure that this issue exists (or will not exist in the future) on other OS(s)
-    // So just switch back to last tab which is tabIndex2
-    GTUtilsMdi::clickTab(os, tabIndex2);
-
 //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
 //        Expected result:
 //          - The Workflow Designer is in the dashboards view mode.
@@ -4480,7 +4458,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -4587,7 +4565,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
@@ -4667,7 +4645,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));

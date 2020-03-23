@@ -96,7 +96,6 @@ echo Copying plugins
 PLUGIN_LIST="annotator \
             ball \
             biostruct3d_view \
-            browser_support \
             chroma_view \
             circular_view \
             clark_support \

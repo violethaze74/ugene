@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,6 +44,7 @@ public:
 
     // MSAEditorNameList
     static QStringList getNameList(GUITestOpStatus &os);
+    static bool hasSequencesWithNames(GUITestOpStatus& os, const QStringList& names);
     static QStringList getVisibleNames(GUITestOpStatus &os);
     static QString getSimilarityValue(GUITestOpStatus &os, int row);
     static void clickCollapseTriangle(GUITestOpStatus &os, QString seqName);
@@ -72,6 +73,7 @@ public:
     // scrolls to the position (in the MSA zero-based coordinates)
     static void scrollToPosition(GUITestOpStatus &os, const QPoint& position);
     static void scrollToBottom(GUITestOpStatus &os);
+    static void moveMouseToPosition(GUITestOpStatus &os, const QPoint& globalMaPosition);
     static void clickToPosition(GUITestOpStatus &os, const QPoint& globalMaPosition);
 
     static void selectSequence(GUITestOpStatus &os, const QString &seqName);
