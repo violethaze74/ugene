@@ -927,8 +927,6 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
     }
 }
 
-
-
 GUI_TEST_CLASS_DEFINITION(test_6167) {
     //1. Change workflow designer output folder to sandbox
     class Custom : public CustomScenario {
@@ -3284,8 +3282,315 @@ GUI_TEST_CLASS_DEFINITION(test_6546_11) {
     CHECK_SET_ERR(selection.height() == 7, QString("Expected selection height: 8, actual: %1").arg(selection.height()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6548_1) {
+    //NOTE: here is problems with detecting #ff00ff color so double condition is used fontColor == "#ff00ff" || fontColor == "#ff66ff"
+    //1. Open _common_data/scenarios/_regression/6548/6548_extended_DNA.aln.
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6548/6548_extended_DNA.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open OP tab and select "Weak similarities" color scheme
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
+    GTComboBox::setIndexWithText(os, colorScheme, "Weak similarities");
+
+    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
+    GTUtilsMSAEditorSequenceArea::zoomToMax(os);
+    QPoint pos;
+    QString fontColor;
+    QString backgroundColor;
+    //first column check
+    {
+        //Check most-frequent symbol
+        pos = QPoint(0, 0);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check gap symbol
+        pos = QPoint(0, 3);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+    }
+    //second column check
+    {
+        //Check second frequent symbol
+        pos = QPoint(1, 5);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check third frequent symbol
+        pos = QPoint(1, 9);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check fourth frequent symbol
+        pos = QPoint(1, 12);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
+
+        //Check fifth frequent symbol
+        pos = QPoint(1, 14);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+    }
+    //third column check
+    {
+        //Check symbol priorities T > G > C > A > R
+        //Check T
+        pos = QPoint(2, 3);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check G
+        pos = QPoint(2, 2);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check C
+        pos = QPoint(2, 1);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check A
+        pos = QPoint(2, 0);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
+
+        //Check R
+        pos = QPoint(2, 4);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+    }
+    //fourth column
+    {
+        //Check symbol priorities M > S > V > W > Y
+        //Check M
+        pos = QPoint(3, 0);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check S
+        pos = QPoint(3, 2);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check V
+        pos = QPoint(3, 4);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check W
+        pos = QPoint(3, 1);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
+
+        //Check Y
+        pos = QPoint(3, 3);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+    }
+    //fifth column
+    {
+        //Check symbol priorities D > H > K > N > X
+        //Check D
+        pos = QPoint(4, 2);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check H
+        pos = QPoint(4, 1);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#ff00ff" || fontColor == "#ff66ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check K
+        pos = QPoint(4, 0);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check N
+        pos = QPoint(4, 3);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
+
+        //Check X
+        pos = QPoint(4, 4);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6548_2) {
+    //NOTE: here is problems with detecting #ff00ff color so double condition is used fontColor == "#ff00ff" || fontColor == "#ff66ff"
+    //1. Open _common_data/clustal/RNA_nucl_ext_rand_seq.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/RNA_nucl_ext_rand_seq.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open OP tab and select "Weak similarities" color scheme
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
+    GTComboBox::setIndexWithText(os, colorScheme, "Weak similarities");
+
+    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
+    GTUtilsMSAEditorSequenceArea::zoomToMax(os);
+    QPoint pos;
+    QString fontColor;
+    QString backgroundColor;
+
+    //second column check
+    {
+        //U > H > M > X
+        //Check U
+        pos = QPoint(1, 1);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check H
+        pos = QPoint(1, 0);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#ff00ff" || fontColor == "#ff66ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check M
+        pos = QPoint(1, 2);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check X
+        pos = QPoint(1, 3);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
+    }
+    //sethird column check
+    {
+        //A > R > Y
+        //Check A
+        pos = QPoint(2, 3);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check R
+        pos = QPoint(2, 2);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check Y
+        pos = QPoint(2, 1);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check gap
+        pos = QPoint(2, 0);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+    }
+    //fourth column
+    {
+        //S > W
+        //Check S
+        pos = QPoint(3, 0);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+
+        //Check W
+        pos = QPoint(3, 1);
+        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
+        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+
+        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
+    }
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6564) {
-    // 1. Open general/_common_data/scenarios/msal/ma2_gap_col.aln.
+    // 1. Open general/_common_data/scenarios/msa/ma2_gap_col.aln.
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3949,7 +4254,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640) {
     GTGlobals::sleep();
 
     // 3. Expected state: No any selection
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( 0, 0, 0, 0));
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 0, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6640_1) {
@@ -3966,7 +4271,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_1) {
     GTGlobals::sleep();
 
     // 4. Expected state: No any selected sequence
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( 0, 0, 0, 0));
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 0, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6640_2) {
@@ -3995,7 +4300,6 @@ GUI_TEST_CLASS_DEFINITION(test_6640_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6640_4) {
-
     // 1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
@@ -4056,7 +4360,6 @@ GUI_TEST_CLASS_DEFINITION(test_6640_6) {
     // 4. Expected state: No any selected read, selected column only
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
     CHECK_SET_ERR(name.size() == 0, QString("1. Unexpected selection! Expected selection size == 4, actual selection size == %1").arg(QString::number(name.size())));
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6649) {
@@ -4111,7 +4414,6 @@ GUI_TEST_CLASS_DEFINITION(test_6652) {
 
     // 4. Expected result: only the clicked cell is selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(9, 5, 1, 1));
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6652_1) {
     // 1. Open "data/samples/CLUSTALW/COI.aln".
@@ -4123,7 +4425,7 @@ GUI_TEST_CLASS_DEFINITION(test_6652_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
 
     // 3. Move the mouse cursor inside the region, push the mouse left button down, drag the mouse cursor to the right.
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
     const QString selection1 = GTClipboard::text(os);
@@ -4151,7 +4453,6 @@ GUI_TEST_CLASS_DEFINITION(test_6654) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6655) {
-
     // 1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4168,21 +4469,20 @@ GUI_TEST_CLASS_DEFINITION(test_6655) {
     GTKeyboardDriver::keyClick(Qt::Key_Down);
     GTGlobals::sleep(1000);
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
-                   "Required sequence is not collapsed");
+                  "Required sequence is not collapsed");
 
     // 5. Click right arrow
     GTKeyboardDriver::keyClick(Qt::Key_Right);
     GTGlobals::sleep(1000);
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
-                   "Required sequence is collapsed");
+                  "Required sequence is collapsed");
 
     GTKeyboardDriver::keyClick(Qt::Key_Left);
     GTGlobals::sleep(1000);
 
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
-                   "Required sequence is collapsed");
-
+                  "Required sequence is collapsed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6659) {
@@ -4523,9 +4823,8 @@ GUI_TEST_CLASS_DEFINITION(test_6684_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6692) {
-
     // 1. Open "_common_data/scenarios/msa/ma.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -4549,16 +4848,14 @@ GUI_TEST_CLASS_DEFINITION(test_6692) {
     // 6. Expected result: "Conocephalus_discolor" group is removed, "Mecopoda_elongata_Ishigaki_J" is still collapsed.
     QStringList modifiedNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
-    CHECK_SET_ERR(originalNames.length()-modifiedNames.length() == 3, "The number of sequences remained unchanged.");
+    CHECK_SET_ERR(originalNames.length() - modifiedNames.length() == 3, "The number of sequences remained unchanged.");
     CHECK_SET_ERR(!modifiedNames.contains("Conocephalus_discolor"), "Removed sequence is present in multiple alignment.");
 
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
                   "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6692_1) {
-
     // 1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
@@ -4578,13 +4875,12 @@ GUI_TEST_CLASS_DEFINITION(test_6692_1) {
 
     // 5. Expected result: the first row is removed. "SZYD_Cas9_CR51" row is expanded, all other rows are collapsed.
     CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, QString("SZYD_Cas9_CR51")),
-                   "Required sequence is collapsed");
+                  "Required sequence is collapsed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6692_2) {
-
     // 1. Open "_common_data/scenarios/msa/ma.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -4603,7 +4899,7 @@ GUI_TEST_CLASS_DEFINITION(test_6692_2) {
 
     // 5. Select "Conocephalus_discolor" and "Conocephalus_sp." sequence.
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,10), QPoint(11,11));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 10), QPoint(11, 11));
 
     // 6. Press the Delete key on the keyboard.
 
@@ -4616,12 +4912,11 @@ GUI_TEST_CLASS_DEFINITION(test_6692_2) {
                   "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Conocephalus_percaudata")),
-                   "Required sequence is removed");
+                  "Required sequence is removed");
 }
 GUI_TEST_CLASS_DEFINITION(test_6692_3) {
-
     // 1. Open "_common_data/scenarios/msa/ma.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -4644,14 +4939,13 @@ GUI_TEST_CLASS_DEFINITION(test_6692_3) {
     // 6. Expected result: "Conocephalus_discolor" sequence is removed. There are two collapsed groups: "Conocephalus_sp." and "Mecopoda_elongata_Ishigaki_J". The "Conocephalus_sp." group has one internal sequence "Conocephalus_percaudata" in it, the group is opened. The "Mecopoda_elongata_Ishigaki_J" is collapsed.
     GTUtilsMsaEditor::toggleCollapsingGroup(os, "Conocephalus_sp.");
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Conocephalus_discolor")),
-                   "Required sequence is not removed");
+                  "Required sequence is not removed");
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_percaudata"),
                   "1 Conocephalus_percaudata is not collapsed");
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
                   "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
 }
 GUI_TEST_CLASS_DEFINITION(test_6693) {
-
     // 1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4661,20 +4955,18 @@ GUI_TEST_CLASS_DEFINITION(test_6693) {
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Select any region in "Mecopoda_elongata_Sumatra".
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,13), QPoint(5,13));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 13), QPoint(5, 13));
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
 
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( 0, 0, 0, 0));
-
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 0, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6697) {
-
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
@@ -4685,15 +4977,14 @@ GUI_TEST_CLASS_DEFINITION(test_6697) {
 
     // 3. Expected state: the new first column is selected.
 
-    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0,0), QPoint(0,9), "A\nA\nA\nA\nA\nA\nA\nA\n-\nA");
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 0), QPoint(0, 9), "A\nA\nA\nA\nA\nA\nA\nA\n-\nA");
 
     // 4. Press the Delete key again.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep();
 
     // 5. Expected state: the new first column is selected.
-    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0,0), QPoint(0,9), "G\nG\nG\nG\nG\nG\nG\nG\n-\nG");
-
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 0), QPoint(0, 9), "G\nG\nG\nG\nG\nG\nG\nG\n-\nG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6689) {
@@ -4760,10 +5051,8 @@ GUI_TEST_CLASS_DEFINITION(test_6707) {
                               GTGlobals::UseMouse);
     //Expected result: the file is still in the folder, the color schemes appear in the folder.
     CHECK_SET_ERR(file.exists(), "the file was unexpectedly removed");
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6710) {
-
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4790,10 +5079,8 @@ GUI_TEST_CLASS_DEFINITION(test_6710) {
 
     // 8. Expected result: two rows are selected: "Conocephalus_sp." and "Conocephalus_percaudata".
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 5, 1, 2));
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6714) {
-
     // 1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
@@ -4810,9 +5097,8 @@ GUI_TEST_CLASS_DEFINITION(test_6714) {
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
     CHECK_SET_ERR(name.size() == 1, QString("1. Unexpected selection! Expected selection size == 1, actual selection size == %1").arg(QString::number(name.size())));
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
-
 }
 
-} // namespace GUITest_regression_scenarios
+}    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
