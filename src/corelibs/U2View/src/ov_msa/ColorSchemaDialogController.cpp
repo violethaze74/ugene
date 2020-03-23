@@ -338,6 +338,7 @@ void ColorSchemaSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
     ColorSchemaSettingsPageState* state = qobject_cast<ColorSchemaSettingsPageState*>(s);
     colorsDirEdit->setText(state->colorsDir);
     customSchemas = state->customSchemas;
+    removedCustomSchemas = state->removedCustomSchemas;
     colorSchemas->clear();
 
     foreach(const ColorSchemeData& customSchema, customSchemas){
@@ -350,6 +351,7 @@ AppSettingsGUIPageState* ColorSchemaSettingsPageWidget::getState(QString& ) cons
     ColorSchemaSettingsPageState* state = new ColorSchemaSettingsPageState();
     state->colorsDir = colorsDirEdit->text();
     state->customSchemas = customSchemas;
+    state->removedCustomSchemas = removedCustomSchemas;
     return state;
 }
 
@@ -362,7 +364,6 @@ void ColorSchemaSettingsPageWidget::sl_schemaChanged(int index){
         deleteSchemaButton->setEnabled(true);
     }
 }
-
 
 void ColorSchemaSettingsPageWidget::sl_onColorsDirButton() {
     QString path = colorsDirEdit->text();
@@ -437,6 +438,7 @@ void ColorSchemaSettingsPageWidget::sl_onDeleteColorSchema(){
     for(int i = 0; i < customSchemas.size(); ++i){
         ColorSchemeData& customSchema = customSchemas[i];
         if(customSchema.name == schemaName){
+            removedCustomSchemas.append(customSchemas[i]);
             customSchemas.removeAt(i);
             colorSchemas->removeItemWidget(item);
             delete item;

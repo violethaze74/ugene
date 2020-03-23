@@ -36,6 +36,7 @@ namespace U2 {
 MsaEditorStatusBar::MsaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea)
     : MaEditorStatusBar(mobj, seqArea) {
     setObjectName("msa_editor_status_bar");
+    setStatusBarStyle();
     lineLabel->setPatterns(tr("Seq %1 / %2"), tr("Sequence %1 of %2"));
     updateLabels();
     setupLayout();

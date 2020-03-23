@@ -256,8 +256,14 @@ QMap<char, QColor> ColorSchemeUtils::getDefaultSchemaColors(DNAAlphabetType type
 void ColorSchemeUtils::setColorsDir(const QString &colorsDir) {
     QString settingsFile = AppContext::getSettings()->fileName();
     QString settingsDir = QFileInfo(settingsFile).absolutePath();
-    if (settingsDir != colorsDir) {
-        AppContext::getSettings()->setValue(COLOR_SCHEME_SETTINGS_ROOT + COLOR_SCHEME_COLOR_SCHEMA_DIR, colorsDir, true);
+    QString finalColorDir = colorsDir;
+    QFileInfo info(colorsDir);
+    if (!info.isDir()) {
+        finalColorDir = info.dir().absolutePath();
+        coreLog.trace(QString("%1: the file location was trimmed to the file directory.").arg(colorsDir));
+    }
+    if (settingsDir != finalColorDir) {
+        AppContext::getSettings()->setValue(COLOR_SCHEME_SETTINGS_ROOT + COLOR_SCHEME_COLOR_SCHEMA_DIR, finalColorDir, true);
     }
 }
 

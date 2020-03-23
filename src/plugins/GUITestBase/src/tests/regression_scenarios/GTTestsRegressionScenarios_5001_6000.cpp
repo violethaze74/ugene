@@ -1232,49 +1232,7 @@ GUI_TEST_CLASS_DEFINITION(test_5360) {
     CHECK_SET_ERR(!lt.hasError(), "There is an error in the log");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5363_1) {
-//    1. {Tools --> BLAST --> BLAST make database}
-//    2. Set murine.gb as input file
-//    3. Check nucleotide radiobutton
-//    4. Create database
-//    Expected state: database was successfully created
-//    5. Open murine.gb
-//    6. {Analyze --> Query with local BLAST}
-//    7. Select the created database and accept the dialog
-//    Expected state: blast annotations were found and the annotations locations are equal to 'hit-from' and 'hit-to' qualifier values
 
-    FormatDBSupportRunDialogFiller::Parameters parametersDB;
-    parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
-    parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
-    GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, parametersDB));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST make database...");
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    BlastAllSupportDialogFiller::Parameters parametersSearch;
-    parametersSearch.runBlast = true;
-    parametersSearch.dbPath = sandBoxDir + "/murine.nin";
-
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(parametersSearch, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    QTreeWidgetItem* treeItem = GTUtilsAnnotationsTreeView::findItem(os, "blast result");
-    CHECK_SET_ERR(treeItem != NULL, "blast result annotations not found");
-    bool ok;
-    int hitFrom = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-to", treeItem).toInt(&ok);
-    CHECK_SET_ERR(ok, "Cannot get hit-to qualifier value");
-
-    int hitTo = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-from", treeItem).toInt(&ok);
-    CHECK_SET_ERR(ok, "Cannot get hit-from qualifier value");
-
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(hitFrom, hitTo - hitFrom)),
-                  QString("Cannot find blast result [%1, %2]").arg(hitFrom).arg(hitTo));
-
-}
 
 GUI_TEST_CLASS_DEFINITION(test_5363_2) {
 //    1. {Tools --> BLAST --> BLAST+ make database}
@@ -1564,36 +1522,13 @@ GUI_TEST_CLASS_DEFINITION(test_5431) {
                   "2 Conocephalus_discolor is not collapsed");
 
     GTUtilsMSAEditorSequenceArea::removeSequence(os, "Phaneroptera_falcata");
-
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5431_1) {
-
-    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-
-    // 2. Remove all columns except the first one.
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 0), QPoint(13, 9));
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
-
-    GTUtilsMsaEditor::toggleCollapsingMode(os);
-
-    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Tettigonia_viridissima"),
-                  "1 Tettigonia_viridissima is not collapsed");
-    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_discolor"),
-                  "2 Conocephalus_discolor is not collapsed");
-
-    GTUtilsMSAEditorSequenceArea::removeSequence(os, "Phaneroptera_falcata");
-
+   
     // 3. Expected state: first group is removed
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 4, "Wrong rows number");
 
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5447_1) {
+[<0;112;24MGUI_TEST_CLASS_DEFINITION(test_5447_1) {
 //    1. Open "data/samples/Genbank/murine.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1891,37 +1826,6 @@ GUI_TEST_CLASS_DEFINITION(test_5517) {
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 0, true));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Build dotplot...", GTGlobals::UseMouse);
     GTGlobals::sleep();
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5520_1) {
-    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    class Scenario : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
-            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
-
-            QRadioButton* rbNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable");
-            CHECK_SET_ERR(rbNewTable != NULL, "rbCreateNewTable not found");
-            GTRadioButton::click(os, rbNewTable);
-            GTGlobals::sleep();
-
-            QLineEdit* leTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath");
-            CHECK_SET_ERR(leTablePath != NULL, "leNewTablePath not found");
-            GTLineEdit::setText(os, leTablePath, sandBoxDir + "/test_5520_1.gb");
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5520_2) {

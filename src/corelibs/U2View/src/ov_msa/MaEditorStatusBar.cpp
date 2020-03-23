@@ -170,4 +170,8 @@ void MaEditorStatusBar::updateSelectionLabel() {
     selectionLabel->update(selSize, 10 + qMax(maxSelLength, nonSelLength));
 }
 
+void MaEditorStatusBar::setStatusBarStyle() {
+    setStyleSheet(QString("#%1 { background:rgb(219,219,219); border: 1px solid rgb(185,185,185); }").arg(objectName()));
+}
+
 }//namespace

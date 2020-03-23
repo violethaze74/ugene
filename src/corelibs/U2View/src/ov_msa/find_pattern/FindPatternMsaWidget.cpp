@@ -152,13 +152,14 @@ private:
     int current;
 };
 
-FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor* _msaEditor) :
-    msaEditor(_msaEditor),
-    searchTask(nullptr),
-    previousMaxResult(-1),
-    savableWidget(this, GObjectViewUtils::findViewByName(msaEditor->getName()))
-{
+FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor* _msaEditor) 
+    : msaEditor(_msaEditor),
+      searchTask(nullptr),
+      previousMaxResult(-1),
+      savableWidget(this, GObjectViewUtils::findViewByName(msaEditor->getName())),
+      setSelectionToFirstValuebleResult(true) {
     setupUi(this);
+    setObjectName("FindPatternMsaWidget");
     progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
     resultLabel->setObjectName("resultLabel");
@@ -208,7 +209,11 @@ void FindPatternMsaWidget::showCurrentResultAndStopProgress(const int current, c
     progressLabel->hide();
     resultLabel->show();
     assert(total >= current);
-    resultLabel->setText(tr("Results: %1/%2").arg(QString::number(current)).arg(QString::number(total)));
+    if (!findPatternResults.isEmpty() && current == 0) {
+        resultLabel->setText(tr("Results: %1/%2").arg("-").arg(QString::number(total)));
+    } else {
+        resultLabel->setText(tr("Results: %1/%2").arg(QString::number(current)).arg(QString::number(total)));
+    }
 }
 
 FindPatternMsaWidget::ResultIterator::ResultIterator()
@@ -784,7 +789,7 @@ void FindPatternMsaWidget::sl_onMsaModified()
     setRegionToWholeSequence();
     checkState();
     verifyPatternAlphabet();
-    sl_activateNewSearch(true);
+    sl_activateNewSearch(true, true);
 }
 
 void FindPatternMsaWidget::showTooLongSequenceError()
@@ -969,6 +974,9 @@ void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
             prevPushButton->setEnabled(true);
             checkState();
             correctSearchInCombo();
+            if (setSelectionToFirstValuebleResult) {
+                sl_nextButtonClicked();
+            }
         }
         searchTask = nullptr;
     }
@@ -1076,7 +1084,8 @@ void FindPatternMsaWidget::sl_toggleExtendedAlphabet() {
     sl_activateNewSearch(true);
 }
 
-void FindPatternMsaWidget::sl_activateNewSearch(bool forcedSearch){
+void FindPatternMsaWidget::sl_activateNewSearch(bool forcedSearch, bool activatedByOutsideChanges) {
+    setSelectionToFirstValuebleResult = !activatedByOutsideChanges;
     QList<NamePattern> newPatterns = updateNamePatterns();
     if(isSearchPatternsDifferent(newPatterns) || forcedSearch){
         patternList.clear();
@@ -1144,8 +1153,10 @@ void FindPatternMsaWidget::sl_onShiftEnterPressed(){
 }
 
 void FindPatternMsaWidget::sl_collapseModelChanged() {
-    resultIterator.collapseModelChanged();
-    showCurrentResult();
+    if (resultIterator.getTotalCount() != 0 && resultIterator.getGlobalPos() != 0) {
+        resultIterator.collapseModelChanged();
+        showCurrentResult();
+    }
 }
 
 bool FindPatternMsaWidget::isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const {

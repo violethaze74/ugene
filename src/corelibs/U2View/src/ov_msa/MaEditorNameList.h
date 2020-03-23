@@ -172,6 +172,7 @@ protected:
     QPixmap*            cachedView;
 
     MsaEditorUserModStepController *changeTracker;
+    int maVersionBeforeMousePress;
 
     static const int CROSS_SIZE = 9;
     static const int CHILDREN_OFFSET = 8;

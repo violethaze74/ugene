@@ -33,7 +33,7 @@ class MultipleAlignmentObject;
 class MaEditorSequenceArea;
 class MaEditorSelection;
 
-class MaEditorStatusBar : public QWidget {
+class MaEditorStatusBar : public QFrame {
     Q_OBJECT
 protected:
     class TwoArgPatternLabel : public QLabel {
@@ -71,6 +71,7 @@ protected:
     virtual void updatePositionLabel();
     void updateColumnLabel();
     void updateSelectionLabel();
+    void setStatusBarStyle();
 
 protected:
     MultipleAlignmentObject*    aliObj;
