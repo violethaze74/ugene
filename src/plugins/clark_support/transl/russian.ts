@@ -375,15 +375,4 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
-<context>
-    <name>U2::LocalWorkflow::ClarkLogParser</name>
-    <message>
-        <source>There is not enough memory (RAM) to execute CLARK.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CLARK process crashed. It might happened because there is not enough memory (RAM) to complete the CLARK execution.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
 </TS>

@@ -221,17 +221,17 @@
 <context>
     <name>U2::CircularViewRenderArea</name>
     <message>
-        <location filename="../src/CircularView.cpp" line="472"/>
+        <location filename="../src/CircularView.cpp" line="464"/>
         <source>CircularView is NULL</source>
         <translation>CircularView is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularView.cpp" line="474"/>
+        <location filename="../src/CircularView.cpp" line="466"/>
         <source>Circular view settings are NULL</source>
         <translation>Circular view settings are NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularView.cpp" line="494"/>
+        <location filename="../src/CircularView.cpp" line="485"/>
         <source>circular view size %1 %2</source>
         <translation>Размер кругового вида %1 %2</translation>
     </message>

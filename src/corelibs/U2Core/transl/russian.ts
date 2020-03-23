@@ -64,12 +64,12 @@
         <translation>Загруженные последовательности имеют разные алфавиты. Поэтому создано несколько объектов типа последовательность для каждого алфавита. Все последовательности одного объекта имеют одинаковый афлфавит и последовательности из разных объектов имеют разные алфавиты.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="613"/>
+        <location filename="../src/datatype/Annotation.cpp" line="638"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="618"/>
+        <location filename="../src/datatype/Annotation.cpp" line="643"/>
         <source>Translation</source>
         <translation>Трансляция</translation>
     </message>

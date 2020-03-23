@@ -1909,7 +1909,7 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::ShtirlitzStartupTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="334"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="333"/>
         <source>Shtirlitz Startup Task</source>
         <translation>Shtirlitz Startup Task</translation>
     </message>
@@ -1917,32 +1917,32 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::ShtirlitzTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="138"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="137"/>
         <source>Shtirlitz is sending the first-time report</source>
         <translation>Отправляется отчет о системе</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="150"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="149"/>
         <source>%1 days passed passed since previous Shtirlitz&apos;s report. Shtirlitz is sending the new one.</source>
         <translation>%1 дней прошло со времени отправки последнего отчета. Отправляется новый отчет.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="292"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="291"/>
         <source>Connecting to remote server</source>
         <translation>Соединение с удаленным сервером</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="311"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="310"/>
         <source>Cannot resolve destination path for statistical reports</source>
         <translation>Невозможно определить адрес сервера статистики</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="315"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="314"/>
         <source>Network error while resolving destination URL: </source>
         <translation>Ошибка сети при определении адреса сервера статистики:</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="328"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="327"/>
         <source>Network error while sending report: </source>
         <translation>Ошибка сети при отправке отчета:</translation>
     </message>
@@ -2316,17 +2316,9 @@ Would you like to download and install it?</source>
     </message>
 </context>
 <context>
-    <name>U2::WelcomePageJsAgent</name>
-    <message>
-        <location filename="../src/welcome_page/WelcomePageJsAgent.cpp" line="62"/>
-        <source>The Workflow Designer plugin is not loaded. You can add it using the menu Settings -&gt; Plugins. Then you need to restart UGENE.</source>
-        <translation>Плагин дизайнера вычислительных схем не был загружен. Вы можете добавить его в меню Настройки -&gt; Модули. После этого перезапустите UGENE.</translation>
-    </message>
-</context>
-<context>
     <name>U2::WelcomePageMdiController</name>
     <message>
-        <location filename="../src/welcome_page/WelcomePageMdiController.cpp" line="77"/>
+        <location filename="../src/welcome_page/WelcomePageMdiController.cpp" line="64"/>
         <source>Start Page</source>
         <translation>Стартовая страница</translation>
     </message>
@@ -2334,14 +2326,64 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::WelcomePageWidget</name>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="58"/>
-        <source>No opened projects</source>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="86"/>
+        <source>Welcome to UGENE</source>
+        <translation>Добро пожаловать в UGENE</translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="110"/>
+        <source>Open File(s)</source>
+        <translation><![CDATA[Открыть файл(ы)<br>]]></translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="111"/>
+        <source>Create Sequence</source>
+        <translation><![CDATA[Создать <br>последовательность]]></translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="112"/>
+        <source>Run or Create Workflow</source>
+        <translation><![CDATA[Запустить или создать<br> схему]]></translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="113"/>
+        <source>Quick Start Guide</source>
+        <translation><![CDATA[Краткое руководство<br>]]></translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="148"/>
+        <source>Recent files</source>
+        <translation>Недавние файлы</translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="154"/>
+        <source>Recent projects</source>
+        <translation>Недавние проекты</translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="189"/>
+        <source>Cite UGENE:</source>
+        <translation>Чтобы процитировать UGENE, используйте публикацию: </translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="203"/>
+        <source>Follow UGENE:</source>
+        <translation>UGENE в социальных сетях:</translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="251"/>
+        <source>No recent files</source>
+        <translation>Нет открытых файлов</translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="269"/>
+        <source>No recent projects</source>
         <translation>Нет открытых проектов</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="59"/>
-        <source>No opened files</source>
-        <translation>Нет открытых файлов</translation>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="342"/>
+        <source>The Workflow Designer plugin is not loaded. You can add it using the menu Settings -&gt; Plugins. Then you need to restart UGENE.</source>
+        <translation>Плагин дизайнера вычислительных схем не был загружен. Вы можете добавить его в меню Настройки -&gt; Модули. После этого перезапустите UGENE.</translation>
     </message>
 </context>
 <context>

@@ -349,9 +349,6 @@
     </message>
 </context>
 <context>
-    <name>U2::BioStruct3DSubsetEditor</name>
-</context>
-<context>
     <name>U2::BioStruct3DViewContext</name>
     <message>
         <location filename="../src/BioStruct3DViewPlugin.cpp" line="192"/>

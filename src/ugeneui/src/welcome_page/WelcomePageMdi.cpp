@@ -34,9 +34,7 @@ WelcomePageMdi::WelcomePageMdi(const QString &title, WelcomePageMdiController *c
     l->setMargin(0);
 
     widget = new WelcomePageWidget(this);
-    connect(widget, SIGNAL(si_loaded()), controller, SLOT(sl_onPageLoaded()));
     l->addWidget(widget);
-
     installEventFilter(this);
 }
 
@@ -50,10 +48,6 @@ bool WelcomePageMdi::eventFilter(QObject *obj, QEvent *event) {
 
 void WelcomePageMdi::updateRecent(const QStringList &recentProjects, const QStringList &recentFiles) {
     widget->updateRecent(recentProjects, recentFiles);
-}
-
-bool WelcomePageMdi::isLoaded() const {
-    return widget->isLoaded();
 }
 
 } // U2

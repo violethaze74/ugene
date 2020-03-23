@@ -539,17 +539,17 @@
         <translation>Reverse primers found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="252"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="249"/>
         <source>Products found: %1</source>
         <translation>Products found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="256"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="253"/>
         <source>Primers details:</source>
         <translation>Информация о праймерах:</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="260"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="257"/>
         <source>Products found: %1. &lt;br&gt;&lt;br&gt;The detailed information about primers is not available as primers or sequence contain a character from the Extended DNA alphabet.</source>
         <translation>Найдено продуктов: %1. &lt;br&gt;&lt;br&gt;Детальная информация о праймерах недоступна так как праймеры или продукты содержат символы из расширенного ДНК алфавита.</translation>
     </message>
