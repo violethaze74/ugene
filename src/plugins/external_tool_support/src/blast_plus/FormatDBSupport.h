@@ -19,29 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WELCOME_PAGE_JS_AGENT_H_
-#define _U2_WELCOME_PAGE_JS_AGENT_H_
+#ifndef _U2_FORMATDB_SUPPORT_H
+#define _U2_FORMATDB_SUPPORT_H
 
-#include <U2Gui/JavaScriptAgent.h>
+#include <U2Core/ExternalToolRegistry.h>
+#include "utils/ExternalToolSupportAction.h"
 
 namespace U2 {
 
-class WelcomePageJsAgent : public JavaScriptAgent {
+class FormatDBSupport : public ExternalTool {
     Q_OBJECT
 public:
-    WelcomePageJsAgent(QObject* parent);
+    FormatDBSupport(const QString& id, const QString& name, const QString& path = "");
 
-    void message(const QString &message);
-
+    static const QString ET_MAKEBLASTDB;
+    static const QString ET_MAKEBLASTDB_ID;
+    static const QString ET_GPU_MAKEBLASTDB;
+    static const QString ET_GPU_MAKEBLASTDB_ID;
+    static const QString FORMATDB_TMP_DIR;
 public slots:
-    void performAction(const QString &actionId);
-    void openUrl(const QString &urlId);
-    void openFile(const QString &url);
-
-private:
-    static QString getUrlById(const QString &urlId);
+    void sl_runWithExtFileSpecify();
 };
 
-}   // namespace U2
-
-#endif // _U2_WELCOME_PAGE_JS_AGENT_H_
+}//namespace
+#endif // _U2_FORMATDB_SUPPORT_H

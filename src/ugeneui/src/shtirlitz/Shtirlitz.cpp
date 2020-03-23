@@ -81,9 +81,7 @@ QUuid Shtirlitz::getUniqueUgeneId() {
 }
 
 static QString getWhatsNewHtml() {
-    UserAppsSettings* settings = AppContext::getAppSettings()->getUserAppsSettings();
-    QString activeTranslationFile = settings->getTranslationFile();
-    QString activeLanguage = activeTranslationFile.isEmpty() ? "en" : activeTranslationFile.right(2);
+    QString activeLanguage = AppContext::getSettings()->getValue("UGENE_CURR_TRANSL", "en").toString().toLower();
     if (activeLanguage != "en" && activeLanguage != "ru") {
         activeLanguage = "en"; // We do not have other variants of "Whats New?" file today.
     }
@@ -92,6 +90,7 @@ static QString getWhatsNewHtml() {
         return "";
     }
     QTextStream in(&htmlFile);
+    in.setCodec("UTF-8");
     return in.readAll();
 }
 

@@ -103,18 +103,16 @@ public:
 
     virtual void adjustReferenceLength(U2OpStatus& os) { Q_UNUSED(os); }
 
-    /* Returns region of selected MA rows indexes extended to the collapsible groups boundaries. */
+    /**
+     * Returns region of selected MA rows indexes extended to the collapsible groups boundaries.
+     *
+     * Warning: use getSelectedMaRowIndexes() instead: the selected region is not a single continuous
+     * region in collapsing mode!
+     */
     U2Region getSelectedMaRows() const;
 
-    /*
-     * Returns range of MA rows extended up to the bounds of collapsible group.
-     *
-     * For example if viewRowsRegion starts or ends inside of some group, the whole group is added to
-     * the result region.
-     *
-     * Notice: this method accept view rows as an input and returns MA rows.
-     */
-    U2Region getMaRowsExtendedToCollapsibleGroups(const U2Region& viewRowsRegion) const;
+    /** Returns list of selected MA row indexes. */
+    QList<int> getSelectedMaRowIndexes() const;
 
     QString getCopyFormattedAlgorithmId() const;
 
@@ -191,6 +189,12 @@ private:
     QList<U2MsaGap> findCommonGapColumns(int& numOfColumns);
     U2MsaGap addTrailingGapColumns(int count);
     QList<U2MsaGap> findRestorableGapColumns(const int shift);
+
+    /**
+     * Restores view selection using cached MA selection.
+     * If the original selection can't be restored moves the selection to the top-left corner of the original.
+     */
+    void restoreViewSelectionFromMaSelection();
 
 signals:
     void si_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
@@ -323,10 +327,15 @@ protected:
      * May be out of range if clicked out of the view/rows range.
      */
     QPoint              mousePressViewPos;
+
     /** Current selection with view rows/column coordinates. */
     MaEditorSelection   selection;
-    /** Current selection with MA row/column coordinates with no collapsible module info. */
-    MaEditorSelection   baseSelection;
+
+    /** Selected MA row ids within the current view selection. */
+    QList<qint64> selectedMaRowIds;
+
+    /** Selected MA row columns within the current view selection. */
+    U2Region selectedColumns;
 
     int                 maVersionBeforeShifting;
     SelectionModificationHelper::MovableSide movableBorder;
@@ -338,8 +347,8 @@ protected:
     QAction*            useDotsAction;
 
     QList<QAction*>     colorSchemeMenuActions;
-    QList<QAction* >    customColorSchemeMenuActions;
-    QList<QAction* >    highlightingSchemeMenuActions;
+    QList<QAction*>    customColorSchemeMenuActions;
+    QList<QAction*>    highlightingSchemeMenuActions;
 
     QAction*            replaceCharacterAction;
     QAction*            fillWithGapsinsSymAction;

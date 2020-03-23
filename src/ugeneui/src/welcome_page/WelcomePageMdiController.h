@@ -36,7 +36,6 @@ public:
     WelcomePageMdiController();
 
 private slots:
-    void sl_onPageLoaded();
     void sl_showPage();
     void sl_onRecentChanged();
     void sl_onMdiClose(MWMDIWindow *mdi);

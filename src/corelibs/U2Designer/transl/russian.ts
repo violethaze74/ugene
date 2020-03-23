@@ -1115,12 +1115,6 @@ Set up the folder:</source>
     </message>
 </context>
 <context>
-    <name>U2::OutputFilesWidget</name>
-</context>
-<context>
-    <name>U2::ProblemsWidget</name>
-</context>
-<context>
     <name>U2::QDCreateAnnotationsTask</name>
     <message>
         <location filename="../src/QDScheduler.h" line="165"/>
@@ -1199,9 +1193,6 @@ Set up the folder:</source>
     </message>
 </context>
 <context>
-    <name>U2::ResourcesWidget</name>
-</context>
-<context>
     <name>U2::ScanDashboardsDirTask</name>
     <message>
         <location filename="../src/dashboard/ScanDashboardsDirTask.cpp" line="35"/>
@@ -1234,9 +1225,6 @@ Set up the folder:</source>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
-</context>
-<context>
-    <name>U2::StatisticsWidget</name>
 </context>
 <context>
     <name>U2::StringActionDialog</name>

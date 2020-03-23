@@ -652,4 +652,43 @@ int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os, const U2Regi
     return removingGapColumnCount;
 }
 
+QList<qint64> MultipleAlignmentObject::convertMaRowIndexesToMaRowIds(const QList<int>& maRowIndexes, bool excludeErrors) {
+    QList<qint64> ids;
+    const QList<MultipleAlignmentRow>& rows = getMultipleAlignment()->getRows();
+    for (int i = 0; i < maRowIndexes.length(); i++) {
+        int index = maRowIndexes[i];
+        bool isValid = index >= 0 && index <= rows.size() - 1;
+        if (isValid) {
+            ids << rows[index]->getRowId();
+        } else if (!excludeErrors) {
+            ids << -1;
+        }
+    }
+    return ids;
+}
+
+QList<int> MultipleAlignmentObject::convertMaRowIdsToMaRowIndexes(const QList<qint64>& maRowIds, bool excludeErrors) {
+    QList<int> indexes;
+    const QList<MultipleAlignmentRow>& rows = getMultipleAlignment()->getRows();
+    for (int i = 0; i < maRowIds.length(); i++) {
+        int rowId = maRowIds[i];
+        int index = -1;
+        for (int j = 0; j < rows.size(); j++) {
+            const MultipleAlignmentRow& row = rows[j];
+            if (row->getRowId() == rowId) {
+                index = j;
+                break;
+            }
+        }
+        bool isValid = index >= 0;
+        if (isValid) {
+            indexes << index;
+        } else if (!excludeErrors) {
+            indexes << -1;
+        }
+    }
+    return indexes;
+}
+
+
 }   // namespace U2

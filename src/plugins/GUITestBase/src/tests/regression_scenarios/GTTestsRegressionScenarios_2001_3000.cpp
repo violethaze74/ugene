@@ -614,21 +614,6 @@ GUI_TEST_CLASS_DEFINITION( test_2021_9 )
         QString("Unexpected MSA content has occurred: got %1").arg(finalMsaContent));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_2024){
-//    1. Open WD
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-
-//    2. Add element "Local BLAST search"
-    GTUtilsWorkflowDesigner::addAlgorithm( os, "Local BLAST search" );
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Local BLAST search"));
-    GTMouseDriver::click();
-
-//    Expected state: element has parameters "gap cost" and "match score"
-    GTUtilsWorkflowDesigner::setParameter(os, "Gap costs", 2, GTUtilsWorkflowDesigner::comboValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Match scores", 1, GTUtilsWorkflowDesigner::comboValue);
-
-}
-
 GUI_TEST_CLASS_DEFINITION( test_2026 ) {
     // 1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile( os, dataDir + "samples/CLUSTALW/", "COI.aln" );
@@ -3108,46 +3093,6 @@ GUI_TEST_CLASS_DEFINITION(test_2432) {
     CHECK_SET_ERR(breakpoints.isEmpty(), "There are breakpoints in the workflow");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_2437) {
-    //1. Select {Tools -> BLAST -> FormatDB...} in the main menu.
-    //2. Fill the dialog:
-    //    {Select input file(s) for formatting database} : "%datadir%/samples/FASTA/human_T1.fa"
-    //    {Type of file(s)} : nucleotide
-    //    {Select the path to save database into} : "%testdir%/_common_data/scenarios/sandbox/test_2437"
-    //Click the "Format" button.
-    FormatDBSupportRunDialogFiller::Parameters p;
-    p.inputFilePath = dataDir + "samples/FASTA/human_T1.fa";
-    p.alphabetType = FormatDBSupportRunDialogFiller::Parameters::Nucleotide;
-    p.outputDirPath = QDir(sandBoxDir + "test_2437").absolutePath();
-    QDir().mkpath(p.outputDirPath);
-    GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, p));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST make database...");
-
-    //3. Wait for the task end.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //4. Select {Tools -> BLAST -> BLAST Search...} in the main menu.
-    //5. Click the "Select a database file" button and select ""%testdir%/_common_data/scenarios/sandbox/test_2437/human_T1formatDB.log".
-    //Expected state: {Database path} and {Base name for BLAST DB files} fields are correctly filled.
-    class Scenario : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir + "test_2437/human_T1formatDB.log"));
-            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
-
-            QLineEdit *path = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "databasePathLineEdit"));
-            CHECK_SET_ERR(!path->text().isEmpty(), "Empty database path");
-            QLineEdit *name = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "baseNameLineEdit"));
-            CHECK_SET_ERR(name->text() == "human_T1", "Wrong database name");
-
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Cancel);
-        }
-    };
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST search...");
-    GTGlobals::sleep();
-}
-
 GUI_TEST_CLASS_DEFINITION( test_2449 ) {
 //    1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
@@ -3913,23 +3858,6 @@ GUI_TEST_CLASS_DEFINITION( test_2569 ){
     QString clipboardText = GTClipboard::text(os);
 //    Expected state: the clipboard content is the same to the element content.
     CHECK_SET_ERR(clipboardText == "Command", "copy element content works wrong " + clipboardText);
-}
-
-GUI_TEST_CLASS_DEFINITION( test_2570 ) {
-    GTLogTracer l;
-    GTFileDialog::openFile( os, dataDir + "samples/FASTA/", "human_T1.fa" );
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "BLAST" << "FormatDB..."));
-    FormatDBSupportRunDialogFiller::Parameters p;
-    p.justCancel = true;
-    p.checkAlphabetType = true;
-    p.alphabetType = FormatDBSupportRunDialogFiller::Parameters::Nucleotide;
-    GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, p));
-    GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2577 ) {

@@ -56,7 +56,8 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
       ui(_ui),
       nhBar(_nhBar),
       editor(_ui->getEditor()),
-      changeTracker(nullptr) {
+      changeTracker(nullptr),
+      maVersionBeforeMousePress(-1) {
     setObjectName("msa_editor_name_list");
     setFocusPolicy(Qt::WheelFocus);
     cachedView = new QPixmap();
@@ -356,45 +357,28 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     }
 
     U2OpStatus2Log os;
+    maVersionBeforeMousePress = editor->getMaObject()->getModificationVersion();
     changeTracker->startTracking(os);
+    editor->getMaObject()->saveState();
     emit si_startMaChanging();
     mousePressPoint = e->pos();
     MaCollapseModel* collapseModel = ui->getCollapseModel();
     RowHeightController* heightController = ui->getRowHeightController();
     int viewRow = qMin(heightController->getViewRowIndexByScreenYPosition(e->y()), collapseModel->getViewRowCount() - 1);
-    int cursorX = editor->getCursorPosition().x();
-    
+
     // Do not update cursor position on clicks with Shift. Clicks with Shift update selection only.
     bool updateCursorPos = !e->modifiers().testFlag(Qt::ShiftModifier);
     if (updateCursorPos) {
-        editor->setCursorPosition(QPoint(cursorX, viewRow));
+        editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), viewRow));
     }
 
-    const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroupByViewRow(viewRow);
-    int minRowsInGroupToExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
-    if (group != NULL && group->size() >= minRowsInGroupToExpandCollapse) {
-        U2Region selection = getSelection();
-        U2Region yRange = heightController->getScreenYRegionByViewRowIndex(viewRow);
-        bool selected = selection.contains(viewRow);
-        QRect textRect = calculateTextRect(yRange, selected);
-        QRect buttonRect = calculateExpandCollapseButtonRect(textRect);
-        if (buttonRect.contains(mousePressPoint)) {
-            if (!selected) {
-                collapseModel->toggle(viewRow);
-            } else {
-                triggerExpandCollapseOnSelectedRow(!group->isCollapsed);
-            }
-            sl_completeRedraw();
-            QWidget::mousePressEvent(e);
-            return;
-        }
+    const MaCollapsibleGroup* group = getCollapsibleGroupByExpandCollapsePoint(mousePressPoint);
+    if (group != NULL) {
+        collapseModel->toggle(viewRow);
+        return;
     }
-    
-    if (updateCursorPos) {
-        editor->setCursorPosition(QPoint(cursorX, viewRow));
-    }
-    U2Region s = getSelection();
-    if (s.contains(viewRow)) {
+
+    if (getSelection().contains(viewRow)) {
         // We support dragging only for 'flat' mode, when there are no groups with multiple sequences.
         dragging = !ui->getCollapseModel()->hasGroupsWithMultipleRows();
     } else {
@@ -436,89 +420,93 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
     bool hasShiftModifier = e->modifiers().testFlag(Qt::ShiftModifier);
     bool hasCtrlModifier = e->modifiers().testFlag(Qt::ControlModifier);
     ScrollController* scrollController = ui->getScrollController();
-    if (rubberBand->isVisible() || dragging) {
-        RowHeightController* rowsController = ui->getRowHeightController();
-        int maxRows = ui->getSequenceArea()->getViewRowCount();
-        int lastVisibleRow = scrollController->getLastVisibleViewRowIndex(height(), true);
-        int lastVisibleRowY = rowsController->getScreenYRegionByViewRowIndex(lastVisibleRow).endPos();
 
-        U2Region selection = getSelection(); // current selection.
+    RowHeightController* rowsController = ui->getRowHeightController();
+    int maxRows = ui->getSequenceArea()->getViewRowCount();
+    int lastVisibleRow = scrollController->getLastVisibleViewRowIndex(height(), true);
+    int lastVisibleRowY = rowsController->getScreenYRegionByViewRowIndex(lastVisibleRow).endPos();
 
-        // mousePressRowExt has extended range: -1 (before first) to maxRows (after the last)
-        int mousePressRowExt = mousePressPoint.y() >= lastVisibleRowY
-                               ? maxRows :
-                               rowsController->getViewRowIndexByScreenYPosition(mousePressPoint.y());
-        int mousePressRow = qBound(0, mousePressRowExt, maxRows - 1);
+    U2Region selection = getSelection(); // current selection.
 
-        // mouseReleaseRowExt has extended range: -1 (before first) to maxRows (after the last)
-        int mouseReleaseRowExt = e->y() >= lastVisibleRowY
-                ? maxRows
-                : rowsController->getViewRowIndexByScreenYPosition(e->y());
-        int mouseReleaseRow = qBound(0, mouseReleaseRowExt, maxRows - 1);
+    // mousePressRowExt has extended range: -1 (before first) to maxRows (after the last)
+    int mousePressRowExt = mousePressPoint.y() >= lastVisibleRowY
+                           ? maxRows :
+                           rowsController->getViewRowIndexByScreenYPosition(mousePressPoint.y());
+    int mousePressRow = qBound(0, mousePressRowExt, maxRows - 1);
 
-        bool isClick = e->pos() == mousePressPoint;
-        if (isClick) {
-            // special case: click but don't drag
-            dragging = false;
+    // mouseReleaseRowExt has extended range: -1 (before first) to maxRows (after the last)
+    int mouseReleaseRowExt = e->y() >= lastVisibleRowY
+                             ? maxRows
+                             : rowsController->getViewRowIndexByScreenYPosition(e->y());
+    int mouseReleaseRow = qBound(0, mouseReleaseRowExt, maxRows - 1);
+
+    bool isClick = e->pos() == mousePressPoint;
+    if (isClick) {
+        // special case: click but don't drag
+        dragging = false;
+    }
+    U2Region nameListRegion(0, maxRows);
+    if (isClick && getCollapsibleGroupByExpandCollapsePoint(mousePressPoint) != NULL) {
+        // Do nothing. Expand collapse is processed as a part of MousePress.
+    } else if (dragging) {
+        int shift = 0;
+        if (mouseReleaseRow == 0) {
+            shift = -selection.startPos;
+        } else if (mouseReleaseRow == maxRows - 1) {
+            shift = maxRows - (selection.startPos + selection.length);
+        } else {
+            shift = mouseReleaseRow - editor->getCursorPosition().y();
         }
-        U2Region nameListRegion(0, maxRows);
-        if (dragging) {
-            int shift = 0;
-            if (mouseReleaseRow == 0) {
-                shift = -selection.startPos;
-            } else if (mouseReleaseRow == maxRows - 1) {
-                shift = maxRows - (selection.startPos + selection.length);
-            } else {
-                shift = mouseReleaseRow - editor->getCursorPosition().y();
+        moveSelectedRegion(shift);
+    } else if (nameListRegion.contains(mousePressRowExt) || nameListRegion.contains(mouseReleaseRowExt)) {
+        int newSelectionStart = -1;
+        int newSelectionLen = -1;
+        QPoint cursorPos = editor->getCursorPosition();
+        if (hasShiftModifier && isClick) { // append region between current selection & mouseReleaseRow to the selection.
+            if (mouseReleaseRow < cursorPos.y()) {
+                newSelectionStart = mouseReleaseRow;
+                newSelectionLen = cursorPos.y() - mousePressRow + 1;
+            } else if (mouseReleaseRow > cursorPos.y()) {
+                newSelectionStart = cursorPos.y();
+                newSelectionLen = mousePressRow - cursorPos.y() + 1;
             }
-            moveSelectedRegion(shift);
-        } else if (nameListRegion.contains(mousePressRowExt) || nameListRegion.contains(mouseReleaseRowExt)) {
-            int newSelectionStart = -1;
-            int newSelectionLen = -1;
-            QPoint cursorPos = editor->getCursorPosition();
-            if (hasShiftModifier && isClick) { // append region between current selection & mouseReleaseRow to the selection.
-                if (mouseReleaseRow < cursorPos.y()) {
-                    newSelectionStart = mouseReleaseRow;
-                    newSelectionLen = cursorPos.y() - mousePressRow + 1;
-                } else if (mouseReleaseRow > cursorPos.y()) {
-                    newSelectionStart = cursorPos.y();
-                    newSelectionLen = mousePressRow - cursorPos.y() + 1;
-                }
-            } else {
-                newSelectionStart = qMin(mousePressRow, mouseReleaseRow);
-                newSelectionLen = qAbs(mousePressRow - mouseReleaseRow) + 1;
-                // Add region to the selection when Shift is used and there is an intersection.
-                if (selection.length > 0 && hasShiftModifier) {
-                    // Region to test intersection. Extended to +1 both sides so we track 'touches' too.
-                    U2Region selectionExt(newSelectionStart - 1, newSelectionLen + 2);
-                    if (selectionExt.intersect(selection).length > 0) {
-                        if (selection.startPos < newSelectionStart) {
-                            newSelectionLen += newSelectionStart - selection.startPos;
-                            newSelectionStart = selection.startPos;
-                        }
-                        if (newSelectionStart + newSelectionLen < selection.endPos()) {
-                            newSelectionLen = selection.endPos() - newSelectionStart;
-                        }
+        } else {
+            newSelectionStart = qMin(mousePressRow, mouseReleaseRow);
+            newSelectionLen = qAbs(mousePressRow - mouseReleaseRow) + 1;
+            // Add region to the selection when Shift is used and there is an intersection.
+            if (selection.length > 0 && hasShiftModifier) {
+                // Region to test intersection. Extended to +1 both sides so we track 'touches' too.
+                U2Region selectionExt(newSelectionStart - 1, newSelectionLen + 2);
+                if (selectionExt.intersect(selection).length > 0) {
+                    if (selection.startPos < newSelectionStart) {
+                        newSelectionLen += newSelectionStart - selection.startPos;
+                        newSelectionStart = selection.startPos;
+                    }
+                    if (newSelectionStart + newSelectionLen < selection.endPos()) {
+                        newSelectionLen = selection.endPos() - newSelectionStart;
                     }
                 }
             }
-            if (newSelectionLen > 0) {
-                if (hasCtrlModifier && selection.length > 0) { // with Ctrl we copy X range to the new selection.
-                    const MaEditorSelection& maSelection = ui->getSequenceArea()->getSelection();
-                    MaEditorSelection newSelection(maSelection.x(), newSelectionStart, maSelection.width(), newSelectionLen);
-                    ui->getSequenceArea()->setSelection(newSelection);
-                } else {
-                    setSelection(newSelectionStart, newSelectionLen);
-                }
-            }
-        } else {
-            clearSelection();
         }
+        if (newSelectionLen > 0) {
+            if (hasCtrlModifier && selection.length > 0) { // with Ctrl we copy X range to the new selection.
+                const MaEditorSelection& maSelection = ui->getSequenceArea()->getSelection();
+                MaEditorSelection newSelection(maSelection.x(), newSelectionStart, maSelection.width(), newSelectionLen);
+                ui->getSequenceArea()->setSelection(newSelection);
+            } else {
+                setSelection(newSelectionStart, newSelectionLen);
+            }
+        }
+    } else {
+        clearSelection();
     }
+
     rubberBand->hide();
     dragging = false;
-    emit si_stopMaChanging(false);
     changeTracker->finishTracking();
+    editor->getMaObject()->releaseState();
+    emit si_stopMaChanging(maVersionBeforeMousePress != editor->getMaObject()->getModificationVersion());
+    maVersionBeforeMousePress = -1;
     scrollController->stopSmoothScrolling();
 
     QWidget::mouseReleaseEvent(e);
@@ -528,6 +516,24 @@ void MaEditorNameList::wheelEvent(QWheelEvent *we) {
     bool toMin = we->delta() > 0;
     ui->getScrollController()->scrollStep(toMin ? ScrollController::Up : ScrollController::Down);
     QWidget::wheelEvent(we);
+}
+
+const MaCollapsibleGroup* MaEditorNameList::getCollapsibleGroupByExpandCollapsePoint(const QPoint& point) const {
+    const MaCollapseModel* collapseModel = ui->getCollapseModel();
+    RowHeightController* heightController = ui->getRowHeightController();
+    int viewRow = heightController->getViewRowIndexByScreenYPosition(point.y());
+    if (viewRow < 0 || viewRow >= collapseModel->getViewRowCount()) {
+        return NULL;
+    }
+    const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroupByViewRow(viewRow);
+    int minRowsInGroupToExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
+    if (group == NULL || group->size() < minRowsInGroupToExpandCollapse) {
+        return NULL;
+    }
+    U2Region yRange = heightController->getScreenYRegionByViewRowIndex(viewRow);
+    QRect textRect = calculateTextRect(yRange, getSelection().contains(viewRow));
+    QRect buttonRect = calculateExpandCollapseButtonRect(textRect);
+    return buttonRect.contains(point) ? group : NULL;
 }
 
 void MaEditorNameList::clearSelection() {

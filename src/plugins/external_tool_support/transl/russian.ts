@@ -1919,89 +1919,89 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FormatDBSupportRunDialog</name>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="20"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="20"/>
         <source>Format Database</source>
         <translation>Форматирование базы данных</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="29"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="29"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="38"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="38"/>
         <source>Select input file(s) for formatting database:</source>
         <translation>Выберите входной файл(ы) для форматирования базы данных:</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="59"/>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="93"/>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="220"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="59"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="93"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="220"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="68"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="68"/>
         <source>Or select directory with input files:</source>
         <translation>Или выберите директорию со входными файлами:</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="105"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="105"/>
         <source>File filter</source>
         <translation>Фильтр</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="119"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="119"/>
         <source>Include files filter</source>
         <translation>Включающий фильтр</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="129"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="129"/>
         <source>*.fa;*.fasta</source>
         <translation>*.fa;*.fasta</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="136"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="136"/>
         <source>Exclude files filter</source>
         <translation>Исключающий фильтр</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="146"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="146"/>
         <source>*.pal</source>
         <translation>*.pal</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="158"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="158"/>
         <source>Type of file(s)</source>
         <translation>Тип файла(ов)</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="167"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="167"/>
         <source>protein</source>
         <translation>белки</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="177"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="177"/>
         <source>nucleotide</source>
         <translation>нуклеотиды</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="190"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="190"/>
         <source>Output settings</source>
         <translation>Выходные настройки</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="205"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="205"/>
         <source>Select the path to save the database into:</source>
         <translation>Выберите путь для сохранения базы данных:</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="234"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="234"/>
         <source>Base name for BLAST files:</source>
         <translation>Базовое имя для файлов BLAST:</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="244"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="244"/>
         <source>Title for database file:</source>
         <translation>Название для файла базы данных:</translation>
     </message>
@@ -3841,210 +3841,171 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastAllSupport</name>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="77"/>
         <source>The &lt;i&gt;blastall&lt;/i&gt; is the old program developed and distributed by the NCBI for running BLAST searches. The NCBI recommends that people start using the programs of the BLAST+ package instead.</source>
-        <translation>&lt;i&gt; blastall &lt;/i&gt;это программа разработанная NCBI для запуска BLAST поиска. NCBI рекомендует использовать более новый пакет BLAST+.</translation>
+        <translation type="vanished">&lt;i&gt; blastall &lt;/i&gt;это программа разработанная NCBI для запуска BLAST поиска. NCBI рекомендует использовать более новый пакет BLAST+.</translation>
     </message>
 </context>
 <context>
     <name>U2::BlastAllSupportContext</name>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="122"/>
         <source>Query with local BLAST...</source>
-        <translation>Поиск с помощью локальной базы данных BLAST...</translation>
+        <translation type="vanished">Поиск с помощью локальной базы данных BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="164"/>
         <source>Sequence object is NULL</source>
-        <translation>Sequence object is NULL</translation>
+        <translation type="vanished">Sequence object is NULL</translation>
     </message>
 </context>
 <context>
     <name>U2::BlastAllSupportMultiTask</name>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="674"/>
         <source>Source file</source>
-        <translation>Исходный файл</translation>
+        <translation type="vanished">Исходный файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="675"/>
         <source>Used database</source>
-        <translation>Используемая база данных</translation>
+        <translation type="vanished">Используемая база данных</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="677"/>
         <source>No any results found</source>
-        <translation>Результатов не найдено</translation>
+        <translation type="vanished">Результатов не найдено</translation>
     </message>
 </context>
 <context>
     <name>U2::BlastAllSupportRunDialog</name>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="108"/>
         <source>Wrong parameters for creating annotations</source>
-        <translation>Неверные параметры для создания аннотаций</translation>
+        <translation type="vanished">Неверные параметры для создания аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="122"/>
         <source>Error</source>
-        <translation>Ошибка</translation>
+        <translation type="vanished">Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="122"/>
         <source>Cannot create an annotation object. Please check settings</source>
-        <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
+        <translation type="vanished">Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
 </context>
 <context>
     <name>U2::BlastAllSupportTask</name>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="61"/>
         <source>A problem occurred during doing BLAST. The sequence is no more available.</source>
-        <translation>A problem occurred during doing BLAST. The sequence is no more available.</translation>
+        <translation type="vanished">A problem occurred during doing BLAST. The sequence is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="81"/>
         <source>Subdirectory for temporary files exists. Can not remove this folder.</source>
-        <translation>Subdirectory for temporary files exists. Can not remove this folder.</translation>
+        <translation type="vanished">Subdirectory for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="86"/>
         <source>Can not create folder for temporary files.</source>
-        <translation>Не удаётся создать папку для временных файлов.</translation>
+        <translation type="vanished">Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="99"/>
         <source>Can not create fake NCBI ini file</source>
-        <translation>Can not create fake NCBI ini file</translation>
+        <translation type="vanished">Can not create fake NCBI ini file</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="210"/>
         <source>Output file not found</source>
-        <translation>Выходной файл не найден</translation>
+        <translation type="vanished">Выходной файл не найден</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="212"/>
         <source>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</source>
-        <translation>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
+        <translation type="vanished">Output file not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="258"/>
         <source>Can not remove folder for temporary files.</source>
-        <translation>Can not remove folder for temporary files.</translation>
+        <translation type="vanished">Can not remove folder for temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="293"/>
         <source>Incorrect number of fields in line: %1</source>
-        <translation>Incorrect number of fields in line: %1</translation>
+        <translation type="vanished">Incorrect number of fields in line: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="298"/>
         <source>Can&apos;t get location. Start position is absent in [%1]</source>
-        <translation>Can&apos;t get location. Start position is absent in [%1]</translation>
+        <translation type="vanished">Can&apos;t get location. Start position is absent in [%1]</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="303"/>
         <source>Can&apos;t get location. End position is absent in [%1]</source>
-        <translation>Can&apos;t get location. End position is absent in [%1]</translation>
+        <translation type="vanished">Can&apos;t get location. End position is absent in [%1]</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="322"/>
         <source>Can&apos;t get hit start location from [%1]</source>
-        <translation>Can&apos;t get hit start location from [%1]</translation>
+        <translation type="vanished">Can&apos;t get hit start location from [%1]</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="327"/>
         <source>Can&apos;t get hit end location from [%1]</source>
-        <translation>Can&apos;t get hit end location from [%1]</translation>
+        <translation type="vanished">Can&apos;t get hit end location from [%1]</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="357"/>
         <source>Can&apos;t get align length from [%1]</source>
-        <translation>Can&apos;t get align length from [%1]</translation>
+        <translation type="vanished">Can&apos;t get align length from [%1]</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="362"/>
         <source>Can&apos;t get gaps from [%1]</source>
-        <translation>Can&apos;t get gaps from [%1]</translation>
+        <translation type="vanished">Can&apos;t get gaps from [%1]</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="367"/>
         <source>Can&apos;t get identity from [%1]</source>
-        <translation>Can&apos;t get identity from [%1]</translation>
+        <translation type="vanished">Can&apos;t get identity from [%1]</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="396"/>
         <source>Can&apos;t open output file</source>
-        <translation>Can&apos;t open output file</translation>
+        <translation type="vanished">Can&apos;t open output file</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="458"/>
         <source>Can&apos;t get Hsp_query-from element</source>
-        <translation>Can&apos;t get Hsp_query-from element</translation>
+        <translation type="vanished">Can&apos;t get Hsp_query-from element</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="465"/>
         <source>Can&apos;t get Hsp_query-to element</source>
-        <translation>Can&apos;t get Hsp_query-to element</translation>
+        <translation type="vanished">Can&apos;t get Hsp_query-to element</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="494"/>
         <source>Unknown strand source setting</source>
-        <translation>Unknown strand source setting</translation>
+        <translation type="vanished">Unknown strand source setting</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="501"/>
         <source>Can&apos;t get location. %1[%2]</source>
-        <translation>Can&apos;t get location. %1[%2]</translation>
+        <translation type="vanished">Can&apos;t get location. %1[%2]</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="512"/>
         <source>Can&apos;t get identity</source>
-        <translation>Can&apos;t get identity</translation>
+        <translation type="vanished">Can&apos;t get identity</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="520"/>
         <source>Can&apos;t get gaps</source>
-        <translation>Can&apos;t get gaps</translation>
+        <translation type="vanished">Can&apos;t get gaps</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="528"/>
         <source>Can&apos;t get align length</source>
-        <translation>Can&apos;t get align length</translation>
+        <translation type="vanished">Can&apos;t get align length</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportTask.cpp" line="541"/>
         <source>Can&apos;t evaluate location</source>
-        <translation>Can&apos;t evaluate location</translation>
+        <translation type="vanished">Can&apos;t evaluate location</translation>
     </message>
 </context>
 <context>
     <name>U2::BlastAllWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="169"/>
         <source>Select input file</source>
-        <translation>Выберите входной файл</translation>
+        <translation type="vanished">Выберите входной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="222"/>
         <source>This file has the incompatible format for the BLAST+ search.</source>
-        <translation>Этот файл имеет несовместимый формат для поиска BLAST+.</translation>
+        <translation type="vanished">Этот файл имеет несовместимый формат для поиска BLAST+.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="267"/>
         <source>This file does not contain any sequence.</source>
-        <translation>Этот файл не содержит последовательностей.</translation>
+        <translation type="vanished">Этот файл не содержит последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="222"/>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="267"/>
         <source>Wrong input file</source>
-        <translation>Неверный входной файл</translation>
+        <translation type="vanished">Неверный входной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="313"/>
         <source>Wrong parameters for creating annotations</source>
-        <translation>Неверные параметры для создания аннотаций</translation>
+        <translation type="vanished">Неверные параметры для создания аннотаций</translation>
     </message>
 </context>
 <context>
@@ -4367,47 +4328,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastRunCommonDialog</name>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="57"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="56"/>
         <source>Restore to default</source>
         <translation>Значения по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="58"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="57"/>
         <source>Search</source>
         <translation>Искать</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="59"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="58"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="284"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="278"/>
         <source>Direct nucleotide alignment</source>
         <translation>Прямое нуклеотидное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="287"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="281"/>
         <source>Direct protein alignment</source>
         <translation>Прямое белковое выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="291"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="285"/>
         <source>Direct protein alignment (on GPU)</source>
         <translation>Прямое белковое выравнивание (на GPU)</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="295"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="289"/>
         <source>Protein alignment, input nucleotide is translated input protein before the search</source>
         <translation>Белковое выравнивание, входные нуклеотиды транслируются в белки до поиска</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="299"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="293"/>
         <source>Protein alignment, nucleotide database is translated input protein before the search</source>
         <translation>Белковое выравнивание, нуклеотидная база данных транслируется в белковую до поиска</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="303"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="297"/>
         <source>Protein alignment, both input query and database are translated before the search</source>
         <translation>Белковое выравнивание, оба запроса и база данных транслируются до поиска</translation>
     </message>
@@ -5167,32 +5128,30 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ETSProjectViewItemsContoller</name>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="52"/>
         <source>FormatDB...</source>
-        <translation>Создать БД BLAST...</translation>
+        <translation type="vanished">Создать БД BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="53"/>
+        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="52"/>
         <source>BLAST+ make DB...</source>
         <translation>Создать БД BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="79"/>
+        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="76"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="97"/>
         <source>Path for BLAST %1 tool not selected.</source>
-        <translation>Путь для BLAST %1 не установлен.</translation>
+        <translation type="vanished">Путь для BLAST %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="100"/>
+        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="91"/>
         <source>Path for BLAST+ %1 tool not selected.</source>
         <translation>Путь для BLAST+ %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="102"/>
+        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="92"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -5283,105 +5242,103 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportPlugin</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="174"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="172"/>
         <source>Search tools in PATH</source>
         <translation>Search tools in PATH</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="221"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="219"/>
         <source>External tool support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="221"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="219"/>
         <source>Runs other external tools</source>
         <translation>Модуль позволяет использовать внешние программы</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="288"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="286"/>
         <source>Align with ClustalW...</source>
         <translation>Выравнивание с помощью ClustalW...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="296"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="294"/>
         <source>Align with ClustalO...</source>
         <translation>Выравнивание с помощью ClustalO...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="304"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="302"/>
         <source>Align with MAFFT...</source>
         <translation>Выравнивание с помощью MAFFT...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="312"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="310"/>
         <source>Align with T-Coffee...</source>
         <translation>Выравнивание с помощью T-Coffee...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="470"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="461"/>
         <source>The &lt;i&gt;Basic Local Alignment Search Tool&lt;/i&gt; (BLAST) finds regions of local similarity between sequences. The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance of matches. BLAST can be used to infer functional and evolutionary relationships between sequences as well as help identify members of gene families.</source>
         <translation>The &lt;i&gt;Basic Local Alignment Search Tool&lt;/i&gt; (BLAST) ищет регионы локального сходства между последовательностями. Программа сравнивает нуклеотидные или белковые последовательности в базах данных последовательностей и вычисляет статистическую значимость совпадений. BLAST может использоваться для выявления функциональных и эволюционных взаимосвязей между последовательностями, а также для определения членов семейств гена.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="474"/>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="476"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="465"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="467"/>
         <source>&lt;i&gt;BLAST+&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
         <translation>&lt;i&gt;BLAST+&lt;/i&gt; это новая версия пакета BLAST от NCBI.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="478"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="469"/>
         <source>&lt;i&gt;Bowtie&lt;i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end). &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </source>
         <translation>&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="485"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="476"/>
         <source>&lt;i&gt;Cufflinks&lt;/i&gt; assembles transcripts, estimates their abundances, and tests for differential expression and regulation in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts. It also estimates the relative abundances of these transcripts based on how many reads support each one, taking into account biases in library preparation protocols. </source>
         <translation>&lt;i&gt;Cufflinks&lt;/i&gt; собирает транскрипции и оценивает их распространенность. </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="492"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="483"/>
         <source>&lt;i&gt;Bowtie 2&lt;/i&gt; is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s or 1000s of characters, and particularly good at aligning to relatively long (e.g. mammalian) genomes. &lt;br/&gt;&lt;br/&gt;It indexes the genome with an FM index to keep its memory footprint small: for the human genome, its memory footprint is typically around 3.2Gb. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;Bowtie 2&lt;/i&gt; supports gapped, local, and paired-end alignment modes.</source>
         <translation>&lt;i&gt;Bowtie 2&lt;/i&gt; один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на большие референсные последовательности. Особенно эффективно применение инструмента для выравнивания ридов начиная от 50 и до сотен и тысяч символов, и больших геномов (например млекопитающих).</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="500"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="491"/>
         <source>&lt;i&gt;Cistrome&lt;/i&gt; is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysisThis pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology.</source>
         <translation>&lt;i&gt;Cistrome&lt;/i&gt; это версия UGENE пайплайна Cistrome, который включает некоторые инструменты, используемые в ChIP-seq анализе.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="503"/>
         <source>BLAST make database...</source>
-        <translation>Создание базы данных BLAST...</translation>
+        <translation type="vanished">Создание базы данных BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="507"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="494"/>
         <source>BLAST+ make database...</source>
         <translation>Создание базы данных BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="519"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="498"/>
         <source>Map reads to reference...</source>
         <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="544"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="521"/>
         <source>Reads de novo assembly (with %1)...</source>
         <translation>Сборка прочтений de novo (при помощи %1)...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="529"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="508"/>
         <source>BLAST+ search...</source>
         <translation>Поиск с помощью BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="533"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="512"/>
         <source>BLAST+ query database...</source>
         <translation>Запрос с помощью BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="515"/>
         <source>BLAST search...</source>
-        <translation>Поиск с помощью BLAST...</translation>
+        <translation type="vanished">Поиск с помощью BLAST...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportL10N.h" line="38"/>
@@ -5397,12 +5354,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportService</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="746"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="722"/>
         <source>External tools support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="746"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="722"/>
         <source>Provides support to run external tools from UGENE</source>
         <translation>Позволяет запускать внешние инструменты из UGENE</translation>
     </message>
@@ -5607,28 +5564,26 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::FormatDBSupport</name>
     <message>
-        <location filename="../src/blast/FormatDBSupport.cpp" line="73"/>
         <source>The &lt;i&gt;formatdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by &lt;i&gt;blastall&lt;/i&gt;.</source>
-        <translation>The &lt;i&gt;formatdb&lt;/i&gt; создает белковые или нуклеотидные базы данных до того как эти базы будут использованы поиском &lt;i&gt;blastall&lt;/i&gt;.</translation>
+        <translation type="vanished">The &lt;i&gt;formatdb&lt;/i&gt; создает белковые или нуклеотидные базы данных до того как эти базы будут использованы поиском &lt;i&gt;blastall&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupport.cpp" line="89"/>
-        <location filename="../src/blast/FormatDBSupport.cpp" line="104"/>
+        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="71"/>
+        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="86"/>
         <source>The &lt;i&gt;makeblastdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by other BLAST+ tools.</source>
         <translation>The &lt;i&gt;makeblastdb&lt;/i&gt; создает белковые или нуклеотидные базы данных до того как эти базы будут использованы другими инструментами BLAST+.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupport.cpp" line="118"/>
         <source>Path for BLAST %1 tool not selected.</source>
-        <translation>Путь для BLAST %1 не установлен.</translation>
+        <translation type="vanished">Путь для BLAST %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupport.cpp" line="121"/>
+        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="99"/>
         <source>Path for BLAST+ %1 tool not selected.</source>
         <translation>Путь для BLAST+ %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupport.cpp" line="123"/>
+        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="100"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -5636,39 +5591,37 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::FormatDBSupportRunDialog</name>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="43"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="43"/>
         <source>Format</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="44"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="44"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="75"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="75"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="98"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="98"/>
         <source>Select a folder with input files</source>
         <translation>Выберите папку со входным файлом</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="109"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="109"/>
         <source>Select a folder to save database files</source>
         <translation>Выберите папку для сохранения базы данных</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="121"/>
-        <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="127"/>
         <source>Input files paths contain space characters.</source>
-        <translation>Путь до входных файлов содержат пробелы.</translation>
+        <translation type="vanished">Путь до входных файлов содержат пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="135"/>
-        <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="140"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="119"/>
+        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="124"/>
         <source>Output database path contain space characters.</source>
         <translation>Путь до выходного файла содержит пробелы.</translation>
     </message>
@@ -5676,68 +5629,67 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::FormatDBSupportTask</name>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="55"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="55"/>
         <source>Run NCBI FormatDB task</source>
         <translation>Run NCBI FormatDB task</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="151"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="151"/>
         <source>Cannot create temp folder</source>
         <translation>Cannot create temp folder</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="168"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="168"/>
         <source>Trying to initialize Format DB task second time</source>
         <translation>Trying to initialize Format DB task second time</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="175"/>
         <source>Input files paths contain space characters.</source>
-        <translation>Input files paths contain space characters.</translation>
+        <translation type="vanished">Input files paths contain space characters.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="192"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="179"/>
         <source>Output database path contain space characters.</source>
         <translation>Output database path contain space characters.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="103"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="103"/>
         <source>Blast database creation has been cancelled</source>
         <translation>Создание базы данных BLAST было отменено</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="93"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="93"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="110"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="110"/>
         <source>Blast database has been successfully created</source>
         <translation>База данных BLAST успешно создана</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="111"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="111"/>
         <source>Source sequences: </source>
         <translation>Исходные последовательности: </translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="119"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="119"/>
         <source>Database file path: %1</source>
         <translation>Путь до базы данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="121"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="121"/>
         <source>Type: %1</source>
         <translation>Тип: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="123"/>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="129"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="123"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="129"/>
         <source>Formatdb log file path: </source>
         <translation>Formatdb log file path: </translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="127"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="127"/>
         <source>Blast database creation has been failed</source>
         <translation>Создание базы данных BLAST завершилось неудачно</translation>
     </message>
@@ -6756,202 +6708,163 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BlastAllPrompter</name>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="341"/>
         <source>unset</source>
-        <translation>не указан</translation>
+        <translation type="vanished">не указан</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="342"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation> из &lt;u&gt;%1&lt;/u&gt;</translation>
+        <translation type="vanished"> из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="343"/>
         <source>For sequence %1 find annotations in database &lt;u&gt;%2&lt;/u&gt;.</source>
-        <translation>Для последовательности %1 ищет аннотации в базе данных &lt;u&gt;%2&lt;/u&gt;.</translation>
+        <translation type="vanished">Для последовательности %1 ищет аннотации в базе данных &lt;u&gt;%2&lt;/u&gt;.</translation>
     </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::BlastAllWorker</name>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="57"/>
         <source>Best hits limit</source>
-        <translation>Предел лучших попыток</translation>
+        <translation type="vanished">Предел лучших попыток</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="61"/>
         <source>Number of best hits from a region to keep. 0 turns it off. If used, 100 is recommended.</source>
-        <translation>Количество лучших попыток для сохранения. 0 выключает опцию. При использовании рекомендуется значение 100.</translation>
+        <translation type="vanished">Количество лучших попыток для сохранения. 0 выключает опцию. При использовании рекомендуется значение 100.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="88"/>
         <source>Input sequence</source>
-        <translation>Входная последовательность</translation>
+        <translation type="vanished">Входная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="89"/>
         <source>Sequence for which annotations is searched.</source>
-        <translation>Последовательность для поиска аннотаций.</translation>
+        <translation type="vanished">Последовательность для поиска аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="90"/>
         <source>Annotations</source>
-        <translation>Аннотации</translation>
+        <translation type="vanished">Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="90"/>
         <source>Found annotations.</source>
-        <translation>Найденные аннотации.</translation>
+        <translation type="vanished">Найденные аннотации.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="99"/>
         <source>Search type</source>
-        <translation>Тип поиска</translation>
+        <translation type="vanished">Тип поиска</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="100"/>
         <source>Select type of BLAST searches.</source>
-        <translation>Выберите тип BLAST поиска.</translation>
+        <translation type="vanished">Выберите тип BLAST поиска.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="101"/>
         <source>Database Path</source>
-        <translation>Путь до базы данных</translation>
+        <translation type="vanished">Путь до базы данных</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="102"/>
         <source>Path with database files.</source>
-        <translation>Путь до файлов базы данных.</translation>
+        <translation type="vanished">Путь до файлов базы данных.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="103"/>
         <source>Database Name</source>
-        <translation>Имя базы данных</translation>
+        <translation type="vanished">Имя базы данных</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="104"/>
         <source>Base name for BLAST DB files.</source>
-        <translation>Базовое имя для файлов базы данных BLAST.</translation>
+        <translation type="vanished">Базовое имя для файлов базы данных BLAST.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="105"/>
         <source>Expected value</source>
-        <translation>Ожидаемое значение</translation>
+        <translation type="vanished">Ожидаемое значение</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="106"/>
         <source>This setting specifies the statistical significance threshold for reporting matches against database sequences.</source>
-        <translation>Этот параметр определяет статистическую значимость порога совпадений.</translation>
+        <translation type="vanished">Этот параметр определяет статистическую значимость порога совпадений.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="108"/>
         <source>Annotate as</source>
-        <translation>Аннотировать как</translation>
+        <translation type="vanished">Аннотировать как</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="109"/>
         <source>Name for annotations.</source>
-        <translation>Имя для аннотаций.</translation>
+        <translation type="vanished">Имя для аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="110"/>
         <source>Tool Path</source>
-        <translation>Путь</translation>
+        <translation type="vanished">Путь</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="111"/>
         <source>External tool path.</source>
-        <translation>Путь до внешнего инструмента.</translation>
+        <translation type="vanished">Путь до внешнего инструмента.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="112"/>
         <source>Temporary folder</source>
-        <translation>Временная папка</translation>
+        <translation type="vanished">Временная папка</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="113"/>
         <source>Folder for temporary files.</source>
-        <translation>Папка для временных файлов.</translation>
+        <translation type="vanished">Папка для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="115"/>
         <source>BLAST output</source>
-        <translation>Выходной файл</translation>
+        <translation type="vanished">Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="116"/>
         <source>Location of BLAST output file.</source>
-        <translation>Расположение выходного файла.</translation>
+        <translation type="vanished">Расположение выходного файла.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="117"/>
         <source>BLAST output type</source>
-        <translation>Тип выходного файла</translation>
+        <translation type="vanished">Тип выходного файла</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="118"/>
         <source>Type of BLAST output file.</source>
-        <translation>Имп выходного файла.</translation>
+        <translation type="vanished">Имп выходного файла.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="119"/>
         <source>Gapped alignment</source>
-        <translation>Выравнивание с пробелами</translation>
+        <translation type="vanished">Выравнивание с пробелами</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="120"/>
         <source>Perform gapped alignment.</source>
-        <translation>Выполняет выравнивание с пробелами.</translation>
+        <translation type="vanished">Выполняет выравнивание с пробелами.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="122"/>
         <source>Gap costs</source>
-        <translation>Вес пробела</translation>
+        <translation type="vanished">Вес пробела</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="123"/>
         <source>Cost to create and extend a gap in an alignment.</source>
-        <translation>Стоимость создания и расширения пробела в выравнивании.</translation>
+        <translation type="vanished">Стоимость создания и расширения пробела в выравнивании.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="124"/>
         <source>Match scores</source>
-        <translation>Веса совпадений</translation>
+        <translation type="vanished">Веса совпадений</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="125"/>
         <source>Reward and penalty for matching and mismatching bases.</source>
-        <translation>Вознаграждения и наказания за совпадения и несовпадения.</translation>
+        <translation type="vanished">Вознаграждения и наказания за совпадения и несовпадения.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="180"/>
         <source>Local BLAST search</source>
-        <translation>Локальный поиск c помощью BLAST</translation>
+        <translation type="vanished">Локальный поиск c помощью BLAST</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="181"/>
         <source>Finds annotations for DNA sequence in local database.</source>
-        <translation>Ищет аннотации для ДНК последовательности в локальной базе данных.</translation>
+        <translation type="vanished">Ищет аннотации для ДНК последовательности в локальной базе данных.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="400"/>
         <source>Empty sequence supplied to BLAST</source>
-        <translation>Empty sequence supplied to BLAST</translation>
+        <translation type="vanished">Empty sequence supplied to BLAST</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="410"/>
         <source>Selected BLAST search with nucleotide input sequence</source>
-        <translation>Selected BLAST search with nucleotide input sequence</translation>
+        <translation type="vanished">Selected BLAST search with nucleotide input sequence</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="415"/>
         <source>Selected BLAST search with amino acid input sequence</source>
-        <translation>Selected BLAST search with amino acid input sequence</translation>
+        <translation type="vanished">Selected BLAST search with amino acid input sequence</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllWorker.cpp" line="422"/>
         <source>Not selected BLAST output file</source>
-        <translation>Not selected BLAST output file</translation>
+        <translation type="vanished">Not selected BLAST output file</translation>
     </message>
 </context>
 <context>
@@ -12996,12 +12909,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PrepareInputFastaFilesTask</name>
     <message>
-        <location filename="../src/blast/PrepareInputFastaFilesTask.cpp" line="36"/>
+        <location filename="../src/blast_plus/PrepareInputFastaFilesTask.cpp" line="36"/>
         <source>Prepare input FASTA files</source>
         <translation>Prepare input FASTA files</translation>
     </message>
     <message>
-        <location filename="../src/blast/PrepareInputFastaFilesTask.cpp" line="91"/>
+        <location filename="../src/blast_plus/PrepareInputFastaFilesTask.cpp" line="91"/>
         <source>File &apos;%1&apos; was skipped. Cannot detect the file format.</source>
         <translation>File &apos;%1&apos; was skipped. Cannot detect the file format.</translation>
     </message>

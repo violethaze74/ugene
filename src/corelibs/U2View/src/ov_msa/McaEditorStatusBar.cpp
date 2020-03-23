@@ -46,6 +46,7 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject* mobj,
       nameList(nameList)
 {
     setObjectName("mca_editor_status_bar");
+    setStatusBarStyle();
 
     colomnLabel->setPatterns(tr("RefPos %1 / %2"),
                              tr("Reference position %1 of %2"));
