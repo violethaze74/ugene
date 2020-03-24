@@ -3562,7 +3562,7 @@ GUI_TEST_CLASS_DEFINITION(test_6548_2) {
         CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
         CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
     }
-    //sethird column check
+    //third column check
     {
         //A > R > Y
         //Check A

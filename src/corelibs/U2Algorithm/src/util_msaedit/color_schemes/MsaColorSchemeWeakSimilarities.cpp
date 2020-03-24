@@ -45,7 +45,7 @@ QColor MsaColorSchemeWeakSimilarities::getBackgroundColor(int seq, int pos, char
     }
 
     updateCache(pos);
-    SAFE_POINT(cachedData.keys().contains(pos), "Column data is absent", QColor());
+    SAFE_POINT(cachedData.keys().contains(pos), "Column data is absent", gapColorPair.second);
 
     int fontColorIndex = getColorIndex(pos, c);
     return colorPairsByFrequence[fontColorIndex].second;

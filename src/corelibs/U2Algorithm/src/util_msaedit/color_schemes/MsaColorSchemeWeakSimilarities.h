@@ -43,7 +43,7 @@ private:
     static const QList<QPair<QColor, QColor>> colorPairsByFrequence;
     static const QPair<QColor, QColor> gapColorPair;
 
-	int getColorIndex(const int columnNum, const char c) const override;
+    int getColorIndex(const int columnNum, const char c) const override;
 };
 
 class MsaColorSchemeWeakSimilaritiesFactory : public MsaColorSchemeFactory {

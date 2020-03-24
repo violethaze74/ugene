@@ -343,6 +343,7 @@ bool WelcomePageWidget::runAction(const QString& actionId) {
     } else if (actionId == BaseWelcomePageActions::QUICK_START) {
         QDesktopServices::openUrl(QUrl("https://ugene.net/wiki/display/QSG/Quick+Start+Guide"));
     }
+    return false;
 }
 
 HoverQLabel::HoverQLabel(const QString& html, const QString& _normalStyle, const QString& _hoveredStyle, const QString& objectName)
