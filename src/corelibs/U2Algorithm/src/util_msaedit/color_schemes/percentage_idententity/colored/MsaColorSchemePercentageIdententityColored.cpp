@@ -74,8 +74,10 @@ void MsaColorSchemePercentageIdententityColored::updateCache(const int columnNum
     if (alignmentChanged) {
         cachedData.clear();
         alignmentChanged = false;
+    } else if (cachedData.keys().contains(columnNum)) {
+        return;
     }
-    CHECK(!cachedData.keys().contains(columnNum), );
+
     SAFE_POINT(columnNum < maObj->getLength(), "Unexpected column number", );
 
     ColumnCharsCounter currentRowCounter;

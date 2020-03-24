@@ -33,6 +33,7 @@
 #include "MsaColorSchemePercentageIdentity.h"
 #include "MsaColorSchemePercentageIdententityGrayscale.h"
 #include "MsaColorSchemeStatic.h"
+#include "MsaColorSchemeWeakSimilarities.h"
 
 namespace U2 {
 
@@ -45,6 +46,7 @@ const QString MsaColorScheme::IDENTPERC_NUCL              = "COLOR_SCHEME_IDENTP
 const QString MsaColorScheme::IDENTPERC_NUCL_COLORED      = "COLOR_SCHEME_IDENTPERC_NUCL_COLORED";
 const QString MsaColorScheme::IDENTPERC_NUCL_GRAY         = "COLOR_SCHEME_IDENTPERC_NUCL_GRAY";
 const QString MsaColorScheme::CUSTOM_NUCL                 = "COLOR_SCHEME_CUSTOM_NUCL";
+const QString MsaColorScheme::WEAK_SIMILARITIES_NUCL      = "COLOR_SCHEME_WEAK_SIMILARITIES_NUCL";
 
 const QString MsaColorScheme::UGENE_AMINO                 = "COLOR_SCHEME_UGENE_AMINO";
 const QString MsaColorScheme::ZAPPO_AMINO                 = "COLOR_SCHEME_ZAPPO_AMINO";
@@ -571,6 +573,8 @@ void MsaColorSchemeRegistry::initBuiltInSchemes() {
     addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_NUCL, tr("Percentage identity"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
     addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityColoredFactory(this, MsaColorScheme::IDENTPERC_NUCL_COLORED, tr("Percentage identity (colored)"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
     addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_NUCL_GRAY, tr("Percentage identity (gray)"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    
+    addMsaColorSchemeFactory(new MsaColorSchemeWeakSimilaritiesFactory(this, MsaColorScheme::WEAK_SIMILARITIES_NUCL, tr("Weak similarities"), DNAAlphabet_NUCL));
 
     //amino
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);

@@ -1503,7 +1503,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5431) {
-
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1525,7 +1524,6 @@ GUI_TEST_CLASS_DEFINITION(test_5431) {
    
     // 3. Expected state: first group is removed
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 4, "Wrong rows number");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5447_1) {

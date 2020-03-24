@@ -41,18 +41,20 @@ public:
 
     static const QList<char> NUCLEOTIDE_LIST;
 
+protected:
+    void updateCache(const int columnNum) const;
+    virtual int getColorIndex(const int columnNum, const char c) const;
+
+    mutable QMap<qint64, ColumnCharsCounter> cachedData;    //first value - column number
+
 private slots:
     void sl_alignmentChanged();
 
 private:
     static const QList<QColor> BACKGROUND_COLORS;
     static const QList<QColor> FONT_COLORS;
-    void updateCache(const int columnNum) const;
-    int getColorIndex(const int columnNum, const char c) const;
 
-    mutable QMap<qint64, ColumnCharsCounter> cachedData; //first value - column number
     mutable bool alignmentChanged;
-
     double threshold;
 };
 
