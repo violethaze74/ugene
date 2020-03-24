@@ -51,7 +51,7 @@ private slots:
     void sl_openRecentFile();
 
 private:
-    bool runAction(const QString& actionId);
+    void runAction(const QString& actionId);
 
     QWidget* createHeaderWidget();
     QWidget* createMiddleWidget();

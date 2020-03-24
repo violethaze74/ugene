@@ -23,10 +23,8 @@
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectSelection.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -288,11 +286,6 @@ void MSAEditor::updateActions() {
     sl_updateRealignAction();
 }
 
-void MSAEditor::copyRowFromSequence(U2SequenceObject *seqObj, U2OpStatus &os) {
-    MSAUtils::copyRowFromSequence(getMaObject(), seqObj, os);
-    maObject->updateCachedMultipleAlignment();
-}
-
 void MSAEditor::sl_onSeqOrderChanged(const QStringList& order ){
     if(!maObject->isStateLocked()) {
         maObject->sortRowsByList(order);
@@ -433,7 +426,7 @@ void MSAEditor::sl_addToAlignment() {
 }
 
 void MSAEditor::sl_realignSomeSequences() {
-    const MaEditorSelection& selection = ui->getEditor()->getSelection();
+    const MaEditorSelection& selection = getSelection();
     int startSeq = selection.y();
     int endSeq = selection.y() + selection.height() - 1;
     MaCollapseModel* model = ui->getCollapseModel();
@@ -506,18 +499,14 @@ void MSAEditor::sl_rowsRemoved(const QList<qint64> &rowIds) {
 }
 
 void MSAEditor::sl_updateRealignAction() {
-    if (maObject->isStateLocked() || maObject->getAlphabet()->isRaw()) {
+    if (maObject->isStateLocked() || maObject->getAlphabet()->isRaw() || ui == nullptr) {
         realignSomeSequenceAction->setDisabled(true);
         return;
     }
-
-    realignSomeSequenceAction->setEnabled(true);
-    if (ui != nullptr) {
-        const MaEditorSelection& selection = ui->getEditor()->getSelection();
-        int length = maObject->getLength();
-        U2Region sel = ui->getSequenceArea()->getSelectedMaRows();
-        realignSomeSequenceAction->setDisabled(sel.length == 0 || sel.length == maObject->getNumRows() || length != selection.width());
-    }
+    const MaEditorSelection& selection = getSelection();
+    bool isWholeSequenceSelection = selection.width() == maObject->getLength() && selection.height() >= 1;
+    bool isAllRowsSelection = selection.height() == ui->getCollapseModel()->getViewRowCount();
+    realignSomeSequenceAction->setEnabled(isWholeSequenceSelection && !isAllRowsSelection);
 }
 
 void MSAEditor::buildTree() {

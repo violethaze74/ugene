@@ -332,7 +332,7 @@ bool WelcomePageWidget::eventFilter(QObject* watched, QEvent* event) {
     return false;
 }
 
-bool WelcomePageWidget::runAction(const QString& actionId) {
+void WelcomePageWidget::runAction(const QString& actionId) {
     auto action = AppContext::getWelcomePageActionRegistry()->getById(actionId);
     if (action != nullptr) {
         GRUNTIME_NAMED_COUNTER(cvar, tvar, "Welcome Page: " + actionId, "");

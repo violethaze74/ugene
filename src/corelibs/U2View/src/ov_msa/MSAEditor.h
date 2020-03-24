@@ -84,8 +84,6 @@ public:
     //Return alignment row that is displayed on target line in MSAEditor
     const MultipleSequenceAlignmentRow getRowByLineNumber(int lineNumber) const;
 
-    void copyRowFromSequence(U2SequenceObject *seqObj, U2OpStatus &os);
-
     PairwiseAlignmentWidgetsSettings* getPairwiseAlignmentWidgetsSettings() const { return pairwiseAlignmentWidgetsSettings; }
 
     MSAEditorTreeManager* getTreeManager() {return &treeManager;}
