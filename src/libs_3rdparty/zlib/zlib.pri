@@ -11,7 +11,6 @@ DESTDIR = ../../$$out_dir()
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        TARGET = zlibd
         DEFINES+=_DEBUG
         CONFIG +=console
         OBJECTS_DIR=_tmp/obj/debug
