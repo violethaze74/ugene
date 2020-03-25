@@ -4703,9 +4703,7 @@ GUI_TEST_CLASS_DEFINITION(test_1439) {
 
     CHECK_SET_ERR(l.hasError(), "There is no error in the log");
     QString expectedError = "Can't align sequences that are longer than 100000 bp.";
-#ifndef UGENE_X86
-    expectedError = "Not enough memory to do this alignment.";
-#endif
+
     CHECK_SET_ERR(l.getError().contains(expectedError), "Wrong error in the log: " + l.getError());
 }
 
