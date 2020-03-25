@@ -521,14 +521,14 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(GUITestOpStatus &os, const
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     CHECK_SET_ERR_RESULT(editor != NULL, "MsaEditor not found", false);
 //Seq names are drawn on widget, so this hack is needed
-    U2Region selectedRowsRegion = msaEditArea->getSelectedMaRows();
     QStringList selectedRowNames;
-    for(int x = selectedRowsRegion.startPos; x < selectedRowsRegion.endPos(); x++) {
-        selectedRowNames.append(editor->getMaObject()->getRow(x)->getName());
-    }
-
-    if (selectedRowNames.contains(seqName)) {
-        return true;
+    QList<int> selectedMaRows = msaEditArea->getSelectedMaRowIndexes();
+    for (int i = 0; i < selectedMaRows.size(); i++) {
+        int maIndex = selectedMaRows[i];
+        QString selectedSequenceName = editor->getMaObject()->getRow(maIndex)->getName();
+        if (selectedSequenceName == seqName) {
+            return true;
+        }
     }
     return false;
 }
@@ -540,7 +540,7 @@ int GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(GUITestOpStatus &os) {
         (GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", 0);
 
-    return msaEditArea->getSelectedMaRows().length;
+    return msaEditArea->getSelectedMaRowIndexes().size();
 }
 #undef GT_METHOD_NAME
 
