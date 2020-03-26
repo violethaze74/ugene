@@ -107,10 +107,10 @@ QWidget* WelcomePageWidget::createMiddleWidget() {
     auto buttonsGridLayout = new QGridLayout();
     buttonsGridLayout->setVerticalSpacing(100);
     buttonsGridLayout->setHorizontalSpacing(140);
-    QString openFilesText = tr("Open File(s)"); // Открыть файл(ы)
-    QString createSequenceText = tr("Create Sequence"); // Создать последовательность
-    QString createWorkflowText = tr("Run or Create Workflow"); // Запустить или создать схему
-    QString quickStartText = tr("Quick Start Guide"); // Краткое руководство
+    QString openFilesText = tr("Open File(s)");
+    QString createSequenceText = tr("Create Sequence");
+    QString createWorkflowText = tr("Run or Create Workflow");
+    QString quickStartText = tr("Quick Start Guide");
     QString normalStyle = "QLabel {text-decoration: none; color: #145774; font-size: 18px;}";
     QString hoveredStyle = "QLabel {text-decoration: underline; color: #145774; font-size: 18px;}";
 
