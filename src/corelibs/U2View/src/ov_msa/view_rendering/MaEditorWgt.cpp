@@ -82,10 +82,12 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
     connect(getRedoAction(), SIGNAL(triggered()), SLOT(sl_countRedo()));
 }
 
-QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment ali, QWidget* heightTarget){
+QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment alignment,
+                                              QWidget* heightTarget, bool proxyMouseEventsToNameList) {
+    QString labelHtml = QString("<p style=\"margin-right: 5px\">%1</p>").arg(text);
     return new MaLabelWidget(this,
                              heightTarget == NULL ? seqAreaHeader : heightTarget,
-                             QString("<p style=\"margin-right: 5px\">%1</p>").arg(text), ali);
+                             labelHtml, alignment, proxyMouseEventsToNameList);
 }
 
 ScrollController *MaEditorWgt::getScrollController() {
@@ -189,7 +191,7 @@ void MaEditorWgt::initWidgets() {
     seqAreaContainer->setLayout(seqAreaLayout);
 
     QWidget *label;
-    label = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consArea);
+    label = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consArea, false);
     label->setMinimumHeight(consArea->height());
 
     nameAreaLayout = new QVBoxLayout();

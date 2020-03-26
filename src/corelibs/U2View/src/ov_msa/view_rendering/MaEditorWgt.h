@@ -60,7 +60,8 @@ public:
 
     QWidget* createHeaderLabelWidget(const QString& text = QString(),
                                      Qt::Alignment ali = Qt::AlignCenter,
-                                     QWidget* heightTarget = NULL);
+                                     QWidget* heightTarget = NULL,
+                                     bool proxyMouseEventsToNameList = true);
 
     MaEditor*                       getEditor() const { return editor; }
     MaEditorSequenceArea*           getSequenceArea() const { return seqArea; }
