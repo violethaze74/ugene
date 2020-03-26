@@ -350,8 +350,10 @@ void McaEditorSequenceArea::sl_updateActions() {
 
 void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge) {
     MultipleChromatogramAlignmentObject* mcaObj = getEditor()->getMaObject();
-    U2Region reg = getSelectedMaRows();
-    SAFE_POINT(!reg.isEmpty() && reg.length == 1, "Incorrect selection", )
+    QList<int> maRows = getSelectedMaRowIndexes();
+    SAFE_POINT(!maRows.isEmpty() && maRows.size() == 1, "Incorrect selection", )
+    int maRowIndex = maRows[0];
+
     U2OpStatus2Log os;
     U2UseCommonUserModStep userModStep(mcaObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
@@ -360,9 +362,8 @@ void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::Trim
     SAFE_POINT(!getSelection().isEmpty(), "selection is empty", );
     int currentPos = getSelection().x();
 
-    mcaObj->trimRow(reg.startPos, currentPos, os, edge);
+    mcaObj->trimRow(maRowIndex, currentPos, os, edge);
     CHECK_OP(os, );
-
 }
 
 void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
@@ -370,10 +371,10 @@ void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
     trimRightEndAction->setEnabled(isEnabled);
 
     CHECK(isEnabled, );
-    CHECK(!getSelection().isEmpty(), );
+    int maRowIndex = getTopSelectedMaRow();
+    CHECK(maRowIndex >= 0,);
 
-    U2Region reg = getSelectedMaRows();
-    MultipleAlignmentRow row = editor->getMaObject()->getRow(reg.startPos);
+    MultipleAlignmentRow row = editor->getMaObject()->getRow(maRowIndex);
     int start = row->getCoreStart();
     int end = row->getCoreEnd();
     int currentSelection = getSelection().x();
