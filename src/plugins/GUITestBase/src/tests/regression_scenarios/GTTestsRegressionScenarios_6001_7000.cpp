@@ -3626,20 +3626,20 @@ GUI_TEST_CLASS_DEFINITION(test_6564) {
     // 2. Enable "Collapsing mode". As result 2 names in the name list are hidden.
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
-    // 3. Try to select 2 last names: "Podisma_sapporensis" or "Hetrodes_pupus_EF540832".
-    // 4. Expected State: name is selected
-
-    GTUtilsMsaEditor::clickSequenceName(os, "Podisma_sapporensis");
+    // 3. Select a region in the first sequence (click on any base of the sequence).
+    // 4. Press_ Shift_ and click to the sequence number 3 in the name list (on the left).
+	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3,0));   
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMsaEditor::clickSequenceName(os, "Hetrodes_pupus_EF540832");
+    GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
+	// 5. Sequences 1,2,3 selected (because _Shift_ was used)
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
     const MaEditorSelection &selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 14, QString("Expected selection width: 14, actual: %1").arg(selection.width()));
-    CHECK_SET_ERR(selection.y() == 6, QString("Expected selection y: 6, actual: %1").arg(selection.y()));
-    CHECK_SET_ERR(selection.height() == 2, QString("Expected selection height: 2, actual: %1").arg(selection.height()));
+    CHECK_SET_ERR(selection.y() == 0, QString("Expected selection y: 0, actual: %1").arg(selection.y()));
+    CHECK_SET_ERR(selection.height() == 3, QString("Expected selection height: 3, actual: %1").arg(selection.height()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6569) {
