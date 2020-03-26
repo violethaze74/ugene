@@ -314,6 +314,14 @@ QList<int> MaEditorSequenceArea::getSelectedMaRowIndexes() const {
     return ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(selection.getYRegion(), true);
 }
 
+int MaEditorSequenceArea::getTopSelectedMaRow() const {
+    if (selection.isEmpty()) {
+        return -1;
+    }
+    int firstSelectedViewRow = (int) selection.getYRegion().startPos;
+    return ui->getCollapseModel()->getMaRowIndexByViewRowIndex(firstSelectedViewRow);
+}
+
 QString MaEditorSequenceArea::getCopyFormattedAlgorithmId() const{
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, BaseDocumentFormats::CLUSTAL_ALN).toString();
 }
