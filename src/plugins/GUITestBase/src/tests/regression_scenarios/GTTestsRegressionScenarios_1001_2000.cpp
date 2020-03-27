@@ -4712,6 +4712,7 @@ GUI_TEST_CLASS_DEFINITION(test_1442_1) {
 //    Expected state: Opened only window with position frequency matrix and it's Logo.
 //    In Project View not added any items.
 
+
     GTFileDialog::openFile(os, dataDir + "position_weight_matrix/JASPAR/fungi", "MA0265.1.pfm");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
