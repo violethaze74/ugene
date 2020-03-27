@@ -865,12 +865,12 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os,);
 
-    const U2Region& sel = getSelectedMaRows();
+    QList<int> selectedMaRows = getSelectedMaRowIndexes();
 
     QList<qint64> modifiedRowIds;
-    modifiedRowIds.reserve(sel.length);
-    for (int i = sel.startPos; i < sel.endPos(); i++) {
-        const MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(i);
+    for (int i = 0; i < selectedMaRows.size(); i++) {
+        int maRowIndex = selectedMaRows[i];
+        MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(maRowIndex);
         QByteArray currentRowContent = currentRow->toByteArray(os, ma->getLength());
         switch (type.getType()) {
             case ModificationType::Reverse:
@@ -916,7 +916,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
         QList<U2MsaGap> gapModel;
         MaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
 
-        maObj->updateRow(os, i, name, seqBytes, gapModel);
+        maObj->updateRow(os, maRowIndex, name, seqBytes, gapModel);
         modifiedRowIds << currentRow->getRowId();
     }
 
