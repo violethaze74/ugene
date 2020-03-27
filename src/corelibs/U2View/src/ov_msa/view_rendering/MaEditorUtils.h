@@ -88,7 +88,7 @@ class MaLabelWidget : public MaUtilsWidget {
     Q_OBJECT
 public:
     // SANGER_TODO: rename the class and reconsider the usage of it and its parent
-    MaLabelWidget(MaEditorWgt* _ui, QWidget* heightWidget, const QString & _t, Qt::Alignment _a);
+    MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QString & text, Qt::Alignment alignment, bool proxyMouseEventsToNameList = true);
 
 protected:
     void paintEvent(QPaintEvent *e);
@@ -97,7 +97,10 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
 
 private:
+    void sendEventToNameList(QMouseEvent* e) const;
+
     QLabel* label;
+    bool proxyMouseEventsToNameList;
 };
 
 } // namespace

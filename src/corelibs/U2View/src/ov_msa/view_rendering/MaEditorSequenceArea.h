@@ -103,16 +103,11 @@ public:
 
     virtual void adjustReferenceLength(U2OpStatus& os) { Q_UNUSED(os); }
 
-    /**
-     * Returns region of selected MA rows indexes extended to the collapsible groups boundaries.
-     *
-     * Warning: use getSelectedMaRowIndexes() instead: the selected region is not a single continuous
-     * region in collapsing mode!
-     */
-    U2Region getSelectedMaRows() const;
-
     /** Returns list of selected MA row indexes. */
     QList<int> getSelectedMaRowIndexes() const;
+
+    /** Returns MA row index of the top-most selected view row or -1 if selection is empty. */
+    int getTopSelectedMaRow() const;
 
     QString getCopyFormattedAlgorithmId() const;
 
@@ -220,6 +215,14 @@ protected:
 
     virtual void initRenderer() = 0;
     virtual void drawBackground(QPainter& p);
+
+    /**
+     * Returns region of selected MA rows indexes extended to the collapsible groups boundaries.
+    *
+    * Warning: use getSelectedMaRowIndexes() instead: the selected region is not a single continuous
+    * region in collapsing mode!
+    */
+    U2Region getSelectedMaRows() const;
 
     /**
      * Inserts a region consisting of gaps only before the selection. The inserted region width

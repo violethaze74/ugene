@@ -112,18 +112,16 @@ QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo(const QPoint& p
     if (pos.isNull()) {
         return QPair<QString, QString>(NONE_MARK, NONE_MARK);
     }
-
-    QPair<QString, QString> p;
-    MaEditor* editor = seqArea->getEditor();
-    SAFE_POINT(editor != NULL, "Editor is NULL", p);
-    SAFE_POINT(editor->getMaObject(), "MaObject is NULL", p);
-    const MultipleAlignmentRow row = editor->getMaObject()->getRow(seqArea->getSelectedMaRows().startPos);
-    QString len = QString::number(row->getUngappedLength());
-    if (row->charAt(pos.x()) == U2Msa::GAP_CHAR) {
-        return QPair<QString, QString>(GAP_MARK, len);
-    } else {
-        return QPair<QString, QString>(QString::number(row->getUngappedPosition(pos.x()) + 1), len);
+    int maRowIndex = seqArea->getTopSelectedMaRow();
+    if (maRowIndex == -1) {
+        return QPair<QString, QString>(NONE_MARK, NONE_MARK);
     }
+    MultipleAlignmentRow row = seqArea->getEditor()->getMaObject()->getRow(maRowIndex);
+    QString ungappedLength = QString::number(row->getUngappedLength());
+    if (row->charAt(pos.x()) == U2Msa::GAP_CHAR) {
+        return QPair<QString, QString>(GAP_MARK, ungappedLength);
+    }
+    return QPair<QString, QString>(QString::number(row->getUngappedPosition(pos.x()) + 1), ungappedLength);
 }
 
 void MaEditorStatusBar::updateLock() {
