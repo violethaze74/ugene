@@ -417,6 +417,10 @@ void MaEditorNameList::mouseMoveEvent(QMouseEvent* e) {
 }
 
 void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
+    if (e->button() != Qt::LeftButton) {
+        QWidget::mouseReleaseEvent(e);
+        return;
+    }
     bool hasShiftModifier = e->modifiers().testFlag(Qt::ShiftModifier);
     bool hasCtrlModifier = e->modifiers().testFlag(Qt::ControlModifier);
     ScrollController* scrollController = ui->getScrollController();
