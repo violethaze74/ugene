@@ -121,6 +121,10 @@ void MultipleSequenceAlignmentObject::insertGap(const U2Region &rows, int pos, i
     MultipleAlignmentObject::insertGap(rows, pos, nGaps, false);
 }
 
+void MultipleSequenceAlignmentObject::insertGap(const QList<int>& rowIndexes, int pos, int nGaps) {
+    MultipleAlignmentObject::insertGap(rowIndexes, pos, nGaps, false);
+}
+
 void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QString> &rowNames) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     const MultipleSequenceAlignment &ma = getMultipleAlignment();

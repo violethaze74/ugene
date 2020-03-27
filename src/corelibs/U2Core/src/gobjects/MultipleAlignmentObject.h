@@ -112,8 +112,12 @@ public:
     void sortRowsByList(const QStringList &order);
 
     virtual void replaceCharacter(int startPos, int rowIndex, char newChar) = 0;
-    /** Methods that modify the gap model only */
+
+    /** Inserts gap into 'pos' for the given rows. */
     virtual void insertGap(const U2Region &rows, int pos, int nGaps) = 0;
+
+    /** Inserts gap into 'pos' for the given rows. */
+    virtual void insertGap(const QList<int>& rowIndexes, int pos, int nGaps) = 0;
 
     /** Method that affect the whole alignment, including sequences
      */
@@ -168,6 +172,10 @@ protected:
     virtual void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
                                      int startPos, int nBases) = 0;
     void insertGap(const U2Region &rows, int pos, int nGaps, bool collapseTrailingGaps);
+
+    void insertGap(const QList<int>& rowIndexes, int pos, int nGaps, bool collapseTrailingGaps);
+
+    void insertGap(const QList<qint64>& rowIds, int pos, int nGaps, bool collapseTrailingGaps);
 
     MultipleAlignment cachedMa;
 

@@ -1381,7 +1381,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     cancelShiftTracking();
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    if (NULL == maObj || maObj->isStateLocked()) {
+    if (maObj == NULL || maObj->isStateLocked()) {
         return;
     }
     U2OpStatus2Log os;
@@ -1394,7 +1394,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
         return;
     }
 
-    U2Region selectedMaRows = getSelectedMaRows();
+    QList<int> selectedMaRows = getSelectedMaRowIndexes();
     maObj->insertGap(selectedMaRows, selection.x(), countOfGaps);
     adjustReferenceLength(os);
     CHECK_OP(os,);

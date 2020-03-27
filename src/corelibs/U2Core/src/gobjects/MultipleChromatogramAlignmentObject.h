@@ -77,7 +77,11 @@ private:
     void removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
         int startPos, int nBases);
-    virtual void insertGap(const U2Region &rows, int pos, int nGaps);
+
+    void insertGap(const U2Region& rows, int pos, int nGaps) override;
+
+    void insertGap(const QList<int>& rowIndexes, int pos, int nGaps) override;
+
     QList<U2Region> getColumnsWithGaps(int requiredGapsCount) const;
     U2MsaRowGapModel getReferenceGapModel() const;
 

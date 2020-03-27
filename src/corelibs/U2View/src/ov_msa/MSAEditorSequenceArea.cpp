@@ -264,7 +264,7 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
     QVector<MaCollapsibleGroup> newCollapseGroups;
 
     QSet<qint64> maRowIdsOfNonCollapsedRowsBefore;
-    for(int i = 0; i < collapseModel->getGroupCount(); i++) {
+    for (int i = 0; i < collapseModel->getGroupCount(); i++) {
         const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(i);
         if (!group->isCollapsed) {
             maRowIdsOfNonCollapsedRowsBefore += group->maRowIds.toSet();
@@ -277,35 +277,6 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
         newCollapseGroups << MaCollapsibleGroup(maRowsInGroup, maRowIdsInGroup, isCollapsed);
     }
     collapseModel->update(newCollapseGroups);
-
-    // Fix gap models for all sequences inside collapsed groups.
-    bool isModelChanged = false;
-    QMap<qint64, QList<U2MsaGap> > curGapModel = msaObject->getMapGapModel();
-    QSet<qint64> updatedRowsIds;
-    QSet<int> updatedCollapsibleGroups;
-    foreach (qint64 modifiedRowId, modInfo.modifiedRowIds) {
-        int modifiedMaRow = editor->getMaObject()->getRowPosById(modifiedRowId);
-        const MultipleSequenceAlignmentRow &modifiedRowRef = editor->getMaObject()->getRow(modifiedMaRow);
-        int modifiedViewRow = collapseModel->getViewRowIndexByMaRowIndex(modifiedMaRow);
-        int collapsibleGroupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(modifiedViewRow);
-        const MaCollapsibleGroup* collapsibleGroup = collapseModel->getCollapsibleGroup(collapsibleGroupIndex);
-        if (updatedCollapsibleGroups.contains(collapsibleGroupIndex) || collapsibleGroup == NULL) {
-            continue;
-        }
-        updatedCollapsibleGroups.insert(collapsibleGroupIndex);
-        foreach(int maRow , collapsibleGroup->maRows) {
-            qint64 maRowId = editor->getMaObject()->getRow(maRow)->getRowId();
-            if(!updatedRowsIds.contains(maRowId) && !modInfo.modifiedRowIds.contains(maRowId)) {
-                isModelChanged = isModelChanged || modifiedRowRef->getGapModel() != curGapModel[maRowId];
-                curGapModel[maRowId] = modifiedRowRef->getGapModel();
-                updatedRowsIds.insert(maRowId);
-            }
-        }
-    }
-    if (isModelChanged) {
-        U2OpStatus2Log os;
-        msaObject->updateGapModel(os, curGapModel);
-    }
 }
 
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {

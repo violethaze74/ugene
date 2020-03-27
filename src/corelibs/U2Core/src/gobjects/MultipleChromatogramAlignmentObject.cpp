@@ -184,6 +184,10 @@ void MultipleChromatogramAlignmentObject::insertGap(const U2Region &rows, int po
     MultipleAlignmentObject::insertGap(rows, pos, nGaps, true);
 }
 
+void MultipleChromatogramAlignmentObject::insertGap(const QList<int>& rowIndexes, int pos, int nGaps) {
+    MultipleAlignmentObject::insertGap(rowIndexes, pos, nGaps, true);
+}
+
 QList<U2Region> MultipleChromatogramAlignmentObject::getColumnsWithGaps(int requiredGapsCount) const {
     assert(-1 == requiredGapsCount || requiredGapsCount == getNumRows() + 1);
     U2MsaListGapModel gapModel = getGapModel();

@@ -23,7 +23,6 @@
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -380,27 +379,44 @@ void MultipleAlignmentObject::sortRowsByList(const QStringList &order) {
     updateCachedMultipleAlignment(mi);
 }
 
-void MultipleAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps, bool collapseTrailingGaps) {
-    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    const MultipleAlignment &ma = getMultipleAlignment();
+void MultipleAlignmentObject::insertGap(const U2Region& rows, int pos, int nGaps, bool collapseTrailingGaps) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked",);
+    const MultipleAlignment& ma = getMultipleAlignment();
     int startSeq = rows.startPos;
     int endSeq = startSeq + rows.length;
 
-    QList<qint64> rowIdsToInsert;
+    QList<qint64> rowIds;
     for (int i = startSeq; i < endSeq; ++i) {
         qint64 rowId = ma->getRow(i)->getRowId();
-        rowIdsToInsert.append(rowId);
+        rowIds.append(rowId);
     }
+    insertGap(rowIds, pos, nGaps, collapseTrailingGaps);
+}
 
+void MultipleAlignmentObject::insertGap(const QList<int>& rowIndexes, int pos, int nGaps, bool collapseTrailingGaps) {
+    const MultipleAlignment& ma = getMultipleAlignment();
+    QList<qint64> rowIds;
+    for (int i = 0; i < rowIndexes.size(); i++) {
+        int rowIndex = rowIndexes[i];
+        qint64 rowId = ma->getRow(rowIndex)->getRowId();
+        rowIds.append(rowId);
+    }
+    insertGap(rowIds, pos, nGaps, collapseTrailingGaps);
+}
+
+void MultipleAlignmentObject::insertGap(const QList<qint64>& rowIds, int pos, int nGaps, bool collapseTrailingGaps) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked",);
+    const MultipleAlignment& ma = getMultipleAlignment();
     U2OpStatus2Log os;
-    MsaDbiUtils::insertGaps(entityRef, rowIdsToInsert, pos, nGaps, os, collapseTrailingGaps);
-    SAFE_POINT_OP(os, );
+    MsaDbiUtils::insertGaps(entityRef, rowIds, pos, nGaps, os, collapseTrailingGaps);
+    SAFE_POINT_OP(os,);
 
     MaModificationInfo mi;
     mi.rowListChanged = false;
-    mi.modifiedRowIds = rowIdsToInsert;
+    mi.modifiedRowIds = rowIds;
     updateCachedMultipleAlignment(mi);
 }
+
 
 namespace {
 
@@ -533,7 +549,7 @@ int MultipleAlignmentObject::shiftRegion(int startPos, int startRow, int nBases,
     int n = 0;
     if (shift > 0) {
         //if last symbol selected - do not add gaps at the end
-        if (!(startPos + nBases == getLength())) {
+        if (startPos + nBases != getLength()) {
             // if some trailing gaps are selected --> save them!
             if (startPos + nBases + shift > getLength()) {
                 bool increaseAlignmentLen = true;
