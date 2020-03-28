@@ -149,10 +149,6 @@ int MultipleAlignmentObject::getRowPosById(qint64 rowId) const {
     return getMultipleAlignment()->getRowsIds().indexOf(rowId);
 }
 
-U2MsaMapGapModel MultipleAlignmentObject::getMapGapModel() const {
-    return getMultipleAlignment()->getMapGapModel();
-}
-
 U2MsaListGapModel MultipleAlignmentObject::getGapModel() const {
     return getMultipleAlignment()->getGapModel();
 }
@@ -504,30 +500,51 @@ void MultipleAlignmentObject::removeRegion(int startPos, int startRow, int nBase
 }
 
 int MultipleAlignmentObject::deleteGap(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps) {
+    QList<int> rowIndexes;
+    for (int i = (int) rows.startPos; i < (int) rows.endPos(); i++) {
+        rowIndexes << i;
+    }
+    deleteGap(os, rowIndexes, pos, maxGaps);
+}
+
+static QList<int> toUniqueRowIndexes(const QList<int>& rowIndexes, int numRows) {
+    QSet<int> uniqueRowIndexes;
+    for (int i = 0; i < rowIndexes.size(); i++) {
+        int rowIndex = rowIndexes[i];
+        if (rowIndex >= 0 && rowIndex < numRows) {
+            uniqueRowIndexes << rowIndex;
+        }
+    }
+    return uniqueRowIndexes.toList();
+}
+
+int MultipleAlignmentObject::deleteGap(U2OpStatus &os, const QList<int>& rowIndexes, int pos, int maxGaps) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", 0);
 
-    const int removingGapColumnCount = getMaxWidthOfGapRegion(os, rows, pos, maxGaps);
+    int removingGapColumnCount = getMaxWidthOfGapRegion(os, rowIndexes, pos, maxGaps);
     SAFE_POINT_OP(os, 0);
-    if (0 == removingGapColumnCount) {
+
+    if (removingGapColumnCount == 0) {
         return 0;
     } else if (removingGapColumnCount < maxGaps) {
         pos += maxGaps - removingGapColumnCount;
     }
     QList<qint64> modifiedRowIds;
-    modifiedRowIds.reserve(rows.length);
-
     MultipleAlignment msa = getMultipleAlignmentCopy();
     // iterate through given rows to update each of them in DB
-    for (int rowCount = rows.startPos; rowCount < rows.endPos(); ++rowCount) {
-        msa->removeChars(rowCount, pos, removingGapColumnCount, os);
+    QList<int> uniqueRowIndexes = toUniqueRowIndexes(rowIndexes, getNumRows());
+    for (int i = 0; i < rowIndexes.size(); i++) {
+        int rowIndex = uniqueRowIndexes[i];
+        msa->removeChars(rowIndex, pos, removingGapColumnCount, os);
         CHECK_OP(os, 0);
 
-        const MultipleAlignmentRow row = msa->getRow(rowCount);
+        MultipleAlignmentRow row = msa->getRow(rowIndex);
         MaDbiUtils::updateRowGapModel(entityRef, row->getRowId(), row->getGapModel(), os);
         CHECK_OP(os, 0);
         modifiedRowIds << row->getRowId();
     }
-    if (rows.startPos == 0 && rows.length == getNumRows()) {
+
+    if (uniqueRowIndexes.size() == getNumRows()) {
         // delete columns
         MaDbiUtils::updateMaLength(entityRef, getLength() - removingGapColumnCount, os);
         CHECK_OP(os, 0);
@@ -539,6 +556,7 @@ int MultipleAlignmentObject::deleteGap(U2OpStatus &os, const U2Region &rows, int
     updateCachedMultipleAlignment(mi);
     return removingGapColumnCount;
 }
+
 
 int MultipleAlignmentObject::shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", 0);
@@ -613,44 +631,44 @@ void MultipleAlignmentObject::loadDataCore(U2OpStatus &os) {
     loadAlignment(os);
 }
 
-int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps) {
-    const MultipleAlignment &ma = getMultipleAlignment();
-    SAFE_POINT_EXT(U2Region(0, ma->getNumRows()).contains(rows) && 0 <= pos && 0 <= maxGaps && ma->getLength() > pos,
-        os.setError("Illegal parameters of the gap region"), 0);
+int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps) {
+    const MultipleAlignment& ma = getMultipleAlignment();
+    SAFE_POINT_EXT(pos >= 0 && maxGaps >= 0 && pos < ma->getLength(), os.setError("Illegal parameters of the gap region"), 0);
 
-    const int maxRemovedGaps = qBound(0, maxGaps, ma->getLength() - pos);
     // check if there is nothing to remove
-    if (0 == maxRemovedGaps) {
+    int maxRemovedGaps = qBound(0, maxGaps, ma->getLength() - pos);
+    if (maxRemovedGaps == 0) {
         return 0;
     }
-
+    QList<int> uniqueRowIndexes = toUniqueRowIndexes(rowIndexes, getNumRows());
     int removingGapColumnCount = maxRemovedGaps;
     bool isRegionInRowTrailingGaps = true;
     // iterate through given rows to determine the width of the continuous gap region
-    for (int rowCount = rows.startPos; rowCount < rows.endPos(); ++rowCount) {
+    for (int i = 0; i < uniqueRowIndexes.size(); i++) {
+        int rowIndex = uniqueRowIndexes[i];
         int gapCountInCurrentRow = 0;
         // iterate through current row bases to determine gap count
         while (gapCountInCurrentRow < maxRemovedGaps) {
-            if (!ma->isGap(rowCount, pos + maxGaps - gapCountInCurrentRow - 1)) {
+            if (!ma->isGap(rowIndex, pos + maxGaps - gapCountInCurrentRow - 1)) {
                 break;
             }
             gapCountInCurrentRow++;
         }
 
         // determine if the given area intersects a row in the area of trailing gaps
-        if (0 != gapCountInCurrentRow && isRegionInRowTrailingGaps) {
+        if (gapCountInCurrentRow != 0 && isRegionInRowTrailingGaps) {
             int trailingPosition = pos + maxRemovedGaps - gapCountInCurrentRow;
-            if (ma->getLength() != trailingPosition) {
+            if (trailingPosition != ma->getLength()) {
                 while (ma->getLength() > trailingPosition && isRegionInRowTrailingGaps) {
-                    isRegionInRowTrailingGaps &= ma->isGap(rowCount, trailingPosition);
-                    ++trailingPosition;
+                    isRegionInRowTrailingGaps = isRegionInRowTrailingGaps && ma->isGap(rowIndex, trailingPosition);
+                    trailingPosition++;
                 }
             }
         } else if (isRegionInRowTrailingGaps) {
             isRegionInRowTrailingGaps = false;
         }
 
-        if (0 == gapCountInCurrentRow) {
+        if (gapCountInCurrentRow == 0) {
             // don't do anything if there is a row without gaps
             return 0;
         }
@@ -658,8 +676,8 @@ int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os, const U2Regi
     }
 
     if (isRegionInRowTrailingGaps) {
-        if (rows.length == getNumRows() && rows.startPos == 0) {
-            return qMin(getLength() - pos, (qint64)maxGaps);
+        if (uniqueRowIndexes.size() == getNumRows()) {
+            return qMin((int) getLength() - pos, maxGaps);
         } else {
             return 0;
         }

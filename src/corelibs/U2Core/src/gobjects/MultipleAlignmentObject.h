@@ -70,7 +70,7 @@ public:
     const MultipleAlignmentRow getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
     virtual char charAt(int seqNum, qint64 position) const = 0;
-    U2MsaMapGapModel getMapGapModel() const;
+
     U2MsaListGapModel getGapModel() const;
 
     /**
@@ -130,7 +130,9 @@ public:
      *
      * If the given region is a subset of a trailing gaps area then nothing happens.
      */
-    int deleteGap(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
+    int deleteGap(U2OpStatus& os, const U2Region& rows, int pos, int maxGaps);
+
+    int deleteGap(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps);
 
     virtual void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1) = 0;
 
@@ -189,7 +191,7 @@ private:
      * having @pos + @maxGaps number, otherwise 0 is returned. If the region is located
      * in the MSA trailing gaps area, then 0 is returned.
      */
-    int getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
+    int getMaxWidthOfGapRegion(U2OpStatus &os, const QList<int>& rowIndexes, int pos, int maxGaps);
 
     MaSavedState savedState;
 };

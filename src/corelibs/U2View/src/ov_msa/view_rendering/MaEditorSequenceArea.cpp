@@ -1438,7 +1438,7 @@ void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
 
-    U2Region selectedMaRows = getSelectedMaRows();
+    QList<int> selectedMaRows = getSelectedMaRowIndexes();
     int countOfDeletedSymbols = maObj->deleteGap(os, selectedMaRows, topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
 
     // if some symbols were actually removed and the selection is not located
@@ -1709,9 +1709,11 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    U2Region selectedMaRows = getSelectedMaRows();
-    for (qint64 rowIndex = selectedMaRows.startPos; rowIndex < selectedMaRows.endPos(); rowIndex++) {
-        maObj->replaceCharacter(selection.x(), rowIndex, newCharacter);
+    QList<int> selectedMaRows = getSelectedMaRowIndexes();
+    int column = selection.x();
+    for (int i = 0; i < selectedMaRows.size(); i++) {
+        int row = selectedMaRows[i];
+        maObj->replaceCharacter(column, row, newCharacter);
     }
 
     exitFromEditCharacterMode();
