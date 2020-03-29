@@ -157,6 +157,15 @@ int MultipleAlignmentData::getNumRows() const {
     return rows.size();
 }
 
+U2MsaMapGapModel MultipleAlignmentData::getMapGapModel() const {
+    U2MsaMapGapModel mapGapModel;
+    U2MsaListGapModel listGapModel = getGapModel();
+    for (int i = 0; i < rows.size(); i++) {
+        mapGapModel[rows[i]->getRowId()] = listGapModel[i];
+    }
+    return mapGapModel;
+}
+
 U2MsaListGapModel MultipleAlignmentData::getGapModel() const {
     U2MsaListGapModel gapModel;
     const int length = getLength();

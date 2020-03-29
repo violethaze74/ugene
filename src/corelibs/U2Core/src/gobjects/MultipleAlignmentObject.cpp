@@ -149,6 +149,10 @@ int MultipleAlignmentObject::getRowPosById(qint64 rowId) const {
     return getMultipleAlignment()->getRowsIds().indexOf(rowId);
 }
 
+U2MsaMapGapModel MultipleAlignmentObject::getMapGapModel() const {
+    return getMultipleAlignment()->getMapGapModel();
+}
+
 U2MsaListGapModel MultipleAlignmentObject::getGapModel() const {
     return getMultipleAlignment()->getGapModel();
 }

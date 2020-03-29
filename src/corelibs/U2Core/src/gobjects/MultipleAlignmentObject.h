@@ -70,7 +70,7 @@ public:
     const MultipleAlignmentRow getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
     virtual char charAt(int seqNum, qint64 position) const = 0;
-
+    U2MsaMapGapModel getMapGapModel() const;
     U2MsaListGapModel getGapModel() const;
 
     /**
