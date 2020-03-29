@@ -63,6 +63,10 @@ public:
     // inserts column of gaps with newChar at rowIndex row
     void insertCharacter(int rowIndex, int pos, char newChar);
 
+    void insertGap(const U2Region& rows, int pos, int nGaps);
+
+    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps);
+
     void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
 
     void trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge);
@@ -77,10 +81,6 @@ private:
     void removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
         int startPos, int nBases);
-
-    void insertGap(const U2Region& rows, int pos, int nGaps) override;
-
-    void insertGap(const QList<int>& rowIndexes, int pos, int nGaps) override;
 
     QList<U2Region> getColumnsWithGaps(int requiredGapsCount) const;
     U2MsaRowGapModel getReferenceGapModel() const;

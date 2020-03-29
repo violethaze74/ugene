@@ -386,10 +386,10 @@ void MultipleAlignmentObject::insertGap(const U2Region& rows, int pos, int nGaps
         qint64 rowId = ma->getRow(i)->getRowId();
         rowIds.append(rowId);
     }
-    insertGap(rowIds, pos, nGaps, collapseTrailingGaps);
+    insertGapByRowIdList(rowIds, pos, nGaps, collapseTrailingGaps);
 }
 
-void MultipleAlignmentObject::insertGap(const QList<int>& rowIndexes, int pos, int nGaps, bool collapseTrailingGaps) {
+void MultipleAlignmentObject::insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps, bool collapseTrailingGaps) {
     const MultipleAlignment& ma = getMultipleAlignment();
     QList<qint64> rowIds;
     for (int i = 0; i < rowIndexes.size(); i++) {
@@ -397,10 +397,10 @@ void MultipleAlignmentObject::insertGap(const QList<int>& rowIndexes, int pos, i
         qint64 rowId = ma->getRow(rowIndex)->getRowId();
         rowIds.append(rowId);
     }
-    insertGap(rowIds, pos, nGaps, collapseTrailingGaps);
+    insertGapByRowIdList(rowIds, pos, nGaps, collapseTrailingGaps);
 }
 
-void MultipleAlignmentObject::insertGap(const QList<qint64>& rowIds, int pos, int nGaps, bool collapseTrailingGaps) {
+void MultipleAlignmentObject::insertGapByRowIdList(const QList<qint64>& rowIds, int pos, int nGaps, bool collapseTrailingGaps) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked",);
     const MultipleAlignment& ma = getMultipleAlignment();
     U2OpStatus2Log os;
@@ -504,7 +504,7 @@ int MultipleAlignmentObject::deleteGap(U2OpStatus &os, const U2Region &rows, int
     for (int i = (int) rows.startPos; i < (int) rows.endPos(); i++) {
         rowIndexes << i;
     }
-    deleteGap(os, rowIndexes, pos, maxGaps);
+    deleteGapByRowIndexList(os, rowIndexes, pos, maxGaps);
 }
 
 static QList<int> toUniqueRowIndexes(const QList<int>& rowIndexes, int numRows) {
@@ -518,7 +518,7 @@ static QList<int> toUniqueRowIndexes(const QList<int>& rowIndexes, int numRows) 
     return uniqueRowIndexes.toList();
 }
 
-int MultipleAlignmentObject::deleteGap(U2OpStatus &os, const QList<int>& rowIndexes, int pos, int maxGaps) {
+int MultipleAlignmentObject::deleteGapByRowIndexList(U2OpStatus &os, const QList<int>& rowIndexes, int pos, int maxGaps) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", 0);
 
     int removingGapColumnCount = getMaxWidthOfGapRegion(os, rowIndexes, pos, maxGaps);

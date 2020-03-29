@@ -432,7 +432,7 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
                     U2OpStatus2Log os;
                     const int length = maObj->getLength();
                     if (length != gap.offset) {
-                        maObj->deleteGap(os, selectedMaRows, gap.offset, gap.gap);
+                        maObj->deleteGapByRowIndexList(os, selectedMaRows, gap.offset, gap.gap);
                     }
                     CHECK_OP(os, resultShift);
                     resultShift += maObj->shiftRegion(x, y, selectionWidth, height, gap.gap);
@@ -446,7 +446,7 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
                 resultShift = maObj->shiftRegion(x, y, selectionWidth, height, shift);
                 foreach(U2MsaGap gap, gapModelToRestore) {
                     if (gap.endPos() < lengthOnMousePress) {
-                        maObj->insertGap(selectedMaRows, gap.offset, gap.gap);
+                        maObj->insertGapByRowIndexList(selectedMaRows, gap.offset, gap.gap);
                     } else if (gap.offset >= lengthOnMousePress) {
                         U2OpStatus2Log os;
                         U2Region allRows(0, maObj->getNumRows());
@@ -1400,7 +1400,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     }
 
     QList<int> selectedMaRows = getSelectedMaRowIndexes();
-    maObj->insertGap(selectedMaRows, selection.x(), countOfGaps);
+    maObj->insertGapByRowIndexList(selectedMaRows, selection.x(), countOfGaps);
     adjustReferenceLength(os);
     CHECK_OP(os,);
     moveSelection(countOfGaps, 0, true);
@@ -1444,7 +1444,7 @@ void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     Q_UNUSED(userModStep);
 
     QList<int> selectedMaRows = getSelectedMaRowIndexes();
-    int countOfDeletedSymbols = maObj->deleteGap(os, selectedMaRows, topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
+    int countOfDeletedSymbols = maObj->deleteGapByRowIndexList(os, selectedMaRows, topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
 
     // if some symbols were actually removed and the selection is not located
     // at the alignment end, then it's needed to move the selection

@@ -66,6 +66,10 @@ public:
 
     void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
 
+    void insertGap(const U2Region& rows, int pos, int nGaps);
+
+    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps);
+
 private:
     void loadAlignment(U2OpStatus &os);
     void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds);
@@ -75,9 +79,6 @@ private:
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
                              int startPos, int nBases);
 
-    void insertGap(const U2Region& rows, int pos, int nGaps) override;
-
-    void insertGap(const QList<int>& rowIndexes, int pos, int nGaps) override;
 };
 
 }   // namespace U2

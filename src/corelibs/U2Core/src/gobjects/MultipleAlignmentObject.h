@@ -117,7 +117,7 @@ public:
     virtual void insertGap(const U2Region &rows, int pos, int nGaps) = 0;
 
     /** Inserts gap into 'pos' for the given rows. */
-    virtual void insertGap(const QList<int>& rowIndexes, int pos, int nGaps) = 0;
+    virtual void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps) = 0;
 
     /** Method that affect the whole alignment, including sequences
      */
@@ -132,7 +132,7 @@ public:
      */
     int deleteGap(U2OpStatus& os, const U2Region& rows, int pos, int maxGaps);
 
-    int deleteGap(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps);
+    int deleteGapByRowIndexList(U2OpStatus& os, const QList<int>& rowIndexes, int pos, int maxGaps);
 
     virtual void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1) = 0;
 
@@ -175,9 +175,9 @@ protected:
                                      int startPos, int nBases) = 0;
     void insertGap(const U2Region &rows, int pos, int nGaps, bool collapseTrailingGaps);
 
-    void insertGap(const QList<int>& rowIndexes, int pos, int nGaps, bool collapseTrailingGaps);
+    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps, bool collapseTrailingGaps);
 
-    void insertGap(const QList<qint64>& rowIds, int pos, int nGaps, bool collapseTrailingGaps);
+    void insertGapByRowIdList(const QList<qint64>& rowIds, int pos, int nGaps, bool collapseTrailingGaps);
 
     MultipleAlignment cachedMa;
 
