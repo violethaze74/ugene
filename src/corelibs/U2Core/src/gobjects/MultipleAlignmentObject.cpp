@@ -508,7 +508,7 @@ int MultipleAlignmentObject::deleteGap(U2OpStatus &os, const U2Region &rows, int
     for (int i = (int) rows.startPos; i < (int) rows.endPos(); i++) {
         rowIndexes << i;
     }
-    deleteGapByRowIndexList(os, rowIndexes, pos, maxGaps);
+    return deleteGapByRowIndexList(os, rowIndexes, pos, maxGaps);
 }
 
 static QList<int> toUniqueRowIndexes(const QList<int>& rowIndexes, int numRows) {

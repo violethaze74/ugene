@@ -117,7 +117,7 @@ void MultipleSequenceAlignmentObject::updateGapModel(const QList<MultipleSequenc
     updateGapModel(os, newGapModel);
 }
 
-void MultipleSequenceAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps) {
+void MultipleSequenceAlignmentObject::insertGap(const U2Region& rows, int pos, int nGaps) {
     MultipleAlignmentObject::insertGap(rows, pos, nGaps, false);
 }
 
