@@ -418,10 +418,10 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
     int resultShift = 0;
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    const U2Region rows = getSelectedMaRows();
+    QList<int> selectedMaRows = getSelectedMaRowIndexes();
     const int selectionWidth = selection.width();
-    const int height = rows.length;
-    const int y = rows.startPos;
+    const int height = selectedMaRows.size();
+    const int y = getTopSelectedMaRow();
     int x = selection.x();
     if (isCtrlPressed) {
         if (shift > 0) {
@@ -432,7 +432,7 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
                     U2OpStatus2Log os;
                     const int length = maObj->getLength();
                     if (length != gap.offset) {
-                        maObj->deleteGap(os, rows, gap.offset, gap.gap);
+                        maObj->deleteGap(os, selectedMaRows, gap.offset, gap.gap);
                     }
                     CHECK_OP(os, resultShift);
                     resultShift += maObj->shiftRegion(x, y, selectionWidth, height, gap.gap);
@@ -446,7 +446,7 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
                 resultShift = maObj->shiftRegion(x, y, selectionWidth, height, shift);
                 foreach(U2MsaGap gap, gapModelToRestore) {
                     if (gap.endPos() < lengthOnMousePress) {
-                        maObj->insertGap(rows, gap.offset, gap.gap);
+                        maObj->insertGap(selectedMaRows, gap.offset, gap.gap);
                     } else if (gap.offset >= lengthOnMousePress) {
                         U2OpStatus2Log os;
                         U2Region allRows(0, maObj->getNumRows());
@@ -497,16 +497,20 @@ QList<U2MsaGap> MaEditorSequenceArea::findRemovableGapColumns(int& shift) {
 }
 
 QList<U2MsaGap> MaEditorSequenceArea::findCommonGapColumns(int& numOfColumns) {
-    U2Region rows = getSelectedMaRows();
-    const int x = selection.x();
-    const int wight = selection.width();
-    const U2MsaListGapModel listGapModel = editor->getMaObject()->getGapModel();
+    QList<int> selectedMaRows = getSelectedMaRowIndexes();
+    if (selectedMaRows.isEmpty()) {
+        return QList<U2MsaGap>();
+    }
+    int x = selection.x();
+    int wight = selection.width();
+    U2MsaListGapModel listGapModel = editor->getMaObject()->getGapModel();
 
     U2MsaRowGapModel gapModelToUpdate;
-    foreach(U2MsaGap gap, listGapModel[rows.startPos]) {
+    foreach(U2MsaGap gap, listGapModel[selectedMaRows[0]]) {
         if (gap.offset + gap.gap <= x + wight) {
             continue;
-        } else if (gap.offset < x + wight && gap.offset + gap.gap > x + wight) {
+        }
+        if (gap.offset < x + wight && gap.offset + gap.gap > x + wight) {
             int startPos = x + wight;
             U2MsaGap g(startPos, gap.offset + gap.gap - startPos);
             gapModelToUpdate << g;
@@ -516,10 +520,11 @@ QList<U2MsaGap> MaEditorSequenceArea::findCommonGapColumns(int& numOfColumns) {
     }
 
     numOfColumns = 0;
-    for (int i = rows.startPos + 1; i < rows.endPos(); i++) {
+    for (int i = 1; i < selectedMaRowIds.size(); i++) {
+        int maRow = selectedMaRows[i];
         U2MsaRowGapModel currentGapModelToRemove;
         int currentNumOfColumns = 0;
-        foreach(U2MsaGap gap, listGapModel[i]) {
+        foreach(U2MsaGap gap, listGapModel[maRow]) {
             foreach(U2MsaGap gapToRemove, gapModelToUpdate) {
                 U2MsaGap intersectedGap = gap.intersect(gapToRemove);
                 if (intersectedGap.gap == 0) {
