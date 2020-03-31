@@ -143,33 +143,6 @@ int MaCollapseModel::getMaRowIndexByViewRowIndex(int viewRowIndex) const {
     return maRowByViewRow.value(viewRowIndex, -1);
 }
 
-U2Region MaCollapseModel::getMaRowIndexRegionByViewRowIndexRegion(const U2Region& viewRowIndexRegion) const {
-    if (viewRowIndexRegion.isEmpty()) {
-        return U2Region();
-    }
-    if (!hasGroupsWithMultipleItems) {
-        return viewRowIndexRegion;
-    }
-    int minMaRowIndex = INT_MAX;
-    int maxMaRowIndex = 0;
-    for (int viewRowIndex = viewRowIndexRegion.startPos; viewRowIndex < viewRowIndexRegion.endPos(); viewRowIndex++) {
-        const MaCollapsibleGroup* group = getCollapsibleGroupByViewRow(viewRowIndex);
-        if (group != NULL) {
-            foreach(int maRowIndex, group->maRows) {
-                minMaRowIndex = qMin(minMaRowIndex, maRowIndex);
-                maxMaRowIndex = qMax(maxMaRowIndex, maRowIndex);
-            }
-        } else {
-            int maRowIndex = maRowByViewRow.value(viewRowIndex, -1);
-            if (maRowIndex != -1) {
-                minMaRowIndex = qMin(minMaRowIndex, maRowIndex);
-                maxMaRowIndex = qMax(maxMaRowIndex, maRowIndex);
-            }
-        }
-    }
-    return U2Region(minMaRowIndex, maxMaRowIndex - minMaRowIndex + 1);
-}
-
 QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeChildRowsForCollapsedGroups) {
     QList<int> maRows;
     QSet<int> visitedRows;

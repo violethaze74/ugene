@@ -106,9 +106,6 @@ public:
     /* Converts view row index to MA row index. */
     int getMaRowIndexByViewRowIndex(int viewRowIndex) const;
 
-    /* Converts view rows region to MA rows region. */
-    U2Region getMaRowIndexRegionByViewRowIndexRegion(const U2Region &viewRowIndexRegion) const;
-
     /*
      * Returns list of MA row indexes for the given view row indexes.
      * If 'includeChildRowsForCollapsedGroups' is true adds all MA rows in the group

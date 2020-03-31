@@ -217,14 +217,6 @@ protected:
     virtual void drawBackground(QPainter& p);
 
     /**
-     * Returns region of selected MA rows indexes extended to the collapsible groups boundaries.
-    *
-    * Warning: use getSelectedMaRowIndexes() instead: the selected region is not a single continuous
-    * region in collapsing mode!
-    */
-    U2Region getSelectedMaRows() const;
-
-    /**
      * Inserts a region consisting of gaps only before the selection. The inserted region width
      * is specified by @countOfGaps parameter if 0 < @countOfGaps, its height is equal to the
      * current selection's height.

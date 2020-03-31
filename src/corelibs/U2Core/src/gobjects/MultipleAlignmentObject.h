@@ -91,12 +91,20 @@ public:
     /** Removes all rows from the list from the alignment by row indexes. */
     void removeRows(const QList<int>& rowIndexes);
 
+    /** Removes columns region from all rows in the list. */
+    void removeRegion(const QList<int>& rowIndexes, int x, int width, bool removeEmptyRows);
+
+    /** Method that affect the whole alignment, including sequences */
+    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track = true);
+
     /** Renames row with a given index. */
     void renameRow(int rowIdx, const QString& newName);
 
     void moveRowsBlock(int firstRow, int numRows, int delta);
 
     bool isRegionEmpty(int x, int y, int width, int height) const;
+
+    bool isRegionEmpty(const QList<int>& rowIndexes, int x, int width) const;
 
     QList<qint64> getRowsOrder(U2OpStatus& os) const;
     /**
@@ -118,10 +126,6 @@ public:
 
     /** Inserts gap into 'pos' for the given rows. */
     virtual void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps) = 0;
-
-    /** Method that affect the whole alignment, including sequences
-     */
-    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track = true);
 
     /**
      * Removes gap region that extends from the @pos column and is no longer than @maxGaps.

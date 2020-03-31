@@ -286,30 +286,6 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
-U2Region MaEditorSequenceArea::getSelectedMaRows() const {
-    U2Region viewRowsRegion = selection.getYRegion();
-    if (!ui->isCollapsibleMode()) {
-        return viewRowsRegion;
-    }
-
-    MaCollapseModel* collapseModel = ui->getCollapseModel();
-    int startIdx = viewRowsRegion.startPos;
-    int endIdx = viewRowsRegion.startPos + viewRowsRegion.length - 1;
-    int viewRowCount = collapseModel->getViewRowCount();
-    int startGroupIdx = collapseModel->getCollapsibleGroupIndexByViewRowIndex(startIdx);
-    int endGroupIdx = collapseModel->getCollapsibleGroupIndexByViewRowIndex(endIdx);
-
-    while (startIdx > 0 && startGroupIdx != -1 &&
-           startGroupIdx == collapseModel->getCollapsibleGroupIndexByViewRowIndex(startIdx - 1)) {
-        startIdx--;
-    }
-    while (endIdx < viewRowCount - 1 && endGroupIdx != -1 &&
-           endGroupIdx == collapseModel->getCollapsibleGroupIndexByViewRowIndex(endIdx + 1)) {
-        endIdx++;
-    }
-    return ui->getCollapseModel()->getMaRowIndexRegionByViewRowIndexRegion(U2Region(startIdx, endIdx - startIdx + 1));
-}
-
 QList<int> MaEditorSequenceArea::getSelectedMaRowIndexes() const {
     return ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(selection.getYRegion(), true);
 }
@@ -351,28 +327,26 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
 
     Q_ASSERT(isInRange(QPoint(selection.x() + effectiveWidth - 1, selection.y() + selection.height() - 1)));
 
-    // Save a copy of the selection before alignment modification: it will be used to restore selection later.
-    const MaEditorSelection viewSelection = selection;
-    U2Region selectedMaRows = getSelectedMaRows();
-    const MaEditorSelection msaSelection(viewSelection.x(), selectedMaRows.startPos, viewSelection.width(), selectedMaRows.length);
-
-    // Do not allow the deletion if the result MA will be empty.
-    // TODO: the logic below that computes final 'empty' selection state is incomplete!
-    const QRect areaBeforeSelection(0, 0, msaSelection.x(), msaSelection.height());
-    const QRect areaAfterSelection(msaSelection.x() + msaSelection.width(), msaSelection.y(),
-        maObj->getLength() - msaSelection.x() - msaSelection.width(), msaSelection.height());
-    if (maObj->isRegionEmpty(areaBeforeSelection.x(), areaBeforeSelection.y(), areaBeforeSelection.width(), areaBeforeSelection.height())
-        && maObj->isRegionEmpty(areaAfterSelection.x(), areaAfterSelection.y(), areaAfterSelection.width(), areaAfterSelection.height())
-        && msaSelection.height() == maObj->getNumRows())
-    {
-        return;
+    QList<int> selectedMaRows = getSelectedMaRowIndexes();
+    int numRows = (int) maObj->getNumRows();
+    if (selectedMaRows.size() == numRows) {
+        bool isResultAlignmentEmpty = true;
+        U2Region xRegion(selection.x(), effectiveWidth);
+        for (int i = 0; i < selectedMaRows.size() && isResultAlignmentEmpty; i++) {
+            int maRow = selectedMaRows[i];
+            isResultAlignmentEmpty = maObj->isRegionEmpty(0, maRow, xRegion.startPos, 1) &&
+                                     maObj->isRegionEmpty(xRegion.endPos(), maRow, numRows - xRegion.endPos(), 1);
+        }
+        if (isResultAlignmentEmpty) {
+            return;
+        }
     }
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
-    maObj->removeRegion(msaSelection.x(), msaSelection.y(), effectiveWidth, msaSelection.height(), true);
+    maObj->removeRegion(selectedMaRows, selection.x(), effectiveWidth, true);
     GRUNTIME_NAMED_COUNTER(cvar, tvar, "Delete current selection", editor->getFactoryId());
 }
 
@@ -384,14 +358,14 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
     if (maObj->isStateLocked()) {
         return false;
     }
-    U2Region selectedMaRows = getSelectedMaRows();
-    if (maObj->isRegionEmpty(selection.x(), selectedMaRows.startPos, selection.width(), selectedMaRows.length)) {
+    QList<int> selectedMaRows = getSelectedMaRowIndexes();
+    if (maObj->isRegionEmpty(selectedMaRows, selection.x(), selection.width())) {
         return true;
     }
     // backup current selection for the case when selection might disappear
-    const MaEditorSelection selectionBackup = selection;
+    MaEditorSelection selectionBackup = selection;
 
-    const int resultShift = shiftRegion(shift);
+    int resultShift = shiftRegion(shift);
     if (resultShift == 0) {
         return false;
     }
@@ -402,8 +376,8 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
     int newCursorPosX = (cursorPos.x() + resultShift >= 0) ? cursorPos.x() + resultShift : 0;
     editor->setCursorPosition(QPoint(newCursorPosX, cursorPos.y()));
 
-    const MaEditorSelection newSelection(selectionBackup.x() + resultShift, selectionBackup.y(),
-                                         selectionBackup.width(), selectionBackup.height());
+    MaEditorSelection newSelection(selectionBackup.x() + resultShift, selectionBackup.y(),
+                                   selectionBackup.width(), selectionBackup.height());
     setSelection(newSelection);
     if (resultShift > 0) {
         ui->getScrollController()->scrollToBase(static_cast<int>(newSelection.getXRegion().endPos() - 1), width());

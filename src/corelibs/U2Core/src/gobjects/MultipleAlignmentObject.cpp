@@ -220,17 +220,26 @@ void MultipleAlignmentObject::renameRow(int rowIdx, const QString &newName) {
 }
 
 bool MultipleAlignmentObject::isRegionEmpty(int startPos, int startRow, int numChars, int numRows) const {
-    const MultipleAlignment ma = getMultipleAlignment();
-    bool isBlockEmpty = true;
-    for (int row = startRow; row < startRow + numRows && isBlockEmpty; ++row) {
-        for (int pos = startPos; pos < startPos + numChars; ++pos) {
-            if (!ma->isGap(row, pos)) {
-                isBlockEmpty = false;
-                break;
-            }
+    const MultipleAlignment& ma = getMultipleAlignment();
+    bool isEmpty = true;
+    for (int row = startRow; row < startRow + numRows && isEmpty; ++row) {
+        for (int pos = startPos; pos < startPos + numChars && isEmpty; ++pos) {
+            isEmpty = ma->isGap(row, pos);
         }
     }
-    return isBlockEmpty;
+    return isEmpty;
+}
+
+bool MultipleAlignmentObject::isRegionEmpty(const QList<int>& rowIndexes, int x, int width) const {
+    const MultipleAlignment& ma = getMultipleAlignment();
+    bool isEmpty = true;
+    for (int i = 0; i < rowIndexes.size() && isEmpty; i++) {
+        int rowIndex = rowIndexes[i];
+        for (int pos = x; pos < x + width && isEmpty; pos++) {
+            isEmpty = ma->isGap(rowIndex, pos);
+        }
+    }
+    return isEmpty;
 }
 
 void MultipleAlignmentObject::moveRowsBlock(int firstRow, int numRows, int shift) {
@@ -455,6 +464,38 @@ QList<qint64> getRowsAffectedByDeletion(const MultipleAlignment &ma, const QList
     return rowIdsAffectedByDeletion;
 }
 
+}
+
+void MultipleAlignmentObject::removeRegion(const QList<int>& rowIndexes, int x, int width, bool removeEmptyRows) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+
+    const MultipleAlignment& ma = getMultipleAlignment();
+    QList<qint64> modifiedRowIds = convertMaRowIndexesToMaRowIds(rowIndexes);
+    U2OpStatus2Log os;
+    removeRegionPrivate(os, entityRef, modifiedRowIds, x, width);
+    SAFE_POINT_OP(os, );
+
+    QList<qint64> removedRowIds;
+    if (removeEmptyRows) {
+        removedRowIds = MsaDbiUtils::removeEmptyRows(entityRef, modifiedRowIds, os);
+        SAFE_POINT_OP(os, );
+        if (!removedRowIds.isEmpty()) {
+            // suppose that if at least one row in msa was removed then all the rows below it were changed
+            QList<qint64> rowIdsAffectedByDeletion = getRowsAffectedByDeletion(ma, removedRowIds);
+            foreach(qint64 removedRowId, removedRowIds) { // removed rows ain't need to be update
+                modifiedRowIds.removeAll(removedRowId);
+            }
+            modifiedRowIds = mergeLists(modifiedRowIds, rowIdsAffectedByDeletion);
+        }
+    }
+
+    MaModificationInfo mi;
+    mi.modifiedRowIds = modifiedRowIds;
+    updateCachedMultipleAlignment(mi, removedRowIds);
+
+    if (!removedRowIds.isEmpty()) {
+        emit si_rowsRemoved(removedRowIds);
+    }
 }
 
 void MultipleAlignmentObject::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track) {
