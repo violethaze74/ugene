@@ -49,7 +49,7 @@ const QString SequenceInfo::CAPTION_SUFFIX_DS_RNA = "dsRNA:";
 const QString SequenceInfo::CAPTION_SUFFIX_SS_RNA = "ssRNA:";
 
 //nucl
-const QString SequenceInfo::CAPTION_SEQ_GC_CONTENT = "GC Content: ";
+const QString SequenceInfo::CAPTION_SEQ_GC_CONTENT = "GC content: ";
 const QString SequenceInfo::CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT = "Molecular weight: ";
 const QString SequenceInfo::CAPTION_SEQ_EXTINCTION_COEFFICIENT = "Extinction coefficient: ";
 const QString SequenceInfo::CAPTION_SEQ_MELTING_TEMPERATURE = "Melting temperature: ";
@@ -58,8 +58,8 @@ const QString SequenceInfo::CAPTION_SEQ_NMOLE_OD = "nmole/OD<sub>260</sub>: ";
 const QString SequenceInfo::CAPTION_SEQ_MG_OD = QChar(0x3BC) + QString("g/OD<sub>260</sub>: "); // 0x3BC - greek 'mu'
 
 //amino
-const QString SequenceInfo::CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT = "Molecular Weight: ";
-const QString SequenceInfo::CAPTION_SEQ_ISOELECTIC_POINT = "Isoelectic Point: ";
+const QString SequenceInfo::CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT = "Molecular weight: ";
+const QString SequenceInfo::CAPTION_SEQ_ISOELECTIC_POINT = "Isoelectic point: ";
 
 const QString SequenceInfo::CHAR_OCCUR_GROUP_ID = "char_occur_group";
 const QString SequenceInfo::DINUCL_OCCUR_GROUP_ID = "dinucl_occur_group";
