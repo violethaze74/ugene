@@ -5628,7 +5628,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 10), QPoint(0, 12));
     GTKeyboardUtils::copy(os);
     QString clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText == "-\n-\n-", "Unexpected selection: " + clipboardText);
+    CHECK_SET_ERR(clipboardText == "-\nT\nT", "Unexpected selection: " + clipboardText);
 
 //    3.2 Select some region of the grouped sequences in the Sequence area and drag this selection to the right.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 11));
@@ -5638,7 +5638,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 10), QPoint(2, 12));
     GTKeyboardUtils::copy(os);
     clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText == "-\n-\n-", "Unexpected selection 2: " + clipboardText);
+    CHECK_SET_ERR(clipboardText == "T\n-\nA", "Unexpected selection 2: " + clipboardText);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1576) {
@@ -5758,7 +5758,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
     GTKeyboardDriver::keyClick( Qt::Key_Escape);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(6, 11), QPoint(14, 12));
-    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(6, 11), QPoint(14, 12), "--GCTTATT\n--GCTTATT");
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(6, 11), QPoint(14, 12), "GCTTATTAA\nGCTTATTAA");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1586) {

@@ -3994,7 +3994,9 @@ GUI_TEST_CLASS_DEFINITION(test_3612) {
 
     const QString firstSequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Conocephalus_discolor");
     const QString secondSequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Conocephalus_sp.");
-    CHECK_SET_ERR(firstSequence == secondSequence, QString("Sequences are unexpectedly differs: '%1' and '%2'").arg(firstSequence).arg(secondSequence));
+    CHECK_SET_ERR(firstSequence == "TT-AGCT-TATTAA", "Unexpected selection. Expected: TT-AGCT-TATTAA");
+    CHECK_SET_ERR(secondSequence == "TTAGCTTATTAA--", "Unexpected selection. Expected: TTAGCTTATTAA--");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3613) {

@@ -2103,7 +2103,7 @@ GUI_TEST_CLASS_DEFINITION( test_2285 ){
     GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     QString clipboardText = GTClipboard::text(os);
 
-    CHECK_SET_ERR(clipboardText == "T\nT", "Unexpected selection. Expected: T\nT, actual: " + clipboardText);
+    CHECK_SET_ERR(clipboardText == "T\n-", "Unexpected selection. Expected: T\nT, actual: " + clipboardText);
 
 }
 
