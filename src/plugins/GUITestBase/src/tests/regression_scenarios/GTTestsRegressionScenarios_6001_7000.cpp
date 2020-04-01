@@ -3306,8 +3306,8 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
         fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
         backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
 
-        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
 
         //Check gap symbol
         pos = QPoint(0, 3);
@@ -3359,8 +3359,8 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
         fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
         backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
 
-        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
 
         //Check G
         pos = QPoint(2, 2);
@@ -3402,8 +3402,8 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
         fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
         backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
 
-        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
 
         //Check S
         pos = QPoint(3, 2);
@@ -3445,8 +3445,8 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
         fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
         backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
 
-        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
 
         //Check H
         pos = QPoint(4, 1);
@@ -3507,8 +3507,8 @@ GUI_TEST_CLASS_DEFINITION(test_6548_2) {
         fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
         backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
 
-        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
 
         //Check H
         pos = QPoint(1, 0);
@@ -3542,8 +3542,8 @@ GUI_TEST_CLASS_DEFINITION(test_6548_2) {
         fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
         backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
 
-        CHECK_SET_ERR(fontColor == "#00ffff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#0000ff", QString("wrong color %1").arg(backgroundColor));
+        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
+        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
 
         //Check R
         pos = QPoint(2, 2);

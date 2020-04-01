@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-const QList<QPair<QColor, QColor>> MsaColorSchemeWeakSimilarities::colorPairsByFrequence = {QPair<QColor, QColor>(QColor("#00FFFF"), QColor("#0000FF")), 
+const QList<QPair<QColor, QColor>> MsaColorSchemeWeakSimilarities::colorPairsByFrequence = {QPair<QColor, QColor>(QColor("#0000FF"), QColor("#00FFFF")), 
                                                                                             QPair<QColor, QColor>(QColor("#FF00FF"), QColor("#FFFFFF")), 
                                                                                             QPair<QColor, QColor>(QColor("#000000"), QColor("#FFFFFF")), 
                                                                                             QPair<QColor, QColor>(QColor("#000000"), QColor("#C0C0C0")), 
