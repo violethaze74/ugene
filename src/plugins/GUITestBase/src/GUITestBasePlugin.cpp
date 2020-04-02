@@ -1495,6 +1495,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6548_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6548_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_6564);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6566);
     REGISTER_TEST(GUITest_regression_scenarios::test_6569);
     REGISTER_TEST(GUITest_regression_scenarios::test_6580);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6581); //old MAFFT version  v7.212 for Windows32
@@ -1531,9 +1532,13 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6655);
     REGISTER_TEST(GUITest_regression_scenarios::test_6659);
     REGISTER_TEST(GUITest_regression_scenarios::test_6667_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6672);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6673);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6673_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6676_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6676_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_6677);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6677_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6684);
     REGISTER_TEST(GUITest_regression_scenarios::test_6684_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6685_1);
@@ -1555,9 +1560,14 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6706);
     REGISTER_TEST(GUITest_regression_scenarios::test_6707);
     REGISTER_TEST(GUITest_regression_scenarios::test_6710);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6711);
     REGISTER_TEST(GUITest_regression_scenarios::test_6714);
     REGISTER_TEST(GUITest_regression_scenarios::test_6718);
     REGISTER_TEST(GUITest_regression_scenarios::test_6734);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6739);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6740);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6752);
+
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/

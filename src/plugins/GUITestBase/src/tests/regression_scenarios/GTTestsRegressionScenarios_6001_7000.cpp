@@ -3614,6 +3614,23 @@ GUI_TEST_CLASS_DEFINITION(test_6564) {
     CHECK_SET_ERR(selection.height() == 3, QString("Expected selection height: 3, actual: %1").arg(selection.height()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6566) {
+    // 1. Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+
+    // 2. Enable "Collapsing mode"
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Click on any character of "Phaneroptera_falcata" sequence
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
+
+    // 4. Click on "Phaneroptera_falcata" name in the Name List
+    GTUtilsMsaEditor::clickSequenceName(os, "Phaneroptera_falcata");
+
+    // 5. Expected result: the "Phaneroptera_falcata" sequence is selected
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 604, 1));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6569) {
     //1. Open the WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -4565,6 +4582,83 @@ GUI_TEST_CLASS_DEFINITION(test_6667_1) {
         .arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6672) {
+    // 1. Open "_common_data/scenarios/msa/ma2_gap_8_col.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Remove 20-21 columns with gaps
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(19, 0), QPoint(20, 9));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 3. Switch collapsing mode on
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 4. Remove 4-19 columns
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 0), QPoint(18, 5));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 5. Remove 3 column
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 0), QPoint(2, 2));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 6. Remove 2 column
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 0), QPoint(1, 2));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 7. Expected state: One first column left in collapsing mode
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 0), QPoint(0, 1), "A\nT");
+
+}
+GUI_TEST_CLASS_DEFINITION(test_6673) {
+    // 1. Open "_common_data/scenarios/msa/translations_nucl.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "translations_nucl.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Select "P" sequense, last in the name list.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "P");
+
+    // 3. Select first symbol and insert gap.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 4));
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    // 4. Click "Delete" button 3 times.
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected result: a line consisting of gaps should be removed
+    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("P")), "Required sequence is not removed");
+}
+
+
+GUI_TEST_CLASS_DEFINITION(test_6673_1) {
+
+    // 1. Open "_common_data/scenarios/msa/translations_nucl.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "translations_nucl.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Switch collapsing mode on.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Select "S" sequense.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "S");
+
+    // 4. Select first symbol and insert gap.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 1));
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    // Expected result: one gap is inserted for "S" collapsing group
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 0), QPoint(0, 4), "T\n-\nG\nC\nA");
+    }
+
 GUI_TEST_CLASS_DEFINITION(test_6676_1) {
     //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -4657,7 +4751,24 @@ GUI_TEST_CLASS_DEFINITION(test_6677) {
 
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 2, 18));
 }
+GUI_TEST_CLASS_DEFINITION(test_6677_1) {
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
+    // 2. Enable the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Select the first character in the collapsed group.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 13));
+    GTGlobals::sleep();
+
+    // 4. Click collapse triangle:
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
+
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 13, 1, 2));
+}
 GUI_TEST_CLASS_DEFINITION(test_6684) {
     //UTEST-38
     class Custom : public CustomScenario {
@@ -5296,6 +5407,26 @@ GUI_TEST_CLASS_DEFINITION(test_6710) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 5, 1, 2));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6711) {
+    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    // 2. Select the last column and press the Delete key.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(13, 0), QPoint(13, 9));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 3. Expected result: the last column is removed, the new last column is selected.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(12, 0, 1, 10));
+
+    // 4. Press the Delete key again. Expected result: the last column is removed the new last column is selected.
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(11, 0, 1, 10));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6714) {
     // 1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
@@ -5370,6 +5501,71 @@ GUI_TEST_CLASS_DEFINITION(test_6734) {
     //Expected state: UGENE isn't crash
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6739) {
+    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    // 2. Remove all columns except the first one.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 0), QPoint(13, 9));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 3. Toggle the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 4. Expected result: there are two collapsed groups.
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Isophya_altaica_EF540820"),
+                  "1 Isophya_altaica_EF540820 is not collapsed");
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_discolor"),
+                  "2 Conocephalus_discolor is not collapsed");
+
+    // 5. Select the second sequence.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Bicolorana_bicolor_EF540830");
+
+    // 6. Open the second group.
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Bicolorana_bicolor_EF540830");
+
+    // 7. Expected result: sequences in the second group are selected.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 1, 1, 4));
+}
+GUI_TEST_CLASS_DEFINITION(test_6740) {
+
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Enable the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Select all sequences.
+    GTUtilsMsaEditor::selectRows(os, 0, 16, GTGlobals::UseMouse);
+    GTGlobals::sleep();
+
+    // 4. Click to the center of the selection.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
+
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(4, 3), QPoint(4, 3), "T");
+
+}
+GUI_TEST_CLASS_DEFINITION(test_6752) {
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Select the first "Phaneroptera_falcata" sequence.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Phaneroptera_falcata");
+
+    // 3. Right-click on the last "Hetrodes_pupus_EF540832" sequence.
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 18));
+    GTMouseDriver::click(Qt::RightButton);
+
+    // Expected result: the first sequence is selected only, the context menu is shown.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 604, 1));
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+}
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
