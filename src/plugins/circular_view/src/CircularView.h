@@ -72,9 +72,6 @@ public:
 
     static qreal coordToAngle(const QPoint point);
 
-    const QMap<Annotation *,CircularAnnotationItem *> & getCircularItems() const;
-    const QList<CircularAnnotationLabel *> & getLabelList() const;
-
     bool isCircularTopology() const;
 
     enum Direction {CW, CCW, UNKNOWN};
@@ -113,12 +110,6 @@ protected:
     void adaptSizes();
     void updateZoomActions();
 
-    void setInverseSelection(const U2Region &r);
-    /**
-     * Used for region that covers the beginning of the sequence and the end of it.
-     * Usage: @startSeqRegion.startPos should be 0 and @endSeqRegion.endPos should be equal to sequence length.
-     */
-    void setInverseSelection(const U2Region &startSeqRegion, const U2Region &endSeqRegion);
     /**
      * Use for continuous region selection only.
      * TODO: if inverse selection function would be fully available (for splitted kind of selection), rewrite it.
@@ -152,7 +143,6 @@ public:
     ~CircularViewRenderArea();
 
     int getAnnotationYLevel(Annotation *a) const { return annotationYLevel.value(a); }
-    void adaptNumberOfLabels(int h);
 
     static const int MIDDLE_ELLIPSE_SIZE;
     int getCenterY() const { return verticalOffset; }

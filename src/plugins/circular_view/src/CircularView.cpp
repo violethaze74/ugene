@@ -41,8 +41,6 @@
 #include <U2Gui/GScrollBar.h>
 #include <U2Gui/GraphUtils.h>
 
-#include <U2View/ADVSequenceWidget.h>
-
 #include "CircularItems.h"
 #include "CircularView.h"
 #include "CircularViewPlugin.h"
@@ -114,75 +112,59 @@ void CircularView::mousePressEvent(QMouseEvent *e) {
 
 void CircularView::mouseMoveEvent(QMouseEvent *e) {
     QWidget::mouseMoveEvent(e);
+    if (!(e->buttons() & Qt::LeftButton)) {
+        return;
+    }
 
     CircularViewRenderArea *ra = getRenderArea();
-    const QPoint areaPoint = toRenderAreaPoint(e->pos());
-    const qreal arcsin = ra->coordToAsin(areaPoint);
-    ra->mouseAngle = arcsin;
+    QPoint areaPoint = toRenderAreaPoint(e->pos());
+    qreal arcSin = ra->coordToAsin(areaPoint);
+    ra->mouseAngle = arcSin;
 
-    if (e->buttons() & Qt::LeftButton) {
-        Direction pressMove = getDirection(lastPressAngle, lastMoveAngle);
-        Direction moveA = getDirection(lastMoveAngle, arcsin);
+    Direction pressMove = getDirection(lastPressAngle, lastMoveAngle);
+    Direction moveA = getDirection(lastMoveAngle, arcSin);
 
-        const float totalLen = qAbs(lastPressAngle - lastMoveAngle) + qAbs(lastMoveAngle - arcsin);
-        if ((totalLen < 10) && !holdSelection) {
-            if ((pressMove != CW) && (moveA != CW)) {
-                clockwise = false;
-            } else if ((pressMove != CCW) && (moveA != CCW)) {
-                clockwise = true;
-            }
-            if (totalLen < 1) {
-                clockwise = lastPressAngle < arcsin;
-            }
-            holdSelection = true;
+    float totalLen = qAbs(lastPressAngle - lastMoveAngle) + qAbs(lastMoveAngle - arcSin);
+    if ((totalLen < 10) && !holdSelection) {
+        if ((pressMove != CW) && (moveA != CW)) {
+            clockwise = false;
+        } else if ((pressMove != CCW) && (moveA != CCW)) {
+            clockwise = true;
         }
-
-        qint64 movement = ra->asinToPos(arcsin);
-        if (!clockwise) {
-            qSwap<qint64>(lastPressPos, movement);
+        if (totalLen < 1) {
+            clockwise = lastPressAngle < arcSin;
         }
+        holdSelection = true;
+    }
 
-        // compute selection
-        int seqLen = ctx->getSequenceLength();
-        int selStart = lastPressPos;
-        int selEnd = movement;
-        int selLen = selEnd - selStart;
+    qint64 movement = ra->asinToPos(arcSin);
+    if (!clockwise) {
+        qSwap<qint64>(lastPressPos, movement);
+    }
 
-        bool twoParts = false;
-        if (selLen < 0) {    // 'a' and 'lastPressPos' are swapped so it should be positive
-            selLen = selEnd + seqLen - selStart;
-            Q_ASSERT(selLen >= 0);
+    // compute selection
+    qint64 selStart = lastPressPos;
+    qint64 selEnd = movement;
+    bool twoParts = selStart > selEnd;
+    if (selStart > selEnd) {
+        qSwap<qint64>(selStart, selEnd);
+    }
 
-            if (selEnd) {    // [0, selEnd]
-                twoParts = true;
-            }
-        }
+    if (!clockwise) {
+        qSwap<qint64>(lastPressPos, movement);
+    }
 
-        if (selLen > seqLen - selStart) {
-            selLen = seqLen - selStart;
-        }
+    lastMovePos = movement;
+    lastMouseY = areaPoint.y() - ra->getCenterY();
 
-        if (!clockwise) {
-            qSwap<qint64>(lastPressPos, movement);
-        }
-
-        lastMovePos = movement;
-        lastMouseY = areaPoint.y() - ra->getCenterY();
-
-        if (twoParts) {
-            if (e->modifiers() & Qt::ControlModifier) {
-                setInverseSelection(U2Region(0, selEnd), U2Region(selStart, seqLen - selStart));
-            } else {
-                setSelection(U2Region(0, selEnd));
-                addSelection(U2Region(selStart, seqLen - selStart));
-            }
-        } else {
-            if (e->modifiers() & Qt::ControlModifier) {
-                setInverseSelection(U2Region(selStart, selLen));
-            } else {
-                setSelection(U2Region(selStart, selLen));
-            }
-        }
+    if (e->modifiers() & Qt::ControlModifier) { // invert the selection.
+        twoParts = !twoParts;
+    }
+    if (twoParts) {
+        setSelection(U2Region(selEnd, seqLen - selEnd));
+        addSelection(U2Region(0, selStart));
+    } else {
+        setSelection(U2Region(selStart, selEnd - selStart));
     }
     renderArea->update();
 }
@@ -213,7 +195,6 @@ QList<Annotation *> CircularView::findAnnotationsByCoord(const QPoint &coord) co
     CircularViewRenderArea *renderArea = qobject_cast<CircularViewRenderArea *>(this->renderArea);
     QPoint cp(coord - QPoint(width() / 2, renderArea->getCenterY()));
     foreach (CircularAnnotationItem *item, renderArea->circItems) {
-        CircularAnnotationRegionItem *regItem = item->getContainingRegion(cp);
         int region = item->containsRegion(cp);
         if (region != -1) {
             res.append(item->getAnnotation());
@@ -238,14 +219,6 @@ QList<Annotation *> CircularView::findAnnotationsByCoord(const QPoint &coord) co
 
 QSize CircularView::sizeHint() const {
     return getRenderArea()->size();
-}
-
-const QMap<Annotation *, CircularAnnotationItem *> &CircularView::getCircularItems() const {
-    return getRenderArea()->circItems;
-}
-
-const QList<CircularAnnotationLabel *> &CircularView::getLabelList() const {
-    return getRenderArea()->labelList;
 }
 
 bool CircularView::isCircularTopology() const {
@@ -330,46 +303,22 @@ void CircularView::sl_onCircularTopologyChange() {
 
 void CircularView::updateZoomActions() {
     CircularViewRenderArea *ra = getRenderArea();
-    if (ra->outerEllipseSize * ZOOM_SCALE / width() > 10) {
-        emit si_zoomInDisabled(true);
-    } else {
-        emit si_zoomInDisabled(false);
-    }
+    emit si_zoomInDisabled(ra->outerEllipseSize * ZOOM_SCALE / width() > 10);
     emit si_fitInViewDisabled(ra->currentScale == 0);
-
-    if (ra->outerEllipseSize / ZOOM_SCALE < MIN_OUTER_SIZE) {
-        emit si_zoomOutDisabled(true);
-    } else {
-        emit si_zoomOutDisabled(false);
-    }
-}
-
-void CircularView::setInverseSelection(const U2Region &r) {
-    U2Region part1(0, r.startPos);
-    setSelection(part1);
-    addSelection(U2Region(r.endPos(), ctx->getSequenceLength() - r.endPos()));
-}
-
-void CircularView::setInverseSelection(const U2Region &startSeqRegion, const U2Region &endSeqRegion) {
-    SAFE_POINT(startSeqRegion.startPos == 0 && endSeqRegion.endPos() == ctx->getSequenceLength(), "Invalid regions selection", );
-    setSelection(U2Region(startSeqRegion.endPos(), endSeqRegion.startPos - startSeqRegion.endPos()));
+    emit si_zoomOutDisabled(ra->outerEllipseSize / ZOOM_SCALE < MIN_OUTER_SIZE);
 }
 
 void CircularView::invertCurrentSelection() {
-    DNASequenceSelection *selection = ctx->getSequenceSelection();
-    SAFE_POINT(selection != NULL, "Sequence selection is NULL", );
-    CHECK(!selection->isEmpty(), );
-
-    QVector<U2Region> selRegions = selection->getSelectedRegions();
-    CHECK(selRegions.size() < 3, );
-    if (selRegions.size() == 1) {
-        setInverseSelection(selRegions.first());
-    } else {
-        if (selRegions.first().startPos == 0 && selRegions.last().endPos() == ctx->getSequenceLength()) {
-            setInverseSelection(selRegions.first(), selRegions.last());
-        } else {
-            setInverseSelection(selRegions.last(), selRegions.first());
-        }
+    DNASequenceSelection* selection = ctx->getSequenceSelection();
+    const QVector<U2Region>& regions = selection->getSelectedRegions();
+    CHECK(regions.size() == 1 || regions.size() == 2,);
+    if (regions.size() == 1) {
+        setSelection(U2Region(regions[0].endPos(), seqLen - regions[0].endPos()));
+        addSelection(U2Region(0, regions[0].startPos));
+    } else if (regions[0].startPos == 0 && regions[1].endPos() == seqLen) {
+        setSelection(U2Region(regions[0].endPos(), regions[1].startPos - regions[0].endPos()));
+    } else if (regions[1].startPos == 0 && regions[0].endPos() == seqLen) {
+        setSelection(U2Region(regions[1].endPos(), regions[0].startPos - regions[1].endPos()));
     }
 }
 
@@ -381,14 +330,8 @@ CircularView::Direction CircularView::getDirection(float a, float b) const {
     if (a == b) {
         return UNKNOWN;
     }
-
     bool cl = ((a - b >= PI) || ((b - a <= PI) && (b - a >= 0)));
-
-    if (cl) {
-        return CW;
-    } else {
-        return CCW;
-    }
+    return cl ? CW : CCW;
 }
 
 void CircularView::adaptSizes() {
@@ -470,14 +413,6 @@ CircularViewRenderArea::CircularViewRenderArea(CircularView *d)
 
     //build annotation items to get number of region levels for proper resize
     buildItems(QFont());
-}
-
-void CircularViewRenderArea::adaptNumberOfLabels(int h) {
-    QFont font;
-    QFontMetrics fm(font, this);
-
-    int lblHeight = fm.height();
-    maxDisplayingLabels = int(h / lblHeight);
 }
 
 void CircularViewRenderArea::paintContent(QPainter &p, bool paintSelection, bool paintMarker) {
