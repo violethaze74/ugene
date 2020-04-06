@@ -108,6 +108,7 @@ QWidget* WelcomePageWidget::createMiddleWidget() {
     buttonsGridLayout->setVerticalSpacing(100);
     buttonsGridLayout->setHorizontalSpacing(140);
     QString openFilesText = tr("Open File(s)");
+
     QString createSequenceText = tr("Create Sequence");
     QString createWorkflowText = tr("Run or Create Workflow");
     QString quickStartText = tr("Quick Start Guide");
@@ -115,14 +116,17 @@ QWidget* WelcomePageWidget::createMiddleWidget() {
     QString hoveredStyle = "QLabel {text-decoration: underline; color: #145774; font-size: 18px;}";
 
     auto openFilesButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_open.png", openFilesText), normalStyle, hoveredStyle);
+    openFilesButton->setObjectName("openFilesButton");
     connect(openFilesButton, SIGNAL(clicked()), SLOT(sl_openFiles()));
     buttonsGridLayout->addWidget(openFilesButton, 0, 0);
 
     auto createSequenceButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_create_seq.png", createSequenceText), normalStyle, hoveredStyle);
+    createSequenceButton->setObjectName("createSequenceButton");
     connect(createSequenceButton, SIGNAL(clicked()), SLOT(sl_createSequence()));
     buttonsGridLayout->addWidget(createSequenceButton, 0, 1);
 
     auto createWorkflowButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_workflow.png", createWorkflowText), normalStyle, hoveredStyle);
+    createWorkflowButton->setObjectName("createWorkflowButton");
     connect(createWorkflowButton, SIGNAL(clicked()), SLOT(sl_createWorkflow()));
     buttonsGridLayout->addWidget(createWorkflowButton, 1, 0);
 
