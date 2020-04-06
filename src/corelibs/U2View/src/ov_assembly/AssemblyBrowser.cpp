@@ -279,7 +279,7 @@ QString AssemblyBrowser::tryAddObject(GObject * obj) {
     } else {
         return unacceptableObjectError;
     }
-
+    gobject->addObjectRelation(GObjectRelation(GObjectReference(obj), ObjectRole_ReferenceSequence));
     return "";
 }
 

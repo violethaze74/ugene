@@ -2350,6 +2350,56 @@ GUI_TEST_CLASS_DEFINITION(test_6398) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6455) {
+    QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "regression_6455.ugenedb");
+    QFile::copy(dataDir + "samples/Assembly/chrM.fa", sandBoxDir + "regression_6455.fa");
+
+    //1. Open "samples/Assembly/chrM.fa".
+    GTFileDialog::openFile(os, sandBoxDir + "regression_6455.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
+    GTFileDialog::openFile(os, sandBoxDir + "regression_6455.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Click the "chrM" sequence object in Project View.
+    GTUtilsProjectTreeView::click(os, "chrM", "regression_6455.fa");
+
+    //4. Click "Set reference sequence", and zoom view until it possible.
+    //Expected result: first visible symbol "C" with green background color.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "setReferenceAction"));
+    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTGlobals::sleep();
+
+    GTUtilsAssemblyBrowser::zoomToMax(os);
+    QWidget *refArea = GTWidget::findWidget(os, "Assembly reference sequence area");
+    QString color = GTWidget::getColor(os, refArea, QPoint(5, 5)).name();
+    CHECK_SET_ERR(color == "#2bb42b", QString("color is %1, expected: #2bb42b").arg(color));
+
+    //5. Edit chrM by add 5 symbols at start
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: regression_6455 [s] chrM"));
+    GTUtilsProjectTreeView::doubleClickItem(os, "regression_6455.fa");
+    GTThread::waitForMainThread();
+
+    GTUtilsSequenceView::enableEditingMode(os);
+
+    GTKeyboardDriver::keyClick('T');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('T');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('T');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('T');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('T');
+
+    //6. Switch back to assembly view.
+    //Expected result: first visible symbol on the screen is "A" with yellow background color.
+    refArea = GTWidget::findWidget(os, "Assembly reference sequence area");
+    color = GTWidget::getColor(os, refArea, QPoint(5, 5)).name();
+    CHECK_SET_ERR(color == "#bfc255", QString("color is %1, expected: #bfc255").arg(color));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6459) {
     //1. Open "data/samples/Genbank/human_T1.fa".
     //2. Open "Search in Sequence" options panel tab.
