@@ -5507,29 +5507,13 @@ GUI_TEST_CLASS_DEFINITION(test_6718) {
     //3. Go to the "General" tab.
     //4. Click "Copy".
     GTUtilsOptionPanelMsa::copySelection(os);
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(nullptr != treeView, "treeView is not found");
-
-    //5. Click on the Project Tree View and paste.
-    GTWidget::click(os, treeView);
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
-
-    QString name;
-    foreach (const QString &doc, GTUtilsProjectTreeView::getDocuments(os).keys()) {
-        CHECK_CONTINUE(doc.startsWith("clipboard"));
-
-        name = doc;
-        break;
-    }
+    GTGlobals::sleep(500);
 
     //Expected: the file as the same as _common_data/scenarios/_regression/6718/6718.aln
-    QString url = QDir(GUrlUtils::getDefaultDataPath() + "\\" + name).absolutePath();
-    ;
     QString pattern = testDir + "_common_data/scenarios/_regression/6718/6718.aln";
-    bool eq = GTFile::equals(os, url, pattern);
+    bool eq = GTFile::equals(os, pattern);
 
-    CHECK_SET_ERR(eq, "files should be equal");
+    CHECK_SET_ERR(eq, "file should be equal to the clipboard");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6734) {
