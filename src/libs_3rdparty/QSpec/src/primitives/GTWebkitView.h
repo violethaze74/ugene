@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,30 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-
-#ifndef _U2_GT_UTILS_START_PAGE_
-#define _U2_GT_UTILS_START_PAGE_
+#ifndef GTWEBKITVIEW_H
+#define GTWEBKITVIEW_H
 
 #include "GTGlobals.h"
-#include <primitives/GTWebView.h>
+#include "GTWebView.h"
 
-#include <U2Gui/U2WebView.h>
+#include <QWebView>
+#include <QWebElement>
 
-namespace U2 {
-using namespace HI;
+namespace HI {
 
-class GTUtilsStartPage
-{
+class HI_EXPORT GTWebkitView {
 public:
-    enum Buttons{OpenFile, CreateSequence, CreateWorkflow, QuickStartGuide};
-    static void openStartPage(HI::GUITestOpStatus &os);
-    static U2WebView* getStartPage(HI::GUITestOpStatus &os);
-    static HIWebElement getButton(HI::GUITestOpStatus &os, Buttons button);
-    static void clickButton(HI::GUITestOpStatus &os, Buttons button);
-    static void clickResentDocument(HI::GUITestOpStatus &os, QString text);
-    static void clickResentProject(HI::GUITestOpStatus &os, QString text);
+    static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, QWebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
+private:
+    static HIWebElement toHiWebEleent(const QWebElement &element);
 };
+
+typedef class GTWebkitView GTWebViewPrivate;
 
 }
 
-#endif // _U2_GT_UTILS_START_PAGE_
+#endif // GTWEBKITVIEW_H
