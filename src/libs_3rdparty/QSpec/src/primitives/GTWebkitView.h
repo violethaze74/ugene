@@ -35,7 +35,7 @@ public:
     static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, QWebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
 private:
-    static HIWebElement toHiWebEleent(const QWebElement &element);
+    static HIWebElement toHiWebElement(const QWebElement &element);
 };
 
 typedef class GTWebkitView GTWebViewPrivate;

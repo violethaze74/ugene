@@ -75,7 +75,7 @@ QList<HIWebElement> GTWebkitView::findElementsBySelector(GUITestOpStatus &os, QW
 }
 #undef GT_METHOD_NAME
 
-HIWebElement GTWebkitView::toHiWebEleent(const QWebElement &element) {
+HIWebElement GTWebkitView::toHiWebElement(const QWebElement &element) {
     QMap<QString, QString> attributesMap;
     foreach (const QString &name, element.attributeNames()) {
         attributesMap.insert(name, element.attribute(name));

@@ -24,7 +24,7 @@
 
 #ifdef UGENE_WEB_KIT
 #include <QWebPage>
-#include <WebView>
+#include <QWebView>
 #else
 #include <QWebEnginePage>
 #include <QWebEngineView>
