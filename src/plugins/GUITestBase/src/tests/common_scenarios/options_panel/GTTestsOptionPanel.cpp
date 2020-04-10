@@ -409,6 +409,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QString s9 = QString("nmole/OD<sub>260</sub>: </td><td>0.00");
     QString s10 = QString("g/OD<sub>260</sub>: </td><td>39.39");
 
+    GTUtilsOptionsPanel::resizeToMaximum(os);
     QString labelText = statisticsLabel->text();
 
     CHECK_SET_ERR(labelText.contains(s), QString("label text: %1. It does not contais %2").arg(labelText).arg(s));
@@ -453,6 +454,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
     CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
+    GTUtilsOptionsPanel::resizeToMaximum(os);
     QString labelText = statisticsLabel->text();
 
     QString s = QString("Length: </td><td>199 950 nt");
