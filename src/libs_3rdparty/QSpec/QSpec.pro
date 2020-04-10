@@ -35,6 +35,7 @@ HEADERS += \
            src/primitives/GTScrollBar.h \
            src/primitives/GTSlider.h \
            src/primitives/GTSpinBox.h \
+           src/primitives/GTSplitter.h \
            src/primitives/GTTabBar.h \
            src/primitives/GTTableView.h \
            src/primitives/GTTabWidget.h \
@@ -94,6 +95,7 @@ SOURCES += \
            src/primitives/GTScrollBar.cpp \
            src/primitives/GTSlider.cpp \
            src/primitives/GTSpinBox.cpp \
+           src/primitives/GTSplitter.cpp \
            src/primitives/GTTabBar.cpp \
            src/primitives/GTTableView.cpp \
            src/primitives/GTTabWidget.cpp \
