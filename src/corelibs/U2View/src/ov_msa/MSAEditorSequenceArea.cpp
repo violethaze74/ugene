@@ -37,7 +37,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
@@ -118,13 +117,6 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     saveSequence = new QAction(tr("Export selected sequence(s)..."), this);
     saveSequence->setObjectName("Save sequence");
     connect(saveSequence, SIGNAL(triggered()), SLOT(sl_saveSequence()));
-
-    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position..."), this);
-    gotoAction->setObjectName("action_go_to_position");
-    gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
-    gotoAction->setShortcutContext(Qt::WindowShortcut);
-    gotoAction->setToolTip(QString("%1 (%2)").arg(gotoAction->text()).arg(gotoAction->shortcut().toString()));
-    connect(gotoAction, SIGNAL(triggered()), SLOT(sl_goto()));
 
     removeAllGapsAction = new QAction(QIcon(":core/images/msaed_remove_all_gaps.png"), tr("Remove all gaps"), this);
     removeAllGapsAction->setObjectName("Remove all gaps");
@@ -284,7 +276,6 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
 
     t->addAction(ui->getUndoAction());
     t->addAction(ui->getRedoAction());
-    t->addAction(gotoAction);
     t->addAction(removeAllGapsAction);
     t->addSeparator();
 
@@ -329,7 +320,6 @@ void MSAEditorSequenceArea::initRenderer() {
 
 void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QAction* copyMenuAction = GUIUtils::findAction(m->actions(), MSAE_MENU_LOAD);
-    m->insertAction(copyMenuAction, gotoAction);
 
     QMenu* loadSeqMenu = GUIUtils::findSubMenu(m, MSAE_MENU_LOAD);
     SAFE_POINT(loadSeqMenu != NULL, "loadSeqMenu", );

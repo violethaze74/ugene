@@ -45,7 +45,6 @@
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
 #include "helpers/ScrollController.h"
-#include "view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 

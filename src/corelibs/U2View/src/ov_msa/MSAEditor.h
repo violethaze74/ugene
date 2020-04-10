@@ -100,6 +100,7 @@ protected slots:
     void sl_buildTree();
     void sl_align();
     void sl_addToAlignment();
+    void sl_searchInSequences();
     void sl_realignSomeSequences();
     void sl_setSeqAsReference();
     void sl_unsetReferenceSeq();
@@ -119,6 +120,7 @@ protected:
 
 private:
     void addExportMenu(QMenu* m);
+    void addNavigationMenu(QMenu* m);
     void addTreeMenu(QMenu* m);
     void addAdvancedMenu(QMenu* m);
     void addStatisticsMenu(QMenu* m);
@@ -129,12 +131,14 @@ private:
     void alignSequencesFromObjectsToAlignment(const QList<GObject*>& objects);
     void alignSequencesFromFilesToAlignment();
 
-    QAction*          buildTreeAction;
-    QAction*          alignAction;
-    QAction*          alignSequencesToAlignmentAction;
-    QAction*          realignSomeSequenceAction;
-    QAction*          setAsReferenceSequenceAction;
-    QAction*          unsetReferenceSequenceAction;
+    QAction* buildTreeAction;
+    QAction* alignAction;
+    QAction* alignSequencesToAlignmentAction;
+    QAction* realignSomeSequenceAction;
+    QAction* setAsReferenceSequenceAction;
+    QAction* unsetReferenceSequenceAction;
+    QAction* gotoAction;
+    QAction* searchInSequencesAction;
 
     PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings;
     MSAEditorTreeManager           treeManager;

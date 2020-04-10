@@ -180,7 +180,7 @@ private:
 
     QAction*        delColAction;
     QAction*        removeAllGapsAction;
-    QAction*        gotoAction;
+
     QAction*        createSubaligniment;
     QAction*        saveSequence;
     QAction*        addSeqFromFileAction;

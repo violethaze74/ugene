@@ -39,6 +39,7 @@
 #include <U2Gui/OptionsPanelWidget.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/ProjectView.h>
+#include <U2View/FindPatternMsaWidgetFactory.h>
 
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "MSAEditor.h"
@@ -58,6 +59,9 @@ MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* o
       realignSomeSequenceAction(nullptr),
       treeManager(this)
 {
+    gotoAction = NULL;
+    searchInSequencesAction = NULL;
+
     initZoom();
     initFont();
 
@@ -138,6 +142,8 @@ void MSAEditor::buildStaticToolbar(QToolBar* tb) {
 }
 
 void MSAEditor::buildStaticMenu(QMenu* m) {
+    addNavigationMenu(m);
+
     addLoadMenu(m);
 
     addCopyMenu(m);
@@ -162,6 +168,14 @@ void MSAEditor::addExportMenu(QMenu* m) {
     QMenu* em = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(em != NULL, "Export menu not found", );
     em->addAction(saveScreenshotAction);
+}
+
+void MSAEditor::addNavigationMenu(QMenu* m) {
+    QMenu* navMenu = m->addMenu(tr("Navigation"));
+    navMenu->menuAction()->setObjectName(MSAE_MENU_NAVIGATION);
+    navMenu->addAction(gotoAction);
+    navMenu->addSeparator();
+    navMenu->addAction(searchInSequencesAction);
 }
 
 void MSAEditor::addTreeMenu(QMenu* m) {
@@ -196,6 +210,20 @@ QWidget* MSAEditor::createWidget() {
     initActions();
 
     connect(ui , SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
+
+    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position…"), this);
+    gotoAction->setObjectName("action_go_to_position");
+    gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
+    gotoAction->setShortcutContext(Qt::WindowShortcut);
+    gotoAction->setToolTip(QString("%1 (%2)").arg(gotoAction->text()).arg(gotoAction->shortcut().toString()));
+    connect(gotoAction, SIGNAL(triggered()), ui->getSequenceArea(), SLOT(sl_goto()));
+
+    searchInSequencesAction = new QAction(QIcon(":core/images/find_dialog.png"), tr("Search in sequences…"), this);
+    searchInSequencesAction->setObjectName("search_in_sequences");
+    searchInSequencesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
+    searchInSequencesAction->setShortcutContext(Qt::WindowShortcut);
+    searchInSequencesAction->setToolTip(QString("%1 (%2)").arg(searchInSequencesAction->text()).arg(searchInSequencesAction->shortcut().toString()));
+    connect(searchInSequencesAction, SIGNAL(triggered()), this, SLOT(sl_searchInSequences()));
 
     alignAction = new QAction(QIcon(":core/images/align.png"), tr("Align"), this);
     alignAction->setObjectName("Align");
@@ -244,6 +272,7 @@ QWidget* MSAEditor::createWidget() {
 void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     QMenu m;
 
+    addNavigationMenu(&m);
     addLoadMenu(&m);
     addCopyMenu(&m);
     addEditMenu(&m);
@@ -423,6 +452,13 @@ void MSAEditor::sl_addToAlignment() {
     } else {
         alignSequencesFromFilesToAlignment();
     }
+}
+
+void MSAEditor::sl_searchInSequences() {
+    auto optionsPanel = getOptionsPanel();
+    SAFE_POINT(optionsPanel != NULL, "Internal error: options panel is NULL"
+                                     " when search in sequences has been initiated!",);
+    optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId());
 }
 
 void MSAEditor::sl_realignSomeSequences() {
