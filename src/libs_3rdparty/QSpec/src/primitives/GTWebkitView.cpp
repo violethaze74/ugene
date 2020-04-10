@@ -71,7 +71,7 @@ QList<HIWebElement> GTWebkitView::findElementsBySelector(GUITestOpStatus &os, QW
     }
 
     GT_CHECK_RESULT(!options.failIfNotFound || !filteredElements.isEmpty(), QString("There are no elements that match selector '%1'").arg(selector), QList<HIWebElement>());
-    return webElements;
+    return filteredElements;
 }
 #undef GT_METHOD_NAME
 

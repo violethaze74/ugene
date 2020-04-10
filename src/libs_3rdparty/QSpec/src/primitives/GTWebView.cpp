@@ -157,6 +157,7 @@ void GTWebView::checkElement(GUITestOpStatus &os, WebView *view, QString text, Q
 bool GTWebView::doesElementExist(GUITestOpStatus &os, WebView *view, const QString &text, const QString &tag, bool exactMatch) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
+    options.searchInHidden = false;
     foreach (const HIWebElement &element, findElementsBySelector(os, view, tag, options)) {
         if (compare(element.toPlainText(), text, exactMatch)) {
             return true;
