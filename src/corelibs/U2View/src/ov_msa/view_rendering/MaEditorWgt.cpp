@@ -204,6 +204,7 @@ void MaEditorWgt::initWidgets() {
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
     nameAreaContainer->setStyleSheet("background-color: white;");
+    nhBar->setStyleSheet("background-color: normal;"); // avoid white background of scrollbar set 1 line above.
 
     nameAreaContainer->setMinimumWidth(15); // splitter uses min-size to collapse a widget
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
