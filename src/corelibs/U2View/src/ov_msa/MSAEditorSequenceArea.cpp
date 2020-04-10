@@ -505,13 +505,12 @@ void MSAEditorSequenceArea::sl_delCol() {
 }
 
 void MSAEditorSequenceArea::sl_goto() {
-    QObjectScopedPointer<QDialog> dlg = new QDialog(this);
-    dlg->setModal(true);
-    dlg->setWindowTitle(tr("Go To"));
-    int aliLen = editor->getAlignmentLen();
-    PositionSelector *ps = new PositionSelector(dlg.data(), 1, aliLen, true);
+    QDialog gotoDialog(this);
+    gotoDialog.setModal(true);
+    gotoDialog.setWindowTitle(tr("Go to Position"));
+    PositionSelector* ps = new PositionSelector(&gotoDialog, 1, editor->getMaObject()->getLength(), true);
     connect(ps, SIGNAL(si_positionChanged(int)), SLOT(sl_onPosChangeRequest(int)));
-    dlg->exec();
+    gotoDialog.exec();
 }
 
 void MSAEditorSequenceArea::sl_onPosChangeRequest(int position) {

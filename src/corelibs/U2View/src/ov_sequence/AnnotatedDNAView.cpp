@@ -948,7 +948,7 @@ void AnnotatedDNAView::sl_onShowPosSelectorRequest() {
 
     QObjectScopedPointer<QDialog> dlg = new QDialog(getWidget());
     dlg->setModal(true);
-    dlg->setWindowTitle(tr("Go To"));
+    dlg->setWindowTitle(tr("Go to Position"));
 
     PositionSelector *ps = new PositionSelector(dlg.data(), 1, seqCtx->getSequenceLength(), true);
     connect(ps, SIGNAL(si_positionChanged(int)), SLOT(sl_onPosChangeRequest(int)));

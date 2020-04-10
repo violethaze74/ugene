@@ -2683,7 +2683,7 @@ Are you sure you want to open all of them?</source>
     <name>U2::PositionSelector</name>
     <message>
         <location filename="../src/util/PositionSelector.cpp" line="42"/>
-        <location filename="../src/util/PositionSelector.cpp" line="89"/>
+        <location filename="../src/util/PositionSelector.cpp" line="88"/>
         <source>Go!</source>
         <translation>Перейти!</translation>
     </message>
@@ -2693,14 +2693,24 @@ Are you sure you want to open all of them?</source>
         <translation>Перейти на позицию</translation>
     </message>
     <message>
-        <location filename="../src/util/PositionSelector.cpp" line="75"/>
+        <location filename="../src/util/PositionSelector.cpp" line="60"/>
+        <source>Enter position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/PositionSelector.cpp" line="74"/>
         <source>Position</source>
         <translation>Позиция</translation>
     </message>
     <message>
-        <location filename="../src/util/PositionSelector.cpp" line="95"/>
+        <location filename="../src/util/PositionSelector.cpp" line="94"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/util/PositionSelector.cpp" line="99"/>
+        <source>Help</source>
+        <translation type="unfinished">Помощь</translation>
     </message>
 </context>
 <context>

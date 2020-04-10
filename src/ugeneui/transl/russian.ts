@@ -2333,55 +2333,55 @@ Would you like to download and install it?</source>
     <message>
         <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="110"/>
         <source>Open File(s)</source>
-        <translation><![CDATA[Открыть файл(ы)<br>]]></translation>
-    </message>
-    <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="111"/>
-        <source>Create Sequence</source>
-        <translation><![CDATA[Создать <br>последовательность]]></translation>
+        <translation>Открыть файл(ы)&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="112"/>
-        <source>Run or Create Workflow</source>
-        <translation><![CDATA[Запустить или создать<br> схему]]></translation>
+        <source>Create Sequence</source>
+        <translation>Создать &lt;br&gt;последовательность</translation>
     </message>
     <message>
         <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="113"/>
-        <source>Quick Start Guide</source>
-        <translation><![CDATA[Краткое руководство<br>]]></translation>
+        <source>Run or Create Workflow</source>
+        <translation>Запустить или создать&lt;br&gt; схему</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="148"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="114"/>
+        <source>Quick Start Guide</source>
+        <translation>Краткое руководство&lt;br&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="152"/>
         <source>Recent files</source>
         <translation>Недавние файлы</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="154"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="158"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="189"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="193"/>
         <source>Cite UGENE:</source>
         <translation>Чтобы процитировать UGENE, используйте публикацию: </translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="203"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="207"/>
         <source>Follow UGENE:</source>
         <translation>UGENE в социальных сетях:</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="251"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="255"/>
         <source>No recent files</source>
         <translation>Нет открытых файлов</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="269"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="273"/>
         <source>No recent projects</source>
         <translation>Нет открытых проектов</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="342"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="346"/>
         <source>The Workflow Designer plugin is not loaded. You can add it using the menu Settings -&gt; Plugins. Then you need to restart UGENE.</source>
         <translation>Плагин дизайнера вычислительных схем не был загружен. Вы можете добавить его в меню Настройки -&gt; Модули. После этого перезапустите UGENE.</translation>
     </message>
