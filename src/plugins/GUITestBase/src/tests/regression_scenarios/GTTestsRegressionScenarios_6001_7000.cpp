@@ -4375,7 +4375,10 @@ GUI_TEST_CLASS_DEFINITION(test_6640_4) {
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 2. Select 4 reads
+	// 2. Click "Show chromatograms" button on the toolbar.
+	GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+
+    // 3. Select 4 reads
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR51");
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B70");
@@ -4383,7 +4386,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_4) {
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
-    // 3. Expected state: 4 reads are selected
+    // 4. Expected state: 4 reads are selected
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
     CHECK_SET_ERR(name.size() == 2, QString("1. Unexpected selection! Expected selection size == 2, actual selection size == %1").arg(QString::number(name.size())));
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR50", QString("Unexpected selected read, expected: SZYD_Cas9_CR50, current: %1").arg(name[0]));
