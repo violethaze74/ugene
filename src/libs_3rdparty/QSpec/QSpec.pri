@@ -58,7 +58,6 @@ win32 {
 
     QMAKE_MSVC_PROJECT_NAME=lib_3rd_QSpec
 
-    LIBS += User32.lib Gdi32.lib
-    LIBS += psapi.lib
+    LIBS += User32.lib Gdi32.lib Advapi32.lib psapi.lib
     DEFINES += "PSAPI_VERSION=1"
 }
