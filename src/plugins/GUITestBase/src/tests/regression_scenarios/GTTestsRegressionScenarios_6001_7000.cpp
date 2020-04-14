@@ -5553,6 +5553,38 @@ GUI_TEST_CLASS_DEFINITION(test_6718) {
     CHECK_SET_ERR(eq, "file should be equal to the clipboard");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6730) {
+    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    // 2. Switch on the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Select the first column and press the Delete key 6 times.
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 0);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+
+    // 4. Expected result: the whole column is selected.
+    QString expectedSelection = "T\nA\n-\n-\nA\nT\nA";
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTGlobals::sleep(500);
+    QString clipboardText = GTClipboard::text(os);
+    CHECK_SET_ERR(clipboardText == expectedSelection, QString("unexpected selection:\n%1").arg(clipboardText));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6734) {
     //1. Open "_common_data/scenarios/msa/ma.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
