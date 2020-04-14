@@ -60,6 +60,5 @@ macx {
 unix {
     target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
-    QMAKE_LFLAGS += -no-pie
     !macx: QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
 }
