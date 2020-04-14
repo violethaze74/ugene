@@ -118,6 +118,7 @@
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 
 namespace U2 {
 
@@ -5650,6 +5651,26 @@ GUI_TEST_CLASS_DEFINITION(test_6740) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
 
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(4, 3), QPoint(4, 3), "T");
+
+}
+GUI_TEST_CLASS_DEFINITION(test_6751) {
+
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Click twice on the "Consensus:" sign above the Name List area.
+    GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
+    GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
+
+    // 3. Select "Align" -> "Align with MUSCLE..." and click on the "Align" button.
+
+    GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTGlobals::sleep();
+
+    // Expected result: the alignment process has passed successfully.
 
 }
 GUI_TEST_CLASS_DEFINITION(test_6752) {

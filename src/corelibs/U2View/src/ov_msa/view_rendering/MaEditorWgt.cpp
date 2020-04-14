@@ -193,6 +193,7 @@ void MaEditorWgt::initWidgets() {
     QWidget *label;
     label = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consArea, false);
     label->setMinimumHeight(consArea->height());
+    label->setObjectName("consensusLabel");
 
     nameAreaLayout = new QVBoxLayout();
     nameAreaLayout->setContentsMargins(0, 0, 0, 0);
