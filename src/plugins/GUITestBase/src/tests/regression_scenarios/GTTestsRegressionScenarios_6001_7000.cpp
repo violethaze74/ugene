@@ -2350,6 +2350,38 @@ GUI_TEST_CLASS_DEFINITION(test_6398) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+namespace GuiTests {
+
+bool compareColorsInRange(const QColor &col1, const QColor &col2, int percentageRange) {
+    float coeffRight = (100.0 + percentageRange) / 100.0;
+    float coeffLeft = (100.0 - percentageRange) / 100.0;
+
+    int maxLimitRed = col1.red() * coeffRight;
+    int minLimitRed = col1.red() * coeffLeft;
+
+    if (minLimitRed > col2.red() || maxLimitRed < col2.red()) {
+        return false;
+    }
+
+    int maxLimitGreen = col1.green() * coeffRight;
+    int minLimitGreen = col1.green() * coeffLeft;
+
+    if (minLimitGreen > col2.green() || maxLimitGreen < col2.green()) {
+        return false;
+    }
+
+    int maxLimitBlue = col1.blue() * coeffRight;
+    int minLimitBlue = col1.blue() * coeffLeft;
+
+    if (minLimitBlue > col2.blue() || maxLimitBlue < col2.blue()) {
+        return false;
+    }
+
+    return true;
+}
+
+}    // namespace GuiTests
+
 GUI_TEST_CLASS_DEFINITION(test_6455) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "regression_6455.ugenedb");
     QFile::copy(dataDir + "samples/Assembly/chrM.fa", sandBoxDir + "regression_6455.fa");
@@ -2374,7 +2406,7 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
     GTUtilsAssemblyBrowser::zoomToMax(os);
     QWidget *refArea = GTWidget::findWidget(os, "Assembly reference sequence area");
     QString color = GTWidget::getColor(os, refArea, QPoint(5, 5)).name();
-    CHECK_SET_ERR(color == "#2bb42b", QString("color is %1, expected: #2bb42b").arg(color));
+    CHECK_SET_ERR(GuiTests::compareColorsInRange(color, QColor("#2bb42b"), 10), QString("color is %1, expected: #2bb42b").arg(color));
 
     //5. Edit chrM by add 5 symbols at start
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: regression_6455 [s] chrM"));
@@ -2395,9 +2427,11 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
 
     //6. Switch back to assembly view.
     //Expected result: first visible symbol on the screen is "A" with yellow background color.
+    GTUtilsProjectTreeView::doubleClickItem(os, "regression_6455.ugenedb");
+    GTGlobals::sleep();
     refArea = GTWidget::findWidget(os, "Assembly reference sequence area");
     color = GTWidget::getColor(os, refArea, QPoint(5, 5)).name();
-    CHECK_SET_ERR(color == "#bfc255", QString("color is %1, expected: #bfc255").arg(color));
+    CHECK_SET_ERR(GuiTests::compareColorsInRange(color, QColor("#09689c"), 10), QString("color is %1, expected: #09689c").arg(color));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6459) {
