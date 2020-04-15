@@ -1,7 +1,10 @@
-#include <io.h>
-#include <stdio.h>
 #ifdef _WIN32
-#include <windows.h>
+  #include <io.h>
+  #include <stdio.h>
+  #include <windows.h>
+#else
+  #include <sys/stat.h>
+  #include <fcntl.h>
 #endif
 
 #include "ugene_custom_io.h"
@@ -47,7 +50,7 @@ int ugene_custom_open2(const char *filename, int oflag, int pflag) {
 // The conversion is with CP_THREAD_ACP by default
 FILE* ugene_custom_fopen(const char *filename, const char* mode) {
 #ifndef _WIN32
-    return fopen(filename, oflag);
+    return fopen(filename, mode);
 #else
     int wchars_num = MultiByteToWideChar(CP_THREAD_ACP, 0, filename, -1, NULL, 0);
     wchar_t* w_filename = malloc(sizeof(wchar_t) * wchars_num);
