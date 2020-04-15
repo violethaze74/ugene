@@ -31,7 +31,6 @@
 
 #include <U2View/MaEditorStatusBar.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
