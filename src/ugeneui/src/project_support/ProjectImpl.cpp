@@ -217,7 +217,7 @@ void ProjectImpl::sl_onObjectRemoved(GObject* obj) {
 
 void ProjectImpl::sl_onObjectRelationChanged(const QList<GObjectRelation> &previousRelations) {
     GObject *obj = qobject_cast<GObject *>(sender());
-    CHECK(obj != nullptr)
+    CHECK(obj != nullptr, )
     QSet<GObjectRelation> relationsSet = obj->getObjectRelations().toSet();
     relationsSet.unite(previousRelations.toSet());
     QList<GObject *> allObjs;
