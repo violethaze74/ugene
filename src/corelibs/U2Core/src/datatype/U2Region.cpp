@@ -68,19 +68,19 @@ QVector<U2Region> U2Region::circularContainingRegion(QVector<U2Region> &_regions
     }
 }
 
-QVector<U2Region> U2Region::join(QVector<U2Region>& regions)  {
+QVector<U2Region> U2Region::join(QVector<U2Region>& regions) {
     QVector<U2Region> result = regions;
     qStableSort(result.begin(), result.end()); //sort by region start pos first
-    for (int i = 0; i < result.size()-1;) {
+    for (int i = 0; i < result.size() - 1;) {
         const U2Region& ri0 = result[i];
-        const U2Region& ri1 = result[i+1];
+        const U2Region& ri1 = result[i + 1];
         if (!ri0.intersects(ri1)) {
             i++;
             continue;
         }
         U2Region newRi = containingRegion(ri0, ri1);
         result[i] = newRi;
-        result.remove(i+1);
+        result.remove(i + 1);
     }
     return result;
 }
