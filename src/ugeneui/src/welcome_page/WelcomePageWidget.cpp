@@ -19,29 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include <QDragEnterEvent>
-#include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QFile>
 #include <QFileInfo>
-#include <QHBoxLayout>
 #include <QGridLayout>
-#include <QLinearGradient>
-#include <QTextBrowser>
 #include <QMessageBox>
 #include <QDesktopServices>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/IdRegistry.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Counter.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/WelcomePageAction.h>
 
 #include "WelcomePageWidget.h"
@@ -57,20 +50,21 @@ static QString newImageAndTextHtml(const QString& image, const QString& text) {
 }
 
 WelcomePageWidget::WelcomePageWidget(QWidget* parent)
-        : QWidget(parent) {
+        : QScrollArea(parent) {
 
-    auto layout = new QVBoxLayout();
+    auto widget = new QWidget();
+    auto layout = new QVBoxLayout(widget);
     layout->setMargin(0);
     layout->setSpacing(0);
-    setLayout(layout);
 
-    auto headerWidget = createHeaderWidget();
-    auto middleWidget = createMiddleWidget();
-    auto footerWidget = createFooterWidget();
+    layout->addWidget(createHeaderWidget());
+    layout->addWidget(createMiddleWidget());
+    layout->addWidget(createFooterWidget());
 
-    layout->addWidget(headerWidget);
-    layout->addWidget(middleWidget);
-    layout->addWidget(footerWidget);
+    setWidget(widget);
+    setWidgetResizable(true); // make the widget to fill whole available space
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     installEventFilter(this);
 }
@@ -131,6 +125,7 @@ QWidget* WelcomePageWidget::createMiddleWidget() {
     buttonsGridLayout->addWidget(createWorkflowButton, 1, 0);
 
     auto quickStartButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_help.png", quickStartText), normalStyle, hoveredStyle);
+    quickStartButton->setObjectName("quickStartButton");
     connect(quickStartButton, SIGNAL(clicked()), SLOT(sl_openQuickStart()));
     buttonsGridLayout->addWidget(quickStartButton, 1, 1);
 
@@ -185,37 +180,35 @@ QWidget* WelcomePageWidget::createFooterWidget() {
     footerBottomWidget->setStyleSheet("color: #145774; font-size: 16px;");
     auto footerBottomWidgetLayout = new QHBoxLayout();
     footerBottomWidget->setLayout(footerBottomWidgetLayout);
-    footerBottomWidgetLayout->setContentsMargins(25, 0, 0, 0);
+    footerBottomWidgetLayout->setContentsMargins(25, 10, 25, 0);
 
 
-    auto footerCiteBlock = new QTextBrowser();
-    footerCiteBlock->setFrameShape(QFrame::NoFrame);
-    footerCiteBlock->setHtml("<b>" + tr("Cite UGENE:") + "</b>"
-                                                         "<table><tr><td width=40></td><td>"
-                                                         "\"Unipro UGENE: a unified bioinformatics toolkit\"<br>"
-                                                         "Okonechnikov; Golosova; Fursov; the UGENE team<br>"
-                                                         "Bioinformatics 2012 28: 1166-1167"
-                                                         "</td></tr></table>"
+    auto footerCiteLabel = new QLabel("<b>" + tr("Cite UGENE:") + "</b>" +
+                                      "<table><tr><td width=40></td><td>"
+                                      "\"Unipro UGENE: a unified bioinformatics toolkit\"<br>"
+                                      "Okonechnikov; Golosova; Fursov; the UGENE team<br>"
+                                      "Bioinformatics 2012 28: 1166-1167"
+                                      "</td></tr></table>");
+    footerCiteLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    footerCiteLabel->setAlignment(Qt::AlignTop);
+    footerBottomWidgetLayout->addWidget(footerCiteLabel);
+    footerBottomWidgetLayout->addStretch(3);
+
+    auto footerFollowLabel = new QLabel("<b>" + tr("Follow UGENE:") + "</b>" +
+                                        "<table cellspacing=7><tr>"
+                                        "<td width=33></td>"
+                                        "<td><a href='https://www.facebook.com/groups/ugene'><img src=':/ugene/images/welcome_page/social_icon_facebook.png'></a></td>"
+                                        "<td><a href='https://twitter.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_twitter.png'></a></td>"
+                                        "<td><a href='https://www.linkedin.com/profile/view?id=200543736'><img src=':/ugene/images/welcome_page/social_icon_linkedin.png'></a></td>"
+                                        "<td><a href='http://www.youtube.com/user/UniproUGENE'><img src=':/ugene/images/welcome_page/social_icon_youtube.png'></a></td>"
+                                        "<td><a href='http://vk.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_vkontakte.png'></a></td>"
+                                        "<td><a href='http://feeds2.feedburner.com/NewsOfUgeneProject'><img src=':/ugene/images/welcome_page/social_icon_rss.png'></a></td>"
+                                        "</tr></table>"
     );
-    footerBottomWidgetLayout->addWidget(footerCiteBlock);
-    footerBottomWidgetLayout->addStretch();
-
-    auto footerFollowBlock = new QTextBrowser();
-    footerFollowBlock->setFrameShape(QFrame::NoFrame);
-    footerFollowBlock->setOpenExternalLinks(true);
-    footerFollowBlock->setHtml(
-            "<b>" + tr("Follow UGENE:") + "</b>"
-                                          "<table cellspacing=7><tr>"
-                                          "<td width=33></td>"
-                                          "<td><a href='https://www.facebook.com/groups/ugene'><img src=':/ugene/images/welcome_page/social_icon_facebook.png'></a></td>"
-                                          "<td><a href='https://twitter.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_twitter.png'></a></td>"
-                                          "<td><a href='https://www.linkedin.com/profile/view?id=200543736'><img src=':/ugene/images/welcome_page/social_icon_linkedin.png'></a></td>"
-                                          "<td><a href='http://www.youtube.com/user/UniproUGENE'><img src=':/ugene/images/welcome_page/social_icon_youtube.png'></a></td>"
-                                          "<td><a href='http://vk.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_vkontakte.png'></a></td>"
-                                          "<td><a href='http://feeds2.feedburner.com/NewsOfUgeneProject'><img src=':/ugene/images/welcome_page/social_icon_rss.png'></a></td>"
-                                          "</tr></table>"
-    );
-    footerBottomWidgetLayout->addWidget(footerFollowBlock);
+    footerFollowLabel->setOpenExternalLinks(true);
+    footerFollowLabel->setAlignment(Qt::AlignTop);
+    footerBottomWidgetLayout->addWidget(footerFollowLabel);
+    footerBottomWidgetLayout->addStretch(2);
     return footerWidget;
 }
 

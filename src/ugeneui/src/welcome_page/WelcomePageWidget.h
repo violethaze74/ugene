@@ -25,10 +25,11 @@
 #include <QWidget>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QScrollArea>
 
 namespace U2 {
 
-class WelcomePageWidget : public QWidget {
+class WelcomePageWidget : public QScrollArea {
     Q_OBJECT
 public:
     WelcomePageWidget(QWidget *parent);
