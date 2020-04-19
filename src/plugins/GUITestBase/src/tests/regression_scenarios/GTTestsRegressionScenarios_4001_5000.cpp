@@ -5905,7 +5905,7 @@ GUI_TEST_CLASS_DEFINITION(test_4969_2) {
     //2. Unload the sequence.
     GTUtilsDocument::unloadDocument(os, "murine.gb");
     //3. Click "murine.gb" on Start Page.
-    GTUtilsStartPage::clickResentDocument(os, "murine.gb");
+    GTWidget::click(os, GTWidget::findLabelByText(os, "murine.gb").first());
     //Expected: The file is loaded, the view is opened.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded(os, "murine.gb"), "The file is not loaded");

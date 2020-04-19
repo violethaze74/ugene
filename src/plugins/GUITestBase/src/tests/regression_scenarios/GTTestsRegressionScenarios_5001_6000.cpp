@@ -462,7 +462,7 @@ GUI_TEST_CLASS_DEFINITION(test_5052) {
     findOptions.matchPolicy = Qt::MatchContains;
     GTUtilsMdi::closeWindow(os, "NC_", findOptions);
     //3. Click "murine.gb" on Start Page.
-    GTUtilsStartPage::clickResentDocument(os, "murine.gb");
+    GTWidget::click(os, GTWidget::findLabelByText(os, "murine.gb").first());
     //Expected: The file is loaded, the view is opened.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded(os, "murine.gb"), "The file is not loaded");
