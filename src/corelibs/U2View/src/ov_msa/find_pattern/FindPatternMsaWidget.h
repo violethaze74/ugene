@@ -97,6 +97,9 @@ private:
     /** Assigns valid viewRowIndex value to all results & resorts them based on the view position. */
     void resortResultsByViewState();
 
+    /** Returns current visible result equal to the selection. Returns -1 if no such result found. */
+    int findCurrentResultIndexFromSelection() const;
+
     /** Returns next or prev result index using current selection top-left position. */
     int getNextOrPrevResultIndexFromSelection(bool isNext);
 
@@ -179,7 +182,11 @@ private:
     static const int REG_EXP_MAX_RESULT_LEN;
     static const int REG_EXP_MAX_RESULT_SINGLE_STEP;
 
-    QList<FindPatternWidgetResult> searchResults;
+    /** Visible only search results. */
+    QList<FindPatternWidgetResult> visibleSearchResults;
+
+    /** All search results: both visible & hidden in collapsed groups. */
+    QList<FindPatternWidgetResult> allSearchResults;
 
     /** Index of the currently selected result. */
     int currentResultIndex;
