@@ -26,58 +26,39 @@
 
 #include <U2Algorithm/FindAlgorithmTask.h>
 
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/Counter.h>
-#include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GenbankFeatures.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/Theme.h>
-#include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2DbiRegistry.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/TaskWatchdog.h>
 
 #include <U2Formats/FastaFormat.h>
 
-#include <U2Gui/CreateAnnotationWidgetController.h>
+#include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
-#include <U2Gui/U2FileDialog.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/ADVSequenceObjectContext.h>
-#include <U2View/ADVSequenceWidget.h>
-#include <U2View/ADVSingleSequenceWidget.h>
-#include <U2View/AnnotatedDNAView.h>
-#include <U2View/DetView.h>
+#include <U2View/MSAEditorSequenceArea.h>
 
-#include <U2Core/U2AlphabetUtils.h>
+#include "ov_msa/MaCollapseModel.h"
 
 #include "FindPatternMsaTask.h"
 #include "FindPatternMsaWidget.h"
 
 namespace U2 {
 
-const static QString SHOW_OPTIONS_LINK("show_options_link");
-
 const int FindPatternMsaWidget::DEFAULT_RESULTS_NUM_LIMIT = 100000;
 const int FindPatternMsaWidget::DEFAULT_REGEXP_RESULT_LENGTH_LIMIT = 10000;
-
-const QString FindPatternMsaWidget::NEW_LINE_SYMBOL = "\n";
-const QString FindPatternMsaWidget::STYLESHEET_COLOR_DEFINITION = "color: ";
-const QString FindPatternMsaWidget::STYLESHEET_DEFINITIONS_SEPARATOR = ";";
 
 const int FindPatternMsaWidget::REG_EXP_MIN_RESULT_LEN = 1;
 const int FindPatternMsaWidget::REG_EXP_MAX_RESULT_LEN = 1000;
@@ -92,7 +73,7 @@ public:
     }
 
     bool hasNext() const {
-        return (current < patternsString.size() - 1);
+        return current < patternsString.size() - 1;
     }
 
     char next() {
@@ -125,11 +106,7 @@ public:
             return true;
         }
         QChar c(patternsString[current]);
-        if (c.isLetter()) {
-            return c.isUpper();
-        } else {
-            return ('\n' == c);
-        }
+        return c.isLetter() ? c.isUpper() : c == '\n';
     }
 
     void setCurrent(char value) {
@@ -154,10 +131,11 @@ private:
 
 FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor* _msaEditor) 
     : msaEditor(_msaEditor),
+      currentResultIndex(-1),
       searchTask(nullptr),
       previousMaxResult(-1),
       savableWidget(this, GObjectViewUtils::findViewByName(msaEditor->getName())),
-      setSelectionToFirstValuebleResult(true) {
+      setSelectionToTheFirstResult(true) {
     setupUi(this);
     setObjectName("FindPatternMsaWidget");
     progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
@@ -194,7 +172,7 @@ FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor* _msaEditor)
 
     nextPushButton->setDisabled(true);
     prevPushButton->setDisabled(true);
-    showCurrentResultAndStopProgress(0, 0);
+    showCurrentResultAndStopProgress();
     setUpTabOrder();
     previousMaxResult = boxMaxResult->value();
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
@@ -204,113 +182,11 @@ int FindPatternMsaWidget::getTargetMsaLength() const {
     return msaEditor->getAlignmentLen();
 }
 
-void FindPatternMsaWidget::showCurrentResultAndStopProgress(const int current, const int total) {
+void FindPatternMsaWidget::showCurrentResultAndStopProgress() {
     progressMovie->stop();
     progressLabel->hide();
     resultLabel->show();
-    assert(total >= current);
-    if (!findPatternResults.isEmpty() && current == 0) {
-        resultLabel->setText(tr("Results: %1/%2").arg("-").arg(QString::number(total)));
-    } else {
-        resultLabel->setText(tr("Results: %1/%2").arg(QString::number(current)).arg(QString::number(total)));
-    }
-}
-
-FindPatternMsaWidget::ResultIterator::ResultIterator()
-    : msaEditor(nullptr), totalResultsCounter(0), globalPos(0) {}
-
-FindPatternMsaWidget::ResultIterator::ResultIterator(const QMap<int, QList<U2Region> >& results_, MSAEditor* msaEditor_)
-    : searchResults(results_), msaEditor(msaEditor_), totalResultsCounter(0), globalPos(0)
-{
-    initSortedResults();
-    foreach(int key, searchResults.keys()) {
-        totalResultsCounter += searchResults[key].size();
-    }
-}
-
-U2::U2Region FindPatternMsaWidget::ResultIterator::currentResult() const {
-    return *regionsIt;
-}
-
-int FindPatternMsaWidget::ResultIterator::getGlobalPos() const {
-    return globalPos;
-}
-
-int FindPatternMsaWidget::ResultIterator::getTotalCount() const {
-    return totalResultsCounter;
-}
-
-int FindPatternMsaWidget::ResultIterator::getMsaRow() const {
-    return msaRowsIt.key();
-}
-
-void FindPatternMsaWidget::ResultIterator::goBegin() {
-    globalPos = 1;
-    sortedVisibleRowsIt = sortedResults.constBegin();
-    msaRowsIt = sortedVisibleRowsIt->constBegin();
-    regionsIt = msaRowsIt->constBegin();
-}
-
-void FindPatternMsaWidget::ResultIterator::goEnd() {
-    globalPos = totalResultsCounter;
-    sortedVisibleRowsIt = sortedResults.constEnd() - 1;
-    msaRowsIt = sortedVisibleRowsIt->constEnd() - 1;
-    regionsIt = msaRowsIt->constEnd() - 1;
-}
-
-void FindPatternMsaWidget::ResultIterator::goNextResult() {
-    globalPos++;
-    if (globalPos == 1) {
-        sortedVisibleRowsIt = sortedResults.constBegin();
-        msaRowsIt = sortedVisibleRowsIt->constBegin();
-        regionsIt = msaRowsIt->constBegin();
-        return;
-    }
-    regionsIt++;
-    if (globalPos == totalResultsCounter + 1) {
-        goBegin();
-    } else if(regionsIt == msaRowsIt->constEnd()){
-        msaRowsIt++;
-        if (msaRowsIt == sortedVisibleRowsIt->constEnd()) {
-            sortedVisibleRowsIt++;
-            msaRowsIt = sortedVisibleRowsIt->constBegin();
-        }
-        regionsIt = msaRowsIt->constBegin();
-    }
-}
-
-void FindPatternMsaWidget::ResultIterator::goPrevResult() {
-    if (globalPos > 0) {
-        globalPos--;
-    }
-    if (globalPos == 0) {
-        goEnd();
-    } else if (regionsIt == msaRowsIt->constBegin()) {
-        if (msaRowsIt == sortedVisibleRowsIt->constBegin()) {
-            sortedVisibleRowsIt--;
-            msaRowsIt = sortedVisibleRowsIt->constEnd();
-        }
-        msaRowsIt--;
-        regionsIt = msaRowsIt->constEnd() - 1;
-    } else {
-        regionsIt--;
-    }
-}
-
-void FindPatternMsaWidget::ResultIterator::collapseModelChanged() {
-    if (msaEditor == nullptr || regionsIt == nullptr) {
-        return;
-    }
-    initSortedResults();
-    goBegin();
-}
-
-void FindPatternMsaWidget::ResultIterator::initSortedResults() {
-    sortedResults.clear();
-    MaCollapseModel* model = msaEditor->getUI()->getCollapseModel();
-    foreach(int key, searchResults.keys()) {
-        sortedResults[model->getViewRowIndexByMaRowIndex(key)][key] = searchResults[key];
-    }
+    updateCurrentResultLabel();
 }
 
 void FindPatternMsaWidget::initLayout() {
@@ -442,6 +318,10 @@ void FindPatternMsaWidget::connectSlots()
     connect(prevPushButton, SIGNAL(clicked()), SLOT(sl_prevButtonClicked()));
     connect(nextPushButton, SIGNAL(clicked()), SLOT(sl_nextButtonClicked()));
     connect(spinMatch, SIGNAL(valueChanged(int)), SLOT(sl_activateNewSearch()));
+
+    auto sequenceArea = msaEditor->getUI()->getSequenceArea();
+    connect(sequenceArea, SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            this, SLOT(sl_onSelectedRegionChanged(const MaEditorSelection &, const MaEditorSelection &)));
 }
 
 void FindPatternMsaWidget::sl_onAlgorithmChanged(int index)
@@ -457,12 +337,7 @@ void FindPatternMsaWidget::sl_onAlgorithmChanged(int index)
 }
 
 
-void FindPatternMsaWidget::sl_onRegionOptionChanged(int index)
-{
-    if (!msaEditor->getUI()->getSequenceArea()->getSelection().isEmpty()){
-        disconnect(msaEditor->getUI()->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
-            this, SLOT(sl_onSelectedRegionChanged(const MaEditorSelection &, const MaEditorSelection &)));
-    }
+void FindPatternMsaWidget::sl_onRegionOptionChanged(int index) {
     if (boxRegion->itemData(index).toInt() == RegionSelectionIndex_WholeSequence) {
         editStart->hide();
         lblStartEndConnection->hide();
@@ -476,16 +351,13 @@ void FindPatternMsaWidget::sl_onRegionOptionChanged(int index)
         editEnd->show();
         editStart->setReadOnly(false);
         editEnd->setReadOnly(false);
-
         getCompleteSearchRegion(regionIsCorrect, msaEditor->getAlignmentLen());
         checkState();
-    } else if(boxRegion->itemData(index).toInt() == RegionSelectionIndex_CurrentSelectedRegion) {
-        connect(msaEditor->getUI()->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
-            this, SLOT(sl_onSelectedRegionChanged(const MaEditorSelection &, const MaEditorSelection &)));
+    } else if (boxRegion->itemData(index).toInt() == RegionSelectionIndex_CurrentSelectedRegion) {
         editStart->show();
         lblStartEndConnection->show();
         editEnd->show();
-        sl_onSelectedRegionChanged(msaEditor->getUI()->getSequenceArea()->getSelection(), MaEditorSelection());
+        sl_onSelectedRegionChanged(msaEditor->getSelection(), MaEditorSelection());
     }
 }
 
@@ -619,8 +491,7 @@ void FindPatternMsaWidget::showHideMessage( bool show, MessageFlag messageFlag, 
                     const QString message = tr("Warning: annotation name or annotation group name are invalid. ");
                     text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     if (!additionalMsg.isEmpty()){
-                        const QString message = tr("Reason: ");
-                        text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                        text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
                         text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(additionalMsg);
                     }
                     const QString msg = tr(" Please input valid annotation names. ");
@@ -632,8 +503,7 @@ void FindPatternMsaWidget::showHideMessage( bool show, MessageFlag messageFlag, 
                     const QString message = tr("Warning: annotation names are invalid. ");
                     text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     if (!additionalMsg.isEmpty()){
-                        const QString message = tr("Reason: ");
-                        text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                        text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
                         text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(additionalMsg);
                     }
                     const QString msg = tr(" It will be automatically changed to acceptable name if 'Get annotations' button is pressed. ");
@@ -709,13 +579,10 @@ void FindPatternMsaWidget::sl_onSearchPatternChanged()
 }
 
 void FindPatternMsaWidget::sl_onMaxResultChanged(int newMaxResult) {
-    int resultsSize = 0;
-    foreach(const QList<U2Region> & regions, findPatternResults) {
-        resultsSize += regions.size();
-    }
-    bool limitResult = !findPatternResults.isEmpty() && newMaxResult < resultsSize;
+    int resultsSize = searchResults.size();
+    bool limitResult = !searchResults.isEmpty() && newMaxResult < resultsSize;
     bool widenResult = newMaxResult > previousMaxResult && resultsSize == previousMaxResult;
-    bool prevSearchIsNotComplete = findPatternResults.isEmpty() && searchTask != nullptr;
+    bool prevSearchIsNotComplete = searchResults.isEmpty() && searchTask != nullptr;
     if (limitResult || widenResult || prevSearchIsNotComplete) {
         sl_activateNewSearch();
     }
@@ -762,11 +629,7 @@ void FindPatternMsaWidget::setRegionToWholeSequence()
 bool FindPatternMsaWidget::verifyPatternAlphabet()
 {
     bool alphabetIsOk = checkAlphabet(textPattern->toPlainText().remove("\n"));
-    if (!alphabetIsOk) {
-        showHideMessage(true, PatternAlphabetDoNotMatch);
-    } else {
-        showHideMessage(false, PatternAlphabetDoNotMatch);
-    }
+    showHideMessage(!alphabetIsOk, PatternAlphabetDoNotMatch);
 
     bool result = alphabetIsOk;
 
@@ -849,37 +712,32 @@ void FindPatternMsaWidget::checkState()
 
 void FindPatternMsaWidget::enableDisableMatchSpin()
 {
-    if (textPattern->toPlainText().isEmpty() || isAmino) {
-        spinMatch->setEnabled(false);
-    } else {
-        spinMatch->setEnabled(true);
-    }
+    spinMatch->setDisabled(textPattern->toPlainText().isEmpty() || isAmino);
 }
 
-U2Region FindPatternMsaWidget::getCompleteSearchRegion(bool& regionIsCorrect, qint64 maxLen) const
-{
+U2Region FindPatternMsaWidget::getCompleteSearchRegion(bool& isRegionIsCorrect, qint64 maxLen) const {
     if (boxRegion->itemData(boxRegion->currentIndex()).toInt() == RegionSelectionIndex_WholeSequence) {
-        regionIsCorrect = true;
+        isRegionIsCorrect = true;
         return U2Region(0, maxLen);
     }
     bool ok = false;
     qint64 value1 = editStart->text().toLongLong(&ok) - 1;
     if (!ok || value1 < 0) {
-        regionIsCorrect = false;
+        isRegionIsCorrect = false;
         return U2Region();
     }
 
     int value2 = editEnd->text().toLongLong(&ok);
-    if (!ok || value2 <= 0 || value2 > maxLen){
-        regionIsCorrect = false;
+    if (!ok || value2 <= 0 || value2 > maxLen) {
+        isRegionIsCorrect = false;
         return U2Region();
     }
 
-    if (value1 > value2 ) { // start > end
+    if (value1 > value2) { // start > end
         value2 += maxLen;
     }
 
-    regionIsCorrect = true;
+    isRegionIsCorrect = true;
     return U2Region(value1, value2 - value1);
 }
 
@@ -926,7 +784,7 @@ void FindPatternMsaWidget::initFindPatternTask(const QList<NamePattern> &pattern
     // Region
     bool regionIsCorrectRef = false;
     U2Region region = getCompleteSearchRegion(regionIsCorrectRef, msaEditor->getAlignmentLen());
-    SAFE_POINT(true == regionIsCorrectRef, "Internal error: incorrect search region has been supplied."
+    SAFE_POINT(regionIsCorrectRef, "Internal error: incorrect search region has been supplied."
         " Skipping the pattern search.", );
     settings.findSettings.searchRegion = region;
 
@@ -961,25 +819,30 @@ void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
     if (findTask != searchTask){
         return;
     }
-    if (findTask->isFinished() || findTask->isCanceled() || findTask->hasError()) {
-        findPatternResults = findTask->getResults();
-        if (findPatternResults.isEmpty()) {
-            showCurrentResultAndStopProgress(0, 0);
-            nextPushButton->setDisabled(true);
-            prevPushButton->setDisabled(true);
-        } else {
-            resultIterator = ResultIterator(findPatternResults, msaEditor);
-            showCurrentResultAndStopProgress(resultIterator.getGlobalPos(), resultIterator.getTotalCount());
-            nextPushButton->setEnabled(true);
-            prevPushButton->setEnabled(true);
-            checkState();
-            correctSearchInCombo();
-            if (setSelectionToFirstValuebleResult) {
-                sl_nextButtonClicked();
-            }
-        }
-        searchTask = nullptr;
+    if (!findTask->isFinished() && !findTask->isCanceled() && !findTask->hasError()) {
+        return;
     }
+    searchResults.clear();
+    const QList<FindPatternInMsaResult>& findTaskResultList = findTask->getResults();
+    for (int i = 0; i < findTaskResultList.size(); i++) {
+        const FindPatternInMsaResult& findTaskResult = findTaskResultList[i];
+        for (int j = 0; j < findTaskResult.regions.length(); j++) {
+            searchResults << FindPatternWidgetResult(findTaskResult.rowId, -1, findTaskResult.regions[j]);
+        }
+    }
+    resortResultsByViewState();
+    showCurrentResultAndStopProgress();
+    nextPushButton->setDisabled(searchResults.isEmpty());
+    prevPushButton->setDisabled(searchResults.isEmpty());
+    if (!searchResults.isEmpty()) {
+        checkState();
+        correctSearchInCombo();
+        if (setSelectionToTheFirstResult) {
+            currentResultIndex = 0;
+            selectCurrentResult();
+        }
+    }
+    searchTask = nullptr;
 }
 
 bool FindPatternMsaWidget::checkAlphabet( const QString& pattern ){
@@ -987,11 +850,7 @@ bool FindPatternMsaWidget::checkAlphabet( const QString& pattern ){
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
         return true;
     }
-    bool patternFitsIntoAlphabet = TextUtils::fits(alphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());
-    if (patternFitsIntoAlphabet) {
-        return true;
-    }
-    return false;
+    return TextUtils::fits(alphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());
 }
 
 bool FindPatternMsaWidget::checkPatternRegion( const QString& pattern ){
@@ -1000,31 +859,39 @@ bool FindPatternMsaWidget::checkPatternRegion( const QString& pattern ){
     qint64 minMatch = patternLength - maxError;
     SAFE_POINT(minMatch > 0, "Search pattern length is greater than max error value!",false);
 
-    bool regionIsCorrect = false;
-    qint64 regionLength = getCompleteSearchRegion(regionIsCorrect, msaEditor->getAlignmentLen()).length;
+    bool isCorrect = false;
+    qint64 regionLength = getCompleteSearchRegion(isCorrect, msaEditor->getAlignmentLen()).length;
 
-    SAFE_POINT(regionLength > 0 && true == regionIsCorrect,
+    SAFE_POINT(regionLength > 0 && isCorrect,
                "Incorrect region length when enabling/disabling the pattern search button.", false);
 
-    if (minMatch > regionLength) {
-        return false;
-    }
-    return true;
+    return minMatch <= regionLength;
 }
 
-void FindPatternMsaWidget::sl_onSelectedRegionChanged(const MaEditorSelection& current, const MaEditorSelection& prev) {
-    if(!msaEditor->getUI()->getSequenceArea()->getSelection().isEmpty()){
-        QRect selection = msaEditor->getSelectionRect();
-        U2Region firstReg = U2Region(selection.topLeft().rx(), selection.width());
-        editStart->setText(QString::number(firstReg.startPos + 1));
-        editEnd->setText(QString::number(firstReg.endPos()));
+void FindPatternMsaWidget::sl_onSelectedRegionChanged(const MaEditorSelection& currentSelection, const MaEditorSelection& prev) {
+    bool isWholeSequenceSearch = boxRegion->itemData(boxRegion->currentIndex()).toInt() == RegionSelectionIndex_WholeSequence;
+    if (isWholeSequenceSearch) {
+        if (!isResultSelected()) {
+            // reset result position on non-compatible selection change.
+            currentResultIndex = -1;
+        }
     } else {
-        editStart->setText(QString::number(1));
-        editEnd->setText(QString::number(msaEditor->getAlignmentLen()));
+        currentResultIndex = -1;
+        if (currentSelection.isEmpty()) {
+            editStart->setText(QString::number(1));
+            editEnd->setText(QString::number(msaEditor->getAlignmentLen()));
+        } else {
+            QRect selectionRect = currentSelection.toRect();
+            U2Region firstReg = U2Region(selectionRect.topLeft().rx(), selectionRect.width());
+            editStart->setText(QString::number(firstReg.startPos + 1));
+            editEnd->setText(QString::number(firstReg.endPos()));
+
+        }
+        regionIsCorrect = true;
+        boxRegion->setCurrentIndex(boxRegion->findData(RegionSelectionIndex_CustomRegion));
     }
-    regionIsCorrect = true;
-    boxRegion->setCurrentIndex(boxRegion->findData(RegionSelectionIndex_CustomRegion));
     checkState();
+    updateCurrentResultLabel();
 }
 
 void FindPatternMsaWidget::updatePatternText(int previousAlgorithm) {
@@ -1044,48 +911,8 @@ void FindPatternMsaWidget::updatePatternText(int previousAlgorithm) {
     setCorrectPatternsString();
 }
 
-void FindPatternMsaWidget::validateCheckBoxSize(QCheckBox* checkBox, int requiredWidth) {
-    QFont font = checkBox->font();
-    QFontMetrics checkBoxMetrics(font, checkBox);
-    QString text = checkBox->text();
-
-    if(text.contains('\n')) {
-        return;
-    }
-
-    int lastSpacePos = 0;
-    QString wrappedText = "";
-    int startPos = 0;
-    QRect textRect = checkBoxMetrics.boundingRect(text);
-    if(textRect.width() <= requiredWidth) {
-        return;
-    }
-    int length = text.length();
-    for(int endPos = 0; endPos < length; endPos++) {
-        if(' ' == text.at(endPos) || endPos == length - 1) {
-            if(endPos-1 <= startPos) {
-                wrappedText = "";
-            } else {
-                wrappedText = text.mid(startPos, endPos - startPos - 1);
-            }
-            textRect = checkBoxMetrics.boundingRect(wrappedText);
-            if(textRect.width() > requiredWidth && 0 != lastSpacePos) {
-                startPos = endPos;
-                text[lastSpacePos] = '\n';
-            }
-            lastSpacePos = endPos;
-        }
-    }
-    checkBox->setText(text);
-}
-
-void FindPatternMsaWidget::sl_toggleExtendedAlphabet() {
-    verifyPatternAlphabet();
-    sl_activateNewSearch(true);
-}
-
 void FindPatternMsaWidget::sl_activateNewSearch(bool forcedSearch, bool activatedByOutsideChanges) {
-    setSelectionToFirstValuebleResult = !activatedByOutsideChanges;
+    setSelectionToTheFirstResult = !activatedByOutsideChanges;
     QList<NamePattern> newPatterns = updateNamePatterns();
     if(isSearchPatternsDifferent(newPatterns) || forcedSearch){
         patternList.clear();
@@ -1114,49 +941,49 @@ QList<NamePattern> FindPatternMsaWidget::updateNamePatterns() {
 }
 
 void FindPatternMsaWidget::sl_prevButtonClicked() {
-    resultIterator.goPrevResult();
-    showCurrentResult();
+    int nResults = searchResults.size();
+    CHECK(nResults > 0,);
+    if (currentResultIndex == -1 || !isResultSelected()) {
+        currentResultIndex = getNextOrPrevResultIndexFromSelection(false);
+    } else {
+        currentResultIndex = (currentResultIndex - 1 + nResults) % nResults;
+    }
+    selectCurrentResult();
 }
 
 void FindPatternMsaWidget::sl_nextButtonClicked() {
-    resultIterator.goNextResult();
-    showCurrentResult();
+    int nResults = searchResults.size();
+    CHECK(nResults > 0,);
+    if (currentResultIndex == -1 || !isResultSelected()) {
+        currentResultIndex = getNextOrPrevResultIndexFromSelection(true);
+    } else {
+        currentResultIndex = (currentResultIndex + 1) % nResults;
+    }
+    selectCurrentResult();
 }
 
-void FindPatternMsaWidget::showCurrentResult() const {
-    MaCollapseModel* model = msaEditor->getUI()->getCollapseModel();
-    int viewRowIndex = model->getViewRowIndexByMaRowIndex(resultIterator.getMsaRow(), true);
-    if (viewRowIndex == -1) {
-        viewRowIndex = model->getViewRowIndexByMaRowIndex(resultIterator.getMsaRow(), false);
-        model->toggle(viewRowIndex, false);
-    }
-    viewRowIndex = model->getViewRowIndexByMaRowIndex(resultIterator.getMsaRow(), true);
-    const U2Region& currentRegion = resultIterator.currentResult();
-    MaEditorSelection sel(QPoint(currentRegion.startPos, viewRowIndex), currentRegion.length, 1);
-    resultLabel->setText(tr("Results: %1/%2").arg(QString::number(resultIterator.getGlobalPos())).arg(QString::number(resultIterator.getTotalCount())));
-    CHECK(resultIterator.getTotalCount() >= resultIterator.getGlobalPos(), );
+void FindPatternMsaWidget::selectCurrentResult() {
+    int nResults = searchResults.length();
+    CHECK(currentResultIndex >= 0 && currentResultIndex < nResults,);
+    const FindPatternWidgetResult& result = searchResults[currentResultIndex];
     MaEditorSequenceArea* seqArea = msaEditor->getUI()->getSequenceArea();
-    seqArea->setSelection(sel);
-    seqArea->centerPos(sel.topLeft());
+    MaEditorSelection selection(result.region.startPos, result.viewRowIndex, result.region.length, 1);
+    seqArea->setSelection(selection);
+    seqArea->centerPos(selection.topLeft());
+    updateCurrentResultLabel();
 }
 
-void FindPatternMsaWidget::sl_onEnterPressed(){
-    if(nextPushButton->isEnabled()){
-        nextPushButton->click();
-    }
+void FindPatternMsaWidget::sl_onEnterPressed() {
+    nextPushButton->click();
 }
 
 void FindPatternMsaWidget::sl_onShiftEnterPressed(){
-    if(prevPushButton->isEnabled()){
-        prevPushButton->click();
-    }
+    prevPushButton->click();
 }
 
 void FindPatternMsaWidget::sl_collapseModelChanged() {
-    if (resultIterator.getTotalCount() != 0 && resultIterator.getGlobalPos() != 0) {
-        resultIterator.collapseModelChanged();
-        showCurrentResult();
-    }
+    resortResultsByViewState();
+    updateCurrentResultLabel();
 }
 
 bool FindPatternMsaWidget::isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const {
@@ -1178,10 +1005,10 @@ void FindPatternMsaWidget::stopCurrentSearchTask(){
         }
         searchTask = nullptr;
     }
-    findPatternResults.clear();
+    searchResults.clear();
     nextPushButton->setDisabled(true);
     prevPushButton->setDisabled(true);
-    showCurrentResultAndStopProgress(0, 0);
+    showCurrentResultAndStopProgress();
 }
 
 void FindPatternMsaWidget::correctSearchInCombo(){
@@ -1202,6 +1029,63 @@ void FindPatternMsaWidget::startProgressAnimation() {
     resultLabel->setText(tr("Results:"));
     progressLabel->show();
     progressMovie->start();
+}
+
+struct SearchResultsComparator {
+    bool operator()(const FindPatternWidgetResult& r1, const FindPatternWidgetResult& r2) const {
+        return r1.viewRowIndex != r2.viewRowIndex
+               ? r1.viewRowIndex < r2.viewRowIndex
+               : r1.region.startPos < r2.region.startPos;
+    }
+};
+
+void FindPatternMsaWidget::resortResultsByViewState() {
+    MaCollapseModel* collapseModel = msaEditor->getUI()->getCollapseModel();
+    for (int i = 0; i < searchResults.size(); i++) {
+        FindPatternWidgetResult& result = searchResults[i];
+        result.viewRowIndex = collapseModel->getViewRowIndexByMaRowId(result.rowId);
+    }
+    qSort(searchResults.begin(), searchResults.end(), SearchResultsComparator());
+}
+
+int FindPatternMsaWidget::getNextOrPrevResultIndexFromSelection(bool isNext) {
+    if (searchResults.isEmpty()) {
+        return -1;
+    }
+    const MaEditorSelection& selection = msaEditor->getSelection();
+    if (selection.isEmpty()) {
+        return 0;
+    }
+    int resultIndex = 0;
+    for (; resultIndex < searchResults.size(); resultIndex++) {
+        FindPatternWidgetResult& result = searchResults[resultIndex];
+        if (result.viewRowIndex >= selection.y() && result.region.startPos >= selection.x()) {
+            break;
+        }
+    }
+    return isNext ? resultIndex : resultIndex - 1;
+}
+
+bool FindPatternMsaWidget::isResultSelected() const {
+    const MaEditorSelection& selection = msaEditor->getSelection();
+    if (selection.isEmpty() || selection.height() != 1 || searchResults.isEmpty() || currentResultIndex == -1) {
+        return false;
+    }
+    const FindPatternWidgetResult& result = searchResults[currentResultIndex];
+    return selection.y() == result.viewRowIndex && result.region == selection.getXRegion();
+}
+
+void FindPatternMsaWidget::updateCurrentResultLabel() {
+    QString currentResultText = searchResults.isEmpty() || currentResultIndex < 0 ? "-" : QString::number(currentResultIndex + 1);
+    if (searchResults.isEmpty()) {
+        resultLabel->setText(tr("No results"));
+    } else {
+        resultLabel->setText(tr("Results: %1/%2").arg(currentResultText).arg(searchResults.size()));
+    }
+}
+
+FindPatternWidgetResult::FindPatternWidgetResult(qint64 rowId, int viewRowIndex, const U2Region& region)
+        : rowId(rowId), viewRowIndex(viewRowIndex), region(region) {
 }
 
 } // namespace
