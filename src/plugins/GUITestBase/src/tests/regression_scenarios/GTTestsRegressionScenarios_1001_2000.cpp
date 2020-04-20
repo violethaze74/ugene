@@ -6279,7 +6279,7 @@ GUI_TEST_CLASS_DEFINITION(test_1626) {
 
     //3. Change color scheme
     //Expected state: color scheme changed successfully
-    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << "Colors" << "Tailor"));
+    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) <<MSAE_MENU_APPEARANCE<<"Colors" << "Tailor"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 }
 
