@@ -8305,12 +8305,12 @@ GUI_TEST_CLASS_DEFINITION( test_1897 ) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(40, 4), QPoint(50, 12));
 
     //4) Choose Highlighting/Gaps action from context-menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList( ) << "Highlighting"
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList( ) << MSAE_MENU_APPEARANCE <<"Highlighting"
         << "Gaps" ) );
     GTMouseDriver::click(Qt::RightButton );
 
     //5) Look at Hightlighting/Gaps action again
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Highlighting"
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_APPEARANCE <<"Highlighting"
         << "Gaps", PopupChecker::IsChecked));
     GTMouseDriver::click(Qt::RightButton);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
