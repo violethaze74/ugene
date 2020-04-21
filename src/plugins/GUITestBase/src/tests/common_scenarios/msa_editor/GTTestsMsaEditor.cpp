@@ -3499,7 +3499,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050){
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Set this sequence as reference"));
         GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton, QPoint(10, 10));
 
-        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Highlighting" << "Agreements"));
+        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Highlighting" << "Agreements"));
         GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export" << "Export highlighted"));
