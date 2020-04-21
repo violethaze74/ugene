@@ -370,10 +370,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003_3) {
 
     GTUtilsMSAEditorSequenceArea::checkSorted(os, false);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Sort sequences by name");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Sort" << "Sort sequences by name");
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
@@ -384,7 +384,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_3) {
 
     GTUtilsMSAEditorSequenceArea::checkSorted(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
 }
