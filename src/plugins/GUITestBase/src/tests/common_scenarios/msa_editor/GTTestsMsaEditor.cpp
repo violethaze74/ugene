@@ -209,7 +209,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     // GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
@@ -222,7 +222,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
 
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
