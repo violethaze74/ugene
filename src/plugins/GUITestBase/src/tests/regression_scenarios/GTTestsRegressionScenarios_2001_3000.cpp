@@ -957,7 +957,7 @@ GUI_TEST_CLASS_DEFINITION( test_2124 ) {
     // 2. Call the context menu on the sequence area.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
     const QString colorSchemeName = getName() + "_Scheme";
-    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << "Colors"
+    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << MSAE_MENU_APPEARANCE << "Colors"
         << "Custom schemes" << "Create new color scheme" ) );
     GTUtilsDialog::waitForDialog( os, new NewColorSchemeCreator( os, colorSchemeName,
         NewColorSchemeCreator::amino ) );
@@ -965,7 +965,7 @@ GUI_TEST_CLASS_DEFINITION( test_2124 ) {
 
     // 3. Create a new color scheme for the amino alphabet.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << "Colors"
+    GTUtilsDialog::waitForDialog( os, new PopupChooser(os, QStringList( ) << MSAE_MENU_APPEARANCE << "Colors"
         << "Custom schemes" << colorSchemeName ) );
     GTMouseDriver::click(Qt::RightButton );
 }
