@@ -804,7 +804,7 @@ void FindPatternWidget::sl_onMaxResultChanged(int newMaxResult) {
 void FindPatternWidget::setCorrectPatternsString() {
     QTextCursor cursorInTextEdit = textPattern->textCursor();
 
-    if (FindAlgorithmPatternSettings_RegExp != selectedAlgorithm) {
+    if (selectedAlgorithm != FindAlgorithmPatternSettings_RegExp) {
         FastaPatternsWalker walker(textPattern->toPlainText(), cursorInTextEdit.position());
         // Delete all non-alphabet symbols.
         while (walker.hasNext()) {
@@ -813,11 +813,11 @@ void FindPatternWidget::setCorrectPatternsString() {
                 continue;
             }
             if (character.isLetter()) {
-                if(!character.isUpper()) {
+                if (!character.isUpper()) {
                     walker.setCurrent(character.toUpper().toLatin1());
                 }
             } else {
-                if ('\n' != character) {
+                if (character != '\n') {
                     walker.removeCurrent();
                 }
             }
@@ -860,19 +860,17 @@ bool FindPatternWidget::verifyPatternAlphabet()
     bool result = alphabetIsOk;
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        QString reText = textPattern->toPlainText();
+        QString pattern = textPattern->toPlainText();
 
         // Check that all symbols are ascii
-        if (reText.contains(QRegularExpression(QStringLiteral("[^\\x{0000}-\\x{007F}]")))) {
+        if (pattern.contains(QRegularExpression(QStringLiteral("[^\\x{0000}-\\x{007F}]")))) {
             showHideMessage(true, PatternWrongRegExp);
             result = false;
-        }
-        else {
-            QRegExp regExp(reText.toUtf8());
+        } else {
+            QRegExp regExp(pattern.toUtf8());
             if (regExp.isValid()) {
                 showHideMessage(false, PatternWrongRegExp);
-            }
-            else {
+            } else {
                 showHideMessage(true, PatternWrongRegExp);
                 result = false;
             }
@@ -944,12 +942,11 @@ void FindPatternWidget::checkState()
         showHideMessage(true, SearchRegionIncorrect);
         return;
     }
-    if(!usePatternFromFileRadioButton->isChecked()){
+    if (!usePatternFromFileRadioButton->isChecked()) {
         // Show warning if the length of the pattern is greater than the search region length
         // Not for RegExp algorithm
-        if (FindAlgorithmPatternSettings_RegExp != selectedAlgorithm) {
+        if (selectedAlgorithm != FindAlgorithmPatternSettings_RegExp) {
             bool regionOk = checkPatternRegion(textPattern->toPlainText());
-
             if (!regionOk) {
                 GUIUtils::setWidgetWarning(textPattern, true);
                 showHideMessage(true, PatternIsTooLong);
@@ -1070,7 +1067,7 @@ void FindPatternWidget::sl_onFileSelectorToggled(bool on) {
     sl_activateNewSearch(true);
 }
 
-void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) {
+void FindPatternWidget::initFindPatternTask(const QList<NamePattern>& patterns) {
     CHECK(!patterns.isEmpty(), );
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
@@ -1140,9 +1137,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     settings.maxErr = 0;
 
     settings.useAmbiguousBases = useAmbiguousBasesBox->isChecked();
-    settings.maxRegExpResultLength = boxUseMaxResultLen->isChecked() ?
-        boxMaxResultLen->value() :
-    DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
+    settings.maxRegExpResultLength = boxUseMaxResultLen->isChecked() ? boxMaxResultLen->value() : DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
 
     // Creating and registering the task
     bool removeOverlaps = removeOverlapsBox->isChecked();
@@ -1151,10 +1146,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     nextPushButton->setDisabled(true);
     prevPushButton->setDisabled(true);
 
-    searchTask = new FindPatternListTask(settings,
-        patterns,
-        removeOverlaps,
-        spinMatch->value());
+    searchTask = new FindPatternListTask(settings, patterns, removeOverlaps, spinMatch->value());
     connect(searchTask, SIGNAL(si_stateChanged()), SLOT(sl_findPatternTaskStateChanged()));
     startProgressAnimation();
     AppContext::getTaskScheduler()->registerTopLevelTask(searchTask);
