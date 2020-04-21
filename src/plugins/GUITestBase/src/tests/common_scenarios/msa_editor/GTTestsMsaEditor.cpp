@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Show offsets");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show offsets");
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
     CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
@@ -281,7 +281,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Show offsets");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show offsets");
     GTGlobals::sleep();
     GTGlobals::sleep();
 
