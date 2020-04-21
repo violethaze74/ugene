@@ -341,7 +341,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Sort sequences by name");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Sort" << "Sort sequences by name");
     GTGlobals::sleep();
 
     GTUtilsMSAEditorSequenceArea::checkSorted(os);
