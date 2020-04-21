@@ -973,7 +973,7 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
 
 //    4. Select the custom color scheme.
     GTUtilsOptionPanelMsa::setColorScheme(os, "test_5268");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance" << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep(500);
@@ -988,7 +988,7 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
                   QString("An incorrect color scheme is set in option panel: expect '%1', got '%2'")
                   .arg("test_5268").arg(opColorScheme));
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance" << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep(500);
