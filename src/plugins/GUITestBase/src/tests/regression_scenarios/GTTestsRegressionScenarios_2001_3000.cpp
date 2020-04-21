@@ -5574,14 +5574,14 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
 
     //    3. Create a new custom nucleotide color scheme.
     const QString colorSchemeName = getName() + "_NewScheme";
-    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << "Colors"
+    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << MSAE_MENU_APPEARANCE << "Colors"
         << "Custom schemes" << "Create new color scheme" ) );
     GTUtilsDialog::waitForDialog( os, new NewColorSchemeCreator( os, colorSchemeName,
         NewColorSchemeCreator::nucl ) );
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     GTGlobals::sleep(500);
-    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << "Colors"
+    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << MSAE_MENU_APPEARANCE << "Colors"
         << "Custom schemes" << colorSchemeName ) );
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
