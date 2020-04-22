@@ -429,7 +429,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004)
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep();
