@@ -4666,7 +4666,7 @@ GUI_TEST_CLASS_DEFINITION(test_6667_1) {
     //7. Click "next" button
     GTUtilsOptionPanelMsa::clickNext(os);
     
-    expectedSelection = QRect(4, 5, 5, 1);
+    expectedSelection = QRect(7, 2, 5, 1);
     actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
         .arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
