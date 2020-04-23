@@ -1917,6 +1917,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -1974,6 +1975,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2038,6 +2040,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2096,6 +2099,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2131,6 +2135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2177,6 +2182,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2216,6 +2222,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2304,6 +2311,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2401,6 +2409,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2493,6 +2502,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2528,6 +2538,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2572,6 +2583,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2611,25 +2623,26 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(1000);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'A', "1 Incorrect selected character");
 
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     qint64 rowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //3. Press Del keys on the keyboard.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'G', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'G', "2 Incorrect selected character");
     qint64 newRowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     CHECK_SET_ERR(rowLength == newRowLength + 1, "Incorrect row length");
 
@@ -2646,11 +2659,11 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected result: 'A' character appeared
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'A', "3 Incorrect selected character");
 
     //Expected result: consensus  sequence is restored
     sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2668,7 +2681,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
     //Expected state: the character is replaced by close character
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'G', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'G', "4 Incorrect selected character");
 
     //Expected state: the sequence is shifted one character to the left
     newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
@@ -2692,27 +2705,28 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(500);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'A', "1 Incorrect selected character");
 
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     qint64 rowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //3. Press "Remove selection" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'G', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'G', "2 Incorrect selected character");
     qint64 newRowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     CHECK_SET_ERR(rowLength == newRowLength + 1, "Incorrect row length");
 
@@ -2729,11 +2743,11 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected result: 'A' character appeared
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'A', "3 Incorrect selected character");
 
     //Expected result: consensus  sequence is restored
     sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2751,7 +2765,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
     //Expected state: the character is replaced by close character
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'G', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'G', "4 Incorrect selected character");
 
     //Expected state: the sequence is shifted one character to the left
     newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
@@ -2775,25 +2789,26 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+	GTGlobals::sleep(1000);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'A', "1 Incorrect selected character");
 
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     qint64 rowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //3. Press "Remove character/gap" from main
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove character/gap");
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'G', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'G', "2 Incorrect selected character");
     qint64 newRowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     CHECK_SET_ERR(rowLength == newRowLength + 1, "Incorrect row length");
 
@@ -2810,11 +2825,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected result: 'A' character appeared
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
+	GTGlobals::sleep(100);
+    CHECK_SET_ERR(selectedChar == 'A', "3 Incorrect selected character");
 
     //Expected result: consensus  sequence is restored
     sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2832,7 +2848,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     //Expected state: the character is replaced by close character
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'G', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'G', "4 Incorrect selected character");
 
     //Expected state: the sequence is shifted one character to the left
     newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
@@ -3028,15 +3044,18 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //2. Select one symbol in the read
+	
+	// 2. Click "Show chromatograms" button on the toolbar.
+	GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+    
+	//2. Select one symbol in the read
     QPoint point(2218, 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, point);
-    GTGlobals::sleep();
+	GTGlobals::sleep(100);
 
     //3. Push Space key
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep();
+	GTGlobals::sleep(100);
 
     //Expected state : Gap is inserted before symbol
     char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3044,7 +3063,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
     //4. Push Васkspace key
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-    GTGlobals::sleep();
+	GTGlobals::sleep(100);
 
     //Expected state : Gap is removed
     ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3057,16 +3076,17 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
+	
     //2. Select one symbol in the read
     QPoint point(2218, 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, point);
-    GTGlobals::sleep();
+	GTGlobals::sleep(100);
+
     QPoint startMousePosotion = GTMouseDriver::getMousePosition();
 
     //3. Move mouse with pressed left button to the right on one position
-    GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(startMousePosotion.x() + 20, startMousePosotion.y()));
-    GTGlobals::sleep();
+	GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(startMousePosotion.x() + 20, startMousePosotion.y()));
+    GTGlobals::sleep(100);
 
     //Expected state: Gap is inserted before symbol
     char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3074,7 +3094,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
 
     //4. Move mouse with pressed left button to the left on one position
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, startMousePosotion);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected state : Gap is removed
     ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3089,9 +3109,12 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     int startRowHeinght = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
 
+	// 2. Click "Show chromatograms" button on the toolbar.
+	GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+
     //2. Push Zoom In
     GTUtilsMcaEditor::zoomIn(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected state : All Characters increased in size
     int currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3101,7 +3124,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //3. Push Zoom out
     GTUtilsMcaEditor::zoomOut(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected state : All Characters reduced in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3123,7 +3146,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //5. Push Reset Zoom
     GTUtilsMcaEditor::resetZoom(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     //Expected state : All Characters reduced in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3408,6 +3431,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+	GTGlobals::sleep(100);
 
 //    Expected state: Line: - / 16; RefPos: - / 11878; ReadPos: - / -.
     QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3425,6 +3449,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    2. Select the first row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 0);
+	GTGlobals::sleep(100);
 
 //    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3442,6 +3467,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    3. Select the second row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 1);
+	GTGlobals::sleep(100);
 
 //    Expected state: Line: 2 / 16; RefPos: - / 11878; ReadPos: - / 1173.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3459,6 +3485,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    4. Select the last row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 15);
+	GTGlobals::sleep(1000);
 
 //    Expected state: Line: 16 / 16; RefPos: - / 11878; ReadPos: - / 1048.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3476,6 +3503,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    5. Click "Show chromatograms" button on the toolbar.
     GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+	GTGlobals::sleep(1000);
 
 //    Expected state: all rows have been expanded, the labels are the same as in the previous step.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3490,9 +3518,10 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("11878" == referenceLengthString, QString("5. Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("5. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR("1048" == readLengthString, QString("5. Unexpected read length label: expected '%1', got '%2'").arg("1048").arg(readLengthString));
-
+	GTGlobals::sleep(500);
 //    6. Select the first row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 0);
+	GTGlobals::sleep(500);
 
 //    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3510,6 +3539,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    7. Select the first base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 0);
+	GTGlobals::sleep(100);
+
 
 //    Expected state: Line: - / 16; RefPos: 1 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3527,6 +3558,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    8. Select the third base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 2);
+	GTGlobals::sleep(100);
+
 
 //    Expected state: Line: - / 16; RefPos: 3 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3544,6 +3577,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    9. Select the last base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 11936);
+	GTGlobals::sleep(1000);
+
 
 //    Expected state: Line: - / 16; RefPos: 11878 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3561,6 +3596,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    10. Select a column with a gap in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 2071);
+	GTGlobals::sleep(100);
+
 
 //    Expected state: Line: - / 16; RefPos: gap / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3578,6 +3615,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    11. Select the first base of the second read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2052, 1));
+	GTGlobals::sleep(100);
+
 
 //    Expected state: Line: 2 / 16; RefPos: 2053 / 11878; ReadPos: 1 / 1173.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3595,6 +3634,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    12. Select the third base of the fourth read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(4615, 3));
+	GTGlobals::sleep(100);
+
 
 //    Expected state: Line: 4 / 16; RefPos: 4570 / 11878; ReadPos: 3 / 1014.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3612,6 +3653,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    13. Select the fourth symbol of the fourth read (it is a gap).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(4616, 3));
+	GTGlobals::sleep(100);
+
 
 //    Expected state: Line: 4 / 16; RefPos: 4571 / 11878; ReadPos: gap / 1014.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3629,6 +3672,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    14. Select the 19 symbol of the 7 read (it is a gap, the reference also contains a gap on this position).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(3070, 6));
+	GTGlobals::sleep(100);
+
 
 //    Expected state: Line: 7 / 16; RefPos: gap / 11878; ReadPos: gap / 1036.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3646,6 +3691,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
 //    15. Select the 21 symbol of the 7 read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(3072, 6));
+	GTGlobals::sleep(100);
+
 
 //    Expected state: Line: 7 / 16; RefPos: 3073 / 11878; ReadPos: 20 / 1036.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
