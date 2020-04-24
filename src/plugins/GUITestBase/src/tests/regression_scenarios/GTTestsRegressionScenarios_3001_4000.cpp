@@ -3768,6 +3768,7 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
 
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read NGS Reads Assembly");
     CHECK_SET_ERR(read != NULL, "Added workflow element is NULL");
+	GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dirPath + "chrM.sam");
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -3907,8 +3908,8 @@ GUI_TEST_CLASS_DEFINITION(test_3609_3) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_GOTO_ACTION));
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 199960));
     GTWidget::click(os, seqWidget, Qt::RightButton);
-    GTGlobals::sleep(5000);
-
+ 
+   GTGlobals::sleep(5000);
     GTUtilsLog::check(os, l);
 }
 GUI_TEST_CLASS_DEFINITION(test_3610) {
