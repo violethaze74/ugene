@@ -4414,6 +4414,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_4) {
 
 	// 2. Click "Show chromatograms" button on the toolbar.
 	GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+	GTGlobals::sleep(100);
 
     // 3. Select 4 reads
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR51");
