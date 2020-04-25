@@ -22,9 +22,9 @@
 #ifndef _U2_DASHBOARD_H_
 #define _U2_DASHBOARD_H_
 
-#include <U2Gui/U2WebView.h>
-
 #include <U2Lang/WorkflowMonitor.h>
+
+#include "webview/U2WebView.h"
 
 namespace U2 {
 using namespace Workflow;

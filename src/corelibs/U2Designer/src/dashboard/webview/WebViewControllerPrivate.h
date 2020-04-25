@@ -19,29 +19,40 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WEB_VIEW_WEB_KIT_CONTROLLER_PRIVATE_H_
-#define _U2_WEB_VIEW_WEB_KIT_CONTROLLER_PRIVATE_H_
+#ifndef _U2_WEB_VIEW_CONTROLLER_PRIVATE_H_
+#define _U2_WEB_VIEW_CONTROLLER_PRIVATE_H_
 
-#include "util/webview/WebViewControllerPrivate.h"
+#include <QPointer>
+
+#include "U2WebView.h"
 
 namespace U2 {
 
-class WebViewWebKitControllerPrivate : public WebViewControllerPrivate {
+class JavaScriptAgent;
+
+class WebViewControllerPrivate : public QObject {
     Q_OBJECT
 public:
-    WebViewWebKitControllerPrivate(U2WebView *webView);
+    WebViewControllerPrivate(U2WebView *webView);
 
-    void loadPage(const QString &pageUrl);
-    void savePage(const QString &pageUrl);
+    virtual void init() = 0;
 
-    void registerJavaScriptAgent(JavaScriptAgent *agent);
-    void runJavaScript(const QString &script);
-    void runJavaScript(const QString &script, WebViewCallback callback);
+    virtual void loadPage(const QString &pageUrl) = 0;
+    virtual void savePage(const QString &pageUrl) = 0;
 
-private:
-    void init();
+    virtual void registerJavaScriptAgent(JavaScriptAgent *agent) = 0;
+    virtual void runJavaScript(const QString &script) = 0;
+    virtual void runJavaScript(const QString &script, WebViewCallback callback) = 0;
+
+    static void saveContent(const QString &url, const QString &data);
+
+private slots:
+    void sl_linkClicked(const QUrl &url);
+
+protected:
+    QPointer<U2WebView> webView;
 };
 
 }   // namespace U2
 
-#endif // _U2_WEB_VIEW_WEB_KIT_CONTROLLER_PRIVATE_H_
+#endif // _U2_WEB_VIEW_CONTROLLER_PRIVATE_H_

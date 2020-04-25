@@ -22,7 +22,7 @@
 #include <QWebFrame>
 
 #include "WebViewWebKitControllerPrivate.h"
-#include "util/webview/JavaScriptAgent.h"
+#include "../JavaScriptAgent.h"
 
 namespace U2 {
 

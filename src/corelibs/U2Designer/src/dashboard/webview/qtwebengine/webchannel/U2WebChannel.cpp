@@ -23,8 +23,8 @@
 #include <QWebChannelAbstractTransport>
 #include <QWebSocketServer>
 
-#include <U2Gui/WebSocketClientWrapper.h>
-#include <U2Gui/WebSocketTransport.h>
+#include <U2Designer/WebSocketClientWrapper.h>
+#include <U2Designer/WebSocketTransport.h>
 #endif
 
 #include <QWebEnginePage>

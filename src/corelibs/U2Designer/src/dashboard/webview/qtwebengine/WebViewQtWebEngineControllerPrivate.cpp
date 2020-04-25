@@ -22,8 +22,8 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "WebViewQtWebEngineControllerPrivate.h"
-#include "util/webview/JavaScriptAgent.h"
-#include "util/webview/qtwebengine/webchannel/U2WebChannel.h"
+#include "../JavaScriptAgent.h"
+#include "../qtwebengine/webchannel/U2WebChannel.h"
 
 namespace U2 {
 

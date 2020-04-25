@@ -24,7 +24,7 @@
 #include <QJsonObject>
 #include <QMetaMethod>
 
-#include <U2Gui/WebViewController.h>
+#include "webview/WebViewController.h"
 
 #include "Dashboard.h"
 #include "DashboardJsAgent.h"

@@ -26,7 +26,7 @@
 #include "GTGlobals.h"
 #include <primitives/GTWebView.h>
 
-#include <U2Gui/U2WebView.h>
+#include <U2Designer/U2WebView.h>
 
 namespace U2 {
 using namespace HI;

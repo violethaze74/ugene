@@ -22,7 +22,7 @@
 #ifndef _U2_DASHBOARD_PAGE_CONTROLLER_H_
 #define _U2_DASHBOARD_PAGE_CONTROLLER_H_
 
-#include <U2Gui/SimpleWebViewBasedWidgetController.h>
+#include "./webview/SimpleWebViewBasedWidgetController.h"
 
 #include <U2Lang/WorkflowMonitor.h>
 

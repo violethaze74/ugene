@@ -23,7 +23,7 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/WebViewController.h>
+#include "WebViewController.h"
 
 #include "SimpleWebViewBasedWidgetController.h"
 

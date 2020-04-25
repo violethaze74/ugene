@@ -22,7 +22,6 @@
 #ifndef _U2_STATISTICAL_REPORT_CONTROLLER_H_
 #define _U2_STATISTICAL_REPORT_CONTROLLER_H_
 
-#include <U2Gui/U2WebView.h>
 #include <QtWidgets/QTextBrowser>
 
 #include "ui_StatisticalReport.h"

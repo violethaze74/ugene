@@ -24,9 +24,9 @@
 
 #include <QPointer>
 
-#include <U2Gui/JavaScriptAgent.h>
-
 #include <U2Lang/WorkflowMonitor.h>
+
+#include "webview/JavaScriptAgent.h"
 
 namespace U2 {
 
