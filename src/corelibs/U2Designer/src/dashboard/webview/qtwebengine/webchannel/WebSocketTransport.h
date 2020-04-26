@@ -57,7 +57,7 @@
 
 class QWebSocket;
 namespace U2 {
-class U2GUI_EXPORT WebSocketTransport : public QWebChannelAbstractTransport {
+class U2DESIGNER_EXPORT WebSocketTransport : public QWebChannelAbstractTransport {
     Q_OBJECT
 public:
     explicit WebSocketTransport(QWebSocket *socket);
