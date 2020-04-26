@@ -61,7 +61,7 @@ namespace U2 {
 
 class WebSocketTransport;
 
-class U2GUI_EXPORT WebSocketClientWrapper : public QObject {
+class U2DESIGNER_EXPORT WebSocketClientWrapper : public QObject {
     Q_OBJECT
 
 public:

@@ -41,7 +41,7 @@ typedef class QWebView U2WebView;
 typedef class QWebPage U2WebPage;
 #else
 
-class U2GUI_EXPORT U2WebPage : public QWebEnginePage {
+class U2DESIGNER_EXPORT U2WebPage : public QWebEnginePage {
     Q_OBJECT
 public:
     U2WebPage(QObject *parent = Q_NULLPTR) : QWebEnginePage(parent) {

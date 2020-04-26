@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class U2GUI_EXPORT JavaScriptAgent : public QObject {
+class U2DESIGNER_EXPORT JavaScriptAgent : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(QString lang MEMBER lang CONSTANT)

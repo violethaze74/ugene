@@ -29,7 +29,7 @@ namespace U2 {
 class JavaScriptAgent;
 class WebViewController;
 
-class U2GUI_EXPORT SimpleWebViewBasedWidgetController : public QObject {
+class U2DESIGNER_EXPORT SimpleWebViewBasedWidgetController : public QObject {
     Q_OBJECT
 public:
     SimpleWebViewBasedWidgetController(U2WebView *webView, JavaScriptAgent *agent = Q_NULLPTR);

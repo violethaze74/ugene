@@ -29,7 +29,7 @@ namespace U2 {
 
 class WebViewControllerPrivate;
 
-class U2GUI_EXPORT WebViewController : public QObject {
+class U2DESIGNER_EXPORT WebViewController : public QObject {
     Q_OBJECT
 public:
     WebViewController(U2WebView *webView, JavaScriptAgent *agent = Q_NULLPTR);
