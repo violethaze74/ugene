@@ -360,6 +360,11 @@ bool parseAttributes(QString attributesStr, QMap<QString, QString>& parsedAttrVa
     int pos = 0;
 
     while (pos < attributesStr.size()) {
+        //skip sequence of spaces
+        while (attributesStr.at(pos) == " ") {
+            pos++;
+        }
+
         int spaceCharIndex = attributesStr.indexOf(' ', pos);
 
         if (-1 == spaceCharIndex) {
