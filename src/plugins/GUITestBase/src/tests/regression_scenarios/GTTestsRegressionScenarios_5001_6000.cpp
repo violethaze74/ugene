@@ -3856,14 +3856,15 @@ GUI_TEST_CLASS_DEFINITION(test_5770) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+	GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Select read "SZYD_Cas9_5B71"
-    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
+    //2. Select read "SZYD_Cas9_5B70"
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B70");
+	GTGlobals::sleep();
 
     //3. Hold the _Shift_ key and press the _down arrow_ key.
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR51");
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(500);
 
@@ -4376,7 +4377,6 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(100);
 
 //    2. Select 440 base on the second read (the position is ungapped).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2506, 1));

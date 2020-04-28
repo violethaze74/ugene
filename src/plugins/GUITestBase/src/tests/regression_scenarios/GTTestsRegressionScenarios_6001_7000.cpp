@@ -4414,15 +4414,16 @@ GUI_TEST_CLASS_DEFINITION(test_6640_4) {
 
 	// 2. Click "Show chromatograms" button on the toolbar.
 	GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
-	GTGlobals::sleep(100);
 
     // 3. Select 4 reads
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR51");
+	GTGlobals::sleep();
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B70");
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+	GTGlobals::sleep();
 
     // 4. Expected state: 4 reads are selected
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
