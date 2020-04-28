@@ -32,8 +32,8 @@
 
 namespace U2 {
 
-DashboardPageController::DashboardPageController(Dashboard *_dashboard, U2WebView* webView)
-    : SimpleWebViewBasedWidgetController(webView, new DashboardJsAgent(_dashboard)),
+DashboardPageController::DashboardPageController(Dashboard *_dashboard)
+    : SimpleWebViewBasedWidgetController(_dashboard, new DashboardJsAgent(_dashboard)),
       progress(0),
       state(Dashboard::STATE_RUNNING),
       dashboard(_dashboard),

@@ -65,7 +65,6 @@ signals:
     void si_workerStatsUpdate(QString workersStatisticsInfo);   //workaround for Qt5.4, sould be simple QJsonArray.
     void si_onLogChanged(QString logEntry);                     //workaround for Qt5.4 and Qt5.5, sould be simple QJsonObject. More info see https://bugreports.qt.io/browse/QTBUG-48198
     void si_newOutputFile(QString fileInfo);                    //workaround for Qt5.4 and Qt5.5, sould be simple QJsonObject. More info see https://bugreports.qt.io/browse/QTBUG-48198
-    void si_switchTab(QString tabId);                          //workaround for Qt5.4 and Qt5.5, sould be simple QJsonObject. More info see https://bugreports.qt.io/browse/QTBUG-48198
     void si_createOutputWidget();
 
 private:
