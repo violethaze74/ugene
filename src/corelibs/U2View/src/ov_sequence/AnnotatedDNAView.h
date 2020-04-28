@@ -60,7 +60,6 @@ class AutoAnnotationsUpdater;
 class OptionsPanel;
 
 class CodonTableView;
-class CodonTableAction;
 
 class U2VIEW_EXPORT AnnotatedDNAView : public GObjectView {
     Q_OBJECT
@@ -120,8 +119,6 @@ public:
 
     ADVSequenceObjectContext* getSequenceInFocus() const;
 
-    QList<ADVSequenceObjectContext*> getAllSeqContextsInFocus() const;
-
     QList<ADVSequenceObjectContext*> findRelatedSequenceContexts(GObject* obj) const;
 
     void setFocusedSequenceWidget(ADVSequenceWidget* v);
@@ -132,13 +129,9 @@ public:
 
     void addADVAction(ADVGlobalAction* a);
 
-    void removeADVAction(ADVGlobalAction* a) {advActions.removeAll(a);}
-
     AnnotationsTreeView* getAnnotationsView() {return annotationsView;}
 
     void updateAutoAnnotations();
-
-    void addAutoAnnotationsUpdated(AutoAnnotationsUpdater* updater);
 
     /**
      * Returns "true" if all input annotations are within the bounds of the associated sequences.
@@ -170,7 +163,6 @@ protected:
     virtual void addAlignMenu(QMenu* m);
     virtual void addRemoveMenu(QMenu* m);
     virtual void addEditMenu(QMenu* m);
-    virtual ADVSequenceWidget* findSequenceWidgetByPos(const QPoint& globalPos) const;
 
     virtual bool onCloseEvent();
 
@@ -188,7 +180,6 @@ signals:
     /** Emitted when a part was added to a sequence, or it was removed or replaced */
     void si_sequenceModified(ADVSequenceObjectContext*);
     void si_onClose(AnnotatedDNAView* v);
-    void si_proxyCopyQualifierActionTriggered();
 
 public slots:
     void sl_onPosChangeRequest(int pos);

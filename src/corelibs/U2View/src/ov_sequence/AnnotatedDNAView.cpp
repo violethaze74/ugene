@@ -157,16 +157,16 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     removeSequenceObjectAction->setObjectName(ACTION_EDIT_SELECT_SEQUENCE_FROM_VIEW);
     connect(removeSequenceObjectAction, SIGNAL(triggered()), SLOT(sl_removeSelectedSequenceObject()));
 
-    reverseComplementSequenceAction = new QAction(tr("Reverse-complement sequence"), this);
+    reverseComplementSequenceAction = new QAction(tr("Complementary (5'-3') sequence"), this);
     reverseComplementSequenceAction ->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_R));
     reverseComplementSequenceAction->setObjectName(ACTION_EDIT_RESERVE_COMPLEMENT_SEQUENCE);
     connect(reverseComplementSequenceAction, SIGNAL(triggered()), SLOT(sl_reverseComplementSequence()));
 
-    reverseSequenceAction = new QAction(tr("Reverse sequence"), this);
+    reverseSequenceAction = new QAction(tr("Reverse (3'-5') sequence"), this);
     reverseSequenceAction->setObjectName(ACTION_EDIT_RESERVE_SEQUENCE);
     connect(reverseSequenceAction, SIGNAL(triggered()), SLOT(sl_reverseSequence()));
 
-    complementSequenceAction = new QAction(tr("Complement sequence"), this);
+    complementSequenceAction = new QAction(tr("Complementary (3'-5') sequence"), this);
     complementSequenceAction->setObjectName(ACTION_EDIT_COMPLEMENT_SEQUENCE);
     connect(complementSequenceAction, SIGNAL(triggered()), SLOT(sl_complementSequence()));
 
@@ -460,7 +460,7 @@ bool AnnotatedDNAView::onObjectRemoved(GObject* o) {
     } else if (o->getGObjectType() == GObjectTypes::SEQUENCE) {
         U2SequenceObject *seqObj = qobject_cast<U2SequenceObject *>(o);
         ADVSequenceObjectContext *seqCtx = getSequenceContext(seqObj);
-        if (NULL != seqCtx) {
+        if (seqCtx != NULL) {
             foreach (ADVSequenceWidget *w, seqCtx->getSequenceWidgets()) {
                 removeSequenceWidget(w);
             }
@@ -554,17 +554,6 @@ void AnnotatedDNAView::buildStaticMenu(QMenu* m) {
     GObjectView::buildStaticMenu(m);
 }
 
-ADVSequenceWidget * AnnotatedDNAView::findSequenceWidgetByPos(const QPoint& globalPos) const {
-    foreach(ADVSequenceWidget* slv, seqViews) {
-        const QRect& rect = slv->rect();
-        QPoint localPos = slv->mapFromGlobal(globalPos);
-        if (rect.contains(localPos)) {
-            return slv;
-        }
-    }
-    return NULL;
-}
-
 void AnnotatedDNAView::addAnalyseMenu(QMenu* m) {
     QMenu* am = m->addMenu(tr("Analyze"));
     am->menuAction()->setObjectName(ADV_MENU_ANALYSE);
@@ -602,39 +591,41 @@ void AnnotatedDNAView::addRemoveMenu(QMenu* m) {
 
 void AnnotatedDNAView::addEditMenu(QMenu* m) {
     ADVSequenceObjectContext* seqCtx = getSequenceInFocus();
-    SAFE_POINT(NULL != seqCtx, "Sequence in focus is NULL",);
+    SAFE_POINT(seqCtx != nullptr, "Sequence in focus is NULL",);
+
     U2SequenceObject *seqObj = seqCtx->getSequenceObject();
-    SAFE_POINT(NULL != seqObj, "Sequence object in focus is NULL",);
+    SAFE_POINT(seqObj != nullptr, "Sequence object in focus is NULL",);
+
     Document *curDoc = seqObj->getDocument();
-    SAFE_POINT(NULL != curDoc, "Current document is NULL",);
-    QMenu* rm = m->addMenu(tr("Edit"));
+    SAFE_POINT(curDoc != nullptr, "Current document is NULL",);
 
-    if(curDoc->findGObjectByType(GObjectTypes::SEQUENCE).isEmpty() || seqObj->isStateLocked()) {
-        rm->setDisabled(true);
-    }else{
-        rm->setEnabled(true);
-    };
-    rm->menuAction()->setObjectName(ADV_MENU_EDIT);
+    QMenu* editMenu = m->addMenu(tr("Edit"));
+    editMenu->setEnabled(!(curDoc->findGObjectByType(GObjectTypes::SEQUENCE).isEmpty() || seqObj->isStateLocked()));
+    editMenu->menuAction()->setObjectName(ADV_MENU_EDIT);
 
+    QAction* editAction = getEditActionFromSequenceWidget(focusedWidget);
+    if (editAction != nullptr) {
+        editMenu->addAction(editAction);
+    }
     if (annotationSelection->getAnnotations().size() == 1 && annotationsView->editAction->isEnabled()) {
-        rm->addAction(annotationsView->editAction);
+        editMenu->addAction(annotationsView->editAction);
     }
+    editMenu->addAction(editSettingsAction);
+    editMenu->addSeparator();
 
-    rm->addAction(editSettingsAction);
-    rm->addAction(addSequencePart);
-    rm->addAction(replaceSequencePart);
+    editMenu->addAction(addSequencePart);
+    editMenu->addAction(replaceSequencePart);
     sl_selectionChanged();
-    rm->addAction(removeSequencePart);
-    if (seqCtx->getComplementTT() != NULL) {
-        reverseComplementSequenceAction->setEnabled(true);
-        complementSequenceAction->setEnabled(true);
-    } else {
-        reverseComplementSequenceAction->setEnabled(false);
-        complementSequenceAction->setEnabled(false);
+    editMenu->addAction(removeSequencePart);
+    editMenu->addSeparator();
+
+    if (seqObj->getAlphabet()->isNucleic() && seqCtx->getComplementTT() != NULL) {
+        QMenu* replaceMenu = editMenu->addMenu(tr("Replace the whole sequence with"));
+        replaceMenu->addAction(reverseComplementSequenceAction);
+        replaceMenu->addSeparator();
+        replaceMenu->addAction(complementSequenceAction);
+        replaceMenu->addAction(reverseSequenceAction);
     }
-    rm->addAction(reverseComplementSequenceAction);
-    rm->addAction(reverseSequenceAction);
-    rm->addAction(complementSequenceAction);
 }
 
 Task* AnnotatedDNAView::updateViewTask(const QString& stateName, const QVariantMap& stateData) {
@@ -763,9 +754,9 @@ void AnnotatedDNAView::updateMultiViewActions() {
     bool canRemoveFocusedSequence = seqViews.size() > 1 && focusedWidget != NULL && focusedWidget->getActiveSequenceContext() != NULL;
     removeSequenceObjectAction->setEnabled(canRemoveFocusedSequence);
 
-    if (NULL != posSelector) {
+    if (posSelector != NULL) {
         qint64 currentSequenceLength = 0;
-        if (NULL != focusedWidget && NULL != focusedWidget->getActiveSequenceContext()) {
+        if (focusedWidget != NULL && focusedWidget->getActiveSequenceContext() != NULL) {
             currentSequenceLength = focusedWidget->getActiveSequenceContext()->getSequenceLength();
         }
         posSelector->updateRange(1, currentSequenceLength);
@@ -842,7 +833,7 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
         m.addAction(toggleHLAction);
     }
 
-    if (NULL != focusedWidget) {
+    if (focusedWidget != NULL) {
         focusedWidget->buildPopupMenu(m);
     }
     emit si_buildPopupMenu(this, &m);
@@ -852,7 +843,7 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
 
 void AnnotatedDNAView::sl_onFindPatternClicked() {
     OptionsPanel* optionsPanel = getOptionsPanel();
-    SAFE_POINT(NULL != optionsPanel, "Internal error: options panel is NULL"
+    SAFE_POINT(optionsPanel != NULL, "Internal error: options panel is NULL"
         " when pattern search has been initiated!",);
 
     const QString &findPatternGroupId = FindPatternWidgetFactory::getGroupId();
@@ -922,7 +913,7 @@ QString AnnotatedDNAView::addObject(GObject *o) {
         ADVSequenceObjectContext *sc = new ADVSequenceObjectContext(this, dnaObj);
         seqContexts.append(sc);
         //if mainSplitter==NULL -> its view initialization and widgets will be added later
-        if (NULL != mainSplitter && !isChildWidgetObject(dnaObj)) {
+        if (mainSplitter != NULL && !isChildWidgetObject(dnaObj)) {
             ADVSingleSequenceWidget *block = new ADVSingleSequenceWidget(sc, this);
             connect(block, SIGNAL(si_titleClicked(ADVSequenceWidget *)),
                 SLOT(sl_onSequenceWidgetTitleClicked(ADVSequenceWidget *)));
@@ -936,7 +927,7 @@ QString AnnotatedDNAView::addObject(GObject *o) {
         connect(o, SIGNAL(si_relatedObjectRelationChanged()), SLOT(sl_relatedObjectRelationChanged()));
     } else if (o->getGObjectType() == GObjectTypes::ANNOTATION_TABLE) {
         AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(o);
-        SAFE_POINT(NULL != ao, "Invalid annotation table!", QString::null);
+        SAFE_POINT(ao != NULL, "Invalid annotation table!", QString::null);
         annotations.append(ao);
         foreach (ADVSequenceObjectContext *sc, rCtx) {
             sc->addAnnotationObject(ao);
@@ -1010,10 +1001,6 @@ ADVSequenceObjectContext* AnnotatedDNAView::getSequenceInFocus() const {
     return w == NULL ? NULL : w->getActiveSequenceContext();
 }
 
-QList<ADVSequenceObjectContext*> AnnotatedDNAView::getAllSeqContextsInFocus() const {
-    return getSequenceWidgetInFocus()->getSequenceContexts();
-}
-
 ADVSequenceObjectContext* AnnotatedDNAView::getSequenceContext(U2SequenceObject* obj) const {
     foreach(ADVSequenceObjectContext* seqCtx, seqContexts) {
         if(seqCtx->getSequenceObject() == obj) {
@@ -1034,13 +1021,13 @@ ADVSequenceObjectContext* AnnotatedDNAView::getSequenceContext(const GObjectRefe
 }
 
 void AnnotatedDNAView::addRelatedAnnotations(ADVSequenceObjectContext *seqCtx) {
-    QList<GObject *> allLoadedAnnotations = GObjectUtils::findAllObjects(UOF_LoadedOnly,
-        GObjectTypes::ANNOTATION_TABLE);
-    QList<GObject *> annotations = GObjectUtils::findObjectsRelatedToObjectByRole(seqCtx->getSequenceObject(),
-                                    GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence,
-                                    allLoadedAnnotations, UOF_LoadedOnly);
+    QList<GObject*> allLoadedAnnotations = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE);
+    QList<GObject*> loadedAndRelatedAnnotations = GObjectUtils::findObjectsRelatedToObjectByRole(
+            seqCtx->getSequenceObject(),
+            GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence,
+            allLoadedAnnotations, UOF_LoadedOnly);
 
-    foreach (GObject *ao, annotations) {
+    foreach (GObject *ao, loadedAndRelatedAnnotations) {
         if (objects.contains(ao)) {
             seqCtx->addAnnotationObject(qobject_cast<AnnotationTableObject *>(ao));
         } else {
@@ -1099,7 +1086,7 @@ void AnnotatedDNAView::addGraphs(ADVSequenceObjectContext* seqCtx)
     foreach (ADVSequenceWidget* seqWidget, seqCtx->getSequenceWidgets())
     {
         ADVSingleSequenceWidget* singleSeqWidget = qobject_cast<ADVSingleSequenceWidget*>(seqWidget);
-        SAFE_POINT(NULL != singleSeqWidget, "singleSeqWidget is NULL", );
+        SAFE_POINT(singleSeqWidget != NULL, "singleSeqWidget is NULL", );
         GraphMenuAction* graphMenuAction = new GraphMenuAction(singleSeqWidget->getSequenceObject()->getAlphabet());
         if (singleSeqWidget != NULL) {
             singleSeqWidget->addADVSequenceWidgetActionToViewsToolbar(graphMenuAction);
@@ -1311,7 +1298,7 @@ void AnnotatedDNAView::sl_removeSequencePart() {
         t = new ModifySequenceContentTask(dialog->getDocumentFormatId(), seqObj, dialog->getRegionToDelete(), DNASequence(),
             dialog->recalculateQualifiers(), dialog->getStrategy(), dialog->getNewDocumentPath(), dialog->mergeAnnotations());
     }
-    SAFE_POINT(NULL != t, L10N::nullPointerError("Edit sequence task"), );
+    SAFE_POINT(t != NULL, L10N::nullPointerError("Edit sequence task"), );
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 
     seqCtx->getSequenceSelection()->clear();
@@ -1373,15 +1360,6 @@ void AnnotatedDNAView::updateAutoAnnotations() {
     }
 }
 
-void AnnotatedDNAView::addAutoAnnotationsUpdated(AutoAnnotationsUpdater *updater) {
-    foreach (ADVSequenceObjectContext *advContext, seqContexts) {
-        AutoAnnotationsADVAction* autoAnnotAction = AutoAnnotationUtils::findAutoAnnotationADVAction(advContext);
-        if (autoAnnotAction) {
-            autoAnnotAction->addUpdaterToMenu(updater);
-        }
-    }
-}
-
 void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
     Task *t = qobject_cast<Task *>(sender());
     if (NULL == t) {
@@ -1399,7 +1377,7 @@ void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
         }
 
         ADVSequenceObjectContext *seqCtx = getSequenceInFocus();
-        if (reverseComplementTask && NULL != seqCtx) {
+        if (reverseComplementTask && seqCtx != NULL) {
             const QVector<U2Region> regions = seqCtx->getSequenceSelection()->getSelectedRegions();
             if (regions.count() == 1) {
                 const U2Region r = regions.first();
@@ -1415,8 +1393,8 @@ void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
             if (seqSizeDelta > 0) { // try keeping all maximized zooms in max state
                 U2Region newMaxRange(0, modifyContentTask->getSequenceObject()->getSequenceLength());
                 U2Region oldMaxRange(0,  newMaxRange.length - seqSizeDelta);
-                foreach (ADVSequenceObjectContext * seqCtx, seqContexts) {
-                    if (seqCtx->getSequenceGObject() == modifyContentTask->getSequenceObject()) {
+                foreach (ADVSequenceObjectContext * ctx, seqContexts) {
+                    if (ctx->getSequenceGObject() == modifyContentTask->getSequenceObject()) {
                         foreach (ADVSequenceWidget *w, seqCtx->getSequenceWidgets()) {
                             if (w->getVisibleRange() == oldMaxRange) {
                                 w->setVisibleRange(newMaxRange);
@@ -1498,7 +1476,7 @@ void AnnotatedDNAView::sl_aminoTranslationChanged() {
 void AnnotatedDNAView::reverseComplementSequence(bool reverse, bool complement) {
     ADVSequenceObjectContext *seqCtx = getSequenceInFocus();
     U2SequenceObject *seqObj = seqCtx->getSequenceObject();
-    QList<AnnotationTableObject *> annotations = seqCtx->getAnnotationObjects(false).toList();
+    QList<AnnotationTableObject*> annotationObjects = seqCtx->getAnnotationObjects(false).toList();
 
     DNATranslation *complTT = NULL;
     if (seqObj->getAlphabet()->isNucleic()) {
@@ -1507,11 +1485,11 @@ void AnnotatedDNAView::reverseComplementSequence(bool reverse, bool complement) 
 
     Task *t = NULL;
     if (reverse && complement) {
-        t = new ReverseComplementSequenceTask(seqObj,annotations, seqCtx->getSequenceSelection(), complTT);
+        t = new ReverseComplementSequenceTask(seqObj, annotationObjects, seqCtx->getSequenceSelection(), complTT);
     } else if (reverse) {
-        t = new ReverseSequenceTask(seqObj,annotations, seqCtx->getSequenceSelection());
+        t = new ReverseSequenceTask(seqObj, annotationObjects, seqCtx->getSequenceSelection());
     } else if (complement) {
-        t = new ComplementSequenceTask(seqObj,annotations, seqCtx->getSequenceSelection(), complTT);
+        t = new ComplementSequenceTask(seqObj, annotationObjects, seqCtx->getSequenceSelection(), complTT);
     }
 
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
@@ -1537,9 +1515,8 @@ QAction* AnnotatedDNAView::getEditActionFromSequenceWidget(ADVSequenceWidget* se
 bool AnnotatedDNAView::areAnnotationsInRange(const QList<Annotation *> &toCheck) {
     foreach (Annotation *a, toCheck) {
         QList<ADVSequenceObjectContext *> relatedSeqObjects = findRelatedSequenceContexts(a->getGObject());
-
         foreach (ADVSequenceObjectContext *seq, relatedSeqObjects) {
-            SAFE_POINT(NULL != seq, "Sequence is NULL", true);
+            SAFE_POINT(seq != NULL, "Sequence is NULL", true);
             foreach (const U2Region &r, a->getRegions()) {
                 if (r.endPos() > seq->getSequenceLength()) {
                     return false;

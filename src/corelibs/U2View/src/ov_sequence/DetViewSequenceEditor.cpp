@@ -23,6 +23,7 @@
 
 #include "ADVConstants.h"
 #include "ADVSequenceObjectContext.h"
+#include "ADVSingleSequenceWidget.h"
 #include "AnnotatedDNAView.h"
 #include "DetView.h"
 
@@ -323,19 +324,21 @@ void DetViewSequenceEditor::sl_editMode(bool active) {
     SAFE_POINT(!list.isEmpty(), "seq wgts list is empty", );
     ADVSequenceWidget* wgt = list.first();
     AnnotatedDNAView* dnaView = wgt->getAnnotatedDNAView();
-    QAction* a = dnaView->removeAnnsAndQsAction;
-
     if (active) {
         // deactivate Delete shortcut
-        a->setShortcut(QKeySequence());
+        dnaView->removeAnnsAndQsAction->setShortcut(QKeySequence());
         reset();
         view->installEventFilter(this);
+        // Make detailed view visible
+        ADVSingleSequenceWidget* sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(wgt);
+        if (sequenceWidget) {
+            sequenceWidget->setDetViewCollapsed(false);
+        }
         animationTimer.start(500);
     } else {
         editAction->setDisabled(view->getSequenceObject()->isStateLocked());
-
         view->removeEventFilter(this);
-        a->setShortcut(QKeySequence(Qt::Key_Delete));
+        dnaView->removeAnnsAndQsAction->setShortcut(QKeySequence(Qt::Key_Delete));
         animationTimer.stop();
         view->update();
     }
