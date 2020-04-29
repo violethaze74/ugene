@@ -22,7 +22,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
-#include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "WelcomePageMdi.h"
@@ -32,22 +31,20 @@
 namespace U2 {
 
 WelcomePageMdiController::WelcomePageMdiController()
-    : QObject(NULL),
-      welcomePage(NULL)
+    : QObject(nullptr),
+      welcomePage(nullptr)
 {
     MWMDIManager *mdiManager = getMdiManager();
-    CHECK(NULL != mdiManager, );
+    CHECK(mdiManager != nullptr, );
 
     connect(mdiManager, SIGNAL(si_windowClosing(MWMDIWindow*)), SLOT(sl_onMdiClose(MWMDIWindow*)));
 }
 
 MWMDIManager * WelcomePageMdiController::getMdiManager() {
     MainWindow *mainWindow = AppContext::getMainWindow();
-    SAFE_POINT(NULL != mainWindow, L10N::nullPointerError("Main Window"), NULL);
+    SAFE_POINT(mainWindow != nullptr, L10N::nullPointerError("Main Window"), nullptr);
 
-    MWMDIManager *result = mainWindow->getMDIManager();
-    SAFE_POINT(NULL != result, L10N::nullPointerError("MDI Manager"), NULL);
-    return result;
+    return mainWindow->getMDIManager();
 }
 
 void WelcomePageMdiController::sl_showPage() {
@@ -68,13 +65,14 @@ void WelcomePageMdiController::sl_showPage() {
 
 void WelcomePageMdiController::sl_onMdiClose(MWMDIWindow *mdi) {
     CHECK(mdi == welcomePage, );
-    welcomePage = NULL;
+    welcomePage = nullptr;
 }
 
 void WelcomePageMdiController::sl_onRecentChanged() {
     CHECK(welcomePage != nullptr, );
-    QStringList recentProjects = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, QStringList(), true).toStringList();
-    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME, QStringList(), true).toStringList();
+    auto settings = AppContext::getSettings();
+    QStringList recentProjects = settings->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, QStringList(), true).toStringList();
+    QStringList recentFiles = settings->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME, QStringList(), true).toStringList();
     welcomePage->updateRecent(recentProjects, recentFiles);
 }
 

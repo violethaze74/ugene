@@ -35,8 +35,10 @@ class WelcomePageMdiController : public QObject {
 public:
     WelcomePageMdiController();
 
-private slots:
+public slots:
     void sl_showPage();
+
+private slots:
     void sl_onRecentChanged();
     void sl_onMdiClose(MWMDIWindow *mdi);
 
