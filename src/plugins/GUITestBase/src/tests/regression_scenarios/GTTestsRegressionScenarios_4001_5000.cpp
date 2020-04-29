@@ -5738,6 +5738,8 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
     GTUtilsDocument::lockDocument(os, "1.4k.aln");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::waitForNotification(os, true, "Object '1.4k.aln' is locked");
+
     //4. Unlock document after alignment finished
     GTUtilsDocument::unlockDocument(os, "1.4k.aln");
 
@@ -5747,9 +5749,6 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::checkContainsError(os, l, "Object '1.4k.aln' removed");
-    int errorNum = GTUtilsLog::getErrors(os, l).size();
-    CHECK_SET_ERR(errorNum==1, QString("Too many errors in log: %1").arg(errorNum));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4936) {
