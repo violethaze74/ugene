@@ -725,7 +725,7 @@ bowtie index file</source>
 <context>
     <name>U2::Dashboard</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="188"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="183"/>
         <source>Can not create a folder: </source>
         <translation>Невозможно создать папку: </translation>
     </message>
@@ -1187,7 +1187,7 @@ Set up the folder:</source>
 <context>
     <name>U2::RemoveDashboardsTask</name>
     <message>
-        <location filename="../src/dashboard/RemoveDashboardsTask.cpp" line="31"/>
+        <location filename="../src/dashboard/RemoveDashboardsTask.cpp" line="30"/>
         <source>Remove dashboards</source>
         <translation>Удалить панель</translation>
     </message>
@@ -1341,6 +1341,14 @@ Set up the folder:</source>
         <location filename="../src/PropertyWidget.cpp" line="545"/>
         <source>add</source>
         <translation>добавить</translation>
+    </message>
+</context>
+<context>
+    <name>U2::WebViewControllerPrivate</name>
+    <message>
+        <location filename="../src/dashboard/webview/WebViewControllerPrivate.cpp" line="42"/>
+        <source>Can not open a file for writing: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

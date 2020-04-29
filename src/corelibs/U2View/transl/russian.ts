@@ -2622,17 +2622,17 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="142"/>
         <source>Insert subsequence...</source>
-        <translation>Вставить подпоследовательность...</translation>
+        <translation>Вставить участок...</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="147"/>
         <source>Remove subsequence...</source>
-        <translation>Удалить подпоследовательность...</translation>
+        <translation>Удалить участок...</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="151"/>
         <source>Replace subsequence...</source>
-        <translation>Заменить подпоследовательность...</translation>
+        <translation>Заменить участок...</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="156"/>
@@ -2640,14 +2640,9 @@ Double-click to collapse the branch</source>
         <translation>Удалить выделенную последовательность из отображения</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="160"/>
-        <source>Reverse-complement sequence</source>
-        <translation>Заменить на обратно-комплементарную последовательность</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="169"/>
-        <source>Complement sequence</source>
-        <translation>Заменить на комплементарную последовательность</translation>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="138"/>
+        <source>Annotation settings on editing...</source>
+        <translation>Настройки аннотаций при редактировании последовательности...</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="363"/>
@@ -2655,72 +2650,86 @@ Double-click to collapse the branch</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="569"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="558"/>
         <source>Analyze</source>
         <translation>Анализ</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="579"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="568"/>
         <source>Add</source>
         <translation>Аннотация</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="585"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="574"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="591"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="580"/>
         <source>Align</source>
         <translation>Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="597"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="586"/>
         <source>Remove</source>
         <translation>Удаление</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="610"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="602"/>
         <source>Edit</source>
         <translation>Редактирование</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="974"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="965"/>
         <source>Go to Position</source>
         <translation>Перейти к позиции</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1166"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1153"/>
         <source>Show codon table</source>
         <translation>Показать таблицу кодонов</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="165"/>
         <source>Reverse sequence</source>
-        <translation>Заменить на обратную последовательность</translation>
+        <translation type="vanished">Заменить на обратную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="885"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="876"/>
         <source>Select sequence to associate annotations with:</source>
         <translation>Установить связь аннотаций с последовательностью:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="903"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="894"/>
         <source>No sequence object found for annotations</source>
         <translation>Не найдена связанная с аннотациями последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="833"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="824"/>
         <source>Disable &apos;%1&apos; highlighting</source>
         <translation>Не использовать подсветку для &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="138"/>
-        <source>Annotations settings on sequence editing...</source>
-        <translation>Настройка аннотаций при редактировании последовательности...</translation>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="160"/>
+        <source>Complementary (5&apos;-3&apos;) sequence</source>
+        <translation><![CDATA[Комплементарную (3'-5')]]></translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="835"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="165"/>
+        <source>Reverse (3&apos;-5&apos;) sequence</source>
+        <translation><![CDATA[Прочитанную в обратном направлении (3'-5')]]></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="169"/>
+        <source>Complementary (3&apos;-5&apos;) sequence</source>
+        <translation><![CDATA[Комплементарную (3'-5')]]></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="623"/>
+        <source>Replace the whole sequence by</source>
+        <translation>Заменить всю последовательность на</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="826"/>
         <source>Enable &apos;%1&apos; highlighting</source>
         <translation>Задействовать подсветку для &apos;%1&apos;</translation>
     </message>
@@ -4044,22 +4053,26 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::DetViewSequenceEditor</name>
     <message>
-        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="57"/>
         <source>Edit sequence</source>
-        <translation>Редактировать последовательность</translation>
+        <translation type="vanished">Редактировать последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="281"/>
+        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="58"/>
+        <source>Switch on the editing mode</source>
+        <translation>Включить режим редактирования</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="282"/>
         <source>Delete the sequence</source>
         <translation>Удалить последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="283"/>
+        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="284"/>
         <source>Would you like to completely remove the sequence?</source>
         <translation>Удалить последовательность?</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="376"/>
+        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="379"/>
         <source>The sequence &amp; clipboard content have different alphabet</source>
         <translation>The sequence &amp; clipboard content have different alphabet</translation>
     </message>
@@ -4989,12 +5002,12 @@ Please, check external tools in the settings.</source>
         <translation>Предупреждение: текущая последовательность слишком длинная для поиска.</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1389"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1381"/>
         <source>Warning: can not get valid pattern name, annotation will be named &apos;misc_feature&apos;</source>
         <translation>Warning: can not get valid pattern name, annotation will be named &apos;misc_feature&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1526"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1518"/>
         <source>Results:</source>
         <translation>Результаты:</translation>
     </message>
@@ -5042,18 +5055,18 @@ Please, check external tools in the settings.</source>
         <translation>Предупреждение: некорректное регулярное выражение. </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1059"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1056"/>
         <source>Select file to open...</source>
         <translation>Выберите файл...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1113"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1110"/>
         <source>Unable to search on the reverse-complement strand, searching on the direct strand only!</source>
         <translation>Невозможно выполнить поиск в обратно-комплементарной цепи, поиск только в прямой цепи!</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="268"/>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1441"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1433"/>
         <source>Results: %1/%2</source>
         <translation>Результаты: %1/%2</translation>
     </message>
@@ -5063,7 +5076,7 @@ Please, check external tools in the settings.</source>
         <translation>Внимание: имя аннотации или имя группы аннотаций некорректно. </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1277"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1269"/>
         <source>Sequence in focus is NULL</source>
         <translation>Sequence in focus is NULL</translation>
     </message>
@@ -6045,17 +6058,17 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaEditorConsensusArea</name>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorConsensusArea.cpp" line="82"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorConsensusArea.cpp" line="78"/>
         <source>Copy consensus</source>
         <translation>Копировать консенсус</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorConsensusArea.cpp" line="86"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorConsensusArea.cpp" line="82"/>
         <source>Copy consensus with gaps</source>
         <translation>Копировать консенсус с пробелами</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorConsensusArea.cpp" line="90"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorConsensusArea.cpp" line="86"/>
         <source>Consensus mode...</source>
         <translation>Алгоритм построения консенсуса...</translation>
     </message>
@@ -6630,7 +6643,7 @@ Simple overview is unavailable.</source>
         <translation>Вставить пробел</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="457"/>
+        <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="460"/>
         <source>It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</source>
         <translation>Невозможно вставить символ в выравнивание. Используйте символы A-Z или символы пробела (&quot;Пробел&quot;, &quot;-&quot;, &quot;%1&quot;).</translation>
     </message>

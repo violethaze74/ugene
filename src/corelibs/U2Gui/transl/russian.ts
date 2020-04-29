@@ -3401,9 +3401,8 @@ check connection settings</translation>
 <context>
     <name>U2::WebViewControllerPrivate</name>
     <message>
-        <location filename="../src/util/webview/WebViewControllerPrivate.cpp" line="42"/>
         <source>Can not open a file for writing: </source>
-        <translation>Can not open a file for writing: </translation>
+        <translation type="vanished">Can not open a file for writing: </translation>
     </message>
 </context>
 <context>

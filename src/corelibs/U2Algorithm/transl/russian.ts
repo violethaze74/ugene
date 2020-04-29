@@ -254,12 +254,12 @@
 <context>
     <name>U2::LoadPatternsFileTask</name>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="108"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="107"/>
         <source>Load pattern from file</source>
         <translation>Загрузить паттерн из файла</translation>
     </message>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="120"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="119"/>
         <source>Detecting format error for file %1</source>
         <translation>Ошибка распознавания формата для файла %1</translation>
     </message>

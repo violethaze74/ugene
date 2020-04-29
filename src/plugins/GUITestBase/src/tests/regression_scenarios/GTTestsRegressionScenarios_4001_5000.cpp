@@ -5748,7 +5748,6 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4936) {
