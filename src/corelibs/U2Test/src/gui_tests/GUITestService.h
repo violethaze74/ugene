@@ -57,7 +57,6 @@ public:
     static bool isGuiTestServiceNeeded();
 
     static const QString GUITESTING_REPORT_PREFIX;
-    static const qint64 TIMER_INTERVAL;
 
 public slots:
      void runGUICrazyUserTest();

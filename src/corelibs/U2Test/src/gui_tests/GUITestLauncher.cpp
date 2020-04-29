@@ -32,11 +32,8 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/MainWindow.h>
-
 #include "UGUITestBase.h"
 #include "GUITestLauncher.h"
-#include "GUITestService.h"
 #include "GUITestTeamcityLogger.h"
 
 #define TIMEOUT 480000
@@ -61,7 +58,7 @@ GUITestLauncher::GUITestLauncher(int _suiteNumber, bool _noIgnored, QString _ini
     testOutDir = getTestOutDir();
 
     QWidget *splashScreen = QApplication::activeWindow();
-    if (NULL != splashScreen) {
+    if (splashScreen != nullptr) {
         splashScreen->hide();
     }
 }
@@ -83,41 +80,40 @@ bool GUITestLauncher::renameTestLog(const QString& testName) {
 }
 
 void GUITestLauncher::run() {
-
     if (!initGUITestBase()) {
         return;
     }
 
     int finishedCount = 0;
-    foreach(HI::GUITest* t, tests) {
+    foreach(HI::GUITest* test, tests) {
         if (isCanceled()) {
             return;
         }
+        if (test == nullptr) {
+            updateProgress(finishedCount++);
+            continue;
+        }
+        QString testName = test->getFullName();
+        QString testNameForTeamCity = test->getSuite() + "_" + test->getName();
+        results[testName] = "";
 
-        Q_ASSERT(t);
-        if (t) {
-            QString testName = t->getFullName();
-            QString testNameForTeamCity = t->getSuite() +"_"+ t->getName();
-            results[testName] = "";
+        firstTestRunCheck(testName);
 
-            firstTestRunCheck(testName);
+        if (!test->isIgnored()) {
+            qint64 startTime = GTimer::currentTimeMicros();
+            GUITestTeamcityLogger::testStarted(testNameForTeamCity);
 
-            if (!t->isIgnored()) {
-                qint64 startTime = GTimer::currentTimeMicros();
-                GUITestTeamcityLogger::testStarted(testNameForTeamCity);
-
-                QString testResult = performTest(testName);
-                results[testName] = testResult;
-                if (GUITestTeamcityLogger::testFailed(testResult)) {
-                    renameTestLog(testName);
-                }
-
-                qint64 finishTime = GTimer::currentTimeMicros();
-                GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testResult, GTimer::millisBetween(startTime, finishTime));
+            QString testResult = performTest(testName);
+            results[testName] = testResult;
+            if (GUITestTeamcityLogger::testFailed(testResult)) {
+                renameTestLog(testName);
             }
-            else if(t->getReason() == HI::GUITest::Bug){
-                GUITestTeamcityLogger::testIgnored(testNameForTeamCity, t->getIgnoreMessage());
-            }
+
+            qint64 finishTime = GTimer::currentTimeMicros();
+            GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testResult,
+                                                     GTimer::millisBetween(startTime, finishTime));
+        } else if (test->getReason() == HI::GUITest::Bug) {
+            GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getIgnoreMessage());
         }
 
         updateProgress(finishedCount++);
@@ -125,61 +121,61 @@ void GUITestLauncher::run() {
 }
 
 void GUITestLauncher::firstTestRunCheck(const QString& testName) {
-
     QString testResult = results[testName];
     Q_ASSERT(testResult.isEmpty());
 }
 
 bool GUITestLauncher::initGUITestBase() {
     UGUITestBase* b = AppContext::getGUITestBase();
-    SAFE_POINT(NULL != b, "Test base is NULL", false);
+    SAFE_POINT(b != nullptr, "Test base is NULL", false);
     QString label = qgetenv("UGENE_GUI_TEST_LABEL");
-    QList<HI::GUITest *> list = b->getTests(UGUITestBase::Normal, label);
-    if (list.isEmpty()) {
+    QList<HI::GUITest *> allTestList = b->getTests(UGUITestBase::Normal, label);
+    if (allTestList.isEmpty()) {
         setError(tr("No tests to run"));
         return false;
     }
 
     QList<QList<HI::GUITest *> > suiteList;
-    if(suiteNumber){
-        for(int i=0; i<(list.length()/NUMBER_OF_TESTS_IN_SUITE + 1);i++){
-            suiteList << list.mid(i*NUMBER_OF_TESTS_IN_SUITE,NUMBER_OF_TESTS_IN_SUITE);
+    if (suiteNumber) {
+        for (int i = 0; i < (allTestList.length() / NUMBER_OF_TESTS_IN_SUITE + 1); i++) {
+            suiteList << allTestList.mid(i * NUMBER_OF_TESTS_IN_SUITE, NUMBER_OF_TESTS_IN_SUITE);
         }
-        if(suiteNumber<0 || suiteNumber>suiteList.size()){
+        if (suiteNumber < 0 || suiteNumber > suiteList.size()) {
             setError(tr("Invalid suite number: %1. There are %2 suites").arg(suiteNumber).arg(suiteList.size()));
             return false;
         }
         tests = suiteList.takeAt(suiteNumber - 1);
-    }else if(!pathToSuite.isEmpty()){
+    } else if (!pathToSuite.isEmpty()) {
         QString absPath = QDir().absoluteFilePath(pathToSuite);
         QFile suite(absPath);
         SAFE_POINT(suite.exists(), "file " + absPath + " does not exists", false);
-        if(suite.open(QFile::ReadOnly)){
+        if (suite.open(QFile::ReadOnly)) {
             char buf[1024];
-            while(suite.readLine(buf, sizeof(buf)) != -1){
-                QString testName(buf);
-                testName.remove('\n');
-                testName.remove('\t');
-                testName.remove(' ');
+            while (suite.readLine(buf, sizeof(buf)) != -1) {
+                QString testName = QString(buf).remove('\n').remove('\t').remove(' ');
+                if (testName.startsWith("#")) {
+                    continue; // comment line
+                }
                 bool added = false;
-                foreach (HI::GUITest* t, list) {
-                    if((t->getFullName()) == testName){
-                        tests<<t;
+                foreach (HI::GUITest* test, allTestList) {
+                    QString fullTestName = test->getFullName();
+                    QString fullTestNameInTeamcityFormat = fullTestName.replace(':', '_');
+                    if (fullTestName == testName || fullTestNameInTeamcityFormat == testName) {
+                        tests << test;
                         added = true;
                         break;
                     }
                 }
                 SAFE_POINT(added, "test " + testName + " not found", false)
             }
-        }else{
+        } else {
             SAFE_POINT(0, "can not open file " + absPath, false);
         }
-    }
-    else{
-        tests = list;
+    } else {
+        tests = allTestList;
     }
 
-    if(noIgnored){
+    if (noIgnored) {
         foreach(HI::GUITest* test, tests){
             test->setIgnored(false);
         }

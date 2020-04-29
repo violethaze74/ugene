@@ -28,7 +28,6 @@
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/GObject.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -36,7 +35,6 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <core/MainThreadRunnable.h>
 #include "UGUITestBase.h"
 #include <core/GUITestOpStatus.h>
 #include "GUITestService.h"
@@ -50,7 +48,6 @@ namespace U2 {
 #define ULOG_CAT_TEAMCITY "Teamcity Log"
 static Logger log(ULOG_CAT_TEAMCITY);
 const QString GUITestService::GUITESTING_REPORT_PREFIX = "GUITesting";
-const qint64 GUITestService::TIMER_INTERVAL = 100;
 
 GUITestService::GUITestService(QObject *) :
     Service(Service_GUITesting, tr("GUI test viewer"), tr("Service to support UGENE GUI testing")),
@@ -182,7 +179,6 @@ void GUITestService::registerTestSuiteTask(){
 }
 
 Task* GUITestService::createTestSuiteLauncherTask() const {
-
     Q_ASSERT(!testLauncher);
 
     CMDLineRegistry* cmdLine = AppContext::getCMDLineRegistry();
@@ -203,16 +199,16 @@ Task* GUITestService::createTestSuiteLauncherTask() const {
             useSameIni = false;
         }
     }
-    if(!ok){
+    if (!ok) {
         QString pathToSuite = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE);
-        Task *task = !useSameIni ?
+        Task* task = !useSameIni ?
                      new GUITestLauncher(pathToSuite) :
                      new GUITestLauncher(pathToSuite, false, iniTemplate);
         Q_ASSERT(task);
         return task;
     }
 
-    Task *task = !useSameIni ?
+    Task* task = !useSameIni ?
                  new GUITestLauncher(suiteNumber) :
                  new GUITestLauncher(suiteNumber, false, iniTemplate);
     Q_ASSERT(task);
@@ -243,12 +239,11 @@ GUITests GUITestService::postChecks() {
 }
 
 GUITests GUITestService::postActions() {
-
     UGUITestBase* tb = AppContext::getGUITestBase();
-    SAFE_POINT(NULL != tb,"",GUITests());
+    SAFE_POINT(tb != nullptr, "", GUITests());
 
     GUITests additionalChecks = tb->takeTests(UGUITestBase::PostAdditionalActions);
-    SAFE_POINT(additionalChecks.size()>0,"",GUITests());
+    SAFE_POINT(additionalChecks.size() > 0, "", GUITests());
 
     return additionalChecks;
 }
@@ -263,22 +258,19 @@ void GUITestService::sl_allStartUpPluginsLoaded() {
 void GUITestService::runAllGUITests() {
 
     GUITests initTests = preChecks();
-    GUITests postChecksTests = postChecks();
-    GUITests postActiosTests = postActions();
+    GUITests postCheckTests = postChecks();
+    GUITests postActionTests = postActions();
 
     GUITests tests = AppContext::getGUITestBase()->takeTests();
-    SAFE_POINT(false == tests.isEmpty(),"",);
+    SAFE_POINT(!tests.isEmpty(), "",);
 
-    foreach(HI::GUITest* t, tests) {
-        SAFE_POINT(NULL != t,"",);
-        if (!t) {
-            continue;
-        }
-        QString testName = t->getFullName();
-        QString testNameForTeamCity = t->getSuite() +"_"+ t->getName();
+    foreach(HI::GUITest* test, tests) {
+        SAFE_POINT(test != nullptr, "",);
+        QString testName = test->getFullName();
+        QString testNameForTeamCity = test->getSuite() + "_" + test->getName();
 
-        if (t->isIgnored()) {
-            GUITestTeamcityLogger::testIgnored(testNameForTeamCity, t->getIgnoreMessage());
+        if (test->isIgnored()) {
+            GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getIgnoreMessage());
             continue;
         }
 
@@ -287,27 +279,27 @@ void GUITestService::runAllGUITests() {
 
         HI::GUITestOpStatus os;
         log.trace("GTRUNNER - runAllGUITests - going to run initial checks before " + testName);
-        foreach(HI::GUITest* t, initTests) {
-            if (t) {
-                t->run(os);
+        foreach(HI::GUITest* initTest, initTests) {
+            if (initTest) {
+                initTest->run(os);
             }
         }
 
         clearSandbox();
         log.trace("GTRUNNER - runAllGUITests - going to run test " + testName);
-        t->run(os);
+        test->run(os);
         log.trace("GTRUNNER - runAllGUITests - finished running test " + testName);
 
-        foreach(HI::GUITest* t, postChecksTests) {
-            if (t) {
-                t->run(os);
+        foreach(HI::GUITest* postCheckTest, postCheckTests) {
+            if (postCheckTest) {
+                postCheckTest->run(os);
             }
         }
 
         HI::GUITestOpStatus os2;
-        foreach(HI::GUITest* t, postActiosTests) {
-            if (t) {
-                t->run(os2);
+        foreach(HI::GUITest* postActionTest, postActionTests) {
+            if (postActionTest) {
+                postActionTest->run(os2);
             }
         }
 
