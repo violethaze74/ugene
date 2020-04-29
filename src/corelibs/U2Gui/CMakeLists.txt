@@ -1,10 +1,8 @@
 project(U2Gui)
 
+set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 
 find_package(Qt5 REQUIRED Core Gui Widgets Xml Network PrintSupport Svg)
 

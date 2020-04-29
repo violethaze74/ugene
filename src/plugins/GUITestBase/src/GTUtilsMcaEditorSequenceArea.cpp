@@ -49,7 +49,7 @@
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsProjectTreeView.cpp"
+#include "GTUtilsProjectTreeView.h"
 
 namespace U2 {
 using namespace HI;
