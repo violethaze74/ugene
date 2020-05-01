@@ -48,6 +48,5 @@ unix: {
         QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
     } else {
         QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
-        QMAKE_CXXFLAGS += "-Wno-deprecated-copy"
     }
 }
