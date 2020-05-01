@@ -27,30 +27,28 @@
 
 namespace U2 {
 
-MsaEditorUserModStepController::MsaEditorUserModStepController( const U2EntityRef &_msaEntityRef )
-    : msaEntityRef( _msaEntityRef ), msaChangeTracker( NULL )
-{
+MsaEditorUserModStepController::MsaEditorUserModStepController(const U2EntityRef& _msaEntityRef)
+        : msaEntityRef(_msaEntityRef), msaChangeTracker(nullptr) {
 
 }
 
-MsaEditorUserModStepController::~MsaEditorUserModStepController( )
-{
+MsaEditorUserModStepController::~MsaEditorUserModStepController() {
     delete msaChangeTracker;
 }
 
-void MsaEditorUserModStepController::startTracking( U2OpStatus &os )
-{
-    if ( NULL != msaChangeTracker ) {
-        os.setError( "Another action changing alignment is being performed now" );
+void MsaEditorUserModStepController::startTracking(U2OpStatus& os) {
+    if (msaChangeTracker != nullptr) {
+        os.setError("Another action changing alignment is being performed now");
         return;
     }
-    msaChangeTracker = new U2UseCommonUserModStep( msaEntityRef, os );
+    msaChangeTracker = new U2UseCommonUserModStep(msaEntityRef, os);
 }
 
-void MsaEditorUserModStepController::finishTracking( )
-{
-    delete msaChangeTracker;
-    msaChangeTracker = NULL;
+void MsaEditorUserModStepController::finishTracking() {
+    if (isTracking()) {
+        delete msaChangeTracker;
+        msaChangeTracker = nullptr;
+    }
 }
 
 } // namespace U2

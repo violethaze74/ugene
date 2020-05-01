@@ -98,7 +98,7 @@ void GTUtilsLog::checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer &
     Q_UNUSED(os);
     GTGlobals::sleep(500);
     GT_CHECK(logTracer.hasError(), "There is no errors in the log");
-    GT_CHECK(logTracer.getError().contains(messagePart), "The log doesn't contains error message");
+    GT_CHECK(logTracer.getError().contains(messagePart), "The log doesn't contains error message: " + messagePart);
 }
 #undef GT_METHOD_NAME
 
