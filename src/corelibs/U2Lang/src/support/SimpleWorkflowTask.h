@@ -111,7 +111,6 @@ private:
     QString                     docName;
     SimpleMSAWorkflowTaskConfig conf;
     SimpleInOutWorkflowTask*    runWorkflowTask;
-    QPointer<StateLock>         msaObjectLock;
 };
 
 }    // namespace U2

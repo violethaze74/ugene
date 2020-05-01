@@ -151,7 +151,6 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
     if(subTask==saveTemporaryDocumentTask){
         QStringList arguments;
         arguments << "-v";
-        arguments << "--dealign";
         arguments <<"--infile="+url;
         arguments << "--outfmt=clu";
         arguments << "--outfile="+outputUrl;
