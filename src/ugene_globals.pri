@@ -46,12 +46,22 @@ macx {
 linux-g++ {
     # We have a lot of such warning from QT -> disable them.
     QMAKE_CXXFLAGS += -Wno-expansion-to-defined
-    
+    QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    QMAKE_CXXFLAGS += -Wno-class-memaccess
+    QMAKE_CXXFLAGS += -Wno-unused-parameter
+    QMAKE_CXXFLAGS += -Wno-unused-variable
+    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
+    QMAKE_CXXFLAGS += -Wno-catch-value
+    QMAKE_CXXFLAGS += -Wno-sign-compare
+    QMAKE_CXXFLAGS += -Wno-reorder
+    QMAKE_CXXFLAGS += -Wno-ignored-attributes
+    QMAKE_CXXFLAGS += -Wno-cast-function-type
+
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {
-    message("Build with gcov support. See gcov/lcov doc for generating coverage info")
-    QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
-    QMAKE_LFLAGS += -lgcov --coverage
+        message("Build with gcov support. See gcov/lcov doc for generating coverage info")
+        QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
+        QMAKE_LFLAGS += -lgcov --coverage
     }
 }
 
