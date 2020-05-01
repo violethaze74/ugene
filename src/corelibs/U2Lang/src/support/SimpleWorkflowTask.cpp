@@ -140,7 +140,9 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
                                                              const SimpleMSAWorkflowTaskConfig& conf)
         : Task(taskName, TaskFlags_NR_FOSCOE),
           msaObjectPointer(msaObj),
-          conf(conf) {
+          conf(conf),
+          runWorkflowTask(nullptr),
+          msaObjectLock(nullptr){
     SAFE_POINT(msaObj != nullptr, "NULL MultipleSequenceAlignmentObject!",);
 
     U2OpStatus2Log os;
@@ -168,9 +170,19 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
 
 void SimpleMSAWorkflow4GObjectTask::prepare() {
     CHECK_EXT(!msaObjectPointer.isNull(), setError(tr("Object '%1' removed").arg(docName)),);
+    msaObjectLock = new StateLock(getTaskName());
+    msaObjectPointer->lockState(msaObjectLock);
 }
 
 Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
+    if (msaObjectLock != nullptr) {
+        if (!msaObjectPointer.isNull()) {
+            msaObjectPointer->unlockState(msaObjectLock);
+        }
+        delete msaObjectLock;
+        msaObjectLock = nullptr;
+    }
+
     CHECK_OP(stateInfo, ReportResult_Finished);
     CHECK_EXT(!msaObjectPointer.isNull(), setError(tr("Object '%1' removed").arg(docName)), ReportResult_Finished);
     CHECK_EXT(!msaObjectPointer->isStateLocked(), setError(tr("Object '%1' is locked").arg(docName)), ReportResult_Finished);

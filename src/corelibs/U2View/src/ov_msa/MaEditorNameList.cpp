@@ -356,11 +356,17 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
         return;
     }
 
-    U2OpStatus2Log os;
-    maVersionBeforeMousePress = editor->getMaObject()->getModificationVersion();
-    changeTracker->startTracking(os);
-    editor->getMaObject()->saveState();
+    auto maObject = editor->getMaObject();
+    maVersionBeforeMousePress = maObject->getModificationVersion();
+    maObject->saveState();
+
+    //FIXME: do not start tracking signal here. Do it when the real dragging starts.
+    if (maObject->isStateLocked()) {
+        U2OpStatus2Log os;
+        changeTracker->startTracking(os);
+    }
     emit si_startMaChanging();
+
     mousePressPoint = e->pos();
     MaCollapseModel* collapseModel = ui->getCollapseModel();
     RowHeightController* heightController = ui->getRowHeightController();
