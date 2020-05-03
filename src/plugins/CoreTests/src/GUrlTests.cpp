@@ -106,21 +106,7 @@ Task::ReportResult GTest_RemoveTmpDir::report() {
 
 void GTest_RemoveTmpDir::removeDir(const QString &url) {
     QDir dir(url);
-    if (!dir.exists()) {
-        return;
-    }
-    foreach (const QFileInfo &entry, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries)) {
-        if (entry.isDir()) {
-            removeDir(entry.absoluteFilePath());
-            CHECK_OP(stateInfo, );
-        } else {
-            bool removed = QFile::remove(entry.absoluteFilePath());
-            if (!removed) {
-                setError(QString("Can not remove a file: %1").arg(entry.absoluteFilePath()));
-            }
-        }
-    }
-    bool removed = dir.rmdir(url);
+    bool removed = dir.removeRecursively();
     if (!removed) {
         setError(QString("Can not remove a dir: %1").arg(url));
     }
