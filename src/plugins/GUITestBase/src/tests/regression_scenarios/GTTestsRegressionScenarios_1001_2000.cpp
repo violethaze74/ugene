@@ -1519,14 +1519,14 @@ GUI_TEST_CLASS_DEFINITION(test_1113){//commit AboutDialogController.cpp
 
             QWidget* dialog = QApplication::activeModalWidget();
 //getting an info string
-            QWidget *w=dialog->findChild<QWidget*>("about_widget");
-            CHECK_SET_ERR(w!=NULL, "aboutWidget not found");
+            QWidget *w = dialog->findChild<QWidget*>("about_widget");
+            CHECK_SET_ERR(w != nullptr, "aboutWidget not found");
 
             QObject *parent= w->findChild<QObject*>("parent");
-            CHECK_SET_ERR(parent!=NULL, "parentObject not found");
+            CHECK_SET_ERR(parent != nullptr, "parentObject not found");
 
             QObject *child=parent->findChild<QObject*>();
-            CHECK_SET_ERR(child!=NULL, "childObject not found");
+            CHECK_SET_ERR(child != nullptr, "childObject not found");
 
             QString text = child->objectName();
             CHECK_SET_ERR(text.contains("64-bit")||text.contains("32-bit"),text);
@@ -1535,6 +1535,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113){//commit AboutDialogController.cpp
 #else
             GTKeyboardDriver::keyClick( Qt::Key_Escape);
 #endif
+            GTGlobals::sleep(1000);
         }
     };
     GTGlobals::sleep(1000);
@@ -1549,7 +1550,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113){//commit AboutDialogController.cpp
     GTWidget::click(os, w, Qt::LeftButton, QPoint(5,5));
     GTGlobals::sleep(500);
 #endif
-    GTKeyboardDriver::keyClick( Qt::Key_F1);
+    GTKeyboardDriver::keyClick(Qt::Key_F1);
     GTGlobals::sleep(1000);
 //Expected state: About dialog appeared, shown info includes platform info (32/64)
 
@@ -6653,7 +6654,7 @@ GUI_TEST_CLASS_DEFINITION(test_1662){
     GTGlobals::sleep();
     GTUtilsDashboard::findElement(os, "TopHat run 1", "SPAN");
     GTUtilsDashboard::findElement(os, "TopHat run 2", "SPAN");
-    GTWebView::checkElement(os, GTUtilsDashboard::getDashboard(os), "TopHat run 3", "SPAN", false);
+    GTWebView::checkElement(os, GTUtilsDashboard::getDashboardWebView(os), "TopHat run 3", "SPAN", false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1664){
@@ -7827,7 +7828,7 @@ GUI_TEST_CLASS_DEFINITION(test_1764){
     HIWebElement button = GTUtilsDashboard::findElement(os, "readed_fasta.fa", "BUTTON");
     GTUtilsDashboard::click(os, button);
     GTGlobals::sleep();
-    //GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboard(os));
+    //GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboardWebView(os));
 //    Expected state: "readed_fasta.fa" is opened in UGENE
 //    5) Click "Return to workflow", repeat step 4
     GTUtilsMdi::activateWindow(os, "Workflow Designer - New workflow");

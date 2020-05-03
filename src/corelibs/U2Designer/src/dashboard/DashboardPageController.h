@@ -35,7 +35,7 @@ class WebViewController;
 class DashboardPageController : public SimpleWebViewBasedWidgetController {
     Q_OBJECT
 public:
-    DashboardPageController(Dashboard *dashboard);
+    DashboardPageController(Dashboard *dashboard, U2WebView* webView);
 
     DashboardJsAgent *getAgent();
 

@@ -2405,11 +2405,11 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
 //        - "Dashboards manager" button on the toolbar is active.
 //        - There is "Go to Dashboard" button on the toolbar. The button text is exactly as written.
     QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton != nullptr, "'Go to Dashboards' is nullptr");
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -2426,7 +2426,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
     public:
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+            CHECK_SET_ERR(dialog != nullptr, "Active modal widget is nullptr");
 
             const QList<QPair<QString, bool> > expectedDashboardsState( { qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                           qMakePair(QString("Extract consensus as sequence 2"), true) } );
@@ -2475,27 +2475,27 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
                   .arg(expectedButtonText).arg(actualButtonText));
 
     QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
 
-    const int expectedTabsCount = 2;
-    const int actualTabsCount = dashboardsView->count();
+    int expectedTabsCount = 2;
+    int actualTabsCount = dashboardsView->count();
     CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
                   QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
                   .arg(expectedTabsCount).arg(actualTabsCount));
 
-    const int expectedActiveTabIndex = 1;
-    const int actualActiveTabIndex = dashboardsView->currentIndex();
+    int expectedActiveTabIndex = 1;
+    int actualActiveTabIndex = dashboardsView->currentIndex();
     CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
                   QString("There is an incorrect active tab: expected index is %1, actual index is %2")
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
-    const QString expectedTabName = "Extract consensus as sequence 2";
-    const QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString expectedTabName = "Extract consensus as sequence 2";
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
 
-    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
 //    7. Click to the "To Workflow Designer" button on the toolbar.
@@ -2550,7 +2550,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
     public:
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+            CHECK_SET_ERR(dialog != nullptr, "Active modal widget is nullptr");
 
             const QList<QPair<QString, bool> > expectedDashboardsState( { qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                           qMakePair(QString("Extract consensus as sequence 2"), true) } );
@@ -2599,27 +2599,27 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
                   .arg(expectedButtonText).arg(actualButtonText));
 
     QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
 
-    const int expectedTabsCount = 1;
-    const int actualTabsCount = dashboardsView->count();
+    int expectedTabsCount = 1;
+    int actualTabsCount = dashboardsView->count();
     CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
                   QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
                   .arg(expectedTabsCount).arg(actualTabsCount));
 
-    const int expectedActiveTabIndex = 0;
-    const int actualActiveTabIndex = dashboardsView->currentIndex();
+    int expectedActiveTabIndex = 0;
+    int actualActiveTabIndex = dashboardsView->currentIndex();
     CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
                   QString("There is an incorrect active tab: expected index is %1, actual index is %2")
                   .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
 
-    const QString expectedTabName = "Extract consensus as sequence 2";
-    const QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString expectedTabName = "Extract consensus as sequence 2";
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                   .arg(expectedTabName).arg(actualTabName));
 
-    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
 //    7. Click to the "To Workflow Designer" button on the toolbar.

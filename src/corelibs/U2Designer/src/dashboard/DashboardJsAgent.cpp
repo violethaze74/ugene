@@ -90,7 +90,8 @@ QString DashboardJsAgent::absolute(const QString &url) {
 }
 
 void DashboardJsAgent::loadSchema(){
-    qobject_cast<Dashboard*>(parent())->loadSchema();
+    Dashboard* dashboard = qobject_cast<Dashboard*>(parent());
+    dashboard->sl_loadSchema();
 }
 
 void DashboardJsAgent::setClipboardText(const QString &text){

@@ -26,6 +26,7 @@
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
+#include <U2Designer/Dashboard.h>
 
 #include "GTUtilsDashboard.h"
 
@@ -52,7 +53,7 @@ HIWebElement GTUtilsDashboard::getCopyButton(GUITestOpStatus &os, const QString 
     GTGlobals::FindOptions options;
     options.searchInHidden = true;
 
-    return GTWebView::findElementBySelector(os, getDashboard(os), selector, options);
+    return GTWebView::findElementBySelector(os, getDashboardWebView(os), selector, options);
 }
 
 HIWebElement GTUtilsDashboard::getNodeSpan(GUITestOpStatus &os, const QString &nodeId) {
@@ -61,16 +62,7 @@ HIWebElement GTUtilsDashboard::getNodeSpan(GUITestOpStatus &os, const QString &n
     GTGlobals::FindOptions options;
     options.searchInHidden = true;
 
-    return GTWebView::findElementBySelector(os, getDashboard(os), selector, options);
-}
-
-HIWebElement GTUtilsDashboard::getNodeUl(GUITestOpStatus &os, const QString &nodeId) {
-    const QString selector = QString("UL#%1").arg(nodeId);
-
-    GTGlobals::FindOptions options;
-    options.searchInHidden = true;
-
-    return GTWebView::findElementBySelector(os, getDashboard(os), selector, options);
+    return GTWebView::findElementBySelector(os, getDashboardWebView(os), selector, options);
 }
 
 #define GT_METHOD_NAME "clickOutputFile"
@@ -90,18 +82,22 @@ const QMap<QString, GTUtilsDashboard::Tabs> GTUtilsDashboard::tabMap = initTabMa
 const QString GTUtilsDashboard::TREE_ROOT_ID = "treeRoot";
 const QString GTUtilsDashboard::PARENT_LI = "parent_li";
 
-const QString GTUtilsDashboard::WIDTH = "width";
-const QString GTUtilsDashboard::HEIGHT = "height";
 const QString GTUtilsDashboard::TITLE = "title";
 const QString GTUtilsDashboard::COLLAPSED_NODE_TITLE = "Expand this branch";
 const QString GTUtilsDashboard::ON_CLICK = "onclick";
 
-WebView* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os) {
-    return qobject_cast<WebView *>(getTabWidget(os)->currentWidget());
+WebView* GTUtilsDashboard::getDashboardWebView(HI::GUITestOpStatus &os) {
+    Dashboard* dashboard = findDashboard(os);
+    return dashboard == nullptr ? nullptr : dashboard->getWebView();
 }
 
 QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus &os){
     return GTWidget::findExactWidget<QTabWidget *>(os, "WorkflowTabView", GTUtilsMdi::activeWindow(os));
+}
+
+QToolButton* GTUtilsDashboard::findLoadSchemaButton(HI::GUITestOpStatus &os){
+    Dashboard* dashboard = findDashboard(os);
+    return dashboard == nullptr ? nullptr : dashboard->findChild<QToolButton*>("loadSchemaButton");
 }
 
 const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashboardNumber) {
@@ -109,8 +105,8 @@ const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashbo
 }
 
 QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os) {
-    const QString selector = "div#outputWidget button.btn.full-width.long-text";
-    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector, GTGlobals::FindOptions(false));
+    QString selector = "div#outputWidget button.btn.full-width.long-text";
+    QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboardWebView(os), selector, GTGlobals::FindOptions(false));
     QStringList outputFilesNames;
     foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
         const QString outputFileName = outputFilesButton.toPlainText();
@@ -124,7 +120,7 @@ QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "clickOutputFile"
 void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outputFileName) {
     const QString selector = "div#outputWidget button.btn.full-width.long-text";
-    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector);
+    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboardWebView(os), selector);
     foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
         QString buttonText = outputFilesButton.toPlainText();
         if (buttonText == outputFileName) {
@@ -146,42 +142,59 @@ void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outpu
 #undef GT_METHOD_NAME
 
 HIWebElement GTUtilsDashboard::findElement(HI::GUITestOpStatus &os, QString text, QString tag, bool exactMatch){
-    return GTWebView::findElement(os, getDashboard(os), text, tag, exactMatch);
+    return GTWebView::findElement(os, getDashboardWebView(os), text, tag, exactMatch);
 }
 
 HIWebElement GTUtilsDashboard::findTreeElement(HI::GUITestOpStatus &os, QString text){
-    return GTWebView::findTreeElement(os, getDashboard(os), text);
+    return GTWebView::findTreeElement(os, getDashboardWebView(os), text);
 }
 
 HIWebElement GTUtilsDashboard::findContextMenuElement(HI::GUITestOpStatus &os, QString text){
-    return GTWebView::findContextMenuElement(os, getDashboard(os), text);
+    return GTWebView::findContextMenuElement(os, getDashboardWebView(os), text);
 }
 
 void GTUtilsDashboard::click(HI::GUITestOpStatus &os, HIWebElement el, Qt::MouseButton button){
-    GTWebView::click(os, getDashboard(os), el, button);
+    GTWebView::click(os, getDashboardWebView(os), el, button);
 }
 
 bool GTUtilsDashboard::areThereNotifications(HI::GUITestOpStatus &os) {
     openTab(os, Overview);
-    return GTWebView::doesElementExist(os, getDashboard(os), "Notifications", "DIV", true);
+    return GTWebView::doesElementExist(os, getDashboardWebView(os), "Notifications", "DIV", true);
+}
+
+QString GTUtilsDashboard::getTabObjectName(Tabs tab) {
+    switch (tab) {
+        case Overview:
+            return "overviewTabButton";
+        case Input:
+            return "inputTabButton";
+        case ExternalTools:
+            return "externalToolsTabButton";
+    }
+    return "unknown tab";
+}
+
+Dashboard* GTUtilsDashboard::findDashboard(HI::GUITestOpStatus &os) {
+    QTabWidget* tabWidget = getTabWidget(os);
+    return tabWidget == nullptr ? nullptr : qobject_cast<Dashboard*>(tabWidget->currentWidget());
 }
 
 #define GT_METHOD_NAME "openTab"
 void GTUtilsDashboard::openTab(HI::GUITestOpStatus &os, Tabs tab){
-    HIWebElement el = GTWebView::findElement(os, getDashboard(os), tabMap.key(tab), "A");
-    GTWebView::click(os, getDashboard(os), el);
+    QWidget* dashboard = findDashboard(os);
+    GT_CHECK(dashboard != nullptr, "Dashboard widget not found");
+
+    QString tabButtonObjectName = getTabObjectName(tab);
+    QToolButton* tabButton = GTWidget::findExactWidget<QToolButton*>(os, tabButtonObjectName, dashboard);
+    GT_CHECK(tabButton != nullptr, "Tab button not found: " + tabButtonObjectName);
+
+    GTWidget::click(os, tabButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "doesTabExist"
 bool GTUtilsDashboard::doesTabExist(HI::GUITestOpStatus &os, Tabs tab) {
-    return GTWebView::doesElementExist(os, getDashboard(os), tabMap.key(tab), "A");
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getRootNode"
-QString GTUtilsDashboard::getRootNode(GUITestOpStatus &os) {
-    return GTWebView::findElementById(os, getDashboard(os), TREE_ROOT_ID).id();
+    return GTWebView::doesElementExist(os, getDashboardWebView(os), tabMap.key(tab), "A");
 }
 #undef GT_METHOD_NAME
 
@@ -199,7 +212,7 @@ int GTUtilsDashboard::getChildrenNodesCount(GUITestOpStatus &os, const QString &
     options.failIfNotFound = false;
     options.searchInHidden = true;
 
-    return GTWebView::findElementsBySelector(os, getDashboard(os), selector, options).size();
+    return GTWebView::findElementsBySelector(os, getDashboardWebView(os), selector, options).size();
 }
 #undef GT_METHOD_NAME
 
@@ -219,7 +232,7 @@ QString GTUtilsDashboard::getDescendantNodeId(GUITestOpStatus &os, const QString
     GTGlobals::FindOptions options;
     options.searchInHidden = true;
 
-    return GTWebView::findElementBySelector(os, getDashboard(os), selector, options).id();
+    return GTWebView::findElementBySelector(os, getDashboardWebView(os), selector, options).id();
 }
 #undef GT_METHOD_NAME
 
@@ -255,21 +268,21 @@ bool GTUtilsDashboard::doesNodeHaveLimitationMessageNode(GUITestOpStatus &os, co
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
 
-    return !GTWebView::findElementsBySelector(os, getDashboard(os), selector, options).isEmpty();
+    return !GTWebView::findElementsBySelector(os, getDashboardWebView(os), selector, options).isEmpty();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLimitationMessageNodeText"
 QString GTUtilsDashboard::getLimitationMessageNodeText(GUITestOpStatus &os, const QString &nodeId) {
     const QString selector = QString("UL#%1 > LI.%2 > SPAN.limitation-message").arg(nodeId).arg(PARENT_LI);
-    return GTWebView::findElementBySelector(os, getDashboard(os), selector).toPlainText();
+    return GTWebView::findElementBySelector(os, getDashboardWebView(os), selector).toPlainText();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLimitationMessageLogUrl"
 QString GTUtilsDashboard::getLimitationMessageLogUrl(GUITestOpStatus &os, const QString &nodeId) {
     const QString selector = QString("UL#%1 > LI.%2 > SPAN.limitation-message > A").arg(nodeId).arg(PARENT_LI);
-    return getLogUrlFromElement(os, GTWebView::findElementBySelector(os, getDashboard(os), selector));
+    return getLogUrlFromElement(os, GTWebView::findElementBySelector(os, getDashboardWebView(os), selector));
 }
 #undef GT_METHOD_NAME
 
@@ -325,7 +338,7 @@ void GTUtilsDashboard::expandNode(GUITestOpStatus &os, const QString &nodeId) {
 #define GT_METHOD_NAME "getLogUrlFromNode"
 QString GTUtilsDashboard::getLogUrlFromNode(GUITestOpStatus &os, const QString &outputNodeId) {
     const QString logFileLinkSelector = QString("SPAN#%1 A").arg(getNodeSpanId(outputNodeId));
-    return getLogUrlFromElement(os, GTWebView::findElementBySelector(os, getDashboard(os), logFileLinkSelector));
+    return getLogUrlFromElement(os, GTWebView::findElementBySelector(os, getDashboardWebView(os), logFileLinkSelector));
 }
 #undef GT_METHOD_NAME
 

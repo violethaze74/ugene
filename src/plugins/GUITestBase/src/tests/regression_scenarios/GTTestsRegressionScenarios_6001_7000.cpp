@@ -1654,7 +1654,7 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     GTGlobals::sleep();
 
     //Expected: The dashboard appears
-    QWidget *dashboard = GTUtilsDashboard::getDashboard(os);
+    QWidget *dashboard = GTUtilsDashboard::getDashboardWebView(os);
     CHECK_SET_ERR(dashboard != NULL, "Dashboard isn't found");
 }
 
@@ -4407,7 +4407,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_6640_4) {
     // 1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);

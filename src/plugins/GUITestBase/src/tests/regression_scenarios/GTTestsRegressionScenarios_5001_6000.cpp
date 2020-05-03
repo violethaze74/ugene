@@ -363,7 +363,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWebView::findElement(os, GTUtilsDashboard::getDashboard(os), "A problem occurred during allocating memory for running SnpEff.");
+    GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "A problem occurred during allocating memory for running SnpEff.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5027_2) {
@@ -410,7 +410,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWebView::findElement(os, GTUtilsDashboard::getDashboard(os), "There is not enough memory to complete the SnpEff execution.");
+    GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "There is not enough memory to complete the SnpEff execution.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5029) {
@@ -1152,7 +1152,7 @@ GUI_TEST_CLASS_DEFINITION(test_5352) {
 //    6. Click "Close without saving"
 //    Expected state: the launched workflow is loaded successfully, no errors
 
-    GTLogTracer l;
+    GTLogTracer logTracer;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
@@ -1175,10 +1175,12 @@ GUI_TEST_CLASS_DEFINITION(test_5352) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
-    HIWebElement element = GTUtilsDashboard::findElement(os, "", "BUTTON");
-    GTUtilsDashboard::click(os, element);
 
-    CHECK_SET_ERR(!l.hasError(), "There is and error in the log");
+    QToolButton* loadSchemaButton = GTUtilsDashboard::findLoadSchemaButton(os);
+    CHECK_SET_ERR(loadSchemaButton, "loadSchemaButton not found");
+    GTWidget::click(os, loadSchemaButton);
+
+    CHECK_SET_ERR(!logTracer.hasError(), "There are errors in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5356) {

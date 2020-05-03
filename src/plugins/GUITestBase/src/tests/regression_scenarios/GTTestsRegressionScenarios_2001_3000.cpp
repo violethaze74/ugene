@@ -76,6 +76,8 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorNameList.h>
 
+#include <U2Designer/Dashboard.h>
+
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "api/GTSequenceReadingModeDialog.h"
 #include "api/GTSequenceReadingModeDialogUtils.h"
@@ -737,7 +739,7 @@ GUI_TEST_CLASS_DEFINITION( test_2049 ){
     CHECK_SET_ERR(ititHeight != finalHeight, "codone table not changed");
     }
 
-GUI_TEST_CLASS_DEFINITION( test_2053 ){
+GUI_TEST_CLASS_DEFINITION(test_2053){
 //    1. Remove UGENE .ini file
 //    2. Run UGENE
 //    3. Open WD
@@ -752,19 +754,11 @@ GUI_TEST_CLASS_DEFINITION( test_2053 ){
 //    Expected state: after scheme finish there is the hint on the dashboard -
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
-    HIWebElement button = GTUtilsDashboard::findElement(os, "OK, got it!", "BUTTON");
-//    "You can always open the original workflow for your results by clicking on this button."
-    GTUtilsDashboard::click(os, button);
-    GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboard(os));
-//    5. Press the "OK, got it!" button
 
-//    6. Close UGENE then reopen it
+    QToolButton* loadSchemaButton = GTUtilsDashboard::findLoadSchemaButton(os);
+    CHECK_SET_ERR(loadSchemaButton, "loadSchemaButton not found");
 
-//    7. Open WD
-
-//    8. Press the "Go to Dashboard" button
-
-//    Expected state: dashboard view has opened, no hint has appeared
+    CHECK_SET_ERR(loadSchemaButton->toolTip() == "Open workflow schema", "loadSchemaButton has no hint")
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2076 ){
@@ -1009,8 +1003,11 @@ GUI_TEST_CLASS_DEFINITION(test_2093_1) {
     GTGlobals::sleep();
 
 //    2. Select "Load schema" button on the dashboard menu line.
+    QToolButton* loadSchemaButton = GTUtilsDashboard::findLoadSchemaButton(os);
+    CHECK_SET_ERR(loadSchemaButton, "loadSchemaButton not found");
+
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "", "BUTTON"));
+    GTWidget::click(os, loadSchemaButton);
     GTGlobals::sleep();
 
 //    Expected result: the scheme with parameters is loaded.
@@ -1519,7 +1516,7 @@ GUI_TEST_CLASS_DEFINITION( test_2192 ){
 //    8. Select some amount of text on a tree and click on "Copy selected text" which is now should be available.
     GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "SAMtools run"));
     HIWebElement el = GTUtilsDashboard::findElement(os, samtoolsPath, "SPAN");
-    GTWebView::selectElementText(os, GTUtilsDashboard::getDashboard(os), el);
+    GTWebView::selectElementText(os, GTUtilsDashboard::getDashboardWebView(os), el);
     GTUtilsDashboard::click(os, el, Qt::RightButton);
     GTUtilsDashboard::click(os, GTUtilsDashboard::findContextMenuElement(os, "Copy selected text"));
 //       Paste the data in any editor.
@@ -2499,7 +2496,7 @@ GUI_TEST_CLASS_DEFINITION(test_2374){
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: there is no "External Tools" page on the WD dashboards
-    GTWebView::checkElement(os, GTUtilsDashboard::getDashboard(os), "External Tools", "A", false );
+    GTWebView::checkElement(os, GTUtilsDashboard::getDashboardWebView(os), "External Tools", "A", false );
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2375 ) {
@@ -4275,7 +4272,7 @@ GUI_TEST_CLASS_DEFINITION(test_2638){
 //    4. Open "input" tab on dashboard
     QString initTitle = GTUtilsMdi::activeWindowTitle(os);
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::Input);
-    GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboard(os));
+    GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboardWebView(os));
     GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "Map RNA-Seq Reads with TopHat", "LI"));
     GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "index", "BUTTON"));
     GTUtilsTaskTreeView::waitTaskFinished(os);

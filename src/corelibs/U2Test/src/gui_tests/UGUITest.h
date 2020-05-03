@@ -45,8 +45,6 @@ public:
     static const QString sandBoxDir;
 };
 
-typedef QList<UGUITest*> UGUITests;
-
 #define TESTNAME(className) #className
 #define SUITENAME(className) QString(GUI_TEST_SUITE)
 

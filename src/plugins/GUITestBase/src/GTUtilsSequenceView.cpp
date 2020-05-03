@@ -577,10 +577,11 @@ QColor GTUtilsSequenceView::getGraphColor(HI::GUITestOpStatus & /*os*/, GSequenc
 #define GT_METHOD_NAME "enableEditingMode"
 void GTUtilsSequenceView::enableEditingMode(GUITestOpStatus &os, bool enable, int sequenceNumber) {
     DetView *detView = getDetViewByNumber(os, sequenceNumber);
-    CHECK_SET_ERR(NULL != detView, "DetView is NULL");
+    CHECK_SET_ERR(detView != nullptr, "DetView is NULL");
 
-    QToolButton *editButton = qobject_cast<QToolButton *>(GTToolbar::getWidgetForActionTooltip(os, GTWidget::findExactWidget<QToolBar *>(os, "", detView), "Edit sequence"));
-    CHECK_SET_ERR(NULL != editButton, "'Edit sequence' button is NULL");
+    QToolBar* toolbar = GTWidget::findExactWidget<QToolBar*>(os, "", detView);
+    QToolButton *editButton = qobject_cast<QToolButton *>(GTToolbar::getWidgetForActionName(os, toolbar, "edit_sequence_action"));
+    CHECK_SET_ERR(NULL != editButton, "'edit_sequence_action' button is NULL");
     if (editButton->isChecked() != enable) {
         if (editButton->isVisible()) {
             GTWidget::click(os, editButton);

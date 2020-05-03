@@ -22,8 +22,10 @@
 #ifndef _U2_DASHBOARD_H_
 #define _U2_DASHBOARD_H_
 
-#include <U2Lang/WorkflowMonitor.h>
+#include <QVBoxLayout>
+#include <QToolButton>
 
+#include <U2Lang/WorkflowMonitor.h>
 #include "webview/U2WebView.h"
 
 namespace U2 {
@@ -32,7 +34,7 @@ using namespace Workflow;
 class DashboardJsAgent;
 class DashboardPageController;
 
-class U2DESIGNER_EXPORT Dashboard : public U2WebView {
+class U2DESIGNER_EXPORT Dashboard : public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(Dashboard)
 public:
@@ -52,12 +54,12 @@ public:
 
     QString getPageFilePath() const;
 
-    void loadSchema();
-
     /** Modifies the application settings and emits signal for all dashboards */
     void initiateHideLoadButtonHint();
 
     bool isWorkflowInProgress();
+
+    U2WebView* getWebView() const {return webView;}
 
     static const QString REPORT_SUB_DIR;
     static const QString DB_FILE_NAME;
@@ -81,15 +83,21 @@ signals:
 public slots:
     /** Hides the hint on the current dashboard instance */
     void sl_hideLoadBtnHint();
+    void sl_loadSchema();
 
 private slots:
     void sl_runStateChanged(bool paused);
     void sl_pageReady();
     void sl_serialize();
+    void sl_onLogChanged();
     void sl_setDirectory(const QString &dir);
     void sl_workflowStateChanged(Monitor::TaskState state);
 
+    /** Toggles tab button by id. */
+    void sl_onTabButtonToggled(int id, bool checked);
+
 private:
+    void initLayout();
     void loadDocument();
     void saveSettings();
     void loadSettings();
@@ -106,6 +114,14 @@ private:
     const QPointer<const WorkflowMonitor> monitor;
     bool workflowInProgress;
     DashboardPageController *dashboardPageController;
+
+    QVBoxLayout* mainLayout;
+
+    QToolButton* overviewTabButton;
+    QToolButton* inputTabButton;
+    QToolButton* externalToolsTabButton;
+
+    U2WebView* webView;
 };
 
 }   // namespace U2
