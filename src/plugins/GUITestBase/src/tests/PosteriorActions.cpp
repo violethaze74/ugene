@@ -121,7 +121,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0003) {
-    // Restore backuped files
+    // Restore backup files
 
     if (QDir(testDir).exists()) {
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj1.uprj");
@@ -130,6 +130,9 @@ POSTERIOR_ACTION_DEFINITION(post_action_0003) {
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj3.uprj");
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj5.uprj");
+
+        // Files from the projects above.
+        GTFile::restore(os, testDir + "_common_data/scenarios/project/1.gb");
     }
 }
 

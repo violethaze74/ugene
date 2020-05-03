@@ -89,7 +89,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
 }
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
-    // backup some files
+    // Backup some files used in tests directly.
 
     if (QDir(testDir).exists()) {
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj1.uprj");
@@ -98,6 +98,9 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj3.uprj");
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj5.uprj");
+
+        // Files from the projects above.
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/1.gb");
     }
 }
 
