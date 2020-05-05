@@ -35,7 +35,8 @@
 #include <QProcess>
 
 #define SETTINGS_ROOT QString("test_runner/")
-#define NUM_THREADS_VAR_VALUE "10"
+/** Default number of threads to run XML tests. */
+#define NUM_THREADS_VAR_VALUE "1"
 #define TIME_OUT_VAR_VALUE "0"
 
 namespace U2 {
@@ -66,6 +67,7 @@ void TestRunnerPlugin::sl_startTestRunner() {
     TestRunnerService *srv = new TestRunnerService();
     srv->setEnvironment();
 
+/* Disabling to check if it fixes slow commit/nightly builds
     if(cmdReg->hasParameter(CMDLineCoreOptions::TEST_THREADS)) {
         QString val = cmdReg->getParameterValue(CMDLineCoreOptions::TEST_THREADS);
         bool isOk;
@@ -78,7 +80,7 @@ void TestRunnerPlugin::sl_startTestRunner() {
         }
         srv->setVar(NUM_THREADS_VAR, val);
     }
-
+*/
     foreach(const QString &param, suiteUrls) {
         QString dir;
         if(param.contains(":")||param[0]=='.'||param[0]=='/') {
