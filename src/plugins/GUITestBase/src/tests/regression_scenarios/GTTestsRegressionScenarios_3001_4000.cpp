@@ -6125,7 +6125,7 @@ GUI_TEST_CLASS_DEFINITION(test_3998){
 //    {Edit sequence->Reverse complement sequence}
     GTFileDialog::openFile(os, testDir + "_common_data/regression/3998/sequence.fasta");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Reverse-complement sequence");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Replace the whole sequence by" << "Complementary (5'-3') sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::click(os, "sequence.fasta");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
@@ -6136,7 +6136,7 @@ GUI_TEST_CLASS_DEFINITION(test_3998){
 //    {Edit sequence->Reverse sequence}
     GTFileDialog::openFile(os, testDir + "_common_data/regression/3998/sequence.fasta");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Reverse sequence");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Replace the whole sequence by" << "Reverse (3'-5') sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::click(os, "sequence.fasta");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
@@ -6147,7 +6147,7 @@ GUI_TEST_CLASS_DEFINITION(test_3998){
 //    {Edit sequence->Complement sequence}
     GTFileDialog::openFile(os, testDir + "_common_data/regression/3998/sequence.fasta");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Complement sequence");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Replace the whole sequence by" << "Complementary (5'-3') sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::click(os, "sequence.fasta");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
