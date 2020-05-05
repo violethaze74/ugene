@@ -37,6 +37,8 @@ namespace U2 {
 #define ADV_MENU_SECTION1_SEP           "ADV_MENU_SEC1_SEP"
 #define ADV_MENU_SECTION2_SEP           "ADV_MENU_SEC2_SEP"
 #define ADV_MENU_EDIT                   "ADV_MENU_EDIT"
+#define ADV_MENU_REPLACE_WHOLE_SEQUENCE "ADV_MENU_REPLACE_WHOLE_SEQUENCE"
+
 
 #define SEQ_EDIT_SETTINGS_ROOT                  "sequence_edit_settings/"
 #define SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY   "annotation_strategy"

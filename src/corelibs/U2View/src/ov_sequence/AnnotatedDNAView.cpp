@@ -621,11 +621,11 @@ void AnnotatedDNAView::addEditMenu(QMenu* m) {
 
     if (seqObj->getAlphabet()->isNucleic() && seqCtx->getComplementTT() != NULL) {
         QMenu* replaceMenu = editMenu->addMenu(tr("Replace the whole sequence by"));
+        replaceMenu->menuAction()->setObjectName(ADV_MENU_REPLACE_WHOLE_SEQUENCE);
         replaceMenu->addAction(reverseComplementSequenceAction);
         replaceMenu->addSeparator();
         replaceMenu->addAction(complementSequenceAction);
         replaceMenu->addAction(reverseSequenceAction);
-        replaceMenu->setObjectName("replaceWholeSequence");
     }
 }
 

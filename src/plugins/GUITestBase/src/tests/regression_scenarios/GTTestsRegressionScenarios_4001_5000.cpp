@@ -863,7 +863,7 @@ GUI_TEST_CLASS_DEFINITION(test_4095) {
 */
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "fa1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_EDIT<<ACTION_EDIT_RESERVE_SEQUENCE));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<< ADV_MENU_EDIT << ADV_MENU_REPLACE_WHOLE_SEQUENCE << ACTION_EDIT_RESERVE_SEQUENCE));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //GTCA
