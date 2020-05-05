@@ -5199,13 +5199,13 @@ GUI_TEST_CLASS_DEFINITION(test_3805){
     const QString initialContent = GTClipboard::text( os );
 
     //3. Reverse sequence
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Reverse sequence", GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Replace the whole sequence by" << "Reverse (3'-5') sequence", GTGlobals::UseKey);
 
     //4. Complement sequence
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Complement sequence", GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Replace the whole sequence by" << "Complementary (3'-5') sequence" , GTGlobals::UseKey);
 
     //5. Reverse complement sequence
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Reverse-complement sequence", GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Replace the whole sequence by" << "Complementary (5'-3') sequence", GTGlobals::UseKey);
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 51, 102));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));

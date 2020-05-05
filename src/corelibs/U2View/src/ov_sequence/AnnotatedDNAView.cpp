@@ -625,6 +625,7 @@ void AnnotatedDNAView::addEditMenu(QMenu* m) {
         replaceMenu->addSeparator();
         replaceMenu->addAction(complementSequenceAction);
         replaceMenu->addAction(reverseSequenceAction);
+        replaceMenu->setObjectName("replaceWholeSequence");
     }
 }
 
