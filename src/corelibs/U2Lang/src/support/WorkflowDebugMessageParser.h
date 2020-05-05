@@ -22,6 +22,8 @@
 #ifndef _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_H_
 #define _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_H_
 
+#include <U2Core/global.h>
+
 #include <U2Lang/WorkflowInvestigationData.h>
 
 namespace U2 {

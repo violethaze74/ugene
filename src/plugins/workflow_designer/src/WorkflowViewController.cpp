@@ -99,6 +99,9 @@
 
 namespace U2 {
 
+//TODO: sync with SETTINGS in WorkflowSettings.cpp
+#define SETTINGS QString("workflowview/")
+
 #define LAST_DIR SETTINGS + "lastdir"
 #define SPLITTER_STATE SETTINGS + "splitter"
 #define EDITOR_STATE SETTINGS + "editor"

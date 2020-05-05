@@ -33,6 +33,7 @@
 #include "utils/GTUtilsDialog.h"
 
 namespace U2 {
+using namespace HI;
 
 class SharedConnectionsDialogFiller : public Filler {
 public:

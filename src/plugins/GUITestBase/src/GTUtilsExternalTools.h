@@ -23,6 +23,7 @@
 #define _GTUTILS_EXTERNAL_TOOLS_H_
 
 #include <U2Core/U2OpStatus.h>
+#include <core/GUITestOpStatus.h>
 
 namespace U2 {
 

@@ -25,6 +25,9 @@
 #include <U2Lang/IntegralBusModel.h>
 
 namespace U2 {
+
+class DocumentFormat;
+
 namespace Workflow {
 
 class WriteSequenceValidator : public ScreenedParamValidator {

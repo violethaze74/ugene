@@ -24,6 +24,8 @@
 
 #include "BaseMessageTranslator.h"
 
+#include <U2Core/U2Type.h>
+
 namespace U2 {
 
 class U2EntityRef;

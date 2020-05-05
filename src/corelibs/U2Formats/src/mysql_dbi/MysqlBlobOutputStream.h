@@ -23,6 +23,7 @@
 #define _U2_SQLITEBLOBOUTPUTSTREAM_H_
 
 #include <U2Core/OutputStream.h>
+#include <U2Core/U2Type.h>
 
 namespace U2 {
 

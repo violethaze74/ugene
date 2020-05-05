@@ -22,8 +22,10 @@
 #ifndef _U2_DOCUMENTFOLDERS_H_
 #define _U2_DOCUMENTFOLDERS_H_
 
+#include <QSet>
 #include <QStringList>
 
+#include <U2Core/DocumentModel.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2Type.h>
 

@@ -26,6 +26,7 @@
 #include <QVariantList>
 
 #include <U2Core/Matrix44.h>
+#include <U2Core/Vector3D.h>
 
 namespace U2 {
 

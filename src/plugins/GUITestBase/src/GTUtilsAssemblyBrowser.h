@@ -25,6 +25,7 @@
 #include <GTGlobals.h>
 
 #include <QModelIndex>
+#include <QScrollBar>
 
 namespace U2 {
 

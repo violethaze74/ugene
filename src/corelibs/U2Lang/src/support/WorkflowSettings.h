@@ -28,6 +28,8 @@
 
 #include <U2Core/global.h>
 
+//#define SETTINGS QString("workflowview/")
+
 namespace U2 {
 
 class Watcher : public QObject {
@@ -36,8 +38,6 @@ signals:
     void changed();
     friend class WorkflowSettings;
 };
-
-#define SETTINGS QString("workflowview/")
 
 class U2LANG_EXPORT WorkflowSettings : public QObject {
     Q_OBJECT

@@ -24,7 +24,6 @@
 #include <QScopedPointer>
 
 #include <U2Algorithm/GenomeAssemblyMultiTask.h>
-#include <U2Algorithm/GenomeAssemblyRegistry.h>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/FailTask.h>
@@ -46,6 +45,7 @@
 #include <U2Lang/PairedReadsPortValidator.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
+
 
 #include "SpadesDelegate.h"
 #include "SpadesPortRelationDescriptor.h"

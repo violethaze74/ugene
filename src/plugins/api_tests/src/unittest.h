@@ -22,6 +22,7 @@
 #ifndef _U2_UNIT_TEST_H_
 #define _U2_UNIT_TEST_H_
 
+#include <QMetaType>
 #include <QString>
 
 #define _STR(c) #c

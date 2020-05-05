@@ -22,6 +22,8 @@
 #ifndef _U2_MYSQL_UPGRADER_FROM_1_17_TO_1_24_H_
 #define _U2_MYSQL_UPGRADER_FROM_1_17_TO_1_24_H_
 
+#include <U2Core/U2Type.h>
+
 #include "MysqlUpgrader.h"
 
 namespace U2 {

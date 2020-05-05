@@ -25,6 +25,7 @@
 #include <unittest.h>
 
 #include "core/dbi/DbiTest.h"
+#include <U2Core/BioStruct3D.h>
 
 namespace U2 {
 

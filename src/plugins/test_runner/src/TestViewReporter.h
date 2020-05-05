@@ -22,6 +22,8 @@
 #ifndef _U2_TEST_VIEW_REPORTER_H_
 #define _U2_TEST_VIEW_REPORTER_H_
 
+#include <QString>
+
 class QTreeWidget;
 
 namespace U2 {

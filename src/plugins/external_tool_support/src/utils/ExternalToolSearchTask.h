@@ -25,9 +25,9 @@
 #include <U2Core/MultiTask.h>
 #include <U2Core/Task.h>
 
-class ExternalTool;
-
 namespace U2 {
+
+class ExternalTool;
 
 /**
   * Search the possible paths to the external tool.

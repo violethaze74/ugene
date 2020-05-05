@@ -326,6 +326,8 @@ CircularViewRenderArea *CircularView::getRenderArea() const {
     return qobject_cast<CircularViewRenderArea *>(renderArea);
 }
 
+#define PI 3.1415926535897932384626433832795
+
 CircularView::Direction CircularView::getDirection(float a, float b) const {
     if (a == b) {
         return UNKNOWN;

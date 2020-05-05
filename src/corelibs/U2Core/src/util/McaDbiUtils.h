@@ -22,6 +22,8 @@
 #ifndef _U2_MCA_DBI_UTILS_H_
 #define _U2_MCA_DBI_UTILS_H_
 
+#include <globals/global.h>
+
 namespace U2 {
 
 class MultipleChromatogramAlignment;

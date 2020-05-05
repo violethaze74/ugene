@@ -22,6 +22,8 @@
 #ifndef _U2_SPADES_WORKER_
 #define _U2_SPADES_WORKER_
 
+#include <U2Algorithm/GenomeAssemblyRegistry.h>
+
 #include <U2Core/U2OpStatus.h>
 
 #include <U2Lang/DatasetFetcher.h>

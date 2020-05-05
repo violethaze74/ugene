@@ -26,11 +26,12 @@
 
 #include <U2Lang/WorkflowContext.h>
 
+#include "WorkflowBreakpointSharedInfo.h"
+
 namespace U2 {
 
 class AttributeScript;
 class WorkflowScriptEngine;
-enum BreakpointConditionParameter;
 
 class BreakpointConditionChecker {
     Q_DISABLE_COPY(BreakpointConditionChecker)

@@ -99,6 +99,8 @@ SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovable
     return border;
 }
 
+#define PI 3.1415926535897932384626433832795
+
 SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovableSide(const double arcsinCurrent, const int startBase, const int endBase, const int sequenceLength) {
     double asinStart = 0;
     double asinEnd = 0;

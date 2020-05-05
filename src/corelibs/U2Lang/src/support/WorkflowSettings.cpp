@@ -38,6 +38,7 @@
 
 namespace U2 {
 
+#define SETTINGS QString("workflowview/")
 #define GRID_STATE SETTINGS + "showGrid"
 #define SNAP_STATE SETTINGS + "snap2rid"
 #define LOCK_STATE SETTINGS + "monitorRun"

@@ -23,6 +23,7 @@
 #define _U2_PREPARE_TO_IMPORT_TASK_H
 
 #include <U2Core/Task.h>
+#include <U2Core/GUrl.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 namespace U2 {

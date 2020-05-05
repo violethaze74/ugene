@@ -24,6 +24,9 @@
 
 #include <QMetaType>
 
+#include "AnnotationData.h"
+#include "U2Type.h"
+
 namespace U2 {
 
 class Annotation;

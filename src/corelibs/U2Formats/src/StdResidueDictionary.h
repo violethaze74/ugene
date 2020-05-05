@@ -25,6 +25,7 @@
 #include <QByteArray>
 #include <QHash>
 #include <QMutex>
+#include <QScopedPointer>
 
 namespace U2 {
 

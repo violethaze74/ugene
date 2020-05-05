@@ -27,7 +27,7 @@
 #include <QSharedDataPointer>
 #include <QVector>
 
-#include <U2Core/Vector3D.h>
+#include <U2Core/BioStruct3D.h>
 
 #include "BioStruct3DGLRender.h"
 #include "GraphicUtils.h"

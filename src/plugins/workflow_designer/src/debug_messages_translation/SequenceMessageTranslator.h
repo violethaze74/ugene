@@ -26,6 +26,8 @@
 
 namespace U2 {
 
+class U2SequenceObject;
+
 class SequenceMessageTranslator : public BaseMessageTranslator {
 public:
     SequenceMessageTranslator(const QVariant &atomicMessage, Workflow::WorkflowContext *initContext);

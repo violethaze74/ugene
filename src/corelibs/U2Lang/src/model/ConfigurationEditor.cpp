@@ -23,7 +23,7 @@
 
 #include <QHBoxLayout>
 
-#include <U2Core    //U2SafePoints.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 

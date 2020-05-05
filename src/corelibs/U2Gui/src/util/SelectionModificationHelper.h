@@ -24,6 +24,9 @@
 
 #include <QCursor>
 
+#include <U2Core/U2Region.h>
+#include <U2Core/global.h>
+
 namespace U2 {
 
 class U2GUI_EXPORT SelectionModificationHelper {

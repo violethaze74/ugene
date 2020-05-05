@@ -28,10 +28,10 @@
 
 #include <U2Gui/SaveDocumentController.h>
 
-class Ui_SaveSelectedSequenceFromMSADialog;
 
 namespace U2 {
 
+class Ui_SaveSelectedSequenceFromMSADialog;
 class SaveDocumentInFolderController;
 
 class SaveSelectedSequenceFromMSADialogController : public QDialog {

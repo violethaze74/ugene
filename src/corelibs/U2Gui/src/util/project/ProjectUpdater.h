@@ -25,6 +25,7 @@
 #include <QMutex>
 #include <QThread>
 
+#include <U2Core/U2OpStatus.h>
 #include <U2Core/U2Type.h>
 
 namespace U2 {

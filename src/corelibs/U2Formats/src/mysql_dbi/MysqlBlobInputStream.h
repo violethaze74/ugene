@@ -23,6 +23,7 @@
 #define _U2_MYSQL_BLOB_INPUT_STREAM_H_
 
 #include <U2Core/InputStream.h>
+#include <U2Core/U2Type.h>
 
 namespace U2 {
 
