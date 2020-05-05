@@ -22,8 +22,8 @@
 #ifndef _U2_GT_UTILS_NOTIFICATIONS_H_
 #define _U2_GT_UTILS_NOTIFICATIONS_H_
 
-#include "utils/GTUtilsDialog.h"
 #include "GTGlobals.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 using namespace HI;
@@ -35,8 +35,9 @@ public:
     ~NotificationChecker();
 public slots:
     void sl_checkNotification();
+
 private:
-    QTimer* t;
+    QTimer *t;
     HI::GUITestOpStatus &os;
 };
 
@@ -50,12 +51,11 @@ private:
     QString message;
 };
 
-class GTUtilsNotifications
-{
+class GTUtilsNotifications {
 public:
     static void waitForNotification(HI::GUITestOpStatus &os, bool dialogExpected = true, const QString &message = "");
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_GT_UTILS_NOTIFICATIONS_H_
+#endif    // _U2_GT_UTILS_NOTIFICATIONS_H_

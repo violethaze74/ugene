@@ -19,17 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+#include "WebViewWebKitControllerPrivate.h"
+
 #include <QWebFrame>
 
-#include "WebViewWebKitControllerPrivate.h"
 #include "../JavaScriptAgent.h"
 
 namespace U2 {
 
 WebViewWebKitControllerPrivate::WebViewWebKitControllerPrivate(U2WebView *webView)
-    : WebViewControllerPrivate(webView)
-{
-
+    : WebViewControllerPrivate(webView) {
 }
 
 void WebViewWebKitControllerPrivate::loadPage(const QString &pageUrl) {
@@ -60,4 +59,4 @@ void WebViewWebKitControllerPrivate::init() {
     webView->setContextMenuPolicy(Qt::NoContextMenu);
 }
 
-}   // namespace U2
+}    // namespace U2

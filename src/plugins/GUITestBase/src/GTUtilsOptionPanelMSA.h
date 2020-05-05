@@ -88,9 +88,9 @@ public:
     static void setHighlightingScheme(HI::GUITestOpStatus &os, const QString &highlightingSchemeName);
 
     // functions for accessing PA gui elements
-    static QToolButton* getAddButton(HI::GUITestOpStatus &os, int number);
-    static QLineEdit* getSeqLineEdit(HI::GUITestOpStatus &os, int number);
-    static QToolButton* getDeleteButton(HI::GUITestOpStatus &os, int number);
+    static QToolButton *getAddButton(HI::GUITestOpStatus &os, int number);
+    static QLineEdit *getSeqLineEdit(HI::GUITestOpStatus &os, int number);
+    static QToolButton *getDeleteButton(HI::GUITestOpStatus &os, int number);
     static QPushButton *getAlignButton(HI::GUITestOpStatus &os);
     static void setPairwiseAlignmentAlgorithm(HI::GUITestOpStatus &os, const QString &algorithm);
 
@@ -123,7 +123,7 @@ public:
     static void clickPrev(HI::GUITestOpStatus &os);
 
 private:
-    static QWidget* getWidget(HI::GUITestOpStatus &os, const QString& widgetName, int number);
+    static QWidget *getWidget(HI::GUITestOpStatus &os, const QString &widgetName, int number);
 
     static void addSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method, int number);
 
@@ -131,6 +131,6 @@ private:
     static QMap<Tabs, QString> initInnerWidgetNames();
 };
 
-}
+}    // namespace U2
 
-#endif // _U2_GT_UTILS_OPTION_PANEL_MSA_H_
+#endif    // _U2_GT_UTILS_OPTION_PANEL_MSA_H_

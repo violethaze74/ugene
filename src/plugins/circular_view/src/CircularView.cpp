@@ -157,7 +157,7 @@ void CircularView::mouseMoveEvent(QMouseEvent *e) {
     lastMovePos = movement;
     lastMouseY = areaPoint.y() - ra->getCenterY();
 
-    if (e->modifiers() & Qt::ControlModifier) { // invert the selection.
+    if (e->modifiers() & Qt::ControlModifier) {    // invert the selection.
         twoParts = !twoParts;
     }
     if (twoParts) {
@@ -309,9 +309,9 @@ void CircularView::updateZoomActions() {
 }
 
 void CircularView::invertCurrentSelection() {
-    DNASequenceSelection* selection = ctx->getSequenceSelection();
-    const QVector<U2Region>& regions = selection->getSelectedRegions();
-    CHECK(regions.size() == 1 || regions.size() == 2,);
+    DNASequenceSelection *selection = ctx->getSequenceSelection();
+    const QVector<U2Region> &regions = selection->getSelectedRegions();
+    CHECK(regions.size() == 1 || regions.size() == 2, );
     if (regions.size() == 1) {
         setSelection(U2Region(regions[0].endPos(), seqLen - regions[0].endPos()));
         addSelection(U2Region(0, regions[0].startPos));
@@ -1043,7 +1043,7 @@ void CircularViewRenderArea::buildAnnotationLabel(const QFont &font, Annotation 
 
     int r = 0;
     QVector<U2Region> newLocation;
-    foreach(const RegionsPair & pair, mergedRegions) {
+    foreach (const RegionsPair &pair, mergedRegions) {
         newLocation.append(U2Region(pair.first.startPos, pair.first.length + pair.second.length));
     }
 

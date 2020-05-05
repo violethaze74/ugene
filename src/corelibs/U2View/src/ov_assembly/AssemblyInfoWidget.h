@@ -32,7 +32,7 @@ class AssemblyBrowser;
 class AssemblyInfoWidget : public QWidget {
     Q_OBJECT
 public:
-    AssemblyInfoWidget(AssemblyBrowser * browser, QWidget *p = NULL);
+    AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p = NULL);
 
 private:
     U2SavableWidget savableTab;
@@ -43,7 +43,7 @@ class U2VIEW_EXPORT AssemblyInfoWidgetFactory : public OPWidgetFactory {
 public:
     AssemblyInfoWidgetFactory();
 
-    QWidget* createWidget(GObjectView* objView);
+    QWidget *createWidget(GObjectView *objView);
     OPGroupParameters getOPGroupParameters();
 
 private:
@@ -52,6 +52,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // #ifndef __ASSEMBLY_INFO_WIDGET_H__
+#endif    // #ifndef __ASSEMBLY_INFO_WIDGET_H__

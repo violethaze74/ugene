@@ -23,15 +23,13 @@
 
 #include <U2Core/U2SafePoints.h>
 
-
 namespace U2 {
 
 OPGroupParameters::OPGroupParameters(QString groupId, QPixmap headerImage, QString title, QString documentationPage)
-    :  groupId(groupId),
-       groupIcon(headerImage),
-       groupTitle(title),
-       groupDocumentationPage(documentationPage)
-{
+    : groupId(groupId),
+      groupIcon(headerImage),
+      groupTitle(title),
+      groupDocumentationPage(documentationPage) {
 }
 
 bool OPFactoryFilterVisitor::atLeastOneAlphabetPass(DNAAlphabetType factoryAlphabetType) {
@@ -45,16 +43,13 @@ bool OPFactoryFilterVisitor::atLeastOneAlphabetPass(DNAAlphabetType factoryAlpha
 OPWidgetFactory::OPWidgetFactory()
     : QObject(),
       objView(NULL),
-      objectViewOfWidget(ObjViewType_SequenceView)
-{
-
+      objectViewOfWidget(ObjViewType_SequenceView) {
 }
 
 OPWidgetFactory::~OPWidgetFactory() {
-
 }
 
-bool OPWidgetFactory::passFiltration( OPFactoryFilterVisitorInterface* filter ){
+bool OPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
     //by default checks type only
     bool res = false;
 
@@ -66,15 +61,13 @@ bool OPWidgetFactory::passFiltration( OPFactoryFilterVisitorInterface* filter ){
 }
 
 OPCommonWidgetFactory::OPCommonWidgetFactory(QList<QString> _groupIds)
-    : groupIds(_groupIds)
-{
+    : groupIds(_groupIds) {
 }
 
 OPCommonWidgetFactory::~OPCommonWidgetFactory() {
 }
 
 OPFactoryFilterVisitorInterface::~OPFactoryFilterVisitorInterface() {
-
 }
 
-} // namespace
+}    // namespace U2

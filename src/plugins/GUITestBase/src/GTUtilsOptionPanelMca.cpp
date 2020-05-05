@@ -19,20 +19,20 @@
 * MA 02110-1301, USA.
 */
 
-#include <QComboBox>
-#include <QApplication>
-#include <QLabel>
-#include <QToolButton>
-
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSlider.h>
 #include <primitives/GTWidget.h>
 
+#include <QApplication>
+#include <QComboBox>
+#include <QLabel>
+#include <QToolButton>
+
 #include "GTUtilsOptionPanelMca.h"
 
 namespace U2 {
-    using namespace HI;
+using namespace HI;
 
 QMap<GTUtilsOptionPanelMca::Tabs, QString> GTUtilsOptionPanelMca::initNames() {
     QMap<Tabs, QString> result;
@@ -63,8 +63,8 @@ void GTUtilsOptionPanelMca::toggleTab(HI::GUITestOpStatus &os, Tabs tab) {
 #define GT_METHOD_NAME "openTab"
 void GTUtilsOptionPanelMca::openTab(HI::GUITestOpStatus &os, Tabs tab) {
     if (!isTabOpened(os, tab)) {
-       toggleTab(os, tab);
-   }
+        toggleTab(os, tab);
+    }
 }
 #undef GT_METHOD_NAME
 
@@ -78,10 +78,10 @@ void GTUtilsOptionPanelMca::closeTab(HI::GUITestOpStatus &os, Tabs tab) {
 
 #define GT_METHOD_NAME "isTabOpened"
 bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus &os, Tabs tab) {
-        GTGlobals::FindOptions options;
-        options.failIfNotFound = false;
-        QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], NULL, options);
-        return NULL != innerTabWidget && innerTabWidget->isVisible();
+    GTGlobals::FindOptions options;
+    options.failIfNotFound = false;
+    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], NULL, options);
+    return NULL != innerTabWidget && innerTabWidget->isVisible();
 }
 #undef GT_METHOD_NAME
 
@@ -108,8 +108,8 @@ QStringList GTUtilsOptionPanelMca::getConsensusTypes(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getHeight"
-int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus &os){
-    QLabel* alignmentHeightLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "seqNumLabel"));
+int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus &os) {
+    QLabel *alignmentHeightLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "seqNumLabel"));
     GT_CHECK_RESULT(alignmentHeightLabel != NULL, "alignmentHeightLabel not found", -1);
     bool ok;
     int result = alignmentHeightLabel->text().toInt(&ok);
@@ -119,8 +119,8 @@ int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus &os){
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLength"
-int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus &os){
-    QLabel* alignmentLengthLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "lengthLabel"));
+int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus &os) {
+    QLabel *alignmentLengthLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "lengthLabel"));
     GT_CHECK_RESULT(alignmentLengthLabel != NULL, "alignmentLengthLabel not found", -1);
     bool ok;
     int result = alignmentLengthLabel->text().toInt(&ok);
@@ -148,7 +148,7 @@ int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "setExportFileName"
 void GTUtilsOptionPanelMca::setExportFileName(HI::GUITestOpStatus &os, QString exportFileName) {
     openTab(os, Consensus);
-    QLineEdit *exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "pathLe");
+    QLineEdit *exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
     GT_CHECK_RESULT(exportToFileLineEdit != NULL, "exportToFileLineEdit is NULL", );
     GTLineEdit::setText(os, exportToFileLineEdit, exportFileName);
 }
@@ -157,7 +157,7 @@ void GTUtilsOptionPanelMca::setExportFileName(HI::GUITestOpStatus &os, QString e
 #define GT_METHOD_NAME "getExportFileName"
 QString GTUtilsOptionPanelMca::getExportFileName(HI::GUITestOpStatus &os) {
     openTab(os, Consensus);
-    QLineEdit *exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "pathLe");
+    QLineEdit *exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
     GT_CHECK_RESULT(exportToFileLineEdit != NULL, "exportToFileLineEdit is NULL", QString());
     return GTLineEdit::getText(os, exportToFileLineEdit);
 }
@@ -166,17 +166,16 @@ QString GTUtilsOptionPanelMca::getExportFileName(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "setFileFormat"
 void GTUtilsOptionPanelMca::setFileFormat(HI::GUITestOpStatus &os, FileFormat fileFormat) {
     openTab(os, Consensus);
-    QComboBox* formatCb = GTWidget::findExactWidget<QComboBox *>(os, "formatCb");
+    QComboBox *formatCb = GTWidget::findExactWidget<QComboBox *>(os, "formatCb");
     GTComboBox::setCurrentIndex(os, formatCb, fileFormat);
     GTGlobals::sleep(1000);
-
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "pushResetButton"
 void GTUtilsOptionPanelMca::pushResetButton(HI::GUITestOpStatus &os) {
     openTab(os, Consensus);
-    QToolButton* result = GTWidget::findExactWidget<QToolButton *>(os, "thresholdResetButton");
+    QToolButton *result = GTWidget::findExactWidget<QToolButton *>(os, "thresholdResetButton");
     result->click();
 }
 #undef GT_METHOD_NAME
@@ -184,11 +183,11 @@ void GTUtilsOptionPanelMca::pushResetButton(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "pushExportButton"
 void GTUtilsOptionPanelMca::pushExportButton(HI::GUITestOpStatus &os) {
     openTab(os, Consensus);
-    QToolButton* result = GTWidget::findExactWidget<QToolButton *>(os, "exportBtn");
+    QToolButton *result = GTWidget::findExactWidget<QToolButton *>(os, "exportBtn");
     result->click();
 }
 #undef GT_METHOD_NAME
 
 #undef GT_METHOD_NAME
 
-}//namespace
+}    // namespace U2

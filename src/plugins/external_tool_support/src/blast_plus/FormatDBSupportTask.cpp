@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "FormatDBSupportTask.h"
+
 #include <QCoreApplication>
 #include <QDir>
 
@@ -37,9 +39,8 @@
 
 #include <U2Formats/ConvertFileTask.h>
 
-#include "PrepareInputFastaFilesTask.h"
 #include "FormatDBSupport.h"
-#include "FormatDBSupportTask.h"
+#include "PrepareInputFastaFilesTask.h"
 
 namespace U2 {
 
@@ -51,17 +52,16 @@ void FormatDBSupportTaskSettings::reset() {
     tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(FormatDBSupport::FORMATDB_TMP_DIR);
 }
 
-FormatDBSupportTask::FormatDBSupportTask(const QString& id, const FormatDBSupportTaskSettings& _settings) :
-        Task(tr("Run NCBI FormatDB task"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
-        prepareTask(NULL),
-        formatDBTask(NULL),
-        toolId(id),
-        settings(_settings)
-{
+FormatDBSupportTask::FormatDBSupportTask(const QString &id, const FormatDBSupportTaskSettings &_settings)
+    : Task(tr("Run NCBI FormatDB task"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
+      prepareTask(NULL),
+      formatDBTask(NULL),
+      toolId(id),
+      settings(_settings) {
     GCOUNTER(cvar, tvar, "FormatDBSupportTask");
 }
 
-void FormatDBSupportTask::prepare(){
+void FormatDBSupportTask::prepare() {
     const QString tempDir = prepareTempDir();
     CHECK_OP(stateInfo, );
 
@@ -109,9 +109,9 @@ QString FormatDBSupportTask::generateReport() const {
     if (!hasError()) {
         res += QString(tr("Blast database has been successfully created") + "<br><br>");
         res += QString(tr("Source sequences: "));
-        foreach(const QString &filePath, settings.inputFilesPath){
+        foreach (const QString &filePath, settings.inputFilesPath) {
             res += prepareLink(filePath);
-            if(filePath.size() > 1){
+            if (filePath.size() > 1) {
                 res += "<br>    ";
             }
         }
@@ -123,7 +123,7 @@ QString FormatDBSupportTask::generateReport() const {
             res += QString(tr("Formatdb log file path: "));
             res += prepareLink(externalToolLog);
         }
-    }else{
+    } else {
         res += QString(tr("Blast database creation has been failed")) + "<br><br>";
         if (QFile::exists(externalToolLog)) {
             res += QString(tr("Formatdb log file path: "));
@@ -137,12 +137,12 @@ namespace {
 
 QString getTempDirName(qint64 taskId) {
     return "FormatDB_" + QString::number(taskId) + "_" +
-            QDate::currentDate().toString("dd.MM.yyyy") + "_" +
-            QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
-            QString::number(QCoreApplication::applicationPid()) + "/";
+           QDate::currentDate().toString("dd.MM.yyyy") + "_" +
+           QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
+           QString::number(QCoreApplication::applicationPid()) + "/";
 }
 
-}
+}    // namespace
 
 QString FormatDBSupportTask::prepareTempDir() {
     const QString tmpDirName = getTempDirName(getTaskId());
@@ -152,16 +152,16 @@ QString FormatDBSupportTask::prepareTempDir() {
     return tmpDir;
 }
 
-QString FormatDBSupportTask::prepareLink( const QString &path ) const {
+QString FormatDBSupportTask::prepareLink(const QString &path) const {
     QString preparedPath = path;
-    if(preparedPath.startsWith("'") || preparedPath.startsWith("\"")) {
-        preparedPath.remove(0,1);
+    if (preparedPath.startsWith("'") || preparedPath.startsWith("\"")) {
+        preparedPath.remove(0, 1);
     }
     if (preparedPath.endsWith("'") || preparedPath.endsWith("\"")) {
         preparedPath.chop(1);
     }
     return "<a href=\"file:///" + QDir::toNativeSeparators(preparedPath) + "\">" +
-        QDir::toNativeSeparators(preparedPath) + "</a><br>";
+           QDir::toNativeSeparators(preparedPath) + "</a><br>";
 }
 
 void FormatDBSupportTask::createFormatDbTask() {
@@ -169,21 +169,21 @@ void FormatDBSupportTask::createFormatDbTask() {
 
     QStringList arguments;
     assert(toolId == FormatDBSupport::ET_MAKEBLASTDB_ID);
-    for (int i = 0; i < inputFastaFiles.length(); i++){
+    for (int i = 0; i < inputFastaFiles.length(); i++) {
         inputFastaFiles[i] = "\"" + inputFastaFiles[i] + "\"";
     }
     arguments << "-in" << inputFastaFiles.join(" ");
-    arguments <<"-logfile"<< settings.outputPath + "MakeBLASTDB.log";
+    arguments << "-logfile" << settings.outputPath + "MakeBLASTDB.log";
     externalToolLog = settings.outputPath + "MakeBLASTDB.log";
-    if(settings.outputPath.contains(" ")){
+    if (settings.outputPath.contains(" ")) {
         stateInfo.setError(tr("Output database path contain space characters."));
         return;
     }
-    arguments <<"-out"<< settings.outputPath;
-    arguments <<"-dbtype"<< (settings.isInputAmino ? "prot" : "nucl");
+    arguments << "-out" << settings.outputPath;
+    arguments << "-dbtype" << (settings.isInputAmino ? "prot" : "nucl");
 
     formatDBTask = new ExternalToolRunTask(toolId, arguments, new ExternalToolLogParser());
     formatDBTask->setSubtaskProgressWeight(95);
 }
 
-}   // namespace U2
+}    // namespace U2

@@ -65,13 +65,13 @@ public:
 
     void sendMessage(const QJsonObject &message) Q_DECL_OVERRIDE;
 
-    private Q_SLOTS:
+private Q_SLOTS:
     void textMessageReceived(const QString &message);
 
 private:
     QWebSocket *m_socket;
 };
 
-}
+}    // namespace U2
 
-#endif // WEBSOCKETTRANSPORT_H
+#endif    // WEBSOCKETTRANSPORT_H

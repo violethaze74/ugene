@@ -22,14 +22,14 @@
 #ifndef _U2_GT_UTILS_OPTION_PANEL_SEQUENCE_VIEW_H_
 #define _U2_GT_UTILS_OPTION_PANEL_SEQUENCE_VIEW_H_
 
-#include <QToolButton>
 #include <QLineEdit>
+#include <QToolButton>
 
 #include "GTGlobals.h"
 
 namespace U2 {
 
-class GTUtilsOptionPanelSequenceView{
+class GTUtilsOptionPanelSequenceView {
 public:
     enum Tabs {
         Search,
@@ -44,7 +44,7 @@ public:
         Completer
     };
 
-    static const QMap<Tabs,QString> tabsNames;
+    static const QMap<Tabs, QString> tabsNames;
     static const QMap<Tabs, QString> innerWidgetNames;
 
     static void toggleTab(HI::GUITestOpStatus &os, Tabs tab);
@@ -119,6 +119,6 @@ private:
     static QMap<Tabs, QString> initInnerWidgetNames();
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_GT_UTILS_OPTION_PANEL_SEQUENCE_VIEW_H_
+#endif    // _U2_GT_UTILS_OPTION_PANEL_SEQUENCE_VIEW_H_

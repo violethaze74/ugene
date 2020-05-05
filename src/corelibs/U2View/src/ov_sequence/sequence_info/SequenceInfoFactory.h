@@ -31,7 +31,7 @@ class U2VIEW_EXPORT SequenceInfoFactory : public OPWidgetFactory {
 public:
     SequenceInfoFactory();
 
-    virtual QWidget* createWidget(GObjectView* objView);
+    virtual QWidget *createWidget(GObjectView *objView);
 
     virtual OPGroupParameters getOPGroupParameters();
 
@@ -41,7 +41,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-} // namespace U2
+}    // namespace U2
 
 #endif
-

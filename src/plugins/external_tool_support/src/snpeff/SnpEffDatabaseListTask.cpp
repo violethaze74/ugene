@@ -20,18 +20,19 @@
  */
 
 #include "SnpEffDatabaseListTask.h"
-#include "SnpEffTask.h"
-#include "SnpEffSupport.h"
-
-#include <U2Core/AppContext.h>
-#include <U2Core/Settings.h>
 
 #include <QDir>
 #include <QFileInfo>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/Settings.h>
+
+#include "SnpEffSupport.h"
+#include "SnpEffTask.h"
+
 namespace U2 {
 
-#define SNPEFF_DATABASE_LIST_SETTINGS + "snpEffDatabaseList_"
+#define SNPEFF_DATABASE_LIST_SETTINGS +"snpEffDatabaseList_"
 
 SnpEffDatabaseListTask::SnpEffDatabaseListTask()
     : ExternalToolSupportTask(tr("SnpEff Database List task"), TaskFlags_FOSE_COSC) {
@@ -49,8 +50,7 @@ void SnpEffDatabaseListTask::prepare() {
     dbListFilePath += QString(QDir::separator()) + "SnpEff_DB_" + snpEffVersion + ".list";
 
     const QStringList args("databases");
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(),
-                                                          "", QStringList(), QString(), true);
+    ExternalToolRunTask *etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(), "", QStringList(), QString(), true);
     setListenerForTask(etTask);
     etTask->setStandartOutputFile(dbListFilePath);
     addSubTask(etTask);
@@ -63,4 +63,4 @@ void SnpEffDatabaseListTask::run() {
     AppContext::getSettings()->setValue(SNPEFF_DATABASE_LIST_SETTINGS + snpEffVersion, dbListFilePath, true);
 }
 
-} // namespace U2
+}    // namespace U2

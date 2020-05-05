@@ -22,11 +22,11 @@
 #ifndef __SYNC_HTTP_H__
 #define __SYNC_HTTP_H__
 
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkProxy>
 #include <QAuthenticator>
 #include <QEventLoop>
+#include <QNetworkAccessManager>
+#include <QNetworkProxy>
+#include <QNetworkReply>
 
 #include <U2Core/U2OpStatus.h>
 
@@ -35,26 +35,30 @@ namespace U2 {
 class U2CORE_EXPORT SyncHttp : public QNetworkAccessManager {
     Q_OBJECT
 public:
-    SyncHttp(U2OpStatus &os, QObject* parent = 0);
+    SyncHttp(U2OpStatus &os, QObject *parent = 0);
     ~SyncHttp();
-    QString syncGet(const QUrl& url);
-    QString syncPost(const QUrl & url, QIODevice * data);
-    QNetworkReply::NetworkError error() { return err; }
-    QString errorString() { return errString; }
-    protected slots:
-    virtual void finished(QNetworkReply*);
-    virtual void onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*);
+    QString syncGet(const QUrl &url);
+    QString syncPost(const QUrl &url, QIODevice *data);
+    QNetworkReply::NetworkError error() {
+        return err;
+    }
+    QString errorString() {
+        return errString;
+    }
+protected slots:
+    virtual void finished(QNetworkReply *);
+    virtual void onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
     void sl_taskCancellingCheck();
 
 private:
-    void    runTimer();
+    void runTimer();
 
-    QEventLoop* loop;
+    QEventLoop *loop;
     QNetworkReply::NetworkError err;
     QString errString;
     U2OpStatus &os;
 };
 
-} // U2
+}    // namespace U2
 
 #endif

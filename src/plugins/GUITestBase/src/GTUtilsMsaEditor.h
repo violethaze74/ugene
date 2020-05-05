@@ -22,9 +22,10 @@
 #ifndef _U2_GT_UTILS_MSA_EDITOR_H_
 #define _U2_GT_UTILS_MSA_EDITOR_H_
 
+#include <GTGlobals.h>
+
 #include <QColor>
 #include <QRect>
-#include <GTGlobals.h>
 
 namespace U2 {
 
@@ -43,14 +44,14 @@ public:
     static QColor getGraphOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);
     static QColor getSimpleOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);
 
-    static MSAEditor * getEditor(HI::GUITestOpStatus &os);
-    static MsaEditorWgt * getEditorUi(HI::GUITestOpStatus &os);
-    static MaGraphOverview * getGraphOverview(HI::GUITestOpStatus &os);
-    static MaSimpleOverview * getSimpleOverview(HI::GUITestOpStatus &os);
-    static MSAEditorTreeViewerUI * getTreeView(HI::GUITestOpStatus &os);
-    static MaEditorNameList * getNameListArea(HI::GUITestOpStatus &os);
-    static MSAEditorConsensusArea * getConsensusArea(HI::GUITestOpStatus &os);
-    static MSAEditorSequenceArea * getSequenceArea(HI::GUITestOpStatus &os);
+    static MSAEditor *getEditor(HI::GUITestOpStatus &os);
+    static MsaEditorWgt *getEditorUi(HI::GUITestOpStatus &os);
+    static MaGraphOverview *getGraphOverview(HI::GUITestOpStatus &os);
+    static MaSimpleOverview *getSimpleOverview(HI::GUITestOpStatus &os);
+    static MSAEditorTreeViewerUI *getTreeView(HI::GUITestOpStatus &os);
+    static MaEditorNameList *getNameListArea(HI::GUITestOpStatus &os);
+    static MSAEditorConsensusArea *getConsensusArea(HI::GUITestOpStatus &os);
+    static MSAEditorSequenceArea *getSequenceArea(HI::GUITestOpStatus &os);
 
     static QRect getSequenceNameRect(HI::GUITestOpStatus &os, const QString &sequenceName);
     static QRect getSequenceNameRect(HI::GUITestOpStatus &os, int rowNumber);
@@ -94,6 +95,6 @@ public:
     static void dragAndDropSequenceFromProject(HI::GUITestOpStatus &os, const QStringList &pathToSequence);
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_GT_UTILS_MSA_EDITOR_H_
+#endif    // _U2_GT_UTILS_MSA_EDITOR_H_

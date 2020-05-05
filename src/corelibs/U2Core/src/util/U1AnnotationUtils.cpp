@@ -334,11 +334,9 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
 }
 
 bool U1AnnotationUtils::isAnnotationContainsJunctionPoint(const Annotation *annotation,
-                                                          const qint64 sequenceLength)
-{
-    const QList<RegionsPair> mergedRegions =  mergeAnnotatiedRegionsAroundJunctionPoint
-                                             (annotation->getRegions(),
-                                              sequenceLength);
+                                                          const qint64 sequenceLength) {
+    const QList<RegionsPair> mergedRegions = mergeAnnotatiedRegionsAroundJunctionPoint(annotation->getRegions(),
+                                                                                       sequenceLength);
     return isAnnotationContainsJunctionPoint(mergedRegions);
 }
 
@@ -353,8 +351,7 @@ bool U1AnnotationUtils::isAnnotationContainsJunctionPoint(const QList<RegionsPai
 }
 
 QList<RegionsPair> U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(const QVector<U2Region> &regions,
-                                                                             const qint64 sequenceLength)
-{
+                                                                                const qint64 sequenceLength) {
     QList<RegionsPair> result;
 
     for (int i = 0; i < regions.size(); i++) {

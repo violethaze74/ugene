@@ -25,6 +25,7 @@
 #include <QPointer>
 
 #include <U2Core/Task.h>
+
 #include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowIOTasks.h>
 
@@ -39,7 +40,7 @@ public:
     static const QString SCHEMA_PATHS_SETTINGS_TAG;
 
 public:
-    SaveWorkflowSceneTask(Schema *schema, const Metadata& meta);
+    SaveWorkflowSceneTask(Schema *schema, const Metadata &meta);
     virtual void run();
 
 private:
@@ -55,7 +56,7 @@ public:
     virtual Task::ReportResult report();
 
 private:
-    void resetSceneAndScheme( );
+    void resetSceneAndScheme();
 
     Schema *schema;
     Metadata *meta;
@@ -67,5 +68,5 @@ private:
     bool disableWizardAutorun;
 };
 
-} //namespace
+}    // namespace U2
 #endif

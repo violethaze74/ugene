@@ -27,8 +27,8 @@
 #include "SendReportDialog.h"
 #include "Utils.h"
 
-#if defined(Q_OS_UNIX ) && defined(Q_WS_X11)
-#include <X11/Xlib.h>
+#if defined(Q_OS_UNIX) && defined(Q_WS_X11)
+#    include <X11/Xlib.h>
 #endif
 
 namespace {
@@ -36,12 +36,12 @@ QString loadReport(int argc, char *argv[]) {
     if (Utils::hasReportUrl()) {
         return Utils::loadReportFromUrl(Utils::getReportUrl());
     } else if (argc > 1) {
-        return QString::fromUtf8(QByteArray::fromBase64(argv[argc-1]));
+        return QString::fromUtf8(QByteArray::fromBase64(argv[argc - 1]));
     }
 
     return "";
 }
-}
+}    // namespace
 
 int main(int argc, char *argv[]) {
     bool useGui = true;
@@ -69,7 +69,6 @@ int main(int argc, char *argv[]) {
         sender.send("", dumpUrl);
         return 0;
     }
-
 
     if (useGui) {
         SendReportDialog dlg(message, dumpUrl);

@@ -19,19 +19,18 @@
  * MA 02110-1301, USA.
  */
 
+#include "TextSettingsDialog.h"
+
 #include <QColorDialog>
 #include <QProxyStyle>
 #include <QStyleFactory>
 
 #include <U2Gui/HelpButton.h>
 
-#include "TextSettingsDialog.h"
-
 namespace U2 {
 
-TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap& settings)
-: BaseSettingsDialog(parent) {
-
+TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap &settings)
+    : BaseSettingsDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "24748925");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -86,4 +85,4 @@ void TextSettingsDialog::accept() {
     QDialog::accept();
 }
 
-} //namespace
+}    // namespace U2

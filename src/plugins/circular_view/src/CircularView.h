@@ -22,26 +22,26 @@
 #ifndef _U2_CIRCULAR_PAN_VIEW_H_
 #define _U2_CIRCULAR_PAN_VIEW_H_
 
+#include <QAction>
+#include <QFont>
+#include <QScrollBar>
+
 #include <U2Core/Annotation.h>
-#include <U2Core/GObject.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/ProjectModel.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObject.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Log.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
+
+#include <U2Gui/MainWindow.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/GSequenceLineViewAnnotated.h>
-
-#include <QFont>
-#include <QAction>
-#include <QScrollBar>
-
 
 namespace U2 {
 
@@ -55,26 +55,28 @@ class TextItem;
 class CircularView : public GSequenceLineViewAnnotated {
     Q_OBJECT
 public:
-    CircularView(QWidget* p, ADVSequenceObjectContext* ctx, CircularViewSettings* settings);
+    CircularView(QWidget *p, ADVSequenceObjectContext *ctx, CircularViewSettings *settings);
     void pack();
-    void mousePressEvent(QMouseEvent * e);
-    void mouseMoveEvent(QMouseEvent * e);
-    void mouseReleaseEvent(QMouseEvent* e);
-    void resizeEvent(QResizeEvent* e);
+    void mousePressEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void resizeEvent(QResizeEvent *e);
 
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
 
-    void wheelEvent(QWheelEvent* we);
+    void wheelEvent(QWheelEvent *we);
     virtual QSize sizeHint() const;
 
-    virtual QList<Annotation*> findAnnotationsByCoord(const QPoint& coord) const;
+    virtual QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const;
 
     static qreal coordToAngle(const QPoint point);
 
     bool isCircularTopology() const;
 
-    enum Direction {CW, CCW, UNKNOWN};
+    enum Direction { CW,
+                     CCW,
+                     UNKNOWN };
 
     static const int MIN_OUTER_SIZE;
     static const int CV_REGION_ITEM_WIDTH;
@@ -87,7 +89,9 @@ public:
     //used by export to file function
     void paint(QPainter &p, int w, int h, bool paintSelection, bool paintMarker);
 
-    CircularViewSettings* getSettings() { return settings; }
+    CircularViewSettings *getSettings() {
+        return settings;
+    }
     void redraw();
 
 signals:
@@ -99,12 +103,12 @@ public slots:
     void sl_zoomIn();
     void sl_zoomOut();
     void sl_fitInView();
-    void sl_onSequenceObjectRenamed(const QString& oldName);
+    void sl_onSequenceObjectRenamed(const QString &oldName);
     void sl_onCircularTopologyChange();
 
 protected slots:
     virtual void sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &added, const QList<Annotation *> &removed);
-    virtual void sl_onDNASelectionChanged(LRegionsSelection* thiz, const QVector<U2Region>& added, const QVector<U2Region>& removed);
+    virtual void sl_onDNASelectionChanged(LRegionsSelection *thiz, const QVector<U2Region> &added, const QVector<U2Region> &removed);
 
 protected:
     void adaptSizes();
@@ -116,7 +120,7 @@ protected:
      */
     void invertCurrentSelection();
 
-    CircularViewRenderArea* getRenderArea() const;
+    CircularViewRenderArea *getRenderArea() const;
 
     Direction getDirection(float a, float b) const;
 
@@ -129,7 +133,7 @@ protected:
     bool holdSelection;
     qreal lastPressAngle;
     qreal lastMoveAngle;
-    CircularViewSettings* settings;
+    CircularViewSettings *settings;
 };
 
 class CircularViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
@@ -139,49 +143,52 @@ class CircularViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
     friend class CircularAnnotationRegionItem;
     Q_OBJECT
 public:
-    CircularViewRenderArea(CircularView* d);
+    CircularViewRenderArea(CircularView *d);
     ~CircularViewRenderArea();
 
-    int getAnnotationYLevel(Annotation *a) const { return annotationYLevel.value(a); }
+    int getAnnotationYLevel(Annotation *a) const {
+        return annotationYLevel.value(a);
+    }
 
     static const int MIDDLE_ELLIPSE_SIZE;
-    int getCenterY() const { return verticalOffset; }
-    qreal coordToAsin(const QPoint& p) const;
+    int getCenterY() const {
+        return verticalOffset;
+    }
+    qreal coordToAsin(const QPoint &p) const;
     qint64 asinToPos(const qreal asin) const;
 
 protected:
-    qint64 coordToPos(const QPoint& p) const override;
+    qint64 coordToPos(const QPoint &p) const override;
     void resizeEvent(QResizeEvent *e);
-    virtual void drawAll(QPaintDevice* pd);
+    virtual void drawAll(QPaintDevice *pd);
     virtual U2Region getAnnotationYRange(Annotation *a, int ri, const AnnotationSettings *as) const;
 
     void buildAnnotationItem(DrawAnnotationPass pass, Annotation *a, int predefinedOrbit = -1, bool selected = false, const AnnotationSettings *as = NULL);
-    void buildAnnotationLabel( const QFont &font, Annotation *a, const AnnotationSettings *as, bool isAutoAnnotation = false);
+    void buildAnnotationLabel(const QFont &font, Annotation *a, const AnnotationSettings *as, bool isAutoAnnotation = false);
     void buildItems(QFont labelFont);
 
-    virtual void drawAnnotations(QPainter& p);
+    virtual void drawAnnotations(QPainter &p);
 
     void redraw();
 
-    void paintContent(QPainter& p, bool paintSelection = true, bool paintMarker = true);
+    void paintContent(QPainter &p, bool paintSelection = true, bool paintMarker = true);
     void paintContent(QPainter &p, int w, int h, bool paintSelection, bool paintMarker);
 
-    void drawSequenceName(QPainter& p);
-    void drawRuler(QPainter& p);
-    void drawRulerCoordinates(QPainter& p, int startPos, int seqLen);
-    void drawRulerNotches(QPainter& p, int start, int span, int seqLen);
-    void drawAnnotationsSelection(QPainter& p);
-    void drawSequenceSelection(QPainter& p);
-    void drawMarker(QPainter& p);
+    void drawSequenceName(QPainter &p);
+    void drawRuler(QPainter &p);
+    void drawRulerCoordinates(QPainter &p, int startPos, int seqLen);
+    void drawRulerNotches(QPainter &p, int start, int span, int seqLen);
+    void drawAnnotationsSelection(QPainter &p);
+    void drawSequenceSelection(QPainter &p);
+    void drawMarker(QPainter &p);
     void evaluateLabelPositions(const QFont &f);
     qreal getVisibleAngle() const;
-    QPair<int,int> getVisibleRange() const;
+    QPair<int, int> getVisibleRange() const;
 
 private:
-    int findOrbit(const QVector<U2Region>& location, Annotation *a);
-    CircularAnnotationRegionItem* createAnnotationRegionItem(const U2Region &region, int seqLen, int yLevel, const SharedAnnotationData &aData, int index);
-    QPainterPath createAnnotationArrowPath(float startAngle, float spanAngle, float dAlpha, const QRect &outerRect, const QRect &innerRect,
-        const QRect &middleRect, bool complementary, bool isShort) const;
+    int findOrbit(const QVector<U2Region> &location, Annotation *a);
+    CircularAnnotationRegionItem *createAnnotationRegionItem(const U2Region &region, int seqLen, int yLevel, const SharedAnnotationData &aData, int index);
+    QPainterPath createAnnotationArrowPath(float startAngle, float spanAngle, float dAlpha, const QRect &outerRect, const QRect &innerRect, const QRect &middleRect, bool complementary, bool isShort) const;
     void removeRegionsOutOfRange(QVector<U2Region> &location, int seqLen) const;
 
     static const int OUTER_ELLIPSE_SIZE;
@@ -209,17 +216,17 @@ private:
     int arrowHeightDelta;
     int maxDisplayingLabels;
     int verticalOffset;
-    int currentScale; // > 0 -- zoomed IN; < 0 -- zoomed OUT; == 0 -- fits in view
+    int currentScale;    // > 0 -- zoomed IN; < 0 -- zoomed OUT; == 0 -- fits in view
 
-    CircularViewSettings*   settings;
+    CircularViewSettings *settings;
     bool settingsWereChanged;
 
-    CircularView* circularView;
-    QList<QVector<U2Region> > regionY;
+    CircularView *circularView;
+    QList<QVector<U2Region>> regionY;
 
     QMap<Annotation *, CircularAnnotationItem *> circItems;
-    TextItem* seqNameItem;
-    TextItem* seqLenItem;
+    TextItem *seqNameItem;
+    TextItem *seqLenItem;
     QMap<Annotation *, int> annotationYLevel;
     QList<CircularAnnotationLabel *> labelList;
     qreal rotationDegree;
@@ -229,6 +236,6 @@ private:
     int oldYlevel;
 };
 
-}//namespace;
+}    // namespace U2
 
 #endif

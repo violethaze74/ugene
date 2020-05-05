@@ -19,19 +19,18 @@
  * MA 02110-1301, USA.
  */
 
+#include "BranchSettingsDialog.h"
+
 #include <QColorDialog>
 #include <QProxyStyle>
 #include <QStyleFactory>
 
 #include <U2Gui/HelpButton.h>
 
-#include "BranchSettingsDialog.h"
-
 namespace U2 {
 
-BranchSettingsDialog::BranchSettingsDialog(QWidget *parent, const OptionsMap& settings)
-    : BaseSettingsDialog(parent)
-{
+BranchSettingsDialog::BranchSettingsDialog(QWidget *parent, const OptionsMap &settings)
+    : BaseSettingsDialog(parent) {
     changedSettings[BRANCH_COLOR] = settings[BRANCH_COLOR];
     changedSettings[BRANCH_THICKNESS] = settings[BRANCH_THICKNESS];
     setupUi(this);
@@ -78,4 +77,4 @@ void BranchSettingsDialog::accept() {
     QDialog::accept();
 }
 
-} //namespace
+}    // namespace U2

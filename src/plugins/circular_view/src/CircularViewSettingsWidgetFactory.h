@@ -32,22 +32,22 @@ class CircularViewContext;
 class CircularViewSettingsWidgetFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
-    CircularViewSettingsWidgetFactory(CircularViewContext* context);
+    CircularViewSettingsWidgetFactory(CircularViewContext *context);
 
-    virtual QWidget* createWidget(GObjectView *objView);
+    virtual QWidget *createWidget(GObjectView *objView);
 
     virtual OPGroupParameters getOPGroupParameters();
 
-    virtual bool passFiltration (OPFactoryFilterVisitorInterface* filter);
+    virtual bool passFiltration(OPFactoryFilterVisitorInterface *filter);
 
 private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;
     static const QString GROUP_DOC_PAGE;
 
-    CircularViewContext*    ctx;
+    CircularViewContext *ctx;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_CIRCULAR_VIEW_SETTINGS_WIDGET_FACTORY_H_
+#endif    // _U2_CIRCULAR_VIEW_SETTINGS_WIDGET_FACTORY_H_

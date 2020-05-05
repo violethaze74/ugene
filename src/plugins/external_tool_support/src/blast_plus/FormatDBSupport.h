@@ -23,6 +23,7 @@
 #define _U2_FORMATDB_SUPPORT_H
 
 #include <U2Core/ExternalToolRegistry.h>
+
 #include "utils/ExternalToolSupportAction.h"
 
 namespace U2 {
@@ -30,7 +31,7 @@ namespace U2 {
 class FormatDBSupport : public ExternalTool {
     Q_OBJECT
 public:
-    FormatDBSupport(const QString& id, const QString& name, const QString& path = "");
+    FormatDBSupport(const QString &id, const QString &name, const QString &path = "");
 
     static const QString ET_MAKEBLASTDB;
     static const QString ET_MAKEBLASTDB_ID;
@@ -41,5 +42,5 @@ public slots:
     void sl_runWithExtFileSpecify();
 };
 
-}//namespace
-#endif // _U2_FORMATDB_SUPPORT_H
+}    // namespace U2
+#endif    // _U2_FORMATDB_SUPPORT_H

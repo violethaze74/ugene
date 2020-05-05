@@ -19,18 +19,17 @@
  * MA 02110-1301, USA.
  */
 
+#include "WebViewQtWebEngineControllerPrivate.h"
+
 #include <U2Core/U2SafePoints.h>
 
-#include "WebViewQtWebEngineControllerPrivate.h"
 #include "../JavaScriptAgent.h"
 #include "../qtwebengine/webchannel/U2WebChannel.h"
 
 namespace U2 {
 
 WebViewWriter::WebViewWriter(const QString &_pageUrl)
-    : pageUrl(_pageUrl)
-{
-
+    : pageUrl(_pageUrl) {
 }
 
 void WebViewWriter::write(const QString &data) {
@@ -41,9 +40,7 @@ void WebViewWriter::write(const QString &data) {
 
 WebViewQtWebEngineControllerPrivate::WebViewQtWebEngineControllerPrivate(U2WebView *webView)
     : WebViewControllerPrivate(webView),
-      channel(NULL)
-{
-
+      channel(NULL) {
 }
 
 void WebViewQtWebEngineControllerPrivate::loadPage(const QString &pageUrl) {
@@ -57,7 +54,7 @@ void WebViewQtWebEngineControllerPrivate::loadPage(const QString &pageUrl) {
 
 void WebViewQtWebEngineControllerPrivate::savePage(const QString &pageUrl) {
     WebViewWriter *writer = new WebViewWriter(pageUrl);
-    webView->page()->toHtml([writer](const QString &result) mutable {writer->write(result);});
+    webView->page()->toHtml([writer](const QString &result) mutable { writer->write(result); });
 }
 
 void WebViewQtWebEngineControllerPrivate::registerJavaScriptAgent(JavaScriptAgent *agent) {
@@ -81,4 +78,4 @@ void WebViewQtWebEngineControllerPrivate::init() {
     webView->setContextMenuPolicy(Qt::NoContextMenu);
 }
 
-}   // namespace U2
+}    // namespace U2

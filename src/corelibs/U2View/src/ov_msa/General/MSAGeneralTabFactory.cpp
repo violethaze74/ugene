@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "MSAGeneralTabFactory.h"
+
 #include <QPixmap>
 
 #include <U2Core/U2SafePoints.h>
@@ -26,8 +28,6 @@
 #include <U2View/MSAEditor.h>
 
 #include "MSAGeneralTab.h"
-
-#include "MSAGeneralTabFactory.h"
 
 namespace U2 {
 
@@ -39,22 +39,22 @@ MSAGeneralTabFactory::MSAGeneralTabFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget* MSAGeneralTabFactory::createWidget(GObjectView* objView) {
+QWidget *MSAGeneralTabFactory::createWidget(GObjectView *objView) {
     SAFE_POINT(NULL != objView,
-        QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-        NULL);
+               QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
+               NULL);
 
-    MSAEditor* msa = qobject_cast<MSAEditor*>(objView);
+    MSAEditor *msa = qobject_cast<MSAEditor *>(objView);
     SAFE_POINT(NULL != msa,
-        QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
-        NULL);
+               QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
+               NULL);
 
     MSAGeneralTab *widget = new MSAGeneralTab(msa);
     widget->setObjectName("MsaGeneralTab");
     return widget;
 }
 
-const QString & MSAGeneralTabFactory::getGroupId() {
+const QString &MSAGeneralTabFactory::getGroupId() {
     return GROUP_ID;
 }
 
@@ -62,4 +62,4 @@ OPGroupParameters MSAGeneralTabFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("General"), GROUP_DOC_PAGE);
 }
 
-} // namespace U2
+}    // namespace U2

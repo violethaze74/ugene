@@ -19,20 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#include "ScriptEditorWidget.h"
-
-#include "ui_BreakpointConditionEditDialog.h"
 #include "BreakpointConditionEditDialog.h"
-#include <U2Gui/HelpButton.h>
+
 #include <QPushButton>
+
+#include <U2Gui/HelpButton.h>
+
+#include "ScriptEditorWidget.h"
+#include "ui_BreakpointConditionEditDialog.h"
 
 namespace U2 {
 
 BreakpointConditionEditDialog::BreakpointConditionEditDialog(QWidget *parent,
-    const QString &variablesText, bool conditionEnabled, const QString &conditionText,
-    HitCondition initCondition)
-    : QDialog(parent), initHitCondition(initCondition)
-{
+                                                             const QString &variablesText,
+                                                             bool conditionEnabled,
+                                                             const QString &conditionText,
+                                                             HitCondition initCondition)
+    : QDialog(parent), initHitCondition(initCondition) {
     ui = new Ui_BreakpointConditionEditDialog();
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "28967093");
@@ -59,7 +62,6 @@ BreakpointConditionEditDialog::BreakpointConditionEditDialog(QWidget *parent,
     ui->conditionBox->setChecked(conditionEnabled);
 
     connect(ui->buttonBox, SIGNAL(accepted()), SLOT(sl_dialogAccepted()));
-
 }
 
 BreakpointConditionEditDialog::~BreakpointConditionEditDialog() {
@@ -81,4 +83,4 @@ void BreakpointConditionEditDialog::sl_dialogAccepted() {
     emit si_conditionTextChanged(scriptEdit->scriptText());
 }
 
-} // namespace U2
+}    // namespace U2

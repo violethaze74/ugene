@@ -29,19 +29,25 @@
 namespace U2 {
 
 class ExportProjectDialogController : public QDialog, public Ui_ExportProjectDialog {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	ExportProjectDialogController(QWidget *p, const QString& defaultProjectFileName);
+    ExportProjectDialogController(QWidget *p, const QString &defaultProjectFileName);
 
-	void accept();
+    void accept();
 
-	const QString& getDirToSave() const {return exportDir;}
-    const QString& getProjectFile() const {return projectFile;}
+    const QString &getDirToSave() const {
+        return exportDir;
+    }
+    const QString &getProjectFile() const {
+        return projectFile;
+    }
 
-	bool useCompression() const {return false;}
+    bool useCompression() const {
+        return false;
+    }
 
 private slots:
-	void sl_onBrowseButton();
+    void sl_onBrowseButton();
 
 private:
     //canonical representation of the dir
@@ -49,6 +55,6 @@ private:
     QString projectFile;
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

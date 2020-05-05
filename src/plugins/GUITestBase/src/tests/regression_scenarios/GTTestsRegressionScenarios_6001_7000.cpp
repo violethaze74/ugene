@@ -115,10 +115,10 @@
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 
 namespace U2 {
 
@@ -3687,12 +3687,12 @@ GUI_TEST_CLASS_DEFINITION(test_6564) {
 
     // 3. Select a region in the first sequence (click on any base of the sequence).
     // 4. Press_ Shift_ and click to the sequence number 3 in the name list (on the left).
-	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3,0));   
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 0));
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
-	// 5. Sequences 1,2,3 selected (because _Shift_ was used)
+    // 5. Sequences 1,2,3 selected (because _Shift_ was used)
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
     const MaEditorSelection &selection = msaEditor->getSelection();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
@@ -4412,18 +4412,18 @@ GUI_TEST_CLASS_DEFINITION(test_6640_4) {
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-	// 2. Click "Show chromatograms" button on the toolbar.
-	GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+    // 2. Click "Show chromatograms" button on the toolbar.
+    GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
 
     // 3. Select 4 reads
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR51");
-	GTGlobals::sleep();
+    GTGlobals::sleep();
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B70");
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-	GTGlobals::sleep();
+    GTGlobals::sleep();
 
     // 4. Expected state: 4 reads are selected
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
@@ -4654,24 +4654,21 @@ GUI_TEST_CLASS_DEFINITION(test_6667_1) {
 
     QRect expectedSelection(7, 2, 5, 1);
     QRect actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
-    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
-        .arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
+    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2").arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
 
     //6. Click "next" button
     GTUtilsOptionPanelMsa::clickNext(os);
 
     expectedSelection = QRect(4, 4, 5, 1);
     actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
-    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
-        .arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
-    
+    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2").arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
+
     //7. Click "next" button
     GTUtilsOptionPanelMsa::clickNext(os);
-    
+
     expectedSelection = QRect(7, 2, 5, 1);
     actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
-    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
-        .arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
+    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2").arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6672) {
@@ -4704,7 +4701,6 @@ GUI_TEST_CLASS_DEFINITION(test_6672) {
 
     // 7. Expected state: One first column left in collapsing mode
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 0), QPoint(0, 1), "A\nT");
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6673) {
     // 1. Open "_common_data/scenarios/msa/translations_nucl.aln".
@@ -4730,9 +4726,7 @@ GUI_TEST_CLASS_DEFINITION(test_6673) {
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("P")), "Required sequence is not removed");
 }
 
-
 GUI_TEST_CLASS_DEFINITION(test_6673_1) {
-
     // 1. Open "_common_data/scenarios/msa/translations_nucl.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "translations_nucl.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4749,7 +4743,7 @@ GUI_TEST_CLASS_DEFINITION(test_6673_1) {
 
     // Expected result: one gap is inserted for "S" collapsing group
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 0), QPoint(0, 4), "T\n-\nG\nC\nA");
-    }
+}
 
 GUI_TEST_CLASS_DEFINITION(test_6676_1) {
     //    1. Open "data/samples/CLUSTALW/COI.aln".
@@ -5165,7 +5159,7 @@ GUI_TEST_CLASS_DEFINITION(test_6684_1) {
                                                 << "Build dotplot...");
 }
 
-  GUI_TEST_CLASS_DEFINITION(test_6691_1) {
+GUI_TEST_CLASS_DEFINITION(test_6691_1) {
     //UTEST-44
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5233,8 +5227,8 @@ GUI_TEST_CLASS_DEFINITION(test_6692) {
     GTUtilsMsaEditor::toggleCollapsingGroup(os, "Conocephalus_discolor");
 
     // 5. Remove the first group: select all sequences from the "Conocephalus_discolor" group and press Delete key on the keyboard.
-	GTKeyboardDriver::keyClick(Qt::Key_Delete);
-	GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
 
     // 6. Expected result: "Conocephalus_discolor" group is removed, "Mecopoda_elongata_Ishigaki_J" is still collapsed.
     QStringList modifiedNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -5584,7 +5578,7 @@ GUI_TEST_CLASS_DEFINITION(test_6730) {
 
     // 4. Expected result: the whole column is selected.
     QString expectedSelection = "T\nA\n-\n-\nA\nT\nA";
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedSelection, QString("unexpected selection:\n%1").arg(clipboardText));
@@ -5639,7 +5633,6 @@ GUI_TEST_CLASS_DEFINITION(test_6739) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 1, 1, 4));
 }
 GUI_TEST_CLASS_DEFINITION(test_6740) {
-
     // 1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5655,10 +5648,8 @@ GUI_TEST_CLASS_DEFINITION(test_6740) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
 
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(4, 3), QPoint(4, 3), "T");
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6751) {
-
     // 1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5675,7 +5666,6 @@ GUI_TEST_CLASS_DEFINITION(test_6751) {
     GTGlobals::sleep();
 
     // Expected result: the alignment process has passed successfully.
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6752) {
     // 1. Open "COI.aln".
@@ -5692,7 +5682,6 @@ GUI_TEST_CLASS_DEFINITION(test_6752) {
     // Expected result: the first sequence is selected only, the context menu is shown.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 604, 1));
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6760) {
     //1. Open /data/samples/fasta/human_T1.fa
@@ -5700,7 +5689,9 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Open additional object in another sequence view
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Sequence View", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
+                                                                              << "Open new view: Sequence View",
+                                                            GTGlobals::UseMouse));
     GTUtilsProjectTreeView::callContextMenu(os, "human_T1.fa");
 
     //3. Open /data/samples/gff/5prime_utr_intron_A20.gff

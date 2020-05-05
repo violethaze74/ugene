@@ -44,6 +44,6 @@ private:
     int port;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_WEB_CHANNEL_H_
+#endif    // _U2_WEB_CHANNEL_H_

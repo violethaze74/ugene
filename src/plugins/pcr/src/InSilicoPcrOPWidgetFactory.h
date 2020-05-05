@@ -32,13 +32,14 @@ public:
     InSilicoPcrOPWidgetFactory();
 
     // OPWidgetFactory
-    QWidget * createWidget(GObjectView *objView);
+    QWidget *createWidget(GObjectView *objView);
     OPGroupParameters getOPGroupParameters();
     bool passFiltration(OPFactoryFilterVisitorInterface *filter);
+
 private:
     static const QString GROUP_DOC_PAGE;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_IN_SILICO_PCR_OP_WIDGET_FACTORY_H_
+#endif    // _U2_IN_SILICO_PCR_OP_WIDGET_FACTORY_H_

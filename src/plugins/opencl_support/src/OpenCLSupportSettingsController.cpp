@@ -47,7 +47,7 @@ void OpenCLSupportSettingsPageController::saveState(AppSettingsGUIPageState *_s)
     // check gpu count
     if (registeredGpus.count() <= 0) {
         return;
-    } 
+    }
 
     //saving state of enabled/disabled GPUs into registry
     const QString enabledGpu = s->getEnabledGpuName();
@@ -67,7 +67,7 @@ void OpenCLSupportSettingsPageController::saveState(AppSettingsGUIPageState *_s)
     //increasing/decreasing maxuse of according resource
     AppResourceSemaphore *gpuResource = dynamic_cast<AppResourceSemaphore *>(AppResourcePool::instance()->getResource(RESOURCE_OPENCL_GPU));
     if (gpuResource) {
-        gpuResource->setMaxUse(1); //Only one GPU is in use at each very moment
+        gpuResource->setMaxUse(1);    //Only one GPU is in use at each very moment
     }    //else - resource was not registered, nothing to do.
 }
 
@@ -79,7 +79,7 @@ AppSettingsGUIPageWidget *OpenCLSupportSettingsPageController::createWidget(AppS
 
 const QString OpenCLSupportSettingsPageController::helpPageId = QString("24748735");
 
-OpenCLSupportSettingsPageState::OpenCLSupportSettingsPageState(const QString& name)
+OpenCLSupportSettingsPageState::OpenCLSupportSettingsPageState(const QString &name)
     : enabledGpuName(name) {
 }
 
@@ -95,7 +95,6 @@ const static char *noGpusDiscoveredText = "No OpenCL-enabled GPU detected.";
 
 OpenCLSupportSettingsPageWidget::OpenCLSupportSettingsPageWidget(const QString &_msg, OpenCLSupportSettingsPageController * /*ctrl*/)
     : onlyMsg(_msg) {
-
     if (!onlyMsg.isEmpty()) {
         //just display the centered warning message
         QHBoxLayout *hLayout = new QHBoxLayout(this);
@@ -116,7 +115,7 @@ OpenCLSupportSettingsPageWidget::OpenCLSupportSettingsPageWidget(const QString &
 
         vLayout->addWidget(gpusDiscoveredLabel);
 
-        QButtonGroup* buttonGroup = new QButtonGroup(this);
+        QButtonGroup *buttonGroup = new QButtonGroup(this);
         foreach (OpenCLGpuModel *m, gpus) {
             vLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
             QHBoxLayout *hLayout = new QHBoxLayout(this);
@@ -162,6 +161,5 @@ AppSettingsGUIPageState *OpenCLSupportSettingsPageWidget::getState(QString & /*e
 
     return new OpenCLSupportSettingsPageState(enabledGpuName);
 }
-
 
 }    // namespace U2

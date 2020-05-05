@@ -19,28 +19,28 @@
  * MA 02110-1301, USA.
  */
 
+#include "WelcomePageMdiController.h"
+
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "WelcomePageMdi.h"
-#include "WelcomePageMdiController.h"
 #include "project_support/ProjectLoaderImpl.h"
 
 namespace U2 {
 
 WelcomePageMdiController::WelcomePageMdiController()
     : QObject(nullptr),
-      welcomePage(nullptr)
-{
+      welcomePage(nullptr) {
     MWMDIManager *mdiManager = getMdiManager();
     CHECK(mdiManager != nullptr, );
 
-    connect(mdiManager, SIGNAL(si_windowClosing(MWMDIWindow*)), SLOT(sl_onMdiClose(MWMDIWindow*)));
+    connect(mdiManager, SIGNAL(si_windowClosing(MWMDIWindow *)), SLOT(sl_onMdiClose(MWMDIWindow *)));
 }
 
-MWMDIManager * WelcomePageMdiController::getMdiManager() {
+MWMDIManager *WelcomePageMdiController::getMdiManager() {
     MainWindow *mainWindow = AppContext::getMainWindow();
     SAFE_POINT(mainWindow != nullptr, L10N::nullPointerError("Main Window"), nullptr);
 
@@ -54,7 +54,7 @@ void WelcomePageMdiController::sl_showPage() {
     if (welcomePage != nullptr) {
         if (mdiManager->getWindows().contains(welcomePage)) {
             mdiManager->activateWindow(welcomePage);
-        } // else: it means that the page has already been called but it is loading now
+        }    // else: it means that the page has already been called but it is loading now
         return;
     }
 
@@ -76,4 +76,4 @@ void WelcomePageMdiController::sl_onRecentChanged() {
     welcomePage->updateRecent(recentProjects, recentFiles);
 }
 
-} // U2
+}    // namespace U2

@@ -19,16 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+#include "CommonImportOptionsDialog.h"
+
 #include <U2Gui/HelpButton.h>
 
-#include "CommonImportOptionsDialog.h"
 #include "ImportOptionsWidget.h"
 
 namespace U2 {
 
-CommonImportOptionsDialog::CommonImportOptionsDialog(const QString& baseFolder, const ImportToDatabaseOptions& options, QWidget *parent) :
-    QDialog(parent)
-{
+CommonImportOptionsDialog::CommonImportOptionsDialog(const QString &baseFolder, const ImportToDatabaseOptions &options, QWidget *parent)
+    : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "24749086");
     init(baseFolder, options);
@@ -42,8 +42,8 @@ ImportToDatabaseOptions CommonImportOptionsDialog::getOptions() const {
     return optionsWidget->getOptions();
 }
 
-void CommonImportOptionsDialog::init(const QString& baseFolder, const ImportToDatabaseOptions& options) {
+void CommonImportOptionsDialog::init(const QString &baseFolder, const ImportToDatabaseOptions &options) {
     optionsWidget->init(baseFolder, options);
 }
 
-}   // namespace U2
+}    // namespace U2

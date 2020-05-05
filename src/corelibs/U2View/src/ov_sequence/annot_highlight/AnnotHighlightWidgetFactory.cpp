@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "AnnotHighlightWidgetFactory.h"
+
 #include <QPixmap>
 
 #include <U2Core/U2SafePoints.h>
@@ -26,8 +28,6 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include "AnnotHighlightWidget.h"
-
-#include "AnnotHighlightWidgetFactory.h"
 
 namespace U2 {
 
@@ -39,17 +39,17 @@ AnnotHighlightWidgetFactory::AnnotHighlightWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget * AnnotHighlightWidgetFactory::createWidget(GObjectView* objView) {
+QWidget *AnnotHighlightWidgetFactory::createWidget(GObjectView *objView) {
     SAFE_POINT(NULL != objView,
-        QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-        NULL);
+               QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
+               NULL);
 
-    AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
+    AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(objView);
     SAFE_POINT(NULL != annotatedDnaView,
-        QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
-        NULL);
+               QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
+               NULL);
 
-    AnnotHighlightWidget* widget = new AnnotHighlightWidget(annotatedDnaView);
+    AnnotHighlightWidget *widget = new AnnotHighlightWidget(annotatedDnaView);
     widget->setObjectName("AnnotHighlightWidget");
     return widget;
 }
@@ -58,4 +58,4 @@ OPGroupParameters AnnotHighlightWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Annotations Highlighting"), GROUP_DOC_PAGE);
 }
 
-} // namespace U2
+}    // namespace U2

@@ -20,16 +20,18 @@
  */
 
 #include "TreeSettingsDialog.h"
-#include <U2Core/global.h>
-#include <U2Core/U2SafePoints.h>
-#include <U2Gui/HelpButton.h>
+
 #include <QPushButton>
 
+#include <U2Core/U2SafePoints.h>
+#include <U2Core/global.h>
+
+#include <U2Gui/HelpButton.h>
 
 namespace U2 {
 
 TreeSettingsDialog::TreeSettingsDialog(QWidget *parent, const OptionsMap &settings, bool isRectLayout)
-: BaseSettingsDialog(parent) {
+    : BaseSettingsDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "24748919");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -46,7 +48,7 @@ TreeSettingsDialog::TreeSettingsDialog(QWidget *parent, const OptionsMap &settin
     treeViewCombo->addItem(treePhylogramText());
     treeViewCombo->addItem(treeCladogramText());
 
-    switch(settings[BRANCHES_TRANSFORMATION_TYPE].toUInt()) {
+    switch (settings[BRANCHES_TRANSFORMATION_TYPE].toUInt()) {
     case DEFAULT:
         treeViewCombo->setCurrentIndex(treeViewCombo->findText(treeDefaultText()));
         break;
@@ -80,9 +82,9 @@ void TreeSettingsDialog::accept() {
     } else if (treeViewCombo->currentText() == treeCladogramText()) {
         changedSettings[BRANCHES_TRANSFORMATION_TYPE] = CLADOGRAM;
     } else {
-        FAIL("Unexpected tree type value",);
+        FAIL("Unexpected tree type value", );
     }
-    if(scaleSpinBox->isEnabled()) {
+    if (scaleSpinBox->isEnabled()) {
         changedSettings[SCALEBAR_RANGE] = scaleSpinBox->value();
     }
 
@@ -99,4 +101,4 @@ QString TreeSettingsDialog::treeCladogramText() {
     return tr("Cladogram");
 }
 
-} //namespace
+}    // namespace U2

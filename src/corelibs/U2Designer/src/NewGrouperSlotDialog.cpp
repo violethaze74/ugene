@@ -19,21 +19,21 @@
 * MA 02110-1301, USA.
 */
 
+#include "NewGrouperSlotDialog.h"
+
 #include <QMessageBox>
 #include <QPushButton>
+
+#include <U2Gui/HelpButton.h>
 
 #include <U2Lang/BaseTypes.h>
 
 #include "GrouperEditorWidget.h"
 
-#include "NewGrouperSlotDialog.h"
-#include <U2Gui/HelpButton.h>
-
 namespace U2 {
 
 NewGrouperSlotDialog::NewGrouperSlotDialog(QWidget *parent, QList<Descriptor> &inSlots, QStringList &names)
-: QDialog(parent), inSlots(inSlots), names(names)
-{
+    : QDialog(parent), inSlots(inSlots), names(names) {
     setupUi(this);
     new HelpButton(this, buttonBox, "28967130");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -79,9 +79,7 @@ QString NewGrouperSlotDialog::getOutSlotName() const {
 /* Action dialogs */
 /************************************************************************/
 ActionDialog::ActionDialog(QWidget *parent)
-: QDialog(parent)
-{
-
+    : QDialog(parent) {
 }
 
 ActionDialog *ActionDialog::getActionDialog(QWidget *parent, GrouperSlotAction *action, DataTypePtr type, QAbstractTableModel *grouperModel) {
@@ -92,8 +90,8 @@ ActionDialog *ActionDialog::getActionDialog(QWidget *parent, GrouperSlotAction *
     } else if (BaseTypes::STRING_TYPE() == type) {
         return new StringActionDialog(parent, action);
     } else if (BaseTypes::ANNOTATION_TABLE_LIST_TYPE() == type ||
-        BaseTypes::ANNOTATION_TABLE_TYPE() == type) {
-        GrouperSlotsCfgModel *m = dynamic_cast<GrouperSlotsCfgModel*>(grouperModel);
+               BaseTypes::ANNOTATION_TABLE_TYPE() == type) {
+        GrouperSlotsCfgModel *m = dynamic_cast<GrouperSlotsCfgModel *>(grouperModel);
         assert(NULL != m);
         QStringList mergeSeqSlots = m->getMergeSeqSlotsNames();
         return new AnnsActionDialog(parent, action, mergeSeqSlots);
@@ -102,8 +100,7 @@ ActionDialog *ActionDialog::getActionDialog(QWidget *parent, GrouperSlotAction *
 }
 
 AnnsActionDialog::AnnsActionDialog(QWidget *parent, GrouperSlotAction *action, QStringList mergeSeqSlots)
-: ActionDialog(parent)
-{
+    : ActionDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "28967130");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -149,8 +146,7 @@ GrouperSlotAction AnnsActionDialog::getAction() const {
 }
 
 SequeceActionDialog::SequeceActionDialog(QWidget *parent, GrouperSlotAction *action)
-: ActionDialog(parent)
-{
+    : ActionDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "28967130");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -214,8 +210,7 @@ GrouperSlotAction SequeceActionDialog::getAction() const {
 }
 
 MsaActionDialog::MsaActionDialog(QWidget *parent, GrouperSlotAction *action)
-: ActionDialog(parent)
-{
+    : ActionDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "28967130");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -248,8 +243,7 @@ GrouperSlotAction MsaActionDialog::getAction() const {
 }
 
 StringActionDialog::StringActionDialog(QWidget *parent, GrouperSlotAction *action)
-: ActionDialog(parent)
-{
+    : ActionDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "28967130");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -274,4 +268,4 @@ GrouperSlotAction StringActionDialog::getAction() const {
     return action;
 }
 
-} // U2
+}    // namespace U2

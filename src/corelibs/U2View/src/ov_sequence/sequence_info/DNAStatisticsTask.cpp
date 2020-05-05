@@ -19,14 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+#include <math.h>
+
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/U2DbiUtils.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
-#include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2DbiUtils.h>
-
-#include <math.h>
 
 #include "DNAStatisticsTask.h"
 
@@ -244,30 +244,30 @@ static DinucleotidesExtinctionCoefficientsMap createRnaDinucleotidesExtinctionCo
     return res;
 }
 
-static QVector<double> createProteinMWMap(){
+static QVector<double> createProteinMWMap() {
     QVector<double> mwMap(MAP_SIZE, 0);
-    mwMap['A'] = 89.09; // ALA
-    mwMap['R'] = 174.20; // ARG
-    mwMap['N'] = 132.12; // ASN
-    mwMap['D'] = 133.10; // ASP
-    mwMap['B'] = 132.61; // ASX
-    mwMap['C'] = 121.15; // CYS
-    mwMap['Q'] = 146.15; // GLN
-    mwMap['E'] = 147.13; // GLU
-    mwMap['Z'] = 146.64; // GLX
-    mwMap['G'] = 75.07; // GLY
-    mwMap['H'] = 155.16; // HIS
-    mwMap['I'] = 131.17; // ILE
-    mwMap['L'] = 131.17; // LEU
-    mwMap['K'] = 146.19; // LYS
-    mwMap['M'] = 149.21; // MET
-    mwMap['F'] = 165.19; // PHE
-    mwMap['P'] = 115.13; //PRO
-    mwMap['S'] = 105.09; // SER
-    mwMap['T'] = 119.12; // THR
-    mwMap['W'] = 204.23; // TRP
-    mwMap['Y'] = 181.19; // TYR
-    mwMap['V'] = 117.15; // VAL
+    mwMap['A'] = 89.09;    // ALA
+    mwMap['R'] = 174.20;    // ARG
+    mwMap['N'] = 132.12;    // ASN
+    mwMap['D'] = 133.10;    // ASP
+    mwMap['B'] = 132.61;    // ASX
+    mwMap['C'] = 121.15;    // CYS
+    mwMap['Q'] = 146.15;    // GLN
+    mwMap['E'] = 147.13;    // GLU
+    mwMap['Z'] = 146.64;    // GLX
+    mwMap['G'] = 75.07;    // GLY
+    mwMap['H'] = 155.16;    // HIS
+    mwMap['I'] = 131.17;    // ILE
+    mwMap['L'] = 131.17;    // LEU
+    mwMap['K'] = 146.19;    // LYS
+    mwMap['M'] = 149.21;    // MET
+    mwMap['F'] = 165.19;    // PHE
+    mwMap['P'] = 115.13;    //PRO
+    mwMap['S'] = 105.09;    // SER
+    mwMap['T'] = 119.12;    // THR
+    mwMap['W'] = 204.23;    // TRP
+    mwMap['Y'] = 181.19;    // TYR
+    mwMap['V'] = 117.15;    // VAL
     return mwMap;
 }
 
@@ -277,11 +277,11 @@ static QVector<double> createPKAMap() {
     res['C'] = 8.5;
     res['E'] = 4.4;
     res['Y'] = 10.0;
-    res['c'] = 3.1; // CTERM
+    res['c'] = 3.1;    // CTERM
     res['R'] = 12.0;
     res['H'] = 6.5;
     res['K'] = 10.4;
-    res['n'] = 8.0; // NTERM
+    res['n'] = 8.0;    // NTERM
     return res;
 }
 
@@ -291,11 +291,11 @@ static QVector<int> createChargeMap() {
     res['C'] = -1;
     res['E'] = -1;
     res['Y'] = -1;
-    res['c'] = -1; // CTERM
+    res['c'] = -1;    // CTERM
     res['R'] = 1;
     res['H'] = 1;
     res['K'] = 1;
-    res['n'] = 1; // NTERM
+    res['n'] = 1;    // NTERM
     return res;
 }
 
@@ -330,18 +330,17 @@ const QVector<double> DNAStatisticsTask::pKaMap = createPKAMap();
 const QVector<int> DNAStatisticsTask::PROTEIN_CHARGES_MAP = createChargeMap();
 const QVector<double> DNAStatisticsTask::GC_RATIO_MAP = createGcRatioMap();
 
-DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet* alphabet,
+DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet *alphabet,
                                      const U2EntityRef seqRef,
-                                     const QVector<U2Region>& regions)
-    : BackgroundTask< DNAStatistics > (tr("Calculate sequence statistics"), TaskFlag_None),
+                                     const QVector<U2Region> &regions)
+    : BackgroundTask<DNAStatistics>(tr("Calculate sequence statistics"), TaskFlag_None),
       alphabet(alphabet),
       seqRef(seqRef),
       regions(regions),
       charactersCount(MAP_SIZE, 0),
       rcCharactersCount(MAP_SIZE, 0),
       dinucleotidesCount(MAP_SIZE, QVector<qint64>(MAP_SIZE, 0)),
-      rcDinucleotidesCount(MAP_SIZE, QVector<qint64>(MAP_SIZE, 0))
-{
+      rcDinucleotidesCount(MAP_SIZE, QVector<qint64>(MAP_SIZE, 0)) {
     SAFE_POINT_EXT(alphabet != NULL, setError(tr("Alphabet is NULL")), );
 }
 
@@ -356,7 +355,7 @@ void DNAStatisticsTask::computeStats() {
     DbiConnection dbiConnection(seqRef.dbiRef, os);
     CHECK_OP(os, );
 
-    U2SequenceDbi* sequenceDbi = dbiConnection.dbi->getSequenceDbi();
+    U2SequenceDbi *sequenceDbi = dbiConnection.dbi->getSequenceDbi();
     CHECK(sequenceDbi != NULL, );
     SAFE_POINT_EXT(alphabet != NULL, setError(tr("Alphabet is NULL")), );
     qint64 totalLength = U2Region::sumLength(regions);
@@ -368,14 +367,14 @@ void DNAStatisticsTask::computeStats() {
         return;
     }
 
-    foreach (const U2Region& region, regions) {
+    foreach (const U2Region &region, regions) {
         QList<U2Region> blocks = U2Region::split(region, 1024 * 1024);
-        foreach(const U2Region& block, blocks) {
+        foreach (const U2Region &block, blocks) {
             if (isCanceled() || hasError()) {
                 break;
             }
             const QByteArray seqBlock = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
-            CHECK_OP(os,);
+            CHECK_OP(os, );
             const char *sequenceData = seqBlock.constData();
 
             int previousChar = U2Msa::GAP_CHAR;
@@ -402,7 +401,7 @@ void DNAStatisticsTask::computeStats() {
                     const int rcCharacter = static_cast<int>(rcSequenceData[i]);
                     rcCharactersCount[rcCharacter]++;
                     if (previousRcChar != U2Msa::GAP_CHAR && rcCharacter != U2Msa::GAP_CHAR) {
-                        rcDinucleotidesCount[rcCharacter][previousRcChar]++;      // dinucleotides on the complement strand are calculated in 5'->3' direction
+                        rcDinucleotidesCount[rcCharacter][previousRcChar]++;    // dinucleotides on the complement strand are calculated in 5'->3' direction
                     }
                     if (U2Msa::GAP_CHAR != rcCharacter) {
                         previousRcChar = rcCharacter;
@@ -412,7 +411,7 @@ void DNAStatisticsTask::computeStats() {
 
             processedLength += block.length;
             stateInfo.setProgress(static_cast<int>(processedLength * 100 / totalLength));
-            CHECK_OP(stateInfo,);
+            CHECK_OP(stateInfo, );
         }
     }
 
@@ -513,18 +512,18 @@ void DNAStatisticsTask::computeStats() {
     }
 }
 
-double DNAStatisticsTask::calcPi(U2SequenceDbi* sequenceDbi) {
+double DNAStatisticsTask::calcPi(U2SequenceDbi *sequenceDbi) {
     U2OpStatus2Log os;
     QVector<qint64> countMap(256, 0);
-    foreach (const U2Region& region, regions) {
+    foreach (const U2Region &region, regions) {
         QList<U2Region> blocks = U2Region::split(region, 1024 * 1024);
-        foreach(const U2Region& block, blocks) {
+        foreach (const U2Region &block, blocks) {
             if (isCanceled() || hasError()) {
                 break;
             }
             QByteArray seqBlock = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
             CHECK_OP(os, 0);
-            const char* sequenceData = seqBlock.constData();
+            const char *sequenceData = seqBlock.constData();
             for (int i = 0, n = seqBlock.size(); i < n; i++) {
                 char c = sequenceData[i];
                 if (pKaMap[c] != 0) {
@@ -554,7 +553,7 @@ double DNAStatisticsTask::calcPi(U2SequenceDbi* sequenceDbi) {
     return pH;
 }
 
-double DNAStatisticsTask::calcChargeState(const QVector<qint64>& countMap, double pH ) {
+double DNAStatisticsTask::calcChargeState(const QVector<qint64> &countMap, double pH) {
     double chargeState = 0.;
     for (int i = 0; i < countMap.length(); i++) {
         if (isCanceled() || hasError()) {
@@ -567,5 +566,4 @@ double DNAStatisticsTask::calcChargeState(const QVector<qint64>& countMap, doubl
     return chargeState;
 }
 
-
-} // namespace
+}    // namespace U2

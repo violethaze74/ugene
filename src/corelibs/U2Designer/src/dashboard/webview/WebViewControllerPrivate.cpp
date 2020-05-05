@@ -19,19 +19,17 @@
  * MA 02110-1301, USA.
  */
 
+#include "WebViewControllerPrivate.h"
+
 #include <QDesktopServices>
 #include <QFile>
 
 #include <U2Core/U2SafePoints.h>
 
-#include "WebViewControllerPrivate.h"
-
 namespace U2 {
 
 WebViewControllerPrivate::WebViewControllerPrivate(U2WebView *_webView)
-    : webView(_webView)
-{
-
+    : webView(_webView) {
 }
 
 void WebViewControllerPrivate::saveContent(const QString &url, const QString &data) {
@@ -53,4 +51,4 @@ void WebViewControllerPrivate::sl_linkClicked(const QUrl &url) {
     QDesktopServices::openUrl(url);
 }
 
-}   // namespace U2
+}    // namespace U2

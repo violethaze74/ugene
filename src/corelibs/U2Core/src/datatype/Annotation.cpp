@@ -557,7 +557,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
             std::reverse(merged.begin(), merged.end());
         }
         bool hasAnnotatiedRegionsContainJunctionPoint = seqObj->isCircular() && U1AnnotationUtils::isAnnotationContainsJunctionPoint(merged);
-        foreach(const RegionsPair& pair, merged) {
+        foreach (const RegionsPair &pair, merged) {
             if (!seqVal.isEmpty()) {
                 seqVal += "^";
             }

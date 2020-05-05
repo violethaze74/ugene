@@ -19,26 +19,27 @@
  * MA 02110-1301, USA.
  */
 
+#include "MaEditorWgt.h"
+
 #include <QGridLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/ExportImageDialog.h>
 
-#include <U2View/MaEditorStatusBar.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MaEditorNameList.h>
-#include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
+#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MaEditorNameList.h>
+#include <U2View/MaEditorStatusBar.h>
 #include <U2View/UndoRedoFramework.h>
 
 #include "MaEditorUtils.h"
-#include "MaEditorWgt.h"
 #include "SequenceAreaRenderer.h"
 #include "ov_msa/Export/MSAImageExportTask.h"
 #include "ov_msa/helpers/BaseWidthController.h"
@@ -73,20 +74,20 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       delSelectionAction(NULL),
       copySelectionAction(NULL),
       copyFormattedSelectionAction(NULL),
-      pasteAction(NULL)
-{
+      pasteAction(NULL) {
     undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
 
     connect(getUndoAction(), SIGNAL(triggered()), SLOT(sl_countUndo()));
     connect(getRedoAction(), SIGNAL(triggered()), SLOT(sl_countRedo()));
 }
 
-QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment alignment,
-                                              QWidget* heightTarget, bool proxyMouseEventsToNameList) {
+QWidget *MaEditorWgt::createHeaderLabelWidget(const QString &text, Qt::Alignment alignment, QWidget *heightTarget, bool proxyMouseEventsToNameList) {
     QString labelHtml = QString("<p style=\"margin-right: 5px\">%1</p>").arg(text);
     return new MaLabelWidget(this,
                              heightTarget == NULL ? seqAreaHeader : heightTarget,
-                             labelHtml, alignment, proxyMouseEventsToNameList);
+                             labelHtml,
+                             alignment,
+                             proxyMouseEventsToNameList);
 }
 
 ScrollController *MaEditorWgt::getScrollController() {
@@ -105,22 +106,22 @@ DrawHelper *MaEditorWgt::getDrawHelper() {
     return drawHelper;
 }
 
-QAction* MaEditorWgt::getUndoAction() const {
+QAction *MaEditorWgt::getUndoAction() const {
     QAction *a = undoFWK->getUndoAction();
     a->setObjectName("msa_action_undo");
     return a;
 }
 
-QAction* MaEditorWgt::getRedoAction() const {
+QAction *MaEditorWgt::getRedoAction() const {
     QAction *a = undoFWK->getRedoAction();
     a->setObjectName("msa_action_redo");
     return a;
 }
 
-void MaEditorWgt::sl_saveScreenshot(){
-    CHECK(qobject_cast<MSAEditor*>(editor) != NULL, );
+void MaEditorWgt::sl_saveScreenshot() {
+    CHECK(qobject_cast<MSAEditor *>(editor) != NULL, );
     MSAImageExportController controller(this);
-    QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
+    QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
     QString fileName = GUrlUtils::fixFileName(editor->getMaObject()->getGObjectName());
     QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, fileName, ExportImageDialog::NoScaling, p);
     dlg->exec();
@@ -132,12 +133,12 @@ void MaEditorWgt::initWidgets() {
 
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 
-    GScrollBar* shBar = new GScrollBar(Qt::Horizontal);
+    GScrollBar *shBar = new GScrollBar(Qt::Horizontal);
     shBar->setObjectName("horizontal_sequence_scroll");
     shBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    QScrollBar* nhBar = new QScrollBar(Qt::Horizontal);
+    QScrollBar *nhBar = new QScrollBar(Qt::Horizontal);
     nhBar->setObjectName("horizontal_names_scroll");
-    GScrollBar* cvBar = new GScrollBar(Qt::Vertical);
+    GScrollBar *cvBar = new GScrollBar(Qt::Vertical);
     cvBar->setObjectName("vertical_sequence_scroll");
 
     initSeqArea(shBar, cvBar);
@@ -162,8 +163,8 @@ void MaEditorWgt::initWidgets() {
     seqAreaHeaderLayout->setSpacing(0);
     seqAreaHeaderLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-    QWidget* label1 = createHeaderLabelWidget();
-    QWidget* label2 = createHeaderLabelWidget();
+    QWidget *label1 = createHeaderLabelWidget();
+    QWidget *label2 = createHeaderLabelWidget();
 
     seqAreaHeaderLayout->addWidget(consArea);
     seqAreaHeader->setLayout(seqAreaHeaderLayout);
@@ -186,7 +187,7 @@ void MaEditorWgt::initWidgets() {
     seqAreaLayout->setRowStretch(1, 1);
     seqAreaLayout->setColumnStretch(1, 1);
 
-    QWidget* seqAreaContainer = new QWidget();
+    QWidget *seqAreaContainer = new QWidget();
     seqAreaContainer->setLayout(seqAreaLayout);
 
     QWidget *label;
@@ -204,9 +205,9 @@ void MaEditorWgt::initWidgets() {
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
     nameAreaContainer->setStyleSheet("background-color: white;");
-    nhBar->setStyleSheet("background-color: normal;"); // avoid white background of scrollbar set 1 line above.
+    nhBar->setStyleSheet("background-color: normal;");    // avoid white background of scrollbar set 1 line above.
 
-    nameAreaContainer->setMinimumWidth(15); // splitter uses min-size to collapse a widget
+    nameAreaContainer->setMinimumWidth(15);    // splitter uses min-size to collapse a widget
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
     maSplitter.addWidget(seqAreaContainer, 1, 3);
 
@@ -240,7 +241,7 @@ void MaEditorWgt::initWidgets() {
     setLayout(mainLayout);
 
     connect(collapseModel, SIGNAL(si_toggled()), offsetsView, SLOT(sl_updateOffsets()));
-    connect(collapseModel, SIGNAL(si_toggled()), seqArea,     SLOT(sl_modelChanged()));
+    connect(collapseModel, SIGNAL(si_toggled()), seqArea, SLOT(sl_modelChanged()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
 
     connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
@@ -263,8 +264,7 @@ void MaEditorWgt::initActions() {
     copySelectionAction->setObjectName("copy_selection");
     copySelectionAction->setShortcut(QKeySequence::Copy);
     copySelectionAction->setShortcutContext(Qt::WidgetShortcut);
-    copySelectionAction->setToolTip(QString("%1 (%2)").arg(copySelectionAction->text())
-        .arg(copySelectionAction->shortcut().toString()));
+    copySelectionAction->setToolTip(QString("%1 (%2)").arg(copySelectionAction->text()).arg(copySelectionAction->shortcut().toString()));
 
     addAction(copySelectionAction);
 
@@ -272,8 +272,7 @@ void MaEditorWgt::initActions() {
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetShortcut);
-    copyFormattedSelectionAction->setToolTip(QString("%1 (%2)").arg(copyFormattedSelectionAction->text())
-        .arg(copyFormattedSelectionAction->shortcut().toString()));
+    copyFormattedSelectionAction->setToolTip(QString("%1 (%2)").arg(copyFormattedSelectionAction->text()).arg(copyFormattedSelectionAction->shortcut().toString()));
 
     addAction(copyFormattedSelectionAction);
 
@@ -281,8 +280,7 @@ void MaEditorWgt::initActions() {
     pasteAction->setObjectName("paste");
     pasteAction->setShortcuts(QKeySequence::Paste);
     pasteAction->setShortcutContext(Qt::WidgetShortcut);
-    pasteAction->setToolTip(QString("%1 (%2)").arg(pasteAction->text())
-        .arg(pasteAction->shortcut().toString()));
+    pasteAction->setToolTip(QString("%1 (%2)").arg(pasteAction->text()).arg(pasteAction->shortcut().toString()));
 
     addAction(pasteAction);
 }
@@ -295,4 +293,4 @@ void MaEditorWgt::sl_countRedo() {
     GRUNTIME_NAMED_COUNTER(cvar, tvar, tr("Redo"), editor->getFactoryId());
 }
 
-} // namespace
+}    // namespace U2

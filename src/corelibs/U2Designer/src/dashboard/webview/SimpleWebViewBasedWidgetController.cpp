@@ -19,12 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include "SimpleWebViewBasedWidgetController.h"
+
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
 
 #include "WebViewController.h"
-
-#include "SimpleWebViewBasedWidgetController.h"
 
 namespace U2 {
 
@@ -32,8 +32,7 @@ SimpleWebViewBasedWidgetController::SimpleWebViewBasedWidgetController(U2WebView
     : QObject(webView),
       agent(_agent),
       webViewController(new WebViewController(webView, agent)),
-      pageReady(false)
-{
+      pageReady(false) {
     connect(webViewController, SIGNAL(si_pageIsAboutToBeInitialized()), SLOT(sl_pageIsAboutToBeInitialized()));
     connect(webViewController, SIGNAL(si_pageReady()), SLOT(sl_pageInitialized()));
 }
@@ -67,4 +66,4 @@ void SimpleWebViewBasedWidgetController::sl_pageInitialized() {
     emit si_pageReady();
 }
 
-}   // namespace U2
+}    // namespace U2

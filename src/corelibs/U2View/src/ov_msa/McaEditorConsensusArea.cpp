@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "McaEditorConsensusArea.h"
+
 #include <QToolBar>
 
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
@@ -27,11 +29,9 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include "McaEditorConsensusArea.h"
 #include "McaEditor.h"
-#include "view_rendering/McaConsensusAreaRenderer.h"
-
 #include "ov_msa/MaConsensusMismatchController.h"
+#include "view_rendering/McaConsensusAreaRenderer.h"
 
 namespace U2 {
 
@@ -67,5 +67,4 @@ QString McaEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
     return editor->getSettingsRoot() + MCAE_SETTINGS_CONSENSUS_TYPE;
 }
 
-
-}   // namespace U2
+}    // namespace U2

@@ -19,17 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include "ImportSchemaDialog.h"
+
 #include <QMessageBox>
+
+#include <U2Gui/HelpButton.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/WorkflowEnv.h>
-#include <U2Gui/HelpButton.h>
-
-#include "ImportSchemaDialog.h"
 
 namespace U2 {
 
-ImportSchemaDialog::ImportSchemaDialog(QWidget* p) : QDialog(p) {
+ImportSchemaDialog::ImportSchemaDialog(QWidget *p)
+    : QDialog(p) {
     setupUi(this);
     new HelpButton(this, buttonBox, "28967074");
 }
@@ -68,4 +70,4 @@ QString ImportSchemaDialog::getTypeName() {
     return nameEdit->text();
 }
 
-} // U2
+}    // namespace U2

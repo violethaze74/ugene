@@ -31,7 +31,7 @@ class U2VIEW_EXPORT AnnotHighlightWidgetFactory : public OPWidgetFactory {
 public:
     AnnotHighlightWidgetFactory();
 
-    virtual QWidget * createWidget(GObjectView* objView);
+    virtual QWidget *createWidget(GObjectView *objView);
     virtual OPGroupParameters getOPGroupParameters();
 
 private:
@@ -40,6 +40,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_ANNOT_HIGHLIGHT_WIDGET_FACTORY_H_
+#endif    // _U2_ANNOT_HIGHLIGHT_WIDGET_FACTORY_H_

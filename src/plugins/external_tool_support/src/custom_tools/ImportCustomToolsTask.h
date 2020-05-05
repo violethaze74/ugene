@@ -49,6 +49,6 @@ private:
     RegisterCustomToolTask *registerTask;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_IMPORT_CUSTOM_TOOLS_TASK_H_
+#endif    // _U2_IMPORT_CUSTOM_TOOLS_TASK_H_

@@ -33,9 +33,9 @@ class U2VIEW_EXPORT FindPatternMsaWidgetFactory : public OPWidgetFactory {
 public:
     FindPatternMsaWidgetFactory();
 
-    QWidget * createWidget(GObjectView* objView) override;
+    QWidget *createWidget(GObjectView *objView) override;
     OPGroupParameters getOPGroupParameters() override;
-    static const QString & getGroupId();
+    static const QString &getGroupId();
 
 private:
     static const QString GROUP_ID;
@@ -43,6 +43,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

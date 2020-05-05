@@ -36,8 +36,8 @@
 
 #include <U2Gui/MainWindow.h>
 
-#include "PreliminaryActions.h"
 #include "GTUtilsTaskTreeView.h"
+#include "PreliminaryActions.h"
 
 namespace U2 {
 namespace GUITest_preliminary_actions {
@@ -52,7 +52,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 #ifdef Q_OS_WIN
-    QProcess::execute("closeAllErrors.exe"); //this exe file, compiled Autoit script
+    QProcess::execute("closeAllErrors.exe");    //this exe file, compiled Autoit script
 #endif
 
     GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
@@ -60,7 +60,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
 #ifndef Q_OS_WIN
     GTMouseDriver::release(Qt::RightButton);
     GTMouseDriver::release();
-    GTKeyboardDriver::keyRelease( Qt::Key_Control);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     uiLog.trace(QString("pre_action_0000: next keyboard modifiers are pressed before test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
@@ -117,12 +117,12 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0004) {
 PRELIMINARY_ACTION_DEFINITION(pre_action_0005) {
     // Click somewhere to the main window in mac to be sure that the focus is on the application
 
-    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
     CHECK_SET_ERR(mw != NULL, "main window is NULL");
 #ifdef Q_OS_MAC
     GTWidget::click(os, mw, Qt::LeftButton, QPoint(200, 200));
 #endif
 }
 
-}   // namespace GUITest_preliminary_actions
-}   // namespace U2
+}    // namespace GUITest_preliminary_actions
+}    // namespace U2

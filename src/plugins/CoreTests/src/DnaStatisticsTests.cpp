@@ -19,14 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+#include "DnaStatisticsTests.h"
+
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2Location.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/DNASequenceObject.h>
 
 #include <U2Formats/GenbankLocationParser.h>
-
-#include "DnaStatisticsTests.h"
 
 namespace U2 {
 
@@ -50,7 +50,7 @@ const QString GTest_DnaStatisticsTest::EXPECTED_DS_OD260_MASS = "expected-ds-od2
 
 const QString GTest_DnaStatisticsTest::EXPECTED_ISOELECTRIC_POINT = "expected-isoelectric-point";
 
-void GTest_DnaStatisticsTest::init(XMLTestFormat *, const QDomElement& element) {
+void GTest_DnaStatisticsTest::init(XMLTestFormat *, const QDomElement &element) {
     task = nullptr;
 
     checkNecessaryAttributeExistence(element, DOC_NAME_ATTR);
@@ -149,62 +149,86 @@ Task::ReportResult GTest_DnaStatisticsTest::report() {
     if (0 != expectedStats.length) {
         CHECK_EXT(expectedStats.length == result.length,
                   setError(QString("Unexpected length: expected %1, got '%2'")
-                           .arg(expectedStats.length).arg(result.length)), ReportResult_Finished);
+                               .arg(expectedStats.length)
+                               .arg(result.length)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.gcContent) {
         CHECK_EXT(qFuzzyCompare(expectedStats.gcContent + 1, result.gcContent + 1),
                   setError(QString("Unexpected GC content: expected %1, got '%2'")
-                           .arg(expectedStats.gcContent).arg(result.gcContent)), ReportResult_Finished);
+                               .arg(expectedStats.gcContent)
+                               .arg(result.gcContent)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.meltingTemp) {
         CHECK_EXT(qFuzzyCompare(expectedStats.meltingTemp + 1, result.meltingTemp + 1),
                   setError(QString("Unexpected melting temperature: expected %1, got '%2'")
-                           .arg(expectedStats.meltingTemp).arg(result.meltingTemp)), ReportResult_Finished);
+                               .arg(expectedStats.meltingTemp)
+                               .arg(result.meltingTemp)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.ssMolecularWeight) {
         CHECK_EXT(qFuzzyCompare(expectedStats.ssMolecularWeight + 1, result.ssMolecularWeight + 1),
                   setError(QString("Unexpected single strand molecular weight: expected %1, got '%2'")
-                           .arg(expectedStats.ssMolecularWeight).arg(result.ssMolecularWeight)), ReportResult_Finished);
+                               .arg(expectedStats.ssMolecularWeight)
+                               .arg(result.ssMolecularWeight)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.ssExtinctionCoefficient) {
         CHECK_EXT(expectedStats.ssExtinctionCoefficient == result.ssExtinctionCoefficient,
                   setError(QString("Unexpected single strand extinction coefficient: expected %1, got '%2'")
-                           .arg(expectedStats.ssExtinctionCoefficient).arg(result.ssExtinctionCoefficient)), ReportResult_Finished);
+                               .arg(expectedStats.ssExtinctionCoefficient)
+                               .arg(result.ssExtinctionCoefficient)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.ssOd260AmountOfSubstance) {
         CHECK_EXT(qFuzzyCompare(expectedStats.ssOd260AmountOfSubstance + 1, result.ssOd260AmountOfSubstance + 1),
                   setError(QString("Unexpected single strand amount of OD260: expected %1, got '%2'")
-                           .arg(expectedStats.ssOd260AmountOfSubstance).arg(result.ssOd260AmountOfSubstance)), ReportResult_Finished);
+                               .arg(expectedStats.ssOd260AmountOfSubstance)
+                               .arg(result.ssOd260AmountOfSubstance)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.ssOd260Mass) {
         CHECK_EXT(qFuzzyCompare(expectedStats.ssOd260Mass + 1, result.ssOd260Mass + 1),
                   setError(QString("Unexpected single strand OD260 mass: expected %1, got '%2'")
-                           .arg(expectedStats.ssOd260Mass).arg(result.ssOd260Mass)), ReportResult_Finished);
+                               .arg(expectedStats.ssOd260Mass)
+                               .arg(result.ssOd260Mass)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.dsMolecularWeight) {
         CHECK_EXT(qFuzzyCompare(expectedStats.dsMolecularWeight + 1, result.dsMolecularWeight + 1),
                   setError(QString("Unexpected double strand molecular weight: expected %1, got '%2'")
-                           .arg(expectedStats.dsMolecularWeight).arg(result.dsMolecularWeight)), ReportResult_Finished);
+                               .arg(expectedStats.dsMolecularWeight)
+                               .arg(result.dsMolecularWeight)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.dsExtinctionCoefficient) {
         CHECK_EXT(expectedStats.dsExtinctionCoefficient == result.dsExtinctionCoefficient,
                   setError(QString("Unexpected double strand extinction coefficient: expected %1, got '%2'")
-                           .arg(expectedStats.dsExtinctionCoefficient).arg(result.dsExtinctionCoefficient)), ReportResult_Finished);
+                               .arg(expectedStats.dsExtinctionCoefficient)
+                               .arg(result.dsExtinctionCoefficient)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.dsOd260AmountOfSubstance) {
         CHECK_EXT(qFuzzyCompare(expectedStats.dsOd260AmountOfSubstance + 1, result.dsOd260AmountOfSubstance + 1),
                   setError(QString("Unexpected double strand amount of OD260: expected %1, got '%2'")
-                           .arg(expectedStats.dsOd260AmountOfSubstance).arg(result.dsOd260AmountOfSubstance)), ReportResult_Finished);
+                               .arg(expectedStats.dsOd260AmountOfSubstance)
+                               .arg(result.dsOd260AmountOfSubstance)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.dsOd260Mass) {
         CHECK_EXT(qFuzzyCompare(expectedStats.dsOd260Mass + 1, result.dsOd260Mass + 1),
                   setError(QString("Unexpected double strand OD260 mass: expected %1, got '%2'")
-                           .arg(expectedStats.dsOd260Mass).arg(result.dsOd260Mass)), ReportResult_Finished);
+                               .arg(expectedStats.dsOd260Mass)
+                               .arg(result.dsOd260Mass)),
+                  ReportResult_Finished);
     }
     if (0 != expectedStats.isoelectricPoint) {
         CHECK_EXT(qFuzzyCompare(expectedStats.isoelectricPoint + 1, result.isoelectricPoint + 1),
                   setError(QString("Unexpected isoelectric point: expected %1, got '%2'")
-                           .arg(expectedStats.isoelectricPoint).arg(result.isoelectricPoint)), ReportResult_Finished);
+                               .arg(expectedStats.isoelectricPoint)
+                               .arg(result.isoelectricPoint)),
+                  ReportResult_Finished);
     }
     return ReportResult_Finished;
 }
@@ -213,4 +237,4 @@ QList<XMLTestFactory *> DnaStatisticsTests::createTestFactories() {
     return {GTest_DnaStatisticsTest::createFactory()};
 }
 
-} // namespace U2
+}    // namespace U2

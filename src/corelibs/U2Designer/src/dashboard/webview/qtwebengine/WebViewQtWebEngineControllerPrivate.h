@@ -58,6 +58,6 @@ private:
     U2WebChannel *channel;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_WEB_VIEW_QT_WEB_ENGINE_CONTROLLER_PRIVATE_H_
+#endif    // _U2_WEB_VIEW_QT_WEB_ENGINE_CONTROLLER_PRIVATE_H_

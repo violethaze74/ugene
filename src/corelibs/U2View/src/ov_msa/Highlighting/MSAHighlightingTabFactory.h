@@ -30,13 +30,12 @@
 
 namespace U2 {
 
-class U2VIEW_EXPORT MSAHighlightingFactory : public OPWidgetFactory
-{
+class U2VIEW_EXPORT MSAHighlightingFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
     MSAHighlightingFactory();
 
-    QWidget* createWidget(GObjectView* objView);
+    QWidget *createWidget(GObjectView *objView);
 
     OPGroupParameters getOPGroupParameters();
 
@@ -46,6 +45,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

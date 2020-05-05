@@ -32,6 +32,7 @@ public:
     SplashScreen(QWidget *parent = NULL);
 public slots:
     void sl_close();
+
 protected:
     bool eventFilter(QObject *obj, QEvent *ev);
 };
@@ -47,22 +48,22 @@ public:
 
     void getTask();
     void getDots();
+
 protected:
-    void timerEvent(QTimerEvent* e);
-    void paintEvent(QPaintEvent* e);
+    void timerEvent(QTimerEvent *e);
+    void paintEvent(QPaintEvent *e);
 
 private:
     void drawInfo();
 
-    int			    dots_number;
-    int			    dots_timer_id;
-    QString		    version;
-    QString		    task;
-    QImage          image1;
-    QImage          image2;
+    int dots_number;
+    int dots_timer_id;
+    QString version;
+    QString task;
+    QImage image1;
+    QImage image2;
 };
 
-
-} //namespace
+}    // namespace U2
 
 #endif

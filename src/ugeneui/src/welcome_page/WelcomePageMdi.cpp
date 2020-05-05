@@ -19,17 +19,17 @@
  * MA 02110-1301, USA.
  */
 
+#include "WelcomePageMdi.h"
+
 #include <QVBoxLayout>
 
-#include "WelcomePageMdi.h"
 #include "WelcomePageMdiController.h"
 #include "WelcomePageWidget.h"
 
 namespace U2 {
 
 WelcomePageMdi::WelcomePageMdi(const QString &title, WelcomePageMdiController *controller)
-: MWMDIWindow(title), controller(controller)
-{
+    : MWMDIWindow(title), controller(controller) {
     QVBoxLayout *l = new QVBoxLayout(this);
     l->setMargin(0);
 
@@ -50,4 +50,4 @@ void WelcomePageMdi::updateRecent(const QStringList &recentProjects, const QStri
     widget->updateRecent(recentProjects, recentFiles);
 }
 
-} // U2
+}    // namespace U2

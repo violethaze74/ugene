@@ -22,12 +22,13 @@
 #ifndef _U2_GT_UTILS_DASHBOARD_H_
 #define _U2_GT_UTILS_DASHBOARD_H_
 
-#include "GTGlobals.h"
 #include <primitives/GTWebView.h>
+
+#include <QToolButton>
 
 #include <U2Designer/U2WebView.h>
 
-#include <QToolButton>
+#include "GTGlobals.h"
 
 class QTabWidget;
 class Dashboard;
@@ -36,18 +37,20 @@ namespace U2 {
 
 class GTUtilsDashboard {
 public:
-    enum Tabs{Overview, Input, ExternalTools};
+    enum Tabs { Overview,
+                Input,
+                ExternalTools };
 
     /** Returns active dashboard's WebView or nullptr if not found. */
-    static WebView* getDashboardWebView(HI::GUITestOpStatus &os);
+    static WebView *getDashboardWebView(HI::GUITestOpStatus &os);
 
     /** Returns active dashboard or nullptr if not found. */
-    static Dashboard* findDashboard(HI::GUITestOpStatus &os);
+    static Dashboard *findDashboard(HI::GUITestOpStatus &os);
 
     /** Returns load-schema button or nullptr if not found. */
-    static QToolButton* findLoadSchemaButton(HI::GUITestOpStatus &os);
+    static QToolButton *findLoadSchemaButton(HI::GUITestOpStatus &os);
 
-    static QTabWidget* getTabWidget(HI::GUITestOpStatus &os);
+    static QTabWidget *getTabWidget(HI::GUITestOpStatus &os);
 
     static const QString getDashboardName(HI::GUITestOpStatus &os, int dashboardNumber);
 
@@ -58,18 +61,18 @@ public:
     static HI::HIWebElement findTreeElement(HI::GUITestOpStatus &os, QString text);
     static HI::HIWebElement findContextMenuElement(HI::GUITestOpStatus &os, QString text);
     static void click(HI::GUITestOpStatus &os, HI::HIWebElement el, Qt::MouseButton button = Qt::LeftButton);
-    static QString getTabObjectName( Tabs tab);
+    static QString getTabObjectName(Tabs tab);
     static bool areThereNotifications(HI::GUITestOpStatus &os);
     static void openTab(HI::GUITestOpStatus &os, Tabs tab);
 
     static bool doesTabExist(HI::GUITestOpStatus &os, Tabs tab);
 
-// External tools tab
+    // External tools tab
     static QString getNodeText(HI::GUITestOpStatus &os, const QString &nodeId);
     static int getChildrenNodesCount(HI::GUITestOpStatus &os, const QString &nodeId);
     static QString getChildNodeId(HI::GUITestOpStatus &os, const QString &nodeId, int childNum);
     static QString getDescendantNodeId(HI::GUITestOpStatus &os, const QString &nodeId, const QList<int> &childNums);
-    static QString getChildWithTextId(HI::GUITestOpStatus &os, const QString &nodeId, const QString &text);     // childrens has to have unique texts
+    static QString getChildWithTextId(HI::GUITestOpStatus &os, const QString &nodeId, const QString &text);    // childrens has to have unique texts
 
     static bool doesNodeHaveLimitationMessageNode(HI::GUITestOpStatus &os, const QString &nodeId);
     static QString getLimitationMessageNodeText(HI::GUITestOpStatus &os, const QString &nodeId);
@@ -86,7 +89,7 @@ public:
 
     static QString getLogUrlFromNode(HI::GUITestOpStatus &os, const QString &outputNodeId);
 
-    static const QString TREE_ROOT_ID;      // This constant is defined in ExternalToolWidget.js
+    static const QString TREE_ROOT_ID;    // This constant is defined in ExternalToolWidget.js
 
 private:
     static QMap<QString, Tabs> initTabMap();
@@ -97,7 +100,7 @@ private:
     static QString getLogUrlFromElement(HI::GUITestOpStatus &os, const HI::HIWebElement &element);
 
     static const QMap<QString, Tabs> tabMap;
-    static const QString PARENT_LI;     // This constant is defined in ExternalToolWidget.js
+    static const QString PARENT_LI;    // This constant is defined in ExternalToolWidget.js
 
     // Some CSS attributes
     static const QString TITLE;
@@ -105,6 +108,6 @@ private:
     static const QString ON_CLICK;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_GT_UTILS_DASHBOARD_H_
+#endif    // _U2_GT_UTILS_DASHBOARD_H_

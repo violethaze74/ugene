@@ -19,34 +19,33 @@
  * MA 02110-1301, USA.
  */
 
+#include <core/GUITest.h>
+#include <core/GUITestOpStatus.h>
+#include <core/MainThreadRunnable.h>
+
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QDir>
 #include <QGuiApplication>
 #include <QScreen>
 
-#include <core/GUITest.h>
-#include <core/GUITestOpStatus.h>
-#include <core/MainThreadRunnable.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "UGUITestBase.h"
 #include "GUITestService.h"
 #include "GUITestTeamcityLogger.h"
 #include "GUITestThread.h"
 #include "UGUITest.h"
+#include "UGUITestBase.h"
 
 namespace U2 {
 
-GUITestThread::GUITestThread(HI::GUITest *test, Logger &log, bool _needCleanup) :
-    test(test),
-    log(log),
-    needCleanup(_needCleanup),
-    testResult("Not run")
-{
+GUITestThread::GUITestThread(HI::GUITest *test, Logger &log, bool _needCleanup)
+    : test(test),
+      log(log),
+      needCleanup(_needCleanup),
+      testResult("Not run") {
     SAFE_POINT(NULL != test, "GUITest is NULL", );
 }
 
@@ -98,21 +97,19 @@ QString GUITestThread::launchTest(const GUITests &tests) {
                 t->run(os);
             }
         }
-    } catch(HI::GUITestOpStatus *) {
-
+    } catch (HI::GUITestOpStatus *) {
     }
     QString result = os.getError();
 
     //Run post checks if has error
-    if (!result.isEmpty()){
+    if (!result.isEmpty()) {
         try {
             foreach (HI::GUITest *t, postChecks()) {
                 if (NULL != t) {
                     t->run(os);
                 }
             }
-        } catch(HI::GUITestOpStatus *) {
-
+        } catch (HI::GUITestOpStatus *) {
         }
     }
 
@@ -123,7 +120,7 @@ GUITests GUITestThread::preChecks() {
     UGUITestBase *tb = AppContext::getGUITestBase();
     SAFE_POINT(NULL != tb, "GUITestBase is NULL", GUITests());
 
-//    GUITests additionalChecks = tb->takeTests(GUITestBase::PreAdditional);
+    //    GUITests additionalChecks = tb->takeTests(GUITestBase::PreAdditional);
     GUITests additionalChecks = tb->getTests(UGUITestBase::PreAdditional);
     SAFE_POINT(!additionalChecks.isEmpty(), "additionalChecks is empty", GUITests());
 
@@ -134,7 +131,7 @@ GUITests GUITestThread::postChecks() {
     UGUITestBase *tb = AppContext::getGUITestBase();
     SAFE_POINT(NULL != tb, "GUITestBase is NULL", GUITests());
 
-//    GUITests additionalChecks = tb->takeTests(GUITestBase::PostAdditionalChecks);
+    //    GUITests additionalChecks = tb->takeTests(GUITestBase::PostAdditionalChecks);
     GUITests additionalChecks = tb->getTests(UGUITestBase::PostAdditionalChecks);
     SAFE_POINT(!additionalChecks.isEmpty(), "additionalChecks is empty", GUITests());
 
@@ -145,7 +142,7 @@ GUITests GUITestThread::postActions() {
     UGUITestBase *tb = AppContext::getGUITestBase();
     SAFE_POINT(NULL != tb, "GUITestBase is NULL", GUITests());
 
-//    GUITests additionalChecks = tb->takeTests(GUITestBase::PostAdditionalActions);
+    //    GUITests additionalChecks = tb->takeTests(GUITestBase::PostAdditionalActions);
     GUITests additionalChecks = tb->getTests(UGUITestBase::PostAdditionalActions);
     SAFE_POINT(!additionalChecks.isEmpty(), "additionalChecks is empty", GUITests());
 
@@ -195,10 +192,8 @@ void GUITestThread::removeDir(const QString &dirName) {
 void GUITestThread::saveScreenshot() {
     class Scenario : public HI::CustomScenario {
     public:
-        Scenario(HI::GUITest *test) :
-            test(test)
-        {
-
+        Scenario(HI::GUITest *test)
+            : test(test) {
         }
 
         void run(HI::GUITestOpStatus &) {
@@ -230,7 +225,7 @@ void GUITestThread::writeTestResult() {
     printf("%s\n", (GUITestService::GUITESTING_REPORT_PREFIX + ": " + testResult).toUtf8().data());
 }
 
-void GUITestThread::sl_getMemory(){
+void GUITestThread::sl_getMemory() {
 #ifdef Q_OS_LINUX
     qint64 appPid = QApplication::applicationPid();
 
@@ -240,12 +235,12 @@ void GUITestThread::sl_getMemory(){
 #endif
 }
 
-int GUITestThread::countMemForProcessTree(int pid){
+int GUITestThread::countMemForProcessTree(int pid) {
 #ifdef Q_OS_LINUX
     int result = 0;
     //getting child processes
     QProcess pgrep;
-    pgrep.start(QString("pgrep -P %1").arg(pid/*appPid*/));
+    pgrep.start(QString("pgrep -P %1").arg(pid /*appPid*/));
     pgrep.waitForFinished();
     QByteArray pgrepOut = pgrep.readAllStandardOutput();
     QStringList childPidsStringList = QString(pgrepOut).split("\n");
@@ -253,8 +248,8 @@ int GUITestThread::countMemForProcessTree(int pid){
     foreach (QString s, childPidsStringList) {
         bool ok;
         int childPid = s.toInt(&ok);
-        if(ok){
-            childPids<<childPid;
+        if (ok) {
+            childPids << childPid;
         }
     }
 
@@ -269,34 +264,34 @@ int GUITestThread::countMemForProcessTree(int pid){
     splitted.removeAll("");
 
     int memValue;
-    if(splitted.size()>=5){
+    if (splitted.size() >= 5) {
         QString memString = splitted.at(5);
-        if(memString.at(memString.length()-1) == 'g'){
+        if (memString.at(memString.length() - 1) == 'g') {
             //section for gigabytes
             memString.chop(1);
             bool ok;
             memString.toDouble(&ok);
-            if(ok){
-                memValue = memString.toDouble()*1000*1000;
-            }else{
+            if (ok) {
+                memValue = memString.toDouble() * 1000 * 1000;
+            } else {
                 coreLog.trace("String " + memString + " could not be converted to double");
             }
-        }else{
+        } else {
             bool ok;
             memString.toInt(&ok);
-            if(ok){
+            if (ok) {
                 memValue = memString.toInt();
-            }else{
+            } else {
                 coreLog.trace("String " + memString + "could not be converted to int");
             }
         }
-    }else{
+    } else {
         memValue = 0;
     }
-    result+=memValue;
+    result += memValue;
 
     foreach (int childPid, childPids) {
-        result+=countMemForProcessTree(childPid);
+        result += countMemForProcessTree(childPid);
     }
     return result;
 #else
@@ -304,17 +299,17 @@ int GUITestThread::countMemForProcessTree(int pid){
 #endif
 }
 
-void GUITestThread::saveMemoryInfo(){
+void GUITestThread::saveMemoryInfo() {
 #ifdef Q_OS_LINUX
     int max = *std::max_element(memoryList.begin(), memoryList.end());
-    QString filename="memFolder/memory.txt";
+    QString filename = "memFolder/memory.txt";
     QDir().mkpath("memFolder");
-    QFile file( filename );
-    if ( file.open(QIODevice::ReadWrite | QIODevice::Append) ){
+    QFile file(filename);
+    if (file.open(QIODevice::ReadWrite | QIODevice::Append)) {
         file.write(QString("%1_%2 %3\n").arg(test->getSuite()).arg(test->getName()).arg(max).toUtf8());
         file.close();
     }
 #endif
 }
 
-}   // namespace U2
+}    // namespace U2

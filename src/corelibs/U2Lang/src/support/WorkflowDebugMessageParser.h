@@ -31,27 +31,28 @@ namespace Workflow {
 class WorkflowContext;
 class Message;
 
-}
+}    // namespace Workflow
 
 class U2LANG_EXPORT WorkflowDebugMessageParser {
 public:
-                                        WorkflowDebugMessageParser( );
-    virtual                             ~WorkflowDebugMessageParser( );
+    WorkflowDebugMessageParser();
+    virtual ~WorkflowDebugMessageParser();
 
-    void                                setContext( Workflow::WorkflowContext *context );
-    void                                setSourceData( const QQueue<Workflow::Message> &sourceData );
+    void setContext(Workflow::WorkflowContext *context);
+    void setSourceData(const QQueue<Workflow::Message> &sourceData);
 
-    virtual WorkflowInvestigationData   getAllMessageValues( ) = 0;
-    virtual void                        convertMessagesToDocuments( const QString &convertedType,
-                                            const QString &schemeName, quint32 messageNumber ) = 0;
+    virtual WorkflowInvestigationData getAllMessageValues() = 0;
+    virtual void convertMessagesToDocuments(const QString &convertedType,
+                                            const QString &schemeName,
+                                            quint32 messageNumber) = 0;
 
 protected:
-    QQueue<QVariantMap>                 sourceMessages;
-    Workflow::WorkflowContext *         context;
+    QQueue<QVariantMap> sourceMessages;
+    Workflow::WorkflowContext *context;
 
-    static QStringList                  possibleMessageTypes;
+    static QStringList possibleMessageTypes;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_H_
+#endif    // _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_H_

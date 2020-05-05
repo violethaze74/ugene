@@ -19,16 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-#include <QDialogButtonBox>
-#include <QDir>
-#include <QPushButton>
-
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTWidget.h>
+
+#include <QApplication>
+#include <QDialogButtonBox>
+#include <QDir>
+#include <QPushButton>
 
 #include "ExportAnnotationsDialogFiller.h"
 
@@ -40,11 +40,9 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(const QString &exportToFile, fi
       softMode(true), format(format),
       saveSequencesUnderAnnotations(false),
       saveSequenceNames(false),
-      useMethod(GTGlobals::UseMouse)
-{
+      useMethod(GTGlobals::UseMouse) {
     init(exportToFile);
 }
-
 
 ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
                                                  const QString &_exportToFile,
@@ -59,8 +57,7 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
       addToProject(_addToProject),
       saveSequencesUnderAnnotations(_saveSequencesUnderAnnotations),
       saveSequenceNames(_saveSequenceNames),
-      useMethod(method)
-{
+      useMethod(method) {
     init(_exportToFile);
 }
 
@@ -70,9 +67,7 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &os, Custom
       format(genbank),
       saveSequencesUnderAnnotations(false),
       saveSequenceNames(false),
-      useMethod(GTGlobals::UseMouse)
-{
-
+      useMethod(GTGlobals::UseMouse) {
 }
 
 void ExportAnnotationsFiller::init(const QString &exportToFile) {
@@ -87,25 +82,24 @@ void ExportAnnotationsFiller::init(const QString &exportToFile) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
-void ExportAnnotationsFiller::commonScenario()
-{
+void ExportAnnotationsFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != NULL, "dialog not found");
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit*>("fileNameEdit");
+    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
     GT_CHECK(lineEdit != NULL, "line edit not found");
     GTLineEdit::setText(os, lineEdit, exportToFile);
 
-    QComboBox *comboBox = dialog->findChild<QComboBox*>();
+    QComboBox *comboBox = dialog->findChild<QComboBox *>();
     GT_CHECK(comboBox != NULL, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
-    if (comboBox->currentIndex() != index){
+    if (comboBox->currentIndex() != index) {
         GTComboBox::setCurrentIndex(os, comboBox, index, true, useMethod);
     }
-    if (!addToProject){
-        QCheckBox *addToProjectButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectCheck"));
+    if (!addToProject) {
+        QCheckBox *addToProjectButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("addToProjectCheck"));
         GT_CHECK(addToProjectButton != NULL, "Check box not found");
         if (addToProjectButton->isEnabled()) {
             GTCheckBox::setChecked(os, addToProjectButton, false);
@@ -113,11 +107,11 @@ void ExportAnnotationsFiller::commonScenario()
     }
 
     if (!softMode) {
-        QCheckBox *checkButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("exportSequenceCheck"));
+        QCheckBox *checkButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("exportSequenceCheck"));
         GT_CHECK(checkButton != NULL, "Check box not found");
         GTCheckBox::setChecked(os, checkButton, saveSequencesUnderAnnotations);
 
-        checkButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("exportSequenceNameCheck"));
+        checkButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("exportSequenceNameCheck"));
         GT_CHECK(checkButton != NULL, "Check box not found");
         GTCheckBox::setChecked(os, checkButton, saveSequenceNames);
     }
@@ -127,4 +121,4 @@ void ExportAnnotationsFiller::commonScenario()
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}
+}    // namespace U2

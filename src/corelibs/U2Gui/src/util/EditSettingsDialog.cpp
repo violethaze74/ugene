@@ -19,20 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include "EditSettingsDialog.h"
+
 #include <QPushButton>
 
-#include "EditSettingsDialog.h"
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/HelpButton.h>
 
 #include "ui_EditSettingsDialog.h"
 
-#include <U2Core/U2SafePoints.h>
-#include <U2Gui/HelpButton.h>
-
-
-
 namespace U2 {
 
-EditSettingsDialog::EditSettingsDialog(const EditSettings& settings, QWidget* parent)
+EditSettingsDialog::EditSettingsDialog(const EditSettings &settings, QWidget *parent)
     : QDialog(parent) {
     ui = new Ui_EditSettingDialogForm;
     ui->setupUi(this);
@@ -84,4 +83,4 @@ EditSettings EditSettingsDialog::getSettings() const {
     return s;
 }
 
-} // namespace
+}    // namespace U2

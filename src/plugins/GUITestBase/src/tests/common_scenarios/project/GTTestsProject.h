@@ -106,8 +106,8 @@ GUI_TEST_CLASS_DECLARATION(test_0073)
 GUI_TEST_CLASS_DECLARATION(test_0074)
 
 #undef GUI_TEST_SUITE
-}
+}    // namespace GUITest_common_scenarios_project
 
-} //namespace
+}    // namespace U2
 
 #endif

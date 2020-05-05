@@ -20,24 +20,24 @@
  */
 
 #include "FormatDBSupportRunDialog.h"
-#include "FormatDBSupport.h"
+
+#include <QPushButton>
+#include <QToolButton>
 
 #include <U2Core/DNAAlphabet.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/LastUsedDirHelper.h>
 
-#include <QPushButton>
-#include <QToolButton>
+#include "FormatDBSupport.h"
 
 namespace U2 {
 
 ////////////////////////////////////////
 //FormatDBWithExtFileSpecifySupportRunDialog
-FormatDBSupportRunDialog::FormatDBSupportRunDialog(const QString &_name, FormatDBSupportTaskSettings &_settings, QWidget *_parent) :
-        QDialog(_parent), name(_name), settings(_settings)
-{
+FormatDBSupportRunDialog::FormatDBSupportRunDialog(const QString &_name, FormatDBSupportTaskSettings &_settings, QWidget *_parent)
+    : QDialog(_parent), name(_name), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "24749011");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Format"));
@@ -45,31 +45,30 @@ FormatDBSupportRunDialog::FormatDBSupportRunDialog(const QString &_name, FormatD
     formatButton = buttonBox->button(QDialogButtonBox::Ok);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 
-    connect(inputFilesToolButton,SIGNAL(clicked()),SLOT(sl_onBrowseInputFiles()));
-    connect(inputDirToolButton,SIGNAL(clicked()),SLOT(sl_onBrowseInputDir()));
-    connect(databasePathToolButton,SIGNAL(clicked()),SLOT(sl_onBrowseDatabasePath()));
-    connect(inputFilesLineEdit,SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
-    connect(inputDirLineEdit,SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
-    connect(inputFilesRadioButton,SIGNAL(toggled(bool)), SLOT(sl_lineEditChanged()));
-    connect(inputDirRadioButton,SIGNAL(toggled(bool)), SLOT(sl_lineEditChanged()));
-    connect(databasePathLineEdit,SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
-    connect(databaseTitleLineEdit,SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
-    connect(baseNamelineEdit,SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
+    connect(inputFilesToolButton, SIGNAL(clicked()), SLOT(sl_onBrowseInputFiles()));
+    connect(inputDirToolButton, SIGNAL(clicked()), SLOT(sl_onBrowseInputDir()));
+    connect(databasePathToolButton, SIGNAL(clicked()), SLOT(sl_onBrowseDatabasePath()));
+    connect(inputFilesLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
+    connect(inputDirLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
+    connect(inputFilesRadioButton, SIGNAL(toggled(bool)), SLOT(sl_lineEditChanged()));
+    connect(inputDirRadioButton, SIGNAL(toggled(bool)), SLOT(sl_lineEditChanged()));
+    connect(databasePathLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
+    connect(databaseTitleLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
+    connect(baseNamelineEdit, SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
 
-    if(!settings.inputFilesPath.isEmpty()){
-        QString names=settings.inputFilesPath.join(";");
+    if (!settings.inputFilesPath.isEmpty()) {
+        QString names = settings.inputFilesPath.join(";");
         inputFilesLineEdit->setText(names);
     }
     if (!settings.isInputAmino) {
         nucleotideTypeRadioButton->setChecked(true);
     }
     formatButton->setEnabled(false);
-    connect(cancelButton,SIGNAL(clicked()),this,SLOT(reject()));
-    connect(formatButton,SIGNAL(clicked()),this,SLOT(sl_formatDB()));
-
+    connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(formatButton, SIGNAL(clicked()), this, SLOT(sl_formatDB()));
 }
 
-void FormatDBSupportRunDialog::sl_onBrowseInputFiles(){
+void FormatDBSupportRunDialog::sl_onBrowseInputFiles() {
     LastUsedDirHelper lod("");
     QString name;
     QStringList lst = U2FileDialog::getOpenFileNames(NULL, tr("Select file(s)"), lod.dir, "");
@@ -81,17 +80,17 @@ void FormatDBSupportRunDialog::sl_onBrowseInputFiles(){
         inputFilesLineEdit->setText(name);
     }
     inputFilesLineEdit->setFocus();
-    if(lst.length()==1){
+    if (lst.length() == 1) {
         QFileInfo fi(lst.first());
-        if(databaseTitleLineEdit->text().isEmpty()){
+        if (databaseTitleLineEdit->text().isEmpty()) {
             databaseTitleLineEdit->setText(fi.baseName());
         }
-        if(baseNamelineEdit->text().isEmpty()){
+        if (baseNamelineEdit->text().isEmpty()) {
             baseNamelineEdit->setText(fi.baseName());
         }
     }
 }
-void FormatDBSupportRunDialog::sl_onBrowseInputDir(){
+void FormatDBSupportRunDialog::sl_onBrowseInputDir() {
     LastUsedDirHelper lod("");
 
     QString name;
@@ -102,7 +101,7 @@ void FormatDBSupportRunDialog::sl_onBrowseInputDir(){
     inputDirLineEdit->setFocus();
 }
 
-void FormatDBSupportRunDialog::sl_onBrowseDatabasePath(){
+void FormatDBSupportRunDialog::sl_onBrowseDatabasePath() {
     LastUsedDirHelper lod("Database folder");
 
     QString name;
@@ -112,9 +111,9 @@ void FormatDBSupportRunDialog::sl_onBrowseDatabasePath(){
     }
     databasePathLineEdit->setFocus();
 }
-void FormatDBSupportRunDialog::sl_lineEditChanged(){
-    bool hasSpacesInInputFiles=false;
-    bool hasSpacesInOutputDBPath=false;
+void FormatDBSupportRunDialog::sl_lineEditChanged() {
+    bool hasSpacesInInputFiles = false;
+    bool hasSpacesInOutputDBPath = false;
     bool pathWarning = databasePathLineEdit->text().contains(' ');
     QString pathTooltip = pathWarning ? tr("Output database path contain space characters.") : "";
     GUIUtils::setWidgetWarning(databasePathLineEdit, pathWarning);
@@ -128,8 +127,8 @@ void FormatDBSupportRunDialog::sl_lineEditChanged(){
     hasSpacesInOutputDBPath = pathWarning || nameWarning;
 
     bool isFilledInputFilesOrDirLineEdit =
-            (!inputFilesLineEdit->text().isEmpty() && inputFilesRadioButton->isChecked()) ||
-            (!inputDirLineEdit->text().isEmpty() && inputDirRadioButton->isChecked());
+        (!inputFilesLineEdit->text().isEmpty() && inputFilesRadioButton->isChecked()) ||
+        (!inputDirLineEdit->text().isEmpty() && inputDirRadioButton->isChecked());
     bool isFilledDatabasePathLineEdit = !databasePathLineEdit->text().isEmpty();
     bool isFilledDatabaseTitleLineEdit = !databaseTitleLineEdit->text().isEmpty();
     bool isFilledBaseNamelineEdit = !baseNamelineEdit->text().isEmpty();
@@ -141,60 +140,60 @@ void FormatDBSupportRunDialog::sl_lineEditChanged(){
                              !hasSpacesInOutputDBPath);
 }
 
-QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter=true);
+QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter = true);
 
-void FormatDBSupportRunDialog::sl_formatDB(){
-    if(inputFilesRadioButton->isChecked()){
-        settings.inputFilesPath=inputFilesLineEdit->text().split(';');
-    }else{
-        if(includeFilterRadioButton->isChecked()){
-            settings.inputFilesPath=getAllFiles(QDir(inputDirLineEdit->text()), includeFFLineEdit->text());
-        }else{
-            settings.inputFilesPath=getAllFiles(QDir(inputDirLineEdit->text()), excludeFFLineEdit->text(), false);
+void FormatDBSupportRunDialog::sl_formatDB() {
+    if (inputFilesRadioButton->isChecked()) {
+        settings.inputFilesPath = inputFilesLineEdit->text().split(';');
+    } else {
+        if (includeFilterRadioButton->isChecked()) {
+            settings.inputFilesPath = getAllFiles(QDir(inputDirLineEdit->text()), includeFFLineEdit->text());
+        } else {
+            settings.inputFilesPath = getAllFiles(QDir(inputDirLineEdit->text()), excludeFFLineEdit->text(), false);
         }
     }
-    settings.databaseTitle=databaseTitleLineEdit->text();
-    if ((!databasePathLineEdit->text().endsWith('/'))&&(!databasePathLineEdit->text().endsWith('\\'))){
-        settings.outputPath=databasePathLineEdit->text()+'/'+baseNamelineEdit->text();
-    }else{
-        settings.outputPath=databasePathLineEdit->text()+baseNamelineEdit->text();
+    settings.databaseTitle = databaseTitleLineEdit->text();
+    if ((!databasePathLineEdit->text().endsWith('/')) && (!databasePathLineEdit->text().endsWith('\\'))) {
+        settings.outputPath = databasePathLineEdit->text() + '/' + baseNamelineEdit->text();
+    } else {
+        settings.outputPath = databasePathLineEdit->text() + baseNamelineEdit->text();
     }
-    settings.isInputAmino=proteinTypeRadioButton->isChecked();
+    settings.isInputAmino = proteinTypeRadioButton->isChecked();
 
     accept();
 }
 
-QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter){
+QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter) {
     QStringList includeFileList;
     QStringList excludeFilesList;
-    QStringList filters=filter.split(';');
+    QStringList filters = filter.split(';');
     //IsIncludeFilter == true
     //get files from input dir
-    foreach(QString inputFileName, inputDir.entryList(filters, QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Dirs | QDir::Files)){
-        inputFileName = inputDir.absolutePath()+"/"+inputFileName;
+    foreach (QString inputFileName, inputDir.entryList(filters, QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Dirs | QDir::Files)) {
+        inputFileName = inputDir.absolutePath() + "/" + inputFileName;
         QFileInfo inputFileInfo(inputFileName);
-        if(inputFileInfo.isFile()){
+        if (inputFileInfo.isFile()) {
             includeFileList.append(inputFileName);
         }
     }
     //get files from subdirs
-    foreach(QString inputFileName, inputDir.entryList(QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Dirs | QDir::Files)){
-        inputFileName = inputDir.absolutePath()+"/"+inputFileName;
+    foreach (QString inputFileName, inputDir.entryList(QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Dirs | QDir::Files)) {
+        inputFileName = inputDir.absolutePath() + "/" + inputFileName;
         QFileInfo inputFileInfo(inputFileName);
-        if(inputFileInfo.isDir()){
+        if (inputFileInfo.isDir()) {
             includeFileList.append(getAllFiles(QDir(inputFileName), filter, true));
             excludeFilesList.append(getAllFiles(QDir(inputFileName), filter, false));
-        }else{
-            if(!includeFileList.contains(inputFileName)){
+        } else {
+            if (!includeFileList.contains(inputFileName)) {
                 //IsIncludeFilter == false
                 excludeFilesList.append(inputFileName);
             }
         }
     }
-    if(isIncludeFilter){
+    if (isIncludeFilter) {
         return includeFileList;
-    }else{
+    } else {
         return excludeFilesList;
     }
 }
-}//namespace
+}    // namespace U2

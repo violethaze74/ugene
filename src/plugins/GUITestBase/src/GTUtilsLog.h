@@ -22,8 +22,9 @@
 #ifndef _U2_GUI_LOG_UTILS_H_
 #define _U2_GUI_LOG_UTILS_H_
 
-#include "GTGlobals.h"
 #include <U2Core/Log.h>
+
+#include "GTGlobals.h"
 
 namespace U2 {
 
@@ -33,14 +34,24 @@ public:
     GTLogTracer(QString _expectedMessage = "");
     ~GTLogTracer();
 
-    void reset() { wasError = false; }
-    bool hasError() const { return wasError; }
-    bool messageFound() const {return wasMessage;}
-    QString getError() const {return error;}
-    QString getExpectedMessage() const {return expectedMessage;}
+    void reset() {
+        wasError = false;
+    }
+    bool hasError() const {
+        return wasError;
+    }
+    bool messageFound() const {
+        return wasMessage;
+    }
+    QString getError() const {
+        return error;
+    }
+    QString getExpectedMessage() const {
+        return expectedMessage;
+    }
 
-    void onMessage(const LogMessage& msg);
-    static QList<LogMessage*> getMessages();
+    void onMessage(const LogMessage &msg);
+    static QList<LogMessage *> getMessages();
     static bool checkMessage(QString s);
     static bool checkMessageStartsWith(QString s);
 
@@ -54,11 +65,11 @@ private:
 class GTUtilsLog {
 public:
     static void check(HI::GUITestOpStatus &os, const GTLogTracer &logTracer);
-    static void checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer& logTracer, const QString &messagePart);
-    static void checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer& logTracer, bool expected = true);
+    static void checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &messagePart);
+    static void checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, bool expected = true);
     static QStringList getErrors(HI::GUITestOpStatus &os, const GTLogTracer &logTracer);
 };
 
-} // namespace
+}    // namespace U2
 
 #endif
