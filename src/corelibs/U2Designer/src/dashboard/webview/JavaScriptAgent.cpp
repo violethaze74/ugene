@@ -19,12 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include "JavaScriptAgent.h"
+
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
-
-#include "JavaScriptAgent.h"
 
 namespace U2 {
 
@@ -32,8 +32,7 @@ const QString JavaScriptAgent::ID = "ugene";
 
 JavaScriptAgent::JavaScriptAgent(QObject *_parent)
     : QObject(_parent),
-      needAdditionalInitialization(false)
-{
+      needAdditionalInitialization(false) {
     Settings *settings = AppContext::getSettings();
     SAFE_POINT(settings != NULL, "AppContext settings is NULL", );
     lang = settings->getValue("UGENE_CURR_TRANSL", "en").toString();
@@ -47,4 +46,4 @@ void JavaScriptAgent::sl_pageInitialized() {
     emit si_pageInitialized();
 }
 
-}   // namespace U2
+}    // namespace U2

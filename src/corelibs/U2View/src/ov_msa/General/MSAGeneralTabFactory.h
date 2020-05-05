@@ -31,10 +31,10 @@ class U2VIEW_EXPORT MSAGeneralTabFactory : public OPWidgetFactory {
 public:
     MSAGeneralTabFactory();
 
-    QWidget * createWidget(GObjectView* objView);
+    QWidget *createWidget(GObjectView *objView);
     OPGroupParameters getOPGroupParameters();
 
-    static const QString & getGroupId();
+    static const QString &getGroupId();
 
 private:
     static const QString GROUP_ID;
@@ -42,6 +42,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

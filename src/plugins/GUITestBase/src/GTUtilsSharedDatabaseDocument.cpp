@@ -19,28 +19,30 @@
  * MA 02110-1301, USA.
  */
 
+#include "GTUtilsSharedDatabaseDocument.h"
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTWidget.h>
+#include <utils/GTThread.h>
+
 #include <QTreeView>
 
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
+
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/ProjectViewModel.h>
 
 #include "GTDatabaseConfig.h"
-#include "utils/GTUtilsDialog.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsProjectTreeView.h"
-#include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTWidget.h>
-#include <utils/GTThread.h>
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/AddFolderDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportToDatabaseDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/SharedConnectionsDialogFiller.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 using namespace HI;
@@ -48,7 +50,7 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsSharedDatabaseDocument"
 
 #define GT_METHOD_NAME "connectToTestDatabase"
-Document* GTUtilsSharedDatabaseDocument::connectToTestDatabase(HI::GUITestOpStatus &os) {
+Document *GTUtilsSharedDatabaseDocument::connectToTestDatabase(HI::GUITestOpStatus &os) {
     GTLogTracer lt;
     QString conName = "ugene_gui_test";
     GTDatabaseConfig::initTestConnectionInfo(conName);
@@ -58,7 +60,8 @@ Document* GTUtilsSharedDatabaseDocument::connectToTestDatabase(HI::GUITestOpStat
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CONNECT, conName);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Connect to UGENE shared database...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTThread::waitForMainThread();
@@ -79,7 +82,8 @@ Document *GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(HI::GUITes
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CONNECT, conName);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Connect to UGENE shared database...");
 
     CHECK_SET_ERR_RESULT(!lt.hasError(), "errors in log", NULL);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -128,7 +132,7 @@ QModelIndex GTUtilsSharedDatabaseDocument::getItemIndex(HI::GUITestOpStatus &os,
     GTGlobals::FindOptions options;
     options.depth = 1;
     options.failIfNotFound = mustExist;
-    foreach (const QString& folder, folders) {
+    foreach (const QString &folder, folders) {
         itemIndex = GTUtilsProjectTreeView::findIndex(os, folder, itemIndex, options);
         CHECK_OP_BREAK(os);
         CHECK_BREAK(itemIndex.isValid());
@@ -165,7 +169,7 @@ void GTUtilsSharedDatabaseDocument::createPath(HI::GUITestOpStatus &os, Document
 
     QString parentFolder = U2ObjectDbi::ROOT_FOLDER;
     const QStringList folders = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
-    foreach (const QString& folder, folders) {
+    foreach (const QString &folder, folders) {
         bool alreadyExist = getItemIndex(os, databaseDoc, parentFolder + U2ObjectDbi::PATH_SEP + folder, false).isValid();
         if (!alreadyExist) {
             createFolder(os, databaseDoc, parentFolder, folder);
@@ -186,7 +190,7 @@ QString GTUtilsSharedDatabaseDocument::getItemPath(HI::GUITestOpStatus &os, cons
         return U2ObjectDbi::ROOT_FOLDER;
 
     case ProjectViewModel::FOLDER: {
-        Folder* folder = ProjectViewModel::toFolder(itemIndex);
+        Folder *folder = ProjectViewModel::toFolder(itemIndex);
         GT_CHECK_RESULT(NULL != folder, "Can't convert item to folder", QString());
         return folder->getFolderPath();
     }
@@ -200,14 +204,14 @@ QString GTUtilsSharedDatabaseDocument::getItemPath(HI::GUITestOpStatus &os, cons
         if (ProjectViewModel::DOCUMENT == parentItemType) {
             folderPath = U2ObjectDbi::ROOT_FOLDER;
         } else if (ProjectViewModel::FOLDER == parentItemType) {
-            Folder* folder = ProjectViewModel::toFolder(parentItemIndex);
+            Folder *folder = ProjectViewModel::toFolder(parentItemIndex);
             GT_CHECK_RESULT(NULL != folder, "Can't convert parent item to folder", QString());
             folderPath = folder->getFolderPath();
         } else {
             GT_CHECK_RESULT(false, "Can't recognize the parent item", QString());
         }
 
-        GObject* object = ProjectViewModel::toObject(itemIndex);
+        GObject *object = ProjectViewModel::toObject(itemIndex);
         GT_CHECK_RESULT(NULL != object, "Can't convert item to object", QString());
         return folderPath + U2ObjectDbi::PATH_SEP + object->getGObjectName();
     }
@@ -229,7 +233,7 @@ void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Docume
     findOptions.depth = 1;
     const QModelIndex databaseDocIndex = GTUtilsProjectTreeView::findIndex(os, databaseDoc->getName(), findOptions);
 
-    QTreeView* projectTreeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView *projectTreeView = GTUtilsProjectTreeView::getTreeView(os);
     GT_CHECK(NULL != projectTreeView, "Project tree view not found");
     projectTreeView->expand(databaseDocIndex);
 
@@ -237,7 +241,7 @@ void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Docume
     folders.pop_back();
 
     QModelIndex prevFolderIndex = databaseDocIndex;
-    foreach (const QString& folder, folders) {
+    foreach (const QString &folder, folders) {
         const QModelIndex folderIndex = GTUtilsProjectTreeView::findIndex(os, folder, prevFolderIndex, findOptions);
         GTUtilsProjectTreeView::doubleClickItem(os, folderIndex);
         prevFolderIndex = folderIndex;
@@ -348,7 +352,7 @@ void GTUtilsSharedDatabaseDocument::ensureItemsExist(HI::GUITestOpStatus &os, Do
     Q_UNUSED(os);
     GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
 
-    foreach (const QString& itemPath, itemsPaths) {
+    foreach (const QString &itemPath, itemsPaths) {
         ensureItemExists(os, databaseDoc, itemPath);
         CHECK_OP(os, );
     }
@@ -356,7 +360,7 @@ void GTUtilsSharedDatabaseDocument::ensureItemsExist(HI::GUITestOpStatus &os, Do
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "ensureThereAraNoItemsExceptListed"
-void GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(HI::GUITestOpStatus &os, Document *databaseDoc, const QString& parentPath, const QStringList &itemsPaths) {
+void GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &parentPath, const QStringList &itemsPaths) {
     Q_UNUSED(os);
     GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
 
@@ -370,7 +374,7 @@ void GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(HI::GUITes
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "importFiles"
-void GTUtilsSharedDatabaseDocument::importFiles(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &dstFolderPath, const QStringList &filesPaths, const QVariantMap& options) {
+void GTUtilsSharedDatabaseDocument::importFiles(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &dstFolderPath, const QStringList &filesPaths, const QVariantMap &options) {
     Q_UNUSED(os);
     GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!filesPaths.isEmpty(), "Files paths are not provided");
@@ -399,7 +403,7 @@ void GTUtilsSharedDatabaseDocument::importFiles(HI::GUITestOpStatus &os, Documen
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "importDirs"
-void GTUtilsSharedDatabaseDocument::importDirs(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &dstFolderPath, const QStringList &dirsPaths, const QVariantMap& options) {
+void GTUtilsSharedDatabaseDocument::importDirs(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &dstFolderPath, const QStringList &dirsPaths, const QVariantMap &options) {
     Q_UNUSED(os);
     GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!dirsPaths.isEmpty(), "Dirs paths are not provided");
@@ -457,7 +461,7 @@ void GTUtilsSharedDatabaseDocument::importProjectItems(HI::GUITestOpStatus &os, 
 #define GT_METHOD_NAME "convertProjectItemsPaths"
 const QVariant GTUtilsSharedDatabaseDocument::convertProjectItemsPaths(const QMap<QString, QStringList> &projectItems) {
     QMap<QString, QVariant> result;
-    foreach (const QString& documentName, projectItems.keys()) {
+    foreach (const QString &documentName, projectItems.keys()) {
         result.insert(documentName, projectItems[documentName]);
     }
     return result;
@@ -466,4 +470,4 @@ const QVariant GTUtilsSharedDatabaseDocument::convertProjectItemsPaths(const QMa
 
 #undef GT_CLASS_NAME
 
-}   // namespace U2
+}    // namespace U2

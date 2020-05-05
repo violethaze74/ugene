@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "FindPatternMsaWidgetFactory.h"
+
 #include <QPixmap>
 
 #include <U2Core/U2SafePoints.h>
@@ -28,7 +30,6 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include "FindPatternMsaWidget.h"
-#include "FindPatternMsaWidgetFactory.h"
 
 namespace U2 {
 
@@ -40,16 +41,16 @@ FindPatternMsaWidgetFactory::FindPatternMsaWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget * FindPatternMsaWidgetFactory::createWidget(GObjectView* objView) {
+QWidget *FindPatternMsaWidgetFactory::createWidget(GObjectView *objView) {
     SAFE_POINT(NULL != objView,
-        QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-        NULL);
+               QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
+               NULL);
 
-    MSAEditor* msaeditor = qobject_cast<MSAEditor*>(objView);
+    MSAEditor *msaeditor = qobject_cast<MSAEditor *>(objView);
     SAFE_POINT(NULL != msaeditor,
-        QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
-        NULL);
-    FindPatternMsaWidget* widget = new FindPatternMsaWidget(msaeditor);
+               QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
+               NULL);
+    FindPatternMsaWidget *widget = new FindPatternMsaWidget(msaeditor);
     widget->setObjectName("FindPatternMsaWidget");
 
     return widget;
@@ -59,8 +60,8 @@ OPGroupParameters FindPatternMsaWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Search in Alignment"), GROUP_DOC_PAGE);
 }
 
-const QString & FindPatternMsaWidgetFactory::getGroupId() {
+const QString &FindPatternMsaWidgetFactory::getGroupId() {
     return GROUP_ID;
 }
 
-} // namespace U2
+}    // namespace U2

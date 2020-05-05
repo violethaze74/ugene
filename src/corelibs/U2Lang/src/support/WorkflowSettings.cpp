@@ -21,45 +21,45 @@
 
 #include "WorkflowSettings.h"
 
+#include <QApplication>
+#include <QColor>
+#include <QDir>
+#include <QSettings>
+#include <QStyle>
+#include <QStyleFactory>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineUtils.h>
+#include <U2Core/GUrl.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QSettings>
-#include <QDir>
-#include <QApplication>
-#include <QStyle>
-#include <QStyleFactory>
-#include <QColor>
-#include <U2Core/GUrl.h>
-
 namespace U2 {
 
-#define GRID_STATE                  SETTINGS + "showGrid"
-#define SNAP_STATE                  SETTINGS + "snap2rid"
-#define LOCK_STATE                  SETTINGS + "monitorRun"
-#define DEBUGGER_STATE              SETTINGS + "enableDebugger"
-#define STYLE                       SETTINGS + "style"
-#define FONT                        SETTINGS + "font"
-#define DIR                         "workflow_settings/path"
-#define BG_COLOR                    SETTINGS + "bgcolor"
-#define RUN_MODE                    SETTINGS + "runMode"
-#define SCRIPT_MODE                 SETTINGS + "scriptMode"
-#define EXTERNAL_TOOL_WORKER_PATH   SETTINGS + "externalToolWorkerPath"
-#define INCLUDED_WORKER_PATH        SETTINGS + "includedWorkerPath"
-#define WORKFLOW_OUTPUT_PATH        SETTINGS + "workflowOutputPath"
-#define SHOW_LOAD_BUTTON_HINT       SETTINGS + "showLoadButtonHint"
+#define GRID_STATE SETTINGS + "showGrid"
+#define SNAP_STATE SETTINGS + "snap2rid"
+#define LOCK_STATE SETTINGS + "monitorRun"
+#define DEBUGGER_STATE SETTINGS + "enableDebugger"
+#define STYLE SETTINGS + "style"
+#define FONT SETTINGS + "font"
+#define DIR "workflow_settings/path"
+#define BG_COLOR SETTINGS + "bgcolor"
+#define RUN_MODE SETTINGS + "runMode"
+#define SCRIPT_MODE SETTINGS + "scriptMode"
+#define EXTERNAL_TOOL_WORKER_PATH SETTINGS + "externalToolWorkerPath"
+#define INCLUDED_WORKER_PATH SETTINGS + "includedWorkerPath"
+#define WORKFLOW_OUTPUT_PATH SETTINGS + "workflowOutputPath"
+#define SHOW_LOAD_BUTTON_HINT SETTINGS + "showLoadButtonHint"
 
-Watcher* const WorkflowSettings::watcher = new Watcher;
+Watcher *const WorkflowSettings::watcher = new Watcher;
 
 bool WorkflowSettings::showGrid() {
     return AppContext::getSettings()->getValue(GRID_STATE, true).toBool();
 }
 
-void WorkflowSettings::setShowGrid( bool v ) {
+void WorkflowSettings::setShowGrid(bool v) {
     if (showGrid() != v) {
         AppContext::getSettings()->setValue(GRID_STATE, v);
         emit watcher->changed();
@@ -70,7 +70,7 @@ bool WorkflowSettings::snap2Grid() {
     return AppContext::getSettings()->getValue(SNAP_STATE, true).toBool();
 }
 
-void WorkflowSettings::setSnap2Grid( bool v ) {
+void WorkflowSettings::setSnap2Grid(bool v) {
     AppContext::getSettings()->setValue(SNAP_STATE, v);
 }
 
@@ -78,7 +78,7 @@ bool WorkflowSettings::monitorRun() {
     return AppContext::getSettings()->getValue(LOCK_STATE, true).toBool();
 }
 
-void WorkflowSettings::setMonitorRun( bool v ) {
+void WorkflowSettings::setMonitorRun(bool v) {
     AppContext::getSettings()->setValue(LOCK_STATE, v);
 }
 
@@ -90,25 +90,22 @@ void WorkflowSettings::setDebuggerEnabled(bool v) {
     AppContext::getSettings()->setValue(DEBUGGER_STATE, v);
 }
 
-QString WorkflowSettings::defaultStyle()
-{
+QString WorkflowSettings::defaultStyle() {
     return AppContext::getSettings()->getValue(STYLE, "ext").toString();
 }
 
-void WorkflowSettings::setDefaultStyle(const QString& s){
-    if(s != defaultStyle()){
+void WorkflowSettings::setDefaultStyle(const QString &s) {
+    if (s != defaultStyle()) {
         AppContext::getSettings()->setValue(STYLE, s);
         emit watcher->changed();
     }
 }
 
-QFont WorkflowSettings::defaultFont()
-{
+QFont WorkflowSettings::defaultFont() {
     return AppContext::getSettings()->getValue(FONT, true).value<QFont>();
 }
 
-void WorkflowSettings::setDefaultFont(const QFont& f)
-{
+void WorkflowSettings::setDefaultFont(const QFont &f) {
     if (defaultFont() != f) {
         AppContext::getSettings()->setValue(FONT, qVariantFromValue(f));
         emit watcher->changed();
@@ -117,27 +114,27 @@ void WorkflowSettings::setDefaultFont(const QFont& f)
 
 const QString WorkflowSettings::getUserDirectory() {
     Settings *s = AppContext::getSettings();
-    QString defaultPath = QDir::searchPaths( PATH_PREFIX_DATA ).first() + "/workflow_samples/" + "users/";
+    QString defaultPath = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/workflow_samples/" + "users/";
     QString path = s->getValue(DIR, defaultPath, true).toString();
     return path;
 }
 
 void WorkflowSettings::setUserDirectory(const QString &newDir) {
     Settings *s = AppContext::getSettings();
-    QString defaultPath = QDir::searchPaths( PATH_PREFIX_DATA ).first() + "/workflow_samples/" + "users/";
+    QString defaultPath = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/workflow_samples/" + "users/";
     QString path = s->getValue(DIR, defaultPath, true).toString();
     QString newFixedDir = GUrlUtils::getSlashEndedPath(QDir::fromNativeSeparators(newDir));
 
     AppContext::getSettings()->setValue(DIR, newFixedDir, true);
 
-    if(path != newFixedDir) {
+    if (path != newFixedDir) {
         QDir dir(path);
-        if(!dir.exists()) {
+        if (!dir.exists()) {
             return;
         }
         dir.setNameFilters(QStringList() << "*.usa");
         QFileInfoList fileList = dir.entryInfoList();
-        foreach(const QFileInfo &fileInfo, fileList) {
+        foreach (const QFileInfo &fileInfo, fileList) {
             QString newFileUrl = newFixedDir + fileInfo.fileName();
             QFile::copy(fileInfo.filePath(), newFileUrl);
         }
@@ -180,14 +177,14 @@ void WorkflowSettings::setExternalToolDirectory(const QString &newDir) {
 
     s->setValue(EXTERNAL_TOOL_WORKER_PATH, newFixedDir, true);
 
-    if(path != newFixedDir) {
+    if (path != newFixedDir) {
         QDir dir(path);
-        if(!dir.exists()) {
+        if (!dir.exists()) {
             return;
         }
         dir.setNameFilters(QStringList() << "*.etc");
         QFileInfoList fileList = dir.entryInfoList();
-        foreach(const QFileInfo &fileInfo, fileList) {
+        foreach (const QFileInfo &fileInfo, fileList) {
             QString newFileUrl = newFixedDir + fileInfo.fileName();
             QFile::copy(fileInfo.filePath(), newFileUrl);
         }
@@ -198,12 +195,12 @@ QColor WorkflowSettings::getBGColor() {
     Settings *s = AppContext::getSettings();
     QColor ret(Qt::darkCyan);
     ret.setAlpha(200);
-    int r,g,b,a;
-    ret.getRgb(&r,&g,&b,&a);
+    int r, g, b, a;
+    ret.getRgb(&r, &g, &b, &a);
     QString defaultColor = QString::number(r) + "," + QString::number(g) + "," + QString::number(b) + "," + QString::number(a);
-    QString color = s->getValue(BG_COLOR,defaultColor).toString();
+    QString color = s->getValue(BG_COLOR, defaultColor).toString();
     QStringList lst = color.split(",");
-    if(lst.size() != 4) {
+    if (lst.size() != 4) {
         return ret;
     }
 
@@ -211,26 +208,26 @@ QColor WorkflowSettings::getBGColor() {
     g = lst[1].toInt();
     b = lst[2].toInt();
     a = lst[3].toInt();
-    QColor res(r,g,b,a);
+    QColor res(r, g, b, a);
     return res;
 }
 
-void  WorkflowSettings::setBGColor(const QColor &color) {
-    int r,g,b,a;
-    color.getRgb(&r,&g,&b,&a);
+void WorkflowSettings::setBGColor(const QColor &color) {
+    int r, g, b, a;
+    color.getRgb(&r, &g, &b, &a);
     QString newColor = QString::number(r) + "," + QString::number(g) + "," + QString::number(b) + "," + QString::number(a);
     Settings *s = AppContext::getSettings();
     s->setValue(BG_COLOR, newColor);
 }
 
 int WorkflowSettings::getRunMode() {
-    Settings * s = AppContext::getSettings();
+    Settings *s = AppContext::getSettings();
     int ret = 0;
     QString runModeStr = s->getValue(RUN_MODE).value<QString>();
-    if( !runModeStr.isEmpty() ) {
+    if (!runModeStr.isEmpty()) {
         bool ok = false;
         int num = runModeStr.toInt(&ok);
-        if(ok && num >= 0) {
+        if (ok && num >= 0) {
             ret = num;
         }
     }
@@ -238,7 +235,7 @@ int WorkflowSettings::getRunMode() {
 }
 
 void WorkflowSettings::setRunMode(int md) {
-    Settings * s = AppContext::getSettings();
+    Settings *s = AppContext::getSettings();
     s->setValue(RUN_MODE, QString::number(md));
 }
 
@@ -286,4 +283,4 @@ void WorkflowSettings::setShowLoadButtonHint(bool value) {
     s->setValue(SHOW_LOAD_BUTTON_HINT, value);
 }
 
-}//namespace
+}    // namespace U2

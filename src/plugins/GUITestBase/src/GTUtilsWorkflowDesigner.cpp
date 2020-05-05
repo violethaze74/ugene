@@ -19,6 +19,27 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTDoubleSpinBox.h>
+#include <primitives/GTGroupBox.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTMenu.h>
+#include <primitives/GTScrollBar.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTTabWidget.h>
+#include <primitives/GTTableView.h>
+#include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <utils/GTThread.h>
+
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QFileInfo>
@@ -34,27 +55,6 @@
 #include <QTextEdit>
 #include <QToolButton>
 #include <QTreeWidget>
-
-#include <base_dialogs/GTFileDialog.h>
-#include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTAction.h>
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTDoubleSpinBox.h>
-#include <primitives/GTGroupBox.h>
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTMenu.h>
-#include <primitives/GTSpinBox.h>
-#include <primitives/GTTableView.h>
-#include <primitives/GTTabWidget.h>
-#include <primitives/GTToolbar.h>
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTWidget.h>
-#include <primitives/PopupChooser.h>
-#include <primitives/GTScrollBar.h>
-#include <utils/GTThread.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
@@ -80,7 +80,8 @@ const int GTUtilsWorkflowDesigner::verticalShift = 35;
 void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus &os) {
     StartupDialogFiller *filler = new StartupDialogFiller(os);
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Workflow Designer...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Workflow Designer...");
     GTUtilsMdi::waitWindowOpened(os, "Workflow Designer");
     GTUtilsDialog::removeRunnable(filler);
 }
@@ -88,7 +89,7 @@ void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "currentTab"
 GTUtilsWorkflowDesigner::tab GTUtilsWorkflowDesigner::currentTab(HI::GUITestOpStatus &os) {
-    QTabWidget *tabs = qobject_cast<QTabWidget*>(GTWidget::findWidget(os, "tabs"));
+    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs"));
     GT_CHECK_RESULT(NULL != tabs, "tabs widget is not found", algoriths);
     return tab(tabs->currentIndex());
 }
@@ -96,7 +97,7 @@ GTUtilsWorkflowDesigner::tab GTUtilsWorkflowDesigner::currentTab(HI::GUITestOpSt
 
 #define GT_METHOD_NAME "setCurrentTab"
 void GTUtilsWorkflowDesigner::setCurrentTab(HI::GUITestOpStatus &os, tab t) {
-    QTabWidget *tabs = qobject_cast<QTabWidget*>(GTWidget::findWidget(os, "tabs"));
+    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs"));
     GT_CHECK(NULL != tabs, "tabs widget is not found");
     GTTabWidget::setCurrentIndex(os, tabs, int(t));
 }
@@ -152,77 +153,74 @@ void GTUtilsWorkflowDesigner::returnToWorkflow(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 namespace {
-bool compare(QString s1, QString s2, bool exactMatch){
-    if(exactMatch){
-        return s1==s2;
-    }else{
+bool compare(QString s1, QString s2, bool exactMatch) {
+    if (exactMatch) {
+        return s1 == s2;
+    } else {
         return s1.toLower().contains(s2.toLower());
     }
 }
-}
+}    // namespace
 
 #define GT_METHOD_NAME "findTreeItem"
-QTreeWidgetItem* GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os,QString itemName, tab t, bool exactMatch, bool failIfNULL){
-
-    QTreeWidgetItem* foundItem=NULL;
+QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, QString itemName, tab t, bool exactMatch, bool failIfNULL) {
+    QTreeWidgetItem *foundItem = NULL;
     QTreeWidget *w;
-    if(t==algoriths){
-        w=qobject_cast<QTreeWidget*>(GTWidget::findWidget(os,"WorkflowPaletteElements",GTUtilsMdi::activeWindow(os)));
+    if (t == algoriths) {
+        w = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "WorkflowPaletteElements", GTUtilsMdi::activeWindow(os)));
+    } else {
+        w = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples", GTUtilsMdi::activeWindow(os)));
     }
-    else{
-        w=qobject_cast<QTreeWidget*>(GTWidget::findWidget(os,"samples",GTUtilsMdi::activeWindow(os)));
-    }
-    GT_CHECK_RESULT(w!=NULL,"WorkflowPaletteElements is null", NULL);
+    GT_CHECK_RESULT(w != NULL, "WorkflowPaletteElements is null", NULL);
 
-    QList<QTreeWidgetItem*> outerList = w->findItems("",Qt::MatchContains);
+    QList<QTreeWidgetItem *> outerList = w->findItems("", Qt::MatchContains);
 
-    for (int i=0;i<outerList.count();i++){
-        QList<QTreeWidgetItem*> innerList;
+    for (int i = 0; i < outerList.count(); i++) {
+        QList<QTreeWidgetItem *> innerList;
 
-        for(int j=0;j<outerList.value(i)->childCount();j++ ){
-           innerList.append(outerList.value(i)->child(j));
+        for (int j = 0; j < outerList.value(i)->childCount(); j++) {
+            innerList.append(outerList.value(i)->child(j));
         }
 
-        foreach(QTreeWidgetItem* item, innerList){
-            if(t==algoriths){
-                QString s = item->data(0,Qt::UserRole).value<QAction*>()->text();
-                if(compare(s, itemName, exactMatch)){
-                    GT_CHECK_RESULT(foundItem==NULL,"several items have this discription",item);
-                    foundItem=item;
+        foreach (QTreeWidgetItem *item, innerList) {
+            if (t == algoriths) {
+                QString s = item->data(0, Qt::UserRole).value<QAction *>()->text();
+                if (compare(s, itemName, exactMatch)) {
+                    GT_CHECK_RESULT(foundItem == NULL, "several items have this discription", item);
+                    foundItem = item;
                 }
-            }
-            else{
+            } else {
                 QString s = item->text(0);
-                if(compare(s, itemName, exactMatch)){
-                    GT_CHECK_RESULT(foundItem==NULL,"several items have this discription",item);
-                    foundItem=item;
+                if (compare(s, itemName, exactMatch)) {
+                    GT_CHECK_RESULT(foundItem == NULL, "several items have this discription", item);
+                    foundItem = item;
                 }
             }
         }
     }
-    if(failIfNULL){
-        GT_CHECK_RESULT(foundItem!=NULL,"Item \"" + itemName + "\" not found in treeWidget",NULL);
+    if (failIfNULL) {
+        GT_CHECK_RESULT(foundItem != NULL, "Item \"" + itemName + "\" not found in treeWidget", NULL);
     }
     return foundItem;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getVisibleSamples"
-QList<QTreeWidgetItem*> GTUtilsWorkflowDesigner::getVisibleSamples(HI::GUITestOpStatus &os){
-    QTreeWidget* w=qobject_cast<QTreeWidget*>(GTWidget::findWidget(os,"samples"));
-    GT_CHECK_RESULT(w!=NULL,"WorkflowPaletteElements is null", QList<QTreeWidgetItem*>());
+QList<QTreeWidgetItem *> GTUtilsWorkflowDesigner::getVisibleSamples(HI::GUITestOpStatus &os) {
+    QTreeWidget *w = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples"));
+    GT_CHECK_RESULT(w != NULL, "WorkflowPaletteElements is null", QList<QTreeWidgetItem *>());
 
-    QList<QTreeWidgetItem*> outerList = w->findItems("",Qt::MatchContains);
-    QList<QTreeWidgetItem*> resultList;
-    for (int i=0;i<outerList.count();i++){
-        QList<QTreeWidgetItem*> innerList;
+    QList<QTreeWidgetItem *> outerList = w->findItems("", Qt::MatchContains);
+    QList<QTreeWidgetItem *> resultList;
+    for (int i = 0; i < outerList.count(); i++) {
+        QList<QTreeWidgetItem *> innerList;
 
-        for(int j=0;j<outerList.value(i)->childCount();j++ ){
-           innerList.append(outerList.value(i)->child(j));
+        for (int j = 0; j < outerList.value(i)->childCount(); j++) {
+            innerList.append(outerList.value(i)->child(j));
         }
 
-        foreach(QTreeWidgetItem* item, innerList){
-            if(!item->isHidden()){
+        foreach (QTreeWidgetItem *item, innerList) {
+            if (!item->isHidden()) {
                 resultList.append(item);
             }
         }
@@ -232,34 +230,34 @@ QList<QTreeWidgetItem*> GTUtilsWorkflowDesigner::getVisibleSamples(HI::GUITestOp
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addAlgorithm"
-void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, QString algName, bool exactMatch, bool useDragAndDrop){
+void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, QString algName, bool exactMatch, bool useDragAndDrop) {
     expandTabs(os);
-    QTabWidget* tabs = qobject_cast<QTabWidget*>(GTWidget::findWidget(os,"tabs"));
-    GT_CHECK(tabs!=NULL, "tabs widget not found");
+    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs"));
+    GT_CHECK(tabs != NULL, "tabs widget not found");
 
-    GTTabWidget::setCurrentIndex(os,tabs,0);
+    GTTabWidget::setCurrentIndex(os, tabs, 0);
     GTGlobals::sleep(500);
 
     QTreeWidgetItem *alg = findTreeItem(os, algName, algoriths, exactMatch);
     GTGlobals::sleep(100);
-    GT_CHECK(alg!=NULL,"algorithm is NULL");
+    GT_CHECK(alg != NULL, "algorithm is NULL");
 
-    selectAlgorithm(os,alg);
-    QWidget* w = GTWidget::findWidget(os,"sceneView");
+    selectAlgorithm(os, alg);
+    QWidget *w = GTWidget::findWidget(os, "sceneView");
 
     int workerNum = getWorkers(os).size();
-    QPoint p(w->rect().topLeft() + QPoint(100+300*(workerNum-(workerNum/2)*2),100 + 200*(workerNum/2)));//shifting workers position
-    if(useDragAndDrop){
+    QPoint p(w->rect().topLeft() + QPoint(100 + 300 * (workerNum - (workerNum / 2) * 2), 100 + 200 * (workerNum / 2)));    //shifting workers position
+    if (useDragAndDrop) {
         GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), w->mapToGlobal(p));
-    }else{
-        GTWidget::click(os, w,Qt::LeftButton, p);
+    } else {
+        GTWidget::click(os, w, Qt::LeftButton, p);
     }
     GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addElement"
-WorkflowProcessItem * GTUtilsWorkflowDesigner::addElement(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch) {
+WorkflowProcessItem *GTUtilsWorkflowDesigner::addElement(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch) {
     addAlgorithm(os, algName, exactMatch);
     CHECK_OP(os, NULL);
     return getWorker(os, algName);
@@ -267,27 +265,27 @@ WorkflowProcessItem * GTUtilsWorkflowDesigner::addElement(HI::GUITestOpStatus &o
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addElementByUsingNameFilter"
-WorkflowProcessItem* GTUtilsWorkflowDesigner::addElementByUsingNameFilter(HI::GUITestOpStatus &os, const QString &elementName, bool exactMatch) {
+WorkflowProcessItem *GTUtilsWorkflowDesigner::addElementByUsingNameFilter(HI::GUITestOpStatus &os, const QString &elementName, bool exactMatch) {
     GTUtilsWorkflowDesigner::findByNameFilter(os, elementName);
-    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, elementName, exactMatch);
+    WorkflowProcessItem *item = GTUtilsWorkflowDesigner::addElement(os, elementName, exactMatch);
     GTUtilsWorkflowDesigner::cleanNameFilter(os);
     return item;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectAlgorithm"
-void GTUtilsWorkflowDesigner::selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem* algorithm){
-    GT_CHECK(algorithm!=NULL, "algorithm is NULL");
+void GTUtilsWorkflowDesigner::selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem *algorithm) {
+    GT_CHECK(algorithm != NULL, "algorithm is NULL");
     GTGlobals::sleep(500);
 
     algorithm->treeWidget()->scrollToItem(algorithm, QAbstractItemView::PositionAtCenter);
     GTGlobals::sleep(200);
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os,algorithm));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, algorithm));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addSample"
-void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &sampName, QWidget const * const parentWidget) {
+void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &sampName, QWidget const *const parentWidget) {
     expandTabs(os, parentWidget);
     QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs", parentWidget));
     GT_CHECK(tabs != NULL, "tabs widget not found");
@@ -296,7 +294,7 @@ void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &
 
     QTreeWidgetItem *samp = findTreeItem(os, sampName, samples);
     GTGlobals::sleep(100);
-    GT_CHECK(samp != NULL,"sample is NULL");
+    GT_CHECK(samp != NULL, "sample is NULL");
 
     selectSample(os, samp, parentWidget);
     GTGlobals::sleep(500);
@@ -304,11 +302,11 @@ void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectSample"
-void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget const * const parentWidget) {
+void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget const *const parentWidget) {
     GT_CHECK(sample != NULL, "sample is NULL");
     GTGlobals::sleep(500);
 
-    QTreeWidget *paletteTree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os,"samples",parentWidget));
+    QTreeWidget *paletteTree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples", parentWidget));
     paletteTree->scrollToItem(sample);
     GTThread::waitForMainThread();
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, sample));
@@ -318,20 +316,20 @@ void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetI
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "expandTabs"
-void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os, QWidget const * const parentWidget){
-    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "WorkflowViewMainSplitter", parentWidget));
+void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os, QWidget const *const parentWidget) {
+    QSplitter *splitter = qobject_cast<QSplitter *>(GTWidget::findWidget(os, "WorkflowViewMainSplitter", parentWidget));
     GT_CHECK(splitter, "splitter not found");
     QList<int> s;
-    s  = splitter->sizes();
+    s = splitter->sizes();
 
-    if(s.first()==0){//expands tabs if collapsed
+    if (s.first() == 0) {    //expands tabs if collapsed
         QPoint p;
-        p.setX(splitter->geometry().left()+2);
+        p.setX(splitter->geometry().left() + 2);
         p.setY(splitter->geometry().center().y());
         GTMouseDriver::moveTo(p);
         GTGlobals::sleep(300);
         GTMouseDriver::press();
-        p.setX(p.x()+200);
+        p.setX(p.x() + 200);
         GTMouseDriver::moveTo(p);
         GTMouseDriver::release();
         GTThread::waitForMainThread();
@@ -340,8 +338,8 @@ void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os, QWidget const 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findByNameFilter"
-void GTUtilsWorkflowDesigner::findByNameFilter(HI::GUITestOpStatus& os, const QString& elementName) {
-    QLineEdit* nameFilterLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit", GTWidget::findWidget(os, "palette")));
+void GTUtilsWorkflowDesigner::findByNameFilter(HI::GUITestOpStatus &os, const QString &elementName) {
+    QLineEdit *nameFilterLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameFilterLineEdit", GTWidget::findWidget(os, "palette")));
     GT_CHECK(nameFilterLineEdit != NULL, "Filter name line edit is not found");
 
     const QPoint mappedLineEditPos = nameFilterLineEdit->mapToGlobal(nameFilterLineEdit->pos());
@@ -365,8 +363,8 @@ void GTUtilsWorkflowDesigner::findByNameFilter(HI::GUITestOpStatus& os, const QS
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "cleanNameFilter"
-void GTUtilsWorkflowDesigner::cleanNameFilter(HI::GUITestOpStatus& os) {
-    QLineEdit* nameFilterLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit", GTWidget::findWidget(os, "palette")));
+void GTUtilsWorkflowDesigner::cleanNameFilter(HI::GUITestOpStatus &os) {
+    QLineEdit *nameFilterLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameFilterLineEdit", GTWidget::findWidget(os, "palette")));
     GT_CHECK(nameFilterLineEdit != NULL, "Filter name line edit is not found");
 
     const QPoint mappedLineEditPos = nameFilterLineEdit->mapToGlobal(nameFilterLineEdit->pos());
@@ -392,8 +390,7 @@ void GTUtilsWorkflowDesigner::clickOnPalette(HI::GUITestOpStatus &os, const QStr
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getPaletteGroup"
-QTreeWidgetItem * GTUtilsWorkflowDesigner::getPaletteGroup(HI::GUITestOpStatus &os, const QString &groupName) {
-
+QTreeWidgetItem *GTUtilsWorkflowDesigner::getPaletteGroup(HI::GUITestOpStatus &os, const QString &groupName) {
     QTreeWidget *tree = getCurrentTabTreeWidget(os);
     GT_CHECK_RESULT(NULL != tree, "WorkflowPaletteElements is NULL", NULL);
 
@@ -464,7 +461,7 @@ QStringList GTUtilsWorkflowDesigner::getPaletteGroupEntriesNames(GUITestOpStatus
 }
 #undef GT_METHOD_NAME
 
-QPoint GTUtilsWorkflowDesigner::getItemCenter(HI::GUITestOpStatus &os,QString itemName){
+QPoint GTUtilsWorkflowDesigner::getItemCenter(HI::GUITestOpStatus &os, QString itemName) {
     QRect r = getItemRect(os, itemName);
     QPoint p = r.center();
     return p;
@@ -478,33 +475,33 @@ void GTUtilsWorkflowDesigner::removeItem(HI::GUITestOpStatus &os, QString itemNa
 }
 #undef GT_METHOD_NAME
 
-int GTUtilsWorkflowDesigner::getItemLeft(HI::GUITestOpStatus &os, QString itemName){
+int GTUtilsWorkflowDesigner::getItemLeft(HI::GUITestOpStatus &os, QString itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.left();
     return i;
 }
 
-int GTUtilsWorkflowDesigner::getItemRight(HI::GUITestOpStatus &os, QString itemName){
+int GTUtilsWorkflowDesigner::getItemRight(HI::GUITestOpStatus &os, QString itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.right();
     return i;
 }
 
-int GTUtilsWorkflowDesigner::getItemTop(HI::GUITestOpStatus &os, QString itemName){
+int GTUtilsWorkflowDesigner::getItemTop(HI::GUITestOpStatus &os, QString itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.top();
     return i;
 }
 
-int GTUtilsWorkflowDesigner::getItemBottom(HI::GUITestOpStatus &os, QString itemName){
+int GTUtilsWorkflowDesigner::getItemBottom(HI::GUITestOpStatus &os, QString itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.bottom();
     return i;
 }
 #define GT_METHOD_NAME "click"
-void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QString itemName, QPoint p, Qt::MouseButton button){
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView", GTUtilsMdi::activeWindow(os)));
-    GT_CHECK(sceneView!=NULL, "scene view is NULL");
+void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QString itemName, QPoint p, Qt::MouseButton button) {
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView", GTUtilsMdi::activeWindow(os)));
+    GT_CHECK(sceneView != NULL, "scene view is NULL");
     sceneView->ensureVisible(getWorker(os, itemName));
     GTThread::waitForMainThread();
 
@@ -517,9 +514,9 @@ void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QString itemName, Q
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "click"
-void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QGraphicsItem* item, QPoint p, Qt::MouseButton button){
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
-    GT_CHECK(sceneView!=NULL, "scene view is NULL");
+void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QGraphicsItem *item, QPoint p, Qt::MouseButton button) {
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
+    GT_CHECK(sceneView != NULL, "scene view is NULL");
     sceneView->ensureVisible(item);
     QRect rect = GTGraphicsItem::getGraphicsItemRect(os, item);
 
@@ -533,27 +530,27 @@ void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QGraphicsItem* item
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWorker"
-WorkflowProcessItem* GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os,QString itemName,const GTGlobals::FindOptions &options){
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView",GTUtilsMdi::activeWindow(os)));
+WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os, QString itemName, const GTGlobals::FindOptions &options) {
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView", GTUtilsMdi::activeWindow(os)));
     GT_CHECK_RESULT(sceneView, "sceneView not found", NULL);
     QList<QGraphicsItem *> items = sceneView->items();
 
-    foreach(QGraphicsItem* it, items) {
+    foreach (QGraphicsItem *it, items) {
         QGraphicsObject *itObj = it->toGraphicsObject();
 
-        QGraphicsTextItem* textItemO = qobject_cast<QGraphicsTextItem*>(itObj);
+        QGraphicsTextItem *textItemO = qobject_cast<QGraphicsTextItem *>(itObj);
         if (textItemO) {
             QString text = textItemO->toPlainText();
 
             int num = text.indexOf('\n');
-            if(num == -1){
+            if (num == -1) {
                 continue;
             }
             text = text.left(num);
 
             if (text == itemName) {
-                if(qgraphicsitem_cast<WorkflowProcessItem*>(it->parentItem()->parentItem()))
-                    return (qgraphicsitem_cast<WorkflowProcessItem*>(it->parentItem()->parentItem()));
+                if (qgraphicsitem_cast<WorkflowProcessItem *>(it->parentItem()->parentItem()))
+                    return (qgraphicsitem_cast<WorkflowProcessItem *>(it->parentItem()->parentItem()));
             }
         }
     }
@@ -579,17 +576,17 @@ QString GTUtilsWorkflowDesigner::getWorkerText(HI::GUITestOpStatus &os, QString 
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsWorkflowDesigner::clickLink(HI::GUITestOpStatus &os, QString itemName, Qt::MouseButton button, int step){
-    WorkflowProcessItem* worker = getWorker(os, itemName);
+void GTUtilsWorkflowDesigner::clickLink(HI::GUITestOpStatus &os, QString itemName, Qt::MouseButton button, int step) {
+    WorkflowProcessItem *worker = getWorker(os, itemName);
 
     int left = GTUtilsWorkflowDesigner::getItemLeft(os, itemName);
     int right = GTUtilsWorkflowDesigner::getItemRight(os, itemName);
     int top = GTUtilsWorkflowDesigner::getItemTop(os, itemName);
     int bottom = GTUtilsWorkflowDesigner::getItemBottom(os, itemName);
-    for(int i = left; i < right; i+=step){
-        for(int j = top; j < bottom; j+=step){
-            GTMouseDriver::moveTo(QPoint(i,j));
-            if(worker->cursor().shape() == Qt::PointingHandCursor){
+    for (int i = left; i < right; i += step) {
+        for (int j = top; j < bottom; j += step) {
+            GTMouseDriver::moveTo(QPoint(i, j));
+            if (worker->cursor().shape() == Qt::PointingHandCursor) {
                 GTMouseDriver::click(button);
                 return;
             }
@@ -599,34 +596,34 @@ void GTUtilsWorkflowDesigner::clickLink(HI::GUITestOpStatus &os, QString itemNam
 
 #define GT_METHOD_NAME "isWorkerExtended"
 bool GTUtilsWorkflowDesigner::isWorkerExtended(HI::GUITestOpStatus &os, const QString &itemName) {
-    return "ext" == getWorker(os,itemName)->getStyle();
+    return "ext" == getWorker(os, itemName)->getStyle();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getPortById"
-WorkflowPortItem* GTUtilsWorkflowDesigner::getPortById(HI::GUITestOpStatus &os, WorkflowProcessItem *worker, QString id){
-    QList<WorkflowPortItem*> list = getPorts(os, worker);
-    foreach(WorkflowPortItem* p, list){
-        if(p&&p->getPort()->getId()==id){
+WorkflowPortItem *GTUtilsWorkflowDesigner::getPortById(HI::GUITestOpStatus &os, WorkflowProcessItem *worker, QString id) {
+    QList<WorkflowPortItem *> list = getPorts(os, worker);
+    foreach (WorkflowPortItem *p, list) {
+        if (p && p->getPort()->getId() == id) {
             return p;
         }
     }
-    GT_CHECK_RESULT(false, "port with id " + id + "not found",NULL);
+    GT_CHECK_RESULT(false, "port with id " + id + "not found", NULL);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getPorts"
-QList<WorkflowPortItem*> GTUtilsWorkflowDesigner::getPorts(HI::GUITestOpStatus &os, WorkflowProcessItem *worker){
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
-    GT_CHECK_RESULT(sceneView,"sceneView not found", QList<WorkflowPortItem*>())
+QList<WorkflowPortItem *> GTUtilsWorkflowDesigner::getPorts(HI::GUITestOpStatus &os, WorkflowProcessItem *worker) {
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
+    GT_CHECK_RESULT(sceneView, "sceneView not found", QList<WorkflowPortItem *>())
     return worker->getPortItems();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemRect"
-QRect GTUtilsWorkflowDesigner::getItemRect(HI::GUITestOpStatus &os,QString itemName){
-//TODO: support finding items when there are several similar workers in scheme
-    WorkflowProcessItem* w = getWorker(os, itemName);
+QRect GTUtilsWorkflowDesigner::getItemRect(HI::GUITestOpStatus &os, QString itemName) {
+    //TODO: support finding items when there are several similar workers in scheme
+    WorkflowProcessItem *w = getWorker(os, itemName);
     QRect result = GTGraphicsItem::getGraphicsItemRect(os, w);
     result.setTop(result.top() + verticalShift);
     return result;
@@ -651,9 +648,8 @@ QTreeWidget *GTUtilsWorkflowDesigner::getCurrentTabTreeWidget(HI::GUITestOpStatu
 void GTUtilsWorkflowDesigner::toggleDebugMode(HI::GUITestOpStatus &os, bool enable) {
     class DebugModeToggleScenario : public CustomScenario {
     public:
-        DebugModeToggleScenario(bool enable) :
-            enable(enable)
-        {
+        DebugModeToggleScenario(bool enable)
+            : enable(enable) {
         }
 
         void run(HI::GUITestOpStatus &os) {
@@ -671,7 +667,8 @@ void GTUtilsWorkflowDesigner::toggleDebugMode(HI::GUITestOpStatus &os, bool enab
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new DebugModeToggleScenario(enable)));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
 }
 #undef GT_METHOD_NAME
 
@@ -695,15 +692,15 @@ QStringList GTUtilsWorkflowDesigner::getBreakpointList(HI::GUITestOpStatus &os) 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getAllConnectionArrows"
-QList<WorkflowBusItem*> GTUtilsWorkflowDesigner::getAllConnectionArrows(HI::GUITestOpStatus &os){
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
-    GT_CHECK_RESULT(sceneView,"sceneView not found", QList<WorkflowBusItem*>());
+QList<WorkflowBusItem *> GTUtilsWorkflowDesigner::getAllConnectionArrows(HI::GUITestOpStatus &os) {
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
+    GT_CHECK_RESULT(sceneView, "sceneView not found", QList<WorkflowBusItem *>());
 
-    QList<WorkflowBusItem*> result;
+    QList<WorkflowBusItem *> result;
 
-    foreach (QGraphicsItem* item, sceneView->items()) {
-        WorkflowBusItem* arrow = qgraphicsitem_cast<WorkflowBusItem*>(item);
-        if(arrow != NULL){
+    foreach (QGraphicsItem *item, sceneView->items()) {
+        WorkflowBusItem *arrow = qgraphicsitem_cast<WorkflowBusItem *>(item);
+        if (arrow != NULL) {
             result.append(arrow);
         }
     };
@@ -714,25 +711,25 @@ QList<WorkflowBusItem*> GTUtilsWorkflowDesigner::getAllConnectionArrows(HI::GUIT
 
 #define GT_METHOD_NAME "removeCmdlineWorkerFromPalette"
 void GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(HI::GUITestOpStatus &os, const QString &workerName) {
-    QTabWidget* tabs = qobject_cast<QTabWidget*>(GTWidget::findWidget(os, "tabs"));
+    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs"));
     GT_CHECK(tabs != NULL, "tabs widget not found");
 
     GTTabWidget::setCurrentIndex(os, tabs, 0);
 
-    QTreeWidget* w = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "WorkflowPaletteElements"));
+    QTreeWidget *w = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "WorkflowPaletteElements"));
     GT_CHECK(w != NULL, "WorkflowPaletteElements is null");
 
-    QTreeWidgetItem* foundItem = NULL;
-    QList<QTreeWidgetItem*> outerList = w->findItems("", Qt::MatchContains);
-    for (int i = 0; i < outerList.count(); i++){
-        QList<QTreeWidgetItem*> innerList;
+    QTreeWidgetItem *foundItem = NULL;
+    QList<QTreeWidgetItem *> outerList = w->findItems("", Qt::MatchContains);
+    for (int i = 0; i < outerList.count(); i++) {
+        QList<QTreeWidgetItem *> innerList;
 
-        for (int j = 0; j < outerList.value(i)->childCount(); j++){
+        for (int j = 0; j < outerList.value(i)->childCount(); j++) {
             innerList.append(outerList.value(i)->child(j));
         }
 
         foreach (QTreeWidgetItem *item, innerList) {
-            const QString s = item->data(0, Qt::UserRole).value<QAction*>()->text();
+            const QString s = item->data(0, Qt::UserRole).value<QAction *>()->text();
             if (s == workerName) {
                 foundItem = item;
             }
@@ -748,13 +745,13 @@ void GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(HI::GUITestOpStatus
 
 #define GT_METHOD_NAME "increaseOutputPortBoxHeight"
 void GTUtilsWorkflowDesigner::changeInputPortBoxHeight(HI::GUITestOpStatus &os, const int offset) {
-    QTextEdit* doc = GTWidget::findExactWidget<QTextEdit *>(os, "doc");
+    QTextEdit *doc = GTWidget::findExactWidget<QTextEdit *>(os, "doc");
     GT_CHECK(doc != NULL, "doc is not found");
 
-    QGroupBox* paramBox = GTWidget::findExactWidget<QGroupBox *>(os, "paramBox");
+    QGroupBox *paramBox = GTWidget::findExactWidget<QGroupBox *>(os, "paramBox");
     GT_CHECK(paramBox != NULL, "Param Box is not found");
 
-    QGroupBox* inputPortBox = GTWidget::findExactWidget<QGroupBox *>(os, "inputPortBox");
+    QGroupBox *inputPortBox = GTWidget::findExactWidget<QGroupBox *>(os, "inputPortBox");
     GT_CHECK(paramBox != NULL, "inputPortBox is not found");
 
     QPoint docGlobal = doc->mapToGlobal(doc->pos());
@@ -774,18 +771,18 @@ void GTUtilsWorkflowDesigner::importCmdlineBasedElement(GUITestOpStatus &os, con
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "connect"
-void GTUtilsWorkflowDesigner::connect(HI::GUITestOpStatus &os, WorkflowProcessItem * from , WorkflowProcessItem * to){
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(from->scene()->views().at(0));
-    GT_CHECK(sceneView,"sceneView not found")
-    QList<WorkflowPortItem*> fromList = from->getPortItems();
-    QList<WorkflowPortItem*> toList = to->getPortItems();
+void GTUtilsWorkflowDesigner::connect(HI::GUITestOpStatus &os, WorkflowProcessItem *from, WorkflowProcessItem *to) {
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(from->scene()->views().at(0));
+    GT_CHECK(sceneView, "sceneView not found")
+    QList<WorkflowPortItem *> fromList = from->getPortItems();
+    QList<WorkflowPortItem *> toList = to->getPortItems();
 
-    foreach(WorkflowPortItem* fromPort, fromList){
-        foreach(WorkflowPortItem* toPort, toList){
-            if(fromPort->getPort()->canBind(toPort->getPort())){
-                GTMouseDriver::moveTo(GTGraphicsItem::getItemCenter(os,fromPort));
+    foreach (WorkflowPortItem *fromPort, fromList) {
+        foreach (WorkflowPortItem *toPort, toList) {
+            if (fromPort->getPort()->canBind(toPort->getPort())) {
+                GTMouseDriver::moveTo(GTGraphicsItem::getItemCenter(os, fromPort));
                 GTMouseDriver::press();
-                GTMouseDriver::moveTo(GTGraphicsItem::getItemCenter(os,toPort));
+                GTMouseDriver::moveTo(GTGraphicsItem::getItemCenter(os, toPort));
                 GTMouseDriver::release();
                 GTGlobals::sleep(1000);
                 return;
@@ -793,54 +790,54 @@ void GTUtilsWorkflowDesigner::connect(HI::GUITestOpStatus &os, WorkflowProcessIt
         }
     }
 
-    GT_CHECK(false,"no suitable ports to connect");
+    GT_CHECK(false, "no suitable ports to connect");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "disconnect"
-void GTUtilsWorkflowDesigner::disconect(HI::GUITestOpStatus &os, WorkflowProcessItem * from , WorkflowProcessItem * to){
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(from->scene()->views().at(0));
-    GT_CHECK(sceneView,"sceneView not found");
+void GTUtilsWorkflowDesigner::disconect(HI::GUITestOpStatus &os, WorkflowProcessItem *from, WorkflowProcessItem *to) {
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(from->scene()->views().at(0));
+    GT_CHECK(sceneView, "sceneView not found");
 
-    WorkflowBusItem* arrow = getConnectionArrow(os, from, to);
-    QGraphicsTextItem* hint = getArrowHint(os, arrow);
+    WorkflowBusItem *arrow = getConnectionArrow(os, from, to);
+    QGraphicsTextItem *hint = getArrowHint(os, arrow);
     click(os, hint);
 
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConnectionArrow"
-WorkflowBusItem *GTUtilsWorkflowDesigner::getConnectionArrow(HI::GUITestOpStatus &os, WorkflowProcessItem * from , WorkflowProcessItem * to){
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(from->scene()->views().at(0));
-    GT_CHECK_RESULT(sceneView,"sceneView not found", NULL)
-    QList<WorkflowPortItem*> fromList = from->getPortItems();
-    QList<WorkflowPortItem*> toList = to->getPortItems();
+WorkflowBusItem *GTUtilsWorkflowDesigner::getConnectionArrow(HI::GUITestOpStatus &os, WorkflowProcessItem *from, WorkflowProcessItem *to) {
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(from->scene()->views().at(0));
+    GT_CHECK_RESULT(sceneView, "sceneView not found", NULL)
+    QList<WorkflowPortItem *> fromList = from->getPortItems();
+    QList<WorkflowPortItem *> toList = to->getPortItems();
 
-    QList<WorkflowBusItem*> arrows = getAllConnectionArrows(os);
+    QList<WorkflowBusItem *> arrows = getAllConnectionArrows(os);
 
-    foreach(WorkflowPortItem* fromPort, fromList){
-        foreach(WorkflowPortItem* toPort, toList){
-            foreach (WorkflowBusItem* arrow, arrows) {
-                if(arrow->getInPort() == toPort && arrow->getOutPort() == fromPort){
+    foreach (WorkflowPortItem *fromPort, fromList) {
+        foreach (WorkflowPortItem *toPort, toList) {
+            foreach (WorkflowBusItem *arrow, arrows) {
+                if (arrow->getInPort() == toPort && arrow->getOutPort() == fromPort) {
                     return arrow;
                 }
             }
         }
     }
 
-    GT_CHECK_RESULT(false,"no suitable ports to connect", NULL);
+    GT_CHECK_RESULT(false, "no suitable ports to connect", NULL);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getArrowHint"
-QGraphicsTextItem* GTUtilsWorkflowDesigner::getArrowHint(HI::GUITestOpStatus &os, WorkflowBusItem *arrow){
+QGraphicsTextItem *GTUtilsWorkflowDesigner::getArrowHint(HI::GUITestOpStatus &os, WorkflowBusItem *arrow) {
     GT_CHECK_RESULT(arrow != NULL, "arrow item is NULL", NULL);
 
-    foreach (QGraphicsItem* item, arrow->childItems()) {
-        QGraphicsTextItem* hint = qgraphicsitem_cast<QGraphicsTextItem*>(item);
-        if(hint != NULL){
+    foreach (QGraphicsItem *item, arrow->childItems()) {
+        QGraphicsTextItem *hint = qgraphicsitem_cast<QGraphicsTextItem *>(item);
+        if (hint != NULL) {
             return hint;
         }
     }
@@ -849,13 +846,13 @@ QGraphicsTextItem* GTUtilsWorkflowDesigner::getArrowHint(HI::GUITestOpStatus &os
 }
 #undef GT_METHOD_NAME
 
-QList<WorkflowProcessItem*> GTUtilsWorkflowDesigner::getWorkers(HI::GUITestOpStatus &os){
-    QList<WorkflowProcessItem*> result;
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
+QList<WorkflowProcessItem *> GTUtilsWorkflowDesigner::getWorkers(HI::GUITestOpStatus &os) {
+    QList<WorkflowProcessItem *> result;
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
     QList<QGraphicsItem *> items = sceneView->items();
-    foreach(QGraphicsItem* it, items){
-        WorkflowProcessItem* worker = qgraphicsitem_cast<WorkflowProcessItem*>(it);
-        if(worker)
+    foreach (QGraphicsItem *it, items) {
+        WorkflowProcessItem *worker = qgraphicsitem_cast<WorkflowProcessItem *>(it);
+        if (worker)
             result.append(worker);
     }
     return result;
@@ -869,9 +866,7 @@ QWidget *GTUtilsWorkflowDesigner::getDatasetsListWidget(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getCurrentDatasetWidget"
 QWidget *GTUtilsWorkflowDesigner::getCurrentDatasetWidget(GUITestOpStatus &os) {
-    QTabWidget* datasetsTabWidget = GTWidget::findExactWidget<QTabWidget *>(os
-                                                                            , "DatasetsTabWidget"
-                                                                            , GTUtilsMdi::activeWindow(os));
+    QTabWidget *datasetsTabWidget = GTWidget::findExactWidget<QTabWidget *>(os, "DatasetsTabWidget", GTUtilsMdi::activeWindow(os));
     GT_CHECK_RESULT(datasetsTabWidget, "DatasetsTabWidget not found", nullptr);
     return datasetsTabWidget->currentWidget();
 }
@@ -922,8 +917,8 @@ void GTUtilsWorkflowDesigner::addInputFile(HI::GUITestOpStatus &os, const QStrin
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "createDataset"
-void GTUtilsWorkflowDesigner::createDataset(HI::GUITestOpStatus &os, QString datasetName){
-    QWidget* plusButton = GTWidget::findButtonByText(os, "+", getDatasetsListWidget(os));
+void GTUtilsWorkflowDesigner::createDataset(HI::GUITestOpStatus &os, QString datasetName) {
+    QWidget *plusButton = GTWidget::findButtonByText(os, "+", getDatasetsListWidget(os));
     GT_CHECK(plusButton, "plusButton not found");
 
     GTUtilsDialog::waitForDialog(os, new DatasetNameEditDialogFiller(os, datasetName));
@@ -934,11 +929,11 @@ void GTUtilsWorkflowDesigner::createDataset(HI::GUITestOpStatus &os, QString dat
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setDatasetInputFolder"
-void GTUtilsWorkflowDesigner::setDatasetInputFolder(HI::GUITestOpStatus &os, QString filePath){
+void GTUtilsWorkflowDesigner::setDatasetInputFolder(HI::GUITestOpStatus &os, QString filePath) {
     QWidget *currentDatasetWidget = getCurrentDatasetWidget(os);
     GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
 
-    QWidget* addDirButton = GTWidget::findWidget(os, "addDirButton", currentDatasetWidget);
+    QWidget *addDirButton = GTWidget::findWidget(os, "addDirButton", currentDatasetWidget);
     GT_CHECK(addDirButton, "addFileButton not found");
 
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, filePath, "", GTFileDialogUtils::Choose, GTGlobals::UseMouse);
@@ -962,25 +957,25 @@ void GTUtilsWorkflowDesigner::setDatasetInputFolders(GUITestOpStatus &os, const 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setParameter"
-void GTUtilsWorkflowDesigner::setParameter(HI::GUITestOpStatus &os, QString parameter, QVariant value, valueType type, GTGlobals::UseMethod method){
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
-    CHECK_SET_ERR(table,"tableView not found");
+void GTUtilsWorkflowDesigner::setParameter(HI::GUITestOpStatus &os, QString parameter, QVariant value, valueType type, GTGlobals::UseMethod method) {
+    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
+    CHECK_SET_ERR(table, "tableView not found");
 
     //FIND CELL
-    QAbstractItemModel* model = table->model();
+    QAbstractItemModel *model = table->model();
     int iMax = model->rowCount();
     int row = -1;
-    for(int i = 0; i<iMax; i++){
-        QString s = model->data(model->index(i,0)).toString();
-        if (s.compare(parameter,Qt::CaseInsensitive) == 0){
+    for (int i = 0; i < iMax; i++) {
+        QString s = model->data(model->index(i, 0)).toString();
+        if (s.compare(parameter, Qt::CaseInsensitive) == 0) {
             row = i;
             break;
         }
     }
     GT_CHECK(row != -1, QString("parameter not found: %1").arg(parameter));
-    table->scrollTo(model->index(row,1));
+    table->scrollTo(model->index(row, 1));
 
-    GTMouseDriver::moveTo(GTTableView::getCellPosition(os,table,1,row));
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, row));
     GTMouseDriver::click();
     GTGlobals::sleep();
 
@@ -990,34 +985,34 @@ void GTUtilsWorkflowDesigner::setParameter(HI::GUITestOpStatus &os, QString para
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setTableValue"
-void GTUtilsWorkflowDesigner::setTableValue(HI::GUITestOpStatus &os,  QString parameter, QVariant value, valueType type, QTableWidget *table, GTGlobals::UseMethod method){
+void GTUtilsWorkflowDesigner::setTableValue(HI::GUITestOpStatus &os, QString parameter, QVariant value, valueType type, QTableWidget *table, GTGlobals::UseMethod method) {
     int row = -1;
     const int rows = table->rowCount();
-    for(int i = 0; i < rows; i++) {
+    for (int i = 0; i < rows; i++) {
         QString s = table->item(i, 0)->text();
-        if(s == parameter){
+        if (s == parameter) {
             row = i;
             break;
         }
     }
     GT_CHECK(row != -1, QString("parameter not found: %1").arg(parameter));
 
-    QScrollArea* scrollArea = qobject_cast<QScrollArea*>(GTWidget::findWidget(os, "inputScrollArea"));
+    QScrollArea *scrollArea = qobject_cast<QScrollArea *>(GTWidget::findWidget(os, "inputScrollArea"));
     GT_CHECK(scrollArea != NULL, "inputPortBox isn't found");
-    if (!scrollArea->findChildren<QTableWidget*>().contains(table)) {
-        scrollArea = qobject_cast<QScrollArea*>(GTWidget::findWidget(os, "outputScrollArea"));
+    if (!scrollArea->findChildren<QTableWidget *>().contains(table)) {
+        scrollArea = qobject_cast<QScrollArea *>(GTWidget::findWidget(os, "outputScrollArea"));
         GT_CHECK(scrollArea != NULL, "outputPortBox isn't found");
-        GT_CHECK(scrollArea->findChildren<QTableWidget*>().contains(table), "The owner of the table widget isn't found");
+        GT_CHECK(scrollArea->findChildren<QTableWidget *>().contains(table), "The owner of the table widget isn't found");
     }
-    QScrollBar* scrollBar = scrollArea->verticalScrollBar();
+    QScrollBar *scrollBar = scrollArea->verticalScrollBar();
     GT_CHECK(scrollBar != NULL, "Horizontal scroll bar isn't found");
 
     QRect parentTableRect = scrollArea->rect();
     QPoint globalTopLeftParentTable = scrollArea->mapToGlobal(parentTableRect.topLeft());
     QPoint globalBottomRightParentTable = scrollArea->mapToGlobal(parentTableRect.bottomRight());
-    QRect globalParentRect(globalTopLeftParentTable, globalBottomRightParentTable - QPoint (0, 1));
+    QRect globalParentRect(globalTopLeftParentTable, globalBottomRightParentTable - QPoint(0, 1));
 
-    QTableWidgetItem* item = table->item(row, 1);
+    QTableWidgetItem *item = table->item(row, 1);
     QRect rect = table->visualItemRect(item);
     QPoint globalP = table->viewport()->mapToGlobal(rect.center());
 
@@ -1037,10 +1032,10 @@ void GTUtilsWorkflowDesigner::setTableValue(HI::GUITestOpStatus &os,  QString pa
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setCellValue"
-void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget* parent, QVariant value, valueType type, GTGlobals::UseMethod method){
+void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget *parent, QVariant value, valueType type, GTGlobals::UseMethod method) {
     bool ok = true;
-    switch(type){
-    case(comboWithFileSelector) : {
+    switch (type) {
+    case (comboWithFileSelector): {
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, value.toString()));
         GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
 #ifdef Q_OS_WIN
@@ -1049,43 +1044,43 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget* par
 #endif
         break;
     }
-    case(lineEditWithFileSelector) : {
+    case (lineEditWithFileSelector): {
         GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "mainWidget", parent), value.toString());
         GTKeyboardDriver::keyClick(Qt::Key_Enter);
         break;
     }
-    case(spinValue):{
+    case (spinValue): {
         int spinVal = value.toInt(&ok);
-        GT_CHECK(ok,"Wrong input. Int required for GTUtilsWorkflowDesigner::spinValue")
-        QSpinBox* box = qobject_cast<QSpinBox*>(parent->findChild<QSpinBox*>());
+        GT_CHECK(ok, "Wrong input. Int required for GTUtilsWorkflowDesigner::spinValue")
+        QSpinBox *box = qobject_cast<QSpinBox *>(parent->findChild<QSpinBox *>());
         GT_CHECK(box, "spinBox not found. Widget in this cell might be not QSpinBox");
         GTSpinBox::setValue(os, box, spinVal, GTGlobals::UseKeyBoard);
         break;
     }
-    case(doubleSpinValue):{
+    case (doubleSpinValue): {
         double spinVal = value.toDouble(&ok);
-        GT_CHECK(ok,"Wrong input. Double required for GTUtilsWorkflowDesigner::doubleSpinValue")
-        QDoubleSpinBox* box = qobject_cast<QDoubleSpinBox*>(parent->findChild<QDoubleSpinBox*>());
+        GT_CHECK(ok, "Wrong input. Double required for GTUtilsWorkflowDesigner::doubleSpinValue")
+        QDoubleSpinBox *box = qobject_cast<QDoubleSpinBox *>(parent->findChild<QDoubleSpinBox *>());
         GT_CHECK(box, "QDoubleSpinBox not found. Widget in this cell might be not QDoubleSpinBox");
         GTDoubleSpinbox::setValue(os, box, spinVal, GTGlobals::UseKeyBoard);
         break;
     }
-    case(comboValue):{
+    case (comboValue): {
         int comboVal = value.toInt(&ok);
-        QComboBox* box = qobject_cast<QComboBox*>(parent->findChild<QComboBox*>());
+        QComboBox *box = qobject_cast<QComboBox *>(parent->findChild<QComboBox *>());
         GT_CHECK(box, "QComboBox not found. Widget in this cell might be not QComboBox");
 
-        if(!ok){
+        if (!ok) {
             QString comboString = value.toString();
             GTComboBox::setIndexWithText(os, box, comboString, true, method);
-        }else{
+        } else {
             GTComboBox::setCurrentIndex(os, box, comboVal, true, method);
         }
         break;
     }
-    case(textValue):{
+    case (textValue): {
         QString lineVal = value.toString();
-        QLineEdit* line = qobject_cast<QLineEdit*>(parent->findChild<QLineEdit*>());
+        QLineEdit *line = qobject_cast<QLineEdit *>(parent->findChild<QLineEdit *>());
         GT_CHECK(line, "QLineEdit not found. Widget in this cell might be not QLineEdit");
         GTLineEdit::setText(os, line, lineVal);
         GTKeyboardDriver::keyClick(Qt::Key_Enter);
@@ -1093,7 +1088,7 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget* par
     }
     case ComboChecks: {
         QStringList values = value.value<QStringList>();
-        QComboBox *box = qobject_cast<QComboBox*>(parent->findChild<QComboBox*>());
+        QComboBox *box = qobject_cast<QComboBox *>(parent->findChild<QComboBox *>());
         GT_CHECK(box, "QComboBox not found");
         GTComboBox::checkValues(os, box, values);
 #ifndef Q_OS_WIN
@@ -1111,12 +1106,12 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget* par
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCellValue"
-QString GTUtilsWorkflowDesigner::getCellValue(HI::GUITestOpStatus &os, QString parameter, QTableWidget *table){
+QString GTUtilsWorkflowDesigner::getCellValue(HI::GUITestOpStatus &os, QString parameter, QTableWidget *table) {
     Q_UNUSED(os);
     int row = -1;
-    for(int i = 0; i<table->rowCount(); i++){
-        QString s = table->item(i,0)->text();
-        if(s == parameter){
+    for (int i = 0; i < table->rowCount(); i++) {
+        QString s = table->item(i, 0)->text();
+        if (s == parameter) {
             row = i;
             break;
         }
@@ -1129,17 +1124,17 @@ QString GTUtilsWorkflowDesigner::getCellValue(HI::GUITestOpStatus &os, QString p
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getInputPortsTable"
-QTableWidget* GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus &os, int index){
-    QWidget* inputPortBox = GTWidget::findWidget(os, "inputPortBox");
+QTableWidget *GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus &os, int index) {
+    QWidget *inputPortBox = GTWidget::findWidget(os, "inputPortBox");
     GTGroupBox::setChecked(os, "inputPortBox", true);
-    QList<QTableWidget*> tables= inputPortBox->findChildren<QTableWidget*>();
-    foreach (QTableWidget* w, tables) {
-        if(!w->isVisible()){
+    QList<QTableWidget *> tables = inputPortBox->findChildren<QTableWidget *>();
+    foreach (QTableWidget *w, tables) {
+        if (!w->isVisible()) {
             tables.removeOne(w);
         }
     }
     int number = tables.count();
-    GT_CHECK_RESULT(index<number, QString("there are %1 visiable tables for input ports").arg(number), NULL);
+    GT_CHECK_RESULT(index < number, QString("there are %1 visiable tables for input ports").arg(number), NULL);
     return tables[index];
 }
 #undef GT_METHOD_NAME
@@ -1148,9 +1143,9 @@ QTableWidget* GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus &o
 QTableWidget *GTUtilsWorkflowDesigner::getOutputPortsTable(GUITestOpStatus &os, int index) {
     QWidget *outputPortBox = GTWidget::findWidget(os, "outputPortBox");
     GTGroupBox::setChecked(os, "outputPortBox", true);
-    QList<QTableWidget *> tables= outputPortBox->findChildren<QTableWidget *>();
+    QList<QTableWidget *> tables = outputPortBox->findChildren<QTableWidget *>();
     foreach (QTableWidget *w, tables) {
-        if (!w->isVisible()){
+        if (!w->isVisible()) {
             tables.removeOne(w);
         }
     }
@@ -1184,31 +1179,31 @@ void GTUtilsWorkflowDesigner::scrollInputPortsWidgetToTableRow(GUITestOpStatus &
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getAllParameters"
-QStringList GTUtilsWorkflowDesigner::getAllParameters(HI::GUITestOpStatus &os){
+QStringList GTUtilsWorkflowDesigner::getAllParameters(HI::GUITestOpStatus &os) {
     QStringList result;
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
-    GT_CHECK_RESULT(table,"tableView not found", result);
+    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
+    GT_CHECK_RESULT(table, "tableView not found", result);
 
-    QAbstractItemModel* model = table->model();
+    QAbstractItemModel *model = table->model();
     int iMax = model->rowCount();
-    for(int i = 0; i<iMax; i++){
-        QString s = model->data(model->index(i,0)).toString();
-            result<<s;
+    for (int i = 0; i < iMax; i++) {
+        QString s = model->data(model->index(i, 0)).toString();
+        result << s;
     }
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getComboBoxParameterValues"
-QStringList GTUtilsWorkflowDesigner::getComboBoxParameterValues(HI::GUITestOpStatus& os, QString parameter) {
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
+QStringList GTUtilsWorkflowDesigner::getComboBoxParameterValues(HI::GUITestOpStatus &os, QString parameter) {
+    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
     GT_CHECK_RESULT(table, "tableView not found", QStringList());
 
     //FIND CELL
-    QAbstractItemModel* model = table->model();
+    QAbstractItemModel *model = table->model();
     int iMax = model->rowCount();
     int row = -1;
-    for (int i = 0; i < iMax; i++){
+    for (int i = 0; i < iMax; i++) {
         QString s = model->data(model->index(i, 0)).toString();
         if (s.compare(parameter, Qt::CaseInsensitive) == 0) {
             row = i;
@@ -1222,7 +1217,7 @@ QStringList GTUtilsWorkflowDesigner::getComboBoxParameterValues(HI::GUITestOpSta
     GTMouseDriver::click();
     GTGlobals::sleep();
 
-    QComboBox* box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
+    QComboBox *box = qobject_cast<QComboBox *>(table->findChild<QComboBox *>());
     GT_CHECK_RESULT(box, "QComboBox not found. Widget in this cell might be not QComboBox", QStringList());
 
     QStringList result;
@@ -1236,8 +1231,8 @@ QStringList GTUtilsWorkflowDesigner::getComboBoxParameterValues(HI::GUITestOpSta
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCheckableComboboxValuesFromInputPortTable"
-QList<QPair<QString, bool> > GTUtilsWorkflowDesigner::getCheckableComboboxValuesFromInputPortTable(GUITestOpStatus &os, int tableIndex, const QString &slotName) {
-    QList<QPair<QString, bool> > result;
+QList<QPair<QString, bool>> GTUtilsWorkflowDesigner::getCheckableComboboxValuesFromInputPortTable(GUITestOpStatus &os, int tableIndex, const QString &slotName) {
+    QList<QPair<QString, bool>> result;
 
     QTableWidget *table = getInputPortsTable(os, tableIndex);
     GT_CHECK_RESULT(nullptr != table, "table is nullptr", result);
@@ -1252,7 +1247,7 @@ QList<QPair<QString, bool> > GTUtilsWorkflowDesigner::getCheckableComboboxValues
     GTMouseDriver::click();
     GTGlobals::sleep();
 
-    QComboBox *box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
+    QComboBox *box = qobject_cast<QComboBox *>(table->findChild<QComboBox *>());
     GT_CHECK_RESULT(box, "QComboBox not found. Widget in this cell might be not QComboBox", result);
 
     QStandardItemModel *checkBoxModel = qobject_cast<QStandardItemModel *>(box->model());
@@ -1268,48 +1263,49 @@ QList<QPair<QString, bool> > GTUtilsWorkflowDesigner::getCheckableComboboxValues
 #undef GT_METHOD_NAME
 
 namespace {
-    bool equalStrings(const QString &where, const QString &what, bool exactMatch) {
-        if (exactMatch) {
-            return (where == what);
-        } else {
-            return where.contains(what, Qt::CaseInsensitive);
-        }
+bool equalStrings(const QString &where, const QString &what, bool exactMatch) {
+    if (exactMatch) {
+        return (where == what);
+    } else {
+        return where.contains(what, Qt::CaseInsensitive);
     }
 }
-
+}    // namespace
 
 #define GT_METHOD_NAME "getParameter"
-QString GTUtilsWorkflowDesigner::getParameter(HI::GUITestOpStatus &os, QString parameter, bool exactMatch){
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
-    GT_CHECK_RESULT(table,"tableView not found", "");
+QString GTUtilsWorkflowDesigner::getParameter(HI::GUITestOpStatus &os, QString parameter, bool exactMatch) {
+    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
+    GT_CHECK_RESULT(table, "tableView not found", "");
 
-    QAbstractItemModel* model = table->model();
-    GT_CHECK_RESULT(model,"model not found", "");
+    QAbstractItemModel *model = table->model();
+    GT_CHECK_RESULT(model, "model not found", "");
     int iMax = model->rowCount();
     int row = -1;
-    for(int i = 0; i<iMax; i++){
-        QString s = model->data(model->index(i,0)).toString();
+    for (int i = 0; i < iMax; i++) {
+        QString s = model->data(model->index(i, 0)).toString();
         if (equalStrings(s, parameter, exactMatch)) {
             row = i;
             break;
         }
     }
-    GT_CHECK_RESULT(row != -1, "parameter " + parameter + " not found","");
+    GT_CHECK_RESULT(row != -1, "parameter " + parameter + " not found", "");
     QModelIndex idx = model->index(row, 1);
 
     QVariant var;
 
     class Scenario : public CustomScenario {
     public:
-        Scenario(QAbstractItemModel* _model, QModelIndex _idx, QVariant &_result) :
-            model(_model), idx(_idx), result(_result){}
+        Scenario(QAbstractItemModel *_model, QModelIndex _idx, QVariant &_result)
+            : model(_model), idx(_idx), result(_result) {
+        }
         void run(HI::GUITestOpStatus &os) {
             Q_UNUSED(os);
             result = model->data(idx);
             GTGlobals::sleep(100);
         }
+
     private:
-        QAbstractItemModel* model;
+        QAbstractItemModel *model;
         QModelIndex idx;
         QVariant &result;
     };
@@ -1320,12 +1316,12 @@ QString GTUtilsWorkflowDesigner::getParameter(HI::GUITestOpStatus &os, QString p
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isParameterEnabled"
-bool GTUtilsWorkflowDesigner::isParameterEnabled(HI::GUITestOpStatus &os, QString parameter){
+bool GTUtilsWorkflowDesigner::isParameterEnabled(HI::GUITestOpStatus &os, QString parameter) {
     clickParameter(os, parameter);
     QWidget *w = QApplication::widgetAt(GTMouseDriver::getMousePosition());
-    QString s =  w->metaObject()->className();
+    QString s = w->metaObject()->className();
 
-    bool result = !(s == "QWidget");//if parameter is disabled QWidget is under cursor
+    bool result = !(s == "QWidget");    //if parameter is disabled QWidget is under cursor
     return result;
 }
 #undef GT_METHOD_NAME
@@ -1367,7 +1363,7 @@ int getParameterRow(QTableView *table, const QString &parameter) {
     return -1;
 }
 
-}
+}    // namespace
 
 #define GT_METHOD_NAME "clickParameter"
 void GTUtilsWorkflowDesigner::clickParameter(HI::GUITestOpStatus &os, const QString &parameter) {
@@ -1395,44 +1391,44 @@ bool GTUtilsWorkflowDesigner::isParameterVisible(HI::GUITestOpStatus &os, const 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getParametersTable"
-QTableView *GTUtilsWorkflowDesigner::getParametersTable(HI::GUITestOpStatus &os){
+QTableView *GTUtilsWorkflowDesigner::getParametersTable(HI::GUITestOpStatus &os) {
     return qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setParameterScripting"
-void GTUtilsWorkflowDesigner::setParameterScripting(HI::GUITestOpStatus &os, QString parameter, QString scriptMode, bool exactMatch){
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
-    CHECK_SET_ERR(table,"tableView not found");
+void GTUtilsWorkflowDesigner::setParameterScripting(HI::GUITestOpStatus &os, QString parameter, QString scriptMode, bool exactMatch) {
+    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
+    CHECK_SET_ERR(table, "tableView not found");
 
     //FIND CELL
-    QAbstractItemModel* model = table->model();
+    QAbstractItemModel *model = table->model();
     int iMax = model->rowCount();
     int row = -1;
-    for(int i = 0; i<iMax; i++){
-        QString s = model->data(model->index(i,0)).toString();
+    for (int i = 0; i < iMax; i++) {
+        QString s = model->data(model->index(i, 0)).toString();
         if (equalStrings(s, parameter, exactMatch))
             row = i;
     }
     GT_CHECK(row != -1, "parameter not found");
-    table->scrollTo(model->index(row,1));
-    GTMouseDriver::moveTo(GTTableView::getCellPosition(os,table,2,row));
+    table->scrollTo(model->index(row, 1));
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 2, row));
     GTMouseDriver::click();
     GTGlobals::sleep(500);
 
     //SET VALUE
-    QComboBox* box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
+    QComboBox *box = qobject_cast<QComboBox *>(table->findChild<QComboBox *>());
     GT_CHECK(box, "QComboBox not found. Scripting might be unavaluable for this parameter");
     GTComboBox::setIndexWithText(os, box, scriptMode, false);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkErrorList"
-int GTUtilsWorkflowDesigner::checkErrorList(HI::GUITestOpStatus &os, QString error){
-    QListWidget* w = qobject_cast<QListWidget*>(GTWidget::findWidget(os,"infoList"));
+int GTUtilsWorkflowDesigner::checkErrorList(HI::GUITestOpStatus &os, QString error) {
+    QListWidget *w = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "infoList"));
     GT_CHECK_RESULT(w, "ErrorList widget not found", 0);
 
-    QList<QListWidgetItem *> list =  w->findItems(error,Qt::MatchContains);
+    QList<QListWidgetItem *> list = w->findItems(error, Qt::MatchContains);
     return list.size();
 }
 #undef GT_METHOD_NAME
@@ -1452,4 +1448,4 @@ QStringList GTUtilsWorkflowDesigner::getErrors(GUITestOpStatus &os) {
 
 #undef GT_CLASS_NAME
 
-} // namespace
+}    // namespace U2

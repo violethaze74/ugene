@@ -55,7 +55,7 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
         return;
     }
 
-    foreach(const QString & pattern, patterns) {
+    foreach (const QString &pattern, patterns) {
         settings.patterns.append(QPair<QString, QString>("", pattern));
     }
 
@@ -89,7 +89,7 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
             return;
         }
     }
-    
+
     tmp = el.attribute(MAX_RESULT_REGEXP_LENGTH);
     if (!tmp.isEmpty()) {
         bool ok = false;
@@ -210,19 +210,19 @@ Task::ReportResult GTest_FindPatternMsa::report() {
     if (findPatternTask->hasError()) {
         return ReportResult_Finished;
     }
-    const QList<FindPatternInMsaResult>& results = findPatternTask->getResults();
+    const QList<FindPatternInMsaResult> &results = findPatternTask->getResults();
     int resultsCounter = 0;
-    foreach (const FindPatternInMsaResult& result, results) {
+    foreach (const FindPatternInMsaResult &result, results) {
         resultsCounter += result.regions.size();
     }
     if (resultsCounter != expectedResultsSize) {
         stateInfo.setError(QString("Expected and Actual lists of results are different: %1 %2")
-                                   .arg(expectedResultsSize)
-                                   .arg(results.size()));
+                               .arg(expectedResultsSize)
+                               .arg(results.size()));
         return ReportResult_Finished;
     }
-    foreach (const FindPatternInMsaResult& result, results) {
-        foreach(const U2Region &region, result.regions) {
+    foreach (const FindPatternInMsaResult &result, results) {
+        foreach (const U2Region &region, result.regions) {
             if (regionsToCheck.contains(region)) {
                 regionsToCheck.removeOne(region);
             }
@@ -243,4 +243,4 @@ QList<XMLTestFactory *> FindPatternMsaTests::createTestFactories() {
     return res;
 }
 
-}
+}    // namespace U2

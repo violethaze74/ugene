@@ -19,39 +19,39 @@
  * MA 02110-1301, USA.
  */
 
+#include "WelcomePageWidget.h"
+
+#include <QDesktopServices>
 #include <QDropEvent>
 #include <QFile>
 #include <QFileInfo>
 #include <QGridLayout>
 #include <QMessageBox>
-#include <QDesktopServices>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/IdRegistry.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Settings.h>
-#include <U2Core/Counter.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/Settings.h>
 #include <U2Core/Task.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/WelcomePageAction.h>
 
-#include "WelcomePageWidget.h"
 #include "main_window/MainWindowImpl.h"
 
 namespace U2 {
 
-static QString newImageAndTextHtml(const QString& image, const QString& text) {
+static QString newImageAndTextHtml(const QString &image, const QString &text) {
     return QString("<center>") +
            "<img src=':/ugene/images/welcome_page/" + image + "'>" +
            "<br>" + text +
            "</center>";
 }
 
-WelcomePageWidget::WelcomePageWidget(QWidget* parent)
-        : QScrollArea(parent) {
-
+WelcomePageWidget::WelcomePageWidget(QWidget *parent)
+    : QScrollArea(parent) {
     auto widget = new QWidget();
     auto layout = new QVBoxLayout(widget);
     layout->setMargin(0);
@@ -62,14 +62,14 @@ WelcomePageWidget::WelcomePageWidget(QWidget* parent)
     layout->addWidget(createFooterWidget());
 
     setWidget(widget);
-    setWidgetResizable(true); // make the widget to fill whole available space
+    setWidgetResizable(true);    // make the widget to fill whole available space
     setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     installEventFilter(this);
 }
 
-QWidget* WelcomePageWidget::createHeaderWidget() {
+QWidget *WelcomePageWidget::createHeaderWidget() {
     auto headerWidget = new QWidget();
     headerWidget->setContentsMargins(0, 0, 0, 0);
     headerWidget->setStyleSheet("background: qlineargradient(x1:0 y1:0, x2:1 y2:0, stop:0 #E0E7E9, stop:1 white);");
@@ -83,7 +83,7 @@ QWidget* WelcomePageWidget::createHeaderWidget() {
     return headerWidget;
 }
 
-QWidget* WelcomePageWidget::createMiddleWidget() {
+QWidget *WelcomePageWidget::createMiddleWidget() {
     auto middleWidget = new QWidget();
     middleWidget->setStyleSheet("background: white;");
     auto middleWidgetVCenteringLayout = new QVBoxLayout();
@@ -161,7 +161,7 @@ QWidget* WelcomePageWidget::createMiddleWidget() {
     return middleWidget;
 }
 
-QWidget* WelcomePageWidget::createFooterWidget() {
+QWidget *WelcomePageWidget::createFooterWidget() {
     auto footerWidget = new QWidget();
     footerWidget->setStyleSheet("background-color: #B2C4C9;");
     footerWidget->setFixedHeight(150);
@@ -181,7 +181,6 @@ QWidget* WelcomePageWidget::createFooterWidget() {
     auto footerBottomWidgetLayout = new QHBoxLayout();
     footerBottomWidget->setLayout(footerBottomWidgetLayout);
     footerBottomWidgetLayout->setContentsMargins(25, 10, 25, 0);
-
 
     auto footerCiteLabel = new QLabel("<b>" + tr("Cite UGENE:") + "</b>" +
                                       "<table><tr><td width=40></td><td>"
@@ -203,8 +202,7 @@ QWidget* WelcomePageWidget::createFooterWidget() {
                                         "<td><a href='http://www.youtube.com/user/UniproUGENE'><img src=':/ugene/images/welcome_page/social_icon_youtube.png'></a></td>"
                                         "<td><a href='http://vk.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_vkontakte.png'></a></td>"
                                         "<td><a href='http://feeds2.feedburner.com/NewsOfUgeneProject'><img src=':/ugene/images/welcome_page/social_icon_rss.png'></a></td>"
-                                        "</tr></table>"
-    );
+                                        "</tr></table>");
     footerFollowLabel->setOpenExternalLinks(true);
     footerFollowLabel->setAlignment(Qt::AlignTop);
     footerBottomWidgetLayout->addWidget(footerFollowLabel);
@@ -215,9 +213,9 @@ QWidget* WelcomePageWidget::createFooterWidget() {
 #define PATH_PROPERTY "path"
 #define MAX_RECENT 7
 
-void WelcomePageWidget::updateRecent(const QStringList& recentProjects, const QStringList& recentFiles) {
+void WelcomePageWidget::updateRecent(const QStringList &recentProjects, const QStringList &recentFiles) {
     // Clean lists.
-    QLayoutItem* layoutItem;
+    QLayoutItem *layoutItem;
     while ((layoutItem = recentFilesLayout->takeAt(0)) != nullptr) {
         delete layoutItem->widget();
         delete layoutItem;
@@ -269,15 +267,15 @@ void WelcomePageWidget::updateRecent(const QStringList& recentProjects, const QS
     }
 }
 
-void WelcomePageWidget::dragEnterEvent(QDragEnterEvent* event) {
+void WelcomePageWidget::dragEnterEvent(QDragEnterEvent *event) {
     MainWindowDragNDrop::dragEnterEvent(event);
 }
 
-void WelcomePageWidget::dropEvent(QDropEvent* event) {
+void WelcomePageWidget::dropEvent(QDropEvent *event) {
     MainWindowDragNDrop::dropEvent(event);
 }
 
-void WelcomePageWidget::dragMoveEvent(QDragMoveEvent* event) {
+void WelcomePageWidget::dragMoveEvent(QDragMoveEvent *event) {
     MainWindowDragNDrop::dragMoveEvent(event);
 }
 
@@ -298,52 +296,51 @@ void WelcomePageWidget::sl_openQuickStart() {
 }
 
 void WelcomePageWidget::sl_openRecentFile() {
-    HoverQLabel* label = qobject_cast<HoverQLabel*>(sender());
+    HoverQLabel *label = qobject_cast<HoverQLabel *>(sender());
     QString path = label == nullptr ? QString() : label->property(PATH_PROPERTY).toString();
     if (!path.isEmpty()) {
-        Task* openWithProjectTask = AppContext::getProjectLoader()->openWithProjectTask(QList<GUrl>() << path);
-        if (openWithProjectTask != nullptr) { // The task may be null if another open project task is in progress.
+        Task *openWithProjectTask = AppContext::getProjectLoader()->openWithProjectTask(QList<GUrl>() << path);
+        if (openWithProjectTask != nullptr) {    // The task may be null if another open project task is in progress.
             AppContext::getTaskScheduler()->registerTopLevelTask(openWithProjectTask);
         }
     }
 }
 
-bool WelcomePageWidget::eventFilter(QObject* watched, QEvent* event) {
+bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
     CHECK(this == watched, false);
     switch (event->type()) {
-        case QEvent::DragEnter:
-            dragEnterEvent(dynamic_cast<QDragEnterEvent*>(event));
-            return true;
-        case QEvent::DragMove:
-            dragMoveEvent(dynamic_cast<QDragMoveEvent*>(event));
-            return true;
-        case QEvent::Drop:
-            dropEvent(dynamic_cast<QDropEvent*>(event));
-            return true;
-        case QEvent::FocusIn:
-            setFocus();
-            return true;
-        default:
-            break;
+    case QEvent::DragEnter:
+        dragEnterEvent(dynamic_cast<QDragEnterEvent *>(event));
+        return true;
+    case QEvent::DragMove:
+        dragMoveEvent(dynamic_cast<QDragMoveEvent *>(event));
+        return true;
+    case QEvent::Drop:
+        dropEvent(dynamic_cast<QDropEvent *>(event));
+        return true;
+    case QEvent::FocusIn:
+        setFocus();
+        return true;
+    default:
+        break;
     }
     return false;
 }
 
-void WelcomePageWidget::runAction(const QString& actionId) {
+void WelcomePageWidget::runAction(const QString &actionId) {
     auto action = AppContext::getWelcomePageActionRegistry()->getById(actionId);
     if (action != nullptr) {
         GRUNTIME_NAMED_COUNTER(cvar, tvar, "Welcome Page: " + actionId, "");
         action->perform();
     } else if (actionId == BaseWelcomePageActions::CREATE_WORKFLOW) {
-        QMessageBox::warning(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(),
-                             tr("The Workflow Designer plugin is not loaded. You can add it using the menu Settings -> Plugins. Then you need to restart UGENE."));
+        QMessageBox::warning(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), tr("The Workflow Designer plugin is not loaded. You can add it using the menu Settings -> Plugins. Then you need to restart UGENE."));
     } else if (actionId == BaseWelcomePageActions::QUICK_START) {
         QDesktopServices::openUrl(QUrl("https://ugene.net/wiki/display/QSG/Quick+Start+Guide"));
     }
 }
 
-HoverQLabel::HoverQLabel(const QString& html, const QString& _normalStyle, const QString& _hoveredStyle, const QString& objectName)
-        : QLabel(html), normalStyle(_normalStyle), hoveredStyle(_hoveredStyle) {
+HoverQLabel::HoverQLabel(const QString &html, const QString &_normalStyle, const QString &_hoveredStyle, const QString &objectName)
+    : QLabel(html), normalStyle(_normalStyle), hoveredStyle(_hoveredStyle) {
     setCursor(Qt::PointingHandCursor);
     setObjectName(objectName);
     if (!objectName.isEmpty()) {
@@ -353,19 +350,19 @@ HoverQLabel::HoverQLabel(const QString& html, const QString& _normalStyle, const
     setStyleSheet(normalStyle);
 }
 
-void HoverQLabel::enterEvent(QEvent* event) {
+void HoverQLabel::enterEvent(QEvent *event) {
     Q_UNUSED(event);
     setStyleSheet(hoveredStyle);
 }
 
-void HoverQLabel::leaveEvent(QEvent* event) {
+void HoverQLabel::leaveEvent(QEvent *event) {
     Q_UNUSED(event);
     setStyleSheet(normalStyle);
 }
 
-void HoverQLabel::mousePressEvent(QMouseEvent* event) {
+void HoverQLabel::mousePressEvent(QMouseEvent *event) {
     Q_UNUSED(event);
     emit clicked();
 }
 
-} // U2
+}    // namespace U2

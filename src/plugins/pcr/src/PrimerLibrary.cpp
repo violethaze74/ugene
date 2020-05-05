@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "PrimerLibrary.h"
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
@@ -31,7 +33,6 @@
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "PrimerStatistics.h"
-#include "PrimerLibrary.h"
 
 namespace U2 {
 
@@ -39,15 +40,15 @@ QScopedPointer<PrimerLibrary> PrimerLibrary::instance(NULL);
 QMutex PrimerLibrary::mutex;
 
 namespace {
-    const QString libraryName = "primer_library.ugenedb";
-    const UdrSchemaId PRIMER_UDR_ID = "Primer";
-    const int NAME_FILED = 0;
-    const int SEQ_FILED = 1;
-    const int GC_FILED = 2;
-    const int TM_FILED = 3;
-}
+const QString libraryName = "primer_library.ugenedb";
+const UdrSchemaId PRIMER_UDR_ID = "Primer";
+const int NAME_FILED = 0;
+const int SEQ_FILED = 1;
+const int GC_FILED = 2;
+const int TM_FILED = 3;
+}    // namespace
 
-PrimerLibrary * PrimerLibrary::getInstance(U2OpStatus &os) {
+PrimerLibrary *PrimerLibrary::getInstance(U2OpStatus &os) {
     QMutexLocker lock(&mutex);
     if (NULL != instance.data()) {
         return instance.data();
@@ -66,7 +67,7 @@ PrimerLibrary * PrimerLibrary::getInstance(U2OpStatus &os) {
     QHash<QString, QString> properties;
     properties[U2DbiOptions::U2_DBI_LOCKING_MODE] = "normal";
 
-    QScopedPointer<DbiConnection> connection(new DbiConnection(dbiRef, true, os, properties)); // create if not exists
+    QScopedPointer<DbiConnection> connection(new DbiConnection(dbiRef, true, os, properties));    // create if not exists
     SAFE_POINT_OP(os, NULL);
 
     instance.reset(new PrimerLibrary(connection.take()));
@@ -80,8 +81,7 @@ void PrimerLibrary::release() {
 }
 
 PrimerLibrary::PrimerLibrary(DbiConnection *connection)
-: connection(connection), udrDbi(NULL)
-{
+    : connection(connection), udrDbi(NULL) {
     udrDbi = connection->dbi->getUdrDbi();
 }
 
@@ -197,4 +197,4 @@ void PrimerLibrary::setTmAndGcOfPrimer(Primer &primer) {
     }
 }
 
-} // U2
+}    // namespace U2

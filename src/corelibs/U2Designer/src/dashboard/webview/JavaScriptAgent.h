@@ -35,7 +35,7 @@ class U2DESIGNER_EXPORT JavaScriptAgent : public QObject {
     Q_PROPERTY(bool needAdditionalInitialization MEMBER needAdditionalInitialization CONSTANT)
 
 public:
-    JavaScriptAgent(QObject* parent);
+    JavaScriptAgent(QObject *parent);
 
     virtual const QString &getId() const;
 
@@ -52,6 +52,6 @@ private:
     static const QString ID;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_JAVA_SCRIPT_AGENT_H_
+#endif    // _U2_JAVA_SCRIPT_AGENT_H_

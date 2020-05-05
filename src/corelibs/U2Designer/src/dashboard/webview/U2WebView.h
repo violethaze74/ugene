@@ -25,9 +25,9 @@
 #include <functional>
 
 #if UGENE_WEB_KIT
-#include <QWebView>
+#    include <QWebView>
 #else
-#include <QWebEngineView>
+#    include <QWebEngineView>
 #endif
 
 #include <U2Core/global.h>
@@ -44,15 +44,15 @@ typedef class QWebPage U2WebPage;
 class U2DESIGNER_EXPORT U2WebPage : public QWebEnginePage {
     Q_OBJECT
 public:
-    U2WebPage(QObject *parent = Q_NULLPTR) : QWebEnginePage(parent) {
-
+    U2WebPage(QObject *parent = Q_NULLPTR)
+        : QWebEnginePage(parent) {
     }
 
 signals:
     void si_linkClicked(const QUrl &url);
 
 private:
-#if (QT_VERSION >= 0x050500)
+#    if (QT_VERSION >= 0x050500)
     bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool /*isMainFrame*/) {
         if (type == NavigationTypeLinkClicked) {
             emit si_linkClicked(url);
@@ -60,17 +60,17 @@ private:
         }
         return true;
     }
-#else
-    bool javaScriptConfirm(const QUrl & /*securityOrigin*/, const QString &msg) { // hack for Qt5.4 only
+#    else
+    bool javaScriptConfirm(const QUrl & /*securityOrigin*/, const QString &msg) {    // hack for Qt5.4 only
         emit si_linkClicked(msg);
         return false;
     }
-#endif
+#    endif
 };
 
 typedef class QWebEngineView U2WebView;
 #endif
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_WEB_VIEW_H_
+#endif    // _U2_WEB_VIEW_H_

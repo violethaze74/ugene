@@ -22,12 +22,12 @@
 #ifndef _U2_PROJECT_UTILS_H_
 #define _U2_PROJECT_UTILS_H_
 
+#include <GTGlobals.h>
+#include <utils/GTUtilsApp.h>
+
 #include <QMessageBox>
 
 #include <U2Core/GUrl.h>
-
-#include <GTGlobals.h>
-#include <utils/GTUtilsApp.h>
 
 #include "GTUtilsDocument.h"
 
@@ -40,7 +40,8 @@ class GTUtilsProject {
 public:
     class OpenFileSettings {
     public:
-        enum OpenMethod {Dialog, DragDrop};
+        enum OpenMethod { Dialog,
+                          DragDrop };
 
         OpenFileSettings();
 
@@ -50,12 +51,13 @@ public:
     /*
         opens files using settings, checks if the document is loaded
     */
-    static void openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls, const OpenFileSettings& s = OpenFileSettings());
-    static void openFiles(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings& s = OpenFileSettings());
+    static void openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls, const OpenFileSettings &s = OpenFileSettings());
+    static void openFiles(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s = OpenFileSettings());
 
-    enum CheckType {Exists, Empty, NotExists};
+    enum CheckType { Exists,
+                     Empty,
+                     NotExists };
     static void checkProject(HI::GUITestOpStatus &os, CheckType checkType = Exists);
-
 
     /**
      * Opens file @path\@fileName.
@@ -64,14 +66,14 @@ public:
      * Returns the sequence widget.
      */
     static ADVSingleSequenceWidget *openFileExpectSequence(HI::GUITestOpStatus &os,
-                                                            const QString &dirPath,
-                                                            const QString &fileName,
-                                                            const QString &seqName);
+                                                           const QString &dirPath,
+                                                           const QString &fileName,
+                                                           const QString &seqName);
     static ADVSingleSequenceWidget *openFileExpectSequence(HI::GUITestOpStatus &os,
-                                                            const QString &filePath,
-                                                            const QString &seqName);
+                                                           const QString &filePath,
+                                                           const QString &seqName);
 
-     /**
+    /**
      * Opens file @path\@fileName and expects a sequence with raw alphabet to be opened.
      * Verifies that a Sequence View was opened with one sequence.
      * Verifies that the sequence name is @seqName.
@@ -92,8 +94,7 @@ public:
      * the order specified in the list).
      * Returns the sequences widgets (in the same order).
      */
-    static QList<ADVSingleSequenceWidget *> openFileExpectSequences(HI::GUITestOpStatus &os, const QString &path, const QString &fileName,
-        const QList<QString> &seqNames);
+    static QList<ADVSingleSequenceWidget *> openFileExpectSequences(HI::GUITestOpStatus &os, const QString &path, const QString &fileName, const QList<QString> &seqNames);
 
     static void openMultiSequenceFileAsSequences(HI::GUITestOpStatus &os, const QString &path, const QString &fileName);
     static void openMultiSequenceFileAsSequences(HI::GUITestOpStatus &os, const QString &filePath);
@@ -105,10 +106,10 @@ public:
     static void closeProject(HI::GUITestOpStatus &os);
 
 protected:
-    static void openFilesDrop(HI::GUITestOpStatus &os, const QList<QUrl>& urls);
+    static void openFilesDrop(HI::GUITestOpStatus &os, const QList<QUrl> &urls);
     static void openFilesWithDialog(HI::GUITestOpStatus &os, const QList<QUrl> &filePaths);
 };
 
-} // U2
+}    // namespace U2
 
 #endif

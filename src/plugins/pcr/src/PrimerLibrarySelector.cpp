@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "PrimerLibrarySelector.h"
+
 #include <QPushButton>
 
 #include <U2Core/Counter.h>
@@ -27,13 +29,10 @@
 
 #include <U2Gui/HelpButton.h>
 
-#include "PrimerLibrarySelector.h"
-
 namespace U2 {
 
 PrimerLibrarySelector::PrimerLibrarySelector(QWidget *parent)
-: QDialog(parent)
-{
+    : QDialog(parent) {
     GCOUNTER(cvar, tvar, "PrimerLibrarySelector");
     setupUi(this);
     new HelpButton(this, buttonBox, "24749032");
@@ -63,4 +62,4 @@ void PrimerLibrarySelector::sl_selectionChanged() {
     okButton->setDisabled(selection.isEmpty());
 }
 
-} // U2
+}    // namespace U2

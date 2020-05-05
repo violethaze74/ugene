@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "InSilicoPcrOPWidgetFactory.h"
+
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -26,20 +28,17 @@
 
 #include "InSilicoPcrOptionPanelWidget.h"
 
-#include "InSilicoPcrOPWidgetFactory.h"
-
 namespace U2 {
 
 const QString InSilicoPcrOPWidgetFactory::GROUP_DOC_PAGE = "24749032";
 
 InSilicoPcrOPWidgetFactory::InSilicoPcrOPWidgetFactory()
-: OPWidgetFactory()
-{
+    : OPWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget * InSilicoPcrOPWidgetFactory::createWidget(GObjectView *objView) {
-    AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
+QWidget *InSilicoPcrOPWidgetFactory::createWidget(GObjectView *objView) {
+    AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(objView);
     SAFE_POINT(NULL != annotatedDnaView, L10N::nullPointerError("AnnotatedDNAView"), NULL);
     InSilicoPcrOptionPanelWidget *opWidget = new InSilicoPcrOptionPanelWidget(annotatedDnaView);
     opWidget->setObjectName("InSilicoPcrOptionPanelWidget");
@@ -56,4 +55,4 @@ bool InSilicoPcrOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface 
     return filter->typePass(getObjectViewType()) && filter->atLeastOneAlphabetPass(DNAAlphabet_NUCL);
 }
 
-} // U2
+}    // namespace U2

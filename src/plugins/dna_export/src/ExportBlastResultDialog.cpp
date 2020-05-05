@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "ExportBlastResultDialog.h"
+
 #include <QMessageBox>
 #include <QPushButton>
 
@@ -31,11 +33,9 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
 
-#include "ExportBlastResultDialog.h"
-
 namespace U2 {
 
-ExportBlastResultDialog::ExportBlastResultDialog(QWidget* p, const QString& defaultUrl)
+ExportBlastResultDialog::ExportBlastResultDialog(QWidget *p, const QString &defaultUrl)
     : QDialog(p),
       saveController(NULL) {
     setupUi(this);
@@ -84,13 +84,13 @@ void ExportBlastResultDialog::initSaveController(const QString &defaultUrl) {
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-void ExportBlastResultDialog::setOkButtonText(const QString& text) const {
-    QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
+void ExportBlastResultDialog::setOkButtonText(const QString &text) const {
+    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setText(text);
 }
 
-void ExportBlastResultDialog::setFileLabelText(const QString& text) const {
+void ExportBlastResultDialog::setFileLabelText(const QString &text) const {
     fileLabel->setText(text);
 }
 
-}//namespace
+}    // namespace U2

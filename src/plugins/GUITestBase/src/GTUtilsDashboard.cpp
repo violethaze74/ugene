@@ -19,13 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegularExpression>
-#include <QTabWidget>
-
 #include <GTUtilsMdi.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
+
+#include <QRegularExpression>
+#include <QTabWidget>
+
 #include <U2Designer/Dashboard.h>
 
 #include "GTUtilsDashboard.h"
@@ -34,7 +35,7 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDashboard"
-QMap<QString, GTUtilsDashboard::Tabs> GTUtilsDashboard::initTabMap(){
+QMap<QString, GTUtilsDashboard::Tabs> GTUtilsDashboard::initTabMap() {
     QMap<QString, GTUtilsDashboard::Tabs> result;
     result.insert("Overview", GTUtilsDashboard::Overview);
     result.insert("Input", GTUtilsDashboard::Input);
@@ -68,12 +69,15 @@ HIWebElement GTUtilsDashboard::getNodeSpan(GUITestOpStatus &os, const QString &n
 #define GT_METHOD_NAME "clickOutputFile"
 QString GTUtilsDashboard::getLogUrlFromElement(GUITestOpStatus &os, const HIWebElement &element) {
     Q_UNUSED(os);
-        const QString onclickFunction = element.attribute(ON_CLICK);
+    const QString onclickFunction = element.attribute(ON_CLICK);
     QRegularExpression urlFetcher("openLog\\(\\\'(.*)\\\'\\)");
     const QRegularExpressionMatch match = urlFetcher.match(onclickFunction);
     GT_CHECK_RESULT(match.hasMatch(),
                     QString("Can't get URL with a regexp from an element: regexp is '%1', element ID is '%2', element class is '%3'")
-                    .arg(urlFetcher.pattern()).arg(element.id()).arg(element.attribute("class")), QString());
+                        .arg(urlFetcher.pattern())
+                        .arg(element.id())
+                        .arg(element.attribute("class")),
+                    QString());
     return match.captured(1);
 }
 #undef GT_METHOD_NAME
@@ -86,18 +90,18 @@ const QString GTUtilsDashboard::TITLE = "title";
 const QString GTUtilsDashboard::COLLAPSED_NODE_TITLE = "Expand this branch";
 const QString GTUtilsDashboard::ON_CLICK = "onclick";
 
-WebView* GTUtilsDashboard::getDashboardWebView(HI::GUITestOpStatus &os) {
-    Dashboard* dashboard = findDashboard(os);
+WebView *GTUtilsDashboard::getDashboardWebView(HI::GUITestOpStatus &os) {
+    Dashboard *dashboard = findDashboard(os);
     return dashboard == nullptr ? nullptr : dashboard->getWebView();
 }
 
-QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus &os){
+QTabWidget *GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus &os) {
     return GTWidget::findExactWidget<QTabWidget *>(os, "WorkflowTabView", GTUtilsMdi::activeWindow(os));
 }
 
-QToolButton* GTUtilsDashboard::findLoadSchemaButton(HI::GUITestOpStatus &os){
-    Dashboard* dashboard = findDashboard(os);
-    return dashboard == nullptr ? nullptr : dashboard->findChild<QToolButton*>("loadSchemaButton");
+QToolButton *GTUtilsDashboard::findLoadSchemaButton(HI::GUITestOpStatus &os) {
+    Dashboard *dashboard = findDashboard(os);
+    return dashboard == nullptr ? nullptr : dashboard->findChild<QToolButton *>("loadSchemaButton");
 }
 
 const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashboardNumber) {
@@ -141,19 +145,19 @@ void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outpu
 }
 #undef GT_METHOD_NAME
 
-HIWebElement GTUtilsDashboard::findElement(HI::GUITestOpStatus &os, QString text, QString tag, bool exactMatch){
+HIWebElement GTUtilsDashboard::findElement(HI::GUITestOpStatus &os, QString text, QString tag, bool exactMatch) {
     return GTWebView::findElement(os, getDashboardWebView(os), text, tag, exactMatch);
 }
 
-HIWebElement GTUtilsDashboard::findTreeElement(HI::GUITestOpStatus &os, QString text){
+HIWebElement GTUtilsDashboard::findTreeElement(HI::GUITestOpStatus &os, QString text) {
     return GTWebView::findTreeElement(os, getDashboardWebView(os), text);
 }
 
-HIWebElement GTUtilsDashboard::findContextMenuElement(HI::GUITestOpStatus &os, QString text){
+HIWebElement GTUtilsDashboard::findContextMenuElement(HI::GUITestOpStatus &os, QString text) {
     return GTWebView::findContextMenuElement(os, getDashboardWebView(os), text);
 }
 
-void GTUtilsDashboard::click(HI::GUITestOpStatus &os, HIWebElement el, Qt::MouseButton button){
+void GTUtilsDashboard::click(HI::GUITestOpStatus &os, HIWebElement el, Qt::MouseButton button) {
     GTWebView::click(os, getDashboardWebView(os), el, button);
 }
 
@@ -164,28 +168,28 @@ bool GTUtilsDashboard::areThereNotifications(HI::GUITestOpStatus &os) {
 
 QString GTUtilsDashboard::getTabObjectName(Tabs tab) {
     switch (tab) {
-        case Overview:
-            return "overviewTabButton";
-        case Input:
-            return "inputTabButton";
-        case ExternalTools:
-            return "externalToolsTabButton";
+    case Overview:
+        return "overviewTabButton";
+    case Input:
+        return "inputTabButton";
+    case ExternalTools:
+        return "externalToolsTabButton";
     }
     return "unknown tab";
 }
 
-Dashboard* GTUtilsDashboard::findDashboard(HI::GUITestOpStatus &os) {
-    QTabWidget* tabWidget = getTabWidget(os);
-    return tabWidget == nullptr ? nullptr : qobject_cast<Dashboard*>(tabWidget->currentWidget());
+Dashboard *GTUtilsDashboard::findDashboard(HI::GUITestOpStatus &os) {
+    QTabWidget *tabWidget = getTabWidget(os);
+    return tabWidget == nullptr ? nullptr : qobject_cast<Dashboard *>(tabWidget->currentWidget());
 }
 
 #define GT_METHOD_NAME "openTab"
-void GTUtilsDashboard::openTab(HI::GUITestOpStatus &os, Tabs tab){
-    QWidget* dashboard = findDashboard(os);
+void GTUtilsDashboard::openTab(HI::GUITestOpStatus &os, Tabs tab) {
+    QWidget *dashboard = findDashboard(os);
     GT_CHECK(dashboard != nullptr, "Dashboard widget not found");
 
     QString tabButtonObjectName = getTabObjectName(tab);
-    QToolButton* tabButton = GTWidget::findExactWidget<QToolButton*>(os, tabButtonObjectName, dashboard);
+    QToolButton *tabButton = GTWidget::findExactWidget<QToolButton *>(os, tabButtonObjectName, dashboard);
     GT_CHECK(tabButton != nullptr, "Tab button not found: " + tabButtonObjectName);
 
     GTWidget::click(os, tabButton);
@@ -218,7 +222,7 @@ int GTUtilsDashboard::getChildrenNodesCount(GUITestOpStatus &os, const QString &
 
 #define GT_METHOD_NAME "getChildNodeId"
 QString GTUtilsDashboard::getChildNodeId(GUITestOpStatus &os, const QString &nodeId, int childNum) {
-    return getDescendantNodeId(os, nodeId, { childNum });
+    return getDescendantNodeId(os, nodeId, {childNum});
 }
 #undef GT_METHOD_NAME
 
@@ -247,15 +251,20 @@ QString GTUtilsDashboard::getChildWithTextId(GUITestOpStatus &os, const QString 
         quotedChildrenTexts << "\'" + childText + "\'";
         if (text == childText) {
             GT_CHECK_RESULT(resultChildId.isEmpty(),
-                     QString("Expected text '%1' is not unique among the node with ID '%2' children")
-                     .arg(text).arg(nodeId), "");
+                            QString("Expected text '%1' is not unique among the node with ID '%2' children")
+                                .arg(text)
+                                .arg(nodeId),
+                            "");
             resultChildId = currentChildId;
         }
     }
 
     GT_CHECK_RESULT(!resultChildId.isEmpty(),
-             QString("Child with text '%1' not found among the node with ID '%2' children; there are children with the following texts: %3")
-             .arg(text).arg(nodeId).arg(quotedChildrenTexts.join(", ")), "");
+                    QString("Child with text '%1' not found among the node with ID '%2' children; there are children with the following texts: %3")
+                        .arg(text)
+                        .arg(nodeId)
+                        .arg(quotedChildrenTexts.join(", ")),
+                    "");
 
     return resultChildId;
 }
@@ -344,4 +353,4 @@ QString GTUtilsDashboard::getLogUrlFromNode(GUITestOpStatus &os, const QString &
 
 #undef GT_CLASS_NAME
 
-}   // namespace U2
+}    // namespace U2

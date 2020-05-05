@@ -20,11 +20,11 @@
  */
 
 #if (QT_VERSION < 0x050500)
-#include <QWebChannelAbstractTransport>
-#include <QWebSocketServer>
+#    include <QWebChannelAbstractTransport>
+#    include <QWebSocketServer>
 
-#include <U2Designer/WebSocketClientWrapper.h>
-#include <U2Designer/WebSocketTransport.h>
+#    include <U2Designer/WebSocketClientWrapper.h>
+#    include <U2Designer/WebSocketTransport.h>
 #endif
 
 #include <QWebEnginePage>
@@ -38,12 +38,11 @@ const int U2WebChannel::INVALID_PORT = -1;
 U2WebChannel::U2WebChannel(QWebEnginePage *page)
     : QObject(page),
       channel(new QWebChannel(this)),
-      port(INVALID_PORT)
-{
+      port(INVALID_PORT) {
 #if (QT_VERSION < 0x050500)
     QWebSocketServer *server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
     port = 12346;
-    while (!server->listen(QHostAddress::LocalHost, port)) { //TODO: need more useful solution
+    while (!server->listen(QHostAddress::LocalHost, port)) {    //TODO: need more useful solution
         port++;
     }
 
@@ -62,4 +61,4 @@ int U2WebChannel::getPort() const {
     return port;
 }
 
-}   // namespace U2
+}    // namespace U2

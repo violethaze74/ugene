@@ -19,6 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTRadioButton.h>
+#include <primitives/GTSlider.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTTextEdit.h>
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWidget.h>
+#include <system/GTClipboard.h>
+#include <utils/GTThread.h>
+
 #include <QComboBox>
 #include <QLabel>
 #include <QLineEdit>
@@ -27,22 +40,6 @@
 #include <QTextEdit>
 #include <QToolButton>
 #include <QTreeWidget>
-
-#include <drivers/GTKeyboardDriver.h>
-
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTSpinBox.h>
-#include <primitives/GTRadioButton.h>
-#include <primitives/GTSlider.h>
-#include <primitives/GTTextEdit.h>
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTWidget.h>
-
-#include <system/GTClipboard.h>
-
-#include <utils/GTThread.h>
 
 #include <U2Core/U2IdTypes.h>
 
@@ -55,7 +52,7 @@ namespace U2 {
 using namespace HI;
 
 QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::initNames() {
-    QMap<Tabs,QString> result;
+    QMap<Tabs, QString> result;
     result.insert(General, "OP_MSA_GENERAL");
     result.insert(Highlighting, "OP_MSA_HIGHLIGHTING");
     result.insert(PairwiseAlignment, "OP_PAIRALIGN");
@@ -115,21 +112,20 @@ bool GTUtilsOptionPanelMsa::isTabOpened(HI::GUITestOpStatus &os, Tabs tab) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addReference"
-void GTUtilsOptionPanelMsa::addReference(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method){
+void GTUtilsOptionPanelMsa::addReference(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method) {
     GT_CHECK(!seqName.isEmpty(), "sequence name is empty");
     //Option panel should be opned to use this method
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     GT_CHECK(nameList.contains(seqName), QString("sequence with name %1 not found").arg(seqName));
 
-    switch (method)
-    {
+    switch (method) {
     case Button:
         GTUtilsMSAEditorSequenceArea::selectSequence(os, seqName);
         GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
         break;
     case Completer:
-        QWidget* sequenceLineEdit = GTWidget::findWidget(os, "sequenceLineEdit");
+        QWidget *sequenceLineEdit = GTWidget::findWidget(os, "sequenceLineEdit");
         GTWidget::click(os, sequenceLineEdit);
         GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
         GTGlobals::sleep(200);
@@ -141,7 +137,7 @@ void GTUtilsOptionPanelMsa::addReference(HI::GUITestOpStatus &os, QString seqNam
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "removeReference"
-void GTUtilsOptionPanelMsa::removeReference(HI::GUITestOpStatus &os){
+void GTUtilsOptionPanelMsa::removeReference(HI::GUITestOpStatus &os) {
     GTWidget::click(os, GTWidget::findWidget(os, "deleteSeq"));
 }
 #undef GT_METHOD_NAME
@@ -156,8 +152,8 @@ QString GTUtilsOptionPanelMsa::getReference(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLength"
-int GTUtilsOptionPanelMsa::getLength(HI::GUITestOpStatus &os){
-    QLabel* alignmentLengthLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "alignmentLength"));
+int GTUtilsOptionPanelMsa::getLength(HI::GUITestOpStatus &os) {
+    QLabel *alignmentLengthLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "alignmentLength"));
     GT_CHECK_RESULT(alignmentLengthLabel != NULL, "alignmentLengthLabel not found", -1);
     bool ok;
     int result = alignmentLengthLabel->text().toInt(&ok);
@@ -167,8 +163,8 @@ int GTUtilsOptionPanelMsa::getLength(HI::GUITestOpStatus &os){
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getHeight"
-int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus &os){
-    QLabel* alignmentHeightLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "alignmentHeight"));
+int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus &os) {
+    QLabel *alignmentHeightLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "alignmentHeight"));
     GT_CHECK_RESULT(alignmentHeightLabel != NULL, "alignmentHeightLabel not found", -1);
     bool ok;
     int result = alignmentHeightLabel->text().toInt(&ok);
@@ -250,24 +246,24 @@ void GTUtilsOptionPanelMsa::setHighlightingScheme(GUITestOpStatus &os, const QSt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addFirstSeqToPA"
-void GTUtilsOptionPanelMsa::addFirstSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method){
+void GTUtilsOptionPanelMsa::addFirstSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method) {
     addSeqToPA(os, seqName, method, 1);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addSecondSeqToPA"
-void GTUtilsOptionPanelMsa::addSecondSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method){
+void GTUtilsOptionPanelMsa::addSecondSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method) {
     addSeqToPA(os, seqName, method, 2);
 }
 #undef GT_METHOD_NAME
 
-QString GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(HI::GUITestOpStatus &os, int num){
-    QLineEdit* le = qobject_cast<QLineEdit*>(getWidget(os, "sequenceLineEdit", num));
+QString GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(HI::GUITestOpStatus &os, int num) {
+    QLineEdit *le = qobject_cast<QLineEdit *>(getWidget(os, "sequenceLineEdit", num));
     return le->text();
 }
 
 #define GT_METHOD_NAME "addSeqToPA"
-void GTUtilsOptionPanelMsa::addSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method, int number){
+void GTUtilsOptionPanelMsa::addSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method, int number) {
     GT_CHECK(number == 1 || number == 2, "number must be 1 or 2");
     GT_CHECK(!seqName.isEmpty(), "sequence name is empty");
     //Option panel should be opned to use this method
@@ -275,16 +271,15 @@ void GTUtilsOptionPanelMsa::addSeqToPA(HI::GUITestOpStatus &os, QString seqName,
 
     GT_CHECK(nameList.contains(seqName), QString("sequence with name %1 not found").arg(seqName));
 
-    switch (method)
-    {
+    switch (method) {
     case Button:
         GTUtilsMSAEditorSequenceArea::selectSequence(os, seqName);
         GTWidget::click(os, getAddButton(os, number));
         break;
     case Completer:
-        QWidget* sequenceLineEdit = getSeqLineEdit(os, number);
+        QWidget *sequenceLineEdit = getSeqLineEdit(os, number);
         GTWidget::click(os, sequenceLineEdit);
-        GTKeyboardDriver::keyClick( seqName.at(0).toLatin1());
+        GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
         GTGlobals::sleep(200);
         GTBaseCompleter::click(os, sequenceLineEdit, seqName);
         break;
@@ -292,18 +287,17 @@ void GTUtilsOptionPanelMsa::addSeqToPA(HI::GUITestOpStatus &os, QString seqName,
 }
 #undef GT_METHOD_NAME
 
-
 #define GT_METHOD_NAME "getAddButton"
-QToolButton* GTUtilsOptionPanelMsa::getAddButton(HI::GUITestOpStatus &os, int number){
-    QToolButton* result = qobject_cast<QToolButton*>(getWidget(os, "addSeq", number));
+QToolButton *GTUtilsOptionPanelMsa::getAddButton(HI::GUITestOpStatus &os, int number) {
+    QToolButton *result = qobject_cast<QToolButton *>(getWidget(os, "addSeq", number));
     GT_CHECK_RESULT(result != NULL, "toolbutton is NULL", NULL);
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDeleteButton"
-QToolButton* GTUtilsOptionPanelMsa::getDeleteButton(HI::GUITestOpStatus &os, int number){
-    QToolButton* result = qobject_cast<QToolButton*>(getWidget(os, "deleteSeq", number));
+QToolButton *GTUtilsOptionPanelMsa::getDeleteButton(HI::GUITestOpStatus &os, int number) {
+    QToolButton *result = qobject_cast<QToolButton *>(getWidget(os, "deleteSeq", number));
     GT_CHECK_RESULT(result != NULL, "toolbutton is NULL", NULL);
     return result;
 }
@@ -319,7 +313,7 @@ QPushButton *GTUtilsOptionPanelMsa::getAlignButton(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "setPairwiseAlignmentAlgorithm"
 void GTUtilsOptionPanelMsa::setPairwiseAlignmentAlgorithm(HI::GUITestOpStatus &os, const QString &algorithm) {
     openTab(os, PairwiseAlignment);
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox*>(os, "algorithmListComboBox"), algorithm);
+    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmListComboBox"), algorithm);
 }
 #undef GT_METHOD_NAME
 
@@ -497,42 +491,42 @@ void GTUtilsOptionPanelMsa::clickPrev(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSeqLineEdit"
-QLineEdit* GTUtilsOptionPanelMsa::getSeqLineEdit(HI::GUITestOpStatus &os, int number){
-    QLineEdit* result = qobject_cast<QLineEdit*>(getWidget(os, "sequenceLineEdit", number));
+QLineEdit *GTUtilsOptionPanelMsa::getSeqLineEdit(HI::GUITestOpStatus &os, int number) {
+    QLineEdit *result = qobject_cast<QLineEdit *>(getWidget(os, "sequenceLineEdit", number));
     GT_CHECK_RESULT(result != NULL, "sequenceLineEdit is NULL", NULL);
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWidget"
-QWidget* GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus &os, const QString& widgetName, int number){
-    QWidget* sequenceContainerWidget = GTWidget::findWidget(os, "sequenceContainerWidget");
+QWidget *GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus &os, const QString &widgetName, int number) {
+    QWidget *sequenceContainerWidget = GTWidget::findWidget(os, "sequenceContainerWidget");
     GT_CHECK_RESULT(sequenceContainerWidget != NULL, "sequenceContainerWidget not found", NULL);
-    QList<QWidget*> widgetList = sequenceContainerWidget->findChildren<QWidget*>(widgetName);
+    QList<QWidget *> widgetList = sequenceContainerWidget->findChildren<QWidget *>(widgetName);
     GT_CHECK_RESULT(widgetList.count() == 2, QString("unexpected number of widgets: %1").arg(widgetList.count()), NULL);
-    QWidget* w1 = widgetList[0];
-    QWidget* w2 = widgetList[1];
+    QWidget *w1 = widgetList[0];
+    QWidget *w2 = widgetList[1];
     int y1 = w1->mapToGlobal(w1->rect().center()).y();
     int y2 = w2->mapToGlobal(w2->rect().center()).y();
     GT_CHECK_RESULT(y1 != y2, "coordinates are unexpectidly equal", NULL);
 
-    if(number == 1){
-        if(y1 < y2){
+    if (number == 1) {
+        if (y1 < y2) {
             return w1;
-        }else{
+        } else {
             return w2;
         }
-    }else if(number == 2){
-        if(y1 < y2){
+    } else if (number == 2) {
+        if (y1 < y2) {
             return w2;
-        }else{
+        } else {
             return w1;
         }
-    }else{
+    } else {
         GT_CHECK_RESULT(false, "number should be 1 or 2", NULL);
     }
 }
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
-}
+}    // namespace U2

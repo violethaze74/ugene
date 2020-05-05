@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "MaEditor.h"
+
 #include <QFontDialog>
 
 #include <U2Algorithm/MsaHighlightingScheme.h>
@@ -37,11 +39,10 @@
 #include <U2Gui/ExportObjectUtils.h>
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
+#include <U2View/MSAEditorSequenceArea.h>
 
-#include "MaEditor.h"
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
 #include "helpers/ScrollController.h"
@@ -62,15 +63,14 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
       cachedColumnWidth(0),
       cursorPosition(QPoint(0, 0)),
       exportHighlightedAction(NULL),
-      clearSelectionAction(NULL)
-{
-    maObject = qobject_cast<MultipleAlignmentObject*>(obj);
+      clearSelectionAction(NULL) {
+    maObject = qobject_cast<MultipleAlignmentObject *>(obj);
     objects.append(maObject);
 
     onObjectAdded(maObject);
 
     requiredObjects.append(maObject);
-    GCOUNTER(cvar,tvar,factoryId);
+    GCOUNTER(cvar, tvar, factoryId);
 
     if (!U2DbiUtils::isDbiReadOnly(maObject->getEntityRef().dbiRef)) {
         U2OpStatus2Log os;
@@ -115,14 +115,13 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(this, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetColumnWidthCache()));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(sl_resetColumnWidthCache()));
-
 }
 
 QVariantMap MaEditor::saveState() {
     return MaEditorState::saveState(this);
 }
 
-Task* MaEditor::updateViewTask(const QString& stateName, const QVariantMap& stateData) {
+Task *MaEditor::updateViewTask(const QString &stateName, const QVariantMap &stateData) {
     return new UpdateMaEditorTask(this, stateName, stateData);
 }
 
@@ -138,7 +137,7 @@ bool MaEditor::isAlignmentEmpty() const {
     return getAlignmentLen() == 0 || getNumSequences() == 0;
 }
 
-const MaEditorSelection& MaEditor::getSelection() const {
+const MaEditorSelection &MaEditor::getSelection() const {
     return ui->getSequenceArea()->getSelection();
 }
 
@@ -162,7 +161,6 @@ int MaEditor::getColumnWidth() const {
 
         cachedColumnWidth = (int)(cachedColumnWidth * zoomFactor);
         cachedColumnWidth = qMax(cachedColumnWidth, MOBJECT_MIN_COLUMN_WIDTH);
-
     }
     return cachedColumnWidth;
 }
@@ -177,25 +175,25 @@ QVariantMap MaEditor::getHighlightingSettings(const QString &highlightingFactory
     }
 }
 
-void MaEditor::saveHighlightingSettings( const QString &highlightingFactoryId, const QVariantMap &settingsMap /* = QVariant()*/ ) {
+void MaEditor::saveHighlightingSettings(const QString &highlightingFactoryId, const QVariantMap &settingsMap /* = QVariant()*/) {
     snp.highlightSchemeSettings.insert(highlightingFactoryId, QVariant(settingsMap));
 }
 
 void MaEditor::setReference(qint64 sequenceId) {
-    if(sequenceId == U2MsaRow::INVALID_ROW_ID){
+    if (sequenceId == U2MsaRow::INVALID_ROW_ID) {
         exportHighlightedAction->setDisabled(true);
-    }else{
+    } else {
         exportHighlightedAction->setEnabled(true);
     }
-    if(snp.seqId != sequenceId) {
+    if (snp.seqId != sequenceId) {
         snp.seqId = sequenceId;
         emit si_referenceSeqChanged(sequenceId);
     }
     //REDRAW OTHER WIDGETS
 }
 
-void MaEditor::updateReference(){
-    if(maObject->getRowPosById(snp.seqId) == -1){
+void MaEditor::updateReference() {
+    if (maObject->getRowPosById(snp.seqId) == -1) {
         setReference(U2MsaRow::INVALID_ROW_ID);
     }
 }
@@ -212,8 +210,8 @@ void MaEditor::sl_zoomIn() {
 
     if (resizeMode == ResizeMode_OnlyContent) {
         setZoomFactor(zoomFactor * zoomMult);
-    } else if ( (pSize < MOBJECT_MAX_FONT_SIZE) && (resizeMode == ResizeMode_FontAndContent) ) {
-        font.setPointSize(pSize+1);
+    } else if ((pSize < MOBJECT_MAX_FONT_SIZE) && (resizeMode == ResizeMode_FontAndContent)) {
+        font.setPointSize(pSize + 1);
         setFont(font);
     }
 
@@ -237,10 +235,10 @@ void MaEditor::sl_zoomOut() {
     bool resizeModeChanged = false;
 
     if (pSize > MOBJECT_MIN_FONT_SIZE) {
-        font.setPointSize(pSize-1);
+        font.setPointSize(pSize - 1);
         setFont(font);
     } else {
-        SAFE_POINT(zoomMult > 0, QString("Incorrect value of MSAEditor::zoomMult"),);
+        SAFE_POINT(zoomMult > 0, QString("Incorrect value of MSAEditor::zoomMult"), );
         setZoomFactor(zoomFactor / zoomMult);
         ResizeMode oldMode = resizeMode;
         resizeMode = ResizeMode_OnlyContent;
@@ -251,10 +249,9 @@ void MaEditor::sl_zoomOut() {
     emit si_zoomOperationPerformed(resizeModeChanged);
 }
 
-void MaEditor::sl_zoomToSelection()
-{
+void MaEditor::sl_zoomToSelection() {
     ResizeMode oldMode = resizeMode;
-    int seqAreaWidth =  ui->getSequenceArea()->width();
+    int seqAreaWidth = ui->getSequenceArea()->width();
     MaEditorSelection selection = ui->getSequenceArea()->getSelection();
     if (selection.isEmpty()) {
         return;
@@ -299,13 +296,12 @@ void MaEditor::sl_resetZoom() {
     updateActions();
 }
 
-void MaEditor::sl_saveAlignment(){
+void MaEditor::sl_saveAlignment() {
     AppContext::getTaskScheduler()->registerTopLevelTask(new SaveDocumentTask(maObject->getDocument()));
 }
 
-void MaEditor::sl_saveAlignmentAs(){
-
-    Document* srcDoc = maObject->getDocument();
+void MaEditor::sl_saveAlignmentAs() {
+    Document *srcDoc = maObject->getDocument();
     if (srcDoc == NULL) {
         return;
     }
@@ -336,12 +332,12 @@ void MaEditor::sl_lockedStateChanged() {
     updateActions();
 }
 
-void MaEditor::sl_exportHighlighted(){
-    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(ui, (QWidget*)AppContext::getMainWindow()->getQMainWindow());
+void MaEditor::sl_exportHighlighted() {
+    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(ui, (QWidget *)AppContext::getMainWindow()->getQMainWindow());
     d->exec();
     CHECK(!d.isNull(), );
 
-    if (d->result() == QDialog::Accepted){
+    if (d->result() == QDialog::Accepted) {
         AppContext::getTaskScheduler()->registerTopLevelTask(new ExportHighligtningTask(d.data(), this));
     }
 }
@@ -372,14 +368,14 @@ void MaEditor::initActions() {
 }
 
 void MaEditor::initZoom() {
-    Settings* s = AppContext::getSettings();
+    Settings *s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppConext is NULL", );
     zoomFactor = s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, MOBJECT_DEFAULT_ZOOM_FACTOR).toFloat();
     updateResizeMode();
 }
 
 void MaEditor::initFont() {
-    Settings* s = AppContext::getSettings();
+    Settings *s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppConext is NULL", );
     font.setFamily(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString());
     font.setPointSize(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt());
@@ -390,52 +386,52 @@ void MaEditor::initFont() {
 }
 
 void MaEditor::updateResizeMode() {
-    if ( (font.pointSize() >= MOBJECT_MIN_FONT_SIZE) && (zoomFactor < 1.0f) ) {
+    if ((font.pointSize() >= MOBJECT_MIN_FONT_SIZE) && (zoomFactor < 1.0f)) {
         resizeMode = ResizeMode_OnlyContent;
     } else {
         resizeMode = ResizeMode_FontAndContent;
     }
 }
 
-void MaEditor::addCopyMenu(QMenu* m) {
-    QMenu* cm = m->addMenu(tr("Copy/Paste"));
+void MaEditor::addCopyMenu(QMenu *m) {
+    QMenu *cm = m->addMenu(tr("Copy/Paste"));
     cm->menuAction()->setObjectName(MSAE_MENU_COPY);
 }
 
-void MaEditor::addEditMenu(QMenu* m) {
-    QMenu* em = m->addMenu(tr("Edit"));
+void MaEditor::addEditMenu(QMenu *m) {
+    QMenu *em = m->addMenu(tr("Edit"));
     em->menuAction()->setObjectName(MSAE_MENU_EDIT);
 }
 
-void MaEditor::addExportMenu(QMenu* m) {
-    QMenu* em = m->addMenu(tr("Export"));
+void MaEditor::addExportMenu(QMenu *m) {
+    QMenu *em = m->addMenu(tr("Export"));
     em->menuAction()->setObjectName(MSAE_MENU_EXPORT);
     em->addAction(exportHighlightedAction);
-    if(!ui->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
-                getReferenceRowId() != U2MsaRow::INVALID_ROW_ID){
+    if (!ui->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
+        getReferenceRowId() != U2MsaRow::INVALID_ROW_ID) {
         exportHighlightedAction->setEnabled(true);
-    }else{
+    } else {
         exportHighlightedAction->setDisabled(true);
     }
 }
 
-void MaEditor::addSortMenu(QMenu* m) {
-    QMenu* em = m->addMenu(tr("Sort"));
+void MaEditor::addSortMenu(QMenu *m) {
+    QMenu *em = m->addMenu(tr("Sort"));
     em->menuAction()->setObjectName(MSAE_MENU_VIEW);
 }
 
-void MaEditor::addLoadMenu( QMenu* m ) {
-    QMenu* lsm = m->addMenu(tr("Add"));
+void MaEditor::addLoadMenu(QMenu *m) {
+    QMenu *lsm = m->addMenu(tr("Add"));
     lsm->menuAction()->setObjectName(MSAE_MENU_LOAD);
 }
 
-void MaEditor::addAlignMenu(QMenu* m) {
-    QMenu* em = m->addMenu(tr("Align"));
+void MaEditor::addAlignMenu(QMenu *m) {
+    QMenu *em = m->addMenu(tr("Align"));
     em->setIcon(QIcon(":core/images/align.png"));
     em->menuAction()->setObjectName(MSAE_MENU_ALIGN);
 }
 
-void MaEditor::setFont(const QFont& f) {
+void MaEditor::setFont(const QFont &f) {
     int pSize = f.pointSize();
     font = f;
     calcFontPixelToPointSizeCoef();
@@ -443,7 +439,7 @@ void MaEditor::setFont(const QFont& f) {
     updateResizeMode();
     emit si_fontChanged(font);
 
-    Settings* s = AppContext::getSettings();
+    Settings *s = AppContext::getSettings();
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_FAMILY, f.family());
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, f.pointSize());
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_ITALIC, f.italic());
@@ -453,7 +449,7 @@ void MaEditor::setFont(const QFont& f) {
 
 void MaEditor::calcFontPixelToPointSizeCoef() {
     QFontInfo info(font);
-    fontPixelToPointSize = (double) info.pixelSize() / (double) info.pointSize();
+    fontPixelToPointSize = (double)info.pixelSize() / (double)info.pointSize();
 }
 
 void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
@@ -466,27 +462,27 @@ void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
 void MaEditor::setZoomFactor(double newZoomFactor) {
     zoomFactor = newZoomFactor;
     updateResizeMode();
-    Settings* s = AppContext::getSettings();
+    Settings *s = AppContext::getSettings();
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, zoomFactor);
     sl_resetColumnWidthCache();
 }
 
 void MaEditor::updateActions() {
     zoomInAction->setEnabled(font.pointSize() < MOBJECT_MAX_FONT_SIZE);
-    zoomOutAction->setEnabled( getColumnWidth() > MOBJECT_MIN_COLUMN_WIDTH );
-    zoomToSelectionAction->setEnabled( font.pointSize() < MOBJECT_MAX_FONT_SIZE);
-    changeFontAction->setEnabled( resizeMode == ResizeMode_FontAndContent);
+    zoomOutAction->setEnabled(getColumnWidth() > MOBJECT_MIN_COLUMN_WIDTH);
+    zoomToSelectionAction->setEnabled(font.pointSize() < MOBJECT_MAX_FONT_SIZE);
+    changeFontAction->setEnabled(resizeMode == ResizeMode_FontAndContent);
     emit si_updateActions();
 }
 
-const QPoint& MaEditor::getCursorPosition() const {
+const QPoint &MaEditor::getCursorPosition() const {
     return cursorPosition;
 }
 
 void MaEditor::setCursorPosition(const QPoint &newCursorPosition) {
-    CHECK(cursorPosition != newCursorPosition,);
+    CHECK(cursorPosition != newCursorPosition, );
     int x = newCursorPosition.x(), y = newCursorPosition.y();
-    CHECK(x >= 0 && y >= 0 && x < getAlignmentLen() && y < getNumSequences(),);
+    CHECK(x >= 0 && y >= 0 && x < getAlignmentLen() && y < getNumSequences(), );
     cursorPosition = newCursorPosition;
     emit si_cursorPositionChanged(cursorPosition);
 }
@@ -499,4 +495,4 @@ QAction *MaEditor::getClearSelectionAction() const {
     return clearSelectionAction;
 }
 
-} // namespace
+}    // namespace U2

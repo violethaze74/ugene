@@ -33,8 +33,8 @@
 
 #include <U2View/BaseWidthController.h>
 #include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorOverviewArea.h>
+#include <U2View/MaEditorNameList.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/MaSimpleOverview.h>
 #include <U2View/RowHeightController.h>
@@ -63,7 +63,7 @@ QColor GTUtilsMsaEditor::getSimpleOverviewPixelColor(GUITestOpStatus &os, const 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getEditor"
-MSAEditor * GTUtilsMsaEditor::getEditor(GUITestOpStatus &os) {
+MSAEditor *GTUtilsMsaEditor::getEditor(GUITestOpStatus &os) {
     MsaEditorWgt *editorUi = getEditorUi(os);
     CHECK_OP(os, NULL);
     return editorUi->getEditor();
@@ -71,7 +71,7 @@ MSAEditor * GTUtilsMsaEditor::getEditor(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getEditorUi"
-MsaEditorWgt * GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
+MsaEditorWgt *GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
     return activeWindow->findChild<MsaEditorWgt *>();
@@ -79,7 +79,7 @@ MsaEditorWgt * GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getGraphOverview"
-MaGraphOverview * GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
+MaGraphOverview *GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
 
@@ -90,7 +90,7 @@ MaGraphOverview * GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSimpleOverview"
-MaSimpleOverview * GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus &os) {
+MaSimpleOverview *GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
 
@@ -101,7 +101,7 @@ MaSimpleOverview * GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTreeView"
-MSAEditorTreeViewerUI * GTUtilsMsaEditor::getTreeView(GUITestOpStatus &os) {
+MSAEditorTreeViewerUI *GTUtilsMsaEditor::getTreeView(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
     return GTWidget::findExactWidget<MSAEditorTreeViewerUI *>(os, "treeView", activeWindow);
@@ -109,7 +109,7 @@ MSAEditorTreeViewerUI * GTUtilsMsaEditor::getTreeView(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNameListArea"
-MaEditorNameList * GTUtilsMsaEditor::getNameListArea(GUITestOpStatus &os) {
+MaEditorNameList *GTUtilsMsaEditor::getNameListArea(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
 
@@ -120,7 +120,7 @@ MaEditorNameList * GTUtilsMsaEditor::getNameListArea(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusArea"
-MSAEditorConsensusArea * GTUtilsMsaEditor::getConsensusArea(GUITestOpStatus &os) {
+MSAEditorConsensusArea *GTUtilsMsaEditor::getConsensusArea(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
     return GTWidget::findExactWidget<MSAEditorConsensusArea *>(os, "consArea", activeWindow);
@@ -128,7 +128,7 @@ MSAEditorConsensusArea * GTUtilsMsaEditor::getConsensusArea(GUITestOpStatus &os)
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequenceNameRect"
-MSAEditorSequenceArea * GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus &os) {
+MSAEditorSequenceArea *GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus &os) {
     return GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
 }
 #undef GT_METHOD_NAME
@@ -141,7 +141,7 @@ QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, const QString &
     const QStringList names = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     const int rowNumber = names.indexOf(sequenceName);
     GT_CHECK_RESULT(0 <= rowNumber, QString("Sequence '%1' not found").arg(sequenceName), QRect());
-    return getSequenceNameRect(os,  rowNumber);
+    return getSequenceNameRect(os, rowNumber);
 }
 #undef GT_METHOD_NAME
 
@@ -321,7 +321,7 @@ void GTUtilsMsaEditor::toggleCollapsingMode(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isSequenceCollapsed"
-bool GTUtilsMsaEditor::isSequenceCollapsed(GUITestOpStatus &os, const QString &seqName){
+bool GTUtilsMsaEditor::isSequenceCollapsed(GUITestOpStatus &os, const QString &seqName) {
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     GT_CHECK_RESULT(names.contains(seqName), "sequence " + seqName + " not found in name list", false);
     QStringList visiablenames = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -417,4 +417,4 @@ void GTUtilsMsaEditor::setReference(GUITestOpStatus &os, const QString &sequence
 
 #undef GT_CLASS_NAME
 
-}   // namespace U2
+}    // namespace U2

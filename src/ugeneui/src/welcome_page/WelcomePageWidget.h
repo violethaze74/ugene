@@ -22,10 +22,10 @@
 #ifndef _U2_WELCOME_PAGE_WIDGET_H_
 #define _U2_WELCOME_PAGE_WIDGET_H_
 
-#include <QWidget>
 #include <QLabel>
-#include <QVBoxLayout>
 #include <QScrollArea>
+#include <QVBoxLayout>
+#include <QWidget>
 
 namespace U2 {
 
@@ -52,34 +52,34 @@ private slots:
     void sl_openRecentFile();
 
 private:
-    void runAction(const QString& actionId);
+    void runAction(const QString &actionId);
 
-    QWidget* createHeaderWidget();
-    QWidget* createMiddleWidget();
-    QWidget* createFooterWidget();
+    QWidget *createHeaderWidget();
+    QWidget *createMiddleWidget();
+    QWidget *createFooterWidget();
 
-    QVBoxLayout* recentFilesLayout;
-    QVBoxLayout* recentProjectsLayout;
+    QVBoxLayout *recentFilesLayout;
+    QVBoxLayout *recentProjectsLayout;
 };
 
 class HoverQLabel : public QLabel {
     Q_OBJECT
 public:
-    HoverQLabel(const QString& html, const QString& normalStyle, const QString& hoveredStyle, const QString& objectName = QString());
+    HoverQLabel(const QString &html, const QString &normalStyle, const QString &hoveredStyle, const QString &objectName = QString());
 
 signals:
     void clicked();
 
 protected:
-    void enterEvent(QEvent* event);
-    void leaveEvent(QEvent* event);
-    void mousePressEvent(QMouseEvent* event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 
 public:
     QString normalStyle;
     QString hoveredStyle;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_WELCOME_PAGE_WIDGET_H_
+#endif    // _U2_WELCOME_PAGE_WIDGET_H_

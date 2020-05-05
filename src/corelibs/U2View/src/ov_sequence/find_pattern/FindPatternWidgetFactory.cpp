@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "FindPatternWidgetFactory.h"
+
 #include <QPixmap>
 
 #include <U2Core/U2SafePoints.h>
@@ -26,8 +28,6 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include "FindPatternWidget.h"
-
-#include "FindPatternWidgetFactory.h"
 
 namespace U2 {
 
@@ -39,17 +39,17 @@ FindPatternWidgetFactory::FindPatternWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget * FindPatternWidgetFactory::createWidget(GObjectView* objView) {
+QWidget *FindPatternWidgetFactory::createWidget(GObjectView *objView) {
     SAFE_POINT(NULL != objView,
-        QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-        NULL);
+               QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
+               NULL);
 
-    AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
+    AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(objView);
     SAFE_POINT(NULL != annotatedDnaView,
-        QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
-        NULL);
+               QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
+               NULL);
 
-    FindPatternWidget* widget = new FindPatternWidget(annotatedDnaView);
+    FindPatternWidget *widget = new FindPatternWidget(annotatedDnaView);
     widget->setObjectName("FindPatternWidget");
     return widget;
 }
@@ -58,8 +58,8 @@ OPGroupParameters FindPatternWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Search in Sequence"), GROUP_DOC_PAGE);
 }
 
-const QString & FindPatternWidgetFactory::getGroupId() {
+const QString &FindPatternWidgetFactory::getGroupId() {
     return GROUP_ID;
 }
 
-} // namespace U2
+}    // namespace U2

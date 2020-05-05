@@ -42,6 +42,6 @@ private:
     void init();
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_WEB_VIEW_WEB_KIT_CONTROLLER_PRIVATE_H_
+#endif    // _U2_WEB_VIEW_WEB_KIT_CONTROLLER_PRIVATE_H_

@@ -22,10 +22,11 @@
 #ifndef _U2_CHECK_UPDATES_TASKS_H_
 #define _U2_CHECK_UPDATES_TASKS_H_
 
+#include <QMessageBox>
+
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
 #include <U2Core/Version.h>
-#include <QMessageBox>
 
 class QPushButton;
 
@@ -35,8 +36,11 @@ class CheckUpdatesTask : public Task {
     Q_OBJECT
 public slots:
     void sl_registerInTaskScheduler();
+
 public:
-    enum Answer {Update, DoNothing, Skip};
+    enum Answer { Update,
+                  DoNothing,
+                  Skip };
 
     CheckUpdatesTask(bool startUp = false);
     void run();
@@ -44,8 +48,8 @@ public:
 
 private:
     Version siteVersion;
-    bool    runOnStartup;
-    bool    startError;
+    bool runOnStartup;
+    bool startError;
 };
 
 class UpdateMessage : public QObject {
@@ -74,6 +78,6 @@ private:
     QPushButton *updateButton;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

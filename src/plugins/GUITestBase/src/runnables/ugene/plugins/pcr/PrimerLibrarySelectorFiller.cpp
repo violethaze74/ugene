@@ -19,21 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-
-#include "GTUtilsPrimerLibrary.h"
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTWidget.h>
 
+#include <QApplication>
+
+#include "GTUtilsPrimerLibrary.h"
 #include "PrimerLibrarySelectorFiller.h"
 
 namespace U2 {
 using namespace HI;
 
 PrimerLibrarySelectorFiller::PrimerLibrarySelectorFiller(HI::GUITestOpStatus &os, int number, bool doubleClick)
-: Filler(os, "PrimerLibrarySelector"), number(number), doubleClick(doubleClick)
-{
-
+    : Filler(os, "PrimerLibrarySelector"), number(number), doubleClick(doubleClick) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::PrimerLibrarySelectorFiller"
@@ -59,4 +57,4 @@ void PrimerLibrarySelectorFiller::commonScenario() {
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-} // U2
+}    // namespace U2

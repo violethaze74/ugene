@@ -45,7 +45,7 @@ bool UGUITestBase::registerTest(HI::GUITest *test, TestType testType) {
     return false;
 }
 
-QString UGUITestBase::nameUnnamedTest(HI::GUITest* test, TestType testType) {
+QString UGUITestBase::nameUnnamedTest(HI::GUITest *test, TestType testType) {
     QString testName = test->getName();
     if (testName.isEmpty()) {
         testName = getNextTestName(testType);
@@ -81,23 +81,23 @@ HI::GUITest *UGUITestBase::takeTest(const QString &suite, const QString &name, T
     return getMap(testType).take(suite + ":" + name);
 }
 
-GUITestMap& UGUITestBase::getMap(TestType testType) {
+GUITestMap &UGUITestBase::getMap(TestType testType) {
     switch (testType) {
-        case PreAdditional:
-            return preAdditional;
-        case PostAdditionalChecks:
-            return postAdditionalChecks;
-        case PostAdditionalActions:
-            return postAdditionalActions;
-        case Normal:
-        default:
-            return tests;
+    case PreAdditional:
+        return preAdditional;
+    case PostAdditionalChecks:
+        return postAdditionalChecks;
+    case PostAdditionalActions:
+        return postAdditionalActions;
+    case Normal:
+    default:
+        return tests;
     }
 }
 
 GUITests UGUITestBase::getTests(TestType testType, QString label) {
     GUITests testList = getMap(testType).values();
-    foreach (GUITest* t, testList) {
+    foreach (GUITest *t, testList) {
         if (t->getLabel() != label) {
             testList.takeAt(testList.indexOf(t));
         }
@@ -112,5 +112,4 @@ GUITests UGUITestBase::takeTests(TestType testType) {
     return testList;
 }
 
-
-} // namespace
+}    // namespace U2

@@ -57,7 +57,7 @@ private:
     void trySetDone(U2OpStatus &os);
 
     QList<DatasetFetcher> readsFetchers;
-    QList<IntegralBus*> inChannels;
+    QList<IntegralBus *> inChannels;
     IntegralBus *output;
 
 private:
@@ -65,16 +65,18 @@ private:
 
 private slots:
     void sl_taskFinished();
-}; // SpadesWorker
+};    // SpadesWorker
 
 class SpadesWorkerFactory : public DomainFactory {
     Q_DECLARE_TR_FUNCTIONS(SpadesWorkerFactory)
 public:
-    SpadesWorkerFactory() : DomainFactory(ACTOR_ID) {}
+    SpadesWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-    static int getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired);
+    static int getReadsUrlSlotIdIndex(const QString &portId, bool &isPaired);
 
     static const QString ACTOR_ID;
 
@@ -112,24 +114,26 @@ public:
 
     static const QString BASE_SPADES_SUBDIR;
 
-    static const QString getPortNameById(const QString& portId);
+    static const QString getPortNameById(const QString &portId);
 
     static const StrStrMap PORT_ID_2_YAML_LIBRARY_NAME;
     static StrStrMap getPortId2YamlLibraryName();
 
-}; // SpadesWorkerFactory
+};    // SpadesWorkerFactory
 
 class SpadesPrompter : public PrompterBase<SpadesPrompter> {
     Q_OBJECT
 public:
-    SpadesPrompter(Actor *p = NULL) : PrompterBase<SpadesPrompter>(p) {}
+    SpadesPrompter(Actor *p = NULL)
+        : PrompterBase<SpadesPrompter>(p) {
+    }
 
 protected:
     QString composeRichDoc();
 
-}; // SpadesPrompter
+};    // SpadesPrompter
 
-} // LocalWorkflow
-} // U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_SPADES_WORKER_
+#endif    // _U2_SPADES_WORKER_

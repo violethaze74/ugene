@@ -22,22 +22,22 @@
 #ifndef _U2_RANGE_SELECTOR_H_
 #define _U2_RANGE_SELECTOR_H_
 
-#include <U2Core/global.h>
-#include <U2Core/U2Region.h>
-
+#include <QDialog>
 #include <QLabel>
 #include <QLineEdit>
 #include <QToolButton>
-#include <QDialog>
+
+#include <U2Core/U2Region.h>
+#include <U2Core/global.h>
 
 class Ui_RangeSelectionDialog;
 
 namespace U2 {
 
 class U2GUI_EXPORT RangeSelector : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 public:
-    RangeSelector(QDialog* dialog, int rangeStart, int rangeEnd, int len, bool autoClose);
+    RangeSelector(QDialog *dialog, int rangeStart, int rangeEnd, int len, bool autoClose);
 
     int getStart() const;
 
@@ -66,22 +66,21 @@ private:
     int rangeEnd;
     int len;
 
-    QLineEdit* startEdit;
-    QLineEdit* endEdit;
-    QToolButton* minButton;
-    QToolButton* maxButton;
-    QLabel* rangeLabel;
+    QLineEdit *startEdit;
+    QLineEdit *endEdit;
+    QToolButton *minButton;
+    QToolButton *maxButton;
+    QLabel *rangeLabel;
 
-    QDialog* dialog;
+    QDialog *dialog;
 
     bool autoClose;
 };
 
-
 class U2GUI_EXPORT MultipleRangeSelector : public QDialog {
-Q_OBJECT
+    Q_OBJECT
 public:
-    MultipleRangeSelector(QWidget* parent, const QVector<U2Region>& _regions, int _seqLen, bool isCircular);
+    MultipleRangeSelector(QWidget *parent, const QVector<U2Region> &_regions, int _seqLen, bool isCircular);
 
     ~MultipleRangeSelector();
 
@@ -95,13 +94,13 @@ private:
     bool isCircular;
     QPalette normalPalette;
 
-    Ui_RangeSelectionDialog* ui;
+    Ui_RangeSelectionDialog *ui;
 
 protected slots:
 
     void sl_multipleButtonToggled(bool);
 
-    void sl_buttonClicked(QAbstractButton* b);
+    void sl_buttonClicked(QAbstractButton *b);
 
     void sl_minButton();
 
@@ -109,10 +108,9 @@ protected slots:
 
     void sl_returnPressed();
 
-    void sl_textEdited(const QString&);
-
+    void sl_textEdited(const QString &);
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

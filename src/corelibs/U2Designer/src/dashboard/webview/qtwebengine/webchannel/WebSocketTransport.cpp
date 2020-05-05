@@ -50,10 +50,9 @@
 
 #include "WebSocketTransport.h"
 
+#include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QDebug>
-
 #include <QtWebSockets/QWebSocket>
 
 /*!
@@ -72,12 +71,9 @@ Construct the transport object and wrap the given socket.
 The socket is also set as the parent of the transport object.
 */
 WebSocketTransport::WebSocketTransport(QWebSocket *socket)
-: QWebChannelAbstractTransport(socket)
-, m_socket(socket) {
-    connect(socket, &QWebSocket::textMessageReceived,
-        this, &WebSocketTransport::textMessageReceived);
-    connect(socket, &QWebSocket::disconnected,
-        this, &WebSocketTransport::deleteLater);
+    : QWebChannelAbstractTransport(socket), m_socket(socket) {
+    connect(socket, &QWebSocket::textMessageReceived, this, &WebSocketTransport::textMessageReceived);
+    connect(socket, &QWebSocket::disconnected, this, &WebSocketTransport::deleteLater);
 }
 
 /*!
@@ -103,7 +99,7 @@ void WebSocketTransport::textMessageReceived(const QString &messageData) {
     QJsonDocument message = QJsonDocument::fromJson(messageData.toUtf8(), &error);
     if (error.error) {
         qWarning() << "Failed to parse text message as JSON object:" << messageData
-            << "Error is:" << error.errorString();
+                   << "Error is:" << error.errorString();
         return;
     } else if (!message.isObject()) {
         qWarning() << "Received JSON message that is not an object: " << messageData;
@@ -112,4 +108,4 @@ void WebSocketTransport::textMessageReceived(const QString &messageData) {
     emit messageReceived(message.object(), this);
 }
 
-}
+}    // namespace U2

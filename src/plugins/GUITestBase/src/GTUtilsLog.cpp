@@ -20,6 +20,7 @@
  */
 
 #include "GTUtilsLog.h"
+
 #include "U2Core/LogCache.h"
 #include <U2Core/U2SafePoints.h>
 
@@ -27,43 +28,40 @@ namespace U2 {
 using namespace HI;
 
 GTLogTracer::GTLogTracer(QString _expectedMessage)
-: wasError(false), wasMessage(false), expectedMessage(_expectedMessage) {
+    : wasError(false), wasMessage(false), expectedMessage(_expectedMessage) {
     LogServer::getInstance()->addListener(this);
 }
 
-GTLogTracer::~GTLogTracer(){
+GTLogTracer::~GTLogTracer() {
     LogServer::getInstance()->removeListener(this);
 }
 
 void GTLogTracer::onMessage(const LogMessage &msg) {
-
     if (msg.level == LogLevel_ERROR) {
         wasError = true;
         error = msg.text;
     }
 
-    if(expectedMessage != ""){
-        if (msg.text.contains(expectedMessage)){
+    if (expectedMessage != "") {
+        if (msg.text.contains(expectedMessage)) {
             wasMessage = true;
         }
     }
-
-
 }
 
-QList<LogMessage*> GTLogTracer::getMessages(){
+QList<LogMessage *> GTLogTracer::getMessages() {
     return LogCache::getAppGlobalInstance()->messages;
 }
 
-bool GTLogTracer::checkMessage(QString s){
-    QList<LogMessage*> messages = getMessages();
+bool GTLogTracer::checkMessage(QString s) {
+    QList<LogMessage *> messages = getMessages();
     QList<QString> textMessages;
-    foreach(LogMessage* message, messages){
+    foreach (LogMessage *message, messages) {
         textMessages.append(message->text);
     }
 
-    foreach(QString message, textMessages){
-        if (message.contains(s, Qt::CaseInsensitive)){
+    foreach (QString message, textMessages) {
+        if (message.contains(s, Qt::CaseInsensitive)) {
             return true;
         }
     }
@@ -73,9 +71,9 @@ bool GTLogTracer::checkMessage(QString s){
 #define GT_CLASS_NAME "GTUtilsLog"
 #define GT_METHOD_NAME "checkMessageStartsWith"
 bool GTLogTracer::checkMessageStartsWith(QString s) {
-    QList<LogMessage*> messages = getMessages();
+    QList<LogMessage *> messages = getMessages();
     QList<QString> textMessages;
-    foreach(LogMessage* message, messages) {
+    foreach (LogMessage *message, messages) {
         if (message->text.startsWith(s, Qt::CaseInsensitive)) {
             return true;
         }
@@ -86,7 +84,7 @@ bool GTLogTracer::checkMessageStartsWith(QString s) {
 
 #define GT_CLASS_NAME "GTUtilsLog"
 #define GT_METHOD_NAME "check"
-void GTUtilsLog::check(HI::GUITestOpStatus &os, const GTLogTracer& logTracer) {
+void GTUtilsLog::check(HI::GUITestOpStatus &os, const GTLogTracer &logTracer) {
     Q_UNUSED(os);
     GTGlobals::sleep(500);
     GT_CHECK(!logTracer.hasError(), "There is an error in log: " + logTracer.getError());
@@ -107,9 +105,9 @@ void GTUtilsLog::checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer
     Q_UNUSED(os);
     GT_CHECK(logTracer.getExpectedMessage() != "", "Expected message shoul be specyfied on creating GTLogtracer");
     GTGlobals::sleep(500);
-    if(expected){
+    if (expected) {
         GT_CHECK(logTracer.messageFound(), "message not found");
-    }else{
+    } else {
         GT_CHECK(!logTracer.messageFound(), "message unexpectidly found");
     }
 }
@@ -129,4 +127,4 @@ QStringList GTUtilsLog::getErrors(HI::GUITestOpStatus & /*os*/, const GTLogTrace
 
 #undef GT_CLASS_NAME
 
-} // namespace
+}    // namespace U2

@@ -20,10 +20,11 @@
  */
 
 #include "McaGeneralTabFactory.h"
-#include "McaGeneralTab.h"
+
+#include <U2Core/U2SafePoints.h>
 
 #include "../McaEditor.h"
-#include <U2Core/U2SafePoints.h>
+#include "McaGeneralTab.h"
 
 namespace U2 {
 
@@ -35,22 +36,22 @@ McaGeneralTabFactory::McaGeneralTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
 
-QWidget* McaGeneralTabFactory::createWidget(GObjectView *objView) {
+QWidget *McaGeneralTabFactory::createWidget(GObjectView *objView) {
     SAFE_POINT(NULL != objView,
-        QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-        NULL);
+               QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
+               NULL);
 
-    McaEditor* msa = qobject_cast<McaEditor*>(objView);
+    McaEditor *msa = qobject_cast<McaEditor *>(objView);
     SAFE_POINT(NULL != msa,
-        QString("Internal error: unable to cast object view to McaEditor for group '%1'.").arg(GROUP_ID),
-        NULL);
+               QString("Internal error: unable to cast object view to McaEditor for group '%1'.").arg(GROUP_ID),
+               NULL);
 
     McaGeneralTab *widget = new McaGeneralTab(msa);
     widget->setObjectName("McaGeneralTab");
     return widget;
 }
 
-const QString & McaGeneralTabFactory::getGroupId() {
+const QString &McaGeneralTabFactory::getGroupId() {
     return GROUP_ID;
 }
 
@@ -58,4 +59,4 @@ OPGroupParameters McaGeneralTabFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("General"), GROUP_DOC_PAGE);
 }
 
-} // namespace
+}    // namespace U2

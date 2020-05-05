@@ -22,8 +22,9 @@
 #ifndef _U2_GT_UTILS_SEQUENCE_VIEW_H
 #define _U2_GT_UTILS_SEQUENCE_VIEW_H
 
-#include <QString>
 #include <GTGlobals.h>
+
+#include <QString>
 
 namespace U2 {
 
@@ -53,10 +54,10 @@ public:
 
     static void goToPosition(HI::GUITestOpStatus &os, int position);
 
-    static ADVSingleSequenceWidget * getSeqWidgetByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
-    static DetView * getDetViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
-    static PanView * getPanViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
-    static Overview* getOverviewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static ADVSingleSequenceWidget *getSeqWidgetByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
+    static DetView *getDetViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
+    static PanView *getPanViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
+    static Overview *getOverviewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
     static int getSeqWidgetsNumber(HI::GUITestOpStatus &os);
     static QVector<U2Region> getSelection(HI::GUITestOpStatus &os, int number = 0);
     static QString getSeqName(HI::GUITestOpStatus &os, int number = 0);
@@ -66,10 +67,10 @@ public:
     static void clickAnnotationDet(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
     static void clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
 
-    static GSequenceGraphView* getGraphView(HI::GUITestOpStatus &os);
-    static QList<QVariant> getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView* graph);
-    static QList<TextLabel*> getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView* graph);
-    static QColor getGraphColor(HI::GUITestOpStatus &os, GSequenceGraphView* graph);
+    static GSequenceGraphView *getGraphView(HI::GUITestOpStatus &os);
+    static QList<QVariant> getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
+    static QList<TextLabel *> getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
+    static QColor getGraphColor(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
 
     static void enableEditingMode(HI::GUITestOpStatus &os, bool enable = true, int sequenceNumber = 0);
 
@@ -81,11 +82,11 @@ public:
 
     static qint64 getCursor(HI::GUITestOpStatus &os);
 
-    static QString getRegionAsString(HI::GUITestOpStatus &os, const U2Region& region);
+    static QString getRegionAsString(HI::GUITestOpStatus &os, const U2Region &region);
 
     static void clickOnDetView(HI::GUITestOpStatus &os);
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // GTSEQUENCEVIEWUTILS_H
+#endif    // GTSEQUENCEVIEWUTILS_H

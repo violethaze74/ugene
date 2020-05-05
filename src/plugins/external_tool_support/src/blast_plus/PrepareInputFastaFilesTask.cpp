@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "PrepareInputFastaFilesTask.h"
+
 #include <QFileInfo>
 
 #include <U2Core/BaseDocumentFormats.h>
@@ -28,16 +30,12 @@
 
 #include <U2Formats/ConvertFileTask.h>
 
-#include "PrepareInputFastaFilesTask.h"
-
 namespace U2 {
 
 PrepareInputFastaFilesTask::PrepareInputFastaFilesTask(const QStringList &inputFiles, const QString &tempDir)
     : Task(tr("Prepare input FASTA files"), TaskFlags_NR_FOSE_COSC),
       inputFiles(inputFiles),
-      tempDir(tempDir)
-{
-
+      tempDir(tempDir) {
 }
 
 QStringList PrepareInputFastaFilesTask::getFastaFiles() const {
@@ -104,4 +102,4 @@ QString PrepareInputFastaFilesTask::getFixedFileName(const QString &filePath) co
     return fileInfo.fileName().replace(" ", "_");
 }
 
-}   // namespace U2
+}    // namespace U2

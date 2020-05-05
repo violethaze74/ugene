@@ -20,35 +20,35 @@
  */
 
 #include "CircularViewSettingsWidgetFactory.h"
-#include "CircularViewSettingsWidget.h"
-#include "CircularViewPlugin.h"
+
+#include <U2Core/U2SafePoints.h>
 
 #include <U2View/AnnotatedDNAView.h>
-#include <U2Core/U2SafePoints.h>
+
+#include "CircularViewPlugin.h"
+#include "CircularViewSettingsWidget.h"
 
 namespace U2 {
 
 const QString CircularViewSettingsWidgetFactory::GROUP_ID = "OP_CV_SETTINGS";
-const QString CircularViewSettingsWidgetFactory::GROUP_ICON_STR  = ":circular_view/images/circular.png";
+const QString CircularViewSettingsWidgetFactory::GROUP_ICON_STR = ":circular_view/images/circular.png";
 const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "24748797";
 
-CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularViewContext* context)
+CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularViewContext *context)
     : ctx(context) {
     SAFE_POINT(context != NULL, tr("Circular view context is NULL"), );
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget* CircularViewSettingsWidgetFactory::createWidget(GObjectView *objView) {
+QWidget *CircularViewSettingsWidgetFactory::createWidget(GObjectView *objView) {
     SAFE_POINT(objView != NULL, tr("Object view is NULL"), NULL);
 
     CircularViewSplitter *cvSplitter = ctx->getView(objView, false);
-    AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
+    AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(objView);
     SAFE_POINT(annotatedDnaView != NULL, "Can not cast GObjectView to AnnotatedDNAView", NULL);
-    CircularViewSettingsWidget* widget = new CircularViewSettingsWidget(ctx->getSettings(annotatedDnaView), cvSplitter);
-    connect(ctx, SIGNAL(si_cvSplitterWasCreatedOrRemoved(CircularViewSplitter*, CircularViewSettings*)),
-            widget, SLOT(sl_cvSplitterWasCreatedOrRemoved(CircularViewSplitter*, CircularViewSettings*)));
-    connect(widget, SIGNAL(si_openCvButtonClicked(CircularViewSettings*)),
-            ctx, SLOT(sl_toggleBySettings(CircularViewSettings*)));
+    CircularViewSettingsWidget *widget = new CircularViewSettingsWidget(ctx->getSettings(annotatedDnaView), cvSplitter);
+    connect(ctx, SIGNAL(si_cvSplitterWasCreatedOrRemoved(CircularViewSplitter *, CircularViewSettings *)), widget, SLOT(sl_cvSplitterWasCreatedOrRemoved(CircularViewSplitter *, CircularViewSettings *)));
+    connect(widget, SIGNAL(si_openCvButtonClicked(CircularViewSettings *)), ctx, SLOT(sl_toggleBySettings(CircularViewSettings *)));
     widget->setObjectName("CircularViewSettingsWidget");
     return widget;
 }
@@ -59,10 +59,10 @@ OPGroupParameters CircularViewSettingsWidgetFactory::getOPGroupParameters() {
 
 bool CircularViewSettingsWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
     bool res = false;
-    SAFE_POINT( filter != NULL, "OPFactoryFilterVisitorInterface::filter is NULL", res);
+    SAFE_POINT(filter != NULL, "OPFactoryFilterVisitorInterface::filter is NULL", res);
 
     res = filter->typePass(getObjectViewType()) && filter->atLeastOneAlphabetPass(DNAAlphabet_NUCL);
     return res;
 }
 
-} // namespace
+}    // namespace U2

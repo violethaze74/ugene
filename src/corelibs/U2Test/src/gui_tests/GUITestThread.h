@@ -22,9 +22,11 @@
 #ifndef _U2_GUI_TEST_THREAD_H_
 #define _U2_GUI_TEST_THREAD_H_
 
-#include <QThread>
-#include <U2Core/global.h>
 #include <core/GUITest.h>
+
+#include <QThread>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
@@ -38,8 +40,12 @@ public:
 
     void run();
 
-    HI::GUITest* getTest(){ return test; }
-    QString getTestResult() { return testResult; }
+    HI::GUITest *getTest() {
+        return test;
+    }
+    QString getTestResult() {
+        return testResult;
+    }
 
 private slots:
     void sl_testTimeOut();
@@ -67,6 +73,6 @@ private:
     QList<int> memoryList;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_GUI_TEST_THREAD_H_
+#endif    // _U2_GUI_TEST_THREAD_H_

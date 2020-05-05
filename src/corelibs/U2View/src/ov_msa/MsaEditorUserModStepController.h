@@ -30,21 +30,23 @@ class U2OpStatus;
 
 class MsaEditorUserModStepController {
 public:
-    MsaEditorUserModStepController(const U2EntityRef& msaEntityRef);
+    MsaEditorUserModStepController(const U2EntityRef &msaEntityRef);
 
     ~MsaEditorUserModStepController();
 
-    void startTracking(U2OpStatus& os);
+    void startTracking(U2OpStatus &os);
 
-    bool isTracking() const { return msaChangeTracker != nullptr; }
+    bool isTracking() const {
+        return msaChangeTracker != nullptr;
+    }
 
     void finishTracking();
 
 private:
-    const U2EntityRef& msaEntityRef;
-    U2UseCommonUserModStep* msaChangeTracker;
+    const U2EntityRef &msaEntityRef;
+    U2UseCommonUserModStep *msaChangeTracker;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_MSA_EDITOR_USER_MOD_STEP_CONTROLLER_H_
+#endif    // _U2_MSA_EDITOR_USER_MOD_STEP_CONTROLLER_H_

@@ -70,13 +70,13 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Close all modal widgets
     // Clear the clipboard
 
-    QWidget* popupWidget = QApplication::activePopupWidget();
+    QWidget *popupWidget = QApplication::activePopupWidget();
     while (popupWidget != NULL) {
         GTWidget::close(os, popupWidget);
         popupWidget = QApplication::activePopupWidget();
     }
 
-    QWidget* modalWidget = QApplication::activeModalWidget();
+    QWidget *modalWidget = QApplication::activeModalWidget();
     while (modalWidget != NULL) {
         GTWidget::close(os, modalWidget);
         modalWidget = QApplication::activeModalWidget();
@@ -103,7 +103,8 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);
 #ifdef Q_OS_MAC
-        GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Close project");
+        GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                    << "Close project");
 #else
         GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
         GTGlobals::sleep(100);
@@ -146,5 +147,5 @@ POSTERIOR_ACTION_DEFINITION(post_action_0004) {
     }
 }
 
-}   // namespace GUITest_posterior_actions
-}   // namespace U2
+}    // namespace GUITest_posterior_actions
+}    // namespace U2

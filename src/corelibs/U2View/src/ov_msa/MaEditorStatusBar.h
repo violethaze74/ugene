@@ -38,9 +38,8 @@ class MaEditorStatusBar : public QFrame {
 protected:
     class TwoArgPatternLabel : public QLabel {
     public:
-        TwoArgPatternLabel(QString textPattern, QString tooltipPattern,
-                           QString objectName, QWidget* parent = NULL);
-        TwoArgPatternLabel(QString objectName, QWidget* parent = NULL);
+        TwoArgPatternLabel(QString textPattern, QString tooltipPattern, QString objectName, QWidget *parent = NULL);
+        TwoArgPatternLabel(QString objectName, QWidget *parent = NULL);
         void setPatterns(QString textPattern, QString tooltipPattern);
 
         void update(QString firstArg, int minWidth);
@@ -49,13 +48,13 @@ protected:
         void updateMinWidth(QString maxLenArg);
 
     private:
-        QString         textPattern;
-        QString         tooltipPattern;
-        QFontMetrics    fm;
+        QString textPattern;
+        QString tooltipPattern;
+        QFontMetrics fm;
     };
 
 public:
-    MaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea);
+    MaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSequenceArea *seqArea);
 
 private slots:
     void sl_update();
@@ -64,7 +63,7 @@ private slots:
 protected:
     virtual void setupLayout() = 0;
     virtual void updateLabels() = 0;
-    QPair<QString, QString> getGappedPositionInfo(const QPoint& pos) const;
+    QPair<QString, QString> getGappedPositionInfo(const QPoint &pos) const;
 
     void updateLock();
     virtual void updateLineLabel();
@@ -74,17 +73,17 @@ protected:
     void setStatusBarStyle();
 
 protected:
-    MultipleAlignmentObject*    aliObj;
-    MaEditorSequenceArea*       seqArea;
-    QPixmap                     lockedIcon;
-    QPixmap                     unlockedIcon;
+    MultipleAlignmentObject *aliObj;
+    MaEditorSequenceArea *seqArea;
+    QPixmap lockedIcon;
+    QPixmap unlockedIcon;
 
-    QHBoxLayout*                layout;
-    TwoArgPatternLabel*         lineLabel;
-    TwoArgPatternLabel*         colomnLabel;
-    TwoArgPatternLabel*         positionLabel;
-    TwoArgPatternLabel*         selectionLabel;
-    QLabel*                     lockLabel;
+    QHBoxLayout *layout;
+    TwoArgPatternLabel *lineLabel;
+    TwoArgPatternLabel *colomnLabel;
+    TwoArgPatternLabel *positionLabel;
+    TwoArgPatternLabel *selectionLabel;
+    QLabel *lockLabel;
 
     static const QString NONE_MARK;
     static const QString GAP_MARK;
@@ -93,8 +92,6 @@ private:
     QString selectionPattern;
 };
 
+}    // namespace U2
 
-
-}//namespace;
-
-#endif // _U2_MA_EDITOR_STATUS_BAR_H_
+#endif    // _U2_MA_EDITOR_STATUS_BAR_H_

@@ -22,9 +22,9 @@
 #ifndef _U2_BIO_STRUCT_3D_OBJECT_UNIT_TESTS_H_
 #define _U2_BIO_STRUCT_3D_OBJECT_UNIT_TESTS_H_
 
-#include "core/dbi/DbiTest.h"
-
 #include <unittest.h>
+
+#include "core/dbi/DbiTest.h"
 
 namespace U2 {
 
@@ -36,9 +36,9 @@ public:
     static void shutdown();
     static U2DbiRef getDbiRef();
     static U2EntityRef getObjRef();
-    static U2ObjectDbi * getObjDbi();
-    static UdrDbi * getUdrDbi();
-    static const BioStruct3D & getBioStruct();
+    static U2ObjectDbi *getObjDbi();
+    static UdrDbi *getUdrDbi();
+    static const BioStruct3D &getBioStruct();
 
     static BioStruct3D readBioStruct(const QString &fileName, U2OpStatus &os, bool useSessionDbi = true);
 
@@ -71,7 +71,7 @@ DECLARE_TEST(BioStruct3DObjectUnitTests, clone_NullObj);
 /* remove */
 DECLARE_TEST(BioStruct3DObjectUnitTests, remove);
 
-} // U2
+}    // namespace U2
 
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, createInstance);
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, createInstance_WrongDbi);
@@ -82,4 +82,4 @@ DECLARE_METATYPE(BioStruct3DObjectUnitTests, clone_NullDbi);
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, clone_NullObj);
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, remove);
 
-#endif // _U2_BIO_STRUCT_3D_OBJECT_UNIT_TESTS_H_
+#endif    // _U2_BIO_STRUCT_3D_OBJECT_UNIT_TESTS_H_

@@ -19,15 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+#include "WebViewController.h"
+
 #include <U2Core/U2SafePoints.h>
 
-#include "WebViewController.h"
 #include "WebViewControllerPrivate.h"
 
 #ifdef UGENE_WEB_KIT
-#include "webkit/WebViewWebKitControllerPrivate.h"
-# else
-#include "qtwebengine/WebViewQtWebEngineControllerPrivate.h"
+#    include "webkit/WebViewWebKitControllerPrivate.h"
+#else
+#    include "qtwebengine/WebViewQtWebEngineControllerPrivate.h"
 #endif
 
 namespace U2 {
@@ -36,11 +37,10 @@ WebViewController::WebViewController(U2WebView *_webView, JavaScriptAgent *_agen
     : QObject(_webView),
       agent(_agent),
       pageLoaded(false),
-      pageInitialized(false)
-{
+      pageInitialized(false) {
 #ifdef UGENE_WEB_KIT
     controllerPrivate = new WebViewWebKitControllerPrivate(_webView);
-# else
+#else
     controllerPrivate = new WebViewQtWebEngineControllerPrivate(_webView);
 #endif
     connect(_webView, SIGNAL(loadFinished(bool)), SLOT(sl_pageLoaded(bool)));
@@ -93,4 +93,4 @@ void WebViewController::sl_pageInitialized() {
     emit si_pageReady();
 }
 
-}   // namespace U2
+}    // namespace U2

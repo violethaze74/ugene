@@ -48,8 +48,6 @@
 #include <U2View/MaEditorNameList.h>
 
 #include "GTTestsMcaEditor.h"
-#include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
-
 #include "GTUtilsDashboard.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
@@ -59,14 +57,15 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsNotifications.h"
-#include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
+#include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 
 namespace U2 {
@@ -89,7 +88,7 @@ const QString namesOfRow[16] = {"SZYD_Cas9_CR50",
                                 "SZYD_Cas9_CR65",
                                 "SZYD_Cas9_CR66",
                                 "SZYD_Cas9_5B70",
-                                "SZYD_Cas9_5B71" };
+                                "SZYD_Cas9_5B71"};
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     class Scenario : public CustomScenario {
@@ -118,11 +117,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             bool checkContainsSecond = output.contains("sanger_reads_alignment");
             bool checkContainsThird = output.contains("UGENE_Data");
             bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
             CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
             //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -138,10 +137,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
 
             //4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -150,7 +149,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Sanger data analysis"
+                                                << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state :
@@ -167,7 +168,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(rows == 16, QString("Incorrect rows quantity, expected: 16, current: %1").arg(rows));
     //    16 reads with names "SZYD_Cas9_CR50"..."SZYD_Cas9_CR56", "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66", "SZYD_Cas9_CR70" and "SZYD_Cas9_CR71"
     QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames(os);
-    foreach(QString rowName, rowNames) {
+    foreach (QString rowName, rowNames) {
         bool checkCurrentName = false;
         for (int i = 0; i < 16; i++) {
             QString currentName = namesOfRow[i];
@@ -219,11 +220,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             bool checkContainsSecond = output.contains("sanger_reads_alignment");
             bool checkContainsThird = output.contains("UGENE_Data");
             bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
             CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
             //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
             QStringList reads;
@@ -239,10 +240,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
 
             //4. Uncheck "Add to project" option
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
@@ -257,7 +258,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
 
             //7.Push Save
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findExactWidget<QToolButton *>(os, "setOutputButton"));
 
             //Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
             output = GTLineEdit::getText(os, "outputLineEdit");
@@ -271,7 +272,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Sanger data analysis"
+                                                << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : No Еrrors in the Log
@@ -296,7 +299,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     //16 reads with names "SZYD_Cas9_CR50"..."SZYD_Cas9_CR56", "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66", "SZYD_Cas9_5B70" and "SZYD_Cas9_5B71"
     QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames(os);
-    foreach(QString rowName, rowNames) {
+    foreach (QString rowName, rowNames) {
         bool checkCurrentName = false;
         for (int i = 0; i < 16; i++) {
             QString currentName = namesOfRow[i];
@@ -353,8 +356,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
             //    7. Push Run on Results page where "alignment.ugenedb" is result database by default
             const QString expectedResultFileName = "alignment.ugenedb";
             QString actualResultFileName = GTUtilsWizard::getParameter(os, "Mapped reads file").toString();
-            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'")
-                .arg(expectedResultFileName).arg(actualResultFileName));
+            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'").arg(expectedResultFileName).arg(actualResultFileName));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
@@ -372,8 +374,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     const QString expectedResultFileName = "alignment.ugenedb";
     const QString actualResultFileName = outputFiles.first();
-    CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect output file name, exptected '%1', got '%2'")
-        .arg(expectedResultFileName).arg(actualResultFileName));
+    CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect output file name, exptected '%1', got '%2'").arg(expectedResultFileName).arg(actualResultFileName));
 
     //    8. Click to "alignment.ugenedb" on the dashboard.
     GTUtilsDashboard::clickOutputFile(os, actualResultFileName);
@@ -387,16 +388,13 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     CHECK_SET_ERR(1 == documents.count(), QString("An incorrect documents count: expected 1, got %1").arg(documents.count()));
 
     const QString actualDocumentName = documents.keys().first();
-    CHECK_SET_ERR(expectedResultFileName == actualDocumentName, QString("An unexpected document name: expected '%1', got '%2'")
-        .arg(expectedResultFileName).arg(actualDocumentName));
+    CHECK_SET_ERR(expectedResultFileName == actualDocumentName, QString("An unexpected document name: expected '%1', got '%2'").arg(expectedResultFileName).arg(actualDocumentName));
 
-    CHECK_SET_ERR(1 == documents.first().count(), QString("An incorrect objects count in '%1' document: expected 1, got %2")
-        .arg(documents.keys().first()).arg(documents.first().count()));
+    CHECK_SET_ERR(1 == documents.first().count(), QString("An incorrect objects count in '%1' document: expected 1, got %2").arg(documents.keys().first()).arg(documents.first().count()));
 
     const QString expectedObjectName = "[mc] Mapped reads";
     const QString actualObjectName = documents.first().first();
-    CHECK_SET_ERR(expectedObjectName == actualObjectName, QString("An inexpected object name: expected '%1', got '%2'")
-        .arg(expectedObjectName).arg(actualObjectName));
+    CHECK_SET_ERR(expectedObjectName == actualObjectName, QString("An inexpected object name: expected '%1', got '%2'").arg(expectedObjectName).arg(actualObjectName));
 
     //    Expected state: Aligment editor has been opened
     GTUtilsMcaEditor::getEditorUi(os);
@@ -404,8 +402,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    Expected state: Reference name is  "Reference KM099231:" at the editor left corner
     const QString expectedReferenceLabelText = "Reference KM099231:";
     const QString actualReferenceLabelText = GTUtilsMcaEditor::getReferenceLabelText(os);
-    CHECK_SET_ERR(expectedReferenceLabelText == actualReferenceLabelText, QString("An unexpected reference label text: expected '%1', got '%2'")
-        .arg(expectedReferenceLabelText).arg(actualReferenceLabelText));
+    CHECK_SET_ERR(expectedReferenceLabelText == actualReferenceLabelText, QString("An unexpected reference label text: expected '%1', got '%2'").arg(expectedReferenceLabelText).arg(actualReferenceLabelText));
 
     //    Expected state: "Consensus" is placed under reference name
     // untestable
@@ -416,25 +413,25 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     //                    8 reads with names "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66" and "SZYD_Cas9_5B71"
     const QSet<QString> expectedDirectReadsNames = QSet<QString>() << "SZYD_Cas9_5B71"
-        << "SZYD_Cas9_CR60"
-        << "SZYD_Cas9_CR61"
-        << "SZYD_Cas9_CR62"
-        << "SZYD_Cas9_CR63"
-        << "SZYD_Cas9_CR64"
-        << "SZYD_Cas9_CR65"
-        << "SZYD_Cas9_CR66";
+                                                                   << "SZYD_Cas9_CR60"
+                                                                   << "SZYD_Cas9_CR61"
+                                                                   << "SZYD_Cas9_CR62"
+                                                                   << "SZYD_Cas9_CR63"
+                                                                   << "SZYD_Cas9_CR64"
+                                                                   << "SZYD_Cas9_CR65"
+                                                                   << "SZYD_Cas9_CR66";
     const QStringList actualDirectReadsNames = GTUtilsMcaEditor::getDirectReadsNames(os);
     CHECK_SET_ERR(expectedDirectReadsNames == actualDirectReadsNames.toSet(), "Direct reads names are incorrect");
 
     //                    8 reverse reads with names "SZYD_Cas9_CR50"... "SZYD_Cas9_CR56" and "SZYD_Cas9_5B70"
     const QSet<QString> expectedReverseComplementReadsNames = QSet<QString>() << "SZYD_Cas9_CR50"
-        << "SZYD_Cas9_CR51"
-        << "SZYD_Cas9_CR52"
-        << "SZYD_Cas9_CR53"
-        << "SZYD_Cas9_CR54"
-        << "SZYD_Cas9_CR55"
-        << "SZYD_Cas9_CR56"
-        << "SZYD_Cas9_5B70";
+                                                                              << "SZYD_Cas9_CR51"
+                                                                              << "SZYD_Cas9_CR52"
+                                                                              << "SZYD_Cas9_CR53"
+                                                                              << "SZYD_Cas9_CR54"
+                                                                              << "SZYD_Cas9_CR55"
+                                                                              << "SZYD_Cas9_CR56"
+                                                                              << "SZYD_Cas9_5B70";
     const QStringList actualReverseComplementReadsNames = GTUtilsMcaEditor::getReverseComplementReadsNames(os);
     CHECK_SET_ERR(expectedReverseComplementReadsNames == actualReverseComplementReadsNames.toSet(), "Reverse complement reads names are incorrect");
 
@@ -445,7 +442,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsMdi::closeActiveWindow(os);
 
     //    10. Select "Open view" from context menu and select "Open new view: "Alignment Editor" from context view
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Alignment Editor", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
+                                                                              << "Open new view: Alignment Editor",
+                                                            GTGlobals::UseMouse));
     GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
 
     //    Expected state:  Chromatogram sanger view is opened
@@ -491,8 +490,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
             //    7. Push Run on Results page where "alignment.ugenedb" is result database by default
             const QString expectedResultFileName = "alignment.ugenedb";
             QString actualResultFileName = GTUtilsWizard::getParameter(os, "Mapped reads file").toString();
-            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'")
-                .arg(expectedResultFileName).arg(actualResultFileName));
+            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'").arg(expectedResultFileName).arg(actualResultFileName));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
@@ -534,11 +532,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             bool checkContainsSecond = output.contains("sanger_reads_alignment");
             bool checkContainsThird = output.contains("UGENE_Data");
             bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
             CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
             //2. Select reference  /test/general/_common_data/alphabets/extended_amino_1000.fa
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/extended_amino_1000.fa");
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/extended_amino_1000.fa");
 
             //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
             QStringList reads;
@@ -554,10 +552,10 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
 
             //4. Uncheck "Add to project" option
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
@@ -572,7 +570,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
 
             //7.Push Save
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findExactWidget<QToolButton *>(os, "setOutputButton"));
 
             //Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
             output = GTLineEdit::getText(os, "outputLineEdit");
@@ -587,7 +585,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTLogTracer trace;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Sanger data analysis"
+                                                << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
@@ -621,11 +621,11 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             bool checkContainsSecond = output.contains("sanger_reads_alignment");
             bool checkContainsThird = output.contains("UGENE_Data");
             bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
             CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
             //2. Select reference  /test/general/_common_data/alphabets/standard_dna_rna_amino_1000.fa
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_dna_rna_amino_1000.fa");
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_dna_rna_amino_1000.fa");
 
             //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
             QStringList reads;
@@ -641,10 +641,10 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
 
             //4. Uncheck "Add to project" option
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
@@ -659,7 +659,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
 
             //7.Push Save
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findExactWidget<QToolButton *>(os, "setOutputButton"));
 
             //Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
             output = GTLineEdit::getText(os, "outputLineEdit");
@@ -674,7 +674,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTLogTracer trace;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Sanger data analysis"
+                                                << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Error: More than one sequence in the reference file:  <path>/alphabets/standard_dna_rna_amino_1000.fa
@@ -719,8 +721,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             //    7. Push Run on Results page where "alignment.ugenedb" is result database by default
             const QString expectedResultFileName = "alignment.ugenedb";
             QString actualResultFileName = GTUtilsWizard::getParameter(os, "Mapped reads file").toString();
-            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'")
-                .arg(expectedResultFileName).arg(actualResultFileName));
+            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'").arg(expectedResultFileName).arg(actualResultFileName));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
@@ -762,11 +763,11 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             bool checkContainsSecond = output.contains("sanger_reads_alignment");
             bool checkContainsThird = output.contains("UGENE_Data");
             bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
             CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
             //2. Select reference  /test/general/_common_data/alphabets/standard_dna_rna_1000.fa
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_rna_1000.fa");
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_rna_1000.fa");
 
             //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
             QStringList reads;
@@ -782,10 +783,10 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
 
             //4. Uncheck "Add to project" option
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
@@ -800,7 +801,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
 
             //7.Push Save
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findExactWidget<QToolButton *>(os, "setOutputButton"));
 
             //Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
             output = GTLineEdit::getText(os, "outputLineEdit");
@@ -815,7 +816,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTLogTracer trace;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Sanger data analysis"
+                                                << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
@@ -860,8 +863,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
             //    7. Push Run on Results page where "alignment.ugenedb" is result database by default
             const QString expectedResultFileName = "alignment.ugenedb";
             QString actualResultFileName = GTUtilsWizard::getParameter(os, "Mapped reads file").toString();
-            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'")
-                .arg(expectedResultFileName).arg(actualResultFileName));
+            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'").arg(expectedResultFileName).arg(actualResultFileName));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
@@ -903,11 +905,11 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
             bool checkContainsSecond = output.contains("sanger_reads_alignment");
             bool checkContainsThird = output.contains("UGENE_Data");
             bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
             CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
             //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -923,10 +925,10 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
 
             //4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -935,7 +937,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Sanger data analysis"
+                                                << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select "SZYD_Cas9_5B71" read
@@ -976,7 +980,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //Expected state : "Show/Hide Chromatograms" button is in pressed state
     //All reads are expanded, chromatograms if any are displayed for each reads
     QList<QString> rows = GTUtilsMcaEditor::getReadsNames(os);
-    foreach(QString row, rows) {
+    foreach (QString row, rows) {
         bool isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, row);
         CHECK_SET_ERR(isChromatogramShown, QString("Error: read %1 should be displayed with chromatogram").arg(row));
     }
@@ -986,7 +990,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     //Expected state : "Show/Hide Chromatograms" button is in normal state
     //All reads are collapsed
-    foreach(QString row, rows) {
+    foreach (QString row, rows) {
         bool isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, row);
         CHECK_SET_ERR(!isChromatogramShown, QString("Error: read %1 should be displayed without chromatogram").arg(row));
     }
@@ -996,7 +1000,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     //All reads are expanded, chromatograms if any are displayed for each reads
     //Expected state : All reads are expanded, chromatograms(if any) are displayed for each reads
-    foreach(QString row, rows) {
+    foreach (QString row, rows) {
         bool isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, row);
         CHECK_SET_ERR(isChromatogramShown, QString("Error: read %1 should be displayed with chromatogram").arg(row));
     }
@@ -1020,27 +1024,52 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     //Expected state : Combo with selected "A", "C", "G", "T" items and "Show all" item appeared
     QList<QStringList> paths;
     QList<QStringList> onlyLetterPaths;
-    paths.append(QStringList() << "Appearance" << "Show/hide trace" << "A");
-    onlyLetterPaths.append(QStringList() << "Appearance" << "Show/hide trace" << "A");
-    paths.append(QStringList() << "Appearance" << "Show/hide trace" << "C");
-    onlyLetterPaths.append(QStringList() << "Appearance" << "Show/hide trace" << "C");
-    paths.append(QStringList() << "Appearance" << "Show/hide trace" << "G");
-    onlyLetterPaths.append(QStringList() << "Appearance" << "Show/hide trace" << "G");
-    paths.append(QStringList() << "Appearance" << "Show/hide trace" << "T");
-    onlyLetterPaths.append(QStringList() << "Appearance" << "Show/hide trace" << "T");
-    paths.append(QStringList() << "Appearance" << "Show/hide trace" << "Show all");
+    paths.append(QStringList() << "Appearance"
+                               << "Show/hide trace"
+                               << "A");
+    onlyLetterPaths.append(QStringList() << "Appearance"
+                                         << "Show/hide trace"
+                                         << "A");
+    paths.append(QStringList() << "Appearance"
+                               << "Show/hide trace"
+                               << "C");
+    onlyLetterPaths.append(QStringList() << "Appearance"
+                                         << "Show/hide trace"
+                                         << "C");
+    paths.append(QStringList() << "Appearance"
+                               << "Show/hide trace"
+                               << "G");
+    onlyLetterPaths.append(QStringList() << "Appearance"
+                                         << "Show/hide trace"
+                                         << "G");
+    paths.append(QStringList() << "Appearance"
+                               << "Show/hide trace"
+                               << "T");
+    onlyLetterPaths.append(QStringList() << "Appearance"
+                                         << "Show/hide trace"
+                                         << "T");
+    paths.append(QStringList() << "Appearance"
+                               << "Show/hide trace"
+                               << "Show all");
     //GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, paths, PopupChecker::CheckOptions(PopupChecker::Exists)));
     QStringList menuPath;
-    menuPath << "Appearance" << "Show/hide trace";
+    menuPath << "Appearance"
+             << "Show/hide trace";
     QStringList itemsNames;
-    itemsNames << "A" << "C" << "G" << "T" << "Show all";
+    itemsNames << "A"
+               << "C"
+               << "G"
+               << "T"
+               << "Show all";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, itemsNames, PopupChecker::CheckOptions(PopupChecker::Exists)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select "A"
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show/hide trace" << "A"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
+                                                                              << "Show/hide trace"
+                                                                              << "A"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1056,7 +1085,9 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show/hide trace" << "C"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
+                                                                              << "Show/hide trace"
+                                                                              << "C"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1071,7 +1102,9 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show/hide trace" << "G"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
+                                                                              << "Show/hide trace"
+                                                                              << "G"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1079,14 +1112,16 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //8. Select "T"
     //Expected state : "A", "C", "G"  are unchecked
-    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));\
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     intermediateCheck << "G";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show/hide trace" << "T"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
+                                                                              << "Show/hide trace"
+                                                                              << "T"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1101,10 +1136,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show/hide trace" << "Show all"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
+                                                                              << "Show/hide trace"
+                                                                              << "Show all"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
 
     //10. Expand combo once more
     //Expected state : All four letters are checked
@@ -1132,13 +1168,23 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
 
     //4. Push "Show/Hide Trace"combo from main menu
     //Expected state : Combo with selected "A", "C", "G", "T" items and "Show all" item appeared
-    const QStringList menuPath = QStringList() << "Actions" << "Appearance" << "Show/hide trace";
-    const QStringList itemsNames = QStringList() << "A" << "C" << "G" << "T" << "Show all";
+    const QStringList menuPath = QStringList() << "Actions"
+                                               << "Appearance"
+                                               << "Show/hide trace";
+    const QStringList itemsNames = QStringList() << "A"
+                                                 << "C"
+                                                 << "G"
+                                                 << "T"
+                                                 << "Show all";
     GTMenu::checkMainMenuItemsState(os, menuPath, itemsNames, PopupChecker::CheckOption(PopupChecker::Exists));
 
     //5. Select "A"
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "A");;
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Appearance"
+                                                << "Show/hide trace"
+                                                << "A");
+    ;
 
     //Expected state : Green trace vanished from all chromatograms
 
@@ -1148,7 +1194,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "C");;
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Appearance"
+                                                << "Show/hide trace"
+                                                << "C");
+    ;
 
     //Expected state : Blue trace vanished from all chromatograms
 
@@ -1158,7 +1208,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "G");;
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Appearance"
+                                                << "Show/hide trace"
+                                                << "G");
+    ;
 
     //Expected state : Grey trace vanished from all chromatograms
 
@@ -1169,7 +1223,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "T");;
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Appearance"
+                                                << "Show/hide trace"
+                                                << "T");
+    ;
 
     //Expected state : Red trace vanished from all chromatograms; there are no any traces on the screen
 
@@ -1179,7 +1237,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "Show all");;
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Appearance"
+                                                << "Show/hide trace"
+                                                << "Show all");
+    ;
 
     //10. Expand combo once more
     //Expected state : All four letters are checked
@@ -1200,14 +1262,15 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
 
     //3. Push Remove seuence(s) button on main menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove read"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
+                                                                              << "Remove read"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : the read is deleted
     QStringList reads = GTUtilsMcaEditor::getReadsNames(os);
     bool isReadWasDelete = true;
-    foreach(QString read, reads) {
+    foreach (QString read, reads) {
         if (read == "SZYD_Cas9_CR50") {
             isReadWasDelete = false;
         }
@@ -1222,7 +1285,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     //5 Push Remove seuence(s) button
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove read"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
+                                                                              << "Remove read"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1230,7 +1294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     //Expected state : No corresponding reads in the map
     reads = GTUtilsMcaEditor::getReadsNames(os);
     isReadWasDelete = true;
-    foreach(QString read, reads) {
+    foreach (QString read, reads) {
         if (read == "SZYD_Cas9_5B70" || read == "SZYD_Cas9_5B71" || read == "SZYD_Cas9_CR51") {
             isReadWasDelete = false;
         }
@@ -1245,8 +1309,10 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     reads = GTUtilsMcaEditor::getReadsNames(os);
     int restoreReadsCount = 0;
     QStringList removedReads;
-    removedReads << "SZYD_Cas9_5B70" << "SZYD_Cas9_5B71" << "SZYD_Cas9_5B70";
-    foreach(QString read, reads) {
+    removedReads << "SZYD_Cas9_5B70"
+                 << "SZYD_Cas9_5B71"
+                 << "SZYD_Cas9_5B70";
+    foreach (QString read, reads) {
         if (read == "SZYD_Cas9_5B70") {
             restoreReadsCount++;
             removedReads.removeOne("SZYD_Cas9_5B70");
@@ -1275,12 +1341,15 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
 
     //3. Push Remove seuence(s) button on context menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove read");;
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Edit"
+                                                << "Remove read");
+    ;
 
     //Expected state : the read is deleted
     QStringList reads = GTUtilsMcaEditor::getReadsNames(os);
     bool isReadWasDelete = true;
-    foreach(QString read, reads) {
+    foreach (QString read, reads) {
         if (read == "SZYD_Cas9_CR50") {
             isReadWasDelete = false;
         }
@@ -1295,13 +1364,16 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     //5. Push Remove seuence(s) button
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove read");;
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Edit"
+                                                << "Remove read");
+    ;
 
     //Expected state : 3 reads are deleted
     //Expected state : No corresponding reads in the map
     reads = GTUtilsMcaEditor::getReadsNames(os);
     isReadWasDelete = true;
-    foreach(QString read, reads) {
+    foreach (QString read, reads) {
         if (read == "SZYD_Cas9_5B70" || read == "SZYD_Cas9_5B71" || read == "SZYD_Cas9_CR51") {
             isReadWasDelete = false;
         }
@@ -1316,8 +1388,10 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     reads = GTUtilsMcaEditor::getReadsNames(os);
     int restoreReadsCount = 0;
     QStringList removedReads;
-    removedReads << "SZYD_Cas9_5B70" << "SZYD_Cas9_5B71" << "SZYD_Cas9_5B70";
-    foreach(QString read, reads) {
+    removedReads << "SZYD_Cas9_5B70"
+                 << "SZYD_Cas9_5B71"
+                 << "SZYD_Cas9_5B70";
+    foreach (QString read, reads) {
         if (read == "SZYD_Cas9_5B70") {
             restoreReadsCount++;
             removedReads.removeOne("SZYD_Cas9_5B70");
@@ -1346,12 +1420,14 @@ GUI_TEST_CLASS_DEFINITION(test_0013_3) {
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(5500, 2));
 
     //6. Push Remove seuence(s) from main or context menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove read");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Edit"
+                                                << "Remove read");
 
     //Expected state: the read is deleted
     QStringList reads = GTUtilsMcaEditor::getReadsNames(os);
     bool isReadWasDelete = true;
-    foreach(QString read, reads) {
+    foreach (QString read, reads) {
         if (read == "SZYD_Cas9_CR50") {
             isReadWasDelete = false;
         }
@@ -1391,7 +1467,6 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     //Expected state : Horizontal scrolls bar disappears
     CHECK_SET_ERR(isHidden, "Horizontal scrolls bar is found");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0015_1) {
@@ -1418,7 +1493,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'G', QString("Incorrect symbols, Expected ref = T, con = G, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
-
     //4. Push "Jump to next variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
     GTGlobals::sleep();
@@ -1431,7 +1505,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'G', QString("Incorrect symbols, Expected ref = T, con = G, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //5. Push "Jump to next variation" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next variation"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
+                                                                              << "Jump to next variation"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1442,7 +1517,9 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'C', QString("Incorrect symbols, Expected ref = T, con = C, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //6. Push "Jump to next variation" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next variation");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Navigation"
+                                                << "Jump to next variation");
 
     //Expected state : difference between reference "G" and consensus "A"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1481,7 +1558,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next variation"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
+                                                                              << "Jump to next variation"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1491,7 +1569,9 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next variation");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Navigation"
+                                                << "Jump to next variation");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1534,7 +1614,8 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = C, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //4. Push "Jump to previous variation" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to previous variation"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
+                                                                              << "Jump to previous variation"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1545,7 +1626,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     CHECK_SET_ERR(referenceChar[0] == 'G' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = G, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //9. Push "Jump to next variation" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous variation");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Navigation"
+                                                << "Jump to previous variation");
 
     //Expected state : difference between reference "T" and consensus GAP
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1587,7 +1670,8 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to previous variation"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
+                                                                              << "Jump to previous variation"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1597,7 +1681,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous variation");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Navigation"
+                                                << "Jump to previous variation");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1635,7 +1721,8 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next ambiguous character"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
+                                                                              << "Jump to next ambiguous character"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1645,7 +1732,9 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next ambiguous character");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Navigation"
+                                                << "Jump to next ambiguous character");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1694,7 +1783,8 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == 'M' && readChar == 'M', QString("Incorrect symbols, Expected ref = C, con = M, read = M current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //4. Push "Jump to next ambiguous character" button from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next ambiguous character"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
+                                                                              << "Jump to next ambiguous character"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1708,7 +1798,9 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'W' && readChar == 'W', QString("Incorrect symbols, Expected ref = T, con = W, read = W current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //5.Push "Jump to next ambiguous character" button from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next ambiguous character");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Navigation"
+                                                << "Jump to next ambiguous character");
 
     //Expected state : reference "C", consensus "N", read "N"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1751,7 +1843,8 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to previous ambiguous character"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
+                                                                              << "Jump to previous ambiguous character"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1761,7 +1854,9 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous ambiguous character");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Navigation"
+                                                << "Jump to previous ambiguous character");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1807,7 +1902,8 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     CHECK_SET_ERR(referenceChar[0] == 'G' && consensusChar[0] == 'N' && readChar == 'N', QString("Incorrect symbols, Expected ref = G, con = N, read = N current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //4. Push "Jump to next variation" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to previous ambiguous character"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
+                                                                              << "Jump to previous ambiguous character"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1821,7 +1917,9 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == 'N' && readChar == 'N', QString("Incorrect symbols, Expected ref = C, con = N, read = N current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //5. Push "Jump to previous variation" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous ambiguous character");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Navigation"
+                                                << "Jump to previous ambiguous character");
 
     //Expected state: reference "T", consensus "W", read "W"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1847,7 +1945,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     //3. Using 'drag'n drop' move the name in the another place and release mouse button
     const QRect sequenceNameRect = GTUtilsMcaEditor::getReadNameRect(os, firstVisibleRow);
-    GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(sequenceNameRect.center().x() , sequenceNameRect.y() + (2 *sequenceNameRect.height())));
+    GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(sequenceNameRect.center().x(), sequenceNameRect.y() + (2 * sequenceNameRect.height())));
 
     //Expected state : The read is replaced in another place
     QStringList newOrederedVisibleRows = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
@@ -1917,7 +2015,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -1940,7 +2038,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
     GTKeyboardDriver::keyClick('C');
     GTGlobals::sleep();
 
-
     //Expected state: Expected result: the original character of the alignment was replaced with the new one (e.g 'A' was replaced with 'C').
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(selectedChar == 'C', "Incorrect selected character");
@@ -1949,7 +2046,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     GTGlobals::sleep();
-
 
     //5. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -1975,7 +2071,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -1988,13 +2084,16 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Replace character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit" << "Replace character/gap", PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit"
+                                                                              << "Replace character/gap",
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     //4. Select the item.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Replace character/gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
+                                                                              << "Replace character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
@@ -2040,7 +2139,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2053,11 +2152,16 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled. A hotkey Shift+R is shown nearby.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Edit", QStringList() << "Replace character/gap", PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
+                                                      << "Edit",
+                                    QStringList() << "Replace character/gap",
+                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     //4. Select the item.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Replace character/gap");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Edit"
+                                                << "Replace character/gap");
 
     //Expected state : the character is selected in the replacement mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2099,7 +2203,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2135,7 +2239,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2148,7 +2252,9 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Replace character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit" << "Replace character/gap", PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit"
+                                                                              << "Replace character/gap",
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -2156,7 +2262,8 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
 
     //4. Select the item.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Replace character/gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
+                                                                              << "Replace character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(500);
@@ -2182,7 +2289,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2195,11 +2302,16 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled. A hotkey Shift+R is shown nearby.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Edit", QStringList() << "Replace character/gap", PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
+                                                      << "Edit",
+                                    QStringList() << "Replace character/gap",
+                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     //4. Select the item.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Replace character/gap");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Edit"
+                                                << "Replace character/gap");
 
     //Expected state : the character is selected in the replacement mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2222,7 +2334,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2311,7 +2423,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2324,13 +2436,16 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Insert character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit" << "Insert character/gap", PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit"
+                                                                              << "Insert character/gap",
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     //4. Select the item.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Insert character/gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
+                                                                              << "Insert character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
@@ -2409,7 +2524,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2422,11 +2537,16 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Edit", QStringList() << "Insert character/gap", PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
+                                                      << "Edit",
+                                    QStringList() << "Insert character/gap",
+                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     //4. Select the item.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Insert character/gap");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Edit"
+                                                << "Insert character/gap");
 
     //Expected state : the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2502,7 +2622,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2538,7 +2658,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2551,13 +2671,16 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Insert character/gap".The item is enabled.A hotkey Shift + I is shown nearby.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit" << "Insert character/gap", PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit"
+                                                                              << "Insert character/gap",
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     //4. Select the item.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Insert character/gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
+                                                                              << "Insert character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
@@ -2583,7 +2706,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2596,11 +2719,16 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled. A hotkey Shift+I is shown nearby.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Edit", QStringList() << "Insert character/gap", PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
+                                                      << "Edit",
+                                    QStringList() << "Insert character/gap",
+                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     //4. Select the item.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Insert character/gap");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Edit"
+                                                << "Insert character/gap");
 
     //Expected state : the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2623,7 +2751,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2693,7 +2821,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
     CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
     CHECK_SET_ERR(consSel[0] == 'G', QString("Incorrect consensus character, expected: G, current: %1").arg(consSel));
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_2) {
@@ -2705,7 +2832,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(500);
+    GTGlobals::sleep(500);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2719,7 +2846,8 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     GTGlobals::sleep(100);
 
     //3. Press "Remove selection" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove character/gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
+                                                                              << "Remove character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(100);
@@ -2777,7 +2905,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
     CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
     CHECK_SET_ERR(consSel[0] == 'G', QString("Incorrect consensus character, expected: G, current: %1").arg(consSel));
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_3) {
@@ -2789,7 +2916,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-	GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2803,7 +2930,9 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     GTGlobals::sleep(100);
 
     //3. Press "Remove character/gap" from main
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove character/gap");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Edit"
+                                                << "Remove character/gap");
     GTGlobals::sleep(100);
 
     //Expected state: the character is replaced by close character, the sequence is shifted one character to the left
@@ -2829,7 +2958,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     //Expected result: 'A' character appeared
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
     CHECK_SET_ERR(selectedChar == 'A', "3 Incorrect selected character");
 
     //Expected result: consensus  sequence is restored
@@ -2860,7 +2989,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
     CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
     CHECK_SET_ERR(consSel[0] == 'G', QString("Incorrect consensus character, expected: G, current: %1").arg(consSel));
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027_1) {
@@ -2940,7 +3068,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     GTGlobals::sleep(1000);
 
     //4. Press "Remove all columns of gaps" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove all columns of gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
+                                                                              << "Remove all columns of gaps"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
@@ -2999,7 +3128,9 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
     GTGlobals::sleep(1000);
 
     //4. Press "Remove all columns of gaps" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove all columns of gaps");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Edit"
+                                                << "Remove all columns of gaps");
     GTGlobals::sleep();
 
     //Expected state: Gap column is vanished
@@ -3044,18 +3175,18 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	
-	// 2. Click "Show chromatograms" button on the toolbar.
-	GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
-    
-	//2. Select one symbol in the read
+
+    // 2. Click "Show chromatograms" button on the toolbar.
+    GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+
+    //2. Select one symbol in the read
     QPoint point(2218, 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, point);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //3. Push Space key
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state : Gap is inserted before symbol
     char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3063,7 +3194,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
     //4. Push Васkspace key
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     //Expected state : Gap is removed
     ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3076,16 +3207,16 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	
+
     //2. Select one symbol in the read
     QPoint point(2218, 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, point);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
     QPoint startMousePosotion = GTMouseDriver::getMousePosition();
 
     //3. Move mouse with pressed left button to the right on one position
-	GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(startMousePosotion.x() + 20, startMousePosotion.y()));
+    GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(startMousePosotion.x() + 20, startMousePosotion.y()));
     GTGlobals::sleep(100);
 
     //Expected state: Gap is inserted before symbol
@@ -3109,8 +3240,8 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     int startRowHeinght = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
 
-	// 2. Click "Show chromatograms" button on the toolbar.
-	GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+    // 2. Click "Show chromatograms" button on the toolbar.
+    GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
 
     //2. Push Zoom In
     GTUtilsMcaEditor::zoomIn(os);
@@ -3118,9 +3249,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //Expected state : All Characters increased in size
     int currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
-    CHECK_SET_ERR(startRowHeinght < currentRowHeight, QString("Unexpected row height, must be higher then start height == %1, current %2").
-                                                                                                    arg(QString::number(startRowHeinght)).
-                                                                                                    arg(QString::number(currentRowHeight)));
+    CHECK_SET_ERR(startRowHeinght < currentRowHeight, QString("Unexpected row height, must be higher then start height == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
 
     //3. Push Zoom out
     GTUtilsMcaEditor::zoomOut(os);
@@ -3128,9 +3257,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //Expected state : All Characters reduced in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
-    CHECK_SET_ERR(startRowHeinght == currentRowHeight, QString("Unexpected row height, must be equal start height == %1, current %2").
-                                                                                                    arg(QString::number(startRowHeinght)).
-                                                                                                    arg(QString::number(currentRowHeight)));
+    CHECK_SET_ERR(startRowHeinght == currentRowHeight, QString("Unexpected row height, must be equal start height == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
 
     //4. Push Zoom In 2 times
     GTUtilsMcaEditor::zoomIn(os);
@@ -3140,9 +3267,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //Expected state : All Characters increased in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
-    CHECK_SET_ERR(startRowHeinght < currentRowHeight, QString("Unexpected row height, must be higher then start height == %1, current %2").
-                                                                                                    arg(QString::number(startRowHeinght)).
-                                                                                                    arg(QString::number(currentRowHeight)));
+    CHECK_SET_ERR(startRowHeinght < currentRowHeight, QString("Unexpected row height, must be higher then start height == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
 
     //5. Push Reset Zoom
     GTUtilsMcaEditor::resetZoom(os);
@@ -3150,9 +3275,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //Expected state : All Characters reduced in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
-    CHECK_SET_ERR(startRowHeinght == currentRowHeight, QString("Unexpected row height, must be equal start height == %1, current %2").
-        arg(QString::number(startRowHeinght)).
-        arg(QString::number(currentRowHeight)));
+    CHECK_SET_ERR(startRowHeinght == currentRowHeight, QString("Unexpected row height, must be equal start height == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0033) {
@@ -3193,7 +3316,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     //Expected state :"Simple extended" by default (combo with 2 values: "Simple extended" and "Strict")
     QStringList types = GTUtilsOptionPanelMca::getConsensusTypes(os);
     bool hasMembers = true;
-    foreach(const QString& type, types) {
+    foreach (const QString &type, types) {
         if (type != "Simple extended" && type != "Strict") {
             hasMembers = false;
         }
@@ -3232,17 +3355,25 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Aligned Reads Map is in the bottom screen by default. Show / Hide overview button is in pressed state
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Appearance", QStringList() << "Show overview", PopupChecker::CheckOption(PopupChecker::IsChecked));
+    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
+                                                      << "Appearance",
+                                    QStringList() << "Show overview",
+                                    PopupChecker::CheckOption(PopupChecker::IsChecked));
     GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep(200);
 
     //2. Push Show / Hide overview button on the main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show overview");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Appearance"
+                                                << "Show overview");
 
     //Expected state: There are no map on the screen. Show / Hide overview button is is in released state
-   // simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Appearance", QStringList() << "Show overview", PopupChecker::CheckOption(PopupChecker::IsUnchecked));
+    // simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
+    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
+                                                      << "Appearance",
+                                    QStringList() << "Show overview",
+                                    PopupChecker::CheckOption(PopupChecker::IsUnchecked));
     GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep(200);
@@ -3260,13 +3391,16 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : Aligned Reads Map is in the bottom screen by default
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Appearance", QStringList() << "Show overview", PopupChecker::CheckOption(PopupChecker::IsChecked));
+    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
+                                                      << "Appearance",
+                                    QStringList() << "Show overview",
+                                    PopupChecker::CheckOption(PopupChecker::IsChecked));
     GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep(200);
 
     //2. Select transparent square  and move it by mouse  down
-    QWidget* simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
+    QWidget *simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
     GTWidget::click(os, simple);
     QStringList list = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
     QPoint p = GTMouseDriver::getMousePosition();
@@ -3295,22 +3429,23 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
     GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     // chrom show/hide
-    QAbstractButton* showChromsButton = GTAction::button(os, "chromatograms");
+    QAbstractButton *showChromsButton = GTAction::button(os, "chromatograms");
     CHECK_SET_ERR(showChromsButton != NULL, "show/hide chromatograms button was not found");
     GTWidget::click(os, showChromsButton);
     bool chromCheckedState = showChromsButton->isChecked();
 
     // overview show/hide
-    QAbstractButton* showOverviewButton = GTAction::button(os, "overview");
+    QAbstractButton *showOverviewButton = GTAction::button(os, "overview");
     CHECK_SET_ERR(showOverviewButton != NULL, "overview button was not found");
     GTWidget::click(os, showOverviewButton);
     bool overviewCheckedState = showOverviewButton->isChecked();
 
     // offsets show/hide
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
+                                                                              << "Show offsets"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
-    QAction* offsetAction = GTUtilsMcaEditor::getOffsetAction(os);
+    QAction *offsetAction = GTUtilsMcaEditor::getOffsetAction(os);
     bool offsetCheckedState = offsetAction->isChecked();
 
     // close the view
@@ -3357,13 +3492,13 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     GTGlobals::sleep();
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os,"consensusType"));
-    CHECK_SET_ERR(consensusCombo!=NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os,consensusCombo, "Levitsky");
+    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
+    GTComboBox::setIndexWithText(os, consensusCombo, "Levitsky");
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os,"thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox!=NULL, "consensusCombo is NULL");
-    GTSpinBox::setValue(os,thresholdSpinBox, 68, GTGlobals::UseKeyBoard);
+    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
+    GTSpinBox::setValue(os, thresholdSpinBox, 68, GTGlobals::UseKeyBoard);
 
     // close the view with COI
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
@@ -3382,7 +3517,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     GTGlobals::sleep();
-    consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os,"consensusType"));
+    consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     GTComboBox::checkCurrentValue(os, consensusCombo, "Levitsky");
     CHECK_SET_ERR(GTUtilsOptionPanelMsa::getThreshold(os) == 68, "Consensus threshold for MSA was not saved");
 }
@@ -3396,12 +3531,13 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
 
     GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Change characters font..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
+                                                                              << "Change characters font..."));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
-    ScaleBar* scaleBar = GTWidget::findExactWidget<ScaleBar*>(os, "peak_height_slider");
+    ScaleBar *scaleBar = GTWidget::findExactWidget<ScaleBar *>(os, "peak_height_slider");
 
-    QAbstractButton* plusButton = scaleBar->getPlusButton();
+    QAbstractButton *plusButton = scaleBar->getPlusButton();
     GTWidget::click(os, plusButton);
     GTWidget::click(os, plusButton);
     GTWidget::click(os, plusButton);
@@ -3416,7 +3552,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
     GTGlobals::sleep();
 
     GTFileDialog::openFile(os, sandBoxDir, fileName);
-    scaleBar = GTWidget::findExactWidget<ScaleBar*>(os, "peak_height_slider");
+    scaleBar = GTWidget::findExactWidget<ScaleBar *>(os, "peak_height_slider");
     CHECK_SET_ERR(scaleBar->value() == peakHight, "Peak height was not saved");
 }
 
@@ -3424,16 +3560,16 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     const QString NONE_MARK = "-";
     const QString GAP_MARK = "gap";
 
-//    Check values on the status bar with different selections in the MCA
+    //    Check values on the status bar with different selections in the MCA
 
-//    1. Open "_common_data/sanger/alignment.ugenedb".
+    //    1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-//    Expected state: Line: - / 16; RefPos: - / 11878; ReadPos: - / -.
+    //    Expected state: Line: - / 16; RefPos: - / 11878; ReadPos: - / -.
     QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     QString rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     QString referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3447,11 +3583,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("1. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR(NONE_MARK == readLengthString, QString("1. Unexpected read length label: expected '%1', got '%2'").arg(NONE_MARK).arg(readLengthString));
 
-//    2. Select the first row in the name list.
+    //    2. Select the first row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 0);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-//    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
+    //    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3465,11 +3601,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("2. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR("956" == readLengthString, QString("2. Unexpected read length label: expected '%1', got '%2'").arg("956").arg(readLengthString));
 
-//    3. Select the second row in the name list.
+    //    3. Select the second row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 1);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-//    Expected state: Line: 2 / 16; RefPos: - / 11878; ReadPos: - / 1173.
+    //    Expected state: Line: 2 / 16; RefPos: - / 11878; ReadPos: - / 1173.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3483,11 +3619,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("3. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR("1173" == readLengthString, QString("3. Unexpected read length label: expected '%1', got '%2'").arg("1173").arg(readLengthString));
 
-//    4. Select the last row in the name list.
+    //    4. Select the last row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 15);
-	GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);
 
-//    Expected state: Line: 16 / 16; RefPos: - / 11878; ReadPos: - / 1048.
+    //    Expected state: Line: 16 / 16; RefPos: - / 11878; ReadPos: - / 1048.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3501,11 +3637,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("4. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR("1048" == readLengthString, QString("4. Unexpected read length label: expected '%1', got '%2'").arg("1048").arg(readLengthString));
 
-//    5. Click "Show chromatograms" button on the toolbar.
+    //    5. Click "Show chromatograms" button on the toolbar.
     GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
-	GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);
 
-//    Expected state: all rows have been expanded, the labels are the same as in the previous step.
+    //    Expected state: all rows have been expanded, the labels are the same as in the previous step.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3518,12 +3654,12 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("11878" == referenceLengthString, QString("5. Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("5. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR("1048" == readLengthString, QString("5. Unexpected read length label: expected '%1', got '%2'").arg("1048").arg(readLengthString));
-	GTGlobals::sleep(500);
-//    6. Select the first row in the name list.
+    GTGlobals::sleep(500);
+    //    6. Select the first row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 0);
-	GTGlobals::sleep(500);
+    GTGlobals::sleep(500);
 
-//    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
+    //    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3537,12 +3673,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("6. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR("956" == readLengthString, QString("6. Unexpected read length label: expected '%1', got '%2'").arg("956").arg(readLengthString));
 
-//    7. Select the first base in the reference.
+    //    7. Select the first base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 0);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-
-//    Expected state: Line: - / 16; RefPos: 1 / 11878; ReadPos: - / -.
+    //    Expected state: Line: - / 16; RefPos: 1 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3556,12 +3691,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("7. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR(NONE_MARK == readLengthString, QString("7. Unexpected read length label: expected '%1', got '%2'").arg(NONE_MARK).arg(readLengthString));
 
-//    8. Select the third base in the reference.
+    //    8. Select the third base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 2);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-
-//    Expected state: Line: - / 16; RefPos: 3 / 11878; ReadPos: - / -.
+    //    Expected state: Line: - / 16; RefPos: 3 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3575,12 +3709,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("8. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR(NONE_MARK == readLengthString, QString("8. Unexpected read length label: expected '%1', got '%2'").arg(NONE_MARK).arg(readLengthString));
 
-//    9. Select the last base in the reference.
+    //    9. Select the last base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 11936);
-	GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);
 
-
-//    Expected state: Line: - / 16; RefPos: 11878 / 11878; ReadPos: - / -.
+    //    Expected state: Line: - / 16; RefPos: 11878 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3594,12 +3727,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("9. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR(NONE_MARK == readLengthString, QString("9. Unexpected read length label: expected '%1', got '%2'").arg(NONE_MARK).arg(readLengthString));
 
-//    10. Select a column with a gap in the reference.
+    //    10. Select a column with a gap in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 2071);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-
-//    Expected state: Line: - / 16; RefPos: gap / 11878; ReadPos: - / -.
+    //    Expected state: Line: - / 16; RefPos: gap / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3613,12 +3745,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("10. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR(NONE_MARK == readLengthString, QString("10. Unexpected read length label: expected '%1', got '%2'").arg(NONE_MARK).arg(readLengthString));
 
-//    11. Select the first base of the second read.
+    //    11. Select the first base of the second read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2052, 1));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-
-//    Expected state: Line: 2 / 16; RefPos: 2053 / 11878; ReadPos: 1 / 1173.
+    //    Expected state: Line: 2 / 16; RefPos: 2053 / 11878; ReadPos: 1 / 1173.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3632,12 +3763,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("1" == readPositionString, QString("11. Unexpected read position label: expected '%1', got '%2'").arg("1").arg(readPositionString));
     CHECK_SET_ERR("1173" == readLengthString, QString("11. Unexpected read length label: expected '%1', got '%2'").arg("1173").arg(readLengthString));
 
-//    12. Select the third base of the fourth read.
+    //    12. Select the third base of the fourth read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(4615, 3));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-
-//    Expected state: Line: 4 / 16; RefPos: 4570 / 11878; ReadPos: 3 / 1014.
+    //    Expected state: Line: 4 / 16; RefPos: 4570 / 11878; ReadPos: 3 / 1014.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3651,12 +3781,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("3" == readPositionString, QString("12. Unexpected read position label: expected '%1', got '%2'").arg("3").arg(readPositionString));
     CHECK_SET_ERR("1014" == readLengthString, QString("12. Unexpected read length label: expected '%1', got '%2'").arg("1014").arg(readLengthString));
 
-//    13. Select the fourth symbol of the fourth read (it is a gap).
+    //    13. Select the fourth symbol of the fourth read (it is a gap).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(4616, 3));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-
-//    Expected state: Line: 4 / 16; RefPos: 4571 / 11878; ReadPos: gap / 1014.
+    //    Expected state: Line: 4 / 16; RefPos: 4571 / 11878; ReadPos: gap / 1014.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3670,12 +3799,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(GAP_MARK == readPositionString, QString("13. Unexpected read position label: expected '%1', got '%2'").arg(GAP_MARK).arg(readPositionString));
     CHECK_SET_ERR("1014" == readLengthString, QString("13. Unexpected read length label: expected '%1', got '%2'").arg("1014").arg(readLengthString));
 
-//    14. Select the 19 symbol of the 7 read (it is a gap, the reference also contains a gap on this position).
+    //    14. Select the 19 symbol of the 7 read (it is a gap, the reference also contains a gap on this position).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(3070, 6));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-
-//    Expected state: Line: 7 / 16; RefPos: gap / 11878; ReadPos: gap / 1036.
+    //    Expected state: Line: 7 / 16; RefPos: gap / 11878; ReadPos: gap / 1036.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3689,12 +3817,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(GAP_MARK == readPositionString, QString("14. Unexpected read position label: expected '%1', got '%2'").arg(GAP_MARK).arg(readPositionString));
     CHECK_SET_ERR("1036" == readLengthString, QString("14. Unexpected read length label: expected '%1', got '%2'").arg("1036").arg(readLengthString));
 
-//    15. Select the 21 symbol of the 7 read.
+    //    15. Select the 21 symbol of the 7 read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(3072, 6));
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 
-
-//    Expected state: Line: 7 / 16; RefPos: 3073 / 11878; ReadPos: 20 / 1036.
+    //    Expected state: Line: 7 / 16; RefPos: 3073 / 11878; ReadPos: 20 / 1036.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
     referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
@@ -3709,6 +3836,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("1036" == readLengthString, QString("15. Unexpected read length label: expected '%1', got '%2'").arg("1036").arg(readLengthString));
 }
 
-} //namespace GUITest_common_scenarios_mca_editor
+}    //namespace GUITest_common_scenarios_mca_editor
 
-} //namespace U2
+}    //namespace U2

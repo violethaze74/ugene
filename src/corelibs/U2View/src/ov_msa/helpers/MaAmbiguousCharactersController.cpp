@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "MaAmbiguousCharactersController.h"
+
 #include <QBitArray>
 
 #include <U2Core/AppContext.h>
@@ -29,10 +31,9 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/Notification.h>
 
-#include "MaAmbiguousCharactersController.h"
 #include "ScrollController.h"
-#include "ov_msa/MaEditor.h"
 #include "ov_msa/MaCollapseModel.h"
+#include "ov_msa/MaEditor.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
@@ -45,8 +46,7 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt *ma
       maEditor(NULL != maEditorWgt ? maEditorWgt->getEditor() : NULL),
       maEditorWgt(maEditorWgt),
       nextAction(NULL),
-      previousAction(NULL)
-{
+      previousAction(NULL) {
     SAFE_POINT(NULL != maEditorWgt, "maEditorWgt is NULL", );
     SAFE_POINT(NULL != maEditor, "maEditor is NULL", );
 
@@ -122,7 +122,7 @@ QBitArray getAmbiguousCharacters() {
     return ambiguousCharacters;
 }
 
-}
+}    // namespace
 
 QPoint MaAmbiguousCharactersController::findNextAmbiguous(NavigationDirection direction) const {
     static const QBitArray ambiguousCharacters = getAmbiguousCharacters();
@@ -153,4 +153,4 @@ void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direct
     cachedIterator->setDirection(direction);
 }
 
-}   // namespace U2
+}    // namespace U2

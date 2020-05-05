@@ -19,19 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#include "utils/GTUtilsDialog.h"
 #include "GTTestsSAM.h"
-#include "primitives/GTMenu.h"
-#include "primitives/GTAction.h"
 #include <primitives/GTWidget.h>
+
 #include "GTGlobals.h"
 #include "GTUtilsLog.h"
-#include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ConvertAssemblyToSAMDialogFiller.h"
 #include "GTUtilsTaskTreeView.h"
-
-
+#include "primitives/GTAction.h"
+#include "primitives/GTMenu.h"
+#include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ConvertAssemblyToSAMDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 namespace GUITest_SAM {
@@ -87,5 +86,5 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     CHECK_SET_ERR(!l.hasError(), "Open 'samples/Assembly/chrM.sam' finished with error");
 }
 
-} // GUITest_SAM
-} // U2
+}    // namespace GUITest_SAM
+}    // namespace U2

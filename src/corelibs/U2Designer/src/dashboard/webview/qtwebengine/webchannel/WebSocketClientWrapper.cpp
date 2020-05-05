@@ -49,9 +49,10 @@
 ****************************************************************************/
 
 #include "WebSocketClientWrapper.h"
-#include "WebSocketTransport.h"
 
 #include <QtWebSockets/QWebSocketServer>
+
+#include "WebSocketTransport.h"
 
 /*!
 \brief Wrapps connected QWebSockets clients in WebSocketTransport objects.
@@ -70,10 +71,8 @@ All clients connecting to the QWebSocketServer will be automatically wrapped
 in WebSocketTransport objects.
 */
 WebSocketClientWrapper::WebSocketClientWrapper(QWebSocketServer *server, QObject *parent)
-: QObject(parent)
-, m_server(server) {
-    connect(server, &QWebSocketServer::newConnection,
-        this, &WebSocketClientWrapper::handleNewConnection);
+    : QObject(parent), m_server(server) {
+    connect(server, &QWebSocketServer::newConnection, this, &WebSocketClientWrapper::handleNewConnection);
 }
 
 /*!
@@ -83,4 +82,4 @@ void WebSocketClientWrapper::handleNewConnection() {
     emit clientConnected(new WebSocketTransport(m_server->nextPendingConnection()));
 }
 
-}
+}    // namespace U2

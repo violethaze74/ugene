@@ -19,24 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#include <QLabel>
-#include <QTextDocument>
-
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTScrollBar.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 
+#include <QLabel>
+#include <QTextDocument>
+
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/McaEditorConsensusArea.h>
+#include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/McaEditor.h>
+#include <U2View/McaEditorConsensusArea.h>
 #include <U2View/McaEditorNameList.h>
 #include <U2View/McaEditorReferenceArea.h>
 #include <U2View/McaEditorSequenceArea.h>
 #include <U2View/McaEditorWgt.h>
-#include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/RowHeightController.h>
 #include <U2View/ScrollController.h>
 
@@ -90,10 +90,10 @@ McaEditorSequenceArea *GTUtilsMcaEditor::getSequenceArea(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusArea"
-McaEditorConsensusArea* GTUtilsMcaEditor::getConsensusArea(GUITestOpStatus &os) {
+McaEditorConsensusArea *GTUtilsMcaEditor::getConsensusArea(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
-    return GTWidget::findExactWidget<McaEditorConsensusArea*>(os, "consArea", activeWindow);
+    return GTWidget::findExactWidget<McaEditorConsensusArea *>(os, "consArea", activeWindow);
 }
 #undef GT_METHOD_NAME
 
@@ -101,7 +101,7 @@ McaEditorConsensusArea* GTUtilsMcaEditor::getConsensusArea(GUITestOpStatus &os) 
 McaEditorReferenceArea *GTUtilsMcaEditor::getReferenceArea(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
-    return GTWidget::findExactWidget<McaEditorReferenceArea*>(os, "mca_editor_reference_area", activeWindow);
+    return GTWidget::findExactWidget<McaEditorReferenceArea *>(os, "mca_editor_reference_area", activeWindow);
 }
 #undef GT_METHOD_NAME
 
@@ -118,11 +118,11 @@ QScrollBar *GTUtilsMcaEditor::getVerticalScrollBar(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getMcaRow"
-MultipleAlignmentRowData* GTUtilsMcaEditor::getMcaRow(GUITestOpStatus &os, int rowNum) {
-    McaEditor* mcaEditor = GTUtilsMcaEditor::getEditor(os);
+MultipleAlignmentRowData *GTUtilsMcaEditor::getMcaRow(GUITestOpStatus &os, int rowNum) {
+    McaEditor *mcaEditor = GTUtilsMcaEditor::getEditor(os);
     GT_CHECK_RESULT(NULL != mcaEditor, "McaEditor not found", NULL);
 
-    MultipleChromatogramAlignmentObject* maObj = mcaEditor->getMaObject();
+    MultipleChromatogramAlignmentObject *maObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(NULL != maObj, "MultipleChromatogramAlignmentObject not found", NULL);
 
     MultipleAlignmentRow row = maObj->getRow(rowNum);
@@ -132,11 +132,11 @@ MultipleAlignmentRowData* GTUtilsMcaEditor::getMcaRow(GUITestOpStatus &os, int r
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getOffsetAction"
-QAction* GTUtilsMcaEditor::getOffsetAction(GUITestOpStatus &os) {
-    McaEditorWgt* editorWgt = GTUtilsMcaEditor::getEditorUi(os);
+QAction *GTUtilsMcaEditor::getOffsetAction(GUITestOpStatus &os) {
+    McaEditorWgt *editorWgt = GTUtilsMcaEditor::getEditorUi(os);
     GT_CHECK_RESULT(editorWgt != NULL, "McaEditorWgt not found", NULL);
 
-    MSAEditorOffsetsViewController* offsetController = editorWgt->getOffsetsViewController();
+    MSAEditorOffsetsViewController *offsetController = editorWgt->getOffsetsViewController();
     GT_CHECK_RESULT(offsetController != NULL, "MSAEditorOffsetsViewController is NULL", NULL);
     return offsetController->getToggleColumnsViewAction();
 }
@@ -167,7 +167,7 @@ int GTUtilsMcaEditor::getReadsCount(GUITestOpStatus &os) {
     const QString totalReadsCountString = readsCounRegExp.cap(1);
 
     bool isNumber = false;
-    const int totalReadsCount =  totalReadsCountString.toInt(&isNumber);
+    const int totalReadsCount = totalReadsCountString.toInt(&isNumber);
     GT_CHECK_RESULT(isNumber, QString("Can't convert the reads count string to number: %1").arg(totalReadsCountString), -1);
 
     return totalReadsCount;
@@ -191,7 +191,6 @@ const QStringList GTUtilsMcaEditor::getDirectReadsNames(GUITestOpStatus &os) {
         }
     }
     return directReadsNames;
-
 }
 #undef GT_METHOD_NAME
 
@@ -343,4 +342,4 @@ int GTUtilsMcaEditor::readName2readNumber(GUITestOpStatus &os, const QString &re
 
 #undef GT_CLASS_NAME
 
-}   // namespace U2
+}    // namespace U2

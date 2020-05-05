@@ -19,19 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QListWidgetItem>
+#include "WorkflowUtils.h"
 
-#include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/IntegralBusType.h>
-#include <U2Lang/HRSchemaSerializer.h>
-#include <U2Lang/WorkflowIOTasks.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/IntegralBus.h>
-#include <U2Lang/SharedDbUrlUtils.h>
-#include <U2Lang/URLAttribute.h>
-#include <U2Lang/WorkflowSettings.h>
+#include <QListWidgetItem>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -50,7 +40,17 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "WorkflowUtils.h"
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
+#include <U2Lang/HRSchemaSerializer.h>
+#include <U2Lang/IntegralBus.h>
+#include <U2Lang/IntegralBusModel.h>
+#include <U2Lang/IntegralBusType.h>
+#include <U2Lang/SharedDbUrlUtils.h>
+#include <U2Lang/URLAttribute.h>
+#include <U2Lang/WorkflowIOTasks.h>
+#include <U2Lang/WorkflowSettings.h>
 
 namespace U2 {
 /*****************************
@@ -66,14 +66,14 @@ QStringList WorkflowUtils::initExtensions() {
     return exts;
 }
 
-QString WorkflowUtils::getRichDoc(const Descriptor& d) {
+QString WorkflowUtils::getRichDoc(const Descriptor &d) {
     QString result = QString();
-    if(d.getDisplayName().isEmpty()) {
-        if(!d.getDocumentation().isEmpty()) {
+    if (d.getDisplayName().isEmpty()) {
+        if (!d.getDocumentation().isEmpty()) {
             result = QString("%1").arg(d.getDocumentation());
         }
     } else {
-        if(d.getDocumentation().isEmpty()) {
+        if (d.getDocumentation().isEmpty()) {
             result = QString("<b>%1</b>").arg(d.getDisplayName());
         } else {
             result = QString("<b>%1</b>: %2").arg(d.getDisplayName()).arg(d.getDocumentation());
@@ -83,18 +83,18 @@ QString WorkflowUtils::getRichDoc(const Descriptor& d) {
     return result;
 }
 
-QString WorkflowUtils::getDropUrl(QList<DocumentFormat*>& fs, const QMimeData* md) {
+QString WorkflowUtils::getDropUrl(QList<DocumentFormat *> &fs, const QMimeData *md) {
     QString url;
-    const GObjectMimeData* gomd = qobject_cast<const GObjectMimeData*>(md);
-    const DocumentMimeData* domd = qobject_cast<const DocumentMimeData*>(md);
+    const GObjectMimeData *gomd = qobject_cast<const GObjectMimeData *>(md);
+    const DocumentMimeData *domd = qobject_cast<const DocumentMimeData *>(md);
     if (gomd) {
-        GObject* obj = gomd->objPtr.data();
+        GObject *obj = gomd->objPtr.data();
         if (obj) {
             fs << obj->getDocument()->getDocumentFormat();
             url = obj->getDocument()->getURLString();
         }
     } else if (domd) {
-        Document* doc = domd->objPtr.data();
+        Document *doc = domd->objPtr.data();
         if (doc) {
             fs << doc->getDocumentFormat();
             url = doc->getURLString();
@@ -104,7 +104,7 @@ QString WorkflowUtils::getDropUrl(QList<DocumentFormat*>& fs, const QMimeData* m
         if (urls.size() == 1) {
             url = urls.first().toLocalFile();
             QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(url);
-            foreach(const FormatDetectionResult& di, formats) {
+            foreach (const FormatDetectionResult &di, formats) {
                 fs << di.format;
             }
         }
@@ -112,7 +112,7 @@ QString WorkflowUtils::getDropUrl(QList<DocumentFormat*>& fs, const QMimeData* m
     return url;
 }
 
-void WorkflowUtils::setQObjectProperties(QObject &o , const QVariantMap & params) {
+void WorkflowUtils::setQObjectProperties(QObject &o, const QVariantMap &params) {
     QMapIterator<QString, QVariant> i(params);
     while (i.hasNext()) {
         i.next();
@@ -121,12 +121,11 @@ void WorkflowUtils::setQObjectProperties(QObject &o , const QVariantMap & params
     }
 }
 
-QStringList WorkflowUtils::expandToUrls(const QString& s) {
+QStringList WorkflowUtils::expandToUrls(const QString &s) {
     QStringList urls = s.split(";");
     QStringList result;
     QRegExp wcard("[*?\\[\\]]");
-    foreach(QString url, urls)
-    {
+    foreach (QString url, urls) {
         int idx = url.indexOf(wcard);
         if (idx >= 0) {
             int dirIdx = url.lastIndexOf('/', idx);
@@ -136,7 +135,7 @@ QStringList WorkflowUtils::expandToUrls(const QString& s) {
                 url = url.right(url.length() - dirIdx - 1);
             }
 
-            foreach(QFileInfo fi, dir.entryInfoList((QStringList() << url), QDir::Files|QDir::NoSymLinks)) {
+            foreach (QFileInfo fi, dir.entryInfoList((QStringList() << url), QDir::Files | QDir::NoSymLinks)) {
                 result << fi.absoluteFilePath();
             }
         } else {
@@ -153,7 +152,7 @@ namespace {
 
 bool validateParameters(const Schema &schema, NotificationsList &infoList) {
     bool good = true;
-    foreach (Actor* a, schema.getProcesses()) {
+    foreach (Actor *a, schema.getProcesses()) {
         const int notificationCountBefore = infoList.size();
         good &= a->validate(infoList);
         for (int i = notificationCountBefore; i < infoList.size(); ++i) {
@@ -182,18 +181,18 @@ bool validateExternalTools(Actor *a, NotificationsList &infoList) {
         if (!valid) {
             good = false;
             infoList << WorkflowNotification(WorkflowUtils::externalToolError(tool->getName()),
-                                a->getId(),
-                                WorkflowNotification::U2_ERROR);
+                                             a->getId(),
+                                             WorkflowNotification::U2_ERROR);
         } else if (!fromAttr && !tool->isValid()) {
             if (tool->isCustom()) {
                 infoList << WorkflowNotification(WorkflowUtils::customExternalToolInvalidError(tool->getName(), a->getLabel()),
-                    a->getProto()->getId(),
-                    WorkflowNotification::U2_ERROR);
+                                                 a->getProto()->getId(),
+                                                 WorkflowNotification::U2_ERROR);
                 good = false;
             } else {
                 infoList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
-                    a->getProto()->getId(),
-                    WorkflowNotification::U2_WARNING);
+                                                 a->getProto()->getId(),
+                                                 WorkflowNotification::U2_WARNING);
             }
         }
     }
@@ -202,11 +201,11 @@ bool validateExternalTools(Actor *a, NotificationsList &infoList) {
 
 bool validatePorts(Actor *a, NotificationsList &infoList) {
     bool good = true;
-    foreach(Port *p, a->getEnabledPorts()) {
+    foreach (Port *p, a->getEnabledPorts()) {
         NotificationsList notificationList;
         good &= p->validate(notificationList);
         if (!notificationList.isEmpty()) {
-            foreach(WorkflowNotification notification, notificationList) {
+            foreach (WorkflowNotification notification, notificationList) {
                 WorkflowNotification item;
                 item.message = notification.message;
                 item.port = p->getId();
@@ -263,8 +262,8 @@ bool validateScript(Actor *a, NotificationsList &infoList) {
     if (syntaxResult.state() != QScriptSyntaxCheckResult::Valid) {
         WorkflowNotification notification;
         notification.message = QObject::tr("Script syntax check failed! Line: %1, error: %2")
-            .arg(syntaxResult.errorLineNumber())
-            .arg(syntaxResult.errorMessage());
+                                   .arg(syntaxResult.errorLineNumber())
+                                   .arg(syntaxResult.errorMessage());
         notification.actorId = a->getId();
         notification.type = WorkflowNotification::U2_ERROR;
         infoList << notification;
@@ -273,7 +272,7 @@ bool validateScript(Actor *a, NotificationsList &infoList) {
     return true;
 }
 
-}
+}    // namespace
 
 bool WorkflowUtils::validate(const Schema &schema, NotificationsList &notificationList) {
     bool good = validateOutputDir(WorkflowSettings::getWorkflowOutputDirectory(), notificationList);
@@ -295,7 +294,7 @@ bool WorkflowUtils::validate(const Schema &schema, NotificationsList &notificati
 }
 
 // used in GUI schema validating
-bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &infoList) {
+bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem *> &infoList) {
     NotificationsList notifications;
     bool good = validate(schema, notifications);
 
@@ -312,7 +311,7 @@ bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &info
             item->setIcon(QIcon(":U2Lang/images/error.png"));
         } else if (notification.type == WorkflowNotification::U2_WARNING) {
             item->setIcon(QIcon(":U2Lang/images/warning.png"));
-        } else if (a != nullptr){
+        } else if (a != nullptr) {
             item->setIcon(a->getProto()->getIcon());
         }
 
@@ -359,7 +358,7 @@ bool WorkflowUtils::validate(const Workflow::Schema &schema, QStringList &errs) 
 
 QList<Descriptor> WorkflowUtils::findMatchingTypes(DataTypePtr set, DataTypePtr elementDataType) {
     QList<Descriptor> result;
-    foreach(const Descriptor& d, set->getAllDescriptors()) {
+    foreach (const Descriptor &d, set->getAllDescriptors()) {
         if (set->getDatatypeByDescriptor(d) == elementDataType) {
             result.append(d);
         }
@@ -394,12 +393,11 @@ QList<Descriptor> WorkflowUtils::findMatchingCandidates(DataTypePtr from, DataTy
     return candidates;
 }
 
-QList<Descriptor> WorkflowUtils::findMatchingCandidates(DataTypePtr from, DataTypePtr to, const Descriptor & key) {
+QList<Descriptor> WorkflowUtils::findMatchingCandidates(DataTypePtr from, DataTypePtr to, const Descriptor &key) {
     return findMatchingCandidates(from, to->getDatatypeByDescriptor(key));
 }
 
-Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor> & candidates, DataTypePtr to,
-                                                       const Descriptor & key, const StrStrMap & bindings) {
+Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor> &candidates, DataTypePtr to, const Descriptor &key, const StrStrMap &bindings) {
     DataTypePtr elementDatatype = to->getDatatypeByDescriptor(key);
     if (elementDatatype->isList()) {
         QString currentVal = bindings.value(key.getId());
@@ -414,7 +412,7 @@ Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor> &
     }
 }
 
-DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort * p) {
+DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort *p) {
     assert(p != NULL);
     DataTypePtr to;
     DataTypePtr t = to = p->getType();
@@ -428,7 +426,7 @@ DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort * p) {
     return to;
 }
 
-DataTypePtr WorkflowUtils::getFromDatatypeForBusport(IntegralBusPort * p, DataTypePtr to) {
+DataTypePtr WorkflowUtils::getFromDatatypeForBusport(IntegralBusPort *p, DataTypePtr to) {
     assert(p != NULL);
 
     DataTypePtr from;
@@ -437,48 +435,48 @@ DataTypePtr WorkflowUtils::getFromDatatypeForBusport(IntegralBusPort * p, DataTy
         from = to;
     } else {
         //port is input and has links, go editing mode
-        IntegralBusType* bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
+        IntegralBusType *bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
         bt->addInputs(p, false);
         from = bt;
     }
     return from;
 }
 
-QString WorkflowUtils::findPathToSchemaFile(const QString & name) {
+QString WorkflowUtils::findPathToSchemaFile(const QString &name) {
     // full path given
-    if(QFile::exists(name)) {
+    if (QFile::exists(name)) {
         return name;
     }
     // search schema in data dir
     QString filenameWithDataPrefix = QString(PATH_PREFIX_DATA) + ":" + "cmdline/" + name;
-    if(QFile::exists(filenameWithDataPrefix)) {
+    if (QFile::exists(filenameWithDataPrefix)) {
         return filenameWithDataPrefix;
     }
-    foreach(const QString & ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
+    foreach (const QString &ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
         QString filenameWithDataPrefixAndExt = QString(PATH_PREFIX_DATA) + ":" + "cmdline/" + name + "." + ext;
-        if(QFile::exists(filenameWithDataPrefixAndExt)) {
+        if (QFile::exists(filenameWithDataPrefixAndExt)) {
             return filenameWithDataPrefixAndExt;
         }
     }
 
     // if no such file found -> search name in settings. user saved schemas
-    Settings * settings = AppContext::getSettings();
+    Settings *settings = AppContext::getSettings();
     assert(settings != NULL);
 
     // FIXME: same as WorkflowSceneIOTasks::SCHEMA_PATHS_SETTINGS_TAG
     QVariantMap pathsMap = settings->getValue("workflow_settings/schema_paths").toMap();
     QString path = pathsMap.value(name).toString();
-    if(QFile::exists(path)) {
+    if (QFile::exists(path)) {
         return path;
     }
     return QString();
 }
 
 void WorkflowUtils::getLinkedActorsId(Actor *a, QList<QString> &linkedActors) {
-    if(!linkedActors.contains(a->getId())) {
+    if (!linkedActors.contains(a->getId())) {
         linkedActors.append(a->getId());
-        foreach(Port *p, a->getPorts()) {
-            foreach(Port *pp, p->getLinks().keys()) {
+        foreach (Port *p, a->getPorts()) {
+            foreach (Port *pp, p->getLinks().keys()) {
                 getLinkedActorsId(pp->owner(), linkedActors);
             }
         }
@@ -488,8 +486,7 @@ void WorkflowUtils::getLinkedActorsId(Actor *a, QList<QString> &linkedActors) {
 }
 
 bool WorkflowUtils::isPathExist(const Port *src, const Port *dest) {
-    SAFE_POINT((src->isInput() ^ dest->isInput()), "The ports have the same direction",
-        true);
+    SAFE_POINT((src->isInput() ^ dest->isInput()), "The ports have the same direction", true);
     if (!src->isOutput() && !dest->isInput()) {
         const Port *tmp = dest;
         dest = src;
@@ -513,18 +510,18 @@ bool WorkflowUtils::isPathExist(const Port *src, const Port *dest) {
     return false;
 }
 
-Descriptor WorkflowUtils::getSlotDescOfDatatype(const DataTypePtr & dt) {
+Descriptor WorkflowUtils::getSlotDescOfDatatype(const DataTypePtr &dt) {
     QString dtId = dt->getId();
-    if(dtId == BaseTypes::DNA_SEQUENCE_TYPE()->getId()) {
+    if (dtId == BaseTypes::DNA_SEQUENCE_TYPE()->getId()) {
         return BaseSlots::DNA_SEQUENCE_SLOT();
     }
-    if(dtId == BaseTypes::ANNOTATION_TABLE_TYPE()->getId()) {
+    if (dtId == BaseTypes::ANNOTATION_TABLE_TYPE()->getId()) {
         return BaseSlots::ANNOTATION_TABLE_SLOT();
     }
-    if(dtId == BaseTypes::MULTIPLE_ALIGNMENT_TYPE()->getId()) {
+    if (dtId == BaseTypes::MULTIPLE_ALIGNMENT_TYPE()->getId()) {
         return BaseSlots::MULTIPLE_ALIGNMENT_SLOT();
     }
-    if(dtId == BaseTypes::STRING_TYPE()->getId()) {
+    if (dtId == BaseTypes::STRING_TYPE()->getId()) {
         return BaseSlots::TEXT_SLOT();
     }
     SAFE_POINT(false, "Unexpected slot type", Descriptor());
@@ -539,48 +536,48 @@ static QStringList initLowerToUpperList() {
 }
 static const QStringList lowerToUpperList = initLowerToUpperList();
 
-QString WorkflowUtils::getStringForParameterDisplayRole(const QVariant & value) {
-    if (value.canConvert< QList<Dataset> >()) {
+QString WorkflowUtils::getStringForParameterDisplayRole(const QVariant &value) {
+    if (value.canConvert<QList<Dataset>>()) {
         QString res;
-        foreach (const Dataset &dSet, value.value< QList<Dataset> >()) {
+        foreach (const Dataset &dSet, value.value<QList<Dataset>>()) {
             res += dSet.getName() + "; ";
         }
         return res;
     }
     QString str = value.toString();
-    if(lowerToUpperList.contains(str)) {
+    if (lowerToUpperList.contains(str)) {
         return str.at(0).toUpper() + str.mid(1);
     }
     return str;
 }
 
-Actor * WorkflowUtils::findActorByParamAlias(const QList<Actor*> & procs, const QString & alias, QString & attrName, bool writeLog) {
-    QList<Actor*> actors;
-    foreach(Actor * actor, procs) {
+Actor *WorkflowUtils::findActorByParamAlias(const QList<Actor *> &procs, const QString &alias, QString &attrName, bool writeLog) {
+    QList<Actor *> actors;
+    foreach (Actor *actor, procs) {
         assert(actor != NULL);
-        if(actor->getParamAliases().values().contains(alias)) {
+        if (actor->getParamAliases().values().contains(alias)) {
             actors << actor;
         }
     }
 
     if (actors.isEmpty()) {
         return NULL;
-    } else if(actors.size() > 1) {
-        if(writeLog) {
+    } else if (actors.size() > 1) {
+        if (writeLog) {
             coreLog.error(WorkflowUtils::tr("%1 actors in workflow have '%2' alias").arg(actors.size()).arg(alias));
         }
     }
 
-    Actor * ret = actors.first();
+    Actor *ret = actors.first();
     attrName = ret->getParamAliases().key(alias);
     return ret;
 }
 
-QString WorkflowUtils::getParamIdFromHref(const QString& href) {
+QString WorkflowUtils::getParamIdFromHref(const QString &href) {
     QStringList args = href.split('&');
-    const QString& prefix = QString("%1:").arg(HREF_PARAM_ID);
+    const QString &prefix = QString("%1:").arg(HREF_PARAM_ID);
     QString id;
-    foreach(QString arg, args) {
+    foreach (QString arg, args) {
         if (arg.startsWith(prefix)) {
             id = arg.mid(prefix.length());
             break;
@@ -596,14 +593,14 @@ QString WorkflowUtils::generateIdFromName(const QString &name) {
 }
 
 static void data2text(WorkflowContext *context, DocumentFormatId formatId, GObject *obj, QString &text) {
-    QList<GObject*> objList;
+    QList<GObject *> objList;
     objList << obj;
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::STRING);
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     QScopedPointer<Document> d(new Document(df, iof, GUrl(), context->getDataStorage()->getDbiRef(), objList));
     d->setDocumentOwnsDbiResources(false);
-    StringAdapter *io = dynamic_cast<StringAdapter*>(iof->createIOAdapter());
+    StringAdapter *io = dynamic_cast<StringAdapter *>(iof->createIOAdapter());
     io->open(GUrl(), IOAdapterMode_Write);
     U2OpStatusImpl os;
 
@@ -625,11 +622,11 @@ void WorkflowUtils::print(const QString &slotString, const QVariant &data, DataT
         text += data.toString();
     } else if (BaseTypes::DNA_SEQUENCE_TYPE() == type) {
         QScopedPointer<U2SequenceObject> obj(StorageUtils::getSequenceObject(storage, data.value<SharedDbiDataHandler>()));
-        CHECK(NULL != obj.data(),);
+        CHECK(NULL != obj.data(), );
         data2text(context, BaseDocumentFormats::FASTA, obj.data(), text);
     } else if (BaseTypes::MULTIPLE_ALIGNMENT_TYPE() == type) {
         QScopedPointer<MultipleSequenceAlignmentObject> obj(StorageUtils::getMsaObject(storage, data.value<SharedDbiDataHandler>()));
-        CHECK(NULL != obj.data(),);
+        CHECK(NULL != obj.data(), );
         data2text(context, BaseDocumentFormats::CLUSTAL_ALN, obj.data(), text);
     } else if (BaseTypes::ANNOTATION_TABLE_TYPE() == type || BaseTypes::ANNOTATION_TABLE_LIST_TYPE() == type) {
         QList<SharedAnnotationData> annotationList = StorageUtils::getAnnotationTable(storage, data);
@@ -645,7 +642,7 @@ void WorkflowUtils::print(const QString &slotString, const QVariant &data, DataT
 bool WorkflowUtils::validateSchemaForIncluding(const Schema &s, QString &error) {
     // TEMPORARY disallow filter and grouper elements in includes
     static QString errorStr = tr("The %1 element is a %2. Sorry, but current version of "
-        "UGENE doesn't support of filters and groupers in the includes.");
+                                 "UGENE doesn't support of filters and groupers in the includes.");
     foreach (Actor *actor, s.getProcesses()) {
         ActorPrototype *proto = actor->getProto();
         if (proto->getInfluenceOnPathFlag() || CoreLibConstants::GROUPER_ID == proto->getId()) {
@@ -734,7 +731,7 @@ void WorkflowUtils::applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pat
 
         QStringList srcs = busMap.value(dest).split(";");
         QStringList uniqList;
-        foreach(QString src, srcs) {
+        foreach (QString src, srcs) {
             if (!uniqList.contains(src)) {
                 uniqList << src;
             }
@@ -772,20 +769,19 @@ QStringList WorkflowUtils::getDatasetsUrls(const QList<Dataset> &sets) {
     return result;
 }
 
-QStringList WorkflowUtils::getAttributeUrls(Attribute *attribute){
+QStringList WorkflowUtils::getAttributeUrls(Attribute *attribute) {
     QStringList urlList;
     QVariant var = attribute->getAttributePureValue();
-    if(var.canConvert<QList<Dataset> >()){
-        urlList = WorkflowUtils::getDatasetsUrls(var.value<QList<Dataset> >());
-    }
-    else if (var.canConvert(QVariant::String)) {
+    if (var.canConvert<QList<Dataset>>()) {
+        urlList = WorkflowUtils::getDatasetsUrls(var.value<QList<Dataset>>());
+    } else if (var.canConvert(QVariant::String)) {
         urlList = var.toString().split(";");
     }
     return urlList;
 }
 
-Actor * WorkflowUtils::actorById(const QList<Actor*> &actors, const ActorId &id) {
-    foreach(Actor *a, actors) {
+Actor *WorkflowUtils::actorById(const QList<Actor *> &actors, const ActorId &id) {
+    foreach (Actor *a, actors) {
         if (a->getId() == id) {
             return a;
         }
@@ -794,11 +790,11 @@ Actor * WorkflowUtils::actorById(const QList<Actor*> &actors, const ActorId &id)
 }
 
 QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port *inPort) {
-    QMap<Port*,Link*> links = inPort->getLinks();
+    QMap<Port *, Link *> links = inPort->getLinks();
     if (links.size() == 1) {
         Port *src = links.keys().first();
         assert(src->isOutput());
-        IntegralBusPort *bus = dynamic_cast<IntegralBusPort*>(src);
+        IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(src);
         assert(NULL != bus);
         DataTypePtr type = bus->getType();
         return type->getDatatypesMap();
@@ -806,12 +802,11 @@ QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port *inPort) {
     return QMap<Descriptor, DataTypePtr>();
 }
 
-bool WorkflowUtils::isBindingValid(const QString &srcSlotId, const QMap<Descriptor, DataTypePtr> &srcBus,
-    const QString &dstSlotId, const QMap<Descriptor, DataTypePtr> &dstBus) {
+bool WorkflowUtils::isBindingValid(const QString &srcSlotId, const QMap<Descriptor, DataTypePtr> &srcBus, const QString &dstSlotId, const QMap<Descriptor, DataTypePtr> &dstBus) {
     DataTypePtr srcType;
     // Check that incoming bus contains source slot
     bool found = false;
-    foreach (const Descriptor &d,  srcBus.keys()) {
+    foreach (const Descriptor &d, srcBus.keys()) {
         if (d.getId() == srcSlotId) {
             srcType = srcBus.value(d);
             found = true;
@@ -861,7 +856,7 @@ QString WorkflowUtils::createUniqueString(const QString &str, const QString &sep
                     QString right = uniq.mid(idx + 1);
                     bool ok = false;
                     int num = right.toInt(&ok);
-                    if(ok) {
+                    if (ok) {
                         found = true;
                         number = qMax(number, num + 1);
                     }
@@ -898,7 +893,7 @@ QString WorkflowUtils::getExternalToolPath(const QString &toolId) {
     return tool->getPath();
 }
 
-QString WorkflowUtils::externalToolIsAbsentError(const QString& toolName) {
+QString WorkflowUtils::externalToolIsAbsentError(const QString &toolName) {
     return tr("Specified variable \"%%1%\" does not exist, please check the command again.").arg(toolName);
 }
 
@@ -910,13 +905,13 @@ QString WorkflowUtils::externalToolInvalidError(const QString &toolName) {
     return tr("External tool \"%1\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected").arg(toolName);
 }
 
-QString WorkflowUtils::customExternalToolInvalidError(const QString& toolName, const QString& elementName) {
+QString WorkflowUtils::customExternalToolInvalidError(const QString &toolName, const QString &elementName) {
     return tr("Custom tool \"%1\", specified for the \"%2\" element, didn't pass validation.").arg(toolName).arg(elementName);
 }
 
 void WorkflowUtils::schemaFromFile(const QString &url, Schema *schema, Metadata *meta, U2OpStatus &os) {
     QFile file(url);
-    if(!file.open(QIODevice::ReadOnly)) {
+    if (!file.open(QIODevice::ReadOnly)) {
         os.setError(L10N::errorOpeningFileRead(url));
         return;
     }
@@ -932,7 +927,7 @@ void WorkflowUtils::schemaFromFile(const QString &url, Schema *schema, Metadata 
 }
 
 static bool isDatasetsAttr(Attribute *attr) {
-    URLAttribute *dsa = dynamic_cast<URLAttribute*>(attr);
+    URLAttribute *dsa = dynamic_cast<URLAttribute *>(attr);
     return (NULL != dsa);
 }
 
@@ -967,7 +962,7 @@ UrlAttributeType WorkflowUtils::isUrlAttribute(Attribute *attr, const Actor *act
 
 /** Truncate the last ';' character */
 static void normalizeUrls(QString &urls) {
-    if (!urls.isEmpty() && (1 != urls.size()) && (urls[ urls.size() - 1 ] == ';')) {
+    if (!urls.isEmpty() && (1 != urls.size()) && (urls[urls.size() - 1] == ';')) {
         urls.truncate(urls.size() - 1);
     }
 }
@@ -986,17 +981,14 @@ bool WorkflowUtils::validateInputFiles(QString urls, NotificationsList &notifica
         if (!fi.exists()) {
             notificationList << WorkflowNotification(L10N::errorFileNotFound(url));
             res = false;
-        }
-        else if (!fi.isFile()) {
+        } else if (!fi.isFile()) {
             notificationList << WorkflowNotification(L10N::errorIsNotAFile(url));
             res = false;
-        }
-        else {
+        } else {
             QFile testReadAccess(url);
             if (testReadAccess.open(QIODevice::ReadOnly)) {
                 testReadAccess.close();
-            }
-            else {
+            } else {
                 notificationList << WorkflowNotification(L10N::errorOpeningFileRead(url));
                 res = false;
             }
@@ -1018,8 +1010,7 @@ bool WorkflowUtils::validateInputDirs(QString urls, NotificationsList &notificat
         if (!fi.exists()) {
             notificationList << WorkflowNotification(L10N::errorDirNotFound(url));
             res = false;
-        }
-        else if (!fi.isDir()) {
+        } else if (!fi.isDir()) {
             notificationList << WorkflowNotification(L10N::errorIsNotADir(url));
             res = false;
         }
@@ -1109,7 +1100,7 @@ bool checkDbConnectionAndFixProblems(const QString &dbUrl, NotificationsList &no
         notificationList << notificationMsg;
         return false;
     } else {
-        foreach(WorkflowNotification notification, notificationList) {
+        foreach (WorkflowNotification notification, notificationList) {
             if (notification.message == notificationMsg.message && notification.type == notificationMsg.type) {
                 notificationList.removeAll(notification);
             }
@@ -1118,7 +1109,7 @@ bool checkDbConnectionAndFixProblems(const QString &dbUrl, NotificationsList &no
     }
 }
 
-}
+}    // namespace
 
 bool WorkflowUtils::checkSharedDbConnection(const QString &fullDbUrl) {
     U2OpStatusImpl os;
@@ -1191,7 +1182,7 @@ static bool canWriteToPath(QString dirAbsPath) {
         // Get upper folder
         QString dirPath = existenDir.path();
         QString dirName = existenDir.dirName();
-        dirPath.remove(// remove dir name and slash (if any) from the path
+        dirPath.remove(    // remove dir name and slash (if any) from the path
             dirPath.length() - dirName.length() - 1,
             dirName.length() + 1);
         if (dirPath.isEmpty()) {
@@ -1224,8 +1215,7 @@ bool WorkflowUtils::validateOutputFile(const QString &url, NotificationsList &no
 
     if (canWriteToPath(fi.absolutePath())) {
         return true;
-    }
-    else {
+    } else {
         notificationList << WorkflowNotification(tr("Can't access output file path: '%1'").arg(fi.absoluteFilePath()));
         return false;
     }
@@ -1245,7 +1235,10 @@ bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &not
         return true;
     } else {
         notificationList << WorkflowNotification(tr("Workflow output folder '%1' can't be accessed. Check that the folder exists and you have"
-            " enough permissions to write to it, or choose another folder in the UGENE Application Settings.").arg(url), "", WorkflowNotification::U2_ERROR);
+                                                    " enough permissions to write to it, or choose another folder in the UGENE Application Settings.")
+                                                     .arg(url),
+                                                 "",
+                                                 WorkflowNotification::U2_ERROR);
         return false;
     }
 }
@@ -1286,7 +1279,7 @@ bool WorkflowUtils::validateSharedDbUrl(const QString &url, NotificationsList &n
 bool WorkflowUtils::validateDatasets(const QList<Dataset> &sets, NotificationsList &notificationList) {
     bool res = true;
     foreach (const Dataset &set, sets) {
-        foreach (URLContainer* urlContainer, set.getUrls()) {
+        foreach (URLContainer *urlContainer, set.getUrls()) {
             SAFE_POINT(NULL != urlContainer, "NULL URLContainer!", false);
             bool urlIsValid = urlContainer->validateUrl(notificationList);
             res = res && urlIsValid;
@@ -1311,11 +1304,11 @@ QScriptValue WorkflowUtils::datasetsToScript(const QList<Dataset> &sets, QScript
     return setsArray;
 }
 
-QString WorkflowUtils::getDatasetSplitter(const QString& filePaths){
+QString WorkflowUtils::getDatasetSplitter(const QString &filePaths) {
     static const QString defaultSplitter = ";";
     static const QString additionalSplitter = ",";
 
-    if(filePaths.contains(defaultSplitter)){
+    if (filePaths.contains(defaultSplitter)) {
         return defaultSplitter;
     }
     return additionalSplitter;
@@ -1355,7 +1348,7 @@ const QRegularExpression WorkflowEntityValidator::INACCEPTABLE_SYMBOLS_IN_ID("[^
 /*****************************
  * PrompterBaseImpl
  *****************************/
-QVariant PrompterBaseImpl::getParameter(const QString& id) {
+QVariant PrompterBaseImpl::getParameter(const QString &id) {
     if (map.contains(id)) {
         return map.value(id);
     } else {
@@ -1363,17 +1356,19 @@ QVariant PrompterBaseImpl::getParameter(const QString& id) {
     }
 }
 
-QString PrompterBaseImpl::getURL(const QString& id, bool * empty, const QString &onEmpty, const QString &defaultValue) {
+QString PrompterBaseImpl::getURL(const QString &id, bool *empty, const QString &onEmpty, const QString &defaultValue) {
     QVariant urlVar = getParameter(id);
     QString url;
-    if (urlVar.canConvert< QList<Dataset> >()) {
-        QStringList urls = WorkflowUtils::getDatasetsUrls(urlVar.value< QList<Dataset> >());
+    if (urlVar.canConvert<QList<Dataset>>()) {
+        QStringList urls = WorkflowUtils::getDatasetsUrls(urlVar.value<QList<Dataset>>());
         url = urls.join(";");
     } else {
         url = getParameter(id).toString();
     }
-    if(empty != NULL) { *empty = false; }
-    if(!target->getParameter(id)->getAttributeScript().isEmpty()) {
+    if (empty != NULL) {
+        *empty = false;
+    }
+    if (!target->getParameter(id)->getAttributeScript().isEmpty()) {
         url = "got from user script";
     } else if (url.isEmpty()) {
         if (!onEmpty.isEmpty()) {
@@ -1384,7 +1379,9 @@ QString PrompterBaseImpl::getURL(const QString& id, bool * empty, const QString 
         } else {
             url = "<font color='red'>" + tr("unset") + "</font>";
         }
-        if(empty != NULL) { *empty = true; }
+        if (empty != NULL) {
+            *empty = true;
+        }
     } else if (url.indexOf(";") != -1) {
         url = tr("the list of files");
     } else if (SharedDbUrlUtils::isDbObjectUrl(url)) {
@@ -1400,24 +1397,24 @@ QString PrompterBaseImpl::getURL(const QString& id, bool * empty, const QString 
     return url;
 }
 
-QString PrompterBaseImpl::getRequiredParam(const QString& id) {
+QString PrompterBaseImpl::getRequiredParam(const QString &id) {
     QString url = getParameter(id).toString();
     if (url.isEmpty()) {
-        url = "<font color='red'>"+tr("unset")+"</font>";
+        url = "<font color='red'>" + tr("unset") + "</font>";
     }
     return url;
 }
 
-QString PrompterBaseImpl::getScreenedURL(IntegralBusPort* input, const QString& id, const QString& slot, const QString &onEmpty) {
+QString PrompterBaseImpl::getScreenedURL(IntegralBusPort *input, const QString &id, const QString &slot, const QString &onEmpty) {
     bool empty = false;
     QString attrUrl = QString("<u>%1</u>").arg(getURL(id, &empty, onEmpty));
-    if(!empty) {
+    if (!empty) {
         return attrUrl;
     }
 
-    Actor * origin = input->getProducer(slot);
+    Actor *origin = input->getProducer(slot);
     QString slotUrl;
-    if(origin != NULL) {
+    if (origin != NULL) {
         slotUrl = tr("file(s) alongside of input sources of <u>%1</u>").arg(origin->getLabel());
         return slotUrl;
     }
@@ -1426,34 +1423,33 @@ QString PrompterBaseImpl::getScreenedURL(IntegralBusPort* input, const QString& 
     return attrUrl;
 }
 
-QString PrompterBaseImpl::getProducers(const QString& port, const QString& slot)
-{
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(port));
+QString PrompterBaseImpl::getProducers(const QString &port, const QString &slot) {
+    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(port));
     CHECK(NULL != input, "");
-    QList<Actor*> producers = input->getProducers(slot);
+    QList<Actor *> producers = input->getProducers(slot);
 
     QStringList labels;
-    foreach(Actor* a, producers) {
+    foreach (Actor *a, producers) {
         labels << a->getLabel();
     }
     return labels.join(", ");
 }
 
 QString PrompterBaseImpl::getProducersOrUnset(const QString &port, const QString &slot) {
-    static const QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
+    static const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString prods = getProducers(port, slot);
     return prods.isEmpty() ? unsetStr : prods;
 }
 
-QString PrompterBaseImpl::getHyperlink(const QString& id, const QString& val) {
+QString PrompterBaseImpl::getHyperlink(const QString &id, const QString &val) {
     return QString("<a href=%1:%2>%3</a>").arg(WorkflowUtils::HREF_PARAM_ID).arg(id).arg(val);
 }
 
-QString PrompterBaseImpl::getHyperlink(const QString& id, int val) {
+QString PrompterBaseImpl::getHyperlink(const QString &id, int val) {
     return getHyperlink(id, QString::number(val));
 }
 
-QString PrompterBaseImpl::getHyperlink(const QString& id, qreal val) {
+QString PrompterBaseImpl::getHyperlink(const QString &id, qreal val) {
     return getHyperlink(id, QString::number(val));
 }
 
@@ -1463,4 +1459,4 @@ void PrompterBaseImpl::sl_actorModified() {
     }
 }
 
-}//namespace
+}    // namespace U2

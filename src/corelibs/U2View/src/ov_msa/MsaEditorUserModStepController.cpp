@@ -19,24 +19,23 @@
  * MA 02110-1301, USA.
  */
 
+#include "MsaEditorUserModStepController.h"
+
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "MsaEditorUserModStepController.h"
-
 namespace U2 {
 
-MsaEditorUserModStepController::MsaEditorUserModStepController(const U2EntityRef& _msaEntityRef)
-        : msaEntityRef(_msaEntityRef), msaChangeTracker(nullptr) {
-
+MsaEditorUserModStepController::MsaEditorUserModStepController(const U2EntityRef &_msaEntityRef)
+    : msaEntityRef(_msaEntityRef), msaChangeTracker(nullptr) {
 }
 
 MsaEditorUserModStepController::~MsaEditorUserModStepController() {
     delete msaChangeTracker;
 }
 
-void MsaEditorUserModStepController::startTracking(U2OpStatus& os) {
+void MsaEditorUserModStepController::startTracking(U2OpStatus &os) {
     if (msaChangeTracker != nullptr) {
         os.setError("Another action changing alignment is being performed now");
         return;
@@ -51,4 +50,4 @@ void MsaEditorUserModStepController::finishTracking() {
     }
 }
 
-} // namespace U2
+}    // namespace U2

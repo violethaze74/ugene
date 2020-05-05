@@ -22,10 +22,11 @@
 #ifndef _U2_DASHBOARD_H_
 #define _U2_DASHBOARD_H_
 
-#include <QVBoxLayout>
 #include <QToolButton>
+#include <QVBoxLayout>
 
 #include <U2Lang/WorkflowMonitor.h>
+
 #include "webview/U2WebView.h"
 
 namespace U2 {
@@ -59,7 +60,9 @@ public:
 
     bool isWorkflowInProgress();
 
-    U2WebView* getWebView() const {return webView;}
+    U2WebView *getWebView() const {
+        return webView;
+    }
 
     static const QString REPORT_SUB_DIR;
     static const QString DB_FILE_NAME;
@@ -78,7 +81,7 @@ signals:
     void si_loadSchema(const QString &url);
     void si_hideLoadBtnHint();
     void si_workflowStateChanged(bool isRunning);
-    void si_serializeContent(const QString& content);
+    void si_serializeContent(const QString &content);
 
 public slots:
     /** Hides the hint on the current dashboard instance */
@@ -115,15 +118,15 @@ private:
     bool workflowInProgress;
     DashboardPageController *dashboardPageController;
 
-    QVBoxLayout* mainLayout;
+    QVBoxLayout *mainLayout;
 
-    QToolButton* overviewTabButton;
-    QToolButton* inputTabButton;
-    QToolButton* externalToolsTabButton;
+    QToolButton *overviewTabButton;
+    QToolButton *inputTabButton;
+    QToolButton *externalToolsTabButton;
 
-    U2WebView* webView;
+    U2WebView *webView;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_DASHBOARD_H_
+#endif    // _U2_DASHBOARD_H_

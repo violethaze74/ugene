@@ -77,24 +77,25 @@ class PrepareInputFastaFilesTask;
 
 class FormatDBSupportTaskSettings {
 public:
-    FormatDBSupportTaskSettings() {reset();}
+    FormatDBSupportTaskSettings() {
+        reset();
+    }
     void reset();
 
-    QStringList     inputFilesPath;
-    QString         outputPath;
-    QString         databaseTitle;
-    QString         tempDirPath;
+    QStringList inputFilesPath;
+    QString outputPath;
+    QString databaseTitle;
+    QString tempDirPath;
     /*-p  Type of file
             T - protein
             F - nucleotide*/
-    bool            isInputAmino;
+    bool isInputAmino;
 };
-
 
 class FormatDBSupportTask : public Task {
     Q_OBJECT
 public:
-    FormatDBSupportTask(const QString& id, const FormatDBSupportTaskSettings& settings);
+    FormatDBSupportTask(const QString &id, const FormatDBSupportTaskSettings &settings);
 
 private:
     void prepare();
@@ -102,20 +103,20 @@ private:
     Task::ReportResult report();
     QString generateReport() const;
 
-    QString                     prepareTempDir();
-    QString                     prepareLink(const QString &path) const;
-    void                        createFormatDbTask();
+    QString prepareTempDir();
+    QString prepareLink(const QString &path) const;
+    void createFormatDbTask();
 
-    QString                     externalToolLog;
+    QString externalToolLog;
     PrepareInputFastaFilesTask *prepareTask;
-    ExternalToolRunTask*        formatDBTask;
-    QString                     toolId;
+    ExternalToolRunTask *formatDBTask;
+    QString toolId;
     FormatDBSupportTaskSettings settings;
 
-    QStringList                 inputFastaFiles;
-    QStringList                 fastaTmpFiles;
+    QStringList inputFastaFiles;
+    QStringList fastaTmpFiles;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_FORMATDB_SUPPORT_TASK_H
+#endif    // _U2_FORMATDB_SUPPORT_TASK_H

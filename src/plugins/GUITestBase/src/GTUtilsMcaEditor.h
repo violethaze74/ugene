@@ -25,7 +25,7 @@
 class QLabel;
 class QScrollBar;
 
-namespace HI{
+namespace HI {
 class GUITestOpStatus;
 }
 
@@ -46,14 +46,14 @@ public:
     static QLabel *getReferenceLabel(HI::GUITestOpStatus &os);
     static McaEditorNameList *getNameListArea(HI::GUITestOpStatus &os);
     static McaEditorSequenceArea *getSequenceArea(HI::GUITestOpStatus &os);
-    static McaEditorConsensusArea* getConsensusArea(HI::GUITestOpStatus &os);
+    static McaEditorConsensusArea *getConsensusArea(HI::GUITestOpStatus &os);
     static McaEditorReferenceArea *getReferenceArea(HI::GUITestOpStatus &os);
     static QScrollBar *getHorizontalScrollBar(HI::GUITestOpStatus &os);
     static QScrollBar *getVerticalScrollBar(HI::GUITestOpStatus &os);
 
-    static MultipleAlignmentRowData* getMcaRow(HI::GUITestOpStatus &os, int rowNum);
+    static MultipleAlignmentRowData *getMcaRow(HI::GUITestOpStatus &os, int rowNum);
 
-    static QAction* getOffsetAction(HI::GUITestOpStatus &os);
+    static QAction *getOffsetAction(HI::GUITestOpStatus &os);
 
     static QString getReferenceLabelText(HI::GUITestOpStatus &os);
 
@@ -86,9 +86,9 @@ public:
     static void toggleShowChromatogramsMode(HI::GUITestOpStatus &os);
 
 private:
-    static int readName2readNumber(HI::GUITestOpStatus &os,const QString &readName);
+    static int readName2readNumber(HI::GUITestOpStatus &os, const QString &readName);
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_GT_UTILS_MCA_EDITOR_H_
+#endif    // _U2_GT_UTILS_MCA_EDITOR_H_
