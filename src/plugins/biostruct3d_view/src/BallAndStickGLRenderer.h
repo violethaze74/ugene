@@ -22,6 +22,8 @@
 #ifndef _U2_BIOSTRUCT3D_BALLANDSTICK_RENDERER_H_
 #define _U2_BIOSTRUCT3D_BALLANDSTICK_RENDERER_H_
 
+#include <GraphicUtils.h>
+
 #include "BioStruct3DGLRender.h"
 
 namespace U2 {
