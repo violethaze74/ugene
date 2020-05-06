@@ -21,9 +21,6 @@
 
 #include "GLFrameManager.h"
 
-#include <QOpenGLWidget>
-
-#include <U2Core/Log.h>
 #include <U2Core/Vector3D.h>
 // include this for proper cross-platform including of glu.h
 #include "GraphicUtils.h"

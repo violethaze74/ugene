@@ -24,6 +24,7 @@
 
 #include <GraphicUtils.h>
 
+#include <QOpenGLWidget>
 #include <QVariantList>
 
 #include <U2Core/Matrix44.h>
