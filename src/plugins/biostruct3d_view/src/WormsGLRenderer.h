@@ -27,6 +27,7 @@
 #include <QSharedDataPointer>
 #include <QVector>
 
+#include <U2Core/BioStruct3D.h>
 #include <U2Core/Vector3D.h>
 
 #include "BioStruct3DGLRender.h"
@@ -84,7 +85,6 @@ class WormsGLRenderer : public BioStruct3DGLRenderer {
     Object3D *createHelix3D(int startId, int endId, const BioPolymerModel &bpModel);
     void createWorms();
     void drawWorms();
-    void drawSecondaryStructure();
     const float *getAtomColor(const SharedAtom &atom);
 
 private:
