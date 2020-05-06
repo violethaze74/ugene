@@ -19,6 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+// clang-format off
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <Psapi.h>
+#include <Winbase.h> //for IsProcessorFeaturePresent
+#endif
+// clang-format on
+
 #include "AppResources.h"
 
 #include <U2Core/AppContext.h>
@@ -31,17 +39,11 @@
 #include <QProcess>
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
-#include <stdio.h>
-#include <unistd.h> //for sysconf(3)
+#    include <stdio.h>
+#    include <unistd.h>    //for sysconf(3)
 #endif
 #if defined(Q_OS_LINUX)
-#include <fstream>
-#endif
-
-#ifdef Q_OS_WIN
-#include <windows.h>
-#include <Psapi.h>
-#include <Winbase.h> //for IsProcessorFeaturePresent
+#    include <fstream>
 #endif
 
 namespace U2 {
