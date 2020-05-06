@@ -22,6 +22,8 @@
 #ifndef _U2_GL_FRAME_MANAGER_H_
 #define _U2_GL_FRAME_MANAGER_H_
 
+#include <GraphicUtils.h>
+
 #include <QVariantList>
 
 #include <U2Core/Matrix44.h>
