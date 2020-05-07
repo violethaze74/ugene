@@ -45,18 +45,18 @@
 <context>
     <name>U2::TestRunnerPlugin</name>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="52"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="55"/>
         <source>test_runner_plug_name</source>
         <translation>Test runner</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="52"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="55"/>
         <source>test_runner_desc</source>
         <translation>Test runner allows one to run and manage tests suites and individual tests for Unipro UGENE. Enabled if environment variable UGENE_DEV is set</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="96"/>
-        <location filename="../src/TestRunnerPlugin.cpp" line="107"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="98"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="109"/>
         <source>Can&apos;t load suite %1</source>
         <translation>Can&apos;t load suite %1</translation>
     </message>
@@ -64,18 +64,18 @@
 <context>
     <name>U2::TestRunnerService</name>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="139"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="140"/>
         <location filename="../src/TestRunnerPlugin.cpp" line="175"/>
         <source>Test runner</source>
         <translation>Test runner</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="139"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="140"/>
         <source>Service to support UGENE embedded testing</source>
         <translation>Service to support UGENE embedded testing</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="291"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="287"/>
         <source>Error reading test suite from %1. Error: %2</source>
         <translation>Error reading test suite from %1. Error: %2</translation>
     </message>
@@ -83,55 +83,55 @@
 <context>
     <name>U2::TestViewController</name>
     <message>
-        <location filename="../src/TestViewController.cpp" line="428"/>
-        <location filename="../src/TestViewController.cpp" line="468"/>
-        <location filename="../src/TestViewController.cpp" line="778"/>
+        <location filename="../src/TestViewController.cpp" line="432"/>
+        <location filename="../src/TestViewController.cpp" line="471"/>
+        <location filename="../src/TestViewController.cpp" line="779"/>
         <location filename="../src/TestViewController.cpp" line="798"/>
         <source>error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="932"/>
+        <location filename="../src/TestViewController.cpp" line="930"/>
         <source>info</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="939"/>
+        <location filename="../src/TestViewController.cpp" line="937"/>
         <source>env_mb_title</source>
         <translation>Environment variables</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1144"/>
+        <location filename="../src/TestViewController.cpp" line="1142"/>
         <source>passed</source>
         <translation>Passed</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1147"/>
+        <location filename="../src/TestViewController.cpp" line="1145"/>
         <source>failed</source>
         <translation>Failed</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1149"/>
+        <location filename="../src/TestViewController.cpp" line="1147"/>
         <source>not_run</source>
         <translation>Not run</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1183"/>
+        <location filename="../src/TestViewController.cpp" line="1180"/>
         <source>state: </source>
         <translation>State:</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1185"/>
+        <location filename="../src/TestViewController.cpp" line="1182"/>
         <source>fail_desc: </source>
         <translation>Fail reason:</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1188"/>
+        <location filename="../src/TestViewController.cpp" line="1185"/>
         <source>source_file:</source>
         <translation>Test file:</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="71"/>
+        <location filename="../src/TestViewController.cpp" line="72"/>
         <source>Test runner</source>
         <translation>Test runner</translation>
     </message>
@@ -201,7 +201,7 @@
         <translation>Save Selected Suites</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="428"/>
+        <location filename="../src/TestViewController.cpp" line="432"/>
         <source>Error reading test suites: 
 
  %1</source>
@@ -210,23 +210,23 @@
  %1</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="443"/>
+        <location filename="../src/TestViewController.cpp" line="447"/>
         <source>Select test suite file</source>
         <translation>Select test suite file</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="468"/>
+        <location filename="../src/TestViewController.cpp" line="471"/>
         <source>Error reading test suite: %1</source>
         <translation>Error reading test suite: %1</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="778"/>
+        <location filename="../src/TestViewController.cpp" line="779"/>
         <location filename="../src/TestViewController.cpp" line="798"/>
         <source>Not all environment variables set</source>
         <translation>Not all environment variables set</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="932"/>
+        <location filename="../src/TestViewController.cpp" line="930"/>
         <source>No environment variables found</source>
         <translation>No environment variables found</translation>
     </message>
