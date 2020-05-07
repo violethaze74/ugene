@@ -498,6 +498,36 @@ QLineEdit *GTUtilsOptionPanelMsa::getSeqLineEdit(HI::GUITestOpStatus &os, int nu
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "isSearchInShowHideWidgetOpened"
+bool GTUtilsOptionPanelMsa::isSearchInShowHideWidgetOpened(HI::GUITestOpStatus &os) {
+    QWidget *searchInInnerWidget = GTWidget::findWidget(os, "widgetSearchIn");
+    GT_CHECK_RESULT(searchInInnerWidget != nullptr, "searchInInnerWidget is NULL", false);
+    return searchInInnerWidget->isVisible();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "openSearchInShowHideWidget"
+void GTUtilsOptionPanelMsa::openSearchInShowHideWidget(HI::GUITestOpStatus &os, bool open) {
+    CHECK(open != isSearchInShowHideWidgetOpened(os), );
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setRegionType"
+void GTUtilsOptionPanelMsa::setRegionType(HI::GUITestOpStatus &os, const QString &regionType) {
+    openSearchInShowHideWidget(os);
+    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "boxRegion"), regionType, false);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setRegion"
+void GTUtilsOptionPanelMsa::setRegion(HI::GUITestOpStatus &os, int from, int to) {
+    openSearchInShowHideWidget(os);
+    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "editStart"), QString::number(from));
+    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "editEnd"), QString::number(to));
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getWidget"
 QWidget *GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus &os, const QString &widgetName, int number) {
     QWidget *sequenceContainerWidget = GTWidget::findWidget(os, "sequenceContainerWidget");

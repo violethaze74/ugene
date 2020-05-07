@@ -118,9 +118,14 @@ public:
     static void setMatchPercentage(HI::GUITestOpStatus &os, int percentage);
     static void setCheckedRemoveOverlappedResults(HI::GUITestOpStatus &os, bool checkedState = true);
     static bool checkResultsText(HI::GUITestOpStatus &os, QString expectedText);
+    static void setRegionType(HI::GUITestOpStatus &os, const QString &regionType);
+    static void setRegion(HI::GUITestOpStatus &os, int from, int to);
 
     static void clickNext(HI::GUITestOpStatus &os);
     static void clickPrev(HI::GUITestOpStatus &os);
+
+    static bool isSearchInShowHideWidgetOpened(HI::GUITestOpStatus &os);
+    static void openSearchInShowHideWidget(HI::GUITestOpStatus &os, bool open = true);
 
 private:
     static QWidget *getWidget(HI::GUITestOpStatus &os, const QString &widgetName, int number);

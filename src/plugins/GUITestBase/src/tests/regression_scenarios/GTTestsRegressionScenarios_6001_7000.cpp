@@ -5649,6 +5649,27 @@ GUI_TEST_CLASS_DEFINITION(test_6740) {
 
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(4, 3), QPoint(4, 3), "T");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6746) {
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Open "Search in Alignment" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+
+    // 3. On the "Search in Alignment" options panel tab select "Custom columns region"
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+    GTUtilsOptionPanelMsa::setRegionType(os, "Custom columns region");
+    GTUtilsOptionPanelMsa::setRegion(os, 1, 200);
+
+    //4. Enter the following pattern: "ACGT".
+    GTUtilsOptionPanelMsa::enterPattern(os, "ACGT");
+
+    // Expected result: Results: 1/2
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/2");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6751) {
     // 1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
