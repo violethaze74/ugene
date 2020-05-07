@@ -70,7 +70,7 @@
       <item>
        <widget class="QRadioButton" name="usePatternFromFileRadioButton">
         <property name="text">
-         <string>Load pattern from file</string>
+         <string>Load patterns from file</string>
         </property>
        </widget>
       </item>

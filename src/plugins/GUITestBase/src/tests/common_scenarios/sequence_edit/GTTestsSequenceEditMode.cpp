@@ -201,7 +201,7 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
     CHECK_SET_ERR(string == "-AAA", QString("Unexpected string, expected: -AAA, current: %1").arg(string));
 
-    //5. Put cursor after "AAA" and push Bàckspañå 3 times
+    //5. Put cursor after "AAA" and push Bï¿½ckspaï¿½ï¿½ 3 times
     GTUtilsSequenceView::clickOnDetView(os);
     GTUtilsSequenceView::setCursor(os, 1);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -227,7 +227,7 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
     GTGlobals::sleep(100);
     GTUtilsSequenceView::setCursor(os, 0);
 
-    //7. Push Bàckspañå 3 times
+    //7. Push Bï¿½ckspaï¿½ï¿½ 3 times
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
@@ -297,11 +297,11 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 6));
     CHECK_SET_ERR(string == "ACGTN-", QString("Unexpected string in the begginning of the sequence, expected: ACGTN-, current: %1").arg(string));
 
-    //5. Select these 6 symbols and do ÑTRL+C
+    //5. Select these 6 symbols and do ï¿½TRL+C
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 6);
     GTKeyboardUtils::copy(os);
 
-    //6. Put cursor in "199 939" position and do ÑTRL + V
+    //6. Put cursor in "199 939" position and do ï¿½TRL + V
     GTUtilsSequenceView::setCursor(os, 199939);
     GTKeyboardUtils::paste(os);
     GTGlobals::sleep();
@@ -319,7 +319,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0001) {
     //2. Open "Edit->Annotation settings on sequence edditing" dialog.
     //   Be sure that "Expand or crop affected annotations" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotations settings on sequence editing..."));
+                                                                              << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -377,7 +377,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
     //2. Open "Edit->Annotation settings on sequence edditing" dialog.
     //   Be sure that "Expand or crop affected annotations" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotations settings on sequence editing..."));
+                                                                              << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -440,7 +440,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0003) {
     //2. Open "Edit->Annotation settings on sequence edditing" dialog.
     //   Be sure that "Remove affected annotation" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotations settings on sequence editing..."));
+                                                                              << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -473,7 +473,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
     //2. Open "Edit->Annotation settings on sequence edditing" dialog.
     //   Be sure that "Remove affected annotation" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotations settings on sequence editing..."));
+                                                                              << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -514,7 +514,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0005) {
     //2. Open "Edit->Annotation settings on sequence edditing" dialog.
     //   Be sure that "Split (join annitations parts)" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotations settings on sequence editing..."));
+                                                                              << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitJoinAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -557,7 +557,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0006) {
     //2. Open "Edit->Annotation settings on sequence edditing" dialog.
     //   Be sure that "Split (join annitations parts)" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotations settings on sequence editing..."));
+                                                                              << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitSeparateAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -605,7 +605,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
     //   Be sure that "Recalculate values of qualifiers" option is unchecked.
     //   Be sure that "Expand or crop affected annotations" option is unselected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotations settings on sequence editing..."));
+                                                                              << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -613,7 +613,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
 
     //4. Select Add->Qualifier from context menu
-    //5. In "Add new qualifier" dialog add Òame "Test" and Value : "1500..2000"  and save
+    //5. In "Add new qualifier" dialog add ï¿½ame "Test" and Value : "1500..2000"  and save
     GTUtilsAnnotationsTreeView::createQualifier(os, "Test", "1500..2000", "CDS");
 
     //   Be sure thar new qualifier "Test" appears
@@ -660,7 +660,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
     //   Be sure that "Recalculate values of qualifiers" option is unchecked.
     //   Be sure that "Expand or crop affected annotations" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotations settings on sequence editing..."));
+                                                                              << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, true));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -668,7 +668,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
 
     //4. Select Add->Qualifier from context menu
-    //5. In "Add new qualifier" dialog add Òame "Test" and Value : "1500..2000"  and save
+    //5. In "Add new qualifier" dialog add ï¿½ame "Test" and Value : "1500..2000"  and save
     GTUtilsAnnotationsTreeView::createQualifier(os, "Test", "1500..2000", "CDS");
 
     //   Be sure thar new qualifier "Test" appears

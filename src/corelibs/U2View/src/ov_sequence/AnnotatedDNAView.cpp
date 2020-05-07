@@ -543,8 +543,8 @@ void AnnotatedDNAView::buildStaticMenu(QMenu *m) {
     addAnalyseMenu(m);
     addAlignMenu(m);
     addExportMenu(m);
-    addRemoveMenu(m);
     addEditMenu(m);
+    addRemoveMenu(m);
     m->addSeparator();
 
     annotationsView->adjustStaticMenu(m);

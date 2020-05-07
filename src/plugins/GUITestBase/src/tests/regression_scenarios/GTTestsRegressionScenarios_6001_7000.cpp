@@ -633,7 +633,7 @@ GUI_TEST_CLASS_DEFINITION(test_6066) {
     //    2. Select "Edit" -> "Annotations settings on sequence editing..." menu item in the Details View context menu.
     //    3. Choose "Split (separate annotations parts)" and press "OK".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotations settings on sequence editing..."));
+                                                                              << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitSeparateAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -650,8 +650,8 @@ GUI_TEST_CLASS_DEFINITION(test_6066) {
     // Do not check it here, to avoid view state changing
 
     //    7. Doubleclick the first part if the split annotation and click Delete key.
-    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
-    GTGlobals::sleep(100);
+    GTUtilsAnnotationsTreeView::clickItem(os, "misc_feature", 1, true);
+    GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep();
 
@@ -659,7 +659,7 @@ GUI_TEST_CLASS_DEFINITION(test_6066) {
     // Do not check it here, to avoid view state changing
 
     //    8. Doubleclick the second part of the split annotation.
-    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 3, 0, true);
+    GTUtilsAnnotationsTreeView::clickItem(os, "misc_feature", 1, true);
 
     //    Expected state: UGENE doesn't crash.
 }

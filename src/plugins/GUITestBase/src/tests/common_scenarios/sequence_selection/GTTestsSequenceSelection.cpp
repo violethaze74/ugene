@@ -197,7 +197,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Switch on the editing mode.
-    QAction *editMode = GTAction::findActionByText(os, "Edit sequence");
+    QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
@@ -720,7 +720,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Switch on the editing mode.
-    QAction *editMode = GTAction::findActionByText(os, "Edit sequence");
+    QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
