@@ -144,7 +144,11 @@ private:
     void setCorrectPatternsString();
     void setRegionToWholeSequence();
 
-    U2Region getCompleteSearchRegion(bool &regionIsCorrect, qint64 maxLen) const;
+    /**
+     * Checks current UI state and returns either valid or empty region.
+     * Sets 'isRegionIsCorrect' if the region is valid.
+     */
+    U2Region getSearchRegionFromUi(bool &isRegionIsCorrect) const;
 
     void initFindPatternTask(const QList<QPair<QString, QString>> &patterns);
 

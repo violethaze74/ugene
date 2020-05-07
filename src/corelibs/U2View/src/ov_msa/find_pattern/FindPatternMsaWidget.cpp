@@ -336,7 +336,7 @@ void FindPatternMsaWidget::sl_onRegionOptionChanged(int index) {
         editEnd->show();
         editStart->setReadOnly(false);
         editEnd->setReadOnly(false);
-        getCompleteSearchRegion(regionIsCorrect, msaEditor->getAlignmentLen());
+        getSearchRegionFromUi(regionIsCorrect);
         checkState();
     } else if (boxRegion->itemData(index).toInt() == RegionSelectionIndex_CurrentSelectedRegion) {
         editStart->show();
@@ -683,7 +683,8 @@ void FindPatternMsaWidget::enableDisableMatchSpin() {
     spinMatch->setDisabled(textPattern->toPlainText().isEmpty() || isAmino);
 }
 
-U2Region FindPatternMsaWidget::getCompleteSearchRegion(bool &isRegionIsCorrect, qint64 maxLen) const {
+U2Region FindPatternMsaWidget::getSearchRegionFromUi(bool &isRegionIsCorrect) const {
+    qint64 maxLen = msaEditor->getAlignmentLen();
     if (boxRegion->itemData(boxRegion->currentIndex()).toInt() == RegionSelectionIndex_WholeSequence) {
         isRegionIsCorrect = true;
         return U2Region(0, maxLen);
@@ -751,7 +752,7 @@ void FindPatternMsaWidget::initFindPatternTask(const QList<NamePattern> &pattern
 
     // Region
     bool regionIsCorrectRef = false;
-    U2Region region = getCompleteSearchRegion(regionIsCorrectRef, msaEditor->getAlignmentLen());
+    U2Region region = getSearchRegionFromUi(regionIsCorrectRef);
     SAFE_POINT(regionIsCorrectRef, "Internal error: incorrect search region has been supplied."
                                    " Skipping the pattern search.", );
     settings.findSettings.searchRegion = region;
@@ -779,6 +780,12 @@ void FindPatternMsaWidget::initFindPatternTask(const QList<NamePattern> &pattern
     startProgressAnimation();
     TaskWatchdog::trackResourceExistence(msaEditor->getMaObject(), searchTask);
     AppContext::getTaskScheduler()->registerTopLevelTask(searchTask);
+
+    // Switch from the 'selected region' to 'custom region' because search task results will trigger selection updates.
+    int boxRegionData = boxRegion->itemData(boxRegion->currentIndex()).toInt();
+    if (boxRegionData == RegionSelectionIndex_CurrentSelectedRegion) {
+        boxRegion->setCurrentIndex(boxRegion->findData(RegionSelectionIndex_CustomRegion));
+    }
 }
 
 void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
@@ -829,35 +836,35 @@ bool FindPatternMsaWidget::checkPatternRegion(const QString &pattern) {
     SAFE_POINT(minMatch > 0, "Search pattern length is greater than max error value!", false);
 
     bool isCorrect = false;
-    qint64 regionLength = getCompleteSearchRegion(isCorrect, msaEditor->getAlignmentLen()).length;
+    U2Region searchRegion = getSearchRegionFromUi(isCorrect);
 
-    SAFE_POINT(regionLength > 0 && isCorrect,
+    SAFE_POINT(searchRegion.length > 0 && isCorrect,
                "Incorrect region length when enabling/disabling the pattern search button.",
                false);
 
-    return minMatch <= regionLength;
+    return minMatch <= searchRegion.length;
 }
 
 void FindPatternMsaWidget::sl_onSelectedRegionChanged(const MaEditorSelection &currentSelection, const MaEditorSelection &prev) {
-    bool isWholeSequenceSearch = boxRegion->itemData(boxRegion->currentIndex()).toInt() == RegionSelectionIndex_WholeSequence;
-    if (isWholeSequenceSearch) {
-        if (!isResultSelected()) {
-            // reset result position on non-compatible selection change.
-            currentResultIndex = -1;
-        }
-    } else {
+    int boxRegionData = boxRegion->itemData(boxRegion->currentIndex()).toInt();
+    bool isSearchInSelectionOn = boxRegionData == RegionSelectionIndex_CurrentSelectedRegion;
+    if (isSearchInSelectionOn && findCurrentResultIndexFromSelection() == -1) {
         currentResultIndex = -1;
         if (currentSelection.isEmpty()) {
             editStart->setText(QString::number(1));
             editEnd->setText(QString::number(msaEditor->getAlignmentLen()));
         } else {
             QRect selectionRect = currentSelection.toRect();
-            U2Region firstReg = U2Region(selectionRect.topLeft().rx(), selectionRect.width());
-            editStart->setText(QString::number(firstReg.startPos + 1));
-            editEnd->setText(QString::number(firstReg.endPos()));
+            U2Region firstRegion = U2Region(selectionRect.topLeft().rx(), selectionRect.width());
+            editStart->setText(QString::number(firstRegion.startPos + 1));
+            editEnd->setText(QString::number(firstRegion.endPos()));
         }
+        // Select the option again. Reason: setting text makes RegionSelectionIndex_CurrentRegion activated
+        boxRegion->setCurrentIndex(boxRegion->findData(RegionSelectionIndex_CurrentSelectedRegion));
         regionIsCorrect = true;
-        boxRegion->setCurrentIndex(boxRegion->findData(RegionSelectionIndex_CustomRegion));
+    } else if (!isResultSelected()) {
+        // reset result position on non-compatible selection change.
+        currentResultIndex = -1;
     }
     checkState();
     updateCurrentResultLabel();
