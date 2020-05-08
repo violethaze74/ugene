@@ -784,40 +784,51 @@ void MaEditorSequenceArea::sl_changeSelectionColor() {
     update();
 }
 
+/** Returns longest region of indexes from the same group. */
+U2Region findLongestRegion(const QList<int> &sortedViewIndexes, MaCollapseModel *collapseModel) {
+    U2Region longestRegion;
+    U2Region currentRegion;
+    int currentGroupIndex = -1;
+    foreach (int viewIndex, sortedViewIndexes) {
+        int groupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(viewIndex);
+        if (currentRegion.endPos() == viewIndex && groupIndex == currentGroupIndex) {
+            currentRegion.length++;
+        } else {
+            currentRegion.startPos = viewIndex;
+            currentRegion.length = 1;
+            currentGroupIndex = groupIndex;
+        }
+        if (currentRegion.length > longestRegion.length) {
+            longestRegion = currentRegion;
+        }
+    }
+    return longestRegion;
+}
+
 void MaEditorSequenceArea::restoreViewSelectionFromMaSelection() {
     if (selectedColumns.isEmpty() || selectedMaRowIds.isEmpty()) {
         return;
     }
-    MaCollapseModel *m = ui->getCollapseModel();
-
-    int columnCount = editor->getAlignmentLen();
-    int viewRowCount = m->getViewRowCount();
-
     // Ensure the columns region is in range.
     U2Region columnsRegions = selectedColumns;
     columnsRegions.startPos = qMin(columnsRegions.startPos, (qint64)editor->getAlignmentLen() - 1);
-    qint64 selectedColumnsEndPos = qMin(columnsRegions.endPos(), (qint64)columnCount);
+    qint64 selectedColumnsEndPos = qMin(columnsRegions.endPos(), (qint64)editor->getAlignmentLen());
     columnsRegions.length = selectedColumnsEndPos - columnsRegions.startPos;
 
-    // Convert selected MA rows indexes to view row indexes.
+    // Select the longest continuous region for the new selection
     QList<int> selectedMaRowIndexes = editor->getMaObject()->convertMaRowIdsToMaRowIndexes(selectedMaRowIds);
-    if (!selectedMaRowIndexes.isEmpty()) {
-        int newStartRowIdx = m->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[0]);
-        int newEndRowIdx = newStartRowIdx;
-        for (int i = 1; i < selectedMaRowIndexes.size(); i++) {
-            int viewRowIndex = m->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
-            newStartRowIdx = qMin(newStartRowIdx, viewRowIndex);
-            newEndRowIdx = qMax(newEndRowIdx, viewRowIndex);
-        }
-        int selectionHeight = newEndRowIdx - newStartRowIdx + 1;
-        if (selectionHeight <= 0 || newStartRowIdx + selectionHeight > viewRowCount) {
-            sl_cancelSelection();
-        } else {
-            MaEditorSelection newSelection(columnsRegions.startPos, newStartRowIdx, columnsRegions.length, selectionHeight);
-            setSelection(newSelection);
-        }
-    } else {
+    QList<int> selectedViewIndexes;
+    MaCollapseModel *collapseModel = ui->getCollapseModel();
+    for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
+        selectedViewIndexes << collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
+    }
+    qSort(selectedViewIndexes.begin(), selectedViewIndexes.end());
+    U2Region selectedViewRegion = findLongestRegion(selectedViewIndexes, collapseModel);
+    if (selectedViewRegion.length == 0) {
         sl_cancelSelection();
+    } else {
+        MaEditorSelection newSelection(columnsRegions.startPos, selectedViewRegion.startPos, columnsRegions.length, selectedViewRegion.length);
+        setSelection(newSelection);
     }
 
     ui->getScrollController()->updateVerticalScrollBar();
