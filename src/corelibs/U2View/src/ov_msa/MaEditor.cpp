@@ -491,8 +491,4 @@ QList<qint64> MaEditor::getMaRowIds() const {
     return maObject->getMultipleAlignment()->getRowsIds();
 }
 
-QAction *MaEditor::getClearSelectionAction() const {
-    return clearSelectionAction;
-}
-
 }    // namespace U2

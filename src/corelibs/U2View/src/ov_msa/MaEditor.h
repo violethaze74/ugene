@@ -160,8 +160,6 @@ public:
     /** Sets new cursor position. Emits si_cursorPositionChanged() signal. */
     void setCursorPosition(const QPoint &cursorPosition);
 
-    QAction *getClearSelectionAction() const;
-
 signals:
     void si_fontChanged(const QFont &f);
     void si_zoomOperationPerformed(bool resizeModeChanged);

@@ -167,7 +167,6 @@ private slots:
 
     void sl_modelChanged();
 
-    void sl_resetCollapsibleModel();
     void sl_setCollapsingRegions(const QList<QStringList> &);
     void sl_fontChanged(QFont font);
 

@@ -162,9 +162,6 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
     connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeUpdate()));
 
-    connect(ui->getUndoAction(), SIGNAL(triggered()), SLOT(sl_resetCollapsibleModel()));
-    connect(ui->getRedoAction(), SIGNAL(triggered()), SLOT(sl_resetCollapsibleModel()));
-
     connect(editor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), SLOT(sl_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)));
 
     setMouseTracking(true);
@@ -847,10 +844,6 @@ void MSAEditorSequenceArea::sl_reverseCurrentSelection() {
 void MSAEditorSequenceArea::sl_complementCurrentSelection() {
     ModificationType type(ModificationType::Complement);
     reverseComplementModification(type);
-}
-
-void MSAEditorSequenceArea::sl_resetCollapsibleModel() {
-    editor->resetCollapsibleModel();
 }
 
 void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList> &collapsedGroups) {
