@@ -1,5 +1,5 @@
 # CMake build is not officially supported by UGENE and
-# can only be used for developement (for example to enable CLion IDE integration)
+# can only be used for development (for example to enable CLion IDE integration)
 #
 # For CLion developers:
 #   * add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.

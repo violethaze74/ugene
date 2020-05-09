@@ -20,6 +20,7 @@
  */
 
 #include "GUITestLauncher.h"
+#include <system/GTFile.h>
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -102,7 +103,7 @@ void GUITestLauncher::run() {
             qint64 startTime = GTimer::currentTimeMicros();
             GUITestTeamcityLogger::testStarted(testNameForTeamCity);
 
-            QString testResult = performTest(testName);
+            QString testResult = runTest(testName);
             results[testName] = testResult;
             if (GUITestTeamcityLogger::testFailed(testResult)) {
                 renameTestLog(testName);
@@ -210,6 +211,36 @@ QString GUITestLauncher::getTestOutDir() {
     return d.absolutePath();
 }
 
+static QString getTestDirFromEnv() {
+    QString testDir = qgetenv("UGENE_TESTS_PATH");
+    if (!testDir.isEmpty()) {
+        if (QFileInfo(testDir).exists()) {
+            return testDir + (testDir.endsWith("/") ? "" : "/");
+        }
+        coreLog.error(QString("UGENE_TESTS_PATH is defined, but doesn't exist: '%1'").arg(testDir));
+    }
+
+    bool ok;
+    int i = qgetenv("UGENE_GUI_TEST_SUITE_NUMBER").toInt(&ok);
+#ifdef Q_OS_MAC
+    if (ok && i > 1) {
+        return QString("../../../../../../test%1/").arg(i - 1);
+    }
+    return QString("../../../../../../test/");
+#else
+    if (ok && i > 1) {
+        return QString("../../test%1/").arg(i - 1);
+    }
+    return QString("../../test/");
+#endif
+}
+
+static QString getTestDirAbsolutePath() {
+    QString testDir = getTestDirFromEnv();
+    QFileInfo dirInfo(testDir);
+    return dirInfo.isDir() ? dirInfo.absoluteFilePath() : testDir;
+}
+
 QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
@@ -225,13 +256,62 @@ QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
     }
     env.insert(U2_USER_INI, iniFileName);
 
+    env.insert("UGENE_TESTS_PATH", getTestDirAbsolutePath());
     return env;
 }
 
-QString GUITestLauncher::performTest(const QString &testName) {
+/** Helper class to backup & restore data around the test run. */
+class BackupAndRestore {
+public:
+    /** Backups sensitive data before the test run. */
+    BackupAndRestore(const QString &testDir);
+
+    /** Performs cleanup after the test run. */
+    ~BackupAndRestore();
+
+    QString testDir;
+};
+
+BackupAndRestore::BackupAndRestore(const QString &testDir)
+    : testDir(testDir) {
+    // Backup files before run. FIXME: rework to use svn revert -R ?
+    if (QDir(testDir).exists()) {
+        GUITestOpStatus os;
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj1.uprj");
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj2-1.uprj");
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj2.uprj");
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj3.uprj");
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj5.uprj");
+
+        // Files from the projects above.
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/1.gb");
+    }
+}
+
+BackupAndRestore::~BackupAndRestore() {
+    // Restore saved files
+    if (QDir(testDir).exists()) {
+        GUITestOpStatus os;
+        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj1.uprj");
+        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj2-1.uprj");
+        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj2.uprj");
+        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj3.uprj");
+        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
+        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj5.uprj");
+
+        // Files from the projects above.
+        GTFile::restore(os, testDir + "_common_data/scenarios/project/1.gb");
+    }
+}
+
+QString GUITestLauncher::runTest(const QString &testName) {
     QString path = QCoreApplication::applicationFilePath();
     QProcessEnvironment environment = getProcessEnvironment(testName);
     QStringList arguments = getTestProcessArguments(testName);
+
+    QString testDir = environment.value("UGENE_TESTS_PATH");
+    BackupAndRestore backupAndRestore(testDir);
 
     // ~QProcess is killing the process, will not return until the process is terminated.
     QProcess process;

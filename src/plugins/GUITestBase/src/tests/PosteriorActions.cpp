@@ -22,7 +22,9 @@
 #include <GTGlobals.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTMenu.h>
+#ifdef Q_OS_MAC
+#    include <primitives/GTMenu.h>
+#endif
 #include <primitives/GTWidget.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
@@ -121,29 +123,13 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
 }
 
-POSTERIOR_ACTION_DEFINITION(post_action_0003) {
-    // Restore backup files
-
-    if (QDir(testDir).exists()) {
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj1.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj2-1.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj2.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj3.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj5.uprj");
-
-        // Files from the projects above.
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/1.gb");
-    }
-}
-
 POSTERIOR_ACTION_DEFINITION(post_action_0004) {
     if (QDir(sandBoxDir).exists()) {
         GTFile::setReadWrite(os, sandBoxDir, true);
         QDir sandBox(sandBoxDir);
-        foreach (const QString &path, sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
-            GTFile::removeDir(sandBox.absolutePath() + "/" + path);
-        }
+            foreach (const QString &path, sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
+                GTFile::removeDir(sandBox.absolutePath() + "/" + path);
+            }
     }
 }
 
