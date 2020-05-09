@@ -1995,7 +1995,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     //6. Select any symbol in the read
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTGlobals::sleep(500);
+    GTGlobals::sleep(1000);
 
     //7. Push Esc
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -3076,7 +3076,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
 
     //Expected state: Gap column is vanished
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
-    CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing");
+    CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing 1");
     QString refSel = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, sel.x(), 1);
     CHECK_SET_ERR(refSel[0] == 'G', QString("Invalid reference selected character, expected: G, current: %1").arg(refSel[0]));
     char rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -3089,7 +3089,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     GTGlobals::sleep();
 
     //Expected result : gap column was restored
-    CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing");
+    CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing 2");
     refSel = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, sel.x(), 1);
     CHECK_SET_ERR(refSel[0] == U2Mca::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -3101,7 +3101,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     GTUtilsMcaEditor::redo(os);
 
     //Expected result : Gap column is vanished
-    CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing");
+    CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing 3");
     refSel = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, sel.x(), 1);
     CHECK_SET_ERR(refSel[0] == 'G', QString("Invalid reference selected character, expected: G, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
