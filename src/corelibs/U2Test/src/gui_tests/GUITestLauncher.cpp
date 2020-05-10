@@ -220,9 +220,9 @@ static QString getTestDirFromEnv() {
     } else if (!testDir.endsWith("/")) {
         testDir += "/";
     }
-    QFileInfo dirInfo(testDir);
-    QString absolutePath = dirInfo.absoluteFilePath();
     if (!isTestPathLogged) {
+        QFileInfo dirInfo(testDir);
+        QString absolutePath = dirInfo.absoluteFilePath();
         coreLog.info(QString("UGENE_TESTS_PATH for tests: '%1', absolute path: %2")
                          .arg(testDir)
                          .arg(absolutePath));
@@ -233,13 +233,7 @@ static QString getTestDirFromEnv() {
         }
         isTestPathLogged = true;
     }
-#ifdef Q_OS_WIN
-    // Absolute path on Windows looks like 'C:/../' and is not compatible with
-    // some testing controls (like 'open file dialog').
     return testDir;
-#else
-    return absolutePath;
-#endif
 }
 
 QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
