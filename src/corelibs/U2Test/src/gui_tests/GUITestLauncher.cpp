@@ -211,52 +211,29 @@ QString GUITestLauncher::getTestOutDir() {
     return d.absolutePath();
 }
 
-static QString getTestDirFromEnv() {
-    QString testDir = qgetenv("UGENE_TESTS_PATH");
-    if (!testDir.isEmpty()) {
-        if (QFileInfo(testDir).exists()) {
-            return testDir + (testDir.endsWith("/") ? "" : "/");
-        }
-        coreLog.error(QString("UGENE_TESTS_PATH is defined, but doesn't exist: '%1'").arg(testDir));
-    }
-
-    bool ok;
-    int i = qgetenv("UGENE_GUI_SUITE_NUMBER").toInt(&ok);
-#ifdef Q_OS_MAC
-    if (ok && i > 1) {
-        return QString("../../../../../../test%1/").arg(i - 1);
-    }
-    return QString("../../../../../../test/");
-#else
-    if (ok && i > 1) {
-        return QString("../../test%1/").arg(i - 1);
-    }
-    return QString("../../test/");
-#endif
-}
-
 static bool isTestPathLogged = false;
 
-/** Returns absolute file path to tests dir. The path ends with a '/' character. */
-static QString getTestDirAbsolutePath() {
-    QString testDir = getTestDirFromEnv();
-    QFileInfo dirInfo(testDir);
-    QString absolutePath = dirInfo.isDir() ? dirInfo.absoluteFilePath() : testDir;
+static QString getTestDirFromEnv() {
+    QString testDir = qgetenv("UGENE_TESTS_PATH");
+    if (testDir.isEmpty()) {
+        testDir = "../../test/";
+    } else if (!testDir.endsWith("/")) {
+        testDir += "/";
+    }
     if (!isTestPathLogged) {
-        coreLog.info(QString("UGENE_TESTS_PATH for tests: '%1'").arg(absolutePath));
+        QFileInfo dirInfo(testDir);
+        QString absolutePath = dirInfo.absoluteFilePath();
+        coreLog.info(QString("UGENE_TESTS_PATH for tests: '%1', absolute path: %2")
+                         .arg(testDir)
+                         .arg(absolutePath));
         // Perform extra check: to make the misconfiguration easier discoverable in logs.
         QFileInfo commonData(absolutePath, "_common_data");
         if (!commonData.isDir()) {
-            coreLog.error(QString("UGENE_TESTS_PATH is not a valid test dir '%1'")
-                              .arg(absolutePath));
+            coreLog.error("UGENE_TESTS_PATH is not a valid test dir!");
         }
         isTestPathLogged = true;
     }
-    // Some tests concatenate testDir + subpath with no leading '/'.
-    if (!absolutePath.endsWith("/")) {
-        absolutePath += "/";
-    }
-    return absolutePath;
+    return testDir;
 }
 
 QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
@@ -274,7 +251,7 @@ QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
     }
     env.insert(U2_USER_INI, iniFileName);
 
-    env.insert("UGENE_TESTS_PATH", getTestDirAbsolutePath());
+    env.insert("UGENE_TESTS_PATH", getTestDirFromEnv());
     return env;
 }
 
