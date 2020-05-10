@@ -235,22 +235,10 @@ static QString getTestDirFromEnv() {
 #endif
 }
 
-static bool isTestPathLogged = false;
-
 static QString getTestDirAbsolutePath() {
     QString testDir = getTestDirFromEnv();
     QFileInfo dirInfo(testDir);
-    QString absolutePath = dirInfo.isDir() ? dirInfo.absoluteFilePath() : testDir;
-    if (!isTestPathLogged) {
-        coreLog.info(QString("UGENE_TESTS_PATH for tests: '%1'").arg(testDir));
-        // Perform extra check: to make the misconfiguration easier discoverable in logs.
-        QFileInfo commonData(absolutePath, "_common_data");
-        if (!commonData.isDir()) {
-            coreLog.error(QString("UGENE_TESTS_PATH is not a valid test dir '%1'").arg(testDir));
-        }
-        isTestPathLogged = true;
-    }
-    return absolutePath;
+    return dirInfo.isDir() ? dirInfo.absoluteFilePath() : testDir;
 }
 
 QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
