@@ -347,6 +347,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {

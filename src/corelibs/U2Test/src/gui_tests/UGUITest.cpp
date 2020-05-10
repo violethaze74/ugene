@@ -35,26 +35,34 @@
 
 namespace U2 {
 
-static QString getTestDir() {
-    QString testDir = qgetenv("UGENE_TESTS_PATH");
-    QFileInfo dirInfo(testDir);
-    if (testDir.isEmpty() || !dirInfo.isDir()) {
-        coreLog.error(QString("UGENE_TESTS_PATH is not set"));
-        return "";
+QString getTestDir() {
+    const QString testDir = qgetenv("UGENE_TESTS_PATH");
+    if (!testDir.isEmpty()) {
+        if (!QFileInfo(testDir).exists()) {
+            coreLog.error(QString("UGENE_TESTS_PATH is defined, but doesn't exist: '%1'").arg(testDir));
+        } else {
+            return testDir + (testDir.endsWith("/") ? "" : "/");
+        }
     }
-    if (!dirInfo.isDir()) {
-        coreLog.error(QString("UGENE_TESTS_PATH doesn't exist: '%1'").arg(testDir));
-        return "";
+
+    bool ok;
+    int i = qgetenv("UGENE_GUI_TEST_SUITE_NUMBER").toInt(&ok);
+#ifdef Q_OS_MAC
+    if (ok && i > 1) {
+        return QString("../../../../../../test%1/").arg(i - 1);
+    } else {
+        return QString("../../../../../../test/");
     }
-    QFileInfo commonData(dirInfo.absolutePath(), "_common_data");
-    if (!commonData.isDir()) {
-        coreLog.error(QString("UGENE_TESTS_PATH is not a valid test dir '%1'").arg(testDir));
-        return "";
+#else
+    if (ok && i > 1) {
+        return QString("../../test%1/").arg(i - 1);
+    } else {
+        return QString("../../test/");
     }
-    return testDir;
+#endif
 }
 
-static QString getDataDir() {
+QString getDataDir() {
     QString dataDir = qgetenv("UGENE_DATA_PATH");
     if (!dataDir.isEmpty()) {
         if (!QFileInfo(dataDir).exists()) {
@@ -91,7 +99,7 @@ static QString getDataDir() {
     return dataDir;
 }
 
-static QString getScreenshotDir() {
+QString getScreenshotDir() {
     QString result;
 #ifdef Q_OS_MAC
     result = "../../../../../../screenshotFol/";

@@ -40,6 +40,9 @@ public:
     // backup file to the file with backupPostfix. fail the given file can't be opened
     static void backup(GUITestOpStatus &os, const QString&);
 
+    // backup directory to the file with backupPostfix
+    static void backupDir(GUITestOpStatus &os, const QString&);
+
     // copy file removing target file if exist
     static void copy(GUITestOpStatus &os, const QString& from, const QString& to);
 
@@ -51,6 +54,9 @@ public:
 
     // restores file and deletes backup. fail if there is no backup or can't write to the given file
     static void restore(GUITestOpStatus &os, const QString&);
+
+    // restores file and deletes backup. fail if there is no backup or can't write to the given file
+    static void restoreDir(GUITestOpStatus &os, const QString&);
 
     // checks if file exists
     static bool check(GUITestOpStatus &os, const QString&);

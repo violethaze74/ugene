@@ -27,6 +27,7 @@
 namespace U2 {
 namespace GUITest_preliminary_actions {
 
+#define PRELIMINARY_ACTION_DECLARATION(className) GUI_TEST_CLASS_DECLARATION(className)
 #define PRELIMINARY_ACTION_DEFINITION(className) GUI_TEST_CLASS_DEFINITION(className)
 
 #undef GUI_TEST_SUITE
@@ -36,6 +37,7 @@ namespace GUITest_preliminary_actions {
 GUI_TEST_CLASS_DECLARATION(pre_action_0000)
 GUI_TEST_CLASS_DECLARATION(pre_action_0001)
 GUI_TEST_CLASS_DECLARATION(pre_action_0002)
+GUI_TEST_CLASS_DECLARATION(pre_action_0003)
 GUI_TEST_CLASS_DECLARATION(pre_action_0004)
 GUI_TEST_CLASS_DECLARATION(pre_action_0005)
 

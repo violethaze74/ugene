@@ -88,6 +88,22 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
     }
 }
 
+PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
+    // Backup some files used in tests directly.
+
+    if (QDir(testDir).exists()) {
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj1.uprj");
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj2-1.uprj");
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj2.uprj");
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj3.uprj");
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj5.uprj");
+
+        // Files from the projects above.
+        GTFile::backup(os, testDir + "_common_data/scenarios/project/1.gb");
+    }
+}
+
 PRELIMINARY_ACTION_DEFINITION(pre_action_0004) {
     // create a directory for screenshots
 

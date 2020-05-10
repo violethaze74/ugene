@@ -58,10 +58,7 @@ private:
     static QString getTestOutDir();
 
     void firstTestRunCheck(const QString &testName);
-
-    /** Runs test in separate process and waits until its finished. */
-    QString runTest(const QString &testName);
-
+    QString performTest(const QString &testName);
     static QString readTestResult(const QByteArray &output);
     bool renameTestLog(const QString &testName);
 

@@ -337,18 +337,48 @@ void GTFile::backup(GUITestOpStatus &os, const QString& path) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "backupDir"
+void GTFile::backupDir(GUITestOpStatus &os, const QString& path) {
+
+    copyDir(os, path, path + backupPostfix);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "restore"
 void GTFile::restore(GUITestOpStatus &os, const QString& path) {
+
     QFile backupFile(path + backupPostfix);
-    if (!backupFile.exists()) {
+
+    bool ok = backupFile.open(QIODevice::ReadOnly);
+    GT_CHECK(ok, "There is no backup file for <" + path + ">");
+
+    QFile file(path);
+    ok = file.open(QIODevice::ReadOnly);
+    if (ok) {
+        file.remove();
+    }
+
+    bool renamed = backupFile.rename(path);
+    GT_CHECK(renamed == true, "restore of <" + path + "> can't be done");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "restoreDir"
+void GTFile::restoreDir(GUITestOpStatus &os, const QString& path) {
+    QDir backupDir(path + backupPostfix);
+    bool exists = backupDir.exists();
+    if(!exists){
         return;
     }
-    QFile originalFile(path);
-    if (originalFile.exists()) {
-        originalFile.remove();
+
+    QDir dir(path);
+    exists = dir.exists();
+    if (exists) {
+        removeDir(dir.absolutePath());
     }
-    bool isMoved = backupFile.rename(path);
-    GT_CHECK(isMoved, "restore of <" + path + "> can't be done");
+
+    bool renamed = backupDir.rename(path + backupPostfix, path);
+    GT_CHECK(renamed == true, "restore of <" + path + "> can't be done");
 }
 #undef GT_METHOD_NAME
 

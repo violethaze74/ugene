@@ -146,6 +146,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
+    // backup proj3 first
+    //     GTFile::backup(os, testDir + "_common_data/scenarios/project/proj3.uprj");
+
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj3.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
@@ -183,6 +186,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
     GTGlobals::sleep();
+
+    // proj3 was modified, restoring
+    //     GTFile::restore(os, testDir + "_common_data/scenarios/project/proj3.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
