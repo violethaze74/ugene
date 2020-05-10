@@ -277,6 +277,7 @@ BackupAndRestore::BackupAndRestore(const QString &testDir)
     : testDir(testDir) {
     // Backup files before run. FIXME: rework to use svn revert -R ?
     if (QDir(testDir).exists()) {
+        coreLog.info("Running backup for files before the test run.");
         GUITestOpStatus os;
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj1.uprj");
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj2-1.uprj");
@@ -287,12 +288,14 @@ BackupAndRestore::BackupAndRestore(const QString &testDir)
 
         // Files from the projects above.
         GTFile::backup(os, testDir + "_common_data/scenarios/project/1.gb");
+        coreLog.info("Backup is finished");
     }
 }
 
 BackupAndRestore::~BackupAndRestore() {
     // Restore saved files
     if (QDir(testDir).exists()) {
+        coreLog.info("Running restore for files after the test run.");
         GUITestOpStatus os;
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj1.uprj");
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj2-1.uprj");
@@ -303,6 +306,7 @@ BackupAndRestore::~BackupAndRestore() {
 
         // Files from the projects above.
         GTFile::restore(os, testDir + "_common_data/scenarios/project/1.gb");
+        coreLog.info("Restore is finished.");
     }
 }
 
@@ -315,6 +319,7 @@ QString GUITestLauncher::runTest(const QString &testName) {
     BackupAndRestore backupAndRestore(testDir);
 
     // ~QProcess is killing the process, will not return until the process is terminated.
+    coreLog.info(QString("Starting a new process for test %1").arg(testName));
     QProcess process;
     process.setProcessEnvironment(environment);
     process.start(path, arguments);
@@ -329,9 +334,12 @@ QString GUITestLauncher::runTest(const QString &testName) {
     if (!started) {
         return tr("An error occurred while starting UGENE: ") + process.errorString();
     }
-    bool finished;
-    finished = process.waitForFinished(TIMEOUT);
+    bool finished = process.waitForFinished(TIMEOUT);
     QProcess::ExitStatus exitStatus = process.exitStatus();
+
+    coreLog.info(QString("The process for test %1 is finished with status: %2")
+                     .arg(testName)
+                     .arg(exitStatus));
 
     if (!finished || exitStatus != QProcess::NormalExit) {
         CmdlineTaskRunner::killChildrenProcesses(processId);

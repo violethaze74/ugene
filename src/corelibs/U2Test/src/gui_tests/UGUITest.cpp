@@ -42,8 +42,7 @@ static QString getTestDir() {
         coreLog.error(QString("UGENE_TESTS_PATH is not set"));
         return "";
     }
-    coreLog.info(QString("Using UGENE_TESTS_PATH = '%1'").arg(testDir));
-    return testDir;
+    return testDir + (testDir.endsWith("/") ? "" : "/");
 }
 
 static QString getDataDir() {

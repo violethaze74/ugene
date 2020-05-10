@@ -339,16 +339,20 @@ void GTFile::backup(GUITestOpStatus &os, const QString& path) {
 
 #define GT_METHOD_NAME "restore"
 void GTFile::restore(GUITestOpStatus &os, const QString& path) {
+
     QFile backupFile(path + backupPostfix);
-    if (!backupFile.exists()) {
-        return;
+
+    bool ok = backupFile.open(QIODevice::ReadOnly);
+    GT_CHECK(ok, "There is no backup file for <" + path + ">");
+
+    QFile file(path);
+    ok = file.open(QIODevice::ReadOnly);
+    if (ok) {
+        file.remove();
     }
-    QFile originalFile(path);
-    if (originalFile.exists()) {
-        originalFile.remove();
-    }
-    bool isMoved = backupFile.rename(path);
-    GT_CHECK(isMoved, "restore of <" + path + "> can't be done");
+
+    bool restored = backupFile.rename(path);
+    GT_CHECK(restored == true, "restore of <" + path + "> can't be done");
 }
 #undef GT_METHOD_NAME
 
