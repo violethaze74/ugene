@@ -237,24 +237,18 @@ static QString getTestDirFromEnv() {
 
 static bool isTestPathLogged = false;
 
-/** Returns absolute file path to tests dir. The path ends with a '/' character. */
 static QString getTestDirAbsolutePath() {
     QString testDir = getTestDirFromEnv();
     QFileInfo dirInfo(testDir);
     QString absolutePath = dirInfo.isDir() ? dirInfo.absoluteFilePath() : testDir;
     if (!isTestPathLogged) {
-        coreLog.info(QString("UGENE_TESTS_PATH for tests: '%1'").arg(absolutePath));
+        coreLog.info(QString("UGENE_TESTS_PATH for tests: '%1'").arg(testDir));
         // Perform extra check: to make the misconfiguration easier discoverable in logs.
         QFileInfo commonData(absolutePath, "_common_data");
         if (!commonData.isDir()) {
-            coreLog.error(QString("UGENE_TESTS_PATH is not a valid test dir '%1'")
-                              .arg(absolutePath));
+            coreLog.error(QString("UGENE_TESTS_PATH is not a valid test dir '%1'").arg(testDir));
         }
         isTestPathLogged = true;
-    }
-    // Some tests concatenate testDir + subpath with no leading '/'.
-    if (!absolutePath.endsWith("/")) {
-        absolutePath += "/";
     }
     return absolutePath;
 }
