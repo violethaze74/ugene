@@ -38,19 +38,11 @@ namespace U2 {
 static QString getTestDir() {
     QString testDir = qgetenv("UGENE_TESTS_PATH");
     QFileInfo dirInfo(testDir);
-    if (testDir.isEmpty() || !dirInfo.isDir()) {
+    if (testDir.isEmpty()) {
         coreLog.error(QString("UGENE_TESTS_PATH is not set"));
         return "";
     }
-    if (!dirInfo.isDir()) {
-        coreLog.error(QString("UGENE_TESTS_PATH doesn't exist: '%1'").arg(testDir));
-        return "";
-    }
-    QFileInfo commonData(dirInfo.absolutePath(), "_common_data");
-    if (!commonData.isDir()) {
-        coreLog.error(QString("UGENE_TESTS_PATH is not a valid test dir '%1'").arg(testDir));
-        return "";
-    }
+    coreLog.info(QString("Using UGENE_TESTS_PATH = '%1'").arg(testDir));
     return testDir;
 }
 
