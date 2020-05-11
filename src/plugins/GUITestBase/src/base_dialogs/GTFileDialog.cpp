@@ -343,7 +343,7 @@ void GTFileDialog::openFile(GUITestOpStatus &os, const QString &path, const QStr
     };
     GTThread::runInMainThread(os, new OpenFileScenario(path + "/" + fileName));
     GTThread::waitForMainThread();
-    GTGlobals::sleep(200);
+    GTGlobals::sleep(500);
 #else
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, path, fileName, (GTFileDialogUtils::Button)button, m);
     GTUtilsDialog::waitForDialog(os, ob);
@@ -351,9 +351,8 @@ void GTFileDialog::openFile(GUITestOpStatus &os, const QString &path, const QStr
     ob->openFileDialog();
     GTThread::waitForMainThread();
     GTGlobals::sleep(100);
-}
 #endif
-}    // namespace HI
+}
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openFile"
