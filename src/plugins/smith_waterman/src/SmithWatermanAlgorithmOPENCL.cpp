@@ -444,7 +444,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
 
     clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &err);
     if (CL_INVALID_QUEUE_PROPERTIES == err) {    //device doesn't support the CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE property, so let's try to run without it
-        clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, NULL, &err);
+        clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, 0, &err);
     }
     if (hasOPENCLError(err, "cl::CommandQueue() failed "))
         return;

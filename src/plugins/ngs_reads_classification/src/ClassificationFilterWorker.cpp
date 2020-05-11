@@ -433,7 +433,8 @@ void ClassificationFilterTask::run() {
     while (reader.hasNext()) {
         CHECK_OP(stateInfo, );
 
-        DNASequence *seq = reader.getNextSequenceObject(), *pairedSeq;
+        DNASequence *seq = reader.getNextSequenceObject();
+        DNASequence *pairedSeq = nullptr;
         algoLog.trace(QString("Got seq: %1").arg(seq->getName()));
         if (cfg.paired) {
             if (!pairedReader.hasNext()) {

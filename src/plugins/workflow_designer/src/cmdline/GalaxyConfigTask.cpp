@@ -180,7 +180,11 @@ void GalaxyConfigTask::tryToFindByLocate(const QString &objectName, QString &obj
     }
     QString fileName = objectName + "_path.txt";
     QString locateCommand = QString("locate %1 -l 1 > %2").arg(objectName).arg(fileName);
-    system(locateCommand.toLocal8Bit().constData());
+    int rc = system(locateCommand.toLocal8Bit().constData());
+    if (rc == -1) {    // From docs: The value returned is -1 on error, and the return status of the command otherwise.
+        coreLog.info(QString("Locate command returned -1: %1").arg(locateCommand));
+        return;
+    }
 
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
