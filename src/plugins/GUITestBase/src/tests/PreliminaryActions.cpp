@@ -101,6 +101,10 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
 
         // Files from the projects above.
         GTFile::backup(os, testDir + "_common_data/scenarios/project/1.gb");
+
+        // Assembly browser test
+        GTFile::backup(os, testDir + "_common_data/scenarios/assembly/example-alignment.ugenedb");
+        GTFile::backup(os, testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb");
     }
 }
 
