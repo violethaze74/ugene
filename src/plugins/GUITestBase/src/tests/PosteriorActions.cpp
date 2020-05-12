@@ -131,14 +131,9 @@ POSTERIOR_ACTION_DEFINITION(post_action_0003) {
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj3.uprj");
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj5.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj5.uprj");
 
         // Files from the projects above.
         GTFile::restore(os, testDir + "_common_data/scenarios/project/1.gb");
-
-        // Assembly browser test
-        GTFile::restore(os, testDir + "_common_data/scenarios/assembly/example-alignment.ugenedb");
-        GTFile::restore(os, testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb");
     }
 }
 
