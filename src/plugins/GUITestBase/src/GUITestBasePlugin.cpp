@@ -1973,7 +1973,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002);
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003,"runs > 8 mins and fails");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003, "runs > 8 mins and fails");
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005);
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006, "runs > 8 mins and fails");
@@ -2940,14 +2940,14 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0004);
 
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0007);
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0001, "runs > 8 mins in teamcity");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0002, "runs > 8 mins in teamcity");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0003, "runs > 8 mins in teamcity");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0004, "runs > 8 mins in teamcity");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1, "runs > 8 mins in teamcity");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005, "runs > 8 mins in teamcity");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0006, "runs > 8 mins in teamcity");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0007, "runs > 8 mins in teamcity");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0008, "Very long test muted in the teamcity");
 
     /////////////////////////////////////////////////////////////////////////
