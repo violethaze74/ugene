@@ -37,8 +37,7 @@
 #include "GUITestTeamcityLogger.h"
 #include "UGUITestBase.h"
 
-/** Timeout per GUI test. */
-#define TIMEOUT_MILLIS 480000
+#define TIMEOUT 480000
 
 #ifdef Q_OS_MAC
 #    define NUMBER_OF_TESTS_IN_SUITE 750
@@ -250,13 +249,11 @@ QString GUITestLauncher::performTest(const QString &testName) {
         return tr("An error occurred while starting UGENE: ") + process.errorString();
     }
     bool finished;
-    finished = process.waitForFinished(TIMEOUT_MILLIS);
+    finished = process.waitForFinished(TIMEOUT);
     QProcess::ExitStatus exitStatus = process.exitStatus();
 
     if (!finished || exitStatus != QProcess::NormalExit) {
-        coreLog.error("Killing test by timeout");
         CmdlineTaskRunner::killChildrenProcesses(processId);
-        coreLog.error("Test was killed by timeout");
     }
 
 #ifdef Q_OS_WIN
