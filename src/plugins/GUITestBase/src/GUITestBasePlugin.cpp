@@ -2791,7 +2791,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_Assembly_browser::test_0012, "permission setter issue");
     REGISTER_TEST(GUITest_Assembly_browser::test_0013);
     REGISTER_TEST(GUITest_Assembly_browser::test_0014);
-    REGISTER_TEST(GUITest_Assembly_browser::test_0015);
+    REGISTER_TEST_IGNORED(GUITest_Assembly_browser::test_0015, "UTI-306");
     REGISTER_TEST(GUITest_Assembly_browser::test_0016);
     REGISTER_TEST(GUITest_Assembly_browser::test_0017);
     REGISTER_TEST(GUITest_Assembly_browser::test_0018);
