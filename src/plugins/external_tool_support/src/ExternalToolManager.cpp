@@ -26,7 +26,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CustomExternalTool.h>
-#include <U2Core/MultiTask.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2SafePoints.h>
@@ -72,6 +71,10 @@ void ExternalToolManagerImpl::innerStart() {
 void ExternalToolManagerImpl::checkStartupTasksState() {
     CHECK(startupChecks, );
     CHECK(!toolStates.values().contains(ValidationIsInProcess) && !toolStates.values().contains(SearchingIsInProcess), );
+    markStartupCheckAsFinished();
+}
+
+void ExternalToolManagerImpl::markStartupCheckAsFinished() {
     startupChecks = false;
     ExternalToolSupportSettings::setExternalTools();
 
@@ -345,8 +348,12 @@ void ExternalToolManagerImpl::sl_customToolsLoaded(Task *task) {
             toolPaths.insert(tool->getId(), toolPath);
         }
     }
-
-    validateTools(toolPaths);
+    bool skipValidationOnStart = qgetenv("UGENE_SKIP_EXTERNAL_TOOLS_VALIDATION") == "1";
+    if (skipValidationOnStart) {
+        markStartupCheckAsFinished();
+    } else {
+        validateTools(toolPaths);
+    }
 }
 
 void ExternalToolManagerImpl::sl_customToolImported(const QString &toolId) {

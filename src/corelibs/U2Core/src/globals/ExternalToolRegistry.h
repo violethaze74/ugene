@@ -201,6 +201,10 @@ public:
     virtual void validate(const QStringList &toolNames, const StrStrMap &toolPaths, ExternalToolValidationListener *listener = nullptr) = 0;
 
     virtual bool isValid(const QString &toolName) const = 0;
+
+    /** Returns true if all startup checks are finished. */
+    virtual bool isStartupCheckFinished() const = 0;
+
     virtual ExternalToolState getToolState(const QString &toolName) const = 0;
 
 signals:

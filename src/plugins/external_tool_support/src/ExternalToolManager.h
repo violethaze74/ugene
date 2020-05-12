@@ -56,6 +56,11 @@ public:
     virtual void validate(const QStringList &toolIds, const StrStrMap &toolPaths, ExternalToolValidationListener *listener = nullptr);
 
     virtual bool isValid(const QString &toolIds) const;
+
+    virtual bool isStartupCheckFinished() const {
+        return startupChecks;
+    }
+
     virtual ExternalToolState getToolState(const QString &toolId) const;
 
 signals:
@@ -74,6 +79,7 @@ private slots:
 private:
     void innerStart();
     void checkStartupTasksState();
+    void markStartupCheckAsFinished();
     QString addTool(ExternalTool *tool);
     bool dependenciesAreOk(const QString &toolId);
     void validateTools(const StrStrMap &toolPaths = StrStrMap(), ExternalToolValidationListener *listener = nullptr);

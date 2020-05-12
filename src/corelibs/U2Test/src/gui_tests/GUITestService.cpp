@@ -245,7 +245,10 @@ GUITests GUITestService::postActions() {
 }
 
 void GUITestService::sl_allStartUpPluginsLoaded() {
-    if (!connect(AppContext::getExternalToolRegistry()->getManager(), SIGNAL(si_startupChecksFinish()), SLOT(sl_registerService()))) {
+    auto externalToolsManager = AppContext::getExternalToolRegistry()->getManager();
+    if (externalToolsManager == nullptr || externalToolsManager->isStartupCheckFinished()) {
+        sl_registerService();
+    } else if (!connect(externalToolsManager, SIGNAL(si_startupChecksFinish()), SLOT(sl_registerService()))) {
         coreLog.error(tr("Can't connect external tool manager signal"));
         sl_registerService();
     }
