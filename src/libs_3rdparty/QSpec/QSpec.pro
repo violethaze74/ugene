@@ -16,6 +16,7 @@ HEADERS += \
            src/base_dialogs/ColorDialogFiller.h \
            src/base_dialogs/DefaultDialogFiller.h \
            src/base_dialogs/FontDialogFiller.h \
+           src/base_dialogs/GTFileDialog.h \
            src/base_dialogs/MessageBoxFiller.h \
            src/drivers/GTKeyboardDriver.h \
            src/drivers/GTMouseDriver.h \
@@ -69,6 +70,7 @@ SOURCES += \
            src/base_dialogs/ColorDialogFiller.cpp \
            src/base_dialogs/DefaultDialogFiller.cpp \
            src/base_dialogs/FontDialogFiller.cpp \
+           src/base_dialogs/GTFileDialog.cpp \
            src/base_dialogs/MessageBoxFiller.cpp \
            src/drivers/GTKeyboardDriver.cpp \
            src/drivers/GTKeyboardDriverLinux.cpp \

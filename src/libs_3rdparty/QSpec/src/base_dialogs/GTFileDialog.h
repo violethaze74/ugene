@@ -22,12 +22,12 @@
 #ifndef GTFILE_DIALOG_H
 #define GTFILE_DIALOG_H
 
-#include <GTGlobals.h>
-#include <utils/GTUtilsDialog.h>
+#include "GTGlobals.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace HI {
 
-class GTFileDialogUtils : public Filler {
+class HI_EXPORT GTFileDialogUtils : public Filler {
 friend class GTFileDialogUtils_list;
 public:
     enum Button {Open, Cancel, Save, Choose};
@@ -62,7 +62,7 @@ protected:
     TextInput textInput;
 };
 
-class GTFileDialogUtils_list : public GTFileDialogUtils{
+class HI_EXPORT GTFileDialogUtils_list : public GTFileDialogUtils{
 public:
     GTFileDialogUtils_list(GUITestOpStatus &os, const QString &folderPath, const QStringList &fileNames);
     GTFileDialogUtils_list(GUITestOpStatus &os, const QStringList &filePaths);
@@ -78,7 +78,7 @@ private:
     QStringList filePaths;
 };
 
-class GTFileDialog {
+class HI_EXPORT GTFileDialog {
 public:
     enum Button {Open, Cancel};
     static void openFile(GUITestOpStatus &os, const QString &path, const QString &fileName, Button button = Open, GTGlobals::UseMethod m = GTGlobals::UseMouse);
