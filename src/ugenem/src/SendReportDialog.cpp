@@ -427,7 +427,7 @@ QString ReportSender::getOSVersion() {
 }
 
 int ReportSender::getTotalPhysicalMemory() {
-    return getMemorySize() / (1024 * 1024);
+    return (int)(getMemorySize() / (1024 * 1024));
 }
 
 #ifndef Q_OS_MAC

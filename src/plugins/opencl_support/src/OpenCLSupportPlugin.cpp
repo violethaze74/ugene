@@ -171,7 +171,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
                 return Error_OpenCLError;
             }
 
-            actualParamLength = (actualParamSize) / sizeof(char);
+            actualParamLength = (int)(actualParamSize / sizeof(char));
             gauto_array<char> vendorNameValue(new char[actualParamLength + 1]);
             strncpy(vendorNameValue.get(), paramValue.get(), actualParamLength);
 
@@ -182,7 +182,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
                 return Error_OpenCLError;
             }
 
-            actualParamLength = (actualParamSize) / sizeof(char);
+            actualParamLength = int(actualParamSize / sizeof(char));
             gauto_array<char> deviceNameValue(new char[actualParamLength + 1]);
             strncpy(deviceNameValue.get(), paramValue.get(), actualParamLength);
 

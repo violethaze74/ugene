@@ -4144,7 +4144,7 @@ static int gl2psPrintPDFShaderStreamDataCoord(GL2PSvertex *vertex,
                                               GLfloat dy,
                                               GLfloat xmin,
                                               GLfloat ymin) {
-    int offs = 0;
+    size_t offs = 0;
     unsigned long imap;
     double dmax = ~1UL;
     char edgeflag = 0;
@@ -4179,7 +4179,7 @@ static int gl2psPrintPDFShaderStreamDataCoord(GL2PSvertex *vertex,
         offs += (*action)(imap, 4);
     }
 
-    return offs;
+    return (int)offs;
 }
 
 /* Put vertex' rgb value (8bit for every component) in shader stream */

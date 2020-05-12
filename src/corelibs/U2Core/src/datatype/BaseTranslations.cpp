@@ -48,9 +48,9 @@ static void fill3To1(QList<Mapping3To1<char>> &map, QMap<DNATranslationRole, QLi
     assert(dstAl->isAmino());
     Q_UNUSED(dstAl);
 
-    int len = strlen(amino);
-    assert(len == (int)strlen(role) && len == (int)strlen(n1) && len == (int)strlen(n2) && len == (int)strlen(n3));
-    for (int i = 0; i < len; i++) {
+    size_t len = strlen(amino);
+    assert(strlen(role) == len && strlen(n1) == len && strlen(n2) == len && strlen(n3) == len);
+    for (size_t i = 0; i < len; i++) {
         char res = amino[i];
         char c1 = n1[i];
         char c2 = n2[i];
@@ -62,12 +62,13 @@ static void fill3To1(QList<Mapping3To1<char>> &map, QMap<DNATranslationRole, QLi
         Triplet t(c1, c2, c3);
         Mapping3To1<char> m(t, res);
         map.append(m);
-        if (role[i] == 'M')
+        if (role[i] == 'M') {
             codons[DNATranslationRole_Start].append(t);
-        else if (role[i] == 'L')
+        } else if (role[i] == 'L') {
             codons[DNATranslationRole_Start_Alternative].append(t);
-        else if (amino[i] == '*')
+        } else if (amino[i] == '*') {
             codons[DNATranslationRole_Stop].append(t);
+        }
     }
 }
 
