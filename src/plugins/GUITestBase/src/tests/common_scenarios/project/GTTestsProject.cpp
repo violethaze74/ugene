@@ -1132,7 +1132,7 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
 
-    QAction *editMode = GTAction::findActionByText(os, "Edit sequence");
+    QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
@@ -1148,7 +1148,7 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
 
-    QAction *editMode = GTAction::findActionByText(os, "Edit sequence");
+    QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
