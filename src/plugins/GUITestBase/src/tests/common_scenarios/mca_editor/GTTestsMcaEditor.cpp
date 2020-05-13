@@ -1,4 +1,5 @@
-﻿/**
+﻿
+/**
 * UGENE - Integrated Bioinformatics Tools.
 * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
@@ -3240,16 +3241,13 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     int startRowHeinght = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
 
-    // 2. Click "Show chromatograms" button on the toolbar.
-    GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
-
     //2. Push Zoom In
     GTUtilsMcaEditor::zoomIn(os);
     GTGlobals::sleep(100);
 
     //Expected state : All Characters increased in size
     int currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
-    CHECK_SET_ERR(startRowHeinght < currentRowHeight, QString("Unexpected row height, must be higher then start height == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
+    CHECK_SET_ERR(startRowHeinght < currentRowHeight, QString("Unexpected row height, must be higher then start height_1 == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
 
     //3. Push Zoom out
     GTUtilsMcaEditor::zoomOut(os);
@@ -3257,17 +3255,17 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //Expected state : All Characters reduced in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
-    CHECK_SET_ERR(startRowHeinght == currentRowHeight, QString("Unexpected row height, must be equal start height == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
+    CHECK_SET_ERR(startRowHeinght == currentRowHeight, QString("Unexpected row height, must be equal start height_2 == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
 
     //4. Push Zoom In 2 times
     GTUtilsMcaEditor::zoomIn(os);
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep(100);
     GTUtilsMcaEditor::zoomIn(os);
     GTGlobals::sleep();
 
     //Expected state : All Characters increased in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
-    CHECK_SET_ERR(startRowHeinght < currentRowHeight, QString("Unexpected row height, must be higher then start height == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
+    CHECK_SET_ERR(startRowHeinght < currentRowHeight, QString("Unexpected row height, must be higher then start height_3 == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
 
     //5. Push Reset Zoom
     GTUtilsMcaEditor::resetZoom(os);
@@ -3275,7 +3273,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //Expected state : All Characters reduced in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
-    CHECK_SET_ERR(startRowHeinght == currentRowHeight, QString("Unexpected row height, must be equal start height == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
+    CHECK_SET_ERR(startRowHeinght == currentRowHeight, QString("Unexpected row height, must be equal start height_4 == %1, current %2").arg(QString::number(startRowHeinght)).arg(QString::number(currentRowHeight)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0033) {
