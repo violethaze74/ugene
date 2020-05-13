@@ -304,6 +304,7 @@ void ExternalToolRegistry::unregisterEntry(const QString &id) {
 QList<ExternalTool *> ExternalToolRegistry::getAllEntries() const {
     return registryOrder;
 }
+
 QList<QList<ExternalTool *>> ExternalToolRegistry::getAllEntriesSortedByToolKits() const {
     QList<QList<ExternalTool *>> res;
     QList<ExternalTool *> list = registryOrder;

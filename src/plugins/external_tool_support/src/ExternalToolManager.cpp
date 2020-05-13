@@ -348,12 +348,7 @@ void ExternalToolManagerImpl::sl_customToolsLoaded(Task *task) {
             toolPaths.insert(tool->getId(), toolPath);
         }
     }
-    bool skipValidationOnStart = qgetenv("UGENE_SKIP_EXTERNAL_TOOLS_VALIDATION") == "1";
-    if (skipValidationOnStart) {
-        markStartupCheckAsFinished();
-    } else {
-        validateTools(toolPaths);
-    }
+    validateTools(toolPaths);
 }
 
 void ExternalToolManagerImpl::sl_customToolImported(const QString &toolId) {
@@ -366,7 +361,6 @@ void ExternalToolManagerImpl::sl_customToolImported(const QString &toolId) {
     if (!toolPath.isEmpty()) {
         toolPaths.insert(tool->getId(), toolPath);
     }
-
     validateTools(toolPaths);
 }
 
@@ -396,6 +390,7 @@ bool ExternalToolManagerImpl::dependenciesAreOk(const QString &toolId) {
 
 void ExternalToolManagerImpl::validateTools(const StrStrMap &toolPaths, ExternalToolValidationListener *listener) {
     QList<Task *> taskList;
+    bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
     foreach (QString toolId, validateList) {
         validateList.removeAll(toolId);
         toolStates.insert(toolId, ValidationIsInProcess);
@@ -416,10 +411,11 @@ void ExternalToolManagerImpl::validateTools(const StrStrMap &toolPaths, External
         }
 
         ExternalToolValidateTask *task;
+        QString toolName = AppContext::getExternalToolRegistry()->getToolNameById(toolId);
         if (pathSpecified) {
-            task = new ExternalToolJustValidateTask(toolId, AppContext::getExternalToolRegistry()->getToolNameById(toolId), toolPath);
+            task = new ExternalToolJustValidateTask(toolId, toolName, toolPath, isPathOnlyValidation);
         } else {
-            task = new ExternalToolSearchAndValidateTask(toolId, AppContext::getExternalToolRegistry()->getToolNameById(toolId));
+            task = new ExternalToolSearchAndValidateTask(toolId, toolName, isPathOnlyValidation);
         }
         connect(task,
                 SIGNAL(si_stateChanged()),
