@@ -71,7 +71,7 @@ class ExternalToolJustValidateTask : public ExternalToolValidateTask {
     Q_OBJECT
     Q_DISABLE_COPY(ExternalToolJustValidateTask)
 public:
-    ExternalToolJustValidateTask(const QString &toolId, const QString &toolName, const QString &path, bool validatePathOnly = false);
+    ExternalToolJustValidateTask(const QString &toolId, const QString &toolName, const QString &path);
     virtual ~ExternalToolJustValidateTask();
 
     virtual void run();
@@ -100,7 +100,7 @@ private:
     ExternalTool *tool;
 
     /** If 'true' the task performs only path + executable flags validation for the tool. */
-    bool validatePathOnly;
+    bool isPathOnlyValidation;
     static const int TIMEOUT_MS = 30000;
     static const int CHECK_PERIOD_MS = 1000;
 };
@@ -108,7 +108,7 @@ private:
 class ExternalToolSearchAndValidateTask : public ExternalToolValidateTask {
     Q_OBJECT
 public:
-    ExternalToolSearchAndValidateTask(const QString &toolId, const QString &toolName, bool isPathOnlyValidation = false);
+    ExternalToolSearchAndValidateTask(const QString &toolId, const QString &toolName);
 
     void prepare();
     virtual QList<Task *> onSubTaskFinished(Task *subTask);
@@ -120,7 +120,6 @@ private:
     bool toolIsFound;
     ExternalToolSearchTask *searchTask;
     ExternalToolJustValidateTask *validateTask;
-    bool isPathOnlyValidation;
 };
 
 class ExternalToolsValidateTask : public SequentialMultiTask {

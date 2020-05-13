@@ -35,7 +35,6 @@
 
 #include "ExternalToolSearchTask.h"
 #include "ExternalToolSupportSettings.h"
-#include "python/PythonSupport.h"
 
 namespace U2 {
 
@@ -46,11 +45,11 @@ ExternalToolValidateTask::ExternalToolValidateTask(const QString &_toolId, const
       isValid(false) {
 }
 
-ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString &_toolId, const QString &_toolName, const QString &path, bool validatePathOnly)
+ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString &_toolId, const QString &_toolName, const QString &path)
     : ExternalToolValidateTask(_toolId, _toolName, TaskFlag_None),
       externalToolProcess(NULL),
-      tool(NULL),
-      validatePathOnly(validatePathOnly) {
+      tool(NULL) {
+    isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
     toolPath = path;
     SAFE_POINT_EXT(!toolPath.isEmpty(), setError(tr("Tool's path is empty")), );
 }
@@ -68,7 +67,8 @@ void ExternalToolJustValidateTask::run() {
 
     QFileInfo info(toolPath);
     CHECK_EXT(info.exists(), setError(tr("Tool's executable isn't exists")), );
-    if (validatePathOnly) {
+    if (isPathOnlyValidation) {
+        isValid = true;
         return;
     }
 
@@ -309,12 +309,11 @@ void ExternalToolJustValidateTask::performAdditionalChecks() {
     }
 }
 
-ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString &_toolId, const QString &_toolName, bool isPathOnlyValidation)
+ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString &_toolId, const QString &_toolName)
     : ExternalToolValidateTask(_toolId, _toolName, TaskFlags(TaskFlag_CancelOnSubtaskCancel | TaskFlag_NoRun)),
       toolIsFound(false),
       searchTask(NULL),
-      validateTask(NULL),
-      isPathOnlyValidation(isPathOnlyValidation) {
+      validateTask(NULL) {
 }
 
 void ExternalToolSearchAndValidateTask::prepare() {
@@ -335,7 +334,7 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
             toolIsFound = false;
         } else {
             toolIsFound = true;
-            validateTask = new ExternalToolJustValidateTask(toolId, toolName, toolPaths.first(), isPathOnlyValidation);
+            validateTask = new ExternalToolJustValidateTask(toolId, toolName, toolPaths.first());
             subTasks << validateTask;
         }
     }
@@ -352,7 +351,7 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
             toolPaths.removeFirst();
 
             if (!toolPaths.isEmpty()) {
-                validateTask = new ExternalToolJustValidateTask(toolId, toolName, toolPaths.first(), isPathOnlyValidation);
+                validateTask = new ExternalToolJustValidateTask(toolId, toolName, toolPaths.first());
                 subTasks << validateTask;
             }
         }
