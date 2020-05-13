@@ -333,10 +333,10 @@ bool WorkflowUtils::validate(const Workflow::Schema &schema, QStringList &errs) 
 
     foreach (const WorkflowNotification &notification, notifications) {
         QString res = QString();
-        if (notification.actorId.isEmpty()) {
+        Actor *a = schema.actorById(notification.actorId);
+        if (notification.actorId.isEmpty() || a == nullptr) {
             res = notification.message;
         } else {
-            Actor *a = schema.actorById(notification.actorId);
             QString message = notification.message;
             res = QString("%1: %2").arg(a->getLabel()).arg(message);
 
