@@ -26,6 +26,7 @@
 #include <QDir>
 #include <QMap>
 #include <QTextStream>
+#include <QThread>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
@@ -80,6 +81,9 @@ bool GUITestLauncher::renameTestLog(const QString &testName) {
 
 void GUITestLauncher::run() {
     if (!initGUITestBase()) {
+        // FIXME: if test suite can't run for some reason UGENE runs shutdown task that asserts that startup is in progress.
+        //  Workaround: wait 3 seconds to ensure that startup is complete & GUI test base error message is printed.
+        QThread::currentThread()->sleep(3);
         return;
     }
 
@@ -139,35 +143,39 @@ bool GUITestLauncher::initGUITestBase() {
             suiteList << allTestList.mid(i * NUMBER_OF_TESTS_IN_SUITE, NUMBER_OF_TESTS_IN_SUITE);
         }
         if (suiteNumber < 0 || suiteNumber > suiteList.size()) {
-            setError(tr("Invalid suite number: %1. There are %2 suites").arg(suiteNumber).arg(suiteList.size()));
+            setError(QString("Invalid suite number: %1. There are %2 suites")
+                         .arg(suiteNumber)
+                         .arg(suiteList.size()));
             return false;
         }
         tests = suiteList.takeAt(suiteNumber - 1);
     } else if (!pathToSuite.isEmpty()) {
         QString absPath = QDir().absoluteFilePath(pathToSuite);
         QFile suite(absPath);
-        SAFE_POINT(suite.exists(), "file " + absPath + " does not exists", false);
-        if (suite.open(QFile::ReadOnly)) {
-            char buf[1024];
-            while (suite.readLine(buf, sizeof(buf)) != -1) {
-                QString testName = QString(buf).remove('\n').remove('\t').remove(' ');
-                if (testName.startsWith("#")) {
-                    continue;    // comment line
-                }
-                bool added = false;
-                foreach (HI::GUITest *test, allTestList) {
-                    QString fullTestName = test->getFullName();
-                    QString fullTestNameInTeamcityFormat = fullTestName.replace(':', '_');
-                    if (fullTestName == testName || fullTestNameInTeamcityFormat == testName) {
-                        tests << test;
-                        added = true;
-                        break;
-                    }
-                }
-                SAFE_POINT(added, "test " + testName + " not found", false)
+        if (!suite.open(QFile::ReadOnly)) {
+            setError("Can't open suite file: " + absPath);
+            return false;
+        }
+        char buf[1024];
+        while (suite.readLine(buf, sizeof(buf)) != -1) {
+            QString testName = QString(buf).remove('\n').remove('\t').remove(' ');
+            if (testName.startsWith("#")) {
+                continue;    // comment line
             }
-        } else {
-            SAFE_POINT(0, "can not open file " + absPath, false);
+            bool added = false;
+            foreach (HI::GUITest *test, allTestList) {
+                QString fullTestName = test->getFullName();
+                QString fullTestNameInTeamcityFormat = fullTestName.replace(':', '_');
+                if (fullTestName == testName || fullTestNameInTeamcityFormat == testName) {
+                    tests << test;
+                    added = true;
+                    break;
+                }
+            }
+            if (!added) {
+                setError("Test not found: " + testName);
+                return false;
+            }
         }
     } else {
         tests = allTestList;
