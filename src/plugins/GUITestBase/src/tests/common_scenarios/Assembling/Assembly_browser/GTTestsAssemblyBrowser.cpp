@@ -26,7 +26,6 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <system/GTClipboard.h>
 
@@ -39,32 +38,24 @@
 #include <U2Designer/PropertyWidget.h>
 
 #include "GTGlobals.h"
-#include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsProjectTreeView.h"
-#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "primitives/GTAction.h"
 #include "primitives/GTComboBox.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
-#include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/EditGroupAnnotationsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExtractAssemblyRegionDialogFiller.h"
-#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
-#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "system/GTFile.h"
-#include "utils/GTKeyboardUtils.h"
 #include "utils/GTUtilsApp.h"
 
 namespace U2 {
@@ -277,10 +268,10 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     //    4. Set the path to a file in a read-only folder and accept the dialog.
     //    Expected state: a messagebox appears, dialog is not closed.
 
-    //    5. Set the path to a file in a non-existant folder, which parent is read-only, and accept the dialog.
+    //    5. Set the path to a file in a non-existent folder, which parent is read-only, and accept the dialog.
     //    Expected state: a messagebox appears, dialog is not closed.
 
-    //    6. Set the path to an existant read-only file.
+    //    6. Set the path to an existent read-only file.
     //    Expected state: a messagebox appears, dialog is not closed.
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, "");
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ExpectMessageBox, "");
@@ -313,7 +304,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     //    Expected state: an "Export the Assembly Coverage" dialog appears.
     QList<ExportCoverageDialogFiller::Action> actions;
 
-    //    3. Click the "Select file" button, select any non-existant file in the writable folder and accept the dialog.
+    //    3. Click the "Select file" button, select any non-existent file in the writable folder and accept the dialog.
     //    Expected state: dialog closes, file appears.
     QDir().mkpath(sandBoxDir + "common_assembly_browser/test_0013");
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::SelectFile, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013_1.txt"));
@@ -323,7 +314,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTFile::check(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013_1.txt");
 
-    //    4. Call the dialog again. Write the valid output file path manually. Path should be to a non-existant file in the writable folder. Accept the dialog.
+    //    4. Call the dialog again. Write the valid output file path manually. Path should be to a non-existent file in the writable folder. Accept the dialog.
     //    Expected state: dialog closes, file appears.
     actions.clear();
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013_2.txt"));
@@ -333,7 +324,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTFile::check(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013_2.txt");
 
-    //    5. Call the dialog again. Write the valid output file path manually. Path should be to a non-existant file in a non-existant folder with the writable parent folder. Accept the dialog.
+    //    5. Call the dialog again. Write the valid output file path manually. Path should be to a non-existent file in a non-existent folder with the writable parent folder. Accept the dialog.
     //    Expected state: dialog closes, file appears.
     actions.clear();
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_3.txt"));
@@ -343,7 +334,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTFile::check(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_3.txt");
 
-    //    6. Call the dialog again. Set the output file path to an existant writable file. Accept the dialog.
+    //    6. Call the dialog again. Set the output file path to an existent writable file. Accept the dialog.
     //    Expected state: dialog closes, file is overwritten.
     GTFile::copy(os, testDir + "_common_data/text/text.txt", sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
     const qint64 fileSizeBefore = GTFile::getSize(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
@@ -577,7 +568,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTUtilsProjectTreeView::click(os, "chrM.fa");
 
     //6. Click "Set reference sequence".
-    //7. Choose the file "assembly_test_0018.fa" from sanbox.
+    //7. Choose the file "assembly_test_0018.fa" from sandbox.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir + "assembly_test_0018.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
@@ -855,7 +846,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
     //2. Lock document for editing
     GTUtilsDocument::lockDocument(os, "chrM.sorted.bam.ugenedb");
-    //3. Try to add refrence
+    //3. Try to add reference
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "This action requires changing the assembly object that is locked for editing"));
     GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
     //Expected: Error message appears
@@ -901,7 +892,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     //    Check scrollbars, rules values etc.
     int finalHorVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
     int finalVerVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical)->value();
-    CHECK_SET_ERR(finalHorVal > initHorVal, QString("Unexpected horisontal scroll values. Initial: %1, final %2").arg(initHorVal).arg(finalHorVal));
+    CHECK_SET_ERR(finalHorVal > initHorVal, QString("Unexpected horizontal scroll values. Initial: %1, final %2").arg(initHorVal).arg(finalHorVal));
     CHECK_SET_ERR(finalVerVal > initVerVal, QString("Unexpected vertical scroll values. Initial: %1, final %2").arg(initVerVal).arg(finalVerVal));
 
     GTGlobals::sleep(500);
