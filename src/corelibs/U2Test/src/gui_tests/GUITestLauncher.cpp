@@ -228,6 +228,10 @@ QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
     return env;
 }
 
+static bool isVideoRecordingOn() {
+    return qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
+}
+
 QString GUITestLauncher::performTest(const QString &testName) {
     QString path = QCoreApplication::applicationFilePath();
     QProcessEnvironment environment = getProcessEnvironment(testName);
@@ -240,7 +244,7 @@ QString GUITestLauncher::performTest(const QString &testName) {
     qint64 processId = process.processId();
 
     QProcess screenRecorder;
-    if (qgetenv("UGENE_SKIP_TEST_RECORDING").toInt() != 1) {
+    if (isVideoRecordingOn()) {
         screenRecorder.start(getScreenRecorderString(testName));
     }
 
@@ -262,7 +266,7 @@ QString GUITestLauncher::performTest(const QString &testName) {
 
     QString testResult = readTestResult(process.readAllStandardOutput());
 
-    if (qgetenv("UGENE_SKIP_TEST_RECORDING").toInt() != 1) {
+    if (isVideoRecordingOn()) {
         screenRecorder.close();
         screenRecorder.waitForFinished(2000);
         if (!GUITestTeamcityLogger::testFailed(testResult)) {
