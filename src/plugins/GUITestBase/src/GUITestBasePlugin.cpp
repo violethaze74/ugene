@@ -1356,7 +1356,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5759);
     REGISTER_TEST(GUITest_regression_scenarios::test_5761);
     REGISTER_TEST(GUITest_regression_scenarios::test_5762);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_5769_1, "runs > 8 mins and fails");
+    REGISTER_TEST(GUITest_regression_scenarios::test_5769_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5769_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5770);
     REGISTER_TEST(GUITest_regression_scenarios::test_5773);
