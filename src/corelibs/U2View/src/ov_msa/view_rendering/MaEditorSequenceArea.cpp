@@ -791,6 +791,11 @@ U2Region findLongestRegion(const QList<int> &sortedViewIndexes, MaCollapseModel 
     int currentGroupIndex = -1;
     foreach (int viewIndex, sortedViewIndexes) {
         int groupIndex = collapseModel->getCollapsibleGroupIndexByViewRowIndex(viewIndex);
+        auto group = collapseModel->getCollapsibleGroup(groupIndex);
+        if (group->maRowIds.size() == 1) {
+            // a group with only 1 row is not a real group: it is processed as a top-level row.
+            groupIndex = -1;
+        }
         if (currentRegion.endPos() == viewIndex && groupIndex == currentGroupIndex) {
             currentRegion.length++;
         } else {
