@@ -7054,7 +7054,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681) {
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
     //    3. Click {show wizard} toolbar button
     //    4. Fill wizard with proper data
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Well done!"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Workflow is valid."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
     GTGlobals::sleep();
 
@@ -7120,7 +7120,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
     GTGlobals::sleep();
     //    3. Click {show wizard} toolbar button
     //    4. Fill wizard with proper data
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Well done!"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Workflow is valid."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
     GTGlobals::sleep();
     //    5. Run schema
@@ -7145,7 +7145,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_2) {
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
     //    3. Click {show wizard} toolbar button
     //    4. Fill wizard with proper data
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Well done!"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Workflow is valid."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
     GTGlobals::sleep();
 
@@ -7196,7 +7196,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_3) {
     GTGlobals::sleep();
     //    3. Click {show wizard} toolbar button
     //    4. Fill wizard with proper data
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Well done!"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Workflow is valid."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
     GTGlobals::sleep();
     //    5. Run schema

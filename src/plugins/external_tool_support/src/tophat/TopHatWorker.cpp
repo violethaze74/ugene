@@ -795,28 +795,34 @@ bool InputSlotsValidator::validate(const IntegralBusPort *port, NotificationsLis
 
 bool BowtieToolsValidator::validateBowtie(const Actor *actor, NotificationsList &notificationList) const {
     Attribute *attr = actor->getParameter(TopHatWorkerFactory::BOWTIE_TOOL_PATH);
-    SAFE_POINT(NULL != attr, "NULL attribute", false);
+    SAFE_POINT(attr != nullptr, "Bowtie tool path is not defined", false);
 
-    ExternalTool *bowTieTool = NULL;
+    ExternalTool *bowTieTool = nullptr;
     {
         int version = getValue<int>(actor, TopHatWorkerFactory::BOWTIE_VERSION);
-        if (1 == version) {
+        if (version == 1) {
             bowTieTool = AppContext::getExternalToolRegistry()->getById(BowtieSupport::ET_BOWTIE_ID);
-            SAFE_POINT(NULL != bowTieTool, "NULL bowtie tool", false);
+            SAFE_POINT(bowTieTool != nullptr, "Bowtie tool is not found", false);
             ExternalTool *topHatTool = AppContext::getExternalToolRegistry()->getById(TopHatSupport::ET_TOPHAT_ID);
-            SAFE_POINT(NULL != topHatTool, "NULL tophat tool", false);
+            SAFE_POINT(topHatTool != nullptr, "TopHat tool is not found", false);
 
             Version bowtieVersion = Version::parseVersion(bowTieTool->getVersion());
             Version topHatVersion = Version::parseVersion(topHatTool->getVersion());
 
             if (topHatVersion.text.isEmpty() || bowtieVersion.text.isEmpty()) {
-                QString toolName = topHatVersion.text.isEmpty() ? "TopHat" : "Bowtie";
-                QString message = QObject::tr("%1 tool's version is undefined, "
-                                              "this may cause some compatibility issues")
-                                      .arg(toolName);
-
-                WorkflowNotification warning(message, actor->getLabel(), WorkflowNotification::U2_WARNING);
-                notificationList << warning;
+                bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
+                if (!isPathOnlyValidation) {    // PathOnlyValidation is used in nightly tests.
+                    if (topHatVersion.text.isEmpty() && bowtieVersion.text.isEmpty()) {
+                        QString message = QObject::tr("TopHat and Bowtie tool versions are undefined, this may cause some compatibility issues");
+                        WorkflowNotification warning(message, actor->getLabel(), WorkflowNotification::U2_WARNING);
+                        notificationList << warning;
+                    } else {
+                        QString toolName = topHatVersion.text.isEmpty() ? "TopHat" : "Bowtie";
+                        QString message = QObject::tr("%1 tool's version is undefined, this may cause some compatibility issues").arg(toolName);
+                        WorkflowNotification warning(message, actor->getLabel(), WorkflowNotification::U2_WARNING);
+                        notificationList << warning;
+                    }
+                }
                 return true;
             } else if (!(Version::parseVersion("0.12.9") > bowtieVersion && Version::parseVersion("2.0.8") >= topHatVersion) && !(Version::parseVersion("0.12.9") <= bowtieVersion && Version::parseVersion("2.0.8b") <= topHatVersion)) {
                 QString message = QObject::tr("Bowtie and TopHat tools have incompatible "
@@ -833,7 +839,7 @@ bool BowtieToolsValidator::validateBowtie(const Actor *actor, NotificationsList 
         } else {
             bowTieTool = AppContext::getExternalToolRegistry()->getById(Bowtie2Support::ET_BOWTIE2_ALIGN_ID);
         }
-        SAFE_POINT(NULL != bowTieTool, "NULL bowtie tool", false);
+        SAFE_POINT(bowTieTool != nullptr, "Bowtie tool is not found", false);
     }
 
     bool valid = attr->isDefaultValue() ? !bowTieTool->getPath().isEmpty() : !attr->isEmpty();
