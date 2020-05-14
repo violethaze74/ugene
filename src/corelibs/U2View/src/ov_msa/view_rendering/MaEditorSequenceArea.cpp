@@ -784,7 +784,7 @@ void MaEditorSequenceArea::sl_changeSelectionColor() {
     update();
 }
 
-/** Returns longest region of indexes from the same group. */
+/** Returns longest region of indexes from adjustent group. */
 U2Region findLongestRegion(const QList<int> &sortedViewIndexes, MaCollapseModel *collapseModel) {
     U2Region longestRegion;
     U2Region currentRegion;
@@ -796,7 +796,7 @@ U2Region findLongestRegion(const QList<int> &sortedViewIndexes, MaCollapseModel 
             // a group with only 1 row is not a real group: it is processed as a top-level row.
             groupIndex = -1;
         }
-        if (currentRegion.endPos() == viewIndex && groupIndex == currentGroupIndex) {
+        if (currentRegion.endPos() == viewIndex) {
             currentRegion.length++;
         } else {
             currentRegion.startPos = viewIndex;
@@ -822,11 +822,12 @@ void MaEditorSequenceArea::restoreViewSelectionFromMaSelection() {
 
     // Select the longest continuous region for the new selection
     QList<int> selectedMaRowIndexes = editor->getMaObject()->convertMaRowIdsToMaRowIndexes(selectedMaRowIds);
-    QList<int> selectedViewIndexes;
+    QSet<int> selectedViewIndexesSet;
     MaCollapseModel *collapseModel = ui->getCollapseModel();
     for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
-        selectedViewIndexes << collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
+        selectedViewIndexesSet << collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
     }
+    QList<int> selectedViewIndexes = selectedViewIndexesSet.toList();
     qSort(selectedViewIndexes.begin(), selectedViewIndexes.end());
     U2Region selectedViewRegion = findLongestRegion(selectedViewIndexes, collapseModel);
     if (selectedViewRegion.length == 0) {
