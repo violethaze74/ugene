@@ -75,6 +75,7 @@ void WebViewQtWebEngineControllerPrivate::init() {
     const QString onSocketsArgument = (U2WebChannel::INVALID_PORT == port ? "false" : "true");
     const QString portArgument = (U2WebChannel::INVALID_PORT == port ? "" : "," + QString::number(port));
     runJavaScript("installWebChannel(" + onSocketsArgument + portArgument + ")");
+    runJavaScript("$(\".dash-menu-line\").hide();");    //FIXME: this will make buttons non-clickable and tests fail.
     webView->setContextMenuPolicy(Qt::NoContextMenu);
 }
 

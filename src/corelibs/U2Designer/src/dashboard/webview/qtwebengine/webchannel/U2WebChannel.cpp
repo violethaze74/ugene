@@ -23,8 +23,8 @@
 #    include <QWebChannelAbstractTransport>
 #    include <QWebSocketServer>
 
-#    include <U2Designer/WebSocketClientWrapper.h>
-#    include <U2Designer/WebSocketTransport.h>
+#    include "dashboard/webview/qtwebengine/webchannel/WebSocketClientWrapper.h"
+#    include "dashboard/webview/qtwebengine/webchannel/WebSocketTransport.h"
 #endif
 
 #include <QWebEnginePage>

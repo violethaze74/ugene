@@ -29,7 +29,12 @@
 #include <QJsonObject>
 #include <QMessageBox>
 #include <QSettings>
-#include <QWebFrame>
+
+#if UGENE_WEB_KIT
+#    include <QWebFrame>
+#else
+#    include <QWebEnginePage>
+#endif
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -296,11 +301,18 @@ void Dashboard::sl_pageReady() {
     if (!WorkflowSettings::isShowLoadButtonHint()) {
         dashboardPageController->runJavaScript("hideLoadBtnHint()");
     }
-
+#ifdef UGENE_WEB_KIT
     QString html = webView->page()->mainFrame()->toHtml();
     if (isExternalToolsButtonVisibleInHtml(html)) {
         externalToolsTabButton->setVisible(true);
     }
+#else
+    webView->page()->toHtml([this](const QString &html) mutable {
+        if (isExternalToolsButtonVisibleInHtml(html)) {
+            externalToolsTabButton->setVisible(true);
+        }
+    });
+#endif
 }
 
 void Dashboard::sl_onLogChanged() {

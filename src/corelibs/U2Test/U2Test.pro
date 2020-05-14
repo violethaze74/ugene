@@ -32,7 +32,7 @@ TRANSLATIONS += transl/russian.ts
 
 FORMS += src/gui_tests/GUITestingWindow.ui
 
-if (contains(DEFINES, HI_EXCLUDED)) {
+if (!useWebKit()) {
 
 HEADERS -= src/gui_tests/UGUITest.h \
            src/gui_tests/UGUITestBase.h \

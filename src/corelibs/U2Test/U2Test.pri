@@ -10,7 +10,8 @@ LIBS += -L../../$$out_dir()
 LIBS += -lU2Core$$D -lQSpec$$D
 INCLUDEPATH += ../../libs_3rdparty/QSpec/src
 
-if (contains(DEFINES, HI_EXCLUDED)) {
+if (!useWebKit()) {
+    # GUI testing is available only with WebKit.
     LIBS -= -lQSpec$$D
 }
 

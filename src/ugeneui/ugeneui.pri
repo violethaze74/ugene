@@ -26,7 +26,8 @@ LIBS += -lU2Core$$D -lU2Designer$$D -lU2Algorithm$$D -lU2Formats$$D -lU2Gui$$D -
 LIBS += $$add_sqlite_lib()
 
 macx: LIBS += -framework Foundation /System/Library/Frameworks/Security.framework/Security
-if (contains(DEFINES, HI_EXCLUDED)) {
+if (!useWebKit()) {
+    DEFINES += HI_EXCLUDED
     LIBS -= -lQSpec$$D
 }
 

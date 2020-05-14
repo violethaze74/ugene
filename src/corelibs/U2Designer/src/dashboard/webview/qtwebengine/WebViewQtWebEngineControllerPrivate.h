@@ -22,7 +22,7 @@
 #ifndef _U2_WEB_VIEW_QT_WEB_ENGINE_CONTROLLER_PRIVATE_H_
 #define _U2_WEB_VIEW_QT_WEB_ENGINE_CONTROLLER_PRIVATE_H_
 
-#include "util/webview/WebViewControllerPrivate.h"
+#include "dashboard/webview/WebViewControllerPrivate.h"
 
 namespace U2 {
 
