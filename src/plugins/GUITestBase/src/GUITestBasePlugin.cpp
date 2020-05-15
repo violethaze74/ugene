@@ -1699,7 +1699,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0010);
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0011);
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0012);
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project_filtering::test_0013, "runs > 8 mins and fails.");
+    REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0014);
 
     //////////////////////////////////////////////////////////////////////////
