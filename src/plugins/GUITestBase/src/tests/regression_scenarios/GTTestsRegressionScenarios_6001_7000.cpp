@@ -2015,15 +2015,17 @@ GUI_TEST_CLASS_DEFINITION(test_6283) {
                 os.setError("Bio is not valid");
             }
 
-            //Expected: Bio module version is 1.73
-            bool hasVerion = true;
+            bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
+            if (!isPathOnlyValidation) {
+                //Expected: Bio module version is 1.73
+                bool hasVersion = true;
 #ifndef Q_OS_WIN
-            hasVerion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "Bio", "Version: 1.73");
+                hasVersion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "Bio", "Version: 1.73");
 #endif
-            if (!hasVerion) {
-                os.setError("Incorrect Bio version");
+                if (!hasVersion) {
+                    os.setError("Incorrect Bio version");
+                }
             }
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -2090,12 +2092,14 @@ GUI_TEST_CLASS_DEFINITION(test_6301) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
-            //Expected: SPAdes description contains the following string - "Version: 3.13.0"
-            const bool hasVersion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "SPAdes", "Version: 3.13.0");
-            if (!hasVersion) {
-                os.setError("Unexpected SPAdes version");
+            bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
+            if (!isPathOnlyValidation) {
+                //Expected: SPAdes description contains the following string - "Version: 3.13.0"
+                bool hasVersion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "SPAdes", "Version: 3.13.0");
+                if (!hasVersion) {
+                    os.setError("Unexpected SPAdes version");
+                }
             }
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
