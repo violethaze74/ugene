@@ -357,7 +357,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     maObject->saveState();
 
     //FIXME: do not start tracking signal here. Do it when the real dragging starts.
-    if (maObject->isStateLocked()) {
+    if (!maObject->isStateLocked()) {
         U2OpStatus2Log os;
         changeTracker->startTracking(os);
     }
