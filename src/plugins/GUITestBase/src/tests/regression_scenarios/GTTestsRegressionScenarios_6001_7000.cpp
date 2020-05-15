@@ -3026,7 +3026,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_2) {
     //  Select ���� ����    ���Ɣ, ��� �� ���� ����, �����   ���� ���� ������ sequences.
     //  Expected result : "Realign sequence(s) to other sequences" button is enabled.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x88_russian_letters.msf");
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 17), QPoint(1, 20));
+    GTUtilsMsaEditor::selectRows(os, 18, 20);
     QAbstractButton *realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
     //  Click "Realign sequence(s) to other sequences".
@@ -3044,7 +3044,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     //     Click "Realign sequence(s) to other sequences".
     //     Expected result : sequences realigned.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "amino_ext.aln");
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(1, 0));
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "FOSB_MOUSE");
     QAbstractButton *realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
     GTWidget::click(os, realignButton);
@@ -3058,7 +3058,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     //     Click "Realign sequence(s) to other sequences".
     //     Expected result : sequences realigned.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "protein.aln");
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 3), QPoint(0, 5));
+    GTUtilsMsaEditor::selectRows(os, 3, 5);
     realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
     GTWidget::click(os, realignButton);
