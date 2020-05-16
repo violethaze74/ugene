@@ -1170,7 +1170,7 @@ GUI_TEST_CLASS_DEFINITION(test_2140) {
                                                 << "NGS data analysis"
                                                 << "Convert UGENE assembly database to SAM...");
 
-    CHECK_SET_ERR(l.hasError() == true, "There is no error message in log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2144) {
@@ -1357,7 +1357,7 @@ GUI_TEST_CLASS_DEFINITION(test_2165) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: UGENE finds the sequence or shows a error message
-    CHECK_SET_ERR(l.hasError() == true, "Error message expected in log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2188) {
@@ -2494,7 +2494,7 @@ GUI_TEST_CLASS_DEFINITION(test_2375) {
         GTGlobals::sleep();
     }
 
-    CHECK_SET_ERR(logtracer.hasError(), "There wasn't errors in the log");
+    CHECK_SET_ERR(logtracer.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2377) {
@@ -2525,7 +2525,7 @@ GUI_TEST_CLASS_DEFINITION(test_2377) {
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
 
     GTGlobals::sleep(5000);
-    CHECK_SET_ERR(l.hasError(), "Error message expected!");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2378) {
@@ -2533,7 +2533,7 @@ GUI_TEST_CLASS_DEFINITION(test_2378) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, testDir + "_common_data/scenarios/sandbox/test_2378.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/sam/", "scerevisiae.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!l.hasError(), "Error message");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2378_1) {
@@ -2559,7 +2559,7 @@ GUI_TEST_CLASS_DEFINITION(test_2378_1) {
     // 4. Run scheme
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
     GTGlobals::sleep(5000);
-    CHECK_SET_ERR(!l.hasError(), "Error message");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2379) {
@@ -2648,7 +2648,7 @@ GUI_TEST_CLASS_DEFINITION(test_2382) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTGlobals::sleep();
-    CHECK_SET_ERR(!l.hasError(), "There must be no errors!");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 
     GTUtilsProjectTreeView::findIndex(os, assDocName);
 }
@@ -2666,7 +2666,7 @@ GUI_TEST_CLASS_DEFINITION(test_2382_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTGlobals::sleep();
-    CHECK_SET_ERR(!l.hasError(), "There must be no errors!");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 
     GTUtilsProjectTreeView::findIndex(os, assDocName);
 }
@@ -2908,7 +2908,7 @@ GUI_TEST_CLASS_DEFINITION(test_2407) {
 
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    CHECK_SET_ERR(!l.hasError(), "File not removed from project!");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2410) {
@@ -3180,7 +3180,7 @@ GUI_TEST_CLASS_DEFINITION(test_2460) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Kalign task finishes with error. Redo button is disabled.
-    CHECK_SET_ERR(l.hasError() == true, "There is no error in the log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 
     QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
     CHECK_SET_ERR(NULL != redo, "There is no REDO button");
@@ -3392,7 +3392,7 @@ GUI_TEST_CLASS_DEFINITION(test_2506) {
     GTFileDialog::openFile(os, testDir + "_common_data/vcf_consensus/", "vcf_cons_out_damaged_1.vcf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.hasError() == true, "There is no expected error message in log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2506_1) {
@@ -3403,7 +3403,7 @@ GUI_TEST_CLASS_DEFINITION(test_2506_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/vcf_consensus/", "vcf_cons_out_damaged_2.vcf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.hasError() == true, "There is no expected error message in log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2513) {
@@ -3731,7 +3731,7 @@ GUI_TEST_CLASS_DEFINITION(test_2566) {
     CHECK_SET_ERR(97 == matchPercentage, "Entered and actual values don't match");
 
     //Expected state: the task finished successfully.
-    CHECK_SET_ERR(!l.hasError(), "Unexpected error in log!: " + l.getError());
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2567) {
@@ -3763,7 +3763,7 @@ GUI_TEST_CLASS_DEFINITION(test_2567) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: the task finished successfully.
-    CHECK_SET_ERR(!l.hasError(), "Unexpected error in log!: " + l.getError());
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2568) {
@@ -4095,7 +4095,7 @@ GUI_TEST_CLASS_DEFINITION(test_2605) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
     // Expected state: export successfull, no any messages in log like "There is no sequence objects in given file, unable to convert it in multiple alignment"
-    CHECK_SET_ERR(!logTracer.hasError(), "Unexpected error");
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2612) {
@@ -4417,7 +4417,7 @@ GUI_TEST_CLASS_DEFINITION(test_2656) {
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
     GTThread::waitForMainThread();
 
-    CHECK_SET_ERR(l.hasError(), "An error should be in the log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2662) {
@@ -4830,7 +4830,7 @@ GUI_TEST_CLASS_DEFINITION(test_2737_1) {
     }
 
     //Expected state: no errors in the log
-    CHECK_SET_ERR(!l.hasError(), "Errors in log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2754) {
@@ -5992,7 +5992,7 @@ GUI_TEST_CLASS_DEFINITION(test_2931) {
                                                 << "NGS data analysis"
                                                 << "Convert UGENE assembly database to SAM...");
 
-    CHECK_SET_ERR(!l.hasError(), "There is error message in log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2945) {
@@ -6189,8 +6189,8 @@ GUI_TEST_CLASS_DEFINITION(test_2972) {
                                                 << "Search with phmmer...");
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(l.hasError(), "no error in log");
-    QString error = l.getError();
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    QString error = l.getJoinedErrorString();
 #ifdef Q_OS_WIN
     QString expectedError = "Task {Search with phmmer} finished with error: Subtask {PHMMER search tool} is failed";
 #else

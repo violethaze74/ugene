@@ -517,7 +517,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(l.hasError(), "Alignment should fail");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 
     settings.minIdentity = 70;
 

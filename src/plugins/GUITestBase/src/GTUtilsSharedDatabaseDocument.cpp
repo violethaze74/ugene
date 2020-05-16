@@ -66,7 +66,7 @@ Document *GTUtilsSharedDatabaseDocument::connectToTestDatabase(HI::GUITestOpStat
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTThread::waitForMainThread();
 
-    CHECK_SET_ERR_RESULT(!lt.hasError(), "errors in log", NULL);
+    CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), NULL);
 
     return GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, conName);
 }
@@ -85,7 +85,7 @@ Document *GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(HI::GUITes
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Connect to UGENE shared database...");
 
-    CHECK_SET_ERR_RESULT(!lt.hasError(), "errors in log", NULL);
+    CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), NULL);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     return GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, conName);
 }

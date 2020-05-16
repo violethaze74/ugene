@@ -193,7 +193,7 @@ GUI_TEST_CLASS_DEFINITION(test_4007) {
     GTGlobals::sleep(5000);
     GTUtilsAnnotationsTreeView::findFirstAnnotation(os);
 
-    CHECK_SET_ERR(!l.hasError(), "There is error in the log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4008) {
@@ -583,7 +583,7 @@ GUI_TEST_CLASS_DEFINITION(test_4059) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     //Expected: no safe points triggered.
-    CHECK_SET_ERR(!l.hasError(), "Errors in log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4064) {
@@ -693,7 +693,7 @@ GUI_TEST_CLASS_DEFINITION(test_4071) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     //Expected: no safe points are triggered.
-    CHECK_SET_ERR(!l.hasError(), "Errors in log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4072) {
@@ -1735,7 +1735,7 @@ GUI_TEST_CLASS_DEFINITION(test_4156) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.hasError(), "There is no error in the log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4160) {
@@ -2729,7 +2729,7 @@ GUI_TEST_CLASS_DEFINITION(test_4334) {
     CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
     GTWidget::click(os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!lt.hasError(), "log should not contain errors");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4345) {
@@ -3620,7 +3620,7 @@ GUI_TEST_CLASS_DEFINITION(test_4587) {
     GTUtilsProjectTreeView::checkObjectTypes(os,
                                              QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
                                              GTUtilsProjectTreeView::findIndex(os, "Contig1"));
-    CHECK_SET_ERR(!l.hasError(), "logfile shouldn't contain errors");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4588) {
@@ -5660,7 +5660,7 @@ GUI_TEST_CLASS_DEFINITION(test_4886) {
     QWidget *parent = GTWidget::findWidget(os, "90-JRI-07 [s] 90-JRI-07 sequence 2");
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0", parent);
     CHECK_OP(os, );
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4908) {
@@ -6016,7 +6016,7 @@ GUI_TEST_CLASS_DEFINITION(test_4986) {
     GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, GTUtilsAnnotationsTreeView::findItem(os, "5_prime_UTR_intron"));
 
     GTThread::waitForMainThread();
-    CHECK_SET_ERR(l.hasError(), "There is no error in the log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4990) {

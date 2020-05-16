@@ -167,7 +167,7 @@ GUI_TEST_CLASS_DEFINITION(test_5004) {
     GTWidget::click(os, graphAction);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5012) {
@@ -202,7 +202,7 @@ GUI_TEST_CLASS_DEFINITION(test_5012) {
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!l.hasError(), "There is an error in the log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5012_1) {
@@ -231,7 +231,7 @@ GUI_TEST_CLASS_DEFINITION(test_5012_1) {
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.hasError(), "There is no error in the log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5012_2) {
@@ -257,7 +257,7 @@ GUI_TEST_CLASS_DEFINITION(test_5012_2) {
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.hasError(), "There is no error in the log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5018) {
@@ -455,7 +455,7 @@ GUI_TEST_CLASS_DEFINITION(test_5039) {
     GTUtilsMsaEditor::redo(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //Expected state : the tab is successfully updated. No error in log.
-    CHECK_SET_ERR(!l.hasError(), "unexpected errors in log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5052) {
@@ -719,7 +719,7 @@ GUI_TEST_CLASS_DEFINITION(test_5208) {
     //    4. Check log.
     //    Expected state: the library contains four primers, log contains no errors.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5211) {
@@ -791,7 +791,7 @@ GUI_TEST_CLASS_DEFINITION(test_5216) {
                                                                      << "accttt",
                                                    true);
     GTGlobals::sleep(3500);
-    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //GTUtilsProjectTreeView::filterProject(os, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
 }
 
@@ -858,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(test_5227) {
     GTLogTracer lt;
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5231) {
@@ -939,7 +939,7 @@ GUI_TEST_CLASS_DEFINITION(test_5249) {
     GTFileDialog::openFile(os, testDir + "_common_data/pdb/1atp.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasError(), "Error in the log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5252) {
@@ -1093,7 +1093,7 @@ GUI_TEST_CLASS_DEFINITION(test_5314) {
     GTFileDialog::openFile(os, testDir + "_common_data/abif/A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
-    CHECK_SET_ERR(!lt.hasError(), "Log shouldn't contain errors");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5335) {
@@ -1205,7 +1205,7 @@ GUI_TEST_CLASS_DEFINITION(test_5352) {
     CHECK_SET_ERR(loadSchemaButton, "loadSchemaButton not found");
     GTWidget::click(os, loadSchemaButton);
 
-    CHECK_SET_ERR(!logTracer.hasError(), "There are errors in the log");
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5356) {
@@ -1234,7 +1234,7 @@ GUI_TEST_CLASS_DEFINITION(test_5356) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(200);
-    CHECK_SET_ERR(!l.hasError(), "There is an error in the log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5360) {
@@ -1255,7 +1255,7 @@ GUI_TEST_CLASS_DEFINITION(test_5360) {
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!lt.hasError(), "There is an error in the log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5363_2) {
@@ -1407,7 +1407,7 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5382) {
@@ -1421,7 +1421,7 @@ GUI_TEST_CLASS_DEFINITION(test_5382) {
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_5382/test_5382.png"));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
-    CHECK_SET_ERR(!l.hasError(), "There is error in the log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5412) {
@@ -1487,7 +1487,7 @@ GUI_TEST_CLASS_DEFINITION(test_5417) {
                                                                         << "Save"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
-    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5425) {
@@ -4810,7 +4810,7 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasError(), "There is an error in the log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5903) {
@@ -5047,7 +5047,7 @@ GUI_TEST_CLASS_DEFINITION(test_5972_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: There are no errors in the log
-    CHECK_SET_ERR(tr.getError().isEmpty(), QString("Errors in the log"));
+    CHECK_SET_ERR(!tr.hasErrors(), "Errors in log: " + tr.getJoinedErrorString());
 
     //Expected: The result file is equal to "_common_data/regression/5972/seq_with_orfs_1.csv"
     bool check = GTFile::equals(os, testDir + "_common_data/regression/5972/seq_with_orfs_1.csv", QDir(sandBoxDir).absolutePath() + "/test_5972_1.csv");

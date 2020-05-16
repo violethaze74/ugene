@@ -49,7 +49,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, "", dataDir + "samples/PDB", "1CF7.PDB"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.hasError() == true, "There is no error message in log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -65,7 +65,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, "", testDir + "_common_data/bam/", "small.bam.sorted.bam.bai"));
     GTFileDialog::openFile(os, testDir + "_common_data/sam/", "out.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.hasError() == true, "There is no error message in log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -83,7 +83,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, "", dataDir + "samples/Assembly", "chrM.fa"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!l.hasError(), "Open 'samples/Assembly/chrM.sam' finished with error");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 }    // namespace GUITest_SAM

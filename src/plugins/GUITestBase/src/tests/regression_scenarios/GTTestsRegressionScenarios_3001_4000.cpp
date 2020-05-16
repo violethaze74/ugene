@@ -426,7 +426,7 @@ GUI_TEST_CLASS_DEFINITION(test_3072) {
 
     // 2. Add folder;
     GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", "regression_test_3072");
-    CHECK_SET_ERR(!l.hasError(), "log contains errors");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3073) {
@@ -591,7 +591,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
     GTGlobals::sleep(6000);
 
     //Expected state: document reloaded without errors/warnings.
-    CHECK_SET_ERR(!l.hasError(), "Errors in log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     GTGlobals::sleep();
 }
 
@@ -2414,7 +2414,7 @@ GUI_TEST_CLASS_DEFINITION(test_3346) {
 
     GTGlobals::sleep(6000);
 
-    CHECK_SET_ERR(lt.hasError(), "Error in log expected");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3348) {
@@ -3805,7 +3805,7 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.getError().contains("There is no header in the SAM file"), "No warnings about header");
+    CHECK_SET_ERR(l.getJoinedErrorString().contains("There is no header in the SAM file"), "No warnings about header");
     CHECK_SET_ERR(2 == GTUtilsLog::getErrors(os, l).size(), "Too many errors");    // initial warning and dashboard problem
 }
 
@@ -4250,7 +4250,7 @@ GUI_TEST_CLASS_DEFINITION(test_3634) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Open as...");
     GTGlobals::sleep();
-    CHECK_SET_ERR(l.hasError(), "No error about opening the file");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3639) {
@@ -4278,7 +4278,7 @@ GUI_TEST_CLASS_DEFINITION(test_3639) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     //Expected state: the document is removed, the folder is not removed, no message boxes appear.
-    CHECK_SET_ERR(!logTracer.hasError(), "Error message");
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
     GTUtilsProjectTreeView::getItemCenter(os, "Recycle bin");
     options.failIfNotFound = false;
     humanT1Doc = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", options);
@@ -4311,7 +4311,7 @@ GUI_TEST_CLASS_DEFINITION(test_3640) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     //Expected state: the document is removed, the folder is not removed.
-    CHECK_SET_ERR(!logTracer.hasError(), "Error message " + logTracer.getError());
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
     GTUtilsProjectTreeView::findIndex(os, "genomes");
     options.failIfNotFound = false;
     humanT1Doc = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", options);
@@ -5748,7 +5748,7 @@ GUI_TEST_CLASS_DEFINITION(test_3903) {
     GTGlobals::sleep(200);
     GTKeyboardDriver::keySequence("A");
     GTGlobals::sleep(1000);
-    CHECK_SET_ERR(lt.hasError() == false, "Log shouldn't contain errors");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3904) {
@@ -5764,7 +5764,7 @@ GUI_TEST_CLASS_DEFINITION(test_3904) {
     GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Percent, 10));
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     GTGlobals::sleep();
-    CHECK_SET_ERR(lt.hasError() == false, "Log shouldn't contain errors");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3905) {
@@ -5896,7 +5896,7 @@ GUI_TEST_CLASS_DEFINITION(test_3938) {
     GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QString error = lt.getError();
+    QString error = lt.getJoinedErrorString();
     CHECK_SET_ERR(!error.contains("finished with error", Qt::CaseInsensitive), "Unexpected error message in the log: " + error);
 }
 
@@ -6034,7 +6034,7 @@ GUI_TEST_CLASS_DEFINITION(test_3960) {
                                                 << "Open as...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(logTracer.hasError() == false, QString("Error message found: %1, but not expected.").arg(logTracer.getError()));
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3975) {
@@ -6086,7 +6086,7 @@ GUI_TEST_CLASS_DEFINITION(test_3983) {
     GTGlobals::sleep();
 
     GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
-    CHECK_SET_ERR(l.hasError(), "No error in the log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3988) {

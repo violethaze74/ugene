@@ -398,7 +398,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     //2. Write the path to the folder which does not exist(in the StartupDialogFiller).
     //3. Click OK(in the StartupDialogFiller).
-    CHECK_SET_ERR(!l.hasError(), "There are error messages about write access in WD folder");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0058) {

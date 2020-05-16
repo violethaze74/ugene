@@ -61,7 +61,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasError(), "Error message expected in log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     GTFile::check(os, "_common_data/e_coli/NC_008253.gb.fasta");
     GTFile::check(os, "_common_data/e_coli/e_coli_1000.gff.fasta");
 }
@@ -89,7 +89,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasError(), "Error message expected in log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     GTFile::check(os, "_common_data/e_coli/NC_008253.gff.fasta");
 }
 
@@ -148,7 +148,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasError(), QString("Log has error: %1").arg(l.getError()));
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     GTFile::check(os, "_common_data/e_coli/e_coli_1000.gff.fasta");
 }
 

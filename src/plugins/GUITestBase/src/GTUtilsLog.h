@@ -22,6 +22,8 @@
 #ifndef _U2_GUI_LOG_UTILS_H_
 #define _U2_GUI_LOG_UTILS_H_
 
+#include <QStringList>
+
 #include <U2Core/Log.h>
 
 #include "GTGlobals.h"
@@ -31,34 +33,25 @@ namespace U2 {
 class GTLogTracer : public QObject, public LogListener {
     Q_OBJECT
 public:
-    GTLogTracer(QString _expectedMessage = "");
+    GTLogTracer(const QString &expectedMessage = QString());
     ~GTLogTracer();
 
-    void reset() {
-        wasError = false;
-    }
-    bool hasError() const {
-        return wasError;
-    }
-    bool messageFound() const {
-        return wasMessage;
-    }
-    QString getError() const {
-        return error;
-    }
-    QString getExpectedMessage() const {
-        return expectedMessage;
-    }
-
     void onMessage(const LogMessage &msg);
-    static QList<LogMessage *> getMessages();
-    static bool checkMessage(QString s);
-    static bool checkMessageStartsWith(QString s);
 
-private:
-    bool wasError;
-    bool wasMessage;
-    QString error;
+    bool hasErrors() const {
+        return !errorsList.isEmpty();
+    }
+
+    QString getJoinedErrorString() const {
+        return errorsList.isEmpty() ? "" : errorsList.join("\n");
+    }
+
+    static QList<LogMessage *> getMessages();
+
+    static bool checkMessage(QString s);
+
+    bool isExpectedMessageFound;
+    QStringList errorsList;
     QString expectedMessage;
 };
 

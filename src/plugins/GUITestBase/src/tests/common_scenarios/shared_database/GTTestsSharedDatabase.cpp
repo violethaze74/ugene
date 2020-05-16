@@ -144,7 +144,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0001) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Connect to UGENE shared database...");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 
     GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
 
@@ -212,7 +212,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0002) {
     const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
     CHECK_SET_ERR(!exists, "A database connection unexpectedly is presented in the project view");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0003) {
@@ -292,7 +292,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0003) {
     const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
     CHECK_SET_ERR(!exists, "A database connection unexpectedly is presented in the project view");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0004) {
@@ -328,7 +328,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0004) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Connect to UGENE shared database...");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0005) {
@@ -394,7 +394,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0005) {
     const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
     CHECK_SET_ERR(!exists, "A database connection unexpectedly is presented in the project view");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0006) {
@@ -460,7 +460,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0006) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Connect to UGENE shared database...");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0007) {
@@ -556,7 +556,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0008) {
     exists = GTUtilsProjectTreeView::checkItem(os, conName2, QModelIndex());
     CHECK_SET_ERR(exists, "A database connection not found in the project view");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0009) {
@@ -658,7 +658,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0013) {
     const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
     CHECK_SET_ERR(exists, "A database connection not found in the project view");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0014) {
@@ -738,7 +738,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0001) {
 
     GTUtilsProjectTreeView::findIndex(os, "pt0001_human_T1");
     CHECK_OP(os, );
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(proj_test_0002) {
@@ -763,7 +763,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0002) {
     GTMouseDriver::click(Qt::RightButton);
 
     CHECK_SET_ERR(1 == model->rowCount(parentDir), "Invalid child item count");
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(proj_test_0003) {
@@ -811,7 +811,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0003) {
     subfolderItem = model->index(0, 0, dirItem);
     subfolderName = subfolderItem.data().toString();
     CHECK_SET_ERR("pt0003_new_name" == subfolderName, "The folder was renamed");
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(proj_test_0004) {
@@ -841,7 +841,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0004) {
     dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2");
     CHECK_SET_ERR(2 == model->rowCount(dirItem1), QString("Invalid child item count for pt0004_dir1 Expected: 2; actual: %1").arg(model->rowCount(dirItem1)));
     CHECK_SET_ERR(0 == model->rowCount(dirItem2), QString("Invalid child item count for pt0004_dir2 Expected: 0; actual: %1").arg(model->rowCount(dirItem2)));
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(proj_test_0005) {
@@ -887,7 +887,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0005) {
     CHECK_SET_ERR(dirItem1 == dirItem3.parent(), "Invalid parent item 2");
     CHECK_SET_ERR(dirItem1 == objItem1.parent(), "Invalid parent item 3");
     CHECK_SET_ERR(dirItem1 == objItem2.parent(), "Invalid parent item 4");
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(proj_test_0006) {
@@ -928,7 +928,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0006) {
     CHECK_SET_ERR(dirItem == dirItem2.parent(), "Invalid parent item 2");
     CHECK_SET_ERR(dirItem2 == objItem.parent(), "Invalid parent item 3");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(proj_test_0007) {
@@ -1011,7 +1011,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0008) {
                                                     << "/proj_test_0008/AbCdEfGh";
     GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, "/proj_test_0008", expectedItems);
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(proj_test_0009) {
@@ -1069,7 +1069,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0001) {
     const QModelIndex importedObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, importedObjectPath);
     CHECK_SET_ERR(importedObjectItemIndex.isValid(), "Can't find the imported object");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0002) {
@@ -1123,7 +1123,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0002) {
     QWidget *sequenceView = GTWidget::findWidget(os, " " + fileObjectNameWidget);
     CHECK_SET_ERR(NULL != sequenceView, "Sequence view wasn't opened");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0003) {
@@ -1202,7 +1202,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, annotationTableName.arg(databaseDoc->getName()));
     CHECK_SET_ERR(NULL != annotationTable, "Annotation table is NULL");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0004) {
@@ -1262,7 +1262,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0004) {
     const QModelIndex sequenceObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
     CHECK_SET_ERR(sequenceObjectIndex.isValid(), "Result item wasn't found");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0005) {
@@ -1312,7 +1312,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0005) {
     const QModelIndex sequenceObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
     CHECK_SET_ERR(sequenceObjectIndex.isValid(), "Result item wasn't found");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0006) {
@@ -1388,7 +1388,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0006) {
     const QModelIndex notImportedObjectIndexIndex = GTUtilsProjectTreeView::findIndex(os, notImportedObjectName, dstFolderIndex, options);
     CHECK_SET_ERR(!notImportedObjectIndexIndex.isValid(), "The object from the inner folder is unexpectedly imported");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0007) {
@@ -1457,7 +1457,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0007) {
                                                     << databaseSequenceObjectPath;
     GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0008) {
@@ -1530,7 +1530,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0008) {
     const QModelIndex sequenceSecondObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceSecondObjectPath);
     CHECK_SET_ERR(sequenceSecondObjectIndex.isValid(), "Result item wasn't found");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0009) {
@@ -1602,7 +1602,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0009) {
     const QModelIndex sequenceSecondObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceSecondObjectPath);
     CHECK_SET_ERR(sequenceSecondObjectIndex.isValid(), "Result item wasn't found");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0010) {
@@ -1657,7 +1657,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0010) {
     const QModelIndex sequenceObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
     CHECK_SET_ERR(sequenceObjectIndex.isValid(), "Result item wasn't found");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0011) {
@@ -1732,7 +1732,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
     QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, someFeatureName);
     CHECK_SET_ERR(NULL != annotationTable, "Annotation table is NULL");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0012) {
@@ -1776,7 +1776,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0012) {
                                                     << databaseMalignmentObjectPath;
     GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0013) {
@@ -1847,7 +1847,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0013) {
     const QString secondContigRegion = secondContig->text(AnnotationsTreeView::COLUMN_VALUE);
     CHECK_SET_ERR(expectedSecondContigRegion == secondContigRegion, QString("Invalid contig region: expected %1, got %2").arg(expectedSecondContigRegion).arg(secondContigRegion));
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log: " + lt.getError());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0014) {
@@ -1885,7 +1885,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0014) {
                                                     << databaseSequenceSecondObjectPath;
     GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0015) {
@@ -2118,7 +2118,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0018) {
     const QModelIndex assemblyObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAssemblyObjectPath);
     CHECK_SET_ERR(assemblyObjectIndex.isValid(), "Result item wasn't found");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0019) {
@@ -2178,7 +2178,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0019) {
     const QModelIndex assemblyObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAssemblyObjectPath);
     CHECK_SET_ERR(assemblyObjectIndex.isValid(), "Result item wasn't found");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(import_test_0020) {
@@ -2275,7 +2275,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0001) {
 
     GTUtilsSequenceView::goToPosition(os, position);
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(view_test_0002) {
@@ -2303,7 +2303,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0002) {
 
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, position);
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(view_test_0003) {
@@ -2339,7 +2339,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0003) {
 
     GTUtilsAssemblyBrowser::zoomToMax(os);
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(view_test_0004) {
@@ -2362,7 +2362,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0004) {
     QWidget *textView = GTWidget::findWidget(os, textVisibleNameWidget);
     CHECK_SET_ERR(NULL != textView, "View wasn't opened");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(view_test_0005) {
@@ -2390,7 +2390,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0005) {
     QWidget *chromaView = seqView->findChild<QWidget *>("chromatogram_view_" + sequenceObjectName);
     CHECK_SET_ERR(NULL != chromaView, "Chromatogram view wasn't opened");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(view_test_0006) {
@@ -2413,7 +2413,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0006) {
     QWidget *treeView = GTWidget::findWidget(os, treeVisibleNameWidget);
     CHECK_SET_ERR(NULL != treeView, "View wasn't opened");
 
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(del_test_0001) {
@@ -2449,7 +2449,7 @@ GUI_TEST_CLASS_DEFINITION(del_test_0001) {
     GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1", GTGlobals::FindOptions(false));
     const QModelIndex objItem = GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1");
     CHECK_SET_ERR(rbItem == objItem.parent(), "Object is not in Recycle bin");
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(del_test_0002) {
@@ -2496,7 +2496,7 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
     const QModelIndex dirItem = GTUtilsProjectTreeView::findIndex(os, "dt0002_dir");
     CHECK_SET_ERR(rbItem == dirItem.parent(), "Folder is not in Recycle bin");
     CHECK_SET_ERR(0 == model->rowCount(dirItem), "Objects of a folder in recycle bin are shown");
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(del_test_0003) {
@@ -2527,7 +2527,7 @@ GUI_TEST_CLASS_DEFINITION(del_test_0003) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, rbItem));
     CHECK_SET_ERR(0 == model->rowCount(rbItem), "Recycle bin is not empty");
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -2553,7 +2553,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0001) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0001_export.fasta"));
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_OP(os, );
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(export_test_0002) {
@@ -2577,7 +2577,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0002) {
 
     bool exported = QFileInfo(testDir + "_common_data/scenarios/sandbox/et0002_features.gb").exists();
     CHECK_SET_ERR(exported, "Object is not exported");
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(export_test_0003) {
@@ -2601,7 +2601,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0003) {
 
     GTWidget::findWidget(os, "msa_editor_et0003_alignment");
     CHECK_OP(os, );
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(export_test_0004) {
@@ -2626,7 +2626,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0004) {
 
     GTWidget::findWidget(os, "assembly_browser_et0004_assembly.bam [as] et0004_assembly");
     CHECK_OP(os, );
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(export_test_0005) {
@@ -2650,7 +2650,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0005) {
 
     bool exported = QFileInfo(testDir + "_common_data/scenarios/sandbox/et0005_variations.vcf").exists();
     CHECK_SET_ERR(exported, "Object is not exported");
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(export_test_0006) {
@@ -2675,7 +2675,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0006) {
 
     GTWidget::findWidget(os, "et0006_text [t] et0006_text");
     CHECK_OP(os, );
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(export_test_0007) {
@@ -2699,7 +2699,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0007) {
 
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_OP(os, );
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(export_test_0008) {
@@ -2723,7 +2723,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0008) {
 
     GTWidget::findWidget(os, "et0008_tree [tr] Tree");
     CHECK_OP(os, );
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(export_test_0009) {
@@ -2750,7 +2750,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0009) {
 
     CHECK_SET_ERR(baseName == "long_name_with_bad_symbols__new", "Exporting basename don't match");
     CHECK_OP(os, );
-    CHECK_SET_ERR(!lt.hasError(), "errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 }    // namespace GUITest_common_scenarios_shared_database

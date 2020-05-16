@@ -839,7 +839,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     GTLogTracer l;
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!l.hasError(), "Errors in the log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6135) {
@@ -4106,7 +4106,7 @@ GUI_TEST_CLASS_DEFINITION(test_6619) {
     GTGlobals::sleep();
 
     //Expected: No errors
-    CHECK_SET_ERR(!lt.hasError(), "Unexpected errors");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6620) {

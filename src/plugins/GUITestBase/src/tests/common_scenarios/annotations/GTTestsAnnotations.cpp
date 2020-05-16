@@ -873,7 +873,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(l.messageFound(), "No expected message in the log");
+    CHECK_SET_ERR(l.isExpectedMessageFound, "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {
@@ -910,7 +910,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(l.messageFound(), "No expected message in the log");
+    CHECK_SET_ERR(l.isExpectedMessageFound, "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {

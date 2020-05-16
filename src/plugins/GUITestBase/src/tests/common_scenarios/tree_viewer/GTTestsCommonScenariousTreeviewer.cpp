@@ -334,7 +334,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    {Path to file:} _common_data/scenarios/sandbox/COI.nwk
 
     //    4. Click  OK button
-    CHECK_SET_ERR(l.hasError(), "there is no error it the log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
     //    Expected state: no crash, philogenetic tree not appears
     //    Error message in the log: "Calculated weight matrix is invalid"
 }

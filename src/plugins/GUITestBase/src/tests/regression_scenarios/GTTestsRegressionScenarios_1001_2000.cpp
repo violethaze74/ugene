@@ -1022,7 +1022,7 @@ GUI_TEST_CLASS_DEFINITION(test_1058) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Open as...");
     GTGlobals::sleep();
-    CHECK_SET_ERR(l.hasError(), "No error about opening the file");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1059) {
@@ -1318,7 +1318,7 @@ GUI_TEST_CLASS_DEFINITION(test_1068) {
     GTWidget::click(os, GTAction::button(os, "Load workflow"));
     GTGlobals::sleep();
     //    Expected state: Workflow was not loaded. Error in log
-    CHECK_SET_ERR(l.hasError(), "no error in log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1069) {
@@ -1375,7 +1375,7 @@ GUI_TEST_CLASS_DEFINITION(test_1071) {
     GTGlobals::sleep();
 
     //expected state: Error message appears, UGENE does not crash.
-    CHECK_SET_ERR(!l.hasError(), "Errors in log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1078) {    //Need to add the test
@@ -2670,7 +2670,7 @@ GUI_TEST_CLASS_DEFINITION(test_1241) {
     GTWidget::click(os, GTAction::button(os, "Enable collapsing"));
 
     //Expected: UGENE doesn't crash, no errors in log.
-    CHECK_SET_ERR(!lt.hasError(), "Errors in log");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1245) {
@@ -3001,7 +3001,7 @@ GUI_TEST_CLASS_DEFINITION(test_1260) {
                                                                           false,
                                                                           true));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
-    CHECK_SET_ERR(!lt.hasError(), "Log should not contain errosrs");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1262) {
@@ -3688,11 +3688,11 @@ GUI_TEST_CLASS_DEFINITION(test_1325) {
     GTFileDialog::openFile(os, testDir + "_common_data/regression/1325/", "long_gff.gff");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
-    CHECK_SET_ERR(l1.hasError(), "There is no error in the log");
+    CHECK_SET_ERR(l1.hasErrors(), "Expected to have errors in the log, but no errors found");
 
     GTLogTracer l2;
     GTUtilsDocument::loadDocument(os, "long_gff.gff");
-    CHECK_SET_ERR(l2.hasError(), "There is no error in the log");
+    CHECK_SET_ERR(l2.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1326) {
@@ -4469,7 +4469,7 @@ GUI_TEST_CLASS_DEFINITION(test_1429) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Build index for reads mapping...");
-    CHECK_SET_ERR(lt.hasError() == false, "Errors in log!");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1432) {
@@ -4645,7 +4645,7 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
     //   Expected result: scheme is loaded completely without any error messages in log
     GTFileDialog::openFile(os, sandBoxDir + "dump_sequence.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!logTracer.hasError(), QString("There is error in the log: %1").arg(logTracer.getError()));
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1457) {
@@ -4762,10 +4762,10 @@ GUI_TEST_CLASS_DEFINITION(test_1439) {
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.hasError(), "There is no error in the log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
     QString expectedError = "Can't align sequences that are longer than 100000 bp.";
 
-    CHECK_SET_ERR(l.getError().contains(expectedError), "Wrong error in the log: " + l.getError());
+    CHECK_SET_ERR(l.getJoinedErrorString().contains(expectedError), "Wrong error in the log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1442_1) {
@@ -5219,7 +5219,7 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(5000);
 
-    CHECK_SET_ERR(l.hasError(), "No errors in the log");
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1511) {
@@ -5718,8 +5718,8 @@ GUI_TEST_CLASS_DEFINITION(test_1576) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(l.hasError(), "no error in log");
-    QString error = l.getError();
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    QString error = l.getJoinedErrorString();
     QString expectedError = "Cannot bind convert-alignment-to-sequence:out-sequence to sequences-to-msa:in-sequence";
 
     CHECK_SET_ERR(error.contains(expectedError), "actual error is " + error);
@@ -5735,8 +5735,8 @@ GUI_TEST_CLASS_DEFINITION(test_1576_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(l.hasError(), "no error in log");
-    QString error = l.getError();
+    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    QString error = l.getJoinedErrorString();
     QString expectedError = "Cannot bind sequences-to-msa:out-msa to convert-alignment-to-sequence:in-msa";
 
     CHECK_SET_ERR(error.contains(expectedError), "actual error is " + error);
@@ -7779,7 +7779,7 @@ GUI_TEST_CLASS_DEFINITION(test_1751) {
     GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/1751/.COI.aln");
 
     //Expected state: Check log for errors
-    CHECK_SET_ERR(!lt.hasError(), "Log sholdn't contain errors");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1759) {
@@ -8215,7 +8215,7 @@ GUI_TEST_CLASS_DEFINITION(test_1859) {
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
     GTGlobals::sleep();
 
-    CHECK_SET_ERR(lt.hasError(), "no error in log");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1860) {

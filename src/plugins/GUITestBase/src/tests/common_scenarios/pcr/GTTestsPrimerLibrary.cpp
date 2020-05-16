@@ -622,7 +622,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     const QString secondData = GTUtilsPrimerLibrary::getPrimerSequence(os, "primerToImport6");
     CHECK_SET_ERR("GGTATATTAATTATTATTA" == secondData, QString("An unexpected primer '%1' data: expect %2, got %3").arg("primerToImport2").arg("GGTATATTAATTATTATTA").arg(secondData));
-    CHECK_SET_ERR(!l.hasError(), "There is error in the log");
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {

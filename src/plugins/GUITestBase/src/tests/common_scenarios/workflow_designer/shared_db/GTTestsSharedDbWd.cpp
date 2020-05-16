@@ -66,7 +66,7 @@ void createTestConnection(HI::GUITestOpStatus &os) {
         GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, params, EditConnectionDialogFiller::FROM_SETTINGS));
     }
 
-    CHECK_SET_ERR_RESULT(!lt.hasError(), "errors in log", );
+    CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), );
 }
 
 }    // namespace
