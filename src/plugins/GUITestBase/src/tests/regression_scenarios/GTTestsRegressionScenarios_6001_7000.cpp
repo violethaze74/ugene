@@ -1146,7 +1146,7 @@ GUI_TEST_CLASS_DEFINITION(test_6226) {
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
     parameters.samOutput = false;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/reads.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/reads.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 }
@@ -1156,7 +1156,7 @@ GUI_TEST_CLASS_DEFINITION(test_6229) {
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
     parameters.samOutput = false;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/reads.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/reads.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 

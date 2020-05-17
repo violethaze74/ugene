@@ -827,7 +827,7 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, sandBoxDir, "test_1038_seq");
+    GTUtilsProject::openFiles(os, sandBoxDir + "test_1038_seq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4139,7 +4139,7 @@ GUI_TEST_CLASS_DEFINITION(test_1393) {
 
     // 1. Open file "_common_data/fasta/trim_fa.fa"
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "trim_fa.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/trim_fa.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Choose{ Export->Export sequences as alignment } in context menu of project view
@@ -4754,7 +4754,7 @@ GUI_TEST_CLASS_DEFINITION(test_1439) {
     GTLogTracer l;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/1439", "NC_000964_multi_region.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/1439/NC_000964_multi_region.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/1439", "NC_000964.fa"));
@@ -5158,7 +5158,7 @@ GUI_TEST_CLASS_DEFINITION(test_1506) {
 GUI_TEST_CLASS_DEFINITION(test_1508) {
     //1. Open COI2.fa as an alignment
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "COI2.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/COI2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. {MSA Editor context menu} -> Align -> Align with MUSCLE
@@ -7261,7 +7261,7 @@ GUI_TEST_CLASS_DEFINITION(test_1688) {
     GTLogTracer l;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/1688/", "sr100.000.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/1688/sr100.000.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);

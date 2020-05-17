@@ -678,7 +678,7 @@ GUI_TEST_CLASS_DEFINITION(test_2030) {
 GUI_TEST_CLASS_DEFINITION(test_2032) {
     // 1. Open {_common_data/fasta/abcd.fa} as separate sequences
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "abcd.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/abcd.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(500);
 
@@ -2708,7 +2708,7 @@ GUI_TEST_CLASS_DEFINITION(test_2392) {
     // Expected state: Open dialog "Sequence reading options"
     // 2. Select "Join sequences into alignment" option and press OK
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTFileDialog::openFile(os, testDir + "_common_data/genbank/", "multi.gb");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/genbank/multi.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Document opened in MSA view
@@ -4087,7 +4087,7 @@ GUI_TEST_CLASS_DEFINITION(test_2605) {
     GTLogTracer logTracer;
     // 1. Open file _common_data/fasta/multy_fa.fa as multiple alignment
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "multy_fa.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/multy_fa.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Export subalignment from this msa to any MSA format
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
@@ -4142,7 +4142,7 @@ GUI_TEST_CLASS_DEFINITION(test_2622) {
     GTLogTracer l;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge, 100));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "multy_fa.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/multy_fa.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Press Ctrl + F.
@@ -4169,7 +4169,7 @@ GUI_TEST_CLASS_DEFINITION(test_2622_1) {
     GTLogTracer l;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge, 100));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "multy_fa.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/multy_fa.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Press Ctrl + F.
@@ -4771,7 +4771,7 @@ GUI_TEST_CLASS_DEFINITION(test_2730) {
     Expected: UGENE does not crash.
 */
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "abcd.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/abcd.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
     QWidget *parent = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
@@ -5550,10 +5550,10 @@ GUI_TEST_CLASS_DEFINITION(test_2895) {
     //1. Open "_common_data/fasta/amino_multy.fa" as multiple alignment.
     //2. Open "_common_data/fasta/amino_multy_ext.fa" as separate sequences.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "amino_multy_ext.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/amino_multy_ext.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "amino_multy.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/amino_multy.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //3. Try to add to the amino_multy.fa document, any sequence from the amino_multy_ext.fa document.
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "amino_multy_ext.fa", "chr1_gl000191_random Amino translation 0 direct"));
@@ -6139,7 +6139,7 @@ GUI_TEST_CLASS_DEFINITION(test_2962_2) {
     GTLogTracer l;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "DNA.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "GXL_141618");

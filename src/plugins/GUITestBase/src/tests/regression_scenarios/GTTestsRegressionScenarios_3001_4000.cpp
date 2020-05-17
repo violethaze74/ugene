@@ -889,7 +889,7 @@ GUI_TEST_CLASS_DEFINITION(test_3138) {
     //    Expected state: founded regions are valid.
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "abcd.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/abcd.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
@@ -1697,7 +1697,7 @@ GUI_TEST_CLASS_DEFINITION(test_3255) {
 GUI_TEST_CLASS_DEFINITION(test_3263) {
     //    1. Open "_common_data/alphabets/standard_dna_rna_amino_1000.fa"
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/alphabets", "standard_dna_rna_amino_1000.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/alphabets/standard_dna_rna_amino_1000.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open CV for the first sequence
     QWidget *cvButton1 = GTWidget::findWidget(os, "CircularViewAction", GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
@@ -2453,7 +2453,7 @@ GUI_TEST_CLASS_DEFINITION(test_3357) {
     Expected state: UGENE doesn't crash.
 */
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/alphabets/", "standard_dna_rna_amino_1000.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/alphabets/standard_dna_rna_amino_1000.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
     QWidget *w = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
@@ -2586,7 +2586,7 @@ GUI_TEST_CLASS_DEFINITION(test_3398_1) {
     //    1. Open "_common_data/fasta/broken/data_in_the_name_line.fa".
     //    2. Select "As separate sequences" mode.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/broken", "data_in_the_name_line.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/broken/data_in_the_name_line.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: an unloaded document appears, there are no objects within.
@@ -2606,7 +2606,7 @@ GUI_TEST_CLASS_DEFINITION(test_3398_2) {
     //    1. Open "_common_data/fasta/broken/data_in_the_name_line.fa".
     //    2. Select "As separate sequences" mode.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge, 10));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/broken", "data_in_the_name_line.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/broken/data_in_the_name_line.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: an unloaded document appears, there are no objects within.
@@ -2626,7 +2626,7 @@ GUI_TEST_CLASS_DEFINITION(test_3398_3) {
     //    1. Open "_common_data/fasta/broken/data_in_the_name_line.fa".
     //    2. Select "Merge into one sequence" mode, set 10 'unknown' symbols.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge, 0));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/broken", "data_in_the_name_line.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/broken/data_in_the_name_line.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: an unloaded document appears, there are no objects within.
@@ -2646,7 +2646,7 @@ GUI_TEST_CLASS_DEFINITION(test_3398_4) {
     //    1. Open "_common_data/fasta/broken/data_in_the_name_line.fa".
     //    2. Select "As separate sequences" mode.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/broken", "data_in_the_name_line.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/broken/data_in_the_name_line.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: an unloaded document appears, there are no objects within.
@@ -3713,7 +3713,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_1) {
         }
     };
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, new Custom()));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "numbers_in_the_middle.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/numbers_in_the_middle.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select first sequence
@@ -3757,7 +3757,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_2) {
         }
     };
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, new Custom()));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "numbers_in_the_middle.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/numbers_in_the_middle.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select second sequence
@@ -4450,7 +4450,7 @@ GUI_TEST_CLASS_DEFINITION(test_3687_1) {
     //Expected: the finishes with error about sequences amount.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsNotifications::waitForNotification(os, true, "contains too many sequences to be displayed");
-    GTFileDialog::openFile(os, testDir + "_common_data/fastq/lymph.fastq");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fastq/lymph.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -4463,7 +4463,7 @@ GUI_TEST_CLASS_DEFINITION(test_3687_2) {
     //Expected: the finishes with error about sequences amount.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsNotifications::waitForNotification(os, true, "contains too many sequences to be displayed");
-    GTFileDialog::openFile(os, testDir + "_common_data/fastq/lymph.fastq");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fastq/lymph.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }

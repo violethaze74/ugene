@@ -495,7 +495,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     // raw alphabet
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "numbers_in_the_middle.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/numbers_in_the_middle.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
@@ -515,7 +515,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     // focus change
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "numbers_in_the_middle.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/numbers_in_the_middle.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);

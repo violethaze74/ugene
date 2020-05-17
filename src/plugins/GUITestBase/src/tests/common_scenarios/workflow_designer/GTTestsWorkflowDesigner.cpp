@@ -56,6 +56,7 @@
 #include "GTTestsWorkflowDesigner.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
@@ -438,7 +439,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTFileDialog::openFile(os, sandBoxDir, "wd_test_0059.fa");
+    GTUtilsProject::openFiles(os, sandBoxDir + "wd_test_0059.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 

@@ -1194,7 +1194,7 @@ GUI_TEST_CLASS_DEFINITION(test_0700) {
 GUI_TEST_CLASS_DEFINITION(test_0702) {
     //1. open _common_data / fasta / DNA.fa in merge mode.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/DNA.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select first contig(1..743) region.
@@ -1447,7 +1447,7 @@ GUI_TEST_CLASS_DEFINITION(test_0774) {
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, sandBoxDir + "/test_0774");
+    GTUtilsProject::openFiles(os, sandBoxDir + "/test_0774");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTUtilsSequenceView::getSeqWidgetsNumber(os) == 2, "Incorrect count of sequences");
@@ -2553,7 +2553,7 @@ GUI_TEST_CLASS_DEFINITION(test_0882) {
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(dataDir + "samples/FASTA/human_T1.fa", QStringList());
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "can't be mapped"));
-    GTFileDialog::openFile(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTUtilsProject::openFiles(os, dataDir + "samples/FASTQ/eas.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 }
@@ -2566,7 +2566,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
 
     GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Gene.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
@@ -2581,7 +2581,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTLogTracer l2;
     GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Gene.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
     errors = GTUtilsLog::getErrors(os, l2);
@@ -2634,7 +2634,7 @@ GUI_TEST_CLASS_DEFINITION(test_0889) {
     //
     //  Expected state: UGENE not crashed
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "RNA.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/RNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class OkClicker : public Filler {

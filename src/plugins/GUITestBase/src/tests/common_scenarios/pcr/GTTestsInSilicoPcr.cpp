@@ -33,6 +33,7 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcr.h"
+#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -49,7 +50,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //1. Open "_common_data/fasta/alphabet.fa".
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "alphabet.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/alphabet.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Activate the "Amino" sequence in the sequence view (set the focus for it).

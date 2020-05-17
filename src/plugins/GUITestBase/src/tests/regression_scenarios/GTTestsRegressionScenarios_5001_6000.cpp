@@ -627,7 +627,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
 GUI_TEST_CLASS_DEFINITION(test_5138_1) {
     //1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "big_aln.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/msa/big_aln.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Do MSA area context menu->Statistics->generate distance matrix
     //    Expected state: notification about low memory has appeared
@@ -4017,7 +4017,7 @@ GUI_TEST_CLASS_DEFINITION(test_5781) {
     parameters.samOutput = false;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
     //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "can't be mapped"));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/COI2.fa");
+    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/COI2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
