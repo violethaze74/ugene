@@ -784,7 +784,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     //    GTF
 
     //    Export annotations from different annotation table objects
-    //    The following sceanrio should work with BED, GFF and GTF formats.
+    //    The following scenario should work with BED, GFF and GTF formats.
     //    1. Open '_common_data/fasta/DNA.fa' as separate sequences
     //    2. Select a few annotations from different annotation table objects
     //    3. {Export -> Export annotations...}, select on of the following formats: BED, GFF, GTF
