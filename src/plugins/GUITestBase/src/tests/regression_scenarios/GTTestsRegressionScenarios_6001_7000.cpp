@@ -5708,6 +5708,23 @@ GUI_TEST_CLASS_DEFINITION(test_6752) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 604, 1));
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
+GUI_TEST_CLASS_DEFINITION(test_6754) {
+    GTLogTracer l;
+
+    // 1. open document samples/CLUSTALW/COI.aln
+    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    // 2. Click "Align > Align with MUSCLE..." and click "Align".
+    GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTGlobals::sleep();
+    // 3. Click on any sequence during the aligning process.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
+
+    // 4. There are no errors in the log
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 1, 1));
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+}
 GUI_TEST_CLASS_DEFINITION(test_6760) {
     //1. Open /data/samples/fasta/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
