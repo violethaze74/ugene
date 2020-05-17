@@ -132,7 +132,7 @@ void SequenceSelectorWidgetController::sl_addSeqClicked() {
         return;
     }
 
-    const MultipleSequenceAlignmentRow selectedRow = msa->getRowByLineNumber(msa->getSelection().y());
+    const MultipleSequenceAlignmentRow selectedRow = msa->getRowByViewRowIndex(msa->getSelection().y());
     setSequenceId(selectedRow->getRowId());
     emit si_selectionChanged();
 }

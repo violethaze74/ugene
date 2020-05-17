@@ -84,7 +84,7 @@ public:
     MsaEditorWgt *getUI() const;
 
     //Return alignment row that is displayed on target line in MSAEditor
-    const MultipleSequenceAlignmentRow getRowByLineNumber(int lineNumber) const;
+    const MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
 
     PairwiseAlignmentWidgetsSettings *getPairwiseAlignmentWidgetsSettings() const {
         return pairwiseAlignmentWidgetsSettings;

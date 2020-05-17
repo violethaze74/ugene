@@ -233,7 +233,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView *_annotatedDnaView)
 
         checkState();
         if (lblErrorMessage->text().isEmpty()) {
-            showHideMessage(true, UseMultiplePatternsTip);
+            showHideMessage(true, PleaseInputAtLeastOneSearchPatternTip);
         }
 
         FindPatternEventFilter *findPatternEventFilter = new FindPatternEventFilter(this);
@@ -659,7 +659,7 @@ void FindPatternWidget::showHideMessage(bool show, MessageFlag messageFlag, cons
                 text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
                 break;
             }
-            case UseMultiplePatternsTip: {
+            case PleaseInputAtLeastOneSearchPatternTip: {
                 const QString message = tr("Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.").arg(lineBreakShortcut);
                 text = tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::infoColorLabelHtmlStr()).arg(message);
                 break;
@@ -720,7 +720,7 @@ void FindPatternWidget::showHideMessage(bool show, MessageFlag messageFlag, cons
     } else {
         lblErrorMessage->setText("");
     }
-    bool hasNoErrors = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(UseMultiplePatternsTip));
+    bool hasNoErrors = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(PleaseInputAtLeastOneSearchPatternTip));
     if (hasNoErrors) {
         GUIUtils::setWidgetWarning(textPattern, false);
     }
@@ -735,7 +735,7 @@ void FindPatternWidget::sl_onSearchPatternChanged() {
 
         checkState();
         if (lblErrorMessage->text().isEmpty()) {
-            showHideMessage(patterns.isEmpty(), UseMultiplePatternsTip);
+            showHideMessage(patterns.isEmpty(), PleaseInputAtLeastOneSearchPatternTip);
         }
 
         enableDisableMatchSpin();

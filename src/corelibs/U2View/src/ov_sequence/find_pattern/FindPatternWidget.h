@@ -55,7 +55,7 @@ enum MessageFlag {
     PatternAlphabetDoNotMatch,
     PatternsWithBadAlphabetInFile,
     PatternsWithBadRegionInFile,
-    UseMultiplePatternsTip,
+    PleaseInputAtLeastOneSearchPatternTip,
     AnnotationNotValidName,
     AnnotationNotValidFastaParsedName,
     NoPatternToSearch,

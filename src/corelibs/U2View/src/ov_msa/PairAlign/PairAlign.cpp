@@ -124,9 +124,9 @@ bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
 void PairAlign::initParameters() {
     if (msa->getSelection().height() == 2) {
         int selectionPos = msa->getSelection().y();
-        qint64 firstRowId = msa->getRowByLineNumber(selectionPos)->getRowId();
+        qint64 firstRowId = msa->getRowByViewRowIndex(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
-        qint64 secondRowId = msa->getRowByLineNumber(selectionPos + 1)->getRowId();
+        qint64 secondRowId = msa->getRowByViewRowIndex(selectionPos + 1)->getRowId();
         secondSeqSelectorWC->setSequenceId(secondRowId);
     } else {
         if (isValidSequenceId(pairwiseAlignmentWidgetsSettings->firstSequenceId)) {

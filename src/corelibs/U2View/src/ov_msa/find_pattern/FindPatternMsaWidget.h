@@ -33,7 +33,7 @@
 #include "ui_FindPatternMsaForm.h"
 
 namespace U2 {
-
+class ShowHideSubgroupWidget;
 class ADVSequenceObjectContext;
 class ADVSequenceWidget;
 class AnnotatedDNAView;
@@ -70,6 +70,7 @@ private slots:
     void sl_onSearchPatternChanged();
     void sl_onMaxResultChanged(int);
     void sl_findPatternTaskStateChanged();
+    void sl_searchModeChanged();
 
     /** A sequence part was added, removed or replaced */
     void sl_onMsaModified();
@@ -111,11 +112,9 @@ private:
     /** Returns true if current MSA editor selection region is equal to the current result. */
     bool isResultSelected() const;
 
-    bool isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const;
     void stopCurrentSearchTask();
     void correctSearchInCombo();
     void setUpTabOrder() const;
-    QList<NamePattern> updateNamePatterns();
     void showCurrentResultAndStopProgress();
     void startProgressAnimation();
 
@@ -144,19 +143,27 @@ private:
     void setCorrectPatternsString();
     void setRegionToWholeSequence();
 
+    /** Performs in-main thread search in sequence names. */
+    void runSearchInSequenceNames(const QStringList &patterns);
+
     /**
      * Checks current UI state and returns either valid or empty region.
      * Sets 'isRegionIsCorrect' if the region is valid.
      */
     U2Region getSearchRegionFromUi(bool &isRegionIsCorrect) const;
 
-    void initFindPatternTask(const QList<QPair<QString, QString>> &patterns);
+    void startFindPatternInMsaTask(const QStringList &patterns);
 
-    /** Checks if there are several patterns in textPattern which are separated by new line symbol,
-    parse them out and returns with their names (if they're exist). */
-    QList<QPair<QString, QString>> getPatternsFromTextPatternField(U2OpStatus &os) const;
+    /**
+     * Checks if there are several patterns in textPattern which are separated by new line symbol,
+     * parses them out and returns with their names (if they're exist).
+     */
+    QStringList getPatternsFromTextPatternField(U2OpStatus &os) const;
 
     void updatePatternText(int previousAlgorithm);
+
+    /** Post processes allSearchResults list after search task is finished. */
+    void postProcessAllSearchResults();
 
     MSAEditor *msaEditor;
     bool isAmino;
@@ -195,14 +202,18 @@ private:
     int currentResultIndex;
 
     Task *searchTask;
-    QString previousPatternString;
+    QString currentPatternFieldText;
     int previousMaxResult;
-    QStringList patternList;
-    QStringList nameList;
+    QStringList currentSearchPatternList;
     QMovie *progressMovie;
     bool setSelectionToTheFirstResult;
+    bool isSearchInNamesMode;
 
     FindPatternMsaWidgetSavableTab savableWidget;
+
+    ShowHideSubgroupWidget *algorithmSubgroup;
+    ShowHideSubgroupWidget *searchInSubgroup;
+    ShowHideSubgroupWidget *otherSettingsSubgroup;
 };
 
 }    // namespace U2

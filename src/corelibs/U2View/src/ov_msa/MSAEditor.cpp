@@ -115,11 +115,9 @@ bool MSAEditor::onCloseEvent() {
     return true;
 }
 
-const MultipleSequenceAlignmentRow MSAEditor::getRowByLineNumber(int lineNumber) const {
-    if (ui->isCollapsibleMode()) {
-        lineNumber = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(lineNumber);
-    }
-    return getMaObject()->getMsaRow(lineNumber);
+const MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
+    int maRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
+    return getMaObject()->getMsaRow(maRowIndex);
 }
 
 MSAEditor::~MSAEditor() {
