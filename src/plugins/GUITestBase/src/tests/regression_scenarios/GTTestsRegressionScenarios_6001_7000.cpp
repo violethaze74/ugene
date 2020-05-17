@@ -5653,7 +5653,58 @@ GUI_TEST_CLASS_DEFINITION(test_6740) {
 
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(4, 3), QPoint(4, 3), "T");
 }
+GUI_TEST_CLASS_DEFINITION(test_6742) {
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    QStringList mainItems = QStringList() << "Overview"
+                                      << "Show offsets"
+                                      << "Zoom In"
+                                      << "Zoom Out"
+                                      << "Zoom To Selection"
+                                      << "Reset Zoom"
+                                      << "Colors"
+                                      << "Highlighting"
+                                      << "Change Font"
+                                      << "Clear selection";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance", mainItems));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTGlobals::sleep();
+
+    QStringList colorsItems = QStringList() << "No colors"
+                                      << "Jalview"
+                                      << "Percentage identity"
+                                      << "Percentage identity (colored)"
+                                      << "Percentage identity (gray)"
+                                      << "UGENE"
+                                      << "UGENE Sanger"
+                                      << "Weak similarities";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance" << "Colors", colorsItems));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTGlobals::sleep();
+
+    QStringList highlightingItems = QStringList() << "No highlighting"
+                                      << "Agreements"
+                                      << "Disagreements"
+                                      << "Gaps"
+                                      << "Conservation level"
+                                      << "Transitions"
+                                      << "Transversions"
+                                      << "Use dots";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance" << "Highlighting", highlightingItems));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList()
+                                                            << "Appearance"
+                                                            << "Colors"
+                                                            << "Custom schemes"
+                                                            << "Create new color scheme", PopupChecker::IsEnabled));
+    GTMouseDriver::click(Qt::RightButton);
+    GTGlobals::sleep();
+
+}
 GUI_TEST_CLASS_DEFINITION(test_6746) {
     // 1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
