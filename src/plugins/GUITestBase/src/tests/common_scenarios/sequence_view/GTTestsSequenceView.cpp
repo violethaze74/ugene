@@ -339,14 +339,14 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/multy_fa.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
     GTUtilsDocument::checkDocument(os, "multy_fa.fa");
 
     QWidget *toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
     CHECK_SET_ERR(toggleAutoAnnotationsButton != NULL, "toggleAutoAnnotationsButton is NULL");
     CHECK_SET_ERR(toggleAutoAnnotationsButton->isEnabled() == false, "toggleAutoAnnotationsButton is enabled, expected disabled");
 
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsDocument::checkDocument(os, "human_T1.fa");
 
     toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");

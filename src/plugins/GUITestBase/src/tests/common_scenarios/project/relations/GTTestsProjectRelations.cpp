@@ -39,7 +39,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_project_relations {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/proj2.uprj");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/proj2.uprj");
     GTUtilsDocument::checkDocument(os, "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));

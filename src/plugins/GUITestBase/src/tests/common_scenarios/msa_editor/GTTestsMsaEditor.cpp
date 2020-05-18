@@ -2449,7 +2449,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028_windows) {
 
 GUI_TEST_CLASS_DEFINITION(test_0029) {
     //    1. open document samples/CLUSTALW/COI.aln
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence", GTGlobals::UseKey));

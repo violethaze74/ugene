@@ -165,7 +165,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.aln
     // Expected state: multiple aligniment view with NC_001363 sequence has been opened
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/sandbox/exp2.aln");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/sandbox/exp2.aln");
     GTUtilsDocument::checkDocument(os, "exp2.aln");
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
@@ -174,7 +174,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "multiple.fa"));
@@ -194,7 +194,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/sandbox/exp2.aln");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/sandbox/exp2.aln");
     GTUtilsDocument::checkDocument(os, "exp2.aln");
 }
 

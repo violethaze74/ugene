@@ -61,7 +61,7 @@ using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     // 2. Click on toolbar button Remove sequence.
@@ -85,7 +85,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     // 2. Click on toolbar button Remove sequence.
@@ -110,7 +110,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTUtilsMdi::click(os, GTGlobals::Close);
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_se1");
@@ -138,7 +138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 GUI_TEST_CLASS_DEFINITION(test_0001_3) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_se2");
@@ -166,7 +166,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_3) {
 GUI_TEST_CLASS_DEFINITION(test_0001_4) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_se2");
@@ -210,7 +210,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_4) {
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Hide all for sequence se2.
@@ -257,7 +257,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Hide all for sequence se2.
@@ -310,7 +310,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. On toolbar for sequence se2: click the button for each view.
@@ -364,7 +364,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
 GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Hide zoom view. Click on toolbar button Hide all for sequence se2.
@@ -414,7 +414,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
 GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide all. CHANGES: using 'Toggle views' insetead 'Toggle view'
@@ -462,7 +462,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     //1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Hide details for sequence se2.
@@ -487,7 +487,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     //1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide details. CHANGES: using 'Toggle views' instead 'Toggle view'
@@ -514,7 +514,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
 GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     //1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Hide details for sequence se2.
@@ -554,7 +554,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
 GUI_TEST_CLASS_DEFINITION(test_0003_3) {
     //1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Hide all for sequence se2.
@@ -579,7 +579,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_3) {
 GUI_TEST_CLASS_DEFINITION(test_0003_4) {
     //1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide details. CHANGES: hiding all views for all sequences, instead hidding only deatails
@@ -606,7 +606,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_4) {
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     //1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Hide overview for sequence se2.
@@ -630,7 +630,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     //1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide overview. CHANGES: using 'Toggle views' instead 'Toggle view'
@@ -656,7 +656,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
 GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     //1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Hide overview for sequence se2.
@@ -686,7 +686,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
 GUI_TEST_CLASS_DEFINITION(test_0004_3) {
     //1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Hide overview for sequence se1.
@@ -710,7 +710,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_3) {
 GUI_TEST_CLASS_DEFINITION(test_0004_4) {
     //1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //2. Click on toolbar button Hide all for sequence se2.
@@ -734,7 +734,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_4) {
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa, open file as separate sequences
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     GTGlobals::sleep();
@@ -769,7 +769,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     GTGlobals::sleep();
@@ -805,7 +805,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     GTGlobals::sleep();
@@ -853,7 +853,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     GTGlobals::sleep();
@@ -915,7 +915,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep(1000);
 
     QWidget *overViewSe1 = GTWidget::findWidget(os, "overview_se1");
@@ -953,7 +953,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 GUI_TEST_CLASS_DEFINITION(test_0011) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     GTGlobals::sleep();
@@ -992,7 +992,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     GTGlobals::sleep();
@@ -1056,7 +1056,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     GTGlobals::sleep();
@@ -1116,7 +1116,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     Runnable *dialog = new SequenceReadingModeSelectorDialogFiller(os);
     GTUtilsDialog::waitForDialog(os, dialog);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     // 2. Close detailed view
@@ -1139,7 +1139,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     // 2. Close detailed view CHANGES: for 1 and 2 instead of global button
@@ -1168,7 +1168,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     Runnable *dialog = new SequenceReadingModeSelectorDialogFiller(os);
     GTUtilsDialog::waitForDialog(os, dialog);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     // 2. Close detailed view
@@ -1210,7 +1210,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     Runnable *dialog = new SequenceReadingModeSelectorDialogFiller(os);
     GTUtilsDialog::waitForDialog(os, dialog);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     // 2. Close detailed view
@@ -1233,7 +1233,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     Runnable *dialog = new SequenceReadingModeSelectorDialogFiller(os);
     GTUtilsDialog::waitForDialog(os, dialog);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     // 2. Close detailed view CHANGES: for 1 and 2 instead of global button
@@ -1261,7 +1261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     Runnable *dialog = new SequenceReadingModeSelectorDialogFiller(os);
     GTUtilsDialog::waitForDialog(os, dialog);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     // 2. Close detailed view
@@ -1302,7 +1302,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     Runnable *dialog = new SequenceReadingModeSelectorDialogFiller(os);
     GTUtilsDialog::waitForDialog(os, dialog);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //  2. Open graph view {Graphs->CG% content}
@@ -1326,7 +1326,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     Runnable *dialog = new SequenceReadingModeSelectorDialogFiller(os);
     GTUtilsDialog::waitForDialog(os, dialog);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //  2. Open graph view {Graphs->CG% content}. Changes: for both sequences
@@ -1364,7 +1364,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
     Runnable *dialog = new SequenceReadingModeSelectorDialogFiller(os);
     GTUtilsDialog::waitForDialog(os, dialog);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep();
 
     //  2. Open graph view {Graphs->CG% content}. Changes: for 1 sequences
@@ -1403,7 +1403,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0015) {
     // 1. Use menu {File->Open}. Open file _common_data/genome_aligner/chrY.fa
-    GTUtilsProject::openFiles(os, testDir + "_common_data/genome_aligner/chrY.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/genome_aligner/chrY.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 

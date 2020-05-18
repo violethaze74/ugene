@@ -62,7 +62,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_sequence_edit {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 50));
@@ -98,7 +98,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Steps:
     //
     // 1. Use menu {File->Open}. Open file samples/FASTA/human_T1.fa
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
 
     // 2. Click Ctrl+A.
     // Expected state: Select range dialog appears
@@ -247,7 +247,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     // 1. Open file "test/_common_data/edit_sequence/test.gb"
-    GTUtilsProject::openFiles(os, testDir + "_common_data/edit_sequence/test.gb");
+    GTUtilsProject::openFile(os, testDir + "_common_data/edit_sequence/test.gb");
 
     // 2. Select "Remove subsequence" in the context menu.
     // 3. Insert region "2..2" into the "Region to remove" field.
@@ -305,7 +305,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/AMINO.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/AMINO.fa");
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 10, 13));
 
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
@@ -355,7 +355,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
-    GTUtilsProject::openFiles(os, testDir + "_common_data/edit_sequence/test.gb");
+    GTUtilsProject::openFile(os, testDir + "_common_data/edit_sequence/test.gb");
 
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "2..2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"

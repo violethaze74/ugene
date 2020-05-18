@@ -565,7 +565,7 @@ GUI_TEST_CLASS_DEFINITION(test_4059) {
     GTLogTracer l;
     //1. Open "_common_data/text/text.txt".
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Plain text"));
-    GTFileDialog::openFile(os, testDir + "_common_data/text/text.txt");
+    GTUtilsProject::openFile(os, testDir + "_common_data/text/text.txt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Delete the "Text" object.
@@ -916,7 +916,7 @@ GUI_TEST_CLASS_DEFINITION(test_4096) {
     };
 
     //GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT));
@@ -2937,7 +2937,7 @@ GUI_TEST_CLASS_DEFINITION(test_4377) {
 
     GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/Gene.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3615,7 +3615,7 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
 GUI_TEST_CLASS_DEFINITION(test_4587) {
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_4587"));
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4587/", "extended_dna.ace");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/4587/extended_dna.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkObjectTypes(os,
                                              QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
@@ -5713,7 +5713,7 @@ GUI_TEST_CLASS_DEFINITION(test_4913) {
     * 4. Press "Esc" button.
     */
     GTUtilsDialog::waitForDialog(os, new SelectDocumentFormatDialogFiller(os));
-    GTFileDialog::openFile(os, dataDir + "samples/Swiss-Prot", "P16152.txt");
+    GTUtilsProject::openFile(os, dataDir + "samples/Swiss-Prot/P16152.txt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

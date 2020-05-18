@@ -439,7 +439,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsProject::openFiles(os, sandBoxDir + "wd_test_0059.fa");
+    GTUtilsProject::openFile(os, sandBoxDir + "wd_test_0059.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 

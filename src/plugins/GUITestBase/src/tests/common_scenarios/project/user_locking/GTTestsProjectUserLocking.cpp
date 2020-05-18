@@ -195,7 +195,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     QIcon roDocumentIcon(":/core/images/ro_document.png");
     QIcon documentIcon(":/core/images/document.png");
 
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/proj2.uprj");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/proj2.uprj");
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
@@ -227,7 +227,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                 << "Close project");
     GTGlobals::sleep();
 
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     item = GTUtilsProjectTreeView::findIndex(os, "1.gb");
@@ -238,8 +238,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    GTUtilsProject::openFiles(os, dataDir + "samples/ABIF/A01.abi");
-    GTUtilsProject::openFiles(os, dataDir + "samples/Genbank/sars.gb");
+    GTUtilsProject::openFile(os, dataDir + "samples/ABIF/A01.abi");
+    GTUtilsProject::openFile(os, dataDir + "samples/Genbank/sars.gb");
     Document *d = GTUtilsDocument::getDocument(os, "A01.abi");
     CHECK_SET_ERR(!d->isModificationAllowed(StateLockModType_AddChild), QString("Enable to perform locking/unlocking for : %1").arg(d->getName()));
 

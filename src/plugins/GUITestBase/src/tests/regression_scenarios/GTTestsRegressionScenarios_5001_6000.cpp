@@ -627,7 +627,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
 GUI_TEST_CLASS_DEFINITION(test_5138_1) {
     //1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/msa/big_aln.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/msa/big_aln.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Do MSA area context menu->Statistics->generate distance matrix
     //    Expected state: notification about low memory has appeared
@@ -4017,7 +4017,7 @@ GUI_TEST_CLASS_DEFINITION(test_5781) {
     parameters.samOutput = false;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
     //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "can't be mapped"));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/COI2.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/COI2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
@@ -4307,7 +4307,7 @@ GUI_TEST_CLASS_DEFINITION(test_5790) {
 GUI_TEST_CLASS_DEFINITION(test_5798_1) {
     //1. Open samples/APR/DNA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
-    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsProject::openFile(os, dataDir + "samples/APR/DNA.apr");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: DNA.apr in the project view
@@ -4319,7 +4319,7 @@ GUI_TEST_CLASS_DEFINITION(test_5798_1) {
 GUI_TEST_CLASS_DEFINITION(test_5798_2) {
     //1. Convert samples/APR/DNA.apr to fasta
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, false, sandBoxDir + "DNA", "FASTA"));
-    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsProject::openFile(os, dataDir + "samples/APR/DNA.apr");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: DNA.fa in the project view
@@ -4331,7 +4331,7 @@ GUI_TEST_CLASS_DEFINITION(test_5798_2) {
 GUI_TEST_CLASS_DEFINITION(test_5798_3) {
     //1. Convert samples/APR/DNA.apr to clustaw
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, false, sandBoxDir + "DNA", "CLUSTALW"));
-    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsProject::openFile(os, dataDir + "samples/APR/DNA.apr");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: DNA.aln in the project view
@@ -4343,7 +4343,7 @@ GUI_TEST_CLASS_DEFINITION(test_5798_3) {
 GUI_TEST_CLASS_DEFINITION(test_5798_4) {
     //1. Open samples/APR/DNA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
-    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsProject::openFile(os, dataDir + "samples/APR/DNA.apr");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: DNA.apr in the project view
@@ -4429,7 +4429,7 @@ GUI_TEST_CLASS_DEFINITION(test_5815) {
 GUI_TEST_CLASS_DEFINITION(test_5818_1) {
     //1. Open samples/ACE/BL060C3.ace in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
-    GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
+    GTUtilsProject::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: BL060C3.ace in the project view
@@ -4439,7 +4439,7 @@ GUI_TEST_CLASS_DEFINITION(test_5818_1) {
 GUI_TEST_CLASS_DEFINITION(test_5818_2) {
     //1. Convert samples/ACE/BL060C3.ace.ugenedb to fasta
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "BL060C3.ace.ugenedb"));
-    GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
+    GTUtilsProject::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: BL060C3.ace.ugenedb in the project view
@@ -4515,7 +4515,7 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
 
 GUI_TEST_CLASS_DEFINITION(test_5837) {
     //    1. open document samples/CLUSTALW/COI.aln
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence", GTGlobals::UseKey));
@@ -4555,7 +4555,7 @@ GUI_TEST_CLASS_DEFINITION(test_5840) {
 GUI_TEST_CLASS_DEFINITION(test_5847) {
     //1. Open samples/APR/DNA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
-    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsProject::openFile(os, dataDir + "samples/APR/DNA.apr");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select any sequence

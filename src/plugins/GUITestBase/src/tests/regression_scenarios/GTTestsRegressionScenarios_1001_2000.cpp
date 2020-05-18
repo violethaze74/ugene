@@ -202,8 +202,8 @@ namespace U2 {
 namespace GUITest_regression_scenarios {
 
 GUI_TEST_CLASS_DEFINITION(test_1001) {
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 4));
@@ -214,8 +214,8 @@ GUI_TEST_CLASS_DEFINITION(test_1001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1001_1) {
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 50));
@@ -228,7 +228,7 @@ GUI_TEST_CLASS_DEFINITION(test_1001_1) {
 GUI_TEST_CLASS_DEFINITION(test_1001_2) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 99, 99, true));
@@ -244,7 +244,7 @@ GUI_TEST_CLASS_DEFINITION(test_1001_2) {
 GUI_TEST_CLASS_DEFINITION(test_1001_3) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 99, 99, true));
@@ -264,7 +264,7 @@ GUI_TEST_CLASS_DEFINITION(test_1001_3) {
 GUI_TEST_CLASS_DEFINITION(test_1001_4) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 99, 99, true));
@@ -827,7 +827,7 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, sandBoxDir + "test_1038_seq");
+    GTUtilsProject::openFile(os, sandBoxDir + "test_1038_seq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3685,7 +3685,7 @@ GUI_TEST_CLASS_DEFINITION(test_1325) {
     GTLogTracer l1;
 
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GFF"));
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/1325/", "long_gff.gff");
+    GTUtilsProject::openFile(os, testDir + "_common_data/regression/1325/long_gff.gff");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
     CHECK_SET_ERR(l1.hasErrors(), "Expected to have errors in the log, but no errors found");
@@ -4007,7 +4007,7 @@ GUI_TEST_CLASS_DEFINITION(test_1371) {
     //    1. Open file "data/samples/ACE/BL060C3.ace" as msa.
     //    Expected state: there are 2 MSA objects in document.
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
-    GTFileDialog::openFile(os, dataDir + "samples/ACE", "BL060C3.ace");
+    GTUtilsProject::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkItem(os, "Contig1");
@@ -4021,7 +4021,7 @@ GUI_TEST_CLASS_DEFINITION(test_1371) {
     QDir().mkpath(sandBoxDir + "test_1371");
 
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1371.ugenedb"));
-    GTFileDialog::openFile(os, dataDir + "samples/ACE", "BL060C3.ace");
+    GTUtilsProject::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4139,7 +4139,7 @@ GUI_TEST_CLASS_DEFINITION(test_1393) {
 
     // 1. Open file "_common_data/fasta/trim_fa.fa"
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/trim_fa.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/trim_fa.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Choose{ Export->Export sequences as alignment } in context menu of project view
@@ -4682,7 +4682,7 @@ GUI_TEST_CLASS_DEFINITION(test_1457) {
 GUI_TEST_CLASS_DEFINITION(test_1458) {
     //1. Open document "../Samples/ACE/BL060C3.ace"
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1458.ace.ugenedb"));
-    GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
+    GTUtilsProject::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Right click on the document in project tab
@@ -4754,7 +4754,7 @@ GUI_TEST_CLASS_DEFINITION(test_1439) {
     GTLogTracer l;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/1439/NC_000964_multi_region.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/1439/NC_000964_multi_region.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/1439", "NC_000964.fa"));
@@ -4967,7 +4967,7 @@ GUI_TEST_CLASS_DEFINITION(test_1463) {
 
 GUI_TEST_CLASS_DEFINITION(test_1475) {
     GTUtilsDialog::waitForDialog(os, new SelectDocumentFormatDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/raw_sequence/", "NC_000117.txt");
+    GTUtilsProject::openFile(os, testDir + "_common_data/raw_sequence/NC_000117.txt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -5158,7 +5158,7 @@ GUI_TEST_CLASS_DEFINITION(test_1506) {
 GUI_TEST_CLASS_DEFINITION(test_1508) {
     //1. Open COI2.fa as an alignment
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/COI2.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/COI2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. {MSA Editor context menu} -> Align -> Align with MUSCLE
@@ -6523,7 +6523,7 @@ GUI_TEST_CLASS_DEFINITION(test_1645) {
     //GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "base_ext_nucl_all_symb.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/base_ext_nucl_all_symb.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/base_ext_nucl_all_symb.fa");
     GTGlobals::sleep();
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "base_ext_nucl_all_symb.fa"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
@@ -7261,7 +7261,7 @@ GUI_TEST_CLASS_DEFINITION(test_1688) {
     GTLogTracer l;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/1688/sr100.000.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/1688/sr100.000.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
@@ -7776,7 +7776,7 @@ GUI_TEST_CLASS_DEFINITION(test_1751) {
     //1. Prepend dot symbol to some valid file name, for instance "data/samples/COI.aln" => "data/samples/.COI.aln"
     //2. Open it
     GTLogTracer lt;
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/1751/.COI.aln");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/1751/.COI.aln");
 
     //Expected state: Check log for errors
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -7994,7 +7994,7 @@ GUI_TEST_CLASS_DEFINITION(test_1797) {
     // Expected state: UGENE doesn't crash - it shows error: "BED parsing error: incorrect number of fields at line 1!"
 
     GTUtilsDialog::waitForDialog(os, new SelectDocumentFormatDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/formats", "test_1797.svg");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/formats/test_1797.svg");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 

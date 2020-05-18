@@ -32,6 +32,7 @@
 
 #include "GTTestsProjectFiltering.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTaskTreeView.h"
@@ -193,7 +194,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     // 1. Open "test/_common_data/text/text.txt"
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Plain text"));
-    GTFileDialog::openFile(os, testDir + "_common_data/text/", "text.txt");
+    GTUtilsProject::openFile(os, testDir + "_common_data/text/text.txt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Open "data/samples/CLUSTALW/HIV-1.aln"

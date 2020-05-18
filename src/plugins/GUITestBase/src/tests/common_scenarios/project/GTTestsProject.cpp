@@ -146,7 +146,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/proj1.uprj");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/proj1.uprj");
     QString expectedTitle;
 #ifdef Q_OS_MAC
     expectedTitle = "proj1 UGENE";
@@ -166,7 +166,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
                                                 << "Close project");
     GTGlobals::sleep();
 
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");
 #ifdef Q_OS_MAC
     expectedTitle = "proj2 UGENE";
 #else
@@ -200,7 +200,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     CHECK_SET_ERR(result == NULL, "Export menu item present in menu without any project created");
 }
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/proj1.uprj");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/proj1.uprj");
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
     GTUtilsDocument::removeDocument(os, "1CF7.pdb", GTGlobals::UseMouse);
@@ -208,18 +208,18 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
     GTUtilsDocument::checkDocument(os, "ty3.aln.gz", MsaEditorFactory::ID);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsProjectTreeView::rename(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)", "qqq");
     GTUtilsProjectTreeView::findIndex(os, "qqq");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/1.gb");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/1.gb");
 
     GTUtilsDialog::waitForDialog(os, new ExportProjectDialogChecker(os, "project.uprj"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
@@ -279,7 +279,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     //2. Do menu {File->Open}. Open project _common_data\scenario\project\proj2.uprj
     //Expected state: dialog with text "Open project in new window" has appear
 
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/proj2.uprj");    // TODO: ask Shutov what to do
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/proj2.uprj");    // TODO: ask Shutov what to do
 
     /*
     this test just checking appearing of dialog not its behavior
@@ -299,7 +299,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016) {
-    GTUtilsProject::openFiles(os, testDir + "_common_data/genbank/.dir/murine.gb");
+    GTUtilsProject::openFile(os, testDir + "_common_data/genbank/.dir/murine.gb");
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export document", GTGlobals::UseMouse));
@@ -322,18 +322,18 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsDocument::checkDocument(os, "CVU55762.gb");
 }
 GUI_TEST_CLASS_DEFINITION(test_0018) {
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsProjectTreeView::rename(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)", "qqq");
     GTUtilsProjectTreeView::rename(os, "qqq", "eee");
     GTUtilsDocument::removeDocument(os, "human_T1.fa");
 
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsProjectTreeView::findIndex(os, "human_T1.fa");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep(1000);
 
     QModelIndex se1 = GTUtilsProjectTreeView::findIndex(os, "se1");
@@ -356,7 +356,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
 GUI_TEST_CLASS_DEFINITION(test_0020) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep(1000);
 
     QModelIndex se1 = GTUtilsProjectTreeView::findIndex(os, "se1");
@@ -378,7 +378,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
 
 GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep(1000);
 
     QModelIndex item = GTUtilsProjectTreeView::findIndex(os, "se1");
@@ -406,7 +406,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023) {
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/1m.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/1m.fa");
     GTGlobals::sleep();
     // GTUtilsMdi::click(os, GTGlobals::Minimize);
 
@@ -445,17 +445,17 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026) {
-    GTUtilsProject::openFiles(os, dataDir + "samples/Genbank/sars.gb");
+    GTUtilsProject::openFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsDocument::checkDocument(os, "sars.gb", AnnotatedDNAViewFactory::ID);
     GTUtilsDocument::removeDocument(os, "sars.gb");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
     GTLogTracer logTracer;
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     QMdiSubWindow *fasta = (QMdiSubWindow *)GTUtilsMdi::findWindow(os, "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     QWidget *coi = GTUtilsMdi::findWindow(os, "COI [m] COI");
     CHECK_SET_ERR(fasta->windowIcon().cacheKey() != coi->windowIcon().cacheKey(), "Icons must not be equals");
     GTUtilsLog::check(os, logTracer);
@@ -463,7 +463,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTLogTracer logTracer;
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::Cancel));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
@@ -486,7 +486,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     GTGlobals::sleep();
 
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
 
     GTGlobals::sleep();
 }
@@ -500,7 +500,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     //    2. Select "Open as multiple sequence alignment" item, accept the dialog.
     //    Expected state: file opens, document contains two malignment objects, the MSA Editor is shown.
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
-    GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
+    GTUtilsProject::openFile(os, testDir + "_common_data/ace/ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "ace_test_1.ace", MsaEditorFactory::ID);
@@ -516,7 +516,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "project_test_0033.ugenedb"));
     //GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
     //GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "project_test_0033.ugenedb"));
-    GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_2.ace");
+    GTUtilsProject::openFile(os, testDir + "_common_data/ace/ace_test_2.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "project_test_0033.ugenedb", AssemblyBrowserFactory::ID);
@@ -576,7 +576,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
 GUI_TEST_CLASS_DEFINITION(test_0038) {
     //test for several alignments in one document
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
-    GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
+    GTUtilsProject::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //check for first document
@@ -615,7 +615,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     //test for several assembly documents in one document
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_3637_1.ugenedb"));
-    GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
+    GTUtilsProject::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //check for first document
@@ -651,7 +651,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0039) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     GTClipboard::setText(os, ">human_T1 (UCS\r\nACGT\r\nACG");
@@ -675,7 +675,7 @@ QString readFileToStr(const QString &path) {
 GUI_TEST_CLASS_DEFINITION(test_0040) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check adding document with 2 sequences in separate mode
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     GTClipboard::setText(os, ">human_T1\r\nACGTACG\r\n>human_T2\r\nACCTGA");
@@ -690,7 +690,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 GUI_TEST_CLASS_DEFINITION(test_0041) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check shift+insert instead Ctrl+V
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     GTClipboard::setText(os, ">human_T1 (UCS\nACGT\nACG");
@@ -704,7 +704,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 GUI_TEST_CLASS_DEFINITION(test_0042) {
     //check adding schemes (WD QD) in project, it should not appear in project view
 
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(dataDir + "workflow_samples/Alignment/basic_align.uwl");
@@ -721,7 +721,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 GUI_TEST_CLASS_DEFINITION(test_0043) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check newick format because there was crash
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(dataDir + "samples/Newick/COI.nwk");
@@ -736,7 +736,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
 GUI_TEST_CLASS_DEFINITION(test_0045) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check document which format cant be saved by UGENE
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(dataDir + "samples/Stockholm/CBS.sto");
@@ -753,7 +753,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
 GUI_TEST_CLASS_DEFINITION(test_0046) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check document which format can't be saved by UGENE has no locked state
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(dataDir + "samples/PDB/1CF7.PDB");
@@ -774,7 +774,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
 GUI_TEST_CLASS_DEFINITION(test_0047) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check document which format can't be saved by UGENE has no locked state
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(dataDir + "samples/FASTA/human_T1.fa");
@@ -791,7 +791,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
 GUI_TEST_CLASS_DEFINITION(test_0048) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //pasting same data 10 times
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     for (int i = 0; i < 10; i++) {
         GTUtilsProjectTreeView::click(os, "COI.aln");
@@ -818,7 +818,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
 GUI_TEST_CLASS_DEFINITION(test_0049) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check no crash after closing project without saving
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(dataDir + "samples/FASTA/human_T1.fa");
@@ -836,7 +836,7 @@ GUI_TEST_CLASS_DEFINITION(test_0049) {
 GUI_TEST_CLASS_DEFINITION(test_0050) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //'usual' scenario
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(dataDir + "samples/FASTA/human_T1.fa");
@@ -862,7 +862,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
 GUI_TEST_CLASS_DEFINITION(test_0051) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check adding document with 2 sequences in align mode
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     GTClipboard::setText(os, ">human_T1\r\nACGTACG\r\n>human_T2\r\nACCTGA");
@@ -878,7 +878,7 @@ GUI_TEST_CLASS_DEFINITION(test_0051) {
 GUI_TEST_CLASS_DEFINITION(test_0052) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check adding document with 2 sequences in merge mode
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     GTClipboard::setText(os, ">human_T1\r\nACGTACG\r\n>human_T2\r\nACCTGA");
@@ -896,7 +896,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
 GUI_TEST_CLASS_DEFINITION(test_0053) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check adding document with 2 sequences in separate mode, with file which cannot be written by UGENE
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(testDir + "_common_data/fasta/multy_fa.fa");
@@ -910,7 +910,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
 
 GUI_TEST_CLASS_DEFINITION(test_0054) {
     //check adding document with 2 sequences in separate mode, with file which cannot be written by UGENE
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(testDir + "_common_data/genbank/multi.gb");
@@ -935,7 +935,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
         }
     };
 
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(testDir + "_common_data/fasta/broken/broken_doc.fa");
@@ -949,7 +949,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
 GUI_TEST_CLASS_DEFINITION(test_0056) {
     //check opening brocken fasta document as text
 
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(testDir + "_common_data/fasta/broken/broken_doc.fa");
@@ -980,7 +980,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
         }
     };
 
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
     GTClipboard::setText(os, ">human_T1\r\nACGTACG\r\n>human_T2\r\nACCTGA");
@@ -993,7 +993,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
 
 GUI_TEST_CLASS_DEFINITION(test_0058) {
     //1. Open a project.
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     //2. Paste the content of the file "samples/Assembly/chrM.sam".
     GTUtilsProjectTreeView::click(os, "COI.aln");

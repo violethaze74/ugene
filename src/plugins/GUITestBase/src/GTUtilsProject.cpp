@@ -58,7 +58,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsProject"
 
-void GTUtilsProject::openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls, const OpenFileSettings &s) {
+void GTUtilsProject::openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls, const OpenFileSettings &s, ProjectCheckType checkType) {
     switch (s.openMethod) {
     case OpenFileSettings::DragDrop:
         openFilesDrop(os, urls);
@@ -67,27 +67,30 @@ void GTUtilsProject::openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls,
         openFilesWithDialog(os, urls);
         break;
     }
-
-    checkProject(os);
+     checkProject(os, checkType);
 }
 
-void GTUtilsProject::openFiles(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s) {
-    openFiles(os, QList<QUrl>() << path.getURLString(), s);
+void GTUtilsProject::openFile(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s, ProjectCheckType checkType) {
+    openFiles(os, QList<QUrl>() << path.getURLString(), s, checkType);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+void GTUtilsProject::openFileExpectNoProject(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s) {
+    GTUtilsProject::openFile(os, path, s, NotExists);
+}
+
 #define GT_METHOD_NAME "checkProject"
-void GTUtilsProject::checkProject(HI::GUITestOpStatus &os, CheckType checkType) {
+void GTUtilsProject::checkProject(HI::GUITestOpStatus &os, ProjectCheckType checkType) {
     GTGlobals::sleep(500);
 
     if (checkType == NotExists) {
-        GT_CHECK(AppContext::getProject() == NULL, "There is a project");
+        GT_CHECK(AppContext::getProject() == nullptr, "There is a project");
         return;
     }
 
-    GT_CHECK(AppContext::getProject() != NULL, "There is no project");
+    GT_CHECK(AppContext::getProject() != nullptr, "There is no project");
     if (checkType == Empty) {
-        GT_CHECK(AppContext::getProject()->getDocuments().isEmpty() == true, "Project is not empty");
+        GT_CHECK(AppContext::getProject()->getDocuments().isEmpty(), "Project is not empty");
     }
 }
 #undef GT_METHOD_NAME
@@ -137,20 +140,20 @@ ADVSingleSequenceWidget *GTUtilsProject::openFileExpectSequence(GUITestOpStatus 
                                                                 const QString &seqName) {
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GT_CHECK_OP_RESULT(os, "Error opening file!", NULL);
+    GT_CHECK_OP_RESULT(os, "Error opening file!", nullptr);
 
     GTGlobals::sleep(200);
 
     int seqWidgetNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
-    GT_CHECK_OP_RESULT(os, "Error getting the number of sequence widgets!", NULL);
-    GT_CHECK_RESULT(1 == seqWidgetNum, QString("Number of sequences is %1").arg(seqWidgetNum), NULL);
+    GT_CHECK_OP_RESULT(os, "Error getting the number of sequence widgets!", nullptr);
+    GT_CHECK_RESULT(1 == seqWidgetNum, QString("Number of sequences is %1").arg(seqWidgetNum), nullptr);
 
     ADVSingleSequenceWidget *seqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    GT_CHECK_OP_RESULT(os, "Error grtting sequence widget!", NULL);
+    GT_CHECK_OP_RESULT(os, "Error grtting sequence widget!", nullptr);
 
     QString actualName = GTUtilsSequenceView::getSeqName(os, seqWidget);
-    GT_CHECK_OP_RESULT(os, "Error getting sequence widget name!", NULL);
-    GT_CHECK_RESULT(actualName == seqName, QString("Expected sequence name: %1, actual: %2!").arg(seqName).arg(actualName), NULL);
+    GT_CHECK_OP_RESULT(os, "Error getting sequence widget name!", nullptr);
+    GT_CHECK_RESULT(actualName == seqName, QString("Expected sequence name: %1, actual: %2!").arg(seqName).arg(actualName), nullptr);
 
     return seqWidget;
 }
@@ -181,7 +184,7 @@ QList<ADVSingleSequenceWidget *> GTUtilsProject::openFileExpectSequences(HI::GUI
                                                                          const QList<QString> &seqNames) {
     QList<ADVSingleSequenceWidget *> result;
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsProject::openFiles(os, path + fileName);
+    GTUtilsProject::openFile(os, path + fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GT_CHECK_OP_RESULT(os, "Error opening file!", QList<ADVSingleSequenceWidget *>());
 
@@ -215,8 +218,7 @@ void GTUtilsProject::openMultiSequenceFileAsSequences(HI::GUITestOpStatus &os, c
 #define GT_METHOD_NAME "openMultiSequenceFileAsSequences"
 void GTUtilsProject::openMultiSequenceFileAsSequences(HI::GUITestOpStatus &os, const QString &filePath) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsProject::openFiles(os, filePath);
-    GTFileDialog::openFile(os, filePath);
+    GTUtilsProject::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 #undef GT_METHOD_NAME
@@ -224,7 +226,7 @@ void GTUtilsProject::openMultiSequenceFileAsSequences(HI::GUITestOpStatus &os, c
 #define GT_METHOD_NAME "openMultiSequenceFileAsMergedSequence"
 void GTUtilsProject::openMultiSequenceFileAsMergedSequence(HI::GUITestOpStatus &os, const QString &filePath) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
-    GTUtilsProject::openFiles(os, filePath);
+    GTUtilsProject::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 #undef GT_METHOD_NAME
@@ -238,7 +240,7 @@ void GTUtilsProject::openMultiSequenceFileAsMalignment(HI::GUITestOpStatus &os, 
 #define GT_METHOD_NAME "openMultiSequenceFileAsMalignment"
 void GTUtilsProject::openMultiSequenceFileAsMalignment(HI::GUITestOpStatus &os, const QString &filePath) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, filePath);
+    GTUtilsProject::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 #undef GT_METHOD_NAME

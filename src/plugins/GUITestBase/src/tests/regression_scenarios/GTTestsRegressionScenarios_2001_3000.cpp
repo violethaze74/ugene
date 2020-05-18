@@ -678,7 +678,7 @@ GUI_TEST_CLASS_DEFINITION(test_2030) {
 GUI_TEST_CLASS_DEFINITION(test_2032) {
     // 1. Open {_common_data/fasta/abcd.fa} as separate sequences
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/abcd.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/abcd.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(500);
 
@@ -1150,7 +1150,7 @@ GUI_TEST_CLASS_DEFINITION(test_2138) {
 #endif
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/2138/1.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/2138/1.fa");
 
     GTGlobals::sleep(1000);
     //Expected state: alignment has been opened and whole msa alphabet is amino
@@ -1879,7 +1879,7 @@ GUI_TEST_CLASS_DEFINITION(test_2292) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_2292.ace.ugenedb"));
-    GTFileDialog::openFile(os, dataDir + "samples/ACE", "K26.ace");
+    GTUtilsProject::openFile(os, dataDir + "samples/ACE/K26.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -1890,7 +1890,7 @@ GUI_TEST_CLASS_DEFINITION(test_2292) {
 GUI_TEST_CLASS_DEFINITION(test_2295) {
     //1. Open samples/APR/DNA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
-    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsProject::openFile(os, dataDir + "samples/APR/DNA.apr");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: Alignent is locked
@@ -2644,7 +2644,7 @@ GUI_TEST_CLASS_DEFINITION(test_2382) {
     QString sandboxDir = testDir + "_common_data/scenarios/sandbox/";
     QString assDocName = "test_2382.ugenedb";
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandboxDir + assDocName));
-    GTFileDialog::openFile(os, testDir + "_common_data/ace/", "capres4.ace");
+    GTUtilsProject::openFile(os, testDir + "_common_data/ace/capres4.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTGlobals::sleep();
@@ -2662,7 +2662,7 @@ GUI_TEST_CLASS_DEFINITION(test_2382_1) {
     QString sandboxDir = testDir + "_common_data/scenarios/sandbox/";
     QString assDocName = "test_2382_1.ugenedb";
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandboxDir + assDocName));
-    GTFileDialog::openFile(os, testDir + "_common_data/ace/", "test_new.cap.ace");
+    GTUtilsProject::openFile(os, testDir + "_common_data/ace/test_new.cap.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTGlobals::sleep();
@@ -2708,7 +2708,7 @@ GUI_TEST_CLASS_DEFINITION(test_2392) {
     // Expected state: Open dialog "Sequence reading options"
     // 2. Select "Join sequences into alignment" option and press OK
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/genbank/multi.gb");
+    GTUtilsProject::openFile(os, testDir + "_common_data/genbank/multi.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Document opened in MSA view
@@ -2721,7 +2721,7 @@ GUI_TEST_CLASS_DEFINITION(test_2400) {
     QString fileName = "2400.ugenedb";
     QString ugenedb = sandBoxDir + fileName;
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
-    GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
+    GTUtilsProject::openFile(os, testDir + "_common_data/ace/ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: assembly view for Contig_1 opened with refrence sequence added to it
     bool ref = GTUtilsAssemblyBrowser::hasReference(os, "2400 [as] 1");
@@ -2736,7 +2736,7 @@ GUI_TEST_CLASS_DEFINITION(test_2401) {
     QString fileName = "2401.ugenedb";
     QString ugenedb = sandbox + fileName;
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
-    GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
+    GTUtilsProject::openFile(os, testDir + "_common_data/ace/ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the file is imported without errors, the assembly is opened.
@@ -2755,7 +2755,7 @@ GUI_TEST_CLASS_DEFINITION(test_2401) {
     // 7. Click OK.
     // 8. Click Append.
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
-    GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_11_(error).ace");
+    GTUtilsProject::openFile(os, testDir + "_common_data/ace/ace_test_11_(error).ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the file is not imported but "2401.ugenedb" still exists.
@@ -4087,7 +4087,7 @@ GUI_TEST_CLASS_DEFINITION(test_2605) {
     GTLogTracer logTracer;
     // 1. Open file _common_data/fasta/multy_fa.fa as multiple alignment
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/multy_fa.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Export subalignment from this msa to any MSA format
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
@@ -4142,7 +4142,7 @@ GUI_TEST_CLASS_DEFINITION(test_2622) {
     GTLogTracer l;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge, 100));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/multy_fa.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Press Ctrl + F.
@@ -4169,7 +4169,7 @@ GUI_TEST_CLASS_DEFINITION(test_2622_1) {
     GTLogTracer l;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge, 100));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/multy_fa.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Press Ctrl + F.
@@ -4771,7 +4771,7 @@ GUI_TEST_CLASS_DEFINITION(test_2730) {
     Expected: UGENE does not crash.
 */
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/abcd.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/abcd.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
     QWidget *parent = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
@@ -5550,10 +5550,10 @@ GUI_TEST_CLASS_DEFINITION(test_2895) {
     //1. Open "_common_data/fasta/amino_multy.fa" as multiple alignment.
     //2. Open "_common_data/fasta/amino_multy_ext.fa" as separate sequences.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/amino_multy_ext.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/amino_multy_ext.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/amino_multy.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/amino_multy.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //3. Try to add to the amino_multy.fa document, any sequence from the amino_multy_ext.fa document.
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "amino_multy_ext.fa", "chr1_gl000191_random Amino translation 0 direct"));
@@ -5971,10 +5971,10 @@ GUI_TEST_CLASS_DEFINITION(test_2929) {
 
 GUI_TEST_CLASS_DEFINITION(test_2930) {
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_2930"));
-    GTFileDialog::openFile(os, dataDir + "samples/ACE", "K26.ace");
+    GTUtilsProject::openFile(os, dataDir + "samples/ACE/K26.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTGlobals::sleep();
@@ -5982,7 +5982,7 @@ GUI_TEST_CLASS_DEFINITION(test_2930) {
 
 GUI_TEST_CLASS_DEFINITION(test_2931) {
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_2931"));
-    GTFileDialog::openFile(os, dataDir + "samples/ACE", "K26.ace");
+    GTUtilsProject::openFile(os, dataDir + "samples/ACE/K26.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -6087,7 +6087,7 @@ GUI_TEST_CLASS_DEFINITION(test_2951) {
     bool printed = GTLogTracer::checkMessage("test message");
     CHECK_SET_ERR(printed, "No message in the log");
 
-    GTUtilsProject::openFiles(os, outFile);
+    GTUtilsProject::openFile(os, outFile);
     QModelIndex objIdx = GTUtilsProjectTreeView::findIndex(os, "d");
     QTreeView *tree = GTUtilsProjectTreeView::getTreeView(os);
     int objectsCount = tree->model()->rowCount(objIdx.parent());
@@ -6139,7 +6139,7 @@ GUI_TEST_CLASS_DEFINITION(test_2962_2) {
     GTLogTracer l;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/DNA.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "GXL_141618");

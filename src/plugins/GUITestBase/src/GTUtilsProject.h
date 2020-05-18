@@ -40,24 +40,30 @@ class GTUtilsProject {
 public:
     class OpenFileSettings {
     public:
-        enum OpenMethod { Dialog,
-                          DragDrop };
-
+        enum OpenMethod {
+            Dialog,
+            DragDrop
+        };
         OpenFileSettings();
-
         OpenMethod openMethod;
     };
 
-    /*
-        opens files using settings, checks if the document is loaded
-    */
-    static void openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls, const OpenFileSettings &s = OpenFileSettings());
-    static void openFiles(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s = OpenFileSettings());
+    enum ProjectCheckType {
+        Exists,
+        Empty,
+        NotExists
+    };
 
-    enum CheckType { Exists,
-                     Empty,
-                     NotExists };
-    static void checkProject(HI::GUITestOpStatus &os, CheckType checkType = Exists);
+    /* Initiates file open dialog for a single file and waits until all tasks finished before the return. Asserts that the project exists. */
+    static void openFile(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s = OpenFileSettings(), ProjectCheckType checkType = Exists);
+
+    /* Initiates file open dialog for multiple files and waits until all tasks finished before the return. Asserts that the project exists. */
+    static void openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls, const OpenFileSettings &s = OpenFileSettings(), ProjectCheckType checkType = Exists);
+
+    /* Initiates file open dialog for a single file and waits until all tasks finished before the return. Asserts that the project does not exists. */
+    static void openFileExpectNoProject(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s = OpenFileSettings());
+
+     static void checkProject(HI::GUITestOpStatus &os, ProjectCheckType checkType = Exists);
 
     /**
      * Opens file @path\@fileName.

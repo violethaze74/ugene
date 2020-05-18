@@ -3367,7 +3367,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/genbank/70Bp2.gen");
+    GTUtilsProject::openFile(os, testDir + "_common_data/genbank/70Bp2.gen");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario("test_0045_1")));

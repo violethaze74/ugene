@@ -128,7 +128,7 @@ using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_6031) {
     //1. Open samples/APR/gyrA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
-    GTFileDialog::openFile(os, dataDir + "samples/APR/gyrA.apr");
+    GTUtilsProject::openFile(os, dataDir + "samples/APR/gyrA.apr");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there is no prefix \27: before name of sequences
@@ -714,7 +714,7 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
 
 GUI_TEST_CLASS_DEFINITION(test_6083) {
     //    1. open document samples/CLUSTALW/COI.aln
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence", GTGlobals::UseKey));
@@ -850,7 +850,7 @@ GUI_TEST_CLASS_DEFINITION(test_6135) {
     // Select only one "Phaneroptera_falcata" sequence and click "Extract".
     // Expected state: one selected sequence was exported.
 
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     class custom : public CustomScenario {
     public:
@@ -1146,7 +1146,7 @@ GUI_TEST_CLASS_DEFINITION(test_6226) {
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
     parameters.samOutput = false;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/reads.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/reads.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 }
@@ -1156,7 +1156,7 @@ GUI_TEST_CLASS_DEFINITION(test_6229) {
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
     parameters.samOutput = false;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/reads.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/reads.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
@@ -2076,7 +2076,7 @@ GUI_TEST_CLASS_DEFINITION(test_6298) {
 #endif
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/6298/small_with_one_char.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/6298/small_with_one_char.fa");
 
     GTGlobals::sleep(1000);
     //Expected state: alignment has been opened and whole msa alphabet is amino
@@ -2351,7 +2351,7 @@ GUI_TEST_CLASS_DEFINITION(test_6398) {
     //1. Open "_common_data/regression/6398/6398.gtf" file
     //Expected: 5 similarity points of the 'GTF" format
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF", 5, 1));
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/6398/6398.gtf");
+    GTUtilsProject::openFile(os, testDir + "_common_data/regression/6398/6398.gtf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -5763,7 +5763,7 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
     GTLogTracer l;
 
     // 1. open document samples/CLUSTALW/COI.aln
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     // 2. Click "Align > Align with MUSCLE..." and click "Align".
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));

@@ -496,8 +496,9 @@ GUI_TEST_CLASS_DEFINITION(test_0407) {
     // 1. Open _common_data/scenarios/_regression/407/trail.fas
     // Expected state: a message box appears
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/407/trail.fas");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/407/trail.fas");
 }
+
 GUI_TEST_CLASS_DEFINITION(test_0490) {
     // 1. Select "Tools > Multiple alignment > [any item]"
     // 2. In the dialog appeared select _common_data/scenarios/_regression/490/fasta-example.fa
@@ -1188,13 +1189,13 @@ GUI_TEST_CLASS_DEFINITION(test_0700) {
         }
     };
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, new CancelScenario()));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/assembly/example-alignment.bam");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/assembly/example-alignment.bam");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0702) {
     //1. open _common_data / fasta / DNA.fa in merge mode.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/DNA.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select first contig(1..743) region.
@@ -1269,10 +1270,10 @@ GUI_TEST_CLASS_DEFINITION(test_0733) {
 
 GUI_TEST_CLASS_DEFINITION(test_0734) {
     //1. Open "_common_data/fasta/test.TXT".
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/test.TXT");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/test.TXT");
 
     //2. Open "_common_data/clustal/test_alignment.aln".
-    GTUtilsProject::openFiles(os, testDir + "_common_data/clustal/test_alignment.aln");
+    GTUtilsProject::openFile(os, testDir + "_common_data/clustal/test_alignment.aln");
 
     //Expected state: two documents are opened in the project view; MSA Editor are shown with test_alignment.
     GTUtilsProjectTreeView::findIndex(os, "test.TXT");    //checks are inside
@@ -1296,7 +1297,7 @@ GUI_TEST_CLASS_DEFINITION(test_0746) {
     // 1. Open file _common_data\scenarios\_regression\764\short.fa
     // 2. Make 'Detailed view' visible (if not)
     // Expected state: 'Show amino translation' and 'Complement strand' buttons are enabled (not grey)
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/_regression/764/short.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/764/short.fa");
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     Runnable *chooser = new PopupChooser(os, QStringList() << "toggleDetailsView");
     GTUtilsDialog::waitForDialog(os, chooser);
@@ -1447,7 +1448,7 @@ GUI_TEST_CLASS_DEFINITION(test_0774) {
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, sandBoxDir + "/test_0774");
+    GTUtilsProject::openFile(os, sandBoxDir + "/test_0774");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTUtilsSequenceView::getSeqWidgetsNumber(os) == 2, "Incorrect count of sequences");
@@ -2553,7 +2554,7 @@ GUI_TEST_CLASS_DEFINITION(test_0882) {
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(dataDir + "samples/FASTA/human_T1.fa", QStringList());
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "can't be mapped"));
-    GTUtilsProject::openFiles(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTUtilsProject::openFileExpectNoProject(os, dataDir + "samples/FASTQ/eas.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 }
@@ -2566,7 +2567,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
 
     GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/Gene.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
@@ -2581,7 +2582,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTLogTracer l2;
     GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/Gene.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
     errors = GTUtilsLog::getErrors(os, l2);
@@ -2634,7 +2635,7 @@ GUI_TEST_CLASS_DEFINITION(test_0889) {
     //
     //  Expected state: UGENE not crashed
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
-    GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/RNA.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/RNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class OkClicker : public Filler {
