@@ -45,11 +45,13 @@
 #endif
 
 #ifdef Q_OS_MAC
-#    define NUMBER_OF_TESTS_IN_SUITE 750
-#elif defined(Q_OS_UNIX)
-#    define NUMBER_OF_TESTS_IN_SUITE 550
+#    define NUMBER_OF_TEST_SUITES 4
+#elif defined(Q_OS_LINUX)
+#    define NUMBER_OF_TEST_SUITES 5
 #elif defined(Q_OS_WIN)
-#    define NUMBER_OF_TESTS_IN_SUITE 850
+#    define NUMBER_OF_TEST_SUITES 3
+#else
+#    define NUMBER_OF_TEST_SUITES 1
 #endif
 
 #define GUITESTING_REPORT_PREFIX "GUITesting"
@@ -141,18 +143,24 @@ bool GUITestLauncher::initGUITestBase() {
         return false;
     }
 
-    QList<QList<HI::GUITest *>> suiteList;
-    if (suiteNumber) {
-        for (int i = 0; i < (allTestList.length() / NUMBER_OF_TESTS_IN_SUITE + 1); i++) {
-            suiteList << allTestList.mid(i * NUMBER_OF_TESTS_IN_SUITE, NUMBER_OF_TESTS_IN_SUITE);
-        }
-        if (suiteNumber < 0 || suiteNumber > suiteList.size()) {
-            setError(QString("Invalid suite number: %1. There are %2 suites")
-                         .arg(suiteNumber)
-                         .arg(suiteList.size()));
+    if (suiteNumber != 0) {
+        if (suiteNumber < 1 || suiteNumber > NUMBER_OF_TEST_SUITES) {
+            setError(QString("Invalid suite number: %1. There are %2 suites").arg(suiteNumber).arg(NUMBER_OF_TEST_SUITES));
             return false;
         }
-        tests = suiteList.takeAt(suiteNumber - 1);
+        int numberAllOfTests = allTestList.length();
+        int numberOfTestsPerSuite = qRound(numberAllOfTests / (double)NUMBER_OF_TEST_SUITES);
+        bool isLastSuite = suiteNumber == NUMBER_OF_TEST_SUITES;
+        int suiteIndex = suiteNumber - 1;
+        int firstTestIndex = suiteIndex * numberOfTestsPerSuite;
+        int testsInSuite = isLastSuite ? numberAllOfTests - firstTestIndex : numberOfTestsPerSuite;
+        tests = allTestList.mid(firstTestIndex, testsInSuite);
+        coreLog.info(QString("Running suite %1, tests from: %2 to %3. Tests in the suite: %4, total tests: %5")
+                         .arg(suiteNumber)
+                         .arg(firstTestIndex)
+                         .arg(firstTestIndex + testsInSuite)
+                         .arg(testsInSuite)
+                         .arg(numberAllOfTests));
     } else if (!pathToSuite.isEmpty()) {
         QString absPath = QDir().absoluteFilePath(pathToSuite);
         QFile suite(absPath);
