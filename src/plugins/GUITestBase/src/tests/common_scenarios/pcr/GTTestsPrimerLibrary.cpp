@@ -294,7 +294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
                                             << "primer2"
                                             << "primer3"
                                             << "primer4";
-    GTUtilsProject::openFileExpectSequences(os, sandBoxDir + "pcrlib/test_0006", "primers.fa", names);
+    GTUtilsProject::openFileExpectSequences(os, sandBoxDir + "pcrlib/test_0006/", "primers.fa", names);
 
     const QString firstSeq = GTUtilsSequenceView::getSequenceAsString(os, 0);
     CHECK_SET_ERR("AAAA" == firstSeq, QString("Incorrect sequence data: expect '%1', got '%2'").arg("AAAA").arg(firstSeq));
@@ -350,7 +350,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList names = QStringList() << "primer1"
                                             << "primer3";
-    GTUtilsProject::openFileExpectSequences(os, sandBoxDir + "pcrlib/test_0007", "primers.gb", names);
+    GTUtilsProject::openFileExpectSequences(os, sandBoxDir + "pcrlib/test_0007/", "primers.gb", names);
 
     const QString firstSeq = GTUtilsSequenceView::getSequenceAsString(os, 0);
     CHECK_SET_ERR("AAAA" == firstSeq, QString("Incorrect sequence data: expect '%1', got '%2'").arg("AAAA").arg(firstSeq));

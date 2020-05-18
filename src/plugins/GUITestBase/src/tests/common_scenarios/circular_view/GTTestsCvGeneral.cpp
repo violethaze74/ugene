@@ -174,7 +174,7 @@ GUI_TEST_CLASS_DEFINITION(general_avail_8) {
                   << "seq5";
 
     seqWidgets = GTUtilsProject::openFileExpectSequences(os,
-                                                         testDir + "_common_data/alphabets",
+                                                         testDir + "_common_data/alphabets/",
                                                          "standard_dna_rna_amino_1000.fa",
                                                          expectedNames);
     CHECK_OP_SET_ERR(os, "Failed to open sequences!");

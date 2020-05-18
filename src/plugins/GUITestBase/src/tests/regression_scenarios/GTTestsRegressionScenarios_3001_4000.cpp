@@ -1818,7 +1818,7 @@ GUI_TEST_CLASS_DEFINITION(test_3274) {
                   << "seq5";
 
     seqWidgets = GTUtilsProject::openFileExpectSequences(os,
-                                                         testDir + "_common_data/alphabets",
+                                                         testDir + "_common_data/alphabets/",
                                                          "standard_dna_rna_amino_1000.fa",
                                                          expectedNames);
     CHECK_OP_SET_ERR(os, "Failed to open sequences!");
@@ -2511,7 +2511,7 @@ GUI_TEST_CLASS_DEFINITION(test_3379) {
                   << "seq5";
 
     seqWidgets = GTUtilsProject::openFileExpectSequences(os,
-                                                         testDir + "_common_data/alphabets",
+                                                         testDir + "_common_data/alphabets/",
                                                          "standard_dna_rna_amino_1000.fa",
                                                          expectedNames);
     CHECK_OP_SET_ERR(os, "Failed to open sequences!");
@@ -2765,7 +2765,7 @@ GUI_TEST_CLASS_DEFINITION(test_3430) {
                   << "seq5";
 
     seqWidgets = GTUtilsProject::openFileExpectSequences(os,
-                                                         testDir + "_common_data/alphabets",
+                                                         testDir + "_common_data/alphabets/",
                                                          "standard_dna_rna_amino_1000.fa",
                                                          expectedNames);
     CHECK_OP_SET_ERR(os, "Failed to open sequences!");
