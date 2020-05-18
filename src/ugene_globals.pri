@@ -44,6 +44,8 @@ macx {
 }
 
 linux-g++ {
+    QMAKE_CXXFLAGS += -Wparentheses
+
     # We have a lot of such warning from QT -> disable them.
     QMAKE_CXXFLAGS += -Wno-expansion-to-defined
     QMAKE_CXXFLAGS += -Wno-deprecated-copy
