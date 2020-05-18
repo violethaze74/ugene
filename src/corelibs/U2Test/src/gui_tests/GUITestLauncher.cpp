@@ -171,8 +171,8 @@ bool GUITestLauncher::initGUITestBase() {
         char buf[1024];
         while (suite.readLine(buf, sizeof(buf)) != -1) {
             QString testName = QString(buf).remove('\n').remove('\t').remove(' ');
-            if (testName.startsWith("#")) {
-                continue;    // comment line
+            if (testName.startsWith("#") || testName.isEmpty()) {
+                continue;    // comment line or empty line.
             }
             bool added = false;
             foreach (HI::GUITest *test, allTestList) {
