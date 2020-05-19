@@ -67,8 +67,9 @@ class U2VIEW_EXPORT AssemblyNavigationWidgetFactory : public OPWidgetFactory {
 public:
     AssemblyNavigationWidgetFactory();
 
-    QWidget *createWidget(GObjectView *objView);
-    OPGroupParameters getOPGroupParameters();
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+
+    OPGroupParameters getOPGroupParameters() override;
 
 private:
     static const QString GROUP_ID;

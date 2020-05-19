@@ -34,9 +34,9 @@ public:
     MSATreeOptionsWidgetFactory();
     ~MSATreeOptionsWidgetFactory();
 
-    virtual QWidget *createWidget(GObjectView *objView);
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
 
-    virtual OPGroupParameters getOPGroupParameters();
+    OPGroupParameters getOPGroupParameters() override;
 
 private slots:
     void sl_onWidgetViewSaved(const TreeOpWidgetViewSettings &settings);
@@ -55,9 +55,9 @@ public:
     TreeOptionsWidgetFactory();
     ~TreeOptionsWidgetFactory();
 
-    virtual QWidget *createWidget(GObjectView *objView);
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
 
-    virtual OPGroupParameters getOPGroupParameters();
+    OPGroupParameters getOPGroupParameters() override;
 
 private slots:
     void sl_onWidgetViewSaved(const TreeOpWidgetViewSettings &settings);
@@ -77,9 +77,9 @@ public:
     virtual ~AddTreeWidgetFactory() {
     }
 
-    virtual QWidget *createWidget(GObjectView *objView);
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
 
-    virtual OPGroupParameters getOPGroupParameters();
+    OPGroupParameters getOPGroupParameters() override;
 
 private:
     static const QString GROUP_ID;

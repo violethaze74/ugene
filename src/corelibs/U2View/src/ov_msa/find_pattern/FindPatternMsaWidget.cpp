@@ -129,23 +129,19 @@ private:
 #define SEARCH_MODE_SEQUENCES_DATA QVariant(1)
 #define SEARCH_MODE_NAMES_DATA QVariant(2)
 
-FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *_msaEditor)
-    : msaEditor(_msaEditor),
+FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, bool isSearchInNamesMode)
+    : msaEditor(msaEditor),
       currentResultIndex(-1),
       searchTask(nullptr),
       previousMaxResult(-1),
       savableWidget(this, GObjectViewUtils::findViewByName(msaEditor->getName())),
       setSelectionToTheFirstResult(true),
-      isSearchInNamesMode(false),
+      isSearchInNamesMode(isSearchInNamesMode),
       algorithmSubgroup(nullptr),
       searchInSubgroup(nullptr),
       otherSettingsSubgroup(nullptr) {
     setupUi(this);
     setObjectName("FindPatternMsaWidget");
-
-    searchContextComboBox->addItem(tr("Sequences"), SEARCH_MODE_SEQUENCES_DATA);
-    searchContextComboBox->addItem(tr("Sequence Names"), SEARCH_MODE_NAMES_DATA);
-    connect(searchContextComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_searchModeChanged()));
 
     progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
@@ -190,6 +186,20 @@ int FindPatternMsaWidget::getTargetMsaLength() const {
     return msaEditor->getAlignmentLen();
 }
 
+void FindPatternMsaWidget::setSearchInNamesMode(bool flag) {
+    CHECK(isSearchInNamesMode != flag, )
+    isSearchInNamesMode = flag;
+    QVariant itemDataToActivate = isSearchInNamesMode ? SEARCH_MODE_NAMES_DATA : SEARCH_MODE_SEQUENCES_DATA;
+    int indexToActivate = 0;
+    for (int i = 0; i < searchContextComboBox->count(); i++) {
+        if (searchContextComboBox->itemData(i) == itemDataToActivate) {
+            indexToActivate = i;
+            break;
+        }
+    }
+    searchContextComboBox->setCurrentIndex(indexToActivate);
+}
+
 void FindPatternMsaWidget::showCurrentResultAndStopProgress() {
     progressMovie->stop();
     progressLabel->hide();
@@ -214,6 +224,12 @@ void FindPatternMsaWidget::initLayout() {
 
     otherSettingsSubgroup = new ShowHideSubgroupWidget(QObject::tr("Other settings"), QObject::tr("Other settings"), widgetOther, false);
     subgroupsLayout->addWidget(otherSettingsSubgroup);
+
+    searchContextComboBox->addItem(tr("Sequences"), SEARCH_MODE_SEQUENCES_DATA);
+    searchContextComboBox->addItem(tr("Sequence Names"), SEARCH_MODE_NAMES_DATA);
+    if (isSearchInNamesMode) {
+        searchContextComboBox->setCurrentIndex(1);
+    }
 
     updateLayout();
 
@@ -326,6 +342,8 @@ void FindPatternMsaWidget::connectSlots() {
 
     auto sequenceArea = msaEditor->getUI()->getSequenceArea();
     connect(sequenceArea, SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)), this, SLOT(sl_onSelectedRegionChanged(const MaEditorSelection &, const MaEditorSelection &)));
+
+    connect(searchContextComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_searchModeChanged()));
 }
 
 void FindPatternMsaWidget::sl_onAlgorithmChanged(int index) {

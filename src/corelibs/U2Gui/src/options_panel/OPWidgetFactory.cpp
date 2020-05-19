@@ -42,7 +42,7 @@ bool OPFactoryFilterVisitor::atLeastOneAlphabetPass(DNAAlphabetType factoryAlpha
 
 OPWidgetFactory::OPWidgetFactory()
     : QObject(),
-      objView(NULL),
+      objView(nullptr),
       objectViewOfWidget(ObjViewType_SequenceView) {
 }
 
@@ -53,11 +53,13 @@ bool OPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
     //by default checks type only
     bool res = false;
 
-    SAFE_POINT(filter != NULL, "OPWidgetFactory::passFiltration. Filter is null", res);
-
+    SAFE_POINT(filter != nullptr, "OPWidgetFactory::passFiltration. Filter is null", res);
     res = filter->typePass(getObjectViewType());
-
     return res;
+}
+
+void OPWidgetFactory::applyOptionsToWidget(QWidget *widget, const QVariantMap &options) {
+    // Do nothing by default. Override in widgets that support this feature.
 }
 
 OPCommonWidgetFactory::OPCommonWidgetFactory(QList<QString> _groupIds)

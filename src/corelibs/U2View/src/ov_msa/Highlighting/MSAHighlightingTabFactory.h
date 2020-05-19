@@ -35,9 +35,9 @@ class U2VIEW_EXPORT MSAHighlightingFactory : public OPWidgetFactory {
 public:
     MSAHighlightingFactory();
 
-    QWidget *createWidget(GObjectView *objView);
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
 
-    OPGroupParameters getOPGroupParameters();
+    OPGroupParameters getOPGroupParameters() override;
 
 private:
     static const QString GROUP_ID;

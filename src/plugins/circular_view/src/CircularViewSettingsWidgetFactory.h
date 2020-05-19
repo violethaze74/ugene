@@ -34,11 +34,11 @@ class CircularViewSettingsWidgetFactory : public OPWidgetFactory {
 public:
     CircularViewSettingsWidgetFactory(CircularViewContext *context);
 
-    virtual QWidget *createWidget(GObjectView *objView);
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
 
-    virtual OPGroupParameters getOPGroupParameters();
+    OPGroupParameters getOPGroupParameters() override;
 
-    virtual bool passFiltration(OPFactoryFilterVisitorInterface *filter);
+    bool passFiltration(OPFactoryFilterVisitorInterface *filter) override;
 
 private:
     static const QString GROUP_ID;

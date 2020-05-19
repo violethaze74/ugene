@@ -135,18 +135,17 @@ AssemblyNavigationWidgetFactory::AssemblyNavigationWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;
 }
 
-QWidget *AssemblyNavigationWidgetFactory::createWidget(GObjectView *objView) {
-    SAFE_POINT(NULL != objView,
+QWidget *AssemblyNavigationWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+    SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-               NULL);
+               nullptr);
 
     AssemblyBrowser *assemblyBrowser = qobject_cast<AssemblyBrowser *>(objView);
-    SAFE_POINT(NULL != assemblyBrowser,
+    SAFE_POINT(assemblyBrowser != nullptr,
                QString("Internal error: unable to cast object view to Assembly Browser for group '%1'.").arg(GROUP_ID),
-               NULL);
+               nullptr);
 
-    AssemblyNavigationWidget *widget = new AssemblyNavigationWidget(assemblyBrowser, assemblyBrowser->getMainWidget());
-    return widget;
+    return new AssemblyNavigationWidget(assemblyBrowser, assemblyBrowser->getMainWidget());
 }
 
 OPGroupParameters AssemblyNavigationWidgetFactory::getOPGroupParameters() {

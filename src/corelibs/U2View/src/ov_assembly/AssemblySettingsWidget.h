@@ -69,9 +69,9 @@ public:
     virtual ~AssemblySettingsWidgetFactory() {
     }
 
-    virtual QWidget *createWidget(GObjectView *objView);
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
 
-    virtual OPGroupParameters getOPGroupParameters();
+    OPGroupParameters getOPGroupParameters() override;
 
 private:
     static const QString GROUP_ID;

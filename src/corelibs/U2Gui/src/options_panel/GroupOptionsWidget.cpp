@@ -30,9 +30,10 @@
 
 namespace U2 {
 
-GroupOptionsWidget::GroupOptionsWidget(const QString &_groupId, const QString &_title, const QString &documentationPage, QWidget *_widget)
+GroupOptionsWidget::GroupOptionsWidget(const QString &_groupId, const QString &_title, const QString &documentationPage, QWidget *_widget, QWidget *mainWidget)
     : groupId(_groupId),
       widget(_widget),
+      mainWidget(mainWidget),
       title(_title) {
 #ifdef Q_OS_MAC
     setStyleSheet("font-size: 11.25pt;");

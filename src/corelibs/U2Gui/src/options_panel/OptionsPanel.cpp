@@ -29,6 +29,7 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 
 #include "GroupHeaderImageWidget.h"
+#include "GroupOptionsWidget.h"
 #include "OptionsPanelWidget.h"
 
 namespace U2 {
@@ -63,16 +64,13 @@ void OptionsPanel::addGroup(OPWidgetFactory *factory) {
     opWidgetFactories.append(factory);
 }
 
-void OptionsPanel::openGroupById(const QString &groupId) {
-    if (OPMainWidgetState_Closed == widget->getState()) {
+void OptionsPanel::openGroupById(const QString &groupId, const QVariantMap &options) {
+    if (widget->getState() == OPMainWidgetState_Closed) {
         widget->openOptionsPanel();
-        openOptionsGroup(groupId);
-    } else {
-        if (activeGroupId != groupId) {
-            closeOptionsGroup(activeGroupId);
-        }
-        openOptionsGroup(groupId);    // focus must be set anyway
+    } else if (activeGroupId != groupId) {
+        closeOptionsGroup(activeGroupId);
     }
+    openOptionsGroup(groupId, options);
 }
 
 void OptionsPanel::sl_groupHeaderPressed(QString groupId) {
@@ -101,20 +99,24 @@ void OptionsPanel::sl_groupHeaderPressed(QString groupId) {
     }
 }
 
-void OptionsPanel::openOptionsGroup(const QString &groupId) {
+void OptionsPanel::openOptionsGroup(const QString &groupId, const QVariantMap &options) {
     SAFE_POINT(!groupId.isEmpty(), "Empty 'groupId'!", );
 
-    if (activeGroupId == groupId) {
-        widget->focusOptionsWidget(groupId);
-        return;
-    }
     GRUNTIME_NAMED_COUNTER(cvat, tvar, QString("Opening tab: %1").arg(groupId), objView->getFactoryId());
     OPWidgetFactory *opWidgetFactory = findFactoryByGroupId(groupId);
-    SAFE_POINT(NULL != opWidgetFactory,
+    SAFE_POINT(opWidgetFactory != nullptr,
                QString("Internal error: can't open a group with ID '%1' on the Options Panel.").arg(groupId), );
 
+    if (activeGroupId == groupId) {
+        GroupOptionsWidget *optionsWidget = widget->focusOptionsWidget(groupId);
+        if (optionsWidget != nullptr) {
+            opWidgetFactory->applyOptionsToWidget(optionsWidget->getMainWidget(), options);
+        }
+        return;
+    }
+
     GroupHeaderImageWidget *headerWidget = widget->findHeaderWidgetByGroupId(groupId);
-    SAFE_POINT(NULL != headerWidget,
+    SAFE_POINT(headerWidget != nullptr,
                QString("Internal error: can't find a header widget for group '%1'").arg(groupId), );
 
     OPGroupParameters parameters = opWidgetFactory->getOPGroupParameters();
@@ -126,13 +128,16 @@ void OptionsPanel::openOptionsGroup(const QString &groupId) {
     QList<QWidget *> commonWidgets;
     foreach (OPCommonWidgetFactory *commonWidgetFactory, opCommonWidgetFactories) {
         SAFE_POINT(NULL != commonWidgetFactory, "NULL OP common widget factory!", );
-        QWidget *commonWidget = commonWidgetFactory->createWidget(objView);
+        QWidget *commonWidget = commonWidgetFactory->createWidget(objView, options);
         commonWidgets.append(commonWidget);
     }
 
     // Create the tab widget
-    widget->createOptionsWidget(groupId, parameters.getTitle(), parameters.getDocumentationPage(), opWidgetFactory->createWidget(objView), commonWidgets);
+    QWidget *mainWidget = opWidgetFactory->createWidget(objView, options);
+    widget->createOptionsWidget(groupId, parameters.getTitle(), parameters.getDocumentationPage(), mainWidget, commonWidgets);
     headerWidget->setHeaderSelected();
+    // Re-apply options in case if they were overriden by SavableTab.
+    opWidgetFactory->applyOptionsToWidget(mainWidget, options);
     activeGroupId = groupId;
 }
 

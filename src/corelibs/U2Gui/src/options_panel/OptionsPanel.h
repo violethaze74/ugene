@@ -56,10 +56,10 @@ public:
     /** Returns the main Options Panel widget */
     OptionsPanelWidget *getMainWidget();
 
-    /** Open a group with the specified group ID: only one at a time */
-    void openGroupById(const QString &groupId);
+    /** Opens a group with the specified group id. */
+    void openGroupById(const QString &groupId, const QVariantMap &options = QVariantMap());
 
-    /** Returs Id for current tab **/
+    /** Returns id for currently opened tab. **/
     QString getActiveGroupId() {
         return activeGroupId;
     }
@@ -73,7 +73,7 @@ private:
     GObjectView *objView;
 
     /** Shows the options widget */
-    void openOptionsGroup(const QString &groupId);
+    void openOptionsGroup(const QString &groupId, const QVariantMap &options = QVariantMap());
 
     /** Hides the options widget  */
     void closeOptionsGroup(const QString &groupId);

@@ -31,8 +31,9 @@ class U2VIEW_EXPORT AnnotHighlightWidgetFactory : public OPWidgetFactory {
 public:
     AnnotHighlightWidgetFactory();
 
-    virtual QWidget *createWidget(GObjectView *objView);
-    virtual OPGroupParameters getOPGroupParameters();
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+
+    OPGroupParameters getOPGroupParameters() override;
 
 private:
     static const QString GROUP_ID;

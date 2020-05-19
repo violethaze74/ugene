@@ -33,8 +33,10 @@ class U2VIEW_EXPORT FindPatternWidgetFactory : public OPWidgetFactory {
 public:
     FindPatternWidgetFactory();
 
-    virtual QWidget *createWidget(GObjectView *objView);
-    virtual OPGroupParameters getOPGroupParameters();
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+
+    OPGroupParameters getOPGroupParameters() override;
+
     static const QString &getGroupId();
 
 private:

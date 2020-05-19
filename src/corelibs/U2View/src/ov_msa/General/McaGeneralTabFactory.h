@@ -31,8 +31,9 @@ class U2VIEW_EXPORT McaGeneralTabFactory : public OPWidgetFactory {
 public:
     McaGeneralTabFactory();
 
-    QWidget *createWidget(GObjectView *objView);
-    OPGroupParameters getOPGroupParameters();
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+
+    OPGroupParameters getOPGroupParameters() override;
 
     static const QString &getGroupId();
 

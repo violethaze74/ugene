@@ -35,8 +35,9 @@ class U2VIEW_EXPORT PairAlignFactory : public OPWidgetFactory {
 public:
     PairAlignFactory();
 
-    virtual QWidget *createWidget(GObjectView *objView);
-    virtual OPGroupParameters getOPGroupParameters();
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+
+    OPGroupParameters getOPGroupParameters() override;
 
 private:
     static const QString GROUP_ID;

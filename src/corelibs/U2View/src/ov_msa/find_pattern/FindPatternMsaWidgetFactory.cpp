@@ -27,8 +27,6 @@
 
 #include <U2Gui/HelpButton.h>
 
-#include <U2View/AnnotatedDNAView.h>
-
 #include "FindPatternMsaWidget.h"
 
 namespace U2 {
@@ -41,18 +39,21 @@ FindPatternMsaWidgetFactory::FindPatternMsaWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget *FindPatternMsaWidgetFactory::createWidget(GObjectView *objView) {
-    SAFE_POINT(NULL != objView,
+#define SEARCH_IN_NAMES_MODE_OPTION_KEY "FindPatternMsaWidgetFactory_findInNames"
+
+QWidget *FindPatternMsaWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+    SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-               NULL);
+               nullptr);
 
-    MSAEditor *msaeditor = qobject_cast<MSAEditor *>(objView);
-    SAFE_POINT(NULL != msaeditor,
+    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(objView);
+    SAFE_POINT(msaEditor != nullptr,
                QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
-               NULL);
-    FindPatternMsaWidget *widget = new FindPatternMsaWidget(msaeditor);
-    widget->setObjectName("FindPatternMsaWidget");
+               nullptr);
 
+    bool isSearchInNamesMode = options.value(SEARCH_IN_NAMES_MODE_OPTION_KEY).toBool();
+    FindPatternMsaWidget *widget = new FindPatternMsaWidget(msaEditor, isSearchInNamesMode);
+    widget->setObjectName("FindPatternMsaWidget");
     return widget;
 }
 
@@ -60,8 +61,21 @@ OPGroupParameters FindPatternMsaWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Search in Alignment"), GROUP_DOC_PAGE);
 }
 
+void FindPatternMsaWidgetFactory::applyOptionsToWidget(QWidget *widget, const QVariantMap &options) {
+    FindPatternMsaWidget *findPatternMsaWidget = qobject_cast<FindPatternMsaWidget *>(widget);
+    CHECK(findPatternMsaWidget != nullptr, )
+    bool isSearchInNamesMode = options.value(SEARCH_IN_NAMES_MODE_OPTION_KEY).toBool();
+    findPatternMsaWidget->setSearchInNamesMode(isSearchInNamesMode);
+}
+
 const QString &FindPatternMsaWidgetFactory::getGroupId() {
     return GROUP_ID;
+}
+
+const QVariantMap FindPatternMsaWidgetFactory::getOptionsToActivateSearchInNames() {
+    QVariantMap options;
+    options[SEARCH_IN_NAMES_MODE_OPTION_KEY] = true;
+    return options;
 }
 
 }    // namespace U2

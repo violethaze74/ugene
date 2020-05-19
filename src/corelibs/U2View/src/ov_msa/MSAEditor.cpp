@@ -63,8 +63,9 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
       alignSequencesToAlignmentAction(nullptr),
       realignSomeSequenceAction(nullptr),
       treeManager(this) {
-    gotoAction = NULL;
-    searchInSequencesAction = NULL;
+    gotoAction = nullptr;
+    searchInSequencesAction = nullptr;
+    searchInSequenceNamesAction = nullptr;
 
     initZoom();
     initFont();
@@ -250,6 +251,7 @@ void MSAEditor::addNavigationMenu(QMenu *m) {
     navMenu->addAction(gotoAction);
     navMenu->addSeparator();
     navMenu->addAction(searchInSequencesAction);
+    navMenu->addAction(searchInSequenceNamesAction);
 }
 
 void MSAEditor::addTreeMenu(QMenu *m) {
@@ -298,6 +300,13 @@ QWidget *MSAEditor::createWidget() {
     searchInSequencesAction->setShortcutContext(Qt::WindowShortcut);
     searchInSequencesAction->setToolTip(QString("%1 (%2)").arg(searchInSequencesAction->text()).arg(searchInSequencesAction->shortcut().toString()));
     connect(searchInSequencesAction, SIGNAL(triggered()), this, SLOT(sl_searchInSequences()));
+
+    searchInSequenceNamesAction = new QAction(QIcon(":core/images/find_dialog.png"), tr("Search in sequence names…"), this);
+    searchInSequenceNamesAction->setObjectName("search_in_sequence_names");
+    searchInSequenceNamesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F));
+    searchInSequenceNamesAction->setShortcutContext(Qt::WindowShortcut);
+    searchInSequenceNamesAction->setToolTip(QString("%1 (%2)").arg(searchInSequenceNamesAction->text()).arg(searchInSequenceNamesAction->shortcut().toString()));
+    connect(searchInSequenceNamesAction, SIGNAL(triggered()), this, SLOT(sl_searchInSequenceNames()));
 
     alignAction = new QAction(QIcon(":core/images/align.png"), tr("Align"), this);
     alignAction->setObjectName("Align");
@@ -526,8 +535,16 @@ void MSAEditor::sl_addToAlignment() {
 void MSAEditor::sl_searchInSequences() {
     auto optionsPanel = getOptionsPanel();
     SAFE_POINT(optionsPanel != NULL, "Internal error: options panel is NULL"
-                                     " when search in sequences has been initiated!", );
+                                     " when search in sequences was initiated!", );
     optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId());
+}
+
+void MSAEditor::sl_searchInSequenceNames() {
+    auto optionsPanel = getOptionsPanel();
+    SAFE_POINT(optionsPanel != NULL, "Internal error: options panel is NULL"
+                                     " when search in sequence names was initiated!", );
+    QVariantMap options = FindPatternMsaWidgetFactory::getOptionsToActivateSearchInNames();
+    optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
 }
 
 void MSAEditor::sl_realignSomeSequences() {

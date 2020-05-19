@@ -79,15 +79,13 @@ RefSeqCommonWidgetFactory::RefSeqCommonWidgetFactory(QList<QString> groupIds)
 RefSeqCommonWidgetFactory::~RefSeqCommonWidgetFactory() {
 }
 
-QWidget *RefSeqCommonWidgetFactory::createWidget(GObjectView *objView) {
+QWidget *RefSeqCommonWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
     SAFE_POINT(NULL != objView, QString("NULL object view!"), NULL);
 
     MSAEditor *msa = qobject_cast<MSAEditor *>(objView);
     SAFE_POINT(NULL != msa, QString("Not MSAEditor!"), NULL);
 
-    RefSeqCommonWidget *widget = new RefSeqCommonWidget(msa);
-
-    return widget;
+    return new RefSeqCommonWidget(msa);
 }
 
 }    // namespace U2

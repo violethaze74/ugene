@@ -36,16 +36,17 @@ const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "24748797";
 
 CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularViewContext *context)
     : ctx(context) {
-    SAFE_POINT(context != NULL, tr("Circular view context is NULL"), );
+    SAFE_POINT(context != nullptr, tr("Circular view context is NULL"), );
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *CircularViewSettingsWidgetFactory::createWidget(GObjectView *objView) {
-    SAFE_POINT(objView != NULL, tr("Object view is NULL"), NULL);
+QWidget *CircularViewSettingsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+    SAFE_POINT(objView != nullptr, tr("Object view is NULL"), nullptr);
 
     CircularViewSplitter *cvSplitter = ctx->getView(objView, false);
     AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(objView);
-    SAFE_POINT(annotatedDnaView != NULL, "Can not cast GObjectView to AnnotatedDNAView", NULL);
+    SAFE_POINT(annotatedDnaView != nullptr, "Can not cast GObjectView to AnnotatedDNAView", NULL);
+
     CircularViewSettingsWidget *widget = new CircularViewSettingsWidget(ctx->getSettings(annotatedDnaView), cvSplitter);
     connect(ctx, SIGNAL(si_cvSplitterWasCreatedOrRemoved(CircularViewSplitter *, CircularViewSettings *)), widget, SLOT(sl_cvSplitterWasCreatedOrRemoved(CircularViewSplitter *, CircularViewSettings *)));
     connect(widget, SIGNAL(si_openCvButtonClicked(CircularViewSettings *)), ctx, SLOT(sl_toggleBySettings(CircularViewSettings *)));
@@ -59,7 +60,7 @@ OPGroupParameters CircularViewSettingsWidgetFactory::getOPGroupParameters() {
 
 bool CircularViewSettingsWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
     bool res = false;
-    SAFE_POINT(filter != NULL, "OPFactoryFilterVisitorInterface::filter is NULL", res);
+    SAFE_POINT(filter != nullptr, "OPFactoryFilterVisitorInterface::filter is NULL", res);
 
     res = filter->typePass(getObjectViewType()) && filter->atLeastOneAlphabetPass(DNAAlphabet_NUCL);
     return res;

@@ -140,24 +140,24 @@ GroupHeaderImageWidget *OptionsPanelWidget::createHeaderImageWidget(const QStrin
 GroupOptionsWidget *OptionsPanelWidget::createOptionsWidget(const QString &groupId,
                                                             const QString &title,
                                                             const QString &documentationPage,
-                                                            QWidget *_widget,
+                                                            QWidget *mainWidget,
                                                             QList<QWidget *> commonWidgets) {
-    SAFE_POINT(NULL != _widget, "NULL main widget!", NULL);
+    SAFE_POINT(mainWidget != nullptr, "NULL main widget!", NULL);
     QWidget *innerWidgets = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setMargin(0);
 
     foreach (QWidget *commonWidget, commonWidgets) {
-        SAFE_POINT(NULL != commonWidget, "NULL common widget!", NULL);
+        SAFE_POINT(commonWidget != nullptr, "NULL common widget!", nullptr);
         layout->addWidget(commonWidget);
     }
 
-    layout->addWidget(_widget);
+    layout->addWidget(mainWidget);
 
     innerWidgets->setLayout(layout);
 
-    GroupOptionsWidget *groupWidget = new GroupOptionsWidget(groupId, title, documentationPage, innerWidgets);
+    GroupOptionsWidget *groupWidget = new GroupOptionsWidget(groupId, title, documentationPage, innerWidgets, mainWidget);
 
     // Add widget to the layout and "parent" it
     optionsLayout->insertWidget(0, groupWidget);
@@ -185,8 +185,7 @@ GroupHeaderImageWidget *OptionsPanelWidget::findHeaderWidgetByGroupId(const QStr
             return widget;
         }
     }
-
-    return NULL;
+    return nullptr;
 }
 
 GroupOptionsWidget *OptionsPanelWidget::findOptionsWidgetByGroupId(const QString &groupId) {
@@ -195,13 +194,12 @@ GroupOptionsWidget *OptionsPanelWidget::findOptionsWidgetByGroupId(const QString
             return widget;
         }
     }
-
-    return NULL;
+    return nullptr;
 }
 
 void OptionsPanelWidget::deleteOptionsWidget(const QString &groupId) {
     GroupOptionsWidget *optionsWidget = findOptionsWidgetByGroupId(groupId);
-    SAFE_POINT(NULL != optionsWidget,
+    SAFE_POINT(optionsWidget != nullptr,
                QString("Internal error: failed to find an options widget for group '%1' to delete it.").arg(groupId), );
 
     optionsLayout->removeWidget(optionsWidget);
@@ -209,13 +207,14 @@ void OptionsPanelWidget::deleteOptionsWidget(const QString &groupId) {
     optionsWidgets.removeAll(optionsWidget);
 }
 
-void OptionsPanelWidget::focusOptionsWidget(const QString &groupId) {
+GroupOptionsWidget *OptionsPanelWidget::focusOptionsWidget(const QString &groupId) {
     GroupOptionsWidget *optionsWidget = findOptionsWidgetByGroupId(groupId);
-    SAFE_POINT(NULL != optionsWidget,
-               QString("Internal error: failed to find an options widget for group '%1' to activate it.").arg(groupId), );
-
+    SAFE_POINT(optionsWidget != nullptr,
+               QString("Internal error: failed to find an options widget for group '%1' to activate it.").arg(groupId),
+               nullptr);
     optionsWidget->hide();
     optionsWidget->show();
+    return optionsWidget;
 }
 
 }    // namespace U2

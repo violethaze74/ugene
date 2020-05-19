@@ -37,18 +37,17 @@ MSAHighlightingFactory::MSAHighlightingFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget *MSAHighlightingFactory::createWidget(GObjectView *objView) {
-    SAFE_POINT(NULL != objView,
+QWidget *MSAHighlightingFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+    SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-               NULL);
+               nullptr);
 
     MSAEditor *msa = qobject_cast<MSAEditor *>(objView);
-    SAFE_POINT(NULL != msa,
+    SAFE_POINT(msa != nullptr,
                QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
-               NULL);
+               nullptr);
 
-    MSAHighlightingTab *widget = new MSAHighlightingTab(msa);
-    return widget;
+    return new MSAHighlightingTab(msa);
 }
 
 OPGroupParameters MSAHighlightingFactory::getOPGroupParameters() {

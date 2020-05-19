@@ -39,15 +39,15 @@ AnnotHighlightWidgetFactory::AnnotHighlightWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *AnnotHighlightWidgetFactory::createWidget(GObjectView *objView) {
-    SAFE_POINT(NULL != objView,
+QWidget *AnnotHighlightWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+    SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-               NULL);
+               nullptr);
 
     AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(objView);
-    SAFE_POINT(NULL != annotatedDnaView,
+    SAFE_POINT(annotatedDnaView != nullptr,
                QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
-               NULL);
+               nullptr);
 
     AnnotHighlightWidget *widget = new AnnotHighlightWidget(annotatedDnaView);
     widget->setObjectName("AnnotHighlightWidget");

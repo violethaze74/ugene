@@ -59,9 +59,12 @@ struct FindPatternWidgetResult {
 class FindPatternMsaWidget : public QWidget, private Ui_FindPatternMsaForm {
     Q_OBJECT
 public:
-    FindPatternMsaWidget(MSAEditor *msaEditor);
+    /** Creates a new widget. Activates search-in-name mode if isSearchInNamesMode is true. */
+    FindPatternMsaWidget(MSAEditor *msaEditor, bool isSearchInNamesMode);
 
     int getTargetMsaLength() const;
+
+    void setSearchInNamesMode(bool flag);
 
 private slots:
     void sl_onAlgorithmChanged(int);

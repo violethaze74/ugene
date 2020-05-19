@@ -45,8 +45,10 @@ public:
 };
 
 /** Options Panel Widget state */
-enum OPMainWidgetState { OPMainWidgetState_Opened,
-                         OPMainWidgetState_Closed };
+enum OPMainWidgetState {
+    OPMainWidgetState_Opened,
+    OPMainWidgetState_Closed
+};
 
 /**
  * Serves as a parent widget for all header image and option widgets.
@@ -67,7 +69,7 @@ public:
      */
     GroupOptionsWidget *createOptionsWidget(const QString &groupId,
                                             const QString &title,
-                                            const QString &documentaionLink,
+                                            const QString &documentationLink,
                                             QWidget *widget,
                                             QList<QWidget *> commonWidgets);
 
@@ -86,8 +88,8 @@ public:
     /** Delete options widget (on the left side) */
     void deleteOptionsWidget(const QString &groupId);
 
-    /** Verifies that a widget with the specified ID is present and makes it active */
-    void focusOptionsWidget(const QString &groupId);
+    /** Verifies that a widget with the specified ID is present and makes it active. Returns the widget. */
+    GroupOptionsWidget *focusOptionsWidget(const QString &groupId);
 
     /** Returns NULL if not found */
     GroupOptionsWidget *findOptionsWidgetByGroupId(const QString &groupId);

@@ -107,6 +107,7 @@ protected slots:
     void sl_align();
     void sl_addToAlignment();
     void sl_searchInSequences();
+    void sl_searchInSequenceNames();
     void sl_realignSomeSequences();
     void sl_setSeqAsReference();
     void sl_unsetReferenceSeq();
@@ -149,6 +150,7 @@ private:
     QAction *unsetReferenceSequenceAction;
     QAction *gotoAction;
     QAction *searchInSequencesAction;
+    QAction *searchInSequenceNamesAction;
     QAction *openCustomSettingsAction;
 
     PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings;

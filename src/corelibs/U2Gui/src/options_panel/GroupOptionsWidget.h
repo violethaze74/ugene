@@ -37,24 +37,32 @@ namespace U2 {
 class U2GUI_EXPORT GroupOptionsWidget : public QWidget {
     Q_OBJECT
 public:
-    GroupOptionsWidget(const QString &groupId, const QString &title, const QString &documentationPage, QWidget *widget);
+    GroupOptionsWidget(const QString &groupId, const QString &title, const QString &documentationPage, QWidget *widget, QWidget *mainWidget);
 
-    inline const QString &getGroupId() {
+    const QString &getGroupId() const {
         return groupId;
     }
-    inline static int getMinWidgetWidth() {
+
+    static int getMinWidgetWidth() {
         return MIN_WIDGET_WIDTH;
     }
-    inline static int getMaxWidgetWidth() {
+
+    static int getMaxWidgetWidth() {
         return MAX_WIDGET_WIDTH;
     }
-    inline const QString &getTitle() {
+
+    const QString &getTitle() const {
         return title;
+    }
+
+    QWidget *getMainWidget() const {
+        return mainWidget;
     }
 
 private:
     QString groupId;
     QWidget *widget;
+    QWidget *mainWidget;
     QLabel *titleWidget;
     QString title;
 
