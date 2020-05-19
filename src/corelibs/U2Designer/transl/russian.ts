@@ -725,27 +725,27 @@ bowtie index file</source>
 <context>
     <name>U2::Dashboard</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="151"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="156"/>
         <source>Overview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="159"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="164"/>
         <source>Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="167"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="172"/>
         <source>External Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="187"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="192"/>
         <source>Open workflow schema</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="318"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="330"/>
         <source>Can not create a folder: </source>
         <translation>Невозможно создать папку: </translation>
     </message>

@@ -990,252 +990,252 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Расширенный амино</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="269"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="270"/>
         <source>Complement for standard DNA</source>
         <translation>Комплeментарная трансляция к стандартному ДНК алфавиту</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="289"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="290"/>
         <source>Complement for standard RNA</source>
         <translation>Комплeментарная трансляция к стандартному РНК алфавиту</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="319"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="320"/>
         <source>Complement for extended DNA</source>
         <translation>Комплeментарная траснсляция для расширенного алфавита ДНК</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="349"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="350"/>
         <source>Complement for extended RNA</source>
         <translation>Комплeментарная трансляция к расширенному РНК алфавиту</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="365"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="366"/>
         <source>1. The Standard Genetic Code</source>
         <translation>1. Стандартный генетический код</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="375"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="376"/>
         <source>2. The Vertebrate Mitochondrial Code</source>
         <translation>2. Митохондриальный код позвоночных</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="385"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="386"/>
         <source>3. The Yeast Mitochondrial Code</source>
         <translation>3. Митохондриальный код дрожжей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="395"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="396"/>
         <source>4. The Mold, Protozoan, and Coelenterate Mitochondria and the Mycoplasma Code</source>
         <translation>4. Код Mold, протозойных, и кишечнополостных митохондрий и Mycoplasma</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="405"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="406"/>
         <source>5. The Invertebrate Mitochondrial Code</source>
         <translation>5. Митохондриальный код беспозвоночных</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="415"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="416"/>
         <source>6. The Ciliate, Dasycladacean and Hexamita Nuclear Code</source>
         <translation>6. Митохондриальный код инфузорий, Dasycladacean и Hexamita</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="425"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="426"/>
         <source>9. The Echinoderm and Flatworm Mitochondrial Code</source>
         <translation>9. Митохондриальный код иглокожих и плоских червей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="435"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="436"/>
         <source>10. The Euplotid Nuclear Code</source>
         <translation>10. Ядерный код Euplotid</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="445"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="446"/>
         <source>11. The Bacterial and Plant Plastid Code</source>
         <translation>11. Код пластид бактерий и растений</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="455"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="456"/>
         <source>12. The Alternative Yeast Nuclear Code</source>
         <translation>12. Альтернативный ядерный код дрожжей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="465"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="466"/>
         <source>13. The Ascidian Mitochondrial Code</source>
         <translation>13. Митохондриальный код асцидии</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="475"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="476"/>
         <source>14. The Alternative Flatworm Mitochondrial Code</source>
         <translation>14. Альтернативный митохондриальный код плоских червей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="485"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="486"/>
         <source>15. Blepharisma Nuclear Code</source>
         <translation>15. Ядерный код блефаризмы</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="495"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="496"/>
         <source>16. Chlorophycean Mitochondrial Code</source>
         <translation>16. Митохондриальный код водоросли Chlorophycean</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="505"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="506"/>
         <source>21. Trematode Mitochondrial Code</source>
         <translation>21. Митохондриальный код трематоды</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="515"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="516"/>
         <source>22. Scenedesmus obliquus Mitochondrial Code</source>
         <translation>22. Митохондриальный код водоросли Scenedesmus obliquus</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="525"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="526"/>
         <source>23. Thraustochytrium Mitochondrial Code</source>
         <translation>23. Митохондриальный код Thraustochytrium</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="535"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="536"/>
         <source>24. Pterobranchia Mitochondrial Code</source>
         <translation>24. Митохондриальный код перистожаберных</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="545"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="546"/>
         <source>25. Candidate Division SR1 and Gracilibacteria Code</source>
         <translation>25. Candidate Division SR1 and Gracilibacteria Code</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="555"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="556"/>
         <source>26. Pachysolen tannophilus Nuclear Code</source>
         <translation>26. Pachysolen tannophilus Nuclear Code</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="565"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="566"/>
         <source>27. Karyorelict Nuclear</source>
         <translation>27. Karyorelict Nuclear</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="575"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="576"/>
         <source>28. Condylostoma Nuclear</source>
         <translation>28. Condylostoma Nuclear</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="585"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="586"/>
         <source>29. Mesodinium Nuclear</source>
         <translation>29. Mesodinium Nuclear</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="595"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="596"/>
         <source>30. Peritrich Nuclear</source>
         <translation>30. Peritrich Nuclear</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="605"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="606"/>
         <source>31. Blastocrithidia Nuclear</source>
         <translation>31. Blastocrithidia Nuclear</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="656"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="657"/>
         <source>Alanine</source>
         <translation>Аланин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="657"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="658"/>
         <source>Cysteine</source>
         <translation>Цистеин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="658"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="659"/>
         <source>Aspartic acid</source>
         <translation>Аспарагиновая кислота</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="659"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="660"/>
         <source>Glutamic acid</source>
         <translation>Глутаминовая кислота</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="660"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="661"/>
         <source>Phenylalanine</source>
         <translation>Фенилаланин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="661"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="662"/>
         <source>Glycine</source>
         <translation>Глицин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="662"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="663"/>
         <source>Histidine</source>
         <translation>Гистидин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="663"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="664"/>
         <source>Isoleucine</source>
         <translation>Изолейцин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="664"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="665"/>
         <source>Lysine</source>
         <translation>Лизин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="665"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="666"/>
         <source>Leucine</source>
         <translation>Лейцин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="666"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="667"/>
         <source>Methionine</source>
         <translation>Метионин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="667"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="668"/>
         <source>Asparagine</source>
         <translation>Аспарагин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="668"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="669"/>
         <source>Proline</source>
         <translation>Пролин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="669"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="670"/>
         <source>Glutamine</source>
         <translation>Глютамин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="670"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="671"/>
         <source>Arginine</source>
         <translation>Аргинин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="671"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="672"/>
         <source>Serine</source>
         <translation>Серин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="672"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="673"/>
         <source>Threonine</source>
         <translation>Треонин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="673"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="674"/>
         <source>Valine</source>
         <translation>Валин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="674"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="675"/>
         <source>Tryptophan</source>
         <translation>Триптофан</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="675"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="676"/>
         <source>Tyrosine</source>
         <translation>Тирозин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="676"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="677"/>
         <source>Stop codon</source>
         <translation>Стоп-кодон</translation>
     </message>

@@ -5724,6 +5724,26 @@ GUI_TEST_CLASS_DEFINITION(test_6746) {
     // Expected result: Results: 1/2
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/2");
 }
+GUI_TEST_CLASS_DEFINITION(test_6749) {
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Open "Search in Alignment" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+
+    // 3. Input "AC" pattern to the "Search pattern field"
+    GTUtilsOptionPanelMsa::enterPattern(os, "AC");
+
+    // Expected result: Results: 1/2
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/573");
+
+    // 4. Change search context to the "Sequence Names"
+    GTUtilsOptionPanelMsa::setSearchContext(os, "Sequence Names");
+
+    // Expected result: "Results 1/1"
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
+}
 
 GUI_TEST_CLASS_DEFINITION(test_6751) {
     // 1. Open "COI.aln".

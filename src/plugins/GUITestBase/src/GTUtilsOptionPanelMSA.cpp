@@ -528,6 +528,19 @@ void GTUtilsOptionPanelMsa::setRegion(HI::GUITestOpStatus &os, int from, int to)
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "setSearchContext"
+void GTUtilsOptionPanelMsa::setSearchContext(HI::GUITestOpStatus &os, QString context) {
+    QComboBox *searchContextBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "searchContextComboBox"));
+    GT_CHECK(searchContextBox != NULL, "searchContextBox is NULL");
+
+    if (!searchContextBox->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search context"));
+    }
+    GTComboBox::setIndexWithText(os, searchContextBox, context);
+    GTGlobals::sleep(2500);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getWidget"
 QWidget *GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus &os, const QString &widgetName, int number) {
     QWidget *sequenceContainerWidget = GTWidget::findWidget(os, "sequenceContainerWidget");

@@ -99,37 +99,34 @@
 <context>
     <name>U2::GUITestLauncher</name>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="132"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="142"/>
         <source>No tests to run</source>
         <translation>No tests to run</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="142"/>
         <source>Invalid suite number: %1. There are %2 suites</source>
-        <translation>Invalid suite number: %1. There are %2 suites</translation>
+        <translation type="vanished">Invalid suite number: %1. There are %2 suites</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="249"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="273"/>
         <source>An error occurred while starting UGENE: </source>
         <translation>An error occurred while starting UGENE: </translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="280"/>
         <source>An error occurred while finishing UGENE: </source>
-        <translation>An error occurred while finishing UGENE: </translation>
+        <translation type="vanished">An error occurred while finishing UGENE: </translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="282"/>
         <source>Test fails because of timeout.</source>
-        <translation>Test fails because of timeout.</translation>
+        <translation type="vanished">Test fails because of timeout.</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="311"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="335"/>
         <source>Test name</source>
         <translation>Test name</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="311"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="335"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
@@ -147,7 +144,7 @@
         <translation>Service to support UGENE GUI testing</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestService.cpp" line="249"/>
+        <location filename="../src/gui_tests/GUITestService.cpp" line="252"/>
         <source>Can&apos;t connect external tool manager signal</source>
         <translation>Can&apos;t connect external tool manager signal</translation>
     </message>

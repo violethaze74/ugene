@@ -120,6 +120,7 @@ public:
     static bool checkResultsText(HI::GUITestOpStatus &os, QString expectedText);
     static void setRegionType(HI::GUITestOpStatus &os, const QString &regionType);
     static void setRegion(HI::GUITestOpStatus &os, int from, int to);
+    static void setSearchContext(HI::GUITestOpStatus &os, QString context);
 
     static void clickNext(HI::GUITestOpStatus &os);
     static void clickPrev(HI::GUITestOpStatus &os);

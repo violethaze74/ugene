@@ -2278,7 +2278,7 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::GroupOptionsWidget</name>
     <message>
-        <location filename="../src/options_panel/GroupOptionsWidget.cpp" line="65"/>
+        <location filename="../src/options_panel/GroupOptionsWidget.cpp" line="66"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>

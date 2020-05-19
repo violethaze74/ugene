@@ -118,7 +118,7 @@
         <translation>Включить выделение</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="57"/>
+        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="58"/>
         <source>Circular View Settings</source>
         <translation>Настройки кругового вида</translation>
     </message>

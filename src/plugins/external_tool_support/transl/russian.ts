@@ -2973,27 +2973,32 @@ p, li { white-space: pre-wrap; }
         <translation>Unexpected value &apos;%1&apos; of the library type</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="814"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="816"/>
+        <source>TopHat and Bowtie tool versions are undefined, this may cause some compatibility issues</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="821"/>
         <source>%1 tool&apos;s version is undefined, this may cause some compatibility issues</source>
         <translation>%1 версия инструмента не определена, это может вызвать некоторые проблемы совместимости</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="822"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="828"/>
         <source>Bowtie and TopHat tools have incompatible versions. Your TopHat&apos;s version is %1, Bowtie&apos;s one is %2. The following are considered to be compatible: Bowtie &lt; &quot;0.12.9&quot; and TopHat &lt;= &quot;2.0.8&quot; or Bowtie &gt;= &quot;0.12.9&quot; and TopHat &gt;= &quot;2.0.8.b&quot;</source>
         <translation>Bowtie и TopHat инструменты имеют несовместимые версии. Версия TopHat %1, версия Bowtie %2. Для совместимости необходимо: Bowtie &lt; &quot;0.12.9&quot; and TopHat &lt;= &quot;2.0.8&quot; or Bowtie &gt;= &quot;0.12.9&quot; and TopHat &gt;= &quot;2.0.8.b&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="859"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="865"/>
         <source>At least two samples are required</source>
         <translation>Необходимо как минимум два примера</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="866"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="872"/>
         <source>Duplicate sample name: </source>
         <translation>Повторяющееся имя примера: </translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="871"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="877"/>
         <source>No datasets in the sample: </source>
         <translation>В примере нет данных: </translation>
     </message>
@@ -5169,22 +5174,22 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Tool&apos;s executable isn&apos;t exists</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="77"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="81"/>
         <source>Scripting tool registry is NULL</source>
         <translation>Scripting tool registry is NULL</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="79"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="83"/>
         <source>Scripting tool &apos;%1&apos; isn&apos;t found in the registry</source>
         <translation>Scripting tool &apos;%1&apos; isn&apos;t found in the registry</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="128"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="132"/>
         <source>Tool does not start.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Tool does not start.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="160"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="164"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -5192,7 +5197,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolManagerImpl</name>
     <message>
-        <location filename="../src/ExternalToolManager.cpp" line="382"/>
+        <location filename="../src/ExternalToolManager.cpp" line="383"/>
         <source>A dependency tool isn&apos;t represented in the general tool list. Skip dependency &quot;%1&quot;</source>
         <translation>A dependency tool isn&apos;t represented in the general tool list. Skip dependency &quot;%1&quot;</translation>
     </message>
@@ -5200,7 +5205,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSearchAndValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="367"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="371"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -5466,7 +5471,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="43"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="42"/>
         <source>%1 validate task</source>
         <translation>%1 validate task</translation>
     </message>
@@ -5474,12 +5479,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsInstallTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="413"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="417"/>
         <source>Installing external tools</source>
         <translation>Installing external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="418"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="422"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -5501,13 +5506,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="384"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="388"/>
         <source>Checking external tools</source>
         <translation>Checking external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="402"/>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="404"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="406"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="408"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
