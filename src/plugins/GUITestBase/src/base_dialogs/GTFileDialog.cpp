@@ -335,6 +335,10 @@ void GTFileDialog::openFile(GUITestOpStatus &os, const QString &path, const QStr
             void run(HI::GUITestOpStatus &os) {
                 Q_UNUSED(os);
                 auto openFileTask = U2::AppContext::getProjectLoader()->openWithProjectTask(pathToFile);
+                if (openFileTask == nullptr) {
+                    os.setError("Failed to create open file task: " + pathToFile + ". Is the file already in the project?");
+                    return;
+                }
                 U2::AppContext::getTaskScheduler()->registerTopLevelTask(openFileTask);
             }
             QString pathToFile;

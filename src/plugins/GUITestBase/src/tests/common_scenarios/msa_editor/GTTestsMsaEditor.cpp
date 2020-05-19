@@ -3454,10 +3454,12 @@ GUI_TEST_CLASS_DEFINITION(test_0049) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(10, 10));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTWidget::click(os, GTAction::button(os, "Save alignment"));
     GTUtilsProjectTreeView::click(os, "COI_test_0049.aln");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTFileDialog::openFile(os, sandBoxDir, "COI_test_0049.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
