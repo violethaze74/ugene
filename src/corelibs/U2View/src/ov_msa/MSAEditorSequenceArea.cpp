@@ -464,12 +464,7 @@ void MSAEditorSequenceArea::sl_lockedStateChanged() {
 
 void MSAEditorSequenceArea::sl_removeAllGaps() {
     MultipleSequenceAlignmentObject *msa = getEditor()->getMaObject();
-    SAFE_POINT(NULL != msa, tr("NULL msa object!"), );
-    assert(!msa->isStateLocked());
-
-    MaCollapseModel *collapsibleModel = ui->getCollapseModel();
-    SAFE_POINT(NULL != collapsibleModel, tr("NULL collapsible model!"), );
-    collapsibleModel->reset(editor->getMaRowIds());
+    SAFE_POINT(!msa->isStateLocked(), tr("MSA is locked"), );
 
     // if this method was invoked during a region shifting
     // then shifting should be canceled
