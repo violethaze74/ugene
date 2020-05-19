@@ -4801,7 +4801,7 @@ Please, check external tools in the settings.</source>
     </message>
     <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="506"/>
-        <source>Info: please input at least one pattern to search in the sequence names. </source>
+        <source>Info: please input at least one pattern to search in the sequence names.</source>
         <translation>Информация: введите как минимум один паттерн для поиска в именах последовательностей.</translation>
     </message>
     <message>
@@ -5483,7 +5483,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="304"/>
         <source>Search in sequence names…</source>
-        <translation type="unfinished"></translation>
+        <translation>Искать в именах последовательностей...</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="315"/>

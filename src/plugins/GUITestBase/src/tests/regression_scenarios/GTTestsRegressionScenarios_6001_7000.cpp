@@ -5735,13 +5735,50 @@ GUI_TEST_CLASS_DEFINITION(test_6749) {
     // 3. Input "AC" pattern to the "Search pattern field"
     GTUtilsOptionPanelMsa::enterPattern(os, "AC");
 
-    // Expected result: Results: 1/2
+    // Expected result: Results: 1/573
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/573");
 
     // 4. Change search context to the "Sequence Names"
     GTUtilsOptionPanelMsa::setSearchContext(os, "Sequence Names");
 
     // Expected result: "Results 1/1"
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
+}
+GUI_TEST_CLASS_DEFINITION(test_6750) {
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Press Ctrl+F
+    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
+    GTGlobals::sleep(200);
+
+    // 3. Input "AC" pattern to the "Search pattern field"
+    GTUtilsOptionPanelMsa::enterPattern(os, "AC");
+    // Expected result: Results: 1/573
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/573");
+
+    // 4. Press Ctrl+Shift+F
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyClick('f', Qt::ShiftModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    GTGlobals::sleep();
+
+    // Expected result: "Results 1/1"
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
+
+    // 5. Call the "Search in sequences" context menu
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "search_in_sequences"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    // Expected state: "Results: 1/573"
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/573");
+
+    // 6. Call the "Search in sequence names" context menu
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "search_in_sequence_names"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    // Expected state: "Results: 1/1
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
 }
 

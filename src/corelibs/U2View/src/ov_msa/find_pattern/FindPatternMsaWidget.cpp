@@ -353,7 +353,7 @@ void FindPatternMsaWidget::sl_onAlgorithmChanged(int index) {
     updateLayout();
     bool noValidationErrors = verifyPatternAlphabet();
     if (noValidationErrors) {
-        sl_activateNewSearch(true);
+        sl_activateNewSearch();
     }
 }
 
@@ -502,11 +502,11 @@ void FindPatternMsaWidget::showHideMessage(bool show, MessageFlag messageFlag, c
             }
             case PleaseInputAtLeastOneSearchPatternTip: {
                 QString message = isSearchInNamesMode ?
-                                      tr("Info: please input at least one sequence pattern to search for.") :
-                                      tr("Info: please input at least one pattern to search in the sequence names.");
+                                      tr("Info: please input at least one pattern to search in the sequence names.") :
+                                      tr("Info: please input at least one sequence pattern to search for.");
 
                 message += " " + tr("Use Ctrl+Enter to input multiple patterns").arg(lineBreakShortcut);
-                text = tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::infoColorLabelHtmlStr()).arg(message);
+                text = QString("<b><font color=%1>%2</font><br></br></b>").arg(Theme::infoColorLabelHtmlStr()).arg(message);
                 break;
             }
             case AnnotationNotValidName: {
@@ -577,19 +577,26 @@ void FindPatternMsaWidget::sl_onSearchPatternChanged() {
         return;
     }
     currentPatternFieldText = patternFieldText;
+    validateSearchPatternAndStartNewSearch();
+}
+
+void FindPatternMsaWidget::validateSearchPatternAndStartNewSearch() {
     if (!isSearchInNamesMode) {
         setCorrectPatternsString();
         checkState();
+    } else {
+        regionIsCorrect = true;
     }
-    bool isEmptyPatternHintShown = lblErrorMessage->text().isEmpty() && patternFieldText.isEmpty();
-    showHideMessage(isEmptyPatternHintShown, PleaseInputAtLeastOneSearchPatternTip);
-
     enableDisableMatchSpin();
 
     // Show a warning if the pattern alphabet doesn't match, but do not block the "Search" button
     bool noValidationErrors = isSearchInNamesMode || verifyPatternAlphabet();
+
+    bool isEmptyPatternHintShown = noValidationErrors && currentPatternFieldText.isEmpty();
+    showHideMessage(isEmptyPatternHintShown, PleaseInputAtLeastOneSearchPatternTip);
+
     if (noValidationErrors && regionIsCorrect) {
-        sl_activateNewSearch(false);
+        sl_activateNewSearch();
     }
 }
 
@@ -677,7 +684,7 @@ void FindPatternMsaWidget::sl_onMsaModified() {
 
     checkState();
     verifyPatternAlphabet();
-    sl_activateNewSearch(true, true);
+    sl_activateNewSearch(true);
 }
 
 void FindPatternMsaWidget::showTooLongSequenceError() {
@@ -848,10 +855,7 @@ void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList &patterns
 void FindPatternMsaWidget::sl_searchModeChanged() {
     isSearchInNamesMode = searchContextComboBox->currentData() == SEARCH_MODE_NAMES_DATA;
     updateLayout();
-    bool noValidationErrors = isSearchInNamesMode || verifyPatternAlphabet();
-    if (noValidationErrors) {
-        sl_activateNewSearch(true);
-    }
+    validateSearchPatternAndStartNewSearch();
 }
 
 void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
@@ -957,15 +961,11 @@ void FindPatternMsaWidget::updatePatternText(int previousAlgorithm) {
     setCorrectPatternsString();
 }
 
-void FindPatternMsaWidget::sl_activateNewSearch(bool forcedSearch, bool activatedByOutsideChanges) {
+void FindPatternMsaWidget::sl_activateNewSearch(bool activatedByOutsideChanges) {
     setSelectionToTheFirstResult = !activatedByOutsideChanges;
     U2OpStatusImpl os;
     QStringList newPatterns = getPatternsFromTextPatternField(os);
     CHECK_OP(os, )
-    if (newPatterns == currentSearchPatternList && !forcedSearch) {
-        checkState();
-        return;
-    }
     stopCurrentSearchTask();
     if (isSearchInNamesMode) {
         runSearchInSequenceNames(newPatterns);

@@ -79,7 +79,7 @@ private slots:
     void sl_onMsaModified();
 
     void sl_onSelectedRegionChanged(const MaEditorSelection &currentSelection, const MaEditorSelection &prev);
-    void sl_activateNewSearch(bool forcedSearch = true, bool activatedByOutsideChanges = false);
+    void sl_activateNewSearch(bool activatedByOutsideChanges = false);
     void sl_prevButtonClicked();
     void sl_nextButtonClicked();
 
@@ -95,6 +95,7 @@ private:
     void initMaxResultLenContainer();
     void updateLayout();
     void connectSlots();
+    void validateSearchPatternAndStartNewSearch();
     int getMaxError(const QString &pattern) const;
 
     /** Assigns valid viewRowIndex value to all results & resorts them based on the view position. */
