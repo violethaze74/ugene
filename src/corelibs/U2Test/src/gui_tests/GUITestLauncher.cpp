@@ -296,7 +296,7 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
 QString GUITestLauncher::performTest(const QString &testName) {
     QProcessEnvironment environment = getProcessEnvironment(testName);
 
-    QString externalScriptToRestore = qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE");
+    QString externalScriptToRestore = qgetenv("UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE");
     if (!externalScriptToRestore.isEmpty()) {
         if (restoreTestDirWithExternalScript(externalScriptToRestore)) {
             environment.insert("UGENE_TEST_SKIP_BACKUP_AND_RESTORE", "1");
