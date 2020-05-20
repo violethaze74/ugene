@@ -4315,7 +4315,51 @@ GUI_TEST_CLASS_DEFINITION(test_4700) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Reads);
 }
+GUI_TEST_CLASS_DEFINITION(test_4701) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    // Switch on collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // Expected state: the button is checked.
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
+                  "1 Mecopoda_elongata__Sumatra_ is not collapsed");
+
+    // Press the Remove All Gaps button.
+    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
+                                                                        << "Remove all gaps"));
+    GTMenu::showContextMenu(os, seq);
+
+    // Expected state: the button is checked.
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
+                  "1 Mecopoda_elongata__Sumatra_ is not collapsed");
+
+}
+GUI_TEST_CLASS_DEFINITION(test_4701_1) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Switch on collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // Expected state: two sequences are collapsed.
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
+                  "1 Mecopoda_elongata__Sumatra_ is not collapsed");
+
+    // Edit the alignment.
+    GTUtilsMsaEditor::removeColumn(os, 5);
+
+    // Press Undo.
+    GTUtilsMsaEditor::undo(os);
+
+    // Expected state: the collapsing mode stays turned on.
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
+                  "1 Mecopoda_elongata__Sumatra_ is not collapsed");
+}
 GUI_TEST_CLASS_DEFINITION(test_4702_1) {
     // 1. Open "samples/Genbank/NC_014267.1.gb"
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
