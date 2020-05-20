@@ -55,7 +55,6 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
     QMAKE_CXXFLAGS += -Wno-catch-value
     QMAKE_CXXFLAGS += -Wno-sign-compare
-    QMAKE_CXXFLAGS += -Wno-reorder
     QMAKE_CXXFLAGS += -Wno-ignored-attributes
     QMAKE_CXXFLAGS += -Wno-cast-function-type
 
