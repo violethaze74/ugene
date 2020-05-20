@@ -253,28 +253,27 @@ static bool isVideoRecordingOn() {
 }
 
 static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
-    QFileInfo testsDirInfo = QFileInfo(qgetenv("UGENE_TESTS_PATH"));
-    if (!testsDirInfo.isDir()) {
+    QDir testsDir(qgetenv("UGENE_TESTS_PATH"));
+    if (!testsDir.exists()) {
         coreLog.error("UGENE_TESTS_PATH is not set!");
         return false;
     }
-    QFileInfo dataDirInfo = QFileInfo(qgetenv("UGENE_DATA_PATH"));
-    if (!dataDirInfo.isDir()) {
+    QDir dataDir(qgetenv("UGENE_DATA_PATH"));
+    if (!dataDir.exists()) {
         coreLog.error("UGENE_DATA_PATH is not set!");
         return false;
     }
 
     QProcessEnvironment processEnv = QProcessEnvironment::systemEnvironment();
-    processEnv.insert("UGENE_TESTS_DIR_NAME", testsDirInfo.fileName());
-    processEnv.insert("UGENE_DATA_DIR_NAME", dataDirInfo.fileName());
-
+    processEnv.insert("UGENE_TESTS_DIR_NAME", testsDir.dirName());
+    processEnv.insert("UGENE_DATA_DIR_NAME", dataDir.dirName());
     QProcess process;
     process.setProcessEnvironment(processEnv);
-    QString restoreProcessWorkDir = QFileInfo(testsDirInfo.absolutePath() + "/../").absolutePath();
+    QString restoreProcessWorkDir = QFileInfo(testsDir.absolutePath() + "/../").absolutePath();
     process.setWorkingDirectory(restoreProcessWorkDir);    // Parent dir of the test dir.
     coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
-                 ", tests dir: " + testsDirInfo.fileName() +
-                 ", data dir: " + dataDirInfo.fileName() +
+                 ", tests dir: " + testsDir.dirName() +
+                 ", data dir: " + dataDir.dirName() +
                  ", script: " + pathToShellScript);
     process.start("/bin/bash", QStringList() << pathToShellScript);
     qint64 processId = process.processId();
