@@ -465,10 +465,11 @@ void GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(HI::GUITestOpStatu
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkResultsText"
-bool GTUtilsOptionPanelMsa::checkResultsText(HI::GUITestOpStatus &os, QString expectedText) {
+void GTUtilsOptionPanelMsa::checkResultsText(HI::GUITestOpStatus &os, QString expectedText) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QLabel *label = qobject_cast<QLabel *>(GTWidget::findWidget(os, "resultLabel"));
-    return label->text() == expectedText;
+    QString actualText = label->text();
+    CHECK_SET_ERR(actualText == expectedText, QString("Wrong result. Expected: %1, got: %2").arg(expectedText).arg(actualText));
 }
 #undef GT_METHOD_NAME
 
@@ -529,7 +530,7 @@ void GTUtilsOptionPanelMsa::setRegion(HI::GUITestOpStatus &os, int from, int to)
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setSearchContext"
-void GTUtilsOptionPanelMsa::setSearchContext(HI::GUITestOpStatus &os, const QString& context) {
+void GTUtilsOptionPanelMsa::setSearchContext(HI::GUITestOpStatus &os, const QString &context) {
     QComboBox *searchContextBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "searchContextComboBox"));
     GT_CHECK(searchContextBox != nullptr, "searchContextBox is NULL");
     GTComboBox::setIndexWithText(os, searchContextBox, context);

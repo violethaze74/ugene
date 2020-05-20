@@ -4768,8 +4768,7 @@ GUI_TEST_CLASS_DEFINITION(test_6676_1) {
     QRect actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search"));
 
-    const bool resultsTextMatch = GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
-    CHECK_SET_ERR(resultsTextMatch, QString("Incorrect count of the pattern search results"));
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
 
     //    5. Ensure that focus is set to the pattern input widget.
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
@@ -5174,21 +5173,21 @@ GUI_TEST_CLASS_DEFINITION(test_6691_1) {
     GTGlobals::sleep();
     QRect selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selection.x() == 118, "Wrong selection");
-    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/14"), "Wrong result");
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/14");
 
     GTUtilsOptionPanelMsa::setAlgorithm(os, "Substitute");
     GTUtilsOptionPanelMsa::setMatchPercentage(os, 65);
     GTGlobals::sleep();
     selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selection.x() == 4, "Wrong selection");
-    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/533"), "Wrong result");
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/533");
 
     GTUtilsOptionPanelMsa::enterPattern(os, "TTTT");
     GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(os, true);
     selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     GTGlobals::sleep();
     CHECK_SET_ERR(selection.x() == 6, "Wrong selection");
-    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/752"), "Wrong result");
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/752");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6691_2) {
@@ -5202,12 +5201,12 @@ GUI_TEST_CLASS_DEFINITION(test_6691_2) {
     GTGlobals::sleep(500);
     QRect selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selection.x() == 118, "Wrong selection");
-    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/14"), "Wrong result");
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/14");
 
     GTUtilsMSAEditorSequenceArea::replaceSymbol(os, QPoint(410, 1), '-');
     selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selection.x() == 410, "Wrong selection");
-    CHECK_SET_ERR(GTUtilsOptionPanelMsa::checkResultsText(os, "Results: -/14"), "Wrong result");
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: -/14");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6692) {
@@ -5744,6 +5743,28 @@ GUI_TEST_CLASS_DEFINITION(test_6749) {
     // Expected result: "Results 1/1"
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6749_1) {
+    // Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //  Rename on sequence name in Russian "мой класс".
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "Phaneroptera_falcata", "мой класс", true);
+
+    // Open "Search in Alignment" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+
+    // Change search context to the "Sequence Names"
+    GTUtilsOptionPanelMsa::setSearchContext(os, "Sequence Names");
+
+    // Input "мой" pattern to the "Search pattern field"
+    GTUtilsOptionPanelMsa::enterPattern(os, "мой", true);
+
+    // Expected result: Results: 1/1
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6750) {
     // 1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");

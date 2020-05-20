@@ -704,11 +704,11 @@ int GTUtilsMSAEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumbe
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "renameSequence"
-void GTUtilsMSAEditorSequenceArea::renameSequence(GUITestOpStatus &os, const QString &seqToRename, const QString &newName) {
+void GTUtilsMSAEditorSequenceArea::renameSequence(GUITestOpStatus &os, const QString &seqToRename, const QString &newName, bool useCopyPaste) {
     int num = getVisibleNames(os).indexOf(seqToRename);
     GT_CHECK(num != -1, "sequence not found");
 
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, newName, seqToRename));
+    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, newName, seqToRename, useCopyPaste));
     moveTo(os, QPoint(-10, num));
     GTMouseDriver::doubleClick();
     GTGlobals::sleep(500);

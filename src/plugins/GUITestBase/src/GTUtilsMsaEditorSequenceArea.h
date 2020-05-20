@@ -95,7 +95,7 @@ public:
     static bool checkColor(GUITestOpStatus &os, const QPoint &p, const QString &expectedColor);
     static int getRowHeight(GUITestOpStatus &os, int rowNumber);
 
-    static void renameSequence(GUITestOpStatus &os, const QString &seqToRename, const QString &newName);
+    static void renameSequence(GUITestOpStatus &os, const QString &seqToRename, const QString &newName, bool useCopyPaste = false);
     static void replaceSymbol(GUITestOpStatus &os, const QPoint &maPoint, char newSymbol);
 
     static void createColorScheme(GUITestOpStatus &os, const QString &schemeName, const NewColorSchemeCreator::alphabet al);

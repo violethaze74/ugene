@@ -50,7 +50,7 @@ void RenameSequenceFiller::commonScenario() {
 
     if (oldName != newName) {
         //if filler used not for checking sequence name
-        GTLineEdit::setText(os, nameEdit, newName);
+        GTLineEdit::setText(os, nameEdit, newName, false, useCopyPaste);
     }
 
     GTWidget::click(os, GTWidget::findButtonByText(os, "OK", dialog));

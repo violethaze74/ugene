@@ -30,8 +30,8 @@ using namespace HI;
 class RenameSequenceFiller : public Filler {
 public:
     //class can be used for checking name if newName == oldName
-    RenameSequenceFiller(HI::GUITestOpStatus &_os, QString _newName, QString _oldName = QString())
-        : Filler(_os, ""), os(_os), newName(_newName), oldName(_oldName) {
+    RenameSequenceFiller(HI::GUITestOpStatus &_os, QString _newName, QString _oldName = QString(), bool useCopyPaste = false)
+        : Filler(_os, ""), os(_os), newName(_newName), oldName(_oldName), useCopyPaste(useCopyPaste) {
     }
     RenameSequenceFiller(HI::GUITestOpStatus &_os, CustomScenario *c)
         : Filler(_os, "", c), os(_os) {
@@ -42,6 +42,7 @@ private:
     HI::GUITestOpStatus &os;
     QString newName;
     QString oldName;
+    bool useCopyPaste;
 };
 
 }    // namespace U2
