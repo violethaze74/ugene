@@ -122,9 +122,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0003) {
-    QString externalScriptToRestore = qgetenv("UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE");
-    if (!externalScriptToRestore.isEmpty()) {
-        // Backup and restore is done by external script run during the test startup.
+    if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {    // Restored by the parent process
         return;
     }
     // Restore backup files

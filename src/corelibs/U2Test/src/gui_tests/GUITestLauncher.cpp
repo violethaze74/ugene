@@ -252,9 +252,58 @@ static bool isVideoRecordingOn() {
     return qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
 }
 
+static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
+    QFileInfo testsDirInfo = QFileInfo(qgetenv("UGENE_TESTS_PATH"));
+    if (!testsDirInfo.isDir()) {
+        coreLog.error("UGENE_TESTS_PATH is not set!");
+        return false;
+    }
+    QFileInfo dataDirInfo = QFileInfo(qgetenv("UGENE_DATA_PATH"));
+    if (!dataDirInfo.isDir()) {
+        coreLog.error("UGENE_DATA_PATH is not set!");
+        return false;
+    }
+
+    QProcessEnvironment processEnv = QProcessEnvironment::systemEnvironment();
+    processEnv.insert("UGENE_TESTS_DIR_NAME", testsDirInfo.baseName());
+    processEnv.insert("UGENE_DATA_DIR_NAME", dataDirInfo.baseName());
+
+    QProcess process;
+    process.setProcessEnvironment(processEnv);
+    QString restoreProcessWorkDir = testsDirInfo.dir().absolutePath();
+    process.setWorkingDirectory(restoreProcessWorkDir);    // Parent dir of the test dir.
+    coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
+                 ", tests dir: " + testsDirInfo.baseName() +
+                 ", data dir: " + dataDirInfo.baseName() +
+                 ", script: " + pathToShellScript);
+    process.start("/bin/bash", QStringList() << pathToShellScript);
+    qint64 processId = process.processId();
+    bool started = process.waitForStarted();
+    if (!started) {
+        coreLog.error("An error occurred while running restore script: " + process.errorString());
+        return false;
+    }
+    bool isFinished = process.waitForFinished(5000);
+    QProcess::ExitStatus exitStatus = process.exitStatus();
+    if (!isFinished || exitStatus != QProcess::NormalExit) {
+        CmdlineTaskRunner::killChildrenProcesses(processId);
+        coreLog.error("Backup restore script was killed/exited with bad status: " + QString::number(exitStatus));
+        return false;
+    }
+    return true;
+}
+
 QString GUITestLauncher::performTest(const QString &testName) {
-    QString path = QCoreApplication::applicationFilePath();
     QProcessEnvironment environment = getProcessEnvironment(testName);
+
+    QString externalScriptToRestore = qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE");
+    if (!externalScriptToRestore.isEmpty()) {
+        if (restoreTestDirWithExternalScript(externalScriptToRestore)) {
+            environment.insert("UGENE_TEST_SKIP_BACKUP_AND_RESTORE", "1");
+        }
+    }
+
+    QString path = QCoreApplication::applicationFilePath();
     QStringList arguments = getTestProcessArguments(testName);
 
     // ~QProcess is killing the process, will not return until the process is terminated.
