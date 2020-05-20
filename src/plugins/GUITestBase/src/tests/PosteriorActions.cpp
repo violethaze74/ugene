@@ -122,8 +122,12 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0003) {
+    QString externalScriptToRestore = qgetenv("UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE");
+    if (!externalScriptToRestore.isEmpty()) {
+        // Backup and restore is done by external script run during the test startup.
+        return;
+    }
     // Restore backup files
-
     if (QDir(testDir).exists()) {
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj1.uprj");
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj2-1.uprj");

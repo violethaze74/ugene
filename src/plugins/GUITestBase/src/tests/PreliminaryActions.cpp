@@ -32,6 +32,7 @@
 #include <QProcess>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/Log.h>
 
 #include <U2Gui/MainWindow.h>
@@ -88,9 +89,36 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
     }
 }
 
-PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
-    // Backup some files used in tests directly.
+static void restoreTestDirWithExternalScript(HI::GUITestOpStatus &os, const QString &pathToShellScript) {
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+    QFileInfo testsDirInfo = QFileInfo(UGUITest::testDir);
+    environment.insert("UGENE_TESTS_DIR_NAME", testsDirInfo.baseName());
+    environment.insert("UGENE_DATA_DIR_NAME", QFileInfo(UGUITest::dataDir).baseName());
+    QProcess process;
+    process.setProcessEnvironment(environment);
+    process.setWorkingDirectory(testsDirInfo.dir().absolutePath()); // Parent dir of the test dir.
+    process.start("/bin/bash", QStringList() << pathToShellScript);
+    qint64 processId = process.processId();
+    bool started = process.waitForStarted();
+    if (!started) {
+        os.setError("An error occurred while running restore script: " + process.errorString());
+        return;
+    }
+    bool finished = process.waitForFinished(5000);
+    QProcess::ExitStatus exitStatus = process.exitStatus();
+    if (!finished || exitStatus != QProcess::NormalExit) {
+        CmdlineTaskRunner::killChildrenProcesses(processId);
+        os.setError("Backup restore script was killed/exited with bad status: " + QString::number(exitStatus));
+    }
+}
 
+PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
+    QString externalScriptToRestore = qgetenv("UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE");
+    if (!externalScriptToRestore.isEmpty()) {
+        restoreTestDirWithExternalScript(os, externalScriptToRestore);
+        return;
+    }
+    // Backup some files used in tests directly.
     if (QDir(testDir).exists()) {
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj1.uprj");
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj2-1.uprj");
