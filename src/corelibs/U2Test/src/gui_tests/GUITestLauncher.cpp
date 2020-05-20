@@ -267,6 +267,7 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
     QProcessEnvironment processEnv = QProcessEnvironment::systemEnvironment();
     processEnv.insert("UGENE_TESTS_DIR_NAME", testsDir.dirName());
     processEnv.insert("UGENE_DATA_DIR_NAME", dataDir.dirName());
+    qint64 startTimeMicros = GTimer::currentTimeMicros();
     QProcess process;
     process.setProcessEnvironment(processEnv);
     QString restoreProcessWorkDir = QFileInfo(testsDir.absolutePath() + "/../").absolutePath();
@@ -277,12 +278,18 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
                  ", script: " + pathToShellScript);
     process.start("/bin/bash", QStringList() << pathToShellScript);
     qint64 processId = process.processId();
-    bool started = process.waitForStarted();
-    if (!started) {
+    bool isStarted = process.waitForStarted();
+    if (!isStarted) {
         coreLog.error("An error occurred while running restore script: " + process.errorString());
         return false;
+    } else {
     }
     bool isFinished = process.waitForFinished(5000);
+
+    qint64 endTimeMicros = GTimer::currentTimeMicros();
+    qint64 runTimeMillis = (endTimeMicros - startTimeMicros) / 1000;
+    coreLog.info("Backup and restore run time (millis): " + QString::number(runTimeMillis));
+
     QProcess::ExitStatus exitStatus = process.exitStatus();
     if (!isFinished || exitStatus != QProcess::NormalExit) {
         CmdlineTaskRunner::killChildrenProcesses(processId);
