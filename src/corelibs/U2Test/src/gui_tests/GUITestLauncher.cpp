@@ -265,16 +265,16 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
     }
 
     QProcessEnvironment processEnv = QProcessEnvironment::systemEnvironment();
-    processEnv.insert("UGENE_TESTS_DIR_NAME", testsDirInfo.baseName());
-    processEnv.insert("UGENE_DATA_DIR_NAME", dataDirInfo.baseName());
+    processEnv.insert("UGENE_TESTS_DIR_NAME", testsDirInfo.fileName());
+    processEnv.insert("UGENE_DATA_DIR_NAME", dataDirInfo.fileName());
 
     QProcess process;
     process.setProcessEnvironment(processEnv);
-    QString restoreProcessWorkDir = testsDirInfo.dir().absolutePath();
+    QString restoreProcessWorkDir = QFileInfo(testsDirInfo.absolutePath() + "/../").absolutePath();
     process.setWorkingDirectory(restoreProcessWorkDir);    // Parent dir of the test dir.
     coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
-                 ", tests dir: " + testsDirInfo.baseName() +
-                 ", data dir: " + dataDirInfo.baseName() +
+                 ", tests dir: " + testsDirInfo.fileName() +
+                 ", data dir: " + dataDirInfo.fileName() +
                  ", script: " + pathToShellScript);
     process.start("/bin/bash", QStringList() << pathToShellScript);
     qint64 processId = process.processId();
