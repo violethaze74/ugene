@@ -309,7 +309,8 @@ QString GUITestLauncher::runTest(const QString &testName) {
         }
         U2OpStatusImpl os;
         testOutput = runTestOnce(os, testName, isVideoRecordingOn());
-        if (!os.hasError()) {
+        bool isFailed = os.hasError() || GUITestTeamcityLogger::testFailed(testOutput);
+        if (!isFailed) {
             break;
         }
         coreLog.error(QString("Test failed with error: '%1'. Test output is '%2'.").arg(os.getError()).arg(testOutput));
