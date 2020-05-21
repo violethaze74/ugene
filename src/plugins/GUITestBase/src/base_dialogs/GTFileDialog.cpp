@@ -326,7 +326,7 @@ void GTFileDialogUtils::setViewMode(ViewMode v) {
 #define GT_METHOD_NAME "openFile"
 void GTFileDialog::openFile(GUITestOpStatus &os, const QString &path, const QString &fileName, Button button, GTGlobals::UseMethod m) {
     bool isDirectApiMode = qgetenv("UGENE_USE_DIRECT_API_TO_OPEN_FILES") == "1";
-    if (isDirectApiMode) {
+    if (isDirectApiMode && button == Open) {
         class OpenFileScenario : public CustomScenario {
         public:
             OpenFileScenario(const QString &pathToFile)
