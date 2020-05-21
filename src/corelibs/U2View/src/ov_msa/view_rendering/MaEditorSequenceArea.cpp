@@ -313,11 +313,11 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     cancelShiftTracking();
 
     // Selection width may be equal to 0 (for example in MCA) -> this means that the whole row is selected.
-    int effectiveWidth = selection.x() == 0 && selection.width() == 0 ? editor->getAlignmentLen() : selection.width();
-    bool wholeRowRemoved = effectiveWidth == editor->getAlignmentLen();
+    int numColumns = editor->getAlignmentLen();
+    int effectiveWidth = selection.x() == 0 && selection.width() == 0 ? numColumns : selection.width();
+    bool isWholeRowRemoved = effectiveWidth == numColumns;
 
-    if (wholeRowRemoved) {
-        // Reuse code of the name list.
+    if (isWholeRowRemoved) {    // Reuse code of the name list.
         ui->getEditorNameList()->sl_removeSelectedRows();
         return;
     }
@@ -332,7 +332,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
         for (int i = 0; i < selectedMaRows.size() && isResultAlignmentEmpty; i++) {
             int maRow = selectedMaRows[i];
             isResultAlignmentEmpty = maObj->isRegionEmpty(0, maRow, xRegion.startPos, 1) &&
-                                     maObj->isRegionEmpty(xRegion.endPos(), maRow, numRows - xRegion.endPos(), 1);
+                                     maObj->isRegionEmpty(xRegion.endPos(), maRow, numColumns - xRegion.endPos(), 1);
         }
         if (isResultAlignmentEmpty) {
             return;
