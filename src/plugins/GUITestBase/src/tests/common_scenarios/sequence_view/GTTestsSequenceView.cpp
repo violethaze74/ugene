@@ -2301,21 +2301,19 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0069) {
-    //    1. Open any sequence (e.g. murine.gb)
-    //    2. Resize the view to see a few lines
-    //    3. Press the mouse button on one line (start the selection)
-    //    4. Move the mouse to the other line and release the button (finish the selection)
-    //    Expected state: the sequence between press position and release position is selected (the line is selected)
 
+    //   Open a sequence (e.g. murine.gb)
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
 
+    // Check that multi-line mode is enabled
     QAbstractButton *wrapButton = GTAction::button(os, "wrap_sequence_action");
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
-
-    ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(seqWgt != NULL, "Cannot find sequence widget");
     CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os).isEmpty(), "Selection is not empty");
 
+    DetView *seqWgt = GTUtilsSequenceView::getDetViewByNumber(os);
+    CHECK_SET_ERR(seqWgt != NULL, "Cannot find DetView widget");
+
+    //   Move the mouse to the other line and release the button (make a selection)
     GTWidget::click(os, seqWgt);
     QPoint p1 = GTMouseDriver::getMousePosition();
     QPoint p2(p1.x() + 300, p1.y() + 200);
