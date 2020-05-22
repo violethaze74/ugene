@@ -134,9 +134,9 @@ FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, bool isSearchIn
       currentResultIndex(-1),
       searchTask(nullptr),
       previousMaxResult(-1),
-      savableWidget(this, GObjectViewUtils::findViewByName(msaEditor->getName())),
       setSelectionToTheFirstResult(true),
       isSearchInNamesMode(isSearchInNamesMode),
+      savableWidget(this, GObjectViewUtils::findViewByName(msaEditor->getName())),
       algorithmSubgroup(nullptr),
       searchInSubgroup(nullptr),
       otherSettingsSubgroup(nullptr) {

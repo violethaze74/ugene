@@ -55,9 +55,9 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt *_ui, QScrollBar *_nhBar)
     : labels(NULL),
       ui(_ui),
       nhBar(_nhBar),
-      editor(_ui->getEditor()),
       changeTracker(nullptr),
-      maVersionBeforeMousePress(-1) {
+      maVersionBeforeMousePress(-1),
+      editor(_ui->getEditor()) {
     setObjectName("msa_editor_name_list");
     setFocusPolicy(Qt::WheelFocus);
     cachedView = new QPixmap();
@@ -128,7 +128,6 @@ void MaEditorNameList::drawNames(QPainter &painter, const QList<int> &maRows, bo
     MultipleAlignmentObject *maObj = editor->getMaObject();
     SAFE_POINT(NULL != maObj, tr("MSA Object is NULL"), );
 
-    const QPoint &cursorPosition = editor->getCursorPosition();
     const QStringList seqNames = maObj->getMultipleAlignment()->getRowNames();
     const MaCollapseModel *collapseModel = ui->getCollapseModel();
     U2Region selection = getSelection();
@@ -683,7 +682,6 @@ void MaEditorNameList::drawContent(QPainter &painter) {
     const int referenceIndex = editor->getReferenceRowId() == U2MsaRow::INVALID_ROW_ID ? U2MsaRow::INVALID_ROW_ID : ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
     SAFE_POINT_OP(os, );
 
-    const QPoint &cursorPosition = editor->getCursorPosition();
     const MaCollapseModel *collapsibleModel = ui->getCollapseModel();
     int crossSpacing = ui->isCollapsibleMode() ? CROSS_SIZE * 2 : 0;
     const ScrollController *scrollController = ui->getScrollController();
