@@ -22,6 +22,7 @@
 #include <core/GUITest.h>
 #include <core/GUITestOpStatus.h>
 #include <core/MainThreadRunnable.h>
+#include <drivers/GTMouseDriver.h>
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -89,6 +90,9 @@ void GUITestThread::sl_testTimeOut() {
 
 QString GUITestThread::launchTest(const GUITests &tests) {
     QTimer::singleShot(test->getTimeout(), this, SLOT(sl_testTimeOut()));
+
+    // Start all tests with some common mouse position.
+    GTMouseDriver::moveTo(QPoint(400, 300));
 
     HI::GUITestOpStatus os;
     try {
