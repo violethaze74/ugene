@@ -2249,19 +2249,12 @@ GUI_TEST_CLASS_DEFINITION(test_2351) {
             }
             projectNameEdit->setText(projectName);
 
-            QLineEdit *projectFolderEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFolderEdit", dialog));
-            if (NULL == projectFolderEdit) {
-                os.setError("projectFolderEdit not found");
-                return;
-            }
-            projectFolderEdit->setText(projectFolder);
-
-            QLineEdit *projectFileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFileEdit", dialog));
+            QLineEdit *projectFileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
             if (NULL == projectFileEdit) {
                 os.setError("projectFileEdit not found");
                 return;
             }
-            projectFileEdit->setText(projectFile);
+            projectFileEdit->setText(projectFolder + "/" + projectFile);
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
@@ -2590,11 +2583,8 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
             QLineEdit *projectNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectNameEdit", dialog));
             GTLineEdit::setText(os, projectNameEdit, projectName);
 
-            QLineEdit *projectFolderEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFolderEdit", dialog));
-            GTLineEdit::setText(os, projectFolderEdit, projectFolder);
-
-            QLineEdit *projectFileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFileEdit", dialog));
-            GTLineEdit::setText(os, projectFileEdit, projectFile);
+            QLineEdit *projectFileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
+            GTLineEdit::setText(os, projectFileEdit, projectFolder + "/" + projectFile);
 
             GTGlobals::sleep();
 #ifdef Q_OS_MACX

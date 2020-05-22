@@ -99,9 +99,14 @@ static QVariant toRelativeRelations(const QList<GObjectRelation> &absRelations, 
         if (GUrl::getURLType(relRel.getDocURL()) == GUrl_File) {    //make URL absolute
 
 #ifdef _DEBUG    //ensure internal URLs are always canonical
-            QFileInfo fi(relRel.getDocURL());
+            QString relDocUrl = relRel.getDocURL();
+            QFileInfo fi(relDocUrl);
             QString canonicalPath = fi.canonicalFilePath();
-            assert(canonicalPath.isEmpty() || canonicalPath == relRel.getDocURL());
+#ifdef Q_OS_WIN
+            canonicalPath = canonicalPath.toLower();
+            relDocUrl = relDocUrl.toLower();
+#endif
+            assert(canonicalPath.isEmpty() || canonicalPath == relDocUrl);
 #endif
 
             QString relativeURL = projDir.relativeFilePath(relRel.getDocURL());

@@ -45,15 +45,15 @@ static QString fixProjectFile(const QString &name) {
     return result;
 }
 
-ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const QString &defaultProjectFileName)
+ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const QString &defaultProjectFilePath)
     : QDialog(p) {
     setupUi(this);
     new HelpButton(this, buttonBox, "");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     setModal(true);
-    projectFile = fixProjectFile(defaultProjectFileName);
-    projectFilePathEdit->setText(projectFile);
+    projectFilePath = fixProjectFile(defaultProjectFilePath);
+    projectFilePathEdit->setText(projectFilePath);
     Project *proj = AppContext::getProject();
     if (proj == NULL || !proj->isItemModified() || proj->getProjectURL().isEmpty()) {
         warningLabel->setVisible(false);
@@ -67,10 +67,10 @@ ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const Q
 }
 
 void ExportProjectDialogController::accept() {
-    projectFile = fixProjectFile(projectFilePathEdit->text());
-    QFileInfo fi(projectFile);
+    projectFilePath = fixProjectFile(projectFilePathEdit->text());
+    QFileInfo fi(projectFilePath = fixProjectFile(projectFilePathEdit->text()));
     U2OpStatus2Log os;
-    exportDir = GUrlUtils::prepareDirLocation(fi.absoluteDir().absolutePath(), os);
+    QString exportDir = GUrlUtils::prepareDirLocation(fi.absoluteDir().absolutePath(), os);
     if (exportDir.isEmpty()) {
         assert(os.hasError());
         QMessageBox::critical(this, this->windowTitle(), os.getError());
@@ -79,13 +79,23 @@ void ExportProjectDialogController::accept() {
     QDialog::accept();
 }
 
+const QString ExportProjectDialogController::getDirToSave() const {
+    QFileInfo fi(projectFilePath);
+    return fi.absoluteDir().absolutePath();
+}
+
+const QString ExportProjectDialogController::getProjectFile() const {
+    QFileInfo fi(projectFilePath);
+    return fi.fileName();
+}
+
 void ExportProjectDialogController::sl_onFileSelectButton() {
     LastUsedDirHelper h;
-    QString folder = U2FileDialog::getSaveFileName(this, tr("Save file"), h.dir);
-    if (folder.isEmpty()) {
+    QString path = U2FileDialog::getSaveFileName(this, tr("Save file"), h.dir);
+    if (path.isEmpty()) {
         return;
     }
-    projectFilePathEdit->setText(folder);
+    projectFilePathEdit->setText(path);
 }
 
 }    // namespace U2

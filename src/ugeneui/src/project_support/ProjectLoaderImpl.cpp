@@ -822,7 +822,8 @@ ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m
         projectNameEdit->setText(AppContext::getProject()->getProjectName());
         QString url = AppContext::getProject()->getProjectURL();
         if (!url.isEmpty()) {
-            projectFilePathEdit->setText(url);
+            QFileInfo fi(url);
+            projectFilePathEdit->setText(fi.absoluteFilePath());
         } else {
             setupDefaults();
         }
@@ -880,7 +881,8 @@ void ProjectDialogController::sl_projectNameEdited(const QString &text) {
 
 void ProjectDialogController::setupDefaults() {
     projectNameEdit->setText(ProjectLoaderImpl::tr("New Project"));
-    projectFilePathEdit->setText(ProjectLoaderImpl::tr("project"));
+    QFileInfo fi("project.proj");
+    projectFilePathEdit->setText(fi.absoluteFilePath());
 }
 
 void ProjectDialogController::accept() {

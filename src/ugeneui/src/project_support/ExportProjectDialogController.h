@@ -35,12 +35,8 @@ public:
 
     void accept();
 
-    const QString &getDirToSave() const {
-        return exportDir;
-    }
-    const QString &getProjectFile() const {
-        return projectFile;
-    }
+    const QString getDirToSave() const;
+    const QString getProjectFile() const;
 
     bool useCompression() const {
         return false;
@@ -51,8 +47,7 @@ private slots:
 
 private:
     //canonical representation of the dir
-    QString exportDir;
-    QString projectFile;
+    QString projectFilePath;
 };
 
 }    // namespace U2
