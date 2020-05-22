@@ -6058,12 +6058,12 @@ GUI_TEST_CLASS_DEFINITION(test_1600_4) {
                                                                         << "Remove all gaps"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     //    3. Choose in MSA context menu { Edit -> Remove all gaps }
-    //    Expected state: All internal gaps have been removed from alignment, collapsing mode has been switched off
+    //    Expected state: All internal gaps have been removed from alignment, collapsing mode should be on as before removing gap
     QString seq = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Isophya_altaica_EF540820");
     CHECK_SET_ERR(seq == "AAGTTACTAA---", "unexpected sequence1: " + seq);
     QString seq1 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Podisma_sapporensis");
     CHECK_SET_ERR(seq1 == "AAGAATAATTA--", "unexpected sequence2: " + seq);
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == false, "collapsing mode is unexpectidly on");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1600_5) {
