@@ -103,14 +103,12 @@ public:
         return result; \
     }
 
+#define GT_CHECK_ERROR(os) \
+    if (os.hasError()) {return;}
+
 /** Used in tests */
 #define CHECK_SET_ERR(condition, errorMessage) \
     CHECK_SET_ERR_RESULT(condition, errorMessage, )
-
-#define CHECK_SET_ERR_NO_MESSAGE(condition, errorMessage) \
-    if(!condition){ \
-    CHECK_SET_ERR(condition, errorMessage) \
-}
 
 #define CHECK_OP_SET_ERR(os, errorMessage) \
     CHECK_SET_ERR(!os.isCoR(), errorMessage)
@@ -136,9 +134,6 @@ public:
 
 #define GT_CHECK_RESULT(condition, errorMessage, result) \
     CHECK_SET_ERR_RESULT(condition, GT_CLASS_NAME " __ " GT_METHOD_NAME " _  " + QString(errorMessage), result)
-
-#define GT_CHECK_OP(os, errorMessage) \
-    GT_CHECK(!os.isCoR(), errorMessage)
 
 #define GT_CHECK_OP_RESULT(os, errorMessage, result) \
     GT_CHECK_RESULT(!os.isCoR(), errorMessage, result)

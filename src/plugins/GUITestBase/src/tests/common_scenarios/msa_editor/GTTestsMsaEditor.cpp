@@ -2014,8 +2014,10 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
                                                                         << "remove_columns_of_gaps"));
     GTMouseDriver::click(Qt::RightButton);
 
+    GTUtilsDialog::waitAllFinished(os);
+    GT_CHECK_ERROR(os);
+
     // Expected state: UGENE not crashes, deletion is not performed
-    GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(0, 9));
     GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
