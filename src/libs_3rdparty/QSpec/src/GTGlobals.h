@@ -28,7 +28,22 @@
 
 #include <QAction>
 
+/**
+ * Default wait time for any UI operation to complete.
+ * Example of UI operation to wait for:
+ *  - wait for a popup to show
+ *  - wait for an element to be present.
+ */
+#define GT_OP_WAIT_MILLIS 10000
+
+/**
+ * Default check time to check that WAIT op is completed.
+ * The completion of UI op is checked in the loop every GT_OP_CHECK_MILLIS.
+ */
+#define GT_OP_CHECK_MILLIS 100
+
 namespace HI {
+
 /*!
  * \brief The class contains the most commonly used methods
  */
