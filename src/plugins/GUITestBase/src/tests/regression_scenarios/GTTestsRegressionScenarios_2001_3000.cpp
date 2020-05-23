@@ -2558,7 +2558,7 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
         // It is a local support class, it is the same as SaveProjectAsDialogFiller,
         // but it clicks the final button with keyboard.
         // I know that it is bad practice to create so useless classes, but I don't need to extend the original class.
-        // Do not move it to another place: if you need the same filler than extand the original class.
+        // Do not move it to another place: if you need the same filler than extend the original class.
     public:
         CreateProjectFiller(HI::GUITestOpStatus &_os,
                             const QString &_projectName,
@@ -2571,12 +2571,7 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
         }
 
         virtual void run() {
-            GTGlobals::sleep();
-            QWidget *dialog = QApplication::activeModalWidget();
-            if (NULL == dialog) {
-                os.setError("activeModalWidget is NULL");
-                return;
-            }
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             QLineEdit *projectNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectNameEdit", dialog));
             GTLineEdit::setText(os, projectNameEdit, projectName);
@@ -2584,13 +2579,12 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
             QLineEdit *projectFileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
             GTLineEdit::setText(os, projectFileEdit, projectFolder + "/" + projectFile);
 
-            GTGlobals::sleep();
+            GTGlobals::sleep(1000);
 #ifdef Q_OS_MACX
             GTWidget::click(os, GTWidget::findButtonByText(os, "Create", dialog));
 #else
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
 #endif
-            GTGlobals::sleep();
         }
 
     private:
@@ -2599,7 +2593,7 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
         const QString projectFile;
     };
 
-    //    0. Create a project that will be "existing" in the second step
+    // 0. Create a project that will be "existing" in the second step
     const QString projectName = "test_2379";
     const QString projectFolder = testDir + "_common_data/scenarios/sandbox";
     const QString projectFile = "test_2379";
@@ -2612,9 +2606,9 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
 
-    //    1. Press "Create new project" button
-    //    2. Specify the path to an existing project
-    //    3. Press "Create" button by using keyboard
+    // 1. Press "Create new project" button
+    // 2. Specify the path to an existing project
+    // 3. Press "Create" button by using keyboard
     //    Expected state: only one dialog with warning message appeared
     GTUtilsDialog::waitForDialog(os, new CreateProjectFiller(os, projectName, projectFolder, projectFile));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "Project file already exists"));
