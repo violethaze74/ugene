@@ -659,6 +659,7 @@ void MaEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
 void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &modInfo) {
     exitFromEditCharacterMode();
     updateCollapseModel(modInfo);
+    ui->getScrollController()->sl_updateScrollBars();
     restoreViewSelectionFromMaSelection();
 
     int columnCount = editor->getAlignmentLen();

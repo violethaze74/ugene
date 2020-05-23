@@ -19,7 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/FontDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -30,19 +29,15 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
-#include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
-#include <primitives/GTTableView.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
-#include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
@@ -52,7 +47,6 @@
 #include <QClipboard>
 #include <QDir>
 #include <QFile>
-#include <QListWidget>
 #include <QPlainTextEdit>
 #include <QRadioButton>
 #include <QTableView>
@@ -60,8 +54,6 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-
-#include <U2Gui/ToolsMenu.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -75,7 +67,6 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
 #include "GTUtilsBookmarksTreeView.h"
-#include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsExternalTools.h"
@@ -90,16 +81,13 @@
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsOptionPanelSequenceView.h"
-#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPcr.h"
-#include "GTUtilsPhyTree.h"
 #include "GTUtilsPrimerLibrary.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsStartPage.h"
-#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -140,7 +128,6 @@
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
-#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
@@ -1753,8 +1740,7 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
     //2. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
     MultipleAlignmentRowData *row = GTUtilsMcaEditor::getMcaRow(os, 0);
     int end = row->getCoreStart() + row->getCoreLength() - 1;
-    QPoint p(end, 0);
-    GTUtilsMcaEditorSequenceArea::clickToPosition(os, p);
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(end, 0));
 
     int i = 15;
     while (i != 0) {
@@ -1763,11 +1749,10 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
         i--;
     }
 
-    //4. Select this last symbil again, press "Insert character" and insert gap
+    //4. Select the last symbol again, press "Insert character" and insert gap
     row = GTUtilsMcaEditor::getMcaRow(os, 0);
     end = row->getCoreStart() + row->getCoreLength() - 1;
-    p = QPoint(end, 0);
-    GTUtilsMcaEditorSequenceArea::clickToPosition(os, p);
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(end, 0));
     GTGlobals::sleep(1000);
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Edit"

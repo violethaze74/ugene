@@ -24,7 +24,6 @@
 
 #include <QApplication>
 #include <QMainWindow>
-#include <QStyleOptionSlider>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
@@ -39,8 +38,6 @@
 #include <U2View/McaEditorNameList.h>
 #include <U2View/McaEditorReferenceArea.h>
 #include <U2View/McaEditorSequenceArea.h>
-#include <U2View/McaEditorWgt.h>
-#include <U2View/PanView.h>
 #include <U2View/RowHeightController.h>
 #include <U2View/SequenceObjectContext.h>
 
@@ -98,7 +95,7 @@ int GTUtilsMcaEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumbe
 #define GT_METHOD_NAME "clickToPosition"
 void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition) {
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
-    GT_CHECK(NULL != mcaSeqArea, "MCA Editor sequence area is not found");
+    GT_CHECK(mcaSeqArea != nullptr, "MCA Editor sequence area is not found");
     GT_CHECK(mcaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(globalMaPosition.x())
@@ -109,8 +106,10 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
     scrollToPosition(os, globalMaPosition);
     GTGlobals::sleep();
 
-    const QPoint positionCenter(mcaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
-                                mcaSeqArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
+    BaseWidthController *widthController = mcaSeqArea->getEditor()->getUI()->getBaseWidthController();
+    RowHeightController *heightController = mcaSeqArea->getEditor()->getUI()->getRowHeightController();
+    QPoint positionCenter(widthController->getBaseScreenCenter(globalMaPosition.x()),
+                          heightController->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
     GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
 
     GTMouseDriver::moveTo(mcaSeqArea->mapToGlobal(positionCenter));
@@ -121,7 +120,7 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
 #define GT_METHOD_NAME "scrollToPosition"
 void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const QPoint &position) {
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
-    GT_CHECK(NULL != mcaSeqArea, "MSA Editor sequence area is not found");
+    GT_CHECK(mcaSeqArea != nullptr, "MSA Editor sequence area is not found");
     GT_CHECK(mcaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(position.x())
@@ -131,10 +130,6 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
 
     CHECK(!mcaSeqArea->isVisible(position, false), );
 
-    if (GTUtilsProjectTreeView::isVisible(os)) {
-        GTUtilsProjectTreeView::toggleView(os);
-    }
-
     if (!mcaSeqArea->isRowVisible(position.y(), false)) {
         GTUtilsMcaEditor::scrollToRead(os, position.y());
     }
@@ -143,24 +138,24 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
         scrollToBase(os, position.x());
     }
 
-    CHECK_SET_ERR(mcaSeqArea->isVisible(position, false), "The position is still invisible after scrolling");
+    CHECK_SET_ERR(mcaSeqArea->isVisible(position, false),
+                  QString("The position is still invisible after scrolling: (%1, %2)").arg(position.x()).arg(position.y()));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToBase"
 void GTUtilsMcaEditorSequenceArea::scrollToBase(GUITestOpStatus &os, int position) {
-    const int scrollBarValue = GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController()->getBaseGlobalRange(position).center() -
-                               GTUtilsMcaEditor::getEditorUi(os)->getSequenceArea()->width() / 2;
-    GTScrollBar::moveSliderWithMouseToValue(os,
-                                            GTUtilsMcaEditor::getHorizontalScrollBar(os),
-                                            scrollBarValue);
+    BaseWidthController *widthController = GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController();
+    int scrollBarValue = widthController->getBaseGlobalRange(position).center() -
+                         GTUtilsMcaEditor::getEditorUi(os)->getSequenceArea()->width() / 2;
+    GTScrollBar::moveSliderWithMouseToValue(os, GTUtilsMcaEditor::getHorizontalScrollBar(os), scrollBarValue);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickCollapseTriangle"
 void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus &os, QString rowName, bool showChromatogram) {
     McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea *>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
-    GT_CHECK(mcaEditArea != NULL, "McaEditorSequenceArea not found");
+    GT_CHECK(mcaEditArea != nullptr, "McaEditorSequenceArea not found");
 
     int viewRowIndex = getVisibleNames(os).indexOf(rowName);
     GT_CHECK(viewRowIndex != -1, "sequence not found in nameList");
