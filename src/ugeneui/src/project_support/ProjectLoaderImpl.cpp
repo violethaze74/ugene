@@ -846,6 +846,11 @@ void ProjectDialogController::updateState() {
     const QString &file = projectFilePathEdit->text();
     const QString &name = projectNameEdit->text();
 
+    //todo: improve check
+    if (file.isEmpty() || name.isEmpty()) {
+        ready = false;
+    }
+
     createButton->setEnabled(ready);
 }
 
