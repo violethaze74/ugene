@@ -128,12 +128,8 @@ GUITests GUITestThread::preChecks() {
 
 GUITests GUITestThread::postChecks() {
     UGUITestBase *tb = AppContext::getGUITestBase();
-    SAFE_POINT(NULL != tb, "GUITestBase is NULL", GUITests());
-
-    //    GUITests additionalChecks = tb->takeTests(GUITestBase::PostAdditionalChecks);
     GUITests additionalChecks = tb->getTests(UGUITestBase::PostAdditionalChecks);
     SAFE_POINT(!additionalChecks.isEmpty(), "additionalChecks is empty", GUITests());
-
     return additionalChecks;
 }
 

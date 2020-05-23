@@ -623,7 +623,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTGlobals::sleep(1000);
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::waitForDialogClosed();
+    GTUtilsDialog::waitAllFinished(os);
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "long") != NULL, "Item long not found in tree widget1");
 
     GTUtilsDocument::saveDocument(os, "1anot_1seq.gen");
@@ -663,7 +663,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::waitForDialogClosed();
+    GTUtilsDialog::waitAllFinished(os);
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "noSpaces") != NULL, "Item long not found in tree widget1");
 
     GTUtilsDocument::saveDocument(os, "1anot_1seq.gen");

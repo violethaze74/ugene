@@ -303,13 +303,6 @@ void GTUtilsDialog::removeRunnable(Runnable const *const runnable) {
     }
 }
 
-void GTUtilsDialog::waitForDialogClosed() {
-    while (QApplication::activeModalWidget() != nullptr) {
-        GTGlobals::sleep(100);
-    }
-    GTThread::waitForMainThread();
-}
-
 #define GT_METHOD_NAME "checkAllFinished"
 void GTUtilsDialog::checkAllFinished(GUITestOpStatus &os) {
     Q_UNUSED(os);
@@ -364,9 +357,7 @@ GUIDialogWaiter::WaitSettings Filler::getSettings() const {
 }
 
 void Filler::run() {
-    GTGlobals::sleep(500);
-    //    releaseMouseButtons();
-    if (NULL == scenario) {
+    if (scenario == nullptr) {
         commonScenario();
     } else {
         scenario->run(os);
