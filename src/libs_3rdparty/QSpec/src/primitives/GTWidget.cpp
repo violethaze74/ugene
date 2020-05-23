@@ -366,6 +366,7 @@ QPoint GTWidget::getWidgetGlobalTopLeftPoint(GUITestOpStatus &os, QWidget *widge
 QWidget *GTWidget::getActiveModalWidget(GUITestOpStatus &os) {
     QWidget *modalWidget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && modalWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         modalWidget = QApplication::activeModalWidget();
     }
     GT_CHECK_RESULT(modalWidget != nullptr, "Active modal widget is NULL", nullptr);

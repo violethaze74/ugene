@@ -43,11 +43,11 @@ QMenu *PopupChooser::getMenuPopup() {
     GTMouseDriver::release();
     // wait up to GT_OP_WAIT_MILLIS for the menu to appear
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         QMenu *activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
         if (activePopupMenu != nullptr) {
             return activePopupMenu;
         }
-        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
     }
     return nullptr;
 }
