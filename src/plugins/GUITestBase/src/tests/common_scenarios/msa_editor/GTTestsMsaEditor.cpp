@@ -2307,7 +2307,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    3. fill dialog:
     //    file name: test/_common_data/scenarios/sandbox/image.bmp
     //    press OK
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "image.bmp");
+    GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/sandbox/", "image.bmp");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: image is exported
 }
