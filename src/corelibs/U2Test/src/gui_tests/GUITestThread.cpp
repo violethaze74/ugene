@@ -92,27 +92,21 @@ QString GUITestThread::launchTest(const GUITests &tests) {
     HI::GUITestOpStatus os;
     try {
         foreach (HI::GUITest *t, tests) {
-            if (NULL != t) {
-                t->run(os);
-            }
+            t->run(os);
         }
     } catch (HI::GUITestOpStatus *) {
     }
-    QString result = os.getError();
-
     //Run post checks if has error
-    if (!result.isEmpty()) {
+    QString error = os.getError();
+    if (!error.isEmpty()) {
         try {
             foreach (HI::GUITest *t, postChecks()) {
-                if (NULL != t) {
-                    t->run(os);
-                }
+                t->run(os);
             }
         } catch (HI::GUITestOpStatus *) {
         }
     }
-
-    return result;
+    return error;
 }
 
 GUITests GUITestThread::preChecks() {

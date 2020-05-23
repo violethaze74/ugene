@@ -94,6 +94,8 @@ void GUITestLauncher::run() {
         return;
     }
 
+    qint64 suiteStartMicros = GTimer::currentTimeMicros();
+
     int finishedCount = 0;
     foreach (HI::GUITest *test, tests) {
         if (isCanceled()) {
@@ -127,6 +129,9 @@ void GUITestLauncher::run() {
 
         updateProgress(finishedCount++);
     }
+    qint64 suiteEndMicros = GTimer::currentTimeMicros();
+    qint64 suiteTimeMinutes = ((suiteEndMicros - suiteStartMicros) / 1000000) / 60;
+    coreLog.info(QString("Suite %1 finished in %2 minutes").arg(suiteNumber).arg(suiteTimeMinutes));
 }
 
 void GUITestLauncher::firstTestRunCheck(const QString &testName) {
