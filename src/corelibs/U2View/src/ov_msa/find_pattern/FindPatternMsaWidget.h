@@ -87,6 +87,7 @@ private slots:
     void sl_onShiftEnterPressed();
     void sl_collapseModelChanged();
 
+    void sl_validateStateAndStartNewSearch(bool activatedByOutsideChanges = false);
 private:
     void initLayout();
     void initAlgorithmLayout();
@@ -95,7 +96,8 @@ private:
     void initMaxResultLenContainer();
     void updateLayout();
     void connectSlots();
-    void validateSearchPatternAndStartNewSearch();
+    bool checkRegion();
+
     int getMaxError(const QString &pattern) const;
 
     /** Assigns valid viewRowIndex value to all results & resorts them based on the view position. */
@@ -126,8 +128,9 @@ private:
      * Enables or disables the Search button depending on
      * the Pattern field value (it should be not empty and not too long)
      * and on the validity of the region.
+     * Return true if the search can be started.
      */
-    void checkState();
+    bool checkStateAndUpdateStatus();
     bool checkPatternRegion(const QString &pattern);
 
     /**
@@ -143,6 +146,7 @@ private:
     bool verifyPatternAlphabet();
     bool checkAlphabet(const QString &pattern);
     void showTooLongSequenceError();
+    void hideAllMessages();
 
     void setCorrectPatternsString();
     void setRegionToWholeSequence();
@@ -171,7 +175,6 @@ private:
 
     MSAEditor *msaEditor;
     bool isAmino;
-    bool regionIsCorrect;
     int selectedAlgorithm;
     QString patternString;
     QString patternRegExp;
@@ -206,7 +209,6 @@ private:
     int currentResultIndex;
 
     Task *searchTask;
-    QString currentPatternFieldText;
     int previousMaxResult;
     QStringList currentSearchPatternList;
     QMovie *progressMovie;
