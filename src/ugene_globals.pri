@@ -44,7 +44,7 @@ macx {
 }
 
 linux-g++ {
-    QMAKE_CXXFLAGS += -Wparentheses
+    QMAKE_CXXFLAGS += -Wall
 
     # We have a lot of such warning from QT -> disable them.
     QMAKE_CXXFLAGS += -Wno-expansion-to-defined
