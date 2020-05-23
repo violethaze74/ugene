@@ -138,8 +138,6 @@ private:
     QAction *visitWebAction;
     QAction *viewOnlineDocumentation;
     QAction *openManualAction;
-    QAction *openWDManualAction;
-    QAction *openQDManualAction;
     QAction *welcomePageAction;
     QAction *crashUgeneAction;
 #ifdef _INSTALL_TO_PATH_ACTION

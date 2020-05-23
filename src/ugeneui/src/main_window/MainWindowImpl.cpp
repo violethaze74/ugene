@@ -193,8 +193,6 @@ MainWindowImpl::MainWindowImpl() {
     checkUpdateAction = NULL;
     aboutAction = NULL;
     openManualAction = NULL;
-    openWDManualAction = NULL;
-    openQDManualAction = NULL;
     welcomePageAction = NULL;
     crashUgeneAction = NULL;
     shutDownInProcess = false;
@@ -352,8 +350,6 @@ void MainWindowImpl::prepareGUI() {
     aboutAction->setObjectName(ACTION__ABOUT);
     aboutAction->setParent(mw);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(openManualAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(openWDManualAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(openQDManualAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(viewOnlineDocumentation);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(visitWebAction);
