@@ -74,6 +74,17 @@
 
 namespace U2 {
 
+static QString getProjectFilePathFromPathEdit(const QLineEdit *projectFilePathEdit) {
+    QString path = projectFilePathEdit->text();
+    if (path.isEmpty()) {
+        return path;
+    }
+    if (!path.endsWith(PROJECTFILE_EXT)) {
+        path.append(PROJECTFILE_EXT);
+    }
+    return path;
+}
+
 //////////////////////////////////////////////////////////////////////////
 /// ProjectLoaderImpl
 //////////////////////////////////////////////////////////////////////////
@@ -196,27 +207,23 @@ void ProjectLoaderImpl::updateState() {
 void ProjectLoaderImpl::sl_newProject() {
     QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
     QObjectScopedPointer<ProjectDialogController> d = new ProjectDialogController(ProjectDialogController::New_Project, p);
-    const int rc = d->exec();
+    int rc = d->exec();
     CHECK(!d.isNull(), );
-    QFileInfo fi(d->projectFilePathEdit->text());
-    AppContext::getSettings()->setValue(SETTINGS_DIR + "last_dir", fi.absoluteDir().absolutePath(), true);
+    QFileInfo projectPathFileInfo(getProjectFilePathFromPathEdit(d->projectFilePathEdit));
+    AppContext::getSettings()->setValue(SETTINGS_DIR + "last_dir", projectPathFileInfo.absoluteDir().absolutePath(), true);
 
     if (rc == QDialog::Rejected) {
         updateState();
         return;
     }
 
-    QString fileName = d->projectFilePathEdit->text();
-    if (!fileName.endsWith(PROJECTFILE_EXT)) {
-        fileName.append(PROJECTFILE_EXT);
-    }
-    fi = QFileInfo(fileName);
-    if (fi.exists()) {
-        QFile::remove(fileName);
+    QString projectPath = projectPathFileInfo.absoluteFilePath();
+    if (projectPathFileInfo.exists()) {
+        QFile::remove(projectPath);
     }
 
     QString projectName = d->projectNameEdit->text();
-    AppContext::getTaskScheduler()->registerTopLevelTask(new OpenProjectTask(fileName, projectName));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new OpenProjectTask(projectPath, projectName));
 }
 
 void ProjectLoaderImpl::sl_openProject() {
@@ -886,11 +893,10 @@ void ProjectDialogController::setupDefaults() {
 }
 
 void ProjectDialogController::accept() {
-    QString projUrl = projectFilePathEdit->text();
-    QFileInfo info(projUrl);
-    QString absPath = info.absoluteFilePath();
-    if (info.exists()) {
-        if (QMessageBox::Yes != QMessageBox::question(this, windowTitle(), tr("<html><body align=\"center\"><br>Project file already exists.<br>Are you sure you want to overwrite it?<body></html>"), QMessageBox::Yes, QMessageBox::No)) {
+    QString projectPath = getProjectFilePathFromPathEdit(projectFilePathEdit);
+    if (QFileInfo(projectPath).exists()) {
+        int rc = QMessageBox::question(this, windowTitle(), tr("<html><body align=\"center\"><br>Project file already exists.<br>Are you sure you want to overwrite it?<body></html>"), QMessageBox::Yes, QMessageBox::No);
+        if (rc != QMessageBox::Yes) {
             return;
         }
     }
