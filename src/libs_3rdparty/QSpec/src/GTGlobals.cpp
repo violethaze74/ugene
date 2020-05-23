@@ -53,7 +53,9 @@ namespace {
 }
 
 void GTGlobals::sleep(int msec) {
-    QTest::qWait((msec));
+    if (msec > 0) {
+        QTest::qWait(msec);
+    }
 }
 
 void GTGlobals::systemSleep(int sec) {

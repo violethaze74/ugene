@@ -31,7 +31,6 @@
 #include <QScreen>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "GUITestService.h"
@@ -42,10 +41,9 @@
 
 namespace U2 {
 
-GUITestThread::GUITestThread(HI::GUITest *test, Logger &log, bool _needCleanup)
+GUITestThread::GUITestThread(HI::GUITest *test, bool isRunPostActionsAndCleanup)
     : test(test),
-      log(log),
-      needCleanup(_needCleanup),
+      isRunPostActionsAndCleanup(isRunPostActionsAndCleanup),
       testResult("Not run") {
     SAFE_POINT(NULL != test, "GUITest is NULL", );
 }
@@ -64,15 +62,12 @@ void GUITestThread::run() {
     connect(&timer, SIGNAL(timeout()), this, SLOT(sl_getMemory()), Qt::DirectConnection);
     timer.start(1000);
 
-    const QString error = launchTest(tests);
-
-    if (needCleanup) {
+    QString error = launchTest(tests);
+    if (isRunPostActionsAndCleanup) {
         cleanup();
     }
 
     timer.stop();
-
-    saveMemoryInfo();
 
     testResult = error.isEmpty() ? GUITestTeamcityLogger::successResult : error;
     writeTestResult();
@@ -154,8 +149,6 @@ GUITests GUITestThread::postActions() {
 }
 
 void GUITestThread::clearSandbox() {
-    log.trace("GUITestThread __ clearSandbox");
-
     const QString pathToSandbox = UGUITest::testDir + "_common_data/scenarios/sandbox/";
     QDir sandbox(pathToSandbox);
 
@@ -181,8 +174,8 @@ void GUITestThread::removeDir(const QString &dirName) {
             if (QFile::remove(filePath)) {
                 continue;
             } else {
-                QDir dir(filePath);
-                if (dir.rmdir(filePath)) {
+                QDir subDir(filePath);
+                if (subDir.rmdir(filePath)) {
                     continue;
                 } else {
                     removeDir(filePath);
@@ -227,93 +220,6 @@ void GUITestThread::cleanup() {
 
 void GUITestThread::writeTestResult() {
     printf("%s\n", (GUITestService::GUITESTING_REPORT_PREFIX + ": " + testResult).toUtf8().data());
-}
-
-void GUITestThread::sl_getMemory() {
-#ifdef Q_OS_LINUX
-    qint64 appPid = QApplication::applicationPid();
-
-    int memValue = countMemForProcessTree(appPid);
-
-    memoryList << memValue;
-#endif
-}
-
-int GUITestThread::countMemForProcessTree(int pid) {
-#ifdef Q_OS_LINUX
-    int result = 0;
-    //getting child processes
-    QProcess pgrep;
-    pgrep.start(QString("pgrep -P %1").arg(pid /*appPid*/));
-    pgrep.waitForFinished();
-    QByteArray pgrepOut = pgrep.readAllStandardOutput();
-    QStringList childPidsStringList = QString(pgrepOut).split("\n");
-    QList<int> childPids;
-    foreach (QString s, childPidsStringList) {
-        bool ok;
-        int childPid = s.toInt(&ok);
-        if (ok) {
-            childPids << childPid;
-        }
-    }
-
-    //getting memory of process by pid
-    QProcess memTracer;
-    memTracer.start("bash", QStringList() << "-c" << QString("top -b -p%1 -n 1 | grep %1").arg(pid));
-    memTracer.waitForFinished();
-    QByteArray memOutput = memTracer.readAllStandardOutput();
-    QString s = QString(memOutput);
-    uiLog.trace("top outpup: |" + s + "|");
-    QStringList splitted = s.split(' ');
-    splitted.removeAll("");
-
-    int memValue;
-    if (splitted.size() >= 5) {
-        QString memString = splitted.at(5);
-        if (memString.at(memString.length() - 1) == 'g') {
-            //section for gigabytes
-            memString.chop(1);
-            bool ok;
-            memString.toDouble(&ok);
-            if (ok) {
-                memValue = memString.toDouble() * 1000 * 1000;
-            } else {
-                coreLog.trace("String " + memString + " could not be converted to double");
-            }
-        } else {
-            bool ok;
-            memString.toInt(&ok);
-            if (ok) {
-                memValue = memString.toInt();
-            } else {
-                coreLog.trace("String " + memString + "could not be converted to int");
-            }
-        }
-    } else {
-        memValue = 0;
-    }
-    result += memValue;
-
-    foreach (int childPid, childPids) {
-        result += countMemForProcessTree(childPid);
-    }
-    return result;
-#else
-    return -1;
-#endif
-}
-
-void GUITestThread::saveMemoryInfo() {
-#ifdef Q_OS_LINUX
-    int max = *std::max_element(memoryList.begin(), memoryList.end());
-    QString filename = "memFolder/memory.txt";
-    QDir().mkpath("memFolder");
-    QFile file(filename);
-    if (file.open(QIODevice::ReadWrite | QIODevice::Append)) {
-        file.write(QString("%1_%2 %3\n").arg(test->getSuite()).arg(test->getName()).arg(max).toUtf8());
-        file.close();
-    }
-#endif
 }
 
 }    // namespace U2

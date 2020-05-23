@@ -49,7 +49,7 @@ namespace GUITest_posterior_actions {
 POSTERIOR_ACTION_DEFINITION(post_action_0000) {
     // Release all hold keyboard modifier keys
 
-    const Qt::KeyboardModifiers modifiers = QGuiApplication::queryKeyboardModifiers();
+    Qt::KeyboardModifiers modifiers = QGuiApplication::queryKeyboardModifiers();
     if (modifiers & Qt::ShiftModifier) {
         GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     }
@@ -62,7 +62,9 @@ POSTERIOR_ACTION_DEFINITION(post_action_0000) {
         GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     }
 
-    uiLog.trace(QString("post_action_0000: next keyboard modifiers are pressed after test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
+    if (modifiers != 0) {
+        uiLog.trace(QString("post_action_0000: next keyboard modifiers were pressed after the test: %1").arg(modifiers));
+    }
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0001) {

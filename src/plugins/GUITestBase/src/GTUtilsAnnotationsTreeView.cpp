@@ -55,10 +55,14 @@ using namespace HI;
 
 const QString GTUtilsAnnotationsTreeView::widgetName = "annotations_tree_widget";
 
+#define GT_METHOD_NAME "getTreeWidget"
 QTreeWidget *GTUtilsAnnotationsTreeView::getTreeWidget(HI::GUITestOpStatus &os) {
-    QTreeWidget *treeWidget = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, widgetName, GTUtilsMdi::activeWindow(os)));
+    QWidget *widget = GTWidget::findWidget(os, widgetName, GTUtilsMdi::activeWindow(os));
+    QTreeWidget *treeWidget = qobject_cast<QTreeWidget *>(widget);
+    GT_CHECK_RESULT(treeWidget != nullptr, QString("QTreeWidget '%1' not found").arg(widgetName), nullptr);
     return treeWidget;
 }
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addAnnotationsTableFromProject"
 void GTUtilsAnnotationsTreeView::addAnnotationsTableFromProject(HI::GUITestOpStatus &os, const QString &tableName) {

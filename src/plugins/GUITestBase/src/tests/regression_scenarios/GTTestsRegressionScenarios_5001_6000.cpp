@@ -4977,14 +4977,14 @@ GUI_TEST_CLASS_DEFINITION(test_5950) {
     CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
-    const QPoint point = GTMouseDriver::getMousePosition();
+    QPoint point = GTMouseDriver::getMousePosition();
     GTMouseDriver::moveTo(QPoint(point.x() + 100, point.y()));
     GTMouseDriver::press();
 
     for (int i = 0; i < 2; i++) {
         for (int j = 1; j < 5; j++) {
-            const QPoint point = GTMouseDriver::getMousePosition();
-            const int multiplier = i == 0 ? 1 : (-1);
+            point = GTMouseDriver::getMousePosition();
+            int multiplier = i == 0 ? 1 : (-1);
             GTMouseDriver::moveTo(QPoint(point.x() + multiplier * 16, point.y()));
             QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
             CHECK_SET_ERR(selection.size() == 1, "Incorrect selection");

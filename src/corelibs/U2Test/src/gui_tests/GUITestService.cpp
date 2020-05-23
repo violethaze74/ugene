@@ -341,7 +341,7 @@ void GUITestService::runGUITest(HI::GUITest *test) {
         GUITestTeamcityLogger::testStarted(testNameForTeamCity);
     }
 
-    GUITestThread *testThread = new GUITestThread(test, log);
+    GUITestThread *testThread = new GUITestThread(test);
     connect(testThread, SIGNAL(finished()), SLOT(sl_testThreadFinish()));
     testThread->start();
 }

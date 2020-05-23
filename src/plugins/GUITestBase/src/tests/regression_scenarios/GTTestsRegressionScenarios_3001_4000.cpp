@@ -2432,8 +2432,6 @@ GUI_TEST_CLASS_DEFINITION(test_3348) {
     GTGlobals::sleep(6000);
 
     QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    CHECK_SET_ERR(treeWidget != NULL, "Tree widget is NULL");
-
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 39)");
     QTreeWidgetItem *generalItem = annotationGroup->child(36);
     CHECK_SET_ERR(generalItem != NULL, "Invalid annotation tree item");

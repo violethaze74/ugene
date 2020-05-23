@@ -34,7 +34,6 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
-#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -45,7 +44,6 @@
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 
@@ -680,52 +678,53 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010_1) {
-    //    BED
-
     //    Export annotations from different annotation table objects
-    //    The following sceanrio should work with BED, GFF and GTF formats.
+    //    The following scenario should work with BED, GFF and GTF formats.
     //    1. Open '_common_data/fasta/DNA.fa' as separate sequences
     //    2. Select a few annotations from different annotation table objects
     //    3. {Export -> Export annotations...}, select on of the following formats: BED, GFF, GTF
-    //    Expected state: 'Export annotations' dialog appeared
+    //      Expected state: 'Export annotations' dialog appeared
     //    4. Open exported file
-    //    Expected state: there are two annotation table objects
+    //      Expected state: there are two annotation table objects
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTFileDialog::openFileWithDialog(os, testDir, "_common_data/fasta/DNA.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
+
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141619"), "No GXL_141619 object!");
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618"), "No GXL_141618 object!");
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_1", "200..300", sandBoxDir + "ann_test_0010_1_19.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141619"), Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_2", "100..200", sandBoxDir + "ann_test_0010_1_18.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
 
-    QStringList annList;
-    annList << "ann_1"
-            << "ann_2";
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann_1" << "ann_2");
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_1.bed", ExportAnnotationsFiller::bed, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsDocument::removeDocument(os, "DNA.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "ann_test_0010_1_18.gb");
+    GTUtilsDialog::waitAllFinished(os);
+
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "ann_test_0010_1_19.gb");
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0010_1.bed");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141619 features"), "No GXL_141619 features object!");
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618 features"), "No GXL_141618 features object!");
 }
@@ -734,7 +733,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     //    GFF
 
     //    Export annotations from different annotation table objects
-    //    The following sceanrio should work with BED, GFF and GTF formats.
+    //    The following scenario should work with BED, GFF and GTF formats.
     //    1. Open '_common_data/fasta/DNA.fa' as separate sequences
     //    2. Select a few annotations from different annotation table objects
     //    3. {Export -> Export annotations...}, select on of the following formats: BED, GFF, GTF
@@ -758,10 +757,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
                                                                         << "create_annotation_action"));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
 
-    QStringList annList;
-    annList << "ann_1"
-            << "ann_2";
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann_1" << "ann_2");
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_2.gff", ExportAnnotationsFiller::gff, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -1131,8 +1127,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     //4. Check what created annotation has corresponding qualifier 'note'
     QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    CHECK_SET_ERR(treeWidget != NULL, "Tree widget is NULL");
-
     QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "ann1  (0, 1)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
     GTMouseDriver::doubleClick();

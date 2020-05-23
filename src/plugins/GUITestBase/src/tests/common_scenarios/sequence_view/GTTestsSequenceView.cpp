@@ -1963,7 +1963,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *nameLabel = GTWidget::findWidget(os, "nameLabel");
-    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(os, nameLabel) + QPoint(2 * nameLabel->geometry().width() / 3, 0));
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(nameLabel) + QPoint(2 * nameLabel->geometry().width() / 3, 0));
     GTMouseDriver::doubleClick();
     GTGlobals::sleep(2000);
 
@@ -1975,7 +1975,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
                       DetailsViewSe2->isVisible() == false &&
                       zoomViewSe2->isVisible() == false,
                   "there are widgets not hidden widgets of ADV_single_sequence_widget");
-    CHECK_SET_ERR(toolBarSe2->isVisible() == true, "toolbar is hidden");
+    CHECK_SET_ERR(toolBarSe2->isVisible(), "toolbar is hidden");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0061_1) {

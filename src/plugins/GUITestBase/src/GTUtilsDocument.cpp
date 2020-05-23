@@ -89,16 +89,13 @@ void GTUtilsDocument::removeDocument(HI::GUITestOpStatus &os, const QString &doc
         Runnable *popupChooser = new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED, method);
         GTUtilsDialog::waitForDialog(os, popupChooser);
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));    //dirty hack
-
         GTMouseDriver::click(Qt::RightButton);
         break;
     }
-
-    default:
     case GTGlobals::UseKey:
+    default:
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));    //dirty hack
         GTMouseDriver::click();
-
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         break;
     }

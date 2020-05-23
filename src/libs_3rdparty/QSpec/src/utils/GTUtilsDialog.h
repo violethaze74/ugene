@@ -174,7 +174,7 @@ public:
     static void waitForDialogWhichMayRunOrNot(GUITestOpStatus &os, Runnable *r);
 
     /** Waits up to 'timeout' millis that all dialogs (runnables) are finished: the pool of GUIDialogWaiters is empty. */
-    static void waitAllFinished(GUITestOpStatus &os, int timeoutMillis = GT_OP_WAIT_MILLIS);
+    static void waitAllFinished(GUITestOpStatus &os, int timeoutMillis = 30000);
 
     static void removeRunnable(Runnable const *const runnable);
 

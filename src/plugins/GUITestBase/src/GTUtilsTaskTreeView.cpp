@@ -43,19 +43,14 @@ using namespace HI;
 
 const QString GTUtilsTaskTreeView::widgetName = DOCK_TASK_TREE_VIEW;
 
-void GTUtilsTaskTreeView::waitTaskFinished(HI::GUITestOpStatus &os, long timeout) {
-    GTGlobals::sleep(500);
-    TaskScheduler *scheduller = AppContext::getTaskScheduler();
-    int i = 0;
-    while (!scheduller->getTopLevelTasks().isEmpty()) {
-        GTGlobals::sleep(1000);
-        i++;
-        if (i > (timeout / 1000)) {
-            os.setError(os.getError() + getTasksInfo(scheduller->getTopLevelTasks(), 0));
-            break;
-        }
+void GTUtilsTaskTreeView::waitTaskFinished(HI::GUITestOpStatus &os, long timeoutMillis) {
+    TaskScheduler *scheduler = AppContext::getTaskScheduler();
+    for (int time = 0  ; time < timeoutMillis && !scheduler->getTopLevelTasks().isEmpty(); time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
     }
-    GTGlobals::sleep(1000);
+    if (!scheduler->getTopLevelTasks().isEmpty()) {
+        os.setError(os.getError() + getTasksInfo(scheduler->getTopLevelTasks(), 0));
+    }
 }
 
 QString GTUtilsTaskTreeView::getTasksInfo(QList<Task *> tasks, int level) {

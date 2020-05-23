@@ -47,7 +47,7 @@ private:
 
 class GTUtilsTaskTreeView {
 public:
-    static void waitTaskFinished(HI::GUITestOpStatus &os, long timeout = 180000);
+    static void waitTaskFinished(HI::GUITestOpStatus &os, long timeoutMillis = 180000);
     static void click(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton b = Qt::LeftButton);
     static void openView(HI::GUITestOpStatus &os);
     static void toggleView(HI::GUITestOpStatus &os);

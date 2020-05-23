@@ -70,8 +70,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTGlobals::sleep(1000);
 
     // 4. Check that annotation have the qualifier "repeat homology"
-    QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    CHECK_SET_ERR(treeWidget != NULL, "Tree widget is NULL");
+    GTUtilsAnnotationsTreeView::getTreeWidget(os);
 
     QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 325)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));

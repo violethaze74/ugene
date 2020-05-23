@@ -36,7 +36,7 @@ typedef QList<HI::GUITest *> GUITests;
 class U2TEST_EXPORT GUITestThread : public QThread {
     Q_OBJECT
 public:
-    GUITestThread(HI::GUITest *test, Logger &log, bool needCleanup = true);
+    GUITestThread(HI::GUITest *test, bool isCleanupNeeded = true);
 
     void run();
 
@@ -49,7 +49,6 @@ public:
 
 private slots:
     void sl_testTimeOut();
-    void sl_getMemory();
 
 private:
     QString launchTest(const GUITests &tests);
@@ -62,15 +61,10 @@ private:
     void saveScreenshot();
     void cleanup();
     void writeTestResult();
-    void saveMemoryInfo();
-    int countMemForProcessTree(int pid);
 
     HI::GUITest *test;
-    Logger &log;
-    bool needCleanup;
+    bool isRunPostActionsAndCleanup;
     QString testResult;
-
-    QList<int> memoryList;
 };
 
 }    // namespace U2

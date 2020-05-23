@@ -1426,9 +1426,7 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
     GTGlobals::sleep(200);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    CHECK_SET_ERR(treeWidget != NULL, "Tree widget is NULL");
-
+    GTUtilsAnnotationsTreeView::getTreeWidget(os);
     QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 5)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
     GTMouseDriver::doubleClick();
@@ -4649,7 +4647,7 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
     point.setY(point.y() + 1);
     GTMouseDriver::moveTo(point);
     GTMouseDriver::click();
-    QPoint endPoint = GTWidget::getWidgetCenter(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
+    QPoint endPoint = GTWidget::getWidgetCenter(GTUtilsAnnotationsTreeView::getTreeWidget(os));
 
 #ifdef Q_OS_MAC
     GTMouseDriver::dragAndDrop(point, endPoint);

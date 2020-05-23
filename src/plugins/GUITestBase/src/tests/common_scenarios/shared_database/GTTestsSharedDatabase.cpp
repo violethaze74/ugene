@@ -1181,7 +1181,6 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
 
     QTreeWidget *annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    CHECK_SET_ERR(NULL != annotationTableWidget, "Annotations tree widget is NULL");
     GTUtilsProjectTreeView::dragAndDrop(os, databaseAnnotaionObjectItemIndex, annotationTableWidget);
 
     GTGlobals::sleep(5000);
@@ -1194,13 +1193,9 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     sequenceView = GTWidget::findWidget(os, " " + sequenceWidgetName);
-    CHECK_SET_ERR(NULL != sequenceView, "Sequence view wasn't opened again");
-
     annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    CHECK_SET_ERR(NULL != annotationTableWidget, "Annotations tree widget is NULL again");
-
     QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, annotationTableName.arg(databaseDoc->getName()));
-    CHECK_SET_ERR(NULL != annotationTable, "Annotation table is NULL");
+    CHECK_SET_ERR(annotationTable != nullptr, "Annotation table is NULL");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1726,9 +1721,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
     QWidget *seqView = GTWidget::findWidget(os, " " + sequenceVisibleWidgetName);
     CHECK_SET_ERR(NULL != seqView, "View wasn't opened");
 
-    QTreeWidget *annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    CHECK_SET_ERR(NULL != annotationTableWidget, "Annotations tree widget is NULL");
-
+    GTUtilsAnnotationsTreeView::getTreeWidget(os);
     QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, someFeatureName);
     CHECK_SET_ERR(NULL != annotationTable, "Annotation table is NULL");
 
@@ -1835,8 +1828,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0013) {
     QWidget *seqView = GTWidget::findWidget(os, " " + sequenceVisibleWidgetName);
     CHECK_SET_ERR(NULL != seqView, "View wasn't opened");
 
-    QTreeWidget *annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    CHECK_SET_ERR(NULL != annotationTableWidget, "Annotations tree widget is NULL");
+    GTUtilsAnnotationsTreeView::getTreeWidget(os);
 
     QTreeWidgetItem *contigGroup = GTUtilsAnnotationsTreeView::findItem(os, contigFeatureName);
     CHECK_SET_ERR(NULL != contigGroup, "Contig group is NULL");
@@ -2267,11 +2259,10 @@ GUI_TEST_CLASS_DEFINITION(view_test_0001) {
     QWidget *seqView = GTWidget::findWidget(os, sequenceVisibleWidgetName);
     CHECK_SET_ERR(NULL != seqView, "View wasn't opened");
 
-    QTreeWidget *annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    CHECK_SET_ERR(NULL != annotationTableWidget, "Annotations tree widget is NULL");
+    GTUtilsAnnotationsTreeView::getTreeWidget(os);
 
     QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, someFeatureName);
-    CHECK_SET_ERR(NULL != annotationTable, "Annotation table is NULL");
+    CHECK_SET_ERR(annotationTable != nullptr, "Annotation table is NULL");
 
     GTUtilsSequenceView::goToPosition(os, position);
 

@@ -143,8 +143,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 5. Check names and count of annotations
     QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    CHECK_SET_ERR(treeWidget != NULL, "Tree widget is NULL");
-
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     int annotationsCounter = 0;
     foreach (QTreeWidgetItem *item, treeItems) {

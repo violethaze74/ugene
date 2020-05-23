@@ -43,7 +43,7 @@ public:
 
     // finds widget with the given object name using given FindOptions. Parent widget is QMainWindow, if not set
     static QWidget *findWidget(GUITestOpStatus &os, const QString &widgetName, const QWidget * const parentWidget = NULL, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
-    static QPoint getWidgetCenter(GUITestOpStatus &os, QWidget* w);
+    static QPoint getWidgetCenter(QWidget* widget);
 
     static QAbstractButton *findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = NULL, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static QList<QLabel*> findLabelByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = NULL, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
@@ -52,9 +52,6 @@ public:
     static QColor getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &point);
     static QPixmap getPixmap(GUITestOpStatus &os, QWidget *widget);
     static QImage getImage(GUITestOpStatus &os, QWidget *widget);
-
-    //this method writes info about all widgets to opStatus
-    static void getAllWidgetsInfo(GUITestOpStatus &os, QWidget* parent=NULL);
 
     static void close(GUITestOpStatus &os, QWidget *widget);
     static void showMaximized(GUITestOpStatus &os, QWidget *widget);

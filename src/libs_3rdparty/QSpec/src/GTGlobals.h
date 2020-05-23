@@ -63,7 +63,6 @@ public:
         bool searchInHidden;
 
         static const int INFINITE_DEPTH = 0;
-        static const bool FAIL_IF_NOT_FOUND = true;
     };
 
     static void sleep(int msec = 2000);
@@ -78,15 +77,14 @@ public:
     QString cond = #condition;\
     if (condition) { \
         qDebug("GT_DEBUG_MESSAGE Checking condition (%s). Result: OK", cond.toLocal8Bit().constData()); \
-    } \
-    else { \
+    } else { \
         qWarning("\n------------"); \
         qWarning("GT_DEBUG_MESSAGE Checking condition (%s). Result: FAILED", cond.toLocal8Bit().constData()); \
         qWarning("GT_DEBUG_MESSAGE errorMessage '%s'", QString(errorMessage).toLocal8Bit().constData()); \
         qWarning("------------\n"); \
     } \
     if (os.hasError()) { \
-        qCritical("GT_DEBUG_MESSAGE OpStatus already has error"); \
+        qCritical("GT_DEBUG_MESSAGE OpStatus already has error!"); \
         qCritical("GT_DEBUG_MESSAGE OpStatus error '%s'",os.getError().toLocal8Bit().constData()); \
     } \
 }
@@ -102,9 +100,6 @@ public:
         extraOp; \
         return result; \
     }
-
-#define GT_CHECK_ERROR(os) \
-    if (os.hasError()) {return;}
 
 /** Used in tests */
 #define CHECK_SET_ERR(condition, errorMessage) \

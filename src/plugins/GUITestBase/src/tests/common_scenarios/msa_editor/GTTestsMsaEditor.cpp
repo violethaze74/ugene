@@ -2015,7 +2015,6 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsDialog::waitAllFinished(os);
-    GT_CHECK_ERROR(os);
 
     // Expected state: UGENE not crashes, deletion is not performed
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(0, 9));
