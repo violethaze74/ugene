@@ -7477,7 +7477,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_1) {
 GUI_TEST_CLASS_DEFINITION(test_1710_2) {
     //1. Open Settings -> Preferences -> External Tools.
     //2. Select any invalid file for Blast -> BlastAll.
-    GTUtilsExternalTools::setToolUrl(os, "BlastALL", dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsExternalTools::setToolUrl(os, "BlastN", dataDir + "samples/FASTA/human_T1.fa");
 
     //3. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
