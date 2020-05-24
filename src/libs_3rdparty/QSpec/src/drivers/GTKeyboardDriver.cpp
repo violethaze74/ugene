@@ -43,6 +43,7 @@ bool GTKeyboardDriver::keyClick(char key, Qt::KeyboardModifiers modifiers)
     DRIVER_CHECK(key != 0, "key = 0");
     DRIVER_CHECK(keyPress(key, modifiers), "key could not be pressed");
     DRIVER_CHECK(keyRelease(key, modifiers), "key could not be released");
+    GTThread::waitForMainThread();
     return true;
 }
 
