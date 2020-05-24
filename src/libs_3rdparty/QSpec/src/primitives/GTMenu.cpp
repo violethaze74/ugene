@@ -226,11 +226,11 @@ QPoint GTMenu::actionPos(GUITestOpStatus &os, const QMenu* menu, QAction* action
 QAction* GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QString &itemName, GTGlobals::UseMethod m,bool byText, Qt::MatchFlag matchFlag) {
 
     GT_CHECK_RESULT(menu != NULL, "menu not found", NULL);
-    GT_CHECK_RESULT(itemName.isEmpty() == false, "itemName is empty", NULL);
+    GT_CHECK_RESULT(!itemName.isEmpty(), "itemName is empty", NULL);
 
     QAction *action = getMenuItem(os, menu, itemName, byText, matchFlag);
     GT_CHECK_RESULT(action != NULL, "action not found for item " + itemName, NULL);
-    GT_CHECK_RESULT(action->isEnabled() == true, "action <" + itemName + "> is not enabled", NULL);
+    GT_CHECK_RESULT(action->isEnabled(), "action <" + itemName + "> is not enabled", NULL);
 
     QPoint currentCursorPosition = GTMouseDriver::getMousePosition();
     QPoint menuCorner = menu->mapToGlobal(QPoint(0, 0));
@@ -257,7 +257,7 @@ QAction* GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QSt
         GTMouseDriver::click();
 #else
         QMenu* actionMenu = action->menu();
-        bool clickingSubMenu = actionMenu ? true : false;
+        bool clickingSubMenu = actionMenu != nullptr;
         if (!clickingSubMenu) {
             GTMouseDriver::click();
         }
@@ -265,23 +265,17 @@ QAction* GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QSt
         break;
     }
     case GTGlobals::UseKey:
-        while(action != menu->activeAction()) {
-            GTKeyboardDriver::keyClick( Qt::Key_Down);
-            GTGlobals::sleep(200);
+        while (action != menu->activeAction()) {
+            GTKeyboardDriver::keyClick(Qt::Key_Down);
         }
-
-        GTKeyboardDriver::keyClick( Qt::Key_Enter);
-
-        GTGlobals::sleep(200);
+        GTKeyboardDriver::keyClick(Qt::Key_Enter, Qt::NoModifier, false);
         break;
     default:
         break;
     }
     GTThread::waitForMainThread();
     QMenu* activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
-    if(activePopupMenu==NULL)
-        action=NULL;
-    return action;
+    return activePopupMenu == nullptr ? nullptr : action;
 }
 #undef GT_METHOD_NAME
 
