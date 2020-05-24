@@ -47,16 +47,16 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(const QString &exportToFile, fi
 ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
                                                  const QString &_exportToFile,
                                                  fileFormat _format,
-                                                 bool _addToProject,
-                                                 bool _saveSequencesUnderAnnotations,
-                                                 bool _saveSequenceNames,
+                                                 bool addToProject,
+                                                 bool saveSequencesUnderAnnotations,
+                                                 bool saveSequenceNames,
                                                  GTGlobals::UseMethod method)
     : Filler(_os, "U2__ExportAnnotationsDialog"),
       softMode(false),
       format(_format),
-      addToProject(_addToProject),
-      saveSequencesUnderAnnotations(_saveSequencesUnderAnnotations),
-      saveSequenceNames(_saveSequenceNames),
+      addToProject(addToProject),
+      saveSequencesUnderAnnotations(saveSequencesUnderAnnotations),
+      saveSequenceNames(saveSequenceNames),
       useMethod(method) {
     init(_exportToFile);
 }
@@ -65,13 +65,14 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &os, Custom
     : Filler(os, "U2__ExportAnnotationsDialog", scenario),
       softMode(false),
       format(genbank),
+      addToProject(false),
       saveSequencesUnderAnnotations(false),
       saveSequenceNames(false),
       useMethod(GTGlobals::UseMouse) {
 }
 
-void ExportAnnotationsFiller::init(const QString &exportToFile) {
-    this->exportToFile = QDir::toNativeSeparators(QDir::cleanPath(exportToFile));
+void ExportAnnotationsFiller::init(const QString &exportToFileParam) {
+    exportToFile = QDir::toNativeSeparators(QDir::cleanPath(exportToFileParam));
 
     comboBoxItems[bed] = "BED";
     comboBoxItems[genbank] = "GenBank";
@@ -84,14 +85,14 @@ void ExportAnnotationsFiller::init(const QString &exportToFile) {
 #define GT_METHOD_NAME "commonScenario"
 void ExportAnnotationsFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
-    GT_CHECK(lineEdit != NULL, "line edit not found");
+    GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, exportToFile);
 
     QComboBox *comboBox = dialog->findChild<QComboBox *>();
-    GT_CHECK(comboBox != NULL, "ComboBox not found");
+    GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
@@ -100,7 +101,7 @@ void ExportAnnotationsFiller::commonScenario() {
     }
     if (!addToProject) {
         QCheckBox *addToProjectButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("addToProjectCheck"));
-        GT_CHECK(addToProjectButton != NULL, "Check box not found");
+        GT_CHECK(addToProjectButton != nullptr, "Check box not found");
         if (addToProjectButton->isEnabled()) {
             GTCheckBox::setChecked(os, addToProjectButton, false);
         }
@@ -108,11 +109,11 @@ void ExportAnnotationsFiller::commonScenario() {
 
     if (!softMode) {
         QCheckBox *checkButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("exportSequenceCheck"));
-        GT_CHECK(checkButton != NULL, "Check box not found");
+        GT_CHECK(checkButton != nullptr, "Check box not found");
         GTCheckBox::setChecked(os, checkButton, saveSequencesUnderAnnotations);
 
         checkButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("exportSequenceNameCheck"));
-        GT_CHECK(checkButton != NULL, "Check box not found");
+        GT_CHECK(checkButton != nullptr, "Check box not found");
         GTCheckBox::setChecked(os, checkButton, saveSequenceNames);
     }
 
