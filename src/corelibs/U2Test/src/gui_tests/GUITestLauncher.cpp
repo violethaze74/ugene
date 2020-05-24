@@ -179,10 +179,14 @@ bool GUITestLauncher::initGUITestBase() {
             foreach (HI::GUITest *test, allTestList) {
                 QString fullTestName = test->getFullName();
                 QString fullTestNameInTeamcityFormat = fullTestName.replace(':', '_');
-                if (fullTestName == testName || fullTestNameInTeamcityFormat == testName) {
+                if (testName == fullTestName || testName == fullTestNameInTeamcityFormat) {
                     tests << test;
                     added = true;
                     break;
+                }
+                if (testName == test->getSuite()) {
+                    tests << test;
+                    added = true;
                 }
             }
             if (!added) {
