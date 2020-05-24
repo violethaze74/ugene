@@ -149,24 +149,19 @@ bool GUITestLauncher::initGUITestBase() {
         return false;
     }
 
+    tests.clear();
     if (suiteNumber != 0) {
         if (suiteNumber < 1 || suiteNumber > NUMBER_OF_TEST_SUITES) {
             setError(QString("Invalid suite number: %1. There are %2 suites").arg(suiteNumber).arg(NUMBER_OF_TEST_SUITES));
             return false;
         }
-        int numberAllOfTests = allTestList.length();
-        int numberOfTestsPerSuite = qRound(numberAllOfTests / (double)NUMBER_OF_TEST_SUITES);
-        bool isLastSuite = suiteNumber == NUMBER_OF_TEST_SUITES;
-        int suiteIndex = suiteNumber - 1;
-        int firstTestIndex = suiteIndex * numberOfTestsPerSuite;
-        int testsInSuite = isLastSuite ? numberAllOfTests - firstTestIndex : numberOfTestsPerSuite;
-        tests = allTestList.mid(firstTestIndex, testsInSuite);
-        coreLog.info(QString("Running suite %1, tests from: %2 to %3. Tests in the suite: %4, total tests: %5")
+        for (int i = suiteNumber - 1; i < allTestList.length(); i += NUMBER_OF_TEST_SUITES) {
+            tests << allTestList[i];
+        }
+        coreLog.info(QString("Running suite %1, Tests in the suite: %2, total tests: %3")
                          .arg(suiteNumber)
-                         .arg(firstTestIndex)
-                         .arg(firstTestIndex + testsInSuite)
-                         .arg(testsInSuite)
-                         .arg(numberAllOfTests));
+                         .arg(tests.size())
+                         .arg(allTestList.length()));
     } else if (!pathToSuite.isEmpty()) {
         QString absPath = QDir().absoluteFilePath(pathToSuite);
         QFile suite(absPath);
