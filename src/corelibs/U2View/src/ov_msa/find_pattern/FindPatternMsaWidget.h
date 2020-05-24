@@ -79,7 +79,6 @@ private slots:
     void sl_onMsaModified();
 
     void sl_onSelectedRegionChanged(const MaEditorSelection &currentSelection, const MaEditorSelection &prev);
-    void sl_activateNewSearch(bool activatedByOutsideChanges = false);
     void sl_prevButtonClicked();
     void sl_nextButtonClicked();
 
