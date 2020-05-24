@@ -494,7 +494,7 @@ GUI_TEST_CLASS_DEFINITION(test_5082) {
 
     // Expected: Error notification appears with a correct human readable error. There is a error in log wit memory requirements.
     GTUtilsNotifications::waitForNotification(os, true, "There is not enough memory to align these sequences with MUSCLE.");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
     CHECK_SET_ERR(l.checkMessage("Not enough resources for the task, resource name:"), "No default error in log");
 }
 
