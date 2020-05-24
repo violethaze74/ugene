@@ -36,7 +36,7 @@ namespace HI {
 class HI_EXPORT GTWidget {
 public:
     // fails if widget is NULL, not visible or not enabled; if p isNull, clicks on the center of widget
-    static void click(GUITestOpStatus &os, QWidget *w, Qt::MouseButton mouseButton = Qt::LeftButton, QPoint p = QPoint(), bool safe = true);
+    static void click(GUITestOpStatus &os, QWidget *w, Qt::MouseButton mouseButton = Qt::LeftButton, QPoint p = QPoint());
 
     // fails if widget is NULL, GTWidget::click fails or widget hasn't got focus
     static void setFocus(GUITestOpStatus &os, QWidget *w);

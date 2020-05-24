@@ -89,14 +89,13 @@ void MaAmbiguousCharactersController::sl_resetCachedIterator() {
 }
 
 void MaAmbiguousCharactersController::scrollToNextAmbiguous(NavigationDirection direction) const {
-    const QPoint nextAmbiguous = findNextAmbiguous(direction);
-    if (INVALID_POINT != nextAmbiguous) {
+    QPoint nextAmbiguous = findNextAmbiguous(direction);
+    if (nextAmbiguous != INVALID_POINT) {
         maEditorWgt->getScrollController()->centerPoint(nextAmbiguous, maEditorWgt->getSequenceArea()->size());
         maEditorWgt->getSequenceArea()->setSelection(MaEditorSelection(nextAmbiguous, 1, 1));
     } else {
         // no mismatches - show notification
         const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-        CHECK(notificationStack != NULL, );
         notificationStack->addNotification(tr("There are no ambiguous characters in the alignment."), Info_Not);
     }
 }

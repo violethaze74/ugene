@@ -32,7 +32,7 @@ class NotificationChecker : public QObject {
     Q_OBJECT
 public:
     NotificationChecker(HI::GUITestOpStatus &_os);
-    ~NotificationChecker();
+
 public slots:
     void sl_checkNotification();
 

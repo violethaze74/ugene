@@ -27,7 +27,6 @@
 #include <QTextBrowser>
 #include <QTimer>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
@@ -46,20 +45,16 @@ NotificationChecker::NotificationChecker(HI::GUITestOpStatus &_os)
     t->start(100);
 }
 
-NotificationChecker::~NotificationChecker() {
-    delete t;
-}
-
 #define GT_METHOD_NAME "sl_checkNotification"
 void NotificationChecker::sl_checkNotification() {
-    CHECK(NULL == QApplication::activeModalWidget(), );
+    CHECK(QApplication::activeModalWidget() == nullptr, );
     QList<QWidget *> list = QApplication::allWidgets();
     foreach (QWidget *wid, list) {
-        Notification *notif = qobject_cast<Notification *>(wid);
-        if (notif != NULL && notif->isVisible()) {
-            uiLog.trace("found");
-            GTWidget::click(os, notif);
+        Notification *notification = qobject_cast<Notification *>(wid);
+        if (notification != nullptr && notification->isVisible()) {
+            uiLog.trace("notification is found");
             t->stop();
+            GTWidget::click(os, notification);
             return;
         }
     }
@@ -77,17 +72,13 @@ NotificationDialogFiller::NotificationDialogFiller(HI::GUITestOpStatus &os, cons
 
 #define GT_METHOD_NAME "commonScenario"
 void NotificationDialogFiller::commonScenario() {
-    GTGlobals::sleep(1000);
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "active modal widget is invalid");
-
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     if (!message.isEmpty()) {
         QTextBrowser *tb = dialog->findChild<QTextBrowser *>();
-        GT_CHECK(tb != NULL, "text browser not found");
+        GT_CHECK(tb != nullptr, "text browser not found");
         QString actualMessage = tb->toPlainText();
         GT_CHECK(actualMessage.contains(message), "unexpected message: " + actualMessage);
     }
-
     QWidget *ok = GTWidget::findButtonByText(os, "Ok", dialog);
     GTWidget::click(os, ok);
 #if defined Q_OS_WIN || defined Q_OS_MAC

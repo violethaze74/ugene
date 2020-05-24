@@ -36,28 +36,20 @@ namespace HI {
 #define GT_CLASS_NAME "GTWidget"
 
 #define GT_METHOD_NAME "click"
-void GTWidget::click(GUITestOpStatus &os, QWidget *w, Qt::MouseButton mouseButton, QPoint p, bool safe) {
-    GTGlobals::sleep(100);
-    GT_CHECK(w != NULL, "widget is NULL");
-    //    GT_CHECK(w->isEnabled() == true, "widget " + w->objectName() + "is not enabled");
+void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouseButton, QPoint p) {
+    GT_CHECK(widget != nullptr, "widget is NULL");
 
     if (p.isNull()) {
-        p = w->rect().center();
-
+        p = widget->rect().center();
         // TODO: this is a fast fix
-        if (w->objectName().contains("ADV_single_sequence_widget")) {
+        if (widget->objectName().contains("ADV_single_sequence_widget")) {
             p += QPoint(0, 8);
         }
     }
-    GTMouseDriver::moveTo(w->mapToGlobal(p));
-    if (safe) {
-        GTMouseDriver::click(mouseButton);
-    } else {
-        //sometimes GTGlobals::sleep(os) should not be used after clicking
-        GTMouseDriver::press(mouseButton);
-        GTMouseDriver::release(mouseButton);
-    }
-    GTGlobals::sleep(200);
+    QPoint globalPoint = widget->mapToGlobal(p);
+    GTMouseDriver::moveTo(globalPoint);
+    GTMouseDriver::click(mouseButton);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

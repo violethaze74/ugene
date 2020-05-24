@@ -107,11 +107,6 @@ bool GTMouseDriver::moveTo(const QPoint& p)
     }
 
     XCloseDisplay(display);
-#ifdef _DEBUG
-    GTGlobals::sleep(500);
-#else
-    GTGlobals::sleep(100); //May be not needed
-#endif
     return true;
 }
 #undef GT_METHOD_NAME

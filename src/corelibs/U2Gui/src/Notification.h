@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _TOOL_TIP_H_
-#define _TOOL_TIP_H_
+#ifndef _NOTIFICATION_H_
+#define _NOTIFICATION_H_
 
 #include <QAction>
 #include <QCheckBox>

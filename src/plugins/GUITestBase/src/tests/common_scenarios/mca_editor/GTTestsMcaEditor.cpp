@@ -20,11 +20,8 @@
 * MA 02110-1301, USA.
 */
 
-#include <base_dialogs/ColorDialogFiller.h>
-#include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/FontDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
-#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
@@ -32,16 +29,12 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTRadioButton.h>
 #include <primitives/GTScrollBar.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
-#include <system/GTClipboard.h>
 #include <system/GTFile.h>
-#include <utils/GTKeyboardUtils.h>
-#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QList>
@@ -56,13 +49,11 @@
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMcaEditorStatusWidget.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsMsaEditor.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
-#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -1541,41 +1532,32 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     //2. Push "Ctrl+Alt+v"
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyClick('v', Qt::AltModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //3. Push "Jump to next variation" button
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //4. Push "Jump to next variation" from context menu
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
                                                                               << "Jump to next variation"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //5. Push "Jump to next variation" from main menu
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Navigation"
                                                 << "Jump to next variation");
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
@@ -1816,7 +1798,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     //    1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1831,15 +1813,16 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //3. Push "Jump to previous variation" button
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QToolBar *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    QWidget *prevAmbiguousButton = GTToolbar::getWidgetForActionName(os, toolbar, "prev_ambiguous");
+    GTWidget::click(os, prevAmbiguousButton);
+    GTUtilsDialog::waitAllFinished(os);
 
     //4. Push "Jump to next variation" from context menu
     //Expected state : Notification "There are no ambiguous characters in the alignment.
@@ -1848,9 +1831,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
                                                                               << "Jump to previous ambiguous character"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //5. Push "Jump to previous variation" from main menu
     //Expected state : Notification "There are no ambiguous characters in the alignment.
@@ -1860,7 +1841,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
                                                 << "Navigation"
                                                 << "Jump to previous ambiguous character");
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0018_2) {
@@ -1933,7 +1914,8 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'W' && readChar == 'W', QString("Incorrect symbols, Expected ref = T, con = W, read = W current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0019) {
+GUI_TEST_CLASS_DEFINITION(test_0019)
+{
     //1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
