@@ -93,9 +93,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     // Close all MDI windows
     // Cancel all tasks
 
-    GTGlobals::sleep(1000);
-
-    if (AppContext::getProject() != NULL) {
+    if (AppContext::getProject() != nullptr) {
         GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
         GTGlobals::sleep(100);
@@ -109,18 +107,16 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
                                                     << "Close project");
 #else
         GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-        GTGlobals::sleep(100);
 #endif
         GTGlobals::sleep(500);
 
         GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
-        GTGlobals::sleep();
     }
 
     GTUtilsMdi::closeAllWindows(os);
 
     AppContext::getTaskScheduler()->cancelAllTasks();
-    GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0003) {
