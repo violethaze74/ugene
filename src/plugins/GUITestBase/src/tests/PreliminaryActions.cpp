@@ -71,8 +71,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0001) {
     // Ensure there is no opened project
-
-    CHECK_SET_ERR(AppContext::getProjectView() == NULL && AppContext::getProject() == NULL, "There is a project");
+    CHECK_SET_ERR(AppContext::getProjectView() == nullptr && AppContext::getProject() == nullptr, "pre_action_0001: There is a project");
 }
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {

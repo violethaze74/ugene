@@ -84,7 +84,7 @@ void GTUtilsProject::checkProject(HI::GUITestOpStatus &os, ProjectCheckType chec
     GTGlobals::sleep(500);
 
     if (checkType == NotExists) {
-        GT_CHECK(AppContext::getProject() == nullptr, "There is a project");
+        GT_CHECK(AppContext::getProject() == nullptr, "checkProject: There is a project");
         return;
     }
 
