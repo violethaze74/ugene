@@ -5513,6 +5513,7 @@ GUI_TEST_CLASS_DEFINITION(test_6711) {
     // 4. Press the Delete key again. Expected result: the last column is removed the new last column is selected.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(11, 0, 1, 10));
 }
 
