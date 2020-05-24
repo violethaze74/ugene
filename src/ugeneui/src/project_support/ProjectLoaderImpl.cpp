@@ -893,8 +893,7 @@ void ProjectDialogController::sl_projectNameEdited(const QString &text) {
 
 void ProjectDialogController::setupDefaults() {
     projectNameEdit->setText(ProjectLoaderImpl::tr("New Project"));
-    QFileInfo fi("project.proj");
-    projectFilePathEdit->setText(fi.absoluteFilePath());
+    projectFilePathEdit->setText(QFileInfo("project" + PROJECTFILE_EXT).absoluteFilePath());
 }
 
 void ProjectDialogController::accept() {

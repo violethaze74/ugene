@@ -90,7 +90,7 @@ void GUIDialogWaiter::checkDialog() {
             break;
         }
 
-        if (widget && !isFinished && isExpectedName(widget->objectName(), settings.objectName)) {
+        if (widget != nullptr && !isFinished && isExpectedName(widget->objectName(), settings.objectName)) {
             timer->stop();
             qDebug("-------------------------");
             qDebug("GT_DEBUG_MESSAGE GUIDialogWaiter::wait ID = %d, name = '%s' going to RUN", waiterId, settings.objectName.toLocal8Bit().constData());
@@ -279,7 +279,7 @@ void GTUtilsDialog::waitAllFinished(GUITestOpStatus &os, int timeoutMillis) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         isAllFinished = true;
         foreach (GUIDialogWaiter *waiter, pool) {
-            if (!waiter->isFinished) {
+            if (!waiter->isFinished && waiter->getSettings().destiny == GUIDialogWaiter::MustBeRun) {
                 isAllFinished = false;
                 break;
             }
@@ -307,14 +307,14 @@ void GTUtilsDialog::removeRunnable(Runnable const *const runnable) {
 void GTUtilsDialog::checkAllFinished(GUITestOpStatus &os) {
     Q_UNUSED(os);
 
-    foreach (GUIDialogWaiter *w, pool) {
-        GT_CHECK(w, "NULL GUIDialogWaiter");
-        switch (w->getSettings().destiny) {
+    foreach (GUIDialogWaiter *waiter, pool) {
+        GT_CHECK(waiter != nullptr, "GUIDialogWaiter is null");
+        switch (waiter->getSettings().destiny) {
         case GUIDialogWaiter::MustBeRun:
-            GT_CHECK(w->isFinished, QString("\"%1\" not run but should be").arg((w->getSettings().objectName)));
+            GT_CHECK(waiter->isFinished, QString("\"%1\" not run but should be").arg((waiter->getSettings().objectName)));
             break;
         case GUIDialogWaiter::MustNotBeRun:
-            GT_CHECK(!w->isFinished, QString("\"%1\" had run but should not").arg((w->getSettings().objectName)));
+            GT_CHECK(!waiter->isFinished, QString("\"%1\" had run but should not").arg((waiter->getSettings().objectName)));
             break;
         case GUIDialogWaiter::NoMatter:
             break;

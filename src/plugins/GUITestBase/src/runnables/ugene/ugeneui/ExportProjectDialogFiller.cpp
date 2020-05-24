@@ -27,6 +27,7 @@
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QtCore/QFileInfo>
 
 namespace U2 {
 using namespace HI;
@@ -38,8 +39,11 @@ void ExportProjectDialogChecker::commonScenario() {
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     QLineEdit *projectFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
-    GT_CHECK(projectFileLineEdit != NULL, "LineEdit is NULL");
-    GT_CHECK(projectFileLineEdit->text() == projectName, "Project name is not " + projectName);
+    GT_CHECK(projectFileLineEdit != nullptr, "projectFilePathEdit is not found");
+
+    QString fullPath = projectFileLineEdit->text();
+    QString actualName = projectName.contains('/') ? fullPath : QFileInfo(fullPath).fileName();
+    GT_CHECK(actualName == projectName, QString("Expected project name: %1, got: %2").arg(projectName, actualName));
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
 }
@@ -51,7 +55,7 @@ void ExportProjectDialogChecker::commonScenario() {
 void ExportProjectDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
-    
+
     QLineEdit *projectFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
     GT_CHECK(projectFileLineEdit != NULL, "LineEdit is NULL");
     if (!projectName.isEmpty()) {

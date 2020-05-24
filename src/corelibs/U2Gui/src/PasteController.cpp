@@ -215,7 +215,8 @@ PasteTextTask::PasteTextTask(const QClipboard *clipboard, QSet<QString> &exclude
     CHECK(iof != NULL, );
 
     QVariantMap hints;
-    hints[ProjectLoaderHint_DoNotAddToRecentDocuments] = true;
+    // We create a new file for the pasted content and can add it to the "Recent Files".
+    // hints[ProjectLoaderHint_DoNotAddToRecentDocuments] = true;
     hints[DocumentReadingMode_SequenceAsSeparateHint] = true;
     LoadDocumentTask *loadDocumentTask = new LoadDocumentTask(df->getFormatId(), GUrl(clipboardUrl), iof, hints);
     addSubTask(loadDocumentTask);
