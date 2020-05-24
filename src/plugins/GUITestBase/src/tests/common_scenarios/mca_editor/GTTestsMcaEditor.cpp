@@ -933,7 +933,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Sanger data analysis"
                                                 << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //5. Select "SZYD_Cas9_5B71" read
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
@@ -943,23 +943,23 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //Expected state : aligned read sequence with chromatogram, black triangle, directed down and right before read name
     bool isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, "SZYD_Cas9_5B71");
-    CHECK_SET_ERR(isChromatogramShown, "Error: alighed read sequence should be displayed with chromatogram")
+    CHECK_SET_ERR(isChromatogramShown, "Error: aligned read sequence should be displayed with a chromatogram")
 
     //7. Push black triangle
     GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(os, "SZYD_Cas9_5B71", true);
 
     //Expected state : now it is white triangle, directed to the right
-    //Alighed read sequence has been displayed without chromatogram
+    //Aligned read sequence has been displayed without chromatogram
     isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, "SZYD_Cas9_5B71");
-    CHECK_SET_ERR(!isChromatogramShown, "Error: alighed read sequence should be displayed without chromatogram")
+    CHECK_SET_ERR(!isChromatogramShown, "Error: aligned read sequence should be displayed without chromatogram")
 
     //8. Push white triangle
     GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(os, "SZYD_Cas9_5B71", false);
 
     //Expected state : now it is black triangle again
-    //Alighed read sequence has been displayed with chromatogram
+    //Aligned read sequence has been displayed with chromatogram
     isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, "SZYD_Cas9_5B71");
-    CHECK_SET_ERR(isChromatogramShown, "Error: alighed read sequence should be displayed with chromatogram")
+    CHECK_SET_ERR(isChromatogramShown, "Error: aligned read sequence should be displayed with chromatogram")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {

@@ -21,6 +21,7 @@
 
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTScrollBar.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QMainWindow>
@@ -64,11 +65,7 @@ McaEditorSequenceArea *GTUtilsMcaEditorSequenceArea::getSequenceArea(GUITestOpSt
 
 #define GT_METHOD_NAME "getVisibleNames"
 QStringList GTUtilsMcaEditorSequenceArea::getVisibleNames(GUITestOpStatus &os) {
-    Q_UNUSED(os);
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    McaEditor *editor = mw->findChild<McaEditor *>();
-    CHECK_SET_ERR_RESULT(editor != NULL, "McaEditor not found", QStringList());
-
+    McaEditor *editor = GTUtilsMcaEditor::getEditor(os);
     McaEditorNameList *nameListArea = GTUtilsMcaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(NULL != nameListArea, "Mca Editor name list area is NULL", QStringList());
 
@@ -133,10 +130,12 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     if (!mcaSeqArea->isRowVisible(position.y(), false)) {
         GTUtilsMcaEditor::scrollToRead(os, position.y());
     }
+    GTThread::waitForMainThread();
 
     if (!mcaSeqArea->isPositionVisible(position.x(), false)) {
         scrollToBase(os, position.x());
     }
+    GTThread::waitForMainThread();
 
     CHECK_SET_ERR(mcaSeqArea->isVisible(position, false),
                   QString("The position is still invisible after scrolling: (%1, %2)").arg(position.x()).arg(position.y()));
@@ -172,15 +171,16 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus &os, QS
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isCollapsed"
+#define GT_METHOD_NAME "isChromatogramShown"
 bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(GUITestOpStatus &os, QString rowName) {
+    GTThread::waitForMainThread();
     McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea *>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
     GT_CHECK_RESULT(mcaEditArea != NULL, "McaEditorSequenceArea not found", false);
     int rowNum = GTUtilsMcaEditor::getReadsNames(os).indexOf(rowName);
     GT_CHECK_RESULT(rowNum != -1, "sequence not found in nameList", false);
     int rowHeight = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
-    bool isCollapsed = rowHeight > 100;
-    return isCollapsed;
+    bool isChromatogramShown = rowHeight > 100;
+    return isChromatogramShown;
 }
 #undef GT_METHOD_NAME
 
@@ -229,10 +229,7 @@ QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(GUITestOpStatus &os, con
 
 #define GT_METHOD_NAME "getReferenceReg"
 QString GTUtilsMcaEditorSequenceArea::getReferenceReg(GUITestOpStatus &os, int num, int length) {
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    GT_CHECK_RESULT(mw != NULL, "QMainWindow not found", QString());
-    McaEditor *editor = mw->findChild<McaEditor *>();
-    GT_CHECK_RESULT(editor != NULL, "McaEditor not found", QString());
+    McaEditor *editor = GTUtilsMcaEditor::getEditor(os);
     MultipleChromatogramAlignmentObject *obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != NULL, "MultipleChromatogramAlignmentObject not found", QString());
 
@@ -244,12 +241,9 @@ QString GTUtilsMcaEditorSequenceArea::getReferenceReg(GUITestOpStatus &os, int n
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReferenceReg"
+#define GT_METHOD_NAME "getSelectedReferenceReg"
 QString GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(GUITestOpStatus &os) {
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    GT_CHECK_RESULT(mw != NULL, "QMainWindow not found", QString());
-    McaEditor *editor = mw->findChild<McaEditor *>();
-    GT_CHECK_RESULT(editor != NULL, "McaEditor not found", QString());
+    McaEditor *editor = GTUtilsMcaEditor::getEditor(os);
     MultipleChromatogramAlignmentObject *obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != NULL, "MultipleChromatogramAlignmentObject not found", QString());
 
@@ -425,10 +419,7 @@ qint64 GTUtilsMcaEditorSequenceArea::getRowLength(GUITestOpStatus &os, const int
 
 #define GT_METHOD_NAME "getReferenceLength"
 qint64 GTUtilsMcaEditorSequenceArea::getReferenceLength(GUITestOpStatus &os) {
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    GT_CHECK_RESULT(mw != NULL, "QMainWindow not found", 0);
-    McaEditor *editor = mw->findChild<McaEditor *>();
-    GT_CHECK_RESULT(editor != NULL, "McaEditor not found", 0);
+    McaEditor *editor = GTUtilsMcaEditor::getEditor(os);
     MultipleChromatogramAlignmentObject *obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != NULL, "MultipleChromatogramAlignmentObject not found", 0);
 
@@ -439,12 +430,9 @@ qint64 GTUtilsMcaEditorSequenceArea::getReferenceLength(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReferenceLength"
+#define GT_METHOD_NAME "getReferenceLengthWithGaps"
 qint64 GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(GUITestOpStatus &os) {
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    GT_CHECK_RESULT(mw != NULL, "QMainWindow not found", 0);
-    McaEditor *editor = mw->findChild<McaEditor *>();
-    GT_CHECK_RESULT(editor != NULL, "McaEditor not found", 0);
+    McaEditor *editor = GTUtilsMcaEditor::getEditor(os);
     MultipleChromatogramAlignmentObject *obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != NULL, "MultipleChromatogramAlignmentObject not found", 0);
 
