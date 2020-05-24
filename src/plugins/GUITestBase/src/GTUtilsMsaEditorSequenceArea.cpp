@@ -720,6 +720,7 @@ void GTUtilsMSAEditorSequenceArea::replaceSymbol(GUITestOpStatus &os, const QPoi
     clickToPosition(os, maPoint);
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
     GTKeyboardDriver::keyClick(newSymbol);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

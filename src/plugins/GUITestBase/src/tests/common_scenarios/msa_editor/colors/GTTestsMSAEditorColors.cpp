@@ -21,35 +21,24 @@
 
 #include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
-#include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
-#include <utils/GTKeyboardUtils.h>
-#include <utils/GTUtilsApp.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <U2Core/DNAAlphabet.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
 
 #include "GTTestsMSAEditorColors.h"
-#include "GTUtilsAnnotationsTreeView.h"
-#include "GTUtilsDocument.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsProject.h"
-#include "GTUtilsProjectTreeView.h"
-#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
-#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 
 namespace U2 {
 
@@ -218,7 +207,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the alignment alphabet is changed to Raw, highlighting scheme options are the same.
-    const bool isAlphabetRaw = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isRaw();
+    bool isAlphabetRaw = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isRaw();
     CHECK_SET_ERR(isAlphabetRaw, "Alphabet is not RAW after the symbol replacing");
 
     int threshold = GTUtilsOptionPanelMsa::getThreshold(os);
