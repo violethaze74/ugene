@@ -401,7 +401,7 @@ void SQLiteMsaDbi::setNewRowsOrder(const U2DataId &msaId, const QList<qint64> &r
     CHECK_OP(os, );
 
     QByteArray modDetails;
-    if (TrackOnUpdate == trackMod) {
+    if (trackMod == TrackOnUpdate) {
         QList<qint64> oldOrder = getRowsOrder(msaId, os);
         CHECK_OP(os, );
         modDetails = U2DbiPackUtils::packRowOrderDetails(oldOrder, rowIds);

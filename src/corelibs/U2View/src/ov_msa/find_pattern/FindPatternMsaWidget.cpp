@@ -153,9 +153,6 @@ FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, bool isSearchIn
 
     setContentsMargins(0, 0, 0, 0);
 
-    const DNAAlphabet *alphabet = msaEditor->getMaObject()->getAlphabet();
-    isAmino = alphabet->isAmino();
-
     initLayout();
     connectSlots();
 
@@ -171,8 +168,6 @@ FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, bool isSearchIn
 
     sl_onSearchPatternChanged();
 
-    nextPushButton->setDisabled(true);
-    prevPushButton->setDisabled(true);
     showCurrentResultAndStopProgress();
     setUpTabOrder();
     previousMaxResult = boxMaxResult->value();
@@ -238,7 +233,7 @@ void FindPatternMsaWidget::initLayout() {
 
 void FindPatternMsaWidget::initAlgorithmLayout() {
     boxAlgorithm->addItem(tr("Exact"), FindAlgorithmPatternSettings_Exact);
-    if (!isAmino) {
+    if (!isAmino()) {
         boxAlgorithm->addItem(tr("InsDel"), FindAlgorithmPatternSettings_InsDel);
         boxAlgorithm->addItem(tr("Substitute"), FindAlgorithmPatternSettings_Subst);
     }
@@ -335,6 +330,7 @@ void FindPatternMsaWidget::connectSlots() {
     connect(msaEditor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), this, SLOT(sl_onMsaModified()));
     connect(prevPushButton, SIGNAL(clicked()), SLOT(sl_prevButtonClicked()));
     connect(nextPushButton, SIGNAL(clicked()), SLOT(sl_nextButtonClicked()));
+    connect(groupResultsButton, SIGNAL(clicked()), SLOT(sl_groupResultsButtonClicked()));
     connect(spinMatch, SIGNAL(valueChanged(int)), SLOT(sl_validateStateAndStartNewSearch()));
 
     auto sequenceArea = msaEditor->getUI()->getSequenceArea();
@@ -703,7 +699,7 @@ bool FindPatternMsaWidget::checkStateAndUpdateStatus() {
 }
 
 void FindPatternMsaWidget::enableDisableMatchSpin() {
-    spinMatch->setDisabled(textPattern->toPlainText().isEmpty() || isAmino);
+    spinMatch->setDisabled(textPattern->toPlainText().isEmpty() || isAmino());
 }
 
 U2Region FindPatternMsaWidget::getSearchRegionFromUi(bool &isRegionIsCorrect) const {
@@ -802,6 +798,7 @@ void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList &patterns
     SAFE_POINT(searchTask == nullptr, "Search task is not nullptr", );
     nextPushButton->setDisabled(true);
     prevPushButton->setDisabled(true);
+    groupResultsButton->setDisabled(true);
 
     searchTask = new FindPatternMsaTask(settings);
     connect(searchTask, SIGNAL(si_stateChanged()), SLOT(sl_findPatternTaskStateChanged()));
@@ -847,9 +844,11 @@ void FindPatternMsaWidget::postProcessAllSearchResults() {
     visibleSearchResults.clear();
     resortResultsByViewState();
     showCurrentResultAndStopProgress();
-    nextPushButton->setDisabled(visibleSearchResults.isEmpty());
-    prevPushButton->setDisabled(visibleSearchResults.isEmpty());
-    if (!visibleSearchResults.isEmpty()) {
+    bool hasVisibleResults = !visibleSearchResults.isEmpty();
+    nextPushButton->setEnabled(hasVisibleResults);
+    prevPushButton->setEnabled(hasVisibleResults);
+    groupResultsButton->setEnabled(hasVisibleResults && !msaEditor->getMaObject()->isStateLocked());
+    if (hasVisibleResults) {
         correctSearchInCombo();
         if (setSelectionToTheFirstResult) {
             currentResultIndex = 0;
@@ -876,6 +875,7 @@ bool FindPatternMsaWidget::checkPatternRegion(const QString &pattern) {
 }
 
 void FindPatternMsaWidget::sl_onSelectedRegionChanged(const MaEditorSelection &currentSelection, const MaEditorSelection &prev) {
+    Q_UNUSED(prev);
     int boxRegionData = boxRegion->itemData(boxRegion->currentIndex()).toInt();
     bool isSearchInSelectionOn = boxRegionData == RegionSelectionIndex_CurrentSelectedRegion;
     if (isSearchInSelectionOn && findCurrentResultIndexFromSelection() == -1) {
@@ -994,6 +994,7 @@ void FindPatternMsaWidget::stopCurrentSearchTask() {
     visibleSearchResults.clear();
     nextPushButton->setDisabled(true);
     prevPushButton->setDisabled(true);
+    groupResultsButton->setDisabled(true);
     showCurrentResultAndStopProgress();
 }
 
@@ -1086,6 +1087,49 @@ void FindPatternMsaWidget::updateCurrentResultLabel() {
     } else {
         resultLabel->setText(tr("Results: %1/%2").arg(currentResultText).arg(visibleSearchResults.size()));
     }
+}
+
+void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
+    CHECK(!allSearchResults.isEmpty(), )
+    MultipleSequenceAlignmentObject *maObject = msaEditor->getMaObject();
+    CHECK(!maObject->isStateLocked(), );
+
+    // Drop grouping mode.
+    msaEditor->getUI()->getSequenceArea()->sl_setCollapsingMode(false);
+
+    QSet<qint64> resultUidSet;
+    for (const FindPatternWidgetResult &result : allSearchResults) {
+        resultUidSet << result.rowId;
+    }
+    const QList<qint64> &allRowIds = msaEditor->getMaRowIds();
+    if (resultUidSet.size() == allRowIds.size()) {
+        // Can't re-group anything: every sequence has a result.
+        msaEditor->selectRows(0, allRowIds.size());
+        return;
+    }
+
+    // Reorder rows: move search results to the top. Keep the order stable.
+    QList<qint64> rowsInTheGroup;
+    QList<qint64> rowsOutOfTheGroup;
+    for (qint64 rowId : allRowIds) {
+        if (resultUidSet.contains(rowId)) {
+            rowsInTheGroup << rowId;
+        } else {
+            rowsOutOfTheGroup << rowId;
+        }
+    }
+    QList<qint64> reorderedRowIds = QList<qint64>() << rowsInTheGroup << rowsOutOfTheGroup;
+    CHECK(!maObject->isStateLocked(), );
+    U2OpStatusImpl os;
+    maObject->updateRowsOrder(os, reorderedRowIds);
+    if (!os.hasError()) {
+        msaEditor->selectRows(0, rowsInTheGroup.size());
+    }
+}
+
+bool FindPatternMsaWidget::isAmino() const {
+    const DNAAlphabet *alphabet = msaEditor->getMaObject()->getAlphabet();
+    return alphabet->isAmino();
 }
 
 FindPatternWidgetResult::FindPatternWidgetResult(qint64 rowId, int viewRowIndex, const U2Region &region)

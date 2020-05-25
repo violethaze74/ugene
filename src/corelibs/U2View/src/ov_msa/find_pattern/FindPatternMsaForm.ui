@@ -24,9 +24,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
+    <layout class="QHBoxLayout" name="searchContextLayout">
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="searchContextLabel">
        <property name="text">
         <string>Search context</string>
        </property>
@@ -82,7 +82,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
+    <layout class="QHBoxLayout" name="resultsLayout">
      <item>
       <widget class="QLabel" name="resultLabel">
        <property name="text">
@@ -116,18 +116,37 @@
        </property>
       </spacer>
      </item>
+     <item>
+      <widget class="QPushButton" name="groupResultsButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>102</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Group result sequences in the alignment</string>
+       </property>
+       <property name="text">
+        <string>Group</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
     <layout class="QVBoxLayout" name="subgroupsLayout"/>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <property name="spacing">
-      <number>0</number>
-     </property>
+    <layout class="QHBoxLayout" name="prevNextButtonsLayout">
      <item>
       <widget class="QPushButton" name="prevPushButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -155,7 +174,7 @@
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_2">
+      <spacer name="prevNextButtonsSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -164,7 +183,7 @@
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>50</width>
+         <width>1000</width>
          <height>20</height>
         </size>
        </property>
@@ -172,6 +191,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="nextPushButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>

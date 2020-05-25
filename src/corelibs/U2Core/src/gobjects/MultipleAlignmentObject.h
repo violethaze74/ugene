@@ -106,7 +106,9 @@ public:
 
     bool isRegionEmpty(const QList<int> &rowIndexes, int x, int width) const;
 
-    QList<qint64> getRowsOrder(U2OpStatus &os) const;
+    /** Returns list of ordered row ids. */
+    QList<qint64> getRowIds(U2OpStatus &os) const;
+
     /**
      * Updates the rows order.
      * There must be one-to-one correspondence between the specified rows IDs

@@ -160,6 +160,9 @@ public:
     /** Sets new cursor position. Emits si_cursorPositionChanged() signal. */
     void setCursorPosition(const QPoint &cursorPosition);
 
+    /** Sets selection to the given view rows. */
+    virtual void selectRows(int firstViewRowIndex, int numberOfRows);
+
 signals:
     void si_fontChanged(const QFont &f);
     void si_zoomOperationPerformed(bool resizeModeChanged);

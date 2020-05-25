@@ -43,7 +43,7 @@ MaCollapsibleGroup::MaCollapsibleGroup()
 }
 
 bool MaCollapsibleGroup::operator==(const MaCollapsibleGroup &other) const {
-    return maRows == other.maRows && isCollapsed == other.isCollapsed;
+    return maRows == other.maRows && isCollapsed == other.isCollapsed && maRowIds == other.maRowIds;
 }
 
 int MaCollapsibleGroup::size() const {

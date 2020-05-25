@@ -194,7 +194,7 @@ void MaDbiUtils::updateRowsOrder(const U2EntityRef &meRef, const QList<qint64> &
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(msaDbi != nullptr, "Msa Dbi is null!", );
 
     // Update the data
     msaDbi->setNewRowsOrder(meRef.entityId, rowsOrder, os);

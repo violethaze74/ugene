@@ -200,7 +200,7 @@ void MaEditor::updateReference() {
 
 void MaEditor::resetCollapsibleModel() {
     MaCollapseModel *collapsibleModel = ui->getCollapseModel();
-    SAFE_POINT(NULL != collapsibleModel, "NULL collapsible model!", );
+    SAFE_POINT(collapsibleModel != nullptr, "CollapseModel is null!", );
     collapsibleModel->reset(getMaRowIds());
 }
 
@@ -489,6 +489,11 @@ void MaEditor::setCursorPosition(const QPoint &newCursorPosition) {
 
 QList<qint64> MaEditor::getMaRowIds() const {
     return maObject->getMultipleAlignment()->getRowsIds();
+}
+
+void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {
+    MaEditorSelection selection(0, firstViewRowIndex, getAlignmentLen(), numberOfRows);
+    ui->getSequenceArea()->setSelection(selection);
 }
 
 }    // namespace U2

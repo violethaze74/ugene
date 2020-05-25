@@ -74,6 +74,7 @@ private slots:
     void sl_onMaxResultChanged(int);
     void sl_findPatternTaskStateChanged();
     void sl_searchModeChanged();
+    void sl_groupResultsButtonClicked();
 
     /** A sequence part was added, removed or replaced */
     void sl_onMsaModified();
@@ -87,6 +88,7 @@ private slots:
     void sl_collapseModelChanged();
 
     void sl_validateStateAndStartNewSearch(bool activatedByOutsideChanges = false);
+
 private:
     void initLayout();
     void initAlgorithmLayout();
@@ -96,6 +98,9 @@ private:
     void updateLayout();
     void connectSlots();
     bool checkRegion();
+
+    /** Returns true if the alignment alphabet is Amino. */
+    bool isAmino() const;
 
     int getMaxError(const QString &pattern) const;
 
@@ -173,7 +178,6 @@ private:
     void postProcessAllSearchResults();
 
     MSAEditor *msaEditor;
-    bool isAmino;
     int selectedAlgorithm;
     QString patternString;
     QString patternRegExp;

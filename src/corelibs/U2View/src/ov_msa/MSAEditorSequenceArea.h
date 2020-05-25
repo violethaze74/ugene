@@ -132,6 +132,9 @@ public:
 
     bool hasAminoAlphabet();
 
+public slots:
+    void sl_setCollapsingMode(bool enabled);
+
 protected:
     void focusOutEvent(QFocusEvent *fe);
     void focusInEvent(QFocusEvent *fe);
@@ -153,7 +156,6 @@ private slots:
     void sl_goto();
     void sl_removeAllGaps();
     void sl_sortByName();
-    void sl_setCollapsingMode(bool enabled);
     void sl_updateCollapsingMode();
     void sl_reverseComplementCurrentSelection();
     void sl_reverseCurrentSelection();

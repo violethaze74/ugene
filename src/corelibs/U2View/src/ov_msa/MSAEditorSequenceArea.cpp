@@ -696,11 +696,11 @@ void MSAEditorSequenceArea::sl_sortByName() {
 }
 
 void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
-    CHECK(getEditor() != NULL, );
+    CHECK(getEditor() != nullptr, );
     GCOUNTER(cvar, tvar, "Switch collapsing mode");
 
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-    if (msaObject == NULL || msaObject->isStateLocked()) {
+    if (msaObject == nullptr || msaObject->isStateLocked()) {
         if (collapseModeSwitchAction->isChecked()) {
             collapseModeSwitchAction->setChecked(false);
             collapseModeUpdateAction->setEnabled(false);
@@ -708,7 +708,7 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
         return;
     }
 
-    bool collapseModeChanged = ui->isCollapsibleMode() != enabled;
+    bool isCollapseModeChanged = ui->isCollapsibleMode() != enabled;
     ui->setCollapsibleMode(enabled);
     collapseModeUpdateAction->setEnabled(enabled);
 
@@ -718,7 +718,7 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
         ui->getCollapseModel()->reset(editor->getMaRowIds());
     }
 
-    if (collapseModeChanged) {
+    if (isCollapseModeChanged) {
         setSelection(MaEditorSelection());
     }
 

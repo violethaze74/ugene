@@ -155,8 +155,7 @@ U2Region MaEditorNameList::getSelection() const {
 }
 
 void MaEditorNameList::setSelection(int startSeq, int count) {
-    MaEditorSelection selection(0, startSeq, editor->getAlignmentLen(), count);
-    ui->getSequenceArea()->setSelection(selection);
+    ui->getEditor()->selectRows(startSeq, count);
 }
 
 void MaEditorNameList::updateScrollBar() {
