@@ -346,9 +346,7 @@ void GTFileDialog::openFile(GUITestOpStatus &os, const QString &path, const QStr
         QString pathToFile;
     };
     GTThread::runInMainThread(os, new OpenFileScenario(path + "/" + fileName));
-    GTGlobals::sleep(200);
     GTThread::waitForMainThread();
-    GTGlobals::sleep(100);
 }
 #undef GT_METHOD_NAME
 
