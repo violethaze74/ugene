@@ -209,23 +209,22 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "waitWindowOpened"
 void GTUtilsMdi::waitWindowOpened(HI::GUITestOpStatus &os, const QString &windowNamePart, qint64 timeout) {
     MainWindow *mainWindow = AppContext::getMainWindow();
-    GT_CHECK(mainWindow != NULL, "MainWindow == NULL");
+    GT_CHECK(mainWindow != nullptr, "MainWindow == NULL");
+
     MWMDIManager *mdiManager = mainWindow->getMDIManager();
-    GT_CHECK(mdiManager != NULL, "MainWindow == NULL");
+    GT_CHECK(mdiManager != nullptr, "MWMDIManager == NULL");
 
-    bool found = false;
-    int passedTime = 0;
-    while (!found && passedTime < timeout / 1000) {
+    bool isWindowFound = false;
+    for (int time = 0; time < timeout && !isWindowFound; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         foreach (MWMDIWindow *window, mdiManager->getWindows()) {
-            found |= window->windowTitle().contains(windowNamePart, Qt::CaseInsensitive);
+            isWindowFound = window->windowTitle().contains(windowNamePart, Qt::CaseInsensitive);
+            if (isWindowFound) {
+                break;
+            }
         }
-        GTGlobals::sleep(1000);
-        passedTime++;
     }
-
-    if (!found) {
-        os.setError(QString("Cannot find MDI window with part of name '%1', timeout").arg(windowNamePart));
-    }
+    GT_CHECK_RESULT(isWindowFound, QString("Cannot find MDI window with part of name '%1'").arg(windowNamePart),);
 }
 #undef GT_METHOD_NAME
 

@@ -154,7 +154,7 @@ bool validateParameters(const Schema &schema, NotificationsList &infoList) {
     bool good = true;
     foreach (Actor *a, schema.getProcesses()) {
         const int notificationCountBefore = infoList.size();
-        good &= a->validate(infoList);
+        good = a->validate(infoList) && good;
         for (int i = notificationCountBefore; i < infoList.size(); ++i) {
             infoList[i].actorId = a->getId();
         }
@@ -162,48 +162,47 @@ bool validateParameters(const Schema &schema, NotificationsList &infoList) {
     return good;
 }
 
-bool validateExternalTools(Actor *a, NotificationsList &infoList) {
-    bool good = true;
-    StrStrMap tools = a->getProto()->getExternalTools();
+bool validateExternalTools(Actor *actor, NotificationsList &infoList) {
+    bool isValid = true;
+    StrStrMap tools = actor->getProto()->getExternalTools();
     foreach (const QString &toolId, tools.keys()) {
-        Attribute *attr = a->getParameter(tools[toolId]);
+        Attribute *attr = actor->getParameter(tools[toolId]);
         ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(toolId);
-        if (nullptr == tool) {
-            good = false;
+        if (tool == nullptr) {
+            isValid = false;
             infoList << WorkflowNotification(WorkflowUtils::externalToolIsAbsentError(toolId),
-                                             a->getId(),
+                                             actor->getId(),
                                              WorkflowNotification::U2_ERROR);
             continue;
         }
 
-        bool fromAttr = (NULL != attr) && !attr->isDefaultValue();
-        bool valid = fromAttr ? !attr->isEmpty() : !tool->getPath().isEmpty();
-        if (!valid) {
-            good = false;
+        bool isToolFromAttribute = attr != nullptr && !attr->isDefaultValue();
+        isValid = isToolFromAttribute ? !attr->isEmpty() :!tool->getPath().isEmpty();
+        if (!isValid) {
             infoList << WorkflowNotification(WorkflowUtils::externalToolError(tool->getName()),
-                                             a->getId(),
+                                             actor->getId(),
                                              WorkflowNotification::U2_ERROR);
-        } else if (!fromAttr && !tool->isValid()) {
+        } else if (!isToolFromAttribute && !tool->isValid()) {
             if (tool->isCustom()) {
-                infoList << WorkflowNotification(WorkflowUtils::customExternalToolInvalidError(tool->getName(), a->getLabel()),
-                                                 a->getProto()->getId(),
+                infoList << WorkflowNotification(WorkflowUtils::customExternalToolInvalidError(tool->getName(), actor->getLabel()),
+                                                 actor->getProto()->getId(),
                                                  WorkflowNotification::U2_ERROR);
-                good = false;
+                isValid = false;
             } else {
                 infoList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
-                                                 a->getProto()->getId(),
+                                                 actor->getProto()->getId(),
                                                  WorkflowNotification::U2_WARNING);
             }
         }
     }
-    return good;
+    return isValid;
 }
 
 bool validatePorts(Actor *a, NotificationsList &infoList) {
     bool good = true;
     foreach (Port *p, a->getEnabledPorts()) {
         NotificationsList notificationList;
-        good &= p->validate(notificationList);
+        good = p->validate(notificationList) && good;
         if (!notificationList.isEmpty()) {
             foreach (WorkflowNotification notification, notificationList) {
                 WorkflowNotification item;
@@ -275,22 +274,21 @@ bool validateScript(Actor *a, NotificationsList &infoList) {
 }    // namespace
 
 bool WorkflowUtils::validate(const Schema &schema, NotificationsList &notificationList) {
-    bool good = validateOutputDir(WorkflowSettings::getWorkflowOutputDirectory(), notificationList);
-    foreach (Actor *a, schema.getProcesses()) {
-        good &= validatePorts(a, notificationList);
-        if (a->getProto()->isScriptFlagSet()) {
-            good &= validateScript(a, notificationList);
+    bool isValid = validateOutputDir(WorkflowSettings::getWorkflowOutputDirectory(), notificationList);
+    foreach (Actor *actor, schema.getProcesses()) {
+        isValid = validatePorts(actor, notificationList) && isValid;
+        if (actor->getProto()->isScriptFlagSet()) {
+            isValid = validateScript(actor, notificationList) && isValid;
         }
-        good &= validateExternalTools(a, notificationList);
+        isValid = validateExternalTools(actor, notificationList) && isValid;
     }
     if (!hasSchemeCycles(schema)) {
-        good = false;
-        notificationList << WorkflowNotification(QObject::tr("The workflow contains a cycle"));
+        isValid = false;
+        notificationList << WorkflowNotification(tr("The schema contains loops"));
     }
 
-    good &= validateParameters(schema, notificationList);
-
-    return good;
+    isValid = validateParameters(schema, notificationList) && isValid;
+    return isValid;
 }
 
 // used in GUI schema validating

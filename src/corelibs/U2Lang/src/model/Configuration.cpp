@@ -111,10 +111,10 @@ bool Configuration::validate(NotificationsList &notificationList) const {
         if (!isAttributeVisible(a)) {
             continue;
         }
-        good &= a->validate(notificationList);
+        good = a->validate(notificationList) && good;
     }
     if (validator) {
-        good &= validator->validate(this, notificationList);
+        good = validator->validate(this, notificationList) && good;
     }
     return good;
 }

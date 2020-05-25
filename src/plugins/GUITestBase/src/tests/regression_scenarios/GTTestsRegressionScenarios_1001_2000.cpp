@@ -7472,12 +7472,13 @@ GUI_TEST_CLASS_DEFINITION(test_1710_1) {
     //Expected state: The message appeared saying "Well done!".
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Well done!"));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1710_2) {
     //1. Open Settings -> Preferences -> External Tools.
     //2. Select any invalid file for Blast -> BlastAll.
-    GTUtilsExternalTools::setToolUrl(os, "BlastN", dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsExternalTools::setToolUrl(os, "BlastN", dataDir + "this-file-does-not-exist");
 
     //3. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -7495,6 +7496,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_2) {
     //6. Press the validate button.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "non-critical warnings"));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
+    GTUtilsDialog::waitAllFinished(os);
 
     //Expected state: there must be a warning "External tool is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected".
     GTUtilsWorkflowDesigner::checkErrorList(os, "External tool \"BlastAll\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
@@ -7536,7 +7538,7 @@ GUI_TEST_CLASS_DEFINITION(test_1714) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new DeselectCistromeAndPython()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1720) {
@@ -7556,7 +7558,7 @@ GUI_TEST_CLASS_DEFINITION(test_1720) {
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
 
-    GTGlobals::sleep(8000);
+    GTUtilsDialog::waitAllFinished(os);
     //4. Fill field "Resource ID" with value D11266. Click "OK"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "D11266.gb"));
     GTUtilsLog::check(os, l);
@@ -7611,9 +7613,9 @@ GUI_TEST_CLASS_DEFINITION(test_1756) {
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    GTGlobals::sleep(500);
+    GTUtilsDialog::waitAllFinished(os);
 
-    CHECK_SET_ERR(0 == GTUtilsWorkflowDesigner::checkErrorList(os, "Required parameter is not set: Motif database"),
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Required parameter is not set: Motif database") == 0,
                   "The property Motif database is required. This is wrong.");
 }
 GUI_TEST_CLASS_DEFINITION(test_1731) {

@@ -424,16 +424,20 @@ void BlastPlusWorker::cleanup() {
 /************************************************************************/
 bool ToolsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> & /*options*/) const {
     ExternalTool *tool = getTool(getValue<QString>(actor, BLASTPLUS_PROGRAM_NAME));
-    SAFE_POINT(NULL != tool, "NULL blast plus tool", false);
+    SAFE_POINT(tool != nullptr, "NULL blast plus tool", false);
 
     Attribute *attr = actor->getParameter(BLASTPLUS_EXT_TOOL_PATH);
-    SAFE_POINT(NULL != attr, "NULL blastplus path attribute", false);
+    SAFE_POINT(attr != nullptr, "NULL blastplus path attribute", false);
 
-    bool valid = attr->isDefaultValue() ? !tool->getPath().isEmpty() : !attr->isEmpty();
-    if (!valid) {
+    bool isValid = attr->isDefaultValue() ? !tool->getPath().isEmpty() : !attr->isEmpty();
+    if (!isValid) {
         notificationList << WorkflowNotification(WorkflowUtils::externalToolError(tool->getName()));
+    } else if (attr->isDefaultValue() && !tool->isValid()) {
+        notificationList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
+                                                 actor->getProto()->getId(),
+                                                 WorkflowNotification::U2_WARNING);
     }
-    return valid;
+    return isValid;
 }
 
 ExternalTool *ToolsValidator::getTool(const QString &program) const {
