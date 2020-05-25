@@ -109,21 +109,16 @@ QString GTUtilsAnnotationsTreeView::getAVItemName(HI::GUITestOpStatus &os, AVIte
 
 #define GT_METHOD_NAME "getQualifierValue"
 QString GTUtilsAnnotationsTreeView::getQualifierValue(HI::GUITestOpStatus &os, const QString &qualifierName, QTreeWidgetItem *parentItem) {
-    GTTreeWidget::getItemCenter(os, parentItem);
+    GT_CHECK_RESULT(parentItem != nullptr, "Parent item is null", "");
     QTreeWidgetItem *qualifierItem = findItem(os, qualifierName, parentItem);
-    GT_CHECK_RESULT(NULL != qualifierItem, "Qualifier item not found", "");
     return qualifierItem->text(AnnotationsTreeView::COLUMN_VALUE);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getQualifierValue"
 QString GTUtilsAnnotationsTreeView::getQualifierValue(HI::GUITestOpStatus &os, const QString &qualName, const QString &parentName) {
-    getItemCenter(os, parentName);
     QTreeWidgetItem *parent = findItem(os, parentName);
-    GT_CHECK_RESULT(parent != NULL, "Parent item not found", "");
-
     QTreeWidgetItem *qualItem = findItem(os, qualName, parent);
-    GT_CHECK_RESULT(NULL != qualItem, "Qualifier item not found", "");
     return qualItem->text(AnnotationsTreeView::COLUMN_VALUE);
 }
 #undef GT_METHOD_NAME
@@ -203,11 +198,9 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findFirstAnnotation(HI::GUITestOpSt
 
 #define GT_METHOD_NAME "findItem"
 QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
-    GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", NULL);
+    GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", nullptr);
 
     QTreeWidget *treeWidget = getTreeWidget(os);
-    GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", NULL);
-
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     foreach (QTreeWidgetItem *item, treeItems) {
         QString treeItemName = item->text(0);
@@ -215,9 +208,8 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os, c
             return item;
         }
     }
-    GT_CHECK_RESULT(options.failIfNotFound == false, QString("Item '%1' not found in tree widget").arg(itemName), NULL);
-
-    return NULL;
+    GT_CHECK_RESULT(!options.failIfNotFound, QString("Item '%1' not found in tree widget").arg(itemName), nullptr);
+    return nullptr;
 }
 #undef GT_METHOD_NAME
 
@@ -246,12 +238,10 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItemWithIndex(HI::GUITestOpStat
 
 #define GT_METHOD_NAME "findItem"
 QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os, const QString &itemName, QTreeWidgetItem *parentItem, const GTGlobals::FindOptions &options) {
-    GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", NULL);
-
-    if (parentItem == NULL) {
+    GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", nullptr);
+    if (parentItem == nullptr) {
         return findItem(os, itemName, options);
     }
-
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(parentItem);
     foreach (QTreeWidgetItem *item, treeItems) {
         QString treeItemName = item->text(0);
@@ -259,9 +249,8 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os, c
             return item;
         }
     }
-    GT_CHECK_RESULT(options.failIfNotFound == false, "Item " + itemName + " not found in tree widget", NULL);
-
-    return NULL;
+    GT_CHECK_RESULT(!options.failIfNotFound, "Item " + itemName + " not found in tree widget", NULL);
+    return nullptr;
 }
 
 #undef GT_METHOD_NAME
@@ -485,6 +474,7 @@ void GTUtilsAnnotationsTreeView::selectItems(HI::GUITestOpStatus &os, const QLis
         }
     }
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

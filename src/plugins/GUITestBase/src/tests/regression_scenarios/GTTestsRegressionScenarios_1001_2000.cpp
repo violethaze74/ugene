@@ -724,8 +724,8 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Open...");
 
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(5000);
 
     QStringList windowsNames;
     windowsNames << "murine [s] NC_001363"
@@ -766,14 +766,14 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
 
     for (int i = 0; i < seqNum; i++) {
         ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os, i);
-        CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWgt), QString("No CV for %1 single sequence view").arg(i));
+        CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWgt), QString("No CV for %1 single sequence view. First check").arg(i));
     }
 
     GTUtilsCv::commonCvBtn::click(os);
 
     for (int i = 0; i < seqNum; i++) {
         ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os, i);
-        CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWgt), QString("No CV for %1 single sequence view").arg(i));
+        CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWgt), QString("No CV for %1 single sequence view. Second check").arg(i));
     }
 }
 
@@ -1626,7 +1626,6 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1) {    //commit AboutDialogController.cpp
 
 GUI_TEST_CLASS_DEFINITION(test_1115) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/PBR322_blast_annotations.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1634,14 +1633,16 @@ GUI_TEST_CLASS_DEFINITION(test_1115) {
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     const QModelIndex table = GTUtilsProjectTreeView::findIndex(os, "SYNPBR322 features", GTUtilsProjectTreeView::findIndex(os, "PBR322_blast_annotations.gb"));
     GTUtilsProjectTreeView::dragAndDrop(os, table, GTUtilsAnnotationsTreeView::getTreeWidget(os));
+    GTUtilsDialog::waitAllFinished(os);
 
     //    3. Select two or more BLAST annotations.
     QList<QTreeWidgetItem *> blastResultItems = GTUtilsAnnotationsTreeView::findItems(os, "blast result");
-    CHECK_SET_ERR(2 <= blastResultItems.size(), "Not enough BLAST results");
+    CHECK_SET_ERR(blastResultItems.size() >= 2, "Not enough BLAST results");
 
-    const QStringList expectedNames = QStringList() << GTUtilsAnnotationsTreeView::getQualifierValue(os, "accession", blastResultItems.first())
-                                                    << GTUtilsAnnotationsTreeView::getQualifierValue(os, "accession", blastResultItems.last());
     GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << blastResultItems.first() << blastResultItems.last());
+
+    QStringList expectedNames = QStringList() << GTUtilsAnnotationsTreeView::getQualifierValue(os, "accession", blastResultItems.first())
+                                              << GTUtilsAnnotationsTreeView::getQualifierValue(os, "accession", blastResultItems.last());
 
     //    4. Use menu {Export->Export blast result to alignment}.
     //    5. Click "Export".
@@ -1650,13 +1651,14 @@ GUI_TEST_CLASS_DEFINITION(test_1115) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export"
                                                                               << "Export BLAST result to alignment"));
     GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, blastResultItems.first());
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    6. Check that annotations are correctly exported.
     GTUtilsDocument::checkDocument(os, "test_1115.aln", MsaEditorFactory::ID);
 
-    const QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(expectedNames == names, QString("Unexpected msa rows names: expect '%1', got '%2'").arg(expectedNames.join(", ")).arg(names.join(", ")));
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names == expectedNames, QString("Unexpected msa rows names: expect '%1', got '%2'").arg(expectedNames.join(", ")).arg(names.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1121) {

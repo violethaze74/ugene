@@ -121,14 +121,12 @@ QPoint GTTreeWidget::getItemCenter(GUITestOpStatus &os, QTreeWidgetItem* item) {
 
 #define GT_METHOD_NAME "getItems"
 QList<QTreeWidgetItem*> GTTreeWidget::getItems(QTreeWidgetItem* root) {
-
     QList<QTreeWidgetItem*> treeItems;
-
-    for (int i=0; i<root->childCount(); i++) {
-        treeItems.append(root->child(i));
-        treeItems.append(getItems(root->child(i)));
+    for (int i = 0; i < root->childCount(); i++) {
+        QTreeWidgetItem *childItem = root->child(i);
+        treeItems.append(childItem);
+        treeItems.append(getItems(childItem));
     }
-
     return treeItems;
 }
 #undef GT_METHOD_NAME

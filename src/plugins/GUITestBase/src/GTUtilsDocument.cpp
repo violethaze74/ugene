@@ -62,22 +62,21 @@ Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &d
 
 #define GT_METHOD_NAME "checkDocument"
 void GTUtilsDocument::checkDocument(HI::GUITestOpStatus &os, const QString &documentName, const GObjectViewFactoryId &id) {
-    GTGlobals::sleep(1000);
-
-    Document *d = getDocument(os, documentName);
-    GT_CHECK(d != NULL, "There is no document with name " + documentName);
-
+    Document *document = nullptr;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && document == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        document = getDocument(os, documentName);
+    }
+    GT_CHECK(document != nullptr, "There is no document with name " + documentName);
     if (id.isEmpty()) {
         return;
     }
-
-    GObjectView *view = getDocumentGObjectView(os, d);
+    GObjectView *view = getDocumentGObjectView(os, document);
     if (id == DocumentUnloaded) {
-        GT_CHECK(view == NULL, "GObjectView is not NULL");
+        GT_CHECK(view == nullptr, "GObjectView is not NULL");
         return;
     }
-
-    GT_CHECK(view != NULL, "GObjectView* is NULL");
+    GT_CHECK(view != nullptr, "GObjectView is NULL");
     GObjectViewFactoryId viewFactoryId = view->getFactoryId();
     GT_CHECK(viewFactoryId == id, "View's GObjectViewFactoryId is " + viewFactoryId + ", not " + id);
 }
