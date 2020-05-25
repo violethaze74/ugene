@@ -271,7 +271,7 @@ WorkflowView *WorkflowView::openWD(WorkflowGObject *go) {
 
 WorkflowView::WorkflowView(WorkflowGObject *go)
     : MWMDIWindow(tr("Workflow Designer")), running(false), sceneRecreation(false), go(go), currentProto(NULL), currentActor(NULL),
-      pasteCount(0), debugInfo(new WorkflowDebugStatus(this)), debugActions() {
+      pasteCount(0), debugInfo(new WorkflowDebugStatus(this)), debugActions(), loadWorkflowSceneTask(nullptr) {
     scriptingMode = WorkflowSettings::getScriptingMode();
     elementsMenu = NULL;
     schema = new Schema();
@@ -304,6 +304,9 @@ WorkflowView::WorkflowView(WorkflowGObject *go)
 
 WorkflowView::~WorkflowView() {
     uiLog.trace("~WorkflowView");
+    if (!loadWorkflowSceneTask.isNull()) {
+        loadWorkflowSceneTask->cancel();
+    }
     if (AppContext::getProjectService()) {
         AppContext::getProjectService()->enableSaveAction(true);
     }
@@ -2153,13 +2156,13 @@ void WorkflowView::sl_loadScene(const QString &url, bool fromDashboard) {
     if (fromDashboard && !confirmModified()) {
         return;
     }
-    Task *t = new LoadWorkflowSceneTask(schema, &meta, scene, url, fromDashboard, fromDashboard);    //FIXME unsynchronized meta usage
-    TaskSignalMapper *m = new TaskSignalMapper(t);
+    loadWorkflowSceneTask = new LoadWorkflowSceneTask(schema, &meta, scene, url, fromDashboard, fromDashboard);    //FIXME unsynchronized meta usage
+    TaskSignalMapper *m = new TaskSignalMapper(loadWorkflowSceneTask.data());
     connect(m, SIGNAL(si_taskFinished(Task *)), SLOT(sl_onSceneLoaded()));
     if (LoadWorkflowTask::detectFormat(IOAdapterUtils::readFileHeader(url)) == LoadWorkflowTask::XML) {
         connect(m, SIGNAL(si_taskFinished(Task *)), SLOT(sl_xmlSchemaLoaded(Task *)));
     }
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+    AppContext::getTaskScheduler()->registerTopLevelTask(loadWorkflowSceneTask);
 }
 
 void WorkflowView::sl_xmlSchemaLoaded(Task *t) {
