@@ -37,7 +37,9 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::ExportAnnotationsFiller"
 ExportAnnotationsFiller::ExportAnnotationsFiller(const QString &exportToFile, fileFormat format, HI::GUITestOpStatus &os)
     : Filler(os, "U2__ExportAnnotationsDialog"),
-      softMode(true), format(format),
+      softMode(true),
+      format(format),
+      addToProject(false),
       saveSequencesUnderAnnotations(false),
       saveSequenceNames(false),
       useMethod(GTGlobals::UseMouse) {

@@ -723,7 +723,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     GTUtilsDialog::waitAllFinished(os);
 
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0010_1.bed");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141619 features"), "No GXL_141619 features object!");
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618 features"), "No GXL_141618 features object!");

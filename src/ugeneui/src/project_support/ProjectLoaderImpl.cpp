@@ -537,12 +537,7 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
                         } else {
                             info.openView = nViews++ < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS;
                         }
-                        if (hints.value(ProjectLoaderHint_LoadUnloadedDocument, true).toBool() == false) {
-                            info.loadDocuments = false;
-                        } else {
-                            info.loadDocuments = true;
-                        }
-
+                        info.loadDocuments = hints.value(ProjectLoaderHint_LoadUnloadedDocument, true).toBool();
                         info.url = url;
                         info.hints = dr.rawDataCheckResult.properties;
                         if (!info.hints.contains(DocumentReadingMode_MaxObjectsInDoc)) {
@@ -552,7 +547,7 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
                         info.iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
                         docsInfo << info;
                     } else {
-                        assert(dr.importer != NULL);
+                        assert(dr.importer != nullptr);
                         AD2P_ProviderInfo info;
                         if (hints.value(ProjectLoaderHint_LoadWithoutView, false).toBool() == true) {
                             info.openView = false;
@@ -565,7 +560,7 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
                     }
                 }
             } else {
-                if (hints.value(ProjectLoaderHint_OpenBySystemIfFormatDetectionFailed, false).toBool() == true) {
+                if (hints.value(ProjectLoaderHint_OpenBySystemIfFormatDetectionFailed, false).toBool()) {
                     QDesktopServices::openUrl(QUrl(url.getURLString(), QUrl::TolerantMode));
                 } else {
                     QString message = tr("Failed to detect file format: %1").arg(url.getURLString());

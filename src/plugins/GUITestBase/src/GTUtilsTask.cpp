@@ -42,13 +42,13 @@ QList<Task *> GTUtilsTask::getTopLevelTasks(HI::GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getSubTaskByName"
 Task *GTUtilsTask::getSubTaskByName(HI::GUITestOpStatus &os, QString taskName, GTGlobals::FindOptions options) {
-    Task *result;
+    Task *result = nullptr;
     QList<Task *> tasks = getTopLevelTasks(os);
     foreach (Task *t, tasks) {
         result = getSubTaskByName(os, t, taskName, false);
     }
-    if (options.failIfNotFound == true) {
-        GT_CHECK_RESULT(result != NULL, "no subtask with name " + taskName, NULL);
+    if (options.failIfNotFound) {
+        GT_CHECK_RESULT(result != nullptr, "no subtask with name " + taskName, nullptr);
     }
     return result;
 }
@@ -56,7 +56,7 @@ Task *GTUtilsTask::getSubTaskByName(HI::GUITestOpStatus &os, QString taskName, G
 
 #define GT_METHOD_NAME "getSubTaskByName"
 Task *GTUtilsTask::getSubTaskByName(HI::GUITestOpStatus &os, Task *parent, QString taskName, GTGlobals::FindOptions options) {
-    Task *result;
+    Task *result = nullptr;
     foreach (const QPointer<Task> &t, parent->getSubtasks()) {
         if (t->getTaskName() == taskName) {
             return t.data();
@@ -65,8 +65,8 @@ Task *GTUtilsTask::getSubTaskByName(HI::GUITestOpStatus &os, Task *parent, QStri
         }
     }
 
-    if (options.failIfNotFound == true) {
-        GT_CHECK_RESULT(result != NULL, "no subtask with name " + taskName, NULL);
+    if (options.failIfNotFound) {
+        GT_CHECK_RESULT(result != nullptr, "no subtask with name " + taskName, nullptr);
     }
     return result;
 }
