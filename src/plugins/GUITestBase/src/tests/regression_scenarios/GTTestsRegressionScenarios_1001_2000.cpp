@@ -2068,7 +2068,7 @@ GUI_TEST_CLASS_DEFINITION(test_1175) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
 
-    GTUtilsWorkflowDesigner::checkErrorList(os, "External tool \"BlastAll\" is not set.");
+    GTUtilsWorkflowDesigner::checkErrorList(os, "External tool \"BlastN\" is not set.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1180) {
@@ -7477,7 +7477,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_1710_2) {
     //1. Open Settings -> Preferences -> External Tools.
-    //2. Select any invalid file for Blast -> BlastAll.
+    //2. Select any invalid file for Blast+ -> BlastN.
     GTUtilsExternalTools::setToolUrl(os, "BlastN", dataDir + "this-file-does-not-exist");
 
     //3. Open WD.
@@ -7499,7 +7499,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_2) {
     GTUtilsDialog::waitAllFinished(os);
 
     //Expected state: there must be a warning "External tool is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected".
-    GTUtilsWorkflowDesigner::checkErrorList(os, "External tool \"BlastAll\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
+    GTUtilsWorkflowDesigner::checkErrorList(os, "External tool \"BlastN\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1714) {
