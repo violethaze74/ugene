@@ -22,8 +22,9 @@
 #ifndef _U2_GT_UTILS_MCA_EDITOR_H_
 #define _U2_GT_UTILS_MCA_EDITOR_H_
 
-class QLabel;
-class QScrollBar;
+#include <QWidget>
+#include <QLabel>
+#include <QScrollBar>
 
 namespace HI {
 class GUITestOpStatus;
@@ -41,6 +42,9 @@ class MultipleAlignmentRowData;
 
 class GTUtilsMcaEditor {
 public:
+    /** Returns active MSA editor window or fails. */
+    static QWidget* getActiveMcaEditorWindow(HI::GUITestOpStatus &os);
+
     static McaEditor *getEditor(HI::GUITestOpStatus &os);
     static McaEditorWgt *getEditorUi(HI::GUITestOpStatus &os);
     static QLabel *getReferenceLabel(HI::GUITestOpStatus &os);

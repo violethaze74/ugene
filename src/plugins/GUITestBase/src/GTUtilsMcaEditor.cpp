@@ -39,6 +39,7 @@
 #include <U2View/McaEditorSequenceArea.h>
 #include <U2View/RowHeightController.h>
 #include <U2View/ScrollController.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
@@ -48,6 +49,12 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsMcaEditor"
+
+#define GT_METHOD_NAME "getActiveMcaEditorWindow"
+QWidget *GTUtilsMcaEditor::getActiveMcaEditorWindow(GUITestOpStatus &os) {
+    return GTUtilsMdi::getActiveObjectViewWindow(os, McaEditorFactory::ID);
+}
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getEditor"
 McaEditor *GTUtilsMcaEditor::getEditor(GUITestOpStatus &os) {
@@ -98,16 +105,14 @@ McaEditorSequenceArea *GTUtilsMcaEditor::getSequenceArea(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getConsensusArea"
 McaEditorConsensusArea *GTUtilsMcaEditor::getConsensusArea(GUITestOpStatus &os) {
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_OP(os, NULL);
+    QWidget *activeWindow = getActiveMcaEditorWindow(os);
     return GTWidget::findExactWidget<McaEditorConsensusArea *>(os, "consArea", activeWindow);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceArea"
 McaEditorReferenceArea *GTUtilsMcaEditor::getReferenceArea(GUITestOpStatus &os) {
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_OP(os, NULL);
+    QWidget *activeWindow = getActiveMcaEditorWindow(os);
     return GTWidget::findExactWidget<McaEditorReferenceArea *>(os, "mca_editor_reference_area", activeWindow);
 }
 #undef GT_METHOD_NAME
