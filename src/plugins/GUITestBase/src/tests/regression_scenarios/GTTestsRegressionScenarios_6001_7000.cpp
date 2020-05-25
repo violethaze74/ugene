@@ -473,27 +473,28 @@ GUI_TEST_CLASS_DEFINITION(test_6038_3) {
 GUI_TEST_CLASS_DEFINITION(test_6043) {
     //    1. Open "_common_data/ugenedb/sec1_9_ugenedb.ugenedb".
     //    Expected state: the assembly is successfully opened, the coverage calculation finished, UGENE doens't crash
-    const QString filePath = sandBoxDir + "test_6043.ugenedb";
+    QString filePath = sandBoxDir + "test_6043.ugenedb";
     GTFile::copy(os, testDir + "_common_data/ugenedb/sec1_9_ugenedb.ugenedb", filePath);
 
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const bool assemblyExists = GTUtilsProjectTreeView::checkItem(os, "sec1_and_others");
+    bool assemblyExists = GTUtilsProjectTreeView::checkItem(os, "sec1_and_others");
     CHECK_SET_ERR(assemblyExists, "Assembly object is not found in the project view");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6047) {
     //1. Open and convert APR file
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, false, sandBoxDir + "test_6047", "MSF"));
-    GTFileDialog::openFile(os, testDir + "_common_data/apr/HCVtest.apr");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFileWithDialog(os, testDir + "_common_data/apr/", "DNA.apr");
+    GTUtilsDialog::waitAllFinished(os);
 
     //Check msa length and number of sequences
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 488, "Unexpected length of msa");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 231, "Unexpected quantaty of sequences");
+    int columns = GTUtilsMSAEditorSequenceArea::getLength(os);
+    CHECK_SET_ERR(columns == 2139, "Unexpected length of msa: " + QString::number(columns));
+
+    int rows = GTUtilsMSAEditorSequenceArea::getNameList(os).size();
+    CHECK_SET_ERR(rows == 9, "Unexpected number of sequences in msa: "+ QString::number(rows));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6058_1) {
@@ -5659,51 +5660,54 @@ GUI_TEST_CLASS_DEFINITION(test_6742) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList mainItems = QStringList() << "Overview"
-                                      << "Show offsets"
-                                      << "Zoom In"
-                                      << "Zoom Out"
-                                      << "Zoom To Selection"
-                                      << "Reset Zoom"
-                                      << "Colors"
-                                      << "Highlighting"
-                                      << "Change Font"
-                                      << "Clear selection";
+                                          << "Show offsets"
+                                          << "Zoom In"
+                                          << "Zoom Out"
+                                          << "Zoom To Selection"
+                                          << "Reset Zoom"
+                                          << "Colors"
+                                          << "Highlighting"
+                                          << "Change Font"
+                                          << "Clear selection";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance", mainItems));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTGlobals::sleep();
 
     QStringList colorsItems = QStringList() << "No colors"
-                                      << "Jalview"
-                                      << "Percentage identity"
-                                      << "Percentage identity (colored)"
-                                      << "Percentage identity (gray)"
-                                      << "UGENE"
-                                      << "UGENE Sanger"
-                                      << "Weak similarities";
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance" << "Colors", colorsItems));
+                                            << "Jalview"
+                                            << "Percentage identity"
+                                            << "Percentage identity (colored)"
+                                            << "Percentage identity (gray)"
+                                            << "UGENE"
+                                            << "UGENE Sanger"
+                                            << "Weak similarities";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance"
+                                                                              << "Colors",
+                                                            colorsItems));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTGlobals::sleep();
 
     QStringList highlightingItems = QStringList() << "No highlighting"
-                                      << "Agreements"
-                                      << "Disagreements"
-                                      << "Gaps"
-                                      << "Conservation level"
-                                      << "Transitions"
-                                      << "Transversions"
-                                      << "Use dots";
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance" << "Highlighting", highlightingItems));
+                                                  << "Agreements"
+                                                  << "Disagreements"
+                                                  << "Gaps"
+                                                  << "Conservation level"
+                                                  << "Transitions"
+                                                  << "Transversions"
+                                                  << "Use dots";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance"
+                                                                              << "Highlighting",
+                                                            highlightingItems));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList()
-                                                            << "Appearance"
-                                                            << "Colors"
-                                                            << "Custom schemes"
-                                                            << "Create new color scheme", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance"
+                                                                              << "Colors"
+                                                                              << "Custom schemes"
+                                                                              << "Create new color scheme",
+                                                            PopupChecker::IsEnabled));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6746) {
     // 1. Open "COI.aln".
