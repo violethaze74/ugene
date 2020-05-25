@@ -40,7 +40,7 @@
 #include "UGUITestBase.h"
 
 #ifdef Q_OS_LINUX
-#    define GUI_TEST_TIMEOUT_MILLIS 300000
+#    define GUI_TEST_TIMEOUT_MILLIS 240000
 #else
 #    define GUI_TEST_TIMEOUT_MILLIS 480000
 #endif
