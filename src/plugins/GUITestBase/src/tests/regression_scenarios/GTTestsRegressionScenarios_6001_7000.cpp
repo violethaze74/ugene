@@ -5738,12 +5738,14 @@ GUI_TEST_CLASS_DEFINITION(test_6749) {
 
     // 3. Input "AC" pattern to the "Search pattern field"
     GTUtilsOptionPanelMsa::enterPattern(os, "AC");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: Results: 1/573
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/573");
 
     // 4. Change search context to the "Sequence Names"
     GTUtilsOptionPanelMsa::setSearchContext(os, "Sequence Names");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: "Results 1/1"
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
@@ -5765,6 +5767,7 @@ GUI_TEST_CLASS_DEFINITION(test_6749_1) {
 
     // Input "мой" pattern to the "Search pattern field"
     GTUtilsOptionPanelMsa::enterPattern(os, "мой", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: Results: 1/1
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
