@@ -1469,6 +1469,13 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir().absoluteFilePath(sandBoxDir) + "wd_test_1080.fa", GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
+    // Allow task to start and check there are no errors
+    GTGlobals::sleep(3000);
+    QString taskName = "Execute workflow";
+    GTUtilsTaskTreeView::checkTask(os, taskName);
+    QString taskStatus = GTUtilsTaskTreeView::getTaskStatus(os, taskName);
+    CHECK_SET_ERR(taskStatus == "Running", "The task status is incorrect: " + taskStatus);
+    GTUtilsTaskTreeView::cancelTask(os, taskName);    // Cancel tast because we don't need the result
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
