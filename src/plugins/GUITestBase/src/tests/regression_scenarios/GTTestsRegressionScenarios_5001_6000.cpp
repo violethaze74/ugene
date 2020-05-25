@@ -1032,7 +1032,7 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
     QSet<QRgb> colors;
     for (int i = 0; i < image1.width(); i++) {
         for (int j = 0; j < image1.height(); j++) {
-            colors << image1.pixel(i, j);
+           colors << image1.pixel(i, j);
         }
     }
     CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn");
@@ -1046,7 +1046,7 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
 
     //    3. Select "Model" renderer. Select "Ball-and-Stick" again.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Render Style"
-                                                                              << "Model"));
+                                                                              << "Space Fill"));
     GTWidget::click(os, biostructWidget, Qt::RightButton);
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Render Style"
                                                                               << "Ball-and-Stick"));
