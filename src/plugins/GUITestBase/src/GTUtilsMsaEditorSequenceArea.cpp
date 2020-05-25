@@ -40,7 +40,6 @@
 #include <U2View/DrawHelper.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MaEditorFactory.h>
 #include <U2View/MsaEditorSimilarityColumn.h>
 #include <U2View/RowHeightController.h>
 #include <U2View/ScrollController.h>
@@ -59,7 +58,7 @@ const QString GTUtilsMSAEditorSequenceArea::highlightningColorName = "#9999cc";
 
 #define GT_METHOD_NAME "getSequenceArea"
 MSAEditorSequenceArea *GTUtilsMSAEditorSequenceArea::getSequenceArea(GUITestOpStatus &os) {
-    QWidget *activeWindow = getActiveMsaEditorWindow(os);
+    QWidget *activeWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     MSAEditorSequenceArea *result = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", activeWindow));
     GT_CHECK_RESULT(NULL != result, "MsaEditorSequenceArea is not found", NULL);
     return result;
@@ -87,7 +86,7 @@ void GTUtilsMSAEditorSequenceArea::moveTo(GUITestOpStatus &os, const QPoint &p) 
 
 #define GT_METHOD_NAME "convertCoordinatesToRegions"
 QPair<U2Region, U2Region> GTUtilsMSAEditorSequenceArea::convertCoordinatesToRegions(GUITestOpStatus &os, const QPoint p) {
-    QWidget *activeWindow = getActiveMsaEditorWindow(os);
+    QWidget *activeWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", activeWindow));
     QPair<U2Region, U2Region> res;
     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", res);
@@ -111,7 +110,7 @@ QPair<U2Region, U2Region> GTUtilsMSAEditorSequenceArea::convertCoordinatesToRegi
 
 #define GT_METHOD_NAME "convertCoordinates"
 QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(GUITestOpStatus &os, const QPoint p) {
-    QWidget *activeWindow = getActiveMsaEditorWindow(os);
+    QWidget *activeWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", activeWindow));
     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", QPoint());
 
@@ -121,15 +120,10 @@ QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(GUITestOpStatus &os, con
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getActiveMsaEditorWindow"
-QWidget *GTUtilsMSAEditorSequenceArea::getActiveMsaEditorWindow(GUITestOpStatus &os) {
-    return GTUtilsMdi::getActiveObjectViewWindow(os, MsaEditorFactory::ID);
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "selectArea"
 void GTUtilsMSAEditorSequenceArea::selectArea(GUITestOpStatus &os, QPoint p1, QPoint p2, GTGlobals::UseMethod method) {
-    MSAEditorSequenceArea *sequenceArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", getActiveMsaEditorWindow(os)));
+    QWidget *msaEditor = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    MSAEditorSequenceArea *sequenceArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", msaEditor));
     GT_CHECK(sequenceArea != NULL, "MsaEditorSequenceArea not found");
 
     p1.rx() = (p1.x() == -1 ? sequenceArea->getNumVisibleBases() - 1 : p1.x());
@@ -171,7 +165,7 @@ void GTUtilsMSAEditorSequenceArea::click(GUITestOpStatus &os, const QPoint &scre
 
 #define GT_METHOD_NAME "scrollToPosition"
 void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const QPoint &position) {
-    MSAEditorSequenceArea *msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea *>(os, "msa_editor_sequence_area", getActiveMsaEditorWindow(os));
+    MSAEditorSequenceArea *msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea *>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     GT_CHECK(NULL != msaSeqArea, "MSA Editor sequence area is not found");
     GT_CHECK(msaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
@@ -181,7 +175,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
                  .arg(msaSeqArea->getViewRowCount()));
 
     // scroll down
-    GScrollBar *vBar = GTWidget::findExactWidget<GScrollBar *>(os, "vertical_sequence_scroll", getActiveMsaEditorWindow(os));
+    GScrollBar *vBar = GTWidget::findExactWidget<GScrollBar *>(os, "vertical_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     GT_CHECK(NULL != vBar, "Vertical scroll bar is not found");
 
     QStyleOptionSlider vScrollBarOptions;
@@ -196,7 +190,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     }
 
     // scroll right
-    GScrollBar *hBar = GTWidget::findExactWidget<GScrollBar *>(os, "horizontal_sequence_scroll", getActiveMsaEditorWindow(os));
+    GScrollBar *hBar = GTWidget::findExactWidget<GScrollBar *>(os, "horizontal_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     GT_CHECK(NULL != hBar, "Horisontal scroll bar is not found");
 
     QStyleOptionSlider hScrollBarOptions;
@@ -224,7 +218,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
 #define GT_METHOD_NAME "scrollToBottom"
 void GTUtilsMSAEditorSequenceArea::scrollToBottom(GUITestOpStatus &os) {
     // scroll down
-    GScrollBar *vBar = GTWidget::findExactWidget<GScrollBar *>(os, "vertical_sequence_scroll", getActiveMsaEditorWindow(os));
+    GScrollBar *vBar = GTWidget::findExactWidget<GScrollBar *>(os, "vertical_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     GT_CHECK(NULL != vBar, "Vertical scroll bar is not found");
 #ifdef Q_OS_MAC
     vBar->setValue(vBar->maximum());
@@ -246,7 +240,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToBottom(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "moveMouseToPosition"
 void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition) {
-    MSAEditorSequenceArea *msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea *>(os, "msa_editor_sequence_area", getActiveMsaEditorWindow(os));
+    MSAEditorSequenceArea *msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea *>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     GT_CHECK(NULL != msaSeqArea, "MSA Editor sequence area is not found");
     GT_CHECK(msaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
@@ -432,7 +426,7 @@ int GTUtilsMSAEditorSequenceArea::getLength(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getNumVisibleBases"
 int GTUtilsMSAEditorSequenceArea::getNumVisibleBases(GUITestOpStatus &os) {
-    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", getActiveMsaEditorWindow(os)));
+    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os)));
     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", -1);
 
     return msaEditArea->getEditor()->getUI()->getDrawHelper()->getVisibleBasesCount(msaEditArea->width());
@@ -574,7 +568,7 @@ QString GTUtilsMSAEditorSequenceArea::getSequenceData(GUITestOpStatus &os, int r
 
 #define GT_METHOD_NAME "selectColumnInConsensus"
 void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(GUITestOpStatus &os, int columnNumber) {
-    QWidget *activeWindow = getActiveMsaEditorWindow(os);
+    QWidget *activeWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     const MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(
         GTWidget::findWidget(os, "msa_editor_sequence_area", activeWindow));
     GT_CHECK_RESULT(NULL != msaEditArea, "MsaEditorSequenceArea not found", );
@@ -638,7 +632,7 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceHightighted(GUITestOpStatus &os, co
 
 #define GT_METHOD_NAME "getColor"
 QString GTUtilsMSAEditorSequenceArea::getColor(GUITestOpStatus &os, QPoint p) {
-    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", getActiveMsaEditorWindow(os)));
+    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os)));
     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", "");
 
     QPoint global = convertCoordinates(os, p);
@@ -654,7 +648,7 @@ QString GTUtilsMSAEditorSequenceArea::getColor(GUITestOpStatus &os, QPoint p) {
 QString GTUtilsMSAEditorSequenceArea::getFontColor(GUITestOpStatus &os, QPoint p) {
     QString backgroundColor = getColor(os, p);
 
-    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", getActiveMsaEditorWindow(os)));
+    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os)));
     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", "");
 
     QPair<U2Region, U2Region> regions = convertCoordinatesToRegions(os, p);
@@ -701,7 +695,7 @@ bool GTUtilsMSAEditorSequenceArea::checkColor(GUITestOpStatus &os, const QPoint 
 
 #define GT_METHOD_NAME "getRowHeight"
 int GTUtilsMSAEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumber) {
-    QWidget *activeWindow = getActiveMsaEditorWindow(os);
+    QWidget *activeWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     MsaEditorWgt *ui = activeWindow->findChild<MsaEditorWgt *>();
     return ui->getRowHeightController()->getRowHeightByViewRowIndex(rowNumber);
 }
@@ -752,7 +746,7 @@ void GTUtilsMSAEditorSequenceArea::deleteColorScheme(GUITestOpStatus &os, const 
 
 #define GT_METHOD_NAME "checkSelection"
 void GTUtilsMSAEditorSequenceArea::checkSelection(GUITestOpStatus &os, const QPoint &start, const QPoint &end, const QString &expected) {
-    GTWidget::click(os, getActiveMsaEditorWindow(os));
+    GTWidget::click(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     selectArea(os, start, end);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);

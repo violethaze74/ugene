@@ -41,6 +41,9 @@ class MaSimpleOverview;
 // If you can't find an appropriate method check the GTUtilsMsaEditorSequenceArea class
 class GTUtilsMsaEditor {
 public:
+    /** Returns active MSA editor window or fails. */
+    static QWidget* getActiveMsaEditorWindow(GUITestOpStatus &os);
+
     static QColor getGraphOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);
     static QColor getSimpleOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);
 

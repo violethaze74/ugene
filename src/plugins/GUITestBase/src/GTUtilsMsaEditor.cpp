@@ -34,6 +34,7 @@
 #include <U2View/BaseWidthController.h>
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorOverviewArea.h>
+#include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/MaSimpleOverview.h>
@@ -51,6 +52,12 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsMsaEditor"
+
+#define GT_METHOD_NAME "getActiveMsaEditorWindow"
+QWidget *GTUtilsMsaEditor::getActiveMsaEditorWindow(GUITestOpStatus &os) {
+    return GTUtilsMdi::getActiveObjectViewWindow(os, MsaEditorFactory::ID);
+}
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getGraphOverviewTopLeftPixelColor"
 QColor GTUtilsMsaEditor::getGraphOverviewPixelColor(GUITestOpStatus &os, const QPoint &point) {
@@ -72,17 +79,14 @@ MSAEditor *GTUtilsMsaEditor::getEditor(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getEditorUi"
 MsaEditorWgt *GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_OP(os, NULL);
+    QWidget *activeWindow = getActiveMsaEditorWindow(os);
     return activeWindow->findChild<MsaEditorWgt *>();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getGraphOverview"
 MaGraphOverview *GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_OP(os, NULL);
-
+    QWidget *activeWindow = getActiveMsaEditorWindow(os);
     MaGraphOverview *result = GTWidget::findExactWidget<MaGraphOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_graph"), activeWindow);
     GT_CHECK_RESULT(NULL != result, "MaGraphOverview is not found", NULL);
     return result;
@@ -91,9 +95,7 @@ MaGraphOverview *GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getSimpleOverview"
 MaSimpleOverview *GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus &os) {
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_OP(os, NULL);
-
+    QWidget *activeWindow = getActiveMsaEditorWindow(os);
     MaSimpleOverview *result = GTWidget::findExactWidget<MaSimpleOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_simple"), activeWindow);
     GT_CHECK_RESULT(NULL != result, "MaSimpleOverview is not found", NULL);
     return result;
@@ -102,17 +104,14 @@ MaSimpleOverview *GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getTreeView"
 MSAEditorTreeViewerUI *GTUtilsMsaEditor::getTreeView(GUITestOpStatus &os) {
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_OP(os, NULL);
+    QWidget *activeWindow = getActiveMsaEditorWindow(os);
     return GTWidget::findExactWidget<MSAEditorTreeViewerUI *>(os, "treeView", activeWindow);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNameListArea"
 MaEditorNameList *GTUtilsMsaEditor::getNameListArea(GUITestOpStatus &os) {
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_OP(os, NULL);
-
+    QWidget *activeWindow = getActiveMsaEditorWindow(os);
     MaEditorNameList *result = GTWidget::findExactWidget<MaEditorNameList *>(os, "msa_editor_name_list", activeWindow);
     GT_CHECK_RESULT(NULL != result, "MaGraphOverview is not found", NULL);
     return result;
@@ -121,8 +120,7 @@ MaEditorNameList *GTUtilsMsaEditor::getNameListArea(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getConsensusArea"
 MSAEditorConsensusArea *GTUtilsMsaEditor::getConsensusArea(GUITestOpStatus &os) {
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_OP(os, NULL);
+    QWidget *activeWindow = getActiveMsaEditorWindow(os);
     return GTWidget::findExactWidget<MSAEditorConsensusArea *>(os, "consArea", activeWindow);
 }
 #undef GT_METHOD_NAME
