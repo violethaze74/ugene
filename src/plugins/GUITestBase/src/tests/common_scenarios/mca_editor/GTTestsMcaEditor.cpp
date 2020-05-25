@@ -3527,6 +3527,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
                                                                               << "Change characters font..."));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     ScaleBar *scaleBar = GTWidget::findExactWidget<ScaleBar *>(os, "peak_height_slider");
 
@@ -3542,9 +3543,10 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
     // close ugenedb
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     scaleBar = GTWidget::findExactWidget<ScaleBar *>(os, "peak_height_slider");
     CHECK_SET_ERR(scaleBar->value() == peakHight, "Peak height was not saved");
 }
