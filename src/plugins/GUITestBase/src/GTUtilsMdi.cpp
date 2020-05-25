@@ -34,6 +34,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/ObjectViewModel.h>
 
 #include "GTGlobals.h"
 #include "primitives/GTMenu.h"
@@ -248,6 +249,26 @@ QWidget *GTUtilsMdi::activeWindow(HI::GUITestOpStatus &os, const GTGlobals::Find
         GT_CHECK_RESULT(w != NULL, "Active window is not found", NULL);
     }
     return w;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getActiveObjectViewWindow"
+QWidget *GTUtilsMdi::getActiveObjectViewWindow(GUITestOpStatus &os, const QString &viewId) {
+    GObjectViewWindow *viewWindow = nullptr;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && viewWindow == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        MainWindow *mainWindow = AppContext::getMainWindow();
+        QWidget *mdiWindow = mainWindow == nullptr ? nullptr : mainWindow->getMDIManager()->getActiveWindow();
+        if (mdiWindow == nullptr) {
+            continue;
+        }
+        GObjectViewWindow *activeViewWindow = qobject_cast<GObjectViewWindow *>(mdiWindow);
+        if (activeViewWindow != nullptr && activeViewWindow->getViewFactoryId() == viewId) {
+            viewWindow = activeViewWindow;
+        }
+    }
+    GT_CHECK_RESULT(viewWindow != nullptr, "View window is not found: " + viewId, nullptr);
+    return nullptr;
 }
 #undef GT_METHOD_NAME
 

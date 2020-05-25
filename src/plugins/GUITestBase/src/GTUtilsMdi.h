@@ -41,6 +41,7 @@ public:
 
     // fails if MainWindow is NULL or because of FindOptions settings
     static QWidget *activeWindow(HI::GUITestOpStatus &os, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
+    static QWidget *getActiveObjectViewWindow(HI::GUITestOpStatus &os, const QString& viewId);
     static QString activeWindowTitle(HI::GUITestOpStatus &os);
     static void activateWindow(HI::GUITestOpStatus &os, const QString &windowName);
 
