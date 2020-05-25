@@ -43,6 +43,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 
 namespace U2 {
@@ -94,7 +95,7 @@ void GTUtilsOptionPanelSequenceView::enterPattern(HI::GUITestOpStatus &os, QStri
 
 #define GT_METHOD_NAME "toggleTab"
 void GTUtilsOptionPanelSequenceView::toggleTab(HI::GUITestOpStatus &os, GTUtilsOptionPanelSequenceView::Tabs tab) {
-    GTWidget::click(os, GTWidget::findWidget(os, tabsNames[tab], GTUtilsMdi::activeWindow(os)));
+    GTWidget::click(os, GTWidget::findWidget(os, tabsNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow(os)));
     GTGlobals::sleep(200);
 }
 #undef GT_METHOD_NAME
@@ -120,7 +121,7 @@ void GTUtilsOptionPanelSequenceView::closeTab(HI::GUITestOpStatus &os, GTUtilsOp
 bool GTUtilsOptionPanelSequenceView::isTabOpened(HI::GUITestOpStatus &os, GTUtilsOptionPanelSequenceView::Tabs tab) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
-    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], GTUtilsMdi::activeWindow(os), options);
+    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow(os), options);
     return NULL != innerTabWidget && innerTabWidget->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -189,7 +190,7 @@ bool GTUtilsOptionPanelSequenceView::isGetAnnotationsEnabled(HI::GUITestOpStatus
 
 #define GT_METHOD_NAME "toggleCircularView"
 void GTUtilsOptionPanelSequenceView::toggleCircularView(HI::GUITestOpStatus &os) {
-    GTWidget::click(os, GTWidget::findButtonByText(os, "Open Circular View(s)", GTUtilsMdi::activeWindow(os)));
+    GTWidget::click(os, GTWidget::findButtonByText(os, "Open Circular View(s)", GTUtilsSequenceView::getActiveSequenceViewWindow(os)));
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
@@ -202,7 +203,7 @@ void GTUtilsOptionPanelSequenceView::setTitleFontSize(HI::GUITestOpStatus &os, i
 
 #define GT_METHOD_NAME "getTitleFontSize"
 int GTUtilsOptionPanelSequenceView::getTitleFontSize(HI::GUITestOpStatus &os) {
-    return GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox", GTUtilsMdi::activeWindow(os)));
+    return GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox", GTUtilsSequenceView::getActiveSequenceViewWindow(os)));
 }
 #undef GT_METHOD_NAME
 

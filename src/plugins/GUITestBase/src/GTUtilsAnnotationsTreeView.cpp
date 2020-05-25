@@ -43,6 +43,7 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
+#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
@@ -57,7 +58,7 @@ const QString GTUtilsAnnotationsTreeView::widgetName = "annotations_tree_widget"
 
 #define GT_METHOD_NAME "getTreeWidget"
 QTreeWidget *GTUtilsAnnotationsTreeView::getTreeWidget(HI::GUITestOpStatus &os) {
-    QWidget *widget = GTWidget::findWidget(os, widgetName, GTUtilsMdi::activeWindow(os));
+    QWidget *widget = GTWidget::findWidget(os, widgetName, GTUtilsSequenceView::getActiveSequenceViewWindow(os));
     QTreeWidget *treeWidget = qobject_cast<QTreeWidget *>(widget);
     GT_CHECK_RESULT(treeWidget != nullptr, QString("QTreeWidget '%1' not found").arg(widgetName), nullptr);
     return treeWidget;

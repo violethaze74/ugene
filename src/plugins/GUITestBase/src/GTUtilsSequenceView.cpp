@@ -46,6 +46,7 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSingleSequenceWidget.h>
+#include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/DetView.h>
 #include <U2View/DetViewRenderer.h>
 #include <U2View/DetViewSequenceEditor.h>
@@ -93,11 +94,15 @@ private:
 
 #define GT_CLASS_NAME "GTUtilsSequenceView"
 
+#define GT_METHOD_NAME "getActiveSequenceViewWindow"
+QWidget *GTUtilsSequenceView::getActiveSequenceViewWindow(GUITestOpStatus &os) {
+    return GTUtilsMdi::getActiveObjectViewWindow(os, AnnotatedDNAViewFactory::ID);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getSequenceAsString"
 void GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, QString &sequence) {
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    GT_CHECK(mdiWindow != NULL, "MDI window == NULL");
-
+    QWidget *mdiWindow = getActiveSequenceViewWindow(os);
     QWidget *mdiSequenceWidget = mdiWindow->findChild<ADVSingleSequenceWidget *>();
     GTWidget::click(os, mdiSequenceWidget);
 
@@ -120,9 +125,7 @@ void GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, QString &
 
 #define GT_METHOD_NAME "getSequenceAsString"
 QString GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, int number) {
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    GT_CHECK_RESULT(mdiWindow != NULL, "MDI window == NULL", "");
-
+    QWidget *mdiWindow = getActiveSequenceViewWindow(os);
     GTWidget::click(os, getSeqWidgetByNumber(os, number));
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
@@ -138,12 +141,7 @@ QString GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, int nu
 #define GT_METHOD_NAME "getBeginOfSequenceAsString"
 
 QString GTUtilsSequenceView::getBeginOfSequenceAsString(HI::GUITestOpStatus &os, int length) {
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    GT_CHECK_RESULT(mdiWindow != NULL, "MDI window == NULL", NULL);
-
-    // GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center())); commented for test 6232_4
-    // GTMouseDriver::click();
-
+    QWidget *mdiWindow = getActiveSequenceViewWindow(os);
     Runnable *filler = new SelectSequenceRegionDialogFiller(os, length);
     GTUtilsDialog::waitForDialog(os, filler);
     GTKeyboardUtils::selectAll(os);
@@ -165,9 +163,7 @@ QString GTUtilsSequenceView::getBeginOfSequenceAsString(HI::GUITestOpStatus &os,
 
 #define GT_METHOD_NAME "getEndOfSequenceAsString"
 QString GTUtilsSequenceView::getEndOfSequenceAsString(HI::GUITestOpStatus &os, int length) {
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    GT_CHECK_RESULT(mdiWindow != NULL, "MDI window == NULL", NULL);
-
+    QWidget *mdiWindow = getActiveSequenceViewWindow(os);
     GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
     GTMouseDriver::click();
 
@@ -311,7 +307,7 @@ void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus &os, int position) {
 ADVSingleSequenceWidget *GTUtilsSequenceView::getSeqWidgetByNumber(HI::GUITestOpStatus &os, int number, const GTGlobals::FindOptions &options) {
     QWidget *widget = GTWidget::findWidget(os,
                                            QString("ADV_single_sequence_widget_%1").arg(number),
-                                           GTUtilsMdi::activeWindow(os),
+                                           getActiveSequenceViewWindow(os),
                                            options);
 
     ADVSingleSequenceWidget *seqWidget = qobject_cast<ADVSingleSequenceWidget *>(widget);
@@ -380,7 +376,7 @@ Overview *GTUtilsSequenceView::getOverviewByNumber(HI::GUITestOpStatus &os, int 
 
 #define GT_METHOD_NAME "getSeqWidgetsNumber"
 int GTUtilsSequenceView::getSeqWidgetsNumber(HI::GUITestOpStatus &os) {
-    QList<ADVSingleSequenceWidget *> seqWidgets = GTUtilsMdi::activeWindow(os)->findChildren<ADVSingleSequenceWidget *>();
+    QList<ADVSingleSequenceWidget *> seqWidgets = getActiveSequenceViewWindow(os)->findChildren<ADVSingleSequenceWidget *>();
     return seqWidgets.size();
 }
 #undef GT_METHOD_NAME

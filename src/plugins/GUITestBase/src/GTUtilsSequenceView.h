@@ -38,6 +38,9 @@ class TextLabel;
 
 class GTUtilsSequenceView {
 public:
+    /** Returns active sequence view window or fails if not found. */
+    static QWidget *getActiveSequenceViewWindow(HI::GUITestOpStatus &os);
+
     static void getSequenceAsString(HI::GUITestOpStatus &os, QString &sequence);
     static QString getSequenceAsString(HI::GUITestOpStatus &os, int number = 0);
     static QString getBeginOfSequenceAsString(HI::GUITestOpStatus &os, int length);
