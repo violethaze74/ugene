@@ -4749,6 +4749,7 @@ GUI_TEST_CLASS_DEFINITION(test_0082) {
 GUI_TEST_CLASS_DEFINITION(test_0083) {
     // Open an alignment with some alphabet.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Use a sequence of another alphabet.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
@@ -4762,7 +4763,7 @@ GUI_TEST_CLASS_DEFINITION(test_0083) {
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");
 
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
