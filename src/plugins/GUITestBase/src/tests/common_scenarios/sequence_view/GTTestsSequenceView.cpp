@@ -2148,29 +2148,26 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
     GTWidget::setFocus(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView());
 
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
-    for (int i = 0; i < 5; i++) {
-        GTKeyboardDriver::keyClick(Qt::Key_Down);
-    }
-    CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisibleRange(os).startPos, "Visible range was changed");
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    qint64 currentStartPos = GTUtilsSequenceView::getVisibleRange(os).startPos;
+    CHECK_SET_ERR(visibleRange.startPos == currentStartPos, QString("Visible range was changed after Key_Down: %1 => %2").arg(visibleRange.startPos).arg(currentStartPos));
 
-    for (int i = 0; i < 5; i++) {
-        GTKeyboardDriver::keyClick(Qt::Key_Up);
-    }
-    CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisibleRange(os).startPos, "Visible range was changed");
+    GTKeyboardDriver::keyClick(Qt::Key_Up);
+    GTKeyboardDriver::keyClick(Qt::Key_Up);
+    currentStartPos = GTUtilsSequenceView::getVisibleRange(os).startPos;
+    CHECK_SET_ERR(visibleRange.startPos == currentStartPos, QString("Visible range was changed after Key_Up: %1 => %2").arg(visibleRange.startPos).arg(currentStartPos));
 
-    visibleRange = GTUtilsSequenceView::getVisibleRange(os);
-    GTKeyboardDriver::keyClick(Qt::Key_PageUp);
-    GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
-    GTGlobals::sleep();
-    CHECK_SET_ERR(visibleRange.startPos != GTUtilsSequenceView::getVisibleRange(os).startPos, "Visible range was not changed on page down");
-    visibleRange = GTUtilsSequenceView::getVisibleRange(os);
+    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
+    currentStartPos = GTUtilsSequenceView::getVisibleRange(os).startPos;
+    CHECK_SET_ERR(visibleRange.startPos != currentStartPos, QString("Visible range was not changed after Key_PageDown: %1 => %2").arg(visibleRange.startPos).arg(currentStartPos));
 
+    visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     GTKeyboardDriver::keyClick(Qt::Key_PageUp);
-    GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_PageUp);
-    GTGlobals::sleep();
-    CHECK_SET_ERR(visibleRange.startPos != GTUtilsSequenceView::getVisibleRange(os).startPos, "Visible range was not changed on page up");
+    currentStartPos = GTUtilsSequenceView::getVisibleRange(os).startPos;
+    CHECK_SET_ERR(visibleRange.startPos != currentStartPos, QString("Visible range was not changed after Key_PageUp: %1 => %2").arg(visibleRange.startPos).arg(currentStartPos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0066) {
@@ -2301,7 +2298,6 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0069) {
-
     //   Open a sequence (e.g. murine.gb)
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
 
