@@ -1229,7 +1229,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     // 3. Translate with default settings
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0010_2.aln"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTWidget::click(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // copy to clipboard
