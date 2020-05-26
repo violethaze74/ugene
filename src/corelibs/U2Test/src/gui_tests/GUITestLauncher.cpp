@@ -253,10 +253,6 @@ QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
     return env;
 }
 
-static bool isVideoRecordingOn() {
-    return qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
-}
-
 static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
     QDir testsDir(qgetenv("UGENE_TESTS_PATH"));
     if (!testsDir.exists()) {
@@ -307,12 +303,13 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
 QString GUITestLauncher::runTest(const QString &testName) {
     int repeatCount = qMax(qgetenv("UGENE_TEST_NUMBER_RERUN_FAILED_TEST").toInt(), 0);
     QString testOutput;
+    bool isVideoRecordingOn = qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
     for (int i = 0; i < 1 + repeatCount; i++) {
         if (i >= 1) {
             coreLog.error(QString("Re-running the test. Current re-run: %1, max re-runs: %2").arg(i).arg(repeatCount));
         }
         U2OpStatusImpl os;
-        testOutput = runTestOnce(os, testName, isVideoRecordingOn());
+        testOutput = runTestOnce(os, testName, isVideoRecordingOn && i > 0);
         bool isFailed = os.hasError() || GUITestTeamcityLogger::testFailed(testOutput);
         if (!isFailed) {
             break;
