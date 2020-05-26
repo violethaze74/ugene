@@ -5841,6 +5841,7 @@ GUI_TEST_CLASS_DEFINITION(test_3924) {
     //check comments for vector-nti format
     GTFileDialog::openFile(os, testDir + "_common_data/vector_nti_sequence/unrefined.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
     QString name = GTUtilsAnnotationsTreeView::getQualifierValue(os, "vntifkey", "CDS");
     CHECK_SET_ERR(name == "4", "unexpected qualifier value: " + name)
 }
