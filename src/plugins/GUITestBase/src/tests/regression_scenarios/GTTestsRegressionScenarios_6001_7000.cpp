@@ -5915,6 +5915,33 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
     //Expected result: here is annotation in another sequence view
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "5_prime_UTR_intron"));
 }
+GUI_TEST_CLASS_DEFINITION(test_6808) {
+    // Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Select using CTRL+SHIFT +F "Sequence Names"
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyClick('f', Qt::ShiftModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Input "Mec" pattern to the "Search pattern field"
+    GTUtilsOptionPanelMsa::enterPattern(os, "Mec");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Press "Group" button
+    GTWidget::click(os, GTWidget::findWidget(os, "groupResultsButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected result: the first three sequences are Mecopoda_elongata__Ishigaki__J, Mecopoda_elongata__Sumatra_, Mecopoda_sp.__Malaysia_
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList.size() == 18, "Wrong sequences count");
+    CHECK_SET_ERR(nameList[0] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
+    CHECK_SET_ERR(nameList[1] == "Mecopoda_elongata__Sumatra_", "The second sequence is incorrect");
+    CHECK_SET_ERR(nameList[2] == "Mecopoda_sp.__Malaysia_", "The third sequence is incorrect");
+
+}
 
 }    // namespace GUITest_regression_scenarios
 
