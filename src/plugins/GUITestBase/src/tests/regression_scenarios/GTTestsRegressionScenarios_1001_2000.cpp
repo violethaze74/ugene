@@ -2585,6 +2585,7 @@ GUI_TEST_CLASS_DEFINITION(test_1220) {
                               GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: misc_feature annotations created with pattern subsequence length qualifiers set to 6
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "Misc. Feature");
     QString val = GTUtilsAnnotationsTreeView::getQualifierValue(os, "pattern_match_len", "Misc. Feature");
     CHECK_SET_ERR(val == "6", "unexpected value: " + val);
     //    Current state: "pattern_subseq_length" qualifiers created and set to 5.
