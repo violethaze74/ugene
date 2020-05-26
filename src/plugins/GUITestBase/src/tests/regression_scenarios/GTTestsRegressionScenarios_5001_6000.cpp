@@ -1283,6 +1283,7 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
     QTreeWidgetItem *treeItem = GTUtilsAnnotationsTreeView::findItem(os, "blast result");
     CHECK_SET_ERR(treeItem != NULL, "blast result annotations not found");
     bool ok;
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "blast result");
     int hitFrom = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-to", treeItem).toInt(&ok);
     CHECK_SET_ERR(ok, "Cannot get hit-to qualifier value");
 
