@@ -5772,7 +5772,34 @@ GUI_TEST_CLASS_DEFINITION(test_6749_1) {
     // Expected result: Results: 1/1
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
 }
+GUI_TEST_CLASS_DEFINITION(test_6749_2) {
+    // Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    // Open "Search in Alignment" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+
+    // Input "AC" pattern to the "Search pattern field"
+    GTUtilsOptionPanelMsa::enterPattern(os, "FGH");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected result; red background and warning "Input value contains characters that do not match the active alphabet!"
+    QTextEdit *editPatterns = GTWidget::findExactWidget<QTextEdit *>(os, "textPattern");
+    QString style0 = editPatterns->styleSheet();
+    CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
+
+    // Select using CTRL+SHIFT +F "Sequence Names"
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyClick('f', Qt::ShiftModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected result; white background, no any warning
+    QString style1 = editPatterns->styleSheet();
+    CHECK_SET_ERR(style1 == "background-color: " + GUIUtils::OK_COLOR.name() + ";", "unexpected styleSheet: " + style1);
+
+}
 GUI_TEST_CLASS_DEFINITION(test_6750) {
     // 1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -5791,7 +5818,7 @@ GUI_TEST_CLASS_DEFINITION(test_6750) {
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyClick('f', Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: "Results 1/1"
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
