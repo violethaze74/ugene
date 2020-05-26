@@ -4012,18 +4012,20 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Choose "Set up frames manually" mode and disable the all frames
+    GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
-    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "set_up_frames_manually_radiobutton"));
     GTWidget::click(os, translationsMenuToolbarButton);
     GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     QStringList frames = {"Frame +1", "Frame +2", "Frame +3", "Frame -1", "Frame -2", "Frame -3"};
     foreach (const QString &frame, frames) {
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << frame));
     }
     GTWidget::click(os, translationsMenuToolbarButton);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 3. Close the project and open it again
     GTUtilsProject::closeProject(os);
@@ -4031,12 +4033,14 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: "Set up frames manually" mode is choosen and the all frames are disable
+    GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
     CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "set_up_frames_manually_radiobutton", PopupChecker::IsChecked));
     GTWidget::click(os, translationsMenuToolbarButton);
     GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), frames));
     GTWidget::click(os, translationsMenuToolbarButton);
