@@ -72,15 +72,25 @@ QColor GTUtilsMsaEditor::getSimpleOverviewPixelColor(GUITestOpStatus &os, const 
 #define GT_METHOD_NAME "getEditor"
 MSAEditor *GTUtilsMsaEditor::getEditor(GUITestOpStatus &os) {
     MsaEditorWgt *editorUi = getEditorUi(os);
-    CHECK_OP(os, NULL);
     return editorUi->getEditor();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getEditorUi"
 MsaEditorWgt *GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
-    QWidget *activeWindow = getActiveMsaEditorWindow(os);
-    return activeWindow->findChild<MsaEditorWgt *>();
+    MsaEditorWgt *msaEditorWgt = nullptr;
+    // For some reason MsaEditorWgt is not within normal widgets hierarchy (wrong parent?), so can't use GTWidget::findWidget here.
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && msaEditorWgt == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        MainWindow *mainWindow = AppContext::getMainWindow();
+        QWidget *activeWindow = mainWindow == nullptr ? nullptr : mainWindow->getMDIManager()->getActiveWindow();
+        if (activeWindow == nullptr) {
+            continue;
+        }
+        msaEditorWgt = activeWindow->findChild<MsaEditorWgt *>();
+    }
+    GT_CHECK_RESULT(msaEditorWgt != nullptr, "MSA Editor widget is not found", nullptr);
+    return msaEditorWgt;
 }
 #undef GT_METHOD_NAME
 

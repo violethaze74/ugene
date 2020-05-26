@@ -29,7 +29,6 @@
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 
-#include <QMainWindow>
 #include <QStyle>
 #include <QStyleOptionSlider>
 
@@ -288,12 +287,8 @@ void GTUtilsMSAEditorSequenceArea::checkSorted(GUITestOpStatus &os, bool sortedS
 
 #define GT_METHOD_NAME "getNameList"
 QStringList GTUtilsMSAEditorSequenceArea::getNameList(GUITestOpStatus &os) {
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor *editor = mw->findChild<MSAEditor *>();
-    CHECK_SET_ERR_RESULT(editor != NULL, "MsaEditor not found", QStringList());
-
+    MSAEditor *editor = GTUtilsMsaEditor::getEditor(os);
     QStringList result = editor->getMaObject()->getMultipleAlignment()->getRowNames();
-
     return result;
 }
 #undef GT_METHOD_NAME
@@ -318,11 +313,7 @@ bool GTUtilsMSAEditorSequenceArea::hasSequencesWithNames(GUITestOpStatus &os, co
 
 #define GT_METHOD_NAME "getVisibleNames"
 QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(GUITestOpStatus &os) {
-    Q_UNUSED(os);
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor *editor = mw->findChild<MSAEditor *>();
-    CHECK_SET_ERR_RESULT(editor != NULL, "MsaEditor not found", QStringList());
-
+    MSAEditor *editor = GTUtilsMsaEditor::getEditor(os);
     MaEditorNameList *nameListArea = GTUtilsMsaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(NULL != nameListArea, "MSA Editor name list area is NULL", QStringList());
 
@@ -501,12 +492,10 @@ void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus &os, const int
 
 #define GT_METHOD_NAME "isSequenceSelected"
 bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(GUITestOpStatus &os, const QString &seqName) {
+    MSAEditor *editor = GTUtilsMsaEditor::getEditor(os);
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", false);
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor *editor = mw->findChild<MSAEditor *>();
-    CHECK_SET_ERR_RESULT(editor != NULL, "MsaEditor not found", false);
     //Seq names are drawn on widget, so this hack is needed
     QStringList selectedRowNames;
     QList<int> selectedMaRows = msaEditArea->getSelectedMaRowIndexes();
