@@ -5723,8 +5723,8 @@ GUI_TEST_CLASS_DEFINITION(test_4908) {
 
     GTUtilsProjectTreeView::click(os, "SEQUENCE_WITH_A_ENTRY_2", Qt::LeftButton);
 
-    MWMDIWindow *mdiWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
-    QPoint detPos = mdiWindow->mapToGlobal(mdiWindow->rect().center());
+    QWidget* detView = GTUtilsSequenceView::getDetViewByNumber(os);
+    QPoint detPos = detView->mapToGlobal(detView->rect().center());
 
     GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), detPos);
 

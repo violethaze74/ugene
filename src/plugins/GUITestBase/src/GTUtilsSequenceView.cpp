@@ -125,14 +125,14 @@ void GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, QString &
 
 #define GT_METHOD_NAME "getSequenceAsString"
 QString GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, int number) {
-    QWidget *mdiWindow = getActiveSequenceViewWindow(os);
+    getActiveSequenceViewWindow(os);
     GTWidget::click(os, getSeqWidgetByNumber(os, number));
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
     GTKeyboardUtils::selectAll(os);
     GTGlobals::sleep(500);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy sequence"));
-    GTWidget::click(os, getSeqWidgetByNumber(os, number), Qt::RightButton);
+    GTWidget::click(os, getDetViewByNumber(os, number), Qt::RightButton);
     QString result = GTClipboard::text(os);
     return result;
 }
