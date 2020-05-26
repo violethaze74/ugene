@@ -4621,9 +4621,7 @@ GUI_TEST_CLASS_DEFINITION(test_2711) {
 GUI_TEST_CLASS_DEFINITION(test_2713) {
     //    1. Open file {data/samples/Genbank/murine.gb}
     GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "test_2713.gb");
-    GTGlobals::sleep(500);
     GTFileDialog::openFile(os, sandBoxDir, "test_2713.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open file {data/samples/FASTA/human_T1.fa}
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
@@ -4634,22 +4632,18 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
     //    4. Press "OK"
     //    Expected state: annotations has appeared on the sequence view
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-
     GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+
     QPoint point = GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features");
     point.setX(point.x() + 1);
     point.setY(point.y() + 1);
     GTMouseDriver::moveTo(point);
     GTMouseDriver::click();
-    QPoint endPoint = GTWidget::getWidgetCenter(GTUtilsAnnotationsTreeView::getTreeWidget(os));
 
-#ifdef Q_OS_MAC
+    QPoint endPoint = GTWidget::getWidgetCenter(GTUtilsAnnotationsTreeView::getTreeWidget(os));
     GTMouseDriver::dragAndDrop(point, endPoint);
-#else
-    GTMouseDriver::press();
-    GTMouseDriver::moveTo(endPoint);
-    GTMouseDriver::release();
-#endif
+
+    GTUtilsDialog::waitAllFinished(os);
 
     //    5. Open file {data/samples/Genbank/murine.gb} with text editor, then make some modification and save file
     //    Expected state: dialog about detected file modification has appeared in UGENE window
