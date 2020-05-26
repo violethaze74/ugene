@@ -268,7 +268,7 @@ QWidget *GTUtilsMdi::getActiveObjectViewWindow(GUITestOpStatus &os, const QStrin
         }
     }
     GT_CHECK_RESULT(viewWindow != nullptr, "View window is not found: " + viewId, nullptr);
-    return nullptr;
+    return viewWindow;
 }
 #undef GT_METHOD_NAME
 
