@@ -31,6 +31,7 @@ bool GTMouseDriver::click(Qt::MouseButton button)
     DRIVER_CHECK(press(button), "Button could not be pressed");
     DRIVER_CHECK(release(button), "Button could not be released");
     GTThread::waitForMainThread();
+    GTGlobals::sleep(100); // Adding extra sleep to avoid occasional doubleclicks
     return true;
 }
 
