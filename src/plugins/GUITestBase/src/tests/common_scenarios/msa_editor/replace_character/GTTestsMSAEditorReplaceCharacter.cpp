@@ -465,20 +465,20 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     //4. Replace the character
     //Expected result : the character is replaced in all sequences of the group.
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
-
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
+
+    // Select the character again (collapse mode change may drop the selection)
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(9, 14), QPoint(9, 14));
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 
+    // Check that another sequence from the original group has no changes.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(9, 13), QPoint(9, 13));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     selectionContent = GTClipboard::text(os);
-    CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
+    CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016) {
