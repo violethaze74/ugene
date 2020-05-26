@@ -361,6 +361,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     const QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "primer_bind");
     CHECK_SET_ERR(items.size() == 2, QString("Unexpected annotations count: epxect %1, got %2").arg(2).arg(items.size()));
 
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "primer_bind");
     const QString sequenceQualifier = GTUtilsAnnotationsTreeView::getQualifierValue(os, "sequence", "primer_bind");
     const QString gcQualifier = GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", "primer_bind");
     const QString tmQualifier = GTUtilsAnnotationsTreeView::getQualifierValue(os, "tm", "primer_bind");
