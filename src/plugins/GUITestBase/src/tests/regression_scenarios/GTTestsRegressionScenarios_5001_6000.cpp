@@ -534,6 +534,7 @@ GUI_TEST_CLASS_DEFINITION(test_5110) {
     GTGlobals::sleep();
 
     QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "codon_start", items[0]) == "1", "wrong qualifier value");
 
     //    4. Open the "Annotation highlighting" OP widget.
