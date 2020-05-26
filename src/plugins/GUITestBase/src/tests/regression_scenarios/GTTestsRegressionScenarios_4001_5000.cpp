@@ -970,6 +970,7 @@ GUI_TEST_CLASS_DEFINITION(test_4099) {
     CHECK_SET_ERR(2 == items.length(), "CDS annotations count is not 2");
     foreach (QTreeWidgetItem *item, items) {
         if (item->text(2) == "1656..2450") {
+            GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << item);
             CHECK_SET_ERR("Tn5 neomycin resistance" == GTUtilsAnnotationsTreeView::getQualifierValue(os, "label", item), "Wrong label value");
             break;
         }
