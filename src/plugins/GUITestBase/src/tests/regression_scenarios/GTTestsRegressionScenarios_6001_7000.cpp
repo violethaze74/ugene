@@ -3712,6 +3712,7 @@ GUI_TEST_CLASS_DEFINITION(test_6564) {
 GUI_TEST_CLASS_DEFINITION(test_6566) {
     // 1. Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Enable "Collapsing mode"
     GTUtilsMsaEditor::toggleCollapsingMode(os);
