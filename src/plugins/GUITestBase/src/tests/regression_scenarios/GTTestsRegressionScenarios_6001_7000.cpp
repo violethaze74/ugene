@@ -2047,6 +2047,7 @@ GUI_TEST_CLASS_DEFINITION(test_6291) {
     //2. Click CDS annotation on pan view
     //GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970, 0, true);
     //3. Select qualifier
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
     QString qValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "product", GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
     //QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "db_xref");
     GTUtilsAnnotationsTreeView::clickItem(os, "product", 1, false);
