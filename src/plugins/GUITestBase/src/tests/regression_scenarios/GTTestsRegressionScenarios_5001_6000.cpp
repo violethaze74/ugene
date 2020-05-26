@@ -448,12 +448,17 @@ GUI_TEST_CLASS_DEFINITION(test_5039) {
 GUI_TEST_CLASS_DEFINITION(test_5052) {
     //1. Open "samples/Genbank/murine.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //2. Close the opened sequence view.
+    GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     GTGlobals::FindOptions findOptions;
     findOptions.matchPolicy = Qt::MatchContains;
     GTUtilsMdi::closeWindow(os, "NC_", findOptions);
+
     //3. Click "murine.gb" on Start Page.
     GTWidget::click(os, GTWidget::findLabelByText(os, "murine.gb").first());
+
     //Expected: The file is loaded, the view is opened.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded(os, "murine.gb"), "The file is not loaded");
