@@ -1248,9 +1248,11 @@ GUI_TEST_CLASS_DEFINITION(test_6232_2) {
     /*QTreeWidgetItem* fragment1 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 1");
     CHECK_SET_ERR(fragment1 != NULL, "Fragment 1 is not found");
 */
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "Fragment 1");
     QString firstValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_seq", "Fragment 1");
     CHECK_SET_ERR(firstValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(firstValue));
 
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "Fragment 2");
     QString secondValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_seq", "Fragment 2");
     CHECK_SET_ERR(secondValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(secondValue));
 }
