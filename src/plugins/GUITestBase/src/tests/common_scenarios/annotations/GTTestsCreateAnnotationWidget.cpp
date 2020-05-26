@@ -3160,21 +3160,19 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario1));
     openFileAndCallCreateAnnotationDialog(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    Expected state: a new annotation appears, it hasn't qualifier "note".
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0041_1");
     QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == descriptionItem, "There is an unexpected note qualifier");
+    CHECK_SET_ERR(descriptionItem == nullptr, "There is an unexpected note qualifier");
 
     //    4. Call "Create new annotation" dialog.
     //    5. Create an annotation with some description.
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             setAnnotationName(os, "test_0041_2", dialog);
             setGenbankLocation(os, "100..200", dialog);
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "leDescription", dialog), "test_0041_2 description");
@@ -3185,7 +3183,9 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario2));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
+
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0041_2");
 
     //    Expected state: a new annotation appears, it has a qualifier "note" with description.
     const QString description = GTUtilsAnnotationsTreeView::getQualifierValue(os, "note", "test_0041_2");
