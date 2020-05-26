@@ -2313,15 +2313,16 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     QAbstractButton *wrapButton = GTAction::button(os, "wrap_sequence_action");
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
+    GTUtilsDialog::waitAllFinished(os);
     CHECK_SET_ERR(visibleRange != GTUtilsSequenceView::getVisibleRange(os), "Visible range was not changed on translation show/hide");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0069) {
