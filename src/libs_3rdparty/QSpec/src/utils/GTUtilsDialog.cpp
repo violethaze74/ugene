@@ -286,10 +286,16 @@ void GTUtilsDialog::waitAllFinished(GUITestOpStatus &os, int timeoutMillis) {
         }
     }
     if (!isAllFinished && !os.hasError()) {
-        GUIDialogWaiter *waiter = pool.isEmpty() ? nullptr : pool.first();
+        GUIDialogWaiter *nonFinishedWaiter = nullptr;
+        foreach (GUIDialogWaiter *waiter, pool) {
+            if (!waiter->isFinished && waiter->getSettings().destiny == GUIDialogWaiter::MustBeRun) {
+                nonFinishedWaiter = waiter;
+                break;
+            }
+        }
         os.setError(QString("There are active waiters after: %1ms. First waiter details: %2")
                         .arg(timeoutMillis)
-                        .arg(waiter == nullptr ? "nullptr?" : waiter->getSettings().objectName));
+                        .arg(nonFinishedWaiter == nullptr ? "nullptr?" : nonFinishedWaiter->getSettings().objectName));
     }
 }
 #undef GT_METHOD_NAME

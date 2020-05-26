@@ -366,6 +366,30 @@ QWidget *GTWidget::getActiveModalWidget(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getActivePopupWidget"
+QWidget *GTWidget::getActivePopupWidget(GUITestOpStatus &os) {
+    QWidget *popupWidget = nullptr;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && popupWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        popupWidget = QApplication::activePopupWidget();
+    }
+    GT_CHECK_RESULT(popupWidget != nullptr, "Active popup widget is NULL", nullptr);
+    return popupWidget;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getActivePopupMenu"
+QMenu *GTWidget::getActivePopupMenu(GUITestOpStatus &os) {
+    QMenu *popupWidget = nullptr;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && popupWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        popupWidget = qobject_cast<QMenu *>(QApplication::activePopupWidget());
+    }
+    GT_CHECK_RESULT(popupWidget != nullptr, "Active popup menu is NULL", nullptr);
+    return popupWidget;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "checkEnabled"
 void GTWidget::checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedEnabledState) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
