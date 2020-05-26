@@ -1997,7 +1997,6 @@ GUI_TEST_CLASS_DEFINITION(test_0061_1) {
     //3. Check that first annotation table name is '1CF7 chain A annotation'
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7 chain A annotation"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "1CF7 chain A annotation [1CF7.PDB]"));
-    GTThread::waitForMainThread();
 
     //4. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR E2F-4)'  in 'chain_info' annotation for chain A
     CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os).isEmpty(), "Selection is not empty");
@@ -2023,13 +2022,16 @@ GUI_TEST_CLASS_DEFINITION(test_0061_2) {
     //1. Open "_common_data/pdb/1CRN_without_compnd_tag.PDB"
     GTFileDialog::openFile(os, testDir + "_common_data/pdb", "1CRN_without_compnd_tag.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //2. Check that first annotation table name is '1CRN chain A sequence'
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CRN chain A annotation"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain A annotation [1CRN_without_compnd_tag.PDB]"));
 
-    //3. Check that there is 'chain_id' qualifier with value 'A'  in 'chain_info' annotation for chain A
+    //3. Check that there is 'chain_id' qualifier with value 'A'  in 'chain_info' annotation for chain A    
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "chain_info");
     QString chainId = GTUtilsAnnotationsTreeView::getQualifierValue(os, "chain_id", "chain_info");
     CHECK_SET_ERR("A" == chainId, QString("Incorrect 'chain_info' qualifier value: %1").arg(chainId));
+
     //4. Check that there is not 'molecule_name' qualifier
     QTreeWidgetItem *moleculeName = GTUtilsAnnotationsTreeView::findItem(os, "molecule_name", GTGlobals::FindOptions(false));
     CHECK_SET_ERR(NULL == moleculeName, QString("There is 'moleculeName' qualifier"));
