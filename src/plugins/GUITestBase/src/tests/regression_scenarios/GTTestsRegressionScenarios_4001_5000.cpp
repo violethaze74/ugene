@@ -366,10 +366,10 @@ GUI_TEST_CLASS_DEFINITION(test_4026) {
 
     //3. Double click the sequence in the project.
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_004718");
-    GTGlobals::sleep(1000);
 
     //Expected: there is the same amount of annotations in the panoramic and details views.
     //Actual: annotations are now shown in the views. Their locations and qualifier names are deleted.
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "5'UTR");
     QString value = GTUtilsAnnotationsTreeView::getQualifierValue(os, "evidence", "5'UTR");
     CHECK_SET_ERR("not_experimental" == value, QString("Unexpected qualifier value"));
 }
