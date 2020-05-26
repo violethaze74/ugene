@@ -4841,7 +4841,6 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
     //    2. Launch Primer3 search (set results count to 50)
     //    Expected state: check GC content of the first result pair, it should be 55 and 33
 
-    GTGlobals::sleep();
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4859,28 +4858,13 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
 
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
     GTWidget::click(os, wgt, Qt::RightButton);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QMap<QString, QStringList> docs = GTUtilsProjectTreeView::getDocuments(os);
-    const QString key = docs.keys()[1];
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, key));
-    GTGlobals::sleep();
-
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, QString("Annotations [%1] *").arg(key)));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "top_primers  (5, 0)"));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "pair 1  (0, 2)"));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
     QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "top_primers");
+    CHECK_SET_ERR(items.size() >= 2, "Wrong annotations count");
+    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << items[0]);
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[0]) == "55", "wrong gc percentage");
+    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << items[1]);
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[1]) == "35", "wrong gc percentage");
 }
 
