@@ -1283,6 +1283,7 @@ GUI_TEST_CLASS_DEFINITION(test_3216_1) {
 
     GTFileDialog::openFile(os, sandBoxDir + "test_3216", "test_3216_1.gen");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
     const QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "test_3216_1", "CDS");
     CHECK_SET_ERR(expectedValue == actualValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
 }
