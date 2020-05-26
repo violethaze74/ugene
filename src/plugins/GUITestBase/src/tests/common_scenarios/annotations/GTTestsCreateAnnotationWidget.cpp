@@ -34,6 +34,7 @@
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
+#include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <QAbstractItemModel>
@@ -168,6 +169,7 @@ void setSimpleLocation(HI::GUITestOpStatus &os, int startPos, int endPos, bool c
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "leRegionStart", dialog), QString::number(startPos));
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "leRegionEnd", dialog), QString::number(endPos));
     GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "chbComplement", dialog), complement);
+    GTThread::waitForMainThread();
 }
 
 void setGenbankLocation(HI::GUITestOpStatus &os, const QString &locationString, QWidget *dialog) {
@@ -232,8 +234,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Ensure that the default type is "Misc. Feature".
             const QString type = getTypeFromFullWidget(os, dialog);
@@ -280,8 +281,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Enter any pattern that can be found. Open "Input and output" tab.
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
@@ -367,8 +367,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Ensure that the default type is "Misc. Feature".
             const QString type = getTypeFromFullWidget(os, dialog);
@@ -415,8 +414,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Enter any pattern that can be found. Open "Input and output" tab.
             setSmithWatermanPatternAndOpenLastTab(os, dialog, "AAAAAACCCCCCC");
@@ -502,8 +500,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     class CreateAnnotationDialogScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Enter "tel".
             GTKeyboardDriver::keySequence("tel");
@@ -528,8 +525,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     class SmithWatermanDialogScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
 
@@ -582,8 +578,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Ensure that the group name is "<auto>".
             checkGroupName(os, "<auto>", dialog);
@@ -624,8 +619,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -698,8 +692,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Set the group name. Accept the dialog.
             setGroupName(os, "test_0011", dialog);
@@ -731,8 +724,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -788,8 +780,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Click "Predefined group names" button.
             //    Expected state: a popup menu is shown, it contains all groups from the existing annotation table.
@@ -835,8 +826,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog, "GATTTTATTTAGTCTCCAG");
 
@@ -920,8 +910,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Set the group name. Accept the dialog.
             setGroupName(os, "test_0017", dialog);
@@ -957,8 +946,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog, "GATTTTATTTAGTCTCCAG");
 
@@ -1021,8 +1009,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Click the "Predefined group names" button.
             //    Expected state: a popup menu with possible group names is shown.
@@ -1060,8 +1047,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog, "GATTTTATTTAGTCTCCAG");
 
@@ -1129,8 +1115,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Use default type, group and name. Accept the dialog.
             setGenbankLocation(os, "100..200", dialog);
@@ -1163,8 +1148,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    5. Set any name, use default group and type. Accept the dialog.
             setAnnotationName(os, "test_0023", dialog);
@@ -1198,8 +1182,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     class Scenario3 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    7. Set "Loci" type, use default group and name. Accept the dialog.
             setTypeInFullWidget(os, "Loci", dialog);
@@ -1233,8 +1216,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     class Scenario4 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    9. Set "Attenuator" type and any name, use default group. Accept the dialog.
             setTypeInFullWidget(os, "Attenuator", dialog);
@@ -1272,8 +1254,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -1306,8 +1287,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -1342,8 +1322,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     class Scenario3 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -1378,8 +1357,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     class Scenario4 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -1514,8 +1492,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Set GenBank location style. Set region "100..200". Accept the dialog.
             setGenbankLocation(os, "100..200", dialog);
@@ -1531,7 +1508,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    Expected state: there is an annotation with region "100..200".
     QString expectedLocation = "100..200";
     QString location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
-    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expect '%1', got '%2").arg(expectedLocation).arg(location));
+    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
     GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
 
@@ -1540,8 +1517,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    5. Set GenBank location style. Set region "100..200,300..400". Accept the dialog.
             setGenbankLocation(os, "100..200,300..400", dialog);
@@ -1557,7 +1533,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    Expected state: there is an annotation with region "join(100..200,300..400)".
     expectedLocation = "join(100..200,300..400)";
     location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
-    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expect '%1', got '%2").arg(expectedLocation).arg(location));
+    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
     GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
 
@@ -1566,8 +1542,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     class Scenario3 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    7. Set GenBank location style. Set region "complement(100..200)". Accept the dialog.
             setGenbankLocation(os, "complement(100..200)", dialog);
@@ -1583,7 +1558,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    Expected state: there is an annotation with region "complement(100..200)".
     expectedLocation = "complement(100..200)";
     location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
-    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expect '%1', got '%2").arg(expectedLocation).arg(location));
+    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
     GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
 
@@ -1592,8 +1567,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     class Scenario4 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    9. Set GenBank location style. Set region "complement(join(100..200,300..400))". Accept the dialog.
             setGenbankLocation(os, "complement(join(100..200,300..400))", dialog);
@@ -1609,7 +1583,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    Expected state: there is an annotation with region "complement(join(100..200,300..400))".
     expectedLocation = "complement(join(100..200,300..400))";
     location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
-    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expect '%1', got '%2").arg(expectedLocation).arg(location));
+    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {
@@ -1621,24 +1595,21 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    3. Set simple location style. Set region "100..200". Accept the dialog.
             setSimpleLocation(os, 100, 200, false, dialog);
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario1));
     openFileAndCallCreateAnnotationDialog(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    Expected state: there is an annotation with region "100..200".
     QString expectedLocation = "100..200";
     QString location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
-    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expect '%1', got '%2").arg(expectedLocation).arg(location));
+    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
     GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
 
@@ -1647,8 +1618,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    5. Set simple location style. Set region "100..200". Check the "Complement" checkbox. Accept the dialog.
             setSimpleLocation(os, 100, 200, true, dialog);
@@ -1659,12 +1629,12 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario2));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    Expected state: there is an annotation with region "complement(100..200)".
     expectedLocation = "complement(100..200)";
     location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
-    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expect '%1', got '%2").arg(expectedLocation).arg(location));
+    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
     GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
 
@@ -1673,9 +1643,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     class Scenario3 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    6. Set simple location style. Set region "200..100". Accept the dialog.
             setSimpleLocation(os, 200, 100, false, dialog);
 
@@ -1685,12 +1653,12 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario3));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    Expected state: there is an annotation with region "join(1..100,200..199950)".
     expectedLocation = "join(1..100,200..199950)";
     location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
-    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expect '%1', got '%2").arg(expectedLocation).arg(location));
+    CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
     GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
 
@@ -1699,9 +1667,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     class Scenario4 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    8. Set simple location style. Set region "200..100". Check the "Complement" checkbox. Accept the dialog.
             setSimpleLocation(os, 200, 100, true, dialog);
 
@@ -1711,10 +1677,10 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario4));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
-    //    Expected state: there is an annotation with region "complement(join(1..100,200..199950))".
-    expectedLocation = "complement(join(1..100,200..199950))";
+    //    Expected state: there is an annotation with region "complement(100..200)".
+    expectedLocation = "complement(100..200)";
     location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expect '%1', got '%2").arg(expectedLocation).arg(location));
 }
@@ -1728,8 +1694,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "Existing table" option. Accept the dialog.
             setExistingTable(os, dialog);
@@ -1760,8 +1725,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    5. Select "Create new table" option. Set any valid table path. Accept the dialog.
             QDir().mkpath(sandBoxDir + "test_0028");
@@ -1795,8 +1759,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog, "GATTTTATTTAGTCTCCAG");
 
@@ -1829,8 +1792,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog, "GATTTTATTTAGTCTCCAG");
 
@@ -1915,8 +1877,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    4. Select "Existing table" option. Click "Browse existing tables" button.
             setExistingTable(os, dialog);
@@ -1924,8 +1885,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
             class ProjectTreeItemsChecker : public CustomScenario {
             public:
                 void run(HI::GUITestOpStatus &os) {
-                    QWidget *dialog = QApplication::activeModalWidget();
-                    CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+                    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
                     QTreeView *treeView = dialog->findChild<QTreeView *>();
                     CHECK_SET_ERR(treeView != NULL, "treeWidget is NULL");
@@ -2021,8 +1981,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog, "GATTTTATTTAGTCTCCAG");
 
@@ -2032,8 +1991,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
             class ProjectTreeItemsChecker : public CustomScenario {
             public:
                 void run(HI::GUITestOpStatus &os) {
-                    QWidget *dialog = QApplication::activeModalWidget();
-                    CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+                    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
                     QTreeView *treeView = dialog->findChild<QTreeView *>();
                     CHECK_SET_ERR(treeView != NULL, "treeWidget is NULL");
@@ -2135,8 +2093,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     class ProjectTreeItemsChecker : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             QTreeView *treeView = dialog->findChild<QTreeView *>();
             CHECK_SET_ERR(treeView != NULL, "treeWidget is NULL");
@@ -2224,8 +2181,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "Create new table" option. Click "Browse new file" button. Select any file. Accept the dialog.
             QDir().mkpath(sandBoxDir + "test_0034");
@@ -2257,8 +2213,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    5. Select "Create new table" option. Set any valid file path in the lineedit. Accept the dialog.
             setNewTable(os, dialog, sandBoxDir + "test_0034/test_0034_2.gb");
@@ -2291,8 +2246,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -2324,8 +2278,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -2404,8 +2357,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
 
@@ -2437,13 +2389,11 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Check "Use pattern names" checkbox state.
             //    Expected state: it is invisible.
             QCheckBox *usePatternNames = GTWidget::findExactWidget<QCheckBox *>(os, "chbUsePatternNames", dialog);
-            CHECK_SET_ERR(NULL != usePatternNames, "usePatternNames is NULL");
             CHECK_SET_ERR(!usePatternNames->isVisible(), "usePatternNames is unexpectedly visible");
 
             //    4. Check if location widgets are enabled or disabled.
@@ -2456,32 +2406,25 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //        genbank lineedit - disabled
             //        genbank complementary button - disabled
             QRadioButton *rbSimpleFormat = GTWidget::findExactWidget<QRadioButton *>(os, "rbSimpleFormat", dialog);
-            CHECK_SET_ERR(NULL != rbSimpleFormat, "rbSimpleFormat is NULL");
-            CHECK_SET_ERR(rbSimpleFormat->isEnabled(), "rbSimpleFormat is unexpectedly disabled");
+            CHECK_SET_ERR(rbSimpleFormat->isEnabled(), "1. rbSimpleFormat is unexpectedly disabled");
 
             QLineEdit *leRegionStart = GTWidget::findExactWidget<QLineEdit *>(os, "leRegionStart", dialog);
-            CHECK_SET_ERR(NULL != leRegionStart, "leRegionStart is NULL");
-            CHECK_SET_ERR(leRegionStart->isEnabled(), "leRegionStart is unexpectedly disabled");
+            CHECK_SET_ERR(leRegionStart->isEnabled(), "2. leRegionStart is unexpectedly disabled");
 
             QLineEdit *leRegionEnd = GTWidget::findExactWidget<QLineEdit *>(os, "leRegionEnd", dialog);
-            CHECK_SET_ERR(NULL != leRegionEnd, "leRegionEnd is NULL");
-            CHECK_SET_ERR(leRegionEnd->isEnabled(), "leRegionEnd is unexpectedly disabled");
+            CHECK_SET_ERR(leRegionEnd->isEnabled(), "3. leRegionEnd is unexpectedly disabled");
 
             QCheckBox *chbComplement = GTWidget::findExactWidget<QCheckBox *>(os, "chbComplement", dialog);
-            CHECK_SET_ERR(NULL != chbComplement, "chbComplement is NULL");
-            CHECK_SET_ERR(chbComplement->isEnabled(), "chbComplement is unexpectedly disabled");
+            CHECK_SET_ERR(chbComplement->isEnabled(), "4. chbComplement is unexpectedly disabled");
 
             QRadioButton *rbGenbankFormat = GTWidget::findExactWidget<QRadioButton *>(os, "rbGenbankFormat", dialog);
-            CHECK_SET_ERR(NULL != rbGenbankFormat, "rbGenbankFormat is NULL");
-            CHECK_SET_ERR(rbGenbankFormat->isEnabled(), "rbGenbankFormat is unexpectedly disabled");
+            CHECK_SET_ERR(rbGenbankFormat->isEnabled(), "5. rbGenbankFormat is unexpectedly disabled");
 
             QLineEdit *leLocation = GTWidget::findExactWidget<QLineEdit *>(os, "leLocation", dialog);
-            CHECK_SET_ERR(NULL != leLocation, "leLocation is NULL");
-            CHECK_SET_ERR(!leLocation->isEnabled(), "leLocation is unexpectedly enabled");
+            CHECK_SET_ERR(!leLocation->isEnabled(), "6. leLocation is unexpectedly enabled");
 
             QToolButton *tbDoComplement = GTWidget::findExactWidget<QToolButton *>(os, "tbDoComplement", dialog);
-            CHECK_SET_ERR(NULL != tbDoComplement, "tbDoComplement is NULL");
-            CHECK_SET_ERR(!tbDoComplement->isEnabled(), "tbDoComplement is unexpectedly enabled");
+            CHECK_SET_ERR(!tbDoComplement->isEnabled(), "7. tbDoComplement is unexpectedly enabled");
 
             //    5. Check boundaries for simple location widgets.
             //    Expected state: values belong to region [1..seq_len], the start position can be greater than the end position. If the position is incorrect (e.g. equal 0) a messagebox appears on dialog acception, the dialog is not closed.
@@ -2502,16 +2445,16 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             GTLineEdit::setText(os, leRegionStart, "-1", true);
-            CHECK_SET_ERR(leRegionStart->text().isEmpty(), QString("An unexpected text in leRegionStart: '%1'").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionStart->text() == "1", QString("12. An unexpected text in leRegionStart: '%1'").arg(leRegionStart->text()));
 
             GTLineEdit::setText(os, leRegionStart, "qwerty", true);
-            CHECK_SET_ERR(leRegionStart->text().isEmpty(), QString("An unexpected text in leRegionStart: '%1'").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionStart->text().isEmpty(), QString("13. An unexpected text in leRegionStart: '%1'").arg(leRegionStart->text()));
 
             GTLineEdit::setText(os, leRegionEnd, "-1", true);
-            CHECK_SET_ERR(leRegionEnd->text().isEmpty(), QString("An unexpected text in leRegionEnd: '%1'").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "1", QString("14. An unexpected text in leRegionEnd: '%1'").arg(leRegionEnd->text()));
 
             GTLineEdit::setText(os, leRegionEnd, "qwerty", true);
-            CHECK_SET_ERR(leRegionEnd->text().isEmpty(), QString("An unexpected text in leRegionEnd: '%1'").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(leRegionEnd->text().isEmpty(), QString("15. An unexpected text in leRegionEnd: '%1'").arg(leRegionEnd->text()));
 
             //    6. Enter region "(100..200)" to simple location widgets.
             setSimpleLocation(os, 100, 200, false, dialog);
@@ -2519,7 +2462,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //    Expected state: GenBank location string contains "100..200" region.
             QString expectedGenbankLocation = "100..200";
             QString genbankLocation = leLocation->text();
-            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
+            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("16. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
 
             //    7. Check "Complement" checkbox.
             GTCheckBox::setChecked(os, chbComplement);
@@ -2527,7 +2470,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //    Expected state: GenBank location string contains "complement(100..200)" region.
             expectedGenbankLocation = "complement(100..200)";
             genbankLocation = leLocation->text();
-            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
+            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("17. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
 
             //    8. Uncheck "Complement" checkbox.
             GTCheckBox::setChecked(os, chbComplement, false);
@@ -2535,7 +2478,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //    Expected state: GenBank location string contains "100..200" region.
             expectedGenbankLocation = "100..200";
             genbankLocation = leLocation->text();
-            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
+            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("18. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
 
             //    9. Enter region "(200..100)" to simple location widgets.
             setSimpleLocation(os, 200, 100, false, dialog);
@@ -2543,7 +2486,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //    Expected state: GenBank location string contains "join(1..100,200..199950)" region.
             expectedGenbankLocation = "join(1..100,200..199950)";
             genbankLocation = leLocation->text();
-            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
+            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("19. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
 
             //    10. Check "Complement" checkbox.
             GTCheckBox::setChecked(os, chbComplement);
@@ -2551,7 +2494,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //    Expected state: GenBank location string contains "complement(join(1..100,200..199950))" region.
             expectedGenbankLocation = "complement(join(1..100,200..199950))";
             genbankLocation = leLocation->text();
-            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
+            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("20. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
 
             //    11. Uncheck "Complement" checkbox.
             GTCheckBox::setChecked(os, chbComplement, false);
@@ -2559,7 +2502,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //    Expected state: GenBank location string contains "join(1..100,200..199950)" region.
             expectedGenbankLocation = "join(1..100,200..199950)";
             genbankLocation = leLocation->text();
-            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
+            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("21. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
 
             //    12. Select "GenBank/EMBL format" location style. Check if location widgets are enabled or disabled.
             GTRadioButton::click(os, rbGenbankFormat);
@@ -2572,13 +2515,13 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //        genbank radio button - enabled
             //        genbank lineedit - enabled
             //        genbank complementary button - enabled
-            CHECK_SET_ERR(rbSimpleFormat->isEnabled(), "rbSimpleFormat is unexpectedly disabled");
-            CHECK_SET_ERR(!leRegionStart->isEnabled(), "leRegionStart is unexpectedly enabled");
+            CHECK_SET_ERR(rbSimpleFormat->isEnabled(), "22. rbSimpleFormat is unexpectedly disabled");
+            CHECK_SET_ERR(!leRegionStart->isEnabled(), "23. leRegionStart is unexpectedly enabled");
             CHECK_SET_ERR(!leRegionEnd->isEnabled(), "leRegionEnd is unexpectedly enabled");
-            CHECK_SET_ERR(!chbComplement->isEnabled(), "chbComplement is unexpectedly enabled");
-            CHECK_SET_ERR(rbGenbankFormat->isEnabled(), "rbGenbankFormat is unexpectedly disabled");
-            CHECK_SET_ERR(leLocation->isEnabled(), "leLocation is unexpectedly disabled");
-            CHECK_SET_ERR(tbDoComplement->isEnabled(), "tbDoComplement is unexpectedly disabled");
+            CHECK_SET_ERR(!chbComplement->isEnabled(), "24. chbComplement is unexpectedly enabled");
+            CHECK_SET_ERR(rbGenbankFormat->isEnabled(), "25. rbGenbankFormat is unexpectedly disabled");
+            CHECK_SET_ERR(leLocation->isEnabled(), "26. leLocation is unexpectedly disabled");
+            CHECK_SET_ERR(tbDoComplement->isEnabled(), "27. tbDoComplement is unexpectedly disabled");
 
             //    13. Select "Simple format" location style. Check if location widgets are enabled or disabled.
             GTRadioButton::click(os, rbSimpleFormat);
@@ -2591,68 +2534,68 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //        genbank radio button - enabled
             //        genbank lineedit - disabled
             //        genbank complementary button - disabled
-            CHECK_SET_ERR(rbSimpleFormat->isEnabled(), "rbSimpleFormat is unexpectedly disabled");
-            CHECK_SET_ERR(leRegionStart->isEnabled(), "leRegionStart is unexpectedly disabled");
-            CHECK_SET_ERR(leRegionEnd->isEnabled(), "leRegionEnd is unexpectedly disabled");
-            CHECK_SET_ERR(chbComplement->isEnabled(), "chbComplement is unexpectedly disabled");
-            CHECK_SET_ERR(rbGenbankFormat->isEnabled(), "rbGenbankFormat is unexpectedly disabled");
-            CHECK_SET_ERR(!leLocation->isEnabled(), "leLocation is unexpectedly enabled");
-            CHECK_SET_ERR(!tbDoComplement->isEnabled(), "tbDoComplement is unexpectedly enabled");
+            CHECK_SET_ERR(rbSimpleFormat->isEnabled(), "28. rbSimpleFormat is unexpectedly disabled");
+            CHECK_SET_ERR(leRegionStart->isEnabled(), "29. leRegionStart is unexpectedly disabled");
+            CHECK_SET_ERR(leRegionEnd->isEnabled(), "30. leRegionEnd is unexpectedly disabled");
+            CHECK_SET_ERR(chbComplement->isEnabled(), "31. chbComplement is unexpectedly disabled");
+            CHECK_SET_ERR(rbGenbankFormat->isEnabled(), "32. rbGenbankFormat is unexpectedly disabled");
+            CHECK_SET_ERR(!leLocation->isEnabled(), "33. leLocation is unexpectedly enabled");
+            CHECK_SET_ERR(!tbDoComplement->isEnabled(), "34. tbDoComplement is unexpectedly enabled");
 
             //    14. Select "GenBank/EMBL format" location style. Set location "300..400".
             setGenbankLocation(os, "300..400", dialog);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
 
             //    Expected state: simple location widgets contains non-complemented region "(300..400)".
-            CHECK_SET_ERR("300" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2").arg("300").arg(leRegionStart->text()));
-            CHECK_SET_ERR("400" == leRegionEnd->text(), QString("Unexpected simple location region end: expect %1, got %2").arg("400").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(!chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly checked");
+            CHECK_SET_ERR("300" == leRegionStart->text(), QString("35. Unexpected simple location region start: expect %1, got %2").arg("300").arg(leRegionStart->text()));
+            CHECK_SET_ERR("400" == leRegionEnd->text(), QString("36. Unexpected simple location region end: expect %1, got %2").arg("400").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(!chbComplement->isChecked(), "37. Simple location complement checkbox is unexpectedly checked");
 
             //    15. Set location "join(500..600,700..800)".
             setGenbankLocation(os, "join(500..600,700..800)", dialog);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
 
             //    Expected state: simple location widgets contains non-complemented region "(500..600)".
-            CHECK_SET_ERR("500" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2").arg("500").arg(leRegionStart->text()));
-            CHECK_SET_ERR("600" == leRegionEnd->text(), QString("Unexpected simple location region end: expect %1, got %2").arg("600").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(!chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly checked");
+            CHECK_SET_ERR(leRegionStart->text() == "500", QString("38. Unexpected simple location region start: expect %1, got %2").arg("500").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "600", QString("39. Unexpected simple location region end: expect %1, got %2").arg("600").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(!chbComplement->isChecked(), "40. Simple location complement checkbox is unexpectedly checked");
 
             //    16. Set location "join(1..100,200..199950)".
             setGenbankLocation(os, "join(1..100,200..199950)", dialog);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
 
             //    Expected state: simple location widgets contains non-complemented region "(1..100)".
-            CHECK_SET_ERR("1" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2").arg("1").arg(leRegionStart->text()));
-            CHECK_SET_ERR("100" == leRegionEnd->text(), QString("Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(!chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly checked");
+            CHECK_SET_ERR("1" == leRegionStart->text(), QString("41. Unexpected simple location region start: expect %1, got %2").arg("1").arg(leRegionStart->text()));
+            CHECK_SET_ERR("100" == leRegionEnd->text(), QString("42. Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(!chbComplement->isChecked(), "43. Simple location complement checkbox is unexpectedly checked");
 
             //    17. Set location "complement(200..300)".
             setGenbankLocation(os, "complement(200..300)", dialog);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
 
             //    Expected state: simple location widgets contains complemented region "(200..300)".
-            CHECK_SET_ERR("200" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
-            CHECK_SET_ERR("300" == leRegionEnd->text(), QString("Unexpected simple location region end: expect %1, got %2").arg("300").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly unchecked");
+            CHECK_SET_ERR(leRegionStart->text() == "200", QString("44. Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "300", QString("45. Unexpected simple location region end: expect %1, got %2").arg("300").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(chbComplement->isChecked(), "46. Simple location complement checkbox is unexpectedly unchecked");
 
             //    18. Click "Do complement" button.
             GTWidget::click(os, tbDoComplement);
 
             //    Expected state: simple location widgets contains non-complemented region "(200..300)", GenBank location string contains "200..300".
-            CHECK_SET_ERR("200" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
-            CHECK_SET_ERR("300" == leRegionEnd->text(), QString("Unexpected simple location region end: expect %1, got %2").arg("300").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(!chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly checked");
-            CHECK_SET_ERR("200..300" == leLocation->text(), QString("Unexpected GenBank location string: expect '%1', got '%2'").arg("200..300").arg(leLocation->text()));
+            CHECK_SET_ERR(leRegionStart->text() == "200", QString("47. Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "300", QString("48. Unexpected simple location region end: expect %1, got %2").arg("300").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(!chbComplement->isChecked(), "49. Simple location complement checkbox is unexpectedly checked");
+            CHECK_SET_ERR(leLocation->text() == "200..300", QString("50. Unexpected GenBank location string: expect '%1', got '%2'").arg("200..300").arg(leLocation->text()));
 
             //    19. Set location "400..500qwerty".
             setGenbankLocation(os, "400..500qwerty", dialog);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
 
             //    Expected state: simple location widgets are empty, GenBank location string is empty.
-            CHECK_SET_ERR(leRegionStart->text().isEmpty(), QString("Unexpected simple location region start: expect an empty string, got %1").arg(leRegionStart->text()));
-            CHECK_SET_ERR(leRegionEnd->text().isEmpty(), QString("Unexpected simple location region end: expect an empty string, got %1").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(!chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly checked");
-            CHECK_SET_ERR(leLocation->text().isEmpty(), QString("Unexpected GenBank location string: expect an empty string, got, '%1'").arg(leLocation->text()));
+            CHECK_SET_ERR(leRegionStart->text().isEmpty(), QString("51. Unexpected simple location region start: expect an empty string, got %1").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text().isEmpty(), QString("52. Unexpected simple location region end: expect an empty string, got %1").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(!chbComplement->isChecked(), "53. Simple location complement checkbox is unexpectedly checked");
+            CHECK_SET_ERR(leLocation->text().isEmpty(), QString("54. Unexpected GenBank location string: expect an empty string, got, '%1'").arg(leLocation->text()));
 
             //    20. Check if destination table widgets are enabled or disabled.
             //    Expected state:
@@ -2664,32 +2607,25 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //        New table browse button - enabled
             //        Auto table radio button - not visible
             QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable", dialog);
-            CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
-            CHECK_SET_ERR(!rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbExistingTable->isEnabled(), "55. rbExistingTable is unexpectedly enabled");
 
             QComboBox *cbExistingTable = GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable", dialog);
-            CHECK_SET_ERR(NULL != cbExistingTable, "cbExistingTable is NULL");
-            CHECK_SET_ERR(!cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly enabled");
+            CHECK_SET_ERR(!cbExistingTable->isEnabled(), "56. cbExistingTable is unexpectedly enabled");
 
             QToolButton *tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseExistingTable", dialog);
-            CHECK_SET_ERR(NULL != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
-            CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly enabled");
+            CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "57. tbBrowseExistingTable is unexpectedly enabled");
 
             QRadioButton *rbCreateNewTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbCreateNewTable", dialog);
-            CHECK_SET_ERR(NULL != rbCreateNewTable, "rbCreateNewTable is NULL");
-            CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
+            CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "58. rbCreateNewTable is unexpectedly disabled");
 
             QLineEdit *leNewTablePath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath", dialog);
-            CHECK_SET_ERR(NULL != leNewTablePath, "leNewTablePath is NULL");
-            CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled");
+            CHECK_SET_ERR(leNewTablePath->isEnabled(), "59. leNewTablePath is unexpectedly disabled");
 
             QToolButton *tbBrowseNewTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseNewTable", dialog);
-            CHECK_SET_ERR(NULL != tbBrowseNewTable, "tbBrowseNewTable is NULL");
-            CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled");
+            CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "60. tbBrowseNewTable is unexpectedly disabled");
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
-            CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "61. rbUseAutoTable is unexpectedly visible");
 
             //    21. Cancel the dialog.
             // Dialog is applied to check boundaries.
@@ -2707,8 +2643,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    23. Check if destination table widgets are enabled or disabled.
             //    Expected state:
@@ -2720,31 +2655,24 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //        New table browse button - disabled
             //        Auto table radio button - not visible
             QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable", dialog);
-            CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
 
             QComboBox *cbExistingTable = GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable", dialog);
-            CHECK_SET_ERR(NULL != cbExistingTable, "cbExistingTable is NULL");
             CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled");
 
             QToolButton *tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseExistingTable", dialog);
-            CHECK_SET_ERR(NULL != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
             CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled");
 
             QRadioButton *rbCreateNewTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbCreateNewTable", dialog);
-            CHECK_SET_ERR(NULL != rbCreateNewTable, "rbCreateNewTable is NULL");
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
 
             QLineEdit *leNewTablePath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath", dialog);
-            CHECK_SET_ERR(NULL != leNewTablePath, "leNewTablePath is NULL");
             CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled");
 
             QToolButton *tbBrowseNewTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseNewTable", dialog);
-            CHECK_SET_ERR(NULL != tbBrowseNewTable, "tbBrowseNewTable is NULL");
             CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled");
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
-            CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
             CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
             //    24. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
@@ -2789,31 +2717,28 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             setGenbankLocation(os, "join(1..100,200..199950)", dialog);
 
             QLineEdit *leRegionStart = GTWidget::findExactWidget<QLineEdit *>(os, "leRegionStart", dialog);
-            CHECK_SET_ERR(NULL != leRegionStart, "leRegionStart is NULL");
             QLineEdit *leRegionEnd = GTWidget::findExactWidget<QLineEdit *>(os, "leRegionEnd", dialog);
-            CHECK_SET_ERR(NULL != leRegionEnd, "leRegionEnd is NULL");
             QCheckBox *chbComplement = GTWidget::findExactWidget<QCheckBox *>(os, "chbComplement", dialog);
-            CHECK_SET_ERR(NULL != chbComplement, "chbComplement is NULL");
 
             //    Expected state: simple location widgets contains non-complemented region "(200..100)".
-            CHECK_SET_ERR("200" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
-            CHECK_SET_ERR("100" == leRegionEnd->text(), QString("Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(leRegionStart->text() == "200", QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "100", QString("Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
             CHECK_SET_ERR(!chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly checked");
 
             //    27. Set location "complement(join(1..100,200..199950))".
             setGenbankLocation(os, "complement(join(1..100,200..199950))", dialog);
 
             //    Expected state: simple location widgets contains complemented region "(200..100)".
-            CHECK_SET_ERR("200" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
-            CHECK_SET_ERR("100" == leRegionEnd->text(), QString("Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(leRegionStart->text() == "200", QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "100", QString("Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
             CHECK_SET_ERR(chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly unchecked");
 
             //    28. Click "Do complement" button.
             GTWidget::click(os, GTWidget::findExactWidget<QToolButton *>(os, "tbDoComplement", dialog));
 
             //    Expected state: simple location widgets contains non-complemented region "(200..100)".
-            CHECK_SET_ERR("200" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
-            CHECK_SET_ERR("100" == leRegionEnd->text(), QString("Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(leRegionStart->text() == "200", QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "100", QString("Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
             CHECK_SET_ERR(!chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly checked");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -2823,6 +2748,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario2));
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsProjectTreeView::markSequenceAsCircular(os, "murine.gb");
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
 }
@@ -2836,8 +2762,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -2891,8 +2816,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -3147,8 +3071,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setAnnotationName(os, "test_0041_1", dialog);
             setGenbankLocation(os, "1..100", dialog);
@@ -3204,8 +3127,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -3219,7 +3141,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario1));
     openFileAndCallSmithWatermanDialog(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    Expected state: a new annotation appears, it hasn't qualifier "note".
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0042_1");
@@ -3231,8 +3153,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
@@ -3246,10 +3167,11 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario2));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    Expected state: a new annotation appears, it has a qualifier "note" with description.
-    const QString description = GTUtilsAnnotationsTreeView::getQualifierValue(os, "note", "test_0042_2");
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0042_2");
+    QString description = GTUtilsAnnotationsTreeView::getQualifierValue(os, "note", "test_0042_2");
     CHECK_SET_ERR("test_0042_2 description" == description,
                   QString("An unexpected annotation description: expect '%1', got '%2'")
                       .arg("test_0042_2 description")
@@ -3275,7 +3197,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
     //    Expected state: a new annotation appears, it hasn't qualifier "note".
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0043_1");
     QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == descriptionItem, "There is an unexpected note qualifier");
+    CHECK_SET_ERR(descriptionItem == nullptr, "There is an unexpected note qualifier");
 
     //    4. Set any description. Click "Create annotations" button.
     setAnnotationName(os, "test_0043_2");
@@ -3285,6 +3207,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: a new annotation appears, it has a qualifier "note" with description.
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0043_2");
     const QString description = GTUtilsAnnotationsTreeView::getQualifierValue(os, "note", "test_0043_2");
     CHECK_SET_ERR("test_0043_2 description" == description,
                   QString("An unexpected annotation description: expect '%1', got '%2'")
@@ -3300,8 +3223,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setAnnotationName(os, "test_0044", dialog);
             setGenbankLocation(os, "10..20", dialog);
@@ -3344,8 +3266,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
             : annotationName(annotationName) {
         }
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             setAnnotationName(os, annotationName, dialog);
             setGenbankLocation(os, "10..20", dialog);

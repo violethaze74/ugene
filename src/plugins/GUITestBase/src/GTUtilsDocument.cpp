@@ -34,6 +34,7 @@
 
 #include "GTGlobals.h"
 #include "GTUtilsProjectTreeView.h"
+#include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
 
@@ -98,8 +99,7 @@ void GTUtilsDocument::removeDocument(HI::GUITestOpStatus &os, const QString &doc
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         break;
     }
-
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 #define GT_METHOD_NAME "getDocumentGObjectView"
