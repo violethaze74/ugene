@@ -3611,6 +3611,7 @@ GUI_TEST_CLASS_DEFINITION(test_1321_1) {
     const int annotationsCount = GTUtilsAnnotationsTreeView::findItems(os, "repeat_unit").size();
     CHECK_SET_ERR(1 == annotationsCount, QString("Unexpected annotations count: expect '%1', got '%2'").arg(1).arg(annotationsCount));
 
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "repeat_unit");
     const QString homology = GTUtilsAnnotationsTreeView::getQualifierValue(os, "repeat_identity", "repeat_unit");
     CHECK_SET_ERR("85" == homology, QString("Unexpected repeat homology: expect '%1', got '%2'").arg(85).arg(homology));
 
