@@ -3056,6 +3056,7 @@ GUI_TEST_CLASS_DEFINITION(test_4400) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *commentItem = GTUtilsAnnotationsTreeView::findItem(os, "comment");
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "comment");
     QString qualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Original database", commentItem);
     CHECK_SET_ERR(qualValue == "GenBank", "ORIGDB comment was parced incorreclty");
 }
