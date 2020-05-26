@@ -58,19 +58,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                 CreateDocumentFiller::FASTA,
                                                 "result",
                                                 true);
-    GTGlobals::sleep();
     GTUtilsDialog::waitForDialog(os, filler);
-    GTGlobals::sleep();
-
-    GTGlobals::sleep();
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "New document from text...",
                               GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
-    GTGlobals::sleep();
-
     GTUtilsSequenceView::checkSequence(os, "ACAAGTCGGATTTATA");
 }
 
