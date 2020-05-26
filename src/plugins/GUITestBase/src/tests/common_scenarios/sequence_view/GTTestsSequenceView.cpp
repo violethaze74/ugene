@@ -2331,6 +2331,7 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check that multi-line mode is enabled
+    GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     QAbstractButton *wrapButton = GTAction::button(os, "wrap_sequence_action");
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
     CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os).isEmpty(), "Selection is not empty");
