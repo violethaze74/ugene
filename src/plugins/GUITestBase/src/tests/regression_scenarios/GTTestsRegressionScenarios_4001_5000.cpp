@@ -1835,9 +1835,8 @@ GUI_TEST_CLASS_DEFINITION(test_4179) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "comment");
-    CHECK_SET_ERR(item != NULL, "Can't find \"comment\" item");
-    QString qualifier = GTUtilsAnnotationsTreeView::getQualifierValue(os, "1", item);
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "comment");
+    QString qualifier = GTUtilsAnnotationsTreeView::getQualifierValue(os, "1", "comment");
     CHECK_SET_ERR(qualifier.indexOf("The reference") > 0, "Expected string is not found");
 }
 
