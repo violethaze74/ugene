@@ -1997,16 +1997,23 @@ GUI_TEST_CLASS_DEFINITION(test_0061_1) {
     //3. Check that first annotation table name is '1CF7 chain A annotation'
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7 chain A annotation"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "1CF7 chain A annotation [1CF7.PDB]"));
+    GTThread::waitForMainThread();
+
     //4. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR E2F-4)'  in 'chain_info' annotation for chain A
+    CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os).isEmpty(), "Selection is not empty");
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "chain_info");
     QString moleculeName = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", GTUtilsAnnotationsTreeView::findItem(os, "chain_info"));
     CHECK_SET_ERR(moleculeName == "PROTEIN (TRANSCRIPTION FACTOR E2F-4)", QString("Incorrect molecule name is detected for chain A: %1").arg(moleculeName));
     QTreeWidgetItem *annotationsChainB = GTUtilsAnnotationsTreeView::findItem(os, "1CF7 chain B annotation [1CF7.PDB]");
+
     //5. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR DP-2)'  in 'chain_info' annotation for chain B
     CHECK_SET_ERR(NULL != annotationsChainB, QString("Can't find '1CF7 chain B annotation [1CF7.PDB]' annotations document"));
     QTreeWidgetItem *chainInfoGroup = GTUtilsAnnotationsTreeView::findItem(os, "chain_info  (0, 1)", annotationsChainB);
     CHECK_SET_ERR(NULL != chainInfoGroup, QString("Can't find 'chain_info' annotation group for chain B"));
+    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << chainInfoGroup);
     QTreeWidgetItem *chainInfo = GTUtilsAnnotationsTreeView::findItem(os, "chain_info", chainInfoGroup);
     CHECK_SET_ERR(NULL != chainInfo, QString("Can't find 'chain_info' annotation for chain B"));
+    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << chainInfo);
     QString moleculeNameChainB = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", chainInfo);
 
     CHECK_SET_ERR(moleculeNameChainB == "PROTEIN (TRANSCRIPTION FACTOR DP-2)", QString("Incorrect molecule name is detected for chain B: %1").arg(moleculeNameChainB));
