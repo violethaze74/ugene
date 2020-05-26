@@ -3154,6 +3154,7 @@ GUI_TEST_CLASS_DEFINITION(test_0958) {
                                                                         << "import_annotations_from_CSV_file"));
     GTUtilsProjectTreeView::click(os, "human_T1.fa", Qt::RightButton);
     GTGlobals::sleep();
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test01");
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "test01") != NULL, "Annotation item not found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "test01") == "1..400", "Annotation region was improted incorrectly")
@@ -3163,6 +3164,7 @@ GUI_TEST_CLASS_DEFINITION(test_0958) {
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "prop1", "test01") == "", "Qualifier prop1 was improted incorrectly");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "prop2", "test01") == "", "Qualifier prop2 was improted incorrectly");
 
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test02");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "test02") != NULL, "Annotation item not found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "test02") == "complement(60108..71020)", "Annotation region was improted incorrectly")
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "Gene", "test02") == "",
