@@ -25,6 +25,7 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
+#include <utils/GTThread.h>
 
 #include <QHeaderView>
 #include <QTreeWidgetItem>
@@ -56,6 +57,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
+    GTThread::waitForMainThread();
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
@@ -63,14 +65,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     Runnable *filler = new EditQualifierFiller(os, "qual", "val");
     GTUtilsDialog::waitForDialog(os, filler);
-    GTGlobals::sleep(1000);
-
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_ADD << "add_qualifier_action"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsAnnotationsTreeView::findItem(os, "qual");
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_1) {

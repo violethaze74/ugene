@@ -3422,6 +3422,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
     GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     // chrom show/hide
+    GTUtilsMcaEditor::getActiveMcaEditorWindow(os);
     QAbstractButton *showChromsButton = GTAction::button(os, "chromatograms");
     CHECK_SET_ERR(showChromsButton != NULL, "show/hide chromatograms button was not found");
     GTWidget::click(os, showChromsButton);
@@ -3448,6 +3449,8 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
 
     // open the view again
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::getActiveMcaEditorWindow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // check saved states
     showChromsButton = GTAction::button(os, "chromatograms");
