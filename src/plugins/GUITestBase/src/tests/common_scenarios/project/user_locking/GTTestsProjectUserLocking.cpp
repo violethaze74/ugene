@@ -196,6 +196,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     QIcon documentIcon(":/core/images/document.png");
 
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/proj2.uprj");
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
+
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
@@ -221,13 +223,15 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTGlobals::sleep();
+    GTUtilsProjectTreeView::checkProjectViewIsClosed(os);
 
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     item = GTUtilsProjectTreeView::findIndex(os, "1.gb");
