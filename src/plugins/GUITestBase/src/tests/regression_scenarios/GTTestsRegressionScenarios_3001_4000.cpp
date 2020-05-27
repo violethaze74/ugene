@@ -576,23 +576,24 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
 
     //1. Open "_common_data/regression/test.gb".
     GTFileDialog::openFile(os, sandBoxDir + "murine_3085_2.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
     //2. Append another sequence to the file outside of UGENE.
     //3. Click "Yes" in the appeared dialog in UGENE.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QByteArray data = GTFile::readAll(os, testDir + "_common_data/regression/3085/test_1.gb");
 
+    // UGENE does not detect file modification without 1 second interval: sleep 1 second.
+    GTGlobals::sleep(1000);
     QFile file(sandBoxDir + "murine_3085_2.gb");
     file.open(QIODevice::WriteOnly);
     file.write(data);
     file.close();
 
-    GTGlobals::sleep(6000);
+    GTUtilsDialog::waitAllFinished(os);
 
     //Expected state: document reloaded without errors/warnings.
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3086) {
