@@ -198,7 +198,10 @@ void GTUtilsDashboard::openTab(HI::GUITestOpStatus &os, Tabs tab) {
 
 #define GT_METHOD_NAME "doesTabExist"
 bool GTUtilsDashboard::doesTabExist(HI::GUITestOpStatus &os, Tabs tab) {
-    return GTWebView::doesElementExist(os, getDashboardWebView(os), tabMap.key(tab), "A");
+    QWidget *tabWidget = getTabWidget(os);
+    QString tabButtonObjectName = getTabObjectName(tab);
+    QWidget *button = tabWidget->findChild<QWidget *>(tabButtonObjectName);
+    return button != nullptr && button->isVisible();
 }
 #undef GT_METHOD_NAME
 

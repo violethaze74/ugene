@@ -294,7 +294,7 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected result: a dashboard appears, it has "External Tools" tab.
-    const bool externalToolsTabExists = GTUtilsDashboard::doesTabExist(os, GTUtilsDashboard::ExternalTools);
+    bool externalToolsTabExists = GTUtilsDashboard::doesTabExist(os, GTUtilsDashboard::ExternalTools);
     CHECK_SET_ERR(externalToolsTabExists, "'External tools' dashboard tab unexpectedly is not present on the dashboard");
 }
 
