@@ -1693,22 +1693,21 @@ GUI_TEST_CLASS_DEFINITION(test_6247) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            CHECK_SET_ERR(dialog != NULL, "Dialog isn't found");
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + "alignment.ugenedb";
+    QString filePath = sandBoxDir + "alignment.ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
     //2. Open "Export consensus" tab, set "../sandbox/Mapped reads_consensus.txt" to the "Export to file" field and click export
     QString exportToFile = sandBoxDir + "Aligned reads_consensus.txt";
     GTUtilsOptionPanelMca::setExportFileName(os, exportToFile);
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario));
     GTUtilsOptionPanelMca::pushExportButton(os);
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //3. Open "alignment.ugenedb" again
@@ -1718,6 +1717,7 @@ GUI_TEST_CLASS_DEFINITION(test_6247) {
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario));
     GTUtilsOptionPanelMca::pushExportButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //Expected: there are 3 documents in the project tree: "alignment.ugenedb", "Aligned reads_consensus.txt" and "Aligned reads_consensus_1.txt"
     QMap<QString, QStringList> docs = GTUtilsProjectTreeView::getDocuments(os);
