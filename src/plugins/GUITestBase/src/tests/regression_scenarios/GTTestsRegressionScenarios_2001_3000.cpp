@@ -4688,13 +4688,13 @@ GUI_TEST_CLASS_DEFINITION(test_2721) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            //Expected state: wizard appeared - on the first page "Cistrome data folder" is set to "data/cistrome".
+            //Expected state: wizard appeared - on the first page "Cistrome data folder" is set to "/cistrome".
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
             QLineEdit *urlLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "urlLineEdit", dialog);
             QString url = urlLineEdit->text();
-            CHECK_SET_ERR(url.contains("data/cistrome"), "unexpected url: " + url);
+            CHECK_SET_ERR(url.contains("/cistrome"), "unexpected url: " + url);
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
         }

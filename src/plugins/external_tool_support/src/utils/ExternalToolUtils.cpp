@@ -75,10 +75,16 @@ void ExternalToolUtils::checkExtToolsPath(const QStringList &ids) {
 }
 
 void ExternalToolUtils::addDefaultCistromeDirToSettings() {
-    const QString cistromeDefaultPath = QFileInfo(QString(PATH_PREFIX_DATA) + QString(":") + "cistrome").absoluteFilePath();
+    QString cistromeDefaultPath;
+    QString customDataDir = qgetenv("UGENE_DATA_PATH");
+    if (!customDataDir.isEmpty()) {
+        cistromeDefaultPath = QFileInfo(customDataDir + "/cistrome").absoluteFilePath();
+    } else {
+        cistromeDefaultPath = QFileInfo(QString(PATH_PREFIX_DATA) + QString(":") + "cistrome").absoluteFilePath();
+    }
 
-    const bool defaultExists = QFile::exists(cistromeDefaultPath);
-    const QString savedValue = AppContext::getSettings()->getValue(CISTROME_DATA_DIR).toString();
+    bool defaultExists = QFile::exists(cistromeDefaultPath);
+    QString savedValue = AppContext::getSettings()->getValue(CISTROME_DATA_DIR).toString();
 
     bool addNew = savedValue.isEmpty() && defaultExists;
     bool removeOld = !savedValue.isEmpty() && !QFile::exists(savedValue);
