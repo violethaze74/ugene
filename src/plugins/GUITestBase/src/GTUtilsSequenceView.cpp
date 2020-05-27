@@ -132,7 +132,12 @@ QString GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, int nu
     GTKeyboardUtils::selectAll(os);
     GTGlobals::sleep(500);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy sequence"));
-    GTWidget::click(os, getDetViewByNumber(os, number), Qt::RightButton);
+    // Use PanView or DetView but not the sequence widget itself: there are internal scrollbars in the SequenceWidget that may affect popup menu content.
+    QWidget *panOrDetView = getDetViewByNumber(os, number, GTGlobals::FindOptions(false));
+    if (panOrDetView == nullptr) {
+        panOrDetView = getPanViewByNumber(os, number);
+    }
+    GTWidget::click(os, panOrDetView, Qt::RightButton);
     QString result = GTClipboard::text(os);
     return result;
 }
@@ -324,16 +329,15 @@ ADVSingleSequenceWidget *GTUtilsSequenceView::getSeqWidgetByNumber(HI::GUITestOp
 DetView *GTUtilsSequenceView::getDetViewByNumber(HI::GUITestOpStatus &os, int number, const GTGlobals::FindOptions &options) {
     ADVSingleSequenceWidget *seq = getSeqWidgetByNumber(os, number, options);
     if (options.failIfNotFound) {
-        GT_CHECK_RESULT(seq != NULL, QString("sequence view with num %1 not found").arg(number), NULL);
+        GT_CHECK_RESULT(seq != nullptr, QString("sequence view with num %1 not found").arg(number), nullptr);
     } else {
-        return NULL;
+        return nullptr;
     }
 
     DetView *result = seq->findChild<DetView *>();
     if (options.failIfNotFound) {
-        GT_CHECK_RESULT(seq != NULL, QString("det view with number %1 not found").arg(number), NULL)
+        GT_CHECK_RESULT(result != nullptr, QString("det view with number %1 not found").arg(number), nullptr);
     }
-
     return result;
 }
 #undef GT_METHOD_NAME
