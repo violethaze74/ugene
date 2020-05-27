@@ -747,23 +747,29 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
         GTGlobals::sleep();
     }
 
-    int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
-    QScrollArea *scroll = qobject_cast<QScrollArea *>(GTWidget::findWidget(os, "annotated_DNA_scrollarea"));
-    CHECK_SET_ERR(scroll != NULL, "annotated_DNA_scrollarea not found");
-    for (int i = 0; i < seqNum; i++) {
-        ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os, i);
-        // Comment to UGENE-4076 : the following code should scroll to the single sequence widget and close CV if it is present, but is does not work
-        // FAILED BLOCK start
-        scroll->ensureWidgetVisible(seqWgt);
-        if (GTUtilsCv::isCvPresent(os, seqWgt)) {
-            GTUtilsCv::cvBtn::click(os, seqWgt);
-            GTGlobals::sleep();
+
+    class MainThreadScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QScrollArea *scroll = qobject_cast<QScrollArea *>(GTWidget::findWidget(os, "annotated_DNA_scrollarea"));
+            CHECK_SET_ERR(scroll != nullptr, "annotated_DNA_scrollarea not found");
+            int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
+            for (int i = 0; i < seqNum; i++) {
+                ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os, i);
+                scroll->ensureWidgetVisible(seqWgt);
+                if (GTUtilsCv::isCvPresent(os, seqWgt)) {
+                    GTUtilsCv::cvBtn::click(os, seqWgt);
+                    GTGlobals::sleep();
+                }
+            }
         }
-        // FAILED BLOCK end
-    }
+    };
+
+    GTThread::runInMainThread(os, new MainThreadScenario());
 
     GTUtilsCv::commonCvBtn::click(os);
 
+    int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
     for (int i = 0; i < seqNum; i++) {
         ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os, i);
         CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWgt), QString("No CV for %1 single sequence view. First check").arg(i));

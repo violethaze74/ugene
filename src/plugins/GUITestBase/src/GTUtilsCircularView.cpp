@@ -38,13 +38,13 @@ const QString GTUtilsCv::actionName = "CircularViewAction";
 //////////////////////////////////////////////////////////////////////////
 #define GT_METHOD_NAME "cvBtn::isPresent"
 bool GTUtilsCv::isCvPresent(HI::GUITestOpStatus &os, ADVSingleSequenceWidget *seqWidget) {
-    CHECK_SET_ERR_RESULT(NULL != seqWidget, "NULL sequence widget!", false);
+    CHECK_SET_ERR_RESULT(seqWidget != nullptr, "NULL sequence widget!", false);
 
     QString cvWidgetName = "CV_" + seqWidget->objectName();
     QWidget *cvWidget = GTWidget::findWidget(os, cvWidgetName, NULL, GTGlobals::FindOptions(false));
     CHECK_SET_ERR_RESULT(!os.isCoR(), "Error getting CV widget!", false);
 
-    return NULL != cvWidget;
+    return cvWidget != nullptr;
 }
 #undef GT_METHOD_NAME
 
