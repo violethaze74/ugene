@@ -170,7 +170,9 @@ void DocumentUpdater::update() {
             continue;
         }
 
+        // TODO: changes within 1 second are not detected! If file is modified right after opening UGENE keeps a stale version of the document.
         QDateTime updTime = doc->getLastUpdateTime();
+
         // last update time is updated by save/load tasks
         // if it's a null the document was not loaded or saved => reload is pointless
         // if it's not a null and file not exists => file was deleted (don't reload)

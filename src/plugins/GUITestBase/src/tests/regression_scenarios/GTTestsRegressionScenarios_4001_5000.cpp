@@ -5856,6 +5856,7 @@ GUI_TEST_CLASS_DEFINITION(test_4936) {
     //    1. Open "data/samples/Swiss-Prot/D0VTW9.txt".
     GTFile::copy(os, dataDir + "samples/Swiss-Prot/D0VTW9.txt", sandBoxDir + "test_4936.sw");
     GTFileDialog::openFile(os, sandBoxDir + "test_4936.sw");
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
     //    2. Edit the file directly.
     //    Expected state: UGENE offers to reload the file.
@@ -5864,12 +5865,14 @@ GUI_TEST_CLASS_DEFINITION(test_4936) {
     QByteArray data = GTFile::readAll(os, sandBoxDir + "test_4936.sw");
     data.replace("D0VTW9_9INFA", "00VTW9_9INFA");
 
+    // UGENE does not detect file modification without 1 second interval: sleep 1 second.
+    GTGlobals::sleep(1000);
     QFile file(sandBoxDir + "test_4936.sw");
     file.open(QFile::WriteOnly);
     file.write(data);
     file.close();
 
-    GTGlobals::sleep(5000);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    3. Accept the offer.
     //    Expected state: the document is successfully reloaded, there are no errors in the log.
