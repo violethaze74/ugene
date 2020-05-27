@@ -100,7 +100,7 @@ ExportProjectViewItemsContoller::ExportProjectViewItemsContoller(QObject *p)
     exportMcaToMsaAction = new QAction(tr("Export alignment without chromatograms..."), this);
     connect(exportMcaToMsaAction, SIGNAL(triggered()), SLOT(sl_exportMcaToMsa()));
 
-    exportNucleicAlignmentToAminoAction = new QAction(tr("Export nucleic alignment to amino translation..."), this);
+    exportNucleicAlignmentToAminoAction = new QAction(tr("Export amino acid translation..."), this);
     exportNucleicAlignmentToAminoAction->setObjectName(ACTION_PROJECT__EXPORT_TO_AMINO_ACTION);
     connect(exportNucleicAlignmentToAminoAction, SIGNAL(triggered()), SLOT(sl_exportNucleicAlignmentToAmino()));
 
