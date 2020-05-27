@@ -83,14 +83,15 @@ void GTUtilsProject::openFileExpectNoProject(HI::GUITestOpStatus &os, const GUrl
 void GTUtilsProject::checkProject(HI::GUITestOpStatus &os, ProjectCheckType checkType) {
     GTGlobals::sleep(500);
 
+    Project *project = AppContext::getProject();
     if (checkType == NotExists) {
-        GT_CHECK(AppContext::getProject() == nullptr, "checkProject: There is a project");
+        GT_CHECK(project == nullptr, "checkProject: There is a project");
         return;
     }
 
-    GT_CHECK(AppContext::getProject() != nullptr, "There is no project");
+    GT_CHECK(project != nullptr, "There is no project");
     if (checkType == Empty) {
-        GT_CHECK(AppContext::getProject()->getDocuments().isEmpty(), "Project is not empty");
+        GT_CHECK(project->getDocuments().isEmpty(), "Project is not empty");
     }
 }
 #undef GT_METHOD_NAME

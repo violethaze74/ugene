@@ -49,20 +49,38 @@ using namespace HI;
 
 const QString GTUtilsProjectTreeView::widgetName = "documentTreeWidget";
 
+#define GT_METHOD_NAME "checkProjectViewIsOpened"
+void GTUtilsProjectTreeView::checkProjectViewIsOpened(HI::GUITestOpStatus &os) {
+    GTWidget::findWidget(os, widgetName);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkProjectViewIsClosed"
+void GTUtilsProjectTreeView::checkProjectViewIsClosed(HI::GUITestOpStatus &os) {
+    QWidget *documentTreeWidget = nullptr;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, GTGlobals::FindOptions(false));
+        if (documentTreeWidget == nullptr) {
+            break;
+        }
+    }
+    GT_CHECK_RESULT(documentTreeWidget == nullptr, "Project view is opened, but is expected to be closed", )
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "openView"
 void GTUtilsProjectTreeView::openView(HI::GUITestOpStatus &os, GTGlobals::UseMethod method) {
-    GTGlobals::FindOptions options;
-    options.failIfNotFound = false;
-
-    QWidget *documentTreeWidget = GTWidget::findWidget(os, widgetName, NULL, options);
-    if (!documentTreeWidget) {
+    // Wait up to 2 seconds for the project view to be available.
+    QWidget *documentTreeWidget = nullptr;
+    for (int time = 0; time < 2000 && documentTreeWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, GTGlobals::FindOptions(false));
+    }
+    if (documentTreeWidget == nullptr) {
         toggleView(os, method);
     }
-    GTGlobals::sleep(100);
-    GTThread::waitForMainThread();
-
-    documentTreeWidget = GTWidget::findWidget(os, widgetName, NULL, options);
-    GT_CHECK(documentTreeWidget != NULL, "Can't open document tree widget view, findWidget returned NULL");
+    checkProjectViewIsOpened(os);
 }
 #undef GT_METHOD_NAME
 

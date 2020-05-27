@@ -51,6 +51,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 2. Open view for 1.gb document.
@@ -76,6 +77,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {    //CHANGES another annotation created
 
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 2. Open view for 1.gb document.
@@ -97,10 +99,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {    //CHANGES another annotation created
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 2. Use menu {File->Export Project}
@@ -111,19 +113,18 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Export project...");
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     // 4. Close project. No questions must be asked
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTGlobals::sleep();
-    GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
+    GTUtilsProjectTreeView::checkProjectViewIsClosed(os);
 
     // 5. Open exported project
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 6. Load 1.gb document using context menu.
@@ -137,7 +138,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTGlobals::sleep();
 
     // Expected state: in project view 1.gb document has marked as modified (with blue color)
-    GTGlobals::sleep();
     QModelIndex d = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     GTUtilsProjectTreeView::itemModificationCheck(os, d, true);
 
@@ -147,12 +147,13 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTGlobals::sleep();
+    GTUtilsProjectTreeView::checkProjectViewIsClosed(os);
 
     // 9. Load _common_data/scenarios/sandbox/proj2.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     // Expected state: project view with document "1.gb" has been opened
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 10) Open 1.gb view by context menu
@@ -162,8 +163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // Expected state: annotation added at step 6 already presents in document
     GTGlobals::sleep();
-    QTreeWidgetItem *ann = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
-    CHECK_SET_ERR(ann != NULL, "There is no annotation");
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 }
 
 }    // namespace GUITest_common_scenarios_project_document_modifying
