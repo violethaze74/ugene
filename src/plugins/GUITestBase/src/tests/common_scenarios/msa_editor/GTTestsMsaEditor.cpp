@@ -1226,10 +1226,11 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Do document context menu {Export->Export aligniment to amino format}
-    // 3. Translate with default settings
+    // 3. Translate to amino with default settings
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0010_2.aln"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
     GTWidget::click(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os), Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // copy to clipboard
@@ -1239,18 +1240,18 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: every sequence name the same as it amino translation
-    const QString clipboardText = GTClipboard::text(os);
-    const QString expectedMSA = "L\nS\nD\nS\nP\nK";
-    CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string differs");
+    QString clipboardText = GTClipboard::text(os);
+    QString expectedMSA = "L\nS\nD\nS\nP\nK";
+    CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string are different. Clipboard text: " + clipboardText);
 
-    const QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    const QStringList expectedNameList = QStringList() << "L"
-                                                       << "S"
-                                                       << "D"
-                                                       << "S"
-                                                       << "P"
-                                                       << "K";
-    CHECK_SET_ERR(nameList == expectedNameList, "name lists differ");
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    QStringList expectedNameList = QStringList() << "L(translated)"
+                                                 << "S(translated)"
+                                                 << "D(translated)"
+                                                 << "S(translated)"
+                                                 << "P(translated)"
+                                                 << "K(translated)";
+    CHECK_SET_ERR(nameList == expectedNameList, "Name lists are different. Expected: " + expectedNameList.join(",") + ", actual: " + nameList.join(","));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {

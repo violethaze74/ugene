@@ -45,7 +45,7 @@ protected:
 
 private:
     static void clickEsc(GUITestOpStatus &os);
-    static QMenu *getMenuPopup();
+    static QMenu *getMenuPopup(GUITestOpStatus &os);
 };
 
 class HI_EXPORT PopupChooserByText : public Filler {

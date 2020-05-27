@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QMenu>
 
+#include "GTWidget.h"
 #include "drivers/GTKeyboardDriver.h"
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTMenu.h"
@@ -38,25 +39,16 @@ PopupChooser::PopupChooser(GUITestOpStatus &os, const QStringList &namePath, GTG
 }
 
 #define GT_METHOD_NAME "getMenuPopup"
-QMenu *PopupChooser::getMenuPopup() {
+QMenu *PopupChooser::getMenuPopup(GUITestOpStatus &os) {
     GTGlobals::sleep(100); // TODO: do we need this sleep?
-    GTMouseDriver::release();
-    // wait up to GT_OP_WAIT_MILLIS for the menu to appear
-    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        QMenu *activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
-        if (activePopupMenu != nullptr) {
-            return activePopupMenu;
-        }
-    }
-    return nullptr;
+    GTMouseDriver::release(); //TODO: do we need this release?
+    return GTWidget::getActivePopupMenu(os);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "commonScenario"
 void PopupChooser::commonScenario() {
-    QMenu *activePopupMenu = getMenuPopup();
-    GT_CHECK(activePopupMenu != nullptr, "No popup menu found!");
+    QMenu *activePopupMenu = getMenuPopup(os);
     if (namePath.isEmpty()) {
         clickEsc(os);
         return;
@@ -84,8 +76,7 @@ PopupChooserByText::PopupChooserByText(GUITestOpStatus &os, const QStringList &n
 
 #define GT_METHOD_NAME "commonScenario"
 void PopupChooserByText::commonScenario() {
-    QMenu *activePopupMenu = PopupChooser::getMenuPopup();
-    GT_CHECK(activePopupMenu != nullptr, "No popup menu found!");
+    QMenu *activePopupMenu = PopupChooser::getMenuPopup(os);
     if (namePath.isEmpty()) {
         PopupChooser::clickEsc(os);
         return;
@@ -110,8 +101,7 @@ PopupChecker::PopupChecker(GUITestOpStatus &os, const QStringList &namePath, Che
 
 #define GT_METHOD_NAME "commonScenario"
 void PopupChecker::commonScenario() {
-    QMenu *activePopupMenu = PopupChooser::getMenuPopup();
-    GT_CHECK(activePopupMenu != nullptr, "No popup menu found!");
+    QMenu *activePopupMenu = PopupChooser::getMenuPopup(os);
     if (namePath.isEmpty()) {
         PopupChooser::clickEsc(os);
         return;
@@ -220,8 +210,7 @@ PopupCheckerByText::PopupCheckerByText(GUITestOpStatus &os,
 
 #define GT_METHOD_NAME "commonScenario"
 void PopupCheckerByText::commonScenario() {
-    QMenu *activePopupMenu = PopupChooser::getMenuPopup();
-    GT_CHECK(activePopupMenu != nullptr, "No popup menu found!");
+    QMenu *activePopupMenu = PopupChooser::getMenuPopup(os);
     if (menuPath.isEmpty()) {
         PopupChooser::clickEsc(os);
         return;
