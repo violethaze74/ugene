@@ -77,7 +77,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
     GTUtilsDocument::checkDocument(os, "1.gb");
     GTUtilsDocument::checkDocument(os, "2.gb");
@@ -274,8 +274,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
     GTUtilsDocument::checkDocument(os, "2.gb");
 
@@ -287,14 +286,15 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, testDir + "_common_data/scenarios/sandbox/1.csv", ExportAnnotationsFiller::csv));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B_joined"));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
 
-    GTGlobals::sleep(1000);
     bool equals = GTFile::equals(os, testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0004.csv");
     CHECK_SET_ERR(equals == true, "Exported file differs from the test file");
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
+
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
     const QString fileName = "proj4.uprj";

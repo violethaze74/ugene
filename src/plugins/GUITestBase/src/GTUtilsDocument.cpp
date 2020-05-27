@@ -72,14 +72,17 @@ void GTUtilsDocument::checkDocument(HI::GUITestOpStatus &os, const QString &docu
     if (id.isEmpty()) {
         return;
     }
-    GObjectView *view = getDocumentGObjectView(os, document);
-    if (id == DocumentUnloaded) {
-        GT_CHECK(view == nullptr, "GObjectView is not NULL");
-        return;
+    GObjectView *view = nullptr;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && view == nullptr; time += GT_OP_CHECK_MILLIS) {
+        view = getDocumentGObjectView(os, document);
+        if (id == DocumentUnloaded) {
+            GT_CHECK(view == nullptr, "GObjectView is not for document: " + documentName + ", view id: " + id);
+            return;
+        }
     }
-    GT_CHECK(view != nullptr, "GObjectView is NULL");
+    GT_CHECK(view != nullptr, "GObjectView is not found for document: "+ documentName + ", view id: "+ id);
     GObjectViewFactoryId viewFactoryId = view->getFactoryId();
-    GT_CHECK(viewFactoryId == id, "View's GObjectViewFactoryId is " + viewFactoryId + ", not " + id);
+    GT_CHECK(viewFactoryId == id, "View's GObjectViewFactoryId is " + viewFactoryId + ", not " + id + ", document: "+ documentName);
 }
 #undef GT_METHOD_NAME
 
