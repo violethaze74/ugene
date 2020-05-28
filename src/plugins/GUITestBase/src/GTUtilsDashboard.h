@@ -92,7 +92,6 @@ public:
     static const QString TREE_ROOT_ID;    // This constant is defined in ExternalToolWidget.js
 
 private:
-    static QMap<QString, Tabs> initTabMap();
     static QString getNodeSpanId(const QString &nodeId);
     static HI::HIWebElement getCopyButton(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
     static HI::HIWebElement getNodeSpan(HI::GUITestOpStatus &os, const QString &nodeId);

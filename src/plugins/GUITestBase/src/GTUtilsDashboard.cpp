@@ -35,14 +35,6 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDashboard"
-QMap<QString, GTUtilsDashboard::Tabs> GTUtilsDashboard::initTabMap() {
-    QMap<QString, GTUtilsDashboard::Tabs> result;
-    result.insert("Overview", GTUtilsDashboard::Overview);
-    result.insert("Input", GTUtilsDashboard::Input);
-    result.insert("External Tools", GTUtilsDashboard::ExternalTools);
-    return result;
-}
-
 QString GTUtilsDashboard::getNodeSpanId(const QString &nodeId) {
     // It is defined in ExternalToolsWidget.js.
     return nodeId + "_span";
@@ -82,7 +74,6 @@ QString GTUtilsDashboard::getLogUrlFromElement(GUITestOpStatus &os, const HIWebE
 }
 #undef GT_METHOD_NAME
 
-const QMap<QString, GTUtilsDashboard::Tabs> GTUtilsDashboard::tabMap = initTabMap();
 const QString GTUtilsDashboard::TREE_ROOT_ID = "treeRoot";
 const QString GTUtilsDashboard::PARENT_LI = "parent_li";
 
@@ -198,9 +189,11 @@ void GTUtilsDashboard::openTab(HI::GUITestOpStatus &os, Tabs tab) {
 
 #define GT_METHOD_NAME "doesTabExist"
 bool GTUtilsDashboard::doesTabExist(HI::GUITestOpStatus &os, Tabs tab) {
-    QWidget *tabWidget = getTabWidget(os);
+    QWidget *dashboard = findDashboard(os);
+    GT_CHECK_RESULT(dashboard != nullptr, "Dashboard is not found", false);
+
     QString tabButtonObjectName = getTabObjectName(tab);
-    QWidget *button = tabWidget->findChild<QWidget *>(tabButtonObjectName);
+    QWidget *button = dashboard->findChild<QWidget *>(tabButtonObjectName);
     return button != nullptr && button->isVisible();
 }
 #undef GT_METHOD_NAME
