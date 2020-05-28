@@ -59,6 +59,13 @@ QWidget *GTUtilsMcaEditor::getActiveMcaEditorWindow(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkMcaEditorWindowIsActive"
+void GTUtilsMcaEditor::checkMcaEditorWindowIsActive(GUITestOpStatus &os) {
+    getActiveMcaEditorWindow(os);
+}
+#undef GT_METHOD_NAME
+
+
 #define GT_METHOD_NAME "getEditor"
 McaEditor *GTUtilsMcaEditor::getEditor(GUITestOpStatus &os) {
     McaEditorWgt *editorUi = getEditorUi(os);
@@ -70,6 +77,7 @@ McaEditor *GTUtilsMcaEditor::getEditor(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getEditorUi"
 McaEditorWgt *GTUtilsMcaEditor::getEditorUi(GUITestOpStatus &os) {
+    checkMcaEditorWindowIsActive(os);
     McaEditorWgt *mcaEditorWgt = nullptr;
     // For some reason McaEditorWgt is not within normal widgets hierarchy (wrong parent?), so can't use GTWidget::findWidget here.
     for (int time = 0; time < GT_OP_WAIT_MILLIS && mcaEditorWgt == nullptr; time += GT_OP_CHECK_MILLIS) {

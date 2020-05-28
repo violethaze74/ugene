@@ -42,8 +42,11 @@ class MultipleAlignmentRowData;
 
 class GTUtilsMcaEditor {
 public:
-    /** Returns active MSA editor window or fails. */
+    /** Returns active MCA editor window or fails. */
     static QWidget* getActiveMcaEditorWindow(HI::GUITestOpStatus &os);
+
+    /** Checks if editor window is active or fails. */
+    static void checkMcaEditorWindowIsActive(HI::GUITestOpStatus &os);
 
     static McaEditor *getEditor(HI::GUITestOpStatus &os);
     static McaEditorWgt *getEditorUi(HI::GUITestOpStatus &os);

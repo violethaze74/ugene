@@ -1730,6 +1730,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
 #ifndef Q_OS_LINUX
     //In linux, OS intercept this hotkey
@@ -1801,7 +1802,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Push "Ctrl+Alt+Shift+a"
     //Expected state : Notification "There are no ambiguous characters in the alignment.
@@ -1851,7 +1852,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
-    GTGlobals::sleep(5000);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Push "Ctrl+Alt+Shift+a"
     GTKeyboardDriver::keyPress(Qt::Key_Control);
@@ -1920,7 +1921,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019)
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select any read name by mouse
     QStringList visibleRows = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
@@ -1949,7 +1950,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select any read
     QStringList visibleRows = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
@@ -1995,7 +1996,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -2051,7 +2052,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
@@ -2119,7 +2120,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
@@ -2183,7 +2184,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_1) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -2221,7 +2222,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
@@ -2273,7 +2274,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
@@ -2320,7 +2321,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -2510,7 +2511,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -2608,7 +2609,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -2646,7 +2647,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -2696,7 +2697,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -2743,7 +2744,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -2824,7 +2825,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -2908,7 +2909,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -2992,7 +2993,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Find the column, composed by gaps exept one symbol in the row
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
@@ -3051,7 +3052,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Find the column, composed by gaps exept one symbol in the row
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
@@ -3111,7 +3112,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Find the column, composed by gaps exept one symbol in the row
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
@@ -3170,7 +3171,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     // 2. Click "Show chromatograms" button on the toolbar.
     GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
@@ -3202,7 +3203,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one symbol in the read
     QPoint point(2218, 1);
@@ -3233,7 +3234,8 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
     int startRowHeinght = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
 
     //2. Push Zoom In
@@ -3276,7 +3278,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Push General button
     GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
@@ -3297,7 +3299,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2.Push "Consensus" button
     GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::Consensus);
@@ -3345,7 +3347,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //Expected state: Aligned Reads Map is in the bottom screen by default. Show / Hide overview button is in pressed state
     GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
@@ -3381,7 +3383,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //Expected state : Aligned Reads Map is in the bottom screen by default
     GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
@@ -3472,6 +3474,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     // cons type and threshold
     GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
@@ -3524,6 +3527,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
 
@@ -3564,8 +3568,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(100);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //    Expected state: Line: - / 16; RefPos: - / 11878; ReadPos: - / -.
     QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);

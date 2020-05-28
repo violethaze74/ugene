@@ -86,6 +86,7 @@ MSAEditor *GTUtilsMsaEditor::getEditor(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getEditorUi"
 MsaEditorWgt *GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
+    checkMsaEditorWindowIsActive(os);
     MsaEditorWgt *msaEditorWgt = nullptr;
     // For some reason MsaEditorWgt is not within normal widgets hierarchy (wrong parent?), so can't use GTWidget::findWidget here.
     for (int time = 0; time < GT_OP_WAIT_MILLIS && msaEditorWgt == nullptr; time += GT_OP_CHECK_MILLIS) {

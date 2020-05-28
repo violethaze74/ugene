@@ -2873,9 +2873,7 @@ GUI_TEST_CLASS_DEFINITION(test_2406) {
 GUI_TEST_CLASS_DEFINITION(test_2407) {
     GTLogTracer l;
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "10000_sequences.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "10000_sequences.aln"));
 
