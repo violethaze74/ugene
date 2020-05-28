@@ -74,6 +74,7 @@ void GTUtilsDocument::checkDocument(HI::GUITestOpStatus &os, const QString &docu
     }
     GObjectView *view = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && view == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         view = getDocumentGObjectView(os, document);
         if (id == DocumentUnloaded) {
             GT_CHECK(view == nullptr, "GObjectView is not for document: " + documentName + ", view id: " + id);
