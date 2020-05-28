@@ -4337,7 +4337,6 @@ GUI_TEST_CLASS_DEFINITION(test_4701) {
     // Expected state: the button is checked.
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
                   "1 Mecopoda_elongata__Sumatra_ is not collapsed");
-
 }
 GUI_TEST_CLASS_DEFINITION(test_4701_1) {
     // Open "data/samples/CLUSTALW/COI.aln".
@@ -5137,15 +5136,14 @@ GUI_TEST_CLASS_DEFINITION(test_4785_2) {
     //Expected state : a file browser appeared
     GTFile::copy(os, testDir + "_common_data/clustal/1000_sequences.aln", sandBoxDir + "test_4785.aln");
     GTFileDialog::openFile(os, sandBoxDir, "test_4785.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
 
     //2. Use context menu { Align->Align profile to profile with MUSCLE }
     //3. Select any alignment and press "Ok"
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align profile to profile with MUSCLE"));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/clustal/", "1000_sequences.aln"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep(500);
+    GTUtilsDialog::waitAllFinished(os);
 
     //4. Delete "test_4785.aln"
     //Expected result : An error notification appears :
@@ -5153,7 +5151,8 @@ GUI_TEST_CLASS_DEFINITION(test_4785_2) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "was removed from"));
     GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.");
     QFile::remove(sandBoxDir + "test_4785.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4795) {
@@ -5723,7 +5722,7 @@ GUI_TEST_CLASS_DEFINITION(test_4908) {
 
     GTUtilsProjectTreeView::click(os, "SEQUENCE_WITH_A_ENTRY_2", Qt::LeftButton);
 
-    QWidget* detView = GTUtilsSequenceView::getDetViewByNumber(os);
+    QWidget *detView = GTUtilsSequenceView::getDetViewByNumber(os);
     QPoint detPos = detView->mapToGlobal(detView->rect().center());
 
     GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), detPos);
@@ -5847,7 +5846,7 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
 
     GTUtilsLog::checkContainsError(os, l, "Object '1.4k.aln' is locked");
     int errorNum = GTUtilsLog::getErrors(os, l).size();
-    CHECK_SET_ERR(errorNum==1, QString("Too many errors in log: %1").arg(errorNum));
+    CHECK_SET_ERR(errorNum == 1, QString("Too many errors in log: %1").arg(errorNum));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4936) {
