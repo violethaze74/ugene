@@ -34,20 +34,24 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
+#include "../sort/MsaEditorSortSequencesWidget.h"
+
 namespace U2 {
 
 MSAGeneralTab::MSAGeneralTab(MSAEditor *_msa)
     : msa(_msa), savableTab(this, GObjectViewUtils::findViewByName(_msa->getName())) {
-    SAFE_POINT(NULL != msa, "MSA Editor not defined.", );
+    SAFE_POINT(msa != nullptr, "MSA Editor is not defined.", );
 
     setupUi(this);
 
     ShowHideSubgroupWidget *alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWidget, true);
     ShowHideSubgroupWidget *consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWidget, true);
     ShowHideSubgroupWidget *copyType = new ShowHideSubgroupWidget("COPY_TYPE", tr("Copy to clipboard"), copyTypeWidget, true);
+    ShowHideSubgroupWidget *sortType = new ShowHideSubgroupWidget("SORT_TYPE", tr("Sort sequences"), new MsaEditorSortSequencesWidget(nullptr, msa), true);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(alignmentInfo);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(consensusMode);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(copyType);
+    Ui_GeneralTabOptionsPanelWidget::layout->addWidget(sortType);
 
     initializeParameters();
     connectSignals();

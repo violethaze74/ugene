@@ -388,7 +388,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
 
 void MSAEditor::updateActions() {
     MaEditor::updateActions();
-    if (alignSequencesToAlignmentAction != NULL) {
+    if (alignSequencesToAlignmentAction != nullptr) {
         alignSequencesToAlignmentAction->setEnabled(!maObject->isStateLocked());
     }
     buildTreeAction->setEnabled(!maObject->isStateLocked() && !this->isAlignmentEmpty());
@@ -403,22 +403,22 @@ void MSAEditor::sl_onSeqOrderChanged(const QStringList &order) {
 
 void MSAEditor::sl_showTreeOP() {
     OptionsPanelWidget *opWidget = dynamic_cast<OptionsPanelWidget *>(optionsPanel->getMainWidget());
-    if (NULL == opWidget) {
+    if (opWidget == nullptr) {
         return;
     }
 
     QWidget *addTreeGroupWidget = opWidget->findOptionsWidgetByGroupId("OP_MSA_ADD_TREE_WIDGET");
-    if (NULL != addTreeGroupWidget) {
+    if (addTreeGroupWidget != nullptr) {
         addTreeGroupWidget->hide();
         opWidget->closeOptionsPanel();
     }
     QWidget *addTreeHeader = opWidget->findHeaderWidgetByGroupId("OP_MSA_ADD_TREE_WIDGET");
-    if (NULL != addTreeHeader) {
+    if (addTreeHeader != nullptr) {
         addTreeHeader->hide();
     }
 
     GroupHeaderImageWidget *header = opWidget->findHeaderWidgetByGroupId("OP_MSA_TREES_WIDGET");
-    if (NULL != header) {
+    if (header != nullptr) {
         header->show();
         header->changeState();
     }
@@ -426,17 +426,16 @@ void MSAEditor::sl_showTreeOP() {
 
 void MSAEditor::sl_hideTreeOP() {
     OptionsPanelWidget *opWidget = dynamic_cast<OptionsPanelWidget *>(optionsPanel->getMainWidget());
-    if (NULL == opWidget) {
+    if (opWidget == nullptr) {
         return;
     }
     GroupHeaderImageWidget *header = opWidget->findHeaderWidgetByGroupId("OP_MSA_TREES_WIDGET");
     QWidget *groupWidget = opWidget->findOptionsWidgetByGroupId("OP_MSA_TREES_WIDGET");
-    bool openAddTreeGroup = (NULL != groupWidget);
-
+    bool openAddTreeGroup = groupWidget != nullptr;
     header->hide();
 
     GroupHeaderImageWidget *addTreeHeader = opWidget->findHeaderWidgetByGroupId("OP_MSA_ADD_TREE_WIDGET");
-    if (NULL != addTreeHeader) {
+    if (addTreeHeader != nullptr) {
         addTreeHeader->show();
         if (openAddTreeGroup) {
             addTreeHeader->changeState();

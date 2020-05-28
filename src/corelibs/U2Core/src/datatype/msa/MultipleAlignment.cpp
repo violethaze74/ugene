@@ -167,12 +167,12 @@ U2MsaListGapModel MultipleAlignmentData::getGapModel() const {
 
 class CompareMaRowsByName {
 public:
-    CompareMaRowsByName(MultipleAlignment::Order order = MultipleAlignment::Ascending)
+    CompareMaRowsByName(MultipleAlignment::Order order)
         : order(order) {
     }
 
     bool operator()(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) const {
-        const bool res = QString::compare(row1->getName(), row2->getName(), Qt::CaseInsensitive) > 0;
+        bool res = QString::compare(row1->getName(), row2->getName(), Qt::CaseInsensitive) > 0;
         return order == MultipleAlignment::Ascending ? !res : res;
     }
 
@@ -184,6 +184,27 @@ void MultipleAlignmentData::sortRowsByName(MultipleAlignment::Order order) {
     MaStateCheck check(this);
     Q_UNUSED(check);
     qStableSort(rows.begin(), rows.end(), CompareMaRowsByName(order));
+}
+
+class CompareMaRowsByLength {
+public:
+    CompareMaRowsByLength(MultipleAlignment::Order order)
+        : order(order) {
+    }
+
+    bool operator()(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) const {
+        bool res = row1->getUngappedLength() < row2->getUngappedLength();
+        return order == MultipleAlignment::Ascending ? !res : res;
+    }
+
+private:
+    MultipleAlignment::Order order;
+};
+
+void MultipleAlignmentData::sortRowsByLength(MultipleAlignment::Order order) {
+    MaStateCheck check(this);
+    Q_UNUSED(check);
+    qStableSort(rows.begin(), rows.end(), CompareMaRowsByLength(order));
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {

@@ -135,6 +135,9 @@ public:
     /** Sorts rows by name */
     void sortRowsByName(MultipleAlignment::Order order = MultipleAlignment::Ascending);
 
+    /** Sort rows by un-gapped sequence length. */
+    void sortRowsByLength(MultipleAlignment::Order order = MultipleAlignment::Ascending);
+
     /** Returns row of the alignment */
     MultipleAlignmentRow getRow(int row);
     const MultipleAlignmentRow &getRow(int row) const;
