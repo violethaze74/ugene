@@ -59,6 +59,12 @@ QWidget *GTUtilsMsaEditor::getActiveMsaEditorWindow(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkMsaEditorWindowIsActive"
+void GTUtilsMsaEditor::checkMsaEditorWindowIsActive(GUITestOpStatus &os) {
+    getActiveMsaEditorWindow(os);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getGraphOverviewTopLeftPixelColor"
 QColor GTUtilsMsaEditor::getGraphOverviewPixelColor(GUITestOpStatus &os, const QPoint &point) {
     return GTWidget::getColor(os, getGraphOverview(os), point);

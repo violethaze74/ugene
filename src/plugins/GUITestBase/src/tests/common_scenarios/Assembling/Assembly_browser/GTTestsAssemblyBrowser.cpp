@@ -27,8 +27,10 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
+#include <src/GTUtilsSequenceView.h>
 #include <system/GTClipboard.h>
 
+#include <GTUtilsMsaEditor.h>
 #include <QApplication>
 #include <QDir>
 #include <QTableView>
@@ -69,7 +71,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //1. Open _common_data/scenarios/assembly/example-alignment.ugenedb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
+
+    QWidget *window = GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
+    GTWidget::click(os, window);
     //2. Zoom in until overview selection transforms to cross-hair
     for (int i = 0; i < 24; i++) {
         GTKeyboardDriver::keyClick('=', Qt::ShiftModifier);
@@ -86,14 +90,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     }
     //Expected state: coordinates is not negative
     //CHECK_SET_ERR(AssemblyRuler::browser->calcAsmPosX(qint pos), "Coordinates is negative");
-    QWidget *assRuler;
-    assRuler = GTWidget::findWidget(os, "AssemblyRuler");
+    QWidget *assRuler = GTWidget::findWidget(os, "AssemblyRuler", window);
 
     QObject *l = assRuler->findChild<QObject *>("start position");
-    CHECK_SET_ERR(l != NULL, "first QObject for taking cursor name not found");
+    CHECK_SET_ERR(l != nullptr, "first QObject for taking cursor name not found");
 
     QObject *startPositionObject = l->findChild<QObject *>();
-    CHECK_SET_ERR(startPositionObject != NULL, "second QObject for taking cursor name not found");
+    CHECK_SET_ERR(startPositionObject != nullptr, "second QObject for taking cursor name not found");
 
     QString coordinate = startPositionObject->objectName();
     CHECK_SET_ERR(!coordinate.contains("-"), "coordinate is negative:" + coordinate);
@@ -105,7 +108,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
+    GTUtilsDialog::waitAllFinished(os);
     //2. convert bam file to example-alignment.ugenedb
     //Expected state: conversion finished without error
 }
@@ -786,7 +789,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
 
     //    2. Select region to extract and import extracted file to project
     GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_2.sam", U2Region(4500, 300), "SAM"));
@@ -809,7 +812,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
     //    2. Select region to extract and import extracted file to project
     GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_3.ugenedb", U2Region(6500, 900), "UGENE Database"));
@@ -831,31 +834,41 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 GUI_TEST_CLASS_DEFINITION(test_0027) {
     //    1. Open assembly
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //    2. Open COI.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
     //    3. Drag and drop COI object to assembly browser
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser"));
     GTUtilsAssemblyBrowser::addRefFromProject(os, "COI");
     //    Expected: error message box appears
-    GTGlobals::sleep(500);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
     //1. Open assembly
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
     //2. Lock document for editing
     GTUtilsDocument::lockDocument(os, "chrM.sorted.bam.ugenedb");
     //3. Try to add reference
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "This action requires changing the assembly object that is locked for editing"));
     GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
     //Expected: Error message appears
-    GTGlobals::sleep(500);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0029) {
     //    1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
     for (int i = 0; i < 15; i++) {
         GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
     }
@@ -868,12 +881,14 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     scrollVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
     CHECK_SET_ERR(scrollVal == 1999, QString("Unexpected scroll value2: %1").arg(scrollVal))
 
-    GTGlobals::sleep(500);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
     //    1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
     //    2. Move reads area right and down with mouse
     GTUtilsAssemblyBrowser::zoomToReads(os);
     for (int i = 0; i < 8; i++) {
@@ -894,37 +909,40 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     int finalVerVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical)->value();
     CHECK_SET_ERR(finalHorVal > initHorVal, QString("Unexpected horizontal scroll values. Initial: %1, final %2").arg(initHorVal).arg(finalHorVal));
     CHECK_SET_ERR(finalVerVal > initVerVal, QString("Unexpected vertical scroll values. Initial: %1, final %2").arg(initVerVal).arg(finalVerVal));
-
-    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031) {
     //    1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
     //    2. Click "zoom to reads" link
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    Check zoom
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Export"));
     GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Reads);
-    GTGlobals::sleep(500);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0032) {
     //    1. Open assembly
     GTFile::copy(os, testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "chrM.sorted.bam.ugenedb");
     GTFileDialog::openFile(os, sandBoxDir + "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
     GTUtilsProjectTreeView::click(os, "chrM");
 
     //    2. Rename assembly object
     GTUtilsProjectTreeView::rename(os, "chrM", "new_name");
     //    Check UGENE title
     GTUtilsApp::checkUGENETitle(os, "-* UGENE");
-    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0033) {
     //    1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
     //    2. Open "Assembly browser settings" OP tab
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     GTUtilsAssemblyBrowser::zoomToReads(os);
@@ -937,6 +955,8 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 GUI_TEST_CLASS_DEFINITION(test_0034) {
     //    1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
     //    2. Open "Assembly browser settings" OP tab
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     GTUtilsAssemblyBrowser::zoomToReads(os);
@@ -947,7 +967,10 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
 GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
     GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
 
@@ -974,7 +997,8 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
 GUI_TEST_CLASS_DEFINITION(test_0036) {
     //1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
     //Check these hotkeys: up, down, left, right, +, -, pageup, pagedown
     GTUtilsAssemblyBrowser::zoomToReads(os);
 
@@ -1024,6 +1048,8 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
 GUI_TEST_CLASS_DEFINITION(test_0037) {
     //    1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
     //    2. Use context menu on any read: {copy read data}
     GTUtilsAssemblyBrowser::zoomToReads(os);
 

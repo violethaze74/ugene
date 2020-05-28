@@ -45,6 +45,12 @@ public:
         Hotkey
     };
 
+    /** Returns opened assembly browser window. Fails if not found. */
+    static QWidget* getActiveAssemblyBrowserWindow(HI::GUITestOpStatus &os);
+
+    /** Checks that assembly browser view is opened and is active and fails if not. */
+    static void checkAssemblyBrowserWindowIsActive(HI::GUITestOpStatus &os);
+
     static AssemblyBrowserUi *getView(HI::GUITestOpStatus &os, const QString &viewTitle = "");
 
     static void addRefFromProject(HI::GUITestOpStatus &os, QString docName, QModelIndex parent = QModelIndex());

@@ -71,9 +71,9 @@ void GTUtilsProjectTreeView::checkProjectViewIsClosed(HI::GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "openView"
 void GTUtilsProjectTreeView::openView(HI::GUITestOpStatus &os, GTGlobals::UseMethod method) {
-    // Wait up to 2 seconds for the project view to be available.
+    // Wait up to 3 seconds for the project view to be available.
     QWidget *documentTreeWidget = nullptr;
-    for (int time = 0; time < 2000 && documentTreeWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
+    for (int time = 0; time < 3000 && documentTreeWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, GTGlobals::FindOptions(false));
     }

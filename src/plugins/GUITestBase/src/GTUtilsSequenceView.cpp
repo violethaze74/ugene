@@ -100,6 +100,12 @@ QWidget *GTUtilsSequenceView::getActiveSequenceViewWindow(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkSequenceViewWindowIsActive"
+void GTUtilsSequenceView::checkSequenceViewWindowIsActive(GUITestOpStatus &os) {
+    getActiveSequenceViewWindow(os);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getSequenceAsString"
 void GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, QString &sequence) {
     QWidget *mdiWindow = getActiveSequenceViewWindow(os);
