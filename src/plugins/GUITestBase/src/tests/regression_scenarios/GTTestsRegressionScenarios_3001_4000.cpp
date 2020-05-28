@@ -3459,7 +3459,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
     GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsTaskTreeView::checkTask(os, "SITECON search") == false, "SITECON task is still running");
     GTUtilsTaskTreeView::cancelTask(os, "Auto-annotations update task");
-    GTUtilsTaskTreeView::waitTaskFinished(os, 360000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3545) {

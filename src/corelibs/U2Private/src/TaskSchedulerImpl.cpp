@@ -883,7 +883,7 @@ void TaskSchedulerImpl::updateTaskProgressAndDesc(TaskInfo *ti) {
         assert(task->getProgressManagementType() == Task::Progress_SubTasksBased);
         const QList<QPointer<Task>> &subs = task->getSubtasks();
         int nsubs = subs.size();
-        if (nsubs > 0) {
+        if (nsubs > 0 && !task->isCanceled()) {
             float sum = 0;
             float maxSum = 0.001F;
             foreach (const QPointer<Task> &sub, subs) {
