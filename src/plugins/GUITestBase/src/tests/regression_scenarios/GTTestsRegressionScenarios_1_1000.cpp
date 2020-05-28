@@ -2488,7 +2488,7 @@ GUI_TEST_CLASS_DEFINITION(test_0871) {
     WorkflowProcessItem *read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
 
-    WorkflowProcessItem *amino = GTUtilsWorkflowDesigner::addElement(os, "Amino Translation", true);
+    WorkflowProcessItem *amino = GTUtilsWorkflowDesigner::addElement(os, "Amino Acid Translation", true);
     WorkflowProcessItem *write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_0871", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::connect(os, read, amino);
