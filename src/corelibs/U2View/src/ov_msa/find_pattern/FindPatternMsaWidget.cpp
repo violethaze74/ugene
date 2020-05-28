@@ -1054,21 +1054,24 @@ int FindPatternMsaWidget::findCurrentResultIndexFromSelection() const {
 }
 
 int FindPatternMsaWidget::getNextOrPrevResultIndexFromSelection(bool isNext) {
-    if (visibleSearchResults.isEmpty()) {
-        return -1;
-    }
+    int resultsCount = visibleSearchResults.size();
+    CHECK(resultsCount > 0, -1);
+
     const MaEditorSelection &selection = msaEditor->getSelection();
-    if (selection.isEmpty()) {
-        return 0;
-    }
+    CHECK(!selection.isEmpty(), 0);
+
     int resultIndex = 0;
-    for (; resultIndex < visibleSearchResults.size(); resultIndex++) {
-        FindPatternWidgetResult &result = visibleSearchResults[resultIndex];
+    for (; resultIndex < resultsCount; resultIndex++) {
+        const FindPatternWidgetResult &result = visibleSearchResults[resultIndex];
         if (result.viewRowIndex >= selection.y() && result.region.startPos >= selection.x()) {
             break;
         }
     }
-    return isNext ? (resultIndex == visibleSearchResults.size() ? 0 : resultIndex) : resultIndex - 1;
+    if (isNext) {
+        return resultIndex == visibleSearchResults.size() ? 0 : resultIndex;
+    } else {
+        return resultIndex > 0 ? resultIndex - 1 : resultsCount - 1;
+    }
 }
 
 bool FindPatternMsaWidget::isResultSelected() const {
