@@ -28,6 +28,7 @@
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <utils/GTKeyboardUtils.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QClipboard>
@@ -96,7 +97,9 @@ private:
 
 #define GT_METHOD_NAME "getActiveSequenceViewWindow"
 QWidget *GTUtilsSequenceView::getActiveSequenceViewWindow(GUITestOpStatus &os) {
-    return GTUtilsMdi::getActiveObjectViewWindow(os, AnnotatedDNAViewFactory::ID);
+    QWidget *widget = GTUtilsMdi::getActiveObjectViewWindow(os, AnnotatedDNAViewFactory::ID);
+    GTThread::waitForMainThread();
+    return widget;
 }
 #undef GT_METHOD_NAME
 

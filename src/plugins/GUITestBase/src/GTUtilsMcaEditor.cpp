@@ -24,6 +24,7 @@
 #include <primitives/GTScrollBar.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
+#include <utils/GTThread.h>
 
 #include <QLabel>
 #include <QTextDocument>
@@ -32,6 +33,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/MSAEditorOffsetsView.h>
+#include <U2View/MaEditorFactory.h>
 #include <U2View/McaEditor.h>
 #include <U2View/McaEditorConsensusArea.h>
 #include <U2View/McaEditorNameList.h>
@@ -39,7 +41,6 @@
 #include <U2View/McaEditorSequenceArea.h>
 #include <U2View/RowHeightController.h>
 #include <U2View/ScrollController.h>
-#include <U2View/MaEditorFactory.h>
 
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
@@ -52,7 +53,9 @@ using namespace HI;
 
 #define GT_METHOD_NAME "getActiveMcaEditorWindow"
 QWidget *GTUtilsMcaEditor::getActiveMcaEditorWindow(GUITestOpStatus &os) {
-    return GTUtilsMdi::getActiveObjectViewWindow(os, McaEditorFactory::ID);
+    QWidget *widget = GTUtilsMdi::getActiveObjectViewWindow(os, McaEditorFactory::ID);
+    GTThread::waitForMainThread();
+    return widget;
 }
 #undef GT_METHOD_NAME
 

@@ -930,10 +930,10 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     GTFileDialog::openFile(os, sandBoxDir + "chrM.sorted.bam.ugenedb");
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
-    GTUtilsProjectTreeView::click(os, "chrM");
-
     //    2. Rename assembly object
-    GTUtilsProjectTreeView::rename(os, "chrM", "new_name");
+    QModelIndex documentIndex= GTUtilsProjectTreeView::findIndex(os, "chrM.sorted.bam.ugenedb");
+    QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, "chrM", documentIndex);
+    GTUtilsProjectTreeView::rename(os, objectIndex, "new_name");
     //    Check UGENE title
     GTUtilsApp::checkUGENETitle(os, "-* UGENE");
 }

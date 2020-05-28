@@ -55,7 +55,9 @@ using namespace HI;
 
 #define GT_METHOD_NAME "getActiveMsaEditorWindow"
 QWidget *GTUtilsMsaEditor::getActiveMsaEditorWindow(GUITestOpStatus &os) {
-    return GTUtilsMdi::getActiveObjectViewWindow(os, MsaEditorFactory::ID);
+    QWidget *widget = GTUtilsMdi::getActiveObjectViewWindow(os, MsaEditorFactory::ID);
+    GTThread::waitForMainThread();
+    return widget;
 }
 #undef GT_METHOD_NAME
 

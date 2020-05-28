@@ -52,6 +52,7 @@ const QString GTUtilsProjectTreeView::widgetName = "documentTreeWidget";
 #define GT_METHOD_NAME "checkProjectViewIsOpened"
 void GTUtilsProjectTreeView::checkProjectViewIsOpened(HI::GUITestOpStatus &os) {
     GTWidget::findWidget(os, widgetName);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

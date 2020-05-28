@@ -52,7 +52,9 @@ using namespace HI;
 
 #define GT_METHOD_NAME "getActiveAssemblyBrowserWindow"
 QWidget *GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(GUITestOpStatus &os) {
-    return GTUtilsMdi::getActiveObjectViewWindow(os, AssemblyBrowserFactory::ID);
+    QWidget* widget =  GTUtilsMdi::getActiveObjectViewWindow(os, AssemblyBrowserFactory::ID);
+    GTThread::waitForMainThread();
+    return widget;
 }
 #undef GT_METHOD_NAME
 

@@ -602,11 +602,10 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
+    GTUtilsDialog::waitForDialog(os, new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, false, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
-    Runnable *filler = new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, false, true, true);
-    GTUtilsDialog::waitForDialog(os, filler);
     GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
 }
 GUI_TEST_CLASS_DEFINITION(test_0008_1) {
