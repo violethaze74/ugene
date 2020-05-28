@@ -182,13 +182,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_DOCUMENT__LOCK));
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::click(Qt::RightButton);
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
-    GTGlobals::sleep();
-
-    // proj3 was modified, restoring
-    //     GTFile::restore(os, testDir + "_common_data/scenarios/project/proj3.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
