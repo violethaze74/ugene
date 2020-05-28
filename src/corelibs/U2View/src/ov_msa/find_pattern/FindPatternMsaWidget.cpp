@@ -738,7 +738,7 @@ int FindPatternMsaWidget::getMaxError(const QString &pattern) const {
 }
 
 QStringList FindPatternMsaWidget::getPatternsFromTextPatternField(U2OpStatus &os) const {
-    QString inputText = textPattern->toPlainText().toLocal8Bit();
+    QString inputText = textPattern->toPlainText();
     QList<NamePattern> nameList = FastaFormat::getSequencesAndNamesFromUserInput(inputText, os);
     if (!nameList.isEmpty()) {
         QStringList result;
