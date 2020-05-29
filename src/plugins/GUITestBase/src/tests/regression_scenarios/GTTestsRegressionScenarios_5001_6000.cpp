@@ -961,15 +961,17 @@ GUI_TEST_CLASS_DEFINITION(test_5252) {
 GUI_TEST_CLASS_DEFINITION(test_5268) {
     //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Create a custom color scheme for the alignment with aan ppropriate alphabet.
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
+    GTUtilsDialog::waitAllFinished(os);
 
     //    3. Open "Highlighting" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::Highlighting);
 
     //    4. Select the custom color scheme.
     GTUtilsOptionPanelMsa::setColorScheme(os, "test_5268");
@@ -986,6 +988,7 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl, NewColorSchemeCreator::Change));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
+    GTUtilsDialog::waitAllFinished(os);
 
     //    Expected state: the settings dialog closed, new colors are applied for the opened MSA.
     const QString opColorScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
