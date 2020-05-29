@@ -42,7 +42,7 @@
 #ifdef Q_OS_LINUX
 #    define GUI_TEST_TIMEOUT_MILLIS 240000
 #else
-#    define GUI_TEST_TIMEOUT_MILLIS 480000
+#    define GUI_TEST_TIMEOUT_MILLIS 300000
 #endif
 
 #ifdef Q_OS_MAC
