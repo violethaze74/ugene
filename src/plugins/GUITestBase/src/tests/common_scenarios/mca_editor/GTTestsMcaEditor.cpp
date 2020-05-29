@@ -1531,6 +1531,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
 
     //2. Push "Ctrl+Alt+v"
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyClick('v', Qt::AltModifier);
