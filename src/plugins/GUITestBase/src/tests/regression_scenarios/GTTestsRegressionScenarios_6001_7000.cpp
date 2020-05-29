@@ -2995,6 +2995,8 @@ GUI_TEST_CLASS_DEFINITION(test_6490) {
 GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     //  1. Open "COI_SHORT_21x88.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x70.aln");
+
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     QAbstractButton *realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     //         Expected result : no sequences are selected.
     //         Expected result : the "Realign sequence(s) to other sequences" button is disabled.
@@ -3025,6 +3027,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     //         Expected result : there are no sequences in the Realignment Editor.The "Realign sequence(s) to other sequences" button is disabled.
     GTUtilsProject::closeProject(os);
     GTFileDialog::openFile(os, testDir + "_common_data/empty_sequences/", "empty_mult_seq.fa");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
 }
