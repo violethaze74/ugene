@@ -4919,6 +4919,7 @@ GUI_TEST_CLASS_DEFINITION(test_5948) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
 
     //2. Make sure the editing mode is switched off.
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
     if (editMode->isChecked()) {
