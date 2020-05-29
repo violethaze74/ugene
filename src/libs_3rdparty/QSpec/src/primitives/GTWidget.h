@@ -72,7 +72,7 @@ public:
     static void checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState = true, QWidget const *const parent = NULL);
 
 #define GT_CLASS_NAME "GTWidget"
-#define GT_METHOD_NAME "findWidget"
+#define GT_METHOD_NAME "findExactWidget"
     template<class T>
     static T findExactWidget(GUITestOpStatus &os, const QString &widgetName, QWidget const *const parentWidget = NULL, const GTGlobals::FindOptions &options = GTGlobals::FindOptions()) {
         T result = NULL;
@@ -85,6 +85,21 @@ public:
         return result;
     }
 #undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "findWidgetByType"
+    /** Finds a child widget with the given type. Fails is widget can't be found. */
+    template<class T>
+    static T findWidgetByType(GUITestOpStatus &os, QWidget *parentWidget, const QString& errorMessage) {
+        T widget = nullptr;
+        for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
+            GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+            widget = parentWidget->findChild<T>();
+        }
+        GT_CHECK_RESULT(widget != nullptr, errorMessage, nullptr);
+        return widget;
+    }
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 };
 

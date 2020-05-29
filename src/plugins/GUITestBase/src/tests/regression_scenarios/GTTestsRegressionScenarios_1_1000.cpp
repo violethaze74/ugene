@@ -1630,7 +1630,7 @@ GUI_TEST_CLASS_DEFINITION(test_0786) {
 
     GTUtilsWorkflowDesigner::click(os, "Write Sequence");
     QFile outputFile(sandBoxDir + "786_out.fa");
-    const QString outputFilePath = QFileInfo(outputFile).absoluteFilePath();
+    QString outputFilePath = QFileInfo(outputFile).absoluteFilePath();
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", outputFilePath, GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);

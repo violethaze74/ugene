@@ -60,6 +60,12 @@ public:
     //opens WorkflowDesigner
     static void openWorkflowDesigner(HI::GUITestOpStatus &os);
 
+    /** Returns active WD window or fails if no active WD window is found. */
+    static QWidget* getActiveWorkflowDesignerWindow(HI::GUITestOpStatus &os);
+
+    /** Checks that WD window is active. */
+    static void checkWorkflowDesignerWindowIsActive(HI::GUITestOpStatus &os);
+
     static void loadWorkflow(HI::GUITestOpStatus &os, const QString &fileUrl);
     static void saveWorkflow(HI::GUITestOpStatus &os);
     static void saveWorkflowAs(HI::GUITestOpStatus &os, const QString &fileUrl, const QString &workflowName);
