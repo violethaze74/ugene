@@ -2874,6 +2874,7 @@ GUI_TEST_CLASS_DEFINITION(test_2407) {
     GTLogTracer l;
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "10000_sequences.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "10000_sequences.aln"));
 
@@ -2881,6 +2882,7 @@ GUI_TEST_CLASS_DEFINITION(test_2407) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__UNLOAD_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "10000_sequences.aln"));
     GTMouseDriver::doubleClick();
