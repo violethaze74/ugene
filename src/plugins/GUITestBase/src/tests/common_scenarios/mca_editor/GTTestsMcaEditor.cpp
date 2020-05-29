@@ -1630,6 +1630,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Push "Ctrl+Alt+Shift+v"
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
@@ -1659,8 +1660,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
                                                                               << "Jump to previous variation"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //4. Push "Jump to previous variation" from main menu
