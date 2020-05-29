@@ -314,16 +314,18 @@ void GUITestService::runAllGUITests() {
 
 void GUITestService::runGUITest() {
     CMDLineRegistry *cmdLine = AppContext::getCMDLineRegistry();
-    SAFE_POINT(NULL != cmdLine, "", );
-    QString testName = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST);
+    SAFE_POINT(cmdLine != nullptr, "", );
+    QString fullTestName = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST);
     needTeamcityLog = cmdLine->hasParameter(CMDLineCoreOptions::TEAMCITY_OUTPUT);
 
-    UGUITestBase *tb = AppContext::getGUITestBase();
-    SAFE_POINT(NULL != tb, "Test base is NULL", );
-    HI::GUITest *t = tb->takeTest(testName.split(":").first(), testName.split(":").last());
-    SAFE_POINT(NULL != t, QString("Test '%1' is NULL. A wrong test name?").arg(testName), );
+    UGUITestBase *testBase = AppContext::getGUITestBase();
+    SAFE_POINT(testBase != nullptr, "Test base is null", );
 
-    runGUITest(t);
+    QString suiteName = fullTestName.split(":").first();
+    QString testName = fullTestName.split(":").last();
+    HI::GUITest *test = testBase->takeTest(suiteName, testName);
+    SAFE_POINT(test != nullptr, QString("Test '%1' is not found. A wrong test name?").arg(testName), );
+    runGUITest(test);
 }
 
 void GUITestService::runGUICrazyUserTest() {

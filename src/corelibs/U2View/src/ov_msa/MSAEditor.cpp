@@ -46,6 +46,7 @@
 #include <U2View/FindPatternMsaWidgetFactory.h>
 
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
+#include "General/MSAGeneralTabFactory.h"
 #include "Highlighting/MsaSchemesMenuBuilder.h"
 #include "MSAEditorOffsetsView.h"
 #include "MaEditorFactory.h"
@@ -67,6 +68,14 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     searchInSequencesAction = nullptr;
     searchInSequenceNamesAction = nullptr;
 
+    sortSequencesAction = new QAction(tr("Sort sequences"), this);
+    sortSequencesAction->setObjectName("action_sort_sequences");
+    connect(sortSequencesAction, SIGNAL(triggered()), SLOT(sl_activateSortingPanel()));
+
+    openCustomSettingsAction = new QAction(tr("Create new color scheme"), this);
+    openCustomSettingsAction->setObjectName("Create new color scheme");
+    connect(openCustomSettingsAction, SIGNAL(triggered()), SLOT(sl_showCustomSettings()));
+
     initZoom();
     initFont();
 
@@ -83,10 +92,6 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     if (maObject->getAlphabet() != NULL) {
         pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", maObject->getAlphabet()->getId());
     }
-
-    openCustomSettingsAction = new QAction(tr("Create new color scheme"), this);
-    openCustomSettingsAction->setObjectName("Create new color scheme");
-    connect(openCustomSettingsAction, SIGNAL(triggered()), SLOT(sl_showCustomSettings()));
 
     updateActions();
 }
@@ -162,7 +167,6 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
     addTreeMenu(m);
     addStatisticsMenu(m);
 
-    addSortMenu(m);
     addExportMenu(m);
 
     addAdvancedMenu(m);
@@ -170,6 +174,11 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
     GObjectView::buildStaticMenu(m);
 
     GUIUtils::disableEmptySubmenus(m);
+}
+
+void MSAEditor::addEditMenu(QMenu *m) {
+    QMenu *menu = m->addMenu(tr("Edit"));
+    menu->menuAction()->setObjectName(MSAE_MENU_EDIT);
 }
 
 void MSAEditor::addExportMenu(QMenu *m) {
@@ -185,7 +194,7 @@ void MSAEditor::addAppearanceMenu(QMenu *m) {
 
     appearanceMenu->addAction(showOverviewAction);
     auto offsetsController = ui->getOffsetsViewController();
-    if (offsetsController != NULL) {
+    if (offsetsController != nullptr) {
         appearanceMenu->addAction(offsetsController->getToggleColumnsViewAction());
     }
     appearanceMenu->addSeparator();
@@ -201,6 +210,8 @@ void MSAEditor::addAppearanceMenu(QMenu *m) {
 
     appearanceMenu->addAction(changeFontAction);
     appearanceMenu->addSeparator();
+
+    appearanceMenu->addAction(sortSequencesAction);
     appearanceMenu->addAction(clearSelectionAction);
 }
 
@@ -363,7 +374,6 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     addAlignMenu(&m);
     addTreeMenu(&m);
     addStatisticsMenu(&m);
-    addSortMenu(&m);
     addExportMenu(&m);
     addAdvancedMenu(&m);
 
@@ -388,10 +398,12 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
 
 void MSAEditor::updateActions() {
     MaEditor::updateActions();
+    bool isReadOnly = maObject->isStateLocked();
+    sortSequencesAction->setEnabled(!isReadOnly);
     if (alignSequencesToAlignmentAction != nullptr) {
-        alignSequencesToAlignmentAction->setEnabled(!maObject->isStateLocked());
+        alignSequencesToAlignmentAction->setEnabled(!isReadOnly);
     }
-    buildTreeAction->setEnabled(!maObject->isStateLocked() && !this->isAlignmentEmpty());
+    buildTreeAction->setEnabled(!isReadOnly && !this->isAlignmentEmpty());
     sl_updateRealignAction();
 }
 
@@ -489,7 +501,6 @@ void MSAEditor::sl_align() {
     addAlignMenu(&m);
     addTreeMenu(&m);
     addStatisticsMenu(&m);
-    addSortMenu(&m);
     addExportMenu(&m);
     addAdvancedMenu(&m);
 
@@ -540,8 +551,8 @@ void MSAEditor::sl_searchInSequences() {
 
 void MSAEditor::sl_searchInSequenceNames() {
     auto optionsPanel = getOptionsPanel();
-    SAFE_POINT(optionsPanel != NULL, "Internal error: options panel is NULL"
-                                     " when search in sequence names was initiated!", );
+    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
+                                        " when search in sequence names was initiated!", );
     QVariantMap options = FindPatternMsaWidgetFactory::getOptionsToActivateSearchInNames();
     optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
 }
@@ -653,6 +664,12 @@ char MSAEditor::getReferenceCharAt(int pos) const {
 
 void MSAEditor::sl_showCustomSettings() {
     AppContext::getAppSettingsGUI()->showSettingsDialog(ColorSchemaSettingsPageId);
+}
+
+void MSAEditor::sl_activateSortingPanel() {
+    auto optionsPanel = getOptionsPanel();
+    CHECK(optionsPanel != nullptr, );
+    optionsPanel->openGroupById(MSAGeneralTabFactory::getGroupId());
 }
 
 }    // namespace U2

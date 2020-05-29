@@ -27,7 +27,6 @@
 #include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTextEdit.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <system/GTClipboard.h>
 #include <utils/GTThread.h>
@@ -104,10 +103,16 @@ void GTUtilsOptionPanelMsa::closeTab(HI::GUITestOpStatus &os, Tabs tab) {
 
 #define GT_METHOD_NAME "isTabOpened"
 bool GTUtilsOptionPanelMsa::isTabOpened(HI::GUITestOpStatus &os, Tabs tab) {
-    GTGlobals::FindOptions options;
-    options.failIfNotFound = false;
-    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], NULL, options);
-    return NULL != innerTabWidget && innerTabWidget->isVisible();
+    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], nullptr, GTGlobals::FindOptions(false));
+    return innerTabWidget != nullptr && innerTabWidget->isVisible();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkTabIsOpened"
+void GTUtilsOptionPanelMsa::checkTabIsOpened(HI::GUITestOpStatus &os, Tabs tab) {
+    QString name = innerWidgetNames[tab];
+    QWidget *innerTabWidget = GTWidget::findWidget(os, name);
+    GT_CHECK(innerTabWidget->isVisible(), "MSA Editor options panel is not opened: " + name);
 }
 #undef GT_METHOD_NAME
 
@@ -157,7 +162,7 @@ int GTUtilsOptionPanelMsa::getLength(HI::GUITestOpStatus &os) {
     GT_CHECK_RESULT(alignmentLengthLabel != NULL, "alignmentLengthLabel not found", -1);
     bool ok;
     int result = alignmentLengthLabel->text().toInt(&ok);
-    GT_CHECK_RESULT(ok == true, "label text is not int", -1);
+    GT_CHECK_RESULT(ok, "label text is not int", -1);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -168,7 +173,7 @@ int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus &os) {
     GT_CHECK_RESULT(alignmentHeightLabel != NULL, "alignmentHeightLabel not found", -1);
     bool ok;
     int result = alignmentHeightLabel->text().toInt(&ok);
-    GT_CHECK_RESULT(ok == true, "label text is not int", -1);
+    GT_CHECK_RESULT(ok, "label text is not int", -1);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -179,41 +184,41 @@ void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus &os, const CopyFor
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
     GT_CHECK_RESULT(copyType != nullptr, "copyType not found", );
 
-    QString stringFirmat;
+    QString stringFormat;
     switch (format) {
     case CopyFormat::Fasta:
-        stringFirmat = "Fasta";
+        stringFormat = "Fasta";
         break;
     case CopyFormat::CLUSTALW:
-        stringFirmat = "CLUSTALW";
+        stringFormat = "CLUSTALW";
         break;
     case CopyFormat::Stocholm:
-        stringFirmat = "Stocholm";
+        stringFormat = "Stocholm";
         break;
     case CopyFormat::MSF:
-        stringFirmat = "MSF";
+        stringFormat = "MSF";
         break;
     case CopyFormat::NEXUS:
-        stringFirmat = "NEXUS";
+        stringFormat = "NEXUS";
         break;
     case CopyFormat::Mega:
-        stringFirmat = "Mega";
+        stringFormat = "Mega";
         break;
     case CopyFormat::PHYLIP_Interleaved:
-        stringFirmat = "PHYLIP Interleaved";
+        stringFormat = "PHYLIP Interleaved";
         break;
     case CopyFormat::PHYLIP_Sequential:
-        stringFirmat = "PHYLIP Sequential";
+        stringFormat = "PHYLIP Sequential";
         break;
     case CopyFormat::Rich_text:
-        stringFirmat = "Rich text (HTML)";
+        stringFormat = "Rich text (HTML)";
         break;
 
     default:
         GT_CHECK_RESULT(false, "Unexpected format", );
         break;
     }
-    GTComboBox::setIndexWithText(os, copyType, stringFirmat);
+    GTComboBox::setIndexWithText(os, copyType, stringFormat);
 
     QToolButton *copyButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "copyButton"));
     GT_CHECK_RESULT(copyButton != nullptr, "copyType not found", );
@@ -392,13 +397,6 @@ QString GTUtilsOptionPanelMsa::getExportConsensusOutputPath(GUITestOpStatus &os)
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setExportConsensusOutputFormat"
-void GTUtilsOptionPanelMsa::setExportConsensusOutputFormat(GUITestOpStatus &os, const QString &format) {
-    openTab(os, ExportConsensus);
-    GTComboBox::setIndexWithText(os, "formatCb", NULL, format);
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "getExportConsensusOutputFormat"
 QString GTUtilsOptionPanelMsa::getExportConsensusOutputFormat(GUITestOpStatus &os) {
     return GTComboBox::getCurrentText(os, "formatCb");
@@ -483,12 +481,10 @@ void GTUtilsOptionPanelMsa::clickNext(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickPrev"
-
 void GTUtilsOptionPanelMsa::clickPrev(HI::GUITestOpStatus &os) {
     QPushButton *prev = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "prevPushButton"));
     GTWidget::click(os, prev);
 }
-
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSeqLineEdit"

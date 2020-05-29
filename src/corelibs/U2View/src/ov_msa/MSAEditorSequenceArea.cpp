@@ -127,10 +127,6 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
     addSeqFromProjectAction->setObjectName("Sequence from current project");
     connect(addSeqFromProjectAction, SIGNAL(triggered()), SLOT(sl_addSeqFromProject()));
 
-    sortByNameAction = new QAction(tr("Sort sequences by name"), this);
-    sortByNameAction->setObjectName("action_sort_by_name");
-    connect(sortByNameAction, SIGNAL(triggered()), SLOT(sl_sortByName()));
-
     collapseModeSwitchAction = new QAction(QIcon(":core/images/collapse.png"), tr("Switch on/off collapsing"), this);
     collapseModeSwitchAction->setObjectName("Enable collapsing");
     collapseModeSwitchAction->setCheckable(true);
@@ -283,7 +279,7 @@ void MSAEditorSequenceArea::sl_buildContextMenu(GObjectView *, QMenu *m) {
     buildMenu(m);
 
     QMenu *editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
-    SAFE_POINT(editMenu != NULL, "editMenu", );
+    SAFE_POINT(editMenu != nullptr, "editMenu", );
 
     QList<QAction *> actions;
     actions << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction
@@ -306,15 +302,13 @@ void MSAEditorSequenceArea::initRenderer() {
 }
 
 void MSAEditorSequenceArea::buildMenu(QMenu *m) {
-    QAction *copyMenuAction = GUIUtils::findAction(m->actions(), MSAE_MENU_LOAD);
-
     QMenu *loadSeqMenu = GUIUtils::findSubMenu(m, MSAE_MENU_LOAD);
-    SAFE_POINT(loadSeqMenu != NULL, "loadSeqMenu", );
+    SAFE_POINT(loadSeqMenu != nullptr, "loadSeqMenu", );
     loadSeqMenu->addAction(addSeqFromProjectAction);
     loadSeqMenu->addAction(addSeqFromFileAction);
 
     QMenu *editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
-    SAFE_POINT(editMenu != NULL, "editMenu", );
+    SAFE_POINT(editMenu != nullptr, "editMenu", );
     QList<QAction *> actions;
 
     MsaEditorWgt *msaWgt = getEditor()->getUI();
@@ -327,22 +321,18 @@ void MSAEditorSequenceArea::buildMenu(QMenu *m) {
     editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 
     QMenu *exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
-    SAFE_POINT(exportMenu != NULL, "exportMenu", );
+    SAFE_POINT(exportMenu != nullptr, "exportMenu", );
     exportMenu->addAction(createSubaligniment);
     exportMenu->addAction(saveSequence);
 
     QMenu *copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
-    SAFE_POINT(copyMenu != NULL, "copyMenu", );
+    SAFE_POINT(copyMenu != nullptr, "copyMenu", );
     ui->getCopySelectionAction()->setDisabled(selection.isEmpty());
     emit si_copyFormattedChanging(!selection.isEmpty());
     copyMenu->addAction(ui->getCopySelectionAction());
     ui->getCopyFormattedSelectionAction()->setDisabled(selection.isEmpty());
     copyMenu->addAction(ui->getCopyFormattedSelectionAction());
     copyMenu->addAction(ui->getPasteAction());
-
-    QMenu *viewMenu = GUIUtils::findSubMenu(m, MSAE_MENU_VIEW);
-    SAFE_POINT(viewMenu != NULL, "viewMenu", );
-    viewMenu->addAction(sortByNameAction);
 }
 
 void MSAEditorSequenceArea::sl_fontChanged(QFont font) {
@@ -371,14 +361,13 @@ void MSAEditorSequenceArea::sl_alphabetChanged(const MaModificationInfo &mi, con
 
 void MSAEditorSequenceArea::sl_updateActions() {
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    assert(maObj != NULL);
+    SAFE_POINT(maObj != nullptr, "alignment is null", );
     bool readOnly = maObj->isStateLocked();
 
     createSubaligniment->setEnabled(!isAlignmentEmpty());
     saveSequence->setEnabled(!isAlignmentEmpty());
     addSeqFromProjectAction->setEnabled(!readOnly);
     addSeqFromFileAction->setEnabled(!readOnly);
-    sortByNameAction->setEnabled(!readOnly && !isAlignmentEmpty());
     collapseModeSwitchAction->setEnabled(!readOnly && !isAlignmentEmpty());
 
     //Update actions of "Edit" group
@@ -676,23 +665,6 @@ void MSAEditorSequenceArea::sl_addSeqFromProject() {
         AppContext::getTaskScheduler()->registerTopLevelTask(addSeqObjTask);
         sl_cancelSelection();
     }
-}
-
-void MSAEditorSequenceArea::sl_sortByName() {
-    CHECK(getEditor() != NULL, );
-    MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-    if (msaObject->isStateLocked()) {
-        return;
-    }
-    MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
-    msa->sortRowsByName();
-    QStringList rowNames = msa->getRowNames();
-    if (rowNames != msaObject->getMultipleAlignment()->getRowNames()) {
-        U2OpStatusImpl os;
-        msaObject->updateRowsOrder(os, msa->getRowsIds());
-        SAFE_POINT_OP(os, );
-    }
-    sl_updateCollapsingMode();
 }
 
 void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {

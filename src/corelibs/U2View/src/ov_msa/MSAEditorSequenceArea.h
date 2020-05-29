@@ -155,7 +155,6 @@ private slots:
     void sl_delCol();
     void sl_goto();
     void sl_removeAllGaps();
-    void sl_sortByName();
     void sl_updateCollapsingMode();
     void sl_reverseComplementCurrentSelection();
     void sl_reverseCurrentSelection();
@@ -192,7 +191,6 @@ private:
     QAction *saveSequence;
     QAction *addSeqFromFileAction;
     QAction *addSeqFromProjectAction;
-    QAction *sortByNameAction;
     QAction *collapseModeSwitchAction;
     QAction *collapseModeUpdateAction;
     QAction *reverseComplementAction;

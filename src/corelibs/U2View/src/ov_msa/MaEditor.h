@@ -34,7 +34,6 @@ namespace U2 {
 #define MSAE_MENU_COPY "MSAE_MENU_COPY"
 #define MSAE_MENU_EDIT "MSAE_MENU_EDIT"
 #define MSAE_MENU_EXPORT "MSAE_MENU_EXPORT"
-#define MSAE_MENU_VIEW "MSAE_MENU_VIEW"
 #define MSAE_MENU_ALIGN "MSAE_MENU_ALIGN"
 #define MSAE_MENU_TREES "MSAE_MENU_TREES"
 #define MSAE_MENU_STATISTICS "MSAE_MENU_STATISTICS"
@@ -200,9 +199,8 @@ protected:
     void updateResizeMode();
 
     void addCopyMenu(QMenu *m);
-    virtual void addEditMenu(QMenu *m);
+    virtual void addEditMenu(QMenu *m) = 0;
     virtual void addExportMenu(QMenu *m);
-    void addSortMenu(QMenu *m);
     void addLoadMenu(QMenu *m);
     void addAlignMenu(QMenu *m);    // SANGER_TODO: should the align menu exist in MCA?
 

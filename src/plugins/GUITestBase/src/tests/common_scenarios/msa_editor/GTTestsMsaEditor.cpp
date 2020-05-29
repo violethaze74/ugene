@@ -317,129 +317,35 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     GTGlobals::sleep();
 
     offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
-    CHECK_SET_ERR(offsetsVisible == true, "Offsets are not visible");
+    CHECK_SET_ERR(offsetsVisible, "Offsets are not visible");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "action_sort_by_name"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "action_sort_sequences"));
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
+    GTUtilsDialog::waitAllFinished(os);
 
-    GTUtilsMSAEditorSequenceArea::checkSorted(os);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0003_1) {
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Sort"
-                                                << "Sort sequences by name");
-    GTGlobals::sleep();
-
-    GTUtilsMSAEditorSequenceArea::checkSorted(os);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0003_2) {
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "revcompl.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "action_sort_by_name"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "action_sort_by_name"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-
-    GTUtilsMSAEditorSequenceArea::checkSorted(os);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0003_3) {
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-
-    GTUtilsMSAEditorSequenceArea::checkSorted(os, false);
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Sort"
-                                                << "Sort sequences by name");
-    GTGlobals::sleep();
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
-
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-    GTGlobals::sleep();
-
-    //GTUtilsMdi::click(os, GTGlobals::Maximize);
-    GTGlobals::sleep();
-
-    GTUtilsMSAEditorSequenceArea::checkSorted(os);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0003_4) {
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-
-    GTUtilsMSAEditorSequenceArea::checkSorted(os, false);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "action_sort_by_name"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep();
-    GTGlobals::sleep();
-#ifdef Q_OS_MAC
-    GTMouseDriver::click();
-    GTGlobals::sleep(1000);
-#endif
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os, false);
-    CHECK_SET_ERR(mdiWindow == NULL, "There is an MDI window");
-
-    QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "ma");
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    GTUtilsMSAEditorSequenceArea::checkSorted(os);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
-
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
+    QWidget *msaWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
-
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTMenu::showContextMenu(os, msaWindow);
+    GTUtilsDialog::waitAllFinished(os);
 
     QRect expectedRect(5, 0, 1, 1);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
     GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 }
@@ -3503,28 +3409,6 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
 
     CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "common_msa_test_0050_2.txt", testDir + "_common_data/clustal/COI_highlighted_2"),
                   "Export is incorrect");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0051) {
-    /* 1. Open samples/CLUSTALW/ty3.aln.gz
- * 2. Open context menu, open "View" and choose "Sort sequences by name"
- *   Expected state: Sequences sorted case insensitive by name
-*/
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma_unsorted.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "action_sort_by_name"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep(200);
-
-    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
-
-    CHECK_SET_ERR(names.length() == 4, "Count of sequences in MSA incorrect");
-    CHECK_SET_ERR(names.at(0) == "a", "At positoin 0 not showed 'a' name");
-    CHECK_SET_ERR(names.at(1) == "C", "At positoin 1 not showed 'C' name");
-    CHECK_SET_ERR(names.at(2) == "D", "At positoin 2 not showed 'D' name");
-    CHECK_SET_ERR(names.at(3) == "d", "At positoin 3 not showed 'd' name");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0052) {

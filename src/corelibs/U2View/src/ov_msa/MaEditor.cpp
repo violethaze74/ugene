@@ -398,11 +398,6 @@ void MaEditor::addCopyMenu(QMenu *m) {
     cm->menuAction()->setObjectName(MSAE_MENU_COPY);
 }
 
-void MaEditor::addEditMenu(QMenu *m) {
-    QMenu *em = m->addMenu(tr("Edit"));
-    em->menuAction()->setObjectName(MSAE_MENU_EDIT);
-}
-
 void MaEditor::addExportMenu(QMenu *m) {
     QMenu *em = m->addMenu(tr("Export"));
     em->menuAction()->setObjectName(MSAE_MENU_EXPORT);
@@ -413,11 +408,6 @@ void MaEditor::addExportMenu(QMenu *m) {
     } else {
         exportHighlightedAction->setDisabled(true);
     }
-}
-
-void MaEditor::addSortMenu(QMenu *m) {
-    QMenu *em = m->addMenu(tr("Sort"));
-    em->menuAction()->setObjectName(MSAE_MENU_VIEW);
 }
 
 void MaEditor::addLoadMenu(QMenu *m) {

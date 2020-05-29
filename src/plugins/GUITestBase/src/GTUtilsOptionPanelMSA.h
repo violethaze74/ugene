@@ -71,6 +71,7 @@ public:
     static void openTab(HI::GUITestOpStatus &os, Tabs tab);
     static void closeTab(HI::GUITestOpStatus &os, Tabs tab);
     static bool isTabOpened(HI::GUITestOpStatus &os, Tabs tab);
+    static void checkTabIsOpened(HI::GUITestOpStatus &os, Tabs tab);
 
     static void addReference(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method = Button);
     static void addFirstSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method = Button);
@@ -108,7 +109,6 @@ public:
     static void setExportConsensusOutputPath(HI::GUITestOpStatus &os, const QString &filePath);
     static QString getExportConsensusOutputPath(HI::GUITestOpStatus &os);
 
-    static void setExportConsensusOutputFormat(HI::GUITestOpStatus &os, const QString &format);
     static QString getExportConsensusOutputFormat(HI::GUITestOpStatus &os);
 
     // functions for accessing "Find pattern" options elements

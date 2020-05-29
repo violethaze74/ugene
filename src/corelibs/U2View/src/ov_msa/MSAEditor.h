@@ -118,6 +118,7 @@ protected slots:
     void sl_rowsRemoved(const QList<qint64> &rowIds);
     void sl_updateRealignAction();
     void sl_showCustomSettings();
+    void sl_activateSortingPanel();
 
 protected:
     QWidget *createWidget();
@@ -127,7 +128,8 @@ protected:
     virtual bool onCloseEvent();
 
 private:
-    void addExportMenu(QMenu *m);
+    void addEditMenu(QMenu *m) override;
+    void addExportMenu(QMenu *m) override;
     void addAppearanceMenu(QMenu *m);
     void addColorsMenu(QMenu *m);
     void addHighlightingMenu(QMenu *m);
@@ -136,7 +138,7 @@ private:
     void addAdvancedMenu(QMenu *m);
     void addStatisticsMenu(QMenu *m);
 
-    virtual void updateActions();
+    void updateActions() override;
 
     void initDragAndDropSupport();
     void alignSequencesFromObjectsToAlignment(const QList<GObject *> &objects);
@@ -152,6 +154,7 @@ private:
     QAction *searchInSequencesAction;
     QAction *searchInSequenceNamesAction;
     QAction *openCustomSettingsAction;
+    QAction *sortSequencesAction;
 
     PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings;
     MSAEditorTreeManager treeManager;
