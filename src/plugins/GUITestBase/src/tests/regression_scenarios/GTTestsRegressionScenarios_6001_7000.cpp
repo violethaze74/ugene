@@ -4141,6 +4141,7 @@ GUI_TEST_CLASS_DEFINITION(test_6620) {
 GUI_TEST_CLASS_DEFINITION(test_6628_1) {
     //1.  Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //2. Make sure, that MAFFT is valid
     GTUtilsExternalTools::checkValidation(os, "MAFFT");
@@ -4173,6 +4174,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
 GUI_TEST_CLASS_DEFINITION(test_6628_2) {
     //1.  Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //2. Remove the "MAFFT" external toos
     GTUtilsExternalTools::removeTool(os, "MAFFT");
@@ -4205,6 +4207,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
 GUI_TEST_CLASS_DEFINITION(test_6628_3) {
     //1.  Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //2. Remove the "MAFFT" external toos
     GTUtilsExternalTools::removeTool(os, "MAFFT");
@@ -4239,6 +4242,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_3) {
 GUI_TEST_CLASS_DEFINITION(test_6628_4) {
     //1.  Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //2. Make sure, that MAFFT is valid
     GTUtilsExternalTools::checkValidation(os, "MAFFT");
@@ -4270,6 +4274,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_4) {
 GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     //1.  Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //2. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
     //3. Select "_common_data\empty_sequences\empty_file.fa".
@@ -4298,6 +4303,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
 GUI_TEST_CLASS_DEFINITION(test_6628_6) {
     //1.  Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //2. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
     //3. Select "_common_data\empty_sequences\incorrect_fasta_header_only.fa".
@@ -4326,6 +4332,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_6) {
 GUI_TEST_CLASS_DEFINITION(test_6628_7) {
     //1.  Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //2. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
     //3. Select "_common_data\empty_sequences\incorrect_multifasta_with_empty_seq.fa".
@@ -4355,7 +4362,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
 GUI_TEST_CLASS_DEFINITION(test_6636) {
     // 1. Open "_common_data/clustal/COI_and_short.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI_and_short.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Select "clipboard16" sequence. Drag and drop this sequence a bit.
     //Expected state: "Undo" button is enabled
@@ -4369,7 +4376,8 @@ GUI_TEST_CLASS_DEFINITION(test_6636) {
 GUI_TEST_CLASS_DEFINITION(test_6640) {
     // 1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     // 2. Press Esc key
@@ -4383,7 +4391,8 @@ GUI_TEST_CLASS_DEFINITION(test_6640) {
 GUI_TEST_CLASS_DEFINITION(test_6640_1) {
     // 1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     // 2. Select second sequence
@@ -4400,7 +4409,8 @@ GUI_TEST_CLASS_DEFINITION(test_6640_1) {
 GUI_TEST_CLASS_DEFINITION(test_6640_2) {
     // 1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     // 2. Select one column in consensus
@@ -4413,7 +4423,8 @@ GUI_TEST_CLASS_DEFINITION(test_6640_2) {
 GUI_TEST_CLASS_DEFINITION(test_6640_3) {
     // 1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     // 2. Select one sequence
