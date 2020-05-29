@@ -143,6 +143,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Double - click on the CDS annotation with location(3875..4999) in the Zoom View.
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 3875, 0, true);
     GTGlobals::sleep();
 
@@ -604,6 +605,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     //    "Copy reverse-complement translation"
     //    "Copy annotation sequence"
     //    "Copy annotation sequence translation"
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     QStringList enabledItemsNamesFirst = QStringList() << "Copy selected sequence"
                                                        << "Copy selected complementary 5'-3' sequence"
                                                        << "Copy amino acids"
