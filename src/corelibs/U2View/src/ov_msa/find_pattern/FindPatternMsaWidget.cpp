@@ -542,14 +542,20 @@ void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOut
     QStringList newPatterns = getPatternsFromTextPatternField(os);
     CHECK_OP(os, )
     stopCurrentSearchTask();
-    visibleSearchResults.clear();
-    allSearchResults.clear();
+    clearResults();
     currentResultIndex = -1;
     if (isSearchInNamesMode) {
         runSearchInSequenceNames(newPatterns);
     } else {
         startFindPatternInMsaTask(newPatterns);
     }
+}
+
+void FindPatternMsaWidget::clearResults() {
+    visibleSearchResults.clear();
+    allSearchResults.clear();
+    nextPushButton->setDisabled(true);
+    prevPushButton->setDisabled(true);
 }
 
 void FindPatternMsaWidget::sl_onMaxResultChanged(int newMaxResult) {
@@ -796,8 +802,6 @@ void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList &patterns
     settings.matchValue = spinMatch->value();
 
     SAFE_POINT(searchTask == nullptr, "Search task is not nullptr", );
-    nextPushButton->setDisabled(true);
-    prevPushButton->setDisabled(true);
     groupResultsButton->setDisabled(true);
 
     searchTask = new FindPatternMsaTask(settings);
@@ -815,6 +819,7 @@ void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList &patterns
 
 void FindPatternMsaWidget::sl_searchModeChanged() {
     isSearchInNamesMode = searchContextComboBox->currentData() == SEARCH_MODE_NAMES_DATA;
+    clearResults();
     updateLayout();
     sl_validateStateAndStartNewSearch();
 }

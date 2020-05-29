@@ -98,6 +98,7 @@ private:
     void updateLayout();
     void connectSlots();
     bool checkRegion();
+    void clearResults();
 
     /** Returns true if the alignment alphabet is Amino. */
     bool isAmino() const;
