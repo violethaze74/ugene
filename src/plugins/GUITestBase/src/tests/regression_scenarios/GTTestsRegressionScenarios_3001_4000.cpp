@@ -1630,8 +1630,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
  *    Expected state: GC Content (%) graph view resized
 */
     GTFileDialog::openFile(os, dataDir + "/samples/ABIF/", "A01.abi");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_SET_ERR(NULL != sequenceWidget, "sequenceWidget is not present");
@@ -1646,6 +1645,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     GTGlobals::sleep();
     QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle *>(GTWidget::findWidget(os, "qt_splithandle_chromatogram_view_A1#berezikov"));
     CHECK_SET_ERR(NULL != splitterHandle, "splitterHandle is not present");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
     QSize startSize = graphView->size();
