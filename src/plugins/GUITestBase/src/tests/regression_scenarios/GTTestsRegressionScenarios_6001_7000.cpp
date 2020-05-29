@@ -4326,6 +4326,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
 
     //2. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
     //3. Select "_common_data\empty_sequences\incorrect_multifasta_with_empty_seq.fa".
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_multifasta_with_empty_seq.fa"));
