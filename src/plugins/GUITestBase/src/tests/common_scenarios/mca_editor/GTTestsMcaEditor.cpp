@@ -20,6 +20,7 @@
 * MA 02110-1301, USA.
 */
 
+#include <GTUtilsMsaEditor.h>
 #include <base_dialogs/FontDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
@@ -1916,8 +1917,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'W' && readChar == 'W', QString("Incorrect symbols, Expected ref = T, con = W, read = W current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0019)
-{
+GUI_TEST_CLASS_DEFINITION(test_0019) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
@@ -2215,7 +2215,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_1) {
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::closeProject(os);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023_2) {
@@ -2267,7 +2266,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::closeProject(os);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023_3) {
@@ -2314,7 +2312,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::closeProject(os);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024_1) {
@@ -2690,7 +2687,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::closeProject(os);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025_3) {
@@ -2737,7 +2733,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::closeProject(os);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_1) {
@@ -3484,13 +3479,14 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
     // close the view with ugenedb
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     // open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    GTGlobals::sleep();
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
@@ -3503,20 +3499,26 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
     // close the view with COI
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     // open ugenedb and check consensus settings
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
     CHECK_SET_ERR(GTUtilsOptionPanelMca::getConsensusType(os) == "Strict", "Consensus algorithm type for MCA was not saved");
     CHECK_SET_ERR(GTUtilsOptionPanelMca::getThreshold(os) == 57, "Consensus threshold for MCA was not saved");
+
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
 
     // open COI.aln and check consensus settings
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    GTGlobals::sleep();
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
+
     consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     GTComboBox::checkCurrentValue(os, consensusCombo, "Levitsky");
     CHECK_SET_ERR(GTUtilsOptionPanelMsa::getThreshold(os) == 68, "Consensus threshold for MSA was not saved");
