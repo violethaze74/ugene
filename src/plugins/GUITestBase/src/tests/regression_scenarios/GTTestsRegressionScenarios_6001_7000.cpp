@@ -4293,6 +4293,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
     GTWidget::click(os, align);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //Expected result: the COI alignment is not modified,
     int sequenceNumberAfterAlignment = GTUtilsMsaEditor::getSequencesCount(os);
