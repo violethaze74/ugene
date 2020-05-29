@@ -1688,24 +1688,20 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Multiple sequence alignment"
                                                 << "Align with Kalign...");
-    GTGlobals::sleep();
-
-    // 3. aligned document opens
-    GTGlobals::sleep(5000);
-    GTUtilsMdi::activeWindow(os);
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // CHANGES: close MDI window
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkNoMsaEditorWindowIsOpened(os);
 
     // 4. select document in project and press del
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 
     // Expected state: UGENE not crash
-    GTGlobals::sleep(5000);
+    GTThread::waitForMainThread();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016) {

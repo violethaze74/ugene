@@ -44,8 +44,11 @@ public:
     /** Returns active MSA editor window or fails. */
     static QWidget* getActiveMsaEditorWindow(GUITestOpStatus &os);
 
-    /** Returns active MSA editor window or fails. */
+    /** Checks that the active MDI window is MSA editor window or fails. */
     static void checkMsaEditorWindowIsActive(GUITestOpStatus &os);
+
+    /** Checks that there are no MSA editor window opened (active or not active). */
+    static void checkNoMsaEditorWindowIsOpened(GUITestOpStatus &os);
 
     static QColor getGraphOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);
     static QColor getSimpleOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);

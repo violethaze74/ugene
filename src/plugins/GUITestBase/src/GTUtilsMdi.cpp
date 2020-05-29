@@ -225,7 +225,7 @@ void GTUtilsMdi::waitWindowOpened(HI::GUITestOpStatus &os, const QString &window
             }
         }
     }
-    GT_CHECK_RESULT(isWindowFound, QString("Cannot find MDI window with part of name '%1'").arg(windowNamePart),);
+    GT_CHECK_RESULT(isWindowFound, QString("Cannot find MDI window with part of name '%1'").arg(windowNamePart), );
 }
 #undef GT_METHOD_NAME
 
@@ -269,6 +269,34 @@ QWidget *GTUtilsMdi::getActiveObjectViewWindow(GUITestOpStatus &os, const QStrin
     }
     GT_CHECK_RESULT(viewWindow != nullptr, "View window is not found: " + viewId, nullptr);
     return viewWindow;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkNoActiveObjectViewWindowIsOpened"
+void GTUtilsMdi::checkNoActiveObjectViewWindowIsOpened(GUITestOpStatus &os, const QString &viewId) {
+    QList<QWidget *> allWindows = getAllObjectViewWindows(viewId);
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && allWindows.isEmpty(); time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        allWindows = getAllObjectViewWindows(viewId);
+    }
+    GT_CHECK(allWindows.isEmpty(), "Found object view windows: " + viewId + ", when expected no window to be present");
+    GTThread::waitForMainThread();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getAllObjectViewWindows"
+QList<QWidget *> GTUtilsMdi::getAllObjectViewWindows(const QString &viewId) {
+    MainWindow *mainWindow = AppContext::getMainWindow();
+    QList<QWidget *> result;
+    if (mainWindow != nullptr) {
+        foreach (QWidget *window, mainWindow->getMDIManager()->getWindows()) {
+            GObjectViewWindow *objectViewWindow = qobject_cast<GObjectViewWindow *>(window);
+            if (objectViewWindow != nullptr && objectViewWindow->getViewFactoryId() == viewId) {
+                result << objectViewWindow;
+            }
+        }
+    }
+    return result;
 }
 #undef GT_METHOD_NAME
 
