@@ -52,7 +52,7 @@ using namespace HI;
 
 #define GT_METHOD_NAME "getActiveAssemblyBrowserWindow"
 QWidget *GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(GUITestOpStatus &os) {
-    QWidget* widget =  GTUtilsMdi::getActiveObjectViewWindow(os, AssemblyBrowserFactory::ID);
+    QWidget *widget = GTUtilsMdi::getActiveObjectViewWindow(os, AssemblyBrowserFactory::ID);
     GTThread::waitForMainThread();
     return widget;
 }
@@ -317,6 +317,25 @@ QScrollBar *GTUtilsAssemblyBrowser::getScrollBar(GUITestOpStatus &os, Qt::Orient
     }
 
     GT_CHECK_RESULT(false, QString("Scrollbar with orientation %1 not found").arg(orientation), NULL);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "scrollToStart"
+QScrollBar *GTUtilsAssemblyBrowser::scrollToStart(GUITestOpStatus &os, Qt::Orientation orientation) {
+    QScrollBar *scrollBar = getScrollBar(os, orientation);
+    class MainThreadAction : public CustomScenario {
+    public:
+        MainThreadAction(QScrollBar *scrollbar)
+            : CustomScenario(), scrollbar(scrollbar) {
+        }
+        void run(HI::GUITestOpStatus &os) {
+            Q_UNUSED(os);
+            scrollbar->setValue(0);
+        }
+        QScrollBar *scrollbar;
+    };
+    GTThread::runInMainThread(os, new MainThreadAction(scrollBar));
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

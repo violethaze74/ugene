@@ -144,24 +144,26 @@ bool MWMDIManagerImpl::eventFilter(QObject *obj, QEvent *event) {
     if (t == QEvent::Close) {
         QMdiSubWindow *qw = qobject_cast<QMdiSubWindow *>(obj);
         MDIItem *item = getMDIItem(qw);
-        uiLog.trace(QString("Processing close window request for '%1'").arg(getWindowName(item)));
+        if (item != nullptr) {
+            uiLog.trace(QString("Processing close window request for '%1'").arg(getWindowName(item)));
 
-        //check if user really wants to close the window, ignore event if not
-        if (!onCloseEvent(item->w)) {
-            uiLog.trace(QString("Ignoring close window request for '%1'").arg(getWindowName(item)));
-            event->ignore();
-            return true;
+            //check if user really wants to close the window, ignore event if not
+            if (!onCloseEvent(item->w)) {
+                uiLog.trace(QString("Ignoring close window request for '%1'").arg(getWindowName(item)));
+                event->ignore();
+                return true;
+            }
+
+            // here we sure that window will be closed
+            emit si_windowClosing(item->w);
+
+            if (item == mdiContentOwner) {    // if 'current' window is closed -> clear MDI
+                clearMDIContent(true);
+            }
+            items.removeAll(item);
+            delete item;
+            updateState();
         }
-
-        // here we sure that window will be closed
-        emit si_windowClosing(item->w);
-
-        if (item == mdiContentOwner) {    // if 'current' window is closed -> clear MDI
-            clearMDIContent(true);
-        }
-        items.removeAll(item);
-        delete item;
-        updateState();
     } else if (t == QEvent::WindowStateChange) {
         QMdiSubWindow *qw = qobject_cast<QMdiSubWindow *>(obj);
         defaultIsMaximized = qw->isMaximized();
@@ -306,12 +308,12 @@ MDIItem *MWMDIManagerImpl::getMDIItem(MWMDIWindow *w) const {
 }
 
 MDIItem *MWMDIManagerImpl::getMDIItem(QMdiSubWindow *qw) const {
-    foreach (MDIItem *i, items) {
-        if (i->qw == qw) {
-            return i;
+    foreach (MDIItem *item, items) {
+        if (item->qw == qw) {
+            return item;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void MWMDIManagerImpl::activateWindow(MWMDIWindow *w) {

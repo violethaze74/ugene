@@ -494,7 +494,7 @@ GUI_TEST_CLASS_DEFINITION(test_6047) {
     CHECK_SET_ERR(columns == 2139, "Unexpected length of msa: " + QString::number(columns));
 
     int rows = GTUtilsMSAEditorSequenceArea::getNameList(os).size();
-    CHECK_SET_ERR(rows == 9, "Unexpected number of sequences in msa: "+ QString::number(rows));
+    CHECK_SET_ERR(rows == 9, "Unexpected number of sequences in msa: " + QString::number(rows));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6058_1) {
@@ -2397,11 +2397,11 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
 
     //1. Open "samples/Assembly/chrM.fa".
     GTFileDialog::openFile(os, sandBoxDir + "regression_6455.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, sandBoxDir + "regression_6455.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
     //3. Click the "chrM" sequence object in Project View.
     GTUtilsProjectTreeView::click(os, "chrM", "regression_6455.fa");
@@ -2410,37 +2410,43 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
     //Expected result: first visible symbol "C" with green background color.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "setReferenceAction"));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsAssemblyBrowser::zoomToMax(os);
+    GTUtilsAssemblyBrowser::scrollToStart(os, Qt::Horizontal);
     QWidget *refArea = GTWidget::findWidget(os, "Assembly reference sequence area");
     QString color = GTWidget::getColor(os, refArea, QPoint(5, 5)).name();
-    CHECK_SET_ERR(GuiTests::compareColorsInRange(color, QColor("#2bb42b"), 10), QString("color is %1, expected: #2bb42b").arg(color));
+    QString colorOfG = "#09689c";
+    CHECK_SET_ERR(GuiTests::compareColorsInRange(color, colorOfG, 10), QString("color is %1, expected: %2").arg(color).arg(colorOfG));
 
     //5. Edit chrM by add 5 symbols at start
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: regression_6455 [s] chrM"));
     GTUtilsProjectTreeView::doubleClickItem(os, "regression_6455.fa");
-    GTThread::waitForMainThread();
+    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsSequenceView::enableEditingMode(os);
 
     GTKeyboardDriver::keyClick('T');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('T');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('T');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('T');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('T');
 
     //6. Switch back to assembly view.
-    //Expected result: first visible symbol on the screen is "A" with yellow background color.
+    //Expected result: first visible symbol on the screen is "A" with a yellow background color.
     GTUtilsProjectTreeView::doubleClickItem(os, "regression_6455.ugenedb");
-    GTGlobals::sleep();
-    refArea = GTWidget::findWidget(os, "Assembly reference sequence area");
+    QWidget *assemblyBrowserWindow = GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
+
+    refArea = GTWidget::findWidget(os, "Assembly reference sequence area", assemblyBrowserWindow);
     color = GTWidget::getColor(os, refArea, QPoint(5, 5)).name();
-    CHECK_SET_ERR(GuiTests::compareColorsInRange(color, QColor("#09689c"), 10), QString("color is %1, expected: #09689c").arg(color));
+
+    // Remove association for assembly file or GUI framework will fail on shutdown on de-association dialog called from window->close().
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "unassociateReferenceAction"));
+    GTWidget::click(os, refArea, Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
+
+    QString colorOfT = "#ba546c";
+    CHECK_SET_ERR(GuiTests::compareColorsInRange(color, colorOfT, 10), QString("color is %1, expected: %2").arg(colorOfT).arg(color));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6459) {
@@ -5821,8 +5827,8 @@ GUI_TEST_CLASS_DEFINITION(test_6749_2) {
     // Expected result; white background, no any warning
     QString style1 = editPatterns->styleSheet();
     CHECK_SET_ERR(style1 == "background-color: " + GUIUtils::OK_COLOR.name() + ";", "unexpected styleSheet: " + style1);
-
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6750) {
     // 1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -5963,7 +5969,6 @@ GUI_TEST_CLASS_DEFINITION(test_6808) {
     CHECK_SET_ERR(nameList[0] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
     CHECK_SET_ERR(nameList[1] == "Mecopoda_elongata__Sumatra_", "The second sequence is incorrect");
     CHECK_SET_ERR(nameList[2] == "Mecopoda_sp.__Malaysia_", "The third sequence is incorrect");
-
 }
 
 }    // namespace GUITest_regression_scenarios

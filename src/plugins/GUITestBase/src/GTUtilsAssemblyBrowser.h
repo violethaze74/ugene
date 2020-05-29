@@ -75,6 +75,8 @@ public:
     static void callExportCoverageDialog(HI::GUITestOpStatus &os, Area area = Consensus);
 
     static QScrollBar *getScrollBar(HI::GUITestOpStatus &os, Qt::Orientation orientation);
+
+    static QScrollBar *scrollToStart(HI::GUITestOpStatus &os, Qt::Orientation orientation);
 };
 
 }    // namespace U2
