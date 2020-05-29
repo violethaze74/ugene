@@ -321,7 +321,7 @@ QScrollBar *GTUtilsAssemblyBrowser::getScrollBar(GUITestOpStatus &os, Qt::Orient
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToStart"
-QScrollBar *GTUtilsAssemblyBrowser::scrollToStart(GUITestOpStatus &os, Qt::Orientation orientation) {
+void GTUtilsAssemblyBrowser::scrollToStart(GUITestOpStatus &os, Qt::Orientation orientation) {
     QScrollBar *scrollBar = getScrollBar(os, orientation);
     class MainThreadAction : public CustomScenario {
     public:

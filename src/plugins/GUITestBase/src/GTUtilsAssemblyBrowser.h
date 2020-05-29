@@ -76,7 +76,7 @@ public:
 
     static QScrollBar *getScrollBar(HI::GUITestOpStatus &os, Qt::Orientation orientation);
 
-    static QScrollBar *scrollToStart(HI::GUITestOpStatus &os, Qt::Orientation orientation);
+    static void scrollToStart(HI::GUITestOpStatus &os, Qt::Orientation orientation);
 };
 
 }    // namespace U2
