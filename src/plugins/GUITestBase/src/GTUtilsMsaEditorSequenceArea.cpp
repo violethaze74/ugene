@@ -713,6 +713,7 @@ void GTUtilsMSAEditorSequenceArea::replaceSymbol(GUITestOpStatus &os, const QPoi
 
 #define GT_METHOD_NAME "createColorScheme"
 void GTUtilsMSAEditorSequenceArea::createColorScheme(GUITestOpStatus &os, const QString &colorSchemeName, const NewColorSchemeCreator::alphabet al) {
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes"
