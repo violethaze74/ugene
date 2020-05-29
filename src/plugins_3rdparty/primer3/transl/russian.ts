@@ -1341,7 +1341,7 @@
 <context>
     <name>U2::Primer3Task</name>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="371"/>
+        <location filename="../src/Primer3Task.cpp" line="320"/>
         <source>Pick primers task</source>
         <translation>Выбор праймеров</translation>
     </message>
@@ -1349,22 +1349,22 @@
 <context>
     <name>U2::Primer3ToAnnotationsTask</name>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="802"/>
+        <location filename="../src/Primer3Task.cpp" line="702"/>
         <source>Search primers to annotations</source>
         <translation>Search primers to annotations</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="834"/>
+        <location filename="../src/Primer3Task.cpp" line="731"/>
         <source>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</source>
         <translation>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="845"/>
+        <location filename="../src/Primer3Task.cpp" line="742"/>
         <source>The first exon from the selected range [%1,%2] is larger the number of exons (%2). Please set correct exon range.</source>
         <translation>The first exon from the selected range [%1,%2] is larger the number of exons (%2). Please set correct exon range.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="851"/>
+        <location filename="../src/Primer3Task.cpp" line="750"/>
         <source>The the selected exon range [%1,%2] is larger the number of exons (%2). Please set correct exon range.</source>
         <translation>The the selected exon range [%1,%2] is larger the number of exons (%2). Please set correct exon range.</translation>
     </message>

@@ -2732,17 +2732,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectFileUtils</name>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="253"/>
+        <location filename="../src/ProjectParsing.cpp" line="258"/>
         <source>Project version is not a double value</source>
         <translation>Версия проекта не является вещественным значением</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="258"/>
+        <location filename="../src/ProjectParsing.cpp" line="263"/>
         <source>Project file was created by a newer version of UGENE. Please update UGENE.</source>
         <translation>Файл проекта был создан более ранней версией UGENE. Пожалуйста, обновите UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="264"/>
+        <location filename="../src/ProjectParsing.cpp" line="269"/>
         <source>Not a valid UGENE project file %1</source>
         <translation>Некорректный файл проекта UGENE: &quot;%1&quot;</translation>
     </message>
@@ -2750,22 +2750,22 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectParser10</name>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="346"/>
+        <location filename="../src/ProjectParsing.cpp" line="351"/>
         <source>Can&apos;t find project file: %1, ignoring</source>
         <translation>Невозможно найти файл проекта: %1, игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="350"/>
+        <location filename="../src/ProjectParsing.cpp" line="355"/>
         <source>Duplicate document found: %1, ignoring</source>
         <translation>Найдены одинаковые документы: %1, игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="357"/>
+        <location filename="../src/ProjectParsing.cpp" line="362"/>
         <source>Database document: %1, ignoring</source>
         <translation>Документ базы данных: %1, игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="403"/>
+        <location filename="../src/ProjectParsing.cpp" line="408"/>
         <source>The last loaded state was locked by format</source>
         <translation>Крайнее загруженное состояние было заблокировано форматом</translation>
     </message>

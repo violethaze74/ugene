@@ -4,52 +4,52 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="529"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="531"/>
         <source>This is not ESearch result!</source>
         <translation>Это не является результатом ESearch!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="570"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="572"/>
         <source>This is not a ESummary result!</source>
         <translation>Это не является результатом ESummary!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="648"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="650"/>
         <source>Use Ensembl ID. For example: %1 or %2</source>
         <translation>Используйте Ensembl ID. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="649"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="651"/>
         <source>Use Genbank DNA accession number. For example: %1 or %2</source>
         <translation>Используйте Genbank DNA Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="650"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="652"/>
         <source>Use Genbank protein accession number. For example: %1</source>
         <translation>Используйте Genbank Protein Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="651"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="653"/>
         <source>Use PDB molecule four-letter identifier. For example: %1 or %2</source>
         <translation>Используйте 4-х символьный идентификатор PDB. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="652"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="654"/>
         <source>Use SWISS-PROT accession number. For example: %1 or %2</source>
         <translation>Используйте SWISS-PROT Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="653"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="655"/>
         <source>Use UniProtKB/Swiss-Prot accession number. For example: %1</source>
         <translation>Используйте UniProtKB/Swiss-Prot Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="654"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="656"/>
         <source>Use UniProtKB/TrEMBL accession number. For example: %1</source>
         <translation>Используйте UniProtKB/TrEMBL Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="682"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="684"/>
         <source>Use %1 unique identifier.</source>
         <translation>Исплользуйте уникальный идентификатор %1.</translation>
     </message>
@@ -1394,7 +1394,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::EntrezQueryTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="501"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="503"/>
         <source>Redirecting to %1</source>
         <translation>Redirecting to %1</translation>
     </message>
@@ -2062,17 +2062,17 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadDataFromEntrezTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="393"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="395"/>
         <source>Downloading file %1</source>
         <translation>Downloading file %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="403"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="405"/>
         <source>Sequence with ID=%1 is not found.</source>
         <translation>Последовательность с идентификатором=%1 не найдена.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="444"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="446"/>
         <source>Redirecting to %1</source>
         <translation>Redirecting to %1</translation>
     </message>

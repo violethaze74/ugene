@@ -854,8 +854,12 @@
 <context>
     <name>U2::ExportMSA2MSADialog</name>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="20"/>
         <source>Export Nucleic Alignment to Amino Translation</source>
+        <translation type="vanished">Экспорт выравнивания в амино трансляции</translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="20"/>
+        <source>Export Amino Acid Translation</source>
         <translation>Экспорт выравнивания в амино трансляции</translation>
     </message>
     <message>
@@ -1057,9 +1061,13 @@
         <translation>Экспорт выравнивания без хроматограмм...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="103"/>
         <source>Export nucleic alignment to amino translation...</source>
         <translation>Экспорт нуклеотидной последовательности в амино трансляции...</translation>
+    </message>
+    <message>
+        <location filename="../src/ExportProjectViewItems.cpp" line="103"/>
+        <source>Export amino acid translation...</source>
+        <translation>Экспорт в амино трансляции...</translation>
     </message>
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="107"/>

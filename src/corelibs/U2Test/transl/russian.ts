@@ -99,7 +99,7 @@
 <context>
     <name>U2::GUITestLauncher</name>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="142"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="148"/>
         <source>No tests to run</source>
         <translation>No tests to run</translation>
     </message>
@@ -108,9 +108,8 @@
         <translation type="vanished">Invalid suite number: %1. There are %2 suites</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="273"/>
         <source>An error occurred while starting UGENE: </source>
-        <translation>An error occurred while starting UGENE: </translation>
+        <translation type="vanished">An error occurred while starting UGENE: </translation>
     </message>
     <message>
         <source>An error occurred while finishing UGENE: </source>
@@ -121,12 +120,12 @@
         <translation type="vanished">Test fails because of timeout.</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="335"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="410"/>
         <source>Test name</source>
         <translation>Test name</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="335"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="410"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
