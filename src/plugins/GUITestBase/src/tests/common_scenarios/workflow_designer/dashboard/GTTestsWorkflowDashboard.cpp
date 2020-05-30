@@ -275,7 +275,7 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0002) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
 
     //    1. Open "_common_data/workflow/dashboard/clustulo.uwl".
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/clustulo.uwl");
