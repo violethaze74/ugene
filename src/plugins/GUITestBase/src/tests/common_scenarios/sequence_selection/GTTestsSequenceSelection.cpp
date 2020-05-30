@@ -613,6 +613,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
                                                        << "Copy annotation amino acids";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", enabledItemsNamesFirst, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Select a sequence region using the mouse.
@@ -631,6 +632,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
                                                             PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    The following buttons are disabled :
     //    "Copy annotation sequence"
@@ -639,12 +641,14 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
                                                                                                              << "Copy annotation amino acids",
                                                             PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //3. Click "Copy translation".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy amino acids"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state : the selected region translation is stored in the clipboard.
