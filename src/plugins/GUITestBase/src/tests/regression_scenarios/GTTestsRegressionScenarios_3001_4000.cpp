@@ -1633,7 +1633,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    CHECK_SET_ERR(NULL != sequenceWidget, "sequenceWidget is not present");
+    CHECK_SET_ERR(sequenceWidget != NULL, "sequenceWidget is not present");
 
     GTWidget::click(os, sequenceWidget);
 
@@ -1642,24 +1642,25 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     GTUtilsDialog::waitForDialog(os, chooser);
 
     GTWidget::click(os, graphAction);
-    GTGlobals::sleep();
-    QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle *>(GTWidget::findWidget(os, "qt_splithandle_chromatogram_view_A1#berezikov"));
-    CHECK_SET_ERR(NULL != splitterHandle, "splitterHandle is not present");
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle *>(GTWidget::findWidget(os, "qt_splithandle_chromatogram_view_A1#berezikov"));
+    CHECK_SET_ERR(splitterHandle != nullptr, "splitterHandle is not present");
+
     QWidget *graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
+    GTThread::waitForMainThread();
+
     QSize startSize = graphView->size();
 
     graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
     GTWidget::click(os, GTWidget::findWidget(os, "CHROMA_ACTION"));
 
     GTMouseDriver::moveTo(QPoint(graphView->mapToGlobal(graphView->rect().bottomLeft()).x() + 100, graphView->mapToGlobal(graphView->rect().bottomLeft()).y() + 5));
-    GTGlobals::sleep(100);
     GTMouseDriver::press();
-    GTGlobals::sleep(500);
     GTMouseDriver::moveTo(QPoint(graphView->mapToGlobal(graphView->rect().bottomLeft()).x() + 100, graphView->mapToGlobal(graphView->rect().bottomLeft()).y() + graphView->height() / 2));
     GTMouseDriver::release();
-    GTGlobals::sleep();
+    GTThread::waitForMainThread();
 
     QSize endSize = graphView->size();
     CHECK_SET_ERR(startSize != endSize, "graphView is not resized");
