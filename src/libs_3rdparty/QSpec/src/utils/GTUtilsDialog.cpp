@@ -275,7 +275,7 @@ void GTUtilsDialog::waitForDialogWhichMayRunOrNot(GUITestOpStatus &os, Runnable 
 #define GT_METHOD_NAME "waitAllFinished"
 void GTUtilsDialog::waitAllFinished(GUITestOpStatus &os, int timeoutMillis) {
     bool isAllFinished = pool.isEmpty();
-    for (int time = 0; time < GT_OP_WAIT_MILLIS && !isAllFinished; time += GT_OP_CHECK_MILLIS) {
+    for (int time = 0; time < timeoutMillis && !isAllFinished; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         isAllFinished = true;
         foreach (GUIDialogWaiter *waiter, pool) {

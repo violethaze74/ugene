@@ -967,7 +967,7 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::waitAllFinished(os, 60000);
 
     //    3. Open "Highlighting" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -988,7 +988,7 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl, NewColorSchemeCreator::Change));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::waitAllFinished(os, 60000);
 
     //    Expected state: the settings dialog closed, new colors are applied for the opened MSA.
     const QString opColorScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
