@@ -224,8 +224,7 @@ GUI_TEST_CLASS_DEFINITION(test_4008) {
 GUI_TEST_CLASS_DEFINITION(test_4009) {
     //1. Open file "_common_data/clustal/big.aln"
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/big.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //2. Open "Export Consensus" OP tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
@@ -235,11 +234,8 @@ GUI_TEST_CLASS_DEFINITION(test_4009) {
 
     //4. Remove "big.aln" document
     GTUtilsDocument::removeDocument(os, "big.aln");
-
-    GTGlobals::sleep();
-    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "some tasks were not cancelled")
-
-    //Current state: the task hangs, debug error occurred with message "Infinite wait has timed out"
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //Bad state: the task hangs, debug error occurred with message "Infinite wait has timed out"
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4010) {
