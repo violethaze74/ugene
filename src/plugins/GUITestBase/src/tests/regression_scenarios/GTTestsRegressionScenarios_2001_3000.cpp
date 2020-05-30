@@ -2886,7 +2886,8 @@ GUI_TEST_CLASS_DEFINITION(test_2407) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "10000_sequences.aln"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(500);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
