@@ -60,6 +60,9 @@ public:
 
     static void goToPosition(HI::GUITestOpStatus &os, int position);
 
+    /** Moves mouse to the safe sequence view area (Pan or Det view, not a scrollbar) and clicks (brings focus) into it. */
+    static void clickMouseOnTheSafeSequenceViewArea(HI::GUITestOpStatus &os);
+
     static ADVSingleSequenceWidget *getSeqWidgetByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
     static DetView *getDetViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
     static PanView *getPanViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());

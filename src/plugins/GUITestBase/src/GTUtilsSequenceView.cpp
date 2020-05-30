@@ -246,37 +246,17 @@ void GTUtilsSequenceView::checkSequence(HI::GUITestOpStatus &os, const QString &
 
 #define GT_METHOD_NAME "selectSequenceRegion"
 void GTUtilsSequenceView::selectSequenceRegion(HI::GUITestOpStatus &os, int from, int to) {
-    MainWindow *mw = AppContext::getMainWindow();
-    GT_CHECK(mw != NULL, "MainWindow == NULL");
-
-    MWMDIWindow *mdiWindow = mw->getMDIManager()->getActiveWindow();
-    GT_CHECK(mdiWindow != NULL, "MDI window == NULL");
-
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, from, to));
-
-    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
-    GTMouseDriver::click();
-
+    clickMouseOnTheSafeSequenceViewArea(os);
     GTKeyboardUtils::selectAll(os);
-    GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectSeveralRegionsByDialog"
 void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString multipleRangeString) {
-    MainWindow *mw = AppContext::getMainWindow();
-    GT_CHECK(mw != NULL, "MainWindow == NULL");
-
-    MWMDIWindow *mdiWindow = mw->getMDIManager()->getActiveWindow();
-    GT_CHECK(mdiWindow != NULL, "MDI window == NULL");
-
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, multipleRangeString));
-
-    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
-    GTMouseDriver::click();
-
+    clickMouseOnTheSafeSequenceViewArea(os);
     GTKeyboardUtils::selectAll(os);
-    GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME
 
@@ -316,6 +296,18 @@ void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus &os, int position) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickMouseOnTheSafeSequenceViewArea"
+void GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea(HI::GUITestOpStatus &os) {
+    QWidget *panOrDetView = getDetViewByNumber(os, 0, GTGlobals::FindOptions(false));
+    if (panOrDetView == nullptr) {
+        panOrDetView = getPanViewByNumber(os, 0);
+    }
+    GTMouseDriver::moveTo(panOrDetView->mapToGlobal(panOrDetView->rect().center()));
+    GTMouseDriver::click();
+}
+#undef GT_METHOD_NAME
+
 
 #define GT_METHOD_NAME "getSeqWidgetByNumber"
 ADVSingleSequenceWidget *GTUtilsSequenceView::getSeqWidgetByNumber(HI::GUITestOpStatus &os, int number, const GTGlobals::FindOptions &options) {
