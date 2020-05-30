@@ -2657,10 +2657,9 @@ GUI_TEST_CLASS_DEFINITION(test_3437) {
 GUI_TEST_CLASS_DEFINITION(test_3402) {
     //    Open "test/_common_data/clustal/100_sequences.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "3000_sequences.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Call context menu on the "100_sequences" object.
-
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, sandBoxDir, "test_3402.fa", ExportToSequenceFormatFiller::FASTA, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
                                                                         << "action_project__export_as_sequence_action"));
