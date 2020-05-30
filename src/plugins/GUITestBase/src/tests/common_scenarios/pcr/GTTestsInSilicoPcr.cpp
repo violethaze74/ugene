@@ -413,7 +413,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //Export annotations
     //1. Open "_common_data/cmdline/pcr/begin-end.gb".
     GTFileDialog::openFile(os, testDir + "_common_data/cmdline/pcr/begin-end.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
@@ -429,7 +429,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: one product is found.
-    CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
+    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 1, "Wrong results count");
 
     //6. Choose "Inner" annotation extraction.
     QComboBox *annsComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "annsComboBox"));
@@ -440,7 +440,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
-    CHECK_SET_ERR(NULL == GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)), "Unexpected annotation 1");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == NULL, "Unexpected annotation 1");
     CHECK_SET_ERR("complement(51..150)" == GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center"), "Wrong region 1");
 
     //8. Choose "All annotations" annotation extraction.
@@ -452,8 +452,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are 4 annotations in the exported document: 2 primers, center 51..150 and middle 1..200. Middle has the warning qualifier.
-    CHECK_SET_ERR("1..200" == GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "middle"), "Wrong region 2");
-    CHECK_SET_ERR("complement(51..150)" == GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center"), "Wrong region 3");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "middle") == "1..200", "Wrong region 2");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center") == "complement(51..150)", "Wrong region 3");
 
     //10. Choose "None" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
@@ -464,8 +464,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are only 2 primers annotations in the exported document.
-    CHECK_SET_ERR(NULL == GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)), "Unexpected annotation 2");
-    CHECK_SET_ERR(NULL == GTUtilsAnnotationsTreeView::findItem(os, "center", GTGlobals::FindOptions(false)), "Unexpected annotation 3");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == NULL, "Unexpected annotation 2");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", GTGlobals::FindOptions(false)) == NULL, "Unexpected annotation 3");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
