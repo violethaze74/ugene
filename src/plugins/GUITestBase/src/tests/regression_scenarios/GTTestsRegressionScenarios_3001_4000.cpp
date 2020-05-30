@@ -5893,19 +5893,18 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
 
     GTLogTracer l;
 
-    GTFile::copy(os, testDir + "_common_data/bwa/NC_000021.gbk.fa", sandBoxDir + "test_3950.fa");
+    GTFile::copy(os, testDir + "_common_data/bwa/NC_000021.gbk.min.fa", sandBoxDir + "test_3950.fa");
 
     GTUtilsDialog::waitForDialog(os, new BuildIndexDialogFiller(os, sandBoxDir, "test_3950.fa", "BWA MEM"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Build index for reads mapping...");
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/bwa/workflow/bwa-mem.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
 
     GTUtilsWorkflowDesigner::click(os, "File List");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/nrsf-chr21.fastq");
@@ -5914,11 +5913,10 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
 
     GTUtilsWorkflowDesigner::click(os, "Align reads with BWA MEM");
     GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", sandBoxDir + "test_3950.fa", GTUtilsWorkflowDesigner::textValue);
-    QDir sandBox;
-    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", sandBox.absoluteFilePath(sandBoxDir), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os, 480000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 40000);
 
     GTUtilsLog::check(os, l);
 }
