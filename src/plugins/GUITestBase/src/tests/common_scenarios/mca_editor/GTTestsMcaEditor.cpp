@@ -3482,17 +3482,17 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
 
     // open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
+    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::setIndexWithText(os, consensusCombo, "Levitsky");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
+    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, 68, GTGlobals::UseKeyBoard);
 
     // close the view with COI
