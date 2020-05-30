@@ -90,6 +90,7 @@ void GTUtilsOptionPanelMsa::openTab(HI::GUITestOpStatus &os, Tabs tab) {
     if (!isTabOpened(os, tab)) {
         toggleTab(os, tab);
     }
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
@@ -238,7 +239,7 @@ void GTUtilsOptionPanelMsa::setColorScheme(HI::GUITestOpStatus &os, const QStrin
 QString GTUtilsOptionPanelMsa::getColorScheme(HI::GUITestOpStatus &os) {
     openTab(os, Highlighting);
     QComboBox *colorScheme = GTWidget::findExactWidget<QComboBox *>(os, "colorScheme");
-    GT_CHECK_RESULT(NULL != colorScheme, "ColorSCheme combobox is NULL", "");
+    GT_CHECK_RESULT(colorScheme != nullptr, "ColorSCheme combobox is NULL", "");
     return colorScheme->currentText();
 }
 #undef GT_METHOD_NAME
