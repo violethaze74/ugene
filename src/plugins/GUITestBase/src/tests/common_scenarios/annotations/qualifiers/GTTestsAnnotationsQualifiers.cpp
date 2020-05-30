@@ -198,32 +198,31 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsAnnotationsTreeView::getItemCenter(os, "B");
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
     GTMouseDriver::click();
 
-    Runnable *filler = new EditQualifierFiller(os, "qu");
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsAnnotationsTreeView::getItemCenter(os, "C");
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
     GTMouseDriver::click();
 
-    Runnable *filler1 = new EditQualifierFiller(os, "qu1");
-    GTUtilsDialog::waitForDialog(os, filler1);
+    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu1"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
-    GTGlobals::sleep();
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qu") != NULL, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "qu");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
