@@ -55,7 +55,11 @@ private:
     QString iniFileTemplate;
 
     static QStringList getTestProcessArguments(const QString &testName);
-    QProcessEnvironment getProcessEnvironment(QString testName);
+    /**
+     * Prepares ini file, logs dir and process environment for a single test run.
+     * Returns system environment for the test process.
+     */
+    QProcessEnvironment prepareTestRunEnvironment(const QString &testName, int testRunIteration);
     static QString testOutFile(const QString &testName);
     static QString getTestOutDir();
 
@@ -63,7 +67,7 @@ private:
 
     QString runTest(const QString &testName);
 
-    QString runTestOnce(U2OpStatus &os, const QString &testName, bool enableVideoRecording);
+    QString runTestOnce(U2OpStatus &os, const QString &testName, int iteration, bool enableVideoRecording);
 
     static QString readTestResult(const QByteArray &output);
     bool renameTestLog(const QString &testName);

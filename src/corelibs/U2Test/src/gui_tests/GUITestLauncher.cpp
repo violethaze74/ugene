@@ -235,24 +235,6 @@ QString GUITestLauncher::getTestOutDir() {
     return d.absolutePath();
 }
 
-QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-
-    QDir().mkpath(testOutDir + "/logs");
-    env.insert(ENV_UGENE_DEV, "1");
-    env.insert(ENV_GUI_TEST, "1");
-    env.insert(ENV_USE_NATIVE_DIALOGS, "0");
-    env.insert(U2_PRINT_TO_FILE, testOutDir + "/logs/" + testOutFile(testName));
-
-    QString iniFileName = testOutDir + "/inis/" + testName.replace(':', '_') + "_UGENE.ini";
-    if (!iniFileTemplate.isEmpty() && QFile::exists(iniFileTemplate)) {
-        QFile::copy(iniFileTemplate, iniFileName);
-    }
-    env.insert(U2_USER_INI, iniFileName);
-
-    return env;
-}
-
 static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
     QDir testsDir(qgetenv("UGENE_TESTS_PATH"));
     if (!testsDir.exists()) {
@@ -300,16 +282,41 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
     return true;
 }
 
+QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString &testName, int testRunIteration) {
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+
+    QDir().mkpath(testOutDir + "/logs");
+    env.insert(ENV_UGENE_DEV, "1");
+    env.insert(ENV_GUI_TEST, "1");
+    env.insert(ENV_USE_NATIVE_DIALOGS, "0");
+    env.insert(U2_PRINT_TO_FILE, testOutDir + "/logs/" + testOutFile(testName));
+
+    QString iniFileName = testOutDir + "/inis/" + QString(testName).replace(':', '_') + "_run_" + QString::number(testRunIteration) + "_UGENE.ini";
+    if (!iniFileTemplate.isEmpty() && QFile::exists(iniFileTemplate)) {
+        QFile::copy(iniFileTemplate, iniFileName);
+    }
+    env.insert(U2_USER_INI, iniFileName);
+
+    QString externalScriptToRestore = qgetenv("UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE");
+    if (!externalScriptToRestore.isEmpty()) {
+        if (restoreTestDirWithExternalScript(externalScriptToRestore)) {
+            env.insert("UGENE_TEST_SKIP_BACKUP_AND_RESTORE", "1");
+        }
+    }
+
+    return env;
+}
+
 QString GUITestLauncher::runTest(const QString &testName) {
-    int repeatCount = qMax(qgetenv("UGENE_TEST_NUMBER_RERUN_FAILED_TEST").toInt(), 0);
+    int maxReruns = qMax(qgetenv("UGENE_TEST_NUMBER_RERUN_FAILED_TEST").toInt(), 0);
     QString testOutput;
     bool isVideoRecordingOn = qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
-    for (int i = 0; i < 1 + repeatCount; i++) {
-        if (i >= 1) {
-            coreLog.error(QString("Re-running the test. Current re-run: %1, max re-runs: %2").arg(i).arg(repeatCount));
+    for (int iteration = 0; iteration < 1 + maxReruns; iteration++) {
+        if (iteration >= 1) {
+            coreLog.error(QString("Re-running the test. Current re-run: %1, max re-runs: %2").arg(iteration).arg(maxReruns));
         }
         U2OpStatusImpl os;
-        testOutput = runTestOnce(os, testName, isVideoRecordingOn && i > 0);
+        testOutput = runTestOnce(os, testName, iteration, isVideoRecordingOn && iteration > 0);
         bool isFailed = os.hasError() || GUITestTeamcityLogger::testFailed(testOutput);
         if (!isFailed) {
             break;
@@ -319,15 +326,8 @@ QString GUITestLauncher::runTest(const QString &testName) {
     return testOutput;
 }
 
-QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, bool enableVideoRecording) {
-    QProcessEnvironment environment = getProcessEnvironment(testName);
-
-    QString externalScriptToRestore = qgetenv("UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE");
-    if (!externalScriptToRestore.isEmpty()) {
-        if (restoreTestDirWithExternalScript(externalScriptToRestore)) {
-            environment.insert("UGENE_TEST_SKIP_BACKUP_AND_RESTORE", "1");
-        }
-    }
+QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, int iteration, bool enableVideoRecording) {
+    QProcessEnvironment environment = prepareTestRunEnvironment(testName, iteration);
 
     QString path = QCoreApplication::applicationFilePath();
     QStringList arguments = getTestProcessArguments(testName);
