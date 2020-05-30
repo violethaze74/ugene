@@ -144,39 +144,29 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/proj1.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    QString expectedTitle;
-#ifdef Q_OS_MAC
-    expectedTitle = "proj1 UGENE";
-#else
-    expectedTitle = "proj1 UGENE";
-#endif
-    GTUtilsApp::checkUGENETitle(os, expectedTitle);
-    GTGlobals::sleep(4000);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
+
+    GTUtilsApp::checkUGENETitle(os, "proj1 UGENE");
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsProjectTreeView::checkProjectViewIsClosed(os);
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-#ifdef Q_OS_MAC
-    expectedTitle = "proj2 UGENE";
-#else
-    expectedTitle = "proj2 UGENE";
-#endif
-    GTUtilsApp::checkUGENETitle(os, expectedTitle);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
+    GTUtilsApp::checkUGENETitle(os, "proj2 UGENE");
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
-    GTGlobals::sleep();
+    GTGlobals::sleep(); // todo: make checkExistingToolTip wait until tooltip or fail.
     GTUtilsToolTip::checkExistingToolTip(os, "_common_data/pdb/1CF7.pdb");
 }
 
