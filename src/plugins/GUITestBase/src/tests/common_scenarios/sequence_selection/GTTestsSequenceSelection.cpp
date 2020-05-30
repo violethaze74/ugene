@@ -596,7 +596,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
 GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     //1. Open "murine.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    Expected state : the following buttons on the toolbar are disabled :
     //    "Copy sequence"
@@ -605,7 +605,6 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     //    "Copy reverse-complement translation"
     //    "Copy annotation sequence"
     //    "Copy annotation sequence translation"
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     QStringList enabledItemsNamesFirst = QStringList() << "Copy selected sequence"
                                                        << "Copy selected complementary 5'-3' sequence"
                                                        << "Copy amino acids"
@@ -619,27 +618,26 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     //2. Select a sequence region using the mouse.
     GTUtilsSequenceView::selectSequenceRegion(os, 100, 200);
 
-    QStringList enabledItemsNamesSecond = QStringList() << "Copy selected sequence"
-                                                        << "Copy selected complementary 5'-3' sequence"
-                                                        << "Copy amino acids"
-                                                        << "Copy amino acids of complementary 5'-3' strand";
-    QStringList disableItemNames = QStringList() << "Copy annotation direct strand"
-                                                 << "Copy annotation amino acids";
-
     //    Expected state :
     //    The following buttons are enabled :
     //    "Copy sequence"
     //    "Copy reverse-complement sequence"
     //    "Copy translation"
     //    "Copy reverse-complement translation"
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", enabledItemsNamesSecond, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", QStringList() << "Copy selected sequence"
+                                                                                                             << "Copy selected complementary 5'-3' sequence"
+                                                                                                             << "Copy amino acids"
+                                                                                                             << "Copy amino acids of complementary 5'-3' strand",
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    The following buttons are disabled :
     //    "Copy annotation sequence"
     //    "Copy annotation sequence translation"
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", disableItemNames, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", QStringList() << "Copy annotation direct strand"
+                                                                                                             << "Copy annotation amino acids",
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -651,7 +649,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
 
     //    Expected state : the selected region translation is stored in the clipboard.
     QString text = GTClipboard::text(os);
-    CHECK_SET_ERR(text == "RSGTKKQLNTKQDICGKRFLPRLRAKNR*DS*V", QString("Unexpected text in the clipboard, expected: RSGTKKQLNTKQDICGKRFLPRLRAKNR*DS*V, current: %1").arg(text));
+    CHECK_SET_ERR("RSGTKKQLNTKQDICGKRFLPRLRAKNR*DS*V" == text, QString("Unexpected text in the clipboard, expected: RSGTKKQLNTKQDICGKRFLPRLRAKNR*DS*V, current: %1").arg(text));
 
     //4. Press Ctrl + C(or Cmd + C on Mac OS X) on the keyboard.
     GTKeyboardUtils::copy(os);
