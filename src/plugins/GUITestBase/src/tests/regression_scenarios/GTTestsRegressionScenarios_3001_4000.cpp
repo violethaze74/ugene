@@ -1633,14 +1633,11 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    CHECK_SET_ERR(sequenceWidget != NULL, "sequenceWidget is not present");
-
     GTWidget::click(os, sequenceWidget);
 
     QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     Runnable *chooser = new PopupChooser(os, QStringList() << "GC Content (%)");
     GTUtilsDialog::waitForDialog(os, chooser);
-
     GTWidget::click(os, graphAction);
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1649,8 +1646,6 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     CHECK_SET_ERR(splitterHandle != nullptr, "splitterHandle is not present");
 
     QWidget *graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
-    GTThread::waitForMainThread();
-
     QSize startSize = graphView->size();
 
     graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
@@ -1660,6 +1655,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(QPoint(graphView->mapToGlobal(graphView->rect().bottomLeft()).x() + 100, graphView->mapToGlobal(graphView->rect().bottomLeft()).y() + graphView->height() / 2));
     GTMouseDriver::release();
+
     GTThread::waitForMainThread();
 
     QSize endSize = graphView->size();
