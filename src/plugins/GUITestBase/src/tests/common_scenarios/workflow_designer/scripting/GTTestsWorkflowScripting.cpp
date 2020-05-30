@@ -75,7 +75,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTGlobals::sleep(500);
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "wd_scripting_test_0001"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -89,6 +88,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "wd_scripting_test_0001"));
     GTMouseDriver::click();
+    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "#$%not a script asdasd321 123", "Script syntax check failed!"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -164,7 +164,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "workflow_scripting_test_0004"));
     GTMouseDriver::click();
 
-    const QString scriptText = "if(size(in_seq) >= 10000) {out_seq = in_seq;}";
+    QString scriptText = "if(size(in_seq) >= 10000) {out_seq = in_seq;}";
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", scriptText));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Edit script of the element...",
@@ -189,9 +189,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     WorkflowProcessItem *newScript = GTUtilsWorkflowDesigner::getWorker(os, "workflow_scripting_test_0004");
     QString newText = newScript->getProcess()->getScript()->getScriptText();
     CHECK_SET_ERR(text == newText, "Different script text");
-    GTGlobals::sleep();
-
-    QFile::remove(dataDir + "workflow_samples/users/workflow_scripting_test_0004.usa");
 }
 
 }    // namespace GUITest_common_scenarios_workflow_scripting

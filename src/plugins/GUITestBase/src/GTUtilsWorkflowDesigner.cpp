@@ -565,31 +565,38 @@ void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QGraphicsItem *item
 WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os, QString itemName, const GTGlobals::FindOptions &options) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView", wdWindow));
-    GT_CHECK_RESULT(sceneView, "sceneView not found", NULL);
-    QList<QGraphicsItem *> items = sceneView->items();
-
-    foreach (QGraphicsItem *it, items) {
-        QGraphicsObject *itObj = it->toGraphicsObject();
-
-        QGraphicsTextItem *textItemO = qobject_cast<QGraphicsTextItem *>(itObj);
-        if (textItemO) {
-            QString text = textItemO->toPlainText();
-
-            int num = text.indexOf('\n');
-            if (num == -1) {
-                continue;
-            }
-            text = text.left(num);
-
-            if (text == itemName) {
-                if (qgraphicsitem_cast<WorkflowProcessItem *>(it->parentItem()->parentItem()))
-                    return (qgraphicsitem_cast<WorkflowProcessItem *>(it->parentItem()->parentItem()));
+    GT_CHECK_RESULT(sceneView, "sceneView not found", nullptr);
+    // Wait for the item up to GT_OP_WAIT_MILLIS.
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        QList<QGraphicsItem *> items = sceneView->items();
+        foreach (QGraphicsItem *item, items) {
+            QGraphicsObject *itObj = item->toGraphicsObject();
+            QGraphicsTextItem *textItemO = qobject_cast<QGraphicsTextItem *>(itObj);
+            if (textItemO) {
+                QString text = textItemO->toPlainText();
+                int num = text.indexOf('\n');
+                if (num == -1) {
+                    continue;
+                }
+                text = text.left(num);
+                if (text == itemName) {
+                    if (qgraphicsitem_cast<WorkflowProcessItem *>(item->parentItem()->parentItem())) {
+                        WorkflowProcessItem *result = qgraphicsitem_cast<WorkflowProcessItem *>(item->parentItem()->parentItem());
+                        if (result != nullptr) {
+                            return result;
+                        }
+                        break;
+                    }
+                }
             }
         }
+        if (!options.failIfNotFound) {
+            break;
+        }
     }
-    GT_CHECK_RESULT(options.failIfNotFound == false, "Item '" + itemName + "' not found at scene", NULL);
-
-    return NULL;
+    GT_CHECK_RESULT(!options.failIfNotFound, "Item '" + itemName + "' not found at scene", NULL);
+    return nullptr;
 }
 #undef GT_METHOD_NAME
 
