@@ -58,6 +58,10 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Wno-ignored-attributes
     QMAKE_CXXFLAGS += -Wno-cast-function-type
 
+    # Some of the warnings must be errors
+    QMAKE_CXXFLAGS += -Werror=return-type
+    QMAKE_CXXFLAGS += -Werror=parentheses
+
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {
         message("Build with gcov support. See gcov/lcov doc for generating coverage info")
