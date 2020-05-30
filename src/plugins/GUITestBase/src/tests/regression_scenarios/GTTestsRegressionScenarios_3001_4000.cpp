@@ -4677,10 +4677,9 @@ GUI_TEST_CLASS_DEFINITION(test_3728) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3730) {
-    //  Note: the bug not always reproduced.
-
     //  1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //  2. Create new custom nucleotide color scheme.
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, "test_3730_scheme_1", NewColorSchemeCreator::nucl);
@@ -4692,6 +4691,7 @@ GUI_TEST_CLASS_DEFINITION(test_3730) {
     //  5. Accept Application Settings dialog.
     //  Expected state: UGENE doesn't crash, color scheme is not changed.
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, "test_3730_scheme_2", NewColorSchemeCreator::amino);
+
     QString colorScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
     CHECK_SET_ERR(colorScheme == "test_3730_scheme_1", "The color scheme was unexpectedly changed");
 }
