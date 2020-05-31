@@ -114,15 +114,10 @@ void waitForConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFil
 }
 
 void establishConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFiller::Action &action) {
-    GTGlobals::sleep(1000);
-    QWidget *dialog = QApplication::activeModalWidget();
-
     waitForConnection(os, action);
-    CHECK_OP(os, );
 
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     GTWidget::click(os, GTWidget::findWidget(os, "pbConnect", dialog));
-
-    GTGlobals::sleep(2000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -162,11 +157,9 @@ void stopConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFiller
 #define GT_METHOD_NAME "commonScenario"
 
 void SharedConnectionsDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     QListWidget *list = dynamic_cast<QListWidget *>(GTWidget::findWidget(os, "lwConnections", dialog));
-    CHECK_SET_ERR(NULL != list, "NULL list");
-    GTGlobals::sleep(1000);
+    CHECK_SET_ERR(list != nullptr, "Connections list widget not found");
 
     bool connected = false;
     foreach (const Action &action, actions) {

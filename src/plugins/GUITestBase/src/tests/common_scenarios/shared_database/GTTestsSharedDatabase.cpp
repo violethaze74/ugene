@@ -34,7 +34,6 @@
 #include <utils/GTThread.h>
 
 #include <QApplication>
-#include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
 #include <QListWidget>
@@ -1044,7 +1043,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0001) {
     GTLogTracer lt;
 
     QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    QString newFolderName = "import_test_0001_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    QString newFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0001");
     QString newFolderPath = parentFolderPath + U2ObjectDbi::PATH_SEP + newFolderName;
     QString fileDocName = "human_T1.fa";
     QString fileObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
@@ -1082,7 +1081,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0002) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString newFolderName = "import_test_0002_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString newFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0002");
     const QString newFolderPath = parentFolderPath + newFolderName;
     const QString fileDocName = "human_T1.fa";
     const QString fileObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
@@ -1127,7 +1126,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString folderName = "import_test_0003_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString folderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0003");
     const QString folderPath = parentFolderPath + U2ObjectDbi::PATH_SEP + folderName;
     const QString fileDocName = "murine.gb";
     const QString sequenceObjectName = "NC_001363";
@@ -1203,7 +1202,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0004) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0004_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0004");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "human_T1";
     const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
@@ -1254,7 +1253,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0005) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0005_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0005");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "human_T1";
     const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
@@ -1310,7 +1309,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0006) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0006_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0006");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "seq1";
     const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
@@ -1383,7 +1382,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0007) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0007_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0007");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString importedTopLevelFolderName = "second";
     const QString importedTopLevelFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + importedTopLevelFolderName;
@@ -1452,7 +1451,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0008) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0008_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0008");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString innerFolderName = "second";
     const QString resultFirstFolderName = "seq1";
@@ -1521,7 +1520,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0009) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0009_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0009");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFirstFolderName = "seq1";
     const QString resultSecondFolderName = "human_T1_cutted";
@@ -1582,7 +1581,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0010) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0010_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0010");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString documentName = "human_T1.fa";
     const QString sequenceObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
@@ -1638,7 +1637,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0011_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0011");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString documentName = "murine.gb";
     const QString sequenceObjectName = "NC_001363";
@@ -1709,7 +1708,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0012) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0012_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0012");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "multy_fa";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -1757,7 +1756,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0013) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0013_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0013");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "multy_fa";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -1816,7 +1815,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0014) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0014_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0014");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "multy_fa";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -1857,7 +1856,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0015) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0015_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0015");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "scerevisiae";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -1906,7 +1905,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0016) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0016_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0016");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "scerevisiae";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -1960,7 +1959,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0017) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0017_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0017");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "ace_test_2";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -2033,7 +2032,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0018) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0018_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0018");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "scerevisiae.bam";
     const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
@@ -2090,7 +2089,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0019) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0019_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0019");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "1.bam";
     const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
@@ -2145,7 +2144,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0020) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0020_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0020");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "ace_test_2";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;

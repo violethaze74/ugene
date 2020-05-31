@@ -32,12 +32,14 @@ class Document;
 
 class GTUtilsSharedDatabaseDocument {
 public:
-    static U2::Document *connectToTestDatabase(HI::GUITestOpStatus &os);
+    static U2::Document *connectToTestDatabase(HI::GUITestOpStatus &os, bool isRemoveTempContent = true);
     static U2::Document *connectToUgenePublicDatabase(HI::GUITestOpStatus &os);
     static Document *getDatabaseDocumentByName(HI::GUITestOpStatus &os, const QString &name);
 
     static void disconnectDatabase(HI::GUITestOpStatus &os, Document *databaseDoc);
     static void disconnectDatabase(HI::GUITestOpStatus &os, const QString &name);
+
+    static QString genTestFolderName(const QString &baseName);
 
     static QModelIndex getItemIndex(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath, bool mustExist = true);
 
