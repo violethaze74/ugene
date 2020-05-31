@@ -74,9 +74,12 @@ static void removeTempContentFromOtherTests(HI::GUITestOpStatus &os, Document *d
     CHECK_SET_ERR(!u2Os.hasError(), "folders.init failed: " + u2Os.getError());
     QList<Folder *> topLevelFolders = documentFolders.getSubFolders(U2ObjectDbi::ROOT_FOLDER);
     foreach (Folder *folder, topLevelFolders) {
-        if (folder->getFolderName().startsWith(tmpFolderPrefix)) {
+        QString folderName = folder->getFolderName();
+        if (folderName.startsWith(tmpFolderPrefix)) {
+            GTUtilsProjectTreeView::scrollTo(os, folderName);
+
             GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove selected items", GTGlobals::UseMouse));
-            GTUtilsProjectTreeView::callContextMenu(os, folder->getFolderName());
+            GTUtilsProjectTreeView::callContextMenu(os, folderName);
             GTThread::waitForMainThread();
             GTUtilsDialog::waitAllFinished(os);
         }
@@ -275,24 +278,22 @@ QString GTUtilsSharedDatabaseDocument::getItemPath(HI::GUITestOpStatus &os, cons
 
 #define GT_METHOD_NAME "expantToItem"
 void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath) {
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(databaseDoc != nullptr, "databaseDoc is NULL");
     GT_CHECK(!itemPath.isEmpty(), "Item path is empty");
 
     QStringList folders = itemPath.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
     GTGlobals::FindOptions findOptions;
     findOptions.depth = 1;
-    const QModelIndex databaseDocIndex = GTUtilsProjectTreeView::findIndex(os, databaseDoc->getName(), findOptions);
+    QModelIndex databaseDocIndex = GTUtilsProjectTreeView::findIndex(os, databaseDoc->getName(), findOptions);
 
-    QTreeView *projectTreeView = GTUtilsProjectTreeView::getTreeView(os);
-    GT_CHECK(NULL != projectTreeView, "Project tree view not found");
-    projectTreeView->expand(databaseDocIndex);
+    GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(os, databaseDocIndex);
 
     CHECK(!folders.isEmpty(), );
     folders.pop_back();
 
     QModelIndex prevFolderIndex = databaseDocIndex;
     foreach (const QString &folder, folders) {
-        const QModelIndex folderIndex = GTUtilsProjectTreeView::findIndex(os, folder, prevFolderIndex, findOptions);
+        QModelIndex folderIndex = GTUtilsProjectTreeView::findIndex(os, folder, prevFolderIndex, findOptions);
         GTUtilsProjectTreeView::doubleClickItem(os, folderIndex);
         prevFolderIndex = folderIndex;
     }
@@ -301,11 +302,10 @@ void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Docume
 
 #define GT_METHOD_NAME "expantToItem"
 void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QModelIndex &itemIndex) {
-    Q_UNUSED(os);
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(databaseDoc != nullptr, "databaseDoc is NULL");
     GT_CHECK(itemIndex.isValid(), "Item index is invalid");
 
-    const QString itemPath = getItemPath(os, itemIndex);
+    QString itemPath = getItemPath(os, itemIndex);
     expantToItem(os, databaseDoc, itemPath);
 }
 #undef GT_METHOD_NAME
@@ -362,23 +362,20 @@ void GTUtilsSharedDatabaseDocument::callImportDialog(HI::GUITestOpStatus &os, Do
     GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!itemPath.isEmpty(), "Item path is empty");
 
-    const QModelIndex itemIndex = getItemIndex(os, databaseDoc, itemPath);
+    QModelIndex itemIndex = getItemIndex(os, databaseDoc, itemPath);
     callImportDialog(os, databaseDoc, itemIndex);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "callImportDialog"
 void GTUtilsSharedDatabaseDocument::callImportDialog(HI::GUITestOpStatus &os, Document *databaseDoc, const QModelIndex &itemIndex) {
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(databaseDoc != nullptr, "databaseDoc is NULL");
     GT_CHECK(itemIndex.isValid(), "Item index is invalid");
 
     expantToItem(os, databaseDoc, itemIndex);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, itemIndex));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__ADD_MENU << ACTION_PROJECT__IMPORT_TO_DATABASE, GTGlobals::UseMouse));
-
-    GTUtilsProjectTreeView::getTreeView(os)->scrollTo(itemIndex);
-    const QPoint itemCenter = GTUtilsProjectTreeView::getItemCenter(os, itemIndex);
-    GTMouseDriver::moveTo(itemCenter);
     GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME

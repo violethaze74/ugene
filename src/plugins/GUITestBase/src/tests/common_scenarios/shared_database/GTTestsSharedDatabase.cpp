@@ -1252,34 +1252,26 @@ GUI_TEST_CLASS_DEFINITION(import_test_0005) {
 
     GTLogTracer lt;
 
-    const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
     const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0005");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
-    const QString resultFolderName = "human_T1";
-    const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
     const QString filePath = QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath();
     const QString sequenceObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
-    const QString databaseSequenceObjectPath = resultFolderPath + U2ObjectDbi::PATH_SEP + sequenceObjectName;
-
-    QList<ImportToDatabaseDialogFiller::Action> actions;
-
-    QVariantMap addFilesAction;
-    addFilesAction.insert(ImportToDatabaseDialogFiller::Action::ACTION_DATA__PATHS_LIST, QStringList() << filePath);
-    actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::ADD_FILES, addFilesAction);
-
-    actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::IMPORT, QVariantMap());
-
-    GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, actions));
+    const QString databaseSequenceObjectPath = dstFolderPath + U2ObjectDbi::PATH_SEP + "human_T1" + U2ObjectDbi::PATH_SEP + sequenceObjectName;
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, dstFolderName);
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
+    QList<ImportToDatabaseDialogFiller::Action> actions;
+    QVariantMap addFilesAction;
+    addFilesAction.insert(ImportToDatabaseDialogFiller::Action::ACTION_DATA__PATHS_LIST, QStringList() << filePath);
+    actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::ADD_FILES, addFilesAction);
+    actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::IMPORT, QVariantMap());
+    GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, actions));
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, dstFolderPath);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, databaseSequenceObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
