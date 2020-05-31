@@ -113,16 +113,25 @@ void WorkflowSettings::setDefaultFont(const QFont &f) {
     }
 }
 
+/** TODO: make this method global for UGENE and use it everywhere. */
+static QString getDataDirPath() {
+    QString dataDir = qgetenv("UGENE_DATA_PATH");
+    if (!dataDir.isEmpty()) {
+        return dataDir;
+    }
+    return QDir::searchPaths(PATH_PREFIX_DATA).first();
+}
+
 const QString WorkflowSettings::getUserDirectory() {
     Settings *s = AppContext::getSettings();
-    QString defaultPath = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/workflow_samples/" + "users/";
+    QString defaultPath = getDataDirPath() + "/workflow_samples/users/";
     QString path = s->getValue(DIR, defaultPath, true).toString();
     return path;
 }
 
 void WorkflowSettings::setUserDirectory(const QString &newDir) {
     Settings *s = AppContext::getSettings();
-    QString defaultPath = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/workflow_samples/" + "users/";
+    QString defaultPath = getDataDirPath() + "/workflow_samples/users/";
     QString path = s->getValue(DIR, defaultPath, true).toString();
     QString newFixedDir = GUrlUtils::getSlashEndedPath(QDir::fromNativeSeparators(newDir));
 
