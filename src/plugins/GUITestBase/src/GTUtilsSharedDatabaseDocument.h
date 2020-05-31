@@ -58,9 +58,9 @@ public:
     static void callImportDialog(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath);
     static void callImportDialog(HI::GUITestOpStatus &os, Document *databaseDoc, const QModelIndex &itemIndex);
 
-    static void ensureItemExists(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath);
-    static void ensureItemsExist(HI::GUITestOpStatus &os, Document *databaseDoc, const QStringList &itemsPaths);
-    static void ensureThereAreNoItemsExceptListed(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &parentPath, const QStringList &itemsPaths);
+    static void checkItemExists(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath);
+    static void checkItemsExist(HI::GUITestOpStatus &os, Document *databaseDoc, const QStringList &itemsPaths);
+    static void checkThereAreNoItemsExceptListed(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &parentPath, const QStringList &itemsPaths);
 
     static void importFiles(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &dstFolderPath, const QStringList &filesPaths, const QVariantMap &options = QVariantMap());
     static void importDirs(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &dstFolderPath, const QStringList &dirsPaths, const QVariantMap &options = QVariantMap());

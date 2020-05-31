@@ -48,7 +48,9 @@ const QString READ_ONLY_LOGIN = "read_only_login";
 const QString PASSWORD = "password";
 
 QVariant getSetting(const QString &key) {
-    QSettings settings(UGUITest::testDir + "_common_data/database.ini", QSettings::IniFormat);
+    QString customDatabaseIniPath =  qgetenv("UGENE_TESTS_DATABASE_INI_PATH");
+    QString databaseIniPath = customDatabaseIniPath.isEmpty() ? UGUITest::testDir + "_common_data/database.ini" : customDatabaseIniPath;
+    QSettings settings(databaseIniPath, QSettings::IniFormat);
     return settings.value(SETTINGS_ROOT + key);
 }
 

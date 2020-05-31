@@ -429,7 +429,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
                                                 << "/pcrlib/test_0008/primer2 features"
                                                 << "/pcrlib/test_0008/primer3 features"
                                                 << "/pcrlib/test_0008/primer4 features";
-    GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseConnection, "/pcrlib/test_0008/", itemPaths);
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseConnection, "/pcrlib/test_0008/", itemPaths);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {

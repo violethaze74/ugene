@@ -119,26 +119,32 @@ void GTUtilsSharedDatabaseDocument::disconnectDatabase(HI::GUITestOpStatus &os, 
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getFolderItem"
+#define GT_METHOD_NAME "getItemIndex"
 QModelIndex GTUtilsSharedDatabaseDocument::getItemIndex(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath, bool mustExist) {
-    Q_UNUSED(os);
-    GT_CHECK_RESULT(NULL != databaseDoc, "databaseDoc is NULL", QModelIndex());
+    GT_CHECK_RESULT(databaseDoc != nullptr, "databaseDoc is NULL", QModelIndex());
     GT_CHECK_RESULT(!itemPath.isEmpty(), "Folder path is empty", QModelIndex());
 
-    const QStringList folders = itemPath.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
-
-    QModelIndex itemIndex = GTUtilsProjectTreeView::findIndex(os, databaseDoc->getName());
-    CHECK(!folders.isEmpty(), itemIndex);
+    QStringList folders = itemPath.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
 
     GTGlobals::FindOptions options;
     options.depth = 1;
     options.failIfNotFound = mustExist;
-    foreach (const QString &folder, folders) {
-        itemIndex = GTUtilsProjectTreeView::findIndex(os, folder, itemIndex, options);
-        CHECK_OP_BREAK(os);
-        CHECK_BREAK(itemIndex.isValid());
-    }
 
+    QModelIndex itemIndex;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && !itemIndex.isValid(); time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        itemIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << databaseDoc->getName());
+        foreach (const QString &folder, folders) {
+            itemIndex = GTUtilsProjectTreeView::findIndex(os, folder, itemIndex, options);
+            if (!itemIndex.isValid()) {
+                break;
+            }
+        }
+        if (!mustExist) {
+            break;
+        }
+    }
+    GT_CHECK_RESULT(itemIndex.isValid() || !mustExist, "Item not found: " + itemPath, itemIndex);
     return itemIndex;
 }
 #undef GT_METHOD_NAME
@@ -338,38 +344,26 @@ void GTUtilsSharedDatabaseDocument::callImportDialog(HI::GUITestOpStatus &os, Do
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "ensureItemExists"
-void GTUtilsSharedDatabaseDocument::ensureItemExists(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath) {
-    Q_UNUSED(os);
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
-
-    const QModelIndex itemIndex = getItemIndex(os, databaseDoc, itemPath);
-    GT_CHECK(itemIndex.isValid(), QString("Item is invalid, item's path: '%1'").arg(itemPath));
+#define GT_METHOD_NAME "checkItemExists"
+void GTUtilsSharedDatabaseDocument::checkItemExists(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath) {
+    getItemIndex(os, databaseDoc, itemPath);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "ensureItemsExist"
-void GTUtilsSharedDatabaseDocument::ensureItemsExist(HI::GUITestOpStatus &os, Document *databaseDoc, const QStringList &itemsPaths) {
-    Q_UNUSED(os);
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
-
+#define GT_METHOD_NAME "checkItemsExist"
+void GTUtilsSharedDatabaseDocument::checkItemsExist(HI::GUITestOpStatus &os, Document *databaseDoc, const QStringList &itemsPaths) {
     foreach (const QString &itemPath, itemsPaths) {
-        ensureItemExists(os, databaseDoc, itemPath);
-        CHECK_OP(os, );
+        checkItemExists(os, databaseDoc, itemPath);
     }
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "ensureThereAraNoItemsExceptListed"
-void GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &parentPath, const QStringList &itemsPaths) {
-    Q_UNUSED(os);
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+#define GT_METHOD_NAME "checkThereAraNoItemsExceptListed"
+void GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &parentPath, const QStringList &itemsPaths) {
+    checkItemsExist(os, databaseDoc, itemsPaths);
 
-    ensureItemsExist(os, databaseDoc, itemsPaths);
-    CHECK_OP(os, );
-
-    const QModelIndex parentIndex = getItemIndex(os, databaseDoc, parentPath);
-    const QModelIndexList subIndecies = GTUtilsProjectTreeView::findIndecies(os, "", parentIndex);
+    QModelIndex parentIndex = getItemIndex(os, databaseDoc, parentPath);
+    QModelIndexList subIndecies = GTUtilsProjectTreeView::findIndecies(os, "", parentIndex);
     GT_CHECK(subIndecies.size() == itemsPaths.size(), QString("Parent item contains %1 subitems, expected % subitems").arg(subIndecies.size()).arg(itemsPaths.size()));
 }
 #undef GT_METHOD_NAME

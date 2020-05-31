@@ -123,7 +123,7 @@ QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus &os, const QMod
 #define GT_METHOD_NAME "getItemCenter"
 QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex) {
     GT_CHECK_RESULT(itemIndex.isValid(), "Item index is invalid", QPoint());
-    GT_CHECK_RESULT(NULL != treeView, "treeView is NULL", QPoint());
+    GT_CHECK_RESULT(treeView != NULL, "treeView is NULL", QPoint());
 
     QRect r = treeView->visualRect(itemIndex);
 
@@ -178,20 +178,54 @@ QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus &os, const QStr
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "scrollTo"
+#define GT_METHOD_NAME "scrollToItemName"
 void GTUtilsProjectTreeView::scrollTo(HI::GUITestOpStatus &os, const QString &itemName) {
-    QTreeView *treeView = getTreeView(os);
-    GT_CHECK(treeView != NULL, "tree view not found");
+    QModelIndex index = findIndex(os, itemName);
+    scrollToIndex(os, index);
+}
+#undef GT_METHOD_NAME
 
-    treeView->scrollTo(findIndex(os, itemName));
+#define GT_METHOD_NAME "scrollToIndex"
+void GTUtilsProjectTreeView::scrollToIndex(HI::GUITestOpStatus &os, const QModelIndex &index) {
+    GT_CHECK(index.isValid(), "Item index is invalid");
+    QTreeView *treeView = getTreeView(os);
+
+    class MainThreadActionExpand : public CustomScenario {
+    public:
+        MainThreadActionExpand(QTreeView *treeView, const QModelIndex &index)
+            : CustomScenario(), treeView(treeView), index(index) {
+        }
+        void run(HI::GUITestOpStatus &os) {
+            Q_UNUSED(os);
+            treeView->setExpanded(index, true);
+        }
+        QTreeView *treeView;
+        QModelIndex index;
+    };
+
+    class MainThreadActionScroll : public CustomScenario {
+    public:
+        MainThreadActionScroll(QTreeView *treeView, const QModelIndex &index)
+            : CustomScenario(), treeView(treeView), index(index) {
+        }
+        void run(HI::GUITestOpStatus &os) {
+            Q_UNUSED(os);
+            treeView->scrollTo(index);
+        }
+        QTreeView *treeView;
+        QModelIndex index;
+    };
+    GTThread::runInMainThread(os, new MainThreadActionExpand(treeView, index));
+    GTThread::waitForMainThread();
+
+    GTThread::runInMainThread(os, new MainThreadActionScroll(treeView, index));
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "doubleClickItem"
 void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus &os, const QModelIndex &itemIndex) {
-    GT_CHECK(itemIndex.isValid(), "Item index is invalid");
-    getTreeView(os)->scrollTo(itemIndex);
-
+    scrollToIndex(os, itemIndex);
     GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
     GTMouseDriver::doubleClick();
     GTThread::waitForMainThread();
@@ -207,8 +241,7 @@ void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus &os, const QStr
 #define GT_METHOD_NAME "click"
 void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton button) {
     QModelIndex itemIndex = findIndex(os, itemName);
-    GT_CHECK(itemIndex.isValid(), "Item index is invalid");
-    getTreeView(os)->scrollTo(itemIndex);
+    scrollToIndex(os, itemIndex);
 
     QPoint p = getItemCenter(os, itemIndex);    // clicking on the center does not select the item (Linux)
     p.setX(p.x() + 1);
@@ -223,8 +256,7 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemN
     QModelIndex parentIndex = findIndex(os, parentName);
     GT_CHECK(parentIndex.isValid(), "Parent item index is invalid");
     QModelIndex itemIndex = findIndex(os, itemName, parentIndex);
-    GT_CHECK(itemIndex.isValid(), "Item index is invalid");
-    getTreeView(os)->scrollTo(itemIndex);
+    scrollToIndex(os, itemIndex);
 
     GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
     GTMouseDriver::click(button);
@@ -252,21 +284,22 @@ QTreeView *GTUtilsProjectTreeView::getTreeView(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findItem"
+#define GT_METHOD_NAME "findIndex1"
 QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
     QTreeView *treeView = getTreeView(os);
-    GT_CHECK_RESULT(treeView != NULL, "Tree view is NULL", QModelIndex());
+    GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", QModelIndex());
     return findIndex(os, treeView, itemName, QModelIndex(), options);
 }
+#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findItem"
+#define GT_METHOD_NAME "findIndex2"
 QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions &options) {
     GT_CHECK_RESULT(treeView != NULL, "Tree view is NULL", QModelIndex());
     return findIndex(os, treeView, itemName, QModelIndex(), options);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findItem"
+#define GT_METHOD_NAME "findIndex3"
 QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options) {
     QTreeView *treeView = getTreeView(os);
     GT_CHECK_RESULT(treeView != NULL, "Tree view is NULL", QModelIndex());
@@ -274,32 +307,38 @@ QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, const QSt
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findItem"
+#define GT_METHOD_NAME "findIndex4"
 QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options) {
-    GT_CHECK_RESULT(treeView != NULL, "Tree view is NULL", QModelIndex());
-    GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", QModelIndex());
+    GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", QModelIndex());
+    GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", QModelIndex());
 
-    QModelIndexList foundIndexes = findIndecies(os, treeView, itemName, parent, 0, options);
-    if (foundIndexes.isEmpty()) {
-        if (options.failIfNotFound) {
-            GT_CHECK_RESULT(foundIndexes.size() != 0, QString("Item with name %1 not found").arg(itemName), QModelIndex());
-        } else {
-            return QModelIndex();
+    QModelIndexList foundIndexes;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && foundIndexes.isEmpty(); time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        foundIndexes = findIndecies(os, treeView, itemName, parent, 0, options);
+        if (!options.failIfNotFound) {
+            break;
         }
     }
-
+    if (foundIndexes.isEmpty()) {
+        GT_CHECK_RESULT(!options.failIfNotFound, QString("Item with name %1 not found").arg(itemName), QModelIndex());
+        return QModelIndex();
+    }
     GT_CHECK_RESULT(foundIndexes.size() == 1, QString("there are %1 items with name %2").arg(foundIndexes.size()).arg(itemName), QModelIndex());
 
-    treeView->scrollTo(foundIndexes.at(0));
-    return foundIndexes.at(0);
+    QModelIndex index = foundIndexes.at(0);
+    scrollToIndex(os, index);
+    return index;
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findIndex"
+#define GT_METHOD_NAME "findIndex5"
 QModelIndex GTUtilsProjectTreeView::findIndex(GUITestOpStatus &os, const QStringList &itemPath, const GTGlobals::FindOptions &options) {
     QModelIndex item;
     foreach (const QString &itemName, itemPath) {
-        item = findIndex(os, itemName, item, options);
+        GTGlobals::FindOptions itemOptions = options;
+        itemOptions.depth = 1;
+        item = findIndex(os, itemName, item, itemOptions);
     }
     return item;
 }
@@ -333,30 +372,30 @@ QModelIndexList GTUtilsProjectTreeView::findIndecies(HI::GUITestOpStatus &os,
                                                      int parentDepth,
                                                      const GTGlobals::FindOptions &options) {
     QModelIndexList foundIndecies;
-    CHECK(GTGlobals::FindOptions::INFINITE_DEPTH == options.depth || parentDepth < options.depth, foundIndecies);
+    CHECK(options.depth == GTGlobals::FindOptions::INFINITE_DEPTH || parentDepth < options.depth, foundIndecies);
 
     QAbstractItemModel *model = treeView->model();
-    CHECK_SET_ERR_RESULT(NULL != model, "Model is NULL", foundIndecies);
+    CHECK_SET_ERR_RESULT(model != NULL, "Model is NULL", foundIndecies);
 
     QSortFilterProxyModel *proxyModel = qobject_cast<QSortFilterProxyModel *>(treeView->model());
 
-    const int rowCount = NULL == proxyModel ? model->rowCount(parent) : proxyModel->rowCount(parent);
+    int rowCount = proxyModel == nullptr ? model->rowCount(parent) : proxyModel->rowCount(parent);
     for (int i = 0; i < rowCount; i++) {
-        const QModelIndex index = NULL == proxyModel ? model->index(i, 0, parent) : proxyModel->index(i, 0, parent);
+        QModelIndex index = proxyModel == nullptr ? model->index(i, 0, parent) : proxyModel->index(i, 0, parent);
         QString s = index.data(Qt::DisplayRole).toString();
 
-        GObject *object = ProjectViewModel::toObject(NULL == proxyModel ? index : proxyModel->mapToSource(index));
-        if (NULL != object) {
-            const QString prefix = "[" + GObjectTypes::getTypeInfo(object->getGObjectType()).treeSign + "]";
+        GObject *object = ProjectViewModel::toObject(proxyModel == nullptr ? index : proxyModel->mapToSource(index));
+        if (object != nullptr) {
+            QString prefix = "[" + GObjectTypes::getTypeInfo(object->getGObjectType()).treeSign + "]";
             if (s.startsWith(prefix) || prefix == "[u]") {
                 s = s.mid(prefix.length() + 1);
             }
         } else {
-            const QString unload = "[unloaded] ";
+            QString unload = "[unloaded] ";
             if (s.startsWith(unload)) {
                 s = s.mid(unload.length());
             }
-            const QRegExp loading("^\\[loading \\d+\\%\\] ");
+            QRegExp loading("^\\[loading \\d+\\%\\] ");
             if (-1 != loading.indexIn(s)) {
                 s = s.mid(loading.matchedLength());
             }
@@ -633,11 +672,9 @@ void GTUtilsProjectTreeView::dragAndDrop(GUITestOpStatus &os, const QStringList 
 
 #define GT_METHOD_NAME "isVisible"
 void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os, QModelIndexList from, QModelIndex to) {
-    QTreeView *treeView = getTreeView(os);
-
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     foreach (QModelIndex index, from) {
-        treeView->scrollTo(index);
+        scrollToIndex(os, index);
         GTMouseDriver::moveTo(getItemCenter(os, index));
         GTMouseDriver::click();
     }

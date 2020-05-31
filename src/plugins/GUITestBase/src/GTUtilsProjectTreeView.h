@@ -56,8 +56,11 @@ public:
     static QPoint getItemCenter(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex);
     static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString &itemName);
 
-    // if item is not visible, scroll until item is not visible
+    /** Locates item in the tree by name and scrolls to the item to make it visible. */
     static void scrollTo(HI::GUITestOpStatus &os, const QString &itemName);
+
+    /** Scrolls to the item to make it visible. */
+    static void scrollToIndex(HI::GUITestOpStatus &os, const QModelIndex &index);
 
     static void doubleClickItem(HI::GUITestOpStatus &os, const QModelIndex &itemIndex);
     static void doubleClickItem(HI::GUITestOpStatus &os, const QString &itemName);

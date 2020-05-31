@@ -1715,7 +1715,7 @@ GUI_TEST_CLASS_DEFINITION(test_3266) {
     GTMouseDriver::click(Qt::RightButton);
 
     //Expected state: the folder "2" is in the Recycle bin.
-    GTUtilsSharedDatabaseDocument::ensureItemExists(os, doc, "/Recycle bin/regression_3266_2");
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/regression_3266_2");
 
     //5. Create another folder "2" in the folder "1".
     GTUtilsSharedDatabaseDocument::createFolder(os, doc, "/regression_3266_1", "regression_3266_2");
@@ -1726,8 +1726,8 @@ GUI_TEST_CLASS_DEFINITION(test_3266) {
     GTMouseDriver::click(Qt::RightButton);
 
     //Expected state: folders "1" and "2" both are in the Recycle bin.
-    GTUtilsSharedDatabaseDocument::ensureItemExists(os, doc, "/Recycle bin/regression_3266_1");
-    GTUtilsSharedDatabaseDocument::ensureItemExists(os, doc, "/Recycle bin/regression_3266_2");
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/regression_3266_1");
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/regression_3266_2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3270) {

@@ -34,6 +34,7 @@
 #include <utils/GTThread.h>
 
 #include <QApplication>
+#include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
 #include <QListWidget>
@@ -1009,7 +1010,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0008) {
     const QStringList expectedItems = QStringList() << "/proj_test_0008/abcdefgh"
                                                     << "/proj_test_0008/ABCDEFGH"
                                                     << "/proj_test_0008/AbCdEfGh";
-    GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, "/proj_test_0008", expectedItems);
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, "/proj_test_0008", expectedItems);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1042,32 +1043,28 @@ GUI_TEST_CLASS_DEFINITION(import_test_0001) {
 
     GTLogTracer lt;
 
-    const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString newFolderName = "import_test_0001";
-    const QString newFolderPath = parentFolderPath + U2ObjectDbi::PATH_SEP + newFolderName;
-    const QString fileDocName = "human_T1.fa";
-    const QString fileObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
-    const QString importedObjectPath = newFolderPath + U2ObjectDbi::PATH_SEP + fileObjectName;
+    QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
+    QString newFolderName = "import_test_0001_" + QString::number(QDateTime::currentMSecsSinceEpoch());
+    QString newFolderPath = parentFolderPath + U2ObjectDbi::PATH_SEP + newFolderName;
+    QString fileDocName = "human_T1.fa";
+    QString fileObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
+    QString importedObjectPath = newFolderPath + U2ObjectDbi::PATH_SEP + fileObjectName;
+
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, newFolderName);
-    const QModelIndex newFolderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, newFolderPath);
+    QModelIndex newFolderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, newFolderPath);
 
-    GTFileDialog::openFile(os, dataDir + "/samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, fileDocName);
-    const QModelIndex objectDocIndex = GTUtilsProjectTreeView::findIndex(os, fileObjectName, fileDocIndex);
+    QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, fileDocName);
+    QModelIndex objectDocIndex = GTUtilsProjectTreeView::findIndex(os, fileObjectName, fileDocIndex);
 
     GTUtilsProjectTreeView::dragAndDrop(os, objectDocIndex, newFolderItemIndex);
-    GTGlobals::sleep(200);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Wait until project updater shows the item (something about 10 seconds)
-    GTGlobals::sleep(20000);
-
-    const QModelIndex importedObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, importedObjectPath);
-    CHECK_SET_ERR(importedObjectItemIndex.isValid(), "Can't find the imported object");
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, importedObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1085,7 +1082,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0002) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString newFolderName = "import_test_0002";
+    const QString newFolderName = "import_test_0002_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString newFolderPath = parentFolderPath + newFolderName;
     const QString fileDocName = "human_T1.fa";
     const QString fileObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
@@ -1099,29 +1096,17 @@ GUI_TEST_CLASS_DEFINITION(import_test_0002) {
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, newFolderName);
-    const QModelIndex newFolderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, newFolderPath);
-
-    const QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, fileDocName);
+    QModelIndex newFolderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, newFolderPath);
+    QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << fileDocName);
 
     GTUtilsProjectTreeView::dragAndDrop(os, fileDocIndex, newFolderItemIndex);
-    GTGlobals::sleep(200);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Wait until project updater shows the item (something about 10 seconds)
-    GTGlobals::sleep(20000);
-
-    const QModelIndex importedDocFolderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, importedDocFolderPath);
-    CHECK_SET_ERR(importedDocFolderItemIndex.isValid(), "Can't find the imported document's folder");
-
-    const QModelIndex importedObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, importedObjectPath);
-    CHECK_SET_ERR(importedObjectItemIndex.isValid(), "Can't find the imported object");
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, importedDocFolderPath);
+    QModelIndex importedObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, importedObjectPath);
 
     GTUtilsProjectTreeView::doubleClickItem(os, importedObjectItemIndex);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(200);
 
-    QWidget *sequenceView = GTWidget::findWidget(os, " " + fileObjectNameWidget);
-    CHECK_SET_ERR(NULL != sequenceView, "Sequence view wasn't opened");
+    GTUtilsMdi::checkWindowIsActive(os, " " + fileObjectNameWidget);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1142,7 +1127,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString folderName = "import_test_0003";
+    const QString folderName = "import_test_0003_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString folderPath = parentFolderPath + U2ObjectDbi::PATH_SEP + folderName;
     const QString fileDocName = "murine.gb";
     const QString sequenceObjectName = "NC_001363";
@@ -1152,31 +1137,28 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     const QString databaseSequenceObjectPath = folderPath + U2ObjectDbi::PATH_SEP + sequenceObjectName;
     const QString databaseAnnotationObjectPath = folderPath + U2ObjectDbi::PATH_SEP + annotationObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    const QModelIndex folderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, folderPath);
-    QModelIndex databaseSequenceObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
-
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, fileDocName);
-    const QModelIndex fileAnnotationObjectIndex = GTUtilsProjectTreeView::findIndex(os, annotationObjectName, fileDocIndex);
+
+    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, folderName);
+    QModelIndex folderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, folderPath);
+
+    QModelIndex databaseSequenceObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
+
+    QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << fileDocName);
+    QModelIndex fileAnnotationObjectIndex = GTUtilsProjectTreeView::findIndex(os, annotationObjectName, fileDocIndex);
 
     GTUtilsProjectTreeView::doubleClickItem(os, databaseSequenceObjectItemIndex);
-    GTGlobals::sleep(200);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *sequenceView = GTWidget::findWidget(os, " " + sequenceWidgetName);
-    CHECK_SET_ERR(NULL != sequenceView, "Sequence view wasn't opened");
+    GTWidget::findWidget(os, " " + sequenceWidgetName);
 
     GTUtilsProjectTreeView::dragAndDrop(os, fileAnnotationObjectIndex, folderItemIndex);
-    GTGlobals::sleep(200);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Wait until project updater shows the item (something about 10 seconds)
-    GTGlobals::sleep(10000);
-
     const QModelIndex databaseAnnotaionObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAnnotationObjectPath);
-    CHECK_SET_ERR(databaseAnnotaionObjectItemIndex.isValid(), "Can't find the imported annotation object");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
 
@@ -1189,10 +1171,9 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     databaseSequenceObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
 
     GTUtilsProjectTreeView::doubleClickItem(os, databaseSequenceObjectItemIndex);
-    GTGlobals::sleep(200);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    sequenceView = GTWidget::findWidget(os, " " + sequenceWidgetName);
+    GTWidget::findWidget(os, " " + sequenceWidgetName);
     annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
     QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, annotationTableName.arg(databaseDoc->getName()));
     CHECK_SET_ERR(annotationTable != nullptr, "Annotation table is NULL");
@@ -1222,13 +1203,17 @@ GUI_TEST_CLASS_DEFINITION(import_test_0004) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0004";
+    const QString dstFolderName = "import_test_0004_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "human_T1";
     const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
     const QString filePath = QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath();
     const QString sequenceObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
     const QString databaseSequenceObjectPath = resultFolderPath + U2ObjectDbi::PATH_SEP + sequenceObjectName;
+
+    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, dstFolderName);
 
     QList<ImportToDatabaseDialogFiller::Action> actions;
 
@@ -1240,22 +1225,14 @@ GUI_TEST_CLASS_DEFINITION(import_test_0004) {
     changeDestinationAction.insert(ImportToDatabaseDialogFiller::Action::ACTION_DATA__ITEM, filePath);
     changeDestinationAction.insert(ImportToDatabaseDialogFiller::Action::ACTION_DATA__DESTINATION_FOLDER, dstFolderPath);
     actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::EDIT_DESTINATION_FOLDER, changeDestinationAction);
-
     actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::IMPORT, QVariantMap());
-
     GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, actions));
-
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, dstFolderName);
-
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, parentFolderPath);
+    GTGlobals::sleep(30000);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(15000);
 
-    const QModelIndex sequenceObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
-    CHECK_SET_ERR(sequenceObjectIndex.isValid(), "Result item wasn't found");
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1277,7 +1254,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0005) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0005";
+    const QString dstFolderName = "import_test_0005_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "human_T1";
     const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
@@ -1302,10 +1279,8 @@ GUI_TEST_CLASS_DEFINITION(import_test_0005) {
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, dstFolderPath);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(15000);
 
-    const QModelIndex sequenceObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
-    CHECK_SET_ERR(sequenceObjectIndex.isValid(), "Result item wasn't found");
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1335,7 +1310,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0006) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0006";
+    const QString dstFolderName = "import_test_0006_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "seq1";
     const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
@@ -1367,11 +1342,8 @@ GUI_TEST_CLASS_DEFINITION(import_test_0006) {
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, dstFolderPath);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(15000);
 
-    const QModelIndex sequenceObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
-    CHECK_SET_ERR(sequenceObjectIndex.isValid(), "Result item wasn't found");
-
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
     const QModelIndex dstFolderIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, dstFolderPath);
 
     GTGlobals::FindOptions options;
@@ -1411,7 +1383,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0007) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0007";
+    const QString dstFolderName = "import_test_0007_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString importedTopLevelFolderName = "second";
     const QString importedTopLevelFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + importedTopLevelFolderName;
@@ -1443,14 +1415,13 @@ GUI_TEST_CLASS_DEFINITION(import_test_0007) {
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, dstFolderPath);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(15000);
 
-    GTUtilsSharedDatabaseDocument::ensureItemExists(os, databaseDoc, databaseSequenceObjectPath);
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, databaseSequenceObjectPath);
 
     const QStringList expectedItems = QStringList() << importedTopLevelFolderPath
                                                     << resultFolderPath
                                                     << databaseSequenceObjectPath;
-    GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1481,7 +1452,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0008) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0008";
+    const QString dstFolderName = "import_test_0008_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString innerFolderName = "second";
     const QString resultFirstFolderName = "seq1";
@@ -1517,13 +1488,9 @@ GUI_TEST_CLASS_DEFINITION(import_test_0008) {
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, dstFolderPath);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(15000);
 
-    const QModelIndex sequenceFirstObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceFirstObjectPath);
-    CHECK_SET_ERR(sequenceFirstObjectIndex.isValid(), "Result item wasn't found");
-
-    const QModelIndex sequenceSecondObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceSecondObjectPath);
-    CHECK_SET_ERR(sequenceSecondObjectIndex.isValid(), "Result item wasn't found");
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceFirstObjectPath);
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceSecondObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1554,7 +1521,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0009) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0009";
+    const QString dstFolderName = "import_test_0009_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFirstFolderName = "seq1";
     const QString resultSecondFolderName = "human_T1_cutted";
@@ -1589,13 +1556,9 @@ GUI_TEST_CLASS_DEFINITION(import_test_0009) {
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, dstFolderPath);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(15000);
 
-    const QModelIndex sequenceFirstObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceFirstObjectPath);
-    CHECK_SET_ERR(sequenceFirstObjectIndex.isValid(), "Result item wasn't found");
-
-    const QModelIndex sequenceSecondObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceSecondObjectPath);
-    CHECK_SET_ERR(sequenceSecondObjectIndex.isValid(), "Result item wasn't found");
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceFirstObjectPath);
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceSecondObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1619,7 +1582,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0010) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0010";
+    const QString dstFolderName = "import_test_0010_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString documentName = "human_T1.fa";
     const QString sequenceObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
@@ -1647,10 +1610,8 @@ GUI_TEST_CLASS_DEFINITION(import_test_0010) {
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, dstFolderPath);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(15000);
 
-    const QModelIndex sequenceObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
-    CHECK_SET_ERR(sequenceObjectIndex.isValid(), "Result item wasn't found");
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1677,7 +1638,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0011";
+    const QString dstFolderName = "import_test_0011_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString documentName = "murine.gb";
     const QString sequenceObjectName = "NC_001363";
@@ -1709,13 +1670,9 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, dstFolderPath);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(15000);
 
-    const QModelIndex sequenceObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
-    CHECK_SET_ERR(sequenceObjectIndex.isValid(), "Sequence item wasn't found");
-
-    const QModelIndex annotationTableObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAnnotationTableObjectPath);
-    CHECK_SET_ERR(annotationTableObjectIndex.isValid(), "Annotation table item wasn't found");
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAnnotationTableObjectPath);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
     QWidget *seqView = GTWidget::findWidget(os, " " + sequenceVisibleWidgetName);
@@ -1752,7 +1709,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0012) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0012";
+    const QString dstFolderName = "import_test_0012_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "multy_fa";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -1767,7 +1724,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0012) {
 
     const QStringList expectedItems = QStringList() << objectFolderPath
                                                     << databaseMalignmentObjectPath;
-    GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1800,7 +1757,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0013) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0013";
+    const QString dstFolderName = "import_test_0013_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "multy_fa";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -1822,7 +1779,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0013) {
     const QStringList expectedItems = QStringList() << objectFolderPath
                                                     << databaseSequenceObjectPath
                                                     << databaseAnnotationTableObjectPath;
-    GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
     QWidget *seqView = GTWidget::findWidget(os, " " + sequenceVisibleWidgetName);
@@ -1859,7 +1816,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0014) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0014";
+    const QString dstFolderName = "import_test_0014_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "multy_fa";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -1875,7 +1832,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0014) {
     const QStringList expectedItems = QStringList() << objectFolderPath
                                                     << databaseSequenceFirstObjectPath
                                                     << databaseSequenceSecondObjectPath;
-    GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1900,7 +1857,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0015) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0015";
+    const QString dstFolderName = "import_test_0015_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "scerevisiae";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -1917,7 +1874,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0015) {
 
     const QStringList expectedItems = QStringList() << objectFolderPath
                                                     << databaseAssemblyObjectPath;
-    GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseAssemblyObjectPath);
 
@@ -1949,7 +1906,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0016) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0016";
+    const QString dstFolderName = "import_test_0016_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "scerevisiae";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -1966,7 +1923,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0016) {
 
     const QStringList expectedItems = QStringList() << objectFolderPath
                                                     << databaseAssemblyObjectPath;
-    GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseAssemblyObjectPath);
 
@@ -2003,7 +1960,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0017) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0017";
+    const QString dstFolderName = "import_test_0017_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "ace_test_2";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -2031,7 +1988,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0017) {
                                                     << databaseAssemblySecondObjectPath
                                                     << databaseSequenceFirstObjectPath
                                                     << databaseSequenceSecondObjectPath;
-    GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseAssemblyFirstObjectPath);
 
@@ -2076,7 +2033,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0018) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0018";
+    const QString dstFolderName = "import_test_0018_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "scerevisiae.bam";
     const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
@@ -2105,10 +2062,8 @@ GUI_TEST_CLASS_DEFINITION(import_test_0018) {
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, parentFolderPath);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(10000);
 
-    const QModelIndex assemblyObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAssemblyObjectPath);
-    CHECK_SET_ERR(assemblyObjectIndex.isValid(), "Result item wasn't found");
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAssemblyObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2135,7 +2090,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0019) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0019";
+    const QString dstFolderName = "import_test_0019_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "1.bam";
     const QString resultFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + resultFolderName;
@@ -2165,10 +2120,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0019) {
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, parentFolderPath);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(10000);
-
-    const QModelIndex assemblyObjectIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAssemblyObjectPath);
-    CHECK_SET_ERR(assemblyObjectIndex.isValid(), "Result item wasn't found");
+    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAssemblyObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2193,7 +2145,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0020) {
     GTLogTracer lt;
 
     const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString dstFolderName = "import_test_0020";
+    const QString dstFolderName = "import_test_0020_" + QString::number(QDateTime::currentMSecsSinceEpoch());
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString objectFolderName = "ace_test_2";
     const QString objectFolderPath = dstFolderPath + U2ObjectDbi::ROOT_FOLDER + objectFolderName;
@@ -2213,7 +2165,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0020) {
     const QStringList expectedItems = QStringList() << objectFolderPath
                                                     << databaseMalignmentFirstObjectPath
                                                     << databaseMalignmentSecondObjectPath;
-    GTUtilsSharedDatabaseDocument::ensureThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseMalignmentFirstObjectPath);
 
@@ -2257,7 +2209,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0001) {
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
     QWidget *seqView = GTWidget::findWidget(os, sequenceVisibleWidgetName);
-    CHECK_SET_ERR(NULL != seqView, "View wasn't opened");
+    CHECK_SET_ERR(seqView != nullptr, "View wasn't opened");
 
     GTUtilsAnnotationsTreeView::getTreeWidget(os);
 
