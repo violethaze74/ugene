@@ -65,6 +65,7 @@ Document *GTUtilsSharedDatabaseDocument::connectToTestDatabase(HI::GUITestOpStat
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTThread::waitForMainThread();
+    GTUtilsDialog::waitAllFinished(os);
 
     CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), NULL);
 

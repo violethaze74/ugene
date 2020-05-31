@@ -8088,7 +8088,7 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os, workflowOutputDir.absolutePath()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Workflow Designer...");
-    GTUtilsMdi::waitWindowOpened(os, "Workflow Designer");
+    GTUtilsMdi::checkWindowIsActive(os, "Workflow Designer");
 
     //2. Select "Align sequences with MUSCLE"
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");

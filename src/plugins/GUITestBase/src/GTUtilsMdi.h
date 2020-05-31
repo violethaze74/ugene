@@ -31,6 +31,7 @@
 #include "primitives/GTMenuBar.h"
 
 namespace U2 {
+class MWMDIWindow;
 using namespace HI;
 class GTUtilsMdi {
 public:
@@ -45,20 +46,26 @@ public:
 
     static void checkNoActiveObjectViewWindowIsOpened(HI::GUITestOpStatus &os, const QString &viewId);
 
+    /** Checks if window with a given windowTitlePart is active or fails otherwise. Waits for the window to be active up to default timeout. */
+    static void checkWindowIsActive(HI::GUITestOpStatus &os, const QString &windowTitlePart);
+
     /** Returns list of all object view windows of the given type. */
     static QList<QWidget *> getAllObjectViewWindows(const QString &viewId);
 
     static QString activeWindowTitle(HI::GUITestOpStatus &os);
-    static void activateWindow(HI::GUITestOpStatus &os, const QString &windowName);
 
-    // finds a window with a given window title in MDIManager windows
-    // fails if windowName is empty or because of FindOptions settings
-    static QWidget *findWindow(HI::GUITestOpStatus &os, const QString &windowName, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
+    /** Activates window with the given title substring. Fails if no such window found. */
+    static void activateWindow(HI::GUITestOpStatus &os, const QString &windowTitlePart);
+
+    /**
+     * Finds a window with a given window title.
+     * Fails if windowName is empty or because of FindOptions settings.
+     */
+    static QWidget *findWindow(HI::GUITestOpStatus &os, const QString &windowTitle, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
 
     static void closeActiveWindow(HI::GUITestOpStatus &os);
     static void closeWindow(HI::GUITestOpStatus &os, const QString &windowName, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
     static void closeAllWindows(HI::GUITestOpStatus &os);
-    static void waitWindowOpened(HI::GUITestOpStatus &os, const QString &windowNamePart, qint64 timeout = 180000);
 
     static bool isTabbedLayout(HI::GUITestOpStatus &os);
 

@@ -105,9 +105,8 @@ void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus &os) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Workflow Designer...");
-    GTUtilsMdi::waitWindowOpened(os, "Workflow Designer");
-    GTUtilsDialog::removeRunnable(filler);
     checkWorkflowDesignerWindowIsActive(os);
+    GTUtilsDialog::removeRunnable(filler);
 }
 #undef GT_METHOD_NAME
 
@@ -310,6 +309,7 @@ void GTUtilsWorkflowDesigner::selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidg
             : CustomScenario(), algorithm(algorithm) {
         }
         void run(HI::GUITestOpStatus &os) {
+            Q_UNUSED(os);
             algorithm->treeWidget()->scrollToItem(algorithm, QAbstractItemView::PositionAtCenter);
         }
         QTreeWidgetItem *algorithm;
@@ -348,6 +348,7 @@ void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetI
             : CustomScenario(), paletteTree(paletteTree), sample(sample) {
         }
         void run(HI::GUITestOpStatus &os) {
+            Q_UNUSED(os);
             paletteTree->scrollToItem(sample);
         }
         QTreeWidget *paletteTree;

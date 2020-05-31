@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <GTUtilsMdi.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
@@ -445,6 +446,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //8. Choose "All annotations" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
+    GTUtilsMdi::checkWindowIsActive(os, "begin-end");
     GTComboBox::setCurrentIndex(os, annsComboBox, 0);
 
     //9. Click "Export product(s)".
@@ -457,6 +459,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //10. Choose "None" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
+    GTUtilsMdi::checkWindowIsActive(os, "begin-end");
     GTComboBox::setCurrentIndex(os, annsComboBox, 2);
 
     //11. Click "Export product(s)".

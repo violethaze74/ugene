@@ -59,9 +59,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //    Press "Create workflow button" button on start page
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTWidget::click(os, GTWidget::findWidget(os, "createWorkflowButton"));
-    GTGlobals::sleep(500);
     //    Expected state: WD opened.
-    GTUtilsMdi::waitWindowOpened(os, "Workflow Designer - New workflow", 20000);
+    GTUtilsMdi::checkWindowIsActive(os, "Workflow Designer - New workflow");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {

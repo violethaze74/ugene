@@ -102,36 +102,41 @@ void GTUtilsMdi::click(HI::GUITestOpStatus &os, GTGlobals::WindowAction action) 
 
 #define GT_METHOD_NAME "findWindow"
 QWidget *GTUtilsMdi::findWindow(HI::GUITestOpStatus &os, const QString &windowName, const GTGlobals::FindOptions &options) {
-    Q_UNUSED(os);
-    GT_CHECK_RESULT(windowName.isEmpty() == false, "windowname is empty", NULL);
+    GT_CHECK_RESULT(!windowName.isEmpty(), "windowname is empty", NULL);
 
-    MainWindow *mw = AppContext::getMainWindow();
-    GT_CHECK_RESULT(mw != NULL, "MainWindow == NULL", NULL);
+    MainWindow *mainWindow = AppContext::getMainWindow();
+    GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == nullptr", NULL);
 
-    QList<MWMDIWindow *> mdiWindows = mw->getMDIManager()->getWindows();
-    foreach (MWMDIWindow *w, mdiWindows) {
-        QString mdiTitle = w->windowTitle();
-        switch (options.matchPolicy) {
-        case Qt::MatchExactly:
-            if (mdiTitle == windowName) {
-                return w;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+
+        QList<MWMDIWindow *> mdiWindows = mainWindow->getMDIManager()->getWindows();
+        foreach (MWMDIWindow *window, mdiWindows) {
+            QString mdiTitle = window->windowTitle();
+            switch (options.matchPolicy) {
+            case Qt::MatchExactly:
+                if (mdiTitle == windowName) {
+                    GTThread::waitForMainThread();
+                    return window;
+                }
+                break;
+            case Qt::MatchContains:
+                if (mdiTitle.contains(windowName, Qt::CaseInsensitive)) {
+                    GTThread::waitForMainThread();
+                    return window;
+                }
+                break;
+            default:
+                GT_CHECK_RESULT(false, "Not implemented", nullptr);
             }
+        }
+        if (!options.failIfNotFound) {
             break;
-        case Qt::MatchContains:
-            if (mdiTitle.contains(windowName)) {
-                return w;
-            }
-            break;
-        default:
-            GT_CHECK_RESULT(false, "Not implemented", NULL);
         }
     }
 
-    if (options.failIfNotFound) {
-        GT_CHECK_RESULT(false, "Widget " + windowName + " not found", NULL);
-    }
-
-    return NULL;
+    GT_CHECK_RESULT(!options.failIfNotFound, "Widget " + windowName + " not found", nullptr);
+    return nullptr;
 }
 #undef GT_METHOD_NAME
 
@@ -204,28 +209,6 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
         GTUtilsDialog::removeRunnable(filler);
     }
 #endif
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "waitWindowOpened"
-void GTUtilsMdi::waitWindowOpened(HI::GUITestOpStatus &os, const QString &windowNamePart, qint64 timeout) {
-    MainWindow *mainWindow = AppContext::getMainWindow();
-    GT_CHECK(mainWindow != nullptr, "MainWindow == NULL");
-
-    MWMDIManager *mdiManager = mainWindow->getMDIManager();
-    GT_CHECK(mdiManager != nullptr, "MWMDIManager == NULL");
-
-    bool isWindowFound = false;
-    for (int time = 0; time < timeout && !isWindowFound; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        foreach (MWMDIWindow *window, mdiManager->getWindows()) {
-            isWindowFound = window->windowTitle().contains(windowNamePart, Qt::CaseInsensitive);
-            if (isWindowFound) {
-                break;
-            }
-        }
-    }
-    GT_CHECK_RESULT(isWindowFound, QString("Cannot find MDI window with part of name '%1'").arg(windowNamePart), );
 }
 #undef GT_METHOD_NAME
 
@@ -310,19 +293,38 @@ QString GTUtilsMdi::activeWindowTitle(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "activateWindow"
-void GTUtilsMdi::activateWindow(HI::GUITestOpStatus &os, const QString &windowName) {
-    MainWindow *mw = AppContext::getMainWindow();
-    GT_CHECK(mw != NULL, "MainWindow == NULL");
+void GTUtilsMdi::activateWindow(HI::GUITestOpStatus &os, const QString &windowTitlePart) {
+    MainWindow *mainWindow = AppContext::getMainWindow();
 
-    CHECK(!(activeWindowTitle(os) == windowName), );
+    GT_CHECK(mainWindow != nullptr, "MainWindow == nullptr");
+    CHECK(!activeWindowTitle(os).contains(windowTitlePart, Qt::CaseInsensitive), );
 
     GTGlobals::FindOptions options;
     options.matchPolicy = Qt::MatchContains;
-    MWMDIWindow *window = qobject_cast<MWMDIWindow *>(findWindow(os, windowName, options));
-    GT_CHECK(window != NULL, "window " + windowName + " not found");
+    QWidget *window = findWindow(os, windowTitlePart, options);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << windowName, GTGlobals::UseMouse, Qt::MatchContains);
-    GTGlobals::sleep(500);
+    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << window->windowTitle(), GTGlobals::UseMouse, Qt::MatchContains);
+    GTThread::waitForMainThread();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkWindowIsActive"
+void GTUtilsMdi::checkWindowIsActive(HI::GUITestOpStatus &os, const QString &windowTitlePart) {
+    GT_CHECK(!windowTitlePart.isEmpty(), "windowTitlePart is empty");
+
+    MainWindow *mainWindow = AppContext::getMainWindow();
+    GT_CHECK(mainWindow != nullptr, "MainWindow == nullptr");
+
+    QWidget *window = nullptr;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && window == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        QWidget *activeWindow = mainWindow->getMDIManager()->getActiveWindow();
+        if (activeWindow->windowTitle().contains(windowTitlePart, Qt::CaseInsensitive)) {
+            window = activeWindow;
+        }
+    }
+    GT_CHECK(window != nullptr, "Window with title part '" + windowTitlePart + "' is not found");
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

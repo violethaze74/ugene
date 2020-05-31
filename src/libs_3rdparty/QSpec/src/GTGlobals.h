@@ -34,7 +34,7 @@
  *  - wait for a popup to show
  *  - wait for an element to be present.
  */
-#define GT_OP_WAIT_MILLIS 10000
+#define GT_OP_WAIT_MILLIS 30000
 
 /**
  * Default check time to check that WAIT op is completed.

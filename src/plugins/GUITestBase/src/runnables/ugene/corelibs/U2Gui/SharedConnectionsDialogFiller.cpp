@@ -188,7 +188,7 @@ void SharedConnectionsDialogFiller::commonScenario() {
         case Action::CONNECT:
             establishConnection(os, action);
             CHECK_OP(os, );
-            if (Action::OK == action.expectedResult) {
+            if (action.expectedResult == Action::OK) {
                 connected = true;
             }
             break;
