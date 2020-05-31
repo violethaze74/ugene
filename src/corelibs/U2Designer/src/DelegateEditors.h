@@ -407,7 +407,7 @@ public slots:
     void setValue(const QVariant &value);
 
 private slots:
-    void sl_comboActivated(int itemId);
+    void sl_comboCurrentIndexChanged(int itemId);
 
 signals:
     void si_finished();

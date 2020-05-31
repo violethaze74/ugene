@@ -39,6 +39,8 @@
 
 #include "PropertyWidget.h"
 
+#include <QApplication>
+
 namespace U2 {
 
 DelegateEditor::DelegateEditor(const DelegateEditor &other)
@@ -618,7 +620,7 @@ ScriptSelectionWidget::ScriptSelectionWidget(QWidget *parent)
     combobox = new QComboBox;
     combobox->addItem(NO_SCRIPT_ITEM_STR.first);
     combobox->addItem(USER_SCRIPT_ITEM_STR.first);
-    connect(combobox, SIGNAL(activated(int)), SLOT(sl_comboActivated(int)));
+    connect(combobox, SIGNAL(currentIndexChanged(int)), SLOT(sl_comboCurrentIndexChanged(int)));
     addMainWidget(combobox);
 }
 
@@ -636,7 +638,7 @@ QVariant ScriptSelectionWidget::value() {
     return combobox->itemData(USER_SCRIPT_ITEM_ID, ConfigurationEditor::ItemValueRole);
 }
 
-void ScriptSelectionWidget::sl_comboActivated(int itemId) {
+void ScriptSelectionWidget::sl_comboCurrentIndexChanged(int itemId) {
     switch (itemId) {
     case NO_SCRIPT_ITEM_ID: {
         combobox->setItemData(USER_SCRIPT_ITEM_ID, "", ConfigurationEditor::ItemValueRole);
@@ -644,10 +646,10 @@ void ScriptSelectionWidget::sl_comboActivated(int itemId) {
     }
     case USER_SCRIPT_ITEM_ID: {
         AttributeScript attrScript = combobox->property(SCRIPT_PROPERTY.toLatin1().constData()).value<AttributeScript>();
-        QObjectScopedPointer<ScriptEditorDialog> dlg = new ScriptEditorDialog(combobox, AttributeScriptDelegate::createScriptHeader(attrScript));
+        QObjectScopedPointer<ScriptEditorDialog> dlg = new ScriptEditorDialog(QApplication::activeWindow(), AttributeScriptDelegate::createScriptHeader(attrScript));
         dlg->setScriptText(attrScript.getScriptText());
 
-        const int rc = dlg->exec();
+        int rc = dlg->exec();
         CHECK(!dlg.isNull(), );
         if (rc != QDialog::Accepted) {
             combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);

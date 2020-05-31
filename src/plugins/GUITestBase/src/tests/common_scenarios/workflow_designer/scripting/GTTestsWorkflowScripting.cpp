@@ -28,6 +28,7 @@
 #include <primitives/GTTableView.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
+#include <src/GTUtilsSequenceView.h>
 
 #include <QGraphicsItem>
 #include <QProcess>
@@ -88,12 +89,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "wd_scripting_test_0001"));
     GTMouseDriver::click();
-    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "#$%not a script asdasd321 123", "Script syntax check failed!"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Edit script of the element...",
                               GTGlobals::UseMouse);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -107,6 +108,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show scripting options"));
     GTWidget::click(os, GTAction::button(os, GTAction::findActionByText(os, "Scripting mode")));
+    GTUtilsDialog::waitAllFinished(os);
 
     //  2. Select this worker, select menu item "user script" from "output file" parameter.
     //  Expected state: Script editor dialog appears.
@@ -118,43 +120,43 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", "#$%not a script asdasd321 123", true, "Script syntax check failed! Line: 1, error: Expected `end of file'"));
     GTUtilsWorkflowDesigner::setParameterScripting(os, "output file", "user script");
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTGlobals::sleep(500);
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
     WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
-    GTGlobals::sleep(2000);
+
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write FASTA");
     WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::getWorker(os, "Write FASTA");
+
     GTUtilsWorkflowDesigner::connect(os, reader, writer);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show scripting options"));
     GTWidget::click(os, GTAction::button(os, GTAction::findActionByText(os, "Scripting mode")));
+    GTUtilsDialog::waitAllFinished(os);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write FASTA"));
     GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", "url_out = url + \".result.fa\";"));
     GTUtilsWorkflowDesigner::setParameterScripting(os, "Output file", "user script", true);
-    GTGlobals::sleep(3000);
+    GTUtilsDialog::waitAllFinished(os);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
 
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
-    GTGlobals::sleep(200);
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa.result.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTGlobals::sleep(500);
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "workflow_scripting_test_0004"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -164,8 +166,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "workflow_scripting_test_0004"));
     GTMouseDriver::click();
 
-    QString scriptText = "if(size(in_seq) >= 10000) {out_seq = in_seq;}";
-    GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", scriptText));
+    GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", "if(size(in_seq) >= 10000) {out_seq = in_seq;}"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Edit script of the element...",
                               GTGlobals::UseMouse);
@@ -175,17 +176,23 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
     WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::connect(os, reader, script);
+
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Sequence", true);
     WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence");
-    GTUtilsWorkflowDesigner::connect(os, reader, script);
     GTUtilsWorkflowDesigner::connect(os, script, writer);
 
     QString workflowPath = testDir + "_common_data/scenarios/sandbox/workflow_scripting_test_0004.uwl";
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, workflowPath, "workflow_scripting_test_0004"));
     GTWidget::click(os, GTAction::button(os, "Save workflow"));
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, workflowPath));
     GTWidget::click(os, GTAction::button(os, "Load workflow"));
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     WorkflowProcessItem *newScript = GTUtilsWorkflowDesigner::getWorker(os, "workflow_scripting_test_0004");
     QString newText = newScript->getProcess()->getScript()->getScriptText();
     CHECK_SET_ERR(text == newText, "Different script text");

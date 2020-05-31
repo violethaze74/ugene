@@ -24,6 +24,7 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTWidget.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QDialogButtonBox>
@@ -50,33 +51,33 @@ void CreateElementWithScriptDialogFiller::commonScenario() {
 #define GT_CLASS_NAME "ScriptEditorDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ScriptEditorDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *scriptPathEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "scriptPathEdit", dialog));
-    GT_CHECK(scriptPathEdit, "scriptPath lineEdit not found");
+    GT_CHECK(scriptPathEdit != nullptr, "scriptPath lineEdit not found");
     GTLineEdit::setText(os, scriptPathEdit, url);
 
-    QTextEdit *edit = NULL;
-
+    QTextEdit *edit = nullptr;
     foreach (QTextEdit *textEdit, dialog->findChildren<QTextEdit *>()) {
-        if (!textEdit->isReadOnly())
+        if (!textEdit->isReadOnly()) {
             edit = textEdit;
+        }
     }
     GT_CHECK(edit, "textEdit not found");
     GTTextEdit::setText(os, edit, text);
 
-    GTGlobals::sleep(3000);
     if (checkSyntax) {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, checkSyntaxResult));
         GTWidget::click(os, GTWidget::findWidget(os, "checkButton", dialog));
-        GTGlobals::sleep(1000);
+        GTUtilsDialog::waitAllFinished(os);
     }
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
+
     QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != NULL, "ok button is NULL");
+    GT_CHECK(button != nullptr, "Ok button is NULL");
+    GT_CHECK(button->isEnabled(), "Ok button is not enabled");
     GTWidget::click(os, button);
 }
 #undef GT_METHOD_NAME
@@ -88,13 +89,13 @@ void ScriptEditorDialogSyntaxChecker::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QTextEdit *edit = NULL;
-
+    QTextEdit *edit = nullptr;
     foreach (QTextEdit *textEdit, dialog->findChildren<QTextEdit *>()) {
-        if (!textEdit->isReadOnly())
+        if (!textEdit->isReadOnly()) {
             edit = textEdit;
+        }
     }
-    GT_CHECK(edit, "textEdit not found");
+    GT_CHECK(edit != nullptr, "textEdit not found");
     GTTextEdit::setText(os, edit, text);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, message));
@@ -103,9 +104,10 @@ void ScriptEditorDialogSyntaxChecker::commonScenario() {
     GTGlobals::sleep(1000);
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != NULL, "ok button is NULL");
+    GT_CHECK(button != nullptr, "ok button is NULL");
+    GT_CHECK(button->isEnabled(), "Ok button is not enabled");
     GTWidget::click(os, button);
 }
 #undef GT_METHOD_NAME

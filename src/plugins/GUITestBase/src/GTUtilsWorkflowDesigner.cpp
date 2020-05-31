@@ -302,11 +302,19 @@ WorkflowProcessItem *GTUtilsWorkflowDesigner::addElementByUsingNameFilter(HI::GU
 
 #define GT_METHOD_NAME "selectAlgorithm"
 void GTUtilsWorkflowDesigner::selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem *algorithm) {
-    GT_CHECK(algorithm != NULL, "algorithm is NULL");
-    GTGlobals::sleep(500);
+    GT_CHECK(algorithm != nullptr, "algorithm is nullptr");
 
-    algorithm->treeWidget()->scrollToItem(algorithm, QAbstractItemView::PositionAtCenter);
-    GTGlobals::sleep(200);
+    class MainThreadAction : public CustomScenario {
+    public:
+        MainThreadAction(QTreeWidgetItem *algorithm)
+            : CustomScenario(), algorithm(algorithm) {
+        }
+        void run(HI::GUITestOpStatus &os) {
+            algorithm->treeWidget()->scrollToItem(algorithm, QAbstractItemView::PositionAtCenter);
+        }
+        QTreeWidgetItem *algorithm;
+    };
+    GTThread::runInMainThread(os, new MainThreadAction(algorithm));
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, algorithm));
 }
 #undef GT_METHOD_NAME
@@ -330,10 +338,23 @@ void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &
 
 #define GT_METHOD_NAME "selectSample"
 void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget const *const parentWidget) {
-    GT_CHECK(sample != nullptr, "sample is NULL");
+    GT_CHECK(sample != nullptr, "sample is nullptr");
     QTreeWidget *paletteTree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples", parentWidget));
-    paletteTree->scrollToItem(sample);
-    GTThread::waitForMainThread();
+    GT_CHECK(paletteTree != nullptr, "paletteTree is nullptr");
+
+    class MainThreadAction : public CustomScenario {
+    public:
+        MainThreadAction(QTreeWidget *paletteTree, QTreeWidgetItem *sample)
+            : CustomScenario(), paletteTree(paletteTree), sample(sample) {
+        }
+        void run(HI::GUITestOpStatus &os) {
+            paletteTree->scrollToItem(sample);
+        }
+        QTreeWidget *paletteTree;
+        QTreeWidgetItem *sample;
+    };
+    GTThread::runInMainThread(os, new MainThreadAction(paletteTree, sample));
+
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, sample));
     GTMouseDriver::doubleClick();
     GTThread::waitForMainThread();
@@ -571,23 +592,21 @@ WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os,
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         QList<QGraphicsItem *> items = sceneView->items();
         foreach (QGraphicsItem *item, items) {
-            QGraphicsObject *itObj = item->toGraphicsObject();
-            QGraphicsTextItem *textItemO = qobject_cast<QGraphicsTextItem *>(itObj);
-            if (textItemO) {
-                QString text = textItemO->toPlainText();
-                int num = text.indexOf('\n');
-                if (num == -1) {
+            QGraphicsObject *graphicsObject = item->toGraphicsObject();
+            QGraphicsTextItem *graphicsTextItem = qobject_cast<QGraphicsTextItem *>(graphicsObject);
+            if (graphicsTextItem != nullptr) {
+                QString text = graphicsTextItem->toPlainText();
+                int lineSeparatorIndex = text.indexOf('\n');
+                if (lineSeparatorIndex == -1) {
                     continue;
                 }
-                text = text.left(num);
+                text = text.left(lineSeparatorIndex);
                 if (text == itemName) {
-                    if (qgraphicsitem_cast<WorkflowProcessItem *>(item->parentItem()->parentItem())) {
-                        WorkflowProcessItem *result = qgraphicsitem_cast<WorkflowProcessItem *>(item->parentItem()->parentItem());
-                        if (result != nullptr) {
-                            return result;
-                        }
-                        break;
+                    WorkflowProcessItem *result = qgraphicsitem_cast<WorkflowProcessItem *>(item->parentItem()->parentItem());
+                    if (result != nullptr) {
+                        return result;
                     }
+                    break;
                 }
             }
         }
@@ -595,7 +614,7 @@ WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os,
             break;
         }
     }
-    GT_CHECK_RESULT(!options.failIfNotFound, "Item '" + itemName + "' not found at scene", NULL);
+    GT_CHECK_RESULT(!options.failIfNotFound, "Item '" + itemName + "' is not found", NULL);
     return nullptr;
 }
 #undef GT_METHOD_NAME
@@ -916,7 +935,6 @@ QWidget *GTUtilsWorkflowDesigner::getDatasetsListWidget(GUITestOpStatus &os) {
 QWidget *GTUtilsWorkflowDesigner::getCurrentDatasetWidget(GUITestOpStatus &os) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QTabWidget *datasetsTabWidget = GTWidget::findExactWidget<QTabWidget *>(os, "DatasetsTabWidget", wdWindow);
-    GT_CHECK_RESULT(datasetsTabWidget, "DatasetsTabWidget not found", nullptr);
     return datasetsTabWidget->currentWidget();
 }
 #undef GT_METHOD_NAME
@@ -1476,22 +1494,36 @@ void GTUtilsWorkflowDesigner::setParameterScripting(HI::GUITestOpStatus &os, QSt
 
     //FIND CELL
     QAbstractItemModel *model = table->model();
-    int iMax = model->rowCount();
     int row = -1;
-    for (int i = 0; i < iMax; i++) {
+    for (int i = 0; i < model->rowCount(); i++) {
         QString s = model->data(model->index(i, 0)).toString();
-        if (equalStrings(s, parameter, exactMatch))
+        if (equalStrings(s, parameter, exactMatch)) {
             row = i;
+        }
     }
     GT_CHECK(row != -1, "parameter not found");
-    table->scrollTo(model->index(row, 1));
+
+    class MainThreadAction : public CustomScenario {
+    public:
+        MainThreadAction(QTableView *table, int row)
+            : CustomScenario(), table(table), row(row) {
+        }
+        void run(HI::GUITestOpStatus &os) {
+            Q_UNUSED(os);
+            QAbstractItemModel *model = table->model();
+            table->scrollTo(model->index(row, 1));
+        }
+        QTableView *table;
+        int row;
+    };
+    GTThread::runInMainThread(os, new MainThreadAction(table, row));
+
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 2, row));
     GTMouseDriver::click();
-    GTGlobals::sleep(500);
 
     //SET VALUE
     QComboBox *box = qobject_cast<QComboBox *>(table->findChild<QComboBox *>());
-    GT_CHECK(box, "QComboBox not found. Scripting might be unavaluable for this parameter");
+    GT_CHECK(box != nullptr, "QComboBox not found. Scripting might be unavaluable for this parameter");
     GTComboBox::setIndexWithText(os, box, scriptMode, false);
 }
 #undef GT_METHOD_NAME
