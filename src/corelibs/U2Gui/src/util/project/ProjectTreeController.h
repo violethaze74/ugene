@@ -111,6 +111,7 @@ signals:
 private:
     // QObject
     bool eventFilter(QObject *o, QEvent *e);
+    bool getUserConfirmationForRemoval(const QList<Document *> &selectedDocs, const QList<Folder> &selectedFolders, const QList<GObject *> &selectedObjects);
 
     void setupActions();
     void connectDocument(Document *doc);

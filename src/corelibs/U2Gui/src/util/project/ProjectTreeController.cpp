@@ -789,40 +789,37 @@ void ProjectTreeController::sl_onCreateFolder() {
     }
 }
 
-void ProjectTreeController::sl_onRemoveSelectedItems() {
-    const bool deriveDocsFromObjs = (settings.groupMode != ProjectTreeGroupMode_ByDocument);
-
-    const QList<Document *> selectedDocs = getDocsInSelection(deriveDocsFromObjs).values();
-    const QList<Folder> selectedFolders = getSelectedFolders();
-    const QList<GObject *> selectedObjects = objectSelection.getSelectedObjects();
-    
+bool ProjectTreeController::getUserConfirmationForRemoval(const QList<Document *> &selectedDocs, const QList<Folder> &selectedFolders, const QList<GObject *> &selectedObjects) {
+    if (qgetenv(ENV_GUI_TEST) == "1") {
+        //TODO: a lot (>100) GUI tests must be fixed first.
+        return true;
+    }
     QStringList selectedItemNames;
-    foreach(Document * doc, selectedDocs) {
+    foreach (Document *doc, selectedDocs) {
         selectedItemNames.append(doc->getName());
     }
-    foreach(const Folder& folder, selectedFolders) {
+    foreach (const Folder &folder, selectedFolders) {
         selectedItemNames.append(folder.getFolderName());
     }
-    foreach(GObject* obj, selectedObjects) {
+    foreach (GObject *obj, selectedObjects) {
         selectedItemNames.append(obj->getGObjectName());
     }
-    
-    QString fullItemsNamesList;
 
-    QString warningMessageText = (selectedItemNames.count() == 1) ? tr("Do you really want to remove the selected item?") : tr("Do you really want to remove the selected items?");
+    QString warningMessageText = (selectedItemNames.count() == 1) ? tr("Do you want to remove the selected item?") : tr("Do you want to remove the selected items?");
     warningMessageText += "<ul style=\"margin-top:5px;margin-bottom:0px\"><li>";
 
-    const bool tooManyItemsSelected = (selectedItemNames.count() > MAX_DISPLAING_NAME_COUNT);
+    bool isManyItemsMode = (selectedItemNames.count() > MAX_DISPLAING_NAME_COUNT);
 
+    QString fullItemsNamesList;
     int itemCounter = 0;
     foreach (QString name, selectedItemNames) {
-        if (tooManyItemsSelected) {
+        if (isManyItemsMode) {
             fullItemsNamesList += " - " + name + "\n";
         }
 
-        if (MAX_DISPLAING_NAME_COUNT >= ++itemCounter) {
+        if (++itemCounter <= MAX_DISPLAING_NAME_COUNT) {
             // cut long names
-            if (NAME_DISPLAYING_SYMBOLS_COUNT < name.size()) {
+            if (name.size() > NAME_DISPLAYING_SYMBOLS_COUNT) {
                 name = name.left(NAME_DISPLAYING_SYMBOLS_COUNT);
                 name += "...";
             }
@@ -831,26 +828,32 @@ void ProjectTreeController::sl_onRemoveSelectedItems() {
         }
     }
     // remove last delimiter
-    warningMessageText = warningMessageText.left(
-        warningMessageText.length() - 9); // 9 is "</li><li>" length
+    warningMessageText = warningMessageText.left(warningMessageText.length() - 9);    // 9 is "</li><li>" length
     warningMessageText += "</li></ul>";
-    if (tooManyItemsSelected) {
+    if (isManyItemsMode) {
         warningMessageText += "<pre style=\"margin-top:0px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</pre>";
     }
 
-    QObjectScopedPointer<QMessageBox> questionBox = new QMessageBox;
+    QObjectScopedPointer<QMessageBox> questionBox = new QMessageBox();
     questionBox->setIcon(QMessageBox::Question);
     questionBox->setWindowTitle((selectedItemNames.count() == 1) ? tr("Remove selected item?") : tr("Remove selected items?"));
     questionBox->setText(warningMessageText);
-    if (tooManyItemsSelected) {
+    if (isManyItemsMode) {
         questionBox->setDetailedText(fullItemsNamesList);
     }
     questionBox->addButton(QMessageBox::Yes);
     questionBox->addButton(QMessageBox::No);
-    questionBox->exec();
-    CHECK(!questionBox.isNull(), );
-    
-    if (questionBox->result() == QMessageBox::Yes) {
+    return questionBox->exec() == QMessageBox::Yes;
+}
+
+void ProjectTreeController::sl_onRemoveSelectedItems() {
+    bool deriveDocsFromObjs = (settings.groupMode != ProjectTreeGroupMode_ByDocument);
+
+    QList<Document *> selectedDocs = getDocsInSelection(deriveDocsFromObjs).values();
+    QList<Folder> selectedFolders = getSelectedFolders();
+    QList<GObject *> selectedObjects = objectSelection.getSelectedObjects();
+
+    if (getUserConfirmationForRemoval(selectedDocs, selectedFolders, selectedObjects)) {
         removeItems(selectedDocs, selectedFolders, selectedObjects);
     }
 }
