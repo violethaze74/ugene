@@ -105,7 +105,7 @@ private:
     QSet<QString> ignoredPaths;
 };
 
-class DocumentFolders : public FolderObjectTreeStorage {
+class U2GUI_EXPORT DocumentFolders : public FolderObjectTreeStorage {
 public:
     DocumentFolders();
     void init(Document *doc, U2OpStatus &os);
