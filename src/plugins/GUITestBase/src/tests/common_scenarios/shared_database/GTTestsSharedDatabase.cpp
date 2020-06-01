@@ -1994,7 +1994,6 @@ GUI_TEST_CLASS_DEFINITION(import_test_0018) {
 
     GTLogTracer lt;
 
-    const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
     const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0018");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFolderName = "scerevisiae.bam";
@@ -2002,6 +2001,10 @@ GUI_TEST_CLASS_DEFINITION(import_test_0018) {
     const QString filePath = QFileInfo(testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb").absoluteFilePath();
     const QString assemblyObjectName = "Scmito";
     const QString databaseAssemblyObjectPath = resultFolderPath + U2ObjectDbi::PATH_SEP + assemblyObjectName;
+
+    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
     QList<ImportToDatabaseDialogFiller::Action> actions;
 
@@ -2016,16 +2019,10 @@ GUI_TEST_CLASS_DEFINITION(import_test_0018) {
     actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::IMPORT, QVariantMap());
 
     GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, actions));
-
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, dstFolderName);
-
-    GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, parentFolderPath);
-
+    GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAssemblyObjectPath);
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, databaseAssemblyObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
