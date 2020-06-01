@@ -2324,30 +2324,28 @@ GUI_TEST_CLASS_DEFINITION(del_test_0001) {
     //Expected: the sequence view is closed; the object is moved into the folder "/Recycle bin".
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "dt0001_human_T1"));
+    QModelIndex folderItem =GTUtilsProjectTreeView::findIndex(os, "del_tests");
+    QModelIndex originalItem =GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1", folderItem);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, originalItem));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(3000);
-    GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    CHECK_OP(os, );
+
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTGlobals::sleep(3000);
-    QWidget *seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == seqView, "Sequence view is not closed");
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
 
-    const QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
+    // Check that item is in the recycle bin.
+    QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, rbItem));
     GTMouseDriver::doubleClick();
-    GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1", GTGlobals::FindOptions(false));
-    const QModelIndex objItem = GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1");
-    CHECK_SET_ERR(rbItem == objItem.parent(), "Object is not in Recycle bin");
+
+    GTUtilsProjectTreeView::checkItem(os, "dt0001_human_T1", rbItem);
+
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 

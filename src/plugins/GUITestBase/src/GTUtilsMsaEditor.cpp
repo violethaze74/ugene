@@ -69,7 +69,7 @@ void GTUtilsMsaEditor::checkMsaEditorWindowIsActive(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "checkNoMsaEditorWindowIsOpened"
 void GTUtilsMsaEditor::checkNoMsaEditorWindowIsOpened(GUITestOpStatus &os) {
-    GTUtilsMdi::checkNoActiveObjectViewWindowIsOpened(os, MsaEditorFactory::ID);
+    GTUtilsMdi::checkNoObjectViewWindowIsOpened(os, MsaEditorFactory::ID);
 }
 #undef GT_METHOD_NAME
 

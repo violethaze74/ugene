@@ -109,6 +109,12 @@ void GTUtilsSequenceView::checkSequenceViewWindowIsActive(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkNoSequenceViewWindowIsOpened"
+void GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(GUITestOpStatus &os) {
+    GTUtilsMdi::checkNoObjectViewWindowIsOpened(os, AnnotatedDNAViewFactory::ID);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getSequenceAsString"
 void GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, QString &sequence) {
     QWidget *mdiWindow = getActiveSequenceViewWindow(os);

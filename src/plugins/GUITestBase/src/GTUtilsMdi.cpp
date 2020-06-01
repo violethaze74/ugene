@@ -255,10 +255,10 @@ QWidget *GTUtilsMdi::getActiveObjectViewWindow(GUITestOpStatus &os, const QStrin
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkNoActiveObjectViewWindowIsOpened"
-void GTUtilsMdi::checkNoActiveObjectViewWindowIsOpened(GUITestOpStatus &os, const QString &viewId) {
+#define GT_METHOD_NAME "checkNoObjectViewWindowIsOpened"
+void GTUtilsMdi::checkNoObjectViewWindowIsOpened(GUITestOpStatus &os, const QString &viewId) {
     QList<QWidget *> allWindows = getAllObjectViewWindows(viewId);
-    for (int time = 0; time < GT_OP_WAIT_MILLIS && allWindows.isEmpty(); time += GT_OP_CHECK_MILLIS) {
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && !allWindows.isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         allWindows = getAllObjectViewWindows(viewId);
     }

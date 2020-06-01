@@ -540,8 +540,8 @@ bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, QTreeView *treeV
 
 #define GT_METHOD_NAME "checkItem"
 bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options) {
-    GT_CHECK_RESULT(treeView != NULL, "Tree view is NULL", false);
-    GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", false);
+    GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", false);
+    GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", false);
 
     QModelIndexList foundIndexes = findIndecies(os, treeView, itemName, parent, 0, options);
     return !foundIndexes.isEmpty();

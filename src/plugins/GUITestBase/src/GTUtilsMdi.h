@@ -44,7 +44,8 @@ public:
     static QWidget *activeWindow(HI::GUITestOpStatus &os, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
     static QWidget *getActiveObjectViewWindow(HI::GUITestOpStatus &os, const QString &viewId);
 
-    static void checkNoActiveObjectViewWindowIsOpened(HI::GUITestOpStatus &os, const QString &viewId);
+    /** Checks that there are not view windows opened (active or non-active) with the given view id. */
+    static void checkNoObjectViewWindowIsOpened(HI::GUITestOpStatus &os, const QString &viewId);
 
     /** Checks if window with a given windowTitlePart is active or fails otherwise. Waits for the window to be active up to default timeout. */
     static void checkWindowIsActive(HI::GUITestOpStatus &os, const QString &windowTitlePart);
