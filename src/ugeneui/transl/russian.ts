@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/project_support/CreateNewProjectWidget.ui" line="38"/>
         <source>Save project to file</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить проект в файл</translation>
     </message>
     <message>
         <source>Project folder</source>
