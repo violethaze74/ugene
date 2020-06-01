@@ -4272,82 +4272,68 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 GUI_TEST_CLASS_DEFINITION(test_0072) {
     //    Open COI.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "Chikungunya_E1.fasta");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkNoMsaEditorWindowIsOpened(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);    // wait for overview rendering to finish.
+
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 5));
     //    Check keys: arrows
     GTKeyboardDriver::keyClick(Qt::Key_Up);
-    GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5, 4), QPoint(5, 4)));
 
     GTKeyboardDriver::keyClick(Qt::Key_Left);
-    GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4, 4), QPoint(4, 4)));
 
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4, 5), QPoint(4, 5)));
 
     GTKeyboardDriver::keyClick(Qt::Key_Right);
-    GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5, 5), QPoint(5, 5)));
 
     //    shift + arrows
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Up);
-    GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5, 4), QPoint(5, 5)));
 
     GTKeyboardDriver::keyClick(Qt::Key_Left);
-    GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4, 4), QPoint(5, 5)));
 
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4, 5), QPoint(5, 5)));
 
     GTKeyboardDriver::keyClick(Qt::Key_Right);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(300);
+    GTThread::waitForMainThread();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5, 5), QPoint(5, 5)));
     //    end
     QScrollBar *hbar = GTWidget::findExactWidget<QScrollBar *>(os, "horizontal_sequence_scroll");
     GTKeyboardDriver::keyClick(Qt::Key_End);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(hbar->value() == hbar->maximum(), QString("end key scrollbar value: %1").arg(hbar->value()))
     //    home
     GTKeyboardDriver::keyClick(Qt::Key_Home);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(hbar->value() == 0, QString("home key works wrong. Scrollbar value: %1").arg(hbar->value()))
     //    page down
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(hbar->value() > 20, QString("page down key works wrong. Scrollbar value: %1").arg(hbar->value()))
     //    page up
     GTKeyboardDriver::keyClick(Qt::Key_PageUp);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(hbar->value() == 0, QString("page down key works wrong. Scrollbar value: %1").arg(hbar->value()))
     //  end+shift
     QScrollBar *vbar = GTWidget::findExactWidget<QScrollBar *>(os, "vertical_sequence_scroll");
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ShiftModifier);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(vbar->value() == vbar->maximum(), QString("shift + end key works wrong. Scrollbar value: %1").arg(vbar->value()))
     //  home+shift
     GTKeyboardDriver::keyClick(Qt::Key_Home, Qt::ShiftModifier);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(vbar->value() == 0, QString("shift + home key works wrong. Scrollbar value: %1").arg(vbar->value()))
     //  page down+shift
     GTKeyboardDriver::keyClick(Qt::Key_PageDown, Qt::ShiftModifier);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(vbar->value() > 20, QString("shift + page down key works wrong. Scrollbar value: %1").arg(vbar->value()))
     //  page up + shift
     GTKeyboardDriver::keyClick(Qt::Key_PageUp, Qt::ShiftModifier);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(vbar->value() == 0, QString("shift + page down key works wrong. Scrollbar value: %1").arg(vbar->value()))
     //  wheel event
     for (int i = 0; i < 3; i++) {
         GTMouseDriver::scroll(-1);
-        GTGlobals::sleep(100);
+        GTThread::waitForMainThread();
     }
 
     int scrollBarOffset = hbar->value();
@@ -4355,11 +4341,10 @@ GUI_TEST_CLASS_DEFINITION(test_0072) {
     int maxCharWidth = 24;
     CHECK_SET_ERR(scrollBarOffset % 3 == 0 && scrollBarOffset >= 3 * minCharWidth && scrollBarOffset <= 3 * maxCharWidth,
                   QString("scroll down works wrong. Scrollbar has value: %1").arg(hbar->value()));
-    GTGlobals::sleep(500);
 
     for (int i = 0; i < 2; i++) {
         GTMouseDriver::scroll(1);
-        GTGlobals::sleep(100);
+        GTThread::waitForMainThread();
     }
     scrollBarOffset = hbar->value();
     CHECK_SET_ERR(scrollBarOffset >= minCharWidth && scrollBarOffset <= maxCharWidth, QString("scroll up works wrong. Scrollbar has value: %1").arg(hbar->value()));
