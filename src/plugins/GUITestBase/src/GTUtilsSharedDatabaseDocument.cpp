@@ -57,7 +57,7 @@ static QString getSuiteFolderPrefix() {
     if (suiteNumber.isEmpty()) {
         suiteNumber = "0";
     }
-    return "tmp" + suiteNumber + "_";
+    return "_tmp" + suiteNumber + "_";
 }
 
 #define GT_METHOD_NAME "removeTempContentFromOtherTests"
@@ -286,7 +286,7 @@ void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Docume
     findOptions.depth = 1;
     QModelIndex databaseDocIndex = GTUtilsProjectTreeView::findIndex(os, databaseDoc->getName(), findOptions);
 
-    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
     GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(os, treeView, databaseDocIndex);
 
     CHECK(!folders.isEmpty(), );
