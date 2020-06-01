@@ -78,6 +78,7 @@ static void removeTempContentFromOtherTests(HI::GUITestOpStatus &os, Document *d
         if (folderName.startsWith(tmpFolderPrefix)) {
             GTUtilsProjectTreeView::scrollTo(os, folderName);
 
+//            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove selected items", GTGlobals::UseMouse));
             GTUtilsProjectTreeView::callContextMenu(os, folderName);
             GTThread::waitForMainThread();

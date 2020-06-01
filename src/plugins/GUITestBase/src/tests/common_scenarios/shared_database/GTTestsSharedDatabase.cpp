@@ -1083,7 +1083,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0002) {
     const QString importedObjectPath = importedDocFolderPath + U2ObjectDbi::PATH_SEP + fileObjectName;
 
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
@@ -1096,8 +1096,10 @@ GUI_TEST_CLASS_DEFINITION(import_test_0002) {
     GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, importedDocFolderPath);
     QModelIndex importedObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, importedObjectPath);
 
-    GTUtilsProjectTreeView::doubleClickItem(os, importedObjectItemIndex);
+    GTUtilsMdi::closeActiveWindow(os);
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
 
+    GTUtilsProjectTreeView::doubleClickItem(os, importedObjectItemIndex);
     GTUtilsMdi::checkWindowIsActive(os, " " + fileObjectNameWidget);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
