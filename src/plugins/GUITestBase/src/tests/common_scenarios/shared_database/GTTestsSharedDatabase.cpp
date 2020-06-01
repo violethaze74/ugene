@@ -1618,12 +1618,11 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsMdi::closeActiveWindow(os);
 
-    QList<ImportToDatabaseDialogFiller::Action> actions;
-
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
+    QList<ImportToDatabaseDialogFiller::Action> actions;
     QVariantMap addDocumentAction;
     QMap<QString, QVariant> projectItemsToSelect;
     projectItemsToSelect.insert(documentName, QStringList());
@@ -2057,6 +2056,10 @@ GUI_TEST_CLASS_DEFINITION(import_test_0019) {
     const QString assemblyObjectName = ">chrM";
     const QString databaseAssemblyObjectPath = resultFolderPath + U2ObjectDbi::PATH_SEP + assemblyObjectName;
 
+    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, dstFolderName);
+
     QList<ImportToDatabaseDialogFiller::Action> actions;
 
     QVariantMap addFilesAction;
@@ -2069,17 +2072,11 @@ GUI_TEST_CLASS_DEFINITION(import_test_0019) {
     actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::EDIT_DESTINATION_FOLDER, changeDestinationAction);
 
     actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::IMPORT, QVariantMap());
-
     GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, actions));
-
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, dstFolderName);
-
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, parentFolderPath);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAssemblyObjectPath);
+
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, databaseAssemblyObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
