@@ -286,7 +286,8 @@ void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Docume
     findOptions.depth = 1;
     QModelIndex databaseDocIndex = GTUtilsProjectTreeView::findIndex(os, databaseDoc->getName(), findOptions);
 
-    GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(os, databaseDocIndex);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
+    GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(os, treeView, databaseDocIndex);
 
     CHECK(!folders.isEmpty(), );
     folders.pop_back();

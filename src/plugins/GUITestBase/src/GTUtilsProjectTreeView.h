@@ -60,7 +60,7 @@ public:
     static void scrollTo(HI::GUITestOpStatus &os, const QString &itemName);
 
     /** Scrolls to the item to make it visible. */
-    static void scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &os, const QModelIndex &index);
+    static void scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &index);
 
     static void doubleClickItem(HI::GUITestOpStatus &os, const QModelIndex &itemIndex);
     static void doubleClickItem(HI::GUITestOpStatus &os, const QString &itemName);

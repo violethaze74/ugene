@@ -159,14 +159,14 @@ void ImportToDatabaseDialogFiller::addDirs(const Action &action) {
 
 #define GT_METHOD_NAME "addProjectItems"
 void ImportToDatabaseDialogFiller::addProjectItems(const Action &action) {
-    GT_CHECK(Action::ADD_PROJECT_ITEMS == action.type, "Invalid action type");
+    GT_CHECK(action.type == Action::ADD_PROJECT_ITEMS, "Invalid action type");
     GT_CHECK(action.data.contains(Action::ACTION_DATA__PROJECT_ITEMS_LIST), "Not enough parameters to perform the action");
 
-    const QMap<QString, QStringList> projectItems = convertProjectItemsMap(action.data.value(Action::ACTION_DATA__PROJECT_ITEMS_LIST).toMap());
+    QMap<QString, QStringList> projectItems = convertProjectItemsMap(action.data.value(Action::ACTION_DATA__PROJECT_ITEMS_LIST).toMap());
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, projectItems));
 
     QWidget *addProjectItemsButton = GTWidget::findWidget(os, "pbAddObjects");
-    GT_CHECK(NULL != addProjectItemsButton, "addProjectItemsButton is NULL");
+    GT_CHECK(addProjectItemsButton != nullptr, "addProjectItemsButton is NULL");
     GTWidget::click(os, addProjectItemsButton);
 }
 #undef GT_METHOD_NAME

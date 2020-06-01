@@ -70,36 +70,30 @@ bool checkTreeRowCount(QTreeView *tree, int expectedDocCount) {
 
 #define GT_METHOD_NAME "commonScenario"
 void ProjectTreeItemSelectorDialogFiller::commonScenario() {
-    GTGlobals::sleep(1000);
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog was not found");
-
-    QTreeView *treeView = dialog->findChild<QTreeView *>();
-    GT_CHECK(treeView != NULL, "treeWidget is NULL");
-
-    if (-1 != expectedDocCount) {
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QTreeView *treeView = GTWidget::findWidgetByType<QTreeView *>(os, dialog, "No tree widget found in dialog");
+    if (expectedDocCount != -1) {
         CHECK_SET_ERR(checkTreeRowCount(treeView, expectedDocCount), "Unexpected document count");
     }
 
     GTGlobals::FindOptions options;
     options.depth = GTGlobals::FindOptions::INFINITE_DEPTH;
 
-    if (Separate == mode) {
+    if (mode == Separate) {
         GTKeyboardDriver::keyPress(Qt::Key_Control);
     }
 
     bool firstIsSelected = false;
     foreach (const QString &documentName, itemsToSelect.keys()) {
-        const QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex(os, treeView, documentName, options);
+        QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex(os, treeView, documentName, options);
         GTUtilsProjectTreeView::checkObjectTypes(os, treeView, acceptableTypes, documentIndex);
-
-        const QStringList objects = itemsToSelect.value(documentName);
+        QStringList objects = itemsToSelect.value(documentName);
         if (!objects.isEmpty()) {
             foreach (const QString &objectName, itemsToSelect.value(documentName)) {
-                const QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, treeView, objectName, documentIndex, options);
+                QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, treeView, objectName, documentIndex, options);
                 GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, treeView, objectIndex));
                 GTMouseDriver::click();
-                if (!firstIsSelected && Continuous == mode) {
+                if (!firstIsSelected && mode == Continuous) {
                     GTKeyboardDriver::keyPress(Qt::Key_Shift);
                     firstIsSelected = true;
                 }

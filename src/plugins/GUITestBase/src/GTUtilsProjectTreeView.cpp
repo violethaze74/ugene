@@ -181,14 +181,14 @@ QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus &os, const QStr
 #define GT_METHOD_NAME "scrollToItemName"
 void GTUtilsProjectTreeView::scrollTo(HI::GUITestOpStatus &os, const QString &itemName) {
     QModelIndex index = findIndex(os, itemName);
-    scrollToIndexAndMakeExpanded(os, index);
+    scrollToIndexAndMakeExpanded(os, getTreeView(os), index);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToIndexAndMakeExpanded"
-void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &os, const QModelIndex &index) {
+void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &index) {
     GT_CHECK(index.isValid(), "Item index is invalid");
-    QTreeView *treeView = getTreeView(os);
+    GT_CHECK(treeView != nullptr, "Tree view is null");
 
     class MainThreadActionExpand : public CustomScenario {
     public:
@@ -225,7 +225,7 @@ void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &o
 
 #define GT_METHOD_NAME "doubleClickItem"
 void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus &os, const QModelIndex &itemIndex) {
-    scrollToIndexAndMakeExpanded(os, itemIndex);
+    scrollToIndexAndMakeExpanded(os, getTreeView(os), itemIndex);
     GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
     GTMouseDriver::doubleClick();
     GTThread::waitForMainThread();
@@ -241,7 +241,7 @@ void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus &os, const QStr
 #define GT_METHOD_NAME "click"
 void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton button) {
     QModelIndex itemIndex = findIndex(os, itemName);
-    scrollToIndexAndMakeExpanded(os, itemIndex);
+    scrollToIndexAndMakeExpanded(os, getTreeView(os), itemIndex);
 
     QPoint p = getItemCenter(os, itemIndex);    // clicking on the center does not select the item (Linux)
     p.setX(p.x() + 1);
@@ -254,9 +254,8 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemN
 #define GT_METHOD_NAME "click"
 void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemName, const QString &parentName, Qt::MouseButton button) {
     QModelIndex parentIndex = findIndex(os, parentName);
-    GT_CHECK(parentIndex.isValid(), "Parent item index is invalid");
     QModelIndex itemIndex = findIndex(os, itemName, parentIndex);
-    scrollToIndexAndMakeExpanded(os, itemIndex);
+    scrollToIndexAndMakeExpanded(os, getTreeView(os), itemIndex);
 
     GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
     GTMouseDriver::click(button);
@@ -327,7 +326,7 @@ QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView
     GT_CHECK_RESULT(foundIndexes.size() == 1, QString("there are %1 items with name %2").arg(foundIndexes.size()).arg(itemName), QModelIndex());
 
     QModelIndex index = foundIndexes.at(0);
-    scrollToIndexAndMakeExpanded(os, index);
+    scrollToIndexAndMakeExpanded(os, treeView, index);
     return index;
 }
 #undef GT_METHOD_NAME
@@ -674,7 +673,7 @@ void GTUtilsProjectTreeView::dragAndDrop(GUITestOpStatus &os, const QStringList 
 void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os, QModelIndexList from, QModelIndex to) {
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     foreach (QModelIndex index, from) {
-        scrollToIndexAndMakeExpanded(os, index);
+        scrollToIndexAndMakeExpanded(os, getTreeView(os), index);
         GTMouseDriver::moveTo(getItemCenter(os, index));
         GTMouseDriver::click();
     }
