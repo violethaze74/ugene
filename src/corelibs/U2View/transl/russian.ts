@@ -793,12 +793,12 @@ Probably, the data are too big.</source>
     <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="131"/>
         <source>Group result sequences in the alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Сгруппировать последовательности в выравнивании</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="134"/>
         <source>Group</source>
-        <translation type="unfinished">Группа</translation>
+        <translation>Группировать</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="169"/>
@@ -5788,7 +5788,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="50"/>
         <source>Sort sequences</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировка</translation>
     </message>
 </context>
 <context>
@@ -6825,42 +6825,42 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="41"/>
         <source>Sort by</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировать по</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="46"/>
         <source>Name</source>
-        <translation type="unfinished">Имя</translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="47"/>
         <source>Length</source>
-        <translation type="unfinished">Длина</translation>
+        <translation>Длина</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="51"/>
         <source>Sort order</source>
-        <translation type="unfinished"></translation>
+        <translation>Порядок</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="56"/>
         <source>Ascending</source>
-        <translation type="unfinished"></translation>
+        <translation>По возрастанию</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="57"/>
         <source>Descending</source>
-        <translation type="unfinished"></translation>
+        <translation>По убыванию</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="64"/>
         <source>Sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировать</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="66"/>
         <source>Click to sort sequence in the alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировать последовательности в выравнивании</translation>
     </message>
 </context>
 <context>
