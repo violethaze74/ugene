@@ -779,38 +779,32 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0003) {
     //Expected: the subfolder folder is not renamed.
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
 
     QModelIndex dirItem = GTUtilsProjectTreeView::findIndex(os, "proj_test_0003");
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "proj_test_0003"));
-    GTMouseDriver::doubleClick();
-
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "An invalid project tree view");
-
-    CHECK_SET_ERR(treeView->isExpanded(dirItem), "The folder item has not expanded after double click");
+    GTUtilsProjectTreeView::checkItemIsExpanded(os, treeView, dirItem);
 
     QAbstractItemModel *model = treeView->model();
-    CHECK_SET_ERR(1 == model->rowCount(dirItem), "Invalid child item count");
+    CHECK_SET_ERR(model->rowCount(dirItem) == 1, "Invalid child item count");
 
     QModelIndex subfolderItem = model->index(0, 0, dirItem);
 
     GTUtilsProjectTreeView::rename(os, subfolderItem.data().toString(), "pt0003_new_name");
-    CHECK_OP(os, );
     dirItem = GTUtilsProjectTreeView::findIndex(os, "proj_test_0003");
     subfolderItem = model->index(0, 0, dirItem);
     QString subfolderName = subfolderItem.data().toString();
-    CHECK_SET_ERR("pt0003_new_name" == subfolderName, "Renaming failed");
+    CHECK_SET_ERR(subfolderName == "pt0003_new_name", "Renaming failed");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "pt0003_new_name"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
+    GTGlobals::sleep(2000); // wait for some time.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     subfolderItem = model->index(0, 0, dirItem);
     subfolderName = subfolderItem.data().toString();
-    CHECK_SET_ERR("pt0003_new_name" == subfolderName, "The folder was renamed");
+    CHECK_SET_ERR(subfolderName == "pt0003_new_name", "The folder was renamed");
+
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -833,10 +827,9 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0004) {
     QModelIndex dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2");
     GTGlobals::sleep();
     QModelIndex objItem = GTUtilsProjectTreeView::findIndex(os, "pt0004_human_T1");
-    CHECK_SET_ERR(treeView->isExpanded(dirItem2), "The folder item has not expanded after double click");
-    GTGlobals::sleep();
+    GTUtilsProjectTreeView::checkItemIsExpanded(os, treeView, dirItem2);
     GTUtilsProjectTreeView::dragAndDrop(os, objItem, dirItem1);
-    GTGlobals::sleep(20000);
+
     dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir1");
     dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2");
     CHECK_SET_ERR(2 == model->rowCount(dirItem1), QString("Invalid child item count for pt0004_dir1 Expected: 2; actual: %1").arg(model->rowCount(dirItem1)));
@@ -869,8 +862,8 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0005) {
         const QModelIndex objItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0005_human_T1");
         const QModelIndex objItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0005_COI");
 
-        CHECK_SET_ERR(treeView->isExpanded(dirItem2), "The folder 2 item has not expanded after double click");
-        CHECK_SET_ERR(treeView->isExpanded(dirItem3), "The folder 3 item has not expanded after double click");
+        GTUtilsProjectTreeView::checkItemIsExpanded(os, treeView, dirItem2);
+        GTUtilsProjectTreeView::checkItemIsExpanded(os, treeView, dirItem3);
 
         GTUtilsProjectTreeView::dragAndDropSeveralElements(os, QModelIndexList() << objItem1 << objItem2, dirItem1);
     }
