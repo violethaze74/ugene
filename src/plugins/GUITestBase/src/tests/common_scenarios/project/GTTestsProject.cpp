@@ -81,18 +81,12 @@ using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj1.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj1.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1CF7.pdb" is opened
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
     //     2) UGENE window titled with text "proj1 UGENE"
-    QString expectedTitle;
-#ifdef Q_OS_MAC
-    expectedTitle = "proj1 UGENE";
-#else
-    expectedTitle = "proj1 UGENE";
-#endif
-    GTUtilsApp::checkUGENETitle(os, expectedTitle);
+    GTUtilsApp::checkUGENETitle(os, "proj1 UGENE");
 
     // 2. Use menu {File->Export Project}
     // Expected state: "Export Project" dialog has appeared
@@ -103,26 +97,24 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox/proj1.uprj"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Export project...");
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 5. Use menu {File->Close project}
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTGlobals::sleep();
-
+    GTUtilsProjectTreeView::checkProjectViewIsClosed(os);
     // Expected state: project is unloaded and project view is closed
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
 
     // 6. Use menu {File->Open}. Open project _common_data/sandbox/proj1.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "proj1.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
     // Expected state:
     //     1) project view with document "1CF7.pdb" has been opened,
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
     //     2) UGENE window titled with text "proj1 UGENE"
-    GTUtilsApp::checkUGENETitle(os, expectedTitle);
+    GTUtilsApp::checkUGENETitle(os, "proj1 UGENE");
 
     //     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.pdb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
