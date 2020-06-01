@@ -59,6 +59,7 @@ bool GTMouseDriver::dragAndDrop(const QPoint &start, const QPoint &end) {
     DRIVER_CHECK(moveTo(end), QString("Mouse could not be moved to point (%1, %2)").arg(end.x()).arg(end.y()));
     GTThread::waitForMainThread();
 
+    GTGlobals::sleep(500); // Do extra wait before the release. Otherwise the method is not stable on Linux.
     DRIVER_CHECK(release(), "Button could not be released");
     GTThread::waitForMainThread();
 
