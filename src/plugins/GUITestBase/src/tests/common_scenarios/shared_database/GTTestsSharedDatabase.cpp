@@ -1495,7 +1495,6 @@ GUI_TEST_CLASS_DEFINITION(import_test_0009) {
 
     GTLogTracer lt;
 
-    const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
     const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0009");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString resultFirstFolderName = "seq1";
@@ -1507,6 +1506,10 @@ GUI_TEST_CLASS_DEFINITION(import_test_0009) {
     const QString sequenceSecondObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
     const QString databaseSequenceFirstObjectPath = resultFirstFolderPath + U2ObjectDbi::PATH_SEP + sequenceFirstObjectName;
     const QString databaseSequenceSecondObjectPath = resultSecondFolderPath + U2ObjectDbi::PATH_SEP + sequenceSecondObjectName;
+
+    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
     QList<ImportToDatabaseDialogFiller::Action> actions;
 
@@ -1524,16 +1527,12 @@ GUI_TEST_CLASS_DEFINITION(import_test_0009) {
 
     GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, actions));
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, dstFolderName);
-
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, dstFolderPath);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceFirstObjectPath);
-    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceSecondObjectPath);
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, databaseSequenceFirstObjectPath);
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, databaseSequenceSecondObjectPath);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
