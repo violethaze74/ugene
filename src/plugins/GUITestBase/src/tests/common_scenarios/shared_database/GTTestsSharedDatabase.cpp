@@ -1604,7 +1604,6 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
 
     GTLogTracer lt;
 
-    const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
     const QString dstFolderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0011");
     const QString dstFolderPath = U2ObjectDbi::ROOT_FOLDER + dstFolderName;
     const QString documentName = "murine.gb";
@@ -1615,39 +1614,35 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
     const QString databaseSequenceObjectPath = dstFolderPath + U2ObjectDbi::PATH_SEP + documentName + U2ObjectDbi::PATH_SEP + sequenceObjectName;
     const QString databaseAnnotationTableObjectPath = dstFolderPath + U2ObjectDbi::PATH_SEP + documentName + U2ObjectDbi::PATH_SEP + AnnotationTableObjectName;
 
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank", documentName);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsMdi::closeActiveWindow(os);
+
     QList<ImportToDatabaseDialogFiller::Action> actions;
+
+    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
     QVariantMap addDocumentAction;
     QMap<QString, QVariant> projectItemsToSelect;
     projectItemsToSelect.insert(documentName, QStringList());
     addDocumentAction.insert(ImportToDatabaseDialogFiller::Action::ACTION_DATA__PROJECT_ITEMS_LIST, projectItemsToSelect);
     actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::ADD_PROJECT_ITEMS, addDocumentAction);
-
     actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::IMPORT, QVariantMap());
-
     GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, actions));
-
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank", documentName);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, dstFolderName);
-
     GTUtilsSharedDatabaseDocument::callImportDialog(os, databaseDoc, dstFolderPath);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
-    GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAnnotationTableObjectPath);
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, databaseSequenceObjectPath);
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, databaseAnnotationTableObjectPath);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
     QWidget *seqView = GTWidget::findWidget(os, " " + sequenceVisibleWidgetName);
     CHECK_SET_ERR(NULL != seqView, "View wasn't opened");
 
-    GTUtilsAnnotationsTreeView::getTreeWidget(os);
     QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, someFeatureName);
-    CHECK_SET_ERR(NULL != annotationTable, "Annotation table is NULL");
+    CHECK_SET_ERR(annotationTable != nullptr, "Annotation table is NULL");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
