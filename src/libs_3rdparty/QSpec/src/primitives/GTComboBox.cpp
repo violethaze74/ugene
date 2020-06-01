@@ -125,14 +125,14 @@ void GTComboBox::setCurrentTextWithKeyboard(GUITestOpStatus &os, QComboBox *comb
 
     if (checkVal) {
         QString currentText = comboBox->currentText();
-        GT_CHECK(currentText == text, "Can't set text");
+        GT_CHECK(currentText == text, "Can't set text in setCurrentText: " + text);
     }
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setIndexWithText"
 void GTComboBox::setIndexWithText(GUITestOpStatus &os, QComboBox *const comboBox, const QString &text, bool checkVal, GTGlobals::UseMethod method) {
-    GT_CHECK(comboBox != NULL, "QComboBox* == NULL");
+    GT_CHECK(comboBox != nullptr, "QComboBox* == NULL");
 
     int index = comboBox->findText(text, Qt::MatchExactly);
     GT_CHECK(index != -1, "Text " + text + " was not found");
@@ -146,9 +146,10 @@ void GTComboBox::setIndexWithText(GUITestOpStatus &os, QComboBox *const comboBox
         break;
     }
 
+    GTThread::waitForMainThread();
     if (checkVal) {
         QString currentText = comboBox->currentText();
-        GT_CHECK(currentText == text, "Can't set text");
+        GT_CHECK(currentText == text, "Can't set text in setIndexWithText: " + text + ", method: " + QString::number(method));
     }
 }
 #undef GT_METHOD_NAME

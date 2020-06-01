@@ -411,9 +411,7 @@ void NewColorSchemeCreator::commonScenario() {
 #define GT_CLASS_NAME "CreateAlignmentColorSchemeDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
-    GTGlobals::sleep(500);
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QWidget *w = GTWidget::findWidget(os, "schemeName", dialog);
     QLineEdit *schemeNameLine = qobject_cast<QLineEdit *>(w);
@@ -441,8 +439,7 @@ void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
 #define GT_CLASS_NAME "ColorSchemeDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ColorSchemeDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QList<QAbstractButton *> list = dialog->findChildren<QAbstractButton *>();
     foreach (QAbstractButton *b, list) {
