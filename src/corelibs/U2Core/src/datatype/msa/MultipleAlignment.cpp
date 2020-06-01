@@ -165,46 +165,34 @@ U2MsaListGapModel MultipleAlignmentData::getGapModel() const {
     return gapModel;
 }
 
-class CompareMaRowsByName {
-public:
-    CompareMaRowsByName(MultipleAlignment::Order order)
-        : order(order) {
-    }
+static bool isGreaterByName(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) {
+    return QString::compare(row1->getName(), row2->getName(), Qt::CaseInsensitive) > 0;
+}
 
-    bool operator()(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) const {
-        bool res = QString::compare(row1->getName(), row2->getName(), Qt::CaseInsensitive) > 0;
-        return order == MultipleAlignment::Ascending ? !res : res;
-    }
-
-private:
-    MultipleAlignment::Order order;
-};
+static bool isLessByName(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) {
+    return QString::compare(row1->getName(), row2->getName(), Qt::CaseInsensitive) < 0;
+}
 
 void MultipleAlignmentData::sortRowsByName(MultipleAlignment::Order order) {
     MaStateCheck check(this);
     Q_UNUSED(check);
-    qStableSort(rows.begin(), rows.end(), CompareMaRowsByName(order));
+    bool isAscending = order == MultipleAlignment::Ascending;
+    std::stable_sort(rows.begin(), rows.end(), isAscending ? isLessByName : isGreaterByName);
 }
 
-class CompareMaRowsByLength {
-public:
-    CompareMaRowsByLength(MultipleAlignment::Order order)
-        : order(order) {
-    }
+static bool isGreaterByLength(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) {
+    return row1->getUngappedLength() > row2->getUngappedLength();
+}
 
-    bool operator()(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) const {
-        bool res = row1->getUngappedLength() < row2->getUngappedLength();
-        return order == MultipleAlignment::Ascending ? !res : res;
-    }
-
-private:
-    MultipleAlignment::Order order;
-};
+static bool isLessByLength(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) {
+    return row1->getUngappedLength() < row2->getUngappedLength();
+}
 
 void MultipleAlignmentData::sortRowsByLength(MultipleAlignment::Order order) {
     MaStateCheck check(this);
     Q_UNUSED(check);
-    qStableSort(rows.begin(), rows.end(), CompareMaRowsByLength(order));
+    bool isAscending = order == MultipleAlignment::Ascending;
+    std::stable_sort(rows.begin(), rows.end(), isAscending ? isLessByLength : isGreaterByLength);
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {
