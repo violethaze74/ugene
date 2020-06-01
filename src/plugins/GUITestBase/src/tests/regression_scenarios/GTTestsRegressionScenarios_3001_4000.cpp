@@ -1625,10 +1625,10 @@ GUI_TEST_CLASS_DEFINITION(test_3253_1) {
 }
 GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     /*  1. Open "data/samples/ABIF/A01.abi".
- *  3. Open GC Content (%) graph
- *  2. Close chomatogram view
- *    Expected state: GC Content (%) graph view resized
-*/
+    *   2. Open GC Content (%) graph
+    *   3. Close the chomatogram view
+    *      Expected state: GC Content (%) graph view resized.
+    */
     GTFileDialog::openFile(os, dataDir + "/samples/ABIF/", "A01.abi");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
@@ -1642,13 +1642,11 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle *>(GTWidget::findWidget(os, "qt_splithandle_chromatogram_view_A1#berezikov"));
-    CHECK_SET_ERR(splitterHandle != nullptr, "splitterHandle is not present");
+    GTWidget::findWidget(os, "qt_splithandle_chromatogram_view_A1#berezikov");
 
     QWidget *graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
     QSize startSize = graphView->size();
 
-    graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
     GTWidget::click(os, GTWidget::findWidget(os, "CHROMA_ACTION"));
 
     GTMouseDriver::moveTo(QPoint(graphView->mapToGlobal(graphView->rect().bottomLeft()).x() + 100, graphView->mapToGlobal(graphView->rect().bottomLeft()).y() + 5));
@@ -1657,10 +1655,15 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     GTMouseDriver::release();
 
     GTThread::waitForMainThread();
-
     QSize endSize = graphView->size();
-    CHECK_SET_ERR(startSize != endSize, "graphView is not resized");
+    if (endSize != startSize) {
+        return;
+    }
+    GTGlobals::sleep(5000);    // waitForMainThread may not be enough here.
+    endSize = graphView->size();
+    CHECK_SET_ERR(startSize != endSize, "graphView is not resized, size: " + QString::number(endSize.width()) + "x" + QString::number(endSize.height()));
 }
+
 GUI_TEST_CLASS_DEFINITION(test_3255) {
     //    1. Open "data/samples/Assembly/chrM.sam.bam".
     //    Expected state: an import dialog appears.
