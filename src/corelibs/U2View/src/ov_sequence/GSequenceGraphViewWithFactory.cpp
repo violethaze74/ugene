@@ -53,6 +53,7 @@ GSequenceGraphViewWithFactory::GSequenceGraphViewWithFactory(
           sequenceWidget->getPanGSLView(),
           _factory->getGraphName()),
       factory(_factory) {
+    setObjectName("GSequenceGraphViewWithFactory");
 }
 
 /**

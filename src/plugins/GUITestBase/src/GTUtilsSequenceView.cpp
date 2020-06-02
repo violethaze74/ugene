@@ -305,12 +305,19 @@ void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus &os, int position) {
 
 #define GT_METHOD_NAME "clickMouseOnTheSafeSequenceViewArea"
 void GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea(HI::GUITestOpStatus &os) {
+    QWidget* panOrDetView = getPanOrDetView(os);
+    GTMouseDriver::moveTo(panOrDetView->mapToGlobal(panOrDetView->rect().center()));
+    GTMouseDriver::click();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getPanOrDetView"
+QWidget* GTUtilsSequenceView::getPanOrDetView(HI::GUITestOpStatus &os) {
     QWidget *panOrDetView = getDetViewByNumber(os, 0, GTGlobals::FindOptions(false));
     if (panOrDetView == nullptr) {
         panOrDetView = getPanViewByNumber(os, 0);
     }
-    GTMouseDriver::moveTo(panOrDetView->mapToGlobal(panOrDetView->rect().center()));
-    GTMouseDriver::click();
+    return panOrDetView;
 }
 #undef GT_METHOD_NAME
 

@@ -20,6 +20,7 @@
  */
 
 #include "GTSplitter.h"
+
 #include "drivers/GTMouseDriver.h"
 
 namespace HI {
@@ -28,33 +29,30 @@ namespace HI {
 
 #define GT_METHOD_NAME "getHandleRect"
 QRect GTSplitter::getHandleRect(GUITestOpStatus &os, QSplitter *splitter, int handleNumber) {
-    Q_UNUSED(os)
-    GT_CHECK_RESULT(nullptr != splitter, "splitter is nullptr", QRect());
+    GT_CHECK_RESULT(splitter != nullptr, "splitter is nullptr", QRect());
 
-    const int handlesCount = splitter->count() - 1;
-    GT_CHECK_RESULT(0 <= handleNumber && handleNumber < handlesCount,
+    int handlesCount = splitter->count();
+    GT_CHECK_RESULT(handleNumber >= 0 && handleNumber < handlesCount,
                     QString("Invalid handle number: %1. There are %2 handles in the splitter").arg(handleNumber).arg(handlesCount),
                     QRect());
 
-    const QRect handleRect = splitter->handle(handleNumber)->rect();
-    return QRect(splitter->mapToGlobal(handleRect.topLeft()), splitter->mapToGlobal(handleRect.bottomRight()));
+    QWidget *handle = splitter->handle(handleNumber);
+    QRect handleRect = handle->rect();
+    return QRect(handle->mapToGlobal(handleRect.topLeft()), handle->mapToGlobal(handleRect.bottomRight()));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveHandle"
 void GTSplitter::moveHandle(GUITestOpStatus &os, QSplitter *splitter, int pixels, int handleNumber) {
-    const QRect handleRect = getHandleRect(os, splitter, handleNumber);
+    QRect handleRect = getHandleRect(os, splitter, handleNumber);
     QPoint mouseOffset(0, 0);
-    if (Qt::Vertical == splitter->orientation()) {
+    if (splitter->orientation() == Qt::Vertical) {
         mouseOffset.setY(pixels);
     } else {
         mouseOffset.setX(pixels);
     }
-    GTMouseDriver::moveTo(handleRect.center());
-    GTMouseDriver::click();
-    GTMouseDriver::moveTo(handleRect.center() + mouseOffset);
-    GTMouseDriver::release();
+    GTMouseDriver::dragAndDrop(handleRect.center(), handleRect.center() + mouseOffset);
 }
 #undef GT_METHOD_NAME
 
-}   // namespace HI
+}    // namespace HI

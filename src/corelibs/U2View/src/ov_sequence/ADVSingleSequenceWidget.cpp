@@ -138,6 +138,7 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext *seqCt
     linesSplitter->setChildrenCollapsible(false);
     linesSplitter->setBackgroundRole(QPalette::Window);
     linesSplitter->setAutoFillBackground(true);
+    linesSplitter->setObjectName("single_sequence_view_splitter");
 
     QWidget *linesLayoutWidget = new QWidget();
     linesLayoutWidget->setObjectName("lines_layout_widget");

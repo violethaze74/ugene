@@ -35,6 +35,7 @@
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
+#include <primitives/GTSplitter.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTableView.h>
 #include <primitives/GTToolbar.h>
@@ -1632,35 +1633,23 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     GTFileDialog::openFile(os, dataDir + "/samples/ABIF/", "A01.abi");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    GTWidget::click(os, sequenceWidget);
-
-    QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
-    Runnable *chooser = new PopupChooser(os, QStringList() << "GC Content (%)");
-    GTUtilsDialog::waitForDialog(os, chooser);
-    GTWidget::click(os, graphAction);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
+    GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction", GTUtilsSequenceView::getSeqWidgetByNumber(os, 0)));
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTWidget::findWidget(os, "qt_splithandle_chromatogram_view_A1#berezikov");
 
     QWidget *graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
     QSize startSize = graphView->size();
 
+    // Hide the chromatogram.
     GTWidget::click(os, GTWidget::findWidget(os, "CHROMA_ACTION"));
 
-    GTMouseDriver::moveTo(QPoint(graphView->mapToGlobal(graphView->rect().bottomLeft()).x() + 100, graphView->mapToGlobal(graphView->rect().bottomLeft()).y() + 5));
-    GTMouseDriver::press();
-    GTMouseDriver::moveTo(QPoint(graphView->mapToGlobal(graphView->rect().bottomLeft()).x() + 100, graphView->mapToGlobal(graphView->rect().bottomLeft()).y() + graphView->height() / 2));
-    GTMouseDriver::release();
-
+    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "single_sequence_view_splitter"));
+    CHECK_SET_ERR(splitter != nullptr, "Splitter was not found");
+    GTSplitter::moveHandle(os, splitter, graphView->height() / 2, 2);
     GTThread::waitForMainThread();
+
     QSize endSize = graphView->size();
-    if (endSize != startSize) {
-        return;
-    }
-    GTGlobals::sleep(5000);    // waitForMainThread may not be enough here.
-    endSize = graphView->size();
     CHECK_SET_ERR(startSize != endSize, "graphView is not resized, size: " + QString::number(endSize.width()) + "x" + QString::number(endSize.height()));
 }
 
