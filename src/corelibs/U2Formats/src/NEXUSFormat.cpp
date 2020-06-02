@@ -44,6 +44,8 @@
 
 namespace U2 {
 
+// Documentation: http://informatics.nescent.org/w/images/8/8b/NEXUS_Final.pdf
+
 NEXUSFormat::NEXUSFormat(QObject *p)
     : TextDocumentFormat(p, BaseDocumentFormats::NEXUS, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList() << "nex"
                                                                                                                                                                  << "nxs")    // disable streaming for now
@@ -68,9 +70,8 @@ QString Tokenizer::get() {
 
     QChar c;
     QChar quote;
-
+    whiteSpacesAfterLastToken.clear();
     int nest = 0;
-
     enum State { NONE,
                  QUOTED,
                  WORD,
@@ -176,8 +177,16 @@ QString Tokenizer::get() {
             }
         } else if (state == SPACE) {
             // skip whites
-            buffStream.skipWhiteSpace();
-
+            whiteSpacesAfterLastToken.clear();
+            while (!buffStream.atEnd()) {
+                buffStream >> c;
+                if (c.isSpace()) {
+                    whiteSpacesAfterLastToken += c;
+                } else {
+                    buffStream.seek(buffStream.pos() - 1);
+                    break;
+                }
+            }
             state = NONE;
             if (token.isEmpty()) {
                 continue;
@@ -201,7 +210,6 @@ QString Tokenizer::get() {
 
                 buffStream >> c;
             }
-
             continue;
         } else if (state == SYMBOL) {
             // return single symbol
@@ -394,8 +402,11 @@ bool NEXUSParser::readDataContents(Context &ctx) {
             }
         } else if (cmd == CMD_MATRIX) {
             tz.get();    // cmd name == CMD_MATRIX
-
-            QMap<QString, QByteArray> rows;
+            // From format spec: "Taxa in each section must occur in the same order."
+            QList<QString> names;
+            QList<QByteArray> values;
+            int sectionIndex = 0;
+            int sectionRowIndex = 0;
 
             // Read matrix
             while (true) {
@@ -405,15 +416,17 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                     errors.append("Unexpected EOF");
                     return false;
                 }
-
                 if (name == ";") {
                     break;
                 }
-
                 name.replace('_', ' ');
 
                 // Read value
                 QString value = tz.readUntil(QRegExp("(;|\\n|\\r)"));
+
+                // The value is the last in the section if there is an empty new line at the end.
+                QString trailingSpaces = tz.whiteSpacesAfterLastToken;
+                bool isLastValueInTheSection = trailingSpaces.count('\r') >= 2 || trailingSpaces.count('\n') >= 2;
 
                 // Remove spaces
                 value.remove(QRegExp("\\s"));
@@ -426,19 +439,27 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                 U2OpStatus2Log os;
                 QByteArray bytes = value.toLatin1();
 
-                if (rows.contains(name)) {
-                    rows[name].append(bytes);
+                if (sectionIndex == 0) {
+                    names.append(name);
+                    values.append(bytes);
                 } else {
-                    rows[name] = bytes;
+                    CHECK_EXT(sectionRowIndex < names.length(), errors.append("MATRIX sections have different count of rows!"), false);
+                    CHECK_EXT(name == names[sectionRowIndex], errors.append("MATRIX sections have different name order"), false);
+                    values[sectionRowIndex].append(value);
                 }
-
                 reportProgress();
+                if (isLastValueInTheSection) {
+                    sectionIndex++;
+                    sectionRowIndex = 0;
+                } else {
+                    sectionRowIndex++;
+                }
             }
 
             // Build MultipleSequenceAlignment object
             MultipleSequenceAlignment ma(tz.getIO()->getURL().baseFileName());
-            foreach (const QString &name, rows.keys()) {
-                ma->addRow(name, rows[name]);
+            for (int i = 0; i < names.length(); i++) {
+                ma->addRow(names[i], values[i]);
             }
 
             // Determine alphabet & replace missing chars

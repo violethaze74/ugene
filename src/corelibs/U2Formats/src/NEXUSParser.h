@@ -28,6 +28,7 @@
 
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Task.h>
+#include <U2Core/U2Type.h>
 
 namespace U2 {
 
@@ -43,12 +44,15 @@ public:
     }
 
     QString look();
+
     QString get();
+
     void skip() {
         (void)get();
     }
 
     QStringList getUntil(QString what, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
+
     void skipUntil(QString what, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
 
     QString readUntil(QRegExp rwhat);
@@ -56,10 +60,12 @@ public:
     bool isEof() {
         return io->isEof();
     }
+
     IOAdapter *getIO() {
         return io;
     }
 
+    QString whiteSpacesAfterLastToken;
 private:
     IOAdapter *io;
     QString next;
