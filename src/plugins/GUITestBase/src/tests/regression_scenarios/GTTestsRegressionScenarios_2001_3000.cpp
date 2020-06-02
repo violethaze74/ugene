@@ -5040,7 +5040,7 @@ GUI_TEST_CLASS_DEFINITION(test_2778) {
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/genome_aligner/",
                                                                "chrY.fa",
                                                                testDir + "_common_data/genome_aligner/",
-                                                               "shortreads15Mb.fasta",
+                                                               "shortreads1Mb.fasta",
                                                                true);
     parameters.samOutput = false;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
@@ -5048,6 +5048,8 @@ GUI_TEST_CLASS_DEFINITION(test_2778) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsLog::check(os, l);
