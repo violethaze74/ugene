@@ -3056,36 +3056,50 @@ GUI_TEST_CLASS_DEFINITION(test_6541_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     //     Open "amino_ext.aln".
-    //     Select "FOSB_MOUSE" sequence.
-    //     Expected result : "Realign sequence(s) to other sequences" button is enabled.
-    //     Click "Realign sequence(s) to other sequences".
-    //     Expected result : sequences realigned.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "amino_ext.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    //     Select "FOSB_MOUSE" sequence.
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "FOSB_MOUSE");
+
+    //     Expected result : "Realign sequence(s) to other sequences" button is enabled.
     QAbstractButton *realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
+
+    //     Click "Realign sequence(s) to other sequences".
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //     Expected result : sequences realigned.
     QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
     GTUtilsProject::closeProject(os);
+
     //     Open �protein.aln�.
-    //     Select �Loach�, �Frog�, "Human" sequences.
-    //     Expected result : "Realign sequence(s) to other sequences" button is enabled.
-    //     Click "Realign sequence(s) to other sequences".
-    //     Expected result : sequences realigned.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "protein.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    //     Select �Loach�, �Frog�, "Human" sequences.
     GTUtilsMsaEditor::selectRows(os, 3, 5);
+
+    //     Expected result : "Realign sequence(s) to other sequences" button is enabled.
     realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
+
+    //     Click "Realign sequence(s) to other sequences".
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //     Expected result : sequences realigned.
     undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
     GTUtilsProject::closeProject(os);
+
     //     Open �RAW.aln�.Select any sequence.
-    //     Expected result : "Realign sequence(s) to other sequences" button is disabled.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "RAW.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    //     Expected result : "Realign sequence(s) to other sequences" button is disabled.
     realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
     CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably enabled");
 }
