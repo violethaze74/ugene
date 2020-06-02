@@ -106,7 +106,7 @@ void GTComboBox::setCurrentTextWithKeyboard(GUITestOpStatus &os, QComboBox *comb
     GT_CHECK(index != -1, "Text " + text + " was not found");
 
     if (comboBox->isEditable()) {
-        QPoint p = QPoint(comboBox->rect().width() - 10, 10);
+        QPoint p(comboBox->rect().width() - 10, 10);
         GTWidget::click(os, comboBox, Qt::LeftButton, p);
     } else {
         GTWidget::setFocus(os, comboBox);
@@ -114,7 +114,7 @@ void GTComboBox::setCurrentTextWithKeyboard(GUITestOpStatus &os, QComboBox *comb
     GTGlobals::sleep();
 
     for (auto c : text) {
-        GTKeyboardDriver::keyClick(c.toLatin1());
+        GTKeyboardDriver::keyClick(c.toLatin1(), Qt::NoModifier, false);
         GTGlobals::sleep(200);
     }
 
