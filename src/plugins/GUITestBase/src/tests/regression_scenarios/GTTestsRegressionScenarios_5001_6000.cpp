@@ -4712,33 +4712,34 @@ GUI_TEST_CLASS_DEFINITION(test_5854) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5855) {
-    //1. Open "data/samples/CLUSTALW/COI.aln".
+    // Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //2. Switch on the collapsing mode.
+    // Switch on the collapsing mode.
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
-    //3. Select "Mecopoda_elongata__Ishigaki__J" sequence
-    //3. Press the Shift key
+    // Expected state: a collapsing group appears.
+    GTUtilsMSAEditorSequenceArea::isCollapsed(os, "Mecopoda_elongata__Sumatra_");
+
+    // Select three rows: the header row of the collapsed group, the row above it and the row below it.
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Conocephalus_percaudata");
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_elongata__Ishigaki__J");
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_sp.__Malaysia_");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
-    MSAEditorSequenceArea *seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    MaEditorSelection sel = seqArea->getSelection();
-    int index = seqArea->getRowIndex(sel.y()) + 1;
+    // Click the arrow nearby the group header row to expand the collapsed group.
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
 
-    //Expected:: current index 13
-    CHECK_SET_ERR(index == 13, QString("Unexpected index, expected: 14, current: %1").arg(index));
-    GTGlobals::sleep();
+    // Expected state: the group is expanded, four rows are selected: three rows that you've selected manually and the row that was hidden.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 12, 604, 4));
 
-    //2. Switch off the collapsing mode.
-    GTUtilsMsaEditor::toggleCollapsingMode(os);
+    // Press the up arrow key on the keyboard.
+    GTKeyboardDriver::keyClick(Qt::Key_Up);
 
-    CHECK_SET_ERR(index == 13, QString("Unexpected index, expected: 14, current: %1").arg(index));
-    GTGlobals::sleep();
+    // Expected state: the selection is moved up to one row, it's height is still 4.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 11, 604, 4));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5872) {
