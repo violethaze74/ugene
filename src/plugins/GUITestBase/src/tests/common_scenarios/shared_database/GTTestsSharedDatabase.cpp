@@ -2336,11 +2336,7 @@ GUI_TEST_CLASS_DEFINITION(del_test_0001) {
 
     // Check that item is in the recycle bin.
     QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, rbItem));
-    GTMouseDriver::doubleClick();
-
     GTUtilsProjectTreeView::checkItem(os, "dt0001_human_T1", rbItem);
-
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
