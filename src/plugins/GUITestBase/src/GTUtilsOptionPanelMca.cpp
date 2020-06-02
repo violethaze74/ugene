@@ -55,6 +55,7 @@ const QMap<GTUtilsOptionPanelMca::Tabs, QString> GTUtilsOptionPanelMca::innerWid
 
 #define GT_METHOD_NAME "toggleTab"
 void GTUtilsOptionPanelMca::toggleTab(HI::GUITestOpStatus &os, Tabs tab) {
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
     GTWidget::click(os, GTWidget::findWidget(os, tabsNames[tab]));
     GTGlobals::sleep(500);
 }

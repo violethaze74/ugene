@@ -970,6 +970,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //Expected state : "Show/Hide Chromatograms" button is in pressed state
     //All reads are expanded, chromatograms if any are displayed for each reads
@@ -1007,6 +1008,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select "SZYD_Cas9_5B71" read
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
@@ -1153,6 +1155,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select "SZYD_Cas9_5B71" read
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
@@ -1251,6 +1254,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select "SZYD_Cas9_CR50" read
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
@@ -1330,6 +1334,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select "SZYD_Cas9_CR50" read
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
@@ -1409,6 +1414,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_3) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select any symbol  in the "SZYD_Cas9_CR50" read
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(5500, 2));
@@ -1436,6 +1442,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     QScrollBar *hscroll = GTWidget::findExactWidget<QScrollBar *>(os, "horizontal_names_scroll");
     bool isHidden = hscroll->isHidden();
@@ -1470,6 +1477,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. In Option panelSelect consensuns mode = Strict
     GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
@@ -1529,6 +1537,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Push "Ctrl+Alt+v"
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
@@ -1569,6 +1578,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. In Option panelSelect consensuns mode = Strict
     GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
@@ -1679,6 +1689,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
 #ifndef Q_OS_LINUX
     //In linux, OS intercept this hotkey
@@ -2407,7 +2418,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
@@ -3417,9 +3428,9 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     // chrom show/hide
-    GTUtilsMcaEditor::getActiveMcaEditorWindow(os);
     QAbstractButton *showChromsButton = GTAction::button(os, "chromatograms");
     CHECK_SET_ERR(showChromsButton != NULL, "show/hide chromatograms button was not found");
     GTWidget::click(os, showChromsButton);
