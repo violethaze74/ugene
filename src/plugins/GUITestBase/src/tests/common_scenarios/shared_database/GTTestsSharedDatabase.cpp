@@ -1050,7 +1050,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0001) {
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, newFolderName);
     QModelIndex newFolderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, newFolderPath);
 
-    QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, fileDocName);
+    QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << fileDocName);
     QModelIndex objectDocIndex = GTUtilsProjectTreeView::findIndex(os, fileObjectName, fileDocIndex);
 
     GTUtilsProjectTreeView::dragAndDrop(os, objectDocIndex, newFolderItemIndex);

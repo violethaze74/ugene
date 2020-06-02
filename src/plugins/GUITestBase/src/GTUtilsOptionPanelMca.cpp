@@ -29,6 +29,7 @@
 #include <QLabel>
 #include <QToolButton>
 
+#include "GTUtilsMcaEditor.h"
 #include "GTUtilsOptionPanelMca.h"
 
 namespace U2 {
