@@ -926,7 +926,7 @@ GUI_TEST_CLASS_DEFINITION(test_2100_2) {
 GUI_TEST_CLASS_DEFINITION(test_2124) {
     // 1. Open "data/samples/CLUSTALW/ty3.aln.gz".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "ty3.aln.gz");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Call the context menu on the sequence area.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
@@ -936,12 +936,14 @@ GUI_TEST_CLASS_DEFINITION(test_2124) {
                                                                         << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::amino));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
 
     // 3. Create a new color scheme for the amino alphabet.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes" << colorSchemeName));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2091) {
