@@ -232,8 +232,8 @@ BlastNPlusSupportTask *BlastAndSwReadTask::getBlastTask() {
 
     settings.programName = "blastn";
     settings.databaseNameAndPath = dbPath;
-    settings.megablast = true;
-    settings.wordSize = 28;
+    //settings.megablast = true;
+    settings.wordSize = 11;
     settings.xDropoffGA = 20;
     settings.xDropoffUnGA = 10;
     settings.xDropoffFGA = 100;
