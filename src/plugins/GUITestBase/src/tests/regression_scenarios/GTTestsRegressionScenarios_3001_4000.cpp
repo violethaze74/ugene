@@ -4420,8 +4420,7 @@ GUI_TEST_CLASS_DEFINITION(test_3687_1) {
     //Expected: the finishes with error about sequences amount.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsNotifications::waitForNotification(os, true, "contains too many sequences to be displayed");
-    GTUtilsProject::openFile(os, testDir + "_common_data/fastq/lymph.fastq");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProject::openFile(os, testDir + "_common_data/fastq/lymph_min.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -4433,8 +4432,7 @@ GUI_TEST_CLASS_DEFINITION(test_3687_2) {
     //Expected: the finishes with error about sequences amount.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsNotifications::waitForNotification(os, true, "contains too many sequences to be displayed");
-    GTUtilsProject::openFile(os, testDir + "_common_data/fastq/lymph.fastq");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProject::openFile(os, testDir + "_common_data/fastq/lymph_min.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
