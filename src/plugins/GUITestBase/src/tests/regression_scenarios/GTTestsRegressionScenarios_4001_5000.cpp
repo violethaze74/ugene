@@ -446,11 +446,13 @@ GUI_TEST_CLASS_DEFINITION(test_4034) {
 
 GUI_TEST_CLASS_DEFINITION(test_4035) {
     //1. Open "data/samples/CLUSTALW/COI.aln".
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //2. Click the "Build tree" button on the main toolbar.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFillerPhyML(os, false, 10));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
+
     //3. Select the "PhyML" tool, set "Bootstrap" option to 10, build the tree
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
