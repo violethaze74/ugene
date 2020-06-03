@@ -798,7 +798,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0003) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "pt0003_new_name"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep(2000); // wait for some time.
+    GTGlobals::sleep(2000);    // wait for some time.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     subfolderItem = model->index(0, 0, dirItem);
@@ -991,18 +991,18 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0008) {
     GTLogTracer lt;
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/", "proj_test_0008");
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/proj_test_0008", "abcdefgh");
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/proj_test_0008", "ABCDEFGH");
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/proj_test_0008", "AbCdEfGh");
+    QString testFolder = GTUtilsSharedDatabaseDocument::genTestFolderName("proj_test_0008");
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/", testFolder);
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/" + testFolder, "abcdefgh");
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/" + testFolder, "ABCDEFGH");
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/" + testFolder, "AbCdEfGh");
 
     GTGlobals::sleep(10000);
 
-    const QStringList expectedItems = QStringList() << "/proj_test_0008/abcdefgh"
-                                                    << "/proj_test_0008/ABCDEFGH"
-                                                    << "/proj_test_0008/AbCdEfGh";
-    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, "/proj_test_0008", expectedItems);
+    const QStringList expectedItems = QStringList() << "/" + testFolder + "/abcdefgh"
+                                                    << "/" + testFolder + "/ABCDEFGH"
+                                                    << "/" + testFolder + "/AbCdEfGh";
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, "/" + testFolder, expectedItems);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2322,8 +2322,8 @@ GUI_TEST_CLASS_DEFINITION(del_test_0001) {
 
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
-    QModelIndex folderItem =GTUtilsProjectTreeView::findIndex(os, "del_tests");
-    QModelIndex originalItem =GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1", folderItem);
+    QModelIndex folderItem = GTUtilsProjectTreeView::findIndex(os, "del_tests");
+    QModelIndex originalItem = GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1", folderItem);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, originalItem));
     GTMouseDriver::doubleClick();
 
