@@ -30,6 +30,10 @@ if (!useWebKit()) {
     DEFINES += HI_EXCLUDED
     LIBS -= -lQSpec$$D
 }
+if (exclude_list_enabled()) {
+    DEFINES += HI_EXCLUDED
+    LIBS -= -lQSpec$$D
+}
 
 DESTDIR = ../$$out_dir()
 TARGET = ugeneui$$D
