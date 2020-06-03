@@ -72,6 +72,7 @@ public:
 
     static void callContextMenu(HI::GUITestOpStatus &os, const QString &itemName);
     static void callContextMenu(HI::GUITestOpStatus &os, const QString &itemName, const QString &parentName);
+    static void callContextMenu(HI::GUITestOpStatus &os, const QModelIndex &itemIndex);
 
     static QTreeView *getTreeView(HI::GUITestOpStatus &os);
     static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());

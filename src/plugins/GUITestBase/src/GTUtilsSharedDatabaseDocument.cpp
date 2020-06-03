@@ -67,23 +67,21 @@ static QString getSuiteFolderPrefix() {
  * This helps to limit unstable drag & drop + scroll behavior when project tree is too large.
  */
 static void removeTempContentFromOtherTests(HI::GUITestOpStatus &os, Document *document) {
+    QModelIndexList documentItems = GTUtilsProjectTreeView::findIndecies(os, document->getName(), QModelIndex(), 0, GTGlobals::FindOptions(false));
+    if (documentItems.isEmpty()) {
+        return;
+    }
+    QModelIndex documentItem = documentItems[0];
     QString tmpFolderPrefix = getSuiteFolderPrefix();
-    DocumentFolders documentFolders;
-    U2OpStatusImpl u2Os;
-    documentFolders.init(document, u2Os);
-    CHECK_SET_ERR(!u2Os.hasError(), "folders.init failed: " + u2Os.getError());
-    QList<Folder *> topLevelFolders = documentFolders.getSubFolders(U2ObjectDbi::ROOT_FOLDER);
-    foreach (Folder *folder, topLevelFolders) {
-        QString folderName = folder->getFolderName();
-        if (folderName.startsWith(tmpFolderPrefix)) {
-            GTUtilsProjectTreeView::scrollTo(os, folderName);
-
-//            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-            GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove selected items", GTGlobals::UseMouse));
-            GTUtilsProjectTreeView::callContextMenu(os, folderName);
-            GTThread::waitForMainThread();
-            GTUtilsDialog::waitAllFinished(os);
-        }
+    GTGlobals::FindOptions options;
+    options.matchPolicy = Qt::MatchStartsWith;
+    options.failIfNotFound = false;
+    QModelIndexList tmpFoldersToDelete = GTUtilsProjectTreeView::findIndecies(os, tmpFolderPrefix, documentItem, 1, options);
+    foreach (const QModelIndex &index, tmpFoldersToDelete) {
+        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove selected items", GTGlobals::UseMouse));
+        GTUtilsProjectTreeView::callContextMenu(os, index);
+        GTThread::waitForMainThread();
+        GTUtilsDialog::waitAllFinished(os);
     }
 }
 

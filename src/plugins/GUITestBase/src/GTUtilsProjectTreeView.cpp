@@ -274,6 +274,15 @@ void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QString 
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "callContextMenuByIndex"
+void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QModelIndex &itemIndex) {
+    scrollToIndexAndMakeExpanded(os, getTreeView(os), itemIndex);
+    GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
+    GTMouseDriver::click(Qt::RightButton);
+}
+#undef GT_METHOD_NAME
+
+
 #define GT_METHOD_NAME "getTreeWidget"
 QTreeView *GTUtilsProjectTreeView::getTreeView(HI::GUITestOpStatus &os) {
     openView(os);
