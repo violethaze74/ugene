@@ -732,7 +732,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Replace subsequence..."));
     GTUtilsNotifications::waitForNotification(os, false);
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMdi::activateWindow(os, "qulifier_rebuilding [s] human_T1");
