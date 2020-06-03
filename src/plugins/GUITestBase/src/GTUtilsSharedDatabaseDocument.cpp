@@ -71,22 +71,28 @@ static void removeTempContentFromOtherTests(HI::GUITestOpStatus &os, Document *d
     if (documentItems.isEmpty()) {
         return;
     }
+
     QModelIndex documentItem = documentItems[0];
     QString tmpFolderPrefix = getSuiteFolderPrefix();
     int maxToRemove = 4;    // if there are too many documents to remove the test may fail by timeout.
-    for (int i = 0; i < maxToRemove; i++) {
-        GTGlobals::FindOptions options;
-        options.matchPolicy = Qt::MatchStartsWith;
-        options.failIfNotFound = false;
-        QModelIndexList tmpFoldersToDelete = GTUtilsProjectTreeView::findIndecies(os, tmpFolderPrefix, documentItem, 1, options);
-        if (tmpFoldersToDelete.isEmpty()) {
+    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    for (int item = 0; item < maxToRemove; item++) {
+        bool isRemoved = false;
+        for (int i = 0; i < treeView->model()->rowCount(documentItem); i++) {
+            QModelIndex itemIndex = treeView->model()->index(i, 0, documentItem);
+            QString itemName = itemIndex.data(Qt::DisplayRole).toString();
+            if (itemName.startsWith(tmpFolderPrefix)) {
+                GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove selected items", GTGlobals::UseMouse));
+                GTUtilsProjectTreeView::callContextMenu(os, itemIndex);
+                GTThread::waitForMainThread();
+                GTUtilsDialog::waitAllFinished(os);
+                isRemoved = true;
+                break;
+            }
+        }
+        if (!isRemoved) {
             break;
         }
-        const QModelIndex &index = tmpFoldersToDelete[0];
-        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove selected items", GTGlobals::UseMouse));
-        GTUtilsProjectTreeView::callContextMenu(os, index);
-        GTThread::waitForMainThread();
-        GTUtilsDialog::waitAllFinished(os);
     }
 }
 
