@@ -647,7 +647,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1_neg) {
     GTUtilsDialog::waitForDialog(os, new ReplaceSubsequenceDialogFiller(os, "AAAAA", true));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Replace subsequence..."));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     checkQualifierRegionsShift(os, 0);
