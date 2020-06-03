@@ -5164,7 +5164,7 @@ GUI_TEST_CLASS_DEFINITION(test_3788) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Remove subsequence..."));
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "2..199950"));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QList<U2Region> annotatedRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
