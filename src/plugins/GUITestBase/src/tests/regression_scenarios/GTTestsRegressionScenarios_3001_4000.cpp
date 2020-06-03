@@ -1644,7 +1644,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     // Hide the chromatogram.
     GTWidget::click(os, GTWidget::findWidget(os, "CHROMA_ACTION"));
 
-    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "single_sequence_view_splitter"));
+    QSplitter *splitter = qobject_cast<QSplitter *>(GTWidget::findWidget(os, "single_sequence_view_splitter"));
     CHECK_SET_ERR(splitter != nullptr, "Splitter was not found");
     GTSplitter::moveHandle(os, splitter, graphView->height() / 2, 2);
     GTThread::waitForMainThread();
@@ -4536,22 +4536,19 @@ GUI_TEST_CLASS_DEFINITION(test_3702) {
     // Expected state: sequence view is opened
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     GTUtilsMdi::closeWindow(os, "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
 
-    QWidget *welcomePage = GTUtilsMdi::findWindow(os, "Start Page");
-    CHECK_SET_ERR(welcomePage != NULL, "WelcomePage widget not found");
-    GTWidget::click(os, welcomePage);
-
-    QPoint p = AppContext::getMainWindow()->getQMainWindow()->geometry().center();
+    GTUtilsMdi::checkWindowIsActive(os, "Start Page");
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa");
-    CHECK_SET_ERR(idx.isValid(), "Index is invalid!");
-    GTMouseDriver::dragAndDrop(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"), p);
+    QPoint centerOfWelcomePage = AppContext::getMainWindow()->getQMainWindow()->geometry().center();
+    GTMouseDriver::dragAndDrop(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"), centerOfWelcomePage);
 
-    QWidget *wgt = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(wgt != NULL, "ActiveWindow is NULL");
-    CHECK_SET_ERR(wgt->windowTitle() == "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)", "human_T1.fa should be opened!");
+    QWidget *window = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    CHECK_SET_ERR(window->windowTitle() == "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)", "human_T1.fa should be opened!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3710) {
