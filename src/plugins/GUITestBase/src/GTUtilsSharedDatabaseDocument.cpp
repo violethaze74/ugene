@@ -73,11 +73,16 @@ static void removeTempContentFromOtherTests(HI::GUITestOpStatus &os, Document *d
     }
     QModelIndex documentItem = documentItems[0];
     QString tmpFolderPrefix = getSuiteFolderPrefix();
-    GTGlobals::FindOptions options;
-    options.matchPolicy = Qt::MatchStartsWith;
-    options.failIfNotFound = false;
-    QModelIndexList tmpFoldersToDelete = GTUtilsProjectTreeView::findIndecies(os, tmpFolderPrefix, documentItem, 1, options);
-    foreach (const QModelIndex &index, tmpFoldersToDelete) {
+    int maxToRemove = 4;    // if there are too many documents to remove the test may fail by timeout.
+    for (int i = 0; i < maxToRemove; i++) {
+        GTGlobals::FindOptions options;
+        options.matchPolicy = Qt::MatchStartsWith;
+        options.failIfNotFound = false;
+        QModelIndexList tmpFoldersToDelete = GTUtilsProjectTreeView::findIndecies(os, tmpFolderPrefix, documentItem, 1, options);
+        if (tmpFoldersToDelete.isEmpty()) {
+            break;
+        }
+        const QModelIndex &index = tmpFoldersToDelete[0];
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove selected items", GTGlobals::UseMouse));
         GTUtilsProjectTreeView::callContextMenu(os, index);
         GTThread::waitForMainThread();

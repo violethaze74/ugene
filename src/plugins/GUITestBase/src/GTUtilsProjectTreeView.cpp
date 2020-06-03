@@ -276,12 +276,14 @@ void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QString 
 
 #define GT_METHOD_NAME "callContextMenuByIndex"
 void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QModelIndex &itemIndex) {
-    scrollToIndexAndMakeExpanded(os, getTreeView(os), itemIndex);
+    GT_CHECK(itemIndex.isValid(), "Item index is not valid!");
+    QTreeView *treeView = getTreeView(os);
+    GT_CHECK(treeView != nullptr, "Tree widget is NULL");
+    scrollToIndexAndMakeExpanded(os, treeView, itemIndex);
     GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
     GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME
-
 
 #define GT_METHOD_NAME "getTreeWidget"
 QTreeView *GTUtilsProjectTreeView::getTreeView(HI::GUITestOpStatus &os) {
@@ -355,7 +357,7 @@ QModelIndex GTUtilsProjectTreeView::findIndex(GUITestOpStatus &os, const QString
 #define GT_METHOD_NAME "findIndecies"
 QModelIndexList GTUtilsProjectTreeView::findIndecies(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, int parentDepth, const GTGlobals::FindOptions &options) {
     QTreeView *treeView = getTreeView(os);
-    GT_CHECK_RESULT(treeView != NULL, "Tree widget is NULL", QModelIndexList());
+    GT_CHECK_RESULT(treeView != nullptr, "Tree widget is NULL", QModelIndexList());
 
     return findIndecies(os, treeView, itemName, parent, parentDepth, options);
 }

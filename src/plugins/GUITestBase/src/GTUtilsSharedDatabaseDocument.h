@@ -32,7 +32,7 @@ class Document;
 
 class GTUtilsSharedDatabaseDocument {
 public:
-    static U2::Document *connectToTestDatabase(HI::GUITestOpStatus &os, bool isRemoveTempContent = true);
+    static U2::Document *connectToTestDatabase(HI::GUITestOpStatus &os, bool isRemoveTempContent = false);
     static U2::Document *connectToUgenePublicDatabase(HI::GUITestOpStatus &os);
     static Document *getDatabaseDocumentByName(HI::GUITestOpStatus &os, const QString &name);
 
