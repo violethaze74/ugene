@@ -306,16 +306,25 @@ void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus &os, int position) {
 #define GT_METHOD_NAME "clickMouseOnTheSafeSequenceViewArea"
 void GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea(HI::GUITestOpStatus &os) {
     QWidget* panOrDetView = getPanOrDetView(os);
+    GT_CHECK(panOrDetView != nullptr, "No pan or det-view found!");
     GTMouseDriver::moveTo(panOrDetView->mapToGlobal(panOrDetView->rect().center()));
     GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "clickMouseOnTheSafeSequenceViewArea"
+void GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(HI::GUITestOpStatus &os, int number) {
+    QWidget* panOrDetView = getPanOrDetView(os, number);
+    GT_CHECK(panOrDetView != nullptr, "No pan or det-view found!");
+    GTWidget::click(os, panOrDetView, Qt::RightButton);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getPanOrDetView"
-QWidget* GTUtilsSequenceView::getPanOrDetView(HI::GUITestOpStatus &os) {
-    QWidget *panOrDetView = getDetViewByNumber(os, 0, GTGlobals::FindOptions(false));
+QWidget* GTUtilsSequenceView::getPanOrDetView(HI::GUITestOpStatus &os, int number) {
+    QWidget *panOrDetView = getDetViewByNumber(os, number, GTGlobals::FindOptions(false));
     if (panOrDetView == nullptr) {
-        panOrDetView = getPanViewByNumber(os, 0);
+        panOrDetView = getPanViewByNumber(os, number);
     }
     return panOrDetView;
 }

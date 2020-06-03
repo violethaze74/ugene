@@ -2271,7 +2271,7 @@ GUI_TEST_CLASS_DEFINITION(test_0846) {
                                                                               << "Export annotations...",
                                                             GTGlobals::UseKey));
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "test_0846.csv", ExportAnnotationsFiller::csv));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTGlobals::sleep();
