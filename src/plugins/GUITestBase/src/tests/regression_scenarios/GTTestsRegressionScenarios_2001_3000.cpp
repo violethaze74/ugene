@@ -5673,21 +5673,30 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
         }
     };
 
+    //    2. Click on the Analyze->Query NCBI BLAST database context menu
+    //    3. Click on the Search button
+    //    Expected state: the task starts with no errors
+    //    Current state: the following error appears: 'RemoteBLASTTask' task failed: Database couldn't prepare the response
     GTUtilsDialog::waitForDialog(os, new RemoteBLASTDialogFiller(os, new Scenario));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Query NCBI BLAST database"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "render_area_virus_X"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Click on the Analyze->Query NCBI BLAST database context menu
-    //    3. Click on the Search button
-    //    Expected state: the task has been finished without errors and blast result appears
-    //    Current state: the following error appears: 'RemoteBLASTTask' task failed: Database couldn't prepare the response
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ren"
+                                                         "der_area_virus_X"));
+    QString blastTaskName = "RemoteBLASTTask";
+    bool isTaskStarted = GTUtilsTaskTreeView::checkTask(os, blastTaskName);
+    GTGlobals::sleep(10000);
+
+    // Cancel the task. If not cancelled the run may last too long to trigger timeout in nightly tests.
+    bool isTaskRunning = GTUtilsTaskTreeView::checkTask(os, blastTaskName);
+    if (isTaskRunning) {
+        GTUtilsTaskTreeView::cancelTask(os, blastTaskName);
+    }
+
     GTUtilsLog::check(os, l);
 }
 
