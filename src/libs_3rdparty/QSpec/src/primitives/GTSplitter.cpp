@@ -43,7 +43,7 @@ QRect GTSplitter::getHandleRect(GUITestOpStatus &os, QSplitter *splitter, int ha
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveHandle"
-void GTSplitter::moveHandle(GUITestOpStatus &os, QSplitter *splitter, int pixels, int handleNumber) {
+void (GUITestOpStatus &os, QSplitter *splitter, int pixels, int handleNumber) {
     QRect handleRect = getHandleRect(os, splitter, handleNumber);
     QPoint mouseOffset(0, 0);
     if (splitter->orientation() == Qt::Vertical) {
