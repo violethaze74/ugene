@@ -1193,15 +1193,13 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rulers"
                                                                         << "Create new ruler"));
     GTUtilsDialog::waitForDialog(os, new CreateRulerDialogFiller(os, "name", 1000));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
-    GTGlobals::sleep(500);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     QImage second = GTWidget::getImage(os, panView);
     CHECK_SET_ERR(init != second, "ruler not created");
     //    Hide ruler
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rulers"
                                                                         << "Show Custom Rulers"));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
-    GTGlobals::sleep(500);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     //    Set focus on tree
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
     GTMouseDriver::click();
@@ -1210,7 +1208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     //    Remove ruler
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Rulers..."
                                                                               << "Remove 'name'"));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Rulers"
                                                                         << "Show Custom Rulers",
@@ -1219,8 +1217,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Rulers"
                                                                         << "Remove 'name'",
                                                       PopupChecker::NotExists));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
-    GTGlobals::sleep(1000);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0035) {
