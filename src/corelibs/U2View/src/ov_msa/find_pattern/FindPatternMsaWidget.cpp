@@ -155,6 +155,7 @@ FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, bool isSearchIn
 
     initLayout();
     connectSlots();
+    updateActions();
 
     checkStateAndUpdateStatus();
 
@@ -326,8 +327,10 @@ void FindPatternMsaWidget::connectSlots() {
     connect(editEnd, SIGNAL(textChanged(QString)), SLOT(sl_onRegionValueEdited()));
     connect(boxMaxResult, SIGNAL(valueChanged(int)), SLOT(sl_onMaxResultChanged(int)));
     connect(removeOverlapsBox, SIGNAL(stateChanged(int)), SLOT(sl_validateStateAndStartNewSearch()));
-    connect(msaEditor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), this, SLOT(sl_onMsaModified()));
-    connect(msaEditor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), this, SLOT(sl_onMsaModified()));
+    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    connect(msaObject, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), this, SLOT(sl_onMsaModified()));
+    connect(msaObject, SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), this, SLOT(sl_onMsaModified()));
+    connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_msaStateChanged()));
     connect(prevPushButton, SIGNAL(clicked()), SLOT(sl_prevButtonClicked()));
     connect(nextPushButton, SIGNAL(clicked()), SLOT(sl_nextButtonClicked()));
     connect(groupResultsButton, SIGNAL(clicked()), SLOT(sl_groupResultsButtonClicked()));
@@ -374,7 +377,13 @@ void FindPatternMsaWidget::sl_onRegionValueEdited() {
     sl_validateStateAndStartNewSearch();
 }
 
+void FindPatternMsaWidget::updateActions() {
+    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    groupResultsButton->setEnabled(!msaObject->isStateLocked());
+}
+
 void FindPatternMsaWidget::updateLayout() {
+    updateActions();
     algorithmSubgroup->setVisible(!isSearchInNamesMode);
     searchInSubgroup->setVisible(!isSearchInNamesMode);
     otherSettingsSubgroup->setVisible(!isSearchInNamesMode);
@@ -1138,6 +1147,10 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
 bool FindPatternMsaWidget::isAmino() const {
     const DNAAlphabet *alphabet = msaEditor->getMaObject()->getAlphabet();
     return alphabet->isAmino();
+}
+
+void FindPatternMsaWidget::sl_msaStateChanged() {
+    updateActions();
 }
 
 FindPatternWidgetResult::FindPatternWidgetResult(qint64 rowId, int viewRowIndex, const U2Region &region)

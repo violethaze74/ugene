@@ -78,6 +78,7 @@ private slots:
 
     /** A sequence part was added, removed or replaced */
     void sl_onMsaModified();
+    void sl_msaStateChanged();
 
     void sl_onSelectedRegionChanged(const MaEditorSelection &currentSelection, const MaEditorSelection &prev);
     void sl_prevButtonClicked();
@@ -90,6 +91,7 @@ private slots:
     void sl_validateStateAndStartNewSearch(bool activatedByOutsideChanges = false);
 
 private:
+    void updateActions();
     void initLayout();
     void initAlgorithmLayout();
     void initRegionSelection();
