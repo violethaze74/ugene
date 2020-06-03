@@ -1213,7 +1213,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Rulers"
                                                                         << "Show Custom Rulers",
                                                       PopupChecker::IsDisabled));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Rulers"
                                                                         << "Remove 'name'",
                                                       PopupChecker::NotExists));
