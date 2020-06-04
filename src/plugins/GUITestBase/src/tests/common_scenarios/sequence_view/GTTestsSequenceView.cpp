@@ -1699,25 +1699,20 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
 
 GUI_TEST_CLASS_DEFINITION(test_0052_1) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     DetView *det = GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView();
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image1 = GTWidget::getImage(os, det);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
-    GTGlobals::sleep(2000);
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image2 = GTWidget::getImage(os, det);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "do_not_translate_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
-    GTGlobals::sleep(2000);
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image3 = GTWidget::getImage(os, det);
 
     CHECK_SET_ERR(image1 != image2, "Image was not changed");
