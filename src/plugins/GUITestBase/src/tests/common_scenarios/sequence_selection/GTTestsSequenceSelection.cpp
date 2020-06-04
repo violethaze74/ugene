@@ -73,7 +73,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0001) {
 GUI_TEST_CLASS_DEFINITION(double_click_test_0002) {
     //1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Double - click on the first CDS annotation in the Annotations Editor(the annotation location is 1042..2658).
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
@@ -96,7 +96,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0002) {
                << "Copy annotation direct strand"
                << "Copy annotation amino acids";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, itemsNames, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Ctrl + C(Cmd + C on Mac OS X) keyboard shortcut is shown nearby the "Copy sequence" item.
     QKeySequence check_ks = QKeySequence(QKeySequence(Qt::CTRL | Qt::Key_C));
@@ -114,7 +114,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0002) {
 
     //6. Click "Copy sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, menuPath << "Copy selected sequence"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     menuPath.removeOne("Copy selected sequence");
 
