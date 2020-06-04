@@ -967,14 +967,13 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
 GUI_TEST_CLASS_DEFINITION(test_0031_1) {
     //    Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    Select some redion
     GTUtilsSequenceView::selectSequenceRegion(os, 10, 20);
     //    Use context menu {Copy->Copy reverse complement sequence}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy reverse complement sequence"));
-
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString clipboardtext = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardtext == "AACTTTGGTGA", "Unexpected reverse complement: " + clipboardtext)
