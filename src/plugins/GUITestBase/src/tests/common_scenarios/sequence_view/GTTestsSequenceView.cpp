@@ -2442,7 +2442,7 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     // Expected state: no annotations on zero position
 
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     const QStringList defaultEnzymes = QStringList() << "ClaI"
                                                      << "DraI"
@@ -2450,8 +2450,7 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 4200, 10));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI", GTGlobals::FindOptions(false)) == NULL, "ClaI is unexpectedly found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI", GTGlobals::FindOptions(false)) == NULL, "DraI is unexpectedly found");
@@ -2461,8 +2460,7 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 3900, 300, 4300, 10));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", GTGlobals::FindOptions(false)) == NULL, "EcoRI is unexpectedly found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI") != NULL, "ClaI is unexpectedly not found");
