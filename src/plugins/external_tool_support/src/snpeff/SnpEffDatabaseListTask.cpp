@@ -37,19 +37,24 @@ namespace U2 {
 SnpEffDatabaseListTask::SnpEffDatabaseListTask()
     : ExternalToolSupportTask(tr("SnpEff Database List task"), TaskFlags_FOSE_COSC) {
     snpEffVersion = AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID)->getVersion();
-    dbListFilePath = AppContext::getSettings()->getValue(SNPEFF_DATABASE_LIST_SETTINGS + snpEffVersion, QVariant(""), true).toString();
+    dbListFilePath = qgetenv("UGENE_SNPEFF_DB_LIST");
+    if (dbListFilePath.isEmpty()) {
+        dbListFilePath = AppContext::getSettings()->getValue(SNPEFF_DATABASE_LIST_SETTINGS + snpEffVersion, QVariant(""), true).toString();
+    }
 }
 
 void SnpEffDatabaseListTask::prepare() {
     if (!dbListFilePath.isEmpty() && QFileInfo(dbListFilePath).size() != 0) {
         return;
     }
+    dbListFilePath = qgetenv("UGENE_SNPEFF_DB_LIST");
+    if (dbListFilePath.isEmpty()) {
+        QString iniFile = AppContext::getSettings()->fileName();
+        dbListFilePath = QFileInfo(iniFile).absoluteDir().absolutePath();
+        dbListFilePath += QString(QDir::separator()) + "SnpEff_DB_" + snpEffVersion + ".list";
+    }
 
-    QString iniFile = AppContext::getSettings()->fileName();
-    dbListFilePath = QFileInfo(iniFile).absoluteDir().absolutePath();
-    dbListFilePath += QString(QDir::separator()) + "SnpEff_DB_" + snpEffVersion + ".list";
-
-    const QStringList args("databases");
+    QStringList args("databases");
     ExternalToolRunTask *etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(), "", QStringList(), QString(), true);
     setListenerForTask(etTask);
     etTask->setStandartOutputFile(dbListFilePath);
