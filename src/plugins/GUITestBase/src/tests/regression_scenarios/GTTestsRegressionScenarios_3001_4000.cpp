@@ -1913,17 +1913,22 @@ GUI_TEST_CLASS_DEFINITION(test_3287) {
 GUI_TEST_CLASS_DEFINITION(test_3288) {
     //1. Open "data/samples/CLUSTALW/HIV-1.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "HIV-1.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //2. Click the "Build tree" button on the main toolbar.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFillerPhyML(os, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
+
     //3. Select the "PhyML" tool, set "Equilibrium frequencies" option to "opti,ized", build the tree
-    GTGlobals::sleep(500);
     QProgressBar *taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
-    QString text = taskProgressBar->text();
-    CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
+    int percent = 0;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && percent == 0; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        percent = taskProgressBar->text().replace("%", "").toInt();
+        CHECK_SET_ERR(percent >= 0 && percent <= 100, "Percent must be within 0 and 100%");
+    }
+    GTUtilsTaskTreeView::cancelTask(os, "Calculating Phylogenetic Tree");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000 * 150);
     //Expected state: the task progress is correct.
 }
 
