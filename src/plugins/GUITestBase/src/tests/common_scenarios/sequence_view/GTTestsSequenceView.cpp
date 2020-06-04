@@ -1679,23 +1679,18 @@ GUI_TEST_CLASS_DEFINITION(test_0051) {
 
 GUI_TEST_CLASS_DEFINITION(test_0052) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     DetView *det = GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView();
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image1 = GTWidget::getImage(os, det);
 
     GTWidget::click(os, GTAction::button(os, "complement_action"));
-    GTGlobals::sleep(1000);
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image2 = GTWidget::getImage(os, det);
 
     GTWidget::click(os, GTAction::button(os, "complement_action"));
-    GTGlobals::sleep(1000);
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image3 = GTWidget::getImage(os, det);
 
     CHECK_SET_ERR(image1 != image2, "Image was not changed");
