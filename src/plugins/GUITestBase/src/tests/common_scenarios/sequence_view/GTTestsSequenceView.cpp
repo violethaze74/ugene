@@ -1008,14 +1008,13 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2) {
 GUI_TEST_CLASS_DEFINITION(test_0031_3) {
     //    Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    Select annotation
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
     //    Use context menu {Copy->Copy reverse complement sequence}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "action_copy_annotation_sequence"));
-
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString clipboardtext = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardtext.startsWith("AATGAAAGAC"), "Unexpected reverse complement start: " + clipboardtext.left(10));
@@ -1025,8 +1024,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3) {
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 2, true);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "action_copy_annotation_sequence"));
-
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     clipboardtext = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardtext.startsWith("ATGGTAGCAG"), "Unexpected reverse complement for joined annotation start: " + clipboardtext.left(10));
