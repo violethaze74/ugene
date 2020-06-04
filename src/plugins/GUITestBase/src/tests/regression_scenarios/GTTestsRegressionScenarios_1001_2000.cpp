@@ -299,8 +299,7 @@ GUI_TEST_CLASS_DEFINITION(test_1003) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList(), new Scenario_test_1003()));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1011) {
