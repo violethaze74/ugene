@@ -2232,7 +2232,7 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     //    6. Expected state: exported image have the whole sequence in it and has the minimum size to fit the sequence (no extra white space)
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "fa1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     QWidget *showDetViewButton = GTWidget::findWidget(os, "show_hide_details_view");
     CHECK_SET_ERR(showDetViewButton != NULL, "Cannot find show_hide_details_view button");
