@@ -4548,7 +4548,6 @@ GUI_TEST_CLASS_DEFINITION(test_3702) {
 
     GTUtilsMdi::checkWindowIsActive(os, "Start Page");
 
-    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa");
     QPoint centerOfWelcomePage = AppContext::getMainWindow()->getQMainWindow()->geometry().center();
     GTMouseDriver::dragAndDrop(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"), centerOfWelcomePage);
 
