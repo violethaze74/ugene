@@ -2350,7 +2350,7 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
     //    Expected state: the result file contains the lines of the sequence started from the specified position, no extra empty space
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
     CHECK_SET_ERR(seqWgt != NULL, "Cannot find sequence widget");
