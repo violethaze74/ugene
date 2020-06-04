@@ -553,15 +553,14 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     //     Expected state: the sequence is circular - a few primers cover junction point
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "circular_primers.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
-
-    GTGlobals::sleep();
     QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
     CHECK_SET_ERR(pair1.contains(U2Region(139, 20)), "No 140..159 region");
     CHECK_SET_ERR(pair1.contains(U2Region(331, 20)), "No 332..351 region");
