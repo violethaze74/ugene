@@ -63,7 +63,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0000) {
     }
 
     if (modifiers != 0) {
-        uiLog.trace(QString("post_action_0000: next keyboard modifiers were pressed after the test: %1").arg(modifiers));
+        coreLog.info(QString("post_action_0000: next keyboard modifiers were pressed after the test: %1").arg(modifiers));
     }
 }
 
