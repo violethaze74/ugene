@@ -708,10 +708,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    4. Accept the dialog
     //    Expected state: no warning apeared, primers are located on selected region
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    ADVSingleSequenceWidget *wgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(wgt != NULL, "ADVSequenceWidget is NULL");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
@@ -719,10 +716,9 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     settings.start = 560;
     settings.end = 180;
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, GTWidget::findWidget(os, "det_view_Primers_DNA"), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTGlobals::sleep();
-
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
     CHECK_SET_ERR(pair1.contains(U2Region(160, 20)), "No 161..180 region");
     CHECK_SET_ERR(pair1.contains(U2Region(684, 20)), "No 685..704 region");
