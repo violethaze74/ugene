@@ -1545,7 +1545,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
 GUI_TEST_CLASS_DEFINITION(test_0047) {
     //    Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    Open CV
     GTUtilsCv::cvBtn::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
