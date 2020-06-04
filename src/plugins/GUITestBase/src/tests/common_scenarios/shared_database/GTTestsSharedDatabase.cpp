@@ -722,22 +722,14 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0001) {
     //Expected: the folder is expanded; there is one object: pt0001_human_T1.
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
 
     QModelIndex dirItem = GTUtilsProjectTreeView::findIndex(os, "proj_test_0001");
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    QAbstractItemModel *model = treeView->model();
-    CHECK_OP(os, );
-    CHECK_SET_ERR(3 == model->rowCount(dirItem), "Wrong child count");
+    GTUtilsProjectTreeView::checkItem(os, "pt0001_dir1", dirItem);
+    GTUtilsProjectTreeView::checkItem(os, "pt0001_dir3", dirItem);
 
-    GTUtilsProjectTreeView::findIndex(os, "pt0001_dir1");
-    QModelIndex dir2Item = GTUtilsProjectTreeView::findIndex(os, "pt0001_dir2");
-    GTUtilsProjectTreeView::findIndex(os, "pt0001_dir3");
-    CHECK_OP(os, );
-    CHECK_SET_ERR(1 == model->rowCount(dir2Item), "Wrong child count");
+    QModelIndex dir2Item = GTUtilsProjectTreeView::findIndex(os, "pt0001_dir2", dirItem);
+    GTUtilsProjectTreeView::checkItem(os, "pt0001_human_T1", dir2Item);
 
-    GTUtilsProjectTreeView::findIndex(os, "pt0001_human_T1");
-    CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -748,21 +740,21 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0002) {
     //Expected: the subfolder folder is created.
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
-    QAbstractItemModel *model = treeView->model();
+    CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
 
-    const QModelIndex parentDir = GTUtilsProjectTreeView::findIndex(os, "proj_test_0002");
-    CHECK_SET_ERR(0 == model->rowCount(parentDir), "Invalid child item count");
+    QModelIndex dirItem = GTUtilsProjectTreeView::findIndex(os, "proj_test_0002");
+    int childCount1 = treeView->model()->rowCount(dirItem);
+    CHECK_SET_ERR(childCount1 == 0, "Invalid child item count in proj_test_0002. Expected 0, got " + QString::number(childCount1));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__ADD_MENU << ACTION_PROJECT__CREATE_FOLDER));
     GTUtilsDialog::waitForDialog(os, new AddFolderDialogFiller(os, "pt0002_dir", GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "proj_test_0002"));
-    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsProjectTreeView::callContextMenu(os, dirItem);
 
-    CHECK_SET_ERR(1 == model->rowCount(parentDir), "Invalid child item count");
+    GTUtilsProjectTreeView::checkItem(os, "pt0002_dir", dirItem);
+    int childCount2 = treeView->model()->rowCount(dirItem);
+    CHECK_SET_ERR(childCount2 == 1, "Invalid child item count, expected 1, got " + QString::number(childCount2));
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
