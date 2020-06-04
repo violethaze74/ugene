@@ -2481,7 +2481,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     // Expected state: message box appears
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     class RegionSelectorChecker : public Filler {
     public:
@@ -2522,7 +2522,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new RegionSelectorChecker(os));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 }    // namespace GUITest_common_scenarios_sequence_view
