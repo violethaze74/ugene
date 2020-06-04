@@ -1065,15 +1065,17 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     //    Expected state: annotation table object name contain sequence name
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "sars.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 features"), "Object not found");
 
     GTFileDialog::openFile(os, testDir + "_common_data/gff/", "scaffold_90.gff");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features");
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
-    QWidget *sequence = GTUtilsSequenceView::getSeqWidgetByNumber(os);
+    QWidget *sequence = GTUtilsSequenceView::getPanOrDetView(os);
     CHECK_SET_ERR(sequence != NULL, "Sequence widget not found");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
@@ -1103,7 +1105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
 
     // GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_3.gtf");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 features"), "Object not found");
     CHECK_SET_ERR(!GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features"), "Object shound not be in the project");
 }
