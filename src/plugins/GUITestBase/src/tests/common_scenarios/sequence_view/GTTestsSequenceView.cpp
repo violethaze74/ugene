@@ -648,8 +648,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     Primer3DialogFiller::Primer3Settings settings;
     settings.resultsCount = 50;
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, wgt->getDetView(), Qt::RightButton);
-
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<U2Region> pair32 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 32  (0, 2)");
@@ -676,29 +675,23 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     //    Expected state: primers(left and right) are located on either side of junction point
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    ADVSingleSequenceWidget *wgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(wgt != NULL, "ADVSequenceWidget is NULL");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
 
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleZoomView"));
     GTWidget::click(os, toggleViewButton);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "560..743,1..180"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
-    GTWidget::click(os, wgt, Qt::RightButton, QPoint(10, 10));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTGlobals::sleep();
-
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
     CHECK_SET_ERR(pair1.contains(U2Region(160, 20)), "No 161..180 region");
     CHECK_SET_ERR(pair1.contains(U2Region(684, 20)), "No 685..704 region");
