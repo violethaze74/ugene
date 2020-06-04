@@ -532,7 +532,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
                                                   << "Copy amino acids"
                                                   << "Copy amino acids of complementary 5'-3' strand";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", enabledItemsNames, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList disabledItemsNames = QStringList() << "Copy annotation direct strand"
@@ -540,7 +540,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
                                                    << "Copy annotation amino acids"
                                                    << "Copy annotation amino acids of complementary 5'-3' strand";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", disabledItemsNames, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Ctrl + C(Cmd + C on Mac OS X) keyboard shortcut is shown nearby the "Copy annotation sequence" item.
@@ -568,7 +568,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     //6. Click "Copy annotation direct strand".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy annotation direct strand"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state : a sequence that starts from "ATGGGCCAGACTGTT" is stored in the clipboard.
@@ -578,7 +578,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     //7. Click "Copy annotation amino acids".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy annotation amino acids"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state : a sequence that starts from "MGQTVTTPLSL" is stored in the clipboard.
