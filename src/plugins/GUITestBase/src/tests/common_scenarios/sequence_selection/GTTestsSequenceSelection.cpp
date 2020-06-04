@@ -393,20 +393,20 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Select"
                                                                               << "Sequence between selected annotations",
                                                             PopupChecker::IsDisabled));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    There is item "Sequence around selected annotations", it is enabled.
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Select"
                                                                               << "Sequence around selected annotations",
                                                             PopupChecker::IsEnabled));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //4. Click "Sequence around selected annotations".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Select"
                                                                               << "Sequence around selected annotations"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state :
@@ -430,20 +430,20 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Select"
                                                                               << "Sequence between selected annotations",
                                                             PopupChecker::IsEnabled));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    There is item "Sequence around selected annotations", it is enabled.
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Select"
                                                                               << "Sequence around selected annotations",
                                                             PopupChecker::IsEnabled));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //7. Click "Sequence between selected annotations".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Select"
                                                                               << "Sequence between selected annotations"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state :
@@ -462,7 +462,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     //8. Click "Select > Sequence around selected annotations".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Select"
                                                                               << "Sequence around selected annotations"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state :
