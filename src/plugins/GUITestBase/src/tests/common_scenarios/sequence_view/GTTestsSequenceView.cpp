@@ -2127,9 +2127,8 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
     //    Expected state: the sequence was scrolled to the previous line
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     QAbstractButton *wrapButton = GTAction::button(os, "wrap_sequence_action");
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
 
