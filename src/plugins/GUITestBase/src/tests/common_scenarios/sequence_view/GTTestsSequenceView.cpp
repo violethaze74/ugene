@@ -528,15 +528,14 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     //     Expected state: even the sequence is linear, Primer3 finds primers on junction
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "linear_circular_results.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
-
-    GTGlobals::sleep();
     QList<U2Region> pair2 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 2  (0, 2)");
     CHECK_SET_ERR(pair2.contains(U2Region(3, 21)), "No 4..24 region");
     CHECK_SET_ERR(pair2.contains(U2Region(153, 12)), "No 154..165 region");
