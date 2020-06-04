@@ -52,10 +52,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //1. Open "_common_data/fasta/alphabet.fa".
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/alphabet.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Activate the "Amino" sequence in the sequence view (set the focus for it).
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os, 0));
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os, 0));
 
     //3. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
@@ -68,7 +68,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(warning->isVisible(), "No alphabet warning");
 
     //4. Activate the "Nucl" sequence.
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os, 1));
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os, 1));
 
     //Expected: The panel is available, the info message is hidden.
     CHECK_SET_ERR(params->isEnabled(), "The panel is disabled for the right alphabet");
