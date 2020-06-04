@@ -2093,7 +2093,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     //    2. Scroll with the mouse wheel to the end of the sequence and back to the beginning
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "seq4.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     QAbstractButton *wrapButton = GTAction::button(os, "wrap_sequence_action");
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
