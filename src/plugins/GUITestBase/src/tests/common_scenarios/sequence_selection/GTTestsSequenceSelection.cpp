@@ -612,7 +612,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
                                                        << "Copy annotation direct strand"
                                                        << "Copy annotation amino acids";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", enabledItemsNamesFirst, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -630,7 +630,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
                                                                                                              << "Copy amino acids"
                                                                                                              << "Copy amino acids of complementary 5'-3' strand",
                                                             PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsDialog::waitAllFinished(os);
 
@@ -640,14 +640,14 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", QStringList() << "Copy annotation direct strand"
                                                                                                              << "Copy annotation amino acids",
                                                             PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //3. Click "Copy translation".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy amino acids"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
