@@ -878,14 +878,13 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     //    Expected state: warning is hidden, export is available
 
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "YkrI"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze"
                                                                               << "Find restriction sites..."));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     class SvgLimitsChecker : public Filler {
     public:
@@ -899,7 +898,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
             // set SVG format
             QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
             CHECK_SET_ERR(formatsBox != NULL, "formatBox is NULL");
-            GTComboBox::setIndexWithText(os, formatsBox, "svg");
+            GTComboBox::setIndexWithText(os, formatsBox, "SVG");
 
             // export is not available
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
@@ -944,11 +943,10 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     //remove document
     GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTGlobals::sleep(100);
 
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTThread::waitForMainThread();
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031) {

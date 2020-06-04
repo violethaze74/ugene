@@ -1752,7 +1752,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0027);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0028);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0029);
-    REGISTER_TEST_LABEL(GUITest_common_scenarios_sequence_view::test_0030, "mem");
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0030);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0031);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0031_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0031_2);
