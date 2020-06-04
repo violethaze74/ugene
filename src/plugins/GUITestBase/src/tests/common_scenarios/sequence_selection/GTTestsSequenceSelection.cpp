@@ -306,7 +306,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     //6. Click "Copy selected sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy selected sequence"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state : there is joined sequence from the third and fourth annotations in the clipboard.
@@ -317,7 +317,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     //7. Click "Copy reverse-complement sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy selected complementary 5'-3' sequence"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state : there is joined reverse - complement sequence from the third and fourth annotations in the clipboard.
@@ -328,7 +328,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     //8. Click "Copy translation".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy amino acids"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state : there is joined sequence from the third and fourth annotations translations in the clipboard.
@@ -339,7 +339,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     //9. Click "Copy reverse-complement translation".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy amino acids of complementary 5'-3' strand"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state : there is joined sequence from the third and fourth annotations reverse - complement translations in the clipboard.
@@ -350,7 +350,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     //10. Click "Copy annotation sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy annotation direct strand"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state : there is joined sequence from all four selected annotations in the clipboard.
@@ -361,7 +361,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     //11. Click "Copy annotation sequence translation".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy annotation amino acids"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state : there is joined sequence from all four selected annotations translation in the clipboard.
