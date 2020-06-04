@@ -580,15 +580,15 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     //     Expected state: results are linear
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
 
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep();
     QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
     CHECK_SET_ERR(pair1.contains(U2Region(160, 20)), "No 161..180 region");
     CHECK_SET_ERR(pair1.contains(U2Region(684, 20)), "No 685..704 region");
@@ -612,8 +612,8 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep(5000);
     pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)", "linear  (5, 0)");
     CHECK_SET_ERR(pair1.contains(U2Region(423, 20)), "No 424..443 region");
     CHECK_SET_ERR(pair1.contains(U2Region(582, 20)), "No 583..602 region");
@@ -624,7 +624,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     GTUtilsDocument::removeDocument(os, "DNA.gb");
-    //    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {
