@@ -69,6 +69,7 @@ void ExternalToolJustValidateTask::run() {
     CHECK_EXT(info.exists(), setError(tr("Tool's executable isn't exists")), );
     if (isPathOnlyValidation) {
         isValid = true;
+        coreLog.trace("Using path only validation for: " + toolName + ", path: " + toolPath);
         return;
     }
 
@@ -103,9 +104,9 @@ void ExternalToolJustValidateTask::run() {
     checkVersionRegExp = tool->getVersionRegExp();
     version = "unknown";
 
-    algoLog.trace("Program executable: " + toolPath);
+    coreLog.trace("Program executable: " + toolPath);
     SAFE_POINT(!validations.isEmpty(), "Tools' validations list is empty", );
-    algoLog.trace("Program arguments: " + validations.last().arguments.join(" "));
+    coreLog.trace("Program arguments: " + validations.last().arguments.join(" "));
 
     CHECK(!hasError(), );
 
