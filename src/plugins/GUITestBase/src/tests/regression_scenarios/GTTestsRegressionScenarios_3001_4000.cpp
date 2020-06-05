@@ -2253,7 +2253,7 @@ GUI_TEST_CLASS_DEFINITION(test_3333) {
 
     GTGlobals::FindOptions options;
     options.depth = 1;
-    const int objectsCount = GTUtilsProjectTreeView::findIndecies(os, "", GTUtilsSharedDatabaseDocument::getItemIndex(os, connection, "/genomes/Arabidopsis thaliana (TAIR 10)"), 0, options).size();
+    int objectsCount = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "", GTUtilsSharedDatabaseDocument::getItemIndex(os, connection, "/genomes/Arabidopsis thaliana (TAIR 10)"), 0, options).size();
     CHECK_SET_ERR(8 == objectsCount, QString("An unexpected objects count in the folder: expect %1, got %2").arg(8).arg(objectsCount));
 }
 
@@ -5430,7 +5430,7 @@ GUI_TEST_CLASS_DEFINITION(test_3819) {
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
-    QModelIndexList list = GTUtilsProjectTreeView::findIndecies(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
+    QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
     foreach (QModelIndex index, list) {
         if (index.data() == "[as] chrM") {
             GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, index);

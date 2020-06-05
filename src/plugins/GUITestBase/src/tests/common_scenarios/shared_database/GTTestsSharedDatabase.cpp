@@ -2210,7 +2210,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0003) {
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
-    QModelIndexList list = GTUtilsProjectTreeView::findIndecies(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
+    QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
     foreach (QModelIndex index, list) {
         if (index.data() == "[as] chrM") {
             GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, index);

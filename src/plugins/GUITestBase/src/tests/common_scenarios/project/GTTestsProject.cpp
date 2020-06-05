@@ -817,7 +817,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QModelIndexList list = GTUtilsProjectTreeView::findIndecies(os, "");
+    QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "");
     uiLog.trace("All items in project tree view:");
     foreach (QModelIndex index, list) {
         uiLog.trace(index.data().toString());

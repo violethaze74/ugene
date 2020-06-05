@@ -745,7 +745,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
                       .arg(sequencesCount));
 
     const int expectedDocumentsCount = 2;
-    int documentsCount = GTUtilsProjectTreeView::findIndecies(os, "", QModelIndex(), 2).size();
+    int documentsCount = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "", QModelIndex(), 2).size();
     CHECK_SET_ERR(expectedDocumentsCount == documentsCount,
                   QString("Incorrect count of items in the Project View after the first insertion: expected %1, got %2")
                       .arg(expectedDocumentsCount)
@@ -766,7 +766,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
                       .arg(expectedSequencesCount)
                       .arg(sequencesCount));
 
-    documentsCount = GTUtilsProjectTreeView::findIndecies(os, "", QModelIndex(), 2).size();
+    documentsCount = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "", QModelIndex(), 2).size();
     CHECK_SET_ERR(expectedDocumentsCount == documentsCount,
                   QString("Incorrect count of items in the Project View after the second insertion: expected %1, got %2")
                       .arg(expectedDocumentsCount)

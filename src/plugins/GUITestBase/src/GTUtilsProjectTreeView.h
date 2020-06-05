@@ -80,12 +80,12 @@ public:
     static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
     static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
     static QModelIndex findIndex(HI::GUITestOpStatus &os, const QStringList &itemPath, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QModelIndexList findIndecies(HI::GUITestOpStatus &os,
+    static QModelIndexList findIndeciesInProjectViewNoWait(HI::GUITestOpStatus &os,
                                         const QString &itemName,
                                         const QModelIndex &parent = QModelIndex(),
                                         int parentDepth = 0,
                                         const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QModelIndexList findIndecies(HI::GUITestOpStatus &os,
+    static QModelIndexList findIndeciesInTreeNoWait(HI::GUITestOpStatus &os,
                                         QTreeView *treeView,
                                         const QString &itemName,
                                         const QModelIndex &parent = QModelIndex(),

@@ -325,7 +325,7 @@ QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView
     QModelIndexList foundIndexes;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && foundIndexes.isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        foundIndexes = findIndecies(os, treeView, itemName, parent, 0, options);
+        foundIndexes = findIndeciesInTreeNoWait(os, treeView, itemName, parent, 0, options);
         if (!options.failIfNotFound) {
             break;
         }
@@ -354,12 +354,12 @@ QModelIndex GTUtilsProjectTreeView::findIndex(GUITestOpStatus &os, const QString
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findIndecies"
-QModelIndexList GTUtilsProjectTreeView::findIndecies(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, int parentDepth, const GTGlobals::FindOptions &options) {
+#define GT_METHOD_NAME "findIndeciesInProjectViewNoWait"
+QModelIndexList GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, int parentDepth, const GTGlobals::FindOptions &options) {
     QTreeView *treeView = getTreeView(os);
     GT_CHECK_RESULT(treeView != nullptr, "Tree widget is NULL", QModelIndexList());
 
-    return findIndecies(os, treeView, itemName, parent, parentDepth, options);
+    return findIndeciesInTreeNoWait(os, treeView, itemName, parent, parentDepth, options);
 }
 #undef GT_METHOD_NAME
 
@@ -374,13 +374,13 @@ bool compareStrings(const QString &pattern, const QString &data, Qt::MatchFlags 
 }
 }    // namespace
 
-#define GT_METHOD_NAME "findIndecies"
-QModelIndexList GTUtilsProjectTreeView::findIndecies(HI::GUITestOpStatus &os,
-                                                     QTreeView *treeView,
-                                                     const QString &itemName,
-                                                     const QModelIndex &parent,
-                                                     int parentDepth,
-                                                     const GTGlobals::FindOptions &options) {
+#define GT_METHOD_NAME "findIndeciesInTreeNoWait"
+QModelIndexList GTUtilsProjectTreeView::findIndeciesInTreeNoWait(HI::GUITestOpStatus &os,
+                                                                 QTreeView *treeView,
+                                                                 const QString &itemName,
+                                                                 const QModelIndex &parent,
+                                                                 int parentDepth,
+                                                                 const GTGlobals::FindOptions &options) {
     QModelIndexList foundIndecies;
     CHECK(options.depth == GTGlobals::FindOptions::INFINITE_DEPTH || parentDepth < options.depth, foundIndecies);
 
@@ -415,11 +415,11 @@ QModelIndexList GTUtilsProjectTreeView::findIndecies(HI::GUITestOpStatus &os,
             if (compareStrings(itemName, s, options.matchPolicy)) {
                 foundIndecies << index;
             } else {
-                foundIndecies << findIndecies(os, treeView, itemName, index, parentDepth + 1, options);
+                foundIndecies << findIndeciesInTreeNoWait(os, treeView, itemName, index, parentDepth + 1, options);
             }
         } else {
             foundIndecies << index;
-            foundIndecies << findIndecies(os, treeView, itemName, index, parentDepth + 1, options);
+            foundIndecies << findIndeciesInTreeNoWait(os, treeView, itemName, index, parentDepth + 1, options);
         }
     }
 
@@ -536,15 +536,12 @@ bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, const QString &i
 
 #define GT_METHOD_NAME "checkItem"
 bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options) {
-    QTreeView *treeView = getTreeView(os);
-    GT_CHECK_RESULT(treeView != NULL, "Tree view is NULL", false);
-    return checkItem(os, treeView, itemName, parent, options);
+    return checkItem(os, getTreeView(os), itemName, parent, options);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkItem"
 bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions &options) {
-    GT_CHECK_RESULT(treeView != NULL, "Tree view is NULL", false);
     return checkItem(os, treeView, itemName, QModelIndex(), options);
 }
 #undef GT_METHOD_NAME
@@ -553,9 +550,15 @@ bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, QTreeView *treeV
 bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options) {
     GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", false);
     GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", false);
-
-    QModelIndexList foundIndexes = findIndecies(os, treeView, itemName, parent, 0, options);
-    return !foundIndexes.isEmpty();
+    QModelIndexList indexList;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && indexList.isEmpty(); time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        indexList = findIndeciesInTreeNoWait(os, treeView, itemName, parent, 0, options);
+        if (!options.failIfNotFound) {
+            break;
+        }
+    }
+    return !indexList.isEmpty();
 }
 #undef GT_METHOD_NAME
 
@@ -567,22 +570,22 @@ void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus &os, const QSe
 
 #define GT_METHOD_NAME "checkObjectTypes"
 void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus &os, QTreeView *treeView, const QSet<GObjectType> &acceptableTypes, const QModelIndex &parent) {
-    CHECK_SET_ERR(NULL != treeView, "Invalid tree view detected");
+    CHECK_SET_ERR(treeView != nullptr, "Tree view is null");
     CHECK(!acceptableTypes.isEmpty(), );
 
     QAbstractItemModel *model = treeView->model();
-    CHECK_SET_ERR(NULL != model, "Invalid view model detected");
+    CHECK_SET_ERR(model != nullptr, "Tree model is null");
 
     QSortFilterProxyModel *proxyModel = qobject_cast<QSortFilterProxyModel *>(model);
 
-    const int rowCount = NULL == proxyModel ? model->rowCount(parent) : proxyModel->rowCount(parent);
+    const int rowCount = proxyModel == nullptr ? model->rowCount(parent) : proxyModel->rowCount(parent);
     for (int i = 0; i < rowCount; i++) {
-        const QModelIndex index = NULL == proxyModel ? model->index(i, 0, parent) : proxyModel->mapToSource(proxyModel->index(i, 0, parent));
+        const QModelIndex index = proxyModel == nullptr ? model->index(i, 0, parent) : proxyModel->mapToSource(proxyModel->index(i, 0, parent));
         GObject *object = ProjectViewModel::toObject(index);
-        if (NULL != object && Qt::NoItemFlags != model->flags(index) && !acceptableTypes.contains(object->getGObjectType()))
-            CHECK_SET_ERR(NULL == object || Qt::NoItemFlags == model->flags(index) || acceptableTypes.contains(object->getGObjectType()), "Object has unexpected type");
+        if (object != nullptr && Qt::NoItemFlags != model->flags(index) && !acceptableTypes.contains(object->getGObjectType()))
+            CHECK_SET_ERR(object == nullptr || Qt::NoItemFlags == model->flags(index) || acceptableTypes.contains(object->getGObjectType()), "Object has unexpected type");
 
-        if (NULL == object) {
+        if (object == nullptr) {
             checkObjectTypes(os, treeView, acceptableTypes, NULL == proxyModel ? index : proxyModel->mapFromSource(index));
             CHECK_OP_BREAK(os);
         }
@@ -722,11 +725,11 @@ void GTUtilsProjectTreeView::markSequenceAsCircular(HI::GUITestOpStatus &os, con
 QMap<QString, QStringList> GTUtilsProjectTreeView::getDocuments(GUITestOpStatus &os) {
     ensureFilteringIsDisabled(os);
     GTGlobals::FindOptions options(false, Qt::MatchContains, 1);
-    const QModelIndexList documentsItems = findIndecies(os, "", QModelIndex(), 0, options);
+    const QModelIndexList documentsItems = findIndeciesInProjectViewNoWait(os, "", QModelIndex(), 0, options);
 
     QMap<QString, QStringList> documents;
     foreach (const QModelIndex &documentItem, documentsItems) {
-        const QModelIndexList objectsItems = findIndecies(os, "", documentItem, 0, options);
+        const QModelIndexList objectsItems = findIndeciesInProjectViewNoWait(os, "", documentItem, 0, options);
         QStringList objects;
         foreach (const QModelIndex &objectItem, objectsItems) {
             objects << objectItem.data().toString();

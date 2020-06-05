@@ -67,7 +67,7 @@ static QString getSuiteFolderPrefix() {
  * This helps to limit unstable drag & drop + scroll behavior when project tree is too large.
  */
 static void removeTempContentFromOtherTests(HI::GUITestOpStatus &os, Document *document) {
-    QModelIndexList documentItems = GTUtilsProjectTreeView::findIndecies(os, document->getName(), QModelIndex(), 0, GTGlobals::FindOptions(false));
+    QModelIndexList documentItems = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, document->getName(), QModelIndex(), 0, GTGlobals::FindOptions(false));
     if (documentItems.isEmpty()) {
         return;
     }
@@ -410,7 +410,7 @@ void GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(HI::GUITest
     checkItemsExist(os, databaseDoc, itemsPaths);
 
     QModelIndex parentIndex = getItemIndex(os, databaseDoc, parentPath);
-    QModelIndexList subIndecies = GTUtilsProjectTreeView::findIndecies(os, "", parentIndex);
+    QModelIndexList subIndecies = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "", parentIndex);
     GT_CHECK(subIndecies.size() == itemsPaths.size(), QString("Parent item contains %1 subitems, expected % subitems").arg(subIndecies.size()).arg(itemsPaths.size()));
 }
 #undef GT_METHOD_NAME

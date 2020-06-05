@@ -5424,8 +5424,8 @@ GUI_TEST_CLASS_DEFINITION(test_1529) {
     GTGlobals::sleep();
 
     // Expected state : A new file with MSA was created, added to the project.The MSA object name is "COI_transl.aln".
-    const QModelIndex docIndex = GTUtilsProjectTreeView::findIndecies(os, "COI_transl.aln").first();
-    const int objCount = docIndex.model()->rowCount(docIndex);
+    QModelIndex docIndex = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "COI_transl.aln").first();
+    int objCount = docIndex.model()->rowCount(docIndex);
     CHECK_SET_ERR(1 == objCount, QString("Unexpected child object count in the project. Expected %1, found %2").arg(1).arg(objCount));
 }
 
@@ -7932,7 +7932,7 @@ GUI_TEST_CLASS_DEFINITION(test_1764) {
     GTUtilsDashboard::click(os, button);
     GTGlobals::sleep();
     //    Expected state: opened fasta files have different file path in tooltips
-    QList<QModelIndex> docs = GTUtilsProjectTreeView::findIndecies(os, "readed_fasta.fa");
+    QList<QModelIndex> docs = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "readed_fasta.fa");
     CHECK_SET_ERR(docs.size() == 2, QString("unexpected documents number: %1").arg(docs.size()));
     QString toolTip0 = docs[0].data(Qt::ToolTipRole).toString();
     QString toolTip1 = docs[1].data(Qt::ToolTipRole).toString();
