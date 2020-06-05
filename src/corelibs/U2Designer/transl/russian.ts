@@ -1223,12 +1223,12 @@ Set up the folder:</source>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="594"/>
+        <location filename="../src/DelegateEditors.cpp" line="596"/>
         <source>This computer</source>
         <translation>Данный компьютер</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="595"/>
+        <location filename="../src/DelegateEditors.cpp" line="597"/>
         <source>Remote computer</source>
         <translation>Удаленный компьютер</translation>
     </message>
@@ -1262,17 +1262,17 @@ Set up the folder:</source>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="720"/>
+        <location filename="../src/DelegateEditors.cpp" line="722"/>
         <source>Enter items</source>
         <translation>Введите элементы</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="722"/>
+        <location filename="../src/DelegateEditors.cpp" line="724"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="724"/>
+        <location filename="../src/DelegateEditors.cpp" line="726"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1410,17 +1410,17 @@ Set up the folder:</source>
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="582"/>
+        <location filename="../src/DelegateEditors.cpp" line="584"/>
         <source>Overwrite</source>
         <translation>Переписать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="583"/>
+        <location filename="../src/DelegateEditors.cpp" line="585"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="585"/>
+        <location filename="../src/DelegateEditors.cpp" line="587"/>
         <source>Append</source>
         <translation>Дописать</translation>
     </message>

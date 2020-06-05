@@ -4739,32 +4739,32 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="178"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="179"/>
         <source>Output file %1 not found</source>
         <translation>Output file %1 not found</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="180"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="181"/>
         <source>Output file %3 not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Output file %3 not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="188"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="189"/>
         <source>Loading output file &apos;%1&apos;</source>
         <translation>Loading output file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="271"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="272"/>
         <source>Failed to apply the result of ClustalO: alignment object is not available!</source>
         <translation>Failed to apply the result of ClustalO: alignment object is not available!</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="276"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="277"/>
         <source>ClustalO alignment successfully finished</source>
         <translation>ClustalO alignment successfully finished</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="289"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="290"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Can not remove folder for temporary files.</translation>
     </message>
@@ -4811,7 +4811,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalOWithExtFileSpecifySupportTask</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="325"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="326"/>
         <source>Unrecognized input alignment file format</source>
         <translation>Unrecognized input alignment file format</translation>
     </message>

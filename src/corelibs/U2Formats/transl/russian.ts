@@ -1950,17 +1950,17 @@
 <context>
     <name>U2::NEXUSFormat</name>
     <message>
-        <location filename="../src/NEXUSFormat.cpp" line="51"/>
+        <location filename="../src/NEXUSFormat.cpp" line="53"/>
         <source>NEXUS</source>
         <translation>NEXUS</translation>
     </message>
     <message>
-        <location filename="../src/NEXUSFormat.cpp" line="52"/>
+        <location filename="../src/NEXUSFormat.cpp" line="54"/>
         <source>Nexus is a multiple alignment and phylogenetic trees file format</source>
         <translation>Nexus формат файла для множественных выравниваний и филогенетических деревьев</translation>
     </message>
     <message>
-        <location filename="../src/NEXUSFormat.cpp" line="706"/>
+        <location filename="../src/NEXUSFormat.cpp" line="727"/>
         <source>#NEXUS header missing</source>
         <translation>Отсутствует заголовок #NEXUS</translation>
     </message>
