@@ -4422,6 +4422,7 @@ GUI_TEST_CLASS_DEFINITION(test_3687_1) {
     //2. Select "As separate sequences in sequence viewer" in the dialog.
     //3. Press "Ok".
     //Expected: the finishes with error about sequences amount.
+    qputenv("UGENE_MAX_OBJECTS_PER_DOCUMENT", "100");
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsNotifications::waitForNotification(os, true, "contains too many sequences to be displayed");
     GTUtilsProject::openFile(os, testDir + "_common_data/fastq/lymph_min.fastq");
@@ -4434,6 +4435,7 @@ GUI_TEST_CLASS_DEFINITION(test_3687_2) {
     //2. Select "Join sequences into alignment" in the dialog.
     //3. Press "Ok".
     //Expected: the finishes with error about sequences amount.
+    qputenv("UGENE_MAX_OBJECTS_PER_DOCUMENT", "100");
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsNotifications::waitForNotification(os, true, "contains too many sequences to be displayed");
     GTUtilsProject::openFile(os, testDir + "_common_data/fastq/lymph_min.fastq");

@@ -393,6 +393,11 @@ bool ProjectLoaderImpl::shouldFormatBeSelected(const QList<FormatDetectionResult
     return isFirstFormatEqualFirstUnrelatedFormat || (isFirstUnrelatedFormatMoreThenFormatDetectionAverageSimilarity && isFirstFormatLessThenFormatDetectionMatched) || isFirstFormatLessOrEqualThenFormatDetectionAverageSimilarity || forceSelectFormat;
 }
 
+int ProjectLoaderImpl::getMaxObjectsInSingleDocument() {
+    int maxObjects = qgetenv("UGENE_MAX_OBJECTS_PER_DOCUMENT").toInt();
+    return maxObjects < 10 ? 50000 : maxObjects;
+}
+
 bool ProjectLoaderImpl::detectFormat(const GUrl &url, QList<FormatDetectionResult> &formats, const QVariantMap &hints, FormatDetectionResult &selectedResult) {
     CHECK(!formats.isEmpty(), false);
     int idx = 0;
@@ -541,7 +546,7 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
                         info.url = url;
                         info.hints = dr.rawDataCheckResult.properties;
                         if (!info.hints.contains(DocumentReadingMode_MaxObjectsInDoc)) {
-                            info.hints[DocumentReadingMode_MaxObjectsInDoc] = maxObjectsInSingleDocument;
+                            info.hints[DocumentReadingMode_MaxObjectsInDoc] = getMaxObjectsInSingleDocument();
                         }
                         info.formatId = dr.format->getFormatId();
                         info.iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));

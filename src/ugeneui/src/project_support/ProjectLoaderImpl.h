@@ -59,7 +59,7 @@ public:
     }
 
     static QString getLastProjectURL();
-    static const int maxObjectsInSingleDocument = 50000;
+    static int getMaxObjectsInSingleDocument();
     static bool detectFormat(const GUrl &url, QList<FormatDetectionResult> &formats, const QVariantMap &hints, FormatDetectionResult &selectedResult);
     static bool shouldFormatBeSelected(const QList<FormatDetectionResult> &formats, bool forceSelectFormat);
     static bool processHints(FormatDetectionResult &dr);
