@@ -1804,7 +1804,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0071);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0075);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0076);
-    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0077);
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_sequence_view::test_0077, "UGENE-5579");
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0078);
 
     //////////////////////////////////////////////////////////////////////////
@@ -2186,7 +2186,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0075);
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0076);
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_msa_editor::test_0077, "UGENE-5579");
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0077);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0078);
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0079);
@@ -3080,7 +3080,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0014);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0015);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0016);
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_database::import_test_0017,"UGENE-4507");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_database::import_test_0017, "UGENE-4507");
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0018);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0019);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::import_test_0020);
