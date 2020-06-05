@@ -48,6 +48,15 @@ void SnpEffDatabaseListTask::prepare() {
         return;
     }
     dbListFilePath = qgetenv("UGENE_SNPEFF_DB_LIST");
+    if (!dbListFilePath.isEmpty()) {
+        QDir dbListDir = QFileInfo(dbListFilePath).dir();
+        if (!dbListDir.exists()) {
+            bool isCreated = dbListDir.mkpath(dbListDir.absolutePath());
+            if (!isCreated) {
+                dbListFilePath = "";
+            }
+        }
+    }
     if (dbListFilePath.isEmpty()) {
         QString iniFile = AppContext::getSettings()->fileName();
         dbListFilePath = QFileInfo(iniFile).absoluteDir().absolutePath();
