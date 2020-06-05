@@ -38,25 +38,37 @@
 
 namespace U2 {
 
-ExternalToolValidateTask::ExternalToolValidateTask(const QString &_toolId, const QString &_toolName, TaskFlags flags)
-    : Task(tr("%1 validate task").arg(_toolName), flags),
-      toolId(_toolId),
-      toolName(_toolName),
+ExternalToolValidateTask::ExternalToolValidateTask(const QString &toolId, const QString &toolName, TaskFlags flags)
+    : Task(tr("%1 validate task").arg(toolName), flags),
+      toolId(toolId),
+      toolName(toolName),
       isValid(false) {
 }
 
-ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString &_toolId, const QString &_toolName, const QString &path)
-    : ExternalToolValidateTask(_toolId, _toolName, TaskFlag_None),
-      externalToolProcess(NULL),
-      tool(NULL) {
-    isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
+ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString &toolId, const QString &toolName, const QString &path)
+    : ExternalToolValidateTask(toolId, toolName, TaskFlag_None),
+      externalToolProcess(nullptr),
+      tool(nullptr) {
     toolPath = path;
     SAFE_POINT_EXT(!toolPath.isEmpty(), setError(tr("Tool's path is empty")), );
+
+    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+    SAFE_POINT(etRegistry, "An external tool registry is NULL", );
+    tool = etRegistry->getById(toolId);
+    SAFE_POINT(tool, QString("External tool '%1' isn't found in the registry").arg(toolName), );
+    CHECK_EXT(QFileInfo(toolPath).exists(), setError(tr("External tool is not found: %1").arg(toolPath)), );
+
+    bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
+    if (isPathOnlyValidation) {
+        isValid = true;
+        coreLog.info("Using path only validation for: " + toolName + ", path: " + toolPath);
+        setFlag(U2::TaskFlag_NoRun, true);
+    }
 }
 
 ExternalToolJustValidateTask::~ExternalToolJustValidateTask() {
     delete externalToolProcess;
-    externalToolProcess = NULL;
+    externalToolProcess = nullptr;
 }
 
 void ExternalToolJustValidateTask::run() {
@@ -64,14 +76,6 @@ void ExternalToolJustValidateTask::run() {
     SAFE_POINT(etRegistry, "An external tool registry is NULL", );
     tool = etRegistry->getById(toolId);
     SAFE_POINT(tool, QString("External tool '%1' isn't found in the registry").arg(toolName), );
-
-    QFileInfo info(toolPath);
-    CHECK_EXT(info.exists(), setError(tr("Tool's executable isn't exists")), );
-    if (isPathOnlyValidation) {
-        isValid = true;
-        coreLog.trace("Using path only validation for: " + toolName + ", path: " + toolPath);
-        return;
-    }
 
     validations.append(tool->getToolAdditionalValidations());
     ExternalToolValidation originalValidation = tool->getToolValidation();
