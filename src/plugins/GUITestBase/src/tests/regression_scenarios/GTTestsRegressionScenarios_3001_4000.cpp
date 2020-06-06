@@ -5043,17 +5043,10 @@ GUI_TEST_CLASS_DEFINITION(test_3773_1) {
 GUI_TEST_CLASS_DEFINITION(test_3778) {
     //1. Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Open Circular View.
     QWidget *button = GTWidget::findWidget(os, "globalToggleViewAction_widget");
-    if (!button->isVisible()) {
-        QWidget *ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), GTGlobals::FindOptions(false));
-        if (ext_button != NULL) {
-            GTWidget::click(os, ext_button);
-        }
-        GTGlobals::sleep(500);
-    }
     GTWidget::click(os, button);
     //3. Context menu -> Export -> Save circular view as image.
     //Expected state: the "Export Image" dialog appears.
@@ -5069,10 +5062,12 @@ GUI_TEST_CLASS_DEFINITION(test_3778) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
+
     GTUtilsDialog::waitForDialog(os, new CircularViewExportImage(os, new Scenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "Save circular view as image", GTGlobals::UseMouse));
-    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTFile::check(os, sandBoxDir + "circular_human_T1 (UCSC April 2002 chr7:115977709-117855134).png");
 }
 
