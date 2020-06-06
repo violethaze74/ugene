@@ -2315,8 +2315,9 @@ GUI_TEST_CLASS_DEFINITION(del_test_0001) {
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
     qDebug("Looking for dt0001_human_T1 item");
-    QModelIndex folderItem = GTUtilsProjectTreeView::findIndex(os, "del_tests");
-    QModelIndex originalItem = GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1", folderItem);
+    QModelIndex folder1Item = GTUtilsProjectTreeView::findIndex(os, "del_tests");
+    QModelIndex folder2Item = GTUtilsProjectTreeView::findIndex(os, "dt0002_dir", folder1Item);
+    QModelIndex originalItem = GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1", folder2Item);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, originalItem));
     GTMouseDriver::doubleClick();
 
