@@ -4591,36 +4591,6 @@ GUI_TEST_CLASS_DEFINITION(test_2709) {
     CHECK_SET_ERR(result == "True", "No novel junctions parameter is " + result);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_2711) {
-    //    1. Open "Settings"->"preferences"->"External tools"
-
-    //    2. Set path to R tool as path to Rscript
-
-    class test_2711DialogFiller : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-            QString rScriptPath = AppSettingsDialogFiller::getExternalToolPath(os, "Rscript");
-            CHECK_SET_ERR(!rScriptPath.isEmpty(), "Rscript path is empty");
-            QString rPath = rScriptPath.left(rScriptPath.length() - QString("script").length());
-            AppSettingsDialogFiller::setExternalToolPath(os, "Rscript", rPath);
-            GTGlobals::sleep(500);
-
-            bool valid = AppSettingsDialogFiller::isExternalToolValid(os, "Rscript");
-            CHECK_SET_ERR(!valid, "Rscript is unexpectidly valid");
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-    //    Expected state: Rscript doesn't pass validation
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new test_2711DialogFiller()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
-    GTGlobals::sleep();
-}
-
 GUI_TEST_CLASS_DEFINITION(test_2713) {
     //    1. Open file {data/samples/Genbank/murine.gb}
     GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "test_2713.gb");
