@@ -45,11 +45,11 @@ GUITestThread::GUITestThread(HI::GUITest *test, bool isRunPostActionsAndCleanup)
     : test(test),
       isRunPostActionsAndCleanup(isRunPostActionsAndCleanup),
       testResult("Not run") {
-    SAFE_POINT(NULL != test, "GUITest is NULL", );
+    SAFE_POINT(test != nullptr, "GUITest is NULL", );
 }
 
 void GUITestThread::run() {
-    SAFE_POINT(NULL != test, "GUITest is NULL", );
+    SAFE_POINT(test != nullptr, "GUITest is NULL", );
 
     GUITests tests;
     tests << preChecks();
@@ -92,6 +92,7 @@ QString GUITestThread::launchTest(const GUITests &tests) {
     HI::GUITestOpStatus os;
     try {
         foreach (HI::GUITest *t, tests) {
+            qDebug("launchTest: %s", t->getFullName().toLocal8Bit().constData());
             t->run(os);
         }
     } catch (HI::GUITestOpStatus *) {
