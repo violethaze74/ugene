@@ -558,6 +558,7 @@ GUI_TEST_CLASS_DEFINITION(test_5110) {
 GUI_TEST_CLASS_DEFINITION(test_5128) {
     //1. Open any 3D structure.
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Context menu: { Molecular Surface -> * }.
     //3. Select any model.
