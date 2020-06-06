@@ -332,14 +332,14 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
         int memValue;
     };
 
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(500000)));
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(200))); //200mb
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTGlobals::sleep(100);
-
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
     GTThread::waitForMainThread();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape); // close wizard
+
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
 
@@ -350,7 +350,8 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "A problem occurred during allocating memory for running SnpEff.");
+    GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "There is not enough memory to complete the SnpEff execution.");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5027_2) {
