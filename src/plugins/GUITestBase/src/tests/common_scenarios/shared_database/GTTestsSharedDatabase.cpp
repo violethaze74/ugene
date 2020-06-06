@@ -2314,26 +2314,22 @@ GUI_TEST_CLASS_DEFINITION(del_test_0001) {
 
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
-    qDebug("Looking for dt0001_human_T1 item");
-    QModelIndex folder1Item = GTUtilsProjectTreeView::findIndex(os, "del_tests");
-    QModelIndex folder2Item = GTUtilsProjectTreeView::findIndex(os, "dt0002_dir", folder1Item);
-    QModelIndex originalItem = GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1", folder2Item);
+    QString fileName = "dt0001_file";
+    QModelIndex folderItem = GTUtilsProjectTreeView::findIndex(os, "del_tests");
+    QModelIndex originalItem = GTUtilsProjectTreeView::findIndex(os, fileName, folderItem);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, originalItem));
     GTMouseDriver::doubleClick();
 
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    qDebug("Found dt0001_human_T1 item, deleting it");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
 
-    qDebug("Looking for dt0001_human_T1 item in Recycle Bin");
-    // Check that item is in the recycle bin.
+    // Check that the item is in the recycle bin.
     QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
-    GTUtilsProjectTreeView::checkItem(os, "dt0001_human_T1", rbItem);
-    qDebug("Item dt0001_human_T1 was found in Recycle Bin");
+    GTUtilsProjectTreeView::checkItem(os, fileName, rbItem);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
