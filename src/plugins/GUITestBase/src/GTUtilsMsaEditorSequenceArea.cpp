@@ -720,7 +720,7 @@ void GTUtilsMSAEditorSequenceArea::createColorScheme(GUITestOpStatus &os, const 
                                                                         << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, al));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os, 60000);
+    GTUtilsDialog::waitAllFinished(os);
 }
 #undef GT_METHOD_NAME
 

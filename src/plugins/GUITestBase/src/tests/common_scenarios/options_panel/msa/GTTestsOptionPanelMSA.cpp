@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <api/GTUtils.h>
 #include <base_dialogs/ColorDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -350,9 +351,10 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0002_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create 3 color schemes
-    const QString scheme1 = getName() + "_scheme1";
-    const QString scheme2 = getName() + "_scheme2";
-    const QString scheme3 = getName() + "_scheme3";
+    QString suffix = GTUtils::genUniqueString();
+    QString scheme1 = getName() + "_scheme1" + suffix;
+    QString scheme2 = getName() + "_scheme2" + suffix;
+    QString scheme3 = getName() + "_scheme3" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme1, NewColorSchemeCreator::nucl);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme2, NewColorSchemeCreator::nucl);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme3, NewColorSchemeCreator::nucl);
