@@ -5297,13 +5297,13 @@ GUI_TEST_CLASS_DEFINITION(test_1514) {
     GTGlobals::sleep(1000);
     QPixmap pixmap = GTWidget::getPixmap(os, treeView);
     QImage initImg = pixmap.toImage();
+
     while (zoomOut->isEnabled()) {
         QPixmap pixmap = GTWidget::getPixmap(os, treeView);
         QImage initImg = pixmap.toImage();
         GTWidget::click(os, zoomOut);
         pixmap = GTWidget::getPixmap(os, treeView);
         QImage finalImg = pixmap.toImage();
-        uiLog.trace(QString("Easy to find. are images equal: %1 at step %2").arg(initImg == finalImg).arg(i));
         if (i == 0) {
             CHECK_SET_ERR(!(initImg == finalImg), "Images are unexpectidly equal at first step 1")
         } else {
@@ -5320,18 +5320,17 @@ GUI_TEST_CLASS_DEFINITION(test_1514) {
     QImage finalImg = pixmap.toImage();
     //    Expected state: sizes of the tree and alignment reset.
     CHECK_SET_ERR(initImg == finalImg, "Reset zoom action workes wrong")
+
     //    6. Click the "Zoom in" button in the toolbar until alignment and tree sizes stop change.
-    while (zoomIn->isEnabled()) {
+    i = 0;
+    while (zoomIn->isEnabled() && i < 3) {
         QPixmap pixmap = GTWidget::getPixmap(os, treeView);
         QImage initImg = pixmap.toImage();
         GTWidget::click(os, zoomIn);
         GTGlobals::sleep();
         pixmap = GTWidget::getPixmap(os, treeView);
         QImage finalImg = pixmap.toImage();
-        uiLog.trace(QString("Easy to find. are images equal: %1 at step %2").arg(initImg == finalImg).arg(i));
-        if (i != 12) {
-            CHECK_SET_ERR(!(initImg == finalImg), QString("Images are unexpectidly equal at first step2 i=").arg(i));
-        }
+        CHECK_SET_ERR(!(initImg == finalImg), QString("Images are unexpectidly equal at first step2 i= %1").arg(i));
         i++;
     }
     //    Expected state: the tree and alignment are zoomed in, the "zoom in" button on the toolbar is inactive.
