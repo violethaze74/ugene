@@ -39,11 +39,7 @@
 #include "GUITestTeamcityLogger.h"
 #include "UGUITestBase.h"
 
-#ifdef Q_OS_LINUX
-#    define GUI_TEST_TIMEOUT_MILLIS 240000
-#else
-#    define GUI_TEST_TIMEOUT_MILLIS 300000
-#endif
+#define GUI_TEST_TIMEOUT_MILLIS 240000
 
 #ifdef Q_OS_MAC
 #    define NUMBER_OF_TEST_SUITES 4
