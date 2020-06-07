@@ -2388,29 +2388,23 @@ GUI_TEST_CLASS_DEFINITION(del_test_0003) {
     //Expected: the folder "/Recycle bin" becomes empty.
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
 
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
-    const QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "dt0003_human_T1"));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep(3000);
-    QWidget *seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == seqView, "Sequence view is opened");
-
+    QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, rbItem));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "empty_rb"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(3000);
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, rbItem));
-    CHECK_SET_ERR(0 == model->rowCount(rbItem), "Recycle bin is not empty");
-    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QModelIndex rbItemAfter = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
+    CHECK_SET_ERR(model->rowCount(rbItemAfter) == 0, "Recycle bin is not empty");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(export_test_0001) {
