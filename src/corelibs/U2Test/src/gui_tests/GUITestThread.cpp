@@ -71,6 +71,7 @@ void GUITestThread::run() {
 }
 
 void GUITestThread::sl_testTimeOut() {
+    qDebug("Test is timed out");
     saveScreenshot();
     cleanup();
     testResult = QString("test timed out");
@@ -87,8 +88,9 @@ QString GUITestThread::launchTest(const GUITests &tests) {
     HI::GUITestOpStatus os;
     try {
         foreach (HI::GUITest *t, tests) {
-            qDebug("launchTest: %s", t->getFullName().toLocal8Bit().constData());
+            qDebug("launchTest started: %s", t->getFullName().toLocal8Bit().constData());
             t->run(os);
+            qDebug("launchTest finished: %s", t->getFullName().toLocal8Bit().constData());
         }
     } catch (HI::GUITestOpStatus *) {
     }
@@ -97,11 +99,14 @@ QString GUITestThread::launchTest(const GUITests &tests) {
     if (!error.isEmpty()) {
         try {
             foreach (HI::GUITest *t, postChecks()) {
+                qDebug("launchTest running additional post check: %s", t->getFullName().toLocal8Bit().constData());
                 t->run(os);
+                qDebug("launchTest additional post check is finished: %s", t->getFullName().toLocal8Bit().constData());
             }
         } catch (HI::GUITestOpStatus *) {
         }
     }
+    qDebug("lauchTest is finished");
     return error;
 }
 
@@ -198,11 +203,14 @@ void GUITestThread::cleanup() {
     foreach (HI::GUITest *postAction, postActions()) {
         HI::GUITestOpStatus os;
         try {
+            qDebug("Cleanup action is started: %s", postAction->getFullName().toLocal8Bit().constData());
             postAction->run(os);
+            qDebug("Cleanup action is finished: %s", postAction->getFullName().toLocal8Bit().constData());
         } catch (HI::GUITestOpStatus *opStatus) {
             coreLog.error(opStatus->getError());
         }
     }
+    qDebug("Cleanup is finished");
 }
 
 void GUITestThread::writeTestResult() {
