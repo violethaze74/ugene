@@ -189,7 +189,7 @@ int FindPatternMsaWidget::getTargetMsaLength() const {
 void FindPatternMsaWidget::setSearchInNamesMode(bool flag) {
     CHECK(isSearchInNamesMode != flag, )
     int indexToActivate = flag ? SEARCH_MODE_NAMES_INDEX : SEARCH_MODE_SEQUENCES_INDEX;
-    searchContextComboBox->setCurrentIndex(indexToActivate); // triggers a signal.
+    searchContextComboBox->setCurrentIndex(indexToActivate);    // triggers a signal.
 }
 
 void FindPatternMsaWidget::showCurrentResultAndStopProgress() {
@@ -1121,10 +1121,18 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
         resultUidSet << result.rowId;
     }
     const QList<qint64> &allRowIds = msaEditor->getMaRowIds();
-    if (resultUidSet.size() == allRowIds.size()) {
+    if (resultUidSet.size() >= allRowIds.size()) {
         // Can't re-group anything: every sequence has a result.
         msaEditor->selectRows(0, allRowIds.size());
         return;
+    }
+
+    bool isOldGroupedAtStart = true;
+    for (int i = 0; i < resultUidSet.size(); i++) {
+        if (!resultUidSet.contains(allRowIds[i])) {
+            isOldGroupedAtStart = false;
+            break;
+        }
     }
 
     // Reorder rows: move search results to the top. Keep the order stable.
@@ -1137,12 +1145,19 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
             rowsOutOfTheGroup << rowId;
         }
     }
-    QList<qint64> reorderedRowIds = QList<qint64>() << rowsInTheGroup << rowsOutOfTheGroup;
+    bool isNewGroupAtStart = !isOldGroupedAtStart;
+    QList<qint64> reorderedRowIds = isNewGroupAtStart ?
+                                        QList<qint64>() << rowsInTheGroup << rowsOutOfTheGroup :
+                                        QList<qint64>() << rowsOutOfTheGroup << rowsInTheGroup;
     CHECK(!maObject->isStateLocked(), );
     U2OpStatusImpl os;
     maObject->updateRowsOrder(os, reorderedRowIds);
     if (!os.hasError()) {
-        msaEditor->selectRows(0, rowsInTheGroup.size());
+        if (isNewGroupAtStart) {
+            msaEditor->selectRows(0, rowsInTheGroup.size());
+        } else {
+            msaEditor->selectRows(allRowIds.size() - rowsInTheGroup.size(), rowsInTheGroup.size());
+        }
     }
 }
 
