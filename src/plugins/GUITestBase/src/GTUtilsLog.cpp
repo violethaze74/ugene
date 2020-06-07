@@ -41,7 +41,7 @@ void GTLogTracer::onMessage(const LogMessage &msg) {
         errorsList << msg.text;
     }
 
-    if (!expectedMessage.isEmpty() && msg.text.contains(expectedMessage)) {
+    if (!expectedMessage.isEmpty() && !msg.text.contains("] GT_") && msg.text.contains(expectedMessage)) {
         isExpectedMessageFound = true;
     }
 }
@@ -91,7 +91,6 @@ void GTUtilsLog::checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer &
 
 #define GT_METHOD_NAME "checkContainsMessage"
 void GTUtilsLog::checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, bool expected) {
-    Q_UNUSED(os);
     GT_CHECK(!logTracer.expectedMessage.isEmpty(), "'Expected message' is required by logTracer");
     GTGlobals::sleep(500);
     if (expected) {

@@ -2407,9 +2407,9 @@ GUI_TEST_CLASS_DEFINITION(test_3348) {
                                                 << "Analyze"
                                                 << "Find repeats...",
                               GTGlobals::UseMouse);
-    GTGlobals::sleep(6000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    GTUtilsAnnotationsTreeView::getTreeWidget(os);
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 39)");
     QTreeWidgetItem *generalItem = annotationGroup->child(36);
     CHECK_SET_ERR(generalItem != NULL, "Invalid annotation tree item");

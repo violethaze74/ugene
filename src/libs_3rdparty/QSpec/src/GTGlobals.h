@@ -78,6 +78,11 @@ public:
     static void GUITestFail();
 };
 
+class GTLog {
+public:
+    static void debug(const QString &message);
+};
+
 #define GT_DEBUG_MESSAGE(condition, errorMessage, result) \
     { \
         QByteArray _cond = QString(#condition).toLocal8Bit(); \
