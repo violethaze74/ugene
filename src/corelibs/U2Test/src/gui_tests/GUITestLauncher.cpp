@@ -120,8 +120,9 @@ void GUITestLauncher::run() {
 
                 qint64 finishTime = GTimer::currentTimeMicros();
                 GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testResult, GTimer::millisBetween(startTime, finishTime));
-            } catch (...) {
+            } catch (const std::exception &exc) {
                 coreLog.error("Got exception while running test: " + testName);
+                coreLog.error("Exception text: " + QString(exc.what()));
             }
         } else if (test->getReason() == HI::GUITest::Bug) {
             GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getIgnoreMessage());
