@@ -58,16 +58,11 @@ void GUITestThread::run() {
 
     clearSandbox();
 
-    QTimer timer;
-    connect(&timer, SIGNAL(timeout()), this, SLOT(sl_getMemory()), Qt::DirectConnection);
-    timer.start(1000);
-
     QString error = launchTest(tests);
+    qDebug("launchTest is finished, error: '%s'", error.toLocal8Bit().constData());
     if (isRunPostActionsAndCleanup) {
         cleanup();
     }
-
-    timer.stop();
 
     testResult = error.isEmpty() ? GUITestTeamcityLogger::successResult : error;
     writeTestResult();
@@ -198,6 +193,7 @@ void GUITestThread::saveScreenshot() {
 }
 
 void GUITestThread::cleanup() {
+    qDebug("Running cleanup after the test");
     test->cleanup();
     foreach (HI::GUITest *postAction, postActions()) {
         HI::GUITestOpStatus os;
@@ -210,6 +206,7 @@ void GUITestThread::cleanup() {
 }
 
 void GUITestThread::writeTestResult() {
+    qDebug("writing test result for teamcity");
     printf("%s\n", (GUITestService::GUITESTING_REPORT_PREFIX + ": " + testResult).toUtf8().data());
 }
 
