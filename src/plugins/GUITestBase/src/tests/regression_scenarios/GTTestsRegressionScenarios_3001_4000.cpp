@@ -2362,14 +2362,14 @@ GUI_TEST_CLASS_DEFINITION(test_3346) {
     QFile originalFile(dataDir + "samples/Genbank/murine.gb");
     CHECK_SET_ERR(originalFile.exists(), "Unable to find original file");
 
-    const QString dstPath = sandBoxDir + "murine.gb";
+    QString dstPath = sandBoxDir + "murine.gb";
     originalFile.copy(dstPath);
+
     QFile copiedFile(dstPath);
     CHECK_SET_ERR(copiedFile.exists(), "Unable to copy file");
 
     GTFileDialog::openFile(os, sandBoxDir, "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_OP(os, );
 
     if (!copiedFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         os.setError("Unable to open file");
@@ -2390,7 +2390,8 @@ GUI_TEST_CLASS_DEFINITION(test_3346) {
     out << fileData;
     copiedFile.close();
 
-    GTGlobals::sleep(6000);
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
