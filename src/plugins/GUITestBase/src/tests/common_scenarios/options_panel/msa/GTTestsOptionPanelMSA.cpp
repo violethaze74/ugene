@@ -841,7 +841,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005_1) {
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
     //    1. Open file test/_common_data/alphabets/extended_amino.aln
     GTFileDialog::openFile(os, testDir + "_common_data/alphabets", "extended_amino.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //    2. Create custom color scheme
     const QString scheme = getName() + "_scheme";
@@ -849,6 +849,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
 
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::Highlighting);
 
     //    4. Select custom scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
