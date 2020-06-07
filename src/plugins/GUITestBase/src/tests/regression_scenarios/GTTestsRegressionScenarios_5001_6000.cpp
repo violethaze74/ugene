@@ -332,13 +332,13 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
         int memValue;
     };
 
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(200))); //200mb
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(200)));    //200mb
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
     GTThread::waitForMainThread();
-    GTKeyboardDriver::keyClick(Qt::Key_Escape); // close wizard
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);    // close wizard
 
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
@@ -351,7 +351,6 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "There is not enough memory to complete the SnpEff execution.");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5027_2) {
@@ -1043,7 +1042,7 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
     QSet<QRgb> colors;
     for (int i = 0; i < image1.width(); i++) {
         for (int j = 0; j < image1.height(); j++) {
-           colors << image1.pixel(i, j);
+            colors << image1.pixel(i, j);
         }
     }
     CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn");
@@ -2637,6 +2636,11 @@ GUI_TEST_CLASS_DEFINITION(test_5663) {
                               GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsNotifications::waitForNotification(os, false);
+    QWidget *taskReportWindow = GTUtilsMdi::findWindow(os, "Task report [Download remote documents]");
+    QTextEdit *reportEdit = qobject_cast<QTextEdit *>(GTWidget::findWidget(os, "reportTextEdit", taskReportWindow));
+    CHECK_SET_ERR(reportEdit != nullptr, "reportTextEdit is not found");
+    QString html = reportEdit->toHtml();
+    CHECK_SET_ERR(html.contains("Document was successfully downloaded"), "Report contains expected text");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5665) {
