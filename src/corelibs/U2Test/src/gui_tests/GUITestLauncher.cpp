@@ -111,14 +111,18 @@ void GUITestLauncher::run() {
             qint64 startTime = GTimer::currentTimeMicros();
             GUITestTeamcityLogger::testStarted(testNameForTeamCity);
 
-            QString testResult = runTest(testName);
-            results[testName] = testResult;
-            if (GUITestTeamcityLogger::testFailed(testResult)) {
-                renameTestLog(testName);
-            }
+            try {
+                QString testResult = runTest(testName);
+                results[testName] = testResult;
+                if (GUITestTeamcityLogger::testFailed(testResult)) {
+                    renameTestLog(testName);
+                }
 
-            qint64 finishTime = GTimer::currentTimeMicros();
-            GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testResult, GTimer::millisBetween(startTime, finishTime));
+                qint64 finishTime = GTimer::currentTimeMicros();
+                GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testResult, GTimer::millisBetween(startTime, finishTime));
+            } catch (...) {
+                coreLog.error("Got exception while running test: " + testName);
+            }
         } else if (test->getReason() == HI::GUITest::Bug) {
             GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getIgnoreMessage());
         }
@@ -334,9 +338,9 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
     process.start(path, arguments);
     qint64 processId = process.processId();
 
-    QProcess screenRecorder;
+    QProcess screenRecorderProcess;
     if (enableVideoRecording) {
-        screenRecorder.start(getScreenRecorderString(testName));
+        screenRecorderProcess.start(getScreenRecorderString(testName));
     }
 
     bool isStarted = process.waitForStarted();
@@ -359,8 +363,12 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
     QString testResult = readTestResult(process.readAllStandardOutput());
 
     if (enableVideoRecording) {
-        screenRecorder.close();
-        screenRecorder.waitForFinished(2000);
+        screenRecorderProcess.close();
+        bool isScreenRecorderFinished = screenRecorderProcess.waitForFinished(2000);
+        if (!isScreenRecorderFinished) {
+            screenRecorderProcess.kill();
+            screenRecorderProcess.waitForFinished(2000);
+        }
         if (!GUITestTeamcityLogger::testFailed(testResult)) {
             QFile(getVideoPath(testName)).remove();
         }
@@ -371,6 +379,8 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
     }
 #ifdef Q_OS_WIN
     CmdlineTaskRunner::killProcessTree(process.processId());
+    process.kill();    // to avoid QProcess: Destroyed while process is still running.
+    process.waitForFinished(2000);
 #endif
     QString error = isFinished ? QString("An error occurred while finishing UGENE: %1\n%2").arg(process.errorString()).arg(testResult) :
                                  QString("Test fails because of timeout.");
