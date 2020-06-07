@@ -138,9 +138,6 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="subgroupsLayout"/>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="prevNextButtonsLayout">
      <item>
       <widget class="QPushButton" name="prevPushButton">
@@ -221,6 +218,9 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="subgroupsLayout"/>
    </item>
    <item>
     <spacer name="verticalSpacer_2">
