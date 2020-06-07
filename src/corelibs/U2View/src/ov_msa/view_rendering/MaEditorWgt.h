@@ -66,21 +66,27 @@ public:
     MaEditor *getEditor() const {
         return editor;
     }
+
     MaEditorSequenceArea *getSequenceArea() const {
         return seqArea;
     }
+
     MaEditorNameList *getEditorNameList() {
         return nameList;
     }
+
     MaEditorConsensusArea *getConsensusArea() {
         return consArea;
     }
+
     MaEditorOverviewArea *getOverviewArea() {
         return overviewArea;
     }
+
     MSAEditorOffsetsViewController *getOffsetsViewController() {
         return offsetsView;
     }
+
     ScrollController *getScrollController();
     BaseWidthController *getBaseWidthController();
     RowHeightController *getRowHeightController();

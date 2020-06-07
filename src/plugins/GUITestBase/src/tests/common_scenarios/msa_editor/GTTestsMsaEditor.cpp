@@ -321,14 +321,44 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma_unsorted.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "action_sort_sequences"));
-    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_name"));
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
     GTUtilsDialog::waitAllFinished(os);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "a"
+                                                                                 << "C"
+                                                                                 << "d"
+                                                                                 << "D",
+                  "Sort by name failed (ascending)");
 
-    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_name_descending"));
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsDialog::waitAllFinished(os);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "d"
+                                                                                 << "D"
+                                                                                 << "C"
+                                                                                 << "a",
+                  "Sort by name failed (descending)");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_length"));
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsDialog::waitAllFinished(os);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "D"
+                                                                                 << "d"
+                                                                                 << "a"
+                                                                                 << "C",
+                  "Sort by length failed (ascending)");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_length_descending"));
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsDialog::waitAllFinished(os);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "C"
+                                                                                 << "d"
+                                                                                 << "a"
+                                                                                 << "D",
+                  "Sort by length failed (descending)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -3519,7 +3549,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
 
     CHECK_SET_ERR(clipboardText.contains("mega"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053_2) {

@@ -25,10 +25,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include <U2Core/U2OpStatusUtils.h>
-
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
 
 namespace U2 {
 
@@ -73,27 +70,9 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget *parent, MSAE
 }
 
 void MsaEditorSortSequencesWidget::sl_sortClicked() {
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
-    if (msaObject->isStateLocked()) {
-        return;
-    }
-    MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
+    bool isByName = sortByCombo->currentIndex() == 0;
     MultipleAlignment::Order sortOrder = sortOrderCombo->currentIndex() == 0 ? MultipleAlignment::Ascending : MultipleAlignment::Descending;
-    if (sortByCombo->currentIndex() == 0) {
-        msa->sortRowsByName(sortOrder);
-    } else {
-        msa->sortRowsByLength(sortOrder);
-    }
-
-    // Drop collapsing mode.
-    msaEditor->getUI()->getSequenceArea()->sl_setCollapsingMode(false);
-
-    QStringList rowNames = msa->getRowNames();
-    if (rowNames != msaObject->getMultipleAlignment()->getRowNames()) {
-        U2OpStatusImpl os;
-        msaObject->updateRowsOrder(os, msa->getRowsIds());
-        SAFE_POINT_OP(os, );
-    }
+    msaEditor->sortSequences(isByName, sortOrder);
 }
 
 void MsaEditorSortSequencesWidget::sl_msaObjectStateChanged() {

@@ -69,7 +69,7 @@ public:
     MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj);
     ~MSAEditor();
 
-    QString getSettingsRoot() const {
+    QString getSettingsRoot() const override {
         return MSAE_SETTINGS_ROOT;
     }
 
@@ -96,9 +96,11 @@ public:
 
     void buildTree();
 
-    QString getReferenceRowName() const;
+    QString getReferenceRowName() const override;
 
-    char getReferenceCharAt(int pos) const;
+    char getReferenceCharAt(int pos) const override;
+
+    void sortSequences(bool isByName, const MultipleAlignment::Order& sortOrder);
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint &pos);
@@ -118,7 +120,8 @@ protected slots:
     void sl_rowsRemoved(const QList<qint64> &rowIds);
     void sl_updateRealignAction();
     void sl_showCustomSettings();
-    void sl_activateSortingPanel();
+    void sl_sortSequencesByName();
+    void sl_sortSequencesByLength();
 
 protected:
     QWidget *createWidget();
@@ -129,6 +132,7 @@ protected:
 
 private:
     void addEditMenu(QMenu *m) override;
+    void addSortMenu(QMenu *m);
     void addExportMenu(QMenu *m) override;
     void addAppearanceMenu(QMenu *m);
     void addColorsMenu(QMenu *m);
@@ -154,7 +158,10 @@ private:
     QAction *searchInSequencesAction;
     QAction *searchInSequenceNamesAction;
     QAction *openCustomSettingsAction;
-    QAction *sortSequencesAction;
+    QAction *sortByNameAscendingAction;
+    QAction *sortByNameDescendingAction;
+    QAction *sortByLengthAscendingAction;
+    QAction *sortByLengthDescendingAction;
 
     PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings;
     MSAEditorTreeManager treeManager;

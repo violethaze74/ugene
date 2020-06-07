@@ -273,17 +273,6 @@ void GTUtilsMSAEditorSequenceArea::checkSelectedRect(GUITestOpStatus &os, const 
     CHECK_SET_ERR(expectedRect == msaEditRegion, QString("Unexpected selection region. Expected: [(%1,%2) (%3,%4)]. Actual: [(%5,%6) (%7,%8)]").arg(expectedRect.topLeft().x()).arg(expectedRect.topLeft().y()).arg(expectedRect.bottomRight().x()).arg(expectedRect.bottomRight().y()).arg(msaEditRegion.topLeft().x()).arg(msaEditRegion.topLeft().y()).arg(msaEditRegion.bottomRight().x()).arg(msaEditRegion.bottomRight().y()));
 }
 #undef GT_METHOD_NAME
-#define GT_METHOD_NAME "checkSorted"
-void GTUtilsMSAEditorSequenceArea::checkSorted(GUITestOpStatus &os, bool sortedState) {
-    QStringList names = getNameList(os);
-
-    QStringList sortedNames = names;
-    qSort(sortedNames);
-
-    bool sorted = (sortedNames == names);
-    GT_CHECK(sorted == sortedState, "Sorted state differs from needed sorted state");
-}
-#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNameList"
 QStringList GTUtilsMSAEditorSequenceArea::getNameList(GUITestOpStatus &os) {
