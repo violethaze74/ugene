@@ -1019,6 +1019,8 @@ void FindPatternMsaWidget::correctSearchInCombo() {
 }
 
 void FindPatternMsaWidget::setUpTabOrder() const {
+    QWidget::setTabOrder(groupResultsButton, prevPushButton);
+    QWidget::setTabOrder(prevPushButton, nextPushButton);
     QWidget::setTabOrder(nextPushButton, boxAlgorithm);
     QWidget::setTabOrder(boxRegion, editStart);
     QWidget::setTabOrder(editStart, editEnd);
