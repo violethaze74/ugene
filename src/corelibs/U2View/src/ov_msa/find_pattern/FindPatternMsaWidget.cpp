@@ -126,22 +126,29 @@ private:
     int current;
 };
 
-#define SEARCH_MODE_SEQUENCES_DATA QVariant(1)
-#define SEARCH_MODE_NAMES_DATA QVariant(2)
+#define SEARCH_MODE_SEQUENCES_INDEX 0
+#define SEARCH_MODE_NAMES_INDEX 1
 
-FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, bool isSearchInNamesMode)
+/** Last used search mode. Stored per session only. */
+static int isSearchInNamesModeByDefault = false;
+
+FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, TriState isSearchInNamesModeTriState)
     : msaEditor(msaEditor),
       currentResultIndex(-1),
       searchTask(nullptr),
       previousMaxResult(-1),
       setSelectionToTheFirstResult(true),
-      isSearchInNamesMode(isSearchInNamesMode),
       savableWidget(this, GObjectViewUtils::findViewByName(msaEditor->getName())),
       algorithmSubgroup(nullptr),
       searchInSubgroup(nullptr),
       otherSettingsSubgroup(nullptr) {
     setupUi(this);
     setObjectName("FindPatternMsaWidget");
+    if (isSearchInNamesModeTriState == TriState_Unknown) {    // Re-use the last state
+        isSearchInNamesMode = isSearchInNamesModeByDefault;
+    } else {
+        isSearchInNamesMode = isSearchInNamesModeTriState == TriState_Yes;
+    }
 
     progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
@@ -181,16 +188,8 @@ int FindPatternMsaWidget::getTargetMsaLength() const {
 
 void FindPatternMsaWidget::setSearchInNamesMode(bool flag) {
     CHECK(isSearchInNamesMode != flag, )
-    isSearchInNamesMode = flag;
-    QVariant itemDataToActivate = isSearchInNamesMode ? SEARCH_MODE_NAMES_DATA : SEARCH_MODE_SEQUENCES_DATA;
-    int indexToActivate = 0;
-    for (int i = 0; i < searchContextComboBox->count(); i++) {
-        if (searchContextComboBox->itemData(i) == itemDataToActivate) {
-            indexToActivate = i;
-            break;
-        }
-    }
-    searchContextComboBox->setCurrentIndex(indexToActivate);
+    int indexToActivate = flag ? SEARCH_MODE_NAMES_INDEX : SEARCH_MODE_SEQUENCES_INDEX;
+    searchContextComboBox->setCurrentIndex(indexToActivate); // triggers a signal.
 }
 
 void FindPatternMsaWidget::showCurrentResultAndStopProgress() {
@@ -218,10 +217,10 @@ void FindPatternMsaWidget::initLayout() {
     otherSettingsSubgroup = new ShowHideSubgroupWidget(QObject::tr("Other settings"), QObject::tr("Other settings"), widgetOther, false);
     subgroupsLayout->addWidget(otherSettingsSubgroup);
 
-    searchContextComboBox->addItem(tr("Sequences"), SEARCH_MODE_SEQUENCES_DATA);
-    searchContextComboBox->addItem(tr("Sequence Names"), SEARCH_MODE_NAMES_DATA);
+    searchContextComboBox->addItem(tr("Sequences"));
+    searchContextComboBox->addItem(tr("Sequence Names"));
     if (isSearchInNamesMode) {
-        searchContextComboBox->setCurrentIndex(1);
+        searchContextComboBox->setCurrentIndex(SEARCH_MODE_NAMES_INDEX);
     }
 
     updateLayout();
@@ -469,7 +468,7 @@ void FindPatternMsaWidget::showHideMessage(bool show, MessageFlag messageFlag, c
                                       tr("Info: please input at least one pattern to search in the sequence names.") :
                                       tr("Info: please input at least one sequence pattern to search for.");
 
-                message += " " + tr("Use Ctrl+Enter to input multiple patterns").arg(lineBreakShortcut);
+                message += " " + tr("Use %1 to input multiple patterns").arg(lineBreakShortcut);
                 text = QString("<b><font color=%1>%2</font><br></br></b>").arg(Theme::infoColorLabelHtmlStr()).arg(message);
                 break;
             }
@@ -827,7 +826,8 @@ void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList &patterns
 }
 
 void FindPatternMsaWidget::sl_searchModeChanged() {
-    isSearchInNamesMode = searchContextComboBox->currentData() == SEARCH_MODE_NAMES_DATA;
+    isSearchInNamesMode = searchContextComboBox->currentIndex() == SEARCH_MODE_NAMES_INDEX;
+    isSearchInNamesModeByDefault = isSearchInNamesMode;
     clearResults();
     updateLayout();
     sl_validateStateAndStartNewSearch();

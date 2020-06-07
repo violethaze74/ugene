@@ -546,7 +546,8 @@ void MSAEditor::sl_searchInSequences() {
     auto optionsPanel = getOptionsPanel();
     SAFE_POINT(optionsPanel != NULL, "Internal error: options panel is NULL"
                                      " when search in sequences was initiated!", );
-    optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId());
+    QVariantMap options = FindPatternMsaWidgetFactory::getOptionsToActivateSearchInSequences();
+    optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
 }
 
 void MSAEditor::sl_searchInSequenceNames() {

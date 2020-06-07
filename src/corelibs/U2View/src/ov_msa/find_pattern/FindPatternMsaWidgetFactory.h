@@ -41,6 +41,8 @@ public:
 
     static const QString &getGroupId();
 
+    static const QVariantMap getOptionsToActivateSearchInSequences();
+
     static const QVariantMap getOptionsToActivateSearchInNames();
 
 private:

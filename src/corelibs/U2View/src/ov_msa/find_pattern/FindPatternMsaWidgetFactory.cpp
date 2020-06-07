@@ -39,7 +39,7 @@ FindPatternMsaWidgetFactory::FindPatternMsaWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-#define SEARCH_IN_NAMES_MODE_OPTION_KEY "FindPatternMsaWidgetFactory_findInNames"
+#define SEARCH_MODE_OPTION_KEY "FindPatternMsaWidgetFactory_searchMode"
 
 QWidget *FindPatternMsaWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
     SAFE_POINT(objView != nullptr,
@@ -51,10 +51,9 @@ QWidget *FindPatternMsaWidgetFactory::createWidget(GObjectView *objView, const Q
                QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    bool isSearchInNamesMode = options.value(SEARCH_IN_NAMES_MODE_OPTION_KEY).toBool();
-    FindPatternMsaWidget *widget = new FindPatternMsaWidget(msaEditor, isSearchInNamesMode);
-    widget->setObjectName("FindPatternMsaWidget");
-    return widget;
+    int searchMode = options.value(SEARCH_MODE_OPTION_KEY).toInt();
+    TriState searchInNamesTriState = searchMode == 2 ? TriState_Yes : (searchMode == 1 ? TriState_No : TriState_Unknown);
+    return new FindPatternMsaWidget(msaEditor, searchInNamesTriState);
 }
 
 OPGroupParameters FindPatternMsaWidgetFactory::getOPGroupParameters() {
@@ -64,17 +63,25 @@ OPGroupParameters FindPatternMsaWidgetFactory::getOPGroupParameters() {
 void FindPatternMsaWidgetFactory::applyOptionsToWidget(QWidget *widget, const QVariantMap &options) {
     FindPatternMsaWidget *findPatternMsaWidget = qobject_cast<FindPatternMsaWidget *>(widget);
     CHECK(findPatternMsaWidget != nullptr, )
-    bool isSearchInNamesMode = options.value(SEARCH_IN_NAMES_MODE_OPTION_KEY).toBool();
-    findPatternMsaWidget->setSearchInNamesMode(isSearchInNamesMode);
+    int mode = options.value(SEARCH_MODE_OPTION_KEY).toInt();
+    if (mode == 1 || mode == 2) {
+        findPatternMsaWidget->setSearchInNamesMode(mode == 2);
+    }
 }
 
 const QString &FindPatternMsaWidgetFactory::getGroupId() {
     return GROUP_ID;
 }
 
+const QVariantMap FindPatternMsaWidgetFactory::getOptionsToActivateSearchInSequences() {
+    QVariantMap options;
+    options[SEARCH_MODE_OPTION_KEY] = 1;
+    return options;
+}
+
 const QVariantMap FindPatternMsaWidgetFactory::getOptionsToActivateSearchInNames() {
     QVariantMap options;
-    options[SEARCH_IN_NAMES_MODE_OPTION_KEY] = true;
+    options[SEARCH_MODE_OPTION_KEY] = 2;
     return options;
 }
 
