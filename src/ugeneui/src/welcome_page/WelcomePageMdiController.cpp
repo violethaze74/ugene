@@ -53,11 +53,13 @@ void WelcomePageMdiController::sl_showPage() {
 
     if (welcomePage != nullptr) {
         if (mdiManager->getWindows().contains(welcomePage)) {
+            uiLog.trace("Activating WelcomePage window");
             mdiManager->activateWindow(welcomePage);
         }    // else: it means that the page has already been called but it is loading now
         return;
     }
 
+    uiLog.trace("Creating new WelcomePage window");
     welcomePage = new WelcomePageMdi(tr("Start Page"), this);
     mdiManager->addMDIWindow(welcomePage);
     sl_onRecentChanged();

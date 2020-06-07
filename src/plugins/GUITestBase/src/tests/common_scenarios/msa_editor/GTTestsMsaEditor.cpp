@@ -1644,7 +1644,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected");
-    GTGlobals::sleep(3000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
@@ -3489,7 +3488,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
     QString clipboardText = GTClipboard::text(os);
 
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
-    GTGlobals::sleep(3000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053_1) {
@@ -3522,7 +3520,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
     CHECK_SET_ERR(clipboardText.contains("mega"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
 
-    GTGlobals::sleep(3000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053_2) {
@@ -3533,14 +3530,12 @@ GUI_TEST_CLASS_DEFINITION(test_0053_2) {
     //4. Toolbar {Copy->Copy formatted}
     //Expected state: the buffer contatin the sequence in CLUSTALW format
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    GTGlobals::sleep(200);
 
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
+    CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
 
     GTComboBox::setIndexWithText(os, copyType, "CLUSTALW");
 
@@ -3553,8 +3548,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_2) {
 
     CHECK_SET_ERR(clipboardText.contains("CLUSTAL W 2.0 multiple sequence alignment"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
-
-    GTGlobals::sleep(3000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053_3) {
@@ -3578,7 +3571,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_3) {
     QString clipboardText = GTClipboard::text(os);
 
     CHECK_SET_ERR(clipboardText.contains("ACCAGGCTTGGCAATGCGTATC"), clipboardText);
-    GTGlobals::sleep(3000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053_4) {
@@ -3623,8 +3615,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
 
     CHECK_SET_ERR(clipboardText.contains("<span style=\"font-size:10pt; font-family:Verdana;\">"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("<p><span style=\"background-color:#ff99b1;\">T</span><span style=\"background-color:#fcff92;\">A</span><span style=\"background-color:#fcff92;\">A</span></p>"), clipboardText);
-
-    GTGlobals::sleep(3000);
 }
 
 /** These tests are created according to test plan: https://ugene.net/wiki/display/PD/MSA**/
