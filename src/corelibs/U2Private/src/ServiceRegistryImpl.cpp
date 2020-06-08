@@ -197,7 +197,7 @@ void EnableServiceTask::prepare() {
     }
 
     Task *t = sr->createServiceEnablingTask(s);
-    if (t != NULL) {
+    if (t != nullptr) {
         addSubTask(t);
     }
 

@@ -22,14 +22,25 @@
 #ifndef _U2_GT_UTILS_H_
 #define _U2_GT_UTILS_H_
 
+#include <GTGlobals.h>
+
 #include <QString>
 
 namespace U2 {
+
+using namespace HI;
 
 class GTUtils {
 public:
     /** Generates unique string with the given prefix. Tries to preserve suffix uniqueness to be used safely in parallel test runs. */
     static QString genUniqueString(const QString &prefix = "");
+
+    /** Waits until service is enabled. Fails if the service in not active within the default timeout. */
+    static void checkServiceIsEnabled(HI::GUITestOpStatus &os, const QString &serviceName);
+
+    static void checkExportServiceIsEnabled(HI::GUITestOpStatus &os) {
+        checkServiceIsEnabled(os, "DNA export service");
+    }
 };
 
 }    // namespace U2

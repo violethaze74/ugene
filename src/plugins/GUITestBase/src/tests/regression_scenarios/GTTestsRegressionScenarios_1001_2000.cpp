@@ -63,6 +63,7 @@
 #include <QTextStream>
 #include <QWizard>
 #include <QtWidgets/QTextBrowser>
+#include <api/GTUtils.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
@@ -5409,7 +5410,8 @@ GUI_TEST_CLASS_DEFINITION(test_1529) {
     sourceFile.copy(sandBoxDir + "COI.aln");
 
     GTFileDialog::openFile(os, sandBoxDir, "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Use context menu{ Export->Amino translation... }.
     // Expected state : "Export Amino Translation" dialog has appeared.

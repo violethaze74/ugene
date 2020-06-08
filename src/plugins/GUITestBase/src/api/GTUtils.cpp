@@ -23,13 +23,34 @@
 
 #include <QDateTime>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/ServiceModel.h>
+
 namespace U2 {
 
+#define GT_CLASS_NAME "GTUtils"
 static qint64 counter = QDateTime::currentMSecsSinceEpoch();
 
 QString GTUtils::genUniqueString(const QString &prefix) {
     counter++;
     return prefix + "_" + QString ::number(counter);
 }
+
+#define GT_METHOD_NAME "checkServiceIsEnabled"
+void GTUtils::checkServiceIsEnabled(HI::GUITestOpStatus &os, const QString &serviceName) {
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        QList<Service *> services = AppContext::getServiceRegistry()->getServices();
+        foreach (Service *service, services) {
+            if (service->getName() == serviceName && service->isEnabled()) {
+                return;
+            }
+        }
+    }
+    GT_CHECK(false, "Service was not enabled within required period: " + serviceName);
+}
+#undef GT_METHOD_NAME
+
+#undef GT_CLASS_NAME
 
 }    // namespace U2

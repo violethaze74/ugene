@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <api/GTUtils.h>
 #include <base_dialogs/ColorDialogFiller.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/FontDialogFiller.h>
@@ -1110,7 +1111,8 @@ GUI_TEST_CLASS_DEFINITION(test_0009_2) {
 GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 1. Open file _common_data\scenarios\msa\translations_nucl.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/translations_nucl.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with default settings
@@ -1135,7 +1137,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     // 1. Open file _common_data\scenarios\msa\translations_nucl.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/translations_nucl.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with default settings
@@ -1159,7 +1162,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
 GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     // 1. Open file _common_data\scenarios\msa\translations_nucl.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/translations_nucl.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate to amino with default settings
@@ -1371,7 +1375,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     // 1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Convert alignment to amino. Use context menu {Export->Amino translation of alignment rows}
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os));
@@ -1400,6 +1405,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     // 1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Convert alignment to amino. Use context menu {Export->Amino translation of alignment rows}
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, testDir + "_common_data/scenarios/sandbox/COI_transl.aln"));
@@ -1429,7 +1435,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
 
     // 1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Convert alignment to amino. Use context menu {Export->Amino translation of alignment rows}
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os));

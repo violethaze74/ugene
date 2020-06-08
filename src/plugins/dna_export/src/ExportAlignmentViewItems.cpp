@@ -90,7 +90,7 @@ void MSAExportContext::updateActions() {
 
 void MSAExportContext::buildMenu(QMenu *m) {
     QMenu *exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
-    SAFE_POINT(exportMenu != NULL, "exportMenu", );
+    SAFE_POINT(exportMenu != nullptr, "exportMenu is not found", );
     MultipleSequenceAlignmentObject *mObject = editor->getMaObject();
     if (mObject->getAlphabet()->isNucleic()) {
         exportMenu->addAction(translateMSAAction);
@@ -99,7 +99,7 @@ void MSAExportContext::buildMenu(QMenu *m) {
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
     const MultipleSequenceAlignment ma = editor->getMaObject()->getMultipleAlignment();
-    assert(ma->getAlphabet()->isNucleic());
+    SAFE_POINT(ma->getAlphabet()->isNucleic(), "Alignment alphabet is not nucleic", );
 
     GUrl msaUrl = editor->getMaObject()->getDocument()->getURL();
     QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMaObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");

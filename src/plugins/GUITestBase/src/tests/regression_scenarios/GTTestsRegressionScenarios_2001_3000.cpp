@@ -20,6 +20,7 @@
  */
 
 #include <GTGlobals.h>
+#include <api/GTUtils.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -3357,10 +3358,10 @@ GUI_TEST_CLASS_DEFINITION(test_2498) {
     // 1. Open the /test/_common_data/fasta/empty.fa empty msa file.
     // 2. Open context menu on the sequence area. Go to the {Export -> amino translation}
     //
-
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "empty.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows", PopupChecker::IsDisabled, GTGlobals::UseMouse));
@@ -5643,7 +5644,7 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTWidget::getActiveModalWidget(os);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
         }
     };
@@ -5658,7 +5659,7 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ren"
                                                          "der_area_virus_X"));
     QString blastTaskName = "RemoteBLASTTask";
-    bool isTaskStarted = GTUtilsTaskTreeView::checkTask(os, blastTaskName);
+    GTUtilsTaskTreeView::checkTask(os, blastTaskName);
     GTGlobals::sleep(10000);
 
     // Cancel the task. If not cancelled the run may last too long to trigger timeout in nightly tests.
