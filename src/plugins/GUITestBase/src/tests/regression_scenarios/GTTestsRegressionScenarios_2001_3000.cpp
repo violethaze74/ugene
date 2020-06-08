@@ -4595,6 +4595,7 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
     //    1. Open file {data/samples/Genbank/murine.gb}
     GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "test_2713.gb");
     GTFileDialog::openFile(os, sandBoxDir, "test_2713.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open file {data/samples/FASTA/human_T1.fa}
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
@@ -4643,12 +4644,11 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
     file.write(fileData);
     file.close();
 
-    GTGlobals::sleep(5000);
-
+    GTUtilsDialog::waitAllFinished(os);
     //    7. Open "human_T1" sequence view
     //    Expected state: annotations from "murine.gb" present on the sequence view
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsAnnotationsTreeView::findFirstAnnotation(os);
 }
 
