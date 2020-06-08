@@ -2640,7 +2640,7 @@ GUI_TEST_CLASS_DEFINITION(test_1234) {
  *   Expected state: no bad characters at the end of the frames. Sequences are translated correctly.
  */
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsSequenceView::selectSequenceRegion(os, 100, 120);
     //DLSAETL
     //ISRQKP
@@ -2651,9 +2651,7 @@ GUI_TEST_CLASS_DEFINITION(test_1234) {
                                                       GTGlobals::UseMouse));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "test_1234.fa", true));
 
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-
-    GTGlobals::sleep(2000);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QWidget *parent = GTWidget::findWidget(os, "test_1234.fa");
     CHECK_SET_ERR(NULL != parent, "Failed to find parent widget!");
