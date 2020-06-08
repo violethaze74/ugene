@@ -228,12 +228,10 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/dp_view/", "NC_014267.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ADV_MENU_REPLACE_WHOLE_SEQUENCE << ACTION_EDIT_RESERVE_COMPLEMENT_SEQUENCE, GTGlobals::UseKey));
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(1000);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString expectedSequenceBegin = "ATCAGATT";
     QString sequenceBegin = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 8);
