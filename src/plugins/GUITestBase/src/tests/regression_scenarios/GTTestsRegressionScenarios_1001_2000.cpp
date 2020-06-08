@@ -1631,6 +1631,8 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1) {    //commit AboutDialogController.cpp
 
 GUI_TEST_CLASS_DEFINITION(test_1115) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/PBR322_blast_annotations.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
