@@ -4779,8 +4779,7 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     GTLogTracer l;
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "NM_001135099_no_anns.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "NM_001135099_annotations.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4803,7 +4802,7 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     settings.rtPcrDesign = true;
 
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, sequence, Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
