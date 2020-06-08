@@ -6008,31 +6008,36 @@ GUI_TEST_CLASS_DEFINITION(test_6808_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "groupResultsButton"));
 
     // Expected result: the first three sequences are Mecopoda_elongata__Ishigaki__J, Mecopoda_elongata__Sumatra_, Mecopoda_sp.__Malaysia_
-    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(nameList[0] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
-    CHECK_SET_ERR(nameList[1] == "Mecopoda_elongata__Sumatra_", "The second sequence is incorrect");
-    CHECK_SET_ERR(nameList[2] == "Mecopoda_sp.__Malaysia_", "The third sequence is incorrect");
+    QStringList nameList0 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList0[0] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
+    CHECK_SET_ERR(nameList0[1] == "Mecopoda_elongata__Sumatra_", "The second sequence is incorrect");
+    CHECK_SET_ERR(nameList0[2] == "Mecopoda_sp.__Malaysia_", "The third sequence is incorrect");
 
     // Push Next button
     GTWidget::click(os, GTWidget::findWidget(os, "nextPushButton"));
 
     // Result: first line is selected
-    QStringList nameList1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(nameList1[0] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
+    QStringList nameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList2[0] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 604, 1));
 
-    // Press "Group" button
+    // Press "Group" button -> the group is moved to the end of the list
     GTWidget::click(os, GTWidget::findWidget(os, "groupResultsButton"));
+    QStringList nameList3 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    int length = nameList2.size();
+    CHECK_SET_ERR(nameList3[length - 3] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
+    CHECK_SET_ERR(nameList3[length - 2] == "Mecopoda_elongata__Sumatra_", "The second sequence is incorrect");
+    CHECK_SET_ERR(nameList3[length - 1] == "Mecopoda_sp.__Malaysia_", "The third sequence is incorrect");
 
     // Push Previous button
     GTWidget::click(os, GTWidget::findWidget(os, "prevPushButton"));
 
     // Expected result: third line is selected
-    QStringList nameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(nameList2[2] == "Mecopoda_sp.__Malaysia_", "The sequence is incorrect");
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 2, 604, 1));
-
+    QStringList nameList4 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList4[length - 1] == "Mecopoda_sp.__Malaysia_", "The sequence is incorrect");
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 17, 604, 1));
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6809) {
     // Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
