@@ -324,7 +324,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0002) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create custom color scheme
-    const QString schemeName = getName() + "Scheme";
+    QString suffix = GTUtils::genUniqueString();
+    QString schemeName = getName() + "Scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, schemeName, NewColorSchemeCreator::nucl);
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -371,7 +372,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0003) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create custom color scheme
-    const QString scheme = getName() + "_scheme111111111111111111111111111111111111111111111";
+    QString suffix = GTUtils::genUniqueString();
+    const QString scheme = getName() + "_scheme111111111111111111111111111111111111111111111" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::nucl);
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -779,7 +781,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005) {
     GTFileDialog::openFile(os, testDir + "_common_data/alphabets", "extended_amino.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create custom color scheme
-    const QString scheme = getName() + "_scheme";
+    QString suffix = GTUtils::genUniqueString();
+    const QString scheme = getName() + "_scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::amino);
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -824,9 +827,10 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/alphabets", "extended_amino.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create 3 color schemes
-    const QString scheme1 = getName() + "_scheme1";
-    const QString scheme2 = getName() + "_scheme2";
-    const QString scheme3 = getName() + "_scheme3";
+    QString suffix = GTUtils::genUniqueString();
+    QString scheme1 = getName() + "_scheme1" + suffix;
+    QString scheme2 = getName() + "_scheme2" + suffix;
+    QString scheme3 = getName() + "_scheme3" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme1, NewColorSchemeCreator::amino);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme2, NewColorSchemeCreator::amino);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme3, NewColorSchemeCreator::amino);
@@ -844,7 +848,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //    2. Create custom color scheme
-    const QString scheme = getName() + "_scheme";
+    QString suffix = GTUtils::genUniqueString();
+    const QString scheme = getName() + "_scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::amino);
 
     //    3. Open highlighting option panel tab
