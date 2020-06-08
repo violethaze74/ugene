@@ -6608,26 +6608,18 @@ GUI_TEST_CLASS_DEFINITION(test_1654) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 15));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
                                                                         << "Sequence region"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
-    GTGlobals::sleep(500);
 
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep(5000);
 
     QWidget *createAnnotationsButton = GTWidget::findWidget(os, "getAnnotationsPushButton");
-    GTGlobals::sleep(500);
     CHECK_SET_ERR(!createAnnotationsButton->isEnabled(), "Create annotations button is enabled!");
 }
 
