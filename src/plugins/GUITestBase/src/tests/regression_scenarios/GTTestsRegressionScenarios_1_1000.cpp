@@ -570,7 +570,7 @@ GUI_TEST_CLASS_DEFINITION(test_0574) {
     GTUtilsDialog::waitForDialog(os, new CreateFragmentDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Cloning"
                                                                         << "Create Fragment"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //4. Select newly created fragment
