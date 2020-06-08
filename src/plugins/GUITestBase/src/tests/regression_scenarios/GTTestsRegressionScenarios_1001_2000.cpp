@@ -6676,13 +6676,11 @@ GUI_TEST_CLASS_DEFINITION(test_1660) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 15));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
                                                                         << "Sequence region"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
     GTGlobals::sleep(500);
-
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
 
     //TODO setSearchInregion method checking
