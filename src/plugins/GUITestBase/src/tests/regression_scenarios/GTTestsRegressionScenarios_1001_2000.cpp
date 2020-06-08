@@ -2496,8 +2496,8 @@ GUI_TEST_CLASS_DEFINITION(test_1212_1) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "1..199950"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
                                                                         << "Sequence region"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
-    //    Expected: region is selected
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+        //    Expected: region is selected
     ADVSingleSequenceWidget *w = (ADVSingleSequenceWidget *)GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_SET_ERR(!w->getSequenceSelection()->isEmpty(), "No selected region");
 }
