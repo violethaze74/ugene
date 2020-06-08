@@ -744,29 +744,30 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     CHECK_SET_ERR(clipboardTest == "TATTAA-", "\n Expected: \nTATTAA-\nFound:\n" + clipboardTest);
 }
 
-void test_13(HI::GUITestOpStatus &os, int comboVal, int SpinVal, QString ExpectedCons) {
+static void test_13(HI::GUITestOpStatus &os, int comboVal, int spinVal, const QString &expectedCons) {
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
+    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::setCurrentIndex(os, consensusCombo, comboVal);
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
-    GTSpinBox::setValue(os, thresholdSpinBox, SpinVal, GTGlobals::UseKeyBoard);
+    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    GTSpinBox::setValue(os, thresholdSpinBox, spinVal, GTGlobals::UseKeyBoard);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
                                                                         << "Copy consensus",
                                                       GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
-    GTGlobals::sleep(1000);
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString clipboardText = GTClipboard::text(os);
-    GTGlobals::sleep(500);
-    CHECK_SET_ERR(clipboardText == ExpectedCons, "\n Expected: \n" + ExpectedCons + "\nFound:\n" + clipboardText);
+    CHECK_SET_ERR(clipboardText == expectedCons, "\n Expected: \n" + expectedCons + "\nFound:\n" + clipboardText);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {

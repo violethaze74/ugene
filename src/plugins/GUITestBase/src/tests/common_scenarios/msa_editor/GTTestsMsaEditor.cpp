@@ -1399,35 +1399,29 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
 
     // 1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Convert alignment to amino. Use context menu {Export->Amino translation of alignment rows}
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, testDir + "_common_data/scenarios/sandbox/COI_transl.aln"));
-
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-
-    GTGlobals::sleep();
+    GTWidget::click(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os), Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // CHANGES: close and open MDI window
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep();
+    GTUtilsMdi::checkWindowIsActive(os, "Start Page");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI_transl.aln"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 3. Open converted alignment. Use context menu {Align->Align with Kalign}
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
-
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-    GTGlobals::sleep();
-
-    // Expected state: UGENE not crash
-    GTGlobals::sleep(5000);
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013_2) {
