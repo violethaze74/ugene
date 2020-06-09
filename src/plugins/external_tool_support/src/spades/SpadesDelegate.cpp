@@ -143,7 +143,7 @@ SpadesPropertyDialog::SpadesPropertyDialog(const QMap<QString, QVariant> &value,
     : QDialog(parent) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "28967231");
+    new HelpButton(this, buttonBox, "46500523");
     setItemsData();
     setValue(value);
 }

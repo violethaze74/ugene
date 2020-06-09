@@ -34,7 +34,7 @@ namespace U2 {
 CreateRulerDialogController::CreateRulerDialogController(const QSet<QString> &namesToFilter, int defaultOffset, QWidget *p)
     : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24748759");
+    new HelpButton(this, buttonBox, "46499756");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

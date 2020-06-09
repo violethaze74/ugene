@@ -35,7 +35,7 @@ EditSettingsDialog::EditSettingsDialog(const EditSettings &settings, QWidget *pa
     : QDialog(parent) {
     ui = new Ui_EditSettingDialogForm;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "24748769");
+    new HelpButton(this, ui->buttonBox, "46499774");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

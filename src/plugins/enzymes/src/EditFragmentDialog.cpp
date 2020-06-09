@@ -42,7 +42,7 @@ namespace U2 {
 EditFragmentDialog::EditFragmentDialog(DNAFragment &fragment, QWidget *p)
     : QDialog(p), dnaFragment(fragment) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24748966");
+    new HelpButton(this, buttonBox, "46501116");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

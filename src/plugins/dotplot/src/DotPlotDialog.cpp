@@ -51,7 +51,7 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView *currentADV, int 
     : QDialog(parent), xSeq(sequenceX), ySeq(sequenceY), adv(currentADV), directColor(dColor), invertedColor(iColor), openSequenceTask(NULL) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "24748821");
+    new HelpButton(this, buttonBox, "46499937");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

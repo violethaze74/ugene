@@ -181,7 +181,7 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
                                                      QWidget *parent)
     : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "28967214");
+    new HelpButton(this, buttonBox, "46500506");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
 
