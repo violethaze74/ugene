@@ -695,16 +695,19 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618"), "No GXL_141618 object!");
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_1", "200..300", sandBoxDir + "ann_test_0010_1_19.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
+                                                                        << "create_annotation_action"));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141619"), Qt::RightButton);
     GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_2", "100..200", sandBoxDir + "ann_test_0010_1_18.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD" << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
+                                                                        << "create_annotation_action"));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
     GTUtilsDialog::waitAllFinished(os);
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann_1" << "ann_2");
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann_1"
+                                                              << "ann_2");
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_1.bed", ExportAnnotationsFiller::bed, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -756,7 +759,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
                                                                         << "create_annotation_action"));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann_1" << "ann_2");
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann_1"
+                                                              << "ann_2");
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_2.gff", ExportAnnotationsFiller::gff, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -995,7 +999,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_1.bed");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 features"), "Object not found");
-    CHECK_SET_ERR(!GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features"), "Object shound not be in the project");
+    GTUtilsProjectTreeView::checkNoItem(os, "scaffold_90 features");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012_2) {
@@ -1047,7 +1051,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_2.gff");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 features"), "Object not found");
-    CHECK_SET_ERR(!GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features"), "Object shound not be in the project");
+
+    GTUtilsProjectTreeView::checkNoItem(os, "scaffold_90 features");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012_3) {
@@ -1107,7 +1112,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_3.gtf");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 features"), "Object not found");
-    CHECK_SET_ERR(!GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features"), "Object shound not be in the project");
+    GTUtilsProjectTreeView::checkNoItem(os, "scaffold_90 features");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {

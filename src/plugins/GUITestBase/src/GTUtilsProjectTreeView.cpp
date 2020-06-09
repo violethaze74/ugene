@@ -529,8 +529,14 @@ void GTUtilsProjectTreeView::ensureFilteringIsDisabled(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "checkItem"
 bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
     QTreeView *treeView = getTreeView(os);
-    GT_CHECK_RESULT(treeView != NULL, "Tree view is NULL", false);
     return checkItem(os, treeView, itemName, QModelIndex(), options);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkNoItem"
+void GTUtilsProjectTreeView::checkNoItem(HI::GUITestOpStatus &os, const QString &itemName) {
+    bool isFound = checkItem(os, itemName, GTGlobals::FindOptions(false));
+    GT_CHECK(!isFound, "Unexpected item was found in the project: " + itemName);
 }
 #undef GT_METHOD_NAME
 

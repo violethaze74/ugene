@@ -2020,7 +2020,7 @@ GUI_TEST_CLASS_DEFINITION(test_0830) {
 
     //3) wait for task error, ensure that no output files are in the project
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!GTUtilsProjectTreeView::checkItem(os, "830.ugenedb"), "The output file is in a project");
+    GTUtilsProjectTreeView::checkNoItem(os, "830.ugenedb");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0834) {

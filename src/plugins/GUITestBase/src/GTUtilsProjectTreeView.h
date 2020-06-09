@@ -104,6 +104,8 @@ public:
     static bool checkItem(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
     static bool checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
+    static void checkNoItem(HI::GUITestOpStatus &os, const QString &itemName);
+
     // the method does nothing if `acceptableTypes` is an empty set
     static void checkObjectTypes(HI::GUITestOpStatus &os, const QSet<GObjectType> &acceptableTypes, const QModelIndex &parent = QModelIndex());
     static void checkObjectTypes(HI::GUITestOpStatus &os, QTreeView *treeView, const QSet<GObjectType> &acceptableTypes, const QModelIndex &parent = QModelIndex());

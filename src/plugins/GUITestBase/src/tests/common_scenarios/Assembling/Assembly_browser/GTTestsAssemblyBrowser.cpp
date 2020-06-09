@@ -990,8 +990,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export consensus variations..."));
     GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Consensus);
 
-    GTUtilsProjectTreeView::checkItem(os, "chrM_consensus.gb");
-    GTUtilsProjectTreeView::checkItem(os, "chrM.snp");
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "chrM.snp"), "chrM.snp is not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0036) {
