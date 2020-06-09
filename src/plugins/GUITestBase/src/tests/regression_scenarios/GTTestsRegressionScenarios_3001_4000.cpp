@@ -4334,7 +4334,7 @@ GUI_TEST_CLASS_DEFINITION(test_3656) {
     GTThread::waitForMainThread();
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(treeView != NULL, "Invalid project tree view");
 
     QModelIndex prnt = GTUtilsProjectTreeView::findIndex(os, "Human (hg19)");
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "chr2", prnt);
