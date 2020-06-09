@@ -20,6 +20,7 @@
  */
 
 #include <GTGlobals.h>
+#include <api/GTUtils.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -4338,7 +4339,6 @@ GUI_TEST_CLASS_DEFINITION(test_3656) {
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTThread::waitForMainThread();
-    GTGlobals::sleep(5000);
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
@@ -4346,18 +4346,16 @@ GUI_TEST_CLASS_DEFINITION(test_3656) {
     QModelIndex prnt = GTUtilsProjectTreeView::findIndex(os, "Human (hg19)");
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "chr2", prnt);
     GTThread::waitForMainThread();
+    GTUtils::checkExportServiceIsEnabled(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, idx));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "test_3656.fa"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(GTUtilsTaskTreeView::checkTask(os, "Export sequence to document"), "Task is not running!");
-    GTGlobals::sleep();
 
     GTUtilsTaskTreeView::cancelTask(os, "Export sequence to document");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3658) {
