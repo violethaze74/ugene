@@ -117,7 +117,9 @@ void establishConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogF
     waitForConnection(os, action);
 
     QWidget *dialog = GTWidget::getActiveModalWidget(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "pbConnect", dialog));
+    QWidget *connectButton = GTWidget::findWidget(os, "pbConnect", dialog);
+    GTWidget::checkEnabled(os, connectButton);
+    GTWidget::click(os, connectButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 

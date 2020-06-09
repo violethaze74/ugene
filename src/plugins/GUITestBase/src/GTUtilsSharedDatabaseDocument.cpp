@@ -141,6 +141,7 @@ Document *GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(HI::GUITes
 
     CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), NULL);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
     return GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, conName);
 }
 #undef GT_METHOD_NAME

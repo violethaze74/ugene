@@ -4259,7 +4259,7 @@ GUI_TEST_CLASS_DEFINITION(test_3640) {
 
     //2. Open any document.
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //1. Connect to a read-only shared database (e.g. to the UGENE public database).
     GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(os);
@@ -4271,7 +4271,7 @@ GUI_TEST_CLASS_DEFINITION(test_3640) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, humanT1Doc));
     GTMouseDriver::click();
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "genomes"));
-    ;
+
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::click();
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
