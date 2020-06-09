@@ -988,9 +988,9 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     //    Export consensus
     GTUtilsDialog::waitForDialog(os, new ExportConsensusDialogFiller(os, new Scenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export consensus variations..."));
-    GTWidget::click(os, GTWidget::findWidget(os, "Consensus area"), Qt::RightButton);
-    GTUtilsProjectTreeView::checkItem(os, "chrM_consensus.gb");
+    GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Consensus);
 
+    GTUtilsProjectTreeView::checkItem(os, "chrM_consensus.gb");
     GTUtilsProjectTreeView::checkItem(os, "chrM.snp");
 }
 
