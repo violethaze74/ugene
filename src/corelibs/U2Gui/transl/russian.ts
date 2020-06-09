@@ -509,22 +509,14 @@
 <context>
     <name>CreateDocumentFromTextDialog</name>
     <message>
-        <source>Create Document</source>
-        <translation type="vanished">Создание документа</translation>
-    </message>
-    <message>
-        <source>Document location:</source>
-        <translation type="vanished">Расположение документа:</translation>
-    </message>
-    <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="14"/>
         <source>Create Sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать последовательность</translation>
     </message>
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="22"/>
         <source>Save sequence to file</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить последовательность в файл</translation>
     </message>
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="32"/>
@@ -534,20 +526,16 @@
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="39"/>
         <source>File format</source>
-        <translation type="unfinished">Формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="49"/>
         <source>Sequence name</source>
-        <translation type="unfinished">Имя последовательности</translation>
+        <translation>Имя последовательности</translation>
     </message>
     <message>
         <source>Document format:</source>
-        <translation type="vanished">Формат:</translation>
-    </message>
-    <message>
-        <source>Sequence name:</source>
-        <translation type="vanished">Имя последовательности:</translation>
+        <translation>Формат:</translation>
     </message>
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="65"/>

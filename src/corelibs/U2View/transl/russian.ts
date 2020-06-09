@@ -752,7 +752,7 @@ Probably, the data are too big.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="73"/>
         <source>Load patterns from file</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузить паттерны из файла</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="593"/>
