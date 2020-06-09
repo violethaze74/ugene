@@ -147,11 +147,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                 << "Sanger data analysis"
                                                 << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //Expected state :
     //"reference_sanger_reads_alignment.ugenedb" in the Project View with object :
     //-{'mc' Mapped reads} for multiple chromatogram alignment object in Project View
-    GTUtilsProject::checkProject(os);
     GTUtilsProjectTreeView::openView(os);
     bool check = GTUtilsProjectTreeView::checkItem(os, "Mapped reads");
     CHECK_SET_ERR(check, "'Mapped reads' is not present in the project view");
