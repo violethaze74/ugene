@@ -522,6 +522,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QByteArray data = GTFile::readAll(os, sandBoxDir + "murine_3085_1.gb");
 
+    GTGlobals::sleep(1000);    // wait at least 1 second: UGENE does not detect file changes within 1 second interval.
     QFile file(sandBoxDir + "murine_3085_1.gb");
     file.open(QIODevice::WriteOnly);
     file.write(data);
@@ -540,6 +541,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     data = GTFile::readAll(os, testDir + "_common_data/regression/3085/murine_2.gb");
 
+    GTGlobals::sleep(1000);    // wait at least 1 second: UGENE does not detect file changes within 1 second interval.
     QFile file1(sandBoxDir + "murine_3085_1.gb");
     file1.open(QIODevice::WriteOnly);
     file1.write(data);
@@ -565,8 +567,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QByteArray data = GTFile::readAll(os, testDir + "_common_data/regression/3085/test_1.gb");
 
-    // UGENE does not detect file modification without 1 second interval: sleep 1 second.
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);    // wait at least 1 second: UGENE does not detect file changes within 1 second interval.
     QFile file(sandBoxDir + "murine_3085_2.gb");
     file.open(QIODevice::WriteOnly);
     file.write(data);
@@ -2354,8 +2355,6 @@ GUI_TEST_CLASS_DEFINITION(test_3346) {
     GTLogTracer lt;
 
     QFile originalFile(dataDir + "samples/Genbank/murine.gb");
-    CHECK_SET_ERR(originalFile.exists(), "Unable to find original file");
-
     QString dstPath = sandBoxDir + "murine.gb";
     originalFile.copy(dstPath);
 
@@ -2380,6 +2379,7 @@ GUI_TEST_CLASS_DEFINITION(test_3346) {
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
 
+    GTGlobals::sleep(1000);    // wait at least 1 second: UGENE does not detect file changes within 1 second interval.
     QTextStream out(&copiedFile);
     out << fileData;
     copiedFile.close();

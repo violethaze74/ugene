@@ -4640,6 +4640,7 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
 
     fileData.replace("gag polyprotein", "ggg_polyprotein");
 
+    GTGlobals::sleep(1000);    // wait at least 1 second: UGENE does not detect file changes within 1 second interval.
     opened = file.open(QIODevice::WriteOnly);
     CHECK_SET_ERR(opened, "Can't open the file: " + sandBoxDir + "test_2713.gb");
     file.write(fileData);
