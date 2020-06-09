@@ -1333,48 +1333,41 @@ GUI_TEST_CLASS_DEFINITION(test_3220) {
     //1. Open human_T1.fa
     //
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     //2. Add an annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "DDD", "D", "10..16"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
     //2. Add qualifier with quotes
-    Runnable *filler = new EditQualifierFiller(os, "newqualifier", "val\"", GTGlobals::UseMouse, false);
-    GTUtilsDialog::waitForDialog(os, filler);
-    CHECK_OP(os, );
+    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "newqualifier", "val\"", GTGlobals::UseMouse, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_ADD << "add_qualifier_action"));
-    CHECK_OP(os, );
-
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "D"));
     GTMouseDriver::click(Qt::RightButton);
 
     //3. Add another qualifier to the same annotation
-    filler = new EditQualifierFiller(os, "newqualifier2", "val\"2", GTGlobals::UseMouse, false);
-    GTUtilsDialog::waitForDialog(os, filler);
-    CHECK_OP(os, );
+    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "newqualifier2", "val\"2", GTGlobals::UseMouse, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_ADD << "add_qualifier_action"));
-    CHECK_OP(os, );
-
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "D"));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
 
     //4. Save the file and reload it
     GTUtilsDocument::unloadDocument(os, "human_T1.fa", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDocument::loadDocument(os, "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "D"));
     GTMouseDriver::click(Qt::LeftButton);
 
     QTreeWidgetItem *generalItem = GTUtilsAnnotationsTreeView::findItem(os, "D");
-    CHECK_SET_ERR(generalItem != NULL, "Invalid annotation tree item");
-
     AVAnnotationItem *annotation = dynamic_cast<AVAnnotationItem *>(generalItem);
-    CHECK_SET_ERR(annotation != NULL, "Annotation is not found");
-    CHECK_SET_ERR("val\"" == annotation->annotation->findFirstQualifierValue("newqualifier"), "Qualifier is not found");
-    CHECK_SET_ERR("val\"2" == annotation->annotation->findFirstQualifierValue("newqualifier2"), "Qualifier 2 is not found");
+    CHECK_SET_ERR(annotation != nullptr, "Annotation is not found");
+    CHECK_SET_ERR(annotation->annotation->findFirstQualifierValue("newqualifier") == "val\"", "Qualifier is not found");
+    CHECK_SET_ERR(annotation->annotation->findFirstQualifierValue("newqualifier2") == "val\"2", "Qualifier 2 is not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3221) {
