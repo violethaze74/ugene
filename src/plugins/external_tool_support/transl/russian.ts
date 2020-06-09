@@ -5164,32 +5164,36 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolJustValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="54"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="53"/>
         <source>Tool&apos;s path is empty</source>
         <translation>Tool&apos;s path is empty</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="69"/>
         <source>Tool&apos;s executable isn&apos;t exists</source>
-        <translation>Tool&apos;s executable isn&apos;t exists</translation>
+        <translation type="vanished">Tool&apos;s executable isn&apos;t exists</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="81"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="59"/>
+        <source>External tool is not found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="86"/>
         <source>Scripting tool registry is NULL</source>
         <translation>Scripting tool registry is NULL</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="83"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="88"/>
         <source>Scripting tool &apos;%1&apos; isn&apos;t found in the registry</source>
         <translation>Scripting tool &apos;%1&apos; isn&apos;t found in the registry</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="132"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="137"/>
         <source>Tool does not start.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Tool does not start.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="164"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="169"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -5205,7 +5209,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSearchAndValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="371"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="376"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -5479,12 +5483,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsInstallTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="417"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="422"/>
         <source>Installing external tools</source>
         <translation>Installing external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="422"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="427"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -5506,13 +5510,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="388"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="393"/>
         <source>Checking external tools</source>
         <translation>Checking external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="406"/>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="408"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="411"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="413"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>

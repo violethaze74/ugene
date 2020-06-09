@@ -535,7 +535,7 @@
     </message>
     <message>
         <source>Document format:</source>
-        <translation>Формат:</translation>
+        <translation type="vanished">Формат:</translation>
     </message>
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="65"/>

@@ -801,22 +801,22 @@ Probably, the data are too big.</source>
         <translation>Группировать</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="169"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="166"/>
         <source>Previous</source>
         <translation>Предыдущий</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="172"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="169"/>
         <source>Shift+Return</source>
         <translation>Shift+Return</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="216"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="213"/>
         <source>Next</source>
         <translation>Следующий</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="219"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="216"/>
         <source>Return</source>
         <translation>Возврат</translation>
     </message>
@@ -1544,19 +1544,19 @@ Double-click to collapse the branch</source>
         <translation>Выделение аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="212"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="211"/>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="279"/>
         <source>Search algorithm</source>
         <translation>Алгоритм поиска</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="215"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="214"/>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="280"/>
         <source>Search in</source>
         <translation>Поиск в</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="218"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="217"/>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="281"/>
         <source>Other settings</source>
         <translation>Другие настройки</translation>
@@ -1604,7 +1604,7 @@ Double-click to collapse the branch</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.cpp" line="61"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.cpp" line="60"/>
         <source>Search in Alignment</source>
         <translation>Поиск в выравнивании</translation>
     </message>
@@ -4706,174 +4706,178 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::FindPatternMsaWidget</name>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="1105"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="1107"/>
         <source>Results: %1/%2</source>
         <translation>Результаты: %1/%2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="236"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="235"/>
         <source>Exact</source>
         <translation>Точный</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="221"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="220"/>
         <source>Sequences</source>
         <translation>Последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="222"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="221"/>
         <source>Sequence Names</source>
         <translation>Имена последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="238"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="237"/>
         <source>InsDel</source>
         <translation>Инсерции/делеции</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="239"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="238"/>
         <source>Substitute</source>
         <translation>Замены</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="241"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="240"/>
         <source>Regular expression</source>
         <translation>Регулярные выражения</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="245"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="244"/>
         <source>Should match</source>
         <translation>Точное совпадение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="266"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="265"/>
         <source>Whole alignment</source>
         <translation>Все выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="267"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="266"/>
         <source>Custom columns region</source>
         <translation>Выбранный регион</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="268"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="267"/>
         <source>Selected columns region</source>
         <translation>Выделенный регион</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="299"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="298"/>
         <source>Results no longer than:</source>
         <translation>Результаты не длиннее чем:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="443"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="442"/>
         <source>The value is longer than the search region. Please input a shorter value or select another region!</source>
         <translation>Значение длиннее чем регион поиска. Ввведите более короткое значение или выберите другой регион!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="445"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="451"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="458"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="464"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="478"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="481"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="484"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="489"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="492"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="495"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="502"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="509"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="514"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="521"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="444"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="450"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="457"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="463"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="477"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="480"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="483"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="488"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="491"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="494"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="501"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="508"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="513"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="520"/>
         <source>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;br&gt;&lt;/br&gt;&lt;/b&gt;</source>
         <translation>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;br&gt;&lt;/br&gt;&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="449"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="448"/>
         <source>Warning: input value contains characters that do not match the active alphabet!</source>
         <translation>Предупреждение: входное значение содержит символы, которые не входят в текущий алфавит!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="456"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="455"/>
         <source>Warning: file contains patterns that do not match the active alphabet! Those patterns were ignored </source>
         <translation>Предупреждение: файл содержит паттерны, которые не совпадают с текущим алфавитом! Эти паттерны были проигнорированы </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="462"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="461"/>
         <source>Warning: file contains patterns that longer than the search region! Those patterns were ignored. Please input a shorter value or select another region! </source>
         <translation>Предупреждение: файл содержит паттерны, которые длиннее чем регион поиска! Эти паттерны были проигнорированы. Введите более короткое значение или выберите другой регион! </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="470"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="469"/>
         <source>Info: please input at least one sequence pattern to search for.</source>
         <translation>Информация: введите как минимум один паттерн для поиска.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="469"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="471"/>
+        <source>Use %1 to input multiple patterns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="468"/>
         <source>Info: please input at least one pattern to search in the sequence names.</source>
         <translation>Информация: введите как минимум один паттерн для поиска в именах последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="472"/>
         <source>Use Ctrl+Enter to input multiple patterns</source>
-        <translation>Используйте %1, чтобы ввести несколько подстрок.</translation>
+        <translation type="vanished">Используйте %1, чтобы ввести несколько подстрок.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="477"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="476"/>
         <source>Warning: annotation name or annotation group name are invalid. </source>
         <translation>Внимание: имя аннотации или имя группы аннотаций некорректно. </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="480"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="491"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="479"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="490"/>
         <source>Reason: </source>
         <translation>Причина: </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="480"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="491"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="500"/>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="507"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="479"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="490"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="499"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="506"/>
         <source>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;/b&gt;</source>
         <translation>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="483"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="482"/>
         <source> Please input valid annotation names. </source>
         <translation> Введите корректные имена аннотаций. </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="488"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="487"/>
         <source>Warning: annotation names are invalid. </source>
         <translation>Внимание: имена аннотаций некорректны. </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="494"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="493"/>
         <source> It will be automatically changed to acceptable name if &apos;Get annotations&apos; button is pressed. </source>
         <translation> Они будут автоматически изменены на доступные имена после того как кнопка &apos;Создать аннотации&apos; будет нажата. </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="499"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="498"/>
         <source>Warning: there is no pattern to search. </source>
         <translation>Предупреждение: нет паттернов для поиска. </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="501"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="500"/>
         <source> Please input a valid pattern </source>
         <translation> Введите валидный паттерн</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="506"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="505"/>
         <source>Warning: search region values is not correct. </source>
         <translation>Предупреждение: регион поиска некорректный.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="508"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="507"/>
         <source> Please input a valid region to search</source>
         <translation> Введите корректный регион поиска</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="513"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="512"/>
         <source>Warning: the input regular expression is invalid! </source>
         <translation type="unfinished"></translation>
     </message>
@@ -4882,17 +4886,17 @@ Please, check external tools in the settings.</source>
         <translation type="vanished">Предупреждение: некорректное регулярное выражение. </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="520"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="519"/>
         <source>Warning: current sequence is too long to search in.</source>
         <translation>Предупреждение: текущая последовательность слишком длинная для поиска.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="1030"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="1032"/>
         <source>Results:</source>
         <translation>Результаты:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="1103"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="1105"/>
         <source>No results</source>
         <translation>Нет результатов</translation>
     </message>
@@ -5430,120 +5434,140 @@ Directory Path: %1</source>
 <context>
     <name>U2::MSAEditor</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="322"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="344"/>
         <source>Align</source>
         <translation>Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="269"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="291"/>
         <source>Tree</source>
         <translation>Дерево</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="88"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="72"/>
+        <source>By name</source>
+        <translation>По имени</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="76"/>
+        <source>By name, descending</source>
+        <translation>По имени, по убыванию</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="80"/>
+        <source>By length</source>
+        <translation>По длине</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="84"/>
+        <source>By length, descending</source>
+        <translation>По длине, по убыванию</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="101"/>
         <source>Realign sequence(s) to other sequences</source>
         <translation>Перевыровнять последовательность(и) на другие последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="75"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="88"/>
         <source>Create new color scheme</source>
         <translation>Создать новую цветовую схему</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="71"/>
-        <source>Sort sequences</source>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="194"/>
+        <source>Edit</source>
+        <translation>Редактировать</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="199"/>
+        <source>Sort</source>
         <translation>Сортировка</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="180"/>
-        <source>Edit</source>
-        <translation type="unfinished">Редактирование</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="192"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="215"/>
         <source>Appearance</source>
         <translation>Внешний вид</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="219"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="241"/>
         <source>Colors</source>
         <translation>Раскраска</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="228"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="250"/>
         <source>Custom schemes</source>
         <translation>Пользовательские схемы</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="246"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="268"/>
         <source>Highlighting</source>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="260"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="282"/>
         <source>Navigation</source>
         <translation>Навигация</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="276"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="298"/>
         <source>Advanced</source>
         <translation>Дополнительные операции</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="301"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="323"/>
         <source>Go to position…</source>
         <translation>Перейти к позиции...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="308"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="330"/>
         <source>Search in sequences…</source>
         <translation>Искать в последовательностях...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="315"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="337"/>
         <source>Search in sequence names…</source>
         <translation>Искать в именах последовательностей...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="326"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="348"/>
         <source>Align sequence(s) to this alignment</source>
         <translation>Выровнять последовательность на это выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="330"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="352"/>
         <source>Set this sequence as reference</source>
         <translation>Сделать референсной</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="334"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="356"/>
         <source>Unset reference sequence</source>
         <translation>Отменить референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="479"/>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="582"/>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="602"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="509"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="616"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="636"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>A problem occurred during adding sequences. The multiple alignment is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="571"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="605"/>
         <source>A problem occurred during realigning sequences. The multiple alignment is no more available.</source>
         <translation>A problem occurred during adding sequences. The multiple alignment is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="594"/>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="597"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="628"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="631"/>
         <source>Open file with sequences</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="82"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="95"/>
         <source>Build Tree</source>
         <translation>Построить дерево</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="281"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="303"/>
         <source>Statistics</source>
         <translation>Статистика</translation>
     </message>
@@ -5792,7 +5816,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="49"/>
         <source>Copy to clipboard</source>
-        <translation>Скопировать</translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="50"/>
@@ -6826,42 +6850,42 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::MsaEditorSortSequencesWidget</name>
     <message>
-        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="41"/>
+        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="38"/>
         <source>Sort by</source>
-        <translation>Сортировать по</translation>
+        <translation>Сортировать</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="46"/>
+        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="43"/>
         <source>Name</source>
-        <translation>Имя</translation>
+        <translation>По имени</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="47"/>
+        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="44"/>
         <source>Length</source>
-        <translation>Длина</translation>
+        <translation>По длине</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="51"/>
+        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="48"/>
         <source>Sort order</source>
         <translation>Порядок</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="56"/>
+        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="53"/>
         <source>Ascending</source>
         <translation>По возрастанию</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="57"/>
+        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="54"/>
         <source>Descending</source>
         <translation>По убыванию</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="64"/>
+        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="61"/>
         <source>Sort</source>
         <translation>Сортировать</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="66"/>
+        <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="63"/>
         <source>Click to sort sequence in the alignment</source>
         <translation>Сортировать последовательности в выравнивании</translation>
     </message>
