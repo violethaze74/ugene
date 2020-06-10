@@ -1494,11 +1494,12 @@ GUI_TEST_CLASS_DEFINITION(test_3229) {
 GUI_TEST_CLASS_DEFINITION(test_3245) {
     // 1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "/samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Ensure that there is a single menu item (Create new color scheme) in the {Colors -> Custom schemes}
     // submenu of the context menu. Click it.
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::Highlighting);
 
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     const int initialItemsNumber = combo->count();
