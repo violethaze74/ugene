@@ -322,17 +322,22 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_4) {
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0002) {
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //    2. Create custom color scheme
     QString suffix = GTUtils::genUniqueString();
     QString schemeName = getName() + "Scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, schemeName, NewColorSchemeCreator::nucl);
+
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::isTabOpened(os, GTUtilsOptionPanelMsa::Highlighting);
+
     //    Expected state: color scheme added to "Color" combobox
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::setIndexWithText(os, colorScheme, "No colors");
     GTComboBox::setIndexWithText(os, colorScheme, schemeName);
+
     //    4. Select custom scheme
     //    Expected state: scheme changed
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
