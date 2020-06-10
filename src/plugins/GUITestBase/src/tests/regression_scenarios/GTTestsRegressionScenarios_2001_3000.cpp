@@ -5520,10 +5520,11 @@ GUI_TEST_CLASS_DEFINITION(test_2895) {
 GUI_TEST_CLASS_DEFINITION(test_2897) {
     //    1. Open {data/samples/CLUSTALW/COI.aln}.
     GTFileDialog::openFile(os, dataDir + "/samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //    2. Open options panel 'Highlighting' tab.
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
+    //    2. Open options panel 'Highlighting' tab. 
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::Highlighting);
 
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
@@ -5535,12 +5536,12 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    MSAEditorSequenceArea *msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    GTMenu::showContextMenu(os, msaSeqArea);
 
-    GTGlobals::sleep(500);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes" << colorSchemeName));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTMenu::showContextMenu(os, msaSeqArea);
 
     combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
