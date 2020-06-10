@@ -4192,9 +4192,10 @@ GUI_TEST_CLASS_DEFINITION(test_3629) {
 GUI_TEST_CLASS_DEFINITION(test_3645) {
     //checking results with diffirent algorithms
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::isTabOpened(os, GTUtilsOptionPanelSequenceView::Search);
 
     GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
     GTUtilsOptionPanelSequenceView::enterPatternFromFile(os, testDir + "_common_data/FindAlgorithm/", "find_pattern_op_2.fa");
@@ -4202,10 +4203,10 @@ GUI_TEST_CLASS_DEFINITION(test_3645) {
     GTUtilsOptionPanelSequenceView::clickNext(os);
     GTUtilsOptionPanelSequenceView::clickNext(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy sequence", GTGlobals::UseMouse));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+
     QString clipStr = GTClipboard::text(os);
     CHECK_SET_ERR(clipStr == "GGGGG", "Found sequence don't match");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3634) {
