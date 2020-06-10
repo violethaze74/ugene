@@ -5982,9 +5982,9 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
 GUI_TEST_CLASS_DEFINITION(test_6760) {
     //1. Open /data/samples/fasta/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Open additional object in another sequence view
+    //2. Open additional a second copy of the sequence view
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
                                                                               << "Open new view: Sequence View",
                                                             GTGlobals::UseMouse));
@@ -5998,12 +5998,14 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
     //5. On question "Found annotations that are out of sequence range, continue?" answer "Yes"
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsAnnotationsTreeView::addAnnotationsTableFromProject(os, "Ca20Chr1 features");
-    GTGlobals::sleep();
+
     //6. Switch to another view
+    GTUtilsMdi::closeActiveWindow(os);
     GTUtilsMdi::activateWindow(os, "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    GTGlobals::sleep();
-    //Expected result: here is annotation in another sequence view
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "5_prime_UTR_intron"));
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    //Expected result: the annotation is present in another sequence view too.
+    GTUtilsAnnotationsTreeView::findItem(os, "5_prime_UTR_intron");
 }
 GUI_TEST_CLASS_DEFINITION(test_6808) {
     // Open "COI.aln".

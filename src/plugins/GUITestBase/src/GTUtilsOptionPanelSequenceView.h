@@ -51,6 +51,7 @@ public:
     static void openTab(HI::GUITestOpStatus &os, Tabs tab);
     static void closeTab(HI::GUITestOpStatus &os, Tabs tab);
     static bool isTabOpened(HI::GUITestOpStatus &os, Tabs tab);
+    static void checkTabIsOpened(HI::GUITestOpStatus &os, Tabs tab);
 
     // Find pattern options panel tab
     static void enterPattern(HI::GUITestOpStatus &os, QString pattern, bool useCopyPaste = false);

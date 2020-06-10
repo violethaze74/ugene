@@ -119,10 +119,15 @@ void GTUtilsOptionPanelSequenceView::closeTab(HI::GUITestOpStatus &os, GTUtilsOp
 
 #define GT_METHOD_NAME "isTabOpened"
 bool GTUtilsOptionPanelSequenceView::isTabOpened(HI::GUITestOpStatus &os, GTUtilsOptionPanelSequenceView::Tabs tab) {
-    GTGlobals::FindOptions options;
-    options.failIfNotFound = false;
-    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow(os), options);
-    return NULL != innerTabWidget && innerTabWidget->isVisible();
+    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow(os), GTGlobals::FindOptions(false));
+    return innerTabWidget != nullptr && innerTabWidget->isVisible();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkTabIsOpened"
+void GTUtilsOptionPanelSequenceView::checkTabIsOpened(HI::GUITestOpStatus &os, GTUtilsOptionPanelSequenceView::Tabs tab) {
+    QString name = innerWidgetNames[tab];
+    GTWidget::findWidget(os, name, GTUtilsSequenceView::getActiveSequenceViewWindow(os));
 }
 #undef GT_METHOD_NAME
 

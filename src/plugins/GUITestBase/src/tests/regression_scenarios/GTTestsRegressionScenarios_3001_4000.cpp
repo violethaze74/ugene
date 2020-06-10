@@ -5364,42 +5364,39 @@ GUI_TEST_CLASS_DEFINITION(test_3821) {
 GUI_TEST_CLASS_DEFINITION(test_3829) {
     //    Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     //    Open "data/samples/GFF/5prime_utr_intron_A20.gff".
     GTFileDialog::openFile(os, dataDir + "samples/GFF/5prime_utr_intron_A20.gff");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    Attach the first annotation object to the sequence.
     QModelIndex index = GTUtilsProjectTreeView::findIndex(os, "Ca20Chr1 features");
     //    Expected state: UGENE warning about annotation is out of range.
     class scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            GTGlobals::sleep();
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDialogButtonBox *buttonBox = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(NULL != buttonBox, "buttonBox is NULL");
+            CHECK_SET_ERR(buttonBox != NULL, "buttonBox is NULL");
             QAbstractButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(NULL != okButton, "okButton is NULL");
+            CHECK_SET_ERR(okButton != NULL, "okButton is NULL");
             //    Agree with warning.
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTWidget::click(os, okButton);
-            GTGlobals::sleep(500);
-            if (QApplication::activeModalWidget()) {
-                GTWidget::click(os, okButton);
-            }
         }
     };
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os, new scenario()));
-    GTUtilsProjectTreeView::dragAndDrop(os, index, GTUtilsSequenceView::getSeqWidgetByNumber(os, 0)->getDetView());
-    GTGlobals::sleep(2000);
+    GTUtilsProjectTreeView::dragAndDrop(os, index, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    Expected state: there is a sequence with attached annotation table object, there is an annotation that is located beyond the sequence.
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "5_prime_UTR_intron"));
     GTMouseDriver::click();
+
     //    Select the annotation in the tree view. Open "Statistics" options panel tab or try to find something in the selected region.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
-    GTGlobals::sleep(1000);
+    GTUtilsOptionPanelSequenceView::checkTabIsOpened(os, GTUtilsOptionPanelSequenceView::Statistics);
     //    Expected state: you can't set region that is not inside the sequence.
     //    Current state: an incorrect selected region is set, crashes and safe points are possible with the region.
 }

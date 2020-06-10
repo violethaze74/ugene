@@ -890,7 +890,7 @@ GUI_TEST_CLASS_DEFINITION(test_0627) {
 GUI_TEST_CLASS_DEFINITION(test_0652) {
     //1) Open /data/samples/fasta/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2) Open /data/samples/gff/5prime_utr_intron_A20.gff
     GTFileDialog::openFile(os, dataDir + "samples/GFF/5prime_utr_intron_A20.gff");
@@ -902,9 +902,7 @@ GUI_TEST_CLASS_DEFINITION(test_0652) {
     GTUtilsAnnotationsTreeView::addAnnotationsTableFromProject(os, "Ca20Chr1 features");
 
     //5) In annotations tree view open added annotation and put the mouse cursor over this annotation.
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "5_prime_UTR_intron"));
-    GTGlobals::sleep();
-    //UGENE isn't chrashed showing tooltip.
+    GTUtilsAnnotationsTreeView::findItem(os, "5_prime_UTR_intron");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0659) {
