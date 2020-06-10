@@ -1843,7 +1843,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //
     // 1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Click on some row in sequence names area
     GTUtilsMsaEditor::clickSequence(os, 2);
