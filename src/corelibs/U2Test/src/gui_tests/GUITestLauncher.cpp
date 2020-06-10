@@ -140,6 +140,25 @@ void GUITestLauncher::firstTestRunCheck(const QString &testName) {
     Q_ASSERT(testResult.isEmpty());
 }
 
+/** Returns ideal tests list for the given suite or an empty list if there is no ideal configuration is found. */
+QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QList<HI::GUITest *> &allTests) {
+    QList<int> testsPerSuite;
+    if (suiteCount == 3) {
+        testsPerSuite << 900 << 900 << -1;
+    }
+    QList<HI::GUITest *> tests;
+    if (testsPerSuite.size() == suiteCount) {
+        SAFE_POINT(testsPerSuite.size() == suiteCount, QString("Illegal testsPerSuite size: %1").arg(testsPerSuite.size()), tests);
+        int offset = 0;
+        for (int i = 0; i < suiteIndex; i++) {
+            offset += testsPerSuite[i];
+        }
+        int testCount = testsPerSuite[suiteIndex];    // last index is -1 => list.mid(x, -1) returns a tail.
+        tests << allTests.mid(offset, testCount);
+    }
+    return tests;
+}
+
 bool GUITestLauncher::initGUITestBase() {
     UGUITestBase *b = AppContext::getGUITestBase();
     SAFE_POINT(b != nullptr, "Test base is NULL", false);
@@ -156,8 +175,12 @@ bool GUITestLauncher::initGUITestBase() {
             setError(QString("Invalid suite number: %1. There are %2 suites").arg(suiteNumber).arg(NUMBER_OF_TEST_SUITES));
             return false;
         }
-        for (int i = suiteNumber - 1; i < allTestList.length(); i += NUMBER_OF_TEST_SUITES) {
-            tests << allTestList[i];
+        tests = getIdealTestsSplit(suiteNumber - 1, NUMBER_OF_TEST_SUITES, allTestList);
+        if (tests.isEmpty()) {
+            // Distribute tests between suites evenly.
+            for (int i = suiteNumber - 1; i < allTestList.length(); i += NUMBER_OF_TEST_SUITES) {
+                tests << allTestList[i];
+            }
         }
         coreLog.info(QString("Running suite %1, Tests in the suite: %2, total tests: %3")
                          .arg(suiteNumber)
