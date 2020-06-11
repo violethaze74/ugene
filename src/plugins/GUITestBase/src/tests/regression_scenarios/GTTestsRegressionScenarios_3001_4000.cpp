@@ -5238,7 +5238,7 @@ GUI_TEST_CLASS_DEFINITION(test_3809) {
 GUI_TEST_CLASS_DEFINITION(test_3813) {
     //1. Open "samples/Genbank/murine.gb"
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Press "Find restriction sites" toolbutton
     class Scenario : public CustomScenario {
@@ -5259,13 +5259,16 @@ GUI_TEST_CLASS_DEFINITION(test_3813) {
 
     //6. Press toolbutton "Global automatic annotation updating"
     //7. Select all types of annotating
-    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), GTGlobals::FindOptions(false));
-    if (qt_toolbar_ext_button != NULL && qt_toolbar_ext_button->isVisible()) {
-        GTWidget::click(os, qt_toolbar_ext_button);
+
+    QWidget *toolbarExtButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), GTGlobals::FindOptions(false));
+    if (toolbarExtButton != NULL && toolbarExtButton->isVisible()) {
+        GTWidget::click(os, toolbarExtButton);
     }
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ORFs"));
     GTWidget::click(os, GTWidget::findWidget(os, "toggleAutoAnnotationsButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Plasmid features"));
     GTWidget::click(os, GTWidget::findWidget(os, "toggleAutoAnnotationsButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5273,15 +5276,17 @@ GUI_TEST_CLASS_DEFINITION(test_3813) {
     //8. Unload "murine.gb"
     GTUtilsDocument::unloadDocument(os, "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
 
     //9. Load "murine.gb"
     //Expected state: auto-annotating task started
     GTUtilsDocument::loadDocument(os, "murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //10. Unload the document, while the auto-annotating task is performing
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Failed to unload document", "UnloadWarning"));
     GTUtilsDocument::unloadDocument(os, "murine.gb");
-    GTGlobals::sleep(3000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3815) {
