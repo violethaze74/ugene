@@ -37,9 +37,9 @@
 
 namespace U2 {
 
-const qreal GraphicsButtonItem::radiusMin = 3.0;
-const qreal GraphicsButtonItem::radiusMax = 4.0;
-const QBrush GraphicsButtonItem::highlightingBrush = QBrush(QColor(170, 170, 230));
+const qreal GraphicsButtonItem::radiusMin = 5.0;
+const qreal GraphicsButtonItem::radiusMax = 5.0;
+const QBrush GraphicsButtonItem::highlightingBrush = QBrush(QColor("#ea9700"));
 const QBrush GraphicsButtonItem::ordinaryBrush = QBrush(Qt::gray);
 
 GraphicsButtonItem::GraphicsButtonItem(double nodeValue)

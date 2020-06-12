@@ -437,7 +437,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     QComboBox *annsComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "annsComboBox"));
     GTComboBox::setCurrentIndex(os, annsComboBox, 1);
 
-
     //7. Click "Export product(s)".
     QWidget *extractPB = GTWidget::findWidget(os, "extractProductButton");
     GTUtilsNotifications::waitAllNotificationsClosed(os);

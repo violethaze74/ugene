@@ -62,7 +62,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_tree_viewer {
 using namespace HI;
 
-const int nodeWidth = 7;
+const int nodeWidth = 11;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     //Screenshoting MSA editor (regression test)
 
@@ -927,7 +927,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "D120911.tre");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(500);
-    //   Expected state: philogenetic tree appears
+    //   Expected state: phylogenetic tree appears
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     QList<QGraphicsItem *> list = treeView->scene()->items();
 
@@ -965,13 +965,15 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
     QGraphicsItem *node = nodeList.at(1);
-    QPointF sceneCoord = node->mapToScene(node->boundingRect().center());
+    QPointF sceneCoord = node->mapToScene(node->boundingRect().center() - QPoint(-2, 0)); // Hack for tree button items: they are not hoverable on the right side.
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Swap Siblings"));
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
+    // TODO: Wait until is hovered.
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Swap Siblings"));
     GTMouseDriver::click(Qt::RightButton);
 
     qreal finalW = 0;
