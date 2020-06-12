@@ -1079,7 +1079,9 @@ int FindPatternMsaWidget::getNextOrPrevResultIndexFromSelection(bool isNext) {
     int resultIndex = 0;
     for (; resultIndex < resultsCount; resultIndex++) {
         const FindPatternWidgetResult &result = visibleSearchResults[resultIndex];
-        if (result.viewRowIndex >= selection.y() && result.region.startPos >= selection.x()) {
+        bool inTheNextRow = result.viewRowIndex > selection.y();
+        bool inTheSameRowAndNext = result.viewRowIndex == selection.y() && result.region.startPos >= selection.x();
+        if (inTheNextRow || inTheSameRowAndNext) {
             break;
         }
     }
