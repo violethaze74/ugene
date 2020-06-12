@@ -161,21 +161,16 @@ QString GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, int nu
 #define GT_METHOD_NAME "getBeginOfSequenceAsString"
 
 QString GTUtilsSequenceView::getBeginOfSequenceAsString(HI::GUITestOpStatus &os, int length) {
-    QWidget *mdiWindow = getActiveSequenceViewWindow(os);
-    Runnable *filler = new SelectSequenceRegionDialogFiller(os, length);
-    GTUtilsDialog::waitForDialog(os, filler);
+    checkSequenceViewWindowIsActive(os);
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, length));
     GTKeyboardUtils::selectAll(os);
-    GTGlobals::sleep(1000);
+    GTThread::waitForMainThread();
 
-    GTGlobals::sleep(1000);    // don't touch
     QString sequence;
-    Runnable *chooser = new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey);
-    GTUtilsDialog::waitForDialog(os, chooser);
-    Runnable *reader = new GTSequenceReader(os, &sequence);
-    GTUtilsDialog::waitForDialog(os, reader);
-
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(1000);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey));
+    GTUtilsDialog::waitForDialog(os, new GTSequenceReader(os, &sequence));
+    openPopupMenuOnSequenceViewArea(os);
+    GTUtilsDialog::waitAllFinished(os);
 
     return sequence;
 }

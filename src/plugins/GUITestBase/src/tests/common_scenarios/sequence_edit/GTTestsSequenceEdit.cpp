@@ -235,7 +235,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     QString expectedSequenceBegin = "ATCAGATT";
     QString sequenceBegin = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 8);
-    CHECK_SET_ERR(sequenceBegin == expectedSequenceBegin, "unecpected begin. Expected ATCAGATT, actual: " + sequenceBegin);
+    CHECK_SET_ERR(sequenceBegin == expectedSequenceBegin, "unexpected begin. Expected ATCAGATT, actual: " + sequenceBegin);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
