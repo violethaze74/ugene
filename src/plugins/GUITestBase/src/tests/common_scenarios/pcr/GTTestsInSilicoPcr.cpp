@@ -20,6 +20,7 @@
  */
 
 #include <GTUtilsMdi.h>
+#include <GTUtilsNotifications.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
@@ -436,8 +437,11 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     QComboBox *annsComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "annsComboBox"));
     GTComboBox::setCurrentIndex(os, annsComboBox, 1);
 
+
     //7. Click "Export product(s)".
-    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
+    QWidget *extractPB = GTWidget::findWidget(os, "extractProductButton");
+    GTUtilsNotifications::waitAllNotificationsClosed(os);
+    GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
@@ -450,7 +454,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTComboBox::setCurrentIndex(os, annsComboBox, 0);
 
     //9. Click "Export product(s)".
-    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
+    extractPB = GTWidget::findWidget(os, "extractProductButton");
+    GTUtilsNotifications::waitAllNotificationsClosed(os);
+    GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are 4 annotations in the exported document: 2 primers, center 51..150 and middle 1..200. Middle has the warning qualifier.
@@ -463,7 +469,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTComboBox::setCurrentIndex(os, annsComboBox, 2);
 
     //11. Click "Export product(s)".
-    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
+    extractPB = GTWidget::findWidget(os, "extractProductButton");
+    GTUtilsNotifications::waitAllNotificationsClosed(os);
+    GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are only 2 primers annotations in the exported document.

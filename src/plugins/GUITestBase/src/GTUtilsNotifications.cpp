@@ -102,6 +102,34 @@ void GTUtilsNotifications::waitForNotification(HI::GUITestOpStatus &os, bool dia
 }
 
 #undef GT_METHOD_NAME
+
+/** Returns any visible notification popover widget or nullptr if no widget is found.*/
+static QWidget *findAnyVisibleNotificationWidget() {
+    QList<QWidget *> list = QApplication::allWidgets();
+    foreach (QWidget *wid, list) {
+        Notification *notification = qobject_cast<Notification *>(wid);
+        if (notification != nullptr && notification->isVisible()) {
+            return notification;
+        }
+    }
+    return nullptr;
+}
+
+#define GT_METHOD_NAME "waitAllNotificationsClosed"
+void GTUtilsNotifications::waitAllNotificationsClosed(HI::GUITestOpStatus &os) {
+    QWidget *notification = nullptr;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        notification = findAnyVisibleNotificationWidget();
+        if (notification == nullptr) {
+            break;
+        }
+    }
+    GT_CHECK(notification == nullptr, "Notification is still active after timeout!");
+}
+
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }    // namespace U2

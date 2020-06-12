@@ -54,6 +54,10 @@ private:
 class GTUtilsNotifications {
 public:
     static void waitForNotification(HI::GUITestOpStatus &os, bool dialogExpected = true, const QString &message = "");
+
+    /** Waits until all notification popups are closed. */
+    static void waitAllNotificationsClosed(HI::GUITestOpStatus &os);
+
 };
 
 }    // namespace U2
