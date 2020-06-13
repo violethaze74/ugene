@@ -739,7 +739,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
 
-    globalCoord.setX(globalCoord.x() - 15); // pick a branch coordinate
+    globalCoord.setX(globalCoord.x() - 15);    // pick a branch coordinate
 
     QColor color = GTWidget::getColor(os, treeView, treeView->mapFromGlobal(globalCoord));
     CHECK_SET_ERR(color.name() == "#0000ff", "Expected: #0000ff, found: " + color.name());
@@ -849,17 +849,14 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(500);
 
-    //    Expected state: philogenetic tree appears
+    //    Expected state: phylogenetic tree appears
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     QList<GraphicsButtonItem *> nodeList = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
 
-    QGraphicsItem *node = nodeList.at(1);
-    QPoint globalCoord = GTUtilsPhyTree::getGlobalCoord(os, node);
-
     //    2. Do context menu {Collapse} for any node
-    GTMouseDriver::moveTo(globalCoord);
-    GTMouseDriver::doubleClick();
+    GraphicsButtonItem *node = nodeList.at(1);
+    GTUtilsPhyTree::doubleClickNode(os, node);
 
     QList<QGraphicsSimpleTextItem *> branchList;
     QList<QGraphicsItem *> list = treeView->scene()->items();
@@ -876,14 +873,10 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
         CHECK_SET_ERR(!item->isVisible(), item->text() + " is visible");
     }
 
-    //    Expected state: this node's branches has dissapered
-    globalCoord = GTUtilsPhyTree::getGlobalCoord(os, node);
+    //    Expected state: this node's branches has disappeared
 
     //    3. Do context menu {Expand} for same
-    GTMouseDriver::moveTo(globalCoord);
-    GTGlobals::sleep();
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsPhyTree::doubleClickNode(os, node);
 
     foreach (QGraphicsSimpleTextItem *item, branchList) {
         if (item->text() == "0.011") {
@@ -891,7 +884,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
         }
         CHECK_SET_ERR(item->isVisible(), item->text() + " is not visible");
     }
-    //    Expected state: this node's branches has dissapered
+    //    Expected state: this node's branches has dissapeared
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {

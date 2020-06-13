@@ -44,6 +44,7 @@ public:
     static QPoint getGlobalCoord(HI::GUITestOpStatus &os, QGraphicsItem *item);
 
     static void clickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node);
+    static void doubleClickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node);
     static qreal getNodeDistance(HI::GUITestOpStatus &os, GraphicsButtonItem *node);
 
     static TreeViewerUI *getTreeViewerUi(HI::GUITestOpStatus &os);

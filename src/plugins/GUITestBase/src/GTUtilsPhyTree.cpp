@@ -202,6 +202,17 @@ void GTUtilsPhyTree::clickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "doubleClickNode"
+void GTUtilsPhyTree::doubleClickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node) {
+    GT_CHECK(node != nullptr, "Node to doubleClickNode is NULL");
+    node->ensureVisible();
+    GTThread::waitForMainThread();
+    GTMouseDriver::moveTo(getGlobalCoord(os, node) - QPoint(2, 0));
+    GTMouseDriver::doubleClick();
+    GTThread::waitForMainThread();
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getNodeDistance"
 qreal GTUtilsPhyTree::getNodeDistance(HI::GUITestOpStatus &os, GraphicsButtonItem *node) {
     GT_CHECK_RESULT(NULL != node, "Node is NULL", 0);
