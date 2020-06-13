@@ -1010,32 +1010,35 @@ GUI_TEST_CLASS_DEFINITION(test_3144) {
     // 1.Connect to a shared database.
     Document *dbDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
+    QString folder1Name = GTUtils::genUniqueString("regression_test_3144_1");
+    QString folder2Name = GTUtils::genUniqueString("regression_test_3144_2");
+
     // 2. Create a folder "regression_test_3144_1" in the root folder.
-    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", "regression_test_3144_1");
+    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", folder1Name);
 
     // 3. Create a folder "regression_test_3144_2" in the folder "regression_test_3144_1".
-    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/regression_test_3144_1", "regression_test_3144_2");
+    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/" + folder1Name, folder2Name);
 
     // 4. Remove the folder "regression_test_3144_2".
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "regression_test_3144_2"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, folder2Name));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state : the folder "regression_test_3144_2" is moved to the "Recycle bin".
     QModelIndex rbIndex = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
-    GTUtilsProjectTreeView::findIndex(os, "regression_test_3144_2", rbIndex);
+    GTUtilsProjectTreeView::checkItem(os, folder2Name, rbIndex);
 
     // 5. Remove the folder "regression_test_3144_1".
     GTGlobals::sleep();
     GTGlobals::sleep();
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "regression_test_3144_1"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, folder1Name));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state : folders "regression_test_3144_1" is shown in the "Recycle bin", folder "regression_test_3144_2" disappears.
     rbIndex = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
-    GTUtilsProjectTreeView::findIndex(os, "regression_test_3144_1", rbIndex);
-    GTUtilsProjectTreeView::findIndex(os, "regression_test_3144_2", rbIndex);
+    GTUtilsProjectTreeView::checkItem(os, folder1Name, rbIndex);
+    GTUtilsProjectTreeView::checkItem(os, folder2Name, rbIndex);
 
     GTUtilsLog::check(os, l);
 }
