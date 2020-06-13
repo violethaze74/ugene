@@ -4887,8 +4887,7 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     CHECK_SET_ERR(simple->isVisible(), "simple overveiw is not visiable");
 
     //Check empty simple overview gray color
-    QPixmap pixmap = GTWidget::getPixmap(os, simple);
-    QImage img = pixmap.toImage();
+    QImage img = GTWidget::getImage(os, simple);
     QRgb rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
     QColor c(rgb);
     CHECK_SET_ERR(c.name() == "#ededed", "First check: simple overview has wrong color. Expected: #ededed, Found: " + c.name());
@@ -4900,8 +4899,7 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //check not empty overview color
-    pixmap = GTWidget::getPixmap(os, simple);
-    img = pixmap.toImage();
+    img = GTWidget::getImage(os, simple);
     rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
     c = QColor(rgb);
     CHECK_SET_ERR(c.name() == "#c3ebc3", "simple overview has wrong color. Expected: #c3ebc3, Found: " + c.name());
@@ -4912,8 +4910,7 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     GTThread::waitForMainThread();
 
     //Check empty simple overview gray color again
-    pixmap = GTWidget::getPixmap(os, simple);
-    img = pixmap.toImage();
+    img = GTWidget::getImage(os, simple);
     rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
     c = QColor(rgb);
     CHECK_SET_ERR(c.name() == "#ededed", "Second check: simple overview has wrong color. Expected: #ededed, Found: " + c.name());

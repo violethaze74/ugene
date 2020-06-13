@@ -51,7 +51,6 @@ public:
 
     //returns color of point p in widget w coordinates
     static QColor getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &point);
-    static QPixmap getPixmap(GUITestOpStatus &os, QWidget *widget);
     static QImage getImage(GUITestOpStatus &os, QWidget *widget);
 
     static void close(GUITestOpStatus &os, QWidget *widget);

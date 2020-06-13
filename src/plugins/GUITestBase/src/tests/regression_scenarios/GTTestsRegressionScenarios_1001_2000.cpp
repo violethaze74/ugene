@@ -5273,8 +5273,7 @@ GUI_TEST_CLASS_DEFINITION(test_1511) {
 GUI_TEST_CLASS_DEFINITION(test_1514) {
     //    1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Expected state: the MSA Editor opens.
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //    2. Build a new tree or append the existing tree to this alignment.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk", 0, 0, true));
@@ -5290,50 +5289,40 @@ GUI_TEST_CLASS_DEFINITION(test_1514) {
     //    Expected state: The tree and the alignment are zoomed out, the "Zoom out" button on the toolbar still active.
 
     //    4. Click the "Zoom out" button on the toolbar several times.
-    //    Expected state: the tree doesn't change its size, alignmnet height doesn't change, alignmnet width decreases.
+    //    Expected state: the tree doesn't change its size, alignment height doesn't change, alignment width decreases.
     int i = 0;
-    bool equalStepFound = false;
     GTWidget::click(os, resetZoom);
-    GTGlobals::sleep(1000);
-    QPixmap pixmap = GTWidget::getPixmap(os, treeView);
-    QImage initImg = pixmap.toImage();
-
-    while (zoomOut->isEnabled()) {
-        QPixmap pixmap = GTWidget::getPixmap(os, treeView);
-        QImage initImg = pixmap.toImage();
+    QImage initialImg = GTWidget::getImage(os, treeView);
+    bool isImageChanged = true;
+    CHECK_SET_ERR(zoomOut->isEnabled(), "Zoom out must be enabled.");
+    while (zoomOut->isEnabled() && isImageChanged) {
+        QImage imageBefore = GTWidget::getImage(os, treeView);
         GTWidget::click(os, zoomOut);
-        pixmap = GTWidget::getPixmap(os, treeView);
-        QImage finalImg = pixmap.toImage();
+        QImage imageAfter = GTWidget::getImage(os, treeView);
+        isImageChanged = !(imageBefore == imageAfter);
         if (i == 0) {
-            CHECK_SET_ERR(!(initImg == finalImg), "Images are unexpectidly equal at first step 1")
-        } else {
-            equalStepFound = (initImg == finalImg);
+            CHECK_SET_ERR(isImageChanged, "1. Images are unexpectedly equal at first zoom out");
         }
         i++;
     }
-    GTGlobals::sleep(200);
-    CHECK_SET_ERR(equalStepFound, "Tree changed it's size up to the end");
+    CHECK_SET_ERR(!isImageChanged, "Expecting tree to stop changing within zoomOut button range");
+
     //    5. Click the "Reset zoom" button on the toolbar.
     GTWidget::click(os, resetZoom);
-    GTGlobals::sleep(1000);
-    pixmap = GTWidget::getPixmap(os, treeView);
-    QImage finalImg = pixmap.toImage();
+    QImage finalImg = GTWidget::getImage(os, treeView);
+
     //    Expected state: sizes of the tree and alignment reset.
-    CHECK_SET_ERR(initImg == finalImg, "Reset zoom action workes wrong")
+    CHECK_SET_ERR(initialImg == finalImg, "Reset zoom action failed")
 
     //    6. Click the "Zoom in" button in the toolbar until alignment and tree sizes stop change.
     i = 0;
     while (zoomIn->isEnabled() && i < 3) {
-        QPixmap pixmap = GTWidget::getPixmap(os, treeView);
-        QImage initImg = pixmap.toImage();
+        QImage imageBefore = GTWidget::getImage(os, treeView);
         GTWidget::click(os, zoomIn);
-        GTGlobals::sleep();
-        pixmap = GTWidget::getPixmap(os, treeView);
-        QImage finalImg = pixmap.toImage();
-        CHECK_SET_ERR(!(initImg == finalImg), QString("Images are unexpectidly equal at first step2 i= %1").arg(i));
+        QImage imageAfter = GTWidget::getImage(os, treeView);
+        CHECK_SET_ERR(imageBefore != imageAfter, QString("2. Images are unexpectedly equal at zoomIn step %1").arg(i));
         i++;
     }
-    //    Expected state: the tree and alignment are zoomed in, the "zoom in" button on the toolbar is inactive.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1515) {
@@ -7343,8 +7332,6 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
 
     QWidget *pdb1 = GTWidget::findWidget(os, "1-1A5H");
     QWidget *pdb2 = GTWidget::findWidget(os, "2-1CF7");
-    CHECK_SET_ERR(NULL != pdb1, "No 1A5H view");
-    CHECK_SET_ERR(NULL != pdb2, "No 1CF7 view");
 
     GTUtilsProjectTreeView::click(os, "1CF7.pdb");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Render Style"
@@ -7352,7 +7339,7 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTMenu::showContextMenu(os, pdb2);
 
     GTGlobals::sleep();
-    const QPixmap before = GTWidget::getPixmap(os, pdb2);
+    QImage imageBefore = GTWidget::getImage(os, pdb2);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1A5H.pdb"));
     GTMouseDriver::doubleClick();
@@ -7366,10 +7353,8 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
                               GTGlobals::UseKey);
 
     GTGlobals::sleep();
-    const QPixmap after = GTWidget::getPixmap(os, pdb2);
-
-    GTGlobals::sleep(500);
-    CHECK_SET_ERR(before.toImage() == after.toImage(), "The view has changed");
+    QImage imageAfter = GTWidget::getImage(os, pdb2);
+    CHECK_SET_ERR(imageBefore == imageAfter, "The view has changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1703) {

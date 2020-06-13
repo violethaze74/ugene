@@ -2454,8 +2454,7 @@ GUI_TEST_CLASS_DEFINITION(test_0868) {
     GTGlobals::sleep(1000);
 
     QWidget *assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
-    QPixmap pixmap = GTWidget::getPixmap(os, assembly_reads_area);
-    QImage initImg = pixmap.toImage();
+    QImage initImg = GTWidget::getImage(os, assembly_reads_area);
 
     //    4. Go to any other region
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
@@ -2469,8 +2468,7 @@ GUI_TEST_CLASS_DEFINITION(test_0868) {
 
     //    Expected state: it shows the location that you saved before
     assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
-    pixmap = GTWidget::getPixmap(os, assembly_reads_area);
-    QImage finalImg = pixmap.toImage();
+    QImage finalImg = GTWidget::getImage(os, assembly_reads_area);
     CHECK_SET_ERR(initImg == finalImg, "bookmark does not work");
 }
 

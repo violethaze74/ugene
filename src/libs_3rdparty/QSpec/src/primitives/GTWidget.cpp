@@ -240,38 +240,30 @@ QColor GTWidget::getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &po
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getPixmap"
-QPixmap GTWidget::getPixmap(GUITestOpStatus &os, QWidget *widget) {
-    GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QPixmap());
+#define GT_METHOD_NAME "getImage"
+QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget) {
+    GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QImage());
 
     class Scenario : public CustomScenario {
     public:
-        Scenario(QWidget *widget, QPixmap &pixmap)
+        Scenario(QWidget *widget, QImage &image)
             : widget(widget),
-              pixmap(pixmap) {
+              image(image) {
         }
 
         void run(GUITestOpStatus &os) {
-            Q_UNUSED(os);
-            CHECK_SET_ERR(widget != NULL, "Widget to grab is NULL");
-            pixmap = widget->grab(widget->rect());
+            CHECK_SET_ERR(widget != nullptr, "Widget to grab is NULL");
+            image = widget->grab(widget->rect()).toImage();
         }
 
     private:
         QWidget *widget;
-        QPixmap &pixmap;
+        QImage &image;
     };
 
-    QPixmap pixmap;
-    GTThread::runInMainThread(os, new Scenario(widget, pixmap));
-    return pixmap;
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getImage"
-QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget) {
-    GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QImage());
-    return getPixmap(os, widget).toImage();
+    QImage image;
+    GTThread::runInMainThread(os, new Scenario(widget, image));
+    return image;
 }
 #undef GT_METHOD_NAME
 
