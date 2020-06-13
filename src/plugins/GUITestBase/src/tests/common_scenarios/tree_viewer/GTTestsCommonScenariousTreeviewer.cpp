@@ -30,7 +30,6 @@
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
-#include <utils/GTKeyboardUtils.h>
 
 #include <QColor>
 #include <QGraphicsItem>
@@ -62,7 +61,6 @@ namespace U2 {
 namespace GUITest_common_scenarios_tree_viewer {
 using namespace HI;
 
-const int nodeWidth = 11;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     //Screenshoting MSA editor (regression test)
 
@@ -429,7 +427,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Circular"));
     //GTWidget::click(os,GTWidget::findWidget(os,"Layout"));
     //    Expected state: tree view type changed to circular
-    QList<QGraphicsItem *> list = GTUtilsPhyTree::getNodes(os);
+    QList<GraphicsButtonItem *> list = GTUtilsPhyTree::getNodes(os);
     //QList<QGraphicsSimpleTextItem*> labelsList = GTUtilsPhyTree::getLabels(os);
     QStringList labelList = GTUtilsPhyTree::getLabelsText(os);
     //QList<QGraphicsSimpleTextItem*> distancesList = GTUtilsPhyTree::getDistances(os);
@@ -763,15 +761,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     //    Expected state: philogenetic tree appears
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    QList<QGraphicsItem *> list = treeView->scene()->items();
-    QList<QGraphicsItem *> nodeList;
-
-    foreach (QGraphicsItem *item, list) {
-        uiLog.trace(QString("element width = %1").arg(item->boundingRect().width()));
-        if (qRound(item->boundingRect().width()) == nodeWidth) {
-            nodeList.append(item);
-        }
-    }
+    QList<GraphicsButtonItem *> nodeList = GTUtilsPhyTree::getNodes(os);
 
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
     QPoint globalCoord = GTUtilsPhyTree::getGlobalCoord(os, nodeList.last());
@@ -785,6 +775,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTGlobals::sleep(500);
 
     QList<QGraphicsSimpleTextItem *> branchList;
+    QList<QGraphicsItem *> list = treeView->scene()->items();
     foreach (QGraphicsItem *item, list) {
         QGraphicsSimpleTextItem *textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem *>(item);
         if (textItem && (textItem->text().contains("0.052") || textItem->text().contains("0.045") ||
@@ -819,14 +810,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
 
     //    Expected state: philogenetic tree appears
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    QList<QGraphicsItem *> list = treeView->scene()->items();
-    QList<QGraphicsItem *> nodeList;
-
-    foreach (QGraphicsItem *item, list) {
-        if (qRound(item->boundingRect().width()) == nodeWidth) {
-            nodeList.append(item);
-        }
-    }
+    QList<GraphicsButtonItem *> nodeList = GTUtilsPhyTree::getNodes(os);
 
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
     QPoint globalCoord = GTUtilsPhyTree::getGlobalCoord(os, nodeList.last());
@@ -837,6 +821,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTGlobals::sleep();
 
     QList<QGraphicsSimpleTextItem *> branchList;
+    QList<QGraphicsItem *> list = treeView->scene()->items();
     foreach (QGraphicsItem *item, list) {
         QGraphicsSimpleTextItem *textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem *>(item);
         if (textItem && (textItem->text().contains("0.052") || textItem->text().contains("0.045") ||
@@ -872,16 +857,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
 
     //    Expected state: philogenetic tree appears
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    QList<QGraphicsItem *> list = treeView->scene()->items();
-    QList<QGraphicsItem *> nodeList;
-
-    foreach (QGraphicsItem *item, list) {
-        if (qRound(item->boundingRect().width()) == nodeWidth) {
-            nodeList.append(item);
-        }
-    }
-
+    QList<GraphicsButtonItem *> nodeList = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
+
     QGraphicsItem *node = nodeList.at(1);
     QPoint globalCoord = GTUtilsPhyTree::getGlobalCoord(os, node);
 
@@ -890,6 +868,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTMouseDriver::doubleClick();
 
     QList<QGraphicsSimpleTextItem *> branchList;
+    QList<QGraphicsItem *> list = treeView->scene()->items();
     foreach (QGraphicsItem *item, list) {
         QGraphicsSimpleTextItem *textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem *>(item);
         if (textItem && !textItem->text().contains("0.106") && !textItem->text().contains("0.007") &&
@@ -956,16 +935,10 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     CHECK_SET_ERR(w > 100, "tree seems to be too narrow");
     //3. Choose any node and do the context menu command "Swap siblings"
-    QList<QGraphicsItem *> nodeList;
-    foreach (QGraphicsItem *item, list) {
-        if (item->boundingRect().width() == nodeWidth) {
-            nodeList.append(item);
-        }
-    }
-
+    QList<GraphicsButtonItem *> nodeList = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
     QGraphicsItem *node = nodeList.at(1);
-    QPointF sceneCoord = node->mapToScene(node->boundingRect().center() - QPoint(-2, 0)); // Hack for tree button items: they are not hoverable on the right side.
+    QPointF sceneCoord = node->mapToScene(node->boundingRect().center() - QPoint(-2, 0));    // Hack for tree button items: they are not hoverable on the right side.
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
 
@@ -1130,48 +1103,38 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     QAbstractButton *swap = GTWidget::findButtonByText(os, "Swap Sibling");    //GTAction::button(os, "Swap Siblings");
     QAbstractButton *reroot = GTWidget::findButtonByText(os, "Reroot");    // GTAction::button(os, "Reroot tree");
 
-    CHECK_SET_ERR(collapse != NULL, "collapse action button not found");
-    CHECK_SET_ERR(swap != NULL, "swap action button not found");
-    CHECK_SET_ERR(reroot != NULL, "reroot action button not found");
+    CHECK_SET_ERR(collapse != NULL, "1. Collapse action button not found");
+    CHECK_SET_ERR(swap != NULL, "1. Swap action button not found");
+    CHECK_SET_ERR(reroot != NULL, "1. Re-root action button not found");
 
-    CHECK_SET_ERR(!collapse->isEnabled(), "Collapse action is unexpectedly enabled");
-    CHECK_SET_ERR(!swap->isEnabled(), "Swap action is unexpectedly enabled");
-    CHECK_SET_ERR(!reroot->isEnabled(), "Reroot action is unexpectedly enabled");
+    CHECK_SET_ERR(!collapse->isEnabled(), "2. Collapse action is unexpectedly enabled");
+    CHECK_SET_ERR(!swap->isEnabled(), "2. Swap action is unexpectedly enabled");
+    CHECK_SET_ERR(!reroot->isEnabled(), "2. Reroot action is unexpectedly enabled");
 
-    QList<QGraphicsItem *> nodes = GTUtilsPhyTree::getNodes(os);
-    CHECK_SET_ERR(!nodes.isEmpty(), "No nodes found");
+    QList<GraphicsButtonItem *> nodes = GTUtilsPhyTree::getNodes(os);
+    CHECK_SET_ERR(!nodes.isEmpty(), "3. No nodes found");
+    GTUtilsPhyTree::clickNode(os, nodes[0]);
 
-    QPoint p = GTUtilsPhyTree::getGlobalCoord(os, nodes.first());
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::click();
+    CHECK_SET_ERR(!collapse->isEnabled(), "4. Collapse action is unexpectedly enabled");
+    CHECK_SET_ERR(swap->isEnabled(), "4. Swap action is unexpectedly disabled");
+    CHECK_SET_ERR(!reroot->isEnabled(), "4. Re-root action is unexpectedly enabled");
+    GTUtilsPhyTree::clickNode(os, nodes[5]);
 
-    CHECK_SET_ERR(!collapse->isEnabled(), "Collapse action is unexpectedly enabled");
-    CHECK_SET_ERR(swap->isEnabled(), "Swap action is unexpectedly disnabled");
-    CHECK_SET_ERR(!reroot->isEnabled(), "Reroot action is unexpectedly enabled");
-
-    p = GTUtilsPhyTree::getGlobalCoord(os, nodes[5]);
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::click();
-
-    CHECK_SET_ERR(collapse->isEnabled(), "Collapse action is unexpectedly disabled");
-    CHECK_SET_ERR(swap->isEnabled(), "Swap action is unexpectedly disabled");
-    CHECK_SET_ERR(reroot->isEnabled(), "Reroot action is unexpectedly disabled");
+    CHECK_SET_ERR(collapse->isEnabled(), "5. Collapse action is unexpectedly disabled");
+    CHECK_SET_ERR(swap->isEnabled(), "5. Swap action is unexpectedly disabled");
+    CHECK_SET_ERR(reroot->isEnabled(), "5. Re-root action is unexpectedly disabled");
 
     GTWidget::click(os, collapse);
-    CHECK_SET_ERR(collapse->text() == "Expand", "No Expand action");
+    CHECK_SET_ERR(collapse->text() == "Expand", "6. No Expand action");
 
-    p = GTUtilsPhyTree::getGlobalCoord(os, nodes[3]);
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::click();
-    CHECK_SET_ERR(collapse->text() == "Collapse", "No Collapse action");
+    GTUtilsPhyTree::clickNode(os, nodes[3]);
+    CHECK_SET_ERR(collapse->text() == "Collapse", "7. No Collapse action");
 
-    p = GTUtilsPhyTree::getGlobalCoord(os, nodes[5]);
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::click();
-    CHECK_SET_ERR(collapse->text() == "Expand", "No Expand action");
+    GTUtilsPhyTree::clickNode(os, nodes[5]);
+    CHECK_SET_ERR(collapse->text() == "Expand", "8. No Expand action");
 
     GTWidget::click(os, collapse);
-    CHECK_SET_ERR(collapse->text() == "Collapse", "No Collapse action");
+    CHECK_SET_ERR(collapse->text() == "Collapse", "9. No Collapse action");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026) {
@@ -1185,8 +1148,8 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    2. Select the parent node of "Bicolorana_bicolor_EF540830" and "Roeseliana_roeseli".
     QList<GraphicsButtonItem *> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
     CHECK_SET_ERR(!nodes.isEmpty(), "Tree nodes are not found");
-    const qreal firstNodeDistance = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
-    GTUtilsPhyTree::clickNode(os, nodes.first());
+    qreal firstNodeDistance = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
+    GTUtilsPhyTree::clickNode(os, nodes[0]);
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
 
     //    3. Do the context menu command "Reroot tree".
@@ -1198,7 +1161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    Expected state: the tree is rerooted. The selected node parent node becomes a new tree root.
     nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
     CHECK_SET_ERR(!nodes.isEmpty(), "Tree nodes are not found");
-    const qreal firstNodeDistanceNew = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
+    qreal firstNodeDistanceNew = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
 
     CHECK_SET_ERR(firstNodeDistance != firstNodeDistanceNew, "Distances are not changed. The tree was not rerooted?")
 }

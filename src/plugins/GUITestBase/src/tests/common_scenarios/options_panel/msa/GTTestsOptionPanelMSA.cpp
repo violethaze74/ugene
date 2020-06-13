@@ -1682,7 +1682,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     QWidget *parent2 = GTWidget::findWidget(os, "COI [m] COI", parent);
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView", parent2));
 
-    QList<QGraphicsSimpleTextItem *> initNames = GTUtilsPhyTree::getVisiableLabels(os, treeView);
+    QList<QGraphicsSimpleTextItem *> initNames = GTUtilsPhyTree::getVisibleLabels(os, treeView);
     QList<QGraphicsSimpleTextItem *> initDistanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
     int initNamesNumber = initNames.count();
     int initDistansesNumber = initDistanses.count();
@@ -1692,7 +1692,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTGlobals::sleep(500);
 
     //    Expected state: names are not shown, align labels checkbox is disabled
-    QList<QGraphicsSimpleTextItem *> names = GTUtilsPhyTree::getVisiableLabels(os, treeView);
+    QList<QGraphicsSimpleTextItem *> names = GTUtilsPhyTree::getVisibleLabels(os, treeView);
     CHECK_SET_ERR(names.count() == 0, QString("unexpected number of names: %1").arg(names.count()));
     CHECK_SET_ERR(!alignLabelsCheck->isEnabled(), "align labels checkbox is unexpectidly enabled");
 
@@ -1701,7 +1701,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTGlobals::sleep(500);
 
     //    Expected state: names are shown, align labels checkbox is enabled
-    names = GTUtilsPhyTree::getVisiableLabels(os, treeView);
+    names = GTUtilsPhyTree::getVisibleLabels(os, treeView);
     CHECK_SET_ERR(names.count() == initNamesNumber, QString("unexpected number of names: %1").arg(names.count()));
     CHECK_SET_ERR(alignLabelsCheck->isEnabled(), "align labels checkbox is unexpectidly disabled");
 
@@ -1761,7 +1761,7 @@ void setLabelsColor(HI::GUITestOpStatus &os, int r, int g, int b) {
 bool checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColorName) {
     QGraphicsView *w = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     CHECK_SET_ERR_RESULT(w != NULL, "tree view not found", false);
-    QList<QGraphicsSimpleTextItem *> labels = GTUtilsPhyTree::getVisiableLabels(os, w);
+    QList<QGraphicsSimpleTextItem *> labels = GTUtilsPhyTree::getVisibleLabels(os, w);
     CHECK_SET_ERR_RESULT(!labels.isEmpty(), "there are no visiable labels", false);
 
     const QImage img = GTWidget::getImage(os, AppContext::getMainWindow()->getQMainWindow());
@@ -1814,7 +1814,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
     GTGlobals::sleep(500);
     //    Expected: font changed
-    QGraphicsSimpleTextItem *label = GTUtilsPhyTree::getVisiableLabels(os).at(0);
+    QGraphicsSimpleTextItem *label = GTUtilsPhyTree::getVisibleLabels(os).at(0);
     QString family = label->font().family();
     CHECK_SET_ERR(family == "Serif", "unexpected style: " + family);
     //    5. Change labels size

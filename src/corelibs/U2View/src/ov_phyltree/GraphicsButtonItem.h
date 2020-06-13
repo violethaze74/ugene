@@ -29,6 +29,7 @@
 
 #include "TreeSettings.h"
 
+#define NODE_TREE_ITEM_KIND_KEY 1
 namespace U2 {
 
 class PhyTreeObject;
