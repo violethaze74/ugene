@@ -29,6 +29,7 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
 #include <U2Core/ScriptingToolRegistry.h>
+#include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/WorkflowUtils.h>
@@ -366,6 +367,10 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
 }
 
 Task::ReportResult ExternalToolSearchAndValidateTask::report() {
+    if (qgetenv("UGENE_GUI_TEST") == "1") {    // dump external tool validation time in GUI tests mode.
+        qint64 taskRunMillis = (GTimer::currentTimeMicros() - timeInfo.startTime) / 1000;
+        coreLog.trace(QString("ExternalToolSearchAndValidateTask[%1] time: %2 millis").arg(toolId).arg(taskRunMillis));
+    }
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry, "An external tool registry is NULL", ReportResult_Finished);
     ExternalTool *tool = etRegistry->getById(toolId);
