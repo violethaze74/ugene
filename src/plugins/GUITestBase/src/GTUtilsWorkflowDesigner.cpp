@@ -272,8 +272,8 @@ void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, QString algN
     QWidget *w = GTWidget::findWidget(os, "sceneView", wdWindow);
 
     // Put the new worker in to the grid.
-    int columnWidth = 300;
-    int columnHeight = 200;
+    int columnWidth = 250;
+    int columnHeight = 250;
     int workersPerRow = 3;
 
     int numberOfWorkers = getWorkers(os).size();
