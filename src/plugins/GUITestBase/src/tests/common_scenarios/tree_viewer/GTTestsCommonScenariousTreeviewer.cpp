@@ -721,14 +721,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //2. Open context menu on branch and  select {change settings} menu item
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     QList<QGraphicsItem *> list = treeView->scene()->items();
-    QList<GraphicsButtonItem *> nodeList;
-
-    foreach (QGraphicsItem *item, list) {
-        GraphicsButtonItem *buttonItem = dynamic_cast<GraphicsButtonItem *>(item);
-        if (NULL != buttonItem) {
-            nodeList.append(buttonItem);
-        }
-    }
+    QList<GraphicsButtonItem *> nodeList = GTUtilsPhyTree::getNodes(os);
+    CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
 
     QGraphicsItem *node = nodeList.last();
     QPointF sceneCoord = node->mapToScene(node->boundingRect().center());
@@ -737,7 +731,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //Expected state: Branch settings dialog appears
 
-    //3. Change thickness and collor to differ than standard. Click OK
+    //3. Change thickness and color to differ than standard. Click OK
     //Expected state: selected branch changed
     GTUtilsDialog::waitForDialog(os, new BranchSettingsDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Branch Settings"));
@@ -745,9 +739,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
 
-    globalCoord.setX(globalCoord.x() - 10);
+    globalCoord.setX(globalCoord.x() - 15); // pick a branch coordinate
 
-    const QColor color = GTWidget::getColor(os, treeView, treeView->mapFromGlobal(globalCoord));
+    QColor color = GTWidget::getColor(os, treeView, treeView->mapFromGlobal(globalCoord));
     CHECK_SET_ERR(color.name() == "#0000ff", "Expected: #0000ff, found: " + color.name());
 }
 
