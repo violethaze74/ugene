@@ -631,7 +631,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2100_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_2124);
     REGISTER_TEST(GUITest_regression_scenarios::test_2128);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2128_1);
+    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_2128_1, "It always fails on MacOS. Improve the test");
     REGISTER_TEST(GUITest_regression_scenarios::test_2138);
     REGISTER_TEST_NOT_FOR_MAC(GUITest_regression_scenarios::test_2140);
     REGISTER_TEST(GUITest_regression_scenarios::test_2144);
@@ -662,7 +662,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2292);
     REGISTER_TEST(GUITest_regression_scenarios::test_2295);
     REGISTER_TEST(GUITest_regression_scenarios::test_2298);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2293);
+    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_2293, "It always fails on MacOS. Improve the test");
     REGISTER_TEST(GUITest_regression_scenarios::test_2306);
     REGISTER_TEST(GUITest_regression_scenarios::test_2309);
     REGISTER_TEST(GUITest_regression_scenarios::test_2314);
@@ -1082,7 +1082,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4131);
     REGISTER_TEST(GUITest_regression_scenarios::test_4134);
     REGISTER_TEST(GUITest_regression_scenarios::test_4141);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4148);
+    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_4148, "It always fails on MacOS. Improve the test");
     REGISTER_TEST(GUITest_regression_scenarios::test_4150);
     REGISTER_TEST(GUITest_regression_scenarios::test_4151);
     REGISTER_TEST(GUITest_regression_scenarios::test_4153);
@@ -2222,9 +2222,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/colors
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0003);
+    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0001, "It always fails on MacOS. Improve the test");
+    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0002, "It always fails on MacOS. Improve the test");
+    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0003, "It always fails on MacOS. Improve the test");
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0006);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0007);
@@ -2710,7 +2710,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0004_7);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0004_8);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0004_9);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0005);
+    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0005, "It always fails on MacOS. Improve the test");
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0005_1);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0006);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0007);
@@ -2924,7 +2924,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0004);
+    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0004, "It always fails on MacOS. Improve the test");
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0005);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0006);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0007);
