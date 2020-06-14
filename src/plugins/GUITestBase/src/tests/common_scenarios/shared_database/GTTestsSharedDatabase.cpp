@@ -809,23 +809,25 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0004) {
     //Expected: the object is moved; there are no errors in the log.
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
     QModelIndex dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir1");
-    QModelIndex dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2");
-    GTGlobals::sleep();
+    QModelIndex dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2", dirItem1);
     QModelIndex objItem = GTUtilsProjectTreeView::findIndex(os, "pt0004_human_T1");
     GTUtilsProjectTreeView::checkItemIsExpanded(os, treeView, dirItem2);
     GTUtilsProjectTreeView::dragAndDrop(os, objItem, dirItem1);
 
     dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir1");
+    int dir1RowCount = model->rowCount(dirItem1);
+    CHECK_SET_ERR(dir1RowCount == 2, QString("Invalid child item count for pt0004_dir1 Expected: 2; actual: %1").arg(dir1RowCount));
+
     dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2");
-    CHECK_SET_ERR(2 == model->rowCount(dirItem1), QString("Invalid child item count for pt0004_dir1 Expected: 2; actual: %1").arg(model->rowCount(dirItem1)));
-    CHECK_SET_ERR(0 == model->rowCount(dirItem2), QString("Invalid child item count for pt0004_dir2 Expected: 0; actual: %1").arg(model->rowCount(dirItem2)));
+    int dir2RowCount = model->rowCount(dirItem2);
+    CHECK_SET_ERR(dir2RowCount == 0, QString("Invalid child item count for pt0004_dir2 Expected: 0; actual: %1").arg(dir2RowCount));
+
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
