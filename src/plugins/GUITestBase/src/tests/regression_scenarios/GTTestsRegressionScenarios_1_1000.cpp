@@ -961,16 +961,15 @@ GUI_TEST_CLASS_DEFINITION(test_0666) {
  *   Expected state: UGENE not crashes
 */
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    QAbstractButton *primer3 = GTAction::button(os, "primer3_action");
-    CHECK_SET_ERR(primer3 != NULL, "primer3_action not found");
-    Primer3DialogFiller::Primer3Settings settings;
-    settings.resultsCount = 50;
-    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, primer3);
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/666/", "regression_0666.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    QModelIndex projectTreeItem = GTUtilsProjectTreeView::findIndex(os, "Annotations");
+
+    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsProjectTreeView::dragAndDrop(os, projectTreeItem ,GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "pair 1  (0, 2)"
                                                               << "pair 10  (0, 2)"
@@ -984,7 +983,6 @@ GUI_TEST_CLASS_DEFINITION(test_0666) {
                                                               << "pair 18  (0, 2)"
                                                               << "pair 19  (0, 2)");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0677) {
