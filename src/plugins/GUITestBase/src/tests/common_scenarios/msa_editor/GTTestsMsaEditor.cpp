@@ -1724,31 +1724,28 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     // 1. Run Ugene. Open file _common_data\scenarios\msa\ma2_gapped.aln
     GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln", sandBoxDir + "ma2_gapped.aln");
-    GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped_edited.aln");
     GTFileDialog::openFile(os, sandBoxDir, "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Open same file in text editor. Change first 3 bases of 'Phaneroptera_falcata'
     //    from 'AAG' to 'CTT' and save file.
     //CHANGES: backup old file, copy changed file
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTFile::copy(os, sandBoxDir + "ma2_gapped.aln", sandBoxDir + "ma2_gapped_old.aln");
-    GTFile::copy(os, sandBoxDir + "ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
+    GTGlobals::sleep(1000); // ugene doesn't detect changes whithin one second interval
+    GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
 
     //    Expected state: Dialog suggesting to reload modified document has appeared.
     // 3. Press 'Yes'.
-    GTGlobals::sleep(1000);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    Expected state: document was reloaded, view activated.
     //    'Phaneroptera_falcata' starts with CTT.
-    GTUtilsMdi::activeWindow(os);
-    GTGlobals::sleep();
 
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
     // copy to clipboard
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTThread::waitForMainThread();
 
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
@@ -1757,7 +1754,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "ma2_gapped.aln"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
