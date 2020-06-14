@@ -5292,7 +5292,7 @@ GUI_TEST_CLASS_DEFINITION(test_1514) {
         QImage imageBefore = GTWidget::getImage(os, treeView);
         GTWidget::click(os, zoomOut);
         QImage imageAfter = GTWidget::getImage(os, treeView);
-        isImageChanged = !(imageBefore == imageAfter);
+        isImageChanged = imageBefore != imageAfter;
         if (i == 0) {
             CHECK_SET_ERR(isImageChanged, "1. Images are unexpectedly equal at first zoom out");
         }
@@ -5305,7 +5305,7 @@ GUI_TEST_CLASS_DEFINITION(test_1514) {
     QImage finalImg = GTWidget::getImage(os, treeView);
 
     //    Expected state: sizes of the tree and alignment reset.
-    CHECK_SET_ERR(initialImg == finalImg, "Reset zoom action failed")
+    CHECK_SET_ERR(initialImg.height() == finalImg.height(), "Reset zoom action failed")
 
     //    6. Click the "Zoom in" button in the toolbar until alignment and tree sizes stop change.
     i = 0;
