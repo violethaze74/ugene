@@ -2339,29 +2339,34 @@ GUI_TEST_CLASS_DEFINITION(test_1199) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1203_1) {
-    //    1) Open WD
+    //    Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algorithms);
 
-    //    2) Place "Remote BLAST" element on the scheme
+    //    Print "mer" in line "Name filter"
+    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
+    GTKeyboardDriver::keySequence("Remote BLAST");
+
+    //    Place "Remote BLAST" element on the scheme
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Remote BLAST", true);
     GTUtilsWorkflowDesigner::click(os, "Remote BLAST");
 
-    //    3) Select "Database" to "ncbi-blastn"
+    //    Select "Database" to "ncbi-blastn"
     //    Expected state: "Entrez query" lineedit is enabled
     GTUtilsWorkflowDesigner::setParameter(os, "Database", "ncbi-blastn", GTUtilsWorkflowDesigner::comboValue);
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterEnabled(os, "Entrez query"), "Parameter is unexpectedly disabled");
 
-    //    4) Select "Database" to "ncbi-blastp"
+    //    Select "Database" to "ncbi-blastp"
     //    Expected state: "Entrez query" lineedit is enabled
     GTUtilsWorkflowDesigner::setParameter(os, "Database", "ncbi-blastp", GTUtilsWorkflowDesigner::comboValue);
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterEnabled(os, "Entrez query"), "Parameter is unexpectedly disabled");
 
-    //    5) Select "Database" to "ncbi-cdd"
+    //    Select "Database" to "ncbi-cdd"
     //    Expected state: "Entrez query" lineedit is not visible
     GTUtilsWorkflowDesigner::setParameter(os, "Database", "ncbi-cdd", GTUtilsWorkflowDesigner::comboValue);
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isParameterVisible(os, "Entrez query"), "Parameter is unexpectedly visible");
 
-    //    6) Select "Database" to "ncbi-blastn"
+    //    Select "Database" to "ncbi-blastn"
     //    Expected state: "Entrez query" lineedit is enabled
     GTUtilsWorkflowDesigner::clickParameter(os, "BLAST output");
     GTUtilsWorkflowDesigner::setParameter(os, "Database", "ncbi-blastn", GTUtilsWorkflowDesigner::comboValue);
@@ -3810,7 +3815,7 @@ GUI_TEST_CLASS_DEFINITION(test_1342) {
 
     // 1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algoriths);
+    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algorithms);
 
     // 2. print "mer" in line "Name filter"
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
@@ -3867,8 +3872,8 @@ GUI_TEST_CLASS_DEFINITION(test_1348) {
     GTWidget::click(os, createElement);
     GTGlobals::sleep(5000);
 
-    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algoriths);
-    QTreeWidgetItem *treeItem = GTUtilsWorkflowDesigner::findTreeItem(os, settings.elementName, GTUtilsWorkflowDesigner::algoriths);
+    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algorithms);
+    QTreeWidgetItem *treeItem = GTUtilsWorkflowDesigner::findTreeItem(os, settings.elementName, GTUtilsWorkflowDesigner::algorithms);
     CHECK_SET_ERR(treeItem != NULL, "Element not found");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));

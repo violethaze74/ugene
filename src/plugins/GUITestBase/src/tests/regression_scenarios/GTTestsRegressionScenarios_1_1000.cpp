@@ -1384,7 +1384,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
         }
     }
     if (foundItem != NULL) {
-        GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algoriths);
+        GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algorithms);
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove"));
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
         GTUtilsWorkflowDesigner::clickOnPalette(os, "test_0768", Qt::RightButton);
@@ -2161,16 +2161,16 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
     //    1) Create some custom cmdline worker with some name ("test", for example).
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algoriths);
+    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algorithms);
 
-    QTreeWidgetItem *treeItem = GTUtilsWorkflowDesigner::findTreeItem(os, "test", GTUtilsWorkflowDesigner::algoriths, true, false);
+    QTreeWidgetItem *treeItem = GTUtilsWorkflowDesigner::findTreeItem(os, "test", GTUtilsWorkflowDesigner::algorithms, true, false);
     if (treeItem != NULL) {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove"));
         GTTreeWidget::click(os, treeItem);
         GTMouseDriver::click(Qt::RightButton);
     }
-    QTreeWidgetItem *treeItem1 = GTUtilsWorkflowDesigner::findTreeItem(os, "test1", GTUtilsWorkflowDesigner::algoriths, true, false);
+    QTreeWidgetItem *treeItem1 = GTUtilsWorkflowDesigner::findTreeItem(os, "test1", GTUtilsWorkflowDesigner::algorithms, true, false);
     if (treeItem1 != NULL) {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove"));
@@ -2203,7 +2203,7 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"));
 
-    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algoriths);
+    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algorithms);
     GTUtilsWorkflowDesigner::clickOnPalette(os, "test", Qt::RightButton);
     GTGlobals::sleep(5000);    //added to ensure that crash is not here or to fix this crash
 

@@ -38,7 +38,7 @@ class WorkflowBusItem;
 
 class GTUtilsWorkflowDesigner {
 public:
-    enum tab { algoriths,
+    enum tab { algorithms,
                samples };
     enum valueType {
         spinValue,
@@ -51,7 +51,7 @@ public:
         customDialogSelector
     };
 
-    //returns algoriths or samples
+    //returns algorithms or samples
     static tab currentTab(HI::GUITestOpStatus &os);
 
     //activates the tab t

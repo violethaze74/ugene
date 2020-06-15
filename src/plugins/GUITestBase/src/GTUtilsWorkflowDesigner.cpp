@@ -114,7 +114,7 @@ void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus &os) {
 GTUtilsWorkflowDesigner::tab GTUtilsWorkflowDesigner::currentTab(HI::GUITestOpStatus &os) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs", wdWindow));
-    GT_CHECK_RESULT(NULL != tabs, "tabs widget is not found", algoriths);
+    GT_CHECK_RESULT(NULL != tabs, "tabs widget is not found", algorithms);
     return tab(tabs->currentIndex());
 }
 #undef GT_METHOD_NAME
@@ -192,7 +192,7 @@ QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, 
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QTreeWidgetItem *foundItem = NULL;
     QTreeWidget *w;
-    if (t == algoriths) {
+    if (t == algorithms) {
         w = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "WorkflowPaletteElements", wdWindow));
     } else {
         w = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples", wdWindow));
@@ -209,7 +209,7 @@ QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, 
         }
 
         foreach (QTreeWidgetItem *item, innerList) {
-            if (t == algoriths) {
+            if (t == algorithms) {
                 QString s = item->data(0, Qt::UserRole).value<QAction *>()->text();
                 if (compare(s, itemName, exactMatch)) {
                     GT_CHECK_RESULT(foundItem == NULL, "several items have this discription", item);
@@ -265,7 +265,7 @@ void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, QString algN
 
     GTTabWidget::setCurrentIndex(os, tabs, 0);
 
-    QTreeWidgetItem *alg = findTreeItem(os, algName, algoriths, exactMatch);
+    QTreeWidgetItem *alg = findTreeItem(os, algName, algorithms, exactMatch);
     GT_CHECK(alg != nullptr, "algorithm is NULL");
 
     selectAlgorithm(os, alg);
@@ -443,7 +443,7 @@ void GTUtilsWorkflowDesigner::cleanNameFilter(HI::GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "clickOnPalette"
 void GTUtilsWorkflowDesigner::clickOnPalette(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton mouseButton) {
-    selectAlgorithm(os, findTreeItem(os, itemName, algoriths, true));
+    selectAlgorithm(os, findTreeItem(os, itemName, algorithms, true));
     GTMouseDriver::click(mouseButton);
 }
 #undef GT_METHOD_NAME
@@ -702,7 +702,7 @@ QRect GTUtilsWorkflowDesigner::getItemRect(HI::GUITestOpStatus &os, QString item
 QTreeWidget *GTUtilsWorkflowDesigner::getCurrentTabTreeWidget(HI::GUITestOpStatus &os) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     switch (currentTab(os)) {
-    case algoriths:
+    case algorithms:
         return GTWidget::findExactWidget<QTreeWidget *>(os, "WorkflowPaletteElements", wdWindow);
     case samples:
         return GTWidget::findExactWidget<QTreeWidget *>(os, "samples", wdWindow);

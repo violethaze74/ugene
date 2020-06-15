@@ -3026,7 +3026,7 @@ GUI_TEST_CLASS_DEFINITION(test_3455) {
 
     //Expected: the elements tab is active.
     GTUtilsWorkflowDesigner::tab current = GTUtilsWorkflowDesigner::currentTab(os);
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::algoriths == current, "Samples tab is active");
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::algorithms == current, "Samples tab is active");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3471) {
