@@ -2406,7 +2406,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
             CHECK_SET_ERR(NULL != tabWidget, "tabWidget is NULL");
             CHECK_SET_ERR(!tabWidget->isTabEnabled(1), "'Advanced options' tab is unexpectedly enabled");
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
 
