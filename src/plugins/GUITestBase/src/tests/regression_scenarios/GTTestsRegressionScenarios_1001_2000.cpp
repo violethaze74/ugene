@@ -2424,10 +2424,20 @@ GUI_TEST_CLASS_DEFINITION(test_1204) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new RemoteBLASTDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
-                                                                        << "Query NCBI BLAST database"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active model widget is NULL");
+            QSpinBox *maxResultsSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "quantitySpinBox"));
+            GTSpinBox::setValue(os, maxResultsSpinBox, 5000, GTGlobals::UseKeyBoard);
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze"
+                                                                              << "Query NCBI BLAST database..."));
+    GTUtilsDialog::waitForDialog(os, new RemoteBLASTDialogFiller(os, new Scenario));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1209) {
