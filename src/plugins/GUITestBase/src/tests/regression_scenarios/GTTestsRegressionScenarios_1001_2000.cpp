@@ -20,6 +20,7 @@
  */
 
 #include <GTGlobals.h>
+#include <api/GTUtils.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -63,7 +64,6 @@
 #include <QTextStream>
 #include <QWizard>
 #include <QtWidgets/QTextBrowser>
-#include <api/GTUtils.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
@@ -746,7 +746,6 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
         GTUtilsProjectTreeView::click(os, seqName, Qt::RightButton);
         GTGlobals::sleep();
     }
-
 
     class MainThreadScenario : public CustomScenario {
     public:
@@ -2498,7 +2497,7 @@ GUI_TEST_CLASS_DEFINITION(test_1212_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
                                                                         << "Sequence region"));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
-        //    Expected: region is selected
+    //    Expected: region is selected
     ADVSingleSequenceWidget *w = (ADVSingleSequenceWidget *)GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_SET_ERR(!w->getSequenceSelection()->isEmpty(), "No selected region");
 }
@@ -7320,34 +7319,41 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/pdb", "1A5H.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     GTFileDialog::openFile(os, testDir + "_common_data/pdb", "1CF7.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *pdb1 = GTWidget::findWidget(os, "1-1A5H");
     QWidget *pdb2 = GTWidget::findWidget(os, "2-1CF7");
 
-    GTUtilsProjectTreeView::click(os, "1CF7.pdb");
+    // PDB 2 is active -> update 3d rendering settings.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Render Style"
                                                                         << "Ball-and-Stick"));
     GTMenu::showContextMenu(os, pdb2);
 
     GTGlobals::sleep();
-    QImage imageBefore = GTWidget::getImage(os, pdb2);
+    QImage pdb2ImageBefore = GTWidget::getImage(os, pdb2);
 
+    // Activate PDB 1 and update 3d rendering settings too.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1A5H.pdb"));
     GTMouseDriver::doubleClick();
+    GTThread::waitForMainThread();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Render Style"
                                                                         << "Ball-and-Stick"));
     GTMenu::showContextMenu(os, pdb1);
 
+    // Close PDB 1 view.
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Close active view",
                               GTGlobals::UseKey);
 
     GTGlobals::sleep();
-    QImage imageAfter = GTWidget::getImage(os, pdb2);
-    CHECK_SET_ERR(imageBefore == imageAfter, "The view has changed");
+
+    // Check that PDB 2 image was not changed.
+    QImage pdb2ImageAfter = GTWidget::getImage(os, pdb2);
+    CHECK_SET_ERR(pdb2ImageBefore == pdb2ImageAfter, "PDB2 3d images was changed: blank screen?");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1703) {
