@@ -1935,6 +1935,8 @@ QString HRSchemaSerializer::schemaPortAliases(const NamesMap &nmap, const QList<
         }
 
         const Port *sourcePort = portAlias.getSourcePort();
+        SAFE_POINT(sourcePort != nullptr, "sourcePort is nullptr", QString());
+
         QString sourceActorName = nmap[sourcePort->owner()->getId()];
         QString sourcePortId = sourcePort->getId();
         QString portString = sourceActorName + Constants::DOT + sourcePortId;
