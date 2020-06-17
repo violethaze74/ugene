@@ -101,7 +101,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GTLineEdit::setText(os, nameEdit, "");
 
             //Expected: The OK button is disabled.
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QPushButton *okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(!okButton->isEnabled(), "The OK button is enabled");
 
@@ -726,22 +726,20 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     // 5. Set the primers from the library
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PrimerLibrarySelectorFiller(os, 0, true));
     GTWidget::click(os, GTUtilsPcr::browseButton(os, U2Strand::Direct));
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PrimerLibrarySelectorFiller(os, 1, true));
     GTWidget::click(os, GTUtilsPcr::browseButton(os, U2Strand::Complementary));
-    GTGlobals::sleep();
 
     // 4. Find the product
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: 2 results were found
-    CHECK_SET_ERR(2 == GTUtilsPcr::productsCount(os), "Wrong results count");
+    int productsCount = GTUtilsPcr::productsCount(os);
+    CHECK_SET_ERR(productsCount == 2, "Wrong results count. Expected 2, got " + QString::number(productsCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016) {

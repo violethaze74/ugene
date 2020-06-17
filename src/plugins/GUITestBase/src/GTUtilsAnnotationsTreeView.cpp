@@ -189,7 +189,7 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findFirstAnnotation(HI::GUITestOpSt
     foreach (QTreeWidgetItem *item, treeItems) {
         AVItem *avItem = dynamic_cast<AVItem *>(item);
         GT_CHECK_RESULT(NULL != avItem, "Cannot convert QTreeWidgetItem to AVItem", NULL);
-        if (AVItemType_Annotation == avItem->type) {
+        if (avItem->type == AVItemType_Annotation) {
             return item;
         }
     }
@@ -416,7 +416,7 @@ QList<QTreeWidgetItem *> GTUtilsAnnotationsTreeView::getAllSelectedItems(HI::GUI
 #define GT_METHOD_NAME "getItemCenter"
 QPoint GTUtilsAnnotationsTreeView::getItemCenter(HI::GUITestOpStatus &os, const QString &itemName) {
     QTreeWidgetItem *item = findItem(os, itemName);
-    GT_CHECK_RESULT(item != NULL, "Item " + itemName + " is NULL", QPoint());
+    GT_CHECK_RESULT(item != nullptr, "Item " + itemName + " is NULL", QPoint());
 
     return GTTreeWidget::getItemCenter(os, item);
 }

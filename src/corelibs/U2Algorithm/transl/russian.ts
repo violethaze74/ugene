@@ -434,7 +434,7 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="578"/>
         <source>Weak similarities</source>
-        <translation type="unfinished"></translation>
+        <translation>Слабая гомология</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="589"/>

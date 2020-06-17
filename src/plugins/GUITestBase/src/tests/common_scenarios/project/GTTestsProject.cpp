@@ -419,17 +419,15 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
     GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
-    GTGlobals::sleep(1000);
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTGlobals::sleep(500);
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "misc_feature", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
 
@@ -817,7 +815,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QModelIndexList list = GTUtilsProjectTreeView::findIndecies(os, "");
+    QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "");
     uiLog.trace("All items in project tree view:");
     foreach (QModelIndex index, list) {
         uiLog.trace(index.data().toString());

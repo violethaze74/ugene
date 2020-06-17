@@ -52,7 +52,7 @@ CheckUpdatesTask::CheckUpdatesTask(bool startUp)
 void CheckUpdatesTask::run() {
     stateInfo.setDescription(tr("Connecting to updates server"));
     NetworkConfiguration *nc = AppContext::getAppSettings()->getNetworkConfiguration();
-    SAFE_POINT(nc != NULL, "Network configuration is null", );
+    SAFE_POINT(nc != nullptr, "Network configuration is null", );
 
     bool isProxy = nc->isProxyUsed(QNetworkProxy::HttpProxy);
     bool isException = nc->getExceptionsList().contains(SITE_URL);
@@ -60,7 +60,8 @@ void CheckUpdatesTask::run() {
     if (isProxy && !isException) {
         http.setProxy(nc->getProxy(QNetworkProxy::HttpProxy));
     }
-    QString siteVersionText = http.syncGet(QUrl("http://" + SITE_URL + PAGE_NAME));
+    // The following call blocks some UI tasks (Close project), so don't make it run long.
+    QString siteVersionText = http.syncGet(QUrl("http://" + SITE_URL + PAGE_NAME), 5000);
     if (siteVersionText.isEmpty()) {
         if (!runOnStartup) {
             stateInfo.setError(tr("Cannot load the current version."));

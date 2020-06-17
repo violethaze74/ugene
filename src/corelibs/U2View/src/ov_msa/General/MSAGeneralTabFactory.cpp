@@ -33,7 +33,7 @@ namespace U2 {
 
 const QString MSAGeneralTabFactory::GROUP_ID = "OP_MSA_GENERAL";
 const QString MSAGeneralTabFactory::GROUP_ICON_STR = ":core/images/settings2.png";
-const QString MSAGeneralTabFactory::GROUP_DOC_PAGE = "24748841";
+const QString MSAGeneralTabFactory::GROUP_DOC_PAGE = "46499988";
 
 MSAGeneralTabFactory::MSAGeneralTabFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;

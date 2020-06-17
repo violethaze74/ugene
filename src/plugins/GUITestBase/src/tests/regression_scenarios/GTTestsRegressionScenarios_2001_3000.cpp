@@ -20,6 +20,7 @@
  */
 
 #include <GTGlobals.h>
+#include <api/GTUtils.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -3299,7 +3300,7 @@ GUI_TEST_CLASS_DEFINITION(test_2482) {
     GTWidget::click(os, GTWidget::findWidget(os, "Layout"));
 
     // 3. Select any node in the tree that is not a leaf.
-    QList<QGraphicsItem *> items = GTUtilsPhyTree::getNodes(os);
+    QList<GraphicsButtonItem *> items = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(items.size() >= 4, "Incorrect tree size");
 
     QPoint nodeCoords = GTUtilsPhyTree::getGlobalCoord(os, items.at(3));
@@ -3327,7 +3328,7 @@ GUI_TEST_CLASS_DEFINITION(test_2487) {
     GTFileDialog::openFile(os, dataDir + "samples/Newick/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QList<QGraphicsItem *> items = GTUtilsPhyTree::getNodes(os);
+    QList<GraphicsButtonItem *> items = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(items.size() != 0, "Tree is empty");
 
     QPoint rootCoords = GTUtilsPhyTree::getGlobalCoord(os, items.first());
@@ -3357,10 +3358,10 @@ GUI_TEST_CLASS_DEFINITION(test_2498) {
     // 1. Open the /test/_common_data/fasta/empty.fa empty msa file.
     // 2. Open context menu on the sequence area. Go to the {Export -> amino translation}
     //
-
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "empty.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows", PopupChecker::IsDisabled, GTGlobals::UseMouse));
@@ -3402,7 +3403,7 @@ GUI_TEST_CLASS_DEFINITION(test_2513) {
     GTGlobals::sleep(1000);
     //    Select the last node, then call a context menu for it. It contains two menu items: "swap siblings" and "reroot".
     //The first one should be always disabled (for the tree leafs), the second one should be always enabled.
-    QList<QGraphicsItem *> nodes = GTUtilsPhyTree::getNodes(os);
+    QList<GraphicsButtonItem *> nodes = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!nodes.isEmpty(), "Nodes list is empty");
 
     GTMouseDriver::moveTo(GTUtilsPhyTree::getGlobalCoord(os, nodes.last()));
@@ -4591,40 +4592,11 @@ GUI_TEST_CLASS_DEFINITION(test_2709) {
     CHECK_SET_ERR(result == "True", "No novel junctions parameter is " + result);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_2711) {
-    //    1. Open "Settings"->"preferences"->"External tools"
-
-    //    2. Set path to R tool as path to Rscript
-
-    class test_2711DialogFiller : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-            QString rScriptPath = AppSettingsDialogFiller::getExternalToolPath(os, "Rscript");
-            CHECK_SET_ERR(!rScriptPath.isEmpty(), "Rscript path is empty");
-            QString rPath = rScriptPath.left(rScriptPath.length() - QString("script").length());
-            AppSettingsDialogFiller::setExternalToolPath(os, "Rscript", rPath);
-            GTGlobals::sleep(500);
-
-            bool valid = AppSettingsDialogFiller::isExternalToolValid(os, "Rscript");
-            CHECK_SET_ERR(!valid, "Rscript is unexpectidly valid");
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-    //    Expected state: Rscript doesn't pass validation
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new test_2711DialogFiller()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
-    GTGlobals::sleep();
-}
-
 GUI_TEST_CLASS_DEFINITION(test_2713) {
     //    1. Open file {data/samples/Genbank/murine.gb}
     GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "test_2713.gb");
     GTFileDialog::openFile(os, sandBoxDir, "test_2713.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open file {data/samples/FASTA/human_T1.fa}
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
@@ -4668,17 +4640,17 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
 
     fileData.replace("gag polyprotein", "ggg_polyprotein");
 
+    GTGlobals::sleep(1000);    // wait at least 1 second: UGENE does not detect file changes within 1 second interval.
     opened = file.open(QIODevice::WriteOnly);
     CHECK_SET_ERR(opened, "Can't open the file: " + sandBoxDir + "test_2713.gb");
     file.write(fileData);
     file.close();
 
-    GTGlobals::sleep(5000);
-
+    GTUtilsDialog::waitAllFinished(os);
     //    7. Open "human_T1" sequence view
     //    Expected state: annotations from "murine.gb" present on the sequence view
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsAnnotationsTreeView::findFirstAnnotation(os);
 }
 
@@ -5548,10 +5520,11 @@ GUI_TEST_CLASS_DEFINITION(test_2895) {
 GUI_TEST_CLASS_DEFINITION(test_2897) {
     //    1. Open {data/samples/CLUSTALW/COI.aln}.
     GTFileDialog::openFile(os, dataDir + "/samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //    2. Open options panel 'Highlighting' tab.
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
+    //    2. Open options panel 'Highlighting' tab. 
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::Highlighting);
 
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
@@ -5563,12 +5536,12 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    MSAEditorSequenceArea *msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    GTMenu::showContextMenu(os, msaSeqArea);
 
-    GTGlobals::sleep(500);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes" << colorSchemeName));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTMenu::showContextMenu(os, msaSeqArea);
 
     combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
@@ -5673,21 +5646,30 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
+            GTWidget::getActiveModalWidget(os);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
         }
     };
 
+    //    2. Click on the Analyze->Query NCBI BLAST database context menu
+    //    3. Click on the Search button
+    //    Expected state: the task starts with no errors
+    //    Current state: the following error appears: 'RemoteBLASTTask' task failed: Database couldn't prepare the response
     GTUtilsDialog::waitForDialog(os, new RemoteBLASTDialogFiller(os, new Scenario));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Query NCBI BLAST database"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "render_area_virus_X"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Click on the Analyze->Query NCBI BLAST database context menu
-    //    3. Click on the Search button
-    //    Expected state: the task has been finished without errors and blast result appears
-    //    Current state: the following error appears: 'RemoteBLASTTask' task failed: Database couldn't prepare the response
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ren"
+                                                         "der_area_virus_X"));
+    QString blastTaskName = "RemoteBLASTTask";
+    GTUtilsTaskTreeView::checkTask(os, blastTaskName);
+    GTGlobals::sleep(10000);
+
+    // Cancel the task. If not cancelled the run may last too long to trigger timeout in nightly tests.
+    bool isTaskRunning = GTUtilsTaskTreeView::checkTask(os, blastTaskName);
+    if (isTaskRunning) {
+        GTUtilsTaskTreeView::cancelTask(os, blastTaskName);
+    }
+
     GTUtilsLog::check(os, l);
 }
 

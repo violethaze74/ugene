@@ -58,7 +58,7 @@ const QString DigestSequenceDialog::HINT_MESSAGE(QObject::tr("Hint: there are no
 DigestSequenceDialog::DigestSequenceDialog(ADVSequenceObjectContext *ctx, QWidget *p)
     : QDialog(p), seqCtx(ctx), timer(NULL), animationCounter(0) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24748959");
+    new HelpButton(this, buttonBox, "46501105");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

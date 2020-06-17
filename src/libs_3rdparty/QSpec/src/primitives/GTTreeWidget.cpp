@@ -133,8 +133,7 @@ QList<QTreeWidgetItem*> GTTreeWidget::getItems(QTreeWidgetItem* root) {
 
 #define GT_METHOD_NAME "getItems"
 QList<QTreeWidgetItem *> GTTreeWidget::getItems(GUITestOpStatus &os, QTreeWidget *treeWidget) {
-    Q_UNUSED(os);
-    GT_CHECK_RESULT(NULL != treeWidget, "Tree widget is NULL", QList<QTreeWidgetItem *>());
+    GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", QList<QTreeWidgetItem *>());
     return getItems(treeWidget->invisibleRootItem());
 }
 #undef GT_METHOD_NAME

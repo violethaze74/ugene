@@ -41,7 +41,7 @@ ExportMSA2SequencesDialog::ExportMSA2SequencesDialog(const QString &defaultDir, 
       defaultFileName(defaultFileName),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24748721");
+    new HelpButton(this, buttonBox, "46499662");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

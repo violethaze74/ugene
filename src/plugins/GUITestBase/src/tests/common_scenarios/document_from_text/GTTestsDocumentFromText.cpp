@@ -643,15 +643,13 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
                                                 "result",
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
-    GTGlobals::sleep();
-
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "New document from text...",
                               GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsSequenceView::checkSequence(os, "RNACCGAAUAGCCDMAG");
 }

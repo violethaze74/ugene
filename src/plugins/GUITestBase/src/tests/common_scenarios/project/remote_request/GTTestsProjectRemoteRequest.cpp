@@ -358,7 +358,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsDocument::isDocumentLoaded(os, "1CRN.pdb");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!GTUtilsProjectTreeView::checkItem(os, "1ezg.pdb"), "Object shound not be in the project");
+    GTUtilsProjectTreeView::checkNoItem(os, "1ezg.pdb");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {

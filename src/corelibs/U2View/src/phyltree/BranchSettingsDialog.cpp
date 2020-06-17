@@ -34,7 +34,7 @@ BranchSettingsDialog::BranchSettingsDialog(QWidget *parent, const OptionsMap &se
     changedSettings[BRANCH_COLOR] = settings[BRANCH_COLOR];
     changedSettings[BRANCH_THICKNESS] = settings[BRANCH_THICKNESS];
     setupUi(this);
-    new HelpButton(this, buttonBox, "24748920");
+    new HelpButton(this, buttonBox, "46500084");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

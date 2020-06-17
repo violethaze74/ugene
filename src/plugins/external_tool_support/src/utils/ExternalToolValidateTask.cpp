@@ -29,6 +29,7 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
 #include <U2Core/ScriptingToolRegistry.h>
+#include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/WorkflowUtils.h>
@@ -38,25 +39,37 @@
 
 namespace U2 {
 
-ExternalToolValidateTask::ExternalToolValidateTask(const QString &_toolId, const QString &_toolName, TaskFlags flags)
-    : Task(tr("%1 validate task").arg(_toolName), flags),
-      toolId(_toolId),
-      toolName(_toolName),
+ExternalToolValidateTask::ExternalToolValidateTask(const QString &toolId, const QString &toolName, TaskFlags flags)
+    : Task(tr("%1 validate task").arg(toolName), flags),
+      toolId(toolId),
+      toolName(toolName),
       isValid(false) {
 }
 
-ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString &_toolId, const QString &_toolName, const QString &path)
-    : ExternalToolValidateTask(_toolId, _toolName, TaskFlag_None),
-      externalToolProcess(NULL),
-      tool(NULL) {
-    isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
+ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString &toolId, const QString &toolName, const QString &path)
+    : ExternalToolValidateTask(toolId, toolName, TaskFlag_None),
+      externalToolProcess(nullptr),
+      tool(nullptr) {
     toolPath = path;
     SAFE_POINT_EXT(!toolPath.isEmpty(), setError(tr("Tool's path is empty")), );
+
+    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+    SAFE_POINT(etRegistry, "An external tool registry is NULL", );
+    tool = etRegistry->getById(toolId);
+    SAFE_POINT(tool, QString("External tool '%1' isn't found in the registry").arg(toolName), );
+    CHECK_EXT(QFileInfo(toolPath).exists(), setError(tr("External tool is not found: %1").arg(toolPath)), );
+
+    bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
+    if (isPathOnlyValidation) {
+        isValid = true;
+        coreLog.info("Using path only validation for: " + toolName + ", path: " + toolPath);
+        setFlag(U2::TaskFlag_NoRun, true);
+    }
 }
 
 ExternalToolJustValidateTask::~ExternalToolJustValidateTask() {
     delete externalToolProcess;
-    externalToolProcess = NULL;
+    externalToolProcess = nullptr;
 }
 
 void ExternalToolJustValidateTask::run() {
@@ -64,13 +77,6 @@ void ExternalToolJustValidateTask::run() {
     SAFE_POINT(etRegistry, "An external tool registry is NULL", );
     tool = etRegistry->getById(toolId);
     SAFE_POINT(tool, QString("External tool '%1' isn't found in the registry").arg(toolName), );
-
-    QFileInfo info(toolPath);
-    CHECK_EXT(info.exists(), setError(tr("Tool's executable isn't exists")), );
-    if (isPathOnlyValidation) {
-        isValid = true;
-        return;
-    }
 
     validations.append(tool->getToolAdditionalValidations());
     ExternalToolValidation originalValidation = tool->getToolValidation();
@@ -103,9 +109,9 @@ void ExternalToolJustValidateTask::run() {
     checkVersionRegExp = tool->getVersionRegExp();
     version = "unknown";
 
-    algoLog.trace("Program executable: " + toolPath);
+    coreLog.trace("Program executable: " + toolPath);
     SAFE_POINT(!validations.isEmpty(), "Tools' validations list is empty", );
-    algoLog.trace("Program arguments: " + validations.last().arguments.join(" "));
+    coreLog.trace("Program arguments: " + validations.last().arguments.join(" "));
 
     CHECK(!hasError(), );
 
@@ -361,6 +367,10 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
 }
 
 Task::ReportResult ExternalToolSearchAndValidateTask::report() {
+    if (qgetenv("UGENE_GUI_TEST") == "1") {    // dump external tool validation time in GUI tests mode.
+        qint64 taskRunMillis = (GTimer::currentTimeMicros() - timeInfo.startTime) / 1000;
+        coreLog.trace(QString("ExternalToolSearchAndValidateTask[%1] time: %2 millis").arg(toolId).arg(taskRunMillis));
+    }
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry, "An external tool registry is NULL", ReportResult_Finished);
     ExternalTool *tool = etRegistry->getById(toolId);

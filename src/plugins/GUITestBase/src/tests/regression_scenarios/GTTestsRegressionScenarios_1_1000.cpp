@@ -570,7 +570,7 @@ GUI_TEST_CLASS_DEFINITION(test_0574) {
     GTUtilsDialog::waitForDialog(os, new CreateFragmentDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Cloning"
                                                                         << "Create Fragment"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //4. Select newly created fragment
@@ -890,7 +890,7 @@ GUI_TEST_CLASS_DEFINITION(test_0627) {
 GUI_TEST_CLASS_DEFINITION(test_0652) {
     //1) Open /data/samples/fasta/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2) Open /data/samples/gff/5prime_utr_intron_A20.gff
     GTFileDialog::openFile(os, dataDir + "samples/GFF/5prime_utr_intron_A20.gff");
@@ -902,9 +902,7 @@ GUI_TEST_CLASS_DEFINITION(test_0652) {
     GTUtilsAnnotationsTreeView::addAnnotationsTableFromProject(os, "Ca20Chr1 features");
 
     //5) In annotations tree view open added annotation and put the mouse cursor over this annotation.
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "5_prime_UTR_intron"));
-    GTGlobals::sleep();
-    //UGENE isn't chrashed showing tooltip.
+    GTUtilsAnnotationsTreeView::findItem(os, "5_prime_UTR_intron");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0659) {
@@ -963,16 +961,15 @@ GUI_TEST_CLASS_DEFINITION(test_0666) {
  *   Expected state: UGENE not crashes
 */
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    QAbstractButton *primer3 = GTAction::button(os, "primer3_action");
-    CHECK_SET_ERR(primer3 != NULL, "primer3_action not found");
-    Primer3DialogFiller::Primer3Settings settings;
-    settings.resultsCount = 50;
-    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, primer3);
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/666/", "regression_0666.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    QModelIndex projectTreeItem = GTUtilsProjectTreeView::findIndex(os, "Annotations");
+
+    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsProjectTreeView::dragAndDrop(os, projectTreeItem ,GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "pair 1  (0, 2)"
                                                               << "pair 10  (0, 2)"
@@ -986,7 +983,6 @@ GUI_TEST_CLASS_DEFINITION(test_0666) {
                                                               << "pair 18  (0, 2)"
                                                               << "pair 19  (0, 2)");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0677) {
@@ -1388,7 +1384,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
         }
     }
     if (foundItem != NULL) {
-        GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algoriths);
+        GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algorithms);
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove"));
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
         GTUtilsWorkflowDesigner::clickOnPalette(os, "test_0768", Qt::RightButton);
@@ -2020,7 +2016,7 @@ GUI_TEST_CLASS_DEFINITION(test_0830) {
 
     //3) wait for task error, ensure that no output files are in the project
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!GTUtilsProjectTreeView::checkItem(os, "830.ugenedb"), "The output file is in a project");
+    GTUtilsProjectTreeView::checkNoItem(os, "830.ugenedb");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0834) {
@@ -2165,16 +2161,16 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
     //    1) Create some custom cmdline worker with some name ("test", for example).
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algoriths);
+    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algorithms);
 
-    QTreeWidgetItem *treeItem = GTUtilsWorkflowDesigner::findTreeItem(os, "test", GTUtilsWorkflowDesigner::algoriths, true, false);
+    QTreeWidgetItem *treeItem = GTUtilsWorkflowDesigner::findTreeItem(os, "test", GTUtilsWorkflowDesigner::algorithms, true, false);
     if (treeItem != NULL) {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove"));
         GTTreeWidget::click(os, treeItem);
         GTMouseDriver::click(Qt::RightButton);
     }
-    QTreeWidgetItem *treeItem1 = GTUtilsWorkflowDesigner::findTreeItem(os, "test1", GTUtilsWorkflowDesigner::algoriths, true, false);
+    QTreeWidgetItem *treeItem1 = GTUtilsWorkflowDesigner::findTreeItem(os, "test1", GTUtilsWorkflowDesigner::algorithms, true, false);
     if (treeItem1 != NULL) {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove"));
@@ -2207,7 +2203,7 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"));
 
-    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algoriths);
+    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algorithms);
     GTUtilsWorkflowDesigner::clickOnPalette(os, "test", Qt::RightButton);
     GTGlobals::sleep(5000);    //added to ensure that crash is not here or to fix this crash
 
@@ -2271,7 +2267,7 @@ GUI_TEST_CLASS_DEFINITION(test_0846) {
                                                                               << "Export annotations...",
                                                             GTGlobals::UseKey));
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "test_0846.csv", ExportAnnotationsFiller::csv));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTGlobals::sleep();
@@ -2456,8 +2452,7 @@ GUI_TEST_CLASS_DEFINITION(test_0868) {
     GTGlobals::sleep(1000);
 
     QWidget *assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
-    QPixmap pixmap = GTWidget::getPixmap(os, assembly_reads_area);
-    QImage initImg = pixmap.toImage();
+    QImage initImg = GTWidget::getImage(os, assembly_reads_area);
 
     //    4. Go to any other region
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
@@ -2471,8 +2466,7 @@ GUI_TEST_CLASS_DEFINITION(test_0868) {
 
     //    Expected state: it shows the location that you saved before
     assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
-    pixmap = GTWidget::getPixmap(os, assembly_reads_area);
-    QImage finalImg = pixmap.toImage();
+    QImage finalImg = GTWidget::getImage(os, assembly_reads_area);
     CHECK_SET_ERR(initImg == finalImg, "bookmark does not work");
 }
 
@@ -3566,7 +3560,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
                                                                               << "Predict secondary structure..."));
     GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new Scenario("GORIV")));
     //GTUtilsNotifications::waitForNotification(os, true, "'Secondary structure predict' task failed: The size of sequence is less then minimal allowed size (5 residues).");
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTGlobals::sleep();
     GTUtilsLog::checkContainsError(os, lt1, QString("Task {Secondary structure predict} finished with error: The size of sequence is less then minimal allowed size (5 residues)"));
@@ -3578,18 +3572,17 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze"
                                                                               << "Predict secondary structure..."));
     GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new DodgeLicenceDialogScenario("PsiPred")));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze"
                                                                               << "Predict secondary structure..."));
     GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new Scenario("PsiPred")));
     //GTUtilsNotifications::waitForNotification(os, true, "'Secondary structure predict' task failed: The size of sequence is less then minimal allowed size (5 residues).");
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTGlobals::sleep();
     GTUtilsLog::checkContainsError(os, lt2, QString("Task {Secondary structure predict} finished with error: The size of sequence is less then minimal allowed size (5 residues)"));
-    GTGlobals::sleep();
 }
 
 }    // namespace GUITest_regression_scenarios

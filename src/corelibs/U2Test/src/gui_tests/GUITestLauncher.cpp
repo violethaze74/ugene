@@ -39,11 +39,7 @@
 #include "GUITestTeamcityLogger.h"
 #include "UGUITestBase.h"
 
-#ifdef Q_OS_LINUX
-#    define GUI_TEST_TIMEOUT_MILLIS 240000
-#else
-#    define GUI_TEST_TIMEOUT_MILLIS 300000
-#endif
+#define GUI_TEST_TIMEOUT_MILLIS 240000
 
 #ifdef Q_OS_MAC
 #    define NUMBER_OF_TEST_SUITES 4
@@ -115,14 +111,19 @@ void GUITestLauncher::run() {
             qint64 startTime = GTimer::currentTimeMicros();
             GUITestTeamcityLogger::testStarted(testNameForTeamCity);
 
-            QString testResult = runTest(testName);
-            results[testName] = testResult;
-            if (GUITestTeamcityLogger::testFailed(testResult)) {
-                renameTestLog(testName);
-            }
+            try {
+                QString testResult = runTest(testName);
+                results[testName] = testResult;
+                if (GUITestTeamcityLogger::testFailed(testResult)) {
+                    renameTestLog(testName);
+                }
 
-            qint64 finishTime = GTimer::currentTimeMicros();
-            GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testResult, GTimer::millisBetween(startTime, finishTime));
+                qint64 finishTime = GTimer::currentTimeMicros();
+                GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testResult, GTimer::millisBetween(startTime, finishTime));
+            } catch (const std::exception &exc) {
+                coreLog.error("Got exception while running test: " + testName);
+                coreLog.error("Exception text: " + QString(exc.what()));
+            }
         } else if (test->getReason() == HI::GUITest::Bug) {
             GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getIgnoreMessage());
         }
@@ -137,6 +138,27 @@ void GUITestLauncher::run() {
 void GUITestLauncher::firstTestRunCheck(const QString &testName) {
     QString testResult = results[testName];
     Q_ASSERT(testResult.isEmpty());
+}
+
+/** Returns ideal tests list for the given suite or an empty list if there is no ideal configuration is found. */
+QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QList<HI::GUITest *> &allTests) {
+    QList<int> testsPerSuite;
+    if (suiteCount == 3) {
+        testsPerSuite << 900 << 840 << -1;
+    } else if (suiteCount == 4) {
+        testsPerSuite << 640 << 680 << 640 << -1;
+    }
+    QList<HI::GUITest *> tests;
+    if (testsPerSuite.size() == suiteCount) {
+        SAFE_POINT(testsPerSuite.size() == suiteCount, QString("Illegal testsPerSuite size: %1").arg(testsPerSuite.size()), tests);
+        int offset = 0;
+        for (int i = 0; i < suiteIndex; i++) {
+            offset += testsPerSuite[i];
+        }
+        int testCount = testsPerSuite[suiteIndex];    // last index is -1 => list.mid(x, -1) returns a tail.
+        tests << allTests.mid(offset, testCount);
+    }
+    return tests;
 }
 
 bool GUITestLauncher::initGUITestBase() {
@@ -155,8 +177,12 @@ bool GUITestLauncher::initGUITestBase() {
             setError(QString("Invalid suite number: %1. There are %2 suites").arg(suiteNumber).arg(NUMBER_OF_TEST_SUITES));
             return false;
         }
-        for (int i = suiteNumber - 1; i < allTestList.length(); i += NUMBER_OF_TEST_SUITES) {
-            tests << allTestList[i];
+        tests = getIdealTestsSplit(suiteNumber - 1, NUMBER_OF_TEST_SUITES, allTestList);
+        if (tests.isEmpty()) {
+            // Distribute tests between suites evenly.
+            for (int i = suiteNumber - 1; i < allTestList.length(); i += NUMBER_OF_TEST_SUITES) {
+                tests << allTestList[i];
+            }
         }
         coreLog.info(QString("Running suite %1, Tests in the suite: %2, total tests: %3")
                          .arg(suiteNumber)
@@ -338,9 +364,9 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
     process.start(path, arguments);
     qint64 processId = process.processId();
 
-    QProcess screenRecorder;
+    QProcess screenRecorderProcess;
     if (enableVideoRecording) {
-        screenRecorder.start(getScreenRecorderString(testName));
+        screenRecorderProcess.start(getScreenRecorderString(testName));
     }
 
     bool isStarted = process.waitForStarted();
@@ -363,8 +389,12 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
     QString testResult = readTestResult(process.readAllStandardOutput());
 
     if (enableVideoRecording) {
-        screenRecorder.close();
-        screenRecorder.waitForFinished(2000);
+        screenRecorderProcess.close();
+        bool isScreenRecorderFinished = screenRecorderProcess.waitForFinished(2000);
+        if (!isScreenRecorderFinished) {
+            screenRecorderProcess.kill();
+            screenRecorderProcess.waitForFinished(2000);
+        }
         if (!GUITestTeamcityLogger::testFailed(testResult)) {
             QFile(getVideoPath(testName)).remove();
         }
@@ -375,6 +405,8 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
     }
 #ifdef Q_OS_WIN
     CmdlineTaskRunner::killProcessTree(process.processId());
+    process.kill();    // to avoid QProcess: Destroyed while process is still running.
+    process.waitForFinished(2000);
 #endif
     QString error = isFinished ? QString("An error occurred while finishing UGENE: %1\n%2").arg(process.errorString()).arg(testResult) :
                                  QString("Test fails because of timeout.");

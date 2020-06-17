@@ -722,22 +722,14 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0001) {
     //Expected: the folder is expanded; there is one object: pt0001_human_T1.
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
 
     QModelIndex dirItem = GTUtilsProjectTreeView::findIndex(os, "proj_test_0001");
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    QAbstractItemModel *model = treeView->model();
-    CHECK_OP(os, );
-    CHECK_SET_ERR(3 == model->rowCount(dirItem), "Wrong child count");
+    GTUtilsProjectTreeView::checkItem(os, "pt0001_dir1", dirItem);
+    GTUtilsProjectTreeView::checkItem(os, "pt0001_dir3", dirItem);
 
-    GTUtilsProjectTreeView::findIndex(os, "pt0001_dir1");
-    QModelIndex dir2Item = GTUtilsProjectTreeView::findIndex(os, "pt0001_dir2");
-    GTUtilsProjectTreeView::findIndex(os, "pt0001_dir3");
-    CHECK_OP(os, );
-    CHECK_SET_ERR(1 == model->rowCount(dir2Item), "Wrong child count");
+    QModelIndex dir2Item = GTUtilsProjectTreeView::findIndex(os, "pt0001_dir2", dirItem);
+    GTUtilsProjectTreeView::checkItem(os, "pt0001_human_T1", dir2Item);
 
-    GTUtilsProjectTreeView::findIndex(os, "pt0001_human_T1");
-    CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -748,21 +740,21 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0002) {
     //Expected: the subfolder folder is created.
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
-    QAbstractItemModel *model = treeView->model();
+    CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
 
-    const QModelIndex parentDir = GTUtilsProjectTreeView::findIndex(os, "proj_test_0002");
-    CHECK_SET_ERR(0 == model->rowCount(parentDir), "Invalid child item count");
+    QModelIndex dirItem = GTUtilsProjectTreeView::findIndex(os, "proj_test_0002");
+    int childCount1 = treeView->model()->rowCount(dirItem);
+    CHECK_SET_ERR(childCount1 == 0, "Invalid child item count in proj_test_0002. Expected 0, got " + QString::number(childCount1));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__ADD_MENU << ACTION_PROJECT__CREATE_FOLDER));
     GTUtilsDialog::waitForDialog(os, new AddFolderDialogFiller(os, "pt0002_dir", GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "proj_test_0002"));
-    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsProjectTreeView::callContextMenu(os, dirItem);
 
-    CHECK_SET_ERR(1 == model->rowCount(parentDir), "Invalid child item count");
+    GTUtilsProjectTreeView::checkItem(os, "pt0002_dir", dirItem);
+    int childCount2 = treeView->model()->rowCount(dirItem);
+    CHECK_SET_ERR(childCount2 == 1, "Invalid child item count, expected 1, got " + QString::number(childCount2));
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -798,7 +790,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0003) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "pt0003_new_name"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep(2000); // wait for some time.
+    GTGlobals::sleep(2000);    // wait for some time.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     subfolderItem = model->index(0, 0, dirItem);
@@ -817,23 +809,25 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0004) {
     //Expected: the object is moved; there are no errors in the log.
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
     QModelIndex dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir1");
-    QModelIndex dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2");
-    GTGlobals::sleep();
+    QModelIndex dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2", dirItem1);
     QModelIndex objItem = GTUtilsProjectTreeView::findIndex(os, "pt0004_human_T1");
     GTUtilsProjectTreeView::checkItemIsExpanded(os, treeView, dirItem2);
     GTUtilsProjectTreeView::dragAndDrop(os, objItem, dirItem1);
 
     dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir1");
+    int dir1RowCount = model->rowCount(dirItem1);
+    CHECK_SET_ERR(dir1RowCount == 2, QString("Invalid child item count for pt0004_dir1 Expected: 2; actual: %1").arg(dir1RowCount));
+
     dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2");
-    CHECK_SET_ERR(2 == model->rowCount(dirItem1), QString("Invalid child item count for pt0004_dir1 Expected: 2; actual: %1").arg(model->rowCount(dirItem1)));
-    CHECK_SET_ERR(0 == model->rowCount(dirItem2), QString("Invalid child item count for pt0004_dir2 Expected: 0; actual: %1").arg(model->rowCount(dirItem2)));
+    int dir2RowCount = model->rowCount(dirItem2);
+    CHECK_SET_ERR(dir2RowCount == 0, QString("Invalid child item count for pt0004_dir2 Expected: 0; actual: %1").arg(dir2RowCount));
+
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -991,18 +985,18 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0008) {
     GTLogTracer lt;
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/", "proj_test_0008");
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/proj_test_0008", "abcdefgh");
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/proj_test_0008", "ABCDEFGH");
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/proj_test_0008", "AbCdEfGh");
+    QString testFolder = GTUtilsSharedDatabaseDocument::genTestFolderName("proj_test_0008");
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/", testFolder);
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/" + testFolder, "abcdefgh");
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/" + testFolder, "ABCDEFGH");
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/" + testFolder, "AbCdEfGh");
 
     GTGlobals::sleep(10000);
 
-    const QStringList expectedItems = QStringList() << "/proj_test_0008/abcdefgh"
-                                                    << "/proj_test_0008/ABCDEFGH"
-                                                    << "/proj_test_0008/AbCdEfGh";
-    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, "/proj_test_0008", expectedItems);
+    const QStringList expectedItems = QStringList() << "/" + testFolder + "/abcdefgh"
+                                                    << "/" + testFolder + "/ABCDEFGH"
+                                                    << "/" + testFolder + "/AbCdEfGh";
+    GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, "/" + testFolder, expectedItems);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2218,7 +2212,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0003) {
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
-    QModelIndexList list = GTUtilsProjectTreeView::findIndecies(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
+    QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
     foreach (QModelIndex index, list) {
         if (index.data() == "[as] chrM") {
             GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, index);
@@ -2322,8 +2316,9 @@ GUI_TEST_CLASS_DEFINITION(del_test_0001) {
 
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
-    QModelIndex folderItem =GTUtilsProjectTreeView::findIndex(os, "del_tests");
-    QModelIndex originalItem =GTUtilsProjectTreeView::findIndex(os, "dt0001_human_T1", folderItem);
+    QString fileName = "dt0001_file";
+    QModelIndex folderItem = GTUtilsProjectTreeView::findIndex(os, "del_tests");
+    QModelIndex originalItem = GTUtilsProjectTreeView::findIndex(os, fileName, folderItem);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, originalItem));
     GTMouseDriver::doubleClick();
 
@@ -2334,9 +2329,10 @@ GUI_TEST_CLASS_DEFINITION(del_test_0001) {
 
     GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
 
-    // Check that item is in the recycle bin.
+    // Check that the item is in the recycle bin.
     QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
-    GTUtilsProjectTreeView::checkItem(os, "dt0001_human_T1", rbItem);
+    GTUtilsProjectTreeView::checkItem(os, fileName, rbItem);
+
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -2394,29 +2390,23 @@ GUI_TEST_CLASS_DEFINITION(del_test_0003) {
     //Expected: the folder "/Recycle bin" becomes empty.
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
 
+    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
-    const QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "dt0003_human_T1"));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep(3000);
-    QWidget *seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == seqView, "Sequence view is opened");
-
+    QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, rbItem));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "empty_rb"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(3000);
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, rbItem));
-    CHECK_SET_ERR(0 == model->rowCount(rbItem), "Recycle bin is not empty");
-    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QModelIndex rbItemAfter = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
+    CHECK_SET_ERR(model->rowCount(rbItemAfter) == 0, "Recycle bin is not empty");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(export_test_0001) {

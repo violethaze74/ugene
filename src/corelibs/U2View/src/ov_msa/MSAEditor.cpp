@@ -51,6 +51,7 @@
 #include "MSAEditorOffsetsView.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
+#include "MSAEditorSequenceArea.h"
 #include "MaEditorTasks.h"
 #include "Overview/MaEditorOverviewArea.h"
 #include "RealignSequencesInAlignment/RealignSequencesInAlignmentTask.h"
@@ -68,9 +69,21 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     searchInSequencesAction = nullptr;
     searchInSequenceNamesAction = nullptr;
 
-    sortSequencesAction = new QAction(tr("Sort sequences"), this);
-    sortSequencesAction->setObjectName("action_sort_sequences");
-    connect(sortSequencesAction, SIGNAL(triggered()), SLOT(sl_activateSortingPanel()));
+    sortByNameAscendingAction = new QAction(tr("By name"), this);
+    sortByNameAscendingAction->setObjectName("action_sort_by_name");
+    connect(sortByNameAscendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByName()));
+
+    sortByNameDescendingAction = new QAction(tr("By name, descending"), this);
+    sortByNameDescendingAction->setObjectName("action_sort_by_name_descending");
+    connect(sortByNameDescendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByName()));
+
+    sortByLengthAscendingAction = new QAction(tr("By length"), this);
+    sortByLengthAscendingAction->setObjectName("action_sort_by_length");
+    connect(sortByLengthAscendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLength()));
+
+    sortByLengthDescendingAction = new QAction(tr("By length, descending"), this);
+    sortByLengthDescendingAction->setObjectName("action_sort_by_length_descending");
+    connect(sortByLengthDescendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLength()));
 
     openCustomSettingsAction = new QAction(tr("Create new color scheme"), this);
     openCustomSettingsAction->setObjectName("Create new color scheme");
@@ -162,6 +175,7 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
 
     addCopyMenu(m);
     addEditMenu(m);
+    addSortMenu(m);
 
     addAlignMenu(m);
     addTreeMenu(m);
@@ -179,6 +193,15 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
 void MSAEditor::addEditMenu(QMenu *m) {
     QMenu *menu = m->addMenu(tr("Edit"));
     menu->menuAction()->setObjectName(MSAE_MENU_EDIT);
+}
+
+void MSAEditor::addSortMenu(QMenu *m) {
+    QMenu *menu = m->addMenu(tr("Sort"));
+    menu->menuAction()->setObjectName(MSAE_MENU_SORT);
+    menu->addAction(sortByNameAscendingAction);
+    menu->addAction(sortByNameDescendingAction);
+    menu->addAction(sortByLengthAscendingAction);
+    menu->addAction(sortByLengthDescendingAction);
 }
 
 void MSAEditor::addExportMenu(QMenu *m) {
@@ -211,7 +234,6 @@ void MSAEditor::addAppearanceMenu(QMenu *m) {
     appearanceMenu->addAction(changeFontAction);
     appearanceMenu->addSeparator();
 
-    appearanceMenu->addAction(sortSequencesAction);
     appearanceMenu->addAction(clearSelectionAction);
 }
 
@@ -371,6 +393,9 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     addLoadMenu(&m);
     addCopyMenu(&m);
     addEditMenu(&m);
+    addSortMenu(&m);
+    m.addSeparator();
+
     addAlignMenu(&m);
     addTreeMenu(&m);
     addStatisticsMenu(&m);
@@ -399,7 +424,12 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
 void MSAEditor::updateActions() {
     MaEditor::updateActions();
     bool isReadOnly = maObject->isStateLocked();
-    sortSequencesAction->setEnabled(!isReadOnly);
+
+    sortByNameAscendingAction->setEnabled(!isReadOnly);
+    sortByNameDescendingAction->setEnabled(!isReadOnly);
+    sortByLengthAscendingAction->setEnabled(!isReadOnly);
+    sortByLengthDescendingAction->setEnabled(!isReadOnly);
+
     if (alignSequencesToAlignmentAction != nullptr) {
         alignSequencesToAlignmentAction->setEnabled(!isReadOnly);
     }
@@ -487,7 +517,7 @@ bool MSAEditor::eventFilter(QObject *, QEvent *e) {
 }
 
 void MSAEditor::initDragAndDropSupport() {
-    SAFE_POINT(ui != NULL, QString("MSAEditor::ui is not initialized in MSAEditor::initDragAndDropSupport"), );
+    SAFE_POINT(ui != nullptr, QString("MSAEditor::ui is not initialized in MSAEditor::initDragAndDropSupport"), );
     ui->setAcceptDrops(true);
     ui->installEventFilter(this);
 }
@@ -498,6 +528,9 @@ void MSAEditor::sl_align() {
     addLoadMenu(&m);
     addCopyMenu(&m);
     addEditMenu(&m);
+    addSortMenu(&m);
+    m.addSeparator();
+
     addAlignMenu(&m);
     addTreeMenu(&m);
     addStatisticsMenu(&m);
@@ -546,7 +579,8 @@ void MSAEditor::sl_searchInSequences() {
     auto optionsPanel = getOptionsPanel();
     SAFE_POINT(optionsPanel != NULL, "Internal error: options panel is NULL"
                                      " when search in sequences was initiated!", );
-    optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId());
+    QVariantMap options = FindPatternMsaWidgetFactory::getOptionsToActivateSearchInSequences();
+    optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
 }
 
 void MSAEditor::sl_searchInSequenceNames() {
@@ -666,10 +700,36 @@ void MSAEditor::sl_showCustomSettings() {
     AppContext::getAppSettingsGUI()->showSettingsDialog(ColorSchemaSettingsPageId);
 }
 
-void MSAEditor::sl_activateSortingPanel() {
-    auto optionsPanel = getOptionsPanel();
-    CHECK(optionsPanel != nullptr, );
-    optionsPanel->openGroupById(MSAGeneralTabFactory::getGroupId());
+void MSAEditor::sortSequences(bool isByName, const MultipleAlignment::Order &sortOrder) {
+    MultipleSequenceAlignmentObject *msaObject = getMaObject();
+    if (msaObject->isStateLocked()) {
+        return;
+    }
+    MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
+    if (isByName) {
+        msa->sortRowsByName(sortOrder);
+    } else {
+        msa->sortRowsByLength(sortOrder);
+    }
+
+    // Drop collapsing mode.
+    getUI()->getSequenceArea()->sl_setCollapsingMode(false);
+
+    QStringList rowNames = msa->getRowNames();
+    if (rowNames != msaObject->getMultipleAlignment()->getRowNames()) {
+        U2OpStatusImpl os;
+        msaObject->updateRowsOrder(os, msa->getRowsIds());
+    }
+}
+
+void MSAEditor::sl_sortSequencesByName() {
+    MultipleAlignment::Order order = sender() == sortByNameDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
+    sortSequences(true, order);
+}
+
+void MSAEditor::sl_sortSequencesByLength() {
+    MultipleAlignment::Order order = sender() == sortByLengthDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
+    sortSequences(false, order);
 }
 
 }    // namespace U2

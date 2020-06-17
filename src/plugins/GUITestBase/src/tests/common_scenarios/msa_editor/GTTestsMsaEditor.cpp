@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <api/GTUtils.h>
 #include <base_dialogs/ColorDialogFiller.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/FontDialogFiller.h>
@@ -321,14 +322,44 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma_unsorted.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "action_sort_sequences"));
-    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_name"));
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
     GTUtilsDialog::waitAllFinished(os);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "a"
+                                                                                 << "C"
+                                                                                 << "d"
+                                                                                 << "D",
+                  "Sort by name failed (ascending)");
 
-    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_name_descending"));
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsDialog::waitAllFinished(os);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "d"
+                                                                                 << "D"
+                                                                                 << "C"
+                                                                                 << "a",
+                  "Sort by name failed (descending)");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_length"));
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsDialog::waitAllFinished(os);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "D"
+                                                                                 << "d"
+                                                                                 << "a"
+                                                                                 << "C",
+                  "Sort by length failed (ascending)");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_length_descending"));
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsDialog::waitAllFinished(os);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "C"
+                                                                                 << "d"
+                                                                                 << "a"
+                                                                                 << "D",
+                  "Sort by length failed (descending)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -1080,7 +1111,8 @@ GUI_TEST_CLASS_DEFINITION(test_0009_2) {
 GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 1. Open file _common_data\scenarios\msa\translations_nucl.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/translations_nucl.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with default settings
@@ -1105,7 +1137,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     // 1. Open file _common_data\scenarios\msa\translations_nucl.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/translations_nucl.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with default settings
@@ -1129,7 +1162,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
 GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     // 1. Open file _common_data\scenarios\msa\translations_nucl.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/translations_nucl.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate to amino with default settings
@@ -1341,7 +1375,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     // 1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Convert alignment to amino. Use context menu {Export->Amino translation of alignment rows}
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os));
@@ -1369,35 +1404,30 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
 
     // 1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Convert alignment to amino. Use context menu {Export->Amino translation of alignment rows}
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, testDir + "_common_data/scenarios/sandbox/COI_transl.aln"));
-
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-
-    GTGlobals::sleep();
+    GTWidget::click(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os), Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // CHANGES: close and open MDI window
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep();
+    GTUtilsMdi::checkWindowIsActive(os, "Start Page");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI_transl.aln"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 3. Open converted alignment. Use context menu {Align->Align with Kalign}
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
-
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-    GTGlobals::sleep();
-
-    // Expected state: UGENE not crash
-    GTGlobals::sleep(5000);
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013_2) {
@@ -1405,7 +1435,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
 
     // 1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 2. Convert alignment to amino. Use context menu {Export->Amino translation of alignment rows}
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os));
@@ -1644,7 +1675,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected");
-    GTGlobals::sleep(3000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
@@ -1694,31 +1724,28 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     // 1. Run Ugene. Open file _common_data\scenarios\msa\ma2_gapped.aln
     GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln", sandBoxDir + "ma2_gapped.aln");
-    GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped_edited.aln");
     GTFileDialog::openFile(os, sandBoxDir, "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Open same file in text editor. Change first 3 bases of 'Phaneroptera_falcata'
     //    from 'AAG' to 'CTT' and save file.
     //CHANGES: backup old file, copy changed file
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTFile::copy(os, sandBoxDir + "ma2_gapped.aln", sandBoxDir + "ma2_gapped_old.aln");
-    GTFile::copy(os, sandBoxDir + "ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
+    GTGlobals::sleep(1000); // ugene doesn't detect changes whithin one second interval
+    GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
 
     //    Expected state: Dialog suggesting to reload modified document has appeared.
     // 3. Press 'Yes'.
-    GTGlobals::sleep(1000);
+    GTUtilsDialog::waitAllFinished(os);
 
     //    Expected state: document was reloaded, view activated.
     //    'Phaneroptera_falcata' starts with CTT.
-    GTUtilsMdi::activeWindow(os);
-    GTGlobals::sleep();
 
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
     // copy to clipboard
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTThread::waitForMainThread();
 
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
@@ -1727,7 +1754,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "ma2_gapped.aln"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
@@ -1813,7 +1840,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //
     // 1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Click on some row in sequence names area
     GTUtilsMsaEditor::clickSequence(os, 2);
@@ -3489,7 +3516,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
     QString clipboardText = GTClipboard::text(os);
 
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
-    GTGlobals::sleep(3000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053_1) {
@@ -3521,8 +3547,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
 
     CHECK_SET_ERR(clipboardText.contains("mega"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
-
-    GTGlobals::sleep(3000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053_2) {
@@ -3533,14 +3557,12 @@ GUI_TEST_CLASS_DEFINITION(test_0053_2) {
     //4. Toolbar {Copy->Copy formatted}
     //Expected state: the buffer contatin the sequence in CLUSTALW format
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    GTGlobals::sleep(200);
 
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
+    CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
 
     GTComboBox::setIndexWithText(os, copyType, "CLUSTALW");
 
@@ -3553,8 +3575,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_2) {
 
     CHECK_SET_ERR(clipboardText.contains("CLUSTAL W 2.0 multiple sequence alignment"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
-
-    GTGlobals::sleep(3000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053_3) {
@@ -3578,7 +3598,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_3) {
     QString clipboardText = GTClipboard::text(os);
 
     CHECK_SET_ERR(clipboardText.contains("ACCAGGCTTGGCAATGCGTATC"), clipboardText);
-    GTGlobals::sleep(3000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053_4) {
@@ -3623,8 +3642,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
 
     CHECK_SET_ERR(clipboardText.contains("<span style=\"font-size:10pt; font-family:Verdana;\">"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("<p><span style=\"background-color:#ff99b1;\">T</span><span style=\"background-color:#fcff92;\">A</span><span style=\"background-color:#fcff92;\">A</span></p>"), clipboardText);
-
-    GTGlobals::sleep(3000);
 }
 
 /** These tests are created according to test plan: https://ugene.net/wiki/display/PD/MSA**/

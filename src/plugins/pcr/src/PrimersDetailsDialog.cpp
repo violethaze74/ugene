@@ -31,7 +31,7 @@ PrimersDetailsDialog::PrimersDetailsDialog(QWidget *parent, const QString &detai
     : QDialog(parent) {
     GCOUNTER(cvar, tvar, "PrimersDetailsDialog");
     setupUi(this);
-    new HelpButton(this, buttonBox, "24749034");
+    new HelpButton(this, buttonBox, "46501127");
     textEdit->setText(details);
 }
 

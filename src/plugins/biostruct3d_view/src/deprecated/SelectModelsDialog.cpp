@@ -34,7 +34,7 @@ namespace U2 {
 SelectModelsDialog::SelectModelsDialog(const QList<int> &_modelIds, const QList<int> &_selectedItems, QWidget *parent /* = 0*/)
     : QDialog(parent), Ui_SelectModelsDialog() {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24748809");
+    new HelpButton(this, buttonBox, "46499898");
     buttonBox_1->button(QDialogButtonBox::Cancel)->setText(::U2::SelectModelsDialog::tr("All"));
     buttonBox_1->button(QDialogButtonBox::No)->setText(::U2::SelectModelsDialog::tr("Invert"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(::U2::SelectModelsDialog::tr("OK"));

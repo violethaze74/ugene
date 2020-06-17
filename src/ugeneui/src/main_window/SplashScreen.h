@@ -46,7 +46,7 @@ class SplashScreenWidget : public QWidget {
 public:
     SplashScreenWidget();
 
-    void getTask();
+    void updateActiveTaskName();
     void getDots();
 
 protected:
@@ -59,7 +59,7 @@ private:
     int dots_number;
     int dots_timer_id;
     QString version;
-    QString task;
+    QString activeTaskName;
     QImage image1;
     QImage image2;
 };

@@ -2040,7 +2040,7 @@
 <context>
     <name>U2::WorkflowSettings</name>
     <message>
-        <location filename="../src/support/WorkflowSettings.cpp" line="254"/>
+        <location filename="../src/support/WorkflowSettings.cpp" line="263"/>
         <source>Command line UGENE path not found, a possibility to run in separate process will be disabled</source>
         <translation>Command line UGENE path not found, a possibility to run in separate process will be disabled</translation>
     </message>

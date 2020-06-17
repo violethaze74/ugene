@@ -5563,6 +5563,51 @@ GUI_TEST_CLASS_DEFINITION(test_6711) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(11, 0, 1, 10));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6712) {
+    // Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Move Conocephalus_sp. from 6th position to first position.
+    GTUtilsMsaEditor::clickSequence(os, 5);
+    QRect rowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 5);
+    QRect destinationRowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 0);
+    GTMouseDriver::dragAndDrop(rowNameRect.center(), destinationRowNameRect.center());
+
+    // Turn on the collapsing mode
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // Expected state: Conocephalus_discolor, Conocephalus_percaudata are collapsed.
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_discolor"),
+                  "Conocephalus_discolor is not collapsed");
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_percaudata"),
+                  "Conocephalus_percaudata is not collapsed");
+
+    // Open the group
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_sp.");
+
+    // Insert space to (2, 1) position
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(2, 1));
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    // Select (2, 0, 2, 2) rectangle
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 0), QPoint(2, 2));
+
+    // Press delete
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    // Conocephalus_sp. in the 7th position, Conocephalus_sp. in the first, Conocephalus_percaudata in the second
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList[0] == "Conocephalus_sp.", "The first sequence is incorrect");
+    //CHECK_SET_ERR(nameList[1] == "Conocephalus_percaudata", "The second sequence is incorrect " + nameList[1]);
+    //CHECK_SET_ERR(nameList[6] == "Conocephalus_discolor", "The 6th sequence is incorrect");
+
+    // Expected state: Conocephalus_percaudata is collapsed.
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_sp.");
+    CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_percaudata"),
+                  "Conocephalus_percaudata is not collapsed");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6714) {
     // 1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
@@ -5937,9 +5982,9 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
 GUI_TEST_CLASS_DEFINITION(test_6760) {
     //1. Open /data/samples/fasta/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Open additional object in another sequence view
+    //2. Open additional a second copy of the sequence view
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
                                                                               << "Open new view: Sequence View",
                                                             GTGlobals::UseMouse));
@@ -5953,12 +5998,14 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
     //5. On question "Found annotations that are out of sequence range, continue?" answer "Yes"
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsAnnotationsTreeView::addAnnotationsTableFromProject(os, "Ca20Chr1 features");
-    GTGlobals::sleep();
+
     //6. Switch to another view
+    GTUtilsMdi::closeActiveWindow(os);
     GTUtilsMdi::activateWindow(os, "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    GTGlobals::sleep();
-    //Expected result: here is annotation in another sequence view
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "5_prime_UTR_intron"));
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    //Expected result: the annotation is present in another sequence view too.
+    GTUtilsAnnotationsTreeView::findItem(os, "5_prime_UTR_intron");
 }
 GUI_TEST_CLASS_DEFINITION(test_6808) {
     // Open "COI.aln".
@@ -6008,31 +6055,36 @@ GUI_TEST_CLASS_DEFINITION(test_6808_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "groupResultsButton"));
 
     // Expected result: the first three sequences are Mecopoda_elongata__Ishigaki__J, Mecopoda_elongata__Sumatra_, Mecopoda_sp.__Malaysia_
-    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(nameList[0] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
-    CHECK_SET_ERR(nameList[1] == "Mecopoda_elongata__Sumatra_", "The second sequence is incorrect");
-    CHECK_SET_ERR(nameList[2] == "Mecopoda_sp.__Malaysia_", "The third sequence is incorrect");
+    QStringList nameList0 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList0[0] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
+    CHECK_SET_ERR(nameList0[1] == "Mecopoda_elongata__Sumatra_", "The second sequence is incorrect");
+    CHECK_SET_ERR(nameList0[2] == "Mecopoda_sp.__Malaysia_", "The third sequence is incorrect");
 
     // Push Next button
     GTWidget::click(os, GTWidget::findWidget(os, "nextPushButton"));
 
     // Result: first line is selected
-    QStringList nameList1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(nameList1[0] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
+    QStringList nameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList2[0] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 604, 1));
 
-    // Press "Group" button
+    // Press "Group" button -> the group is moved to the end of the list
     GTWidget::click(os, GTWidget::findWidget(os, "groupResultsButton"));
+    QStringList nameList3 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    int length = nameList2.size();
+    CHECK_SET_ERR(nameList3[length - 3] == "Mecopoda_elongata__Ishigaki__J", "The first sequence is incorrect");
+    CHECK_SET_ERR(nameList3[length - 2] == "Mecopoda_elongata__Sumatra_", "The second sequence is incorrect");
+    CHECK_SET_ERR(nameList3[length - 1] == "Mecopoda_sp.__Malaysia_", "The third sequence is incorrect");
 
     // Push Previous button
     GTWidget::click(os, GTWidget::findWidget(os, "prevPushButton"));
 
     // Expected result: third line is selected
-    QStringList nameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(nameList2[2] == "Mecopoda_sp.__Malaysia_", "The sequence is incorrect");
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 2, 604, 1));
-
+    QStringList nameList4 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList4[length - 1] == "Mecopoda_sp.__Malaysia_", "The sequence is incorrect");
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 17, 604, 1));
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6809) {
     // Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");

@@ -45,11 +45,11 @@ GUITestThread::GUITestThread(HI::GUITest *test, bool isRunPostActionsAndCleanup)
     : test(test),
       isRunPostActionsAndCleanup(isRunPostActionsAndCleanup),
       testResult("Not run") {
-    SAFE_POINT(NULL != test, "GUITest is NULL", );
+    SAFE_POINT(test != nullptr, "GUITest is NULL", );
 }
 
 void GUITestThread::run() {
-    SAFE_POINT(NULL != test, "GUITest is NULL", );
+    SAFE_POINT(test != nullptr, "GUITest is NULL", );
 
     GUITests tests;
     tests << preChecks();
@@ -58,16 +58,11 @@ void GUITestThread::run() {
 
     clearSandbox();
 
-    QTimer timer;
-    connect(&timer, SIGNAL(timeout()), this, SLOT(sl_getMemory()), Qt::DirectConnection);
-    timer.start(1000);
-
     QString error = launchTest(tests);
+    qDebug("launchTest is finished, error: '%s'", error.toLocal8Bit().constData());
     if (isRunPostActionsAndCleanup) {
         cleanup();
     }
-
-    timer.stop();
 
     testResult = error.isEmpty() ? GUITestTeamcityLogger::successResult : error;
     writeTestResult();
@@ -76,6 +71,7 @@ void GUITestThread::run() {
 }
 
 void GUITestThread::sl_testTimeOut() {
+    qDebug("Test is timed out");
     saveScreenshot();
     cleanup();
     testResult = QString("test timed out");
@@ -92,7 +88,9 @@ QString GUITestThread::launchTest(const GUITests &tests) {
     HI::GUITestOpStatus os;
     try {
         foreach (HI::GUITest *t, tests) {
+            qDebug("launchTest started: %s", t->getFullName().toLocal8Bit().constData());
             t->run(os);
+            qDebug("launchTest finished: %s", t->getFullName().toLocal8Bit().constData());
         }
     } catch (HI::GUITestOpStatus *) {
     }
@@ -101,11 +99,14 @@ QString GUITestThread::launchTest(const GUITests &tests) {
     if (!error.isEmpty()) {
         try {
             foreach (HI::GUITest *t, postChecks()) {
+                qDebug("launchTest running additional post check: %s", t->getFullName().toLocal8Bit().constData());
                 t->run(os);
+                qDebug("launchTest additional post check is finished: %s", t->getFullName().toLocal8Bit().constData());
             }
         } catch (HI::GUITestOpStatus *) {
         }
     }
+    qDebug("lauchTest is finished");
     return error;
 }
 
@@ -197,18 +198,23 @@ void GUITestThread::saveScreenshot() {
 }
 
 void GUITestThread::cleanup() {
+    qDebug("Running cleanup after the test");
     test->cleanup();
     foreach (HI::GUITest *postAction, postActions()) {
         HI::GUITestOpStatus os;
         try {
+            qDebug("Cleanup action is started: %s", postAction->getFullName().toLocal8Bit().constData());
             postAction->run(os);
+            qDebug("Cleanup action is finished: %s", postAction->getFullName().toLocal8Bit().constData());
         } catch (HI::GUITestOpStatus *opStatus) {
             coreLog.error(opStatus->getError());
         }
     }
+    qDebug("Cleanup is finished");
 }
 
 void GUITestThread::writeTestResult() {
+    qDebug("writing test result for teamcity");
     printf("%s\n", (GUITestService::GUITESTING_REPORT_PREFIX + ": " + testResult).toUtf8().data());
 }
 

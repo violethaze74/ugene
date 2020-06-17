@@ -36,7 +36,6 @@ public:
     static void callContextMenu(GUITestOpStatus &os, const QPoint &innerCoords = QPoint());    // zero-based position
 
     static void checkSelectedRect(GUITestOpStatus &os, const QRect &expectedRect);
-    static void checkSorted(GUITestOpStatus &os, bool sortedState = true);
 
     static void checkConsensus(GUITestOpStatus &os, QString cons);
     // may be used for selecting visible columns only

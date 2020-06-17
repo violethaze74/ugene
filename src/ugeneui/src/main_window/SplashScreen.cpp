@@ -97,31 +97,36 @@ SplashScreenWidget::SplashScreenWidget() {
     image1 = image2 = image;
 
     dots_number = 0;
-    task = "";
+    activeTaskName = "";
     dots_timer_id = startTimer(500);
     startTimer(50);
 
-    getTask();
+    updateActiveTaskName();
     getDots();
     drawInfo();
 }
 
-void SplashScreenWidget::getTask() {
-    if (AppContext::getTaskScheduler() == NULL) {
+static Task *selectTaskToShowAsActive(const QList<Task *> &taskList, bool preferFirst) {
+    foreach (Task *task, taskList) {
+        if (task->isRunning()) {
+            return task;
+        }
+    }
+    return taskList.isEmpty() ? nullptr : (preferFirst ? taskList.first() : taskList.last());
+}
+
+void SplashScreenWidget::updateActiveTaskName() {
+    TaskScheduler *scheduler = AppContext::getTaskScheduler();
+    CHECK(scheduler != nullptr, )
+    QList<Task *> topLevelTasks = scheduler->getTopLevelTasks();
+    Task *activeTopLevelTask = selectTaskToShowAsActive(topLevelTasks, true);
+    if (activeTopLevelTask == nullptr) {
+        activeTaskName = "";
         return;
     }
-    QList<Task *> tasks = AppContext::getTaskScheduler()->getTopLevelTasks();
-    if (tasks.size() > 0) {
-        Task *topLevelTask = tasks.at(0);
-        task = topLevelTask->getTaskName();
-
-        QList<QPointer<Task>> subtasks = topLevelTask->getSubtasks();
-        if (subtasks.size() > 0) {
-            task = subtasks.at(0)->getTaskName();
-        }
-    } else {
-        task = "";
-    }
+    QList<Task *> subTasks = activeTopLevelTask->getPureSubtasks();
+    Task *activeTask = subTasks.isEmpty() ? activeTopLevelTask : selectTaskToShowAsActive(subTasks, false);
+    activeTaskName = activeTask->getTaskName();
 }
 
 void SplashScreenWidget::getDots() {
@@ -133,7 +138,7 @@ void SplashScreenWidget::getDots() {
 }
 
 void SplashScreenWidget::timerEvent(QTimerEvent *e) {
-    getTask();
+    updateActiveTaskName();
     if (e->timerId() == dots_timer_id) {
         getDots();
     }
@@ -171,11 +176,11 @@ void SplashScreenWidget::drawInfo() {
     }
     p.drawText(17, 285, text);
 
-    if (!task.isEmpty()) {
+    if (!activeTaskName.isEmpty()) {
         font.setPixelSize(TASK_HEIGHT_PX);
         font.setBold(false);
         p.setFont(font);
-        p.drawText(18, 290 + VERSION_HEIGHT_PX, task);
+        p.drawText(18, 290 + VERSION_HEIGHT_PX, activeTaskName);
     }
     p.end();
 }

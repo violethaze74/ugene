@@ -57,6 +57,9 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Wno-sign-compare
     QMAKE_CXXFLAGS += -Wno-ignored-attributes
 
+    # QT 5.4 sources produce this warning when compiled with gcc9. Re-check after QT upgrade.
+    QMAKE_CXXFLAGS += -Wno-cast-function-type
+
     # Some of the warnings must be errors
     QMAKE_CXXFLAGS += -Werror=return-type
     QMAKE_CXXFLAGS += -Werror=parentheses

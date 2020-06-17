@@ -111,7 +111,6 @@ signals:
 private:
     // QObject
     bool eventFilter(QObject *o, QEvent *e);
-    bool getUserConfirmationForRemoval(const QList<Document *> &selectedDocs, const QList<Folder> &selectedFolders, const QList<GObject *> &selectedObjects);
 
     void setupActions();
     void connectDocument(Document *doc);
@@ -149,9 +148,6 @@ private:
     // Two methods below store removed objects and folders respectively in order to remove them on delete task finish.
     void startTrackingRemovedObjects(Task *deleteTask, const QHash<GObject *, Document *> &objs2Docs);
     void startTrackingRemovedFolders(Task *deleteTask, const QList<Folder> &folders);
-
-    static const int NAME_DISPLAYING_SYMBOLS_COUNT;
-    static const int MAX_DISPLAING_NAME_COUNT;
 
     static bool isObjectRemovable(GObject *object);
     static bool isFolderRemovable(const Folder &folder);

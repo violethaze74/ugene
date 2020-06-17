@@ -332,14 +332,14 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
         int memValue;
     };
 
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(500000)));
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(200)));    //200mb
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTGlobals::sleep(100);
-
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
     GTThread::waitForMainThread();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);    // close wizard
+
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
 
@@ -350,7 +350,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "A problem occurred during allocating memory for running SnpEff.");
+    GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "There is not enough memory to complete the SnpEff execution.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5027_2) {
@@ -558,6 +558,7 @@ GUI_TEST_CLASS_DEFINITION(test_5110) {
 GUI_TEST_CLASS_DEFINITION(test_5128) {
     //1. Open any 3D structure.
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Context menu: { Molecular Surface -> * }.
     //3. Select any model.
@@ -745,7 +746,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
                       .arg(sequencesCount));
 
     const int expectedDocumentsCount = 2;
-    int documentsCount = GTUtilsProjectTreeView::findIndecies(os, "", QModelIndex(), 2).size();
+    int documentsCount = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "", QModelIndex(), 2).size();
     CHECK_SET_ERR(expectedDocumentsCount == documentsCount,
                   QString("Incorrect count of items in the Project View after the first insertion: expected %1, got %2")
                       .arg(expectedDocumentsCount)
@@ -766,7 +767,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
                       .arg(expectedSequencesCount)
                       .arg(sequencesCount));
 
-    documentsCount = GTUtilsProjectTreeView::findIndecies(os, "", QModelIndex(), 2).size();
+    documentsCount = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "", QModelIndex(), 2).size();
     CHECK_SET_ERR(expectedDocumentsCount == documentsCount,
                   QString("Incorrect count of items in the Project View after the second insertion: expected %1, got %2")
                       .arg(expectedDocumentsCount)
@@ -1041,7 +1042,7 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
     QSet<QRgb> colors;
     for (int i = 0; i < image1.width(); i++) {
         for (int j = 0; j < image1.height(); j++) {
-           colors << image1.pixel(i, j);
+            colors << image1.pixel(i, j);
         }
     }
     CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn");
@@ -2635,6 +2636,11 @@ GUI_TEST_CLASS_DEFINITION(test_5663) {
                               GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsNotifications::waitForNotification(os, false);
+    QWidget *taskReportWindow = GTUtilsMdi::findWindow(os, "Task report [Download remote documents]");
+    QTextEdit *reportEdit = qobject_cast<QTextEdit *>(GTWidget::findWidget(os, "reportTextEdit", taskReportWindow));
+    CHECK_SET_ERR(reportEdit != nullptr, "reportTextEdit is not found");
+    QString html = reportEdit->toHtml();
+    CHECK_SET_ERR(html.contains("Document was successfully downloaded"), "Report contains expected text");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5665) {
@@ -4773,8 +4779,7 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     GTLogTracer l;
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "NM_001135099_no_anns.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "NM_001135099_annotations.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4797,7 +4802,7 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     settings.rtPcrDesign = true;
 
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, sequence, Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

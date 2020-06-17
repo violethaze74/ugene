@@ -37,21 +37,18 @@
 namespace U2 {
 using namespace HI;
 
-const int widthMin = 7;
-const int widthMax = 9;
-
 #define GT_CLASS_NAME "GTUtilsPhyTree"
 
 #define GT_METHOD_NAME "getNodes"
-QList<QGraphicsItem *> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus &os, int width) {
-    QList<QGraphicsItem *> result;
+QList<GraphicsButtonItem *> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus &os) {
+    QList<GraphicsButtonItem *> result;
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     GT_CHECK_RESULT(treeView, "treeView not found", result);
-
     QList<QGraphicsItem *> list = treeView->scene()->items();
-    foreach (QGraphicsItem *item, list) {
-        if (qRound(item->boundingRect().width()) == width) {
-            result.append(item);
+    for (QGraphicsItem *item : list) {
+        bool isNodeItem = item->data(NODE_TREE_ITEM_KIND_KEY).toBool();
+        if (isNodeItem) {
+            result.append((GraphicsButtonItem *)item);
         }
     }
     return result;
@@ -59,23 +56,28 @@ QList<QGraphicsItem *> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus &os, int wid
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedNodes"
-QList<QGraphicsItem *> GTUtilsPhyTree::getSelectedNodes(HI::GUITestOpStatus &os) {
-    return getNodes(os, widthMax);
+QList<GraphicsButtonItem *> GTUtilsPhyTree::getSelectedNodes(HI::GUITestOpStatus &os) {
+    QList<GraphicsButtonItem *> nodes = getNodes(os);
+    QList<GraphicsButtonItem *> selectedNodes;
+    for (auto node : nodes) {
+        if (node->getIsSelected()) {
+            selectedNodes << node;
+        }
+    }
+    return selectedNodes;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getUnselectedNodes"
-QList<QGraphicsItem *> GTUtilsPhyTree::getUnselectedNodes(HI::GUITestOpStatus &os) {
-    return getNodes(os, widthMin);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getNodes"
-QList<QGraphicsItem *> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus &os) {
-    QList<QGraphicsItem *> result;
-    result.append(getSelectedNodes(os));
-    result.append(getUnselectedNodes(os));
-    return result;
+QList<GraphicsButtonItem *> GTUtilsPhyTree::getUnselectedNodes(HI::GUITestOpStatus &os) {
+    QList<GraphicsButtonItem *> nodes = getNodes(os);
+    QList<GraphicsButtonItem *> unselectedNodes;
+    for (auto node : nodes) {
+        if (node->getIsSelected()) {
+            unselectedNodes << node;
+        }
+    }
+    return unselectedNodes;
 }
 #undef GT_METHOD_NAME
 
@@ -103,7 +105,7 @@ QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getLabels(HI::GUITestOpStatus &
 }
 #undef GT_METHOD_NAME
 
-QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getVisiableLabels(HI::GUITestOpStatus &os, QGraphicsView *treeView) {
+QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getVisibleLabels(HI::GUITestOpStatus &os, QGraphicsView *treeView) {
     QList<QGraphicsSimpleTextItem *> result;
     foreach (QGraphicsSimpleTextItem *item, getLabels(os, treeView)) {
         if (item->isVisible()) {
@@ -192,11 +194,22 @@ QPoint GTUtilsPhyTree::getGlobalCoord(HI::GUITestOpStatus &os, QGraphicsItem *it
 
 #define GT_METHOD_NAME "clickNode"
 void GTUtilsPhyTree::clickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node) {
-    GT_CHECK(NULL != node, "Node to click is NULL");
+    GT_CHECK(node != nullptr, "Node to click is NULL");
     node->ensureVisible();
     GTThread::waitForMainThread();
-    GTMouseDriver::moveTo(getGlobalCoord(os, node));
+    GTMouseDriver::moveTo(getGlobalCoord(os, node) - QPoint(2, 0));
     GTMouseDriver::click();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "doubleClickNode"
+void GTUtilsPhyTree::doubleClickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node) {
+    GT_CHECK(node != nullptr, "Node to doubleClickNode is NULL");
+    node->ensureVisible();
+    GTThread::waitForMainThread();
+    GTMouseDriver::moveTo(getGlobalCoord(os, node) - QPoint(2, 0));
+    GTMouseDriver::doubleClick();
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

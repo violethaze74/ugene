@@ -126,22 +126,29 @@ private:
     int current;
 };
 
-#define SEARCH_MODE_SEQUENCES_DATA QVariant(1)
-#define SEARCH_MODE_NAMES_DATA QVariant(2)
+#define SEARCH_MODE_SEQUENCES_INDEX 0
+#define SEARCH_MODE_NAMES_INDEX 1
 
-FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, bool isSearchInNamesMode)
+/** Last used search mode. Stored per session only. */
+static int isSearchInNamesModeByDefault = false;
+
+FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, TriState isSearchInNamesModeTriState)
     : msaEditor(msaEditor),
       currentResultIndex(-1),
       searchTask(nullptr),
       previousMaxResult(-1),
       setSelectionToTheFirstResult(true),
-      isSearchInNamesMode(isSearchInNamesMode),
       savableWidget(this, GObjectViewUtils::findViewByName(msaEditor->getName())),
       algorithmSubgroup(nullptr),
       searchInSubgroup(nullptr),
       otherSettingsSubgroup(nullptr) {
     setupUi(this);
     setObjectName("FindPatternMsaWidget");
+    if (isSearchInNamesModeTriState == TriState_Unknown) {    // Re-use the last state
+        isSearchInNamesMode = isSearchInNamesModeByDefault;
+    } else {
+        isSearchInNamesMode = isSearchInNamesModeTriState == TriState_Yes;
+    }
 
     progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
@@ -155,6 +162,7 @@ FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, bool isSearchIn
 
     initLayout();
     connectSlots();
+    updateActions();
 
     checkStateAndUpdateStatus();
 
@@ -180,16 +188,8 @@ int FindPatternMsaWidget::getTargetMsaLength() const {
 
 void FindPatternMsaWidget::setSearchInNamesMode(bool flag) {
     CHECK(isSearchInNamesMode != flag, )
-    isSearchInNamesMode = flag;
-    QVariant itemDataToActivate = isSearchInNamesMode ? SEARCH_MODE_NAMES_DATA : SEARCH_MODE_SEQUENCES_DATA;
-    int indexToActivate = 0;
-    for (int i = 0; i < searchContextComboBox->count(); i++) {
-        if (searchContextComboBox->itemData(i) == itemDataToActivate) {
-            indexToActivate = i;
-            break;
-        }
-    }
-    searchContextComboBox->setCurrentIndex(indexToActivate);
+    int indexToActivate = flag ? SEARCH_MODE_NAMES_INDEX : SEARCH_MODE_SEQUENCES_INDEX;
+    searchContextComboBox->setCurrentIndex(indexToActivate);    // triggers a signal.
 }
 
 void FindPatternMsaWidget::showCurrentResultAndStopProgress() {
@@ -217,10 +217,10 @@ void FindPatternMsaWidget::initLayout() {
     otherSettingsSubgroup = new ShowHideSubgroupWidget(QObject::tr("Other settings"), QObject::tr("Other settings"), widgetOther, false);
     subgroupsLayout->addWidget(otherSettingsSubgroup);
 
-    searchContextComboBox->addItem(tr("Sequences"), SEARCH_MODE_SEQUENCES_DATA);
-    searchContextComboBox->addItem(tr("Sequence Names"), SEARCH_MODE_NAMES_DATA);
+    searchContextComboBox->addItem(tr("Sequences"));
+    searchContextComboBox->addItem(tr("Sequence Names"));
     if (isSearchInNamesMode) {
-        searchContextComboBox->setCurrentIndex(1);
+        searchContextComboBox->setCurrentIndex(SEARCH_MODE_NAMES_INDEX);
     }
 
     updateLayout();
@@ -326,8 +326,10 @@ void FindPatternMsaWidget::connectSlots() {
     connect(editEnd, SIGNAL(textChanged(QString)), SLOT(sl_onRegionValueEdited()));
     connect(boxMaxResult, SIGNAL(valueChanged(int)), SLOT(sl_onMaxResultChanged(int)));
     connect(removeOverlapsBox, SIGNAL(stateChanged(int)), SLOT(sl_validateStateAndStartNewSearch()));
-    connect(msaEditor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), this, SLOT(sl_onMsaModified()));
-    connect(msaEditor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), this, SLOT(sl_onMsaModified()));
+    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    connect(msaObject, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), this, SLOT(sl_onMsaModified()));
+    connect(msaObject, SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), this, SLOT(sl_onMsaModified()));
+    connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_msaStateChanged()));
     connect(prevPushButton, SIGNAL(clicked()), SLOT(sl_prevButtonClicked()));
     connect(nextPushButton, SIGNAL(clicked()), SLOT(sl_nextButtonClicked()));
     connect(groupResultsButton, SIGNAL(clicked()), SLOT(sl_groupResultsButtonClicked()));
@@ -374,7 +376,13 @@ void FindPatternMsaWidget::sl_onRegionValueEdited() {
     sl_validateStateAndStartNewSearch();
 }
 
+void FindPatternMsaWidget::updateActions() {
+    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    groupResultsButton->setEnabled(!msaObject->isStateLocked());
+}
+
 void FindPatternMsaWidget::updateLayout() {
+    updateActions();
     algorithmSubgroup->setVisible(!isSearchInNamesMode);
     searchInSubgroup->setVisible(!isSearchInNamesMode);
     otherSettingsSubgroup->setVisible(!isSearchInNamesMode);
@@ -460,7 +468,7 @@ void FindPatternMsaWidget::showHideMessage(bool show, MessageFlag messageFlag, c
                                       tr("Info: please input at least one pattern to search in the sequence names.") :
                                       tr("Info: please input at least one sequence pattern to search for.");
 
-                message += " " + tr("Use Ctrl+Enter to input multiple patterns").arg(lineBreakShortcut);
+                message += " " + tr("Use %1 to input multiple patterns").arg(lineBreakShortcut);
                 text = QString("<b><font color=%1>%2</font><br></br></b>").arg(Theme::infoColorLabelHtmlStr()).arg(message);
                 break;
             }
@@ -818,7 +826,8 @@ void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList &patterns
 }
 
 void FindPatternMsaWidget::sl_searchModeChanged() {
-    isSearchInNamesMode = searchContextComboBox->currentData() == SEARCH_MODE_NAMES_DATA;
+    isSearchInNamesMode = searchContextComboBox->currentIndex() == SEARCH_MODE_NAMES_INDEX;
+    isSearchInNamesModeByDefault = isSearchInNamesMode;
     clearResults();
     updateLayout();
     sl_validateStateAndStartNewSearch();
@@ -1010,6 +1019,8 @@ void FindPatternMsaWidget::correctSearchInCombo() {
 }
 
 void FindPatternMsaWidget::setUpTabOrder() const {
+    QWidget::setTabOrder(groupResultsButton, prevPushButton);
+    QWidget::setTabOrder(prevPushButton, nextPushButton);
     QWidget::setTabOrder(nextPushButton, boxAlgorithm);
     QWidget::setTabOrder(boxRegion, editStart);
     QWidget::setTabOrder(editStart, editEnd);
@@ -1068,7 +1079,9 @@ int FindPatternMsaWidget::getNextOrPrevResultIndexFromSelection(bool isNext) {
     int resultIndex = 0;
     for (; resultIndex < resultsCount; resultIndex++) {
         const FindPatternWidgetResult &result = visibleSearchResults[resultIndex];
-        if (result.viewRowIndex >= selection.y() && result.region.startPos >= selection.x()) {
+        bool inTheNextRow = result.viewRowIndex > selection.y();
+        bool inTheSameRowAndNext = result.viewRowIndex == selection.y() && result.region.startPos >= selection.x();
+        if (inTheNextRow || inTheSameRowAndNext) {
             break;
         }
     }
@@ -1110,10 +1123,18 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
         resultUidSet << result.rowId;
     }
     const QList<qint64> &allRowIds = msaEditor->getMaRowIds();
-    if (resultUidSet.size() == allRowIds.size()) {
+    if (resultUidSet.size() >= allRowIds.size()) {
         // Can't re-group anything: every sequence has a result.
         msaEditor->selectRows(0, allRowIds.size());
         return;
+    }
+
+    bool isOldGroupedAtStart = true;
+    for (int i = 0; i < resultUidSet.size(); i++) {
+        if (!resultUidSet.contains(allRowIds[i])) {
+            isOldGroupedAtStart = false;
+            break;
+        }
     }
 
     // Reorder rows: move search results to the top. Keep the order stable.
@@ -1126,18 +1147,29 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
             rowsOutOfTheGroup << rowId;
         }
     }
-    QList<qint64> reorderedRowIds = QList<qint64>() << rowsInTheGroup << rowsOutOfTheGroup;
+    bool isNewGroupAtStart = !isOldGroupedAtStart;
+    QList<qint64> reorderedRowIds = isNewGroupAtStart ?
+                                        QList<qint64>() << rowsInTheGroup << rowsOutOfTheGroup :
+                                        QList<qint64>() << rowsOutOfTheGroup << rowsInTheGroup;
     CHECK(!maObject->isStateLocked(), );
     U2OpStatusImpl os;
     maObject->updateRowsOrder(os, reorderedRowIds);
     if (!os.hasError()) {
-        msaEditor->selectRows(0, rowsInTheGroup.size());
+        if (isNewGroupAtStart) {
+            msaEditor->selectRows(0, rowsInTheGroup.size());
+        } else {
+            msaEditor->selectRows(allRowIds.size() - rowsInTheGroup.size(), rowsInTheGroup.size());
+        }
     }
 }
 
 bool FindPatternMsaWidget::isAmino() const {
     const DNAAlphabet *alphabet = msaEditor->getMaObject()->getAlphabet();
     return alphabet->isAmino();
+}
+
+void FindPatternMsaWidget::sl_msaStateChanged() {
+    updateActions();
 }
 
 FindPatternWidgetResult::FindPatternWidgetResult(qint64 rowId, int viewRowIndex, const U2Region &region)

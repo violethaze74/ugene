@@ -20,6 +20,7 @@
  */
 
 #include <GTUtilsMdi.h>
+#include <GTUtilsNotifications.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
@@ -52,10 +53,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //1. Open "_common_data/fasta/alphabet.fa".
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/alphabet.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Activate the "Amino" sequence in the sequence view (set the focus for it).
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os, 0));
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os, 0));
 
     //3. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
@@ -68,7 +69,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(warning->isVisible(), "No alphabet warning");
 
     //4. Activate the "Nucl" sequence.
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os, 1));
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os, 1));
 
     //Expected: The panel is available, the info message is hidden.
     CHECK_SET_ERR(params->isEnabled(), "The panel is disabled for the right alphabet");
@@ -437,7 +438,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTComboBox::setCurrentIndex(os, annsComboBox, 1);
 
     //7. Click "Export product(s)".
-    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
+    QWidget *extractPB = GTWidget::findWidget(os, "extractProductButton");
+    GTUtilsNotifications::waitAllNotificationsClosed(os);
+    GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
@@ -450,7 +453,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTComboBox::setCurrentIndex(os, annsComboBox, 0);
 
     //9. Click "Export product(s)".
-    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
+    extractPB = GTWidget::findWidget(os, "extractProductButton");
+    GTUtilsNotifications::waitAllNotificationsClosed(os);
+    GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are 4 annotations in the exported document: 2 primers, center 51..150 and middle 1..200. Middle has the warning qualifier.
@@ -463,7 +468,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTComboBox::setCurrentIndex(os, annsComboBox, 2);
 
     //11. Click "Export product(s)".
-    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
+    extractPB = GTWidget::findWidget(os, "extractProductButton");
+    GTUtilsNotifications::waitAllNotificationsClosed(os);
+    GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are only 2 primers annotations in the exported document.

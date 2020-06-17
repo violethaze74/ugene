@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <api/GTUtils.h>
 #include <base_dialogs/ColorDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -321,16 +322,22 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_4) {
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0002) {
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //    2. Create custom color scheme
-    const QString schemeName = getName() + "Scheme";
+    QString suffix = GTUtils::genUniqueString();
+    QString schemeName = getName() + "Scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, schemeName, NewColorSchemeCreator::nucl);
+
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::isTabOpened(os, GTUtilsOptionPanelMsa::Highlighting);
+
     //    Expected state: color scheme added to "Color" combobox
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::setIndexWithText(os, colorScheme, "No colors");
     GTComboBox::setIndexWithText(os, colorScheme, schemeName);
+
     //    4. Select custom scheme
     //    Expected state: scheme changed
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
@@ -350,9 +357,10 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0002_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create 3 color schemes
-    const QString scheme1 = getName() + "_scheme1";
-    const QString scheme2 = getName() + "_scheme2";
-    const QString scheme3 = getName() + "_scheme3";
+    QString suffix = GTUtils::genUniqueString();
+    QString scheme1 = getName() + "_scheme1" + suffix;
+    QString scheme2 = getName() + "_scheme2" + suffix;
+    QString scheme3 = getName() + "_scheme3" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme1, NewColorSchemeCreator::nucl);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme2, NewColorSchemeCreator::nucl);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme3, NewColorSchemeCreator::nucl);
@@ -369,7 +377,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0003) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create custom color scheme
-    const QString scheme = getName() + "_scheme111111111111111111111111111111111111111111111";
+    QString suffix = GTUtils::genUniqueString();
+    const QString scheme = getName() + "_scheme111111111111111111111111111111111111111111111" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::nucl);
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -777,7 +786,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005) {
     GTFileDialog::openFile(os, testDir + "_common_data/alphabets", "extended_amino.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create custom color scheme
-    const QString scheme = getName() + "_scheme";
+    QString suffix = GTUtils::genUniqueString();
+    const QString scheme = getName() + "_scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::amino);
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -822,9 +832,10 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/alphabets", "extended_amino.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create 3 color schemes
-    const QString scheme1 = getName() + "_scheme1";
-    const QString scheme2 = getName() + "_scheme2";
-    const QString scheme3 = getName() + "_scheme3";
+    QString suffix = GTUtils::genUniqueString();
+    QString scheme1 = getName() + "_scheme1" + suffix;
+    QString scheme2 = getName() + "_scheme2" + suffix;
+    QString scheme3 = getName() + "_scheme3" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme1, NewColorSchemeCreator::amino);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme2, NewColorSchemeCreator::amino);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme3, NewColorSchemeCreator::amino);
@@ -839,14 +850,16 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005_1) {
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
     //    1. Open file test/_common_data/alphabets/extended_amino.aln
     GTFileDialog::openFile(os, testDir + "_common_data/alphabets", "extended_amino.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //    2. Create custom color scheme
-    const QString scheme = getName() + "_scheme";
+    QString suffix = GTUtils::genUniqueString();
+    const QString scheme = getName() + "_scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::amino);
 
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::Highlighting);
 
     //    4. Select custom scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
@@ -1669,7 +1682,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     QWidget *parent2 = GTWidget::findWidget(os, "COI [m] COI", parent);
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView", parent2));
 
-    QList<QGraphicsSimpleTextItem *> initNames = GTUtilsPhyTree::getVisiableLabels(os, treeView);
+    QList<QGraphicsSimpleTextItem *> initNames = GTUtilsPhyTree::getVisibleLabels(os, treeView);
     QList<QGraphicsSimpleTextItem *> initDistanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
     int initNamesNumber = initNames.count();
     int initDistansesNumber = initDistanses.count();
@@ -1679,7 +1692,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTGlobals::sleep(500);
 
     //    Expected state: names are not shown, align labels checkbox is disabled
-    QList<QGraphicsSimpleTextItem *> names = GTUtilsPhyTree::getVisiableLabels(os, treeView);
+    QList<QGraphicsSimpleTextItem *> names = GTUtilsPhyTree::getVisibleLabels(os, treeView);
     CHECK_SET_ERR(names.count() == 0, QString("unexpected number of names: %1").arg(names.count()));
     CHECK_SET_ERR(!alignLabelsCheck->isEnabled(), "align labels checkbox is unexpectidly enabled");
 
@@ -1688,7 +1701,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTGlobals::sleep(500);
 
     //    Expected state: names are shown, align labels checkbox is enabled
-    names = GTUtilsPhyTree::getVisiableLabels(os, treeView);
+    names = GTUtilsPhyTree::getVisibleLabels(os, treeView);
     CHECK_SET_ERR(names.count() == initNamesNumber, QString("unexpected number of names: %1").arg(names.count()));
     CHECK_SET_ERR(alignLabelsCheck->isEnabled(), "align labels checkbox is unexpectidly disabled");
 
@@ -1748,7 +1761,7 @@ void setLabelsColor(HI::GUITestOpStatus &os, int r, int g, int b) {
 bool checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColorName) {
     QGraphicsView *w = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     CHECK_SET_ERR_RESULT(w != NULL, "tree view not found", false);
-    QList<QGraphicsSimpleTextItem *> labels = GTUtilsPhyTree::getVisiableLabels(os, w);
+    QList<QGraphicsSimpleTextItem *> labels = GTUtilsPhyTree::getVisibleLabels(os, w);
     CHECK_SET_ERR_RESULT(!labels.isEmpty(), "there are no visiable labels", false);
 
     const QImage img = GTWidget::getImage(os, AppContext::getMainWindow()->getQMainWindow());
@@ -1801,7 +1814,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
     GTGlobals::sleep(500);
     //    Expected: font changed
-    QGraphicsSimpleTextItem *label = GTUtilsPhyTree::getVisiableLabels(os).at(0);
+    QGraphicsSimpleTextItem *label = GTUtilsPhyTree::getVisibleLabels(os).at(0);
     QString family = label->font().family();
     CHECK_SET_ERR(family == "Serif", "unexpected style: " + family);
     //    5. Change labels size

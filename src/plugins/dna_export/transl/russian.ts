@@ -1062,7 +1062,7 @@
     </message>
     <message>
         <source>Export nucleic alignment to amino translation...</source>
-        <translation>Экспорт нуклеотидной последовательности в амино трансляции...</translation>
+        <translation type="vanished">Экспорт нуклеотидной последовательности в амино трансляции...</translation>
     </message>
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="103"/>

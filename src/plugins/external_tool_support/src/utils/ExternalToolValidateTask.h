@@ -99,8 +99,6 @@ private:
 
     ExternalTool *tool;
 
-    /** If 'true' the task performs only path + executable flags validation for the tool. */
-    bool isPathOnlyValidation;
     static const int TIMEOUT_MS = 30000;
     static const int CHECK_PERIOD_MS = 1000;
 };

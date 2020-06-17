@@ -63,7 +63,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0000) {
     }
 
     if (modifiers != 0) {
-        uiLog.trace(QString("post_action_0000: next keyboard modifiers were pressed after the test: %1").arg(modifiers));
+        coreLog.info(QString("post_action_0000: next keyboard modifiers were pressed after the test: %1").arg(modifiers));
     }
 }
 
@@ -138,6 +138,9 @@ POSTERIOR_ACTION_DEFINITION(post_action_0003) {
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0004) {
+    if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {    // Restored by the parent process
+        return;
+    }
     if (QDir(sandBoxDir).exists()) {
         GTFile::setReadWrite(os, sandBoxDir, true);
         QDir sandBox(sandBoxDir);

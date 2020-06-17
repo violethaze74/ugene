@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <api/GTUtils.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -1108,41 +1109,53 @@ GUI_TEST_CLASS_DEFINITION(test_4106) {
 GUI_TEST_CLASS_DEFINITION(test_4110) {
     GTFile::copy(os, dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "test_4110_human_T1.fa");
     GTUtilsMdi::click(os, GTGlobals::Close);
+
     //    1. Connect to the shared database "ugene_gui_test_win" located on "ugene-quad-ubuntu".
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+
     //    2. Open sequence view for sequence from ugene_gui_test_win:/view_test_0001/NC_001363.
-    QModelIndex fol = GTUtilsProjectTreeView::findIndex(os, "test_4110");
-    QModelIndex seqFol = GTUtilsProjectTreeView::findIndex(os, "NC_001363", fol);
-    QModelIndex annFol = GTUtilsProjectTreeView::findIndex(os, "NC_001363 features", fol);
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, seqFol));
+    QModelIndex folderIndex = GTUtilsProjectTreeView::findIndex(os, "test_4110");
+    QModelIndex sequenceIndex = GTUtilsProjectTreeView::findIndex(os, "NC_001363", folderIndex);
+    QModelIndex annotationIndex = GTUtilsProjectTreeView::findIndex(os, "NC_001363 features", folderIndex);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, sequenceIndex));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTThread::waitForMainThread();
+
     //    Expected state: sequence is opened with its annotations on the same view.
-    QList<QTreeWidgetItem *> annotationsInFile = GTTreeWidget::getItems(GTUtilsAnnotationsTreeView::getTreeWidget(os)->invisibleRootItem());
+    QList<QTreeWidgetItem *> annotationsInFile = GTTreeWidget::getItems(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
     int num = annotationsInFile.size();
     CHECK_SET_ERR(num == 14, QString("1: unexpected annotations number: %1").arg(num));
+
     //    3. Open file "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, sandBoxDir + "test_4110_human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    4. Drag&drop annotation object "ugene_gui_test_win:/view_test_0001/NC_001363 features" to the sequence view.
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsProjectTreeView::dragAndDrop(os, annFol, GTWidget::findWidget(os, "ADV_single_sequence_widget_0", GTUtilsMdi::activeWindow(os)));
-    GTGlobals::sleep(1000);
+    QWidget* panOrDetView = GTUtilsSequenceView::getPanOrDetView(os);
+    GTUtilsProjectTreeView::dragAndDrop(os, annotationIndex, panOrDetView);
+    GTThread::waitForMainThread();
+
     //    Expected state: annotations successfully associated with a new sequence.
-    annotationsInFile = GTTreeWidget::getItems(GTUtilsAnnotationsTreeView::getTreeWidget(os)->invisibleRootItem());
+    annotationsInFile = GTTreeWidget::getItems(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
     num = annotationsInFile.size();
     CHECK_SET_ERR(num == 14, QString("2: unexpected annotations number: %1").arg(num));
+
     //    5. Close both sequence views.
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
+
     //    6. Open a sequence view for "human_T1" again.
     GTUtilsProjectTreeView::doubleClickItem(os, "test_4110_human_T1.fa");
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTThread::waitForMainThread();
+
     //    Expected state: it still displays annotations along with the sequence
-    annotationsInFile = GTTreeWidget::getItems(GTUtilsAnnotationsTreeView::getTreeWidget(os)->invisibleRootItem());
+    annotationsInFile = GTTreeWidget::getItems(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
     num = annotationsInFile.size();
     CHECK_SET_ERR(num == 14, QString("3: unexpected annotations number: %1").arg(num));
-    //    Current state: only sequence is shown
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4111) {
@@ -4877,8 +4890,7 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     CHECK_SET_ERR(simple->isVisible(), "simple overveiw is not visiable");
 
     //Check empty simple overview gray color
-    QPixmap pixmap = GTWidget::getPixmap(os, simple);
-    QImage img = pixmap.toImage();
+    QImage img = GTWidget::getImage(os, simple);
     QRgb rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
     QColor c(rgb);
     CHECK_SET_ERR(c.name() == "#ededed", "First check: simple overview has wrong color. Expected: #ededed, Found: " + c.name());
@@ -4890,8 +4902,7 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //check not empty overview color
-    pixmap = GTWidget::getPixmap(os, simple);
-    img = pixmap.toImage();
+    img = GTWidget::getImage(os, simple);
     rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
     c = QColor(rgb);
     CHECK_SET_ERR(c.name() == "#c3ebc3", "simple overview has wrong color. Expected: #c3ebc3, Found: " + c.name());
@@ -4902,8 +4913,7 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     GTThread::waitForMainThread();
 
     //Check empty simple overview gray color again
-    pixmap = GTWidget::getPixmap(os, simple);
-    img = pixmap.toImage();
+    img = GTWidget::getImage(os, simple);
     rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
     c = QColor(rgb);
     CHECK_SET_ERR(c.name() == "#ededed", "Second check: simple overview has wrong color. Expected: #ededed, Found: " + c.name());
@@ -6045,7 +6055,7 @@ GUI_TEST_CLASS_DEFINITION(test_4986) {
     //    Expected state: there is an error in the log
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTFileDialog::openFile(os, dataDir + "samples/GFF/5prime_utr_intron_A20.gff");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -6053,9 +6063,9 @@ GUI_TEST_CLASS_DEFINITION(test_4986) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, GTUtilsProjectTreeView::findIndex(os, "Ca20Chr1 features"), GTWidget::findWidget(os, "render_area_NC_001363"));
-    GTGlobals::sleep();
 
     GTLogTracer l;
+    GTUtils::checkExportServiceIsEnabled(os);
     GTUtilsDialog::waitForDialog(os, new ExportSequenceOfSelectedAnnotationsFiller(os, sandBoxDir + "test_4986.fa", ExportSequenceOfSelectedAnnotationsFiller::Fasta, ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_sequence_of_selected_annotations"));
     GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, GTUtilsAnnotationsTreeView::findItem(os, "5_prime_UTR_intron"));

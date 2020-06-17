@@ -116,6 +116,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    1. Start UGENE. Open workflow schema file from \common data\workflow\remoteDBReaderTest.uws
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "remoteDBReaderTest.uws");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    Expected state: workflow schema opened in Workflow designer
     QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
     CHECK_SET_ERR(table, "tableView not found");
@@ -128,8 +129,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep();
     //    2. If you don't want result file (T1.gb) in UGENE run folder, change this property in write genbank worker.Run schema.
     //    Expected state: T1.gb file is saved to your disc
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "T1.gb");

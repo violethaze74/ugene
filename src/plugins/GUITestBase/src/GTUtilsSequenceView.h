@@ -66,11 +66,14 @@ public:
     /** Moves mouse to the safe sequence view area (Pan or Det view, not a scrollbar) and clicks (brings focus) into it. */
     static void clickMouseOnTheSafeSequenceViewArea(HI::GUITestOpStatus &os);
 
+    /** Opens popup menu safely on the sequence view. The sequence view must have either Det or Pan view widget. */
+    static void openPopupMenuOnSequenceViewArea(HI::GUITestOpStatus &os, int number = 0);
+
     /**
      * Returns currenly opened PanView or DetView widget.
      * This method is useful to trigger mouse events over a sequence safely with no chance of hitting scrollbars, etc...
      */
-    static QWidget *getPanOrDetView(HI::GUITestOpStatus &os);
+    static QWidget *getPanOrDetView(HI::GUITestOpStatus &os, int number = 0);
 
     static ADVSingleSequenceWidget *getSeqWidgetByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
     static DetView *getDetViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());

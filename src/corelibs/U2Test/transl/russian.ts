@@ -99,7 +99,7 @@
 <context>
     <name>U2::GUITestLauncher</name>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="148"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="149"/>
         <source>No tests to run</source>
         <translation>No tests to run</translation>
     </message>
@@ -120,12 +120,12 @@
         <translation type="vanished">Test fails because of timeout.</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="410"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="417"/>
         <source>Test name</source>
         <translation>Test name</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="410"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="417"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>

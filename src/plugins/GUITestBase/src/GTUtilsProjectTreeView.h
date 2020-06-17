@@ -80,12 +80,12 @@ public:
     static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
     static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
     static QModelIndex findIndex(HI::GUITestOpStatus &os, const QStringList &itemPath, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QModelIndexList findIndecies(HI::GUITestOpStatus &os,
+    static QModelIndexList findIndeciesInProjectViewNoWait(HI::GUITestOpStatus &os,
                                         const QString &itemName,
                                         const QModelIndex &parent = QModelIndex(),
                                         int parentDepth = 0,
                                         const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QModelIndexList findIndecies(HI::GUITestOpStatus &os,
+    static QModelIndexList findIndeciesInTreeNoWait(HI::GUITestOpStatus &os,
                                         QTreeView *treeView,
                                         const QString &itemName,
                                         const QModelIndex &parent = QModelIndex(),
@@ -103,6 +103,8 @@ public:
     static bool checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
     static bool checkItem(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
     static bool checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
+    static void checkNoItem(HI::GUITestOpStatus &os, const QString &itemName);
 
     // the method does nothing if `acceptableTypes` is an empty set
     static void checkObjectTypes(HI::GUITestOpStatus &os, const QSet<GObjectType> &acceptableTypes, const QModelIndex &parent = QModelIndex());

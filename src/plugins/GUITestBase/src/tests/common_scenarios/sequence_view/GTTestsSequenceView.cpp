@@ -528,15 +528,14 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     //     Expected state: even the sequence is linear, Primer3 finds primers on junction
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "linear_circular_results.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
-
-    GTGlobals::sleep();
     QList<U2Region> pair2 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 2  (0, 2)");
     CHECK_SET_ERR(pair2.contains(U2Region(3, 21)), "No 4..24 region");
     CHECK_SET_ERR(pair2.contains(U2Region(153, 12)), "No 154..165 region");
@@ -554,15 +553,14 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     //     Expected state: the sequence is circular - a few primers cover junction point
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "circular_primers.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
-
-    GTGlobals::sleep();
     QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
     CHECK_SET_ERR(pair1.contains(U2Region(139, 20)), "No 140..159 region");
     CHECK_SET_ERR(pair1.contains(U2Region(331, 20)), "No 332..351 region");
@@ -582,15 +580,15 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     //     Expected state: results are linear
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
 
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep();
     QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
     CHECK_SET_ERR(pair1.contains(U2Region(160, 20)), "No 161..180 region");
     CHECK_SET_ERR(pair1.contains(U2Region(684, 20)), "No 685..704 region");
@@ -614,8 +612,8 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep(5000);
     pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)", "linear  (5, 0)");
     CHECK_SET_ERR(pair1.contains(U2Region(423, 20)), "No 424..443 region");
     CHECK_SET_ERR(pair1.contains(U2Region(582, 20)), "No 583..602 region");
@@ -626,7 +624,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     GTUtilsDocument::removeDocument(os, "DNA.gb");
-    //    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {
@@ -637,7 +634,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     //    Expected state: primers are located on both selected regions(start and end).
 
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     ADVSingleSequenceWidget *wgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
     CHECK_SET_ERR(wgt != NULL, "ADVSequenceWidget is NULL");
@@ -645,15 +642,13 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "150000..199950,1..50000"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTGlobals::sleep(200);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
     Primer3DialogFiller::Primer3Settings settings;
     settings.resultsCount = 50;
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, wgt->getDetView(), Qt::RightButton);
-
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<U2Region> pair32 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 32  (0, 2)");
@@ -680,29 +675,23 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     //    Expected state: primers(left and right) are located on either side of junction point
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    ADVSingleSequenceWidget *wgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(wgt != NULL, "ADVSequenceWidget is NULL");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
 
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleZoomView"));
     GTWidget::click(os, toggleViewButton);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "560..743,1..180"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
-    GTWidget::click(os, wgt, Qt::RightButton, QPoint(10, 10));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTGlobals::sleep();
-
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
     CHECK_SET_ERR(pair1.contains(U2Region(160, 20)), "No 161..180 region");
     CHECK_SET_ERR(pair1.contains(U2Region(684, 20)), "No 685..704 region");
@@ -719,10 +708,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    4. Accept the dialog
     //    Expected state: no warning apeared, primers are located on selected region
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    ADVSingleSequenceWidget *wgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(wgt != NULL, "ADVSequenceWidget is NULL");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
@@ -730,10 +716,9 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     settings.start = 560;
     settings.end = 180;
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, GTWidget::findWidget(os, "det_view_Primers_DNA"), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTGlobals::sleep();
-
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
     CHECK_SET_ERR(pair1.contains(U2Region(160, 20)), "No 161..180 region");
     CHECK_SET_ERR(pair1.contains(U2Region(684, 20)), "No 685..704 region");
@@ -893,14 +878,13 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     //    Expected state: warning is hidden, export is available
 
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "YkrI"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze"
                                                                               << "Find restriction sites..."));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     class SvgLimitsChecker : public Filler {
     public:
@@ -914,7 +898,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
             // set SVG format
             QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
             CHECK_SET_ERR(formatsBox != NULL, "formatBox is NULL");
-            GTComboBox::setIndexWithText(os, formatsBox, "svg");
+            GTComboBox::setIndexWithText(os, formatsBox, "SVG");
 
             // export is not available
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
@@ -959,24 +943,22 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     //remove document
     GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTGlobals::sleep(100);
 
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTThread::waitForMainThread();
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031) {
     //    Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    Select some redion
     GTUtilsSequenceView::selectSequenceRegion(os, 10, 20);
     //    Use context menu {Copy->Copy reverse complement sequence}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy reverse complement sequence"));
-
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString clipboardtext = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardtext == "AACTTTGGTGA", "Unexpected reverse complement: " + clipboardtext)
@@ -985,14 +967,13 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
 GUI_TEST_CLASS_DEFINITION(test_0031_1) {
     //    Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    Select some redion
     GTUtilsSequenceView::selectSequenceRegion(os, 10, 20);
     //    Use context menu {Copy->Copy reverse complement sequence}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy reverse complement sequence"));
-
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString clipboardtext = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardtext == "AACTTTGGTGA", "Unexpected reverse complement: " + clipboardtext)
@@ -1001,14 +982,13 @@ GUI_TEST_CLASS_DEFINITION(test_0031_1) {
 GUI_TEST_CLASS_DEFINITION(test_0031_2) {
     //    Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    Select annotation
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
     //    Use context menu {Copy->Copy reverse complement sequence}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "action_copy_annotation_sequence"));
-
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString clipboardtext = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardtext.startsWith("AATGAAAGAC"), "Unexpected reverse complement start: " + clipboardtext.left(10));
@@ -1018,8 +998,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2) {
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 2, true);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "action_copy_annotation_sequence"));
-
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     clipboardtext = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardtext.startsWith("ATGGTAGCAG"), "Unexpected reverse complement for joined annotation start: " + clipboardtext.left(10));
@@ -1029,14 +1008,13 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2) {
 GUI_TEST_CLASS_DEFINITION(test_0031_3) {
     //    Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    Select annotation
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
     //    Use context menu {Copy->Copy reverse complement sequence}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "action_copy_annotation_sequence"));
-
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString clipboardtext = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardtext.startsWith("AATGAAAGAC"), "Unexpected reverse complement start: " + clipboardtext.left(10));
@@ -1046,8 +1024,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3) {
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 2, true);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "action_copy_annotation_sequence"));
-
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     clipboardtext = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardtext.startsWith("ATGGTAGCAG"), "Unexpected reverse complement for joined annotation start: " + clipboardtext.left(10));
@@ -1193,15 +1170,13 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rulers"
                                                                         << "Create new ruler"));
     GTUtilsDialog::waitForDialog(os, new CreateRulerDialogFiller(os, "name", 1000));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
-    GTGlobals::sleep(500);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     QImage second = GTWidget::getImage(os, panView);
     CHECK_SET_ERR(init != second, "ruler not created");
     //    Hide ruler
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rulers"
                                                                         << "Show Custom Rulers"));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
-    GTGlobals::sleep(500);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     //    Set focus on tree
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
     GTMouseDriver::click();
@@ -1210,17 +1185,16 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     //    Remove ruler
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Rulers..."
                                                                               << "Remove 'name'"));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Rulers"
                                                                         << "Show Custom Rulers",
                                                       PopupChecker::IsDisabled));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Rulers"
                                                                         << "Remove 'name'",
                                                       PopupChecker::NotExists));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
-    GTGlobals::sleep(1000);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0035) {
@@ -1571,8 +1545,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
 GUI_TEST_CLASS_DEFINITION(test_0047) {
     //    Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     //    Open CV
     GTUtilsCv::cvBtn::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     //    Use context menu on CV
@@ -1587,15 +1560,17 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
 GUI_TEST_CLASS_DEFINITION(test_0048) {
     //    Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "sars.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     //    Use context menu on annotation in tree view
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "murine.gb", "NC_001363 features"));
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Add"
                                                                               << "Objects with annotations..."));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     //    Check {add-> Objects with annotations} action
     GTUtilsAnnotationsTreeView::findItem(os, "NC_001363 features [murine.gb]");
 }
@@ -1704,23 +1679,18 @@ GUI_TEST_CLASS_DEFINITION(test_0051) {
 
 GUI_TEST_CLASS_DEFINITION(test_0052) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     DetView *det = GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView();
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image1 = GTWidget::getImage(os, det);
 
     GTWidget::click(os, GTAction::button(os, "complement_action"));
-    GTGlobals::sleep(1000);
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image2 = GTWidget::getImage(os, det);
 
     GTWidget::click(os, GTAction::button(os, "complement_action"));
-    GTGlobals::sleep(1000);
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image3 = GTWidget::getImage(os, det);
 
     CHECK_SET_ERR(image1 != image2, "Image was not changed");
@@ -1729,25 +1699,20 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
 
 GUI_TEST_CLASS_DEFINITION(test_0052_1) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     DetView *det = GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView();
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image1 = GTWidget::getImage(os, det);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
-    GTGlobals::sleep(2000);
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image2 = GTWidget::getImage(os, det);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "do_not_translate_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
-    GTGlobals::sleep(2000);
     GTWidget::click(os, det);
-    GTGlobals::sleep(1000);
     QImage image3 = GTWidget::getImage(os, det);
 
     CHECK_SET_ERR(image1 != image2, "Image was not changed");
@@ -2066,7 +2031,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     //    Expected state: the view is not resized, horizontal scrollbar appears, vertical scrollbar is hidden, sequence is in one line
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
     CHECK_SET_ERR(seqWgt != NULL, "No sequence widget found");
@@ -2128,7 +2093,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     //    2. Scroll with the mouse wheel to the end of the sequence and back to the beginning
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "seq4.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     QAbstractButton *wrapButton = GTAction::button(os, "wrap_sequence_action");
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
@@ -2162,9 +2127,8 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
     //    Expected state: the sequence was scrolled to the previous line
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     QAbstractButton *wrapButton = GTAction::button(os, "wrap_sequence_action");
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
 
@@ -2268,7 +2232,7 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     //    6. Expected state: exported image have the whole sequence in it and has the minimum size to fit the sequence (no extra white space)
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "fa1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     QWidget *showDetViewButton = GTWidget::findWidget(os, "show_hide_details_view");
     CHECK_SET_ERR(showDetViewButton != NULL, "Cannot find show_hide_details_view button");
@@ -2386,7 +2350,7 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
     //    Expected state: the result file contains the lines of the sequence started from the specified position, no extra empty space
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
     CHECK_SET_ERR(seqWgt != NULL, "Cannot find sequence widget");
@@ -2444,13 +2408,12 @@ GUI_TEST_CLASS_DEFINITION(test_0076) {
     // Expected state: restriciton sites were recalculated and the is no annotation on zero position
 
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "EcoRI"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
     CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
@@ -2463,8 +2426,7 @@ GUI_TEST_CLASS_DEFINITION(test_0076) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "EcoRI"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", GTGlobals::FindOptions(false)) == NULL, "EcoRI is unexpectedly found");
 }
@@ -2480,7 +2442,7 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     // Expected state: no annotations on zero position
 
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     const QStringList defaultEnzymes = QStringList() << "ClaI"
                                                      << "DraI"
@@ -2488,8 +2450,7 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 4200, 10));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI", GTGlobals::FindOptions(false)) == NULL, "ClaI is unexpectedly found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI", GTGlobals::FindOptions(false)) == NULL, "DraI is unexpectedly found");
@@ -2499,8 +2460,7 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 3900, 300, 4300, 10));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", GTGlobals::FindOptions(false)) == NULL, "EcoRI is unexpectedly found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI") != NULL, "ClaI is unexpectedly not found");
@@ -2521,7 +2481,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     // Expected state: message box appears
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     class RegionSelectorChecker : public Filler {
     public:
@@ -2562,7 +2522,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Find restriction sites"));
     GTUtilsDialog::waitForDialog(os, new RegionSelectorChecker(os));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 }    // namespace GUITest_common_scenarios_sequence_view

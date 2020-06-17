@@ -37,16 +37,15 @@ PrimerLibrarySelectorFiller::PrimerLibrarySelectorFiller(HI::GUITestOpStatus &os
 #define GT_CLASS_NAME "GTUtilsDialog::PrimerLibrarySelectorFiller"
 #define GT_METHOD_NAME "run"
 void PrimerLibrarySelectorFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
-
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     QAbstractButton *okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
-    CHECK_SET_ERR(!okButton->isEnabled(), "the OK button is enabled");
+    CHECK_SET_ERR(!okButton->isEnabled(), "the OK button is enabled, but is expected to be disabled");
 
-    const int primerNumber = (-1 == number ? GTUtilsPrimerLibrary::librarySize(os) - 1 : number);
+    int librarySize = GTUtilsPrimerLibrary::librarySize(os);
+    int primerNumber = number == -1 ? librarySize - 1 : number;
     GTMouseDriver::moveTo(GTUtilsPrimerLibrary::getPrimerPoint(os, primerNumber));
     GTMouseDriver::click();
-    CHECK_SET_ERR(okButton->isEnabled(), "the OK button is disabled");
+    CHECK_SET_ERR(okButton->isEnabled(), "the OK button is disabled, but is expected to be enabled");
 
     if (doubleClick) {
         GTMouseDriver::doubleClick();

@@ -19,38 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FIND_PATTERN_MSA_WIDGET_FACTORY_H_
-#define _U2_FIND_PATTERN_MSA_WIDGET_FACTORY_H_
+#ifndef _U2_GT_UTILS_H_
+#define _U2_GT_UTILS_H_
 
-#include <U2Gui/OPWidgetFactory.h>
+#include <GTGlobals.h>
+
+#include <QString>
 
 namespace U2 {
 
-class GObjectView;
+using namespace HI;
 
-class U2VIEW_EXPORT FindPatternMsaWidgetFactory : public OPWidgetFactory {
-    Q_OBJECT
+class GTUtils {
 public:
-    FindPatternMsaWidgetFactory();
+    /** Generates unique string with the given prefix. Tries to preserve suffix uniqueness to be used safely in parallel test runs. */
+    static QString genUniqueString(const QString &prefix = "");
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    /** Waits until service is enabled. Fails if the service in not active within the default timeout. */
+    static void checkServiceIsEnabled(HI::GUITestOpStatus &os, const QString &serviceName);
 
-    OPGroupParameters getOPGroupParameters() override;
-
-    void applyOptionsToWidget(QWidget *widget, const QVariantMap &options) override;
-
-    static const QString &getGroupId();
-
-    static const QVariantMap getOptionsToActivateSearchInSequences();
-
-    static const QVariantMap getOptionsToActivateSearchInNames();
-
-private:
-    static const QString GROUP_ID;
-    static const QString GROUP_ICON_STR;
-    static const QString GROUP_DOC_PAGE;
+    static void checkExportServiceIsEnabled(HI::GUITestOpStatus &os) {
+        checkServiceIsEnabled(os, "DNA export service");
+    }
 };
 
 }    // namespace U2
-
 #endif

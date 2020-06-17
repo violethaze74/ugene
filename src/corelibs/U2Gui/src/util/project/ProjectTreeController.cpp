@@ -65,9 +65,6 @@
 
 namespace U2 {
 
-const int ProjectTreeController::NAME_DISPLAYING_SYMBOLS_COUNT = 30;
-const int ProjectTreeController::MAX_DISPLAING_NAME_COUNT = 5;
-
 ProjectTreeController::ProjectTreeController(EditableTreeView *tree, const ProjectTreeControllerModeSettings &settings, QObject *parent)
     : QObject(parent),
       tree(tree),
@@ -789,73 +786,14 @@ void ProjectTreeController::sl_onCreateFolder() {
     }
 }
 
-bool ProjectTreeController::getUserConfirmationForRemoval(const QList<Document *> &selectedDocs, const QList<Folder> &selectedFolders, const QList<GObject *> &selectedObjects) {
-    if (qgetenv(ENV_GUI_TEST) == "1") {
-        //TODO: a lot (>100) GUI tests must be fixed first.
-        return true;
-    }
-    QStringList selectedItemNames;
-    foreach (Document *doc, selectedDocs) {
-        selectedItemNames.append(doc->getName());
-    }
-    foreach (const Folder &folder, selectedFolders) {
-        selectedItemNames.append(folder.getFolderName());
-    }
-    foreach (GObject *obj, selectedObjects) {
-        selectedItemNames.append(obj->getGObjectName());
-    }
-
-    QString warningMessageText = (selectedItemNames.count() == 1) ? tr("Do you want to remove the selected item?") : tr("Do you want to remove the selected items?");
-    warningMessageText += "<ul style=\"margin-top:5px;margin-bottom:0px\"><li>";
-
-    bool isManyItemsMode = (selectedItemNames.count() > MAX_DISPLAING_NAME_COUNT);
-
-    QString fullItemsNamesList;
-    int itemCounter = 0;
-    foreach (QString name, selectedItemNames) {
-        if (isManyItemsMode) {
-            fullItemsNamesList += " - " + name + "\n";
-        }
-
-        if (++itemCounter <= MAX_DISPLAING_NAME_COUNT) {
-            // cut long names
-            if (name.size() > NAME_DISPLAYING_SYMBOLS_COUNT) {
-                name = name.left(NAME_DISPLAYING_SYMBOLS_COUNT);
-                name += "...";
-            }
-            warningMessageText += name;
-            warningMessageText += "</li><li>";
-        }
-    }
-    // remove last delimiter
-    warningMessageText = warningMessageText.left(warningMessageText.length() - 9);    // 9 is "</li><li>" length
-    warningMessageText += "</li></ul>";
-    if (isManyItemsMode) {
-        warningMessageText += "<pre style=\"margin-top:0px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</pre>";
-    }
-
-    QObjectScopedPointer<QMessageBox> questionBox = new QMessageBox();
-    questionBox->setIcon(QMessageBox::Question);
-    questionBox->setWindowTitle((selectedItemNames.count() == 1) ? tr("Remove selected item?") : tr("Remove selected items?"));
-    questionBox->setText(warningMessageText);
-    if (isManyItemsMode) {
-        questionBox->setDetailedText(fullItemsNamesList);
-    }
-    questionBox->addButton(QMessageBox::Yes);
-    questionBox->addButton(QMessageBox::No);
-    return questionBox->exec() == QMessageBox::Yes;
-}
-
 void ProjectTreeController::sl_onRemoveSelectedItems() {
-    bool deriveDocsFromObjs = (settings.groupMode != ProjectTreeGroupMode_ByDocument);
+    const bool deriveDocsFromObjs = (settings.groupMode != ProjectTreeGroupMode_ByDocument);
 
-    QList<Document *> selectedDocs = getDocsInSelection(deriveDocsFromObjs).values();
-    QList<Folder> selectedFolders = getSelectedFolders();
-    QList<GObject *> selectedObjects = objectSelection.getSelectedObjects();
+    const QList<Document *> selectedDocs = getDocsInSelection(deriveDocsFromObjs).values();
+    const QList<Folder> selectedFolders = getSelectedFolders();
+    const QList<GObject *> selectedObjects = objectSelection.getSelectedObjects();
 
-    if (getUserConfirmationForRemoval(selectedDocs, selectedFolders, selectedObjects)) {
-        removeItems(selectedDocs, selectedFolders, selectedObjects);
-    }
+    removeItems(selectedDocs, selectedFolders, selectedObjects);
 }
 
 void ProjectTreeController::sl_onLockedStateChanged() {

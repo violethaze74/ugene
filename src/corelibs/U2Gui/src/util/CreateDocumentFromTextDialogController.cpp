@@ -50,7 +50,7 @@ CreateDocumentFromTextDialogController::CreateDocumentFromTextDialogController(Q
       saveController(NULL) {
     ui = new Ui_CreateDocumentFromTextDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "24748714");
+    new HelpButton(this, ui->buttonBox, "46499629");
 
     initSaveController();
 

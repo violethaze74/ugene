@@ -77,7 +77,7 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext *_sc)
     : QDialog(_sc->getAnnotatedDNAView()->getWidget()) {
     sc = _sc;
     setupUi(this);
-    new HelpButton(this, buttonBox, "24748948");
+    new HelpButton(this, buttonBox, "46501082");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

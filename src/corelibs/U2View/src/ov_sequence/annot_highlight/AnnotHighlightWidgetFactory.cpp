@@ -33,7 +33,7 @@ namespace U2 {
 
 const QString AnnotHighlightWidgetFactory::GROUP_ID = "OP_ANNOT_HIGHLIGHT";
 const QString AnnotHighlightWidgetFactory::GROUP_ICON_STR = ":core/images/annotation_settings.png";
-const QString AnnotHighlightWidgetFactory::GROUP_DOC_PAGE = "24748782";
+const QString AnnotHighlightWidgetFactory::GROUP_DOC_PAGE = "46499827";
 
 AnnotHighlightWidgetFactory::AnnotHighlightWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;

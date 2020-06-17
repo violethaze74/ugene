@@ -63,7 +63,7 @@ ImportAnnotationsFromCSVDialog::ImportAnnotationsFromCSVDialog(QWidget *w)
     : QDialog(w),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24748791");
+    new HelpButton(this, buttonBox, "46499847");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

@@ -20,6 +20,7 @@
  */
 
 #include "GTTestsAssemblyBrowser.h"
+#include <GTUtilsMsaEditor.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
@@ -30,7 +31,6 @@
 #include <src/GTUtilsSequenceView.h>
 #include <system/GTClipboard.h>
 
-#include <GTUtilsMsaEditor.h>
 #include <QApplication>
 #include <QDir>
 #include <QTableView>
@@ -931,7 +931,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
     //    2. Rename assembly object
-    QModelIndex documentIndex= GTUtilsProjectTreeView::findIndex(os, "chrM.sorted.bam.ugenedb");
+    QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex(os, "chrM.sorted.bam.ugenedb");
     QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, "chrM", documentIndex);
     GTUtilsProjectTreeView::rename(os, objectIndex, "new_name");
     //    Check UGENE title
@@ -988,10 +988,9 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     //    Export consensus
     GTUtilsDialog::waitForDialog(os, new ExportConsensusDialogFiller(os, new Scenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export consensus variations..."));
-    GTWidget::click(os, GTWidget::findWidget(os, "Consensus area"), Qt::RightButton);
-    GTUtilsProjectTreeView::checkItem(os, "chrM_consensus.gb");
+    GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Consensus);
 
-    GTUtilsProjectTreeView::checkItem(os, "chrM.snp");
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "chrM.snp"), "chrM.snp is not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0036) {
@@ -1001,48 +1000,43 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
 
     //Check these hotkeys: up, down, left, right, +, -, pageup, pagedown
     GTUtilsAssemblyBrowser::zoomToReads(os);
-
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 7; i++) {
         GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
     }
-    GTGlobals::sleep();
 
-    QScrollBar *ver = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical);
-    QScrollBar *hor = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal);
+    QScrollBar *vScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical);
+    QScrollBar *hScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal);
 
-    int initHor = hor->value();
-
+    int vScrollBarValue = vScrollBar->value();
     for (int i = 0; i < 3; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Down);
-        GTGlobals::sleep(500);
     }
-    CHECK_SET_ERR(ver->value() == 3, QString("unexpected vertical value 1: %1").arg(ver->value()));
+    CHECK_SET_ERR(vScrollBar->value() == vScrollBarValue + 3, QString("1. Unexpected vScrollBar value: %1, before: %2").arg(vScrollBar->value()).arg(vScrollBarValue));
 
+    vScrollBarValue = vScrollBar->value();
     for (int i = 0; i < 2; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Up);
-        GTGlobals::sleep(500);
     }
-    CHECK_SET_ERR(ver->value() == 1, QString("unexpected vertical value 2: %1").arg(ver->value()));
+    CHECK_SET_ERR(vScrollBar->value() == vScrollBarValue - 2, QString("2. Unexpected vScrollBar value: %1, before: %2").arg(vScrollBar->value()).arg(vScrollBarValue));
 
+    int hScrollBarValue = hScrollBar->value();
     for (int i = 0; i < 3; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Left);
-        GTGlobals::sleep(500);
     }
-    CHECK_SET_ERR(hor->value() == initHor - 3, QString("unexpected horizontal value 1: %1").arg(hor->value()));
+    CHECK_SET_ERR(hScrollBar->value() == hScrollBarValue - 3, QString("3. Unexpected hScrollBar value: %1, before: %2").arg(hScrollBar->value()).arg(hScrollBarValue));
 
+    hScrollBarValue = hScrollBar->value();
     for (int i = 0; i < 2; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Right);
-        GTGlobals::sleep(500);
     }
-    CHECK_SET_ERR(hor->value() == initHor - 1, QString("unexpected horizontal value 2: %1").arg(hor->value()));
+    CHECK_SET_ERR(hScrollBar->value() == hScrollBarValue + 2, QString("4. Unexpected hScrollBar value: %1, before: %2").arg(hScrollBar->value()).arg(hScrollBarValue));
 
+    vScrollBarValue = vScrollBar->value();
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
-    GTGlobals::sleep(500);
-    CHECK_SET_ERR(ver->value() > 90, QString("unexpected vertical value 3: %1").arg(ver->value()));
+    CHECK_SET_ERR(vScrollBar->value() > vScrollBarValue + 10, QString("5. Unexpected vScrollBar value: %1, before: %").arg(vScrollBar->value()).arg(vScrollBarValue));
 
     GTKeyboardDriver::keyClick(Qt::Key_PageUp);
-    GTGlobals::sleep(500);
-    CHECK_SET_ERR(ver->value() == 1, QString("unexpected vertical value 4: %1").arg(ver->value()));
+    CHECK_SET_ERR(vScrollBar->value() == vScrollBarValue, QString("6. Unexpected vScrollBar value: %1").arg(vScrollBar->value()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0037) {

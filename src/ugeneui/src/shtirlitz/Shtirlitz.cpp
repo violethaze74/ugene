@@ -306,12 +306,12 @@ void ShtirlitzTask::run() {
 
     // Get actual location of the reports receiver
     //FIXME: error handling
-    QString reportsPath = http.syncGet(QUrl(QString(DESTINATION_URL_KEEPER_SRV) + QString(DESTINATION_URL_KEEPER_PAGE)));
+    QString reportsPath = http.syncGet(QUrl(QString(DESTINATION_URL_KEEPER_SRV) + QString(DESTINATION_URL_KEEPER_PAGE)), 10000);
     if (reportsPath.isEmpty()) {
         stateInfo.setError(tr("Cannot resolve destination path for statistical reports"));
         return;
     }
-    if (QNetworkReply::NoError != http.error()) {
+    if (http.error() != QNetworkReply::NoError) {
         stateInfo.setError(tr("Network error while resolving destination URL: ") + http.errorString());
         return;
     }
@@ -323,8 +323,8 @@ void ShtirlitzTask::run() {
         http2.setProxy(nc->getProxy(QNetworkProxy::HttpProxy));
     }
     QString fullPath = reportsPath + "?" + preparedReport;
-    http2.syncGet(fullPath);    //TODO: consider using POST method?
-    if (QNetworkReply::NoError != http.error()) {
+    http2.syncGet(fullPath, 20000);    //TODO: consider using POST method?
+    if (http.error() != QNetworkReply::NoError) {
         stateInfo.setError(tr("Network error while sending report: ") + http2.errorString());
         return;
     }

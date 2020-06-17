@@ -48,7 +48,7 @@ static QString fixProjectFile(const QString &name) {
 ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const QString &defaultProjectFilePath)
     : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "");
+    new HelpButton(this, buttonBox, "46499674");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     setModal(true);
@@ -91,7 +91,8 @@ const QString ExportProjectDialogController::getProjectFile() const {
 
 void ExportProjectDialogController::sl_onFileSelectButton() {
     LastUsedDirHelper h;
-    QString path = U2FileDialog::getSaveFileName(this, tr("Save file"), h.dir);
+    QString path = U2FileDialog::getSaveFileName(this, tr("Save file"), h.dir, 
+        tr("Project files") + DIALOG_FILTER_PROJECT_EXT);
     if (path.isEmpty()) {
         return;
     }

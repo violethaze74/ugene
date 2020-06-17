@@ -393,6 +393,11 @@ bool ProjectLoaderImpl::shouldFormatBeSelected(const QList<FormatDetectionResult
     return isFirstFormatEqualFirstUnrelatedFormat || (isFirstUnrelatedFormatMoreThenFormatDetectionAverageSimilarity && isFirstFormatLessThenFormatDetectionMatched) || isFirstFormatLessOrEqualThenFormatDetectionAverageSimilarity || forceSelectFormat;
 }
 
+int ProjectLoaderImpl::getMaxObjectsInSingleDocument() {
+    int maxObjects = qgetenv("UGENE_MAX_OBJECTS_PER_DOCUMENT").toInt();
+    return maxObjects < 10 ? 50000 : maxObjects;
+}
+
 bool ProjectLoaderImpl::detectFormat(const GUrl &url, QList<FormatDetectionResult> &formats, const QVariantMap &hints, FormatDetectionResult &selectedResult) {
     CHECK(!formats.isEmpty(), false);
     int idx = 0;
@@ -541,7 +546,7 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
                         info.url = url;
                         info.hints = dr.rawDataCheckResult.properties;
                         if (!info.hints.contains(DocumentReadingMode_MaxObjectsInDoc)) {
-                            info.hints[DocumentReadingMode_MaxObjectsInDoc] = maxObjectsInSingleDocument;
+                            info.hints[DocumentReadingMode_MaxObjectsInDoc] = getMaxObjectsInSingleDocument();
                         }
                         info.formatId = dr.format->getFormatId();
                         info.iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
@@ -810,7 +815,7 @@ void SaveProjectDialogController::sl_clicked(QAbstractButton *button) {
 ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m, QWidget *p)
     : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24748706");
+    new HelpButton(this, buttonBox, "46499627");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -866,7 +871,8 @@ void ProjectDialogController::keyPressEvent(QKeyEvent *event) {
 }
 
 void ProjectDialogController::sl_fileSelectClicked() {
-    QString filepath = U2FileDialog::getSaveFileName(this, tr("Save file"), AppContext::getSettings()->getValue(SETTINGS_DIR + "last_dir").toString());
+    QString filepath = U2FileDialog::getSaveFileName(this, tr("Save file"), AppContext::getSettings()->getValue(SETTINGS_DIR + "last_dir").toString(), 
+        tr("Project files") + DIALOG_FILTER_PROJECT_EXT);
     if (filepath.isEmpty())
         return;
     projectFilePathEdit->setText(filepath);

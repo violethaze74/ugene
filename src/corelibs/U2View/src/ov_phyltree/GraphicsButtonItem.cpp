@@ -37,9 +37,9 @@
 
 namespace U2 {
 
-const qreal GraphicsButtonItem::radiusMin = 3.0;
-const qreal GraphicsButtonItem::radiusMax = 4.0;
-const QBrush GraphicsButtonItem::highlightingBrush = QBrush(QColor(170, 170, 230));
+const qreal GraphicsButtonItem::radiusMin = 5.0;
+const qreal GraphicsButtonItem::radiusMax = 5.0;
+const QBrush GraphicsButtonItem::highlightingBrush = QBrush(QColor("#ea9700"));
 const QBrush GraphicsButtonItem::ordinaryBrush = QBrush(Qt::gray);
 
 GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
@@ -51,6 +51,7 @@ GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
     setZValue(2);
     setFlag(QGraphicsItem::ItemIsSelectable);
     setToolTip(QObject::tr("Left click to select the branch\nDouble-click to collapse the branch"));
+    setData(NODE_TREE_ITEM_KIND_KEY, true);
 
     if (nodeValue >= 0) {
         nodeLabel = new QGraphicsSimpleTextItem(QString::number(nodeValue), this);

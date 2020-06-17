@@ -65,7 +65,7 @@ void HmmerSearchDialog::init(U2SequenceObject *seqObj) {
     setupUi(this);
     SAFE_POINT(NULL != seqObj, L10N::nullPointerError("sequence object"), );
 
-    new HelpButton(this, buttonBox, "24748985");
+    new HelpButton(this, buttonBox, "46501169");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

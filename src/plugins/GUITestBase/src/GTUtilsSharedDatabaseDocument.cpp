@@ -67,26 +67,32 @@ static QString getSuiteFolderPrefix() {
  * This helps to limit unstable drag & drop + scroll behavior when project tree is too large.
  */
 static void removeTempContentFromOtherTests(HI::GUITestOpStatus &os, Document *document) {
-    QModelIndexList documentItems = GTUtilsProjectTreeView::findIndecies(os, document->getName(), QModelIndex(), 0, GTGlobals::FindOptions(false));
+    QModelIndexList documentItems = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, document->getName(), QModelIndex(), 0, GTGlobals::FindOptions(false));
     if (documentItems.isEmpty()) {
         return;
     }
+
     QModelIndex documentItem = documentItems[0];
     QString tmpFolderPrefix = getSuiteFolderPrefix();
     int maxToRemove = 4;    // if there are too many documents to remove the test may fail by timeout.
-    for (int i = 0; i < maxToRemove; i++) {
-        GTGlobals::FindOptions options;
-        options.matchPolicy = Qt::MatchStartsWith;
-        options.failIfNotFound = false;
-        QModelIndexList tmpFoldersToDelete = GTUtilsProjectTreeView::findIndecies(os, tmpFolderPrefix, documentItem, 1, options);
-        if (tmpFoldersToDelete.isEmpty()) {
+    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    for (int item = 0; item < maxToRemove; item++) {
+        bool isRemoved = false;
+        for (int i = 0; i < treeView->model()->rowCount(documentItem); i++) {
+            QModelIndex itemIndex = treeView->model()->index(i, 0, documentItem);
+            QString itemName = itemIndex.data(Qt::DisplayRole).toString();
+            if (itemName.startsWith(tmpFolderPrefix)) {
+                GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove selected items", GTGlobals::UseMouse));
+                GTUtilsProjectTreeView::callContextMenu(os, itemIndex);
+                GTThread::waitForMainThread();
+                GTUtilsDialog::waitAllFinished(os);
+                isRemoved = true;
+                break;
+            }
+        }
+        if (!isRemoved) {
             break;
         }
-        const QModelIndex &index = tmpFoldersToDelete[0];
-        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove selected items", GTGlobals::UseMouse));
-        GTUtilsProjectTreeView::callContextMenu(os, index);
-        GTThread::waitForMainThread();
-        GTUtilsDialog::waitAllFinished(os);
     }
 }
 
@@ -135,6 +141,7 @@ Document *GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(HI::GUITes
 
     CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), NULL);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
     return GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, conName);
 }
 #undef GT_METHOD_NAME
@@ -404,7 +411,7 @@ void GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(HI::GUITest
     checkItemsExist(os, databaseDoc, itemsPaths);
 
     QModelIndex parentIndex = getItemIndex(os, databaseDoc, parentPath);
-    QModelIndexList subIndecies = GTUtilsProjectTreeView::findIndecies(os, "", parentIndex);
+    QModelIndexList subIndecies = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "", parentIndex);
     GT_CHECK(subIndecies.size() == itemsPaths.size(), QString("Parent item contains %1 subitems, expected % subitems").arg(subIndecies.size()).arg(itemsPaths.size()));
 }
 #undef GT_METHOD_NAME

@@ -22,11 +22,12 @@
 #ifndef _HI_GT_GLOBALS_H_
 #define _HI_GT_GLOBALS_H_
 
-#include <core/global.h>
 #include <core/GUITestOpStatus.h>
-#include <QMessageLogger>
+#include <core/global.h>
 
 #include <QAction>
+#include <QMessageLogger>
+#include <QTime>
 
 /**
  * Default wait time for any UI operation to complete.
@@ -49,11 +50,16 @@ namespace HI {
  */
 class HI_EXPORT GTGlobals {
 public:
-    enum UseMethod {UseMouse, UseKey, UseKeyBoard};
-    enum WindowAction {Minimize, Maximize, Close, WindowActionCount};
+    enum UseMethod { UseMouse,
+                     UseKey,
+                     UseKeyBoard };
+    enum WindowAction { Minimize,
+                        Maximize,
+                        Close,
+                        WindowActionCount };
 
     // if failIfNull is set to true, fails if object wasn't found
-	class HI_EXPORT FindOptions {
+    class HI_EXPORT FindOptions {
     public:
         FindOptions(bool failIfNotFound = true, Qt::MatchFlags matchPolicy = Qt::MatchExactly, int depth = INFINITE_DEPTH, bool searchInHidden = false);
 
@@ -72,22 +78,22 @@ public:
     static void GUITestFail();
 };
 
+class GTLog {
+public:
+    static void debug(const QString &message);
+};
+
 #define GT_DEBUG_MESSAGE(condition, errorMessage, result) \
-{ \
-    QString cond = #condition;\
-    if (condition) { \
-        qDebug("GT_DEBUG_MESSAGE Checking condition (%s). Result: OK", cond.toLocal8Bit().constData()); \
-    } else { \
-        qWarning("\n------------"); \
-        qWarning("GT_DEBUG_MESSAGE Checking condition (%s). Result: FAILED", cond.toLocal8Bit().constData()); \
-        qWarning("GT_DEBUG_MESSAGE errorMessage '%s'", QString(errorMessage).toLocal8Bit().constData()); \
-        qWarning("------------\n"); \
-    } \
-    if (os.hasError()) { \
-        qCritical("GT_DEBUG_MESSAGE OpStatus already has error!"); \
-        qCritical("GT_DEBUG_MESSAGE OpStatus error '%s'",os.getError().toLocal8Bit().constData()); \
-    } \
-}
+    { \
+        QByteArray _cond = QString(#condition).toLocal8Bit(); \
+        QByteArray _time = QTime::currentTime().toString().toLocal8Bit(); \
+        QByteArray _error = QString(errorMessage).toLocal8Bit(); \
+        if (condition) { \
+            qDebug("[%s] GT_OK: (%s) for '%s'", _time.constData(), _cond.constData(), _error.constData()); \
+        } else { \
+            qWarning("[%s] GT_FAIL: (%s) for '%s'", _time.constData(), _cond.constData(), _error.constData()); \
+        } \
+    }
 
 /**
     Checks condition is false and returns the result if it is.
@@ -109,11 +115,16 @@ public:
     CHECK_SET_ERR(!os.isCoR(), errorMessage)
 
 #define CHECK_SET_ERR_RESULT(condition, errorMessage, result) \
-{ \
-    GT_DEBUG_MESSAGE(condition, errorMessage, result); \
-    if (os.hasError()) { HI::GTGlobals::GUITestFail(); os.setError(os.getError()); return result; } \
-    CHECK_EXT(condition, if (!os.hasError()) { HI::GTGlobals::GUITestFail(); os.setError(errorMessage);}, result) \
-}
+    { \
+        GT_DEBUG_MESSAGE(condition, errorMessage, result); \
+        if (os.hasError()) { \
+            HI::GTGlobals::GUITestFail(); \
+            os.setError(os.getError()); \
+            return result; \
+        } \
+        CHECK_EXT( \
+            condition, if (!os.hasError()) { HI::GTGlobals::GUITestFail(); os.setError(errorMessage); }, result) \
+    }
 
 #define CHECK_OP_SET_ERR_RESULT(os, errorMessage, result) \
     CHECK_SET_ERR_RESULT(!os.isCoR(), errorMessage, result)
@@ -124,8 +135,8 @@ public:
 
 #define GT_CHECK_NO_MESSAGE(condition, errorMessage) \
     if (!(condition)) { \
-    GT_CHECK(condition, errorMessage) \
-}
+        GT_CHECK(condition, errorMessage) \
+    }
 
 #define GT_CHECK_RESULT(condition, errorMessage, result) \
     CHECK_SET_ERR_RESULT(condition, GT_CLASS_NAME " __ " GT_METHOD_NAME " _  " + QString(errorMessage), result)
@@ -134,11 +145,11 @@ public:
     GT_CHECK_RESULT(!os.isCoR(), errorMessage, result)
 
 #define DRIVER_CHECK(condition, errorMessage) \
-    if(!(condition)){ \
-        qCritical("Driver error: '%s'",QString(errorMessage).toLocal8Bit().constData()); \
+    if (!(condition)) { \
+        qCritical("Driver error: '%s'", QString(errorMessage).toLocal8Bit().constData()); \
         return false; \
-    } \
+    }
 
-} //namespace
+}    // namespace HI
 
 #endif

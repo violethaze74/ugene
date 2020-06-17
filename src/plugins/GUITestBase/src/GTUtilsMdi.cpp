@@ -235,6 +235,12 @@ QWidget *GTUtilsMdi::activeWindow(HI::GUITestOpStatus &os, const GTGlobals::Find
 }
 #undef GT_METHOD_NAME
 
+static QString getActiveMdiWindowTitle() {
+    MainWindow *mainWindow = AppContext::getMainWindow();
+    QWidget *mdiWindow = mainWindow == nullptr ? nullptr : mainWindow->getMDIManager()->getActiveWindow();
+    return mdiWindow == nullptr ? "<no active window>" : mdiWindow->windowTitle();
+}
+
 #define GT_METHOD_NAME "getActiveObjectViewWindow"
 QWidget *GTUtilsMdi::getActiveObjectViewWindow(GUITestOpStatus &os, const QString &viewId) {
     GObjectViewWindow *viewWindow = nullptr;
@@ -250,7 +256,7 @@ QWidget *GTUtilsMdi::getActiveObjectViewWindow(GUITestOpStatus &os, const QStrin
             viewWindow = activeViewWindow;
         }
     }
-    GT_CHECK_RESULT(viewWindow != nullptr, "View window is not found: " + viewId, nullptr);
+    GT_CHECK_RESULT(viewWindow != nullptr, "View window is not found: " + viewId + ", active window: " + getActiveMdiWindowTitle(), nullptr);
     return viewWindow;
 }
 #undef GT_METHOD_NAME
