@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,11 @@
 #ifndef GTSEQUENCEREADINGMODEDIALOG_H
 #define GTSEQUENCEREADINGMODEDIALOG_H
 
-#include <U2Core/U2OpStatus.h>
 #include <QDialogButtonBox>
-
 #include <QString>
+
+#include <U2Core/U2OpStatus.h>
+
 #include "GTGlobals.h"
 
 namespace U2 {
@@ -33,7 +34,8 @@ using namespace HI;
 
 class GTSequenceReadingModeDialog {
 public:
-    enum sequenceMode {Separate, Merge};
+    enum sequenceMode { Separate,
+                        Merge };
 
     static GTGlobals::UseMethod useMethod;
     static sequenceMode mode;
@@ -44,6 +46,6 @@ public:
     static QString newDocName;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // GTSEQUENCEREADINGMODEDIALOG_H
+#endif    // GTSEQUENCEREADINGMODEDIALOG_H

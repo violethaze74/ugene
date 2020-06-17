@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,16 +20,17 @@
  */
 
 #include "AssemblyBrowserState.h"
+
 #include "AssemblyBrowser.h"
 #include "AssemblyBrowserFactory.h"
 
 namespace U2 {
 namespace {
-    const QString VIEW_ID   = "view_id";
-    const QString OBJ_REF   = "asm_obj_ref";
-    const QString REGION    = "asm_region";
-    const QString Y_OFFSET  = "asm_y_offset";
-}
+const QString VIEW_ID = "view_id";
+const QString OBJ_REF = "asm_obj_ref";
+const QString REGION = "asm_region";
+const QString Y_OFFSET = "asm_y_offset";
+}    // namespace
 
 bool AssemblyBrowserState::isValid() const {
     return stateData.value(VIEW_ID) == AssemblyBrowserFactory::ID;
@@ -57,7 +58,7 @@ void AssemblyBrowserState::setYOffset(int y) {
 
 int AssemblyBrowserState::getYOffset() const {
     QVariant v = stateData.value(Y_OFFSET);
-    if(v.type() == QVariant::Int) {
+    if (v.type() == QVariant::Int) {
         return v.toInt();
     }
     return 0;
@@ -65,20 +66,20 @@ int AssemblyBrowserState::getYOffset() const {
 
 void AssemblyBrowserState::saveState(const AssemblyBrowser *ab) {
     stateData[VIEW_ID] = AssemblyBrowserFactory::ID;
-    AssemblyObject * gObj = ab->getAssemblyObject();
-    if(gObj != NULL) {
+    AssemblyObject *gObj = ab->getAssemblyObject();
+    if (gObj != NULL) {
         setGObjectRef(GObjectReference(gObj));
     }
 
-    setVisibleBasesRegion( ab->getVisibleBasesRegion() );
-    setYOffset( ab->getYOffsetInAssembly() );
+    setVisibleBasesRegion(ab->getVisibleBasesRegion());
+    setYOffset(ab->getYOffsetInAssembly());
 }
 
 void AssemblyBrowserState::restoreState(AssemblyBrowser *ab) const {
-    if(NULL != ab->getMainWidget() && ab->getMainWidget()->isCorrectView()) {
-        ab->navigateToRegion( getVisibleBasesRegion() );
-        ab->setYOffsetInAssembly( getYOffset() );
+    if (NULL != ab->getMainWidget() && ab->getMainWidget()->isCorrectView()) {
+        ab->navigateToRegion(getVisibleBasesRegion());
+        ab->setYOffsetInAssembly(getYOffset());
     }
 }
 
-} // namespace
+}    // namespace U2

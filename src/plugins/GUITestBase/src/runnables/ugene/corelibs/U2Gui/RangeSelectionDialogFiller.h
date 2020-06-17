@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,26 +27,27 @@
 namespace U2 {
 using namespace HI;
 
-    class SelectSequenceRegionDialogFiller : public Filler {
-    public:
-        enum RangeType {Single, Multiple};
-        SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int *_len);
-        SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, CustomScenario* scenario = NULL);
-        SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _minVal, int _maxVal);
-        SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, const QString &range);
-        SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _length, bool selectFromBegin = true);
+class SelectSequenceRegionDialogFiller : public Filler {
+public:
+    enum RangeType { Single,
+                     Multiple };
+    SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int *_len);
+    SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, CustomScenario *scenario = NULL);
+    SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _minVal, int _maxVal);
+    SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, const QString &range);
+    SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _length, bool selectFromBegin = true);
 
-        void commonScenario();
-        void setCircular(bool v);
-    private:
-        RangeType rangeType;
-        bool selectAll, fromBegin;
-        int minVal, maxVal, length, *len;
-        QString multipleRange;
-        bool circular;
-    };
+    void commonScenario();
+    void setCircular(bool v);
 
+private:
+    RangeType rangeType;
+    bool selectAll, fromBegin;
+    int minVal, maxVal, length, *len;
+    QString multipleRange;
+    bool circular;
+};
 
-}
+}    // namespace U2
 
 #endif

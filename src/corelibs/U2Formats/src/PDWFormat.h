@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,26 +38,24 @@ class U2SequenceObject;
 class U2FORMATS_EXPORT PDWFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-                                    PDWFormat(QObject *p);
+    PDWFormat(QObject *p);
 
 protected:
-    virtual FormatCheckResult       checkRawTextData(const QByteArray &rawData,
-                                        const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData,
+                                               const GUrl & = GUrl()) const;
 
-    virtual Document *              loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef,
-                                        const QVariantMap &fs, U2OpStatus &os);
+    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
 
 private:
-    static QByteArray               parseSequence(IOAdapter *io, U2OpStatus &ti);
+    static QByteArray parseSequence(IOAdapter *io, U2OpStatus &ti);
 
-    static SharedAnnotationData     parseAnnotation(IOAdapter *io, U2OpStatus &ti);
+    static SharedAnnotationData parseAnnotation(IOAdapter *io, U2OpStatus &ti);
 
-    static QByteArray               readPdwValue(const QByteArray &readBuf, const QByteArray &valueName);
+    static QByteArray readPdwValue(const QByteArray &readBuf, const QByteArray &valueName);
 
-    void                            load(IOAdapter *io, const U2DbiRef &ref, const QVariantMap &fs, const GUrl &docUrl, QList<GObject *> &objects,
-                                        U2OpStatus &ti, U2SequenceObject *&dnaObj, AnnotationTableObject *&aObj);
+    void load(IOAdapter *io, const U2DbiRef &ref, const QVariantMap &fs, const GUrl &docUrl, QList<GObject *> &objects, U2OpStatus &ti, U2SequenceObject *&dnaObj, AnnotationTableObject *&aObj);
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

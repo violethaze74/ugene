@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,20 +32,20 @@ namespace U2 {
 
 class U2GUI_EXPORT ImportOptionsWidget : public QWidget {
     Q_OBJECT
-    
+
 public:
     ImportOptionsWidget(QWidget *parent = 0);
     ~ImportOptionsWidget();
 
-    void init(const QString& baseFolder, const ImportToDatabaseOptions& options);
+    void init(const QString &baseFolder, const ImportToDatabaseOptions &options);
 
     QString getFolder() const;
     ImportToDatabaseOptions getOptions() const;
 
 private:
-    Ui_ImportOptionsWidget* ui;
+    Ui_ImportOptionsWidget *ui;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_IMPORT_OPTIONS_WIDGET_H_
+#endif    // _U2_IMPORT_OPTIONS_WIDGET_H_

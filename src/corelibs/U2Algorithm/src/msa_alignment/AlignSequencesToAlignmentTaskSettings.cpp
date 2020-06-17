@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,21 +26,23 @@ namespace U2 {
 /************************************************************************/
 /* AlignSequencesToAlignmentTaskSettings */
 /************************************************************************/
-AlignSequencesToAlignmentTaskSettings::AlignSequencesToAlignmentTaskSettings() : addAsFragments(false), reorderSequences(false), referenceRowId(-1), maxSequenceLength(0) {}
+AlignSequencesToAlignmentTaskSettings::AlignSequencesToAlignmentTaskSettings()
+    : addAsFragments(false), reorderSequences(false), referenceRowId(-1), maxSequenceLength(0) {
+}
 
-AlignSequencesToAlignmentTaskSettings::AlignSequencesToAlignmentTaskSettings(const U2EntityRef& _msaRef, const U2AlphabetId& newAlphabet, bool addAsFragments)
-: addAsFragments(addAsFragments), reorderSequences(false), referenceRowId(-1), maxSequenceLength(0) {
+AlignSequencesToAlignmentTaskSettings::AlignSequencesToAlignmentTaskSettings(const U2EntityRef &_msaRef, const U2AlphabetId &newAlphabet, bool addAsFragments)
+    : addAsFragments(addAsFragments), reorderSequences(false), referenceRowId(-1), maxSequenceLength(0) {
     msaRef = _msaRef;
     alphabet = newAlphabet;
 }
 
 AlignSequencesToAlignmentTaskSettings::AlignSequencesToAlignmentTaskSettings(const AlignSequencesToAlignmentTaskSettings &s)
-: AbstractAlignmentTaskSettings(s), addedSequencesRefs(s.addedSequencesRefs), addedSequencesNames(s.addedSequencesNames), addAsFragments(s.addAsFragments),
-reorderSequences(s.reorderSequences), referenceRowId(s.referenceRowId), maxSequenceLength(s.maxSequenceLength){
+    : AbstractAlignmentTaskSettings(s), addedSequencesRefs(s.addedSequencesRefs), addedSequencesNames(s.addedSequencesNames), addAsFragments(s.addAsFragments),
+      reorderSequences(s.reorderSequences), referenceRowId(s.referenceRowId), maxSequenceLength(s.maxSequenceLength) {
 }
 
 bool AlignSequencesToAlignmentTaskSettings::isValid() const {
     return AbstractAlignmentTaskSettings::isValid() && !addedSequencesRefs.isEmpty() && !addedSequencesNames.isEmpty();
 }
 
-}   //namespace
+}    // namespace U2

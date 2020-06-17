@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_TEXT_OBJECT_UNIT_TESTS_H_
 #define _U2_TEXT_OBJECT_UNIT_TESTS_H_
 
-#include "core/dbi/DbiTest.h"
-
 #include <unittest.h>
+
+#include "core/dbi/DbiTest.h"
 
 namespace U2 {
 
@@ -36,8 +36,8 @@ public:
     static void shutdown();
     static U2DbiRef getDbiRef();
     static U2EntityRef getObjRef();
-    static U2ObjectDbi * getObjDbi();
-    static UdrDbi * getUdrDbi();
+    static U2ObjectDbi *getObjDbi();
+    static UdrDbi *getUdrDbi();
 
 private:
     static TestDbiProvider dbiProvider;
@@ -69,7 +69,7 @@ DECLARE_TEST(TextObjectUnitTests, clone_NullObj);
 /* remove */
 DECLARE_TEST(TextObjectUnitTests, remove);
 
-} // U2
+}    // namespace U2
 
 DECLARE_METATYPE(TextObjectUnitTests, createInstance);
 DECLARE_METATYPE(TextObjectUnitTests, createInstance_WrongDbi);
@@ -81,4 +81,4 @@ DECLARE_METATYPE(TextObjectUnitTests, clone_NullDbi);
 DECLARE_METATYPE(TextObjectUnitTests, clone_NullObj);
 DECLARE_METATYPE(TextObjectUnitTests, remove);
 
-#endif // _U2_TEXT_OBJECT_UNIT_TESTS_H_
+#endif    // _U2_TEXT_OBJECT_UNIT_TESTS_H_

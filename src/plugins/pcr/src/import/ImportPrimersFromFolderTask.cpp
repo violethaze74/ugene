@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2DbiUtils.h>
+#include "ImportPrimersFromFolderTask.h"
+
 #include <U2Core/L10n.h>
+#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "ImportPrimersFromFolderTask.h"
 #include "ImportPrimerFromObjectTask.h"
 
 namespace U2 {
 
-ImportPrimersFromFolderTask::ImportPrimersFromFolderTask(const Folder &folder) :
-    Task(tr("Import primers from the shared database folder: %1").arg(folder.getFolderPath()),
-         TaskFlags(TaskFlag_NoRun | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
-    folder(folder)
-{
+ImportPrimersFromFolderTask::ImportPrimersFromFolderTask(const Folder &folder)
+    : Task(tr("Import primers from the shared database folder: %1").arg(folder.getFolderPath()),
+           TaskFlags(TaskFlag_NoRun | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
+      folder(folder) {
     SAFE_POINT_EXT(NULL != folder.getDocument(), setError(L10N::nullPointerError("folder's document")), );
 }
 
@@ -101,4 +101,4 @@ QList<GObject *> ImportPrimersFromFolderTask::getSubobjects() {
     return subobjects;
 }
 
-}   // namespace U2
+}    // namespace U2

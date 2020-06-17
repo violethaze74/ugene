@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,10 +29,10 @@ using namespace HI;
 
 class ConstructMoleculeDialogFiller : public Filler {
 public:
-    enum ActionType {           // an appropriate action data
-        AddAllFragments,        // ignored
+    enum ActionType {    // an appropriate action data
+        AddAllFragments,    // ignored
         InvertAddedFragment,    // QString with a part of the fragment name, if several fragments match this part, the first one will be inverted
-        ClickCancel,            // ignored
+        ClickCancel,    // ignored
         ClickOk
     };
     typedef QPair<ActionType, QVariant> Action;
@@ -52,6 +52,6 @@ private:
     const QList<Action> actions;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_CONSTRUCT_MOLECULE_DIALOG_FILLER_H_
+#endif    // _U2_CONSTRUCT_MOLECULE_DIALOG_FILLER_H_

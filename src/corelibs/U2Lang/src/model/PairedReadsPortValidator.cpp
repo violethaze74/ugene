@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,9 @@
 namespace U2 {
 namespace Workflow {
 
-PairedReadsPortValidator::PairedReadsPortValidator(const QString& inputId, const QString& inputPairedId)
-    : PortValidator(), inputSlotId(inputId), pairedInputSlotId(inputPairedId) {}
+PairedReadsPortValidator::PairedReadsPortValidator(const QString &inputId, const QString &inputPairedId)
+    : PortValidator(), inputSlotId(inputId), pairedInputSlotId(inputPairedId) {
+}
 
 bool PairedReadsPortValidator::validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
     bool res = true;
@@ -49,5 +50,5 @@ bool PairedReadsPortValidator::validate(const IntegralBusPort *port, Notificatio
     return res;
 }
 
-}   // namesapce Workflow
-}   // namespace U2
+}    // namespace Workflow
+}    // namespace U2

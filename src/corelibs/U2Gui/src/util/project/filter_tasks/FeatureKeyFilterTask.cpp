@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "FeatureKeyFilterTask.h"
+
 #include <U2Core/L10n.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2FeatureDbi.h>
@@ -26,18 +28,14 @@
 
 #include "../ProjectFilterNames.h"
 
-#include "FeatureKeyFilterTask.h"
-
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 /// FeatureKeyFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-FeatureKeyFilterTask::FeatureKeyFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs)
-    : AbstractProjectFilterTask(settings, ProjectFilterNames::FEATURE_KEY_FILTER_NAME, docs)
-{
-
+FeatureKeyFilterTask::FeatureKeyFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+    : AbstractProjectFilterTask(settings, ProjectFilterNames::FEATURE_KEY_FILTER_NAME, docs) {
 }
 
 void FeatureKeyFilterTask::run() {
@@ -93,10 +91,9 @@ void FeatureKeyFilterTask::filterDocument(Document *doc) {
 /// FeatureKeyFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask * FeatureKeyFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-    const QList<QPointer<Document> > &docs) const
-{
+AbstractProjectFilterTask *FeatureKeyFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
+                                                                      const QList<QPointer<Document>> &docs) const {
     return new FeatureKeyFilterTask(settings, docs);
 }
 
-} // namespace U2
+}    // namespace U2

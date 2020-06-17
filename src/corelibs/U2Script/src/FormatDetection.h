@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,11 +59,11 @@ typedef enum U2Format {
  * U2_INVALID_PATH -       the `pathToFile` does not exist or contains path to a folder
  *
  */
-U2SCRIPT_EXPORT U2ErrorType         detectFileFormat(   const wchar_t *     pathToFile,
-                                                        U2Format *          format );
+U2SCRIPT_EXPORT U2ErrorType detectFileFormat(const wchar_t *pathToFile,
+                                             U2Format *format);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // _FORMAT_DETECTION_H_
+#endif    // _FORMAT_DETECTION_H_

@@ -2,11 +2,19 @@
 
 include( ../../ugene_globals.pri )
 
-TARGET = QSpec
+TARGET = QSpec$$D
+QMAKE_PROJECT_NAME = QSpec
 TEMPLATE = lib
 CONFIG += thread debug_and_release warn_off qt dll
 INCLUDEPATH += src _tmp
-QT += testlib webkitwidgets
+QT += testlib
+
+useWebKit() {
+    QT += webkitwidgets
+} else {
+    QT += webenginewidgets
+}
+
 
 DEFINES += BUILDING_QSPEC_DLL
 DEFINES += QT_DLL
@@ -16,7 +24,6 @@ DESTDIR = ../../$$out_dir()
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        TARGET = QSpecd
         DEFINES += _DEBUG
         CONFIG +=console
         MOC_DIR=_tmp/moc/debug
@@ -24,7 +31,6 @@ DESTDIR = ../../$$out_dir()
     }
 
     CONFIG(release, debug|release) {
-        TARGET = QSpec
         DEFINES+=NDEBUG
         MOC_DIR=_tmp/moc/release
         OBJECTS_DIR=_tmp/obj/release
@@ -35,6 +41,7 @@ DESTDIR = ../../$$out_dir()
 unix {
     !macx {
         LIBS += -lXtst
+        QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
     }
     macx {
         QMAKE_LFLAGS += -framework ApplicationServices
@@ -52,7 +59,6 @@ win32 {
 
     QMAKE_MSVC_PROJECT_NAME=lib_3rd_QSpec
 
-    LIBS += User32.lib Gdi32.lib
-    LIBS += psapi.lib
+    LIBS += User32.lib Gdi32.lib Advapi32.lib psapi.lib
     DEFINES += "PSAPI_VERSION=1"
 }

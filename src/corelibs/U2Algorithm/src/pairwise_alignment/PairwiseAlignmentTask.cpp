@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,25 +27,25 @@ const QString PairwiseAlignmentTaskSettings::PA_FIRST_SEQUENCE_REF("firstSequenc
 const QString PairwiseAlignmentTaskSettings::PA_SECOND_SEQUENCE_REF("secondSequenceRef");
 const QString PairwiseAlignmentTaskSettings::DEFAULT_NAME("PairwiseAlignmentResult.aln");
 
-PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(){
+PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings() {
 }
 
-PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(const QVariantMap& someSettings) : AbstractAlignmentTaskSettings(someSettings) {
+PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(const QVariantMap &someSettings)
+    : AbstractAlignmentTaskSettings(someSettings) {
 }
 
-PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(const PairwiseAlignmentTaskSettings &s) :
-    AbstractAlignmentTaskSettings(s),
-    firstSequenceRef(s.firstSequenceRef),
-    secondSequenceRef(s.secondSequenceRef) {
+PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(const PairwiseAlignmentTaskSettings &s)
+    : AbstractAlignmentTaskSettings(s),
+      firstSequenceRef(s.firstSequenceRef),
+      secondSequenceRef(s.secondSequenceRef) {
 }
 
 bool PairwiseAlignmentTaskSettings::isValid() const {
     return firstSequenceRef.isValid() && secondSequenceRef.isValid() && AbstractAlignmentTaskSettings::isValid();
 }
 
-
-PairwiseAlignmentTask::PairwiseAlignmentTask(TaskFlags flags) :
-    AbstractAlignmentTask(tr("Pairwise alignment task"), flags) {
+PairwiseAlignmentTask::PairwiseAlignmentTask(TaskFlags flags)
+    : AbstractAlignmentTask(tr("Pairwise alignment task"), flags) {
 }
 
-}   //namespace
+}    // namespace U2

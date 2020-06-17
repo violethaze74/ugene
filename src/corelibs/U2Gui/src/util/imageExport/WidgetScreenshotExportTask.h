@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,8 +33,10 @@ class WidgetScreenshotExportTask : public ImageExportTask {
 public:
     WidgetScreenshotExportTask(QWidget *widget, const ImageExportTaskSettings &settings)
         : ImageExportTask(settings),
-          widget(widget) {}
+          widget(widget) {
+    }
     virtual void run() = 0;
+
 protected:
     QWidget *widget;
 };
@@ -43,21 +45,24 @@ class WidgetScreenshotExportToSvgTask : public WidgetScreenshotExportTask {
     Q_OBJECT
 public:
     WidgetScreenshotExportToSvgTask(QWidget *widget, const ImageExportTaskSettings &settings)
-        : WidgetScreenshotExportTask(widget, settings) {}
+        : WidgetScreenshotExportTask(widget, settings) {
+    }
     void run();
 };
 
 class WidgetScreenshotExportToPdfTask : public WidgetScreenshotExportTask {
 public:
     WidgetScreenshotExportToPdfTask(QWidget *widget, const ImageExportTaskSettings &settings)
-        : WidgetScreenshotExportTask(widget, settings) {}
+        : WidgetScreenshotExportTask(widget, settings) {
+    }
     void run();
 };
 
 class WidgetScreenshotExportToBitmapTask : public WidgetScreenshotExportTask {
 public:
     WidgetScreenshotExportToBitmapTask(QWidget *widget, const ImageExportTaskSettings &settings)
-        : WidgetScreenshotExportTask(widget, settings) {}
+        : WidgetScreenshotExportTask(widget, settings) {
+    }
     void run();
 };
 
@@ -70,16 +75,17 @@ public:
     int getImageHeight() const;
 
 protected:
-    void initSettingsWidget() {}
+    void initSettingsWidget() {
+    }
 
-    Task* getExportToSvgTask(const ImageExportTaskSettings &settings) const;
-    Task* getExportToPdfTask(const ImageExportTaskSettings &settings) const;
-    Task* getExportToBitmapTask(const ImageExportTaskSettings &settings) const;
+    Task *getExportToSvgTask(const ImageExportTaskSettings &settings) const;
+    Task *getExportToPdfTask(const ImageExportTaskSettings &settings) const;
+    Task *getExportToBitmapTask(const ImageExportTaskSettings &settings) const;
 
 private:
     QWidget *widget;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_WIDGET_SCREENSHOT_EXPORT_TASK_H_
+#endif    // _U2_WIDGET_SCREENSHOT_EXPORT_TASK_H_

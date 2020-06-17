@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,6 @@
 #ifndef _U2_CUSTOM_AUTO_ANNOTATION_DIALOG_H_
 #define _U2_CUSTOM_AUTO_ANNOTATION_DIALOG_H_
 
-
-
 #include <ui_CustomAutoAnnotationDialog.h>
 
 namespace U2 {
@@ -33,16 +31,15 @@ class ADVSequenceObjectContext;
 class CustomAutoAnnotationDialog : public QDialog, Ui_CustomAutoAnnotationDialog {
     Q_OBJECT
 public:
-    CustomAutoAnnotationDialog(ADVSequenceObjectContext* ctx);
+    CustomAutoAnnotationDialog(ADVSequenceObjectContext *ctx);
     virtual void accept();
+
 private:
-    ADVSequenceObjectContext* seqCtx;
+    ADVSequenceObjectContext *seqCtx;
     void loadSettings();
     void saveSettings();
-
 };
 
-
-}//namespace
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,10 +58,10 @@ public:
     SequenceQualityTrimWorkerFactory();
 
     static void init();
-    Worker *createWorker(Actor* actor);
+    Worker *createWorker(Actor *actor);
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_SEQUENCE_QUALITY_TRIM_WORKER_H_
+#endif    // _U2_SEQUENCE_QUALITY_TRIM_WORKER_H_

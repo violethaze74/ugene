@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,7 @@
 namespace U2 {
 
 WorkflowScriptEngine::WorkflowScriptEngine(Workflow::WorkflowContext *context)
-: QScriptEngine()
-{
+    : QScriptEngine() {
     this->context = context;
 }
 
@@ -33,4 +32,4 @@ Workflow::WorkflowContext *WorkflowScriptEngine::getWorkflowContext() {
     return context;
 }
 
-} // U2
+}    // namespace U2

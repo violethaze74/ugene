@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,33 +26,37 @@
 #include <U2Core/U2Region.h>
 #include <U2Core/U2Type.h>
 
-
 namespace U2 {
 
 class DNAAlphabet;
 class U2SequenceObject;
 class U2Region;
 
-struct CharOccurResult
-{
+struct CharOccurResult {
 public:
     CharOccurResult(char charInSequence, qint64 numberOfOccurrence, double percentageOfOccur);
 
-    inline char     getChar() const { return charInSequence; }
-    inline qint64   getNumberOfOccur() const { return numberOfOccurr; }
-    inline double   getPercentage() const { return percentageOfOccur; }
+    inline char getChar() const {
+        return charInSequence;
+    }
+    inline qint64 getNumberOfOccur() const {
+        return numberOfOccurr;
+    }
+    inline double getPercentage() const {
+        return percentageOfOccur;
+    }
+
 private:
-    char        charInSequence;
-    qint64      numberOfOccurr;
-    double      percentageOfOccur;
+    char charInSequence;
+    qint64 numberOfOccurr;
+    double percentageOfOccur;
 };
 
 typedef QList<CharOccurResult> CharactersOccurrence;
 
-class U2VIEW_EXPORT CharOccurTask : public BackgroundTask< QList<CharOccurResult> >
-{
+class U2VIEW_EXPORT CharOccurTask : public BackgroundTask<QList<CharOccurResult>> {
 public:
-    CharOccurTask(const DNAAlphabet* alphabet, U2EntityRef seqRef, U2Region region);
+    CharOccurTask(const DNAAlphabet *alphabet, U2EntityRef seqRef, const QVector<U2Region> &regions);
 
     /**
      * Calculates the characters occurrence (in a different thread).
@@ -61,15 +65,14 @@ public:
     virtual void run();
 
 private:
-    const DNAAlphabet* alphabet;
+    const DNAAlphabet *alphabet;
     U2EntityRef seqRef;
-    U2Region region;
+    QVector<U2Region> regions;
 
     // A region to analyze at a time
     static const qint64 REGION_TO_ANALAYZE = 1000000;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif
-

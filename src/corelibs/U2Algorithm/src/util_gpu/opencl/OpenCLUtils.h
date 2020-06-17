@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,9 +24,9 @@
 
 #ifdef OPENCL_SUPPORT
 
-#include "OpenCLHelper.h"
+#    include <QString>
 
-#include <QString>
+#    include "OpenCLHelper.h"
 
 namespace U2 {
 
@@ -35,21 +35,21 @@ public:
     OpenCLUtils();
 
     static cl_program createProgramByResource(
-                    cl_context clContext,
-                    cl_device_id deviceId,
-                    const QString& resourceName,
-                    const OpenCLHelper& openCLHelper,
-                    cl_int& err);
+        cl_context clContext,
+        cl_device_id deviceId,
+        const QString &resourceName,
+        const OpenCLHelper &openCLHelper,
+        cl_int &err);
 
     static size_t getPreferredWorkGroupSize(
-                    cl_kernel kernel,
-                    cl_device_id deviceId,
-                    const OpenCLHelper& openCLHelper,
-                    cl_int &err); // performance hint, returnes 32 if error, ignoring err
+        cl_kernel kernel,
+        cl_device_id deviceId,
+        const OpenCLHelper &openCLHelper,
+        cl_int &err);    // performance hint, returnes 32 if error, ignoring err
 };
 
-}//namespace
+}    // namespace U2
 
 #endif /*OPENCL_SUPPORT*/
 
-#endif //__OPENCL_UTILS_H__
+#endif    //__OPENCL_UTILS_H__

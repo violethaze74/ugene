@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-typedef QList<QPointer<GObject> > SafeObjList;
+typedef QList<QPointer<GObject>> SafeObjList;
 
 //////////////////////////////////////////////////////////////////////////
 /// AbstractProjectFilterTask
@@ -43,13 +43,12 @@ signals:
     void si_objectsFiltered(const QString &filterGroupName, const SafeObjList &objects);
 
 protected:
-    AbstractProjectFilterTask(const ProjectTreeControllerModeSettings &settings, const QString &filterGroupName,
-        const QList<QPointer<Document> > &docs);
+    AbstractProjectFilterTask(const ProjectTreeControllerModeSettings &settings, const QString &filterGroupName, const QList<QPointer<Document>> &docs);
 
     virtual bool filterAcceptsObject(GObject *obj);
 
     const ProjectTreeControllerModeSettings settings;
-    const QList<QPointer<Document> > docs;
+    const QList<QPointer<Document>> docs;
     const QString filterGroupName;
     SafeObjList filteredObjs;
 
@@ -71,13 +70,13 @@ class U2CORE_EXPORT ProjectFilterTaskFactory {
 public:
     virtual ~ProjectFilterTaskFactory();
 
-    AbstractProjectFilterTask * registerNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) const;
+    AbstractProjectFilterTask *registerNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs) const;
 
 protected:
-    virtual AbstractProjectFilterTask * createNewTask(const ProjectTreeControllerModeSettings &settings,
-        const QList<QPointer<Document> > &docs) const = 0;
+    virtual AbstractProjectFilterTask *createNewTask(const ProjectTreeControllerModeSettings &settings,
+                                                     const QList<QPointer<Document>> &docs) const = 0;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_ABSTRACT_PROJECT_FILTER_TASK_H_
+#endif    // _U2_ABSTRACT_PROJECT_FILTER_TASK_H_

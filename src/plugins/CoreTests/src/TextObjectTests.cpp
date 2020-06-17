@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,21 @@
  * MA 02110-1301, USA.
  */
 
+#include "TextObjectTests.h"
+
 #include <QDomElement>
 
 #include <U2Core/TextObject.h>
 
-#include "TextObjectTests.h"
-
 namespace U2 {
 
-#define OBJ_ATTR        "obj"
-#define STRING_ATTR     "string"
+#define OBJ_ATTR "obj"
+#define STRING_ATTR "string"
 #define WITH_LINE_BREAK "whole_line"
-#define MUST_EXIST      "must_exist"
-#define NEWLINES        "newlines"
+#define MUST_EXIST "must_exist"
+#define NEWLINES "newlines"
 
-void GTest_CheckStringExists::init(XMLTestFormat *tf, const QDomElement& el) {
+void GTest_CheckStringExists::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     objContextName = el.attribute(OBJ_ATTR);
@@ -85,10 +85,10 @@ Task::ReportResult GTest_CheckStringExists::report() {
     return ReportResult_Finished;
 }
 
-QList<XMLTestFactory*> TextObjectTests::createTestFactories() {
-    QList<XMLTestFactory*> res;
+QList<XMLTestFactory *> TextObjectTests::createTestFactories() {
+    QList<XMLTestFactory *> res;
     res.append(GTest_CheckStringExists::createFactory());
     return res;
 }
 
-}   // namespace U2
+}    // namespace U2

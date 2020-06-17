@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,10 @@
 #ifndef _U2_TANDEM_QUERY_H_
 #define _U2_TANDEM_QUERY_H_
 
-#include "RF_SArray_TandemFinder.h"
-
 #include "U2Lang/QDScheme.h"
 #include <U2Lang/QueryDesignerRegistry.h>
+
+#include "RF_SArray_TandemFinder.h"
 
 namespace U2 {
 
@@ -37,14 +37,16 @@ public:
     virtual QString getText() const;
     virtual Task *getAlgorithmTask(const QVector<U2Region> &location);
     virtual bool hasStrand() const;
-    virtual QList<QPair<QString, QString> > saveConfiguration() const;
-    virtual void loadConfiguration(const QList<QPair<QString, QString> > &strMap);
+    virtual QList<QPair<QString, QString>> saveConfiguration() const;
+    virtual void loadConfiguration(const QList<QPair<QString, QString>> &strMap);
     virtual QColor defaultColor() const;
+
 protected:
     QDTandemActor(QDActorPrototype const *prototype);
     friend class QDTandemActorPrototype;
 private slots:
     void sl_onAlgorithmTaskFinished();
+
 private:
     FindTandemsTaskSettings settings;
     QList<TandemFinder *> subTasks;
@@ -57,6 +59,6 @@ public:
     virtual QDActor *createInstance() const;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_TANDEM_QUERY_H_
+#endif    // _U2_TANDEM_QUERY_H_

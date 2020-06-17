@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,9 +33,11 @@ class U2VIEW_EXPORT FindPatternWidgetFactory : public OPWidgetFactory {
 public:
     FindPatternWidgetFactory();
 
-    virtual QWidget * createWidget(GObjectView* objView);
-    virtual OPGroupParameters getOPGroupParameters();
-    static const QString & getGroupId();
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+
+    OPGroupParameters getOPGroupParameters() override;
+
+    static const QString &getGroupId();
 
 private:
     static const QString GROUP_ID;
@@ -43,6 +45,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

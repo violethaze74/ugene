@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -37,17 +37,17 @@ public:
     InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings &pcrSettings, const ExtractProductSettings &productSettings);
 
     QList<Result> takeResult();
-    const InSilicoPcrTaskSettings & getPcrSettings() const;
+    const InSilicoPcrTaskSettings &getPcrSettings() const;
 
 protected:
-    QList<Task*> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask);
 
 private:
     ExtractProductSettings productSettings;
     InSilicoPcrTask *pcrTask;
-    QList<ExtractProductTask*> productTasks;
+    QList<ExtractProductTask *> productTasks;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_IN_SILICO_PCR_WORKFLOW_TASK_H_
+#endif    // _U2_IN_SILICO_PCR_WORKFLOW_TASK_H_

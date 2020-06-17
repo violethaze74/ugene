@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,6 +34,6 @@ public:
     static void crop(DNAChromatogram &chromatogram, int startPos, int length);
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_DNA_CHROMATOGRAM_UTILS_H_
+#endif    // _U2_DNA_CHROMATOGRAM_UTILS_H_

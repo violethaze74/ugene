@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include "KrakenBuildPrompter.h"
+
 #include "KrakenBuildTask.h"
 #include "KrakenBuildWorkerFactory.h"
 
@@ -27,9 +28,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 KrakenBuildPrompter::KrakenBuildPrompter(Actor *actor)
-    : PrompterBase<KrakenBuildPrompter>(actor)
-{
-
+    : PrompterBase<KrakenBuildPrompter>(actor) {
 }
 
 QString KrakenBuildPrompter::composeRichDoc() {
@@ -43,5 +42,5 @@ QString KrakenBuildPrompter::composeRichDoc() {
     }
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

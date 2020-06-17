@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,9 +29,14 @@ using namespace HI;
 
 class ExportSelectedSequenceFromAlignment : public Filler {
 public:
-    enum documentFormat {EMBL, FASTA, FASTQ, GFF, Genbank, Swiss_Prot, Ugene_db};
-    ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus &_os, const QString &_path, documentFormat _format = FASTA,
-        bool _keepGaps = true, bool _addToProj = true);
+    enum documentFormat { EMBL,
+                          FASTA,
+                          FASTQ,
+                          GFF,
+                          Genbank,
+                          Swiss_Prot,
+                          Ugene_db };
+    ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus &_os, const QString &_path, documentFormat _format = FASTA, bool _keepGaps = true, bool _addToProj = true);
     ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus &os, CustomScenario *scenario);
 
     void commonScenario();
@@ -40,9 +45,9 @@ private:
     QString path;
     documentFormat format;
     QMap<documentFormat, QString> comboBoxItems;
-    bool keepGaps,addToProj;
+    bool keepGaps, addToProj;
 };
 
-}
+}    // namespace U2
 
-#endif // EXPORT_SELECTED_SEQUENCE_FROM_ALIGNMENT_DIALOG_FILLER_H
+#endif    // EXPORT_SELECTED_SEQUENCE_FROM_ALIGNMENT_DIALOG_FILLER_H

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
-
 #include "BaseSlots.h"
+
+#include <U2Core/U2SafePoints.h>
 
 static const QString SEQ_SLOT_ID("sequence");
 static const QString MA_SLOT_ID("msa");
@@ -72,5 +72,5 @@ const Descriptor BaseSlots::DATASET_SLOT() {
     return Descriptor(DATASET_SLOT_ID, tr("Dataset name"), tr("Dataset name"));
 }
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2

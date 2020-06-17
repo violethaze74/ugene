@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,11 +40,11 @@ LocalToolbar::LocalToolbar(QWidget *p)
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 }
 
-void LocalToolbar::addAction(QAction* a) {
+void LocalToolbar::addAction(QAction *a) {
     QToolBar::addAction(a);
 
-    QToolButton* button = qobject_cast<QToolButton*>(widgetForAction(a));
+    QToolButton *button = qobject_cast<QToolButton *>(widgetForAction(a));
     button->setFixedSize(TOOLBAR_BUTTON_SIZE, TOOLBAR_BUTTON_SIZE);
 }
 
-} // namespace
+}    // namespace U2

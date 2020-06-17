@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,13 +41,13 @@ public:
     CEASTaskSettings();
     CEASTaskSettings(const CEASSettings &ceas, Workflow::DbiDataStorage *storage, const QList<Workflow::SharedDbiDataHandler> &bedData, const QString &wigData);
 
-    CEASSettings & getCeasSettings();
-    const CEASSettings & getCeasSettings() const;
+    CEASSettings &getCeasSettings();
+    const CEASSettings &getCeasSettings() const;
 
     Workflow::DbiDataStorage *getStorage() const;
     const QList<Workflow::SharedDbiDataHandler> &getBedData() const;
 
-    const QString & getWigData() const;
+    const QString &getWigData() const;
 
     static const QString PDF_FORMAT;
     static const QString PNG_FORMAT;
@@ -69,11 +69,11 @@ public:
     virtual ~CEASSupportTask();
 
     virtual void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    virtual QList<Task *> onSubTaskFinished(Task *subTask);
     virtual void run();
     virtual void cleanup();
 
-    const CEASTaskSettings & getSettings() const;
+    const CEASTaskSettings &getSettings() const;
 
 private:
     CEASTaskSettings settings;
@@ -93,7 +93,7 @@ private:
     void createBedDoc();
     bool canStartETTask() const;
     bool copyFile(const QString &src, const QString &dst);
-    Task* createETTask();
+    Task *createETTask();
 };
 
 class CEASLogParser : public ExternalToolLogParser {
@@ -101,15 +101,14 @@ public:
     CEASLogParser();
 
     int getProgress();
-    void parseOutput(const QString& partOfLog);
-    void parseErrOutput(const QString& partOfLog);
+    void parseOutput(const QString &partOfLog);
+    void parseErrOutput(const QString &partOfLog);
 
 private:
     QString lastErrLine;
-    int     progress;
+    int progress;
 };
 
+}    // namespace U2
 
-} // U2
-
-#endif // _U2_CEAS_SUPPORT_TASK_
+#endif    // _U2_CEAS_SUPPORT_TASK_

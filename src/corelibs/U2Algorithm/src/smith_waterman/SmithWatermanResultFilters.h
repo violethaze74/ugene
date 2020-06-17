@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,52 +23,52 @@
 #define _U2_SMITH_WATERMAN_RESULT_FILTERS_H_
 
 #include <QList>
-#include <U2Core/U2Region.h>
+
 #include <U2Algorithm/SmithWatermanResult.h>
 
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
 class U2ALGORITHM_EXPORT SmithWatermanResultFilter {
 public:
-    virtual bool applyFilter(QList<SmithWatermanResult>* lst) = 0;
-    virtual SmithWatermanResultFilter* clone() const = 0;
+    virtual bool applyFilter(QList<SmithWatermanResult> *lst) = 0;
+    virtual SmithWatermanResultFilter *clone() const = 0;
     virtual ~SmithWatermanResultFilter() {};
 
     virtual QString getId() const = 0;
 };
 
-class U2ALGORITHM_EXPORT SWRF_EmptyFilter: public SmithWatermanResultFilter {
+class U2ALGORITHM_EXPORT SWRF_EmptyFilter : public SmithWatermanResultFilter {
 private:
     static const QString ID;
 
 public:
-    virtual bool applyFilter(QList<SmithWatermanResult>* lst);
-    virtual SmithWatermanResultFilter* clone() const;
+    virtual bool applyFilter(QList<SmithWatermanResult> *lst);
+    virtual SmithWatermanResultFilter *clone() const;
 
     virtual QString getId() const;
 
 private:
-    bool needErase(const SmithWatermanResult& currItem,
-                   const SmithWatermanResult& someItem) const;
+    bool needErase(const SmithWatermanResult &currItem,
+                   const SmithWatermanResult &someItem) const;
 };
 
-class U2ALGORITHM_EXPORT SWRF_WithoutIntersect: public SmithWatermanResultFilter {
+class U2ALGORITHM_EXPORT SWRF_WithoutIntersect : public SmithWatermanResultFilter {
 private:
     static const QString ID;
 
 public:
-    virtual bool applyFilter(QList<SmithWatermanResult>* lst);
-    virtual SmithWatermanResultFilter* clone() const;
+    virtual bool applyFilter(QList<SmithWatermanResult> *lst);
+    virtual SmithWatermanResultFilter *clone() const;
 
     virtual QString getId() const;
 
 private:
-    bool needErase(const SmithWatermanResult& currItem,
-                   const SmithWatermanResult& someItem) const;
-
+    bool needErase(const SmithWatermanResult &currItem,
+                   const SmithWatermanResult &someItem) const;
 };
 
-} // namesapce
+}    // namespace U2
 
 #endif

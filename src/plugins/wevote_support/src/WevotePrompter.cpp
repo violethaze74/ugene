@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,14 +25,12 @@ namespace U2 {
 namespace LocalWorkflow {
 
 WevotePrompter::WevotePrompter(Actor *actor)
-    : PrompterBase<WevotePrompter>(actor)
-{
-
+    : PrompterBase<WevotePrompter>(actor) {
 }
 
 QString WevotePrompter::composeRichDoc() {
     return tr("Ensemble classification data, produced by other tools.");
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

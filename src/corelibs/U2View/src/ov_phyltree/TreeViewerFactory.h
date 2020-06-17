@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,20 +33,21 @@ class U2VIEW_EXPORT TreeViewerFactory : public GObjectViewFactory {
 public:
     TreeViewerFactory();
 
-    virtual bool canCreateView(const MultiGSelection& multiSelection);
+    virtual bool canCreateView(const MultiGSelection &multiSelection);
 
-    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
+    virtual Task *createViewTask(const MultiGSelection &multiSelection, bool single = false);
 
-    virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
+    virtual bool isStateInSelection(const MultiGSelection &multiSelection, const QVariantMap &stateData);
 
-    virtual Task* createViewTask(const QString& viewName, const QVariantMap& stateData);
+    virtual Task *createViewTask(const QString &viewName, const QVariantMap &stateData);
 
-    virtual bool supportsSavedStates() const {return true;}
+    virtual bool supportsSavedStates() const {
+        return true;
+    }
 
     static const GObjectViewFactoryId ID;
-
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

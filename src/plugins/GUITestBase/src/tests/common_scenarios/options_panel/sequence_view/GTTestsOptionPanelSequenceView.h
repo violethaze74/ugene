@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <U2Test/UGUITestBase.h>
 
-namespace U2{
+namespace U2 {
 
 namespace GUITest_common_scenarios_options_panel_sequence_view {
 #undef GUI_TEST_SUITE
@@ -41,7 +41,7 @@ GUI_TEST_CLASS_DECLARATION(test_0008)
 GUI_TEST_CLASS_DECLARATION(test_0009)
 GUI_TEST_CLASS_DECLARATION(test_0010)
 
-}
+}    // namespace GUITest_common_scenarios_options_panel_sequence_view
 
-}
+}    // namespace U2
 #endif

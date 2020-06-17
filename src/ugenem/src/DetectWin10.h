@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,15 +24,16 @@
 
 #include <QString>
 
-#if defined (Q_OS_WIN)
+#if defined(Q_OS_WIN)
 
-#include <windows.h>
-#include <winnt.h>
+#    include <windows.h>
+#    include <winnt.h>
 
 class DetectWindowsVersion {
 public:
     static bool isWindows10();
     static QString getVersionString();
+
 private:
     static void detectWinVersion(OSVERSIONINFO *osver);
     static bool determineWinOsVersionPost8(OSVERSIONINFO *result);
@@ -69,11 +70,11 @@ public:
             load();
         if (!m_handle)
             return 0;
-#ifdef Q_OS_WINCE
-        return QFunctionPointer(GetProcAddress(m_handle, (const wchar_t*)QString::fromLatin1(symbol).utf16()));
-#else
+#    ifdef Q_OS_WINCE
+        return QFunctionPointer(GetProcAddress(m_handle, (const wchar_t *)QString::fromLatin1(symbol).utf16()));
+#    else
         return QFunctionPointer(GetProcAddress(m_handle, symbol));
-#endif
+#    endif
     }
 
     static QFunctionPointer resolve(const QString &libraryName, const char *symbol) {
@@ -81,6 +82,7 @@ public:
     }
 
     static Q_CORE_EXPORT HINSTANCE load(const wchar_t *lpFileName, bool onlySystemDirectory = true);
+
 private:
     HINSTANCE m_handle;
     QString m_libraryName;

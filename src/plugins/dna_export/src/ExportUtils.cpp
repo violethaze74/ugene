@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+
+#include "ExportUtils.h"
 
 #include <QMainWindow>
 
@@ -38,13 +40,12 @@
 #include "ExportSequenceTask.h"
 #include "ExportSequencesDialog.h"
 #include "ExportTasks.h"
-#include "ExportUtils.h"
 #include "dialogs/ExportMca2MsaDialog.h"
 #include "tasks/ExportMca2MsaTask.h"
 
 namespace U2 {
 
-void ExportUtils::loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings& s, ExportSequencesDialog *d)  {
+void ExportUtils::loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings &s, ExportSequencesDialog *d) {
     s.fileName = d->file;
     s.merge = d->merge;
     s.mergeGap = d->mergeGap;
@@ -56,25 +57,25 @@ void ExportUtils::loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings& s, Ex
     s.sequenceName = d->sequenceName;
 }
 
-Task* ExportUtils::wrapExportTask(DocumentProviderTask* t, bool addToProject) {
+Task *ExportUtils::wrapExportTask(DocumentProviderTask *t, bool addToProject) {
     if (!addToProject) {
         return t;
     }
     return new AddExportedDocumentAndOpenViewTask(t);
 }
 
-QString ExportUtils::genUniqueName(const QSet<QString>& names, QString prefix) {
+QString ExportUtils::genUniqueName(const QSet<QString> &names, QString prefix) {
     if (!names.contains(prefix)) {
         return prefix;
     }
     QString name = prefix;
-    int i=0;
+    int i = 0;
     do {
         if (!names.contains(name)) {
             break;
         }
         name = prefix + "_" + QString::number(++i);
-    } while(true);
+    } while (true);
     return name;
 }
 
@@ -98,4 +99,4 @@ void ExportUtils::launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *m
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
-}   // namespace U2
+}    // namespace U2

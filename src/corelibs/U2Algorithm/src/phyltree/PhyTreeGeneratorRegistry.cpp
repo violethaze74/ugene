@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,43 +23,38 @@
 
 namespace U2 {
 
-    PhyTreeGeneratorRegistry::PhyTreeGeneratorRegistry( QObject* pOwn /* = 0*/ ) : QObject(pOwn)
-    {}
+PhyTreeGeneratorRegistry::PhyTreeGeneratorRegistry(QObject *pOwn /* = 0*/)
+    : QObject(pOwn) {
+}
 
-    PhyTreeGeneratorRegistry::~PhyTreeGeneratorRegistry()
-    {
-        foreach( PhyTreeGenerator* generator, genMap.values()) {
-            delete generator;
-        }
+PhyTreeGeneratorRegistry::~PhyTreeGeneratorRegistry() {
+    foreach (PhyTreeGenerator *generator, genMap.values()) {
+        delete generator;
     }
+}
 
-    bool PhyTreeGeneratorRegistry::registerPhyTreeGenerator( PhyTreeGenerator* generator , const QString& gen_id)
-    {
-        if (genMap.contains(gen_id)){
-            return false;
-        }
-        genMap.insert(gen_id, generator);
-        return true;
-
+bool PhyTreeGeneratorRegistry::registerPhyTreeGenerator(PhyTreeGenerator *generator, const QString &gen_id) {
+    if (genMap.contains(gen_id)) {
+        return false;
     }
+    genMap.insert(gen_id, generator);
+    return true;
+}
 
-    bool PhyTreeGeneratorRegistry::hadRegistered( const QString& gen_id)
-    {
-        return genMap.contains(gen_id);
+bool PhyTreeGeneratorRegistry::hadRegistered(const QString &gen_id) {
+    return genMap.contains(gen_id);
+}
+
+PhyTreeGenerator *PhyTreeGeneratorRegistry::getGenerator(const QString &gen_id) {
+    if (genMap.contains(gen_id)) {
+        return genMap.value(gen_id);
+    } else {
+        return NULL;
     }
+}
 
-    PhyTreeGenerator* PhyTreeGeneratorRegistry::getGenerator(const QString& gen_id)
-    {
-        if (genMap.contains(gen_id)) {
-            return genMap.value(gen_id);
-        } else {
-            return NULL;
-        }
-    }
+QStringList PhyTreeGeneratorRegistry::getNameList() {
+    return genMap.keys();
+}
 
-    QStringList PhyTreeGeneratorRegistry::getNameList()
-    {
-        return genMap.keys();
-    }
-
-} // namespace U2
+}    // namespace U2

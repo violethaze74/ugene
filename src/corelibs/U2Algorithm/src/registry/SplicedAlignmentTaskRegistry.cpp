@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,50 +20,43 @@
  */
 
 #include "SplicedAlignmentTaskRegistry.h"
+
 #include "SplicedAlignmentTask.h"
 
 namespace U2 {
 
-SplicedAlignmentTaskRegistry::SplicedAlignmentTaskRegistry( QObject* pOwn /* = 0*/ ) : QObject(pOwn)
-{
-
-
+SplicedAlignmentTaskRegistry::SplicedAlignmentTaskRegistry(QObject *pOwn /* = 0*/)
+    : QObject(pOwn) {
 }
 
-SplicedAlignmentTaskRegistry::~SplicedAlignmentTaskRegistry()
-{
-    foreach( SplicedAlignmentTaskFactory* factory, algMap.values()) {
+SplicedAlignmentTaskRegistry::~SplicedAlignmentTaskRegistry() {
+    foreach (SplicedAlignmentTaskFactory *factory, algMap.values()) {
         delete factory;
     }
 }
 
-bool SplicedAlignmentTaskRegistry::registerTaskFactory( SplicedAlignmentTaskFactory* alg, const QString& algId )
-{
+bool SplicedAlignmentTaskRegistry::registerTaskFactory(SplicedAlignmentTaskFactory *alg, const QString &algId) {
     QMutexLocker locker(&mutex);
 
-    if (algMap.contains(algId)){
+    if (algMap.contains(algId)) {
         return false;
     }
     algMap.insert(algId, alg);
     return true;
-
 }
 
-void SplicedAlignmentTaskRegistry::unregisterTaskFactory(const QString &algId)
-{
+void SplicedAlignmentTaskRegistry::unregisterTaskFactory(const QString &algId) {
     if (algMap.contains(algId)) {
-        SplicedAlignmentTaskFactory* factory = algMap.take(algId);
+        SplicedAlignmentTaskFactory *factory = algMap.take(algId);
         delete factory;
     }
 }
 
-bool SplicedAlignmentTaskRegistry::hadRegistered( const QString& algId )
-{
+bool SplicedAlignmentTaskRegistry::hadRegistered(const QString &algId) {
     return algMap.contains(algId);
 }
 
-SplicedAlignmentTaskFactory* SplicedAlignmentTaskRegistry::getAlgorithm( const QString& algId )
-{
+SplicedAlignmentTaskFactory *SplicedAlignmentTaskRegistry::getAlgorithm(const QString &algId) {
     if (algMap.contains(algId)) {
         return algMap.value(algId);
     } else {
@@ -71,10 +64,8 @@ SplicedAlignmentTaskFactory* SplicedAlignmentTaskRegistry::getAlgorithm( const Q
     }
 }
 
-QStringList SplicedAlignmentTaskRegistry::getAlgNameList()
-{
+QStringList SplicedAlignmentTaskRegistry::getAlgNameList() {
     return algMap.keys();
 }
 
-} //namespace
-
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,6 +38,6 @@ private:
     void upgradeFeatureDbi(U2OpStatus &os, MysqlDbRef *dbRef) const;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MYSQL_UPGRADER_FROM_1_15_TO_1_16_H_
+#endif    // _U2_MYSQL_UPGRADER_FROM_1_15_TO_1_16_H_

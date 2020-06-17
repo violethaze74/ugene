@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,10 @@ namespace LocalWorkflow {
 class VcfConsensusPrompter : public PrompterBase<VcfConsensusPrompter> {
     Q_OBJECT
 public:
-    VcfConsensusPrompter(Actor* p = 0) : PrompterBase<VcfConsensusPrompter>(p) {}
+    VcfConsensusPrompter(Actor *p = 0)
+        : PrompterBase<VcfConsensusPrompter>(p) {
+    }
+
 protected:
     QString composeRichDoc();
 };
@@ -40,28 +43,33 @@ protected:
 class VcfConsensusWorker : public BaseWorker {
     Q_OBJECT
 public:
-    VcfConsensusWorker(Actor* a);
+    VcfConsensusWorker(Actor *a);
 
     virtual void init();
-    virtual Task* tick();
+    virtual Task *tick();
     virtual void cleanup();
 private slots:
     void sl_taskFinished();
+
 private:
-    IntegralBus* inputFA;
-    IntegralBus* inputVcfBgzip;
-    IntegralBus* outputFA;
+    IntegralBus *inputFA;
+    IntegralBus *inputVcfBgzip;
+    IntegralBus *outputFA;
 };
 
 class VcfConsensusWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
     static void init();
-    VcfConsensusWorkerFactory() : DomainFactory(ACTOR_ID) {}
-    virtual Worker* createWorker(Actor *a) {return new VcfConsensusWorker(a);}
+    VcfConsensusWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
+    virtual Worker *createWorker(Actor *a) {
+        return new VcfConsensusWorker(a);
+    }
 };
 
-} // Workflow namespace
-} // U2 namespace
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_VCF_CONSENSUS_WORKER_H
+#endif    // _U2_VCF_CONSENSUS_WORKER_H

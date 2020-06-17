@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "CreateAnnotationFullWidget.h"
+
 #include <QMenu>
 
 #include <U2Core/Counter.h>
@@ -29,14 +31,11 @@
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2LongLongValidator.h>
 
-#include "CreateAnnotationFullWidget.h"
-
 namespace U2 {
 
-CreateAnnotationFullWidget::CreateAnnotationFullWidget(QWidget *parent) :
-    CreateAnnotationWidget(parent),
-    formatType(Simple)
-{
+CreateAnnotationFullWidget::CreateAnnotationFullWidget(QWidget *parent)
+    : CreateAnnotationWidget(parent),
+      formatType(Simple) {
     setupUi(this);
     initLayout();
     init();
@@ -297,7 +296,7 @@ void CreateAnnotationFullWidget::connectSignals() {
     connect(tbSelectGroupName, SIGNAL(clicked()), SLOT(sl_selectGroupNameMenuRequest()));
 }
 
-GObjectComboBoxController * CreateAnnotationFullWidget::createGObjectComboBoxController(const GObjectComboBoxControllerConstraints &constraints) {
+GObjectComboBoxController *CreateAnnotationFullWidget::createGObjectComboBoxController(const GObjectComboBoxControllerConstraints &constraints) {
     return new GObjectComboBoxController(this, constraints, cbExistingTable);
 }
 
@@ -312,4 +311,4 @@ void CreateAnnotationFullWidget::fillSaveDocumentControllerConfig(SaveDocumentCo
     config.fileDialogButton = tbBrowseNewTable;
 }
 
-}   // namespace U2
+}    // namespace U2

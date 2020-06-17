@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,20 +21,19 @@
 
 #include "QueryDesignerRegistry.h"
 
-
 namespace U2 {
 
-void QDActorPrototypeRegistry::registerProto(QDActorPrototype* _factory) {
+void QDActorPrototypeRegistry::registerProto(QDActorPrototype *_factory) {
     IdRegistry<QDActorPrototype>::registerEntry(_factory);
     emit si_registryModified();
 }
 
-QDActorPrototype* QDActorPrototypeRegistry::unregisterProto(const QString& id) {
-    QDActorPrototype* removed = IdRegistry<QDActorPrototype>::unregisterEntry(id);
-    if(removed) {
+QDActorPrototype *QDActorPrototypeRegistry::unregisterProto(const QString &id) {
+    QDActorPrototype *removed = IdRegistry<QDActorPrototype>::unregisterEntry(id);
+    if (removed) {
         emit si_registryModified();
     }
     return removed;
 }
 
-}//namespace
+}    // namespace U2

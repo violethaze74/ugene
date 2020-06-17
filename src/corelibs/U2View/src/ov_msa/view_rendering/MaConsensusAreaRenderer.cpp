@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Algorithm/MsaColorScheme.h>
+#include "MaConsensusAreaRenderer.h"
+
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
+#include <U2Algorithm/MsaColorScheme.h>
 
 #include <U2Core/MultipleAlignmentObject.h>
 
 #include <U2Gui/GraphUtils.h>
 
-#include "MaConsensusAreaRenderer.h"
 #include "MaEditorWgt.h"
-#include "ov_msa/MaEditor.h"
 #include "ov_msa/MSAEditorConsensusArea.h"
+#include "ov_msa/MaEditor.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/RowHeightController.h"
@@ -46,23 +47,19 @@ ConsensusRenderSettings::ConsensusRenderSettings()
       highlightMismatches(false),
       rulerWidth(0),
       firstNotchedBasePosition(0),
-      lastNotchedBasePosition(0)
-{
-
+      lastNotchedBasePosition(0) {
 }
 
 bool ConsensusRenderData::isValid() const {
     return data.size() == static_cast<int>(region.length) &&
-            mismatches.size() == static_cast<int>(region.length);
+           mismatches.size() == static_cast<int>(region.length);
 }
 
 ConsensusCharRenderData::ConsensusCharRenderData()
     : column(0),
       consensusChar(U2Msa::GAP_CHAR),
       isMismatch(false),
-      isSelected(false)
-{
-
+      isSelected(false) {
 }
 
 QRect ConsensusCharRenderData::getCharRect() const {
@@ -75,9 +72,7 @@ MaConsensusAreaRenderer::MaConsensusAreaRenderer(MaEditorConsensusArea *area)
     : QObject(area),
       editor(area->getEditorWgt()->getEditor()),
       ui(area->getEditorWgt()),
-      area(area)
-{
-
+      area(area) {
 }
 
 namespace {
@@ -89,7 +84,7 @@ QFont getRulerFont(const QFont &font) {
     return rulerFont;
 }
 
-}
+}    // namespace
 
 void MaConsensusAreaRenderer::drawContent(QPainter &painter) {
     CHECK(!editor->isAlignmentEmpty(), );
@@ -223,7 +218,7 @@ void MaConsensusAreaRenderer::drawConsensus(QPainter &painter, const ConsensusRe
     }
 }
 
-void MaConsensusAreaRenderer::drawConsensusChar(QPainter &painter, const ConsensusCharRenderData& charData, const ConsensusRenderSettings &settings) {
+void MaConsensusAreaRenderer::drawConsensusChar(QPainter &painter, const ConsensusCharRenderData &charData, const ConsensusRenderSettings &settings) {
     const QRect charRect = charData.getCharRect();
 
     QColor color;
@@ -287,7 +282,7 @@ void MaConsensusAreaRenderer::drawHistogram(QPainter &painter, const ConsensusRe
     // TODO: move calculations to getYRange method
     U2Region yRange = settings.yRangeToDrawIn[MSAEditorConsElement_HISTOGRAM];
     yRange.startPos++;
-    yRange.length -= 2; //keep borders
+    yRange.length -= 2;    //keep borders
 
     QBrush brush(color, Qt::Dense4Pattern);
     painter.setBrush(brush);
@@ -353,7 +348,7 @@ int MaConsensusAreaRenderer::getYRangeLength(MaEditorConsElement element) const 
     case MSAEditorConsElement_HISTOGRAM:
         return 50;
     case MSAEditorConsElement_CONSENSUS_TEXT:
-        return ui->getRowHeightController()->getSequenceHeight();
+        return ui->getRowHeightController()->getSingleRowHeight();
     case MSAEditorConsElement_RULER: {
         QFontMetrics fm(area->getDrawSettings().getRulerFont());
         return fm.height() + 2 * MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE + 4;
@@ -363,4 +358,4 @@ int MaConsensusAreaRenderer::getYRangeLength(MaEditorConsElement element) const 
     }
 }
 
-}   // namespace U2
+}    // namespace U2

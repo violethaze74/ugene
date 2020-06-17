@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "LoadCustomExternalToolsTask.h"
+
 #include <QDir>
 
 #include <U2Core/AppContext.h>
@@ -28,15 +30,12 @@
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "ImportCustomToolsTask.h"
-#include "LoadCustomExternalToolsTask.h"
 #include "RegisterCustomToolTask.h"
 
 namespace U2 {
 
 LoadCustomExternalToolsTask::LoadCustomExternalToolsTask()
-    : Task(tr("Load custom external tools"), TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel)
-{
-
+    : Task(tr("Load custom external tools"), TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel) {
 }
 
 const QList<CustomExternalTool *> &LoadCustomExternalToolsTask::getTools() const {
@@ -69,4 +68,4 @@ QList<Task *> LoadCustomExternalToolsTask::onSubTaskFinished(Task *subTask) {
     return result;
 }
 
-}   // namespace U2
+}    // namespace U2

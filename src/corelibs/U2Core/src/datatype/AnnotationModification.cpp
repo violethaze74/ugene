@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,14 +24,11 @@
 namespace U2 {
 
 AnnotationModification::AnnotationModification(AnnotationModificationType type, Annotation *a)
-    : type(type), annotation(a)
-{
-
+    : type(type), annotation(a) {
 }
 
 QualifierModification::QualifierModification(AnnotationModificationType t, Annotation *a, const U2Qualifier &q)
-    : AnnotationModification(t, a)
-{
+    : AnnotationModification(t, a) {
     additionalData = QVariant::fromValue<U2Qualifier>(q);
 }
 
@@ -40,8 +37,7 @@ U2Qualifier QualifierModification::getQualifier() const {
 }
 
 AnnotationGroupModification::AnnotationGroupModification(AnnotationModificationType t, Annotation *a, AnnotationGroup *g)
-    : AnnotationModification(t, a)
-{
+    : AnnotationModification(t, a) {
     additionalData = QVariant::fromValue<AnnotationGroup *>(g);
 }
 
@@ -49,4 +45,4 @@ AnnotationGroup *AnnotationGroupModification::getGroup() const {
     return additionalData.value<AnnotationGroup *>();
 }
 
-} // namespace U2
+}    // namespace U2

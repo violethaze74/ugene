@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,11 +38,11 @@ public:
     bool hasFormat(const QString &mimeType) const;
     QStringList formats() const;
 
-    QList< QPointer<Document> > docs;
-    QList< QPointer<GObject> > objects;
+    QList<QPointer<Document>> docs;
+    QList<QPointer<GObject>> objects;
     QList<Folder> folders;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_BUNCHMIMEDATA_H_
+#endif    // _U2_BUNCHMIMEDATA_H_

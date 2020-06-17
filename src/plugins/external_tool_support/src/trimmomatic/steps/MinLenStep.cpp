@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include "MinLenStep.h"
+
 #include <U2Core/U2SafePoints.h>
 
-#include "MinLenStep.h"
 #include "trimmomatic/util/LengthSettingsWidget.h"
 
 namespace U2 {
@@ -30,8 +31,7 @@ namespace LocalWorkflow {
 const QString MinLenStepFactory::ID = "MINLEN";
 
 MinLenStep::MinLenStep()
-    : TrimmomaticStep(MinLenStepFactory::ID)
-{
+    : TrimmomaticStep(MinLenStepFactory::ID) {
     name = "MINLEN";
     description = tr("<html><head></head><body>"
                      "<h4>MINLEN</h4>"
@@ -59,14 +59,12 @@ QVariantMap MinLenStep::parseState(const QString &command) const {
 }
 
 MinLenStepFactory::MinLenStepFactory()
-    : TrimmomaticStepFactory(ID)
-{
-
+    : TrimmomaticStepFactory(ID) {
 }
 
 MinLenStep *MinLenStepFactory::createStep() const {
     return new MinLenStep();
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

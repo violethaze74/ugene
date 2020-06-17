@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,16 +23,17 @@
 #define _U2_BAM_BAI_READER_H_
 
 #include <U2Core/IOAdapter.h>
+
 #include "Index.h"
 
 namespace U2 {
 namespace BAM {
 
-class BaiReader
-{
+class BaiReader {
 public:
     BaiReader(IOAdapter &ioAdapter);
     Index readIndex();
+
 private:
     void readBytes(char *buff, qint64 size);
     QByteArray readBytes(qint64 size);
@@ -43,7 +44,7 @@ private:
     IOAdapter &ioAdapter;
 };
 
-} // namespace BAM
-} // namespace U2
+}    // namespace BAM
+}    // namespace U2
 
-#endif // _U2_BAM_BAI_READER_H_
+#endif    // _U2_BAM_BAI_READER_H_

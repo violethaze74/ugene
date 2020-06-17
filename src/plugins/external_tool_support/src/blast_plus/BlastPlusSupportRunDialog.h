@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,12 @@
 #define _U2_BLAST_PLUS_SUPPORT_RUN_DIALOG_H
 
 #include <QDialog>
+
 #include <U2Core/DNASequenceObject.h>
-#include <U2Gui/DialogUtils.h>
+
 #include <U2Gui/CreateAnnotationWidgetController.h>
+#include <U2Gui/DialogUtils.h>
+
 #include "BlastPlusSupportCommonTask.h"
 #include "utils/BlastRunCommonDialog.h"
 
@@ -37,7 +40,7 @@ class RegionSelector;
 class BlastPlusSupportRunDialog : public BlastRunCommonDialog {
     Q_OBJECT
 public:
-    BlastPlusSupportRunDialog(ADVSequenceObjectContext* seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent);
+    BlastPlusSupportRunDialog(ADVSequenceObjectContext *seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent);
 
     U2Region getSelectedRegion() const;
 
@@ -48,11 +51,11 @@ protected slots:
 private:
     bool checkToolPath();
 
-    U2SequenceObject*  dnaso;
+    U2SequenceObject *dnaso;
     QString &lastDBPath;
     QString &lastDBName;
-    ADVSequenceObjectContext* seqCtx;
-    RegionSelector* regionSelector;
+    ADVSequenceObjectContext *seqCtx;
+    RegionSelector *regionSelector;
 };
 
 class BlastPlusWithExtFileSpecifySupportRunDialog : public BlastRunCommonDialog {
@@ -66,22 +69,23 @@ protected slots:
 private slots:
     void sl_cancel();
 
-    void sl_inputFileLineEditChanged(const QString& str);
+    void sl_inputFileLineEditChanged(const QString &str);
     void sl_inputFileOpened();
+
 private:
     bool checkToolPath();
     void tryApplyDoc(Document *doc);
     void onFormatError();
     void loadDoc(const QString &url);
 
-    FileLineEdit*   inputFileLineEdit;
-    bool            wasNoOpenProject;
+    FileLineEdit *inputFileLineEdit;
+    bool wasNoOpenProject;
 
-    QList<BlastTaskSettings>    settingsList;
-    QList<GObjectReference>     sequencesRefList;
+    QList<BlastTaskSettings> settingsList;
+    QList<GObjectReference> sequencesRefList;
     QString &lastDBPath;
     QString &lastDBName;
     bool hasValidInput;
 };
-}//namespace
-#endif // _U2_BLAST_PLUS_SUPPORT_RUN_DIALOG_H
+}    // namespace U2
+#endif    // _U2_BLAST_PLUS_SUPPORT_RUN_DIALOG_H

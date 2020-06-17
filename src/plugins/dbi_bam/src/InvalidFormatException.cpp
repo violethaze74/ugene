@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,10 +24,9 @@
 namespace U2 {
 namespace BAM {
 
-InvalidFormatException::InvalidFormatException(const QString &message):
-    Exception(message)
-{
+InvalidFormatException::InvalidFormatException(const QString &message)
+    : Exception(message) {
 }
 
-} // namespace BAM
-} // namespace U2
+}    // namespace BAM
+}    // namespace U2

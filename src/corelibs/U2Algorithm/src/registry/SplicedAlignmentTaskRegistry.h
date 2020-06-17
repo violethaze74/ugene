@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,17 +39,18 @@ class U2ALGORITHM_EXPORT SplicedAlignmentTaskRegistry : public QObject {
 public:
     explicit SplicedAlignmentTaskRegistry(QObject *parent = 0);
     ~SplicedAlignmentTaskRegistry();
-    bool registerTaskFactory(SplicedAlignmentTaskFactory* alg, const QString& algId);
-    void unregisterTaskFactory(const QString& algId);
-    bool hadRegistered(const QString& algId);
-    SplicedAlignmentTaskFactory* getAlgorithm(const QString& algId);
+    bool registerTaskFactory(SplicedAlignmentTaskFactory *alg, const QString &algId);
+    void unregisterTaskFactory(const QString &algId);
+    bool hadRegistered(const QString &algId);
+    SplicedAlignmentTaskFactory *getAlgorithm(const QString &algId);
     QStringList getAlgNameList();
+
 private:
     QMutex mutex;
-    QMap<QString, SplicedAlignmentTaskFactory*> algMap;
+    QMap<QString, SplicedAlignmentTaskFactory *> algMap;
     Q_DISABLE_COPY(SplicedAlignmentTaskRegistry)
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_SPLICED_ALIGNMENT_TASK_REGISTRY_H_
+#endif    // _U2_SPLICED_ALIGNMENT_TASK_REGISTRY_H_

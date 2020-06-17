@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,7 @@
 namespace U2 {
 
 VCF4VariationFormat::VCF4VariationFormat(QObject *p)
-: AbstractVariationFormat(p, BaseDocumentFormats::VCF4, QStringList()<<"vcf", true)
-{
+    : AbstractVariationFormat(p, BaseDocumentFormats::VCF4, QStringList() << "vcf", true) {
     formatName = QString("VCFv4");
 
     columnRoles.insert(0, ColumnRole_ChromosomeId);
@@ -41,7 +40,7 @@ VCF4VariationFormat::VCF4VariationFormat(QObject *p)
 }
 
 bool VCF4VariationFormat::checkFormatByColumnCount(int columnCount) const {
-    return (columnCount >= maxColumnNumber+1);
+    return (columnCount >= maxColumnNumber + 1);
 }
 
-} // U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,18 +25,18 @@
 #include <QTableView>
 
 namespace U2 {
-class TableViewTabKey : public QTableView
-{
+class TableViewTabKey : public QTableView {
 public:
     explicit TableViewTabKey(QWidget *parent = 0);
 
 protected:
     virtual void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
     virtual void keyPressEvent(QKeyEvent *event);
+
 private:
     void setNextIndex();
     QModelIndex getNextIndex() const;
 };
-}
+}    // namespace U2
 
-#endif // _U2_TABLE_VIEW_TAB_KEY_H_
+#endif    // _U2_TABLE_VIEW_TAB_KEY_H_

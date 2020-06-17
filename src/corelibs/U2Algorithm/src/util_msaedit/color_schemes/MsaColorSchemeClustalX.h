@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,11 +61,11 @@ private:
         ClustalColor_NUM_COLORS
     };
 
-    int                     objVersion;
-    mutable int             cacheVersion;
-    mutable int             aliLen;
+    int objVersion;
+    mutable int cacheVersion;
+    mutable int aliLen;
     mutable QVector<quint8> colorsCache;
-    QColor                  colorByIdx[ClustalColor_NUM_COLORS];
+    QColor colorByIdx[ClustalColor_NUM_COLORS];
 };
 
 class MsaColorSchemeClustalXFactory : public MsaColorSchemeFactory {
@@ -73,9 +73,9 @@ class MsaColorSchemeClustalXFactory : public MsaColorSchemeFactory {
 public:
     MsaColorSchemeClustalXFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
 
-    MsaColorScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
+    MsaColorScheme *create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MSA_COLOR_SCHEME_CLUSTAL_X_H_
+#endif    // _U2_MSA_COLOR_SCHEME_CLUSTAL_X_H_

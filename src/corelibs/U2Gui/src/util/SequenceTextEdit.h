@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_SEQUENCE_TEXT_EDIT_H_
 #define _U2_SEQUENCE_TEXT_EDIT_H_
 
-#include <U2Core/global.h>
-
 #include <QPlainTextEdit>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
@@ -37,7 +37,7 @@ public:
      * So, inserting a big sequence as one huge paragraph will cause perfomance problems.
      * TextEdit splits inserted data to paragraphs with the size PARAGRAPH_SIZE.
      */
-    SequenceTextEdit(QWidget* p = NULL);
+    SequenceTextEdit(QWidget *p = NULL);
 
 protected:
     virtual void insertFromMimeData(const QMimeData *source);
@@ -46,6 +46,6 @@ protected:
     static const int NO_QUESTION_LIMIT = 5000000;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_SEQUENCE_TEXT_EDIT_H_
+#endif    // _U2_SEQUENCE_TEXT_EDIT_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,17 +23,16 @@
 
 namespace U2 {
 
-AuthenticationWidget::AuthenticationWidget(QWidget *parent) :
-    QWidget(parent)
-{
+AuthenticationWidget::AuthenticationWidget(QWidget *parent)
+    : QWidget(parent) {
     setupUi(this);
 }
 
-void AuthenticationWidget::setLogin(const QString& login) {
+void AuthenticationWidget::setLogin(const QString &login) {
     leLogin->setText(login);
 }
 
-void AuthenticationWidget::setPassword(const QString& password) {
+void AuthenticationWidget::setPassword(const QString &password) {
     lePassword->setText(password);
 }
 
@@ -53,4 +52,4 @@ bool AuthenticationWidget::isRemembered() const {
     return cbRemember->isChecked();
 }
 
-}   // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_PERLSUPPORT_H_
 
 #include <U2Core/ExternalToolRegistry.h>
+
 #include "RunnerTool.h"
 
 namespace U2 {
@@ -30,12 +31,12 @@ namespace U2 {
 class PerlSupport : public RunnerTool {
     Q_OBJECT
 public:
-    PerlSupport(const QString& id, const QString &name, const QString &path = "");
+    PerlSupport(const QString &id, const QString &name, const QString &path = "");
 
     static const QString ET_PERL;
     static const QString ET_PERL_ID;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_PERLSUPPORT_H_
+#endif    // _U2_PERLSUPPORT_H_

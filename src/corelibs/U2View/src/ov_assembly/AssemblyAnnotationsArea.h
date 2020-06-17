@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,12 +37,12 @@ public:
     virtual ~AssemblyAnnotationsArea();
 
 signals:
-    void si_mouseMovedToPos(const QPoint&);
+    void si_mouseMovedToPos(const QPoint &);
 
 private:
     AssemblyVariantRowManager *variantRowManager;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _ASSEMBLY_ANNOTATIONS_AREA_
+#endif    // _ASSEMBLY_ANNOTATIONS_AREA_

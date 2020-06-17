@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +28,7 @@ namespace U2 {
 
 class AnnotationSettings;
 
-class AnnotHighlightTree : public QTreeWidget
-{
+class AnnotHighlightTree : public QTreeWidget {
     Q_OBJECT
 public:
     AnnotHighlightTree();
@@ -48,7 +47,7 @@ public:
      */
     QString getFirstItemAnnotName();
 
-     /**
+    /**
       * Returns the annotation name of the currently selected tree item,
       * or an empty string.
       */
@@ -69,15 +68,23 @@ signals:
     void si_colorChanged(QString annotName, QColor annotColor);
 
 private slots:
-    void sl_onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
-    void sl_onItemClicked(QTreeWidgetItem* item, int column);
+    void sl_onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+    void sl_onItemClicked(QTreeWidgetItem *item, int column);
 
 private:
     /** Do not use these methods to add an item to the tree, use addItem(...) instead */
-    virtual void addTopLevelItem(QTreeWidgetItem* item) { QTreeWidget::addTopLevelItem(item); }
-    virtual void addTopLevelItems(const QList<QTreeWidgetItem*>& items) { QTreeWidget::addTopLevelItems(items); }
-    virtual void insertTopLevelItem(int index, QTreeWidgetItem* item) { QTreeWidget::insertTopLevelItem(index, item); }
-    virtual void insertTopLevelItems(int index,  const QList<QTreeWidgetItem *>& items) { QTreeWidget::insertTopLevelItems(index, items); }
+    virtual void addTopLevelItem(QTreeWidgetItem *item) {
+        QTreeWidget::addTopLevelItem(item);
+    }
+    virtual void addTopLevelItems(const QList<QTreeWidgetItem *> &items) {
+        QTreeWidget::addTopLevelItems(items);
+    }
+    virtual void insertTopLevelItem(int index, QTreeWidgetItem *item) {
+        QTreeWidget::insertTopLevelItem(index, item);
+    }
+    virtual void insertTopLevelItems(int index, const QList<QTreeWidgetItem *> &items) {
+        QTreeWidget::insertTopLevelItems(index, items);
+    }
 
     /** Size of the tree elements */
     static const int COLOR_COLUMN_WIDTH;
@@ -88,6 +95,6 @@ private:
     int annotTreeHeight;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

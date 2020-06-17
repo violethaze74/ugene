@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,18 +27,21 @@
 namespace U2 {
 using namespace HI;
 
-class DocumentProviderSelectorDialogFiller : public Filler
-{
+class DocumentProviderSelectorDialogFiller : public Filler {
 public:
-    enum OpenWith{AlignmentEditor, AssemblyBrowser};
-    DocumentProviderSelectorDialogFiller(HI::GUITestOpStatus &os, OpenWith _openWith): Filler(os, "DocumentProviderSelectorDialog"),
-    openWith(_openWith){}
+    enum OpenWith { AlignmentEditor,
+                    AssemblyBrowser };
+    DocumentProviderSelectorDialogFiller(HI::GUITestOpStatus &os, OpenWith _openWith)
+        : Filler(os, "DocumentProviderSelectorDialog"),
+          openWith(_openWith) {
+    }
     virtual void commonScenario();
+
 private:
     OpenWith openWith;
     static const QMap<OpenWith, QString> openWithMap;
     static QMap<OpenWith, QString> initMap();
 };
-}
+}    // namespace U2
 
-#endif // _U2_DOCUMENT_PROVIDER_SELECTOR_DIALOG_FILLER_H_
+#endif    // _U2_DOCUMENT_PROVIDER_SELECTOR_DIALOG_FILLER_H_

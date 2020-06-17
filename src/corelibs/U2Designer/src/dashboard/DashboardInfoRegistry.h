@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,9 +67,9 @@ private:
     QPointer<ScanDashboardsDirTask> scanTask;
 
     QMap<QString, DashboardInfo> registry;
-    QMap<QString, QString> reservedNames;   // dashboards for running workflows are not registered, but they can reserve their name for the correct name rolling
+    QMap<QString, QString> reservedNames;    // dashboards for running workflows are not registered, but they can reserve their name for the correct name rolling
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_DASHBOARD_INFO_REGISTRY_H_
+#endif    // _U2_DASHBOARD_INFO_REGISTRY_H_

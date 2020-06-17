@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,8 @@
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/WorkflowContext.h>
 
-#include "WorkflowBreakpointSharedInfo.h"
 #include "BreakpointConditionChecker.h"
+#include "WorkflowBreakpointSharedInfo.h"
 
 namespace U2 {
 
@@ -84,6 +84,6 @@ private:
     BreakpointConditionChecker conditionChecker;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_WORKFLOW_BREAKPOINT_H_
+#endif    // _U2_WORKFLOW_BREAKPOINT_H_

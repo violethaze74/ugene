@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,7 +82,7 @@ public:
     CuffdiffSupportTask(const CuffdiffSettings &settings);
 
     void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask);
     ReportResult report();
     QStringList getOutputFiles() const;
     QStringList getSystemOutputFiles() const;
@@ -93,24 +93,24 @@ private:
     QString transcriptUrl;
 
     QScopedPointer<Document> transcriptDoc;
-    QList<Task*> saveTasks;
+    QList<Task *> saveTasks;
 
     ExternalToolRunTask *diffTask;
     QStringList outputFiles;
     QStringList systemOutputFiles;
 
     static const QString outSubDirBaseName;
+
 private:
-    Task * createTranscriptTask();
+    Task *createTranscriptTask();
 
     void createTranscriptDoc();
-    Task * createCuffdiffTask();
+    Task *createCuffdiffTask();
     void addOutFiles();
     void addFile(const QString &fileName, bool openBySystem = false);
     void setupWorkingDir();
 };
 
+}    // namespace U2
 
-} // U2
-
-#endif // _U2_CUFFDIFFSUPPORTTASK_H_
+#endif    // _U2_CUFFDIFFSUPPORTTASK_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,15 +44,15 @@ class HmmerBuildWorker : public BaseWorker {
     Q_OBJECT
 public:
     HmmerBuildWorker(Actor *a);
-    
+
     void init();
     bool isReady() const;
-    Task * tick();
+    Task *tick();
     void cleanup();
-    
+
 private slots:
     void sl_taskFinished(Task *task);
-    
+
 protected:
     IntegralBus *input;
     IntegralBus *output;
@@ -66,10 +66,10 @@ public:
     static void init();
     static void cleanup();
     HmmerBuildWorkerFactory();
-    Worker * createWorker(Actor *a);
+    Worker *createWorker(Actor *a);
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_HMMER_BUILD_WORKER_H_
+#endif    // _U2_HMMER_BUILD_WORKER_H_

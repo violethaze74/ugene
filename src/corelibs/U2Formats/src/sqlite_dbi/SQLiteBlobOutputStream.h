@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,6 +40,6 @@ private:
     void update(DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, int size, U2OpStatus &os);
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_SQLITEBLOBOUTPUTSTREAM_H_
+#endif    // _U2_SQLITEBLOBOUTPUTSTREAM_H_

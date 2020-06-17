@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
-
 #include "U2LongLongValidator.h"
+
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-U2LongLongValidator::U2LongLongValidator(qint64 minimum, qint64 maximum, QObject *parent) :
-    QValidator(parent),
-    minimum(minimum),
-    maximum(maximum)
-{
+U2LongLongValidator::U2LongLongValidator(qint64 minimum, qint64 maximum, QObject *parent)
+    : QValidator(parent),
+      minimum(minimum),
+      maximum(maximum) {
 }
 
 QValidator::State U2LongLongValidator::validate(QString &input, int & /*pos*/) const {
@@ -60,4 +59,4 @@ QValidator::State U2LongLongValidator::validate(QString &input, int & /*pos*/) c
     return QValidator::Acceptable;
 }
 
-}   // namespace U2
+}    // namespace U2

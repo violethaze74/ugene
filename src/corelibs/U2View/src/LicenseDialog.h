@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,29 +22,27 @@
 #ifndef LICENSEDIALOG_H
 #define LICENSEDIALOG_H
 
-#include <U2Core/GUrl.h>
-#include <U2Core/PluginModel.h>
+#include <ui_LicenseDialog.h>
 
 #include <QDialog>
 
-#include <ui_LicenseDialog.h>
+#include <U2Core/GUrl.h>
+#include <U2Core/PluginModel.h>
 
 namespace U2 {
 
-class LicenseDialog : public QDialog, private Ui_LicenseDialog
-{
+class LicenseDialog : public QDialog, private Ui_LicenseDialog {
     Q_OBJECT
 
 public:
-    explicit LicenseDialog(Plugin * plugin, QWidget *parent = 0);
+    explicit LicenseDialog(Plugin *plugin, QWidget *parent = 0);
     ~LicenseDialog();
 public slots:
     void sl_accept();
 
 private:
-    Ui_LicenseDialog   *ui;
-    Plugin              *plugin;
-
+    Ui_LicenseDialog *ui;
+    Plugin *plugin;
 };
-}//namespace
-#endif // LICENSEDIALOG_H
+}    // namespace U2
+#endif    // LICENSEDIALOG_H

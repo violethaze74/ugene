@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,14 +28,14 @@ namespace U2 {
 
 class U2CORE_EXPORT SignalBlocker {
 public:
-    SignalBlocker(QObject * const object);
+    SignalBlocker(QObject *const object);
     ~SignalBlocker();
 
 private:
-    QObject * const object;
+    QObject *const object;
     bool previousState;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_SIGNAL_BLOCKER_H_
+#endif    // _U2_SIGNAL_BLOCKER_H_

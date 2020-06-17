@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,6 @@
 #define TSB_SETTINGS_ROOT QString("task_status_bar_settings/")
 namespace U2 {
 
-
 class TaskStatusBarCon : public QObject {
     Q_OBJECT
 public:
@@ -41,20 +40,19 @@ public:
     ~TaskStatusBarCon();
 
 private slots:
-    void sl_taskStateChanged(Task* t);
+    void sl_taskStateChanged(Task *t);
     void sl_taskStateChanged();
     void sl_update();
 
 private:
     void setTSBSettings();
     void updateState();
-    void setTaskToTrack(Task* t);
+    void setTaskToTrack(Task *t);
 
-    Task*           taskToTrack;
-    QString         emptyLine;
+    Task *taskToTrack;
+    QString emptyLine;
 };
 
-
-}//namespace
+}    // namespace U2
 
 #endif

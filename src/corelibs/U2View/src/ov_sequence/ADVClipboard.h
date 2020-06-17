@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,60 +35,75 @@ class AnnotationSelection;
 class ADVSequenceObjectContext;
 class ADVSequenceWidget;
 
-class U2VIEW_EXPORT ADVClipboard: public QObject {
+class U2VIEW_EXPORT ADVClipboard : public QObject {
     Q_OBJECT
 public:
-    ADVClipboard(AnnotatedDNAView* ctx);
+    ADVClipboard(AnnotatedDNAView *ctx);
 
-    QAction* getCopySequenceAction() const {return copySequenceAction;}
-    QAction* getCopyTranslationAction() const {return copyTranslationAction;}
-    QAction* getCopyComplementAction() const {return copyComplementSequenceAction;}
-    QAction* getCopyComplementTranslationAction() const {return copyComplementTranslationAction;}
+    QAction *getCopySequenceAction() const;
+    QAction *getCopyComplementAction() const;
+    QAction *getCopyTranslationAction() const;
+    QAction *getCopyComplementTranslationAction() const;
 
-    QAction* getCopyAnnotationSequenceAction() const {return copyAnnotationSequenceAction;}
-    QAction* getCopyAnnotationSequenceTranslationAction() const {return copyAnnotationSequenceTranslationAction;}
+    QAction *getCopyAnnotationSequenceAction() const;
+    QAction *getCopyComplementAnnotationSequenceAction() const;
+    QAction *getCopyAnnotationSequenceTranslationAction() const;
+    QAction *getCopyComplementAnnotationSequenceTranslationAction() const;
 
-    QAction* getPasteSequenceAction() const {return pasteSequenceAction;}
+    QAction *getCopyQualifierAction() const;
+    QAction *getPasteSequenceAction() const;
 
-    void addCopyMenu(QMenu* m);
+    ADVSequenceObjectContext *getSequenceContext() const;
 
-    void connectSequence(ADVSequenceObjectContext* s);
+    void addCopyMenu(QMenu *m);
 
-    static QAction* createPasteSequenceAction(QObject *parent);
+    void connectSequence(ADVSequenceObjectContext *s);
+
+    static QAction *createPasteSequenceAction(QObject *parent);
 
 public slots:
 
-    void sl_onDNASelectionChanged(LRegionsSelection* s, const QVector<U2Region>& added, const QVector<U2Region>& removed);
-    void sl_onAnnotationSelectionChanged( AnnotationSelection *s, const QList<Annotation *> &added, const QList<Annotation *> &removed);
+    void sl_onDNASelectionChanged(LRegionsSelection *s, const QVector<U2Region> &added, const QVector<U2Region> &removed);
+    void sl_onAnnotationSelectionChanged(AnnotationSelection *s, const QList<Annotation *> &added, const QList<Annotation *> &removed);
     void sl_onFocusedSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *);
 
     void sl_copySequence();
-    void sl_copyTranslation();
     void sl_copyComplementSequence();
+    void sl_copyTranslation();
     void sl_copyComplementTranslation();
-    void sl_copyAnnotationSequence();
-    void sl_copyAnnotationSequenceTranslation();
 
-    ADVSequenceObjectContext* getSequenceContext() const;
+    void sl_copyAnnotationSequence();
+    void sl_copyComplementAnnotationSequence();
+    void sl_copyAnnotationSequenceTranslation();
+    void sl_copyComplementAnnotationSequenceTranslation();
+
+    void sl_setCopyQualifierActionStatus(bool isEnabled, QString text);
 
 private:
     void updateActions();
-    void copySequenceSelection(bool complement, bool amino);
-    void putIntoClipboard(const QString& data);
+    void copySequenceSelection(const bool complement, const bool amino);
+    void copyAnnotationSelection(const bool complement, const bool amino);
+    void putIntoClipboard(const QString &data);
 
-    AnnotatedDNAView* ctx;
-    QAction* copySequenceAction;
-    QAction* copyTranslationAction;
-    QAction* copyComplementSequenceAction;
-    QAction* copyComplementTranslationAction;
-    QAction* copyAnnotationSequenceAction;
-    QAction* copyAnnotationSequenceTranslationAction;
-    QAction* pasteSequenceAction;
+    AnnotatedDNAView *ctx;
+    QAction *copySequenceAction;
+    QAction *copyComplementSequenceAction;
+    QAction *copyTranslationAction;
+    QAction *copyComplementTranslationAction;
+
+    QAction *copyAnnotationSequenceAction;
+    QAction *copyComplementAnnotationSequenceAction;
+    QAction *copyAnnotationSequenceTranslationAction;
+    QAction *copyComplementAnnotationSequenceTranslationAction;
+
+    QAction *copyQualifierAction;
+
+    QAction *pasteSequenceAction;
 
     static const QString COPY_FAILED_MESSAGE;
     static const qint64 MAX_COPY_SIZE_FOR_X86;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

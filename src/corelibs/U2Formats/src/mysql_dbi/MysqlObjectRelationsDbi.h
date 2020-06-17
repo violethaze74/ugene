@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,19 +29,19 @@
 namespace U2 {
 
 class MysqlObjectRelationsDbi : public U2ObjectRelationsDbi, public MysqlChildDbiCommon {
-public :
-                                MysqlObjectRelationsDbi( MysqlDbi *dbi );
+public:
+    MysqlObjectRelationsDbi(MysqlDbi *dbi);
 
-    void                        initSqlSchema( U2OpStatus &os );
+    void initSqlSchema(U2OpStatus &os);
 
-    void                        createObjectRelation( U2ObjectRelation &relation, U2OpStatus &os );
-    QList<U2ObjectRelation>     getObjectRelations( const U2DataId &object, U2OpStatus &os );
-    QList<U2DataId>             getReferenceRelatedObjects( const U2DataId &reference, GObjectRelationRole relationRole, U2OpStatus &os );
-    void                        removeObjectRelation( U2ObjectRelation &relation, U2OpStatus &os );
-    void                        removeAllObjectRelations( const U2DataId &object, U2OpStatus &os );
-    void                        removeReferencesForObject( const U2DataId &object, U2OpStatus &os );
+    void createObjectRelation(U2ObjectRelation &relation, U2OpStatus &os);
+    QList<U2ObjectRelation> getObjectRelations(const U2DataId &object, U2OpStatus &os);
+    QList<U2DataId> getReferenceRelatedObjects(const U2DataId &reference, GObjectRelationRole relationRole, U2OpStatus &os);
+    void removeObjectRelation(U2ObjectRelation &relation, U2OpStatus &os);
+    void removeAllObjectRelations(const U2DataId &object, U2OpStatus &os);
+    void removeReferencesForObject(const U2DataId &object, U2OpStatus &os);
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_MYSQL_OBJECT_RELATIONS_DBI_H_
+#endif    // _U2_MYSQL_OBJECT_RELATIONS_DBI_H_

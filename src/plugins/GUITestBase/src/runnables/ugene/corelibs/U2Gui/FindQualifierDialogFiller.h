@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,8 +29,8 @@ using namespace HI;
 class FindQualifierFiller : public Filler {
 public:
     struct FindQualifierFillerSettings {
-        FindQualifierFillerSettings(const QString& name = QString(),
-                                    const QString& value = QString(),
+        FindQualifierFillerSettings(const QString &name = QString(),
+                                    const QString &value = QString(),
                                     bool exactMatch = true,
                                     bool nextQualifier = true,
                                     unsigned int nextCount = 1,
@@ -44,7 +44,8 @@ public:
               nextCount(nextCount),
               expectTheEndOfTree(expectTheEndOfTree),
               expectNoResults(expectNoResults),
-              selectAll(selectAll) {}
+              selectAll(selectAll) {
+        }
 
         QString name;
         QString value;
@@ -56,7 +57,7 @@ public:
         bool selectAll;
     };
 
-    FindQualifierFiller(HI::GUITestOpStatus &os, const FindQualifierFillerSettings& settings = FindQualifierFillerSettings());
+    FindQualifierFiller(HI::GUITestOpStatus &os, const FindQualifierFillerSettings &settings = FindQualifierFillerSettings());
     FindQualifierFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
 
     void commonScenario();
@@ -65,6 +66,6 @@ private:
     FindQualifierFillerSettings settings;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_GT_RUNNABLES_FIND_QUALIFIER_DIALOG_FILLER_H_
+#endif    // _U2_GT_RUNNABLES_FIND_QUALIFIER_DIALOG_FILLER_H_

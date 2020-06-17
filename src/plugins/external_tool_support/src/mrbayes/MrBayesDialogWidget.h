@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,25 +32,25 @@
 namespace U2 {
 
 class MrBayesWidget : public CreatePhyTreeWidget, private Ui_MrBayesDialog {
-   Q_OBJECT
+    Q_OBJECT
 public:
     MrBayesWidget(const MultipleSequenceAlignment &ma, QWidget *parent);
 
-    void fillSettings(CreatePhyTreeSettings& settings);
+    void fillSettings(CreatePhyTreeSettings &settings);
     void storeSettings();
     void restoreDefault();
     int getRandomSeed();
     bool checkSettings(QString &msg, const CreatePhyTreeSettings &settings);
 
 private:
-    void setComboText(QComboBox* combo, const QString& text);
+    void setComboText(QComboBox *combo, const QString &text);
     QString generateMrBayesSettingsScript();
     bool isAminoAcidAlphabet;
 
 private slots:
-     void sl_onRateChanged(const QString& modelName);
+    void sl_onRateChanged(const QString &modelName);
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MR_BAYES_DIALOG_WIDGET_
+#endif    // _U2_MR_BAYES_DIALOG_WIDGET_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ class SaveDocumentController;
 class ExportMSA2MSADialog : public QDialog, Ui_ExportMSA2MSADialog {
     Q_OBJECT
 public:
-    ExportMSA2MSADialog(const QString& defaultFileName, const DocumentFormatId& f, bool wholeAlignmentOnly, QWidget* p);
+    ExportMSA2MSADialog(const QString &defaultFileName, const DocumentFormatId &f, bool wholeAlignmentOnly, QWidget *p);
 
     void updateModel();
     DocumentFormatId formatId;
@@ -48,10 +48,10 @@ private slots:
 private:
     void initSaveController(const QString &defaultFileName, const DocumentFormatId &defaultFormatId);
 
-    SaveDocumentController* saveController;
+    SaveDocumentController *saveController;
     QList<QString> tableID;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

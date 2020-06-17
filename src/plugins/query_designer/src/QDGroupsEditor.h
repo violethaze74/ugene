@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,8 @@ class QueryViewController;
 class QDGroupsEditor : public QTreeWidget {
     Q_OBJECT
 public:
-    QDGroupsEditor(QueryViewController* p);
+    QDGroupsEditor(QueryViewController *p);
+
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
 private slots:
@@ -41,18 +42,20 @@ private slots:
     void sl_removeActor();
     void sl_setReqNum();
     void rebuild();
+
 private:
     void initActions();
-private:
-    QueryViewController* view;
 
-    QAction* addGroupAction;
-    QAction* removeGroupAction;
-    QAction* addActorAction;
-    QAction* removeActorAction;
-    QAction* setGroupReqNumAction;
+private:
+    QueryViewController *view;
+
+    QAction *addGroupAction;
+    QAction *removeGroupAction;
+    QAction *addActorAction;
+    QAction *removeActorAction;
+    QAction *setGroupReqNumAction;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

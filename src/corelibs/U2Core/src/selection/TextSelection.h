@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,15 +29,19 @@ namespace U2 {
 
 class TextObject;
 
-class  U2CORE_EXPORT TextSelection : public LRegionsSelection {
+class U2CORE_EXPORT TextSelection : public LRegionsSelection {
 public:
-    TextSelection(TextObject* _obj, QObject* p = NULL) : LRegionsSelection(GSelectionTypes::TEXT, p), obj(_obj) {}
-    TextObject *getObject() const { return obj; }
+    TextSelection(TextObject *_obj, QObject *p = NULL)
+        : LRegionsSelection(GSelectionTypes::TEXT, p), obj(_obj) {
+    }
+    TextObject *getObject() const {
+        return obj;
+    }
 
 private:
-    TextObject* obj;
+    TextObject *obj;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

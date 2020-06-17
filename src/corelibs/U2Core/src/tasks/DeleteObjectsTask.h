@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ public:
     void run();
 
 private:
-    QMap<U2DbiRef, QList<U2DataId> > dbiRef2Objs;
+    QMap<U2DbiRef, QList<U2DataId>> dbiRef2Objs;
 };
 
 class U2CORE_EXPORT DeleteFoldersTask : public Task {
@@ -52,6 +52,6 @@ private:
     QMultiMap<U2DbiRef, QString> dbi2Path;
 };
 
-}
+}    // namespace U2
 
-#endif // _U2_DELETE_OBJECTS_H_
+#endif    // _U2_DELETE_OBJECTS_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,24 +19,22 @@
  * MA 02110-1301, USA.
  */
 
+#include "WelcomePageMdi.h"
+
 #include <QVBoxLayout>
 
-#include "WelcomePageMdi.h"
 #include "WelcomePageMdiController.h"
 #include "WelcomePageWidget.h"
 
 namespace U2 {
 
 WelcomePageMdi::WelcomePageMdi(const QString &title, WelcomePageMdiController *controller)
-: MWMDIWindow(title), controller(controller)
-{
+    : MWMDIWindow(title), controller(controller) {
     QVBoxLayout *l = new QVBoxLayout(this);
     l->setMargin(0);
 
     widget = new WelcomePageWidget(this);
-    connect(widget, SIGNAL(si_loaded()), controller, SLOT(sl_onPageLoaded()));
     l->addWidget(widget);
-
     installEventFilter(this);
 }
 
@@ -52,8 +50,4 @@ void WelcomePageMdi::updateRecent(const QStringList &recentProjects, const QStri
     widget->updateRecent(recentProjects, recentFiles);
 }
 
-bool WelcomePageMdi::isLoaded() const {
-    return widget->isLoaded();
-}
-
-} // U2
+}    // namespace U2

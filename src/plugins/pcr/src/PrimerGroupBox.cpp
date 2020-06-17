@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+
+#include "PrimerGroupBox.h"
 
 #include <QMainWindow>
 
@@ -39,18 +41,15 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
-#include "PrimerGroupBox.h"
 #include "PrimerLibrarySelector.h"
 #include "PrimerStatistics.h"
-
 
 namespace U2 {
 
 PrimerGroupBox::PrimerGroupBox(QWidget *parent)
     : QWidget(parent),
       findPrimerTask(NULL),
-      annotatedDnaView(NULL)
-{
+      annotatedDnaView(NULL) {
     setupUi(this);
 
     connect(primerEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_onPrimerChanged(const QString &)));
@@ -61,7 +60,7 @@ PrimerGroupBox::PrimerGroupBox(QWidget *parent)
 void PrimerGroupBox::setAnnotatedDnaView(AnnotatedDNAView *dnaView) {
     cancelFindPrimerTask();
     annotatedDnaView = dnaView;
-    connect(annotatedDnaView, SIGNAL(si_focusChanged(ADVSequenceWidget*,ADVSequenceWidget*)), SLOT(sl_focusChanged()));
+    connect(annotatedDnaView, SIGNAL(si_focusChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_focusChanged()));
 }
 
 void PrimerGroupBox::sl_onPrimerChanged(const QString &primer) {
@@ -140,7 +139,7 @@ QString PrimerGroupBox::getTmString(const QString &sequence) {
     return tr("Tm = ") + tmString;
 }
 
-void PrimerGroupBox::findPrimerAlternatives(const QString& primer) {
+void PrimerGroupBox::findPrimerAlternatives(const QString &primer) {
     cancelFindPrimerTask();
     updateStatistics(primer);
 
@@ -177,7 +176,7 @@ void PrimerGroupBox::findPrimerAlternatives(const QString& primer) {
 void PrimerGroupBox::cancelFindPrimerTask() {
     if (findPrimerTask != NULL) {
         disconnect(this, SLOT(sl_findPrimerTaskStateChanged()));
-        if(!findPrimerTask->isCanceled() && findPrimerTask->getState() != Task::State_Finished){
+        if (!findPrimerTask->isCanceled() && findPrimerTask->getState() != Task::State_Finished) {
             findPrimerTask->cancel();
         }
         findPrimerTask = NULL;
@@ -195,4 +194,4 @@ void PrimerGroupBox::updateStatistics(const QString &primer) {
     characteristicsLabel->setText(characteristics);
 }
 
-} // U2
+}    // namespace U2

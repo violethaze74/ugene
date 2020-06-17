@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,25 +28,24 @@
 
 class Ui_SeqPasterWidget;
 
-namespace U2{
-
+namespace U2 {
 
 class U2GUI_EXPORT SeqPasterWidgetController : public QWidget {
     Q_OBJECT
 public:
-    SeqPasterWidgetController(QWidget *p = NULL, const QByteArray& initText = QByteArray(), bool needWarning = false);
+    SeqPasterWidgetController(QWidget *p = NULL, const QByteArray &initText = QByteArray(), bool needWarning = false);
     ~SeqPasterWidgetController();
 
-    QString validate(); 
+    QString validate();
     QList<DNASequence> getSequences() const;
     void disableCustomSettings();
     void setPreferredAlphabet(const DNAAlphabet *alp);
     void selectText();
-    void setEventFilter(QObject* evFilter);
+    void setEventFilter(QObject *evFilter);
     void allowFastaFormat(bool allow);
 
-    static QByteArray getNormSequence(const DNAAlphabet * alph, const QByteArray & seq, bool replace, QChar replaceChar);
-    
+    static QByteArray getNormSequence(const DNAAlphabet *alph, const QByteArray &seq, bool replace, QChar replaceChar);
+
 private slots:
     void sl_currentIndexChanged(const QString &newText);
 
@@ -56,11 +55,11 @@ private:
 
     const DNAAlphabet *preferred;
     QList<DNASequence> resultSequences;
-    Ui_SeqPasterWidget* ui;
+    Ui_SeqPasterWidget *ui;
     bool additionalWarning;
     bool allowFastaFormatMode;
 };
 
-}//ns
+}    // namespace U2
 
 #endif

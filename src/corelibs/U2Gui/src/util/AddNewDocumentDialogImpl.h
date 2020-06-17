@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,19 +32,18 @@ class SaveDocumentController;
 
 class AddNewDocumentDialogImpl : public QDialog, public Ui_AddNewDocumentDialog {
     Q_OBJECT
-    AddNewDocumentDialogImpl(QWidget* p, AddNewDocumentDialogModel& m, const DocumentFormatConstraints& c);
+    AddNewDocumentDialogImpl(QWidget *p, AddNewDocumentDialogModel &m, const DocumentFormatConstraints &c);
     friend class AddNewDocumentDialogController;
 
 public slots:
     void accept();
 
 private:
-    SaveDocumentController * saveController;
+    SaveDocumentController *saveController;
     AddNewDocumentDialogModel model;
-    DocumentFormatComboboxController* formatController;
+    DocumentFormatComboboxController *formatController;
 };
 
-
-}//namespace
+}    // namespace U2
 
 #endif

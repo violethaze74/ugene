@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,17 +34,17 @@ namespace Js {
 
 class JsScheduler : public ScriptableScheduler {
 public:
-                        JsScheduler( Workflow::Schema *scheme, const Local<Function> &callback );
-                        ~JsScheduler( );
+    JsScheduler(Workflow::Schema *scheme, const Local<Function> &callback);
+    ~JsScheduler();
 
-    virtual Task *      tick( );
+    virtual Task *tick();
 
 private:
-    Local<Function>     schedulerCallback;
+    Local<Function> schedulerCallback;
 };
 
-} // namespace Js
+}    // namespace Js
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_JS_SCHEDULER_H_
+#endif    // _U2_JS_SCHEDULER_H_

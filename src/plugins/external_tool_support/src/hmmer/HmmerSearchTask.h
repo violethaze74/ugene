@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_HMMER_SEARCH_TASK_H_
 
 #include <U2Core/ExternalToolRunTask.h>
+
 #include "HmmerSearchSettings.h"
 
 namespace U2 {
@@ -63,6 +64,6 @@ private:
     static const QString PER_DOMAIN_HITS_FILENAME;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_HMMER_SEARCH_TASK_H_
+#endif    // _U2_HMMER_SEARCH_TASK_H_

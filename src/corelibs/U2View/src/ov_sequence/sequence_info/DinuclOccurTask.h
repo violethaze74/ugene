@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,6 @@
 #include <U2Core/U2Region.h>
 #include <U2Core/U2Type.h>
 
-
 namespace U2 {
 
 typedef QMap<QByteArray, qint64> DinucleotidesOccurrence;
@@ -35,27 +34,25 @@ class DNAAlphabet;
 class U2SequenceObject;
 class U2Region;
 
-class U2VIEW_EXPORT DinuclOccurTask : public BackgroundTask< QMap<QByteArray, qint64> >
-{
+class U2VIEW_EXPORT DinuclOccurTask : public BackgroundTask<QMap<QByteArray, qint64>> {
 public:
-    DinuclOccurTask(const DNAAlphabet* alphabet, U2EntityRef seqRef, U2Region region);
+    DinuclOccurTask(const DNAAlphabet *alphabet, U2EntityRef seqRef, const QVector<U2Region> &regions);
 
-     /**
+    /**
      * Calculates the characters' pairs occurrence (in a different thread).
      * Assumes that the sequence consists of characters from the passed alphabet.
      */
     virtual void run();
 
 private:
-    const DNAAlphabet* alphabet;
+    const DNAAlphabet *alphabet;
     U2EntityRef seqRef;
-    U2Region region;
+    QVector<U2Region> regions;
 
     // A region to analyze at a time
     static const qint64 REGION_TO_ANALAYZE = 1000000;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif
-

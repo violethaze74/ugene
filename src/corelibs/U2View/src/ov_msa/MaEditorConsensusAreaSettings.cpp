@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,8 +27,7 @@ const int MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE = 3;
 
 MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings()
     : visibleElements(MSAEditorConsElement_HISTOGRAM | MSAEditorConsElement_CONSENSUS_TEXT | MSAEditorConsElement_RULER),
-      highlightMismatches(false)
-{
+      highlightMismatches(false) {
     // SANGER_TODO: currently the ruler cannot be drawn above the text - draw methods should be refactored
     order << MSAEditorConsElement_HISTOGRAM
           << MSAEditorConsElement_CONSENSUS_TEXT
@@ -48,4 +47,4 @@ void MaEditorConsensusAreaSettings::setRulerFont(const QFont &font) {
     rulerFont.setPointSize(qMax(8, qRound(font.pointSize() * 0.7)));
 }
 
-}   // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,13 +34,17 @@ enum DeleteMode {
     DeleteAll
 };
 
-class DeleteGapsDialog: public QDialog {
+class DeleteGapsDialog : public QDialog {
     Q_OBJECT
 public:
-    DeleteGapsDialog(QWidget* parent, int alignmentLen);
+    DeleteGapsDialog(QWidget *parent, int alignmentLen);
     ~DeleteGapsDialog();
-    DeleteMode getDeleteMode() const {return deleteMode;}
-    int getValue() const {return value;}
+    DeleteMode getDeleteMode() const {
+        return deleteMode;
+    }
+    int getValue() const {
+        return value;
+    }
 private slots:
     void sl_onRadioButtonClicked();
     void sl_onOkClicked();
@@ -49,9 +53,9 @@ private slots:
 private:
     DeleteMode deleteMode;
     int value;
-    Ui_DeleteGapsDialog* ui;
+    Ui_DeleteGapsDialog *ui;
 };
 
-}
+}    // namespace U2
 
 #endif

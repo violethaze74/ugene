@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,16 +24,17 @@
 
 #include "utils/GTUtilsDialog.h"
 
-namespace U2{
+namespace U2 {
 using namespace HI;
 
-class BranchSettingsDialogFiller : public Filler
-{
+class BranchSettingsDialogFiller : public Filler {
 public:
-    BranchSettingsDialogFiller(HI::GUITestOpStatus &os) : Filler(os,"BranchSettingsDialog"){}
+    BranchSettingsDialogFiller(HI::GUITestOpStatus &os)
+        : Filler(os, "BranchSettingsDialog") {
+    }
     void commonScenario();
 };
 
-}
+}    // namespace U2
 
-#endif // BRANCHSETTINGSDIALOGFILLER_H
+#endif    // BRANCHSETTINGSDIALOGFILLER_H

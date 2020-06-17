@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,13 +34,13 @@ class SetParametersDialogController : public QDialog, public Ui_SetDefaultParame
     Q_OBJECT
 
 public:
-    SetParametersDialogController(QWidget* w = NULL);
+    SetParametersDialogController(QWidget *w = NULL);
 
 private slots:
     void sl_onOkButton();
     void sl_onSliderMoved(int);
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

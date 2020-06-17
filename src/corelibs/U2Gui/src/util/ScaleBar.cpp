@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,18 +19,17 @@
  * MA 02110-1301, USA.
  */
 
+#include "ScaleBar.h"
+
 #include <QAction>
 #include <QSlider>
 #include <QToolButton>
 #include <QVBoxLayout>
 
-#include "ScaleBar.h"
-
 namespace U2 {
 
-ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
-    : QWidget(parent)
-{
+ScaleBar::ScaleBar(Qt::Orientation ori, QWidget *parent)
+    : QWidget(parent) {
     scaleBar = new QSlider(ori);
     scaleBar->setTracking(true);
     scaleBar->setRange(100, 2000);
@@ -108,11 +107,11 @@ QAbstractButton *ScaleBar::getMinusButton() const {
 }
 
 void ScaleBar::sl_minusButtonClicked() {
-    scaleBar->setValue(scaleBar->value()-scaleBar->pageStep());
+    scaleBar->setValue(scaleBar->value() - scaleBar->pageStep());
 }
 
 void ScaleBar::sl_plusButtonClicked() {
-    scaleBar->setValue(scaleBar->value()+scaleBar->pageStep());
+    scaleBar->setValue(scaleBar->value() + scaleBar->pageStep());
 }
 
 void ScaleBar::sl_updateState() {
@@ -122,4 +121,4 @@ void ScaleBar::sl_updateState() {
     plusButton->setEnabled(plusAction->isEnabled());
 }
 
-}   // namespace U2
+}    // namespace U2

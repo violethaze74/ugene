@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,9 @@ using namespace HI;
 
 #define GT_CLASS_NAME "TrimmomaticDialogFiller"
 
-TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario) :
-                                                Filler(os, "TrimmomaticPropertyDialog", customScenario) {}
-
-
+TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario)
+    : Filler(os, "TrimmomaticPropertyDialog", customScenario) {
+}
 
 #undef GT_CLASS_NAME
-}
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,27 +36,40 @@ class TestRunnerSettings;
 
 class U2CORE_EXPORT AppSettings {
 public:
-    AppSettings() : nc(NULL), userAppsSettings(NULL), ri(NULL), trs(NULL), formatSettings(NULL) {}
+    AppSettings()
+        : nc(NULL), userAppsSettings(NULL), ri(NULL), trs(NULL), formatSettings(NULL) {
+    }
 
-    virtual ~AppSettings(){}
+    virtual ~AppSettings() {
+    }
 
-    NetworkConfiguration* getNetworkConfiguration() const {return nc;}
+    NetworkConfiguration *getNetworkConfiguration() const {
+        return nc;
+    }
 
-    UserAppsSettings* getUserAppsSettings() const {return userAppsSettings;}
+    UserAppsSettings *getUserAppsSettings() const {
+        return userAppsSettings;
+    }
 
-    AppResourcePool* getAppResourcePool() const {return ri;}
+    AppResourcePool *getAppResourcePool() const {
+        return ri;
+    }
 
-    TestRunnerSettings* getTestRunnerSettings() const {return trs;}
+    TestRunnerSettings *getTestRunnerSettings() const {
+        return trs;
+    }
 
-    FormatAppsSettings* getFormatAppsSettings() const {return formatSettings;}
+    FormatAppsSettings *getFormatAppsSettings() const {
+        return formatSettings;
+    }
 
 protected:
-    NetworkConfiguration*   nc;
-    UserAppsSettings*       userAppsSettings;
-    AppResourcePool*        ri;
-    TestRunnerSettings*     trs;
-    FormatAppsSettings*   formatSettings;
+    NetworkConfiguration *nc;
+    UserAppsSettings *userAppsSettings;
+    AppResourcePool *ri;
+    TestRunnerSettings *trs;
+    FormatAppsSettings *formatSettings;
 };
 
-}//namespace
+}    // namespace U2
 #endif

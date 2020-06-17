@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ public:
     ImportSequenceFromRawDataTask(const U2DbiRef &dbiRef, const QString &folder, const DNASequence &sequence);
 
     QString getSequenceName() const;
-    const U2EntityRef & getEntityRef() const;
+    const U2EntityRef &getEntityRef() const;
 
 private:
     void run();
@@ -46,6 +46,6 @@ private:
     const DNASequence sequence;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_IMPORT_SEQUENCE_FROM_RAW_DATA_TASK_H_
+#endif    // _U2_IMPORT_SEQUENCE_FROM_RAW_DATA_TASK_H_

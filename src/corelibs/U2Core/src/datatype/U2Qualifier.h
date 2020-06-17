@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,6 @@ public:
     /** Value of qualifier */
     QString value;
 
-
     /** Constructs new empty (and invalid) qualifier */
     U2Qualifier();
 
@@ -57,7 +56,7 @@ public:
     static bool isValidQualifierValue(const QString &value);
 };
 
-} // namespace
+}    // namespace U2
 
 Q_DECLARE_METATYPE(U2::U2Qualifier)
 

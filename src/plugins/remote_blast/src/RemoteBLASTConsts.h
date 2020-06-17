@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -97,11 +97,10 @@ public:
     static const QString cdd_db;
 };
 
-void addParametr(QString &str,const QString &paramName, const QString &param);
-void addParametr(QString &str,const QString &paramName, const double param);
-void addParametr(QString &str,const QString &paramName, const int param);
+void addParametr(QString &str, const QString &paramName, const QString &param);
+void addParametr(QString &str, const QString &paramName, const double param);
+void addParametr(QString &str, const QString &paramName, const int param);
 
-}
-
+}    // namespace U2
 
 #endif

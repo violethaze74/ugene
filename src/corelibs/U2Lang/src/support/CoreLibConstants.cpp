@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,6 +48,6 @@ const QString CoreLibConstants::GROUPER_SLOT_ATTR("group-slot");
 const QString CoreLibConstants::GROUPER_OUT_SLOTS_ATTR("out-slot");
 const QString CoreLibConstants::GROUPER_OPER_ATTR("group-op");
 
-} // Workflow
+}    // namespace Workflow
 
-} // U2
+}    // namespace U2

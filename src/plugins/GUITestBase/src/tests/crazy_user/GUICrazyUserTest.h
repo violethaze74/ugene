@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,8 @@ class GTAbstractGUIAction;
 class GTCrazyUserMonitor : QObject {
     Q_OBJECT
 public:
-    GTCrazyUserMonitor() : timer(NULL) {
+    GTCrazyUserMonitor()
+        : timer(NULL) {
         timer = new QTimer();
 
         timer->connect(timer, SIGNAL(timeout()), this, SLOT(checkActiveWidget()));
@@ -49,23 +50,25 @@ public slots:
     void checkActiveWidget();
 
 private:
-    GTCrazyUserMonitor(const GTCrazyUserMonitor&);
-    GTCrazyUserMonitor& operator=(const GTCrazyUserMonitor&);
+    GTCrazyUserMonitor(const GTCrazyUserMonitor &);
+    GTCrazyUserMonitor &operator=(const GTCrazyUserMonitor &);
 
     QTimer *timer;
-    QList<GTAbstractGUIAction*> formGUIActions(QWidget* widget) const;
+    QList<GTAbstractGUIAction *> formGUIActions(QWidget *widget) const;
 };
-
 
 class simple_crazy_user : public HI::GUITest {
 public:
-    simple_crazy_user() : HI::GUITest("simple_crazy_user"){}
+    simple_crazy_user()
+        : HI::GUITest("simple_crazy_user") {
+    }
+
 protected:
     virtual void run(HI::GUITestOpStatus &os);
 };
 
-}
+}    // namespace GUITest_crazy_user
 
-} //namespace
+}    // namespace U2
 
 #endif

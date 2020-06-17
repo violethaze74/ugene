@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ public:
     ~CuffmergeSupportTask();
 
     void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask);
     void run();
     QStringList getOutputFiles() const;
 
@@ -65,8 +65,8 @@ private:
     QString workingDir;
     QString listFilePath;
     int fileNum;
-    QList<Document*> docs;
-    QList<Task*> writeTasks;
+    QList<Document *> docs;
+    QList<Task *> writeTasks;
     ExternalToolRunTask *mergeTask;
     LoadDocumentTask *loadResultTask;
     QList<AnnotationTableObject *> result;
@@ -84,6 +84,6 @@ private:
     void writeFileList();
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_CUFFMERGESUPPORTTASK_H_
+#endif    // _U2_CUFFMERGESUPPORTTASK_H_

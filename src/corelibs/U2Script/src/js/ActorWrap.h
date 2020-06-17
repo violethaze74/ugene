@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,27 +34,27 @@ namespace Js {
 
 class ActorWrap : public node::ObjectWrap {
 public:
-    static void                         init( );
-    static Handle<Value>                newInstance( int argc, const Handle<Value> *argv );
+    static void init();
+    static Handle<Value> newInstance(int argc, const Handle<Value> *argv);
 
 private:
-                                        ActorWrap( const Workflow::Actor *initActor );
-                                        ~ActorWrap( );
+    ActorWrap(const Workflow::Actor *initActor);
+    ~ActorWrap();
 
-    static Handle<Value>                newObject( const Arguments &args );
-    static Handle<Value>                id( const Arguments &args );
-    static Handle<Value>                label( const Arguments &args );
-    static Handle<Value>                isDone( const Arguments &args );
-    static Handle<Value>                isReady( const Arguments &args );
+    static Handle<Value> newObject(const Arguments &args);
+    static Handle<Value> id(const Arguments &args);
+    static Handle<Value> label(const Arguments &args);
+    static Handle<Value> isDone(const Arguments &args);
+    static Handle<Value> isReady(const Arguments &args);
 
-    static Persistent<Function>         CONSTRUCTOR;
-    static const char *                 CLASS_NAME;
+    static Persistent<Function> CONSTRUCTOR;
+    static const char *CLASS_NAME;
 
-    const Workflow::Actor *             actor;
+    const Workflow::Actor *actor;
 };
 
-}
+}    // namespace Js
 
-}
+}    // namespace U2
 
-#endif // _U2_ACTOR_WRAP_H_
+#endif    // _U2_ACTOR_WRAP_H_

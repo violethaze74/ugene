@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,7 +60,7 @@ DECLARE_TEST(RawDataUdrSchemaUnitTests, writeContent);
 /* writeContent 2 */
 DECLARE_TEST(RawDataUdrSchemaUnitTests, writeContent_Null);
 
-} // U2
+}    // namespace U2
 
 DECLARE_METATYPE(RawDataUdrSchemaUnitTests, getObject);
 DECLARE_METATYPE(RawDataUdrSchemaUnitTests, getObject_Null);
@@ -70,4 +70,4 @@ DECLARE_METATYPE(RawDataUdrSchemaUnitTests, createObject);
 DECLARE_METATYPE(RawDataUdrSchemaUnitTests, writeContent);
 DECLARE_METATYPE(RawDataUdrSchemaUnitTests, writeContent_Null);
 
-#endif // _U2_RAW_DATA_UDR_SCHEMA_UNIT_TESTS_H_
+#endif    // _U2_RAW_DATA_UDR_SCHEMA_UNIT_TESTS_H_

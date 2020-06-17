@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,5 +31,4 @@ int GTSequenceReadingModeDialog::numSymbolFiles = 10;
 bool GTSequenceReadingModeDialog::saveDocument = false;
 QString GTSequenceReadingModeDialog::newDocName = QString();
 
-} // namespace
-
+}    // namespace U2

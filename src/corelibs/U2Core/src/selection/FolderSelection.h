@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,13 +34,13 @@ public:
     bool isEmpty() const;
     void clear();
 
-    const QList<Folder> & getSelection() const;
+    const QList<Folder> &getSelection() const;
     void setSelection(const QList<Folder> &folders);
 
 private:
     QList<Folder> selection;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_FOLDER_SELECTION_H_
+#endif    // _U2_FOLDER_SELECTION_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include "LeadingStep.h"
+
 #include <U2Core/U2SafePoints.h>
 
-#include "LeadingStep.h"
 #include "trimmomatic/util/QualitySettingsWidget.h"
 
 namespace U2 {
@@ -30,8 +31,7 @@ namespace LocalWorkflow {
 const QString LeadingStepFactory::ID = "LEADING";
 
 LeadingStep::LeadingStep()
-    : TrimmomaticStep(LeadingStepFactory::ID)
-{
+    : TrimmomaticStep(LeadingStepFactory::ID) {
     name = "LEADING";
     description = tr("<html><head></head><body>"
                      "<h4>LEADING</h4>"
@@ -58,14 +58,12 @@ QVariantMap LeadingStep::parseState(const QString &command) const {
 }
 
 LeadingStepFactory::LeadingStepFactory()
-    : TrimmomaticStepFactory(ID)
-{
-
+    : TrimmomaticStepFactory(ID) {
 }
 
 LeadingStep *LeadingStepFactory::createStep() const {
     return new LeadingStep();
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

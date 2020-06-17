@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include "AttributeInfo.h"
+
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/WorkflowUtils.h>
-
-#include "AttributeInfo.h"
 
 namespace U2 {
 
@@ -32,12 +32,10 @@ const QString AttributeInfo::DATASETS("datasets");
 const QString AttributeInfo::LABEL("label");
 
 AttributeInfo::AttributeInfo(const QString &_actorId, const QString &_attrId, const QVariantMap &_hints)
-: actorId(_actorId), attrId(_attrId), hints(_hints)
-{
-
+    : actorId(_actorId), attrId(_attrId), hints(_hints) {
 }
 
-void AttributeInfo::validate(const QList<Workflow::Actor*> &actors, U2OpStatus &os) const {
+void AttributeInfo::validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os) const {
     Workflow::Actor *actor = WorkflowUtils::actorById(actors, actorId);
     if (NULL == actor) {
         os.setError(QObject::tr("Actor is not found, id: %1").arg(actorId));
@@ -49,7 +47,7 @@ void AttributeInfo::validate(const QList<Workflow::Actor*> &actors, U2OpStatus &
     }
 }
 
-bool AttributeInfo::operator== (const AttributeInfo &other) const {
+bool AttributeInfo::operator==(const AttributeInfo &other) const {
     return toString() == other.toString();
 }
 
@@ -66,4 +64,4 @@ AttributeInfo AttributeInfo::fromString(const QString &value, U2OpStatus &os) {
     return AttributeInfo(tokens[0], tokens[1]);
 }
 
-} // U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,25 +19,27 @@
  * MA 02110-1301, USA.
  */
 
+#include "ImportPrimerFromObjectTask.h"
+
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "Primer.h"
 #include "PrimerLibrary.h"
-#include "ImportPrimerFromObjectTask.h"
 
 namespace U2 {
 
-ImportPrimerFromObjectTask::ImportPrimerFromObjectTask(GObject *object) :
-    Task(tr("Import primer from the shared database object: %1").arg(NULL == object ? "N/A" : object->getGObjectName()),
-    TaskFlags(TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)), validator(this)
-{
+ImportPrimerFromObjectTask::ImportPrimerFromObjectTask(GObject *object)
+    : Task(tr("Import primer from the shared database object: %1").arg(NULL == object ? "N/A" : object->getGObjectName()),
+           TaskFlags(TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
+      validator(this) {
     SAFE_POINT_EXT(NULL != object, setError(L10N::nullPointerError("an input object")), );
     SAFE_POINT_EXT(GObjectTypes::SEQUENCE == object->getGObjectType(), setError(tr("A non-sequence object was provided")), );
     sequenceObject = qobject_cast<U2SequenceObject *>(object);
@@ -67,12 +69,12 @@ QString ImportPrimerFromObjectTask::generateReport() const {
     const QString docName = (NULL == sequenceObject->getDocument() ? tr("Without document") : sequenceObject->getDocument()->getName());
     QString report = QString("<b>%1</b> %2: <font color='%3'>%4</font>").arg(docName).arg(sequenceObject->getGObjectName());
     if (isCanceled()) {
-        return report.arg(L10N::errorColorLabelHtmlStr()).arg(tr("cancelled"));
+        return report.arg(Theme::errorColorLabelHtmlStr()).arg(tr("cancelled"));
     }
     if (hasError()) {
-        return report.arg(L10N::errorColorLabelHtmlStr()).arg(tr("error")) + ": " + getError();
+        return report.arg(Theme::errorColorLabelHtmlStr()).arg(tr("error")) + ": " + getError();
     }
-    return report.arg(L10N::successColorLabelHtmlStr()).arg(tr("success"));
+    return report.arg(Theme::successColorLabelHtmlStr()).arg(tr("success"));
 }
 
-}   // namespace U2
+}    // namespace U2

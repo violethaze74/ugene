@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,14 +27,12 @@ namespace U2 {
 using namespace HI;
 
 EscapeClicker::EscapeClicker(HI::GUITestOpStatus &os, const QString &name, CustomScenario *scenario)
-    : Filler(os, name, scenario)
-{
-
+    : Filler(os, name, scenario) {
 }
 
 void EscapeClicker::commonScenario() {
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick( Qt::Key_Escape);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 
-}
+}    // namespace U2

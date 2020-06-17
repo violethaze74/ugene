@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,13 +27,12 @@
 namespace U2 {
 namespace BAM {
 
-class IOException : public Exception
-{
+class IOException : public Exception {
 public:
     IOException(const QString &message);
 };
 
-} // namespace BAM
-} // namespace U2
+}    // namespace BAM
+}    // namespace U2
 
-#endif // _U2_BAM_IO_EXCEPTION_H_
+#endif    // _U2_BAM_IO_EXCEPTION_H_

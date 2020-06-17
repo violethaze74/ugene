@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ public:
     virtual void cleanup();
 
     virtual WorkerState getWorkerState(const ActorId &actor);
-    virtual Task * replayLastWorkerTick();
+    virtual Task *replayLastWorkerTick();
     virtual bool cancelCurrentTaskIfAllowed();
     virtual void makeOneTick(const ActorId &actor);
 
@@ -58,15 +58,15 @@ protected:
     qint64 lastTaskTimeSec() const;
     void measuredTick();
 
-    QMap<int, QList<Actor *> > topologicSortedGraph;
+    QMap<int, QList<Actor *>> topologicSortedGraph;
     BaseWorker *lastWorker;
     bool canLastTaskBeCanceled;
     ActorId requestedActorForNextTick;
-    ElapsedTimeUpdater* timeUpdater;
+    ElapsedTimeUpdater *timeUpdater;
 };
 
-} // LocalWorkflow
+}    // namespace LocalWorkflow
 
-} // U2
+}    // namespace U2
 
-#endif // _WORKFLOW_LAST_READY_SCHEDULER_H_
+#endif    // _WORKFLOW_LAST_READY_SCHEDULER_H_

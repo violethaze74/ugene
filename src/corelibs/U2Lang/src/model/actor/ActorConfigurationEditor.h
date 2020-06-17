@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,13 +39,13 @@ public:
     ActorConfigurationEditor(const ActorConfigurationEditor &other);
 
     virtual void setConfiguration(Actor *actor);
-    virtual ConfigurationEditor * clone();
+    virtual ConfigurationEditor *clone();
 
 protected:
     Actor *cfg;
-}; // ActorConfigurationEditor
+};    // ActorConfigurationEditor
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2
 
-#endif // _U2_ACTORCONFIGURATIONEDITOR_H_
+#endif    // _U2_ACTORCONFIGURATIONEDITOR_H_

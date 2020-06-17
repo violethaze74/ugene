@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,13 +27,16 @@
 namespace U2 {
 using namespace HI;
 
-    class GoToDialogFiller : public Filler {
-    public:
-        GoToDialogFiller(HI::GUITestOpStatus &_os, int _goTo) : Filler(_os, ""), goTo(_goTo){}
-        void commonScenario();
-    private:
-        int goTo;
-    };
-}
+class GoToDialogFiller : public Filler {
+public:
+    GoToDialogFiller(HI::GUITestOpStatus &_os, int _goTo)
+        : Filler(_os, ""), goTo(_goTo) {
+    }
+    void commonScenario();
+
+private:
+    int goTo;
+};
+}    // namespace U2
 
 #endif

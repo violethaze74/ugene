@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,15 +25,13 @@
 
 #include <U2Gui/MainWindow.h>
 
-
 namespace U2 {
 
 const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT = "SAMtools";
 const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID = "USUPP_SAMTOOLS";
 
-SamToolsExtToolSupport::SamToolsExtToolSupport(const QString& id, const QString& name, const QString& path)
-    : ExternalTool(id, name, path)
-{
+SamToolsExtToolSupport::SamToolsExtToolSupport(const QString &id, const QString &name, const QString &path)
+    : ExternalTool(id, name, path) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
@@ -43,15 +41,15 @@ SamToolsExtToolSupport::SamToolsExtToolSupport(const QString& id, const QString&
 #ifdef Q_OS_WIN
     executableFileName = "samtools.exe";
 #else
-#if defined(Q_OS_UNIX)
+#    if defined(Q_OS_UNIX)
     executableFileName = "samtools";
-#endif
+#    endif
 #endif
 
     validMessage = "samtools \\(Tools for alignments in the SAM format\\)";
     description = "<i>SAMtools</i> is a set of utilities for interacting"
-        " with and post-processing short DNA sequence read alignments."
-        " This external tool is required to run <i>TopHat</i> external tool.";
+                  " with and post-processing short DNA sequence read alignments."
+                  " This external tool is required to run <i>TopHat</i> external tool.";
     versionRegExp = QRegExp("Version: (\\d+.\\d+.\\d+)");
 
     toolKitName = "SAMtools";
@@ -59,4 +57,4 @@ SamToolsExtToolSupport::SamToolsExtToolSupport(const QString& id, const QString&
     muted = true;
 }
 
-} // namespace
+}    // namespace U2

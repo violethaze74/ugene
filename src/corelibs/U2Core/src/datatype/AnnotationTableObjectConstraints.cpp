@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,24 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/GObjectTypes.h>
-
 #include "AnnotationTableObjectConstraints.h"
+
+#include <U2Core/GObjectTypes.h>
 
 namespace U2 {
 
-AnnotationTableObjectConstraints::AnnotationTableObjectConstraints( QObject *p )
-    : GObjectConstraints( GObjectTypes::ANNOTATION_TABLE, p ), sequenceSizeToFit( 0 )
-{
-
+AnnotationTableObjectConstraints::AnnotationTableObjectConstraints(QObject *p)
+    : GObjectConstraints(GObjectTypes::ANNOTATION_TABLE, p), sequenceSizeToFit(0) {
 }
 
 AnnotationTableObjectConstraints::AnnotationTableObjectConstraints(
-    const AnnotationTableObjectConstraints &c, QObject *p )
-    : GObjectConstraints( GObjectTypes::ANNOTATION_TABLE, p ),
-    sequenceSizeToFit( c.sequenceSizeToFit )
-{
-
+    const AnnotationTableObjectConstraints &c,
+    QObject *p)
+    : GObjectConstraints(GObjectTypes::ANNOTATION_TABLE, p),
+      sequenceSizeToFit(c.sequenceSizeToFit) {
 }
 
-} // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,24 +21,23 @@
 
 #include "CreatePhyTreeSettings.h"
 
-namespace U2{
+namespace U2 {
 
-CreatePhyTreeSettings::CreatePhyTreeSettings() :
-    algorithm(""),
-    matrixId(""),
-    displayWithAlignmentEditor(true),
-    syncAlignmentWithTree(true),
-    useGammaDistributionRates(false),
-    alphaFactor(0),
-    ttRatio(0),
-    bootstrap(false),
-    replicates(0),
-    seed(0),
-    fraction(0),
-    consensusID(""),
-    mb_ngen(1),
-    mrBayesSettingsScript("")
-{
+CreatePhyTreeSettings::CreatePhyTreeSettings()
+    : algorithm(""),
+      matrixId(""),
+      displayWithAlignmentEditor(true),
+      syncAlignmentWithTree(true),
+      useGammaDistributionRates(false),
+      alphaFactor(0),
+      ttRatio(0),
+      bootstrap(false),
+      replicates(0),
+      seed(0),
+      fraction(0),
+      consensusID(""),
+      mb_ngen(1),
+      mrBayesSettingsScript("") {
 }
 
-}
+}    // namespace U2

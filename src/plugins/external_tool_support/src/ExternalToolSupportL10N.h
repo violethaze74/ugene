@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,21 +22,19 @@
 #ifndef _U2_EXTERNAL_TOOL_SUPPORT_L10N_H_
 #define _U2_EXTERNAL_TOOL_SUPPORT_L10N_H_
 
-#include "ExternalToolSupportPlugin.h"
-
 #include <QString>
 
+#include "ExternalToolSupportPlugin.h"
 
 namespace U2 {
 
-
-class ExternalToolSupportL10N : public QObject
-{
+class ExternalToolSupportL10N : public QObject {
     Q_OBJECT
 public:
     static QString errorRemovingTmpSubdir(QString subdirName) {
         return ExternalToolSupportPlugin::tr("The subfolder for temporary files '%1' already exists."
-                " Can not remove this folder!").arg(subdirName);
+                                             " Can not remove this folder!")
+            .arg(subdirName);
     }
 
     static QString errorCreatingTmpSubrir(QString subdirName) {
@@ -44,6 +42,6 @@ public:
     }
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

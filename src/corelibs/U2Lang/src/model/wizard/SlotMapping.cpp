@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,16 +24,13 @@
 namespace U2 {
 
 SlotMapping::SlotMapping(const QString &srcSlotId, const QString &dstSlotId)
-: IdMapping(srcSlotId, dstSlotId)
-{
-
+    : IdMapping(srcSlotId, dstSlotId) {
 }
 
-void SlotMapping::validate(DataTypePtr srcSlotType, DataTypePtr dstSlotType,
-    U2OpStatus &os) const {
+void SlotMapping::validate(DataTypePtr srcSlotType, DataTypePtr dstSlotType, U2OpStatus &os) const {
     if (srcSlotType != dstSlotType) {
         os.setError(QObject::tr("Slots %1, %2 have different types").arg(srcId).arg(dstId));
     }
 }
 
-} // U2
+}    // namespace U2

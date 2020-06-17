@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define __U2_WORKFLOW_BASE_PORTS_H_
 
 #include <QString>
+
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -43,9 +44,9 @@ public:
     static const QString OUT_ASSEMBLY_PORT_ID();
     static const QString IN_ASSEMBLY_PORT_ID();
 
-}; // BasePorts
+};    // BasePorts
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2
 
-#endif // __U2_WORKFLOW_BASE_PORTS_H_
+#endif    // __U2_WORKFLOW_BASE_PORTS_H_

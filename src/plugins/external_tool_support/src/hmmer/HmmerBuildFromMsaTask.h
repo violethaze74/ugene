@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ class HmmerBuildFromMsaTask : public ExternalToolSupportTask {
 public:
     HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MultipleSequenceAlignment &msa);
 
-    const QString & getHmmUrl() const;
+    const QString &getHmmUrl() const;
 
 private:
     void prepare();
@@ -51,6 +51,6 @@ private:
     bool removeWorkingDir;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_HMMER_BUILD_FROM_MSA_TASK_H_
+#endif    // _U2_HMMER_BUILD_FROM_MSA_TASK_H_

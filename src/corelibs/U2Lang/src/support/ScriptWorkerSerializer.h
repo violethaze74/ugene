@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,6 +34,6 @@ public:
     static Workflow::ActorPrototype *string2actor(const QString data, const QString actorName, QString &error, const QString actorFilePath);
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _SCRIPT_WORKER_SERIALIZER_H_
+#endif    // _SCRIPT_WORKER_SERIALIZER_H_

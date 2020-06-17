@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+#include "UrlItem.h"
+
 #include <QFileInfo>
 
 #include "DirectoryItem.h"
 
-#include "UrlItem.h"
-
 namespace U2 {
 
 UrlItem::UrlItem(const QString &url, QListWidget *parent)
-: QListWidgetItem(url, parent)
-{
+    : QListWidgetItem(url, parent) {
     QFileInfo info(url);
     QString name = info.fileName();
     if (name.isEmpty()) {
@@ -40,8 +39,8 @@ UrlItem::UrlItem(const QString &url, QListWidget *parent)
     setToolTip("<p>" + url + "</p>");
 }
 
-QWidget * UrlItem::getOptionsWidget() {
+QWidget *UrlItem::getOptionsWidget() {
     return NULL;
 }
 
-} // U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,14 +20,13 @@
  */
 
 #include "MaStateCheck.h"
+
 #include "MultipleAlignment.h"
 
 namespace U2 {
 
 MaStateCheck::MaStateCheck(const MultipleAlignmentData *maData)
-    : maData(maData)
-{
-
+    : maData(maData) {
 }
 
 MaStateCheck::~MaStateCheck() {
@@ -38,4 +37,4 @@ MaStateCheck::~MaStateCheck() {
 #endif
 }
 
-}   // namespace U2
+}    // namespace U2

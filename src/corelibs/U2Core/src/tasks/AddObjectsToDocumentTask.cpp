@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,21 +20,22 @@
  */
 #include "AddObjectsToDocumentTask.h"
 
+#include <QCoreApplication>
+
+#include <U2Core/CloneObjectTask.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/CloneObjectTask.h>
 #include <U2Core/U2SafePoints.h>
-
-#include <QCoreApplication>
 
 namespace U2 {
 
-AddObjectsToDocumentTask::AddObjectsToDocumentTask(QList<GObject*> &_objects, Document *_doc)
-    : Task(tr("Add objects to document"), TaskFlags_FOSE_COSC | TaskFlag_NoRun), objects(_objects), doc(_doc) {}
+AddObjectsToDocumentTask::AddObjectsToDocumentTask(QList<GObject *> &_objects, Document *_doc)
+    : Task(tr("Add objects to document"), TaskFlags_FOSE_COSC | TaskFlag_NoRun), objects(_objects), doc(_doc) {
+}
 
 void AddObjectsToDocumentTask::prepare() {
-    foreach(GObject *obj, objects) {
+    foreach (GObject *obj, objects) {
         if (obj->isUnloaded()) {
             continue;
         }
@@ -42,12 +43,12 @@ void AddObjectsToDocumentTask::prepare() {
     }
 }
 
-QList<Task*> AddObjectsToDocumentTask::onSubTaskFinished(Task* subTask) {
-    QList<Task*> result;
-    CloneObjectTask *cloneTask = qobject_cast<CloneObjectTask*>(subTask);
+QList<Task *> AddObjectsToDocumentTask::onSubTaskFinished(Task *subTask) {
+    QList<Task *> result;
+    CloneObjectTask *cloneTask = qobject_cast<CloneObjectTask *>(subTask);
     CHECK(cloneTask != NULL, result);
     doc->addObject(cloneTask->takeResult());
     return result;
 }
 
-}
+}    // namespace U2

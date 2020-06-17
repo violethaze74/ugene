@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
+
 #include "ClustalWSupportTask.h"
 
 namespace U2 {
@@ -33,7 +34,8 @@ namespace LocalWorkflow {
 class ClustalWPrompter : public PrompterBase<ClustalWPrompter> {
     Q_OBJECT
 public:
-    ClustalWPrompter(Actor* p = 0);
+    ClustalWPrompter(Actor *p = 0);
+
 protected:
     QString composeRichDoc();
 };
@@ -41,10 +43,10 @@ protected:
 class ClustalWWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ClustalWWorker(Actor* a);
+    ClustalWWorker(Actor *a);
 
     virtual void init();
-    virtual Task* tick();
+    virtual Task *tick();
     virtual void cleanup();
 
 private slots:
@@ -52,7 +54,7 @@ private slots:
 
 private:
     IntegralBus *input, *output;
-    QString resultName,transId;
+    QString resultName, transId;
     ClustalWSupportTaskSettings cfg;
 
 private:
@@ -63,11 +65,15 @@ class ClustalWWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
     static void init();
-    ClustalWWorkerFactory() : DomainFactory(ACTOR_ID) {}
-    virtual Worker* createWorker(Actor* a) {return new ClustalWWorker(a);}
+    ClustalWWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
+    virtual Worker *createWorker(Actor *a) {
+        return new ClustalWWorker(a);
+    }
 };
 
-} // Workflow namespace
-} // U2 namespace
+}    // namespace LocalWorkflow
+}    // namespace U2
 
 #endif

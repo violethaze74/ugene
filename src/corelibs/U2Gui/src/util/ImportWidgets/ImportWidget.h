@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-#define ImportHint_FormatId  "import-hint-format-id"
+#define ImportHint_FormatId "import-hint-format-id"
 #define ImportHint_DestinationUrl "import-hint-destination-url"
 
 class SaveDocumentController;
@@ -42,6 +42,6 @@ protected:
     SaveDocumentController *saveController;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_IMPORT_WIDGET_H_
+#endif    // _U2_IMPORT_WIDGET_H_

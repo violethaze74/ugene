@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,35 +20,34 @@
  */
 
 #include "BranchSettingsDialogFiller.h"
-#include <QApplication>
-#include <QPushButton>
-#include <QColorDialog>
-#include <QSpinBox>
-#include <QDialogButtonBox>
-
-#include <primitives/GTWidget.h>
-#include <primitives/GTSpinBox.h>
 #include <base_dialogs/ColorDialogFiller.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTWidget.h>
 
-namespace U2{
+#include <QApplication>
+#include <QColorDialog>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QSpinBox>
+
+namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::BranchSettingsDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
-void BranchSettingsDialogFiller::commonScenario(){
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog!=NULL, "Active modal widget not found");
+void BranchSettingsDialogFiller::commonScenario() {
+    QWidget *dialog = QApplication::activeModalWidget();
+    GT_CHECK(dialog != NULL, "Active modal widget not found");
 
     GTGlobals::sleep(500);
-    GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os,0,0,255));
-    QPushButton* colorButton = dialog->findChild<QPushButton*>("colorButton");
+    GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 0, 0, 255));
+    QPushButton *colorButton = dialog->findChild<QPushButton *>("colorButton");
     GTWidget::click(os, colorButton);
 
-    QSpinBox* thicknessSpinBox = dialog->findChild<QSpinBox*>("thicknessSpinBox");
-    GTSpinBox::setValue(os,thicknessSpinBox,10);
+    QSpinBox *thicknessSpinBox = dialog->findChild<QSpinBox *>("thicknessSpinBox");
+    GTSpinBox::setValue(os, thicknessSpinBox, 10);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
-}
+}    // namespace U2

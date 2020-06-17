@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,37 +27,36 @@
 namespace U2 {
 using namespace HI;
 
-    class ExportDocumentDialogFiller : public Filler {
-    public:
-        enum FormatToUse {
-            BAM,
-            CLUSTALW,
-            FASTA,
-            GFF,
-            Genbank,
-            MEGA,
-            MSF,
-            NWK,
-            TEXT,
-            UGENEDB,
-            VCF,
-            VectorNTI
-        };
-
-        ExportDocumentDialogFiller(HI::GUITestOpStatus &_os, const QString &_path = "", const QString &_name = "",
-            ExportDocumentDialogFiller::FormatToUse _format = ExportDocumentDialogFiller::Genbank, bool compressFile = false,
-                                 bool addToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
-        void commonScenario();
-
-        static QString defaultExportString;
-    private:
-        QString path, name;
-        GTGlobals::UseMethod useMethod;
-        FormatToUse format;
-        bool compressFile;
-        bool addToProject;
-        QMap<FormatToUse, QString> comboBoxItems;
+class ExportDocumentDialogFiller : public Filler {
+public:
+    enum FormatToUse {
+        BAM,
+        CLUSTALW,
+        FASTA,
+        GFF,
+        Genbank,
+        MEGA,
+        MSF,
+        NWK,
+        TEXT,
+        UGENEDB,
+        VCF,
+        VectorNTI
     };
-}
+
+    ExportDocumentDialogFiller(HI::GUITestOpStatus &_os, const QString &_path = "", const QString &_name = "", ExportDocumentDialogFiller::FormatToUse _format = ExportDocumentDialogFiller::Genbank, bool compressFile = false, bool addToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    void commonScenario();
+
+    static QString defaultExportString;
+
+private:
+    QString path, name;
+    GTGlobals::UseMethod useMethod;
+    FormatToUse format;
+    bool compressFile;
+    bool addToProject;
+    QMap<FormatToUse, QString> comboBoxItems;
+};
+}    // namespace U2
 
 #endif

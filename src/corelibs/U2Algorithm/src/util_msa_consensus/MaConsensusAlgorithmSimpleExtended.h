@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -83,7 +83,7 @@ public:
 
     char getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 
-    virtual MaConsensusAlgorithmSimpleExtended* clone() const;
+    virtual MaConsensusAlgorithmSimpleExtended *clone() const;
 
     enum Character {
         None = 0,
@@ -136,6 +136,6 @@ public:
     bool isSequenceLikeResult() const;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MA_CONSENSUS_ALGORITHM_SIMPLE_EXTENDED_H_
+#endif    // _U2_MA_CONSENSUS_ALGORITHM_SIMPLE_EXTENDED_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
@@ -34,8 +33,6 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ToolsMenu.h>
-
-#include <U2Lang/WorkflowSettings.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 
@@ -180,7 +177,7 @@ void MuscleMSAEditorContext::sl_align() {
     MSAEditor* ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject* obj = ed->getMaObject();
 
-    const QRect selection = action->getMSAEditor()->getCurrentSelection();
+    const QRect selection = action->getMSAEditor()->getSelectionRect();
     MuscleTaskSettings s;
     if (!selection.isNull() ) {
         int width = selection.width();

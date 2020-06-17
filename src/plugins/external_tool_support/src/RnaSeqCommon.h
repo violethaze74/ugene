@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,14 +24,12 @@
 
 #include <QString>
 
-
 namespace U2 {
 
+enum BowtieMode { vMode = 0,
+                  nMode = 1 };
 
-enum BowtieMode {vMode = 0, nMode = 1};
-
-class RnaSeqLibraryType
-{
+class RnaSeqLibraryType {
 public:
     // Init library type as "fr-unstranded"
     RnaSeqLibraryType();
@@ -53,7 +51,6 @@ private:
     static const QString frSecondStrand;
 };
 
-
-} // namespace
+}    // namespace U2
 
 #endif

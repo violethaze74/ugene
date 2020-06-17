@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_CAP3_SUPPORT_DIALOG_H_
 #define _U2_CAP3_SUPPORT_DIALOG_H_
 
-#include <QDialog>
-
 #include <ui_CAP3SupportDialog.h>
+
+#include <QDialog>
 
 namespace U2 {
 
@@ -34,7 +34,7 @@ class SaveDocumentController;
 class CAP3SupportDialog : public QDialog, public Ui_CAP3SupportDialog {
     Q_OBJECT
 public:
-    CAP3SupportDialog(CAP3SupportTaskSettings& settings, QWidget* parent);
+    CAP3SupportDialog(CAP3SupportTaskSettings &settings, QWidget *parent);
     void accept();
 
 private slots:
@@ -46,10 +46,9 @@ private:
     void initSettings();
     void initSaveController();
 
-    CAP3SupportTaskSettings& settings;
+    CAP3SupportTaskSettings &settings;
     SaveDocumentController *saveController;
 };
 
-
-}//namespace
-#endif // _U2_CAP3_SUPPORT_DIALOG_H_
+}    // namespace U2
+#endif    // _U2_CAP3_SUPPORT_DIALOG_H_

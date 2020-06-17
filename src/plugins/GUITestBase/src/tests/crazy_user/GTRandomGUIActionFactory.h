@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,13 +32,13 @@ int randInt(int low, int high);
 
 class GTRandomGUIActionFactory {
 public:
-    static GTAbstractGUIAction* create(QObject* obj);
+    static GTAbstractGUIAction *create(QObject *obj);
 
     static GTAbstractGUIActionMap actionMap;
 };
 
-}
+}    // namespace GUITest_crazy_user
 
-} //namespace
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,16 +44,16 @@ for visualizing them during a scheme's execution */
 
 class BaseMessageTranslator {
 public:
-    BaseMessageTranslator( const QVariant &atomicMessage, Workflow::WorkflowContext *initContext );
-    virtual ~BaseMessageTranslator( );
+    BaseMessageTranslator(const QVariant &atomicMessage, Workflow::WorkflowContext *initContext);
+    virtual ~BaseMessageTranslator();
 
-    virtual QString getTranslation( ) const;
+    virtual QString getTranslation() const;
 
 protected:
     const QVariant source;
     Workflow::WorkflowContext *context;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_BASE_MESSAGE_TRANSLATOR_H_
+#endif    // _U2_BASE_MESSAGE_TRANSLATOR_H_

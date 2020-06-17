@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
+
+#include <QApplication>
 
 #include "SetSequenceOriginDialogFiller.h"
 
@@ -31,11 +31,11 @@ namespace U2 {
 #define GT_CLASS_NAME "SetSequenceOriginDialogFiller"
 #define GT_METHOD_NAME "run"
 
-void SetSequenceOriginDialogFiller::commonScenario(){
+void SetSequenceOriginDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != NULL, "dialog not found");
 
-    QSpinBox* seqOriginBox = GTWidget::findExactWidget<QSpinBox*>(os, "seqOriginBox", dialog);
+    QSpinBox *seqOriginBox = GTWidget::findExactWidget<QSpinBox *>(os, "seqOriginBox", dialog);
     GTSpinBox::setValue(os, seqOriginBox, start, GTGlobals::UseKeyBoard);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -44,4 +44,4 @@ void SetSequenceOriginDialogFiller::commonScenario(){
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}
+}    // namespace U2

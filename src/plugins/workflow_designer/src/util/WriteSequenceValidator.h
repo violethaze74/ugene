@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,6 +25,9 @@
 #include <U2Lang/IntegralBusModel.h>
 
 namespace U2 {
+
+class DocumentFormat;
+
 namespace Workflow {
 
 class WriteSequenceValidator : public ScreenedParamValidator {
@@ -32,7 +35,7 @@ public:
     WriteSequenceValidator(const QString &attr, const QString &port, const QString &slot);
     virtual bool validate(const Configuration *cfg, NotificationsList &notificationList) const;
 
-    static DocumentFormat * getFormatSafe(const Actor *actor);
+    static DocumentFormat *getFormatSafe(const Actor *actor);
     static bool isAnnotationsSupported(const DocumentFormat *format);
 
 private:
@@ -44,7 +47,7 @@ public:
     bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const;
 };
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2
 
-#endif // _U2_WRITESEQUENCEVALIDATOR_H_
+#endif    // _U2_WRITESEQUENCEVALIDATOR_H_

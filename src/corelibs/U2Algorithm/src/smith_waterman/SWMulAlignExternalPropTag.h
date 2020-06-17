@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,11 +29,13 @@ namespace U2 {
 class SWMulAlignExternalPropTag : public SWMulAlignResultNamesTag {
 public:
     enum Type {
-        DATE, TIME, COUNTER
+        DATE,
+        TIME,
+        COUNTER
     };
 
     inline SWMulAlignExternalPropTag(const QString _shorthand, const QString _label, Type _type);
-    virtual QString expandTag(const QVariant & argument) const;
+    virtual QString expandTag(const QVariant &argument) const;
     inline void resetCounter();
     inline Type getType() const;
 
@@ -41,8 +43,6 @@ private:
     mutable quint32 counter;
     Type type;
 };
-
-
 
 inline SWMulAlignExternalPropTag::SWMulAlignExternalPropTag(const QString _shorthand, const QString _label, Type _type)
     : SWMulAlignResultNamesTag(_shorthand, _label), counter(0), type(_type) {
@@ -58,6 +58,6 @@ inline SWMulAlignExternalPropTag::Type SWMulAlignExternalPropTag::getType() cons
     return type;
 }
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_SW_MUL_ALIGN_POS_NUMBER_TAG_H_
+#endif    // _U2_SW_MUL_ALIGN_POS_NUMBER_TAG_H_

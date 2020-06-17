@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,13 +27,14 @@
 namespace U2 {
 
 class TreeViewerUtils {
-    static QFont* font;
+    static QFont *font;
+
 public:
-    static const char* IMAGE_FILTERS;
-    static void saveImageDialog(const QString& filters, QString &fileName, QString &format);
-    static const QFont& getFont();
+    static const char *IMAGE_FILTERS;
+    static void saveImageDialog(const QString &filters, QString &fileName, QString &format);
+    static const QFont &getFont();
 };
 
-}
+}    // namespace U2
 
-#endif // _TREE_VIEWER_UTILS_H_
+#endif    // _TREE_VIEWER_UTILS_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,20 +40,20 @@ enum MatrixBuildType {
 
 class PMBuildSettings {
 public:
-    PMBuildSettings(): type(PM_MONONUCLEOTIDE), target(FREQUENCY_MATRIX) {
-
+    PMBuildSettings()
+        : type(PM_MONONUCLEOTIDE), target(FREQUENCY_MATRIX) {
     }
-    QString                     algo;
-    MatrixBuildType             type;
-    MatrixBuldTarget            target;
+    QString algo;
+    MatrixBuildType type;
+    MatrixBuldTarget target;
 };
 
 class WeightMatrixAlgorithm : public QObject {
     Q_OBJECT
 public:
-    static float getScore(const char* seq, int len, const PWMatrix& m, DNATranslation* complMap);
+    static float getScore(const char *seq, int len, const PWMatrix &m, DNATranslation *complMap);
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,13 +28,15 @@ namespace U2 {
 
 class CustomExternalToolRunTaskHelper : public ExternalToolRunTaskHelper {
 public:
-    CustomExternalToolRunTaskHelper(QProcess* process, ExternalToolLogParser* logParser, U2OpStatus& os)
-        : ExternalToolRunTaskHelper(process, logParser, os) {}
+    CustomExternalToolRunTaskHelper(QProcess *process, ExternalToolLogParser *logParser, U2OpStatus &os)
+        : ExternalToolRunTaskHelper(process, logParser, os) {
+    }
 
 private:
-    void processErrorToLog() override {}
+    void processErrorToLog() override {
+    }
 };
 
-}
+}    // namespace U2
 
 #endif

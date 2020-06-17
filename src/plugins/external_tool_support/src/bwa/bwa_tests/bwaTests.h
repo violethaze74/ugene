@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ public:
     Task::ReportResult report();
     void cleanup();
     QString getTempDataDir();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask);
 
 private:
     DnaAssemblyToRefTaskSettings config;
@@ -59,14 +59,14 @@ private:
     QString resultDirPath;
     bool usePrebuildIndex;
     bool subTaskFailed;
-    BwaTask* bwaTask;
+    BwaTask *bwaTask;
 };
 
 class BwaTests {
 public:
-    static QList<XMLTestFactory*> createTestFactories();
+    static QList<XMLTestFactory *> createTestFactories();
 };
 
-} //namespace U2
+}    //namespace U2
 
-#endif //_U2_BWA_TESTS_H_
+#endif    //_U2_BWA_TESTS_H_

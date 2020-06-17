@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,8 +33,9 @@ class GenbankLocationValidator : public QValidator {
 public:
     GenbankLocationValidator(QPushButton *okButton, int length, bool isCircular, QLineEdit *le);
     ~GenbankLocationValidator();
-    
+
     State validate(QString &str, int &ii) const;
+
 private:
     State failValidate() const;
 
@@ -44,5 +45,5 @@ private:
     QLineEdit *le;
 };
 
-}//namespace
+}    // namespace U2
 #endif

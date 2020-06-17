@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,6 +37,6 @@ private:
     static QStringList initWellKnownErrors();
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_KRAKEN_TRANSLATE_LOG_PARSER_H_
+#endif    // _U2_KRAKEN_TRANSLATE_LOG_PARSER_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ private:
 
     void moveVisibleRange(QPoint pos);
 
-    McaEditor* getEditor() const;
+    McaEditor *getEditor() const;
 
     int getContentWidgetWidth() const;
     int getContentWidgetHeight() const;
@@ -82,6 +82,6 @@ private:
     static const QColor ARROW_REVERSE_COLOR;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MA_SANGER_OVERVIEW_H_
+#endif    // _U2_MA_SANGER_OVERVIEW_H_

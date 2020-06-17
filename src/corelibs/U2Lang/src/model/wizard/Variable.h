@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,11 +34,11 @@ public:
     Variable(const QString &name);
     virtual ~Variable();
 
-    const QString & getName() const;
-    const QString & getValue() const;
+    const QString &getName() const;
+    const QString &getValue() const;
     void setValue(const QString &value);
     bool isAssigned() const;
-    bool operator == (const Variable &other) const;
+    bool operator==(const Variable &other) const;
 
 private:
     QString name;
@@ -53,7 +53,7 @@ public:
 
     Variable variable() const;
     bool isTrue(const QMap<QString, Variable> &vars) const;
-    bool operator < (const Predicate &other) const;
+    bool operator<(const Predicate &other) const;
     QString toString() const;
 
     static Predicate fromString(const QString &string, U2OpStatus &os);
@@ -62,6 +62,6 @@ private:
     Variable var;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_VARIABLE_H_
+#endif    // _U2_VARIABLE_H_

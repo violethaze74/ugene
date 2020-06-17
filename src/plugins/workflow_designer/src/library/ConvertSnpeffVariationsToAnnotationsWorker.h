@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ private:
 class ConvertSnpeffVariationsToAnnotationsFactory : public DomainFactory {
 public:
     ConvertSnpeffVariationsToAnnotationsFactory();
-    Worker * createWorker(Actor *actor);
+    Worker *createWorker(Actor *actor);
 
     static void init();
     static const QString ACTOR_ID;
@@ -52,19 +52,19 @@ public:
     ConvertSnpeffVariationsToAnnotationsWorker(Actor *actor);
 
     void init();
-    Task * tick();
+    Task *tick();
     void cleanup();
 
 private slots:
     void sl_taskFinished(Task *task);
 
 private:
-    Task * createTask(const Message &message);
+    Task *createTask(const Message &message);
 
     IntegralBus *input;
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_WORKER_H_
+#endif    // _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_WORKER_H_

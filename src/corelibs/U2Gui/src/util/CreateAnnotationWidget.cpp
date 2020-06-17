@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "CreateAnnotationWidget.h"
+
 #include <QMenu>
 
 #include <U2Core/GenbankFeatures.h>
@@ -29,13 +31,10 @@
 
 #include <U2Formats/GenbankLocationParser.h>
 
-#include "CreateAnnotationWidget.h"
-
 namespace U2 {
 
-CreateAnnotationWidget::CreateAnnotationWidget(QWidget *parent) :
-    QWidget(parent)
-{
+CreateAnnotationWidget::CreateAnnotationWidget(QWidget *parent)
+    : QWidget(parent) {
 }
 
 QPair<QWidget *, QWidget *> CreateAnnotationWidget::getTabOrderEntryAndExitPoints() const {
@@ -104,4 +103,4 @@ bool CreateAnnotationWidget::isComplementLocation(const QString &locationString)
     return locationString.startsWith("complement(") && locationString.endsWith(")");
 }
 
-}   // namespace U2
+}    // namespace U2

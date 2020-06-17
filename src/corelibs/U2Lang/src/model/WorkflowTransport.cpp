@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,9 +26,7 @@ namespace U2 {
 namespace Workflow {
 
 Message::Message(DataTypePtr t, const QVariant &data, int metadataId)
-: t(t), data(data), metadataId(metadataId)
-{
-
+    : t(t), data(data), metadataId(metadataId) {
 }
 
 DataTypePtr Message::getType() const {
@@ -59,6 +57,6 @@ Message Message::getEmptyMapMessage() {
     return Message(emptyType, emptyData, -1);
 }
 
-} //Workflow namespace
+}    // namespace Workflow
 
-} //GB2 namespace
+}    // namespace U2

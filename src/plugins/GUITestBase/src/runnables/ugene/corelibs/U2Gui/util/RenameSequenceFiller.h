@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,15 +30,21 @@ using namespace HI;
 class RenameSequenceFiller : public Filler {
 public:
     //class can be used for checking name if newName == oldName
-    RenameSequenceFiller(HI::GUITestOpStatus &_os, QString _newName, QString _oldName = QString()):Filler(_os, ""),os(_os), newName(_newName), oldName(_oldName){}
-    RenameSequenceFiller(HI::GUITestOpStatus &_os, CustomScenario* c):Filler(_os, "", c), os(_os){}
+    RenameSequenceFiller(HI::GUITestOpStatus &_os, QString _newName, QString _oldName = QString(), bool useCopyPaste = false)
+        : Filler(_os, ""), os(_os), newName(_newName), oldName(_oldName), useCopyPaste(useCopyPaste) {
+    }
+    RenameSequenceFiller(HI::GUITestOpStatus &_os, CustomScenario *c)
+        : Filler(_os, "", c), os(_os) {
+    }
     virtual void commonScenario();
+
 private:
     HI::GUITestOpStatus &os;
     QString newName;
     QString oldName;
+    bool useCopyPaste;
 };
 
-}
+}    // namespace U2
 
 #endif

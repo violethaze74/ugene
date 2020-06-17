@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,9 +25,7 @@ namespace U2 {
 
 MsaColorSchemeStatic::MsaColorSchemeStatic(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj, const QVector<QColor> &colorsPerChar)
     : MsaColorScheme(parent, factory, maObj),
-      colorsPerChar(colorsPerChar)
-{
-
+      colorsPerChar(colorsPerChar) {
 }
 
 QColor MsaColorSchemeStatic::getBackgroundColor(int seq, int pos, char c) const {
@@ -47,13 +45,11 @@ QColor MsaColorSchemeStatic::getFontColor(int seq, int pos, char c) const {
 
 MsaColorSchemeStaticFactory::MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets, const QVector<QColor> &colorsPerChar)
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets),
-      colorsPerChar(colorsPerChar)
-{
-
+      colorsPerChar(colorsPerChar) {
 }
 
-MsaColorScheme * MsaColorSchemeStaticFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaColorScheme *MsaColorSchemeStaticFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 
-}   // namespace U2
+}    // namespace U2

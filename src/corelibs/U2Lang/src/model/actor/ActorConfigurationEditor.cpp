@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,14 +25,11 @@ namespace U2 {
 namespace Workflow {
 
 ActorConfigurationEditor::ActorConfigurationEditor()
-: ConfigurationEditor(), cfg(NULL)
-{
-
+    : ConfigurationEditor(), cfg(NULL) {
 }
 
 ActorConfigurationEditor::ActorConfigurationEditor(const ActorConfigurationEditor &other)
-: ConfigurationEditor(other)
-{
+    : ConfigurationEditor(other) {
     cfg = other.cfg;
 }
 
@@ -40,9 +37,9 @@ void ActorConfigurationEditor::setConfiguration(Actor *actor) {
     cfg = actor;
 }
 
-ConfigurationEditor * ActorConfigurationEditor::clone() {
+ConfigurationEditor *ActorConfigurationEditor::clone() {
     return new ActorConfigurationEditor(*this);
 }
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2

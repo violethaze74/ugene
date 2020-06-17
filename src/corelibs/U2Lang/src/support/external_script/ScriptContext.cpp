@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,45 +19,44 @@
  * MA 02110-1301, USA.
  */
 
-#include "ScriptableScheduler.h"
 #include "ScriptContext.h"
+
+#include "ScriptableScheduler.h"
 
 namespace U2 {
 
-ScriptContext::ScriptContext( ) : scheduler( NULL ) {
-
+ScriptContext::ScriptContext()
+    : scheduler(NULL) {
 }
 
-ScriptContext::~ScriptContext( ) {
-
+ScriptContext::~ScriptContext() {
 }
 
-void ScriptContext::setWorkflowScheduler( ScriptableScheduler *newScheduler ) {
-    Q_ASSERT( NULL == newScheduler || NULL == scheduler );
+void ScriptContext::setWorkflowScheduler(ScriptableScheduler *newScheduler) {
+    Q_ASSERT(NULL == newScheduler || NULL == scheduler);
     scheduler = newScheduler;
 }
 
-LocalWorkflow::LastReadyScheduler * ScriptContext::getWorkflowScheduler( Workflow::Schema *scheme )
-    const
-{
-    scheduler->setScheme( scheme );
+LocalWorkflow::LastReadyScheduler *ScriptContext::getWorkflowScheduler(Workflow::Schema *scheme)
+    const {
+    scheduler->setScheme(scheme);
     return scheduler;
 }
 
-void ScriptContext::addActorTick( const ActorId &id ) {
-    scheduler->addActorToNextTick( id );
+void ScriptContext::addActorTick(const ActorId &id) {
+    scheduler->addActorToNextTick(id);
 }
 
-QMap<int, QList<Actor *> > ScriptContext::getTopologicalSortedGraph( ) const {
-    return scheduler->getTopologicalSortedGraph( );
+QMap<int, QList<Actor *>> ScriptContext::getTopologicalSortedGraph() const {
+    return scheduler->getTopologicalSortedGraph();
 }
 
-Actor * ScriptContext::getActorById( const ActorId &id ) const {
-    return scheduler->getActorById( id );
+Actor *ScriptContext::getActorById(const ActorId &id) const {
+    return scheduler->getActorById(id);
 }
 
-WorkflowDebugStatus * ScriptContext::getDebugStatus( ) const {
-    return scheduler->getDebugStatus( );
+WorkflowDebugStatus *ScriptContext::getDebugStatus() const {
+    return scheduler->getDebugStatus();
 }
 
-} // namespace U2
+}    // namespace U2

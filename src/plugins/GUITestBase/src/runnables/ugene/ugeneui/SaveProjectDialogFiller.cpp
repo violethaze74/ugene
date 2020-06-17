@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,16 +20,16 @@
  */
 
 #include "SaveProjectDialogFiller.h"
+#include <primitives/GTWidget.h>
+
 #include <QApplication>
 #include <QPushButton>
 
-#include <primitives/GTWidget.h>
-
-namespace U2{
-void SaveProjectDialogFiller::commonScenario(){
-    QWidget* dialog = QApplication::activeModalWidget();
+namespace U2 {
+void SaveProjectDialogFiller::commonScenario() {
+    QWidget *dialog = QApplication::activeModalWidget();
     CHECK_SET_ERR(dialog, "save project dialog not found");
 
     GTUtilsDialog::clickButtonBox(os, dialog, b);
 }
-}
+}    // namespace U2

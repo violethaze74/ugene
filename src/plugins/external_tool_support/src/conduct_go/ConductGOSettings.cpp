@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
 
 #include "ConductGOSettings.h"
 
@@ -42,7 +41,7 @@ ConductGOSettings::ConductGOSettings() {
     initDefault();
 }
 
-void ConductGOSettings::initDefault(){
+void ConductGOSettings::initDefault() {
     outDir = "";
     title = "Default";
     geneUniverse = "hgu133a";
@@ -51,7 +50,7 @@ void ConductGOSettings::initDefault(){
 QStringList ConductGOSettings::getArguments() const {
     QStringList result;
 
-//    go_analysis.py  '$title' '$diff_expr_file' '$logmeta' '$diff_expr_file.dbkey', '$annotation'
+    //    go_analysis.py  '$title' '$diff_expr_file' '$logmeta' '$diff_expr_file.dbkey', '$annotation'
 
     result << title;
 
@@ -66,4 +65,4 @@ QStringList ConductGOSettings::getArguments() const {
     return result;
 }
 
-} // U2
+}    // namespace U2

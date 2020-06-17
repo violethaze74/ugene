@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
 #ifndef _U2_CMDLINE_IO_OUT_TASK_RUNNER_H_
 #define _U2_CMDLINE_IO_OUT_TASK_RUNNER_H_
 
-#include <U2Core/U2Type.h>
 #include <U2Core/CmdlineTaskRunner.h>
+#include <U2Core/U2Type.h>
 
 namespace U2 {
 
@@ -33,9 +33,9 @@ class U2CORE_EXPORT CmdlineInOutTaskConfig : public CmdlineTaskConfig {
 public:
     CmdlineInOutTaskConfig();
 
-    QList<GObject*>     inputObjects;
-    U2DbiRef            outDbiRef;
-    bool                emptyOutputPossible;
+    QList<GObject *> inputObjects;
+    U2DbiRef outDbiRef;
+    bool emptyOutputPossible;
 };
 
 class U2CORE_EXPORT CmdlineInOutTaskRunner : public CmdlineTaskRunner {
@@ -45,7 +45,7 @@ public:
 
     ReportResult report();
 
-    const QList<U2DataId> & getOutputObjects() const;
+    const QList<U2DataId> &getOutputObjects() const;
 
     static QString toString(const U2DbiRef &dbiRef);
     static U2DbiRef parseDbiRef(const QString &string, U2OpStatus &os);
@@ -66,6 +66,6 @@ private:
     QList<U2DataId> outputObjects;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_CMDLINE_IO_OUT_TASK_RUNNER_H_
+#endif    // _U2_CMDLINE_IO_OUT_TASK_RUNNER_H_

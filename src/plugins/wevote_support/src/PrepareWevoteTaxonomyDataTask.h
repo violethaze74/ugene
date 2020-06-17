@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,6 +31,7 @@ class WorkflowProcess;
 }
 
 class PrepareWevoteTaxonomyDataTask : public Task {
+    Q_OBJECT
 public:
     PrepareWevoteTaxonomyDataTask(FileStorage::WorkflowProcess &workflowProcess);
 
@@ -57,6 +58,6 @@ private:
     static const QString SCIENTIFIC_NAME;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_PREPARE_WEVOTE_TAXONOMY_DATA_TASK_H_
+#endif    // _U2_PREPARE_WEVOTE_TAXONOMY_DATA_TASK_H_

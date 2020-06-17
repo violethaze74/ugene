@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 
 #include "ADVGraphModel.h"
 
-namespace U2{
+namespace U2 {
 
 struct SaveCutoffsTaskSettings {
     enum Location {
@@ -45,11 +45,12 @@ public:
     void prepare();
     void run();
     Task::ReportResult report();
+
 private:
     SaveCutoffsTaskSettings settings;
     QList<U2Region> regions;
 };
 
-}
+}    // namespace U2
 
 #endif

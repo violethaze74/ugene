@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,13 +36,14 @@ public:
     AnnotatorPlugin();
 
 private:
-    GObjectViewWindowContext* viewCtx;
+    GObjectViewWindowContext *viewCtx;
 };
 
-class AnnotatorViewContext: public GObjectViewWindowContext {
+class AnnotatorViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    AnnotatorViewContext(QObject* p, bool customFeaturesAvailable);
+    AnnotatorViewContext(QObject *p, bool customFeaturesAvailable);
+
 private:
     bool customFeaturesAvailable;
 
@@ -51,13 +52,13 @@ protected slots:
     void sl_showCustomAutoAnnotationDialog();
 
 protected:
-    virtual void initViewContext(GObjectView* view);
+    virtual void initViewContext(GObjectView *view);
 };
 
 class AnnotatorTests {
 public:
-    static QList<XMLTestFactory*> createTestFactories();
+    static QList<XMLTestFactory *> createTestFactories();
 };
 
-} //namespace
+}    // namespace U2
 #endif

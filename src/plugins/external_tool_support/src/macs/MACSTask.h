@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ public:
     virtual void run();
     virtual void cleanup();
 
-    const MACSSettings & getSettings();
+    const MACSSettings &getSettings();
 
     // Memory should be released by caller
     QList<AnnotationTableObject *> getPeaks() const;
@@ -79,14 +79,14 @@ public:
     MACSLogParser();
 
     int getProgress();
-    void parseOutput(const QString& partOfLog);
-    void parseErrOutput(const QString& partOfLog);
+    void parseOutput(const QString &partOfLog);
+    void parseErrOutput(const QString &partOfLog);
 
 private:
     QString lastErrLine;
-    int     progress;
+    int progress;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_MACS_SUPPORT_TASK_
+#endif    // _U2_MACS_SUPPORT_TASK_

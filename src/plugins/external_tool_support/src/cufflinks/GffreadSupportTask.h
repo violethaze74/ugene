@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,17 +22,17 @@
 #ifndef _U2_GFFRAD_SUPPORT_TASK_H_
 #define _U2_GFFRAD_SUPPORT_TASK_H_
 
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2IdTypes.h>
-#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
 class GffreadSettings {
 public:
-    QString transcriptsUrl; // GTF
-    QString genomeUrl; // FASTA (mutli-FASTA)
-    QString outputUrl; // FASTA
+    QString transcriptsUrl;    // GTF
+    QString genomeUrl;    // FASTA (mutli-FASTA)
+    QString outputUrl;    // FASTA
 
     QStringList getArguments() const;
 };
@@ -52,6 +52,6 @@ private:
     GffreadSettings settings;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_GFFRAD_SUPPORT_TASK_H_
+#endif    // _U2_GFFRAD_SUPPORT_TASK_H_

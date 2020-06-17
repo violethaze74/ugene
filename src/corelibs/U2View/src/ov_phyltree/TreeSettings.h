@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,15 @@
 #ifndef _U2_TREE_SETTINGS_H_
 #define _U2_TREE_SETTINGS_H_
 
-#include <QMap>
-#include <QVariant>
 #include <QDialog>
 #include <QFontInfo>
+#include <QMap>
+#include <QVariant>
 
 namespace U2 {
-enum TREE_TYPE {DEFAULT, PHYLOGRAM, CLADOGRAM};
+enum TREE_TYPE { DEFAULT,
+                 PHYLOGRAM,
+                 CLADOGRAM };
 
 enum TreeLayout {
     RECTANGULAR_LAYOUT,
@@ -64,5 +66,5 @@ enum TreeViewOption {
 };
 
 typedef QMap<TreeViewOption, QVariant> OptionsMap;
-} //namespace
+}    // namespace U2
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,9 +35,9 @@ public:
 private:
     void drawRuler(QPainter &painter, const ConsensusRenderSettings &settings);
 
-    McaReferenceCharController* refCharController;
+    McaReferenceCharController *refCharController;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_MCA_CONSENSUS_AREA_RENDERER_H_
+#endif    // _U2_MCA_CONSENSUS_AREA_RENDERER_H_

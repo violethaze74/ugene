@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,17 +27,19 @@
 namespace U2 {
 using namespace HI;
 
-class GraphLabelsSelectDialogFiller: public Filler
-{
+class GraphLabelsSelectDialogFiller : public Filler {
 public:
-    GraphLabelsSelectDialogFiller(HI::GUITestOpStatus &os, int _windowSize = -1, bool _selectedAreaCheck = false): Filler(os, "GraphLabelsSelectDialog"),
-        windowSize(_windowSize), selectedAreaCheck(_selectedAreaCheck){}
+    GraphLabelsSelectDialogFiller(HI::GUITestOpStatus &os, int _windowSize = -1, bool _selectedAreaCheck = false)
+        : Filler(os, "GraphLabelsSelectDialog"),
+          windowSize(_windowSize), selectedAreaCheck(_selectedAreaCheck) {
+    }
     virtual void commonScenario();
+
 private:
     int windowSize;
     bool selectedAreaCheck;
 };
 
-}
+}    // namespace U2
 
-#endif // GRAPHLABELSSELECTDIALOGFILLER_H
+#endif    // GRAPHLABELSSELECTDIALOGFILLER_H

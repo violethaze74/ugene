@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,23 +26,28 @@
 
 namespace U2 {
 
-class U2PRIVATE_EXPORT IOAdapterRegistryImpl  : public IOAdapterRegistry {
+class U2PRIVATE_EXPORT IOAdapterRegistryImpl : public IOAdapterRegistry {
 public:
-    IOAdapterRegistryImpl(QObject* p = NULL) : IOAdapterRegistry(p) {init();}
+    IOAdapterRegistryImpl(QObject *p = NULL)
+        : IOAdapterRegistry(p) {
+        init();
+    }
 
-    virtual bool registerIOAdapter(IOAdapterFactory* io) ;
+    virtual bool registerIOAdapter(IOAdapterFactory *io);
 
-    virtual bool unregisterIOAdapter(IOAdapterFactory* io);
+    virtual bool unregisterIOAdapter(IOAdapterFactory *io);
 
-    virtual const QList<IOAdapterFactory*>& getRegisteredIOAdapters() const {return adapters;}
+    virtual const QList<IOAdapterFactory *> &getRegisteredIOAdapters() const {
+        return adapters;
+    }
 
-    virtual IOAdapterFactory* getIOAdapterFactoryById(IOAdapterId id) const;
+    virtual IOAdapterFactory *getIOAdapterFactoryById(IOAdapterId id) const;
 
 private:
     void init();
 
-    QList<IOAdapterFactory*> adapters;
+    QList<IOAdapterFactory *> adapters;
 };
 
-}//namespace
+}    // namespace U2
 #endif

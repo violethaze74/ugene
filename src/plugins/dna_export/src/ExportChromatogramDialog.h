@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ class SaveDocumentController;
 class ExportChromatogramDialog : public QDialog, Ui_ExportChromatogramDialog {
     Q_OBJECT
 public:
-    ExportChromatogramDialog(QWidget* p, const GUrl& fileName);
+    ExportChromatogramDialog(QWidget *p, const GUrl &fileName);
 
     void accept();
 
@@ -52,6 +52,6 @@ private:
     SaveDocumentController *saveController;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

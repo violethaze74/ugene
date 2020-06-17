@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,14 +24,13 @@
 namespace U2 {
 
 BreakpointGreaterOrEqualHitCounter::BreakpointGreaterOrEqualHitCounter(
-    BreakpointHitCountCondition initCondition, quint32 initHitCount)
-    : BreakpointEqualHitCounter(initCondition, initHitCount)
-{
-
+    BreakpointHitCountCondition initCondition,
+    quint32 initHitCount)
+    : BreakpointEqualHitCounter(initCondition, initHitCount) {
 }
 
 bool BreakpointGreaterOrEqualHitCounter::hit() {
     return (++hitCount >= targetHitCount);
 }
 
-} // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,20 +27,19 @@
 namespace U2 {
 using namespace HI;
 
-class DashboardsManagerDialogFiller: public Filler
-{
+class DashboardsManagerDialogFiller : public Filler {
 public:
-    DashboardsManagerDialogFiller(HI::GUITestOpStatus &os, CustomScenario* _c = NULL):
-        Filler(os, "DashboardsManagerDialog", _c){}
+    DashboardsManagerDialogFiller(HI::GUITestOpStatus &os, CustomScenario *_c = NULL)
+        : Filler(os, "DashboardsManagerDialog", _c) {
+    }
 
     virtual void commonScenario();
 
     static void selectDashboards(HI::GUITestOpStatus &os, QStringList names);
     static bool isDashboardPresent(HI::GUITestOpStatus &os, QString name);
-    static QList<QPair<QString, bool> > getDashboardsState(HI::GUITestOpStatus &os);    // returns map dashboard_name->is_checked
-
+    static QList<QPair<QString, bool>> getDashboardsState(HI::GUITestOpStatus &os);    // returns map dashboard_name->is_checked
 };
 
-}//namespace U2
+}    //namespace U2
 
-#endif // DASHBOARDSMANAGERDIALOGFILLER_H
+#endif    // DASHBOARDSMANAGERDIALOGFILLER_H

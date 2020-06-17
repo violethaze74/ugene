@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,29 +46,29 @@ class U2SequenceObject;
 class U2FORMATS_EXPORT DocumentFormatUtils : public QObject {
     Q_OBJECT
 public:
-    static QList<DocumentFormatId> toIds(const QList<DocumentFormat*>& formats);
+    static QList<DocumentFormatId> toIds(const QList<DocumentFormat *> &formats);
 
-    static QList<AnnotationSettings*> predefinedSettings();
+    static QList<AnnotationSettings *> predefinedSettings();
 
     /** Extracts sequences either from Sequence or MultipleSequenceAlignment object */
-    static QList<DNASequence> toSequences(const GObject* obj);
+    static QList<DNASequence> toSequences(const GObject *obj);
 
-    static int getMergeGap(const QVariantMap& hints);
+    static int getMergeGap(const QVariantMap &hints);
 
-    static int getMergedSize(const QVariantMap& hints, int defaultVal);
+    static int getMergedSize(const QVariantMap &hints, int defaultVal);
 
-    static void updateFormatHints(QList<GObject*>& objects, QVariantMap& fs);
+    static void updateFormatHints(QList<GObject *> &objects, QVariantMap &fs);
 
     /** Doc URL here is used to set up sequence<->annotation relations */
-    static AnnotationTableObject * addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
-                                                                     const U2DbiRef& dbiRef,
-                                                                     const QStringList& contigs,
-                                                                     const QVector<U2Region>& mergedMapping,
-                                                                     const QVariantMap &hints);
+    static AnnotationTableObject *addAnnotationsForMergedU2Sequence(const GObjectReference &mergedSequenceRef,
+                                                                    const U2DbiRef &dbiRef,
+                                                                    const QStringList &contigs,
+                                                                    const QVector<U2Region> &mergedMapping,
+                                                                    const QVariantMap &hints);
 
     static QString getFormatNameById(const DocumentFormatId &formatId);
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

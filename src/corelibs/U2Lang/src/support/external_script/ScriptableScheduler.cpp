@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,34 +23,31 @@
 
 namespace U2 {
 
-ScriptableScheduler::ScriptableScheduler( Workflow::Schema *scheme )
-    : LastReadyScheduler( scheme )
-{
-
+ScriptableScheduler::ScriptableScheduler(Workflow::Schema *scheme)
+    : LastReadyScheduler(scheme) {
 }
-ScriptableScheduler::~ScriptableScheduler( ) {
-
+ScriptableScheduler::~ScriptableScheduler() {
 }
 
-void ScriptableScheduler::addActorToNextTick( const ActorId &actor ) {
+void ScriptableScheduler::addActorToNextTick(const ActorId &actor) {
     nextTicks << actor;
 }
 
-QMap<int, QList<Workflow::Actor *> > ScriptableScheduler::getTopologicalSortedGraph( ) const {
+QMap<int, QList<Workflow::Actor *>> ScriptableScheduler::getTopologicalSortedGraph() const {
     return topologicSortedGraph;
 }
 
-void ScriptableScheduler::setScheme( Workflow::Schema *newScheme ) {
-    Q_ASSERT( NULL != newScheme && newScheme != schema );
+void ScriptableScheduler::setScheme(Workflow::Schema *newScheme) {
+    Q_ASSERT(NULL != newScheme && newScheme != schema);
     schema = newScheme;
 }
 
-Workflow::Actor * ScriptableScheduler::getActorById( const ActorId &id ) const {
-    return ( NULL != schema ) ? schema->actorById( id ) : NULL;
+Workflow::Actor *ScriptableScheduler::getActorById(const ActorId &id) const {
+    return (NULL != schema) ? schema->actorById(id) : NULL;
 }
 
-WorkflowDebugStatus * ScriptableScheduler::getDebugStatus( ) const {
+WorkflowDebugStatus *ScriptableScheduler::getDebugStatus() const {
     return debugInfo;
 }
 
-} // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,18 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Gui/U2WidgetStateStorage.h>
-
 #include "MainWindow.h"
+
+#include <U2Gui/U2WidgetStateStorage.h>
 
 namespace U2 {
 
 //thread safe design in main thread model
 static int windowCounter = 0;
 
-MWMDIWindow::MWMDIWindow(const QString& windowName)
-    : windowId(++windowCounter)
-{
+MWMDIWindow::MWMDIWindow(const QString &windowName)
+    : windowId(++windowCounter) {
     setWindowTitle(windowName);
     setObjectName(windowName);
 }
@@ -39,4 +38,4 @@ MWMDIWindow::~MWMDIWindow() {
     U2WidgetStateStorage::onWindowClose(this);
 }
 
-} //namespace
+}    // namespace U2

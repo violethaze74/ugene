@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_WORKFLOW_CORE_LIB_CONSTANTS_H_
 
 #include <QString>
+
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -54,10 +55,10 @@ public:
     static const QString GROUPER_OUT_SLOTS_ATTR;
     static const QString GROUPER_OPER_ATTR;
 
-}; // CoreLibConstants
+};    // CoreLibConstants
 
-} // Workflow
+}    // namespace Workflow
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_WORKFLOW_CORE_LIB_CONSTANTS_H_
+#endif    // _U2_WORKFLOW_CORE_LIB_CONSTANTS_H_

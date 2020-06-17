@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,12 +19,13 @@
  * MA 02110-1301, USA.
  */
 
+#include "MSAGeneralTab.h"
+
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
@@ -33,26 +34,29 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
-#include "MSAGeneralTab.h"
+#include "../sort/MsaEditorSortSequencesWidget.h"
 
 namespace U2 {
 
-MSAGeneralTab::MSAGeneralTab(MSAEditor* _msa)
-    : msa(_msa), savableTab(this, GObjectViewUtils::findViewByName(_msa->getName()))
-{
-    SAFE_POINT(NULL != msa, "MSA Editor not defined.", );
+MSAGeneralTab::MSAGeneralTab(MSAEditor *_msa)
+    : msa(_msa), savableTab(this, GObjectViewUtils::findViewByName(_msa->getName())) {
+    SAFE_POINT(msa != nullptr, "MSA Editor is not defined.", );
 
     setupUi(this);
 
-    ShowHideSubgroupWidget* alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWidget, true);
-    ShowHideSubgroupWidget* consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWidget, true);
-    ShowHideSubgroupWidget* copyType = new ShowHideSubgroupWidget("COPY_TYPE", tr("Copy to clipboard"), copyTypeWidget, true);
+    ShowHideSubgroupWidget *alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWidget, true);
+    ShowHideSubgroupWidget *consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWidget, true);
+    ShowHideSubgroupWidget *copyType = new ShowHideSubgroupWidget("COPY_TYPE", tr("Copy to clipboard"), copyTypeWidget, true);
+    ShowHideSubgroupWidget *sortType = new ShowHideSubgroupWidget("SORT_TYPE", tr("Sort sequences"), new MsaEditorSortSequencesWidget(nullptr, msa), true);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(alignmentInfo);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(consensusMode);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(copyType);
+    Ui_GeneralTabOptionsPanelWidget::layout->addWidget(sortType);
 
     initializeParameters();
     connectSignals();
+
+    copyButton->setEnabled(msa->getUI()->getCopyFormattedSelectionAction()->isEnabled());
 
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
@@ -61,7 +65,6 @@ MSAGeneralTab::MSAGeneralTab(MSAEditor* _msa)
 #else
     copyButton->setToolTip("Ctrl+Shift+C");
 #endif
-
 }
 
 void MSAGeneralTab::sl_alignmentChanged() {
@@ -75,18 +78,18 @@ void MSAGeneralTab::sl_copyFormatSelectionChanged(int index) {
     emit si_copyFormatChanged(selectedFormatId);
 }
 
-void MSAGeneralTab::sl_copyFormatted(){
+void MSAGeneralTab::sl_copyFormatted() {
     emit si_copyFormatted();
 }
 
-void MSAGeneralTab::sl_copyFormatStatusChanged(bool enabled){
+void MSAGeneralTab::sl_copyFormatStatusChanged(bool enabled) {
     copyButton->setEnabled(enabled);
 }
 
 void MSAGeneralTab::connectSignals() {
     // Inner signals
-    connect(copyType,               SIGNAL(currentIndexChanged(int)),   SLOT(sl_copyFormatSelectionChanged(int)));
-    connect(copyButton,             SIGNAL(clicked()),                  SLOT(sl_copyFormatted()));
+    connect(copyType, SIGNAL(currentIndexChanged(int)), SLOT(sl_copyFormatSelectionChanged(int)));
+    connect(copyButton, SIGNAL(clicked()), SLOT(sl_copyFormatted()));
 
     // Extern signals
     connect(msa->getMaObject(),
@@ -94,16 +97,12 @@ void MSAGeneralTab::connectSignals() {
             SLOT(sl_alignmentChanged()));
 
     //out
-    connect(this, SIGNAL(si_copyFormatChanged(QString)),
-            msa->getUI()->getSequenceArea(), SLOT(sl_changeCopyFormat(QString)));
+    connect(this, SIGNAL(si_copyFormatChanged(QString)), msa->getUI()->getSequenceArea(), SLOT(sl_changeCopyFormat(QString)));
 
-    connect(this, SIGNAL(si_copyFormatted()),
-            msa->getUI()->getSequenceArea(), SLOT(sl_copyFormattedSelection()));
+    connect(this, SIGNAL(si_copyFormatted()), msa->getUI()->getSequenceArea(), SLOT(sl_copyFormattedSelection()));
 
     //in
-    connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)),
-            SLOT(sl_copyFormatStatusChanged(bool)));
-
+    connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)), SLOT(sl_copyFormatStatusChanged(bool)));
 }
 
 void MSAGeneralTab::initializeParameters() {
@@ -117,29 +116,31 @@ void MSAGeneralTab::initializeParameters() {
 
     //Copy formatted
     DocumentFormatConstraints constr;
-    constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT );
+    constr.supportedObjectTypes.insert(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     constr.addFlagToSupport(DocumentFormatFlag_SupportWriting);
-    DocumentFormatRegistry* freg = AppContext::getDocumentFormatRegistry();
+    DocumentFormatRegistry *freg = AppContext::getDocumentFormatRegistry();
     QList<DocumentFormatId> supportedFormats = freg->selectFormats(constr);
 
-    foreach(const DocumentFormatId& fid, supportedFormats) {
-        DocumentFormat* f = freg->getFormatById(fid);
+    foreach (const DocumentFormatId &fid, supportedFormats) {
+        DocumentFormat *f = freg->getFormatById(fid);
         copyType->addItem(QIcon(), f->getFormatName(), f->getFormatId());
     }
 
     //RTF
     copyType->addItem(QIcon(), "Rich text (HTML)", "RTF");
 
-    QString currentCopyFormattedID = msa->getUI()->getSequenceArea()->getCopyFormatedAlgorithmId();
+    QString currentCopyFormattedID = msa->getUI()->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 
+    //in
+    connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)), SLOT(sl_copyFormatStatusChanged(bool)));
 }
 
 void MSAGeneralTab::updateState() {
     consensusModeWidget->updateState();
 
-    copyButton->setEnabled(!msa->getUI()->getSequenceArea()->getSelection().isNull());
+    copyButton->setEnabled(!msa->getUI()->getSequenceArea()->getSelection().isEmpty());
 }
 
-}   // namespace
+}    // namespace U2

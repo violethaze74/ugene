@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,22 +26,22 @@
 
 namespace U2 {
 
-    class U2ALGORITHM_EXPORT PhyTreeGeneratorRegistry : public QObject
-    {
-    public:
-        PhyTreeGeneratorRegistry(QObject* pOwn = 0);
-        ~PhyTreeGeneratorRegistry();
-        bool registerPhyTreeGenerator(PhyTreeGenerator* generator, const QString& gen_id);
-        bool hadRegistered(const QString& surfId);
-        PhyTreeGenerator* getGenerator(const QString& surfId);
-        QStringList getNameList();
-    private:
-        QMap<QString, PhyTreeGenerator*> genMap;
-        // Copy prohibition
-        PhyTreeGeneratorRegistry(const PhyTreeGeneratorRegistry& m);
-        PhyTreeGeneratorRegistry& operator=(const PhyTreeGeneratorRegistry& m);
-    };
+class U2ALGORITHM_EXPORT PhyTreeGeneratorRegistry : public QObject {
+public:
+    PhyTreeGeneratorRegistry(QObject *pOwn = 0);
+    ~PhyTreeGeneratorRegistry();
+    bool registerPhyTreeGenerator(PhyTreeGenerator *generator, const QString &gen_id);
+    bool hadRegistered(const QString &surfId);
+    PhyTreeGenerator *getGenerator(const QString &surfId);
+    QStringList getNameList();
 
-} // namespace U2
+private:
+    QMap<QString, PhyTreeGenerator *> genMap;
+    // Copy prohibition
+    PhyTreeGeneratorRegistry(const PhyTreeGeneratorRegistry &m);
+    PhyTreeGeneratorRegistry &operator=(const PhyTreeGeneratorRegistry &m);
+};
+
+}    // namespace U2
 
 #endif

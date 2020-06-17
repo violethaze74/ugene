@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,42 +22,44 @@
 #ifndef _U2_FIND_ENZYMES_ALGO_H_
 #define _U2_FIND_ENZYMES_ALGO_H_
 
+#include <QList>
+#include <QObject>
+
 #include <U2Algorithm/EnzymeModel.h>
 
-#include <U2Core/Task.h>
-#include <U2Core/U2Region.h>
+#include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequence.h>
-#include <U2Core/U2Type.h>
 #include <U2Core/DNATranslation.h>
+#include <U2Core/Task.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/AppContext.h>
-
-#include <QObject>
-#include <QList>
+#include <U2Core/U2Type.h>
 
 namespace U2 {
 
 class FindEnzymesAlgListener {
 public:
-    ~FindEnzymesAlgListener(){}
-    virtual void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) = 0;
+    ~FindEnzymesAlgListener() {
+    }
+    virtual void onResult(int pos, const SEnzymeData &enzyme, const U2Strand &strand) = 0;
 };
 
-
-template <typename CompareFN>
+template<typename CompareFN>
 class FindEnzymesAlgorithm {
 public:
-    void run(const DNASequence& sequence, const U2Region& range, const SEnzymeData& enzyme, FindEnzymesAlgListener* l, TaskStateInfo& ti, int resultPosShift=0) {
-
+    void run(const DNASequence &sequence, const U2Region &region, const SEnzymeData &enzyme, FindEnzymesAlgListener *resultListener, TaskStateInfo &stateInfo, int resultPosShift = 0) {
         SAFE_POINT(enzyme->alphabet != NULL, "No enzyme alphabet", );
 
         // look for results in direct strand
-        run(sequence, range, enzyme, enzyme->seq.constData(), U2Strand::Direct, l, ti, resultPosShift);
+        run(sequence, region, enzyme, enzyme->seq.constData(), U2Strand::Direct, resultListener, stateInfo, resultPosShift);
+        if (stateInfo.isCanceled()) {
+            return;
+        }
 
         // if enzyme is not symmetric - look in complementary strand too
-        DNATranslation* tt = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(enzyme->alphabet);
+        DNATranslation *tt = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(enzyme->alphabet);
         if (tt == NULL) {
             return;
         }
@@ -67,27 +69,27 @@ public:
         if (revCompl == enzyme->seq) {
             return;
         }
-        run(sequence, range, enzyme, revCompl.constData(), U2Strand::Complementary, l, ti, resultPosShift);
+        run(sequence, region, enzyme, revCompl.constData(), U2Strand::Complementary, resultListener, stateInfo, resultPosShift);
     }
 
-
-    void run(const DNASequence& sequence, const U2Region& range, const SEnzymeData& enzyme,
-        const char* pattern, U2Strand stand, FindEnzymesAlgListener* l, TaskStateInfo& ti, int resultPosShift=0)
-    {
+    void run(const DNASequence &sequence, const U2Region &region, const SEnzymeData &enzyme, const char *pattern, U2Strand stand, FindEnzymesAlgListener *resultListener, TaskStateInfo &ti, int resultPosShift = 0) {
         CompareFN fn(sequence.alphabet, enzyme->alphabet);
-        const char* seq = sequence.constData();
+        const char *seq = sequence.constData();
         char unknownChar = sequence.alphabet->getDefaultSymbol();
         int plen = enzyme->seq.length();
-        for (int s = range.startPos, n = range.endPos() - plen + 1; s < n && !ti.cancelFlag; s++) {
-            bool match = matchSite(seq + s, pattern, plen, unknownChar, fn);
+        for (int pos = region.startPos, endPos = region.endPos() - plen + 1; pos < endPos && !ti.cancelFlag; pos++) {
+            bool match = matchSite(seq + pos, pattern, plen, unknownChar, fn);
             if (match) {
-                l->onResult(resultPosShift + s, enzyme, stand);
+                resultListener->onResult(resultPosShift + pos, enzyme, stand);
             }
         }
+        if (ti.isCanceled()) {
+            return;
+        }
         if (sequence.circular) {
-            if ( range.startPos + range.length == sequence.length() ) {
+            if (region.startPos + region.length == sequence.length()) {
                 QByteArray buf;
-                const QByteArray& dnaseq = sequence.seq;
+                const QByteArray &dnaseq = sequence.seq;
                 int size = enzyme->seq.size() - 1;
                 int startPos = dnaseq.length() - size;
                 buf.append(dnaseq.mid(startPos));
@@ -95,26 +97,24 @@ public:
                 for (int s = 0; s < size; s++) {
                     bool match = matchSite(buf.constData() + s, pattern, plen, unknownChar, fn);
                     if (match) {
-                        l->onResult(resultPosShift + s + startPos, enzyme, stand);
+                        resultListener->onResult(resultPosShift + s + startPos, enzyme, stand);
                     }
                 }
-
             }
         }
     }
 
-    bool matchSite(const char* seq, const char* pattern, int plen, char unknownChar, const CompareFN& fn) {
+    bool matchSite(const char *seq, const char *pattern, int plen, char unknownChar, const CompareFN &fn) {
         bool match = true;
-        for (int p=0; p < plen && match; p++) {
+        for (int p = 0; p < plen && match; p++) {
             char c1 = seq[p];
             char c2 = pattern[p];
             match = (c1 != unknownChar && fn.equals(c2, c1));
         }
         return match;
     }
-
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

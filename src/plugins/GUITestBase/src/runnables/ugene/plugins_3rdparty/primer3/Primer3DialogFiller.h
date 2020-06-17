@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,8 +38,8 @@ public:
               pickRight(true),
               pickLeft(true),
               shortRegion(false),
-              rtPcrDesign(false)
-        {}
+              rtPcrDesign(false) {
+        }
 
         int resultsCount;
         QString primersGroupName;
@@ -54,10 +54,11 @@ public:
 
     Primer3DialogFiller(HI::GUITestOpStatus &os, const Primer3Settings &settings = Primer3Settings());
     void commonScenario();
+
 private:
     Primer3Settings settings;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_GT_RUNNABLES_PLUGINS_3RDPARTY_PRIMER3_DIALOG_FILLER_H_
+#endif    // _U2_GT_RUNNABLES_PLUGINS_3RDPARTY_PRIMER3_DIALOG_FILLER_H_

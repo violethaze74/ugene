@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,16 +34,16 @@ class SaveDocumentController;
 class AceImportWidget : public ImportWidget, public Ui_AceImportWidget {
     Q_OBJECT
 public:
-    AceImportWidget(const GUrl& url);
+    AceImportWidget(const GUrl &url);
 
     virtual QVariantMap getSettings() const;
 
 private:
-    void initSaveController(const GUrl& url);
+    void initSaveController(const GUrl &url);
 
     static const QString EXTENSION;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_ACE_IMPORT_WIDGET_H_
+#endif    // _U2_ACE_IMPORT_WIDGET_H_

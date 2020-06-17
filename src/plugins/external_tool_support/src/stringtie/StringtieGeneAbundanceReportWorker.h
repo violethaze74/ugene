@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ namespace LocalWorkflow {
 class StringtieGeneAbundanceReportWorker : public BaseWorker {
     Q_OBJECT
 public:
-    StringtieGeneAbundanceReportWorker(Actor* actor);
+    StringtieGeneAbundanceReportWorker(Actor *actor);
 
     void init();
     Task *tick();
@@ -40,13 +40,13 @@ private slots:
     void sl_taskSucceeded(Task *task);
 
 private:
-    IntegralBus * input;
+    IntegralBus *input;
     QStringList stringtieReports;
 
     static const QString OUTPUT_DIR;
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_H_
+#endif    // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <QColor>
-
 #include "MsaHighlightingSchemeDisagreements.h"
+
+#include <QColor>
 
 namespace U2 {
 
 MsaHighlightingSchemeDisagreements::MsaHighlightingSchemeDisagreements(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
-    : MsaHighlightingScheme(parent, factory, maObj)
-{
-
+    : MsaHighlightingScheme(parent, factory, maObj) {
 }
 
 void MsaHighlightingSchemeDisagreements::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
@@ -39,13 +37,12 @@ void MsaHighlightingSchemeDisagreements::process(const char refChar, char &seqCh
     MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
-
 MsaHighlightingSchemeDisagreementsFactory::MsaHighlightingSchemeDisagreementsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeDisagreementsFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaHighlightingScheme *MsaHighlightingSchemeDisagreementsFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaHighlightingSchemeDisagreements(parent, this, maObj);
 }
 
-}
+}    // namespace U2

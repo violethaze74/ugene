@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,19 +19,20 @@
  * MA 02110-1301, USA.
  */
 
+#include "MaSangerOverview.h"
+
 #include <QHBoxLayout>
-#include <QPainter>
 #include <QPaintEvent>
+#include <QPainter>
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GraphUtils.h>
 
-#include "MaSangerOverview.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/McaEditor.h"
 #include "ov_msa/McaReferenceCharController.h"
-#include "ov_msa/MSACollapsibleModel.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
@@ -51,8 +52,7 @@ MaSangerOverview::MaSangerOverview(MaEditorWgt *ui)
     : MaOverview(ui),
       vScrollBar(new QScrollBar(Qt::Vertical, this)),
       renderArea(new QWidget(this)),
-      completeRedraw(true)
-{
+      completeRedraw(true) {
     QHBoxLayout *mainLayout = new QHBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -158,7 +158,7 @@ int MaSangerOverview::getContentWidgetHeight() const {
 }
 
 int MaSangerOverview::getReadsHeight() const {
-    const int rowsCount = ui->getCollapseModel()->getDisplayableRowsCount();
+    const int rowsCount = ui->getCollapseModel()->getViewRowCount();
     return rowsCount * READ_HEIGHT;
 }
 
@@ -255,17 +255,18 @@ void MaSangerOverview::drawReads() {
     QPainter painter(&cachedReadsView);
     painter.fillRect(cachedReadsView.rect(), Qt::white);
 
-    MultipleChromatogramAlignmentObject const * const mcaObject = getEditor()->getMaObject();
+    MultipleChromatogramAlignmentObject const *const mcaObject = getEditor()->getMaObject();
     SAFE_POINT(NULL != mcaObject, tr("Incorrect multiple chromatogram alignment object"), );
     const MultipleChromatogramAlignment mca = mcaObject->getMultipleAlignment();
-    const int rowsCount = editor->getUI()->getCollapseModel()->getDisplayableRowsCount();
+    const int rowsCount = editor->getUI()->getCollapseModel()->getViewRowCount();
 
     double yOffset = 0;
     const double yStep = qMax(static_cast<double>(READ_HEIGHT), static_cast<double>(cachedReadsView.height()) / rowsCount);
     yOffset += (yStep - READ_HEIGHT) / 2;
 
     for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++) {
-        const MultipleChromatogramAlignmentRow row = mca->getMcaRow(ui->getCollapseModel()->mapToRow(rowNumber));
+        const MultipleChromatogramAlignmentRow row = mca->getMcaRow(
+            ui->getCollapseModel()->getMaRowIndexByViewRowIndex(rowNumber));
         const U2Region coreRegion = row->getCoreRegion();
         const U2Region positionRegion = editor->getUI()->getBaseWidthController()->getBasesGlobalRange(coreRegion);
 
@@ -290,8 +291,8 @@ void MaSangerOverview::drawReads() {
 
 void MaSangerOverview::moveVisibleRange(QPoint pos) {
     QRect newVisibleRange(cachedVisibleRange);
-    const int newPosX = qBound((cachedVisibleRange.width() - 1) / 2, pos.x(), width() - (cachedVisibleRange.width() - 1 ) / 2);
-    const int newPosY = qBound(getReferenceHeight() + (cachedVisibleRange.height() - 1) / 2, pos.y(), height() - (cachedVisibleRange.height() - 1 ) / 2);
+    const int newPosX = qBound((cachedVisibleRange.width() - 1) / 2, pos.x(), width() - (cachedVisibleRange.width() - 1) / 2);
+    const int newPosY = qBound(getReferenceHeight() + (cachedVisibleRange.height() - 1) / 2, pos.y(), height() - (cachedVisibleRange.height() - 1) / 2);
     const QPoint newPos(newPosX, newPosY);
     newVisibleRange.moveCenter(newPos);
 
@@ -308,4 +309,4 @@ void MaSangerOverview::moveVisibleRange(QPoint pos) {
     ui->getScrollController()->setVScrollbarValue(newVScrollBarValue);
 }
 
-}   // namespace U2
+}    // namespace U2

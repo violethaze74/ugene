@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ class HmmerParseSearchResultsTask : public Task {
 public:
     HmmerParseSearchResultsTask(const QString &resultUrl, const AnnotationCreationPattern &pattern);
 
-    const QList<SharedAnnotationData> & getAnnotations() const;
+    const QList<SharedAnnotationData> &getAnnotations() const;
 
 private:
     enum TOKENS {
@@ -75,6 +75,6 @@ private:
     static const qint64 BUFF_SIZE;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_HMMER_PARSE_SEARCH_RESULTS_TASK_H_
+#endif    // _U2_HMMER_PARSE_SEARCH_RESULTS_TASK_H_

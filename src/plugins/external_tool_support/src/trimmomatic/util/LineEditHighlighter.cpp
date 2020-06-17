@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,18 +19,17 @@
  * MA 02110-1301, USA.
  */
 
+#include "LineEditHighlighter.h"
+
 #include <QLineEdit>
 
 #include <U2Gui/GUIUtils.h>
-
-#include "LineEditHighlighter.h"
 
 namespace U2 {
 
 LineEditHighlighter::LineEditHighlighter(QLineEdit *_lineEdit)
     : QObject(_lineEdit),
-      lineEdit(_lineEdit)
-{
+      lineEdit(_lineEdit) {
     connect(lineEdit, SIGNAL(textChanged(QString)), SLOT(sl_textChanged(QString)));
     sl_textChanged(lineEdit->text());
 }
@@ -39,4 +38,4 @@ void LineEditHighlighter::sl_textChanged(const QString &text) {
     GUIUtils::setWidgetWarning(lineEdit, text.isEmpty());
 }
 
-}   // namespace U2
+}    // namespace U2

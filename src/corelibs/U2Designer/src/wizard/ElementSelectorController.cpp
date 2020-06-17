@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +19,25 @@
  * MA 02110-1301, USA.
  */
 
+#include "ElementSelectorController.h"
+
 #include <U2Lang/ElementSelectorWidget.h>
 
 #include "../PropertyWidget.h"
 #include "WizardController.h"
 
-#include "ElementSelectorController.h"
-
 namespace U2 {
 
 ElementSelectorController::ElementSelectorController(WizardController *wc,
-    ElementSelectorWidget *_widget, int _labelSize)
-: WidgetController(wc), widget(_widget), labelSize(_labelSize)
-{
-
+                                                     ElementSelectorWidget *_widget,
+                                                     int _labelSize)
+    : WidgetController(wc), widget(_widget), labelSize(_labelSize) {
 }
 
 ElementSelectorController::~ElementSelectorController() {
-
 }
 
-QWidget * ElementSelectorController::createGUI(U2OpStatus & /*os*/) {
+QWidget *ElementSelectorController::createGUI(U2OpStatus & /*os*/) {
     QList<ComboItem> values;
     foreach (const SelectorValue &value, widget->getValues()) {
         values.append(qMakePair(value.getName(), value.getValue()));
@@ -60,4 +58,4 @@ void ElementSelectorController::sl_valueChanged(const QVariant &newValue) {
     wc->setSelectorValue(widget, newValue);
 }
 
-} // U2
+}    // namespace U2

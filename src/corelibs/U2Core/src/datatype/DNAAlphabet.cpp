@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ const QString BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() {
     return "NUCL_DNA_EXTENDED_ALPHABET";
 }
 
-const QString BaseDNAAlphabetIds::NUCL_RNA_EXTENDED (){
+const QString BaseDNAAlphabetIds::NUCL_RNA_EXTENDED() {
     return "NUCL_RNA_EXTENDED_ALPHABET";
 }
 
@@ -51,14 +51,11 @@ const QString BaseDNAAlphabetIds::AMINO_EXTENDED() {
     return "AMINO_EXTENDED_ALPHABET";
 }
 
-DNAAlphabet::DNAAlphabet(const QString& _id, const QString& _name, DNAAlphabetType _t, const QBitArray& _map,
-                         Qt::CaseSensitivity cm, char _defSym)
-: id(_id), name(_name), type(_t), map(_map), caseMode(cm), defSym(_defSym)
-{
+DNAAlphabet::DNAAlphabet(const QString &_id, const QString &_name, DNAAlphabetType _t, const QBitArray &_map, Qt::CaseSensitivity cm, char _defSym)
+    : id(_id), name(_name), type(_t), map(_map), caseMode(cm), defSym(_defSym) {
     assert(map[defSym] == true);
     numChars = getAlphabetChars().count();
 }
-
 
 QByteArray DNAAlphabet::getAlphabetChars(bool forceBothCases) const {
     QByteArray res;
@@ -66,7 +63,7 @@ QByteArray DNAAlphabet::getAlphabetChars(bool forceBothCases) const {
     for (int i = 0; i < 256; i++) {
         if (map[i]) {
             bool skip = (!bothCases) && i >= 'a' && i <= 'z';
-            if (!skip)  {
+            if (!skip) {
                 res.append((char)i);
             }
         }
@@ -75,9 +72,8 @@ QByteArray DNAAlphabet::getAlphabetChars(bool forceBothCases) const {
     return res;
 }
 
-
-bool DNAAlphabet::containsAll(const char* str, int len) const {
-    for (int i=0; i < len; i++) {
+bool DNAAlphabet::containsAll(const char *str, int len) const {
+    for (int i = 0; i < len; i++) {
         char c = str[i];
         if (!contains(c)) {
             return false;
@@ -86,5 +82,4 @@ bool DNAAlphabet::containsAll(const char* str, int len) const {
     return true;
 }
 
-} //namespace
-
+}    // namespace U2

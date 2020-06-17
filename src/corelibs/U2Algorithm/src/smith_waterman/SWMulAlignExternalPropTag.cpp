@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ namespace U2 {
 QString SWMulAlignExternalPropTag::expandTag(const QVariant & /*argument*/) const {
     QString tagExpansion;
 
-    switch(type) {
+    switch (type) {
     case DATE:
         tagExpansion = QDate::currentDate().toString(Qt::ISODate);
         break;
@@ -48,4 +48,4 @@ QString SWMulAlignExternalPropTag::expandTag(const QVariant & /*argument*/) cons
     return tagExpansion;
 }
 
-} // namespace
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-
 #ifndef U2_GT_BASECOMPLETER_H
 #define U2_GT_BASECOMPLETER_H
 
@@ -35,8 +34,8 @@ public:
     static void click(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor, const QString &seqName);
     static QStringList getNames(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor);
     static bool isEmpty(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor);
-    static QTreeWidget* getCompleter(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor);
+    static QTreeWidget *getCompleter(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor);
 };
 
-}
-#endif // GTBASECOMPLETER_H
+}    // namespace U2
+#endif    // GTBASECOMPLETER_H

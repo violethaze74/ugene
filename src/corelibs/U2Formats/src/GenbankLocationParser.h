@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,13 +44,12 @@ public:
     static const QString REMOTE_ENTRY_WARNING;
     static const QString JOIN_COMPLEMENT_WARNING;
 
-    static ParsingResult parseLocation(const char* str, int len, U2Location& location, qint64 seqlenForCircular = -1);
-    static ParsingResult parseLocation(const char* str, int len, U2Location& location, QStringList &messages, qint64 seqlenForCircular = -1);
+    static ParsingResult parseLocation(const char *str, int len, U2Location &location, qint64 seqlenForCircular = -1);
+    static ParsingResult parseLocation(const char *str, int len, U2Location &location, QStringList &messages, qint64 seqlenForCircular = -1);
 };
 
+}    // namespace Genbank
 
-}
-
-}//namespace
+}    // namespace U2
 
 #endif

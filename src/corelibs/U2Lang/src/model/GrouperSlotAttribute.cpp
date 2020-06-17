@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Lang/IntegralBusType.h>
-
 #include "GrouperSlotAttribute.h"
+
+#include <U2Lang/IntegralBusType.h>
 
 namespace U2 {
 
 GrouperOutSlotAttribute::GrouperOutSlotAttribute(const Descriptor &d, const DataTypePtr type, bool required, const QVariant &defaultValue)
-: Attribute(d, type, required, defaultValue)
-{
-
+    : Attribute(d, type, required, defaultValue) {
 }
 
 GrouperOutSlotAttribute::~GrouperOutSlotAttribute() {
@@ -71,9 +69,7 @@ void GrouperOutSlotAttribute::updateActorIds(const QMap<ActorId, ActorId> &actor
 }
 
 GroupSlotAttribute::GroupSlotAttribute(const Descriptor &d, const DataTypePtr type, bool required, const QVariant &defaultValue)
-: Attribute(d, type, required, defaultValue)
-{
-
+    : Attribute(d, type, required, defaultValue) {
 }
 
 Attribute *GroupSlotAttribute::clone() {
@@ -94,4 +90,4 @@ void GroupSlotAttribute::setAttributeValue(const QVariant &newVal) {
     Attribute::setAttributeValue(GrouperOutSlot::busMap2readable(slotStr));
 }
 
-} // U2
+}    // namespace U2

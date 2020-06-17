@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -27,11 +27,11 @@
 #include <U2View/McaEditorSequenceArea.h>
 
 namespace U2 {
-    using namespace HI;
+using namespace HI;
 
 class GTUtilsMcaEditorSequenceArea {
 public:
-    static McaEditorSequenceArea* getSequenceArea(HI::GUITestOpStatus &os);
+    static McaEditorSequenceArea *getSequenceArea(HI::GUITestOpStatus &os);
     static QStringList getVisibleNames(HI::GUITestOpStatus &os);
     static int getRowHeight(HI::GUITestOpStatus &os, int rowNumber);
     static void clickToPosition(HI::GUITestOpStatus &os, const QPoint &globalMaPosition);
@@ -71,5 +71,5 @@ public:
     static QString getConsensusStringByRegion(GUITestOpStatus &os, const U2Region reg);
 };
 
-}//namespace
-#endif // GTUTILSMSAEDITORSEQUENCEAREA_H
+}    // namespace U2
+#endif    // GTUTILSMSAEDITORSEQUENCEAREA_H

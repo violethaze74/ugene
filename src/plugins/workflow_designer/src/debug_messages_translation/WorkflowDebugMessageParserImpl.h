@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,24 +31,25 @@ class GObject;
 
 class WorkflowDebugMessageParserImpl : public WorkflowDebugMessageParser {
 public:
-    WorkflowInvestigationData   getAllMessageValues( );
-    void                        convertMessagesToDocuments( const QString &convertedType,
-                                    const QString &schemeName, quint32 messageNumber );
+    WorkflowInvestigationData getAllMessageValues();
+    void convertMessagesToDocuments(const QString &convertedType,
+                                    const QString &schemeName,
+                                    quint32 messageNumber);
 
 private:
-    void                        initParsedInfo( );
-    QString                     convertToString( const QString &contentIdentifier,
-                                    const QVariant &content ) const;
-    QString                     getMessageTypeFromIdentifier( const QString &messageIdentifier ) const;
-    BaseMessageTranslator *     createMessageTranslator( const QString &messageType,
-                                    const QVariant &messageData ) const;
-    GObject *                   fetchObjectFromMessage( const QString &messageType,
-                                    const QVariant &messageData ) const;
+    void initParsedInfo();
+    QString convertToString(const QString &contentIdentifier,
+                            const QVariant &content) const;
+    QString getMessageTypeFromIdentifier(const QString &messageIdentifier) const;
+    BaseMessageTranslator *createMessageTranslator(const QString &messageType,
+                                                   const QVariant &messageData) const;
+    GObject *fetchObjectFromMessage(const QString &messageType,
+                                    const QVariant &messageData) const;
 
     QStringList messageTypes;
     WorkflowInvestigationData parsedInfo;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_IMPL_H_
+#endif    // _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_IMPL_H_

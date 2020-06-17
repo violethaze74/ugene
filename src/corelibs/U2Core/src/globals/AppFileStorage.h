@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,12 @@
 #ifndef _U2_APP_FILE_STORAGE_
 #define _U2_APP_FILE_STORAGE_
 
-#include <QMutex>
 #include <QFile>
+#include <QMutex>
 
-#include <U2Core/global.h>
 #include <U2Core/U2OpStatus.h>
+#include <U2Core/global.h>
+
 #include "../dbi/U2SQLiteTripleStore.h"
 
 namespace U2 {
@@ -48,6 +49,7 @@ public:
 
 class U2CORE_EXPORT WorkflowProcess {
     friend class U2::AppFileStorage;
+
 public:
     WorkflowProcess(const QString &id);
     virtual ~WorkflowProcess();
@@ -58,13 +60,13 @@ public:
 private:
     QString id;
     QString tempDirectory;
-    QList<QFile*> usedFiles;
+    QList<QFile *> usedFiles;
 
     void addFile(const QString &url);
     void unuseFiles();
 };
 
-} // FileStorage
+}    // namespace FileStorage
 
 /** A triplestore for information about files produced by UGENE */
 class U2CORE_EXPORT AppFileStorage {
@@ -110,7 +112,7 @@ private:
     QString storageDir;
 
     QMutex cleanupMutex;
-}; // AppFileStorage
+};    // AppFileStorage
 
 /** Describes role types for the storage */
 class U2CORE_EXPORT StorageRoles {
@@ -129,8 +131,8 @@ public:
 
     /** Source custom file url - CUSTOM_FILE_TO_FILE_ROLE - destination custom file url */
     static const QString CUSTOM_FILE_TO_FILE;
-}; // StorageRoles
+};    // StorageRoles
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_APP_FILE_STORAGE_
+#endif    // _U2_APP_FILE_STORAGE_

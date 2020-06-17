@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,30 +28,29 @@ namespace U2 {
 
 class AnnotationSettings;
 
-class AnnotHighlightSettingsWidget : public QWidget, private Ui_annotHighlightSettings
-{
+class AnnotHighlightSettingsWidget : public QWidget, private Ui_annotHighlightSettings {
     Q_OBJECT
 public:
-    AnnotHighlightSettingsWidget(QWidget* parent = 0);
+    AnnotHighlightSettingsWidget(QWidget *parent = 0);
 
-    void setSettings(AnnotationSettings* annotSettings, bool disableShowTranslations);
+    void setSettings(AnnotationSettings *annotSettings, bool disableShowTranslations);
 
 signals:
-    void si_annotSettingsChanged(AnnotationSettings* annotSettings);
+    void si_annotSettingsChanged(AnnotationSettings *annotSettings);
 
 private slots:
     void sl_onShowHideChanged(int checkedState);
     void sl_onShowOnTranslationChanged(int checkedState);
     void sl_onShowQualifierChanged(int checkedState);
-    void sl_onEditQualifiersChanged(const QString&);
+    void sl_onEditQualifiersChanged(const QString &);
 
 private:
     void setIncorrectState();
     void setCorrectState();
 
-    AnnotationSettings* currentSettings;
+    AnnotationSettings *currentSettings;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

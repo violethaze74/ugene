@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_STARTUP_DIALOG_FILLER_H_
 
 #include <core/GUITestOpStatus.h>
+
 #include <U2Test/UGUITest.h>
 
 #include "utils/GTUtilsDialog.h"
@@ -43,6 +44,6 @@ private:
     const bool isPathValid;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_STARTUP_DIALOG_FILLER_H_
+#endif    // _U2_STARTUP_DIALOG_FILLER_H_

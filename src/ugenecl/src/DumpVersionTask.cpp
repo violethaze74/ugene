@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,21 +30,22 @@
 
 namespace U2 {
 
-const QString DumpVersionTask::VERSION_CMDLINE_OPTION       = "version";
+const QString DumpVersionTask::VERSION_CMDLINE_OPTION = "version";
 const QString DumpVersionTask::VERSION_CMDLINE_OPTION_SHORT = "v";
 
 void DumpVersionTask::initHelp() {
-    CMDLineHelpProvider * versionSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider *versionSection = new CMDLineHelpProvider(
         VERSION_CMDLINE_OPTION,
-        tr( "Shows version information." ),
-        "", // No full description
-        "", // No arguments
+        tr("Shows version information."),
+        "",    // No full description
+        "",    // No arguments
         VERSION_CMDLINE_OPTION_SHORT);
 
-    AppContext::getCMDLineRegistry()->registerCMDLineHelpProvider( versionSection );
+    AppContext::getCMDLineRegistry()->registerCMDLineHelpProvider(versionSection);
 }
 
-DumpVersionTask::DumpVersionTask() : Task(tr("Dump version information task"), TaskFlag_None) {
+DumpVersionTask::DumpVersionTask()
+    : Task(tr("Dump version information task"), TaskFlag_None) {
 }
 
 void DumpVersionTask::run() {
@@ -52,4 +53,4 @@ void DumpVersionTask::run() {
     fprintf(stdout, "Using Qt %s\n", qVersion());
 }
 
-} // U2
+}    // namespace U2

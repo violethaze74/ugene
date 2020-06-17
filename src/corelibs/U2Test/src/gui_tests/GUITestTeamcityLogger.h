@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,17 +28,17 @@ namespace U2 {
 
 class GUITestTeamcityLogger {
 public:
-    static void testStarted(const QString& testName);
-    static void testIgnored(const QString& testName, const QString& ignoreReason);
+    static void testStarted(const QString &testName);
+    static void testIgnored(const QString &testName, const QString &ignoreReason);
     static void teamCityLogResult(const QString &testName, const QString &testResult, qint64 testTimeMicros);
 
-//private:
-    static QString escaped(const QString &s); // returns valid teamcity log string with escaped symbols
+    //private:
+    static QString escaped(const QString &s);    // returns valid teamcity log string with escaped symbols
     static bool testFailed(const QString &testResult);
 
     static const QString successResult;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

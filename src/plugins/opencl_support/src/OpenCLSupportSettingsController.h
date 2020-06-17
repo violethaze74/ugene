@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef __OPENCL_SUPPORT_SETTINGS_CONTROLLER__
 #define __OPENCL_SUPPORT_SETTINGS_CONTROLLER__
 
-#include <QVector>
 #include <QLabel>
-#include <QCheckBox>
+#include <QRadioButton>
+#include <QVector>
 
 #include <U2Gui/AppSettingsGUI.h>
 
@@ -35,15 +35,17 @@ namespace U2 {
 class OpenCLSupportSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    OpenCLSupportSettingsPageController( const QString & _displayMsg, QObject * p = 0 );
+    OpenCLSupportSettingsPageController(const QString &_displayMsg, QObject *p = 0);
 
-    virtual AppSettingsGUIPageState * getSavedState();
+    virtual AppSettingsGUIPageState *getSavedState();
 
-    virtual void saveState( AppSettingsGUIPageState * s );
+    virtual void saveState(AppSettingsGUIPageState *s);
 
-    virtual AppSettingsGUIPageWidget * createWidget(AppSettingsGUIPageState* state);
+    virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *state);
 
-    const QString& getHelpPageId() const {return helpPageId;};
+    const QString &getHelpPageId() const {
+        return helpPageId;
+    };
 
 private:
     QString displayMsg;
@@ -53,24 +55,27 @@ private:
 class OpenCLSupportSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
-    OpenCLSupportSettingsPageState( int num_gpus );
-    QVector<bool> enabledGpus;
+    OpenCLSupportSettingsPageState(const QString &name);
+
+    const QString &getEnabledGpuName() const;
+
+private:
+    QString enabledGpuName;
 };
 
 class OpenCLSupportSettingsPageWidget : public AppSettingsGUIPageWidget {
     Q_OBJECT
 public:
-    OpenCLSupportSettingsPageWidget( const QString & _msg, OpenCLSupportSettingsPageController * ctrl );
+    OpenCLSupportSettingsPageWidget(const QString &_msg, OpenCLSupportSettingsPageController *ctrl);
 
-    virtual void setState( AppSettingsGUIPageState * state );
+    virtual void setState(AppSettingsGUIPageState *state);
+    virtual AppSettingsGUIPageState *getState(QString &err) const;
 
-    virtual AppSettingsGUIPageState* getState( QString & err ) const;
-
+private:
     QString onlyMsg;
-
-    QList<QCheckBox *> gpuEnableChecks;
+    QMap<QString, QRadioButton *> gpuRadioButtons;
 };
 
-} //namespace
+}    // namespace U2
 
-#endif //__OPENCL_SUPPORT_SETTINGS_CONTROLLER__
+#endif    //__OPENCL_SUPPORT_SETTINGS_CONTROLLER__

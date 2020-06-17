@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <U2Test/XMLTestUtils.h>
 
-namespace U2{
+namespace U2 {
 
 class GTest_SubstMatrix : public XmlTest {
     Q_OBJECT
@@ -42,10 +42,9 @@ private:
 
 class SMatrixTests {
 public:
-    static QList< XMLTestFactory* > createTestFactories();
+    static QList<XMLTestFactory *> createTestFactories();
 };
 
-}
+}    // namespace U2
 
 #endif
-

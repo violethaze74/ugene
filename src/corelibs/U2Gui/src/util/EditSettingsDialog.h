@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 
 #include <QDialog>
 
-#include <U2Core/global.h>
 #include <U2Core/U1AnnotationUtils.h>
+#include <U2Core/global.h>
 
 class Ui_EditSettingDialogForm;
 
@@ -35,8 +35,8 @@ class EditSettings {
 public:
     EditSettings()
         : recalculateQualifiers(true),
-          annotationStrategy(U1AnnotationUtils::AnnotationStrategyForResize_Resize)
-    {}
+          annotationStrategy(U1AnnotationUtils::AnnotationStrategyForResize_Resize) {
+    }
 
     bool recalculateQualifiers;
     U1AnnotationUtils::AnnotationStrategyForResize annotationStrategy;
@@ -45,14 +45,15 @@ public:
 class U2GUI_EXPORT EditSettingsDialog : public QDialog {
     Q_OBJECT
 public:
-    EditSettingsDialog(const EditSettings& settings, QWidget* parent);
+    EditSettingsDialog(const EditSettings &settings, QWidget *parent);
     ~EditSettingsDialog();
 
     EditSettings getSettings() const;
+
 private:
-    Ui_EditSettingDialogForm* ui;
+    Ui_EditSettingDialogForm *ui;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_EDIT_SETTINGS_DIALOG_H_
+#endif    // _U2_EDIT_SETTINGS_DIALOG_H_

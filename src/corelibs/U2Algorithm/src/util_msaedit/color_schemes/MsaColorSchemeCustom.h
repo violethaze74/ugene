@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,12 +32,12 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MsaColorSchemeCustomFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MsaColorSchemeCustomFactory(QObject *parent, const ColorSchemeData& scheme);
+    MsaColorSchemeCustomFactory(QObject *parent, const ColorSchemeData &scheme);
 
-    MsaColorScheme * create(QObject *p, MultipleAlignmentObject *obj) const;
-    bool isEqualTo(const ColorSchemeData& scheme) const;
+    MsaColorScheme *create(QObject *p, MultipleAlignmentObject *obj) const;
+    bool isEqualTo(const ColorSchemeData &scheme) const;
 
-    void setScheme(const ColorSchemeData& scheme);
+    void setScheme(const ColorSchemeData &scheme);
 
 private:
     static QVector<QColor> colorMapToColorVector(const QMap<char, QColor> &map);
@@ -45,6 +45,6 @@ private:
     QVector<QColor> colorsPerChar;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MSA_COLOR_SCHEME_CUSTOM_H_
+#endif    // _U2_MSA_COLOR_SCHEME_CUSTOM_H_

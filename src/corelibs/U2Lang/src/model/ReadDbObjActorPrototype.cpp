@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,18 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Lang/URLAttribute.h>
-
 #include "ReadDbObjActorPrototype.h"
+
+#include <U2Lang/URLAttribute.h>
 
 namespace U2 {
 
 namespace Workflow {
 
 ReadDbObjActorPrototype::ReadDbObjActorPrototype(const Descriptor &desc, const QList<PortDescriptor *> &ports, const QList<Attribute *> &attrs)
-    : IntegralBusActorPrototype(desc, ports, attrs)
-{
-
+    : IntegralBusActorPrototype(desc, ports, attrs) {
 }
 
 void ReadDbObjActorPrototype::setCompatibleDbObjectTypes(const QSet<GObjectType> &types) {
@@ -43,6 +41,6 @@ void ReadDbObjActorPrototype::setCompatibleDbObjectTypes(const QSet<GObjectType>
     }
 }
 
-} // Workflow
+}    // namespace Workflow
 
-} // U2
+}    // namespace U2

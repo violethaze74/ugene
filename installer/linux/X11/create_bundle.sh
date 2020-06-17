@@ -177,7 +177,6 @@ echo copying plugins
 add-plugin annotator
 add-plugin ball
 add-plugin biostruct3d_view
-add-plugin browser_support
 add-plugin chroma_view
 add-plugin circular_view
 add-plugin clark_support

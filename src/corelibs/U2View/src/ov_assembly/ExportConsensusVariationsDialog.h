@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,11 @@
 #ifndef _U2_EXPORT_CONSENSUS_VARIATIONS_DIALOG_H_
 #define _U2_EXPORT_CONSENSUS_VARIATIONS_DIALOG_H_
 
+#include <ui_ExportConsensusDialog.h>
+
 #include <QDialog>
 
 #include "ExportConsensusVariationsTask.h"
-#include <ui_ExportConsensusDialog.h>
 
 namespace U2 {
 
@@ -35,20 +36,20 @@ class SaveDocumentController;
 class ExportConsensusVariationsDialog : public QDialog, private Ui_ExportConsensusDialog {
     Q_OBJECT
 public:
-    ExportConsensusVariationsDialog(QWidget * p, const ExportConsensusVariationsTaskSettings & settings, const U2Region & visibleRegion);
+    ExportConsensusVariationsDialog(QWidget *p, const ExportConsensusVariationsTaskSettings &settings, const U2Region &visibleRegion);
 
     virtual void accept();
 
-    const ExportConsensusVariationsTaskSettings & getSettings() const;
+    const ExportConsensusVariationsTaskSettings &getSettings() const;
 
 private:
     void initSaveController();
 
     ExportConsensusVariationsTaskSettings settings;
-    SaveDocumentController * saveController;
-    RegionSelector * regionSelector;
+    SaveDocumentController *saveController;
+    RegionSelector *regionSelector;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_EXPORT_CONSENSUS_VARIATIONS_DIALOG_H_
+#endif    // _U2_EXPORT_CONSENSUS_VARIATIONS_DIALOG_H_

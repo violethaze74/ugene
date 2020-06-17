@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +22,12 @@
 #ifndef _U2_WIDGETCONTROLLER_H_
 #define _U2_WIDGETCONTROLLER_H_
 
+#include <QLabel>
+#include <QWidget>
+
 #include <U2Core/U2OpStatus.h>
 
 #include <U2Lang/ConfigurationEditor.h>
-
-#include <QLabel>
-#include <QWidget>
 
 namespace U2 {
 
@@ -38,7 +38,7 @@ public:
     WidgetController(WizardController *wc);
     virtual ~WidgetController();
 
-    virtual QWidget * createGUI(U2OpStatus &os) = 0;
+    virtual QWidget *createGUI(U2OpStatus &os) = 0;
 
 protected:
     WizardController *wc;
@@ -54,6 +54,6 @@ private:
     QLabel *label;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_WIDGETCONTROLLER_H_
+#endif    // _U2_WIDGETCONTROLLER_H_

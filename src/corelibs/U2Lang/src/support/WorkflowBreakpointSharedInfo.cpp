@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,30 +28,27 @@ const char *BREAK_WHEN_HIT_COUNT_GREATER_OR_EQUAL = "break when the hit count is
 
 namespace U2 {
 
-BreakpointHitCounterDump::BreakpointHitCounterDump(BreakpointHitCountCondition _condition, quint32 _hitCount,
-    quint32 _hitCounterParameter) : typeOfCondition(_condition), hitCount(_hitCount),
-    hitCounterParameter(_hitCounterParameter)
-{
-
+BreakpointHitCounterDump::BreakpointHitCounterDump(BreakpointHitCountCondition _condition, quint32 _hitCount, quint32 _hitCounterParameter)
+    : typeOfCondition(_condition), hitCount(_hitCount),
+      hitCounterParameter(_hitCounterParameter) {
 }
 
 U2LANG_EXPORT const QMap<BreakpointHitCountCondition, QString> &getNamesOfHitCounters() {
     static QMap<BreakpointHitCountCondition, QString> namesOfHitCounters;
-    if(namesOfHitCounters.isEmpty()) {
+    if (namesOfHitCounters.isEmpty()) {
         namesOfHitCounters[ALWAYS] = QObject::tr(BREAK_ALWAYS);
         namesOfHitCounters[HIT_COUNT_EQUAL] = QObject::tr(BREAK_WHEN_HIT_COUNT_EQUAL);
         namesOfHitCounters[HIT_COUNT_MULTIPLE] = QObject::tr(BREAK_WHEN_HIT_COUNT_MULTIPLE);
-        namesOfHitCounters[HIT_COUNT_GREATER_OR_EQUAL]
-            = QObject::tr(BREAK_WHEN_HIT_COUNT_GREATER_OR_EQUAL);
+        namesOfHitCounters[HIT_COUNT_GREATER_OR_EQUAL] = QObject::tr(BREAK_WHEN_HIT_COUNT_GREATER_OR_EQUAL);
     }
     return namesOfHitCounters;
 }
 
 BreakpointConditionDump::BreakpointConditionDump(BreakpointConditionParameter _conditionParameter,
-    const QString &_condition, bool _isEnabled) : conditionParameter(_conditionParameter),
-    condition(_condition), isEnabled(_isEnabled)
-{
-
+                                                 const QString &_condition,
+                                                 bool _isEnabled)
+    : conditionParameter(_conditionParameter),
+      condition(_condition), isEnabled(_isEnabled) {
 }
 
-} // namespace U2
+}    // namespace U2

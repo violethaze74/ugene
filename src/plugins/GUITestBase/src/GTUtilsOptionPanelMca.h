@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -68,6 +68,6 @@ private:
     static QMap<Tabs, QString> initNames();
     static QMap<Tabs, QString> initInnerWidgetNames();
 };
-}
+}    // namespace U2
 
-#endif // _U2_GT_UTILS_OPTION_PANEL_MCA_H_
+#endif    // _U2_GT_UTILS_OPTION_PANEL_MCA_H_

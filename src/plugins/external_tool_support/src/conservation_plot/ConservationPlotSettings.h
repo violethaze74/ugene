@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,35 +22,31 @@
 #ifndef _U2_CONSERVATION_PLOT_SETTINGS_
 #define _U2_CONSERVATION_PLOT_SETTINGS_
 
-
 #include <QList>
 #include <QString>
 #include <QStringList>
 
 namespace U2 {
 
-
 class ConservationPlotSettings {
 public:
-
     ConservationPlotSettings();
 
-    QString     outFile;
-    QString     title;
-    QString     label;
-    QString     assemblyVersion;
-    qint64      windowSize;
-    qint64      height;
-    qint64      width;
+    QString outFile;
+    QString title;
+    QString label;
+    QString assemblyVersion;
+    qint64 windowSize;
+    qint64 height;
+    qint64 width;
 
 public:
-     QStringList getArguments(const QList<QString>& bedFiles);
+    QStringList getArguments(const QList<QString> &bedFiles);
 
 private:
     void initDefault();
-
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_CONSERVATION_PLOT_SETTINGS_
+#endif    // _U2_CONSERVATION_PLOT_SETTINGS_

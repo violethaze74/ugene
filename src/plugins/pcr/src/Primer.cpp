@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,9 +26,7 @@ namespace U2 {
 const double Primer::INVALID_GC = -1;
 const double Primer::INVALID_TM = -1;
 Primer::Primer()
-: U2Entity(), gc(0.0), tm(0.0)
-{
-
+    : U2Entity(), gc(0.0), tm(0.0) {
 }
 
-} // U2
+}    // namespace U2

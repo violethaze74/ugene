@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,22 +28,23 @@ namespace U2 {
 using namespace HI;
 class EditQualifierFiller : public Filler {
 public:
-    EditQualifierFiller(HI::GUITestOpStatus &_os, const QString &_qualifierName, const QString &_valueName,
-                        bool _noCheck = false, bool _closeErrorMessageBox = false)
+    EditQualifierFiller(HI::GUITestOpStatus &_os, const QString &_qualifierName, const QString &_valueName, bool _noCheck = false, bool _closeErrorMessageBox = false)
         : Filler(_os, "EditQualifierDialog"),
           qualifierName(_qualifierName),
           valueName(_valueName),
           noCheck(_noCheck),
-          closeErrormessageBox(_closeErrorMessageBox) {}
+          closeErrormessageBox(_closeErrorMessageBox) {
+    }
 
-    EditQualifierFiller(HI::GUITestOpStatus &_os, const QString &_qualifierName,
-                        bool _noCheck = false, bool _closeErrorMessageBox = false)
+    EditQualifierFiller(HI::GUITestOpStatus &_os, const QString &_qualifierName, bool _noCheck = false, bool _closeErrorMessageBox = false)
         : Filler(_os, "EditQualifierDialog"),
           qualifierName(_qualifierName),
           noCheck(_noCheck),
-          closeErrormessageBox(_closeErrorMessageBox) {}
+          closeErrormessageBox(_closeErrorMessageBox) {
+    }
 
     void commonScenario();
+
 private:
     QString qualifierName;
     QString valueName;
@@ -51,6 +52,6 @@ private:
     bool closeErrormessageBox;
 };
 
-}
+}    // namespace U2
 
 #endif

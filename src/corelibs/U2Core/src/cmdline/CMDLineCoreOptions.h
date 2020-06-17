@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 
 #include <QObject>
 #include <QString>
+
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -50,7 +51,11 @@ public:
     static const QString LAUNCH_GUI_TEST_SUITE;
     static const QString LAUNCH_GUI_TEST_CRAZY_USER;
     static const QString USAGE;
+    static const QString DOWNLOAD_DIR;
+    static const QString CUSTOM_TOOLS_CONFIG_DIR;
     static const QString TMP_DIR;
+    static const QString DEFAULT_DATA_DIR;
+    static const QString FILE_STORAGE_DIR;
     static const QString SESSION_DB;
     static const QString USE_SAME_INI_FOR_TESTS;
 
@@ -58,8 +63,8 @@ public:
     // initialize help for core cmdline options
     static void initHelp();
 
-}; // CMDLineCoreOptions
+};    // CMDLineCoreOptions
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_CMDLINE_OPTIONS_H_
+#endif    // _U2_CMDLINE_OPTIONS_H_

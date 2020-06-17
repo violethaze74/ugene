@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,9 +32,9 @@ class Task;
 class U2GUI_EXPORT LoadDocumentTaskProvider {
 public:
     virtual ~LoadDocumentTaskProvider() {};
-    virtual QList<Task*> createLoadDocumentTasks(const QList<Document*>& docs) const = 0;
+    virtual QList<Task *> createLoadDocumentTasks(const QList<Document *> &docs) const = 0;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_LOADDOCUMENTTASKPROVIDER_H_
+#endif    // _U2_LOADDOCUMENTTASKPROVIDER_H_

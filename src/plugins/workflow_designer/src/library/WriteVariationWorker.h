@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,26 +30,28 @@ namespace LocalWorkflow {
 class WriteVariationWorker : public BaseDocWriter {
     Q_OBJECT
 public:
-    WriteVariationWorker(Actor *p, const DocumentFormatId& fid);
+    WriteVariationWorker(Actor *p, const DocumentFormatId &fid);
 
 protected:
     virtual void data2doc(Document *doc, const QVariantMap &data);
     virtual void storeEntry(IOAdapter *io, const QVariantMap &data, int entryNum);
     virtual bool hasDataToWrite(const QVariantMap &data) const;
     virtual QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const;
-}; // WriteVariationWorker
+};    // WriteVariationWorker
 
 class WriteVariationWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
 
-    WriteVariationWorkerFactory() : DomainFactory(ACTOR_ID) {}
+    WriteVariationWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-}; // WriteVariationWorkerFactory
+};    // WriteVariationWorkerFactory
 
-} // LocalWorkflow
-} // U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _WRITE_VARIATION_LIST_WORKER_
+#endif    // _WRITE_VARIATION_LIST_WORKER_

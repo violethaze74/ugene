@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,13 +26,13 @@
 
 namespace U2 {
 namespace Workflow {
-    class Actor;
+class Actor;
 }
 namespace WorkflowSerialize {
 
 class OldUWL {
 public:
-    static void parseMarkerDefinition(Tokenizer &tokenizer, QMap<QString, Workflow::Actor*> &actorMap);
+    static void parseMarkerDefinition(Tokenizer &tokenizer, QMap<QString, Workflow::Actor *> &actorMap);
     static void parseOldAttributes(Workflow::Actor *proc, ParsedPairs &pairs);
 };
 
@@ -41,7 +41,7 @@ public:
     static const QString MARKER_START;
 };
 
-} // WorkflowSerialize
-} // U2
+}    // namespace WorkflowSerialize
+}    // namespace U2
 
-#endif // _U2_OLDUWL_H_
+#endif    // _U2_OLDUWL_H_

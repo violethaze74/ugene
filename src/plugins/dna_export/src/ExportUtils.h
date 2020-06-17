@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,20 +36,19 @@ class ExportSequencesDialog;
 class MultipleChromatogramAlignmentObject;
 class Task;
 
-class ExportUtils: public QObject {
+class ExportUtils : public QObject {
     Q_OBJECT
 public:
+    static void loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings &s, U2::ExportSequencesDialog *d);
 
-    static void loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings& s, U2::ExportSequencesDialog *d);
-
-    static Task* wrapExportTask(DocumentProviderTask* t, bool addToProject);
+    static Task *wrapExportTask(DocumentProviderTask *t, bool addToProject);
 
     // generates unique name using prefix + numbers
-    static QString genUniqueName(const QSet<QString>& names, QString prefix);
+    static QString genUniqueName(const QSet<QString> &names, QString prefix);
 
     static void launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject);
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

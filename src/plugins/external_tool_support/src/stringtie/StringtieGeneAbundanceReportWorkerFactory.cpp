@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "StringtieGeneAbundanceReportWorkerFactory.h"
+
 #include <U2Core/BaseDocumentFormats.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -33,7 +35,6 @@
 
 #include "StringtieGeneAbundanceReportPrompter.h"
 #include "StringtieGeneAbundanceReportWorker.h"
-#include "StringtieGeneAbundanceReportWorkerFactory.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -43,8 +44,7 @@ const QString StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID = "in";
 const QString StringtieGeneAbundanceReportWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-url";
 
 StringtieGeneAbundanceReportWorkerFactory::StringtieGeneAbundanceReportWorkerFactory()
-    : DomainFactory(ACTOR_ID)
-{
+    : DomainFactory(ACTOR_ID) {
 }
 
 Worker *StringtieGeneAbundanceReportWorkerFactory::createWorker(Actor *actor) {
@@ -120,5 +120,5 @@ void StringtieGeneAbundanceReportWorkerFactory::cleanup() {
     delete localDomain->unregisterEntry(ACTOR_ID);
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

@@ -16,11 +16,14 @@ include_directories(../../include)
 file(GLOB_RECURSE SRCS src/*.cpp)
 file(GLOB_RECURSE HDRS src/*.h)
 
+list(FILTER SRCS EXCLUDE REGEX "src/dashboard/webview/qtwebengine/.*")
+list(FILTER HDRS EXCLUDE REGEX "src/dashboard/webview/qtwebengine/.*")
+
 qt5_add_resources(RCC_SRCS U2Designer.qrc)
 
 add_library(U2Designer SHARED ${HDRS} ${SRCS} ${RCC_SRCS})
 
 target_link_libraries(U2Designer
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Svg Qt5::Script Qt5::WebKit Qt5::WebKitWidgets
-        U2Core U2Algorithm U2Gui)
+        U2Core U2Lang U2Gui)
 

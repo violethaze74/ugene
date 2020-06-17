@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,24 +32,23 @@ class SeekableBuf;
 class U2OpStatus;
 class DNAChromatogram;
 
-class U2FORMATS_EXPORT  ABIFormat : public DocumentFormat {
+class U2FORMATS_EXPORT ABIFormat : public DocumentFormat {
     Q_OBJECT
 public:
-    ABIFormat(QObject* p);
+    ABIFormat(QObject *p);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    virtual FormatCheckResult checkRawData(const QByteArray &rawData, const GUrl & = GUrl()) const;
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual Document *loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
 
-    virtual DNASequence* loadSequence(IOAdapter *io, U2OpStatus &ti);
-
+    virtual DNASequence *loadSequence(IOAdapter *io, U2OpStatus &ti);
 
 private:
-    Document* parseABI(const U2DbiRef& dbiRef, SeekableBuf*, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);
-    bool loadABIObjects(SeekableBuf* fp, DNASequence& seq, DNAChromatogram& cd);
+    Document *parseABI(const U2DbiRef &dbiRef, SeekableBuf *, IOAdapter *io, const QVariantMap &fs, U2OpStatus &os);
+    bool loadABIObjects(SeekableBuf *fp, DNASequence &seq, DNAChromatogram &cd);
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

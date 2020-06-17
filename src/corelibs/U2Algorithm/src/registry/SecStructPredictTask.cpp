@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,20 +23,17 @@
 
 namespace U2 {
 
-SecStructPredictTask::SecStructPredictTask(const QByteArray& seq)
-: Task (tr("Secondary structure predict"), TaskFlag_None), sequence(seq)
-{
-
+SecStructPredictTask::SecStructPredictTask(const QByteArray &seq)
+    : Task(tr("Secondary structure predict"), TaskFlag_None), sequence(seq) {
 }
 
 #define MIN_REGION_SIZE 5
 
-void SecStructPredictTask::prepare()
-{
+void SecStructPredictTask::prepare() {
     if (sequence.length() < MIN_REGION_SIZE) {
         setError("The size of sequence is less then minimal allowed size (5 residues).");
         return;
     }
 }
 
-} // namespace U2
+}    // namespace U2

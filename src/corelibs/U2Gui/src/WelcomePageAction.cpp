@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,17 +29,14 @@ const QString BaseWelcomePageActions::CREATE_WORKFLOW = "create_workflow";
 const QString BaseWelcomePageActions::QUICK_START = "quick_start";
 
 WelcomePageAction::WelcomePageAction(const QString &id)
-: id(id)
-{
-
+    : id(id) {
 }
 
 WelcomePageAction::~WelcomePageAction() {
-
 }
 
-const QString & WelcomePageAction::getId() const {
+const QString &WelcomePageAction::getId() const {
     return id;
 }
 
-} // U2
+}    // namespace U2

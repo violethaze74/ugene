@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,12 +23,11 @@
 
 #include "ui_RegionSelectorWithExcludedRegion.h"
 
-
 namespace U2 {
 
-RegionSelectorWithExludedRegion::RegionSelectorWithExludedRegion(QWidget* parent,
+RegionSelectorWithExludedRegion::RegionSelectorWithExludedRegion(QWidget *parent,
                                                                  qint64 maxLen,
-                                                                 DNASequenceSelection* selection,
+                                                                 DNASequenceSelection *selection,
                                                                  bool isCircularAvailable)
     : QWidget(parent),
       ui(new Ui_RegionSelectorWithExcludedRegion) {
@@ -102,7 +101,6 @@ QString RegionSelectorWithExludedRegion::getErrorMessage() const {
 
 void RegionSelectorWithExludedRegion::connectSlots() {
     connect(ui->excludeCheckBox, SIGNAL(toggled(bool)), ui->excludeWidget, SLOT(setEnabled(bool)));
-
 }
 
-} // namespace
+}    // namespace U2

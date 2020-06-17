@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,18 +20,17 @@
  */
 
 #include "DefaultWizardFiller.h"
+
 #include "GTUtilsWizard.h"
 
 namespace U2 {
 
-DefaultWizardFiller::DefaultWizardFiller(HI::GUITestOpStatus &os, const QString &wizardName) :
-    Filler(os, wizardName)
-{
-
+DefaultWizardFiller::DefaultWizardFiller(HI::GUITestOpStatus &os, const QString &wizardName)
+    : Filler(os, wizardName) {
 }
 
 void DefaultWizardFiller::commonScenario() {
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
 }
 
-}   // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,31 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
-
 #include "GObjectRelationRoles.h"
+
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
 namespace {
-    const QString SEQUENCE("sequence");
-    const QString ANNOTATION_TABLE("annotation_table");
-    const QString PHYLOGENETIC_TREE("phylogenetic_tree");
-    const QString REFERENCE_SEQUENCE("reference_sequence");
-}
+const QString SEQUENCE("sequence");
+const QString ANNOTATION_TABLE("annotation_table");
+const QString PHYLOGENETIC_TREE("phylogenetic_tree");
+const QString REFERENCE_SEQUENCE("reference_sequence");
+}    // namespace
 
 QString GObjectRelationRoleCompatibility::toString(GObjectRelationRole role) {
     switch (role) {
-        case ObjectRole_Sequence:
-            return SEQUENCE;
-        case ObjectRole_AnnotationTable:
-            return ANNOTATION_TABLE;
-        case ObjectRole_PhylogeneticTree:
-            return PHYLOGENETIC_TREE;
-        case ObjectRole_ReferenceSequence:
-            return REFERENCE_SEQUENCE;
-        default:
-            FAIL("Unknown role", "");
+    case ObjectRole_Sequence:
+        return SEQUENCE;
+    case ObjectRole_AnnotationTable:
+        return ANNOTATION_TABLE;
+    case ObjectRole_PhylogeneticTree:
+        return PHYLOGENETIC_TREE;
+    case ObjectRole_ReferenceSequence:
+        return REFERENCE_SEQUENCE;
+    default:
+        FAIL("Unknown role", "");
     }
 }
 
@@ -61,4 +61,4 @@ GObjectRelationRole GObjectRelationRoleCompatibility::fromString(const QString &
     }
 }
 
-}
+}    // namespace U2

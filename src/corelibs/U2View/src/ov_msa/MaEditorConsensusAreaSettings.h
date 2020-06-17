@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,16 +45,16 @@ public:
     void setRulerFont(const QFont &font);
 
     QFont font;
-    QList<MaEditorConsElement>  order;
-    MaEditorConsElements        visibleElements;
+    QList<MaEditorConsElement> order;
+    MaEditorConsElements visibleElements;
     // SANGER_TODO: valid only for mca yet - can be separated
-    bool                        highlightMismatches;
+    bool highlightMismatches;
     static const int RULER_NOTCH_SIZE;
 
 private:
     QFont rulerFont;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MA_EDITOR_CONSENSUS_AREA_SETTINGS_H_
+#endif    // _U2_MA_EDITOR_CONSENSUS_AREA_SETTINGS_H_

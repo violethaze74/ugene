@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,10 @@
 #ifndef _U2_GENOME_ALIGNER_CMDLINE_TASK_H_
 #define _U2_GENOME_ALIGNER_CMDLINE_TASK_H_
 
-#include <U2Core/Task.h>
-#include <U2Core/GUrl.h>
 #include <U2Algorithm/DnaAssemblyTask.h>
+
+#include <U2Core/GUrl.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
 
@@ -35,6 +36,7 @@ public:
     virtual ~GenomeAlignerCMDLineTask();
     virtual void prepare();
     static QString getArgumentsDescritption();
+
 private:
     int mismatchCount, ptMismatchCount, memSize, refSize, qualityThreshold;
     bool useOpenCL;
@@ -44,8 +46,8 @@ private:
     bool onlyBuildIndex;
     QList<GUrl> shortReadUrls;
 
-}; // GenomeAlignerCMDLineTask
+};    // GenomeAlignerCMDLineTask
 
-} //namespace
+}    // namespace U2
 
-#endif // _U2_GENOME_ALIGNER_CMDLINE_TASK_H_
+#endif    // _U2_GENOME_ALIGNER_CMDLINE_TASK_H_

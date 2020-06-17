@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,17 +29,15 @@ namespace U2 {
 class ADVSequenceWidget;
 class ADVSequenceObjectContext;
 
-class SetSequenceOriginDialog : public QDialog, Ui_SetSequenceOriginDialog
-{
+class SetSequenceOriginDialog : public QDialog, Ui_SetSequenceOriginDialog {
     Q_OBJECT
-    ADVSequenceObjectContext* seqContext;
+    ADVSequenceObjectContext *seqContext;
+
 public:
-    SetSequenceOriginDialog(ADVSequenceWidget* parent);
+    SetSequenceOriginDialog(ADVSequenceWidget *parent);
     int getSequenceShift();
-
-
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

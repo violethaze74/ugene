@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,6 +33,7 @@ class CustomExternalTool;
 class RegisterCustomToolTask;
 
 class ImportCustomToolsTask : public Task {
+    Q_OBJECT
 public:
     ImportCustomToolsTask(const QString &url);
 
@@ -48,6 +49,6 @@ private:
     RegisterCustomToolTask *registerTask;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_IMPORT_CUSTOM_TOOLS_TASK_H_
+#endif    // _U2_IMPORT_CUSTOM_TOOLS_TASK_H_

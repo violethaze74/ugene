@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,19 +22,19 @@
 #ifndef _U2_EDITABLE_TREE_VIEW_H_
 #define _U2_EDITABLE_TREE_VIEW_H_
 
-#include <U2Core/global.h>
 #include <QTreeView>
 
+#include <U2Core/global.h>
 
 namespace U2 {
 
 class U2GUI_EXPORT EditableTreeView : public QTreeView {
 public:
-    EditableTreeView(QWidget* p);
+    EditableTreeView(QWidget *p);
 
     bool isEditingActive();
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_EDITABLE_TREE_VIEW_H_
+#endif    // _U2_EDITABLE_TREE_VIEW_H_

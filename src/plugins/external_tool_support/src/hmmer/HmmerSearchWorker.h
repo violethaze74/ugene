@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ public:
 
     void init();
     bool isReady() const;
-    Task * tick();
+    Task *tick();
     void cleanup();
 
 private slots:
@@ -68,10 +68,10 @@ public:
 
     static void init();
     HmmerSearchWorkerFactory();
-    Worker * createWorker(Actor *a);
+    Worker *createWorker(Actor *a);
 };
 
-} // namespace LocalWorkflow
-} // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif //_U2_HMMER_SEARCH_WORKER_H_
+#endif    //_U2_HMMER_SEARCH_WORKER_H_

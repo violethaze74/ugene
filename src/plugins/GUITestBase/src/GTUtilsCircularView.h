@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,13 +26,11 @@
 
 #include "GTGlobals.h"
 
-
-namespace U2{
+namespace U2 {
 using namespace HI;
 class ADVSingleSequenceWidget;
 
-class GTUtilsCv
-{
+class GTUtilsCv {
 public:
     /**
      * Returns "true", if CV widget exists in @seqWidget.
@@ -42,7 +40,7 @@ public:
 
     /** Test utils for CV button on a sequence widget */
     class cvBtn {
-        public:
+    public:
         /** Returns "true", if there is CV button in @seqWidget */
         static bool isPresent(HI::GUITestOpStatus &os, ADVSingleSequenceWidget *seqWidget);
 
@@ -61,24 +59,23 @@ public:
 
     /** Test utils for CV button on the Sequence View toolbar (common for several sequences) */
     class commonCvBtn {
-        public:
+    public:
         /** Status @os is set to an error if there is no CV button on the main toolbar */
-        static void mustExist(HI::GUITestOpStatus& os);
+        static void mustExist(HI::GUITestOpStatus &os);
 
         /**
          * Clicks CV button on the main toolbar.
          * Status @os is set to error if the button does not exist.
          */
-        static void click(HI::GUITestOpStatus& os);
+        static void click(HI::GUITestOpStatus &os);
     };
 
-
 private:
-    static QAbstractButton * getCvButton(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* seqWidget, bool setFailedIfNotFound);
+    static QAbstractButton *getCvButton(HI::GUITestOpStatus &os, ADVSingleSequenceWidget *seqWidget, bool setFailedIfNotFound);
 
     static const QString actionName;
 };
 
-}
+}    // namespace U2
 
-#endif // _GT_UTILS_CIRCULAR_VIEW_H_
+#endif    // _GT_UTILS_CIRCULAR_VIEW_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,13 @@
  * MA 02110-1301, USA.
  */
 
+#include "FileStorageUtils.h"
+
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-
-#include "FileStorageUtils.h"
 
 namespace U2 {
 
@@ -103,4 +103,4 @@ void FileStorageUtils::addSamToBamConvertInfo(const QString &samUrl, const QStri
     addFileToFileInfo(fToFInfo, process);
 }
 
-} // U2
+}    // namespace U2

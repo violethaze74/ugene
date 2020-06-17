@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ public:
     };
     static OverviewScaleType getOverviewScaleType();
     static void setOverviewScaleType(OverviewScaleType t);
-    
+
     static bool getShowCoordsOnRuler();
     static void setShowCoordsOnRuler(bool what);
 
@@ -44,9 +44,9 @@ public:
 
     static bool getOptimizeRenderOnScroll();
     static void setOptimizeRenderOnScroll(bool what);
-    
-}; // AssemblyBrowserSettings
 
-} // U2
+};    // AssemblyBrowserSettings
 
-#endif // __ASSEMBLY_BROWSER_SETTINGS_H__
+}    // namespace U2
+
+#endif    // __ASSEMBLY_BROWSER_SETTINGS_H__

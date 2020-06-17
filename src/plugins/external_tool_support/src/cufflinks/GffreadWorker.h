@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ public:
     GffreadWorker(Actor *a);
 
     void init();
-    Task * tick();
+    Task *tick();
     void cleanup();
 
 private slots:
@@ -47,19 +47,21 @@ private:
     QString getOutUrl();
     GffreadSettings takeSettings(U2OpStatus &os);
     QVariantMap takeData(U2OpStatus &os);
-    Task * runGffread(const GffreadSettings &settings);
+    Task *runGffread(const GffreadSettings &settings);
     bool noMoreData() const;
     void finalize();
     void sendResult(const QString &outUrl);
 
 private:
-    QMap<QString, int> counters; // url <-> count suffix
+    QMap<QString, int> counters;    // url <-> count suffix
 };
 
 class GffreadWorkerFactory : public DomainFactory {
 public:
-    GffreadWorkerFactory() : DomainFactory(ACTOR_ID) {}
-    Worker * createWorker(Actor *a);
+    GffreadWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
+    Worker *createWorker(Actor *a);
 
     static const QString ACTOR_ID;
     static void init();
@@ -68,13 +70,15 @@ public:
 class GffreadPrompter : public PrompterBase<GffreadPrompter> {
     Q_OBJECT
 public:
-    GffreadPrompter(Actor *a = NULL) : PrompterBase<GffreadPrompter>(a) {}
+    GffreadPrompter(Actor *a = NULL)
+        : PrompterBase<GffreadPrompter>(a) {
+    }
 
 protected:
     QString composeRichDoc();
 };
 
-} // LocalWorkflow
-} // namespace
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_GFFREAD_WORKER_H_
+#endif    // _U2_GFFREAD_WORKER_H_

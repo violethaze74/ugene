@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,15 +39,15 @@ public:
 
 protected:
     QString getChildId(QWidget *child) const;
-    QWidget * getChildWidgetById(const QString &childId) const;
+    QWidget *getChildWidgetById(const QString &childId) const;
     bool childExists(const QString &childId) const;
 
 private:
-    QWidget * getPrimerEditWidgetById(const QString &childId) const;
+    QWidget *getPrimerEditWidgetById(const QString &childId) const;
 
     InSilicoPcrOptionPanelWidget *originalWrappedWidget;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_PCR_OPTIONS_PANEL_SAVABLE_TAB_H_
+#endif    // _U2_PCR_OPTIONS_PANEL_SAVABLE_TAB_H_

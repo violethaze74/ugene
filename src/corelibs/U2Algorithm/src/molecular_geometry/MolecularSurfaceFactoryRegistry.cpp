@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,40 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#include "VanDerWaalsSurface.h"
 #include "MolecularSurfaceFactoryRegistry.h"
+
+#include "VanDerWaalsSurface.h"
 
 namespace U2 {
 
-MolecularSurfaceFactoryRegistry::MolecularSurfaceFactoryRegistry( QObject* pOwn /* = 0*/ ) : QObject(pOwn)
-{
-    registerSurfaceFactory(new VanDerWaalsSurfaceFactory(),QString("vdWS"));
+MolecularSurfaceFactoryRegistry::MolecularSurfaceFactoryRegistry(QObject *pOwn /* = 0*/)
+    : QObject(pOwn) {
+    registerSurfaceFactory(new VanDerWaalsSurfaceFactory(), QString("vdWS"));
 }
 
-MolecularSurfaceFactoryRegistry::~MolecularSurfaceFactoryRegistry()
-{
-    foreach( MolecularSurfaceFactory* factory, surfMap.values()) {
+MolecularSurfaceFactoryRegistry::~MolecularSurfaceFactoryRegistry() {
+    foreach (MolecularSurfaceFactory *factory, surfMap.values()) {
         delete factory;
     }
 }
 
-bool MolecularSurfaceFactoryRegistry::registerSurfaceFactory( MolecularSurfaceFactory* surf, const QString& surfId )
-{
-    if (surfMap.contains(surfId)){
+bool MolecularSurfaceFactoryRegistry::registerSurfaceFactory(MolecularSurfaceFactory *surf, const QString &surfId) {
+    if (surfMap.contains(surfId)) {
         return false;
     }
     surfMap.insert(surfId, surf);
     return true;
-
 }
 
-bool MolecularSurfaceFactoryRegistry::hadRegistered( const QString& surfId )
-{
+bool MolecularSurfaceFactoryRegistry::hadRegistered(const QString &surfId) {
     return surfMap.contains(surfId);
 }
 
-MolecularSurfaceFactory* MolecularSurfaceFactoryRegistry::getSurfaceFactory( const QString& surfId )
-{
+MolecularSurfaceFactory *MolecularSurfaceFactoryRegistry::getSurfaceFactory(const QString &surfId) {
     if (surfMap.contains(surfId)) {
         return surfMap.value(surfId);
     } else {
@@ -60,9 +56,8 @@ MolecularSurfaceFactory* MolecularSurfaceFactoryRegistry::getSurfaceFactory( con
     }
 }
 
-QStringList MolecularSurfaceFactoryRegistry::getSurfNameList()
-{
+QStringList MolecularSurfaceFactoryRegistry::getSurfNameList() {
     return surfMap.keys();
 }
 
-} // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
 
 namespace U2 {
 
-AlignmentAlgorithmMainWidget::AlignmentAlgorithmMainWidget(QWidget* parent, QVariantMap* s) :
-    QWidget(parent), externSettings(s), externSettingsExists(s != NULL) {
+AlignmentAlgorithmMainWidget::AlignmentAlgorithmMainWidget(QWidget *parent, QVariantMap *s)
+    : QWidget(parent), externSettings(s), externSettingsExists(s != NULL) {
 }
 
 AlignmentAlgorithmMainWidget::~AlignmentAlgorithmMainWidget() {
@@ -47,16 +47,16 @@ QMap<QString, QVariant> AlignmentAlgorithmMainWidget::getAlignmentAlgorithmCusto
 void AlignmentAlgorithmMainWidget::fillInnerSettings() {
 }
 
-bool AlignmentAlgorithmGUIExtensionFactory::hasMainWidget(const QWidget* parent) {
+bool AlignmentAlgorithmGUIExtensionFactory::hasMainWidget(const QWidget *parent) {
     return mainWidgets.contains(parent);
 }
 
-void AlignmentAlgorithmGUIExtensionFactory::sl_widgetDestroyed(QObject * obj) {
-    foreach (AlignmentAlgorithmMainWidget* mainWidget, mainWidgets.values()) {
+void AlignmentAlgorithmGUIExtensionFactory::sl_widgetDestroyed(QObject *obj) {
+    foreach (AlignmentAlgorithmMainWidget *mainWidget, mainWidgets.values()) {
         if (obj == mainWidget) {
             mainWidgets.remove(mainWidgets.key(mainWidget));
         }
     }
 }
 
-}   //namespace
+}    // namespace U2

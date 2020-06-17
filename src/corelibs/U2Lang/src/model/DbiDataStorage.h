@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,9 +66,10 @@ public:
     void openDbi(const U2DbiRef &dbiRef, U2OpStatus &os);
 
 private:
-    DbiDataStorage(const DbiDataStorage &) {}
+    DbiDataStorage(const DbiDataStorage &) {
+    }
     TmpDbiHandle *dbiHandle;
-    QMap<U2DbiId, DbiConnection*> connections;
+    QMap<U2DbiId, DbiConnection *> connections;
     /* DbiRef <-> temporary */
     QMap<U2DbiId, bool> dbiList;
 
@@ -95,8 +96,8 @@ public:
     static QString getText(DbiDataStorage *storage, const QVariant &data);
 };
 
-} // Workflow
+}    // namespace Workflow
 
-} // U2
+}    // namespace U2
 
-#endif // _WORKFLOW_DBI_DATA_STORAGE_H_
+#endif    // _WORKFLOW_DBI_DATA_STORAGE_H_

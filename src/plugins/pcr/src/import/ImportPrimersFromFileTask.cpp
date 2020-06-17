@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,25 +19,25 @@
  * MA 02110-1301, USA.
  */
 
+#include "ImportPrimersFromFileTask.h"
+
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ImportPrimerFromObjectTask.h"
-#include "ImportPrimersFromFileTask.h"
 #include "PrimerStatistics.h"
 
 namespace U2 {
 
-ImportPrimersFromFileTask::ImportPrimersFromFileTask(const QString &filePath) :
-    Task(tr("Import primers from local file: %1").arg(filePath),
-         TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
-    filePath(filePath),
-    loadTask(NULL)
-{
+ImportPrimersFromFileTask::ImportPrimersFromFileTask(const QString &filePath)
+    : Task(tr("Import primers from local file: %1").arg(filePath),
+           TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
+      filePath(filePath),
+      loadTask(NULL) {
     SAFE_POINT_EXT(!filePath.isEmpty(), setError("File path is empty"), );
 }
 
@@ -65,11 +65,11 @@ QList<Task *> ImportPrimersFromFileTask::onSubTaskFinished(Task *subTask) {
 QString ImportPrimersFromFileTask::generateReport() const {
     QString report = QString("<b>%1</b>: <font color='%2'>%3</font>").arg(filePath);
     if (isCanceled()) {
-        return report.arg(L10N::errorColorLabelHtmlStr()).arg(tr("cancelled"));
+        return report.arg(Theme::errorColorLabelHtmlStr()).arg(tr("cancelled"));
     }
 
     if (hasError()) {
-        return report.arg(L10N::errorColorLabelHtmlStr()).arg(tr("error")) + ": " + getError();
+        return report.arg(Theme::errorColorLabelHtmlStr()).arg(tr("error")) + ": " + getError();
     }
 
     int tasksWithError = 0;
@@ -87,14 +87,13 @@ QString ImportPrimersFromFileTask::generateReport() const {
     }
 
     if (0 == primersImported) {
-        return report.arg(L10N::errorColorLabelHtmlStr()).arg(tr("error")) + ": " + tr("there are no applicable sequences");
+        return report.arg(Theme::errorColorLabelHtmlStr()).arg(tr("error")) + ": " + tr("there are no applicable sequences");
     }
 
-    return report.arg(L10N::successColorLabelHtmlStr())
-                 .arg(tr("success")) +
-                     " (" + "primers imported: " + QString::number(primersImported) +
-                     (tasksWithError > 0 ? "; sequences were not converted: " + QString::number(tasksWithError) : "")
-                     + ")";
+    return report.arg(Theme::successColorLabelHtmlStr())
+               .arg(tr("success")) +
+           " (" + "primers imported: " + QString::number(primersImported) +
+           (tasksWithError > 0 ? "; sequences were not converted: " + QString::number(tasksWithError) : "") + ")";
 }
 
-}   // namespace U2
+}    // namespace U2

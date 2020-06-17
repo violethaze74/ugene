@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,16 +29,17 @@ namespace U2 {
 class CEASSupport : public ExternalTool {
     Q_OBJECT
 public:
-    CEASSupport(const QString& id, const QString& name, const QString& path = "");
+    CEASSupport(const QString &id, const QString &name, const QString &path = "");
 
     static const QString ET_CEAS;
     static const QString ET_CEAS_ID;
     static const QString REFGENE_DIR_NAME;
     static const QString REF_GENES_DATA_NAME;
+
 private:
     void initialize();
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_CEAS_SUPPORT_
+#endif    // _U2_CEAS_SUPPORT_

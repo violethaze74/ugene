@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,16 +37,20 @@ public:
 
     ~AssemblyConsensusAlgorithmRegistry();
 
-    AssemblyConsensusAlgorithmFactory* getAlgorithmFactory(const QString& algoId);
-    void addAlgorithmFactory(AssemblyConsensusAlgorithmFactory* algo);
+    AssemblyConsensusAlgorithmFactory *getAlgorithmFactory(const QString &algoId);
+    void addAlgorithmFactory(AssemblyConsensusAlgorithmFactory *algo);
 
-    QList<QString> getAlgorithmIds() const {return algorithms.keys(); }
-    QList<AssemblyConsensusAlgorithmFactory*> getAlgorithmFactories() const {return algorithms.values();}
+    QList<QString> getAlgorithmIds() const {
+        return algorithms.keys();
+    }
+    QList<AssemblyConsensusAlgorithmFactory *> getAlgorithmFactories() const {
+        return algorithms.values();
+    }
 
 private:
-    QMap<QString , AssemblyConsensusAlgorithmFactory*> algorithms;
+    QMap<QString, AssemblyConsensusAlgorithmFactory *> algorithms;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

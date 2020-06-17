@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,14 +61,13 @@ public:
      * and creates its copy on the database with @dstDbiRef.
      * Returns the cloned object.
      */
-    static void cloneObject(const U2EntityRef &srcObjRef, const U2DbiRef &dstDbiRef, const QString &dstFolder,
-        U2RawData &dstObject, U2OpStatus &os);
+    static void cloneObject(const U2EntityRef &srcObjRef, const U2DbiRef &dstDbiRef, const QString &dstFolder, U2RawData &dstObject, U2OpStatus &os);
 
     /**
      * Updates the data of the object by provided @objRef.
      */
     static void writeContent(const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os);
-    static void writeContent(const U2DataId& masterId, const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os);
+    static void writeContent(const U2DataId &masterId, const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os);
 
     /**
      * Returns the data of the object by provided @objRef.
@@ -76,6 +75,6 @@ public:
     static QByteArray readAllContent(const U2EntityRef &objRef, U2OpStatus &os);
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_RAWDATAUDRSCHEMA_H_
+#endif    // _U2_RAWDATAUDRSCHEMA_H_

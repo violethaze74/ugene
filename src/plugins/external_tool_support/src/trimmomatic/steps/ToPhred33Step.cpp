@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include "ToPhred33Step.h"
+
 #include <U2Core/U2SafePoints.h>
 
-#include "ToPhred33Step.h"
 #include "trimmomatic/util/NoSettingsWidget.h"
 
 namespace U2 {
@@ -30,8 +31,7 @@ namespace LocalWorkflow {
 const QString ToPhred33StepFactory::ID = "TOPHRED33";
 
 ToPhred33Step::ToPhred33Step()
-    : TrimmomaticStep(ToPhred33StepFactory::ID)
-{
+    : TrimmomaticStep(ToPhred33StepFactory::ID) {
     name = "TOPHRED33";
     description = tr("<html><head></head><body>"
                      "<h4>TOPHRED33</h4>"
@@ -52,14 +52,12 @@ QVariantMap ToPhred33Step::parseState(const QString &command) const {
 }
 
 ToPhred33StepFactory::ToPhred33StepFactory()
-    : TrimmomaticStepFactory(ID)
-{
-
+    : TrimmomaticStepFactory(ID) {
 }
 
 ToPhred33Step *ToPhred33StepFactory::createStep() const {
     return new ToPhred33Step();
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

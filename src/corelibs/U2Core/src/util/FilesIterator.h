@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,16 +32,17 @@ class FilesIterator;
 
 class U2CORE_EXPORT FilesIteratorFactory {
 public:
-    static FilesIterator * createDirectoryScanner(const QStringList &dirs, const QString &includeFilter,
-        const QString &excludeFilter, bool recursive);
+    static FilesIterator *createDirectoryScanner(const QStringList &dirs, const QString &includeFilter, const QString &excludeFilter, bool recursive);
 
-    static FilesIterator * createFileList(const QStringList &files);
+    static FilesIterator *createFileList(const QStringList &files);
 };
 
 class U2CORE_EXPORT FilesIterator {
 public:
-    FilesIterator() {}
-    virtual ~FilesIterator() {}
+    FilesIterator() {
+    }
+    virtual ~FilesIterator() {
+    }
 
     /** Returns empty string if there are no more files */
     virtual QString getNextFile() = 0;
@@ -87,6 +88,6 @@ private:
     QStringList files;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_FILES_ITERATOR_
+#endif    // _U2_FILES_ITERATOR_

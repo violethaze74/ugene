@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,11 +35,11 @@ class Descriptor;
 
 class U2DESIGNER_EXPORT DesignerGUIUtils {
 public:
-    static void paintSamplesArrow(QPainter* painter);
-    static void paintSamplesDocument(QPainter* painter, QTextDocument* doc, int pageWidth, int pageHeight, const QPalette& pal);
-    static void setupSamplesDocument(const Descriptor& d, const QIcon& ico, QTextDocument* res);
+    static void paintSamplesArrow(QPainter *painter);
+    static void paintSamplesDocument(QPainter *painter, QTextDocument *doc, int pageWidth, int pageHeight, const QPalette &pal);
+    static void setupSamplesDocument(const Descriptor &d, const QIcon &ico, QTextDocument *res);
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

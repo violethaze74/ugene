@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,17 @@
  * MA 02110-1301, USA.
  */
 
+#include "CoreTests.h"
+
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 #include <U2Test/XMLTestFormat.h>
 
-#include "CoreTests.h"
-
 //built-in test impls
 #include "AnnotationTableObjectTest.h"
+#include "AnnotationUtilsTests.h"
 #include "AsnParserTests.h"
 #include "BinaryFindOpenCLTests.h"
 #include "BioStruct3DObjectTests.h"
@@ -36,10 +37,12 @@
 #include "DNASequenceObjectTests.h"
 #include "DNATranslationImplTests.h"
 #include "DnaAssemblyTests.h"
+#include "DnaStatisticsTests.h"
 #include "DocumentModelTests.h"
 #include "EditAlignmentTests.h"
 #include "EditSequenceTests.h"
 #include "FindAlgorithmTests.h"
+#include "FindPatternMsaTaskTest.h"
 #include "FormatDetectionTests.h"
 #include "GUrlTests.h"
 #include "LoadRemoteDocumentTests.h"
@@ -47,6 +50,7 @@
 #include "MsaObjectTests.h"
 #include "PWMatrixTests.h"
 #include "PhyTreeObjectTests.h"
+#include "RealignSequencesInAlignmentTaskTest.h"
 #include "SMatrixTests.h"
 #include "SecStructPredictTests.h"
 #include "SequenceWalkerTests.h"
@@ -56,24 +60,24 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT U2::Plugin* U2_PLUGIN_INIT_FUNC()
-{
+extern "C" Q_DECL_EXPORT U2::Plugin *U2_PLUGIN_INIT_FUNC() {
     return new CoreTests();
 }
 
-CoreTests::CoreTests() : Plugin("Core tests", "Core lib tests") {
+CoreTests::CoreTests()
+    : Plugin("Core tests", "Core lib tests") {
     registerFactories();
 }
 CoreTests::~CoreTests() {
 }
 
-template <class Factory>
+template<class Factory>
 bool CoreTests::registerFactory(XMLTestFormat *xmlTestFormat) {
-    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = Factory::createTestFactories();
 
     bool res = true;
-    foreach(XMLTestFactory* f, l->qlist) {
+    foreach (XMLTestFactory *f, l->qlist) {
         bool ok = xmlTestFormat->registerTestFactory(f);
         res = res && ok;
     }
@@ -83,10 +87,9 @@ bool CoreTests::registerFactory(XMLTestFormat *xmlTestFormat) {
 }
 
 void CoreTests::registerFactories() {
-
-    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
-    assert(xmlTestFormat!=NULL);
+    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    assert(xmlTestFormat != NULL);
 
     registerFactory<SMatrixTests>(xmlTestFormat);
 
@@ -160,6 +163,14 @@ void CoreTests::registerFactories() {
 
     // Some utility actions to use them in tests
     registerFactory<UtilTestActions>(xmlTestFormat);
+
+    registerFactory<RealignTests>(xmlTestFormat);
+
+    registerFactory<FindPatternMsaTests>(xmlTestFormat);
+
+    registerFactory<AnnotationUtilsTests>(xmlTestFormat);
+
+    registerFactory<DnaStatisticsTests>(xmlTestFormat);
 }
 
-}//namespace
+}    // namespace U2

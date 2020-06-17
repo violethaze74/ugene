@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,18 +22,19 @@
 #ifndef _U2_BUILT_IN_ASSEMBLY_CONSENSUS_ALGORITHMS_H_
 #define _U2_BUILT_IN_ASSEMBLY_CONSENSUS_ALGORITHMS_H_
 
-#include <U2Core/global.h>
 #include <QString>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
 class U2ALGORITHM_EXPORT BuiltInAssemblyConsensusAlgorithms {
 public:
-	static const QString DEFAULT_ALGO;
+    static const QString DEFAULT_ALGO;
     static const QString LEVITSKY_ALGO;
     static const QString SAMTOOLS_ALGO;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

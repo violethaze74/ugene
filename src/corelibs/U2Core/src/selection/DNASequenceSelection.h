@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,17 +30,20 @@ namespace U2 {
 class U2SequenceObject;
 
 class U2CORE_EXPORT DNASequenceSelection : public LRegionsSelection {
-
     Q_OBJECT
 
 public:
-    DNASequenceSelection(U2SequenceObject* _obj, QObject* p = NULL) : LRegionsSelection(GSelectionTypes::DNASEQUENCE, p), obj(_obj) {}
-    const U2SequenceObject* getSequenceObject() const { return obj; }
+    DNASequenceSelection(U2SequenceObject *_obj, QObject *p = NULL)
+        : LRegionsSelection(GSelectionTypes::DNASEQUENCE, p), obj(_obj) {
+    }
+    const U2SequenceObject *getSequenceObject() const {
+        return obj;
+    }
 
 private:
-    U2SequenceObject* obj;
+    U2SequenceObject *obj;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

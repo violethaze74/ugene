@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,9 +26,7 @@ namespace U2 {
 const QStringList KrakenClassifyLogParser::wellKnownErrors = KrakenClassifyLogParser::initWellKnownErrors();
 
 KrakenClassifyLogParser::KrakenClassifyLogParser()
-    : ExternalToolLogParser()
-{
-
+    : ExternalToolLogParser() {
 }
 
 bool KrakenClassifyLogParser::isError(const QString &line) const {
@@ -53,4 +51,4 @@ QStringList KrakenClassifyLogParser::initWellKnownErrors() {
     return result;
 }
 
-}   // namespace U2
+}    // namespace U2

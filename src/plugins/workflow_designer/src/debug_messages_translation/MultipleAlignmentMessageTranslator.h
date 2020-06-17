@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,15 +30,15 @@ namespace U2 {
 
 class MultipleAlignmentMessageTranslator : public BaseMessageTranslator {
 public:
-    MultipleAlignmentMessageTranslator( const QVariant &atomicMessage,
-        Workflow::WorkflowContext *initContext );
+    MultipleAlignmentMessageTranslator(const QVariant &atomicMessage,
+                                       Workflow::WorkflowContext *initContext);
 
-    QString getTranslation( ) const;
+    QString getTranslation() const;
 
 protected:
     MultipleSequenceAlignment malignment;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_MULTIPLE_ALIGNMENT_MESSAGE_TRANSLATOR_H_
+#endif    // _U2_MULTIPLE_ALIGNMENT_MESSAGE_TRANSLATOR_H_

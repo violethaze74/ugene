@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,15 +33,15 @@ class U2CORE_EXPORT PasswordStorage {
 public:
     PasswordStorage();
 
-    void addEntry(const QString& fullUrl, const QString& password, bool remember);
-    void removeEntry(const QString& fullUrl);
-    QString getEntry(const QString& fullUrl) const;
-    bool contains(const QString& fullUrl) const;
-    bool isRemembered(const QString& fullUrl) const;
-    void setRemembered(const QString& fullUrl, bool remember);
+    void addEntry(const QString &fullUrl, const QString &password, bool remember);
+    void removeEntry(const QString &fullUrl);
+    QString getEntry(const QString &fullUrl) const;
+    bool contains(const QString &fullUrl) const;
+    bool isRemembered(const QString &fullUrl) const;
+    void setRemembered(const QString &fullUrl, bool remember);
 
 private:
-    static void remember(const QString& fullUrl, const QString& password);
+    static void remember(const QString &fullUrl, const QString &password);
     static void forget(const QString &fullUrl);
     static QByteArray serialize(const QString &password);
     static QString deserialize(const QByteArray &data);
@@ -51,6 +51,6 @@ private:
     static const QString SETTINGS_PATH;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_PASSWORD_STORAGE_H_
+#endif    // _U2_PASSWORD_STORAGE_H_

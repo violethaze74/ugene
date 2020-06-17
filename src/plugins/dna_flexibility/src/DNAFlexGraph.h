@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,25 +22,21 @@
 #ifndef _U2_DNA_FLEX_GRAPH_H_
 #define _U2_DNA_FLEX_GRAPH_H_
 
-
-#include <U2View/GraphMenu.h>
 #include <U2View/GSequenceGraphView.h>
-
+#include <U2View/GraphMenu.h>
 
 namespace U2 {
-
 
 /**
  * Factory used to draw a DNA Flexibility graph
  */
-class DNAFlexGraphFactory : public GSequenceGraphFactory
-{
+class DNAFlexGraphFactory : public GSequenceGraphFactory {
     Q_OBJECT
 public:
-    DNAFlexGraphFactory(QObject*);
-    virtual QList<QSharedPointer<GSequenceGraphData> > createGraphs(GSequenceGraphView*);
-    virtual GSequenceGraphDrawer* getDrawer(GSequenceGraphView*);
-    virtual bool isEnabled(const U2SequenceObject*) const;
+    DNAFlexGraphFactory(QObject *);
+    virtual QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *);
+    virtual GSequenceGraphDrawer *getDrawer(GSequenceGraphView *);
+    virtual bool isEnabled(const U2SequenceObject *) const;
 
 private:
     /** Default size of "window" on a graph */
@@ -50,6 +46,5 @@ private:
     static const int DEFAULT_WINDOW_STEP;
 };
 
-
-} // namespace
+}    // namespace U2
 #endif

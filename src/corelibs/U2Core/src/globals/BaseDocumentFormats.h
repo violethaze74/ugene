@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -70,13 +70,12 @@ public:
     static const DocumentFormatId VECTOR_NTI_ALIGNX;
     static const DocumentFormatId VECTOR_NTI_SEQUENCE;
 
-    static DocumentFormat* get(const DocumentFormatId& formatId);
-    static bool equal(const DocumentFormatId &first, const DocumentFormatId &second);   // a workaround for UGENE-5521, use this method to compare format IDs
+    static DocumentFormat *get(const DocumentFormatId &formatId);
+    static bool equal(const DocumentFormatId &first, const DocumentFormatId &second);    // a workaround for UGENE-5521, use this method to compare format IDs
     static bool isInvalidId(const DocumentFormatId &formatId);
     static DocumentFormatId toValidId(const DocumentFormatId &invalidFormatId);
 };
 
-
-}//namespace
+}    // namespace U2
 
 #endif

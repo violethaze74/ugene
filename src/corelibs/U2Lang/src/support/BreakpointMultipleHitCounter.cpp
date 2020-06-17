@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
-
 #include "BreakpointMultipleHitCounter.h"
+
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
 BreakpointMultipleHitCounter::BreakpointMultipleHitCounter(
-    BreakpointHitCountCondition initCondition, quint32 initMultiple)
-    : BaseBreakpointHitCounter(initCondition), multiple(initMultiple)
-{
-    SAFE_POINT( 0 < multiple, "Invalid value for hit counter!", );
+    BreakpointHitCountCondition initCondition,
+    quint32 initMultiple)
+    : BaseBreakpointHitCounter(initCondition), multiple(initMultiple) {
+    SAFE_POINT(0 < multiple, "Invalid value for hit counter!", );
 }
 
 bool BreakpointMultipleHitCounter::hit() {
@@ -44,4 +44,4 @@ void BreakpointMultipleHitCounter::setHitCountParameter(quint32 newParameter) {
     multiple = newParameter;
 }
 
-} // namespace U2
+}    // namespace U2

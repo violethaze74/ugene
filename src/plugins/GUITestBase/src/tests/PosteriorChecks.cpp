@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,13 +40,13 @@ POSTERIOR_CHECK_DEFINITION(post_check_0001) {
     // Check there are no popup widgets
 
     QWidget *modalWidget = QApplication::activeModalWidget();
-    if (NULL != modalWidget) {
-        CHECK_SET_ERR(NULL == modalWidget, QString("There is a modal widget after test finish: %1").arg(modalWidget->windowTitle()));
+    if (modalWidget != nullptr) {
+        CHECK_SET_ERR(modalWidget == nullptr, QString("There is a modal widget after test finish: %1").arg(modalWidget->windowTitle()));
     }
 
     QWidget *popupWidget = QApplication::activePopupWidget();
-    CHECK_SET_ERR(NULL == popupWidget, "There is a popup widget after test finish");
+    CHECK_SET_ERR(popupWidget == nullptr, "There is a popup widget after test finish");
 }
 
-}   // namespace GUITest_posterior_checks
-}   // namespace U2
+}    // namespace GUITest_posterior_checks
+}    // namespace U2

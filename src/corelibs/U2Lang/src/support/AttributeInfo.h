@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,21 +22,21 @@
 #ifndef _U2_ATTRIBUTEINFO_H_
 #define _U2_ATTRIBUTEINFO_H_
 
-#include <U2Core/global.h>
 #include <U2Core/U2OpStatus.h>
+#include <U2Core/global.h>
 
 namespace U2 {
 
 namespace Workflow {
-    class Actor;
+class Actor;
 }
 
 class U2LANG_EXPORT AttributeInfo {
 public:
     AttributeInfo(const QString &actorId, const QString &attrId, const QVariantMap &hints = QVariantMap());
 
-    void validate(const QList<Workflow::Actor*> &actors, U2OpStatus &os) const;
-    bool operator== (const AttributeInfo &other) const;
+    void validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os) const;
+    bool operator==(const AttributeInfo &other) const;
     QString toString() const;
 
     static AttributeInfo fromString(const QString &value, U2OpStatus &os);
@@ -53,6 +53,6 @@ public:
     static const QString LABEL;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_ATTRIBUTEINFO_H_
+#endif    // _U2_ATTRIBUTEINFO_H_

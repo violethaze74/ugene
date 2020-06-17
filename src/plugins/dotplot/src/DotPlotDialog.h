@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,9 @@
 
 #include <ui_DotPlotDialog.h>
 
-#include <U2Algorithm/RepeatFinderSettings.h>
 #include <QDialog>
+
+#include <U2Algorithm/RepeatFinderSettings.h>
 
 namespace U2 {
 
@@ -35,17 +36,19 @@ class Document;
 class AnnotatedDNAView;
 class U2SequenceObject;
 
-class DotPlotDialog : public QDialog, public Ui_DotPlotDialog{
+class DotPlotDialog : public QDialog, public Ui_DotPlotDialog {
     Q_OBJECT
 public:
-    DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int minLen, int identity,
-        ADVSequenceObjectContext *seqX, ADVSequenceObjectContext *seqY, bool dir, bool inv,
-        const QColor &dColor = QColor(), const QColor &iColor = QColor(), bool hideLoadSequences = false);
+    DotPlotDialog(QWidget *parent, AnnotatedDNAView *currentADV, int minLen, int identity, ADVSequenceObjectContext *seqX, ADVSequenceObjectContext *seqY, bool dir, bool inv, const QColor &dColor = QColor(), const QColor &iColor = QColor(), bool hideLoadSequences = false);
 
     virtual void accept();
 
-    ADVSequenceObjectContext    *getXSeq() const {return xSeq;}
-    ADVSequenceObjectContext    *getYSeq() const {return ySeq;}
+    ADVSequenceObjectContext *getXSeq() const {
+        return xSeq;
+    }
+    ADVSequenceObjectContext *getYSeq() const {
+        return ySeq;
+    }
 
     int getMinLen() const;
     int getMismatches() const;
@@ -54,8 +57,12 @@ public:
     bool isDirect() const;
     bool isInverted() const;
 
-    const QColor& getDirectColor() const {return directColor;}
-    const QColor& getInvertedColor() const {return invertedColor;}
+    const QColor &getDirectColor() const {
+        return directColor;
+    }
+    const QColor &getInvertedColor() const {
+        return invertedColor;
+    }
 
 protected slots:
     void sl_minLenHeuristics();
@@ -72,29 +79,31 @@ protected slots:
 
     void sl_loadSequenceButton();
 
-    void sl_loadTaskStateChanged(Task* t);
+    void sl_loadTaskStateChanged(Task *t);
 
     void sl_documentAddedOrRemoved();
     void sl_objectAddedOrRemoved();
     void sl_loadedStateChanged();
 
+    void sl_sequenceSelectorIndexChanged();
+
 private:
     void reconnectAllProjectDocuments();
     void updateSequenceSelectors();
 
-    ADVSequenceObjectContext    *xSeq, *ySeq;
-    AnnotatedDNAView*           adv;
+    ADVSequenceObjectContext *xSeq, *ySeq;
+    AnnotatedDNAView *adv;
 
     QColor directColor, invertedColor;
 
     void updateColors();
 
-    bool isObjectInADV(GObject* obj);
-    GObject* getGObjectByName(const QString& gObjectName);
+    bool isObjectInADV(GObject *obj);
+    GObject *getGObjectByName(const QString &gObjectName);
 
-    Task* openSequenceTask;
+    Task *openSequenceTask;
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

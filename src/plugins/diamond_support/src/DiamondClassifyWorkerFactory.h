@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,7 +61,7 @@ public:
     static const QString WORKFLOW_CLASSIFY_TOOL_DIAMOND;
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_DIAMOND_CLASSIFY_WORKER_FACTORY_H_
+#endif    // _U2_DIAMOND_CLASSIFY_WORKER_FACTORY_H_

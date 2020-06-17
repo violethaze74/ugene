@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,9 @@
 #ifndef _U2_REMOVE_DOCUMENT_TASK_H_
 #define _U2_REMOVE_DOCUMENT_TASK_H_
 
+#include <QPointer>
 
 #include <U2Core/Task.h>
-
-#include <QPointer>
 
 namespace U2 {
 
@@ -36,7 +35,7 @@ class StateLock;
 class U2CORE_EXPORT RemoveMultipleDocumentsTask : public Task {
     Q_OBJECT
 public:
-    RemoveMultipleDocumentsTask(Project* p, const QList<Document*>& docs, bool saveModifiedDocs, bool useGUI);
+    RemoveMultipleDocumentsTask(Project *p, const QList<Document *> &docs, bool saveModifiedDocs, bool useGUI);
     ~RemoveMultipleDocumentsTask();
 
     virtual void prepare();
@@ -44,14 +43,13 @@ public:
     ReportResult report();
 
 private:
-    QPointer<Project>           p;
-    bool                        saveModifiedDocs;
-    bool                        useGUI;
-    StateLock*                  lock;
-    QList<QPointer<Document> >  docPtrs;
+    QPointer<Project> p;
+    bool saveModifiedDocs;
+    bool useGUI;
+    StateLock *lock;
+    QList<QPointer<Document>> docPtrs;
 };
 
-
-}//namespace
+}    // namespace U2
 
 #endif

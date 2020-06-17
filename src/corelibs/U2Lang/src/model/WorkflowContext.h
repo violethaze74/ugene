@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,12 +43,12 @@ class WorkflowMonitor;
 class U2LANG_EXPORT WorkflowContext {
     Q_DISABLE_COPY(WorkflowContext)
 public:
-    WorkflowContext(const QList<Actor*> &procs, WorkflowMonitor *monitor);
+    WorkflowContext(const QList<Actor *> &procs, WorkflowMonitor *monitor);
     virtual ~WorkflowContext();
 
     bool init();
-    DbiDataStorage * getDataStorage();
-    WorkflowMonitor * getMonitor();
+    DbiDataStorage *getDataStorage();
+    WorkflowMonitor *getMonitor();
 
     /**
      * @slotStr = "actor.slot>actor_path1,actor_path1,..."
@@ -68,13 +68,13 @@ public:
     QString workingDir() const;
     QString absolutePath(const QString &relative) const;
 
-    MessageMetadataStorage & getMetadataStorage();
+    MessageMetadataStorage &getMetadataStorage();
 
 private:
     WorkflowMonitor *monitor;
     DbiDataStorage *storage;
     MessageMetadataStorage metadataStorage;
-    QMap<QString, Actor*> procMap;
+    QMap<QString, Actor *> procMap;
 
     QMutex addFileMutex;
     QStringList externalProcessFiles;
@@ -94,10 +94,11 @@ public:
     static bool useOutputDir();
     static bool useSubDirs();
     static void saveRunInfo(const QString &dir);
+
+    static const QString WORKING_DIR;
 };
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2
 
-
-#endif // _U2_WORKFLOW_CONTEXT_H_
+#endif    // _U2_WORKFLOW_CONTEXT_H_

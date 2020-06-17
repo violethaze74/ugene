@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,40 +32,33 @@ class McaEditorWgt;
 class U2VIEW_EXPORT McaEditorNameList : public MaEditorNameList {
     Q_OBJECT
 public:
-    McaEditorNameList(McaEditorWgt* ui, QScrollBar* nhBar);
-
-    U2Region getSelection() const;
+    McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar);
 
 protected slots:
-    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection &oldSelection);
+    void sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &oldSelection);
 
 private slots:
-    void sl_clearSelection();
     void sl_updateActions();
 
 signals:
     void si_selectionChanged();
 
 protected:
-    void drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool selected, bool collapsed, bool isReference);
+    void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference) override;
 
-    void setSelection(int startSeq, int count);
-    bool isRowInSelection(int row) const;
+    void setSelection(int startSeq, int count) override;
 
 private:
-    McaEditor* getEditor() const;
+    McaEditor *getEditor() const;
     bool isRowReversed(int rowIndex) const;
-    void drawText(QPainter &painter, const QString &text, const QRect &rect, bool selected);
+    void drawText(QPainter &painter, const QString &text, const QRect &rect, bool selected) override;
     void drawArrow(QPainter &painter, bool isReversed, const QRectF &arrowRect);
     QRectF calculateArrowRect(const U2Region &yRange) const;
-    void moveSelection(int dy);
 
     int getAvailableWidth() const;
     int getMinimumWidgetWidth() const;
 
     int getIconColumnWidth() const;
-
-    U2Region localSelection;
 
     static const int MARGIN_ARROW_LEFT;
     static const int MARGIN_ARROW_RIGHT;
@@ -77,6 +70,6 @@ private:
     static const QColor ARROW_REVERSE_COLOR;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MCA_EDITOR_NAME_LIST_H_
+#endif    // _U2_MCA_EDITOR_NAME_LIST_H_

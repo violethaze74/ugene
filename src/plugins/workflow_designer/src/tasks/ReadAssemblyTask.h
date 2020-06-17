@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ public:
     ReadAssemblyTask(const QString &url, const QString &datasetName, WorkflowContext *ctx);
     virtual void prepare();
     virtual void run();
-    virtual QList<Task*> onSubTaskFinished(Task *subTask);
+    virtual QList<Task *> onSubTaskFinished(Task *subTask);
 
 private:
     WorkflowContext *ctx;
@@ -58,7 +58,7 @@ public:
 
     virtual void run();
     GUrl getResultUrl() const;
-    const QStringList & getConvertedFiles() const;
+    const QStringList &getConvertedFiles() const;
 
 private:
     DocumentFormatId formatId;
@@ -78,7 +78,7 @@ public:
     virtual ReadDocumentTask *createTask(const QString &url, const QVariantMap &hints, WorkflowContext *ctx);
 };
 
-} // LocalWorkflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2
 
-#endif // _U2_READ_ASSEMBLY_TASK_
+#endif    // _U2_READ_ASSEMBLY_TASK_

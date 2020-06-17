@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,18 +30,18 @@ class PhyNode;
 class GraphicsRectangularBranchItem;
 class GraphicsUnrootedBranchItem;
 
-class CreateUnrootedBranchesTask: public CreateBranchesTask {
+class CreateUnrootedBranchesTask : public CreateBranchesTask {
     Q_OBJECT
 
     qreal coef;
-    GraphicsRectangularBranchItem* root1;
-    GraphicsUnrootedBranchItem* getBranch(GraphicsRectangularBranchItem *r, GraphicsUnrootedBranchItem* parent);
+    GraphicsRectangularBranchItem *root1;
+    GraphicsUnrootedBranchItem *getBranch(GraphicsRectangularBranchItem *r, GraphicsUnrootedBranchItem *parent);
 
 public:
     CreateUnrootedBranchesTask(GraphicsRectangularBranchItem *r);
     void run();
 };
 
-}//namespace;
+}    // namespace U2
 
 #endif

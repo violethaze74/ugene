@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ public:
     static bool getSchemaColors(ColorSchemeData &customScheme);
     static QList<ColorSchemeData> getSchemas();
     static QString getColorsDir();
-    static void getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QColor>& alphColors);
+    static void getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QColor> &alphColors);
     static QMap<char, QColor> getDefaultSchemaColors(DNAAlphabetType type, bool defaultAlpType);
     static void setColorsDir(const QString &colorsDir);
     static void fillEmptyColorScheme(QVector<QColor> &colorsPerChar);
@@ -49,6 +49,6 @@ public:
     static const QString COLOR_SCHEME_COLOR_SCHEMA_DIR;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_COLOR_SCHEME_UTILS_H_
+#endif    // _U2_COLOR_SCHEME_UTILS_H_

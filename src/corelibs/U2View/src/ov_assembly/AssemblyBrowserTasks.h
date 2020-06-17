@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_ASSEMBLY_BROSER_TASKS_H_
 
 #include <U2Core/GObjectReference.h>
+
 #include <U2Gui/ObjectViewTasks.h>
 
 namespace U2 {
@@ -35,12 +36,13 @@ class AssemblyBrowser;
 class OpenAssemblyBrowserTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenAssemblyBrowserTask(AssemblyObject * obj);
-    OpenAssemblyBrowserTask(UnloadedObject * obj);
-    OpenAssemblyBrowserTask(Document * doc);
+    OpenAssemblyBrowserTask(AssemblyObject *obj);
+    OpenAssemblyBrowserTask(UnloadedObject *obj);
+    OpenAssemblyBrowserTask(Document *doc);
     virtual void open();
-    static void updateTitle(AssemblyBrowser* ab);
-    static AssemblyBrowser * openBrowserForObject(AssemblyObject *obj, QString viewName, bool persistent);
+    static void updateTitle(AssemblyBrowser *ab);
+    static AssemblyBrowser *openBrowserForObject(AssemblyObject *obj, QString viewName, bool persistent);
+
 private:
     GObjectReference unloadedObjRef;
 };
@@ -56,11 +58,12 @@ class UpdateAssemblyBrowserTask : public ObjectViewTask {
     Q_OBJECT
 public:
     UpdateAssemblyBrowserTask(GObjectView *v, const QString &stateName, const QVariantMap &stateData)
-        : ObjectViewTask(v, stateName, stateData) {}
+        : ObjectViewTask(v, stateName, stateData) {
+    }
 
     virtual void update();
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

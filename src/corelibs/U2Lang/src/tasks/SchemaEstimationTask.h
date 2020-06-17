@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_SCHEMA_ESTIMATION_TASK_H_
 
 #include <U2Core/Task.h>
+
 #include <U2Lang/Dataset.h>
 #include <U2Lang/Schema.h>
 
@@ -69,7 +70,7 @@ public slots:
 
 private:
     QStringList parseTokens(const QString &attrStr, U2OpStatus &os);
-    Attribute * getAttribute(const QString &attrStr, U2OpStatus &os);
+    Attribute *getAttribute(const QString &attrStr, U2OpStatus &os);
     QScriptValue prepareDatasets(const QList<Dataset> &sets);
     void checkFile(const QString &url, U2OpStatus &os);
 
@@ -78,7 +79,7 @@ private:
     const Schema *schema;
 };
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2
 
-#endif // _U2_SCHEMA_ESTIMATION_TASK_H_
+#endif    // _U2_SCHEMA_ESTIMATION_TASK_H_

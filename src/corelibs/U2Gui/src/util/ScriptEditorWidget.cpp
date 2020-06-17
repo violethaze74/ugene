@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include <QLineEdit>
-#include <QTextEdit>
-#include <QSplitter>
+#include "ScriptEditorWidget.h"
+
 #include <QBoxLayout>
+#include <QLineEdit>
+#include <QSplitter>
+#include <QTextEdit>
 
 #include "ScriptHighlighter.h"
-#include "ScriptEditorWidget.h"
 
 const char *SCRIPT_TEXT_PROPERTY_NAME = "script text";
 
 namespace U2 {
 
 ScriptEditorWidget::ScriptEditorWidget(QWidget *parent, ScriptEditorType typeOfField)
-    : QWidget(parent)
-{
+    : QWidget(parent) {
     scriptContainer = new QSplitter(Qt::Vertical, this);
     scriptContainer->setFocusPolicy(Qt::NoFocus);
 
@@ -72,4 +72,4 @@ int ScriptEditorWidget::scriptEditCursorLineNumber() const {
     return scriptEdit->cursorLineNumber();
 }
 
-} // namespace U2
+}    // namespace U2

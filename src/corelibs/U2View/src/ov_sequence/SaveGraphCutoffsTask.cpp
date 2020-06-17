@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,12 +23,11 @@
 
 namespace U2 {
 
-SaveCutoffsTask::SaveCutoffsTask(SaveCutoffsTaskSettings _s):
-Task("Run saving graph cutoffs as annotations task", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported), settings(_s){
-
+SaveCutoffsTask::SaveCutoffsTask(SaveCutoffsTaskSettings _s)
+    : Task("Run saving graph cutoffs as annotations task", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported), settings(_s) {
 }
 
-void SaveCutoffsTask::prepare(){
+void SaveCutoffsTask::prepare() {
     /*
     int startPos = settings.d->cachedFrom, len = settings.d->cachedLen, step = settings.d->cachedS;
     PairVector& points = settings.d->cachedData;
@@ -41,12 +40,11 @@ void SaveCutoffsTask::prepare(){
     */
 }
 
-void SaveCutoffsTask::run(){
-
+void SaveCutoffsTask::run() {
 }
 
-Task::ReportResult SaveCutoffsTask::report(){
+Task::ReportResult SaveCutoffsTask::report() {
     return ReportResult_Finished;
 }
 
-}
+}    // namespace U2

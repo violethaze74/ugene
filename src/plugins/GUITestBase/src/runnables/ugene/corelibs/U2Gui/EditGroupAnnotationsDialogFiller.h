@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,16 +26,18 @@
 
 namespace U2 {
 using namespace HI;
-    class EditGroupAnnotationsFiller : public Filler {
-    public:
-        EditGroupAnnotationsFiller(HI::GUITestOpStatus &_os, const QString &_groupName):
-          Filler(_os, ""), groupName(_groupName) {}
+class EditGroupAnnotationsFiller : public Filler {
+public:
+    EditGroupAnnotationsFiller(HI::GUITestOpStatus &_os, const QString &_groupName)
+        : Filler(_os, ""), groupName(_groupName) {
+    }
 
-        void commonScenario();
-    private:
-        QString groupName;
-    };
+    void commonScenario();
 
-}
+private:
+    QString groupName;
+};
+
+}    // namespace U2
 
 #endif

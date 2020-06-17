@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,21 +22,21 @@
 #ifndef _U2_ANNOTATION_TABLE_OBJECT_CONSTRAINTS_H_
 #define _U2_ANNOTATION_TABLE_OBJECT_CONSTRAINTS_H_
 
-#include <U2Core/global.h>
 #include <U2Core/GObject.h>
+#include <U2Core/global.h>
 
 namespace U2 {
 
 class U2CORE_EXPORT AnnotationTableObjectConstraints : public GObjectConstraints {
     Q_OBJECT
 public:
-                    AnnotationTableObjectConstraints( QObject *p = NULL );
-                    AnnotationTableObjectConstraints( const AnnotationTableObjectConstraints &c,
-                        QObject *p = NULL );
+    AnnotationTableObjectConstraints(QObject *p = NULL);
+    AnnotationTableObjectConstraints(const AnnotationTableObjectConstraints &c,
+                                     QObject *p = NULL);
 
-    qint64          sequenceSizeToFit;
+    qint64 sequenceSizeToFit;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_ANNOTATION_TABLE_OBJECT_CONSTRAINTS_H_
+#endif    // _U2_ANNOTATION_TABLE_OBJECT_CONSTRAINTS_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,10 @@
 #ifndef _U2_DASHBOARDS_MANAGER_DIALOG_H_
 #define _U2_DASHBOARDS_MANAGER_DIALOG_H_
 
+#include <ui_DashboardsManagerDialog.h>
+
 #include <U2Designer/Dashboard.h>
 #include <U2Designer/DashboardInfo.h>
-
-#include <ui_DashboardsManagerDialog.h>
 
 namespace U2 {
 
@@ -45,13 +45,13 @@ private slots:
 
 private:
     void setupList();
-    QList<QTreeWidgetItem*> allItems() const;
-    bool confirmDashboardsRemoving( ) const;
+    QList<QTreeWidgetItem *> allItems() const;
+    bool confirmDashboardsRemoving() const;
 
 private:
     QStringList toRemove;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_DASHBOARDS_MANAGER_DIALOG_H_
+#endif    // _U2_DASHBOARDS_MANAGER_DIALOG_H_

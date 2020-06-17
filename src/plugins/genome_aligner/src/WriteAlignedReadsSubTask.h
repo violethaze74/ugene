@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,31 +22,33 @@
 #ifndef _U2_WRITE_ALIGNER_READS_SUB_TASK_H_
 #define _U2_WRITE_ALIGNER_READS_SUB_TASK_H_
 
-#include "GenomeAlignerIndex.h"
-#include "WriteAlignedReadsSubTask.h"
+#include <U2Algorithm/DnaAssemblyTask.h>
 
 #include <U2Core/Task.h>
-#include <U2Algorithm/DnaAssemblyTask.h>
+
+#include "GenomeAlignerIndex.h"
+#include "WriteAlignedReadsSubTask.h"
 
 namespace U2 {
 
 class WriteAlignedReadsSubTask : public Task {
     Q_OBJECT
 public:
-    WriteAlignedReadsSubTask(QReadWriteLock &listM, QMutex& _writeLock, GenomeAlignerWriter *seqWriter, QList<DataBunch*> &data, quint64 &readsAligned);
+    WriteAlignedReadsSubTask(QReadWriteLock &listM, QMutex &_writeLock, GenomeAlignerWriter *seqWriter, QList<DataBunch *> &data, quint64 &readsAligned);
     virtual void run();
+
 private:
     GenomeAlignerWriter *seqWriter;
-    QList<DataBunch*> &data;
+    QList<DataBunch *> &data;
     quint64 &readsAligned;
 
     inline void setReadWritten(SearchQuery *read, SearchQuery *revCompl);
     QReadWriteLock &listM;
 
     // lock to use when data is written to output.
-    QMutex& writeLock;
+    QMutex &writeLock;
 };
 
-} //namespace
+}    // namespace U2
 
-#endif // _U2_WRITE_ALIGNER_READS_SUB_TASK_H_
+#endif    // _U2_WRITE_ALIGNER_READS_SUB_TASK_H_

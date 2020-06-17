@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,10 +36,10 @@ public:
     MessageMetadata(const QString &databaseUrl, const QString &databaseId, const QString &datasetName);
 
     int getId() const;
-    const QString & getDatasetName() const;
-    const QString & getFileUrl() const;
-    const QString & getDatabaseUrl() const;
-    const QString & getDatabaseId() const;
+    const QString &getDatasetName() const;
+    const QString &getFileUrl() const;
+    const QString &getDatabaseUrl() const;
+    const QString &getDatabaseId() const;
 
     static const int INVALID_ID;
 
@@ -63,6 +63,6 @@ private:
     QMap<int, MessageMetadata> data;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_MESSAGE_METADATA_H_
+#endif    // _U2_MESSAGE_METADATA_H_

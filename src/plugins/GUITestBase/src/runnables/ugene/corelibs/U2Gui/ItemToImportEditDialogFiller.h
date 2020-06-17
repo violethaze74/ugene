@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ namespace U2 {
 using namespace HI;
 class ItemToImportEditDialogFiller : public Filler {
 public:
-    ItemToImportEditDialogFiller(HI::GUITestOpStatus& os, const QVariantMap& data);
+    ItemToImportEditDialogFiller(HI::GUITestOpStatus &os, const QVariantMap &data);
 
     void commonScenario();
 
@@ -36,6 +36,6 @@ private:
     QVariantMap data;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_ITEM_TO_IMPORT_EDIT_DIALOG_FILLER_H_
+#endif    // _U2_ITEM_TO_IMPORT_EDIT_DIALOG_FILLER_H_

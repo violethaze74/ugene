@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,13 +32,16 @@ class XMLTestFormat;
 
 class U2TEST_EXPORT XMLTestFactory {
 public:
-    XMLTestFactory(const QString& _tagName) : tagName(_tagName){}
+    XMLTestFactory(const QString &_tagName)
+        : tagName(_tagName) {
+    }
     virtual ~XMLTestFactory();
 
-    virtual GTest* createTest(XMLTestFormat* tf, const QString& testName, GTest* cp, const GTestEnvironment* env,
-                              const QList<GTest*>& subtasks, const QDomElement& el) = 0;
+    virtual GTest *createTest(XMLTestFormat *tf, const QString &testName, GTest *cp, const GTestEnvironment *env, const QList<GTest *> &subtasks, const QDomElement &el) = 0;
 
-    const QString& getTagName() const {return tagName;}
+    const QString &getTagName() const {
+        return tagName;
+    }
 
 private:
     QString tagName;
@@ -50,19 +53,19 @@ public:
     XMLTestFormat();
     virtual ~XMLTestFormat();
 
-    virtual GTest* createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QByteArray& testData, QString& err);
+    virtual GTest *createTest(const QString &name, GTest *cp, const GTestEnvironment *env, const QByteArray &testData, QString &err);
 
-    virtual GTest* createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QDomElement& el, QString& err);
+    virtual GTest *createTest(const QString &name, GTest *cp, const GTestEnvironment *env, const QDomElement &el, QString &err);
 
-    virtual bool registerTestFactory(XMLTestFactory* tf);
+    virtual bool registerTestFactory(XMLTestFactory *tf);
 
-    virtual bool unregisterTestFactory(XMLTestFactory* tf);
+    virtual bool unregisterTestFactory(XMLTestFactory *tf);
 
 private:
     void registerBuiltInFactories();
-    QMap<QString, XMLTestFactory*> testFactories;
+    QMap<QString, XMLTestFactory *> testFactories;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,36 +20,37 @@
  */
 
 #include "EditGroupAnnotationsDialogFiller.h"
-#include <primitives/GTWidget.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTCheckBox.h>
-#include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include <QDir>
+#include <primitives/GTWidget.h>
+
 #include <QApplication>
-#include <QPushButton>
 #include <QDialogButtonBox>
+#include <QDir>
+#include <QPushButton>
 #include <QToolButton>
+
+#include "utils/GTKeyboardUtils.h"
 
 namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::EditGroupAnnotationsFiller"
 #define GT_METHOD_NAME "commonScenario"
-void EditGroupAnnotationsFiller::commonScenario()
-{
+void EditGroupAnnotationsFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != NULL, "dialog not found");
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit*>();
+    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>();
     GT_CHECK(lineEdit != NULL, "line edit not found");
     GTLineEdit::setText(os, lineEdit, groupName);
 
-    GTKeyboardDriver::keyClick( Qt::Key_Enter);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}
+}    // namespace U2

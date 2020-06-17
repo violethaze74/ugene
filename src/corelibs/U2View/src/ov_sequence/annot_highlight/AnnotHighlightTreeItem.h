@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,21 +22,24 @@
 #ifndef _U2_ANNOT_HIGHLIGHT_TREE_ITEM_H_
 #define _U2_ANNOT_HIGHLIGHT_TREE_ITEM_H_
 
+#include <QTreeWidgetItem>
 
 #include <U2Core/AnnotationSettings.h>
-
-#include <QTreeWidgetItem>
 
 namespace U2 {
 
 class U2VIEW_EXPORT AnnotHighlightTreeItem : public QTreeWidgetItem {
 public:
-    AnnotHighlightTreeItem(const QString& annotName, const QColor& annotColor);
+    AnnotHighlightTreeItem(const QString &annotName, const QColor &annotColor);
 
-    inline QString getName() { return annotName; }
+    inline QString getName() {
+        return annotName;
+    }
 
-    inline QColor getColor() { return annotColor; }
-    void setColor(const QColor& _annotColor);
+    inline QColor getColor() {
+        return annotColor;
+    }
+    void setColor(const QColor &_annotColor);
 
     static const int ROW_HEIGHT;
     static const int COLOR_ICON_SIZE;
@@ -45,10 +48,9 @@ private:
     void drawColorCell();
 
     QString annotName;
-    QColor  annotColor;
+    QColor annotColor;
 };
 
-} // namespace
-
+}    // namespace U2
 
 #endif

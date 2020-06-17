@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ namespace U2 {
 
 class GrouperSlotsCfgModel;
 
-class GrouperEditorWidget: public QWidget, public Ui_GrouperEditorWidget {
+class GrouperEditorWidget : public QWidget, public Ui_GrouperEditorWidget {
     Q_OBJECT
 public:
     GrouperEditorWidget(GrouperSlotsCfgModel *gouperModel, Workflow::Actor *grouper, QWidget *parent = NULL);
@@ -68,7 +68,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     int columnCount(const QModelIndex &) const;
     int rowCount(const QModelIndex &) const;
-    Qt::ItemFlags flags( const QModelIndex & index ) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
     QStringList getMergeSeqSlotsNames() const;
@@ -85,6 +85,6 @@ private:
     QList<GrouperOutSlot> &outSlots;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _GROUPER_EDITOR_WIDGET_H_
+#endif    // _GROUPER_EDITOR_WIDGET_H_

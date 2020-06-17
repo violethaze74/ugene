@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,23 +36,25 @@ class Bowtie2Worker : public BaseShortReadsAlignerWorker {
 public:
     Bowtie2Worker(Actor *p);
 
-protected :
+protected:
     QVariantMap getCustomParameters() const;
     QString getDefaultFileName() const;
     QString getBaseSubdir() const;
-    void setGenomeIndex(DnaAssemblyToRefTaskSettings& settings);
-}; // Bowtie2Worker
+    void setGenomeIndex(DnaAssemblyToRefTaskSettings &settings);
+};    // Bowtie2Worker
 
 class Bowtie2WorkerFactory : public BaseShortReadsAlignerWorkerFactory {
 public:
     static const QString ACTOR_ID;
 
-    Bowtie2WorkerFactory() : BaseShortReadsAlignerWorkerFactory(ACTOR_ID) {}
+    Bowtie2WorkerFactory()
+        : BaseShortReadsAlignerWorkerFactory(ACTOR_ID) {
+    }
     static void init();
     virtual Worker *createWorker(Actor *a);
-}; // Bowtie2WorkerFactory
+};    // Bowtie2WorkerFactory
 
-} // LocalWorkflow
-} // U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_BOWTIE2_SUPPORT_WORKER_
+#endif    // _U2_BOWTIE2_SUPPORT_WORKER_

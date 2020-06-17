@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,13 +28,13 @@ namespace U2 {
 
 class SpadesSlotRelationDescriptor : public SlotRelationDescriptor {
 public:
-    SpadesSlotRelationDescriptor(const QString& portId, const QString& slotId);
+    SpadesSlotRelationDescriptor(const QString &portId, const QString &slotId);
 
     SpadesSlotRelationDescriptor *clone() const;
 
-    bool isSlotEnabled(const QVariant& attrValue) const;
+    bool isSlotEnabled(const QVariant &attrValue) const;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_SPADES_SLOT_RELATION_DESCRIPTOR_H_
+#endif    // _U2_SPADES_SLOT_RELATION_DESCRIPTOR_H_

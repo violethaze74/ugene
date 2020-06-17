@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-
 #include "ProjectFilterNames.h"
+
+#include <QApplication>
 
 namespace U2 {
 
@@ -41,6 +41,6 @@ const QString MCA_REFERENCE_CONTENT_FILTER_NAME = QApplication::translate("Abstr
 const QString SEQUENCE_ACC_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Sequence accession number");
 const QString TEXT_CONTENT_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Text content");
 
-}
+}    // namespace ProjectFilterNames
 
-} // namespace U2
+}    // namespace U2

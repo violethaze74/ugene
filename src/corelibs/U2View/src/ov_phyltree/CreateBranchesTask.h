@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,15 +28,20 @@ namespace U2 {
 
 class GraphicsBranchItem;
 
-class CreateBranchesTask: public Task {
+class CreateBranchesTask : public Task {
     Q_OBJECT
 protected:
-    GraphicsBranchItem* root;
+    GraphicsBranchItem *root;
+
 public:
-    CreateBranchesTask(): Task(QObject::tr("Generating tree view"), TaskFlag_None), root(NULL) {}
-    GraphicsBranchItem* getResult() { return root; }
+    CreateBranchesTask()
+        : Task(QObject::tr("Generating tree view"), TaskFlag_None), root(NULL) {
+    }
+    GraphicsBranchItem *getResult() {
+        return root;
+    }
 };
 
-}//namespace;
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,10 +25,12 @@
 
 namespace U2 {
 
-CalculateSequencesNumberTask::CalculateSequencesNumberTask(const QString& url) : Task(tr("Calculate sequences number"),
-                                                                                 TaskFlag_None),
-                                                                                 sequenceUrl(url),
-                                                                                 sequencesNumber(0) {}
+CalculateSequencesNumberTask::CalculateSequencesNumberTask(const QString &url)
+    : Task(tr("Calculate sequences number"),
+           TaskFlag_None),
+      sequenceUrl(url),
+      sequencesNumber(0) {
+}
 
 int CalculateSequencesNumberTask::getSequencesNumber() const {
     return sequencesNumber;
@@ -38,4 +40,4 @@ void CalculateSequencesNumberTask::run() {
     sequencesNumber = StreamSequenceReader::getNumberOfSequences(sequenceUrl, stateInfo);
 }
 
-}
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,25 +24,26 @@
 
 #include "SequenceObjectContext.h"
 
-
 namespace U2 {
 
 class U2VIEW_EXPORT ADVSequenceObjectContext : public SequenceObjectContext {
     Q_OBJECT
 public:
-    ADVSequenceObjectContext(AnnotatedDNAView* v, U2SequenceObject* obj);
+    ADVSequenceObjectContext(AnnotatedDNAView *v, U2SequenceObject *obj);
 
-    AnnotatedDNAView*   getAnnotatedDNAView() const {return view;}
+    AnnotatedDNAView *getAnnotatedDNAView() const {
+        return view;
+    }
 
-    AnnotationSelection* getAnnotationsSelection() const;
+    AnnotationSelection *getAnnotationsSelection() const;
 
 protected slots:
     void sl_onAnnotationRelationChange();
 
 private:
-    AnnotatedDNAView*               view;
+    AnnotatedDNAView *view;
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

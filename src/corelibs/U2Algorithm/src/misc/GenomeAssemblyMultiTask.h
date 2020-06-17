@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
 
-#include <U2Core/Task.h>
 #include <U2Core/GUrl.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
 
@@ -34,18 +34,21 @@ class Document;
 class U2ALGORITHM_EXPORT GenomeAssemblyMultiTask : public Task {
     Q_OBJECT
 public:
-    GenomeAssemblyMultiTask(const GenomeAssemblyTaskSettings& settings);
+    GenomeAssemblyMultiTask(const GenomeAssemblyTaskSettings &settings);
     virtual void prepare();
     virtual ReportResult report();
     virtual QString generateReport() const;
     QString getResultUrl() const;
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    const GenomeAssemblyTaskSettings& getSettings() const {return settings;}
-    GenomeAssemblyTask* getAssemblyTask() const;
+    QList<Task *> onSubTaskFinished(Task *subTask);
+    const GenomeAssemblyTaskSettings &getSettings() const {
+        return settings;
+    }
+    GenomeAssemblyTask *getAssemblyTask() const;
+
 private:
     GenomeAssemblyTaskSettings settings;
-    GenomeAssemblyTask* assemblyTask;
+    GenomeAssemblyTask *assemblyTask;
 };
 
-} // namespace
+}    // namespace U2
 #endif

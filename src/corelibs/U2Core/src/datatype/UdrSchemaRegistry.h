@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ public:
 
     void registerSchema(const UdrSchema *schema, U2OpStatus &os);
     QList<UdrSchemaId> getRegisteredSchemas() const;
-    const UdrSchema * getSchemaById(const UdrSchemaId &id) const;
+    const UdrSchema *getSchemaById(const UdrSchemaId &id) const;
 
     /**
      * Check the names of schemas and fields that they consist of
@@ -46,9 +46,9 @@ public:
 
 private:
     mutable QMutex mutex;
-    QHash<UdrSchemaId, const UdrSchema*> schemas;
+    QHash<UdrSchemaId, const UdrSchema *> schemas;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_UDRSCHEMAREGISTRY_H_
+#endif    // _U2_UDRSCHEMAREGISTRY_H_

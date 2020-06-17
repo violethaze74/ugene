@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,11 @@
  * MA 02110-1301, USA.
  */
 
+#include "McaEditorNameList.h"
+
 #include <U2Gui/GraphUtils.h>
 
 #include "McaEditor.h"
-#include "McaEditorNameList.h"
 #include "McaEditorSequenceArea.h"
 #include "helpers/RowHeightController.h"
 #include "view_rendering/MaEditorSelection.h"
@@ -35,15 +36,12 @@ const qreal McaEditorNameList::ARROW_LINE_WIDTH = 2;
 const qreal McaEditorNameList::ARROW_LENGTH = 25;
 const qreal McaEditorNameList::ARROW_HEAD_WIDTH = 6;
 const qreal McaEditorNameList::ARROW_HEAD_LENGTH = 7;
-const QColor McaEditorNameList::ARROW_DIRECT_COLOR = "blue"; // another possible color: "#4EADE1";
-const QColor McaEditorNameList::ARROW_REVERSE_COLOR = "green"; // another possible color: "#03c03c";
+const QColor McaEditorNameList::ARROW_DIRECT_COLOR = "blue";    // another possible color: "#4EADE1";
+const QColor McaEditorNameList::ARROW_REVERSE_COLOR = "green";    // another possible color: "#03c03c";
 
 McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
-    : MaEditorNameList(ui, nhBar)
-{
+    : MaEditorNameList(ui, nhBar) {
     setObjectName("mca_editor_name_list");
-
-    connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
 
     editSequenceNameAction->setText(tr("Rename read"));
     editSequenceNameAction->setShortcut(Qt::Key_F2);
@@ -53,50 +51,36 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
     setMinimumWidth(getMinimumWidgetWidth());
 }
 
-U2Region McaEditorNameList::getSelection() const {
-    return localSelection;
-}
-
-void McaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection & /*oldSelection*/) {
-    setSelection(current.y(), current.height());
+void McaEditorNameList::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection & /*oldSelection*/) {
     sl_updateActions();
-}
-
-void McaEditorNameList::sl_clearSelection() {
-    setSelection(0, 0);
+    sl_completeRedraw();
+    emit si_selectionChanged();
 }
 
 void McaEditorNameList::sl_updateActions() {
     MaEditorNameList::sl_updateActions();
 
-    const bool hasSequenceSelection = !ui->getSequenceArea()->getSelection().isEmpty();
-    const bool hasRowSelection = !getSelection().isEmpty();
+    U2Region selection = getSelection();
+    const bool hasSequenceSelection = !selection.isEmpty();
+    const bool hasRowSelection = !selection.isEmpty();
     const bool isWholeReadSelected = hasRowSelection && !hasSequenceSelection;
 
     removeSequenceAction->setShortcut(isWholeReadSelected ? QKeySequence::Delete : QKeySequence());
 }
 
-void McaEditorNameList::drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool selected, bool collapsed, bool isReference) {
+void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference) {
     const bool isReversed = isRowReversed(rowIndex);
     const QRectF arrowRect = calculateArrowRect(U2Region(rect.y(), rect.height()));
-    MaEditorNameList::drawCollapsibileSequenceItem(painter, rowIndex, name, rect, selected, collapsed, isReference);
+    MaEditorNameList::drawCollapsibleSequenceItem(painter, rowIndex, name, rect, isSelected, isCollapsed, isReference);
     drawArrow(painter, isReversed, arrowRect);
 }
 
 void McaEditorNameList::setSelection(int startSeq, int count) {
-    localSelection = U2Region(startSeq, count);
-    completeRedraw = true;
-    update();
-    sl_updateActions();
-    emit si_selectionChanged();
+    ui->getSequenceArea()->setSelection(MaEditorSelection(0, startSeq, 0, count));
 }
 
-bool McaEditorNameList::isRowInSelection(int row) const {
-    return localSelection.contains(row);
-}
-
-McaEditor* McaEditorNameList::getEditor() const {
-    return qobject_cast<McaEditor*>(editor);
+McaEditor *McaEditorNameList::getEditor() const {
+    return qobject_cast<McaEditor *>(editor);
 }
 
 bool McaEditorNameList::isRowReversed(int rowIndex) const {
@@ -125,7 +109,7 @@ QRectF McaEditorNameList::calculateArrowRect(const U2Region &yRange) const {
     const qreal arrowWidth = ARROW_LENGTH;
     const qreal arrowHeight = ARROW_HEAD_LENGTH;
     const qreal arrowX = widgetWidth - arrowWidth - MARGIN_ARROW_RIGHT;
-    const qreal arrowY = yRange.startPos + (qreal)(ui->getRowHeightController()->getSequenceHeight() - arrowHeight) / 2;
+    const qreal arrowY = yRange.startPos + (qreal)(ui->getRowHeightController()->getSingleRowHeight() - arrowHeight) / 2;
     return QRectF(arrowX, arrowY, arrowWidth, arrowHeight);
 }
 
@@ -142,11 +126,4 @@ int McaEditorNameList::getIconColumnWidth() const {
     return iconColumnWidth;
 }
 
-void McaEditorNameList::moveSelection(int dy) {
-    MaEditorNameList::moveSelection(dy);
-    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
-    seqArea->sl_cancelSelection();
-    updateSelection(nextSequenceToSelect);
-}
-
-}   // namespace U2
+}    // namespace U2

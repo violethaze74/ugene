@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ public:
 
     bool hasFullDataset() const;
     bool isDone() const;
-    const QString &getDatasetName() const;  // it is valid before takeFullDataset call
+    const QString &getDatasetName() const;    // it is valid before takeFullDataset call
     QList<Message> takeFullDataset();
     void processInputMessage();
     QString getPortId() const;
@@ -56,7 +56,7 @@ private:
     QList<Message> datasetMessages;
 };
 
-} //LocalWorkflow
-} //U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif //_U2_DATASET_FETCHER_H_
+#endif    //_U2_DATASET_FETCHER_H_

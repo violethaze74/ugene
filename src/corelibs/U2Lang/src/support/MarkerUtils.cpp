@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QVariant>
-
 #include "MarkerUtils.h"
+
+#include <QVariant>
 
 namespace U2 {
 
@@ -218,5 +218,4 @@ void MarkerUtils::textValueToString(const QVariantList &value, QString &string) 
     string += value.at(1).toString();
 }
 
-
-} // U2
+}    // namespace U2

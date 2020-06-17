@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,15 +32,16 @@ class GObject;
 class U2CORE_EXPORT AddObjectsToDocumentTask : public Task {
     Q_OBJECT
 public:
-    AddObjectsToDocumentTask (QList<GObject*> &_objects, Document *_doc);
+    AddObjectsToDocumentTask(QList<GObject *> &_objects, Document *_doc);
     void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask);
+
 private:
-    QList<GObject*> objects;
+    QList<GObject *> objects;
     Document *doc;
-    QList<GObject*> clones;
+    QList<GObject *> clones;
 };
 
-}// namespace
+}    // namespace U2
 
 #endif

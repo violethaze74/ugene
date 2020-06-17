@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,25 +40,25 @@ class SaveDocumentController;
 class U2GUI_EXPORT CreateDocumentFromTextDialogController : public QDialog {
     Q_OBJECT
 public:
-    CreateDocumentFromTextDialogController(QWidget* p = NULL);
+    CreateDocumentFromTextDialogController(QWidget *p = NULL);
     ~CreateDocumentFromTextDialogController();
 
     void accept();
 
 private slots:
     void sl_filepathTextChanged();
-    
+
 private:
     void addSeqPasterWidget();
     QList<DNASequence> prepareSequences() const;
     void initSaveController();
-    
+
     SeqPasterWidgetController *w;
     SaveDocumentController *saveController;
     QString filter;
-    Ui_CreateDocumentFromTextDialog* ui;
+    Ui_CreateDocumentFromTextDialog *ui;
 };
 
-}//ns
+}    // namespace U2
 
 #endif

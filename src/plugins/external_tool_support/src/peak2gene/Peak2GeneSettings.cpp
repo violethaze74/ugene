@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-
 #include "Peak2GeneSettings.h"
-#include "Peak2GeneSupport.h"
 
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DataPathRegistry.h>
+#include <U2Core/GUrlUtils.h>
+
+#include "Peak2GeneSupport.h"
 
 namespace U2 {
 
@@ -39,22 +39,22 @@ Peak2GeneSettings::Peak2GeneSettings() {
     initDefault();
 }
 
-void Peak2GeneSettings::initDefault(){
+void Peak2GeneSettings::initDefault() {
     outpos = Peak2GeneSettings::OUT_TYPE_ALL;
     symbol = false;
     distance = 3000;
     genomePath = "";
 }
 
-QStringList Peak2GeneSettings::getArguments( const QString& treatFilePath){
+QStringList Peak2GeneSettings::getArguments(const QString &treatFilePath) {
     QString entrezPath = "";
     //init data path
 
-    U2DataPathRegistry* dpr =  AppContext::getDataPathRegistry();
-    if (dpr){
-        U2DataPath* dp = dpr->getDataPathByName(Peak2GeneSupport::ENTREZ_TRANSLATION_DATA_NAME);
-        if (dp && dp->isValid()){
-            if(!dp->getDataNames().isEmpty()){
+    U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
+    if (dpr) {
+        U2DataPath *dp = dpr->getDataPathByName(Peak2GeneSupport::ENTREZ_TRANSLATION_DATA_NAME);
+        if (dp && dp->isValid()) {
+            if (!dp->getDataNames().isEmpty()) {
                 entrezPath = dp->getPathByName(dp->getDataNames().first());
             }
         }
@@ -68,7 +68,7 @@ QStringList Peak2GeneSettings::getArguments( const QString& treatFilePath){
 
     result << "--op=" + outpos;
 
-    if (symbol){
+    if (symbol) {
         result << "--symbol";
     }
 
@@ -81,4 +81,4 @@ QStringList Peak2GeneSettings::getArguments( const QString& treatFilePath){
     return result;
 }
 
-} // U2
+}    // namespace U2

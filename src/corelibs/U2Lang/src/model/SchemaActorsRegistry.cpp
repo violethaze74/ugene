@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+#include "SchemaActorsRegistry.h"
+
 #include <QMutexLocker>
 
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/HRSchemaSerializer.h>
-
-#include "SchemaActorsRegistry.h"
 
 namespace U2 {
 namespace Workflow {
@@ -61,5 +61,5 @@ Schema *SchemaActorsRegistry::getSchema(const QString &protoId) {
     return copy;
 }
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2

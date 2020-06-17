@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,10 +32,10 @@ class McaReferenceCharController;
 class McaEditorStatusBar : public MaEditorStatusBar {
     Q_OBJECT
 public:
-    McaEditorStatusBar(MultipleAlignmentObject* mobj,
+    McaEditorStatusBar(MultipleAlignmentObject *mobj,
                        MaEditorSequenceArea *seqArea,
                        McaEditorNameList *nameList,
-                       McaReferenceCharController* refCharController);
+                       McaReferenceCharController *refCharController);
 
 private:
     void setupLayout();
@@ -43,10 +43,10 @@ private:
     void updateLineLabel();
     void updatePositionLabel();
 
-    McaReferenceCharController* refCharController;
+    McaReferenceCharController *refCharController;
     McaEditorNameList *nameList;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_MCA_EDITOR_STATUS_BAR_H_
+#endif    // _U2_MCA_EDITOR_STATUS_BAR_H_

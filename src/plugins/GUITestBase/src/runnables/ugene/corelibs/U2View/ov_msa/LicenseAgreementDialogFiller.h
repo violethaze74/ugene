@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,5 +34,5 @@ public:
     void commonScenario();
 };
 
-}
-#endif // _U2_LICENSE_AGREEMENT_DIALOG_FILLER_H_
+}    // namespace U2
+#endif    // _U2_LICENSE_AGREEMENT_DIALOG_FILLER_H_

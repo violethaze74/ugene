@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,21 +26,15 @@
 
 namespace U2 {
 
-const QList<char> MsaColorSchemePercentageIdententityColored::NUCLEOTIDE_LIST     = { 'T', 'U', 'G', 'C', 'A', 'B', 'D', 'H', 'K', 'M', 'R', 'S', 'V', 'W', 'Y', 'N'};
-const QList<QColor> MsaColorSchemePercentageIdententityColored::BACKGROUND_COLORS = { Qt::white, Qt::yellow, Qt::green, Qt::cyan };
-const QList<QColor> MsaColorSchemePercentageIdententityColored::FONT_COLORS       = { Qt::black, Qt::red,    Qt::black, Qt::blue };
-
-//const QString MsaColorSchemePercentageIdententityColored::LIGHT_GREEN = "#00CC99";
-//const QList<QColor> MsaColorSchemePercentageIdententityColored::WEAK_SIMILARITIES_BACKGROUND_COLORS = { QColor(LIGHT_GREEN),
-//                                                                                                        QColor(Qt::cyan),
-//                                                                                                        QColor(Qt::white),
-//                                                                                                        QColor(Qt::darkGray) };
+const QList<char> MsaColorSchemePercentageIdententityColored::NUCLEOTIDE_LIST = {'T', 'U', 'G', 'C', 'A', 'B', 'D', 'H', 'K', 'M', 'R', 'S', 'V', 'W', 'Y', 'N'};
+const QList<QColor> MsaColorSchemePercentageIdententityColored::BACKGROUND_COLORS = {Qt::white, Qt::yellow, Qt::green, Qt::cyan};
+const QList<QColor> MsaColorSchemePercentageIdententityColored::FONT_COLORS = {Qt::black, Qt::red, Qt::black, Qt::blue};
 
 MsaColorSchemePercentageIdententityColored::MsaColorSchemePercentageIdententityColored(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
-                                            : MsaColorScheme(parent, factory, maObj),
-                                              alignmentChanged(false),
-                                              threshold(50.0) {
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), this, SLOT(sl_alignmentChanged()));
+    : MsaColorScheme(parent, factory, maObj),
+      alignmentChanged(false),
+      threshold(50.0) {
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), this, SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemePercentageIdententityColored::getBackgroundColor(int rowNum, int columnNum, char c) const {
@@ -51,15 +45,6 @@ QColor MsaColorSchemePercentageIdententityColored::getBackgroundColor(int rowNum
 
     int backgroundColorIndex = getColorIndex(columnNum, c);
     QColor backgroundColor = BACKGROUND_COLORS.value(backgroundColorIndex, QColor());
-
-    /*if (showWeakSimilarities) {
-        const int charIndex = currentColumnData.getIndexOfNucleotideWithCharacter(c);
-        SAFE_POINT(charIndex != -1, "Unexpected character", QColor());
-
-        const bool hasEqualPercentage = currentColumnData.hasEqualPercentage();
-        int colorIndex = getWeakSimilaritiesColorIndex(charIndex, hasEqualPercentage);
-        resultColor = WEAK_SIMILARITIES_BACKGROUND_COLORS.value(colorIndex, QColor());
-    }*/
 
     return backgroundColor;
 }
@@ -76,7 +61,7 @@ QColor MsaColorSchemePercentageIdententityColored::getFontColor(int rowNum, int 
     return fontColor;
 }
 
-void MsaColorSchemePercentageIdententityColored::applySettings(const QVariantMap& settings) {
+void MsaColorSchemePercentageIdententityColored::applySettings(const QVariantMap &settings) {
     threshold = settings.value(THRESHOLD_PARAMETER_NAME).toDouble();
 }
 
@@ -88,12 +73,14 @@ void MsaColorSchemePercentageIdententityColored::updateCache(const int columnNum
     if (alignmentChanged) {
         cachedData.clear();
         alignmentChanged = false;
+    } else if (cachedData.keys().contains(columnNum)) {
+        return;
     }
-    CHECK(!cachedData.keys().contains(columnNum), );
+
     SAFE_POINT(columnNum < maObj->getLength(), "Unexpected column number", );
 
     ColumnCharsCounter currentRowCounter;
-    foreach(const MultipleAlignmentRow& row, maObj->getRows()) {
+    foreach (const MultipleAlignmentRow &row, maObj->getRows()) {
         char ch = row.data()->charAt(columnNum);
         if (NUCLEOTIDE_LIST.contains(ch)) {
             currentRowCounter.addNucleotide(ch);
@@ -121,42 +108,15 @@ int MsaColorSchemePercentageIdententityColored::getColorIndex(const int columnNu
     if (size == 1 && !hasGaps && !hasNonAlphabetCharsNumber) {
         index = 1;
     } else if (size == 2 && !hasNonAlphabetCharsNumber &&
-        currentNucleotideList[0].frequency == currentNucleotideList[1].frequency &&
-        currentNucleotideList[0].character == c) {
+               currentNucleotideList[0].frequency == currentNucleotideList[1].frequency &&
+               currentNucleotideList[0].character == c) {
         index = 2;
     } else if (hasPercentageMoreThenThreshold &&
-        currentNucleotideList[0].character == c) {
+               currentNucleotideList[0].character == c) {
         index = 3;
     }
 
     return index;
 }
 
-//int MsaColorSchemePercentageIdententityColored::getWeakSimilaritiesColorIndex(const int indexOf, const bool equalPercentage) const {
-//    int colorIndex = -1;
-//    switch (indexOf) {
-//    case 0:
-//        if (equalPercentage) {
-//            colorIndex = 0;
-//        } else {
-//            colorIndex = 1;
-//        }
-//        break;
-//    case 1:
-//    case 2:
-//        colorIndex = 2;
-//        break;
-//    case 3:
-//        colorIndex = 3;
-//        break;
-//    case 4:
-//    default:
-//        colorIndex = 2;
-//        break;
-//    }
-//
-//    return colorIndex;
-//}
-
-
-}   // namespace U2
+}    // namespace U2

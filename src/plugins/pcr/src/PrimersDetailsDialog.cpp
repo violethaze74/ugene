@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,20 @@
  * MA 02110-1301, USA.
  */
 
+#include "PrimersDetailsDialog.h"
+
 #include <U2Core/Counter.h>
 
 #include <U2Gui/HelpButton.h>
 
-#include "PrimersDetailsDialog.h"
-
 namespace U2 {
 
 PrimersDetailsDialog::PrimersDetailsDialog(QWidget *parent, const QString &details)
-: QDialog(parent)
-{
+    : QDialog(parent) {
     GCOUNTER(cvar, tvar, "PrimersDetailsDialog");
     setupUi(this);
-    new HelpButton(this, buttonBox, "24742642");
+    new HelpButton(this, buttonBox, "46501127");
     textEdit->setText(details);
 }
 
-} // U2
+}    // namespace U2

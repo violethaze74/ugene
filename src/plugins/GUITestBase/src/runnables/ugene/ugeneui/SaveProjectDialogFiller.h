@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,19 +22,22 @@
 #ifndef SAVEPROJECTDIALOGFILLER_H
 #define SAVEPROJECTDIALOGFILLER_H
 
-#include "utils/GTUtilsDialog.h"
 #include <QDialogButtonBox>
 
-namespace U2{
+#include "utils/GTUtilsDialog.h"
+
+namespace U2 {
 using namespace HI;
 
-class SaveProjectDialogFiller: public Filler{
+class SaveProjectDialogFiller : public Filler {
 public:
-    SaveProjectDialogFiller(HI::GUITestOpStatus &os, QDialogButtonBox::StandardButton _b):
-        Filler(os,"SaveProjectDialog"),b(_b){}
+    SaveProjectDialogFiller(HI::GUITestOpStatus &os, QDialogButtonBox::StandardButton _b)
+        : Filler(os, "SaveProjectDialog"), b(_b) {
+    }
     void commonScenario();
+
 private:
     QDialogButtonBox::StandardButton b;
 };
-}
-#endif // SAVEPROJECTDIALOGFILLER_H
+}    // namespace U2
+#endif    // SAVEPROJECTDIALOGFILLER_H

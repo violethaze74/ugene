@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,11 +30,9 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
-
 namespace U2 {
 
-
-GSequenceGraphDrawer* GSequenceGraphFactory::getDrawer(GSequenceGraphView* v) {
+GSequenceGraphDrawer *GSequenceGraphFactory::getDrawer(GSequenceGraphView *v) {
     qint64 seqLen = v->getSequenceLength();
     // by default we have max window = 500: it is normal for DNA regions to have some meaningful content in this range
     qint64 window = qBound((qint64)40, GraphUtils::pickRoundedNumberBelow(seqLen / 300), (qint64)500);
@@ -43,27 +41,26 @@ GSequenceGraphDrawer* GSequenceGraphFactory::getDrawer(GSequenceGraphView* v) {
     return new GSequenceGraphDrawer(v, wd);
 }
 
-
 /**
  * Constructor of a graph view with factory
  */
 GSequenceGraphViewWithFactory::GSequenceGraphViewWithFactory(
-   ADVSingleSequenceWidget* sequenceWidget, GSequenceGraphFactory* _factory)
-   : GSequenceGraphView(
-      sequenceWidget,
-      sequenceWidget->getSequenceContext(),
-      sequenceWidget->getPanGSLView(),
-     _factory->getGraphName()),
-    factory(_factory)
-{
+    ADVSingleSequenceWidget *sequenceWidget,
+    GSequenceGraphFactory *_factory)
+    : GSequenceGraphView(
+          sequenceWidget,
+          sequenceWidget->getSequenceContext(),
+          sequenceWidget->getPanGSLView(),
+          _factory->getGraphName()),
+      factory(_factory) {
+    setObjectName("GSequenceGraphViewWithFactory");
 }
 
 /**
  * Adds an action to the graphs menu
  */
-void GSequenceGraphViewWithFactory::addActionsToGraphMenu(QMenu* graphMenu)
-{
+void GSequenceGraphViewWithFactory::addActionsToGraphMenu(QMenu *graphMenu) {
     GSequenceGraphView::addActionsToGraphMenu(graphMenu);
 }
 
-} // namespace
+}    // namespace U2

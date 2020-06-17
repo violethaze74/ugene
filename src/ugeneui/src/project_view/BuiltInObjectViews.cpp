@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,23 +23,23 @@
 
 #include <U2Gui/ObjectViewModel.h>
 
-#include <U2View/SimpleTextObjectView.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MaEditorFactory.h>
-#include <U2View/TreeViewerFactory.h>
 #include <U2View/AssemblyBrowserFactory.h>
+#include <U2View/MaEditorFactory.h>
+#include <U2View/SimpleTextObjectView.h>
+#include <U2View/TreeViewerFactory.h>
 
 #include "ProjectViewImpl.h"
 
 namespace U2 {
 
 void ProjectViewImpl::registerBuiltInObjectViews() {
-    GObjectViewFactoryRegistry* reg = AppContext::getObjectViewFactoryRegistry();
+    GObjectViewFactoryRegistry *reg = AppContext::getObjectViewFactoryRegistry();
 
-    GObjectViewFactory* f = new SimpleTextObjectViewFactory();
+    GObjectViewFactory *f = new SimpleTextObjectViewFactory();
     reg->registerGObjectViewFactory(f);
 
-    f =  new AnnotatedDNAViewFactory();
+    f = new AnnotatedDNAViewFactory();
     reg->registerGObjectViewFactory(f);
 
     f = new MsaEditorFactory();
@@ -56,20 +56,20 @@ void ProjectViewImpl::registerBuiltInObjectViews() {
 }
 
 void ProjectViewImpl::unregisterBuiltInObjectViews() {
-    GObjectViewFactoryRegistry* reg = AppContext::getObjectViewFactoryRegistry();
+    GObjectViewFactoryRegistry *reg = AppContext::getObjectViewFactoryRegistry();
 
-    GObjectViewFactory* f = reg->getFactoryById(SimpleTextObjectViewFactory::ID);
-    assert(f!=NULL);
+    GObjectViewFactory *f = reg->getFactoryById(SimpleTextObjectViewFactory::ID);
+    assert(f != NULL);
     reg->unregisterGObjectViewFactory(f);
     delete f;
 
     f = reg->getFactoryById(AnnotatedDNAViewFactory::ID);
-    assert(f!=NULL);
+    assert(f != NULL);
     reg->unregisterGObjectViewFactory(f);
     delete f;
 
     f = reg->getFactoryById(MsaEditorFactory::ID);
-    assert(f!=NULL);
+    assert(f != NULL);
     reg->unregisterGObjectViewFactory(f);
     delete f;
 
@@ -79,5 +79,4 @@ void ProjectViewImpl::unregisterBuiltInObjectViews() {
     delete f;
 }
 
-}//namespace
-
+}    // namespace U2

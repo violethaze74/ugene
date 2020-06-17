@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,10 @@
 #ifndef _U2_ANNOTATED_DNA_VIEW_STATE_H_
 #define _U2_ANNOTATED_DNA_VIEW_STATE_H_
 
-#include <U2Core/U2Region.h>
-#include <U2Core/GObject.h>
 #include <QVariant>
+
+#include <U2Core/GObject.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
@@ -33,13 +34,15 @@ class AnnotatedDNAView;
 class U2VIEW_EXPORT AnnotatedDNAViewState {
 public:
     AnnotatedDNAViewState();
-    AnnotatedDNAViewState(const QVariantMap& _stateData) : stateData(_stateData){}
+    AnnotatedDNAViewState(const QVariantMap &_stateData)
+        : stateData(_stateData) {
+    }
 
-    static QVariantMap saveState(AnnotatedDNAView* v);
+    static QVariantMap saveState(AnnotatedDNAView *v);
 
     bool isValid() const;
 
-    void setSequenceObjects(const QList<GObjectReference>& objs, const QVector<U2Region>& selections);
+    void setSequenceObjects(const QList<GObjectReference> &objs, const QVector<U2Region> &selections);
 
     QList<GObjectReference> getSequenceObjects() const;
 
@@ -47,14 +50,11 @@ public:
 
     QList<GObjectReference> getAnnotationObjects() const;
 
-    void setAnnotationObjects(const QList<GObjectReference>& objs);
+    void setAnnotationObjects(const QList<GObjectReference> &objs);
 
     QVariantMap stateData;
 };
 
-
-
-
-} // namespace
+}    // namespace U2
 
 #endif

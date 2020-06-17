@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,13 +27,15 @@
 namespace U2 {
 using namespace HI;
 
-class UHMM3PhmmerDialogFiller: public Filler
-{
+class UHMM3PhmmerDialogFiller : public Filler {
 public:
-    UHMM3PhmmerDialogFiller(HI::GUITestOpStatus &os, QString _input):Filler(os, "PhmmerSearchDialog"), input(_input){}
+    UHMM3PhmmerDialogFiller(HI::GUITestOpStatus &os, QString _input)
+        : Filler(os, "PhmmerSearchDialog"), input(_input) {
+    }
     void commonScenario();
+
 private:
     QString input;
 };
-}
-#endif // _U2_UHMM3_PHMMER_DIALOG_FILLER_H_
+}    // namespace U2
+#endif    // _U2_UHMM3_PHMMER_DIALOG_FILLER_H_

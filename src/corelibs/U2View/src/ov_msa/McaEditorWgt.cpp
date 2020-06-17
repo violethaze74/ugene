@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "McaEditorWgt.h"
+
 #include <QApplication>
 
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
@@ -30,6 +32,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/Settings.h>
 
+#include "MSAEditorOffsetsView.h"
 #include "MaConsensusMismatchController.h"
 #include "McaEditor.h"
 #include "McaEditorConsensusArea.h"
@@ -38,10 +41,7 @@
 #include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
 #include "McaEditorStatusBar.h"
-#include "McaEditorWgt.h"
 #include "McaReferenceCharController.h"
-#include "MSACollapsibleModel.h"
-#include "MSAEditorOffsetsView.h"
 #include "helpers/McaRowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
 
@@ -50,8 +50,7 @@ namespace U2 {
 #define TOP_INDENT 10
 
 McaEditorWgt::McaEditorWgt(McaEditor *editor)
-    : MaEditorWgt(editor)
-{
+    : MaEditorWgt(editor) {
     rowHeightController = new McaRowHeightController(this);
     refCharController = new McaReferenceCharController(this, editor);
 
@@ -69,50 +68,30 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
     QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();
     QWidget *refName = createHeaderLabelWidget(tr("Reference %1:").arg(name),
-                                               Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), refArea);
+                                               Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter),
+                                               refArea);
     refName->setObjectName("reference label container widget");
 
     nameAreaLayout->insertWidget(0, refName);
     nameAreaLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
 
-    QVector<U2Region> itemRegions;
-    for (int i = 0; i < editor->getNumSequences(); i++) {
-        itemRegions << U2Region(i, 1);
-    }
+    // MCA editor has "always ON" collapsible mode.
+    collapsibleMode = true;
+    enableCollapsingOfSingleRowGroups = true;
+    collapseModel->reset(editor->getMaRowIds());
 
-    collapseModel->setTrivialGroupsPolicy(MSACollapsibleItemModel::Allow);
-    collapseModel->reset(itemRegions);
-    Settings* s = AppContext::getSettings();
+    Settings *s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
     bool showChromatograms = s->getValue(editor->getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool();
     collapseModel->collapseAll(!showChromatograms);
-    collapseModel->setFakeCollapsibleModel(true);
-    collapsibleMode = true;
     GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, showChromatograms, "'Show chromatograms' is checked on the view opening", editor->getFactoryId());
     GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !showChromatograms, "'Show chromatograms' is unchecked on the view opening", editor->getFactoryId());
 
-    McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consArea);
+    McaEditorConsensusArea *mcaConsArea = qobject_cast<McaEditorConsensusArea *>(consArea);
     SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );
     seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
     seqAreaHeader->setStyleSheet("background-color: white;");
     connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
-    MultipleChromatogramAlignmentObject* mcaObj = editor->getMaObject();
-    connect(mcaObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
-}
-
-void McaEditorWgt::sl_alignmentChanged() {
-    int size = editor->getNumSequences();
-    int collapseSize = collapseModel->getItemSize();
-    if (size > collapseSize) {
-        QVector<U2Region> itemRegions;
-        for (int i = 0; i < size; i++) {
-            itemRegions << U2Region(i, 1);
-        }
-        collapseModel->reset(itemRegions);
-        McaEditor* mcaEditor = getEditor();
-        bool isButtonChecked = mcaEditor->isChromatogramButtonChecked();
-        collapseModel->collapseAll(!isButtonChecked);
-    }
 }
 
 McaEditor *McaEditorWgt::getEditor() const {
@@ -127,19 +106,15 @@ McaEditorNameList *McaEditorWgt::getEditorNameList() const {
     return qobject_cast<McaEditorNameList *>(nameList);
 }
 
-McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
-    return qobject_cast<McaEditorSequenceArea*>(seqArea);
+McaEditorSequenceArea *McaEditorWgt::getSequenceArea() const {
+    return qobject_cast<McaEditorSequenceArea *>(seqArea);
 }
 
-McaReferenceCharController* McaEditorWgt::getRefCharController() const {
+McaReferenceCharController *McaEditorWgt::getRefCharController() const {
     return refCharController;
 }
 
-QAction *McaEditorWgt::getClearSelectionAction() const {
-    return clearSelectionAction;
-}
-
-QAction* McaEditorWgt::getToogleColumnsAction() const {
+QAction *McaEditorWgt::getToggleColumnsAction() const {
     SAFE_POINT(offsetsView != NULL, "Offset controller is NULL", NULL);
     return offsetsView->getToggleColumnsViewAction();
 }
@@ -147,15 +122,10 @@ QAction* McaEditorWgt::getToogleColumnsAction() const {
 void McaEditorWgt::initActions() {
     MaEditorWgt::initActions();
 
-    clearSelectionAction = new QAction(tr("Clear selection"), this);
-    clearSelectionAction->setShortcut(Qt::Key_Escape);
-    connect(clearSelectionAction, SIGNAL(triggered()), SIGNAL(si_clearSelection()));
-    addAction(clearSelectionAction);
-
     delSelectionAction->setText(tr("Remove character/gap"));
 }
 
-void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
+void McaEditorWgt::initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) {
     seqArea = new McaEditorSequenceArea(this, shBar, cvBar);
 }
 
@@ -163,7 +133,7 @@ void McaEditorWgt::initOverviewArea() {
     overviewArea = new McaEditorOverviewArea(this);
 }
 
-void McaEditorWgt::initNameList(QScrollBar* nhBar) {
+void McaEditorWgt::initNameList(QScrollBar *nhBar) {
     nameList = new McaEditorNameList(this, nhBar);
 }
 
@@ -175,4 +145,4 @@ void McaEditorWgt::initStatusBar() {
     statusBar = new McaEditorStatusBar(editor->getMaObject(), seqArea, getEditorNameList(), refCharController);
 }
 
-}   // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,11 @@
 #ifndef _U2_STARTUPDIALOG_H_
 #define _U2_STARTUPDIALOG_H_
 
-#include <U2Designer/OutputDirectoryWidget.h>
-
 #include <ui_StartupDialog.h>
 
 #include <QDialog>
+
+#include <U2Designer/OutputDirectoryWidget.h>
 
 namespace U2 {
 
@@ -36,10 +36,11 @@ public:
     StartupDialog(QWidget *parent);
 private slots:
     void sl_accepted();
+
 private:
     OutputDirectoryWidget *outDirWidget;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_STARTUPDIALOG_H_
+#endif    // _U2_STARTUPDIALOG_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,8 @@
 #ifndef _U2_SEQUENCE_EXPORT_SETTINGS_WIDGET_H_
 #define _U2_SEQUENCE_EXPORT_SETTINGS_WIDGET_H_
 
-#include "ui_SequenceImageExportSettingsWidget.h"
 #include "SequencePainter.h"
-
+#include "ui_SequenceImageExportSettingsWidget.h"
 
 namespace U2 {
 
@@ -36,24 +35,24 @@ class U2Region;
 class SequenceExportSettingsWidget : public QWidget, public Ui_SequenceExportSettingsWidget {
     Q_OBJECT
 public:
-    SequenceExportSettingsWidget(U2SequenceObject* seqObj, QSharedPointer<CustomExportSettings> settings, DNASequenceSelection* selection = NULL);
+    SequenceExportSettingsWidget(U2SequenceObject *seqObj, QSharedPointer<CustomExportSettings> settings, DNASequenceSelection *selection = NULL);
 
 signals:
     void si_regionChanged(U2Region region);
 
 private slots:
     void sl_areaChanged();
-    void sl_regionChanged(const U2Region& r);
+    void sl_regionChanged(const U2Region &r);
 
 private:
-    SequenceExportType  getExportType() const;
+    SequenceExportType getExportType() const;
 
-    QSharedPointer<SequenceExportSettings>  settings;
+    QSharedPointer<SequenceExportSettings> settings;
 
-    U2SequenceObject*       seqObject;
-    RegionSelector*         regionSelector;
+    U2SequenceObject *seqObject;
+    RegionSelector *regionSelector;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_SEQUENCE_EXPORT_SETTINGS_WIDGET_H_
+#endif    // _U2_SEQUENCE_EXPORT_SETTINGS_WIDGET_H_

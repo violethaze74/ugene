@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ public:
     PairedDatasetsController(WizardController *wc, PairedReadsWidget *widget);
     virtual ~PairedDatasetsController();
 
-    virtual QWidget * createGUI(U2OpStatus &os);
+    virtual QWidget *createGUI(U2OpStatus &os);
 
 private slots:
     void sl_datasetsChanged();
@@ -46,6 +46,6 @@ private:
     PairedReadsController *dsc;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_PAIREDDATASETSCONTROLLER_H_
+#endif    // _U2_PAIREDDATASETSCONTROLLER_H_

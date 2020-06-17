@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,26 +19,25 @@
  * MA 02110-1301, USA.
  */
 
+#include "BlastDBCmdDialog.h"
+
 #include <QPushButton>
 
 #include <U2Core/BaseDocumentFormats.h>
-
 #include <U2Core/GUrlUtils.h>
+
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
 
-#include "BlastDBCmdDialog.h"
-
 namespace U2 {
 
-BlastDBCmdDialog::BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &_settings, QWidget *_parent) :
-    QDialog(_parent),
-    saveController(NULL),
-    settings(_settings)
-{
+BlastDBCmdDialog::BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &_settings, QWidget *_parent)
+    : QDialog(_parent),
+      saveController(NULL),
+      settings(_settings) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24742622");
+    new HelpButton(this, buttonBox, "");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Fetch"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -50,13 +49,13 @@ BlastDBCmdDialog::BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &_settings, QWi
     initSaveController();
 
     connect(dbSelector, SIGNAL(si_dbChanged()), SLOT(sl_update()));
-    connect(queryIdEdit, SIGNAL(textChanged( const QString& )), SLOT(sl_update()));
+    connect(queryIdEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_update()));
     connect(browseOutputButton, SIGNAL(clicked(bool)), SLOT(sl_update()));
 
     sl_update();
 }
 
-void BlastDBCmdDialog::accept(){
+void BlastDBCmdDialog::accept() {
     if (!dbSelector->validateDatabaseDir()) {
         return;
     }
@@ -93,15 +92,14 @@ void BlastDBCmdDialog::initSaveController() {
 
     const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::FASTA;
 
-
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-void BlastDBCmdDialog::setQueryId( const QString& queryId ) {
+void BlastDBCmdDialog::setQueryId(const QString &queryId) {
     queryIdEdit->setText(queryId);
     settings.query = queryId;
     delete saveController;
     initSaveController();
 }
 
-}//namespace
+}    // namespace U2

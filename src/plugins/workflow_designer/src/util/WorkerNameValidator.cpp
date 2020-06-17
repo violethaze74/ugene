@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
-
 #include "WorkerNameValidator.h"
+
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
 DeprecatedWorkerNameValidator::DeprecatedWorkerNameValidator(QObject *parent)
-: QValidator(parent)
-{
-
+    : QValidator(parent) {
 }
 
 QValidator::State DeprecatedWorkerNameValidator::validate(QString &input, int & /*pos*/) const {
@@ -39,4 +37,4 @@ QValidator::State DeprecatedWorkerNameValidator::validate(QString &input, int & 
     return Acceptable;
 }
 
-} // U2
+}    // namespace U2

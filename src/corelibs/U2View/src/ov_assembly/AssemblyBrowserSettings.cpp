@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -75,4 +75,4 @@ void AssemblyBrowserSettings::setOptimizeRenderOnScroll(bool what) {
     AppContext::getSettings()->setValue(OPTIMIZE_SCROLL, what);
 }
 
-} // U2
+}    // namespace U2

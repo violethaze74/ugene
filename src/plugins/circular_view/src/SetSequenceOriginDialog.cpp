@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,33 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2View/ADVSequenceWidget.h>
-#include <U2View/ADVSequenceObjectContext.h>
+#include "SetSequenceOriginDialog.h"
+
 #include <U2Core/DNASequenceSelection.h>
 
-#include "SetSequenceOriginDialog.h"
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/ADVSequenceWidget.h>
 
 namespace U2 {
 
-SetSequenceOriginDialog::SetSequenceOriginDialog(ADVSequenceWidget* parent ) : QDialog(parent), seqContext(parent->getActiveSequenceContext())
-{
+SetSequenceOriginDialog::SetSequenceOriginDialog(ADVSequenceWidget *parent)
+    : QDialog(parent), seqContext(parent->getActiveSequenceContext()) {
     setupUi(this);
     seqOriginBox->setMinimum(1);
     seqOriginBox->setMaximum(seqContext->getSequenceLength());
-    const QVector<U2Region>& selectedRegions = seqContext->getSequenceSelection()->getSelectedRegions();
+    seqOriginBox->selectAll();    // allow user to start typing or copy-paste without cleaning default '1' first.
+    const QVector<U2Region> &selectedRegions = seqContext->getSequenceSelection()->getSelectedRegions();
 
     if (selectedRegions.size() > 0) {
         seqOriginBox->setValue(selectedRegions.first().startPos + 1);
     }
-
 }
 
-int SetSequenceOriginDialog::getSequenceShift()
-{
+int SetSequenceOriginDialog::getSequenceShift() {
     return seqOriginBox->value();
 }
 
-
-
-} // namespace
-
+}    // namespace U2

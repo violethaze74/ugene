@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,18 +24,15 @@
 
 #include <QString>
 
-
 namespace U2 {
 
-
-class HighFlexSettings
-{
+class HighFlexSettings {
 public:
     HighFlexSettings();
 
-    int             windowSize;
-    int             windowStep;
-    double          threshold;
+    int windowSize;
+    int windowStep;
+    double threshold;
 
     void restoreDefaults();
     void rememberSettings();
@@ -52,7 +49,6 @@ private:
     bool restoreRememberedSettings();
 };
 
-
-} // namespace
+}    // namespace U2
 
 #endif

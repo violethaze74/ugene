@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,19 +26,18 @@
 
 namespace U2 {
 
-class U2ALGORITHM_EXPORT VanDerWaalsSurface : public MolecularSurface
-{
+class U2ALGORITHM_EXPORT VanDerWaalsSurface : public MolecularSurface {
 public:
     VanDerWaalsSurface();
     qint64 estimateMemoryUsage(int numberOfAtoms);
-    virtual void calculate(const QList<SharedAtom>& atoms, int& progress);
+    virtual void calculate(const QList<SharedAtom> &atoms, int &progress);
 };
 
 class U2ALGORITHM_EXPORT VanDerWaalsSurfaceFactory : public MolecularSurfaceFactory {
 public:
-    virtual MolecularSurface *createInstance()const;
+    virtual MolecularSurface *createInstance() const;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // VANDERWAALSSURFACE_H
+#endif    // VANDERWAALSSURFACE_H

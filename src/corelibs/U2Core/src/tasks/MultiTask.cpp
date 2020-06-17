@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,29 +19,26 @@
  * MA 02110-1301, USA.
  */
 
+#include "MultiTask.h"
+
 #include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "MultiTask.h"
-
 namespace U2 {
 
 MultiTask::MultiTask(const QString &name, const QList<Task *> &taskz, bool withLock, TaskFlags f)
-    : Task(name, f), tasks(taskz)
-{
+    : Task(name, f), l(nullptr), tasks(taskz) {
     setMaxParallelSubtasks(1);
     SAFE_POINT(!taskz.empty(), "No tasks provided to multitask", );
 
-    foreach( Task * t, taskz ) {
+    foreach (Task *t, taskz) {
         addSubTask(t);
     }
     if (withLock) {
         SAFE_POINT(AppContext::getProject() != NULL, "MultiTask::no project", );
         l = new StateLock(getTaskName(), StateLockFlag_LiveLock);
         AppContext::getProject()->lockState(l);
-    } else {
-        l = NULL;
     }
 }
 
@@ -51,12 +48,12 @@ QList<Task *> MultiTask::getTasks() const {
 
 Task::ReportResult MultiTask::report() {
     Project *p = AppContext::getProject();
-    if (l != NULL && p != NULL) {
+    if (l != nullptr && p != nullptr) {
         p->unlockState(l);
         delete l;
-        l = NULL;
+        l = nullptr;
     }
-    foreach(Task* t, tasks) {
+    foreach (Task *t, tasks) {
         CHECK_CONTINUE(t->isConcatenateChildrenErrors());
 
         setReportingSupported(true);
@@ -82,8 +79,7 @@ QString MultiTask::generateReport() const {
 //SequentialMultiTask
 
 SequentialMultiTask::SequentialMultiTask(const QString &name, const QList<Task *> &taskz, TaskFlags f)
-    : Task(name, f), tasks(taskz)
-{
+    : Task(name, f), tasks(taskz) {
     setMaxParallelSubtasks(1);
 }
 
@@ -92,7 +88,6 @@ void SequentialMultiTask::prepare() {
     if (tasks.size() > 0) {
         addSubTask(tasks.first());
     }
-
 }
 
 QList<Task *> SequentialMultiTask::onSubTaskFinished(Task *subTask) {
@@ -100,7 +95,7 @@ QList<Task *> SequentialMultiTask::onSubTaskFinished(Task *subTask) {
 
     int idx = tasks.indexOf(subTask);
     if ((idx != -1) && (idx + 1 < tasks.size())) {
-        res.append(tasks.at(idx+1));
+        res.append(tasks.at(idx + 1));
     }
 
     return res;
@@ -110,4 +105,4 @@ QList<Task *> SequentialMultiTask::getTasks() const {
     return tasks;
 }
 
-} //namespace
+}    // namespace U2

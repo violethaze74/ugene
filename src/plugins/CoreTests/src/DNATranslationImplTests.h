@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,11 @@
 #ifndef _U2_DNATRANSLATION_IMPL_TESTS_H_
 #define _U2_DNATRANSLATION_IMPL_TESTS_H_
 
-#include <U2Test/XMLTestUtils.h>
-
 #include <QDomElement>
+
 #include <U2Core/DNAAlphabet.h>
+
+#include <U2Test/XMLTestUtils.h>
 
 namespace U2 {
 
@@ -38,17 +39,17 @@ class GTest_DNATranslation3to1Test : public XmlTest {
 
     ReportResult report();
 
-    QString		objContextName;
+    QString objContextName;
 
     int strFrom;
     int strTo;
-    QString		stringValue;
+    QString stringValue;
 };
 //---------------------------------------------------------------------
 class DNATranslationImplTests {
 public:
-    static QList<XMLTestFactory*> createTestFactories();
+    static QList<XMLTestFactory *> createTestFactories();
 };
 
-}//namespace
+}    // namespace U2
 #endif

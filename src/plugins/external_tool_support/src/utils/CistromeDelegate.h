@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,21 +29,25 @@ namespace LocalWorkflow {
 
 class CistromeComboBoxWithUrlsDelegate : public ComboBoxWithUrlsDelegate {
 public:
-    CistromeComboBoxWithUrlsDelegate(const QVariantMap& items, bool _isPath = false, QObject *parent = 0) : ComboBoxWithUrlsDelegate(items, _isPath, parent) {}
+    CistromeComboBoxWithUrlsDelegate(const QVariantMap &items, bool _isPath = false, QObject *parent = 0)
+        : ComboBoxWithUrlsDelegate(items, _isPath, parent) {
+    }
 
     virtual void update();
 
 protected:
     virtual void updateUgeneSettings() = 0;
-    virtual void updateValues(const QString& dataPathName, const QString& attributeName, const QString& defaultValue = "");
-    virtual void updateDataPath(const QString& dataPathName, const QString& dirName, bool folders = false);
+    virtual void updateValues(const QString &dataPathName, const QString &attributeName, const QString &defaultValue = "");
+    virtual void updateDataPath(const QString &dataPathName, const QString &dirName, bool folders = false);
 
     virtual QString getDataPathName() = 0;
     virtual QString getAttributeName() = 0;
-    virtual QString getDefaultValue() { return ""; }
+    virtual QString getDefaultValue() {
+        return "";
+    }
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_CISTROME_DELEGATE_H_
+#endif    // _U2_CISTROME_DELEGATE_H_

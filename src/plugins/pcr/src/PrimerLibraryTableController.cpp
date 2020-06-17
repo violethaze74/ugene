@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,19 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include "PrimerLibraryTableController.h"
+
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "PrimerLibrary.h"
 #include "PrimerLibraryTable.h"
-#include "PrimerLibraryTableController.h"
 
 namespace U2 {
 
-PrimerLibraryTableController::PrimerLibraryTableController(QObject *parent, PrimerLibraryTable *table) :
-    QObject(parent),
-    table(table)
-{
+PrimerLibraryTableController::PrimerLibraryTableController(QObject *parent, PrimerLibraryTable *table)
+    : QObject(parent),
+      table(table) {
     SAFE_POINT(NULL != table, "Primer library table is NULL", );
 
     U2OpStatus2Log os;
@@ -62,4 +62,4 @@ void PrimerLibraryTableController::sl_primerRemoved(const U2DataId &primerId) {
     table->removePrimer(primerId, os);
 }
 
-}   // namespace U2
+}    // namespace U2

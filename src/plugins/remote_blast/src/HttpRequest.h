@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,27 +39,39 @@
 namespace U2 {
 
 struct ResponseBuffer {
-    ResponseBuffer(){}
-    ~ResponseBuffer() { buf.close(); }
-    void setBuffer(QByteArray *arr) { buf.setBuffer(arr); }
-    bool open(QIODevice::OpenMode openMode) { return buf.open(openMode); }
-    void close() { buf.close(); }
-    QByteArray readLine() { return buf.readLine(); }
+    ResponseBuffer() {
+    }
+    ~ResponseBuffer() {
+        buf.close();
+    }
+    void setBuffer(QByteArray *arr) {
+        buf.setBuffer(arr);
+    }
+    bool open(QIODevice::OpenMode openMode) {
+        return buf.open(openMode);
+    }
+    void close() {
+        buf.close();
+    }
+    QByteArray readLine() {
+        return buf.readLine();
+    }
 
     QBuffer buf;
 };
 
-
-class HttpRequestBLAST:public HttpRequest {
+class HttpRequestBLAST : public HttpRequest {
     Q_DECLARE_TR_FUNCTIONS(HttpRequestBLAST)
 public:
-    HttpRequestBLAST(Task *_task):HttpRequest(_task){}
-    virtual void sendRequest(const QString &program,const QString &query);
+    HttpRequestBLAST(Task *_task)
+        : HttpRequest(_task) {
+    }
+    virtual void sendRequest(const QString &program, const QString &query);
     virtual void parseResult(const QByteArray &buf);
     virtual QByteArray getOutputFile();
 
 private:
-    class Waiter: public QThread {
+    class Waiter : public QThread {
     public:
         static void await(int mseconds) {
             msleep(mseconds);
@@ -69,11 +81,9 @@ private:
     static const QString host;
     QByteArray output;
     void parseHit(const QDomNode &xml);
-    void parseHsp(const QDomNode &xml,const QString &id, const QString &def,
-                  const QString &accession, const QString &hitLen);
+    void parseHsp(const QDomNode &xml, const QString &id, const QString &def, const QString &accession, const QString &hitLen);
 };
 
-
-}
+}    // namespace U2
 
 #endif

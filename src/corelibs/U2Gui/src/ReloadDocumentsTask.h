@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,25 +24,25 @@
 
 #include <QCoreApplication>
 
-#include <U2Core/Task.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
 
 class U2GUI_EXPORT ReloadDocumentsTask : public Task {
     Q_OBJECT
 public:
-    ReloadDocumentsTask(const QList<Document*>& docs2Reload);
+    ReloadDocumentsTask(const QList<Document *> &docs2Reload);
 
 private:
     void prepare() override;
     ReportResult report() override;
     QString generateReport() const override;
-    QList<Task *> onSubTaskFinished(Task* subTask) override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
-    QList<Document*> docs2Reload;
+    QList<Document *> docs2Reload;
     QStringList subTaskStateInfoErrors;
 };
 
-}// namespace U2
+}    // namespace U2
 #endif

@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -24,15 +24,14 @@
 namespace U2 {
 
 InSilicoPcrWorkflowTask::InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings &pcrSettings, const ExtractProductSettings &productSettings)
-: Task(tr("In silico PCR workflow task"), TaskFlags_NR_FOSE_COSC), productSettings(productSettings)
-{
+    : Task(tr("In silico PCR workflow task"), TaskFlags_NR_FOSE_COSC), productSettings(productSettings) {
     pcrTask = new InSilicoPcrTask(pcrSettings);
     addSubTask(pcrTask);
     pcrTask->setSubtaskProgressWeight((float)0.7);
 }
 
-QList<Task*> InSilicoPcrWorkflowTask::onSubTaskFinished(Task *subTask) {
-    QList<Task*> result;
+QList<Task *> InSilicoPcrWorkflowTask::onSubTaskFinished(Task *subTask) {
+    QList<Task *> result;
     CHECK(NULL != subTask, result);
     CHECK(!subTask->getStateInfo().isCoR(), result);
 
@@ -58,8 +57,8 @@ QList<InSilicoPcrWorkflowTask::Result> InSilicoPcrWorkflowTask::takeResult() {
     return result;
 }
 
-const InSilicoPcrTaskSettings & InSilicoPcrWorkflowTask::getPcrSettings() const {
+const InSilicoPcrTaskSettings &InSilicoPcrWorkflowTask::getPcrSettings() const {
     return pcrTask->getSettings();
 }
 
-} // U2
+}    // namespace U2

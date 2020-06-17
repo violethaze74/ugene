@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,18 @@
  * MA 02110-1301, USA.
  */
 
+#include "CredentialsAskerGui.h"
+
 #include <QMainWindow>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include "AuthenticationDialog.h"
-#include "CredentialsAskerGui.h"
 
 namespace U2 {
 
@@ -81,4 +82,4 @@ bool CredentialsAskerGui::askWithModifiableLogin(QString &resourceUrl) const {
     return true;
 }
 
-} // namespace U2
+}    // namespace U2

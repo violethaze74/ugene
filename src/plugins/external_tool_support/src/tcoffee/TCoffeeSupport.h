@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,9 @@
 #define _U2_TCOFFEE_SUPPORT_H
 
 #include <U2Core/ExternalToolRegistry.h>
+
 #include <U2View/MSAEditor.h>
+
 #include "utils/ExternalToolSupportAction.h"
 
 namespace U2 {
@@ -31,30 +33,33 @@ namespace U2 {
 class TCoffeeSupport : public ExternalTool {
     Q_OBJECT
 public:
-    TCoffeeSupport(const QString& id, const QString& name, const QString& path = "");
-    GObjectViewWindowContext* getViewContext(){ return viewCtx; }
+    TCoffeeSupport(const QString &id, const QString &name, const QString &path = "");
+    GObjectViewWindowContext *getViewContext() {
+        return viewCtx;
+    }
 
     static const QString ET_TCOFFEE;
     static const QString ET_TCOFFEE_ID;
     static const QString TCOFFEE_TMP_DIR;
 public slots:
     void sl_runWithExtFileSpecify();
+
 private:
-    GObjectViewWindowContext* viewCtx;
+    GObjectViewWindowContext *viewCtx;
 };
 
-class TCoffeeSupportContext: public GObjectViewWindowContext {
+class TCoffeeSupportContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    TCoffeeSupportContext(QObject* p);
+    TCoffeeSupportContext(QObject *p);
 
 protected slots:
     void sl_align_with_TCoffee();
 
 protected:
-    virtual void initViewContext(GObjectView* view);
-    virtual void buildMenu(GObjectView* view, QMenu* m);
+    virtual void initViewContext(GObjectView *view);
+    virtual void buildMenu(GObjectView *view, QMenu *m);
 };
 
-}//namespace
-#endif // _U2_TCOFFEE_SUPPORT_H
+}    // namespace U2
+#endif    // _U2_TCOFFEE_SUPPORT_H

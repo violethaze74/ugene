@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,9 +33,9 @@ public:
         Wide,
         None
     };
-    virtual QVariant convert(const QVariant& d, const DataTypePtr from, const DataTypePtr to) = 0;
+    virtual QVariant convert(const QVariant &d, const DataTypePtr from, const DataTypePtr to) = 0;
     virtual ConvertionType canConvert(const DataTypePtr from, const DataTypePtr to) = 0;
 };
 
-} //namespace
+}    // namespace U2
 #endif

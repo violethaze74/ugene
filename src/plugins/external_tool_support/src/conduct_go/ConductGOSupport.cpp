@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,9 +20,8 @@
  */
 
 #include "ConductGOSupport.h"
-
-#include <python/PythonSupport.h>
 #include <R/RSupport.h>
+#include <python/PythonSupport.h>
 
 #include <U2Core/AppContext.h>
 
@@ -31,9 +30,8 @@ namespace U2 {
 const QString ConductGOSupport::ET_GO_ANALYSIS = "go_analysis";
 const QString ConductGOSupport::ET_GO_ANALYSIS_ID = "USUPP_CONDUCT_GO_ANALYSIS";
 
-ConductGOSupport::ConductGOSupport(const QString& id, const QString &name)
-: ExternalTool(id, name, "")
-{
+ConductGOSupport::ConductGOSupport(const QString &id, const QString &name)
+    : ExternalTool(id, name, "") {
     initialize();
 }
 
@@ -74,4 +72,4 @@ void ConductGOSupport::initialize() {
     muted = true;
 }
 
-} // U2
+}    // namespace U2

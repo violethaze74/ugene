@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ public:
     ExtractAssemblyCoverageWorker(Actor *actor);
 
     void init();
-    Task * tick();
+    Task *tick();
     void cleanup();
 
 private slots:
@@ -65,7 +65,7 @@ public:
     static const QString EXPORT_BASES_QUANTITY;
 };
 
-class ExtractAssemblyCoverageWorkerPrompter : public PrompterBase<ExtractAssemblyCoverageWorkerPrompter>{
+class ExtractAssemblyCoverageWorkerPrompter : public PrompterBase<ExtractAssemblyCoverageWorkerPrompter> {
     Q_OBJECT
 public:
     ExtractAssemblyCoverageWorkerPrompter(Actor *actor = NULL);
@@ -90,7 +90,7 @@ public:
     ExtractAssemblyCoverageFileExtensionRelation *clone() const;
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_EXTRACT_ASSEMBLY_COVERAGE_WORKER_H_
+#endif    // _U2_EXTRACT_ASSEMBLY_COVERAGE_WORKER_H_

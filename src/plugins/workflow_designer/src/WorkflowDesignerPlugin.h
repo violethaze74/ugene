@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,10 +41,15 @@ public:
     static const QString RUN_WORKFLOW;
     static const QString REMOTE_MACHINE;
     static const QString PRINT;
+    static const QString CUSTOM_EL_WITH_SCRIPTS_DIR;
+    static const QString CUSTOM_EXTERNAL_TOOL_DIR;
+    static const QString INCLUDED_ELEMENTS_DIR;
+    static const QString WORKFLOW_OUTPUT_DIR;
 
 public:
-    WorkflowDesignerPlugin ();
-    ~WorkflowDesignerPlugin ();
+    WorkflowDesignerPlugin();
+    ~WorkflowDesignerPlugin();
+
 private:
     void registerCMDLineHelp();
     void registerWorkflowTasks();
@@ -60,10 +65,11 @@ class WorkflowDesignerService : public Service {
 public:
     WorkflowDesignerService();
     bool closeViews();
-protected:
-    virtual Task* createServiceEnablingTask();
 
-    virtual Task* createServiceDisablingTask();
+protected:
+    virtual Task *createServiceEnablingTask();
+
+    virtual Task *createServiceDisablingTask();
 
     virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
 
@@ -82,11 +88,10 @@ private:
     void initSampleActions();
 
 private:
-    QAction*        designerAction;
-    QAction*        managerAction;
-    QAction*        newWorkflowAction;
+    QAction *designerAction;
+    QAction *managerAction;
+    QAction *newWorkflowAction;
 };
-
 
 class WorkflowWelcomePageAction : public WelcomePageAction {
 public:
@@ -97,6 +102,6 @@ private:
     QPointer<WorkflowDesignerService> service;
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_MSA_DISTANCE_ALGORITHM_REGISTRY_H_
 #define _U2_MSA_DISTANCE_ALGORITHM_REGISTRY_H_
 
-#include "MSADistanceAlgorithm.h"
-
 #include <QStringList>
+
+#include "MSADistanceAlgorithm.h"
 
 namespace U2 {
 
@@ -34,24 +34,26 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithmRegistry : public QObject {
     Q_OBJECT
 
 public:
-    MSADistanceAlgorithmRegistry(QObject* p = NULL);
+    MSADistanceAlgorithmRegistry(QObject *p = NULL);
 
     ~MSADistanceAlgorithmRegistry();
 
-    MSADistanceAlgorithmFactory* getAlgorithmFactory(const QString& algoId);
+    MSADistanceAlgorithmFactory *getAlgorithmFactory(const QString &algoId);
 
-    void addAlgorithm(MSADistanceAlgorithmFactory* algo);
+    void addAlgorithm(MSADistanceAlgorithmFactory *algo);
 
-    QStringList getAlgorithmIds() const ;
+    QStringList getAlgorithmIds() const;
 
-    QList<MSADistanceAlgorithmFactory*> getAlgorithmFactories() const {return algorithms.values();}
+    QList<MSADistanceAlgorithmFactory *> getAlgorithmFactories() const {
+        return algorithms.values();
+    }
 
-    QList<MSADistanceAlgorithmFactory*> getAlgorithmFactories(DistanceAlgorithmFlags flags) const;
+    QList<MSADistanceAlgorithmFactory *> getAlgorithmFactories(DistanceAlgorithmFlags flags) const;
 
 private:
-    QMap<QString , MSADistanceAlgorithmFactory*> algorithms;
+    QMap<QString, MSADistanceAlgorithmFactory *> algorithms;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

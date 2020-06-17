@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,15 +30,15 @@ namespace U2 {
 
 class VariationTrackMessageTranslator : public BaseMessageTranslator {
 public:
-    VariationTrackMessageTranslator( const QVariant &atomicMessage,
-        Workflow::WorkflowContext *initContext );
+    VariationTrackMessageTranslator(const QVariant &atomicMessage,
+                                    Workflow::WorkflowContext *initContext);
 
-    QString getTranslation( ) const;
+    QString getTranslation() const;
 
 protected:
     U2EntityRef variantTrackRef;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_VARIATION_TRACK_MESSAGE_TRANSLATOR_H_
+#endif    // _U2_VARIATION_TRACK_MESSAGE_TRANSLATOR_H_

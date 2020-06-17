@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,21 +22,25 @@
 #ifndef _U2_SMITH_WATERMAN_TASK_FACTORY_H_
 #define _U2_SMITH_WATERMAN_TASK_FACTORY_H_
 
-#include "SmithWatermanSettings.h"
 #include <U2Core/Task.h>
 
+#include "SmithWatermanSettings.h"
 
 namespace U2 {
 
-class SmithWatermanTaskFactory {            //for ADV search only
+class SmithWatermanTaskFactory {    //for ADV search only
 public:
-    virtual Task* getTaskInstance(const SmithWatermanSettings& config,
-                                  const QString& taskName) const = 0;
-    virtual bool hasAdvancedSettings() const { return false; }
-    virtual void execAdvancedDialog() {}
-    virtual ~SmithWatermanTaskFactory() {}
+    virtual Task *getTaskInstance(const SmithWatermanSettings &config,
+                                  const QString &taskName) const = 0;
+    virtual bool hasAdvancedSettings() const {
+        return false;
+    }
+    virtual void execAdvancedDialog() {
+    }
+    virtual ~SmithWatermanTaskFactory() {
+    }
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

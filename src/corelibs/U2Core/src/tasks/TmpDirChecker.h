@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,9 @@
 #ifndef TMPDIRCHECKER_H
 #define TMPDIRCHECKER_H
 
-#include <U2Core/Task.h>
 #include <QDir>
+
+#include <U2Core/Task.h>
 
 namespace U2 {
 
@@ -45,5 +46,5 @@ private:
     QString commonTempDirPath;
 };
 
-} // namespace
-#endif // TMPDIRCHECKER_H
+}    // namespace U2
+#endif    // TMPDIRCHECKER_H

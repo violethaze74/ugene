@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,10 @@
 #ifndef _U2_MA_EDITOR_STATE_H_
 #define _U2_MA_EDITOR_STATE_H_
 
-#include <U2Core/U2Region.h>
-#include <U2Core/GObject.h>
-
 #include <QVariant>
+
+#include <U2Core/GObject.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
@@ -33,16 +33,19 @@ class MaEditor;
 
 class U2VIEW_EXPORT MaEditorState {
 public:
-    MaEditorState(){}
+    MaEditorState() {
+    }
 
-    MaEditorState(const QVariantMap& _stateData) : stateData(_stateData){}
+    MaEditorState(const QVariantMap &_stateData)
+        : stateData(_stateData) {
+    }
 
-    static QVariantMap saveState(MaEditor* v);
+    static QVariantMap saveState(MaEditor *v);
 
     bool isValid() const;
 
     GObjectReference getMaObjectRef() const;
-    void setMaObjectRef(const GObjectReference& ref);
+    void setMaObjectRef(const GObjectReference &ref);
 
     QFont getFont() const;
     void setFont(const QFont &f);
@@ -59,6 +62,6 @@ public:
     QVariantMap stateData;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

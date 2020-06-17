@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,15 @@
 #ifndef _U2_CALCULATE_SEQUENCES_NUMBER_TASK_H_
 #define _U2_CALCULATE_SEQUENCES_NUMBER_TASK_H_
 
-#include <U2Core/global.h>
 #include <U2Core/Task.h>
+#include <U2Core/global.h>
 
 namespace U2 {
 
 class U2FORMATS_EXPORT CalculateSequencesNumberTask : public Task {
+    Q_OBJECT
 public:
-    CalculateSequencesNumberTask(const QString& url);
+    CalculateSequencesNumberTask(const QString &url);
 
     int getSequencesNumber() const;
 
@@ -40,5 +41,5 @@ private:
     int sequencesNumber;
 };
 
-}
+}    // namespace U2
 #endif

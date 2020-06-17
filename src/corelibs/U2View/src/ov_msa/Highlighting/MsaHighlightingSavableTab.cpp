@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,16 +20,17 @@
  */
 
 #include "MsaHighlightingSavableTab.h"
-#include "MSAHighlightingTab.h"
+
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/U2WidgetStateStorage.h>
-#include <U2Core/U2SafePoints.h>
+
+#include "MSAHighlightingTab.h"
 
 namespace U2 {
 
 MsaHighlightingSavableTab::MsaHighlightingSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow)
-    : MsaOpSavableTab(wrappedWidget, contextWindow)
-{
+    : MsaOpSavableTab(wrappedWidget, contextWindow) {
     SAFE_POINT(NULL != qobject_cast<MSAHighlightingTab *>(wrappedWidget), "Invalid widget provided", );
 }
 
@@ -50,4 +51,4 @@ void MsaHighlightingSavableTab::disableSavingForWidgets(const QStringList &s) {
     widgetsNotToSave.append(s);
 }
 
-}
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,12 +23,13 @@
 
 namespace U2 {
 
-QList<GCounter*>& GCounter::getCounters() {
+QList<GCounter *> &GCounter::getCounters() {
     static GCounterList counters;
     return counters.list;
 }
 
-GCounter::GCounter(const QString& _name, const QString& s, double scale) : name(_name), suffix(s), totalCount(0), counterScale(scale), destroyMe(false) {
+GCounter::GCounter(const QString &_name, const QString &s, double scale)
+    : name(_name), suffix(s), totalCount(0), counterScale(scale), destroyMe(false) {
     assert(counterScale > 0);
     getCounters().append(this);
 }
@@ -46,8 +47,8 @@ GCounter *GCounter::getCounter(const QString &name, const QString &suffix) {
     return NULL;
 }
 
-GReportableCounter::GReportableCounter(const QString& name, const QString& suffix, double scale /* = 1 */) :
-GCounter(name, suffix, scale) {
+GReportableCounter::GReportableCounter(const QString &name, const QString &suffix, double scale /* = 1 */)
+    : GCounter(name, suffix, scale) {
 }
 
 GCounterList::~GCounterList() {
@@ -60,4 +61,4 @@ GCounterList::~GCounterList() {
     }
 }
 
-} //namespace
+}    // namespace U2

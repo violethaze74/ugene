@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,14 +25,12 @@ namespace U2 {
 namespace LocalWorkflow {
 
 TrimmomaticPrompter::TrimmomaticPrompter(Actor *actor)
-    : PrompterBase<TrimmomaticPrompter>(actor)
-{
-
+    : PrompterBase<TrimmomaticPrompter>(actor) {
 }
 
 QString TrimmomaticPrompter::composeRichDoc() {
     return tr("Trim, crop and/or remove adapters for input Illumina FASTQ data.");
 }
 
-} // namespace LocalWorkflow
-} // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

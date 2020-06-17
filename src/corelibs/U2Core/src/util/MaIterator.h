@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,11 +33,11 @@ public:
     bool hasNext() const;
     char next();
 
-    MaIterator &operator ++();
-    char operator *();
+    MaIterator &operator++();
+    char operator*();
 
-    bool operator ==(const MaIterator &other) const;
-    bool operator !=(const MaIterator &other) const;
+    bool operator==(const MaIterator &other) const;
+    bool operator!=(const MaIterator &other) const;
 
     void setCircular(bool isCircular);
     void setIterateInCoreRegionsOnly(bool coreRegionsOnly);
@@ -67,6 +67,6 @@ protected:
     static const qint64 INVALID_POSITION;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _MA_ITERATOR_H_
+#endif    // _MA_ITERATOR_H_

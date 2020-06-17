@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,14 +29,16 @@ namespace U2 {
 
 class U2LANG_EXPORT SchemaConfig {
 public:
-    SchemaConfig() {}
-    virtual ~SchemaConfig() {}
+    SchemaConfig() {
+    }
+    virtual ~SchemaConfig() {
+    }
 
-    virtual RunFileSystem * getRFS() = 0;
+    virtual RunFileSystem *getRFS() = 0;
     virtual QVariant getAttributeValue(const AttributeInfo &info) const = 0;
     virtual void setAttributeValue(const AttributeInfo &info, const QVariant &value) = 0;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_SCHEMACONFIG_H_
+#endif    // _U2_SCHEMACONFIG_H_

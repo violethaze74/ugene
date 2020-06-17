@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,13 @@
 #ifndef _U2_GRAPHPACK_ENTROPY_H_
 #define _U2_GRAPHPACK_ENTROPY_H_
 
-#include "DNAGraphPackPlugin.h"
+#include <QAction>
+#include <QBitArray>
+#include <QList>
 
 #include <U2View/GSequenceGraphView.h>
 
-#include <QAction>
-#include <QList>
-#include <QBitArray>
+#include "DNAGraphPackPlugin.h"
 
 namespace U2 {
 
@@ -37,15 +37,15 @@ class AnnotatedDNAView;
 class EntropyGraphFactory : public GSequenceGraphFactory {
     Q_OBJECT
 public:
-    EntropyGraphFactory(QObject* p);
-    QList<QSharedPointer<GSequenceGraphData> > createGraphs(GSequenceGraphView* v);
-    bool isEnabled(const U2SequenceObject* o) const;
+    EntropyGraphFactory(QObject *p);
+    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *v);
+    bool isEnabled(const U2SequenceObject *o) const;
 };
 
 class EntropyGraphAlgorithm : public GSequenceGraphAlgorithm {
 public:
-    void calculate(QVector<float>& res, U2SequenceObject* o, const U2Region& r, const GSequenceGraphWindowData* d, U2OpStatus &os);
+    void calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &r, const GSequenceGraphWindowData *d, U2OpStatus &os);
 };
 
-} // namespace
+}    // namespace U2
 #endif

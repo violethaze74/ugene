@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,14 @@
 #ifndef _TREE_SETTIHS_DIALOG_
 #define _TREE_SETTIHS_DIALOG_
 
-#include "BaseSettingsDialog.h"
 #include <ui_TreeSettingsDialog.h>
+
+#include "BaseSettingsDialog.h"
 #include "ov_phyltree/TreeSettings.h"
 
 namespace U2 {
 
-class TreeSettingsDialog : public BaseSettingsDialog, public Ui_TreeSettingsDialog{
+class TreeSettingsDialog : public BaseSettingsDialog, public Ui_TreeSettingsDialog {
     Q_OBJECT
 public:
     TreeSettingsDialog(QWidget *parent, const OptionsMap &settings, bool isRectLayout);
@@ -42,5 +43,5 @@ private slots:
     void sl_treeTypeChanged(int);
 };
 
-} //namespace
+}    // namespace U2
 #endif

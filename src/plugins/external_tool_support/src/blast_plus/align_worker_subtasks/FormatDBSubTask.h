@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,24 +33,24 @@ namespace Workflow {
 class FormatDBSubTask : public Task {
     Q_OBJECT
 public:
-    FormatDBSubTask(const QString& referenceUrl,
+    FormatDBSubTask(const QString &referenceUrl,
                     const SharedDbiDataHandler &referenceDbHandler,
                     DbiDataStorage *storage);
     void prepare();
 
-    const QString& getResultPath() const;
+    const QString &getResultPath() const;
 
 private:
     QString getAcceptableTempDir() const;
 
-    const QString               referenceUrl;
-    const SharedDbiDataHandler  referenceDbHandler;
+    const QString referenceUrl;
+    const SharedDbiDataHandler referenceDbHandler;
     DbiDataStorage *storage;
 
     QString databaseNameAndPath;
 };
 
-} // namespace Workflow
-} // namespace U2
+}    // namespace Workflow
+}    // namespace U2
 
-#endif // _U2_FORMAT_DB_SUBTASK_H_
+#endif    // _U2_FORMAT_DB_SUBTASK_H_

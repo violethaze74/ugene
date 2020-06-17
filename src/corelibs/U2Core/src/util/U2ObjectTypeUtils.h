@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,11 +28,11 @@
 namespace U2 {
 
 class U2CORE_EXPORT U2ObjectTypeUtils {
-public :
-    static U2DataType                   toDataType( const GObjectType &gType );
-    static GObjectType                  toGObjectType( const U2DataType &dbType );
+public:
+    static U2DataType toDataType(const GObjectType &gType);
+    static GObjectType toGObjectType(const U2DataType &dbType);
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_OBJECT_TYPE_UTILS_H_
+#endif    // _U2_OBJECT_TYPE_UTILS_H_

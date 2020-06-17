@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,14 +25,12 @@ namespace U2 {
 namespace LocalWorkflow {
 
 StringtieGeneAbundanceReportPrompter::StringtieGeneAbundanceReportPrompter(Actor *actor)
-    : PrompterBase<StringtieGeneAbundanceReportPrompter>(actor)
-{
-
+    : PrompterBase<StringtieGeneAbundanceReportPrompter>(actor) {
 }
 
 QString StringtieGeneAbundanceReportPrompter::composeRichDoc() {
     return tr("Create a general report for several StringTie gene abundance output files.");
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

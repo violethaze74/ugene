@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+#include "ActorCfgFilterProxyModel.h"
+
 #include <U2Core/U2SafePoints.h>
 
-#include "ActorCfgFilterProxyModel.h"
 #include "ActorCfgModel.h"
 
 namespace U2 {
 
 ActorCfgFilterProxyModel::ActorCfgFilterProxyModel(QObject *p)
-    : QSortFilterProxyModel(p)
-{
+    : QSortFilterProxyModel(p) {
     setDynamicSortFilter(true);
 }
 
@@ -49,4 +49,4 @@ bool ActorCfgFilterProxyModel::filterAcceptsColumn(int sourceColumn, const QMode
     return srcModel->getScriptMode() || sourceColumn < 2;
 }
 
-} // namespace U2
+}    // namespace U2

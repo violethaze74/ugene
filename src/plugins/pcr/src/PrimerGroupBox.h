@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ class PrimerGroupBox : public QWidget, public Ui_PrimerGroupBox {
     Q_OBJECT
 public:
     PrimerGroupBox(QWidget *parent);
-    void setAnnotatedDnaView(AnnotatedDNAView* dnaView);
+    void setAnnotatedDnaView(AnnotatedDNAView *dnaView);
 
     QByteArray getPrimer() const;
     uint getMismatches() const;
@@ -54,15 +54,15 @@ private slots:
 private:
     static QString getTmString(const QString &sequence);
 
-    void findPrimerAlternatives(const QString& primer);
+    void findPrimerAlternatives(const QString &primer);
     void cancelFindPrimerTask();
 
     void updateStatistics(const QString &primer);
 
-    FindAlgorithmTask* findPrimerTask;
-    AnnotatedDNAView*   annotatedDnaView;
+    FindAlgorithmTask *findPrimerTask;
+    AnnotatedDNAView *annotatedDnaView;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_PCR_GROUP_BOX_H_
+#endif    // _U2_PCR_GROUP_BOX_H_

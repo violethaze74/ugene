@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,30 +20,31 @@
  */
 
 #include "SWMulAlignSubseqPropTag.h"
+
 #include <U2Core/U2Region.h>
 
 namespace U2 {
 
-QString SWMulAlignSubseqPropTag::expandTag(const QVariant & argument) const {
+QString SWMulAlignSubseqPropTag::expandTag(const QVariant &argument) const {
     assert(argument.canConvert<U2Region>());
     U2Region subsequence = argument.value<U2Region>();
 
     quint64 tagExpansion = 0;
-    switch(posType) {
-        case START:
-            tagExpansion = subsequence.startPos + 1;
-            break;
-        case END:
-            tagExpansion = subsequence.endPos();
-            break;
-        case LENGTH:
-            tagExpansion = subsequence.length;
-            break;
-        default:
-            assert(0);
+    switch (posType) {
+    case START:
+        tagExpansion = subsequence.startPos + 1;
+        break;
+    case END:
+        tagExpansion = subsequence.endPos();
+        break;
+    case LENGTH:
+        tagExpansion = subsequence.length;
+        break;
+    default:
+        assert(0);
     }
 
     return QString::number(tagExpansion);
 }
 
-} //namespace
+}    // namespace U2

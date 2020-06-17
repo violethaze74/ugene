@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,46 +26,38 @@ namespace U2 {
 const int MessageMetadata::INVALID_ID = -1;
 
 MessageMetadata::MessageMetadata()
-: id(INVALID_ID)
-{
-
+    : id(INVALID_ID) {
 }
 
 MessageMetadata::MessageMetadata(const QString &datasetName)
-: id(nextId()), datasetName(datasetName)
-{
-
+    : id(nextId()), datasetName(datasetName) {
 }
 
 MessageMetadata::MessageMetadata(const QString &fileUrl, const QString &datasetName)
-: id(nextId()), datasetName(datasetName), fileUrl(fileUrl)
-{
-
+    : id(nextId()), datasetName(datasetName), fileUrl(fileUrl) {
 }
 
 MessageMetadata::MessageMetadata(const QString &databaseUrl, const QString &databaseId, const QString &datasetName)
-: id(nextId()), datasetName(datasetName), databaseUrl(databaseUrl), databaseId(databaseId)
-{
-
+    : id(nextId()), datasetName(datasetName), databaseUrl(databaseUrl), databaseId(databaseId) {
 }
 
 int MessageMetadata::getId() const {
     return id;
 }
 
-const QString & MessageMetadata::getDatasetName() const {
+const QString &MessageMetadata::getDatasetName() const {
     return datasetName;
 }
 
-const QString & MessageMetadata::getFileUrl() const {
+const QString &MessageMetadata::getFileUrl() const {
     return fileUrl;
 }
 
-const QString & MessageMetadata::getDatabaseUrl() const {
+const QString &MessageMetadata::getDatabaseUrl() const {
     return databaseUrl;
 }
 
-const QString & MessageMetadata::getDatabaseId() const {
+const QString &MessageMetadata::getDatabaseId() const {
     return databaseId;
 }
 
@@ -85,4 +77,4 @@ MessageMetadata MessageMetadataStorage::get(int metadataId) const {
     return data.value(metadataId, MessageMetadata());
 }
 
-} // U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,10 +34,9 @@ class SlotMapping : public IdMapping {
 public:
     SlotMapping(const QString &srcSlotId, const QString &dstSlotId);
 
-    void validate(DataTypePtr srcSlotType, DataTypePtr dstSlotType,
-        U2OpStatus &os) const;
+    void validate(DataTypePtr srcSlotType, DataTypePtr dstSlotType, U2OpStatus &os) const;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_SLOTMAPPING_H_
+#endif    // _U2_SLOTMAPPING_H_

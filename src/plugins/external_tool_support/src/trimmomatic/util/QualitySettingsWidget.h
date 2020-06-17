@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
 #ifndef _U2_QUALITY_SETTINGS_WIDGET_H_
 #define _U2_QUALITY_SETTINGS_WIDGET_H_
 
-#include "ui_QualitySettingsWidget.h"
 #include "trimmomatic/TrimmomaticStep.h"
+#include "ui_QualitySettingsWidget.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -45,7 +45,7 @@ public:
     static const QString QUALITY;
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_QUALITY_SETTINGS_WIDGET_H_
+#endif    // _U2_QUALITY_SETTINGS_WIDGET_H_

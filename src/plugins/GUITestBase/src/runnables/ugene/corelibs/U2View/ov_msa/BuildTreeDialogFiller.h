@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ private:
 };
 
 class BuildTreeDialogFillerPhyML : public Filler {
- public:
+public:
     BuildTreeDialogFillerPhyML(HI::GUITestOpStatus &os, bool _freqOptimRadioPressed, int bootstrap = -1);
     void commonScenario();
 
@@ -63,6 +63,6 @@ private:
     int bootstrap;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_GT_RUNNABLES_BUILD_TREE_DIALOG_FILLER_H_
+#endif    // _U2_GT_RUNNABLES_BUILD_TREE_DIALOG_FILLER_H_

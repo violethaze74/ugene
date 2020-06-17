@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,17 +28,16 @@
 
 #include <U2View/MSAEditor.h>
 
-
 namespace U2 {
 
-class U2VIEW_EXPORT PairAlignFactory : public OPWidgetFactory
-{
+class U2VIEW_EXPORT PairAlignFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
     PairAlignFactory();
 
-    virtual QWidget* createWidget(GObjectView* objView);
-    virtual OPGroupParameters getOPGroupParameters();
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+
+    OPGroupParameters getOPGroupParameters() override;
 
 private:
     static const QString GROUP_ID;
@@ -46,6 +45,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

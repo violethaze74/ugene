@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +28,7 @@
 
 namespace U2 {
 
-class U2CORE_EXPORT ConnectSharedDatabaseTask : public DocumentProviderTask
-{
+class U2CORE_EXPORT ConnectSharedDatabaseTask : public DocumentProviderTask {
     Q_OBJECT
 public:
     ConnectSharedDatabaseTask(const U2DbiRef &dbiRef, const QString &documentName, bool initializeDb);
@@ -44,6 +43,6 @@ private:
     bool initializeDb;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_CONNECT_SHARED_DATABASE_H_
+#endif    // _U2_CONNECT_SHARED_DATABASE_H_

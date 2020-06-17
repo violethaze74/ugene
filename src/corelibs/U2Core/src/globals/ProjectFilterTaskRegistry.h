@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ public:
     virtual ~ProjectFilterTaskRegistry();
 
     QList<AbstractProjectFilterTask *> createFilterTasks(const ProjectTreeControllerModeSettings &settings,
-        const QList<QPointer<Document> > &docs);
+                                                         const QList<QPointer<Document>> &docs);
     void registerTaskFactory(ProjectFilterTaskFactory *factory);
 
 private:
@@ -45,6 +45,6 @@ private:
     QList<ProjectFilterTaskFactory *> factories;
 };
 
-}
+}    // namespace U2
 
-#endif // _U2_PROJECT_FILTER_TASK_REGISTRY_H_
+#endif    // _U2_PROJECT_FILTER_TASK_REGISTRY_H_

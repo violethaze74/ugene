@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,25 +34,33 @@ namespace Workflow {
 */
 class U2LANG_EXPORT Peer {
 public:
-    Peer() : peer(NULL) {}
-    virtual ~Peer() {}
-
-    // casting to whatever you want
-    template<typename T> inline T* castPeer() const {
-        return (T*)(peer);
+    Peer()
+        : peer(NULL) {
+    }
+    virtual ~Peer() {
     }
 
-    void* getPeer() const {return peer;}
-    void setPeer(void* p) { peer = p; }
+    // casting to whatever you want
+    template<typename T>
+    inline T *castPeer() const {
+        return (T *)(peer);
+    }
+
+    void *getPeer() const {
+        return peer;
+    }
+    void setPeer(void *p) {
+        peer = p;
+    }
 
 protected:
     // any pointer
-    void* peer;
+    void *peer;
 
-}; // Peer
+};    // Peer
 
-} // Workflow
+}    // namespace Workflow
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_WORKFLOW_PEER_H_
+#endif    // _U2_WORKFLOW_PEER_H_

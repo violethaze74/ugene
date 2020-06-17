@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_CSV_COLUMN_CONFIGURATION_DIALOG_H_
 
 #include <ui_CSVColumnConfigurationDialog.h>
+
 #include "CSVColumnConfiguration.h"
 
 namespace U2 {
@@ -30,7 +31,7 @@ namespace U2 {
 class CSVColumnConfigurationDialog : public QDialog, Ui_CSVColumnConfigurationDialog {
     Q_OBJECT
 public:
-    CSVColumnConfigurationDialog(QWidget* w, const ColumnConfig& config);
+    CSVColumnConfigurationDialog(QWidget *w, const ColumnConfig &config);
 
     ColumnConfig config;
 
@@ -40,9 +41,8 @@ public slots:
 private slots:
     virtual void sl_complMarkToggle(bool);
     virtual void sl_startToggle(bool);
-
 };
 
-} // namespace U2
+}    // namespace U2
 
 #endif

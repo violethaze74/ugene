@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ struct DataBunch {
         qDeleteAll(queries);
     }
 
-    QVector<SearchQuery*> queries;
+    QVector<SearchQuery *> queries;
     QVector<BMType> bitValuesV;
     QVector<int> windowSizes;
     QVector<int> readNumbersV;
@@ -50,6 +50,6 @@ struct DataBunch {
     void prepareSorted();
 };
 
-} //namespace
+}    // namespace U2
 
-#endif // _U2_WRITE_ALIGNER_READS_SUB_TASK_H_
+#endif    // _U2_WRITE_ALIGNER_READS_SUB_TASK_H_

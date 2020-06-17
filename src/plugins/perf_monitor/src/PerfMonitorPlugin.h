@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,13 @@
 #ifndef _U2_PERF_MON_PLUGIN_H_
 #define _U2_PERF_MON_PLUGIN_H_
 
-#include <U2Core/PluginModel.h>
-
 #include <QAction>
+
+#include <U2Core/PluginModel.h>
 
 namespace U2 {
 
-class PerfMonitorPlugin : public Plugin  {
+class PerfMonitorPlugin : public Plugin {
     Q_OBJECT
 public:
     PerfMonitorPlugin();
@@ -37,10 +37,10 @@ private slots:
     void sl_openWindow();
 
 private:
-    QAction*    openWindowAction;
-    int         windowId;
+    QAction *openWindowAction;
+    int windowId;
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

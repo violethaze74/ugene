@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,31 +23,27 @@
 #define _U2_DNA_FLEX_GRAPH_ALGORITHM_H_
 
 #include <U2Core/DNASequenceObject.h>
+
 #include <U2View/GraphMenu.h>
 
-
 namespace U2 {
-
 
 /**
  * Algorithm used to calculate data of a DNA Flexibility graph
  */
-class DNAFlexGraphAlgorithm : public GSequenceGraphAlgorithm
-{
+class DNAFlexGraphAlgorithm : public GSequenceGraphAlgorithm {
 public:
     DNAFlexGraphAlgorithm();
     virtual ~DNAFlexGraphAlgorithm();
 
     virtual void calculate(
-       QVector<float>&,
-       U2SequenceObject*,
-       const U2Region&,
-       const GSequenceGraphWindowData*,
-       U2OpStatus &os);
+        QVector<float> &,
+        U2SequenceObject *,
+        const U2Region &,
+        const GSequenceGraphWindowData *,
+        U2OpStatus &os);
 };
 
-
-} // namespace
-
+}    // namespace U2
 
 #endif

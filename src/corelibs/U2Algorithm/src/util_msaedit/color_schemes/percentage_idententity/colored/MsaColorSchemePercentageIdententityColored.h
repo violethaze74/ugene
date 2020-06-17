@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,10 @@
 #ifndef _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_COLORED_H_
 #define _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_COLORED_H_
 
+#include <QList>
+
 #include "../../MsaColorScheme.h"
 #include "ColumnCharsCounter.h"
-
-#include <QList>
 
 namespace U2 {
 
@@ -37,9 +37,15 @@ public:
     QColor getBackgroundColor(int rowNum, int columnNum, char c) const override;
     QColor getFontColor(int rowNum, int columnNum, char c) const override;
 
-    void applySettings(const QVariantMap& settings) override;
+    void applySettings(const QVariantMap &settings) override;
 
     static const QList<char> NUCLEOTIDE_LIST;
+
+protected:
+    void updateCache(const int columnNum) const;
+    virtual int getColorIndex(const int columnNum, const char c) const;
+
+    mutable QMap<qint64, ColumnCharsCounter> cachedData;    //first value - column number
 
 private slots:
     void sl_alignmentChanged();
@@ -47,18 +53,11 @@ private slots:
 private:
     static const QList<QColor> BACKGROUND_COLORS;
     static const QList<QColor> FONT_COLORS;
-    //static const QList<QColor> WEAK_SIMILARITIES_BACKGROUND_COLORS;
-    //static const QString LIGHT_GREEN;
-    void updateCache(const int columnNum) const;
-    int getColorIndex(const int columnNum, const char c) const;
-    //int getWeakSimilaritiesColorIndex(const int indexOf, const bool equalPercentage) const;
 
-    mutable QMap<qint64, ColumnCharsCounter> cachedData; //first value - column number
     mutable bool alignmentChanged;
-
     double threshold;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_COLORED_H_
+#endif    // _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_COLORED_H_

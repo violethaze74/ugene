@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,45 +39,56 @@ class ClearAnnotationsTask;
 class U2VIEW_EXPORT GSequenceLineViewAnnotated : public GSequenceLineView {
     Q_OBJECT
 public:
+    GSequenceLineViewAnnotated(QWidget *p, SequenceObjectContext *ctx);
 
-                                            GSequenceLineViewAnnotated(QWidget *p, SequenceObjectContext *ctx);
+    bool isAnnotationVisible(const Annotation *a) const;
 
-    bool                                    isAnnotationVisible(Annotation *a) const;
+    virtual QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const;
 
-    virtual QList<AnnotationSelectionData>  selectAnnotationByCoord(const QPoint &coord) const;
+    static QString prepareAnnotationText(const SharedAnnotationData &a, const AnnotationSettings *as);
 
-    static QString                          prepareAnnotationText(const SharedAnnotationData &a, const AnnotationSettings *as);
+    QList<Annotation *> findAnnotationsInRange(const U2Region &range) const;
 
-    QList<Annotation *>                     findAnnotationsInRange(const U2Region &range) const;
-
-    bool                                    isAnnotationSelectionInVisibleRange() const;
-
+    bool isAnnotationSelectionInVisibleRange() const;
 
 protected:
-    void                                    mousePressEvent(QMouseEvent *e);
-    void                                    mouseDoubleClickEvent(QMouseEvent* me);
+    void mousePressEvent(QMouseEvent *e);
 
-    virtual bool                            event(QEvent *e);
-    virtual QString                         createToolTip(QHelpEvent *e);
+    void mouseDoubleClickEvent(QMouseEvent *me);
 
-    virtual void                            registerAnnotations(const QList<Annotation *> &l);
-    virtual void                            unregisterAnnotations(const QList<Annotation *> &l);
-    virtual void                            ensureVisible(Annotation *a, int locationIdx);
+    virtual bool event(QEvent *e);
+
+    virtual QString createToolTip(QHelpEvent *e);
+
+    virtual void registerAnnotations(const QList<Annotation *> &l);
+
+    virtual void unregisterAnnotations(const QList<Annotation *> &l);
+
+    virtual void ensureVisible(Annotation *a, int locationIdx);
 
 protected slots:
-    virtual void                            sl_onAnnotationSettingsChanged(const QStringList &changedSettings);
 
-    void                                    sl_onAnnotationObjectAdded(AnnotationTableObject *);
-    void                                    sl_onAnnotationObjectRemoved(AnnotationTableObject *);
-    void                                    sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *);
-    void                                    sl_onAnnotationsAdded(const QList<Annotation *> &);
-    void                                    sl_onAnnotationsRemoved(const QList<Annotation *> &);
-    virtual void                            sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
-    virtual void                            sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &added,
-                                                const QList<Annotation *> &removed);
+    virtual void sl_onAnnotationSettingsChanged(const QStringList &changedSettings);
+
+    void sl_onAnnotationObjectAdded(AnnotationTableObject *);
+
+    void sl_onAnnotationObjectRemoved(AnnotationTableObject *);
+
+    void sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *);
+
+    void sl_onAnnotationsAdded(const QList<Annotation *> &);
+
+    void sl_onAnnotationsRemoved(const QList<Annotation *> &);
+
+    virtual void sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
+
+    /* Updates view so annotation becomes visible. */
+    virtual void sl_onAnnotationActivated(Annotation *annotation, int regionIndex);
+
+    virtual void sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &added, const QList<Annotation *> &removed);
 
 private:
-    void                                    connectAnnotationObject(const AnnotationTableObject *ao);
+    void connectAnnotationObject(const AnnotationTableObject *ao);
 
 protected:
     friend class ClearAnnotationsTask;
@@ -89,13 +100,13 @@ public:
     ~GSequenceLineViewAnnotatedRenderArea();
 
     //! VIEW_RENDERER_REFACTORING: only the second method should be available, because it is more common
-    virtual U2Region                getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as) const = 0;
-    virtual bool                    isPosOnAnnotationYRange(const QPoint& p, Annotation *a, int region, const AnnotationSettings* as) const;
+    virtual U2Region getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as) const = 0;
+    virtual bool isPosOnAnnotationYRange(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as) const;
 
-    GSequenceLineViewAnnotated *    getGSequenceLineViewAnnotated() const;
+    GSequenceLineViewAnnotated *getGSequenceLineViewAnnotated() const;
 
 protected:
-    virtual void drawAll(QPaintDevice* pd) = 0;
+    virtual void drawAll(QPaintDevice *pd) = 0;
 
     //! VIEW_RENDERER_REFACTORING: should be removed, currenlty is used in CircularView
     enum DrawAnnotationPass {
@@ -119,17 +130,17 @@ protected:
 
 class ClearAnnotationsTask : public Task {
 public:
-                                    ClearAnnotationsTask(const QList<Annotation *> &    list,
-                                                          GSequenceLineViewAnnotated *  view);
+    ClearAnnotationsTask(const QList<Annotation *> &list,
+                         GSequenceLineViewAnnotated *view);
 
-    void                            run();
-    Task::ReportResult              report();
+    void run();
+    Task::ReportResult report();
 
 private:
-    QList<Annotation *>             l;
-    GSequenceLineViewAnnotated *    view;
+    QList<Annotation *> l;
+    GSequenceLineViewAnnotated *view;
 };
 
-} // namespace U2
+}    // namespace U2
 
 #endif

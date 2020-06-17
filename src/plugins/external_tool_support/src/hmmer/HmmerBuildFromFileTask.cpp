@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+#include "HmmerBuildFromFileTask.h"
+
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ConvertAlignment2StockholmTask.h"
-#include "HmmerBuildFromFileTask.h"
 
 namespace U2 {
 
@@ -34,12 +35,11 @@ HmmerBuildFromFileTask::HmmerBuildFromFileTask(const HmmerBuildSettings &setting
       convertTask(NULL),
       buildTask(NULL),
       settings(settings),
-      msaUrl(msaUrl)
-{
+      msaUrl(msaUrl) {
     SAFE_POINT_EXT(!msaUrl.isEmpty(), tr("Msa URL is empty"), );
 }
 
-const QString & HmmerBuildFromFileTask::getHmmProfileUrl() const {
+const QString &HmmerBuildFromFileTask::getHmmProfileUrl() const {
     return settings.profileUrl;
 }
 
@@ -102,4 +102,4 @@ void HmmerBuildFromFileTask::removeTempDir() {
     }
 }
 
-}   // namespace U2
+}    // namespace U2

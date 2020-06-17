@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ POSTERIOR_CHECK_DECLARATION(post_check_0001)
 
 #undef GUI_TEST_SUITE
 
-}   // namespace GUITest_posterior_checks
-}   // namespace U2
+}    // namespace GUITest_posterior_checks
+}    // namespace U2
 
-#endif // _U2_POSTERIOR_CHECKS_H_
+#endif    // _U2_POSTERIOR_CHECKS_H_

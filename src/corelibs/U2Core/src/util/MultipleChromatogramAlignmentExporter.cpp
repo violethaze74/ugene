@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include "MultipleChromatogramAlignmentExporter.h"
+
 #include <U2Core/ChromatogramUtils.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/McaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -29,7 +32,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
 
-#include "MultipleChromatogramAlignmentExporter.h"
 #include "datatype/msa/MultipleAlignmentRowInfo.h"
 
 namespace U2 {
@@ -98,7 +100,7 @@ QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os
 
 QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const {
     QList<U2McaRow> result;
-    foreach(qint64 rowId, rowIds) {
+    foreach (qint64 rowId, rowIds) {
         result << McaDbiUtils::getMcaRow(os, U2EntityRef(dbiRef, mcaId), rowId);
         CHECK_OP(os, QList<U2McaRow>());
     }
@@ -109,7 +111,7 @@ QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(
     QList<McaRowMemoryData> mcaRowsMemoryData;
     mcaRowsMemoryData.reserve(rows.count());
 
-    foreach(const U2McaRow &row, rows) {
+    foreach (const U2McaRow &row, rows) {
         McaRowMemoryData mcaRowMemoryData;
         mcaRowMemoryData.chromatogram = ChromatogramUtils::exportChromatogram(os, U2EntityRef(connection.dbi->getDbiRef(), row.chromatogramId));
         CHECK_OP(os, QList<McaRowMemoryData>());
@@ -132,13 +134,11 @@ DNASequence MultipleChromatogramAlignmentExporter::exportSequence(U2OpStatus &os
     U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
     SAFE_POINT_EXT(NULL != sequenceDbi, os.setError("NULL Sequence Dbi during exporting rows sequences"), DNASequence());
 
-    QByteArray sequenceData = sequenceDbi->getSequenceData(sequenceId, U2_REGION_MAX, os);
-    CHECK_OP(os, DNASequence());
-
     U2Sequence dbSequence = sequenceDbi->getSequenceObject(sequenceId, os);
     CHECK_OP(os, DNASequence());
 
-    return DNASequence(dbSequence.visualName, sequenceData);
+    QScopedPointer<U2SequenceObject> sequenceObject(new U2SequenceObject(dbSequence.visualName, U2EntityRef(connection.dbi->getDbiRef(), dbSequence.id)));
+    return sequenceObject->getSequence(U2_REGION_MAX, os);
 }
 
 QVariantMap MultipleChromatogramAlignmentExporter::exportRowAdditionalInfo(U2OpStatus &os, const U2DataId &chromatogramId) const {
@@ -166,14 +166,14 @@ QVariantMap MultipleChromatogramAlignmentExporter::exportRowAdditionalInfo(U2OpS
 QVariantMap MultipleChromatogramAlignmentExporter::exportAlignmentInfo(U2OpStatus &os, const U2DataId &mcaId) const {
     U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
     SAFE_POINT_EXT(NULL != attributeDbi, os.setError("NULL Attribute Dbi during exporting an alignment info"), QVariantMap());
-    U2Dbi* dbi = attributeDbi->getRootDbi();
+    U2Dbi *dbi = attributeDbi->getRootDbi();
     SAFE_POINT_EXT(NULL != dbi, os.setError("NULL root Dbi during exporting an alignment info"), QVariantMap());
 
     QVariantMap info;
     QList<U2DataId> attributeIds = attributeDbi->getObjectAttributes(mcaId, "", os);
     CHECK_OP(os, QVariantMap());
 
-    foreach(const U2DataId &attributeId, attributeIds) {
+    foreach (const U2DataId &attributeId, attributeIds) {
         if (dbi->getEntityTypeById(attributeId) != U2Type::AttributeString) {
             continue;
         }
@@ -192,4 +192,4 @@ U2Mca MultipleChromatogramAlignmentExporter::exportAlignmentObject(U2OpStatus &o
     return U2Mca(dbMsa);
 }
 
-}   // namespace U2
+}    // namespace U2

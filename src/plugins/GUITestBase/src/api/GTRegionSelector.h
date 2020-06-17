@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,9 @@
 #ifndef _U2_GT_REGIONSELECTOR_H_
 #define _U2_GT_REGIONSELECTOR_H_
 
-#include "GTGlobals.h"
 #include <U2Gui/RegionSelector.h>
+
+#include "GTGlobals.h"
 
 namespace U2 {
 using namespace HI;
@@ -32,17 +33,24 @@ class GTRegionSelector {
 public:
     class RegionSelectorSettings {
     public:
-        RegionSelectorSettings(): start(0), end(0), unset(true){}
-        RegionSelectorSettings(int _start, int _end): start(_start), end(_end), unset(false){}
-        bool isUnset() const { return unset; }
+        RegionSelectorSettings()
+            : start(0), end(0), unset(true) {
+        }
+        RegionSelectorSettings(int _start, int _end)
+            : start(_start), end(_end), unset(false) {
+        }
+        bool isUnset() const {
+            return unset;
+        }
 
         int start, end;
+
     private:
         bool unset;
     };
 
-    static void setRegion(HI::GUITestOpStatus& os, RegionSelector *regionSelector, const RegionSelectorSettings& s);
+    static void setRegion(HI::GUITestOpStatus &os, RegionSelector *regionSelector, const RegionSelectorSettings &s);
 };
 
-}
-#endif // _U2_GT_REGIONSELECTOR_H_
+}    // namespace U2
+#endif    // _U2_GT_REGIONSELECTOR_H_

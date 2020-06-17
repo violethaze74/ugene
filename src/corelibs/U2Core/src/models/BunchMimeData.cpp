@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,18 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
-
 #include "BunchMimeData.h"
+
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
 const QString BunchMimeData::MIME_TYPE("application/x-ugene-bunch-mime");
 
 BunchMimeData::BunchMimeData()
-: QMimeData()
-{
-
+    : QMimeData() {
 }
 
 bool BunchMimeData::hasFormat(const QString &mimeType) const {
@@ -41,4 +39,4 @@ QStringList BunchMimeData::formats() const {
     return QStringList(MIME_TYPE);
 }
 
-} // U2
+}    // namespace U2

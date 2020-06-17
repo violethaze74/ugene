@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,7 @@
 namespace U2 {
 
 SimpleSNPVariationFormat::SimpleSNPVariationFormat(QObject *p)
-: AbstractVariationFormat(p, BaseDocumentFormats::SNP, QStringList()<<"snp")
-{
+    : AbstractVariationFormat(p, BaseDocumentFormats::SNP, QStringList() << "snp") {
     formatName = QString("SimpleSNP");
 
     columnRoles.insert(0, ColumnRole_ChromosomeId);
@@ -39,7 +38,7 @@ SimpleSNPVariationFormat::SimpleSNPVariationFormat(QObject *p)
 }
 
 bool SimpleSNPVariationFormat::checkFormatByColumnCount(int columnCount) const {
-    return (columnCount == maxColumnNumber+1);
+    return (columnCount == maxColumnNumber + 1);
 }
 
-} // U2
+}    // namespace U2

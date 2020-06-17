@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,8 +23,10 @@
 #define __CUDA_SUPPORT_PLUGIN_H__
 
 #include <cuda.h>
-#include <U2Core/PluginModel.h>
+
 #include <U2Algorithm/CudaGpuRegistry.h>
+
+#include <U2Core/PluginModel.h>
 
 namespace U2 {
 
@@ -41,17 +43,18 @@ public:
     };
 
     CudaSupportPlugin();
+
 private:
-    Error obtainGpusInfo( QString & err );
+    Error obtainGpusInfo(QString &err);
     void loadGpusSettings();
     void registerAvailableGpus();
 
-    static QString getCudaErrorString( CUresult code );
-    static QString getSettingsErrorString( Error err );
+    static QString getCudaErrorString(CUresult code);
+    static QString getSettingsErrorString(Error err);
 
     QList<CudaGpuModel *> gpus;
 };
 
-}
+}    // namespace U2
 
-#endif //__CUDA_SUPPORT_PLUGIN_H__
+#endif    //__CUDA_SUPPORT_PLUGIN_H__

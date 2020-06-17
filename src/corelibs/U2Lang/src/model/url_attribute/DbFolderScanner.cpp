@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "DbFolderScanner.h"
+
 #include <U2Core/DNAInfo.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -27,13 +29,10 @@
 
 #include <U2Lang/SharedDbUrlUtils.h>
 
-#include "DbFolderScanner.h"
-
 namespace U2 {
 
 DbFolderScanner::DbFolderScanner(const QString &url, const QString &accFilter, const QString &objNameFilter, bool recursive)
-    : accFilter(accFilter)
-{
+    : accFilter(accFilter) {
     const U2DbiRef dbiRef = SharedDbUrlUtils::getDbRefFromEntityUrl(url);
 
     U2OpStatusImpl os;
@@ -128,4 +127,4 @@ bool DbFolderScanner::hasNext() {
     return !unusedObjects.isEmpty();
 }
 
-} // U2
+}    // namespace U2

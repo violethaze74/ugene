@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_EDIT_FRAGMENT_DIALOG_H_
 #define _U2_EDIT_FRAGMENT_DIALOG_H_
 
-#include "DNAFragment.h"
-
 #include <ui_EditFragmentDialog.h>
+
+#include "DNAFragment.h"
 
 namespace U2 {
 
@@ -33,26 +33,24 @@ class DNATranslation;
 class EditFragmentDialog : public QDialog, public Ui_EditFragmentDialog {
     Q_OBJECT
 public:
-   EditFragmentDialog(DNAFragment& fragment, QWidget* p);
-   virtual void accept();
+    EditFragmentDialog(DNAFragment &fragment, QWidget *p);
+    virtual void accept();
+
 private:
-   DNAFragment& dnaFragment;
-   DNATranslation* transl;
-   QString seq,trseq;
-   void updatePreview();
-   void resetLeftOverhang();
-   void resetRightOverhang();
-   bool isValidOverhang(const QString& text);
+    DNAFragment &dnaFragment;
+    DNATranslation *transl;
+    QString seq, trseq;
+    void updatePreview();
+    void resetLeftOverhang();
+    void resetRightOverhang();
+    bool isValidOverhang(const QString &text);
 private slots:
-   void sl_updatePreview();
-   void sl_onLeftResetClicked();
-   void sl_onRightResetClicked();
-   void sl_customOverhangSet(const QString& text);
-
-
+    void sl_updatePreview();
+    void sl_onLeftResetClicked();
+    void sl_onRightResetClicked();
+    void sl_customOverhangSet(const QString &text);
 };
 
-
-} //namespace
+}    // namespace U2
 
 #endif

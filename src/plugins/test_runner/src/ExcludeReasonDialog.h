@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,19 +26,19 @@
 
 class Ui_ExcludeReasonDialog;
 
-namespace U2{
+namespace U2 {
 
-class ExcludeReasonDialog : public QDialog
-{
+class ExcludeReasonDialog : public QDialog {
     Q_OBJECT
 
 public:
     ExcludeReasonDialog(QWidget *parent = 0);
     ~ExcludeReasonDialog();
     QString getReason();
+
 private:
     Ui_ExcludeReasonDialog *ui;
 };
 
-}
-#endif // EXCLUDERESAONDIALOG_H
+}    // namespace U2
+#endif    // EXCLUDERESAONDIALOG_H

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,19 +35,20 @@ class WelcomePageMdiController : public QObject {
 public:
     WelcomePageMdiController();
 
-private slots:
-    void sl_onPageLoaded();
+public slots:
     void sl_showPage();
+
+private slots:
     void sl_onRecentChanged();
     void sl_onMdiClose(MWMDIWindow *mdi);
 
 private:
-    static MWMDIManager * getMdiManager();
+    static MWMDIManager *getMdiManager();
 
 private:
     WelcomePageMdi *welcomePage;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_WELCOME_PAGE_MDI_CONTROLLER_H_
+#endif    // _U2_WELCOME_PAGE_MDI_CONTROLLER_H_

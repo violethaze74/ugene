@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include "McaEditorConsensusArea.h"
+
 #include <QToolBar>
 
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 
 #include <U2Core/AppContext.h>
 
 #include <U2Gui/GUIUtils.h>
 
-#include "McaEditorConsensusArea.h"
 #include "McaEditor.h"
-#include "MSAEditor.h" // for menu names consts
-#include "view_rendering/McaConsensusAreaRenderer.h"
-
 #include "ov_msa/MaConsensusMismatchController.h"
+#include "view_rendering/McaConsensusAreaRenderer.h"
 
 namespace U2 {
 
@@ -69,5 +67,4 @@ QString McaEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
     return editor->getSettingsRoot() + MCAE_SETTINGS_CONSENSUS_TYPE;
 }
 
-
-}   // namespace U2
+}    // namespace U2

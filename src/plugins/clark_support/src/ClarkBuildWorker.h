@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,10 +24,11 @@
 
 #include <QCoreApplication>
 
+#include <U2Core/GUrl.h>
+
+#include <U2Lang/BaseNGSWorker.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
-#include <U2Lang/BaseNGSWorker.h>
-#include <U2Core/GUrl.h>
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -52,19 +53,24 @@ typedef PrompterBase<ClarkBuildPrompter> ClarkBuildBase;
 class ClarkBuildPrompter : public ClarkBuildBase {
     Q_OBJECT
 public:
-    ClarkBuildPrompter(Actor* p = 0) : ClarkBuildBase(p) {}
+    ClarkBuildPrompter(Actor *p = 0)
+        : ClarkBuildBase(p) {
+    }
+
 protected:
     QString composeRichDoc();
-}; //ClarkBuildPrompter
+};    //ClarkBuildPrompter
 
-class ClarkBuildWorker: public BaseWorker {
+class ClarkBuildWorker : public BaseWorker {
     Q_OBJECT
 public:
     ClarkBuildWorker(Actor *a);
+
 protected:
     void init();
-    Task * tick();
-    void cleanup() {}
+    Task *tick();
+    void cleanup() {
+    }
 
 private slots:
     void sl_taskFinished(Task *task);
@@ -72,23 +78,30 @@ private slots:
 protected:
     IntegralBus *output;
 
-}; //ClarkBuildWorker
+};    //ClarkBuildWorker
 
 class ClarkBuildWorkerFactory : public DomainFactory {
     static const QString ACTOR_ID;
+
 public:
     static void init();
     static void cleanup();
-    ClarkBuildWorkerFactory() : DomainFactory(ACTOR_ID) {}
-    Worker* createWorker(Actor* a) { return new ClarkBuildWorker(a); }
-}; //ClarkBuildWorkerFactory
+    ClarkBuildWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
+    Worker *createWorker(Actor *a) {
+        return new ClarkBuildWorker(a);
+    }
+};    //ClarkBuildWorkerFactory
 
 class ClarkBuildTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     ClarkBuildTask(const QString &dbUrl, const QStringList &genomeUrls, int rank, const QString &taxdataUrl);
 
-    const QString &getDbUrl() const {return dbUrl;}
+    const QString &getDbUrl() const {
+        return dbUrl;
+    }
 
 private:
     void prepare();
@@ -101,7 +114,7 @@ private:
     int rank;
 };
 
-} //LocalWorkflow
-} //U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif //_U2_CLARK_BUILD_WORKER_H_
+#endif    //_U2_CLARK_BUILD_WORKER_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,21 +23,21 @@
 
 namespace U2 {
 
-static void visitBranchDFS(QTreeWidgetItem* item, TreeWidgetVisitor* visitor) {
+static void visitBranchDFS(QTreeWidgetItem *item, TreeWidgetVisitor *visitor) {
     if (visitor->isChildVisitRequired(item)) {
-        for (int i = 0; i < item->childCount(); i++) {    
-            QTreeWidgetItem* child = item->child(i);
+        for (int i = 0; i < item->childCount(); i++) {
+            QTreeWidgetItem *child = item->child(i);
             visitBranchDFS(child, visitor);
         }
     }
     visitor->visit(item);
 }
 
-void TreeWidgetUtils::visitDFS(QTreeWidget* tree, TreeWidgetVisitor* visitor) {
+void TreeWidgetUtils::visitDFS(QTreeWidget *tree, TreeWidgetVisitor *visitor) {
     for (int i = 0; i < tree->topLevelItemCount(); i++) {
-        QTreeWidgetItem* child = tree->topLevelItem(i);
+        QTreeWidgetItem *child = tree->topLevelItem(i);
         visitBranchDFS(child, visitor);
     }
 }
 
-} //namespace
+}    // namespace U2

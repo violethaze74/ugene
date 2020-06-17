@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,8 +23,10 @@
 #define _U2_FINDALGORITHM_TESTS_H_
 
 #include <U2Algorithm/FindAlgorithmTask.h>
-#include <U2Test/XMLTestUtils.h>
+
 #include <U2Core/DNASequenceObject.h>
+
+#include <U2Test/XMLTestUtils.h>
 
 namespace U2 {
 
@@ -47,9 +49,9 @@ private:
 
 class FindAlgorithmTests {
 public:
-    static QList<XMLTestFactory*> createTestFactories();
+    static QList<XMLTestFactory *> createTestFactories();
 };
 
-}//ns
+}    // namespace U2
 
 #endif

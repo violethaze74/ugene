@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ namespace U2 {
 
 struct U2ALGORITHM_EXPORT SmithWatermanResult {
     SharedAnnotationData toAnnotation(const QString &name) const;
-    bool operator <(const SmithWatermanResult &op1) const;
+    bool operator<(const SmithWatermanResult &op1) const;
 
     U2Strand strand;
     bool trans;
@@ -58,6 +58,6 @@ private:
     QList<SmithWatermanResult> result;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,7 +79,7 @@ public:
     bool isAutoTableOptionSelected() const;
 
     void showSelectGroupMenu(QMenu &menu);
-    GObjectComboBoxController * createGObjectComboBoxController(const GObjectComboBoxControllerConstraints &constraints);
+    GObjectComboBoxController *createGObjectComboBoxController(const GObjectComboBoxControllerConstraints &constraints);
 
     void countDescriptionUsage() const;
     void fillSaveDocumentControllerConfig(SaveDocumentControllerConfig &config) const;
@@ -92,6 +92,6 @@ private:
     ShowHideSubgroupWidget *annotationParametersWidget;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_CREATE_ANNOTATION_OPTIONS_PANEL_WIDGET_H_
+#endif    // _U2_CREATE_ANNOTATION_OPTIONS_PANEL_WIDGET_H_

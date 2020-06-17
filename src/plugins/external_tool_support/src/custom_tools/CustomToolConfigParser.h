@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,12 +35,11 @@ class U2OpStatus;
 class CustomToolConfigParser {
     Q_DECLARE_TR_FUNCTIONS(CustomToolConfigParser)
 public:
-
-    static CustomExternalTool *parse(U2OpStatus &os, const QString& url);
+    static CustomExternalTool *parse(U2OpStatus &os, const QString &url);
     static QDomDocument serialize(CustomExternalTool *tool);
 
 private:
-    static bool validate(U2OpStatus  &os, CustomExternalTool *tool);
+    static bool validate(U2OpStatus &os, CustomExternalTool *tool);
     static QDomElement addChildElement(QDomDocument &doc, const QString &elementName, const QString &elementData);
 
     static const QString ELEMENT_CONFIG;
@@ -59,6 +58,6 @@ private:
     static const QString BINARY_NAME;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_CUSTOM_TOOL_CONFIG_PARSER_H_
+#endif    // _U2_CUSTOM_TOOL_CONFIG_PARSER_H_

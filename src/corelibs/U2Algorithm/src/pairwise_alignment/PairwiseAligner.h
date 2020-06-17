@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,12 +43,13 @@ protected:
 
 class U2ALGORITHM_EXPORT PairwiseAlignerFactory {
 public:
-    static PairwiseAligner * createAligner(const QString &alignerId,
-        const QByteArray &seq1, const QByteArray &seq2);
+    static PairwiseAligner *createAligner(const QString &alignerId,
+                                          const QByteArray &seq1,
+                                          const QByteArray &seq2);
 
     static const QString NEEDLEMAN_WUNSCH;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_PAIRWISE_ALIGNER_H_
+#endif    // _U2_PAIRWISE_ALIGNER_H_

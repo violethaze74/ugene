@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_GENBANK_LOCATION_PARSER_UNIT_TESTS_H_
 
 #include <unittest.h>
+
 #include <U2Core/U2OpStatusUtils.h>
 
 namespace U2 {
@@ -56,7 +57,7 @@ DECLARE_TEST(LocationParserTestData, locationParserGreaterInvalid);
 DECLARE_TEST(LocationParserTestData, locationParserName);
 DECLARE_TEST(LocationParserTestData, locationParserNameInvalid);
 DECLARE_TEST(LocationParserTestData, locationBuildStringNumberInvalid);
-}
+}    // namespace U2
 
 DECLARE_METATYPE(LocationParserTestData, locationParser);
 DECLARE_METATYPE(LocationParserTestData, locationParserEmpty);

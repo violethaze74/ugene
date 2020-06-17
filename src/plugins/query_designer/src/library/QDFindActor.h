@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,24 +22,26 @@
 #ifndef _U2_FIND_QUERY_H_
 #define _U2_FIND_QUERY_H_
 
-#include <U2Lang/QueryDesignerRegistry.h>
-
 #include <U2Algorithm/FindAlgorithmTask.h>
 
+#include <U2Lang/QueryDesignerRegistry.h>
 
 namespace U2 {
 
 class QDFindActor : public QDActor {
     Q_OBJECT
 public:
-    QDFindActor(QDActorPrototype const* proto);
+    QDFindActor(QDActorPrototype const *proto);
     int getMinResultLen() const;
     int getMaxResultLen() const;
     QString getText() const;
-    Task* getAlgorithmTask(const QVector<U2Region>& location);
-    QColor defaultColor() const { return QColor(0xff,0xf8,0); }
+    Task *getAlgorithmTask(const QVector<U2Region> &location);
+    QColor defaultColor() const {
+        return QColor(0xff, 0xf8, 0);
+    }
 private slots:
-    void sl_onFindTaskFinished(Task* t);
+    void sl_onFindTaskFinished(Task *t);
+
 private:
     FindAlgorithmTaskSettings settings;
 };
@@ -47,10 +49,14 @@ private:
 class QDFindActorPrototype : public QDActorPrototype {
 public:
     QDFindActorPrototype();
-    virtual QDActor* createInstance() const { return new QDFindActor(this); }
-    virtual QIcon getIcon() const { return QIcon(":core/images/find_dialog.png"); }
+    virtual QDActor *createInstance() const {
+        return new QDFindActor(this);
+    }
+    virtual QIcon getIcon() const {
+        return QIcon(":core/images/find_dialog.png");
+    }
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

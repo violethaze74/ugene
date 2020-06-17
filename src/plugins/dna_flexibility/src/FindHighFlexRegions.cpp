@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,28 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-
 #include "FindHighFlexRegions.h"
-#include "FindHighFlexRegionsAlgorithm.h"
 
+#include "FindHighFlexRegionsAlgorithm.h"
 
 namespace U2 {
 
-
 FindHighFlexRegions::FindHighFlexRegions(
-                         const DNASequence& _sequence,
-                         const HighFlexSettings& _settings)
+    const DNASequence &_sequence,
+    const HighFlexSettings &_settings)
     : Task(tr("Searching for regions of high DNA flexibility"), TaskFlags_FOSCOE),
       sequence(_sequence),
-      settings(_settings)
-{
+      settings(_settings) {
 }
 
-
-void FindHighFlexRegions::run()
-{
+void FindHighFlexRegions::run() {
     FindHighFlexRegionsAlgorithm::find(
-        dynamic_cast<FindHighFlexRegionsListener*>(this),
+        dynamic_cast<FindHighFlexRegionsListener *>(this),
         settings,
         sequence.constSequence(),
         sequence.length(),
@@ -52,11 +47,8 @@ QList<HighFlexResult> FindHighFlexRegions::getResults() const {
     return results;
 }
 
-
-void FindHighFlexRegions::onResult(const HighFlexResult& result)
-{
+void FindHighFlexRegions::onResult(const HighFlexResult &result) {
     results.append(result);
 }
 
-
-} // namespace
+}    // namespace U2

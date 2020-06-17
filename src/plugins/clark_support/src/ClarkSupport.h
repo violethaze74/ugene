@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ namespace U2 {
 class ClarkSupport : public ExternalTool {
     Q_OBJECT
 public:
-    ClarkSupport(const QString& id, const QString& name, const QString& path = "");
+    ClarkSupport(const QString &id, const QString &name, const QString &path = "");
 
     static void registerTools(ExternalToolRegistry *etRegistry);
     static void unregisterTools(ExternalToolRegistry *etRegistry);
@@ -47,8 +47,7 @@ public:
     static const QString ET_CLARK_GET_TARGETS_DEF_ID;
     static const QString ET_CLARK_GET_FILES_TO_TAX_NODES;
     static const QString ET_CLARK_GET_FILES_TO_TAX_NODES_ID;
-
 };
 
-}//namespace
-#endif // _U2_CLARK_SUPPORT_H_
+}    // namespace U2
+#endif    // _U2_CLARK_SUPPORT_H_

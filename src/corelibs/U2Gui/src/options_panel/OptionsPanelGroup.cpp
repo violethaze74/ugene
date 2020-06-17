@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,12 +23,10 @@
 
 namespace U2 {
 
-OptionsPanelGroup::OptionsPanelGroup(GroupHeaderImageWidget* _headerImageWidget,
-    GroupOptionsWidget* _optionsWidget)
+OptionsPanelGroup::OptionsPanelGroup(GroupHeaderImageWidget *_headerImageWidget,
+                                     GroupOptionsWidget *_optionsWidget)
     : headerImageWidget(_headerImageWidget),
-      optionsWidget(_optionsWidget)
-{
-
+      optionsWidget(_optionsWidget) {
 }
 
-} // namespace U2
+}    // namespace U2

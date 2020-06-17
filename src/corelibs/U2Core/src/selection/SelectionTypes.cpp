@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
 #include "SelectionTypes.h"
 
 // These are included to export symbols
-#include "TextSelection.h"
 #include "DNASequenceSelection.h"
+#include "TextSelection.h"
 
 namespace U2 {
 
@@ -43,4 +43,4 @@ const GSelectionType GSelectionTypes::ANNOTATION_GROUPS("selection_annotation_gr
 
 const GSelectionType GSelectionTypes::FOLDERS("selection_folders");
 
-}//namespace
+}    // namespace U2

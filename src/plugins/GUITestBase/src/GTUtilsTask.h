@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,21 +29,19 @@ class Task;
 namespace U2 {
 using namespace HI;
 
-class GTUtilsTask
-{
+class GTUtilsTask {
 public:
-    static QList<Task*> getTopLevelTasks(HI::GUITestOpStatus &os);
-    static Task* getTaskByName(HI::GUITestOpStatus &os, QString taskName, GTGlobals::FindOptions options = GTGlobals::FindOptions(true));
-    static Task* getSubTaskByName(HI::GUITestOpStatus &os, QString taskName, GTGlobals::FindOptions options = GTGlobals::FindOptions(true));
-    static Task* getSubTaskByName(HI::GUITestOpStatus &os, Task* parent, QString taskName, GTGlobals::FindOptions options = GTGlobals::FindOptions(true));
+    static QList<Task *> getTopLevelTasks(HI::GUITestOpStatus &os);
+    static Task *getTaskByName(HI::GUITestOpStatus &os, QString taskName, GTGlobals::FindOptions options = GTGlobals::FindOptions(true));
+    static Task *getSubTaskByName(HI::GUITestOpStatus &os, QString taskName, GTGlobals::FindOptions options = GTGlobals::FindOptions(true));
+    static Task *getSubTaskByName(HI::GUITestOpStatus &os, Task *parent, QString taskName, GTGlobals::FindOptions options = GTGlobals::FindOptions(true));
     static void checkTask(HI::GUITestOpStatus &os, QString taskName);
     static void checkNoTask(HI::GUITestOpStatus &os, QString taskName);
     static void cancelTask(HI::GUITestOpStatus &os, QString taskName);
     static void cancelSubTask(HI::GUITestOpStatus &os, QString taskName);
     static void waitTaskStart(HI::GUITestOpStatus &os, QString taskName, int timeOut = 180000);
-
 };
 
-}
+}    // namespace U2
 
-#endif // GTUTILSTASK_H
+#endif    // GTUTILSTASK_H

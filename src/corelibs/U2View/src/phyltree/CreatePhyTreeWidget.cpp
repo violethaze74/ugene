@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,14 +25,12 @@
 
 namespace U2 {
 
-QString CreatePhyTreeWidget::settingsPath(){
+QString CreatePhyTreeWidget::settingsPath() {
     return QString(PHY_TREE_SETTINGS);
 }
 
-CreatePhyTreeWidget::CreatePhyTreeWidget(QWidget *parent) :
-    QWidget(parent)
-{
-
+CreatePhyTreeWidget::CreatePhyTreeWidget(QWidget *parent)
+    : QWidget(parent) {
 }
 
 bool CreatePhyTreeWidget::checkSettings(QString &, const CreatePhyTreeSettings &) {
@@ -47,4 +45,4 @@ bool CreatePhyTreeWidget::insertOutputOptionWidget(PhyTreeDisplayOptionsWidget *
     return false;
 }
 
-}
+}    // namespace U2

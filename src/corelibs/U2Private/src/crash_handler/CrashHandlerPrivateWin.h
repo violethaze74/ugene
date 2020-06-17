@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,12 +25,11 @@
 #include <qglobal.h>
 #ifdef Q_OS_WIN
 
-#include <windows.h>
+#    include <google_breakpad/common/minidump_format.h>
+#    include <windows.h>
 
-#include <google_breakpad/common/minidump_format.h>
-
-#include "CrashHandlerPrivate.h"
-#include "StackWalker.h"
+#    include "CrashHandlerPrivate.h"
+#    include "StackWalker.h"
 
 namespace U2 {
 
@@ -61,9 +60,8 @@ private:
     bool dumpWasSuccessfullySaved;
 };
 
-
-}   // namespace U2
+}    // namespace U2
 
 #endif
 
-#endif // _U2_CRASH_HANDLER_PRIVATE_WIN_H_
+#endif    // _U2_CRASH_HANDLER_PRIVATE_WIN_H_

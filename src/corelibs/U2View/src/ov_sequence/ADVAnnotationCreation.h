@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,18 +39,19 @@ class U2SequenceObject;
 class U2VIEW_EXPORT ADVAnnotationCreation : public QObject {
     Q_OBJECT
 public:
-    ADVAnnotationCreation(AnnotatedDNAView* v);
+    ADVAnnotationCreation(AnnotatedDNAView *v);
 
-    QAction* getCreateAnnotationAction() const {return createAction;}
+    QAction *getCreateAnnotationAction() const {
+        return createAction;
+    }
 
 private slots:
     void sl_createAnnotation();
 
 private:
-    AnnotatedDNAView* ctx;
-    QAction* createAction;
+    AnnotatedDNAView *ctx;
+    QAction *createAction;
 };
-
 
 class U2VIEW_EXPORT ADVCreateAnnotationsTask : public Task {
     Q_OBJECT
@@ -61,9 +62,9 @@ public:
 
 private:
     QPointer<AnnotatedDNAView> ctx;
-    CreateAnnotationsTask* t;
+    CreateAnnotationsTask *t;
 };
 
-} // namespace U2
+}    // namespace U2
 
 #endif

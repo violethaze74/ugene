@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -24,9 +24,8 @@
 namespace U2 {
 
 GenomeAlignerWriteTask::GenomeAlignerWriteTask(GenomeAlignerWriter *s)
-: Task("WriteAlignedReadsSubTask", TaskFlag_None),
-seqWriter(s), end(false), writing(false), readsWritten(0)
-{
+    : Task("WriteAlignedReadsSubTask", TaskFlag_None),
+      seqWriter(s), end(false), writing(false), readsWritten(0) {
 }
 
 void GenomeAlignerWriteTask::setSeqWriter(GenomeAlignerWriter *seqWriter) {
@@ -110,4 +109,4 @@ void GenomeAlignerWriteTask::setReadWritten(SearchQuery *read, SearchQuery *revC
     }
 }
 
-} // U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,9 +49,9 @@ public:
     static const Descriptor CATEGORY_SNP_ANNOTATION();
     static const Descriptor CATEGORY_CHIP_SEQ();
 
-}; // BaseActorCategories
+};    // BaseActorCategories
 
-}//Workflow namespace
-}//GB2 namespace
+}    // namespace Workflow
+}    // namespace U2
 
 #endif

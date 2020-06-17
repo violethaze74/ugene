@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,6 +33,6 @@ public:
     static const QString ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
 };
 
-}   //namespace
+}    // namespace U2
 
-#endif // _U2_BASE_ALIGNMENT_ALGORITHM_IDS_H_
+#endif    // _U2_BASE_ALIGNMENT_ALGORITHM_IDS_H_

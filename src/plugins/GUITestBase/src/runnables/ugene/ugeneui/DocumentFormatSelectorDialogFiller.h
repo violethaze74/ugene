@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,30 +26,32 @@
 
 class QRadioButton;
 
-namespace U2{
+namespace U2 {
 using namespace HI;
 
-class DocumentFormatSelectorDialogFiller : public Filler
-{
+class DocumentFormatSelectorDialogFiller : public Filler {
 public:
     DocumentFormatSelectorDialogFiller(HI::GUITestOpStatus &os,
                                        const QString &_format,
                                        const int _score = -1,
-                                       const int _formatLineLable = -1):
-        Filler(os, "DocumentFormatSelectorDialog"),
-        format(_format),
-        score(_score),
-        formatLineLable(_formatLineLable){}
-    DocumentFormatSelectorDialogFiller(HI::GUITestOpStatus &os, CustomScenario* custom):
-        Filler(os, "DocumentFormatSelectorDialog", custom){}
+                                       const int _formatLineLable = -1)
+        : Filler(os, "DocumentFormatSelectorDialog"),
+          format(_format),
+          score(_score),
+          formatLineLable(_formatLineLable) {
+    }
+    DocumentFormatSelectorDialogFiller(HI::GUITestOpStatus &os, CustomScenario *custom)
+        : Filler(os, "DocumentFormatSelectorDialog", custom) {
+    }
     virtual void commonScenario();
+
 private:
     QString format;
     int score;
     int formatLineLable;
-    QRadioButton* getButton(HI::GUITestOpStatus &os);
+    QRadioButton *getButton(HI::GUITestOpStatus &os);
 };
 
-}
+}    // namespace U2
 
-#endif // DOCUMENTFORMATSELECTORDIALOGFILLER_H
+#endif    // DOCUMENTFORMATSELECTORDIALOGFILLER_H

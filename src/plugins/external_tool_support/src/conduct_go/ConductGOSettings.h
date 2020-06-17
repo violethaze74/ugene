@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,6 @@
 
 namespace U2 {
 
-
 class ConductGOSettings {
 public:
     const static QString UNIVERSE_HGU133A;
@@ -44,18 +43,18 @@ public:
 
     ConductGOSettings();
 
-    QString     outDir;
-    QString     title;
-    QString     treatUrl;
-    QString     geneUniverse;
+    QString outDir;
+    QString title;
+    QString treatUrl;
+    QString geneUniverse;
 
 public:
-     QStringList getArguments() const;
+    QStringList getArguments() const;
 
 private:
     void initDefault();
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_CONDUCT_GO_SETTINGS_
+#endif    // _U2_CONDUCT_GO_SETTINGS_

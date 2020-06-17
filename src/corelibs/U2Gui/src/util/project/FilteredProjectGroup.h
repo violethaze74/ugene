@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,8 +38,8 @@ class WrappedObject : public QObject {
 public:
     WrappedObject(GObject *obj, FilteredProjectGroup *parentGroup);
 
-    GObject * getObject() const;
-    FilteredProjectGroup * getParentGroup() const;
+    GObject *getObject() const;
+    FilteredProjectGroup *getParentGroup() const;
 
     static bool objectLessThan(const WrappedObject *first, const WrappedObject *second);
 
@@ -59,14 +59,14 @@ public:
     explicit FilteredProjectGroup(const QString &name);
     ~FilteredProjectGroup();
 
-    const QString & getGroupName() const;
+    const QString &getGroupName() const;
 
     void addObject(GObject *obj, int objNumber);
     void removeAt(int objNumber);
 
     bool contains(GObject *obj) const;
-    WrappedObject * getWrappedObject(GObject *obj) const;
-    WrappedObject * getWrappedObject(int position) const;
+    WrappedObject *getWrappedObject(GObject *obj) const;
+    WrappedObject *getWrappedObject(int position) const;
     int getWrappedObjectNumber(WrappedObject *obj) const;
     int getObjectsCount() const;
     int getNewObjectNumber(GObject *obj) const;
@@ -78,6 +78,6 @@ private:
     QList<WrappedObject *> filteredObjs;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_FILTERED_PROJECT_GROUP_H_
+#endif    // _U2_FILTERED_PROJECT_GROUP_H_

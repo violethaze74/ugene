@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 
 #include <U2Lang/LocalDomain.h>
 
-#include "KrakenClassifyTask.h"
 #include "../ngs_reads_classification/src/TaxonomySupport.h"
+#include "KrakenClassifyTask.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -33,7 +33,7 @@ namespace LocalWorkflow {
 class KrakenClassifyWorker : public BaseWorker {
     Q_OBJECT
 public:
-    KrakenClassifyWorker(Actor* actor);
+    KrakenClassifyWorker(Actor *actor);
 
     void init();
     Task *tick();
@@ -55,7 +55,7 @@ private:
     static const QString KRAKEN_DIR;
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _U2_KRAKEN_CLASSIFY_WORKER_H_
+#endif    // _U2_KRAKEN_CLASSIFY_WORKER_H_

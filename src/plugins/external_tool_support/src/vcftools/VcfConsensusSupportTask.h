@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,13 @@
 #ifndef _U2_VCF_CONSENSUS_SUPPORT_TASK_H_
 #define _U2_VCF_CONSENSUS_SUPPORT_TASK_H_
 
+#include "samtools/TabixSupportTask.h"
+
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrl.h>
 
 #include <U2Formats/BgzipTask.h>
-
-#include "samtools/TabixSupportTask.h"
 
 namespace U2 {
 
@@ -39,19 +39,20 @@ public:
     VcfConsensusSupportTask(const GUrl &inputFA, const GUrl &inputVcf, const GUrl &output);
 
     void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask);
 
-    const GUrl& getResultUrl();
+    const GUrl &getResultUrl();
+
 private:
     GUrl inputFA;
     GUrl inputVcf;
     GUrl output;
     TabixSupportTask *tabixTask;
-    ExternalToolRunTask* vcfTask;
+    ExternalToolRunTask *vcfTask;
 
     QString getPath(ExternalTool *et);
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_VCF_CONSENSUS_SUPPORT_TASK_H_
+#endif    // _U2_VCF_CONSENSUS_SUPPORT_TASK_H_

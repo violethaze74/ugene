@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,24 +22,26 @@
 #ifndef _DIST_BUILD_SARRAY_WIDGET_H_
 #define _DIST_BUILD_SARRAY_WIDGET_H_
 
-#include "ui_BuildSuffixArraySettings.h"
 #include "U2View/DnaAssemblyGUIExtension.h"
 
-namespace U2{
+#include "ui_BuildSuffixArraySettings.h"
+
+namespace U2 {
 
 class BuildSArraySettingsWidget : public DnaAssemblyAlgorithmBuildIndexWidget, Ui_BuildSuffixArraySettings {
     Q_OBJECT
 public:
-    BuildSArraySettingsWidget(QWidget* parent);
-    virtual QMap<QString,QVariant> getBuildIndexCustomSettings();
+    BuildSArraySettingsWidget(QWidget *parent);
+    virtual QMap<QString, QVariant> getBuildIndexCustomSettings();
     virtual QString getIndexFileExtension();
-    virtual GUrl buildIndexUrl(const GUrl& url);
+    virtual GUrl buildIndexUrl(const GUrl &url);
 private slots:
     void sl_onPartSliderChanged(int value);
+
 private:
     int systemSize;
 };
 
-}
+}    // namespace U2
 
 #endif

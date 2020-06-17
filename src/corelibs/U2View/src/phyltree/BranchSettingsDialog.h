@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ namespace U2 {
 class BranchSettingsDialog : public BaseSettingsDialog, public Ui_BranchSettingsDialog {
     Q_OBJECT
 public:
-    BranchSettingsDialog(QWidget *parent, const OptionsMap& settings);
+    BranchSettingsDialog(QWidget *parent, const OptionsMap &settings);
 
     virtual void accept();
 
@@ -42,6 +42,6 @@ private:
     void updateColorButton();
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

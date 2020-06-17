@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "dialogs/ExportMca2MsaDialog.h"
+
 #include <QPushButton>
 
 #include <U2Core/BaseDocumentFormats.h>
@@ -27,18 +29,15 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
 
-#include "dialogs/ExportMca2MsaDialog.h"
-
 namespace U2 {
 
 ExportMca2MsaDialog::ExportMca2MsaDialog(const QString &defaultFilePath, QWidget *parent)
     : QDialog(parent),
-      saveController(NULL)
-{
+      saveController(NULL) {
     setupUi(this);
     GCOUNTER(cvar, tvar, "'Export Alignment without Chromatograms' dialog opening");
 
-    new HelpButton(this, buttonBox, "24742333");
+    new HelpButton(this, buttonBox, "46499665");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -78,4 +77,4 @@ void ExportMca2MsaDialog::initSaveController(const QString &defaultFilePath) {
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-}   // namespace U2
+}    // namespace U2

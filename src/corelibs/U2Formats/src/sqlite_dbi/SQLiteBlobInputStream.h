@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,6 +59,6 @@ public:
     qint64 skip(qint64 n, U2OpStatus &os);
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_SQLITEBLOBINPUTSTREAM_H_
+#endif    // _U2_SQLITEBLOBINPUTSTREAM_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,26 +19,25 @@
  * MA 02110-1301, USA.
  */
 
+#include "StartupDialog.h"
+
 #include <QDir>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include <U2Core/L10n.h>
+#include <U2Core/Theme.h>
 
 #include <U2Gui/HelpButton.h>
-
-#include "StartupDialog.h"
 
 namespace U2 {
 
 StartupDialog::StartupDialog(QWidget *parent)
-: QDialog(parent)
-{
+    : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "24740087");
+    new HelpButton(this, buttonBox, "46500220");
 
-    label->setStyleSheet(L10N::infoHintStyleSheet());
+    label->setStyleSheet(Theme::infoHintStyleSheet());
 
     outDirWidget = new OutputDirectoryWidget(this, false /*don't commitOnHide*/);
     QVBoxLayout *l = new QVBoxLayout(box);
@@ -49,19 +48,18 @@ StartupDialog::StartupDialog(QWidget *parent)
     connect(button, SIGNAL(clicked()), this, SLOT(sl_accepted()));
 
 #ifdef Q_OS_WIN
-    QFont f( "Arial", 8, QFont::Bold);
+    QFont f("Arial", 8, QFont::Bold);
     label->setFont(f);
 #endif
-
 }
 
-void StartupDialog::sl_accepted(){
+void StartupDialog::sl_accepted() {
     QDir dir(outDirWidget->getChoosenDir());
-    if(!dir.exists()){
+    if (!dir.exists()) {
         dir.mkpath(dir.absolutePath());
     }
     QFile file(dir.filePath("ex1.txt"));
-    if (!file.open(QIODevice::WriteOnly)){
+    if (!file.open(QIODevice::WriteOnly)) {
         QMessageBox::critical(this, this->windowTitle(), tr("You have no write access to the folder. Please choose another one."));
         return;
     }
@@ -71,4 +69,4 @@ void StartupDialog::sl_accepted(){
     QDialog::accept();
 }
 
-} // U2
+}    // namespace U2

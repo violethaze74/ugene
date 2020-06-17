@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_MSA_EDITOR_STATUS_BAR_H_
 #define _U2_MSA_EDITOR_STATUS_BAR_H_
 
-#include "MaEditorStatusBar.h"
-
 #include <QRegExpValidator>
+
+#include "MaEditorStatusBar.h"
 
 class QLineEdit;
 class QPushButton;
@@ -37,37 +37,19 @@ class MaSearchValidator;
 class MsaEditorStatusBar : public MaEditorStatusBar {
     Q_OBJECT
 public:
-    MsaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea);
-
-    bool eventFilter(QObject* obj, QEvent* ev);
-
-private slots:
-    void sl_alphabetChanged();
-    void sl_findNext();
-    void sl_findPrev();
-    void sl_findFocus();
+    MsaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSequenceArea *seqArea);
 
 private:
     void setupLayout();
     void updateLabels();
-
-private:
-    QLabel*                     findLabel;
-    QPushButton*                prevButton;
-    QPushButton*                nextButton;
-    QLineEdit*                  searchEdit;
-
-    QPoint                      lastSearchPos;
-    QAction*                    findAction;
-    MaSearchValidator*         validator;
 };
 
 class MaSearchValidator : public QRegExpValidator {
 public:
-    MaSearchValidator(const DNAAlphabet* alphabet, QObject* parent);
+    MaSearchValidator(const DNAAlphabet *alphabet, QObject *parent);
     State validate(QString &input, int &pos) const;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_MSA_EDITOR_STATUS_BAR_H_
+#endif    // _U2_MSA_EDITOR_STATUS_BAR_H_

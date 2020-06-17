@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,6 +53,6 @@ public:
     virtual void setAttributeValue(const QVariant &newVal);
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _GROUPER_SLOT_ATTRIBUTE_
+#endif    // _GROUPER_SLOT_ATTRIBUTE_

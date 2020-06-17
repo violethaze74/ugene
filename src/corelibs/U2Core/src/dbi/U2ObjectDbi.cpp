@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,23 +23,23 @@
 
 namespace U2 {
 
-const QString U2ObjectDbi::ROOT_FOLDER                  = "/";
-const QString U2ObjectDbi::RECYCLE_BIN_FOLDER           = "Recycle bin";
-const QString U2ObjectDbi::PATH_SEP                     = "/";
+const QString U2ObjectDbi::ROOT_FOLDER = "/";
+const QString U2ObjectDbi::RECYCLE_BIN_FOLDER = "Recycle bin";
+const QString U2ObjectDbi::PATH_SEP = "/";
 
-const int U2ObjectDbi::OBJECT_ACCESS_UPDATE_INTERVAL    = 5000;
+const int U2ObjectDbi::OBJECT_ACCESS_UPDATE_INTERVAL = 5000;
 
-const QString U2ObjectDbi::PREV_OBJ_PATH_ATTR_NAME      = "Previous path";
+const QString U2ObjectDbi::PREV_OBJ_PATH_ATTR_NAME = "Previous path";
 
-void U2ObjectDbi::updateObjectAccessTime(const U2DataId &/*objectId*/, U2OpStatus &/*os*/) {
+void U2ObjectDbi::updateObjectAccessTime(const U2DataId & /*objectId*/, U2OpStatus & /*os*/) {
 }
 
-bool U2ObjectDbi::isObjectInUse(const U2DataId &/*id*/, U2OpStatus &/*os*/) {
+bool U2ObjectDbi::isObjectInUse(const U2DataId & /*id*/, U2OpStatus & /*os*/) {
     return false;
 }
 
-QList<U2DataId> U2ObjectDbi::getAllObjectsInUse(U2OpStatus &/*os*/) {
+QList<U2DataId> U2ObjectDbi::getAllObjectsInUse(U2OpStatus & /*os*/) {
     return QList<U2DataId>();
 }
 
-} // namespace U2
+}    // namespace U2

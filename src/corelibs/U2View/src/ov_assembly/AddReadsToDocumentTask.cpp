@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,23 +19,22 @@
  * MA 02110-1301, USA.
  */
 
+#include "AddReadsToDocumentTask.h"
+
 #include <QCoreApplication>
 
-#include <U2Core/L10n.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/L10n.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
 #include <U2Formats/DocumentFormatUtils.h>
 
-#include "AddReadsToDocumentTask.h"
-
 namespace U2 {
 
 AddReadsToDocumentTask::AddReadsToDocumentTask(const QList<U2AssemblyRead> &reads, const QPointer<Document> &doc)
-    : Task(tr("Add short reads to document"), TaskFlag_None), reads(reads), doc(doc)
-{
+    : Task(tr("Add short reads to document"), TaskFlag_None), reads(reads), doc(doc) {
     SAFE_POINT_EXT(!doc.isNull(), setError(L10N::nullPointerError("document")), );
     dbiRef = doc->getDbiRef();
     SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("Invalid database reference detected")), );
@@ -68,4 +67,4 @@ Task::ReportResult AddReadsToDocumentTask::report() {
     return ReportResult_Finished;
 }
 
-} // namespace U2
+}    // namespace U2

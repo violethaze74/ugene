@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,19 +23,18 @@
 
 namespace U2 {
 Plugin::Plugin(const QString &_name, const QString &_desc, const bool _isFree, PluginState _state)
-    : name(_name), description(_desc), isFreeValue(_isFree), state(_state)
-{
-    isLicenseAcceptedValue=false;
+    : name(_name), description(_desc), isFreeValue(_isFree), state(_state) {
+    isLicenseAcceptedValue = false;
 }
-void Plugin::setLicensePath(const QString & _licensePath){
-    licensePath=GUrl(_licensePath);
-}
-
-void Plugin::acceptLicense(){
-    isLicenseAcceptedValue=true;
+void Plugin::setLicensePath(const QString &_licensePath) {
+    licensePath = GUrl(_licensePath);
 }
 
-const QString & Plugin::getId() const {
+void Plugin::acceptLicense() {
+    isLicenseAcceptedValue = true;
+}
+
+const QString &Plugin::getId() const {
     return id;
 }
 
@@ -43,4 +42,4 @@ void Plugin::setId(const QString &value) {
     id = value;
 }
 
-}//namespace
+}    // namespace U2

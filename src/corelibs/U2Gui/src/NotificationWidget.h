@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,15 +24,14 @@
 
 #include <assert.h>
 
+#include <QLabel>
+#include <QMouseEvent>
 #include <QObject>
 #include <QPoint>
-
-#include <QMouseEvent>
+#include <QScrollArea>
 #include <QStyle>
-#include <QLabel>
 #include <QToolButton>
 #include <QVBoxLayout>
-#include <QScrollArea>
 
 namespace U2 {
 
@@ -42,16 +41,16 @@ namespace U2 {
 #define TS_HEIGHT 350
 #define TS_WIDTH TT_WIDTH + 27
 
-class Header: public QFrame {
-Q_OBJECT
+class Header : public QFrame {
+    Q_OBJECT
 
 public:
-    Header(QWidget *w = NULL); 
+    Header(QWidget *w = NULL);
     bool isFixed();
 
-protected: 
-    void mousePressEvent(QMouseEvent *me) ; 
-    void mouseMoveEvent(QMouseEvent *me) ;
+protected:
+    void mousePressEvent(QMouseEvent *me);
+    void mouseMoveEvent(QMouseEvent *me);
     bool eventFilter(QObject *, QEvent *);
 
 private:
@@ -65,8 +64,8 @@ private:
     QPoint offset;
 };
 
-class NotificationWidget: public QFrame {
-Q_OBJECT
+class NotificationWidget : public QFrame {
+    Q_OBJECT
 
 public:
     NotificationWidget(QWidget *w = NULL);
@@ -76,7 +75,7 @@ public:
     void setFixed(bool val);
 
 protected:
-    bool event(QEvent *event); 
+    bool event(QEvent *event);
 
 private:
     QScrollArea *scrlArea;
@@ -84,12 +83,12 @@ private:
     QFrame *frame;
     Header *header;
 
-    QPoint m_old_pos; 
-    bool m_mouse_down; 
-    bool left, right, bottom; 
+    QPoint m_old_pos;
+    bool m_mouse_down;
+    bool left, right, bottom;
 
     bool isFixed;
 };
 
-} //namespace
+}    // namespace U2
 #endif

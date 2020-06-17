@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,12 +61,12 @@ public:
         bool addResultToProject;
     };
 
-    AlignToReferenceBlastCmdlineTask(const Settings& settings);
+    AlignToReferenceBlastCmdlineTask(const Settings &settings);
 
 private:
     void prepare();
     QString generateReport() const;
-    QList<Task*> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask);
     void run();
     ReportResult report();
 
@@ -91,7 +91,7 @@ private:
 class AlignToReferenceBlastDialog : public QDialog, public Ui_AlignToReferenceBlastDialog {
     Q_OBJECT
 public:
-    AlignToReferenceBlastDialog(QWidget* parent);
+    AlignToReferenceBlastDialog(QWidget *parent);
     AlignToReferenceBlastCmdlineTask::Settings getSettings() const;
 
 public slots:
@@ -114,6 +114,6 @@ private:
     QString defaultOutputUrl;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H_
+#endif    // _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H_

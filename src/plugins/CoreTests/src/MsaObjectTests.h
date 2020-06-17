@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,6 +46,6 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _MSA_OBJECT_TESTS_H_
+#endif    // _MSA_OBJECT_TESTS_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,6 @@
 #include <U2Algorithm/PairwiseAligner.h>
 
 #include <U2Core/SMatrix.h>
-
 
 namespace U2 {
 
@@ -74,6 +73,6 @@ private:
     void setFValue(int i, int j, float v);
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_NW_ALIGNER_H_
+#endif    // _U2_NW_ALIGNER_H_

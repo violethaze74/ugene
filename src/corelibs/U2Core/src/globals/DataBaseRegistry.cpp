@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,41 +23,39 @@
 
 namespace U2 {
 
-DataBaseRegistry::DataBaseRegistry(QObject *o):QObject(o) {
+DataBaseRegistry::DataBaseRegistry(QObject *o)
+    : QObject(o) {
 }
 
 DataBaseRegistry::~DataBaseRegistry() {
-    foreach(const DataBaseFactory *dbf, factories) {
+    foreach (const DataBaseFactory *dbf, factories) {
         delete dbf;
     }
 }
 
 bool DataBaseRegistry::registerDataBase(DataBaseFactory *f, const QString &id) {
-    if(!isRegistered(id)) {
+    if (!isRegistered(id)) {
         factories[id] = f;
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
 
-bool DataBaseRegistry::isRegistered(const QString& id) {
-    if(factories.contains(id)) {
+bool DataBaseRegistry::isRegistered(const QString &id) {
+    if (factories.contains(id)) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
 
 DataBaseFactory *DataBaseRegistry::getFactoryById(const QString &id) {
-    if(isRegistered(id)) {
+    if (isRegistered(id)) {
         return factories[id];
-    }
-    else {
+    } else {
         return NULL;
     }
 }
 
-}
+}    // namespace U2

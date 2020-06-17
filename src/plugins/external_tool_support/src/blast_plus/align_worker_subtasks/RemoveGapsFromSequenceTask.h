@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ class U2SequenceObject;
 
 class FindGapsInSequenceCallback : public SequenceDbiWalkerCallback {
 public:
-    FindGapsInSequenceCallback(U2SequenceObject * const sequenceObject);
+    FindGapsInSequenceCallback(U2SequenceObject *const sequenceObject);
 
     void onRegion(SequenceDbiWalkerSubtask *subtask, TaskStateInfo &stateInfo);
 
@@ -40,7 +40,7 @@ public:
 private:
     void addGaps(const QList<U2MsaGap> &gaps);
 
-    U2SequenceObject * const sequenceObject;
+    U2SequenceObject *const sequenceObject;
 
     QMutex mutex;
     QList<U2Region> gappedRegions;
@@ -49,13 +49,13 @@ private:
 class RemoveGapsFromSequenceTask : public Task {
     Q_OBJECT
 public:
-    RemoveGapsFromSequenceTask(U2SequenceObject * const sequenceObject);
+    RemoveGapsFromSequenceTask(U2SequenceObject *const sequenceObject);
 
 private:
     void prepare();
     void run();
 
-    U2SequenceObject * const sequenceObject;
+    U2SequenceObject *const sequenceObject;
 
     FindGapsInSequenceCallback callback;
     SequenceDbiWalkerTask *findGapsTask;
@@ -63,6 +63,6 @@ private:
     static const int CHUNK_SIZE = 128000;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_REMOVE_GAPS_FROM_SEQUENCE_TASK_H_
+#endif    // _U2_REMOVE_GAPS_FROM_SEQUENCE_TASK_H_

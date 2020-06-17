@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,16 +26,17 @@
 
 namespace U2 {
 using namespace HI;
-    class SaveProjectAsDialogFiller : public Filler {
-    public:
-        SaveProjectAsDialogFiller(HI::GUITestOpStatus &_os, const QString &_projectName, const QString &_projectFolder, const QString &_projectFile)
-            :Filler(_os, "CreateNewProjectDialog"), projectName(_projectName), projectFolder(_projectFolder), projectFile(_projectFile){}
-        void commonScenario();
-    private:
-        const QString projectName;
-        const QString projectFolder;
-        const QString projectFile;
-    };
-}
+class SaveProjectAsDialogFiller : public Filler {
+public:
+    SaveProjectAsDialogFiller(HI::GUITestOpStatus &_os, const QString &_projectName, const QString &_projectFile)
+        : Filler(_os, "CreateNewProjectDialog"), projectName(_projectName), projectFile(_projectFile) {
+    }
+    void commonScenario();
+
+private:
+    const QString projectName;
+    const QString projectFile;
+};
+}    // namespace U2
 
 #endif

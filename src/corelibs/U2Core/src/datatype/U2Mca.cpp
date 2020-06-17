@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,40 +24,30 @@
 namespace U2 {
 
 U2McaRow::U2McaRow()
-    : U2MsaRow()
-{
-
+    : U2MsaRow() {
 }
 
 U2McaRow::U2McaRow(const U2MsaRow &msaRow)
-    : U2MsaRow(msaRow)
-{
-
+    : U2MsaRow(msaRow) {
 }
 
 bool U2McaRow::hasValidChildObjectIds() const {
     return !chromatogramId.isEmpty();
 }
 
-U2Mca::U2Mca()
-{
-
+U2Mca::U2Mca() {
 }
 
 U2Mca::U2Mca(const U2Msa &dbMsa)
-    : U2Msa(dbMsa)
-{
-
+    : U2Msa(dbMsa) {
 }
 
 U2Mca::U2Mca(const U2DataId &id, const QString &dbId, qint64 version)
-    : U2Msa(id, dbId, version)
-{
-
+    : U2Msa(id, dbId, version) {
 }
 
 U2DataType U2Mca::getType() const {
     return U2Type::Mca;
 }
 
-}   // namespace U2
+}    // namespace U2

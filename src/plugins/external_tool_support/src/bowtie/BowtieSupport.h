@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ namespace U2 {
 class BowtieSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BowtieSupport(const QString& id, const QString &name, const QString &path = "");
+    BowtieSupport(const QString &id, const QString &name, const QString &path = "");
 
     static const QString ET_BOWTIE;
     static const QString ET_BOWTIE_BUILD;
@@ -37,6 +37,6 @@ public:
     static const QString ET_BOWTIE_ID;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_BOWTIE_SUPPORT_H_
+#endif    // _U2_BOWTIE_SUPPORT_H_

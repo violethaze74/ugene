@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-
 #include "ConfigurationWizardFiller.h"
-#include "GTUtilsWizard.h"
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTWidget.h>
+
+#include <QApplication>
+
+#include "GTUtilsWizard.h"
 
 namespace U2 {
 using namespace HI;
@@ -52,4 +53,4 @@ void ConfigurationWizardFiller::commonScenario() {
 
 #undef GT_CLASS_NAME
 
-}   // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,10 +31,10 @@ namespace U2 {
 class BreakpointGreaterOrEqualHitCounter : public BreakpointEqualHitCounter {
 public:
     BreakpointGreaterOrEqualHitCounter(BreakpointHitCountCondition initCondition,
-        quint32 initHitCount);
+                                       quint32 initHitCount);
     virtual bool hit();
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_WORKFLOW_BREAKPOINT_GREATER_OR_EQUAL_HIT_COUNTER_H_
+#endif    // _U2_WORKFLOW_BREAKPOINT_GREATER_OR_EQUAL_HIT_COUNTER_H_

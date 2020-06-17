@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,15 +23,17 @@
 #define _GTUTILS_EXTERNAL_TOOLS_H_
 
 #include <U2Core/U2OpStatus.h>
+#include <core/GUITestOpStatus.h>
 
 namespace U2 {
 
 class GTUtilsExternalTools {
 public:
     static void removeTool(HI::GUITestOpStatus &os, const QString &toolName);
+    static void checkValidation(HI::GUITestOpStatus &os, const QString &toolName);
     static void setToolUrl(HI::GUITestOpStatus &os, const QString &toolName, const QString &url);
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _GTUTILS_EXTERNAL_TOOLS_H_
+#endif    // _GTUTILS_EXTERNAL_TOOLS_H_

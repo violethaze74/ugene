@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,17 +24,19 @@
 
 #include "utils/GTUtilsDialog.h"
 
-namespace U2{
+namespace U2 {
 using namespace HI;
 
-class AliasesDialogFiller : public Filler
-{
+class AliasesDialogFiller : public Filler {
 public:
-    AliasesDialogFiller(HI::GUITestOpStatus &_os, QMap<QPoint*,QString> _map):Filler(_os,"SchemaAliasesConfigurationDialog"),
-        map(_map){}
+    AliasesDialogFiller(HI::GUITestOpStatus &_os, QMap<QPoint *, QString> _map)
+        : Filler(_os, "SchemaAliasesConfigurationDialog"),
+          map(_map) {
+    }
     void commonScenario();
+
 private:
-    QMap<QPoint*,QString> map;
+    QMap<QPoint *, QString> map;
 };
-}
-#endif // ALIASESDIALOGFILLER_H
+}    // namespace U2
+#endif    // ALIASESDIALOGFILLER_H

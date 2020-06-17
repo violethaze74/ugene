@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
 #ifndef _U2_ALPHABET_H_
 #define _U2_ALPHABET_H_
 
-#include <U2Core/global.h>
 #include <U2Core/U2Identity.h>
+#include <U2Core/global.h>
 
 namespace U2 {
 
@@ -33,9 +33,11 @@ namespace U2 {
 */
 class U2CORE_EXPORT U2AlphabetId : public AbstractStringId {
 public:
-    U2AlphabetId(const QString& id = QString()) : AbstractStringId(id){}
+    U2AlphabetId(const QString &id = QString())
+        : AbstractStringId(id) {
+    }
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

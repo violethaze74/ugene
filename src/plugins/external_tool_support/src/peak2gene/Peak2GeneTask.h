@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,20 +40,20 @@ class SaveDocumentTask;
 class Peak2GeneTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    Peak2GeneTask(const Peak2GeneSettings& settings, Workflow::DbiDataStorage *storage, const QList<Workflow::SharedDbiDataHandler>& treatAnn);
+    Peak2GeneTask(const Peak2GeneSettings &settings, Workflow::DbiDataStorage *storage, const QList<Workflow::SharedDbiDataHandler> &treatAnn);
     virtual ~Peak2GeneTask();
 
     virtual void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    virtual QList<Task *> onSubTaskFinished(Task *subTask);
     virtual void run();
     virtual void cleanup();
 
-    const Peak2GeneSettings & getSettings() const;
+    const Peak2GeneSettings &getSettings() const;
 
-    AnnotationTableObject * getGenes() const;
-    AnnotationTableObject * getPeaks() const;
-    const QString & getGenesUrl() const;
-    const QString & getPeaksUrl() const;
+    AnnotationTableObject *getGenes() const;
+    AnnotationTableObject *getPeaks() const;
+    const QString &getGenesUrl() const;
+    const QString &getPeaksUrl() const;
 
 private:
     Peak2GeneSettings settings;
@@ -79,9 +79,9 @@ private:
     static const QString TREAT_NAME;
 
 private:
-    Document* createDoc(const QList<Workflow::SharedDbiDataHandler> &annData, const QString& name);
+    Document *createDoc(const QList<Workflow::SharedDbiDataHandler> &annData, const QString &name);
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_PEAK2GENE_SUPPORT_TASK_
+#endif    // _U2_PEAK2GENE_SUPPORT_TASK_

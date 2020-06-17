@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,22 +19,21 @@
  * MA 02110-1301, USA.
  */
 
+#include "MsaColorSchemeCustom.h"
+
 #include <U2Core/U2SafePoints.h>
 
 #include "ColorSchemeUtils.h"
-#include "MsaColorSchemeCustom.h"
 #include "MsaColorSchemeStatic.h"
 
 namespace U2 {
 
 MsaColorSchemeCustomFactory::MsaColorSchemeCustomFactory(QObject *parent, const ColorSchemeData &scheme)
     : MsaColorSchemeFactory(parent, scheme.name, scheme.name, scheme.type | DNAAlphabet_RAW),
-      colorsPerChar(colorMapToColorVector(scheme.alpColors))
-{
-
+      colorsPerChar(colorMapToColorVector(scheme.alpColors)) {
 }
 
-MsaColorScheme * MsaColorSchemeCustomFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaColorScheme *MsaColorSchemeCustomFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 
@@ -61,9 +60,9 @@ QVector<QColor> MsaColorSchemeCustomFactory::colorMapToColorVector(const QMap<ch
     QMapIterator<char, QColor> it(map);
     while (it.hasNext()) {
         it.next();
-        colorsPerChar[it.key()] = colorsPerChar[it.key() + ('a'-'A')] = it.value();
+        colorsPerChar[it.key()] = colorsPerChar[it.key() + ('a' - 'A')] = it.value();
     }
     return colorsPerChar;
 }
 
-}   // namespace U2
+}    // namespace U2

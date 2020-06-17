@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -24,16 +24,16 @@
 
 #include <U2Test/XMLTestFormat.h>
 
-#include "HmmerSearchTaskTest.h"
 #include "HmmerBuildTaskTest.h"
+#include "HmmerSearchTaskTest.h"
 #include "PhmmerSearchTaskTest.h"
 
 namespace U2 {
 
 class HmmerTests {
 public:
-    static QList<XMLTestFactory*> createTestFactories() {
-        QList<XMLTestFactory*> res;
+    static QList<XMLTestFactory *> createTestFactories() {
+        QList<XMLTestFactory *> res;
         res.append(GTest_UHMM3Search::createFactory());
         res.append(GTest_UHMM3SearchCompare::createFactory());
 
@@ -46,6 +46,6 @@ public:
     }
 };
 
-}
+}    // namespace U2
 
 #endif

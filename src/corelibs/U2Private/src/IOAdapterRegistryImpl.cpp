@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,30 +21,29 @@
 
 #include "IOAdapterRegistryImpl.h"
 
-#include <U2Core/LocalFileAdapter.h>
-#include <U2Core/HttpFileAdapter.h>
-#include <U2Core/VFSAdapter.h>
-#include <U2Core/StringAdapter.h>
 #include <U2Core/DatabaseConnectionAdapter.h>
+#include <U2Core/HttpFileAdapter.h>
+#include <U2Core/LocalFileAdapter.h>
+#include <U2Core/StringAdapter.h>
+#include <U2Core/VFSAdapter.h>
 
 namespace U2 {
 
-bool IOAdapterRegistryImpl::registerIOAdapter(IOAdapterFactory* io) {
-    if (getIOAdapterFactoryById(io->getAdapterId())!=NULL) {
+bool IOAdapterRegistryImpl::registerIOAdapter(IOAdapterFactory *io) {
+    if (getIOAdapterFactoryById(io->getAdapterId()) != NULL) {
         return false;
     }
     adapters.push_back(io);
     return true;
 }
 
-bool IOAdapterRegistryImpl::unregisterIOAdapter(IOAdapterFactory* io)  {
+bool IOAdapterRegistryImpl::unregisterIOAdapter(IOAdapterFactory *io) {
     int n = adapters.removeAll(io);
     return n > 0;
 }
 
-
-IOAdapterFactory* IOAdapterRegistryImpl::getIOAdapterFactoryById(IOAdapterId id) const  {
-    foreach (IOAdapterFactory* io, adapters) {
+IOAdapterFactory *IOAdapterRegistryImpl::getIOAdapterFactoryById(IOAdapterId id) const {
+    foreach (IOAdapterFactory *io, adapters) {
         if (io->getAdapterId() == id) {
             return io;
         }
@@ -52,15 +51,14 @@ IOAdapterFactory* IOAdapterRegistryImpl::getIOAdapterFactoryById(IOAdapterId id)
     return NULL;
 }
 
-
 void IOAdapterRegistryImpl::init() {
     registerIOAdapter(new LocalFileAdapterFactory(this));
     registerIOAdapter(new GzippedLocalFileAdapterFactory(this));
-    registerIOAdapter( new HttpFileAdapterFactory(this) );
-    registerIOAdapter( new GzippedHttpFileAdapterFactory(this) );
-    registerIOAdapter( new VFSAdapterFactory(this) );
-    registerIOAdapter( new StringAdapterFactory(this) );
-    registerIOAdapter( new DatabaseConnectionAdapterFactory(this) );
+    registerIOAdapter(new HttpFileAdapterFactory(this));
+    registerIOAdapter(new GzippedHttpFileAdapterFactory(this));
+    registerIOAdapter(new VFSAdapterFactory(this));
+    registerIOAdapter(new StringAdapterFactory(this));
+    registerIOAdapter(new DatabaseConnectionAdapterFactory(this));
 }
 
-}//namespace
+}    // namespace U2

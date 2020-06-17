@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,15 +19,15 @@
  * MA 02110-1301, USA.
  */
 
+#include "Metaphlan2Validator.h"
+
 #include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DataPathRegistry.h>
 
-#include "Metaphlan2Validator.h"
-#include "Metaphlan2WorkerFactory.h"
-
 #include "../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
+#include "Metaphlan2WorkerFactory.h"
 
 namespace U2 {
 namespace Workflow {
@@ -59,6 +59,6 @@ bool Metaphlan2Validator::validateDatabase(const Actor *actor, NotificationsList
     return result;
 }
 
-}
+}    // namespace Workflow
 
-}
+}    // namespace U2

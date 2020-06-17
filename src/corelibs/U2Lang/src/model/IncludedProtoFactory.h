@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,33 +38,31 @@ public:
     virtual ~IncludedProtoFactory() = default;
 
     static void init(IncludedProtoFactory *protoMaker);
-    static ActorPrototype *getScriptProto(QList<DataTypePtr > input, QList<DataTypePtr > output, QList<Attribute*> attrs,
-        const QString &name, const QString &description, const QString &actorFilePath, bool isAliasName = false);
+    static ActorPrototype *getScriptProto(QList<DataTypePtr> input, QList<DataTypePtr> output, QList<Attribute *> attrs, const QString &name, const QString &description, const QString &actorFilePath, bool isAliasName = false);
     static ActorPrototype *getExternalToolProto(ExternalProcessConfig *cfg);
     static ActorPrototype *getSchemaActorProto(Schema *schema, const QString &name, const QString &actorFilePath);
     static bool registerExternalToolWorker(ExternalProcessConfig *cfg);
     static void registerScriptWorker(const QString &actorName);
-    static ExternalProcessConfig* getExternalToolWorker(const QString& id);
+    static ExternalProcessConfig *getExternalToolWorker(const QString &id);
     static ExternalProcessConfig *unregisterExternalToolWorker(const QString &id);
 
     static bool isRegistered(const QString &actorName);
     static bool isRegisteredTheSameProto(const QString &actorName, ActorPrototype *proto);
 
 protected:
-    virtual ActorPrototype *_getScriptProto(QList<DataTypePtr > input, QList<DataTypePtr > output, QList<Attribute*> attrs,
-        const QString &name,const QString &description, const QString &actorFilePath, bool isAliasName) = 0;
+    virtual ActorPrototype *_getScriptProto(QList<DataTypePtr> input, QList<DataTypePtr> output, QList<Attribute *> attrs, const QString &name, const QString &description, const QString &actorFilePath, bool isAliasName) = 0;
     virtual ActorPrototype *_getExternalToolProto(ExternalProcessConfig *cfg) = 0;
     virtual ActorPrototype *_getSchemaActorProto(Schema *schema, const QString &name, const QString &actorFilePath) = 0;
     virtual bool _registerExternalToolWorker(ExternalProcessConfig *cfg) = 0;
     virtual void _registerScriptWorker(const QString &actorName) = 0;
-    virtual ExternalProcessConfig* _getExternalToolWorker(const QString& id) = 0;
+    virtual ExternalProcessConfig *_getExternalToolWorker(const QString &id) = 0;
     virtual ExternalProcessConfig *_unregisterExternalToolWorker(const QString &id) = 0;
 
 private:
     static IncludedProtoFactory *instance;
 };
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2
 
-#endif // _SCRIPT_PROTO_MAKER_H_
+#endif    // _SCRIPT_PROTO_MAKER_H_

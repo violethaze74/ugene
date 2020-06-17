@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,25 +27,25 @@
 namespace U2 {
 namespace BAM {
 
-class VirtualOffset
-{
+class VirtualOffset {
 public:
     VirtualOffset(quint64 packedOffset);
     VirtualOffset(quint64 coffset, int uoffset);
-    quint64 getPackedOffset()const;
-    quint64 getCoffset()const;
-    int getUoffset()const;
-    bool operator==(VirtualOffset right)const;
-    bool operator!=(VirtualOffset right)const;
-    bool operator<(VirtualOffset right)const;
-    bool operator>(VirtualOffset right)const;
-    bool operator<=(VirtualOffset right)const;
-    bool operator>=(VirtualOffset right)const;
+    quint64 getPackedOffset() const;
+    quint64 getCoffset() const;
+    int getUoffset() const;
+    bool operator==(VirtualOffset right) const;
+    bool operator!=(VirtualOffset right) const;
+    bool operator<(VirtualOffset right) const;
+    bool operator>(VirtualOffset right) const;
+    bool operator<=(VirtualOffset right) const;
+    bool operator>=(VirtualOffset right) const;
+
 private:
     quint64 packedOffset;
 };
 
-} // namespace BAM
-} // namespace U2
+}    // namespace BAM
+}    // namespace U2
 
-#endif // _VIRTUAL_OFFSET_H_
+#endif    // _VIRTUAL_OFFSET_H_

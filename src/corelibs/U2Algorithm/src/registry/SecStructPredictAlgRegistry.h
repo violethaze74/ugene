@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,20 +38,21 @@ class SecStructPredictTask;
 class U2ALGORITHM_EXPORT SecStructPredictAlgRegistry : public QObject {
     Q_OBJECT
 public:
-    SecStructPredictAlgRegistry(QObject* pOwn = 0);
+    SecStructPredictAlgRegistry(QObject *pOwn = 0);
     ~SecStructPredictAlgRegistry();
-    bool registerAlgorithm(SecStructPredictTaskFactory* alg, const QString& algId);
-    bool hadRegistered(const QString& algId);
-    SecStructPredictTaskFactory* getAlgorithm(const QString& algId);
+    bool registerAlgorithm(SecStructPredictTaskFactory *alg, const QString &algId);
+    bool hadRegistered(const QString &algId);
+    SecStructPredictTaskFactory *getAlgorithm(const QString &algId);
     QStringList getAlgNameList();
+
 private:
     QMutex mutex;
-    QMap<QString, SecStructPredictTaskFactory*> algMap;
+    QMap<QString, SecStructPredictTaskFactory *> algMap;
     // Copy prohibition
-    SecStructPredictAlgRegistry(const SecStructPredictAlgRegistry& m);
-    SecStructPredictAlgRegistry& operator=(const SecStructPredictAlgRegistry& m);
+    SecStructPredictAlgRegistry(const SecStructPredictAlgRegistry &m);
+    SecStructPredictAlgRegistry &operator=(const SecStructPredictAlgRegistry &m);
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

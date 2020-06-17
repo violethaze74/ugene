@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +19,27 @@
  * MA 02110-1301, USA.
  */
 
+#include "KrakenSupportPlugin.h"
+
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
 
 #include "KrakenBuildWorkerFactory.h"
 #include "KrakenClassifyWorkerFactory.h"
 #include "KrakenSupport.h"
-#include "KrakenSupportPlugin.h"
 
 namespace U2 {
 
 const QString KrakenSupportPlugin::PLUGIN_NAME = QObject::tr("Kraken external tool support");
 const QString KrakenSupportPlugin::PLUGIN_DESCRIPRION = QObject::tr("The plugin supports Kraken: taxonomic sequence classification system (https://ccb.jhu.edu/software/kraken/)");
 
-extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
     KrakenSupportPlugin *plugin = new KrakenSupportPlugin();
     return plugin;
 }
 
 KrakenSupportPlugin::KrakenSupportPlugin()
-    : Plugin(PLUGIN_NAME, PLUGIN_DESCRIPRION)
-{
+    : Plugin(PLUGIN_NAME, PLUGIN_DESCRIPRION) {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
 
@@ -58,4 +58,4 @@ KrakenSupportPlugin::~KrakenSupportPlugin() {
     etRegistry->unregisterEntry(KrakenSupport::CLASSIFY_TOOL_ID);
 }
 
-}   // namespace U2
+}    // namespace U2

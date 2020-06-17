@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,39 +22,43 @@
 #ifndef _U2_LREGION_SELECTION_H_
 #define _U2_LREGION_SELECTION_H_
 
-#include <U2Core/U2Region.h>
 #include <U2Core/SelectionModel.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
 class U2CORE_EXPORT LRegionsSelection : public GSelection {
     Q_OBJECT
 public:
-    LRegionsSelection(GSelectionType type, QObject* p = NULL);
+    LRegionsSelection(GSelectionType type, QObject *p = NULL);
 
-    const QVector<U2Region>& getSelectedRegions() const {return regions;}
+    const QVector<U2Region> &getSelectedRegions() const {
+        return regions;
+    }
 
-    void setSelectedRegions(const QVector<U2Region>& newSelection);
+    void setSelectedRegions(const QVector<U2Region> &newSelection);
 
-    void addRegion(const U2Region& r);
+    void addRegion(const U2Region &r);
 
-    void removeRegion(const U2Region& r);
+    void removeRegion(const U2Region &r);
 
-    void setRegion(const U2Region& r);
+    void setRegion(const U2Region &r);
 
-    virtual bool isEmpty() const {return regions.isEmpty();}
+    virtual bool isEmpty() const {
+        return regions.isEmpty();
+    }
 
     virtual void clear();
 
     static QVector<U2Region> cropSelection(qint64 sequenceLength, const QVector<U2Region> &regions);
 
 signals:
-    void si_selectionChanged(LRegionsSelection* thiz, const QVector<U2Region>& added, const QVector<U2Region>& removed);
+    void si_selectionChanged(LRegionsSelection *thiz, const QVector<U2Region> &added, const QVector<U2Region> &removed);
 
 public:
     QVector<U2Region> regions;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

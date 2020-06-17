@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,18 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+#include "CleanupFileStorageTask.h"
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppFileStorage.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "CleanupFileStorageTask.h"
-
 namespace U2 {
 
 CleanupFileStorageTask::CleanupFileStorageTask()
-: Task(tr("Cleanup file storage"), TaskFlag_None)
-{
-
+    : Task(tr("Cleanup file storage"), TaskFlag_None) {
 }
 
 void CleanupFileStorageTask::run() {
@@ -40,4 +38,4 @@ void CleanupFileStorageTask::run() {
     fileStorage->cleanup(stateInfo);
 }
 
-} // U2
+}    // namespace U2

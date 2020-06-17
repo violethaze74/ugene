@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "SequenceQualityTrimTask.h"
+
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
@@ -26,16 +28,12 @@
 #include <U2Core/U2ObjectRelationsDbi.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "SequenceQualityTrimTask.h"
-
 namespace U2 {
 
 SequenceQualityTrimTaskSettings::SequenceQualityTrimTaskSettings()
     : qualityTreshold(30),
       minSequenceLength(0),
-      trimBothEnds(true)
-{
-
+      trimBothEnds(true) {
 }
 
 SequenceQualityTrimTask::SequenceQualityTrimTask(const SequenceQualityTrimTaskSettings &settings)
@@ -43,8 +41,7 @@ SequenceQualityTrimTask::SequenceQualityTrimTask(const SequenceQualityTrimTaskSe
       settings(settings),
       trimmedSequenceObject(NULL),
       trimmedChromatogramObject(NULL),
-      isFilteredOut(false)
-{
+      isFilteredOut(false) {
     SAFE_POINT_EXT(NULL != settings.sequenceObject, setError("Sequence object is NULL"), );
 }
 
@@ -138,4 +135,4 @@ void SequenceQualityTrimTask::trimChromatogram(const U2Region &regionToCrop) {
     CHECK_OP(stateInfo, );
 }
 
-}   // namespace U2
+}    // namespace U2

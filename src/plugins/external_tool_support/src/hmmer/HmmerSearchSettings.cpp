@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
-
 #include "HmmerSearchSettings.h"
+
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -43,9 +43,7 @@ HmmerSearchSettings::HmmerSearchSettings()
       noNull2(false),
       noali(true),
       seed(42),
-      annotationTable(NULL)
-{
-
+      annotationTable(NULL) {
 }
 
 bool HmmerSearchSettings::validate() const {
@@ -62,4 +60,4 @@ bool HmmerSearchSettings::validate() const {
     return true;
 }
 
-}   // namespace U2
+}    // namespace U2

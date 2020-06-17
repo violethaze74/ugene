@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,13 +32,13 @@ using namespace HI;
 
 class GTUtilsBookmarksTreeView {
 public:
-    static QTreeWidget* getTreeWidget(HI::GUITestOpStatus &os);
+    static QTreeWidget *getTreeWidget(HI::GUITestOpStatus &os);
 
     // returns center or item's rect
     // fails if the item wasn't found
     static QPoint getItemCenter(GUITestOpStatus &os, const QString &itemName);
 
-    static QTreeWidgetItem* findItem(GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QTreeWidgetItem *findItem(GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
     static QString getSelectedItem(GUITestOpStatus &os);
 
     static void addBookmark(GUITestOpStatus &os, const QString &viewName, const QString &bookmarkName = QString());
@@ -50,6 +50,6 @@ public:
     static const QString widgetName;
 };
 
-} // namespace
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,21 +34,26 @@ class Document;
 class U2ALGORITHM_EXPORT DnaAssemblyMultiTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings& settings, bool viewResult = false, bool justBuildIndex = false);
+    DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings &settings, bool viewResult = false, bool justBuildIndex = false);
     virtual void prepare();
     virtual ReportResult report();
     virtual QString generateReport() const;
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    bool getOpenViewFlag() { return openView; }
-    const DnaAssemblyToRefTaskSettings& getSettings() const {return settings;}
+    QList<Task *> onSubTaskFinished(Task *subTask);
+    bool getOpenViewFlag() {
+        return openView;
+    }
+    const DnaAssemblyToRefTaskSettings &getSettings() const {
+        return settings;
+    }
+
 private:
     DnaAssemblyToRefTaskSettings settings;
-    DnaAssemblyToReferenceTask* assemblyToRefTask;
+    DnaAssemblyToReferenceTask *assemblyToRefTask;
     //Document* doc;
     QList<ShortReadSet> shortReadSets;
     bool openView;
     bool justBuildIndex;
 };
 
-} // namespace
+}    // namespace U2
 #endif

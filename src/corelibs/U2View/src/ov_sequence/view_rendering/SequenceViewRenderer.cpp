@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,11 +21,10 @@
 
 #include "SequenceViewRenderer.h"
 
-#include <U2Core/U2Region.h>
-#include <U2Core/U2SafePoints.h>
-
 #include <QFontMetrics>
 
+#include <U2Core/U2Region.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -54,7 +53,6 @@ CommonSequenceViewMetrics::CommonSequenceViewMetrics() {
 /************************************************************************/
 SequenceViewRenderer::SequenceViewRenderer(SequenceObjectContext *ctx)
     : ctx(ctx) {
-
 }
 
 int SequenceViewRenderer::posToXCoord(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const {
@@ -73,4 +71,4 @@ qint64 SequenceViewRenderer::getRowLineHeight() const {
     return commonMetrics.lineHeight;
 }
 
-} // namespace
+}    // namespace U2

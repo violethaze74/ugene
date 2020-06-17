@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ protected:
     virtual void data2doc(Document *doc, const QVariantMap &data);
     virtual bool hasDataToWrite(const QVariantMap &data) const;
     virtual QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const;
-}; // BaseWriteAssemblyWorker
+};    // BaseWriteAssemblyWorker
 
 class WriteBAMWorker : public BaseWriteAssemblyWorker {
     Q_OBJECT
@@ -44,22 +44,24 @@ public:
 
 protected:
     virtual bool isStreamingSupport() const;
-    virtual Task * getWriteDocTask(Document *doc, const SaveDocFlags &flags);
+    virtual Task *getWriteDocTask(Document *doc, const SaveDocFlags &flags);
     virtual void takeParameters(U2OpStatus &os);
 
 private:
     bool buildIndex;
-}; // WriteBAMWorker
+};    // WriteBAMWorker
 
 class WriteAssemblyWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
 
-    WriteAssemblyWorkerFactory() : DomainFactory(ACTOR_ID) {}
+    WriteAssemblyWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-}; // WriteAssemblyWorkerFactory
+};    // WriteAssemblyWorkerFactory
 
 class WriteBAMTask : public Task {
 public:
@@ -71,7 +73,7 @@ private:
     Document *doc;
     bool buildIndex;
     SaveDocFlags flags;
-}; // WriteBAMTask
+};    // WriteBAMTask
 
-} // LocalWorkflow
-} // U2
+}    // namespace LocalWorkflow
+}    // namespace U2

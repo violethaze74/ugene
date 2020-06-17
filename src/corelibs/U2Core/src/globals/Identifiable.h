@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,16 +28,21 @@ namespace U2 {
 
 // A template of object with identity
 
-template<typename T> class Identifiable {
+template<typename T>
+class Identifiable {
 public:
-    Identifiable(const T& _id) : id(_id) {}
+    Identifiable(const T &_id)
+        : id(_id) {
+    }
 
-    const T& getId() const { return id; }
+    const T &getId() const {
+        return id;
+    }
 
 private:
     T id;
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

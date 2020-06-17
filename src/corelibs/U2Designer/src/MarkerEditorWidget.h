@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -22,15 +22,15 @@
 #ifndef _MARKER_EDITOR_WIDGET_H_
 #define _MARKER_EDITOR_WIDGET_H_
 
-#include "ui_MarkerEditorWidget.h"
-#include "ui_EditMarkerDialog.h"
 #include "ui_EditIntegerMarkerWidget.h"
+#include "ui_EditMarkerDialog.h"
+#include "ui_MarkerEditorWidget.h"
 
 namespace U2 {
 
 class Marker;
 
-class MarkerEditorWidget: public QWidget, public Ui_MarkerEditorWidget {
+class MarkerEditorWidget : public QWidget, public Ui_MarkerEditorWidget {
     Q_OBJECT
 public:
     MarkerEditorWidget(QAbstractTableModel *markerModel, QWidget *parent = NULL);
@@ -48,6 +48,6 @@ private slots:
     void sl_onItemEntered(const QModelIndex &idx);
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _MARKER_EDITOR_WIDGET_H_
+#endif    // _MARKER_EDITOR_WIDGET_H_

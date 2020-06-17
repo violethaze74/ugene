@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,21 +28,21 @@ namespace U2 {
 
 class BamBedConversionTask : public ConvertFileTask {
 public:
-    BamBedConversionTask (const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir);
+    BamBedConversionTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir);
 
 protected:
     void prepare();
     void run();
-
 };
 
-class BAMBEDConvertFactory : public ConvertFileFactory{
+class BAMBEDConvertFactory : public ConvertFileFactory {
 public:
-    virtual bool isCustomFormatTask (const QString& detectedFormat, const QString& targetFormat);
-    virtual ConvertFileTask* getTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir) {return new BamBedConversionTask(sourceURL, detectedFormat, targetFormat, dir);}
+    virtual bool isCustomFormatTask(const QString &detectedFormat, const QString &targetFormat);
+    virtual ConvertFileTask *getTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir) {
+        return new BamBedConversionTask(sourceURL, detectedFormat, targetFormat, dir);
+    }
 };
 
+}    // namespace U2
 
-}//namespace
-
-#endif // _U2_BEDTOOLS_SUPPORT_TASK_H_
+#endif    // _U2_BEDTOOLS_SUPPORT_TASK_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,4 +27,4 @@ const QString BuiltInAssemblyConsensusAlgorithms::DEFAULT_ALGO("Default");
 const QString BuiltInAssemblyConsensusAlgorithms::LEVITSKY_ALGO("Levitsky");
 const QString BuiltInAssemblyConsensusAlgorithms::SAMTOOLS_ALGO("SAMtools");
 
-}//namespace
+}    // namespace U2

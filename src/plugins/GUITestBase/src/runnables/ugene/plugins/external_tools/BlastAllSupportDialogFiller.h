@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,19 +35,19 @@ class BlastAllSupportDialogFiller : public Filler {
 public:
     class Parameters {
     public:
-        Parameters():
-          runBlast(false),
-          programNameText("blastn"),
-          withInputFile(false),
-          test_3211(false) {}
+        Parameters()
+            : runBlast(false),
+              programNameText("blastn"),
+              withInputFile(false),
+              test_3211(false) {
+        }
 
-
-          bool runBlast;
-          QString programNameText;
-          QString dbPath;
-          bool withInputFile;
-          QString inputPath;
-          bool test_3211;
+        bool runBlast;
+        QString programNameText;
+        QString dbPath;
+        bool withInputFile;
+        QString inputPath;
+        bool test_3211;
     };
 
     BlastAllSupportDialogFiller(const Parameters &parameters, HI::GUITestOpStatus &os);
@@ -63,6 +63,6 @@ private:
     QWidget *dialog;
 };
 
-}
+}    // namespace U2
 
-#endif // _U2_BLAST_ALL_SUPPORT_DIALOG_FILLER_H_
+#endif    // _U2_BLAST_ALL_SUPPORT_DIALOG_FILLER_H_

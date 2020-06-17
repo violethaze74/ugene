@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,8 +42,7 @@ private:
 private:
     void parseVisualActorParams(const QString &actorId);
     void parseLinkVisualBlock(const QString &from, const QString &to);
-    void parseStyleData(ActorVisualData &visual, const QString &styleId,
-        ParsedPairs &pairs);
+    void parseStyleData(ActorVisualData &visual, const QString &styleId, ParsedPairs &pairs);
     void parseScale(const QString &scaleStr);
 
     static QPointF string2Point(const QString &str, U2OpStatus &os);
@@ -70,6 +69,6 @@ private:
     static QString rect2String(const QRectF &rect);
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_HRVISUALSERIALIZER_H_
+#endif    // _U2_HRVISUALSERIALIZER_H_

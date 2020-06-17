@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,8 @@ public:
     DotPlotImageExportSettings(bool includeAreaSelection = false,
                                bool includeRepeatSelection = false)
         : includeAreaSelection(includeAreaSelection),
-          includeRepeatSelection(includeRepeatSelection) {}
+          includeRepeatSelection(includeRepeatSelection) {
+    }
 
     bool includeAreaSelection;
     bool includeRepeatSelection;
@@ -48,11 +49,13 @@ public:
                                    const ImageExportTaskSettings &settings)
         : ImageExportTask(settings),
           dotplotWidget(wgt),
-          dpExportSettings(dotPlotExportSettings) {}
+          dpExportSettings(dotPlotExportSettings) {
+    }
     void run();
+
 protected:
-    DotPlotWidget*              dotplotWidget;
-    DotPlotImageExportSettings  dpExportSettings;
+    DotPlotWidget *dotplotWidget;
+    DotPlotImageExportSettings dpExportSettings;
 };
 
 class DotPlotImageExportController : public ImageExportController {
@@ -65,15 +68,15 @@ public:
 
 protected:
     void initSettingsWidget();
-    Task* getExportToBitmapTask(const ImageExportTaskSettings &settings) const;
+    Task *getExportToBitmapTask(const ImageExportTaskSettings &settings) const;
 
 private:
-    DotPlotWidget*  dotplotWidget;
+    DotPlotWidget *dotplotWidget;
 
-    QCheckBox*      includeAreaSelection;
-    QCheckBox*      includeRepeatSelection;
+    QCheckBox *includeAreaSelection;
+    QCheckBox *includeRepeatSelection;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_DOTPLOT_IMAGE_EXPORT_TASK_H_
+#endif    // _U2_DOTPLOT_IMAGE_EXPORT_TASK_H_

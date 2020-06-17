@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,32 +21,33 @@
 #ifndef _U2_GRAPH_LABELS_SELECT_DIALOG_H_
 #define _U2_GRAPH_LABELS_SELECT_DIALOG_H_
 
-#include <U2Core/U2Region.h>
 #include <QDialog>
+
+#include <U2Core/U2Region.h>
 
 class QSpinBox;
 class QCheckBox;
 
-namespace U2{
+namespace U2 {
 
 class GSequenceGraphData;
 
-class GraphLabelsSelectDialog : public QDialog
-{
+class GraphLabelsSelectDialog : public QDialog {
     Q_OBJECT
 public:
-    GraphLabelsSelectDialog(int maxWindowSize, QWidget* parent);
+    GraphLabelsSelectDialog(int maxWindowSize, QWidget *parent);
 
     int getWindowSize();
     bool isUsedIntervals();
 private slots:
     void sl_onCancelClicked();
     void sl_onOkClicked();
+
 private:
-    QSpinBox* stepSpinBox;
-    QCheckBox* usedIntervalsCheck;
+    QSpinBox *stepSpinBox;
+    QCheckBox *usedIntervalsCheck;
 };
 
-}//ns
+}    // namespace U2
 
-#endif //_U2_GRAPH_LABELS_SELECT_DIALOG_H_
+#endif    //_U2_GRAPH_LABELS_SELECT_DIALOG_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,13 +29,14 @@ using namespace HI;
 
 class StructuralAlignmentDialogFiller : public Filler {
 public:
-    StructuralAlignmentDialogFiller(HI::GUITestOpStatus &os, const QStringList& chainIndex = QStringList());
+    StructuralAlignmentDialogFiller(HI::GUITestOpStatus &os, const QStringList &chainIndex = QStringList());
 
     void commonScenario();
+
 private:
     QStringList chainIndexes;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_STRUCTURAL_ALIGNMENT_DIALOG_FILLER_H_
+#endif    // _U2_STRUCTURAL_ALIGNMENT_DIALOG_FILLER_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,15 +23,12 @@
 
 namespace U2 {
 
-SplicedAlignmentTask::SplicedAlignmentTask(const SplicedAlignmentTaskConfig& cfg) :
-    Task(tr("SplicedAlignmentTask"), TaskFlag_None), config(cfg)
-{
-
+SplicedAlignmentTask::SplicedAlignmentTask(const SplicedAlignmentTaskConfig &cfg)
+    : Task(tr("SplicedAlignmentTask"), TaskFlag_None), config(cfg) {
 }
 
-SplicedAlignmentTask::SplicedAlignmentTask(const QString &taskName, TaskFlags flags, const SplicedAlignmentTaskConfig &cfg) :
-    Task(taskName, flags), config(cfg)
-{
+SplicedAlignmentTask::SplicedAlignmentTask(const QString &taskName, TaskFlags flags, const SplicedAlignmentTaskConfig &cfg)
+    : Task(taskName, flags), config(cfg) {
 }
 
-} //namespace
+}    // namespace U2

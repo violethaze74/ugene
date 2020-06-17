@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,15 +33,15 @@ class McaEditor;
 class McaGeneralTab : public QWidget, public Ui_McaGeneralTab {
     Q_OBJECT
 public:
-    McaGeneralTab(McaEditor* mca);
+    McaGeneralTab(McaEditor *mca);
 
 public slots:
     void sl_alignmentChanged();
 
 private:
-    McaEditor* mca;
+    McaEditor *mca;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_MCA_GENERAL_TAB_H_
+#endif    // _U2_MCA_GENERAL_TAB_H_

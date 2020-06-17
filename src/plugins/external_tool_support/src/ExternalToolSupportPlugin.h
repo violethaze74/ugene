@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 namespace U2 {
 class ETSProjectViewItemsContoller;
 
-class ExternalToolSupportPlugin : public Plugin  {
+class ExternalToolSupportPlugin : public Plugin {
     Q_OBJECT
 public:
     ExternalToolSupportPlugin();
@@ -43,7 +43,7 @@ private:
     ExternalToolManagerImpl validationManager;
 };
 
-class ExternalToolSupportService: public Service {
+class ExternalToolSupportService : public Service {
     Q_OBJECT
 public:
     ExternalToolSupportService();
@@ -51,10 +51,9 @@ public:
 protected:
     virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
 
-    ETSProjectViewItemsContoller*    projectViewController;
+    ETSProjectViewItemsContoller *projectViewController;
 };
 
-}
-
+}    // namespace U2
 
 #endif

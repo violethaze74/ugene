@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or * modify it under the terms of the GNU General Public License
@@ -21,10 +21,11 @@
 #ifndef _U2_BOWTIE2_TASK_H
 #define _U2_BOWTIE2_TASK_H
 
-#include <U2Algorithm/DnaAssemblyTask.h>
-#include <U2Core/ExternalToolRunTask.h>
-
 #include <QTemporaryFile>
+
+#include <U2Algorithm/DnaAssemblyTask.h>
+
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
@@ -34,6 +35,7 @@ public:
     Bowtie2BuildIndexTask(const QString &referencePath, const QString &indexPath);
 
     void prepare();
+
 private:
     QString referencePath;
     QString indexPath;
@@ -44,6 +46,7 @@ class Bowtie2AlignTask : public ExternalToolSupportTask {
 public:
     Bowtie2AlignTask(const DnaAssemblyToRefTaskSettings &settings);
     void prepare();
+
 private:
     DnaAssemblyToRefTaskSettings settings;
 };
@@ -58,6 +61,7 @@ public:
     ReportResult report();
 protected slots:
     QList<Task *> onSubTaskFinished(Task *subTask);
+
 public:
     static const QString OPTION_MODE;
     static const QString OPTION_MISMATCHES;
@@ -82,7 +86,7 @@ private:
     Bowtie2BuildIndexTask *buildIndexTask;
     Bowtie2AlignTask *alignTask;
 
-    Task* unzipTask;
+    Task *unzipTask;
     QTemporaryFile temp;
 };
 
@@ -91,6 +95,6 @@ public:
     DnaAssemblyToReferenceTask *createTaskInstance(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex = false);
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_BOWTIE2_TASK_H
+#endif    // _U2_BOWTIE2_TASK_H

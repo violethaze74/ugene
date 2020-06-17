@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,11 +24,11 @@
 
 #include <QWidget>
 
+#include <U2Gui/BreakpointConditionEditDialog.h>
+
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowBreakpointSharedInfo.h>
-
-#include <U2Gui/BreakpointConditionEditDialog.h>
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -47,7 +47,9 @@ public:
     BreakpointManagerView(WorkflowDebugStatus *initDebugInfo, Schema *initScheme, QGraphicsScene *scene, QWidget *parent = NULL);
     void onBreakpointReached(ActorId actor);
 
-    QAction* getNewBreakpointAction() { return newBreakpointAction; }
+    QAction *getNewBreakpointAction() {
+        return newBreakpointAction;
+    }
 
     bool eventFilter(QObject *object, QEvent *event);
     void clear();
@@ -120,6 +122,6 @@ private:
     static QMap<BreakpointConditionParameter, HitCondition> conditionParametertranslations;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_BREAKPOINT_MANAGER_VIEW_H_
+#endif    // _U2_BREAKPOINT_MANAGER_VIEW_H_

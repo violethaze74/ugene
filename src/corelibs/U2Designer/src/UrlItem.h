@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -32,10 +32,11 @@ class UrlItem : public QObject, public QListWidgetItem {
     Q_OBJECT
 public:
     UrlItem(const QString &url, QListWidget *parent = NULL);
-    virtual ~UrlItem() {}
+    virtual ~UrlItem() {
+    }
 
     virtual void accept(UrlItemVisitor *visitor) = 0;
-    virtual QWidget * getOptionsWidget();
+    virtual QWidget *getOptionsWidget();
 
 signals:
     void si_dataChanged();
@@ -56,6 +57,6 @@ public:
     virtual void visit(DbFolderItem *item) = 0;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_URL_ITEM_H_
+#endif    // _U2_URL_ITEM_H_

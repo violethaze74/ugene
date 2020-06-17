@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,9 +29,9 @@ namespace U2 {
 class FastQCSupport : public ExternalTool {
     Q_OBJECT
 public:
-    FastQCSupport(const QString& id, const QString& name, const QString& path = "");
+    FastQCSupport(const QString &id, const QString &name, const QString &path = "");
 
-    static ExternalTool * getJava();
+    static ExternalTool *getJava();
 
     static const QString ET_FASTQC;
     static const QString ET_FASTQC_ID;
@@ -40,5 +40,5 @@ private slots:
     void sl_javaPathChanged();
 };
 
-}//namespace
-#endif // _U2_FASTQC_SUPPORT_H_
+}    // namespace U2
+#endif    // _U2_FASTQC_SUPPORT_H_

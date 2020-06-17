@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ class UgeneUpdater : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(UgeneUpdater)
 public:
-    static UgeneUpdater * getInstance();
+    static UgeneUpdater *getInstance();
     static void release();
     static void onClose();
 
@@ -64,6 +64,6 @@ private:
     static QMutex mutex;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_UGENE_UPDATER_H_
+#endif    // _U2_UGENE_UPDATER_H_

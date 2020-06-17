@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,27 +26,33 @@
 
 namespace U2 {
 using namespace HI;
-    class EditAnnotationFiller : public Filler {
-    public:
-        EditAnnotationFiller(HI::GUITestOpStatus &_os, const QString &_annotationName, const QString &_location, bool _complementStrand = false)
-            :Filler(_os, "CreateAnnotationDialog"), annotationName(_annotationName), location(_location), complementStrand(_complementStrand) {}
-        EditAnnotationFiller(HI::GUITestOpStatus &_os, CustomScenario* c): Filler(_os, "CreateAnnotationDialog", c), annotationName(""), location(""), complementStrand(false) {}
-        virtual void commonScenario();
-    private:
-        QString annotationName;
-        QString location;
-        bool complementStrand;
-    };
+class EditAnnotationFiller : public Filler {
+public:
+    EditAnnotationFiller(HI::GUITestOpStatus &_os, const QString &_annotationName, const QString &_location, bool _complementStrand = false)
+        : Filler(_os, "CreateAnnotationDialog"), annotationName(_annotationName), location(_location), complementStrand(_complementStrand) {
+    }
+    EditAnnotationFiller(HI::GUITestOpStatus &_os, CustomScenario *c)
+        : Filler(_os, "CreateAnnotationDialog", c), annotationName(""), location(""), complementStrand(false) {
+    }
+    virtual void commonScenario();
 
-    class EditAnnotationChecker : public Filler {
-    public:
-        EditAnnotationChecker(HI::GUITestOpStatus &_os, const QString &_annotationName, const QString &_location)
-            :Filler(_os, "CreateAnnotationDialog"), annotationName(_annotationName), location(_location){}
-        virtual void commonScenario();
-    private:
-        QString annotationName;
-        QString location;
-        };
-}
+private:
+    QString annotationName;
+    QString location;
+    bool complementStrand;
+};
+
+class EditAnnotationChecker : public Filler {
+public:
+    EditAnnotationChecker(HI::GUITestOpStatus &_os, const QString &_annotationName, const QString &_location)
+        : Filler(_os, "CreateAnnotationDialog"), annotationName(_annotationName), location(_location) {
+    }
+    virtual void commonScenario();
+
+private:
+    QString annotationName;
+    QString location;
+};
+}    // namespace U2
 
 #endif

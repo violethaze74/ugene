@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,13 +23,12 @@
 
 namespace U2 {
 
-void PairAlignSequences::setValues(int _score, const U2Region & _refSubseqInterval, const U2Region & _ptrnSubseqInterval, QByteArray _pairAlignment) {
+void PairAlignSequences::setValues(int _score, const U2Region &_refSubseqInterval, const U2Region &_ptrnSubseqInterval, QByteArray _pairAlignment) {
     score = _score;
     refSubseqInterval = _refSubseqInterval;
     ptrnSubseqInterval = _ptrnSubseqInterval;
     pairAlignment = _pairAlignment;
 }
-
 
 PairAlignSequences::PairAlignSequences() {
     score = 0;
@@ -37,4 +36,4 @@ PairAlignSequences::PairAlignSequences() {
     isAminoTranslated = false;
 }
 
-}//namespace
+}    // namespace U2

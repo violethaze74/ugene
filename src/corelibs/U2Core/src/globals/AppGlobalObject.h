@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,9 +39,11 @@ class U2CORE_EXPORT AppGlobalObject : public QObject, public Identifiable<QStrin
     Q_OBJECT
 
 public:
-    AppGlobalObject(const QString& id) : Identifiable<QString>(id) {}
+    AppGlobalObject(const QString &id)
+        : Identifiable<QString>(id) {
+    }
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,8 +30,7 @@ class StructuralAlignmentTask;
 class BioStruct3DObject;
 class BioStruct3DSubsetEditor;
 
-class StructuralAlignmentDialog : public QDialog, public Ui_StructuralAlignmentDialog
-{
+class StructuralAlignmentDialog : public QDialog, public Ui_StructuralAlignmentDialog {
     Q_OBJECT
 
 public:
@@ -41,7 +40,9 @@ public:
     int execIfAlgorithmAvailable();
 
     /** @returns set up StructuralAlignmentTask */
-    StructuralAlignmentTask* getTask() { return task; }
+    StructuralAlignmentTask *getTask() {
+        return task;
+    }
 
 public slots:
     virtual void accept();
@@ -49,9 +50,8 @@ public slots:
 private:
     StructuralAlignmentTask *task;
     BioStruct3DSubsetEditor *ref, *mob;
-
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif  // #ifndef _U2_STRUCTURAL_ALIGNMENT_DIALOG_H_
+#endif    // #ifndef _U2_STRUCTURAL_ALIGNMENT_DIALOG_H_

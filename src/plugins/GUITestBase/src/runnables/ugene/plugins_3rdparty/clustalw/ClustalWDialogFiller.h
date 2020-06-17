@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,13 +29,14 @@ using namespace HI;
 
 class ClustalWDialogFiller : public Filler {
 public:
-    ClustalWDialogFiller(HI::GUITestOpStatus &_os, int _gapOpenVal=0);
+    ClustalWDialogFiller(HI::GUITestOpStatus &_os, int _gapOpenVal = 0);
 
     void commonScenario();
+
 private:
     int gapOpenVal;
 };
 
-}
+}    // namespace U2
 
-#endif //_U2_GT_RUNNABLES_PLUGINS_3RDPARTY_CLUSTALW_DIALOG_FILLER_H_
+#endif    //_U2_GT_RUNNABLES_PLUGINS_3RDPARTY_CLUSTALW_DIALOG_FILLER_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include "DiamondClassifyPrompter.h"
+
 #include "DiamondClassifyTask.h"
 #include "DiamondClassifyWorkerFactory.h"
 
@@ -27,9 +28,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 DiamondClassifyPrompter::DiamondClassifyPrompter(Actor *actor)
-    : PrompterBase<DiamondClassifyPrompter>(actor)
-{
-
+    : PrompterBase<DiamondClassifyPrompter>(actor) {
 }
 
 QString DiamondClassifyPrompter::composeRichDoc() {
@@ -38,5 +37,5 @@ QString DiamondClassifyPrompter::composeRichDoc() {
     return tr("Classify sequences from <u>%1</u> with DIAMOND, use %2 database.").arg(readsProducerName).arg(databaseUrl);
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

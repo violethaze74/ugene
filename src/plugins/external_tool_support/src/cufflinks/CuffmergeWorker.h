@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,28 +30,24 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-
-class CuffmergePrompter : public PrompterBase<CuffmergePrompter>
-{
+class CuffmergePrompter : public PrompterBase<CuffmergePrompter> {
     Q_OBJECT
 
 public:
-    CuffmergePrompter(Actor* parent = 0);
+    CuffmergePrompter(Actor *parent = 0);
 
 protected:
     QString composeRichDoc();
 };
 
-
-class CuffmergeWorker : public BaseWorker
-{
+class CuffmergeWorker : public BaseWorker {
     Q_OBJECT
 
 public:
-    CuffmergeWorker(Actor* actor);
+    CuffmergeWorker(Actor *actor);
 
     void init();
-    Task * tick();
+    Task *tick();
     void cleanup();
 
 private slots:
@@ -65,21 +61,23 @@ protected:
 
 private:
     CuffmergeSettings scanParameters() const;
-    Task * createCuffmergeTask();
+    Task *createCuffmergeTask();
     void takeAnnotations();
 };
 
-
-class CuffmergeWorkerFactory : public DomainFactory
-{
+class CuffmergeWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
     static void init();
-    CuffmergeWorkerFactory() : DomainFactory(ACTOR_ID) {}
-    virtual Worker* createWorker(Actor* actor) { return new CuffmergeWorker(actor); }
+    CuffmergeWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
+    virtual Worker *createWorker(Actor *actor) {
+        return new CuffmergeWorker(actor);
+    }
 };
 
-} // namespace LocalWorkflow
-} // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
 #endif

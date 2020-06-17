@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,13 +32,17 @@ namespace U2 {
  */
 class U2CORE_EXPORT U2RawData : public U2Object {
 public:
-    U2RawData() : U2Object() {}
-    U2RawData(const U2DbiRef &dbiRef) : U2Object(U2DataId(), dbiRef.dbiId, 0) {}
+    U2RawData()
+        : U2Object() {
+    }
+    U2RawData(const U2DbiRef &dbiRef)
+        : U2Object(U2DataId(), dbiRef.dbiId, 0) {
+    }
 
     /** The identifier of a serializer which the data is packed by */
     QString serializer;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_RAWDATA_H_
+#endif    // _U2_RAWDATA_H_

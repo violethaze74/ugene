@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,9 +29,11 @@ namespace U2 {
 class BlastXPlusSupportTask : public BlastPlusSupportCommonTask {
     Q_OBJECT
 public:
-    BlastXPlusSupportTask(const BlastTaskSettings& settings):BlastPlusSupportCommonTask(settings){}
-    virtual ExternalToolRunTask* createBlastPlusTask();
+    BlastXPlusSupportTask(const BlastTaskSettings &settings)
+        : BlastPlusSupportCommonTask(settings) {
+    }
+    virtual ExternalToolRunTask *createBlastPlusTask();
 };
 
-}//namespace
-#endif // _U2_BLASTXPLUS_SUPPORT_TASK_H
+}    // namespace U2
+#endif    // _U2_BLASTXPLUS_SUPPORT_TASK_H

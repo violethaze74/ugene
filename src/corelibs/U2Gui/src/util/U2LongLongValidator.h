@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,12 +34,12 @@ public:
     U2LongLongValidator(qint64 minimum, qint64 maximum, QObject *parent = 0);
 
     State validate(QString &input, int &pos) const;
-    
+
 private:
     qint64 minimum;
     qint64 maximum;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_LONG_LONG_VALIDATOR_H_
+#endif    // _U2_LONG_LONG_VALIDATOR_H_

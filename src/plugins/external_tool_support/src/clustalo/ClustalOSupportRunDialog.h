@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,12 @@
 #ifndef _U2_CLUSTALO_SUPPORT_RUN_DIALOG_H
 #define _U2_CLUSTALO_SUPPORT_RUN_DIALOG_H
 
+#include <ui_ClustalOSupportRunDialog.h>
+
 #include <QDialog>
 
 #include <U2Gui/DialogUtils.h>
-#include <ui_ClustalOSupportRunDialog.h>
+
 #include "ClustalOSupportTask.h"
 
 namespace U2 {
@@ -35,21 +37,20 @@ class SaveDocumentController;
 class ClustalOSupportRunDialog : public QDialog, public Ui_ClustalOSupportRunDialog {
     Q_OBJECT
 public:
-    ClustalOSupportRunDialog(const MultipleSequenceAlignment& ma, ClustalOSupportTaskSettings& settings, QWidget* parent);
+    ClustalOSupportRunDialog(const MultipleSequenceAlignment &ma, ClustalOSupportTaskSettings &settings, QWidget *parent);
 
 private slots:
     void accept();
 
 private:
-    MultipleSequenceAlignment                      ma;
-    ClustalOSupportTaskSettings&    settings;
-
+    MultipleSequenceAlignment ma;
+    ClustalOSupportTaskSettings &settings;
 };
 
 class ClustalOWithExtFileSpecifySupportRunDialog : public QDialog, public Ui_ClustalOSupportRunDialog {
     Q_OBJECT
 public:
-    ClustalOWithExtFileSpecifySupportRunDialog(ClustalOSupportTaskSettings& settings, QWidget* parent);
+    ClustalOWithExtFileSpecifySupportRunDialog(ClustalOSupportTaskSettings &settings, QWidget *parent);
 
 private slots:
     void accept();
@@ -58,9 +59,9 @@ private slots:
 private:
     void initSaveController();
 
-    ClustalOSupportTaskSettings&    settings;
-    SaveDocumentController *        saveController;
+    ClustalOSupportTaskSettings &settings;
+    SaveDocumentController *saveController;
 };
 
-}//namespace
-#endif // _U2_CLUSTALO_SUPPORT_RUN_DIALOG_H
+}    // namespace U2
+#endif    // _U2_CLUSTALO_SUPPORT_RUN_DIALOG_H

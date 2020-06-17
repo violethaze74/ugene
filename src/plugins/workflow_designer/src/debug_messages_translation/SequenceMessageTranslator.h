@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,16 +26,18 @@
 
 namespace U2 {
 
+class U2SequenceObject;
+
 class SequenceMessageTranslator : public BaseMessageTranslator {
 public:
-    SequenceMessageTranslator( const QVariant &atomicMessage, Workflow::WorkflowContext *initContext );
+    SequenceMessageTranslator(const QVariant &atomicMessage, Workflow::WorkflowContext *initContext);
 
-    QString getTranslation( ) const;
+    QString getTranslation() const;
 
 protected:
     U2SequenceObject *sequenceObject;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_SEQUENCE_MESSAGE_TRANSLATOR_H_
+#endif    // _U2_SEQUENCE_MESSAGE_TRANSLATOR_H_

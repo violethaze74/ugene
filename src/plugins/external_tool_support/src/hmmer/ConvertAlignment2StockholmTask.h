@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ class ConvertAlignment2Stockholm : public Task {
 public:
     ConvertAlignment2Stockholm(const QString &msaUrl, const QString &workingDir);
 
-    const QString & getResultUrl() const;
+    const QString &getResultUrl() const;
 
 private:
     void prepare();
@@ -51,6 +51,6 @@ private:
     QString resultUrl;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_CONVERT_ALIGNMENT_2_STOCKHOLM_TASK_H_
+#endif    // _U2_CONVERT_ALIGNMENT_2_STOCKHOLM_TASK_H_

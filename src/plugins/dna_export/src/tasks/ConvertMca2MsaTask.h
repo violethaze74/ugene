@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,6 +49,6 @@ private:
     QScopedPointer<StateLocker> locker;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_CONVERT_MCA_2_MSA_TASK_H_
+#endif    // _U2_CONVERT_MCA_2_MSA_TASK_H_

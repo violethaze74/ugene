@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -243,13 +243,25 @@ inline const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData:
     return getRow(rowIndex).dynamicCast<const MultipleChromatogramAlignmentRow>();
 }
 
-inline bool	operator!=(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignment &ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator!=(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignmentData *ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator!=(const MultipleChromatogramAlignmentData *ptr1, const MultipleChromatogramAlignment &ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator==(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignment &ptr2) { return *ptr1 == *ptr2; }
-inline bool	operator==(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignmentData *ptr2) { return *ptr1 == *ptr2; }
-inline bool	operator==(const MultipleChromatogramAlignmentData *ptr1, const MultipleChromatogramAlignment &ptr2) { return *ptr1 == *ptr2; }
+inline bool operator!=(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignment &ptr2) {
+    return *ptr1 != *ptr2;
+}
+inline bool operator!=(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignmentData *ptr2) {
+    return *ptr1 != *ptr2;
+}
+inline bool operator!=(const MultipleChromatogramAlignmentData *ptr1, const MultipleChromatogramAlignment &ptr2) {
+    return *ptr1 != *ptr2;
+}
+inline bool operator==(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignment &ptr2) {
+    return *ptr1 == *ptr2;
+}
+inline bool operator==(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignmentData *ptr2) {
+    return *ptr1 == *ptr2;
+}
+inline bool operator==(const MultipleChromatogramAlignmentData *ptr1, const MultipleChromatogramAlignment &ptr2) {
+    return *ptr1 == *ptr2;
+}
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_H_
+#endif    // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_H_

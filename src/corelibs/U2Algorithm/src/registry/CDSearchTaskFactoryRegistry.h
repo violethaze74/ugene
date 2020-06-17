@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,21 +24,23 @@
 
 #include <U2Algorithm/CDSearchTaskFactory.h>
 
-
 namespace U2 {
 
 class U2ALGORITHM_EXPORT CDSearchFactoryRegistry : public QObject {
     Q_OBJECT
 public:
-    CDSearchFactoryRegistry() : localSearchFactory(NULL), remoteSearchFactory(NULL) {}
+    CDSearchFactoryRegistry()
+        : localSearchFactory(NULL), remoteSearchFactory(NULL) {
+    }
     ~CDSearchFactoryRegistry() {
         delete localSearchFactory;
         delete remoteSearchFactory;
     }
 
-    enum SearchType { LocalSearch, RemoteSearch };
+    enum SearchType { LocalSearch,
+                      RemoteSearch };
 
-    void registerFactory(CDSearchFactory* factory, SearchType type) {
+    void registerFactory(CDSearchFactory *factory, SearchType type) {
         if (type == LocalSearch) {
             assert(localSearchFactory == NULL);
             localSearchFactory = factory;
@@ -50,7 +52,7 @@ public:
         }
     }
 
-    CDSearchFactory* getFactory(SearchType type) const {
+    CDSearchFactory *getFactory(SearchType type) const {
         if (type == LocalSearch) {
             return localSearchFactory;
         } else if (type == RemoteSearch) {
@@ -62,10 +64,10 @@ public:
     }
 
 private:
-    CDSearchFactory* localSearchFactory;
-    CDSearchFactory* remoteSearchFactory;
+    CDSearchFactory *localSearchFactory;
+    CDSearchFactory *remoteSearchFactory;
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

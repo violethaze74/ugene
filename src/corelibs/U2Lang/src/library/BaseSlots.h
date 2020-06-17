@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,9 +41,9 @@ public:
     static const Descriptor VARIATION_TRACK_SLOT();
     static const Descriptor ASSEMBLY_SLOT();
     static const Descriptor DATASET_SLOT();
-}; // BaseSlots
+};    // BaseSlots
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2
 
-#endif // __U2_WORKFLOW_BASE_SLOTS_H_
+#endif    // __U2_WORKFLOW_BASE_SLOTS_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,9 +29,13 @@ using namespace HI;
 
 class ExportToSequenceFormatFiller : public Filler {
 public:
-    enum documentFormat {EMBL, FASTA, FASTQ, GFF, Genbank, Swiss_Prot};
-    ExportToSequenceFormatFiller(HI::GUITestOpStatus &os, const QString &path, const QString &name, documentFormat format,
-                                    bool saveFile, bool keepCharacters, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    enum documentFormat { EMBL,
+                          FASTA,
+                          FASTQ,
+                          GFF,
+                          Genbank,
+                          Swiss_Prot };
+    ExportToSequenceFormatFiller(HI::GUITestOpStatus &os, const QString &path, const QString &name, documentFormat format, bool saveFile, bool keepCharacters, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     ExportToSequenceFormatFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
 
     void commonScenario();
@@ -45,6 +49,6 @@ private:
     GTGlobals::UseMethod useMethod;
 };
 
-}
+}    // namespace U2
 
 #endif

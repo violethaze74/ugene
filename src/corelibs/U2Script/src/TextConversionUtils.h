@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,12 +30,10 @@ namespace U2 {
 
 class TextConversionUtils {
 public:
-    static U2ErrorType          qstringToCstring( const QString &source, int maxExpectedLength,
-                                    wchar_t *destination );
-    static U2ErrorType          repeatLastConversion( int maxExpectedLength, wchar_t *destination,
-                                    int *requiredSize );
+    static U2ErrorType qstringToCstring(const QString &source, int maxExpectedLength, wchar_t *destination);
+    static U2ErrorType repeatLastConversion(int maxExpectedLength, wchar_t *destination, int *requiredSize);
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_TEXT_CONVERSION_UTILS_H_
+#endif    // _U2_TEXT_CONVERSION_UTILS_H_

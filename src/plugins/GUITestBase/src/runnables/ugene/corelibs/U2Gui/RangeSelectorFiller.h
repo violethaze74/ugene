@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,13 +27,16 @@
 namespace U2 {
 using namespace HI;
 
-    class ZoomToRangeDialogFiller : public Filler {
-    public:
-        ZoomToRangeDialogFiller(HI::GUITestOpStatus &_os, int min = -1, int max = -1) : Filler(_os, "range_selection_dialog"), minVal(min), maxVal(max){}
-        void commonScenario();
-    private:
-        int minVal, maxVal;
-    };
-}
+class ZoomToRangeDialogFiller : public Filler {
+public:
+    ZoomToRangeDialogFiller(HI::GUITestOpStatus &_os, int min = -1, int max = -1)
+        : Filler(_os, "range_selection_dialog"), minVal(min), maxVal(max) {
+    }
+    void commonScenario();
+
+private:
+    int minVal, maxVal;
+};
+}    // namespace U2
 
 #endif

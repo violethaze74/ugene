@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,12 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include "Utils.h"
+
 #include <QCoreApplication>
 #include <QFile>
 #include <QProcess>
 #include <QStringList>
-
-#include "Utils.h"
 
 const QString Utils::SESSION_DB_UGENE_ARG = "--session-db=";
 
@@ -33,7 +33,7 @@ const QString SESSION_DB_FILE_ARG = "-d";
 const QString DUMP_FILE_ARG = "-dump";
 const QString SILENT_SEND_FILE_ARG = "--silent-sending";
 const QString FAILED_TEST_FILE_ARG = "--failed-test";
-const int MAX_FILE_SIZE = 512000; // 500 Kb
+const int MAX_FILE_SIZE = 512000;    // 500 Kb
 
 bool Utils::hasReportUrl() {
     return hasArgument(REPORT_FILE_ARG);
@@ -84,7 +84,7 @@ bool Utils::hasArgument(const QString &key) {
     if (-1 == idx) {
         return false;
     }
-    if ((args.size() - 1) == idx) { // last item
+    if ((args.size() - 1) == idx) {    // last item
         return false;
     }
     return true;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,11 +29,13 @@ using namespace HI;
 
 class RemovePartFromSequenceDialogFiller : public Filler {
 public:
-    enum RemoveType {Remove, Resize};
-    enum FormatToUse {FASTA, Genbank};
+    enum RemoveType { Remove,
+                      Resize };
+    enum FormatToUse { FASTA,
+                       Genbank };
 
     RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, QString _range, bool recalculateQuals = false);
-    RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os,RemoveType _removeType, bool _saveNew, const QString &_saveToFile, FormatToUse _format);
+    RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, RemoveType _removeType, bool _saveNew, const QString &_saveToFile, FormatToUse _format);
     RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, RemoveType _removeType);
 
     void commonScenario();
@@ -48,6 +50,6 @@ private:
     bool recalculateQuals;
 };
 
-}
+}    // namespace U2
 
 #endif

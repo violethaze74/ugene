@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,29 +34,29 @@ namespace Js {
 
 class DebugStatusWrap : public node::ObjectWrap {
 public:
-    static void                         init( );
-    static Handle<Value>                newInstance( int argc, const Handle<Value> *argv );
+    static void init();
+    static Handle<Value> newInstance(int argc, const Handle<Value> *argv);
 
 private:
-                                        DebugStatusWrap( WorkflowDebugStatus *initDebugStatus );
-                                        ~DebugStatusWrap( );
+    DebugStatusWrap(WorkflowDebugStatus *initDebugStatus);
+    ~DebugStatusWrap();
 
-    static Handle<Value>                newObject( const Arguments &args );
-    static Handle<Value>                addBreakpointToActor( const Arguments &args );
-    static Handle<Value>                removeBreakpointFromActor( const Arguments &args );
-    static Handle<Value>                setBreakpointEnabled( const Arguments &args );
-    static Handle<Value>                getActorsWithBreakpoints( const Arguments &args );
-    static Handle<Value>                setPaused( const Arguments &args );
-    static Handle<Value>                isPaused( const Arguments &args );
+    static Handle<Value> newObject(const Arguments &args);
+    static Handle<Value> addBreakpointToActor(const Arguments &args);
+    static Handle<Value> removeBreakpointFromActor(const Arguments &args);
+    static Handle<Value> setBreakpointEnabled(const Arguments &args);
+    static Handle<Value> getActorsWithBreakpoints(const Arguments &args);
+    static Handle<Value> setPaused(const Arguments &args);
+    static Handle<Value> isPaused(const Arguments &args);
 
-    static Persistent<Function>         CONSTRUCTOR;
-    static const char *                 CLASS_NAME;
+    static Persistent<Function> CONSTRUCTOR;
+    static const char *CLASS_NAME;
 
-    WorkflowDebugStatus *               debugStatus;
+    WorkflowDebugStatus *debugStatus;
 };
 
-} // namespace Js
+}    // namespace Js
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_DEBUG_STATUS_WRAP_H_
+#endif    // _U2_DEBUG_STATUS_WRAP_H_

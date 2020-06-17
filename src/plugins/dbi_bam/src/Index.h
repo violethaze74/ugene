@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,22 +23,24 @@
 #define _U2_BAM_INDEX_H_
 
 #include <QList>
+
 #include "VirtualOffset.h"
 
 namespace U2 {
 namespace BAM {
 
-class Index
-{
+class Index {
 public:
-    Index() {}
+    Index() {
+    }
     class ReferenceIndex {
     public:
         class Chunk {
         public:
             Chunk(VirtualOffset start, VirtualOffset end);
-            VirtualOffset getStart()const;
-            VirtualOffset getEnd()const;
+            VirtualOffset getStart() const;
+            VirtualOffset getEnd() const;
+
         private:
             VirtualOffset start;
             VirtualOffset end;
@@ -49,24 +51,27 @@ public:
             Bin(unsigned int bin, QList<Chunk> chunks);
             const QList<Chunk> &getChunks() const;
             unsigned int getBin() const;
+
         private:
             unsigned int bin;
             QList<Chunk> chunks;
         };
         ReferenceIndex(const QList<Bin> &bins, const QList<VirtualOffset> &intervals);
-        const QList<Bin> &getBins()const;
-        const QList<VirtualOffset> &getIntervals()const;
+        const QList<Bin> &getBins() const;
+        const QList<VirtualOffset> &getIntervals() const;
+
     private:
         QList<Bin> bins;
         QList<VirtualOffset> intervals;
     };
     Index(const QList<ReferenceIndex> &referenceIndices);
-    const QList<ReferenceIndex> &getReferenceIndices()const;
+    const QList<ReferenceIndex> &getReferenceIndices() const;
+
 private:
     QList<ReferenceIndex> referenceIndices;
 };
 
-} // namespace BAM
-} // namespace U2
+}    // namespace BAM
+}    // namespace U2
 
-#endif // _U2_BAM_INDEX_H_
+#endif    // _U2_BAM_INDEX_H_

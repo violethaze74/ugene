@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,11 +37,11 @@ class ProjectFilteringController : public QObject {
 public:
     ProjectFilteringController(QObject *p = NULL);
 
-    void startFiltering(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
+    void startFiltering(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs);
     void stopFiltering();
 
 signals:
-    void si_objectsFiltered(const QString &groupName, const QList<QPointer<GObject> > &objs);
+    void si_objectsFiltered(const QString &groupName, const QList<QPointer<GObject>> &objs);
     void si_filteringStarted();
     void si_filteringFinished();
 
@@ -57,11 +57,11 @@ private:
     QSet<AbstractProjectFilterTask *> activeFilteringTasks;
     QTimer filterStarter;
     ProjectTreeControllerModeSettings lastSettings;
-    QList<QPointer<Document> > lastDocs;
+    QList<QPointer<Document>> lastDocs;
 
     static const int FILTER_START_INTERVAL;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_PROJECT_FILTERING_CONTROLLER_H_
+#endif    // _U2_PROJECT_FILTERING_CONTROLLER_H_

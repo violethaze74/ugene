@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,31 +19,28 @@
  * MA 02110-1301, USA.
  */
 
-#include <drivers/GTMouseDriver.h>
 #include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
 
 #include "GTUtilsEscClicker.h"
 
 namespace U2 {
 
-GTUtilsEscClicker::GTUtilsEscClicker( HI::GUITestOpStatus &_os, const QString &menuObjectName, bool _mouse )
-    : Filler( _os, GUIDialogWaiter::WaitSettings( menuObjectName, GUIDialogWaiter::Popup ) ),
-    mouse( _mouse )
-{
-
+GTUtilsEscClicker::GTUtilsEscClicker(HI::GUITestOpStatus &_os, const QString &menuObjectName, bool _mouse)
+    : Filler(_os, GUIDialogWaiter::WaitSettings(menuObjectName, GUIDialogWaiter::Popup)),
+      mouse(_mouse) {
 }
 
-void GTUtilsEscClicker::commonScenario( )
-{
-    GTGlobals::sleep( 1000 );
-    if ( mouse ) {
-        QPoint p = GTMouseDriver::getMousePosition( );
-        p.setX( p.x( ) - 50 );
-        GTMouseDriver::moveTo( p );
+void GTUtilsEscClicker::commonScenario() {
+    GTGlobals::sleep(1000);
+    if (mouse) {
+        QPoint p = GTMouseDriver::getMousePosition();
+        p.setX(p.x() - 50);
+        GTMouseDriver::moveTo(p);
         GTMouseDriver::click();
     } else {
         GTKeyboardDriver::keyClick(Qt::Key_Escape);
     }
 }
 
-} // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,12 +38,16 @@ class U2VIEW_EXPORT McaEditorConsensusArea : public MaEditorConsensusArea {
     Q_DISABLE_COPY(McaEditorConsensusArea)
 
 public:
-    McaEditorConsensusArea(McaEditorWgt* ui);
+    McaEditorConsensusArea(McaEditorWgt *ui);
 
-    QString getDefaultAlgorithmId() const { return BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO; }
+    QString getDefaultAlgorithmId() const {
+        return BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO;
+    }
 
-    MaConsensusMismatchController* getMismatchController() { return mismatchController; }
-    void buildStaticToolbar(QToolBar* tb);
+    MaConsensusMismatchController *getMismatchController() {
+        return mismatchController;
+    }
+    void buildStaticToolbar(QToolBar *tb);
 
 private:
     void initRenderer();
@@ -51,8 +55,8 @@ private:
     QString getLastUsedAlgoSettingsKey() const;
 
 private:
-    MaConsensusMismatchController*  mismatchController;
+    MaConsensusMismatchController *mismatchController;
 };
 
-} // namespace
-#endif // _U2_MCA_EDITOR_CONSENSUS_AREA_H_
+}    // namespace U2
+#endif    // _U2_MCA_EDITOR_CONSENSUS_AREA_H_

@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_OUTPUT_COLLECTOR_H_
 #define _U2_OUTPUT_COLLECTOR_H_
 
-#include <U2Core/ExternalToolRunTask.h>
-
 #include <QString>
+
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
@@ -32,8 +32,8 @@ class OutputCollector : public ExternalToolListener {
 public:
     OutputCollector(bool skipMessageWithCommand = true);
 
-    void addNewLogMessage(const QString& message, int messageType);
-    const QString& getLog() const;
+    void addNewLogMessage(const QString &message, int messageType);
+    const QString &getLog() const;
 
 private:
     const bool skipMessageWithCommand;
@@ -41,6 +41,6 @@ private:
     QString collectedLog;
 };
 
-}
+}    // namespace U2
 
 #endif

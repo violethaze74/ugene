@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,12 +35,12 @@ class DocumentProviderTask;
 class U2CORE_EXPORT ImportFileToDatabaseTask : public Task {
     Q_OBJECT
 public:
-    ImportFileToDatabaseTask(const QString &srcUrl, const U2DbiRef& dstDbiRef, const QString &dstFolder, const ImportToDatabaseOptions& options);
+    ImportFileToDatabaseTask(const QString &srcUrl, const U2DbiRef &dstDbiRef, const QString &dstFolder, const ImportToDatabaseOptions &options);
 
     void prepare();
     void run();
 
-    const QString& getFilePath() const;
+    const QString &getFilePath() const;
 
 private:
     DocumentProviderTask *detectFormat();
@@ -53,9 +53,9 @@ private:
     QString dstFolder;
     ImportToDatabaseOptions options;
 
-    DocumentFormat* format;
+    DocumentFormat *format;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_IMPORT_FILE_TO_DATABASE_TASK_H_
+#endif    // _U2_IMPORT_FILE_TO_DATABASE_TASK_H_

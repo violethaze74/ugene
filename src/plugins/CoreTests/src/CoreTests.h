@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,12 +33,13 @@ class CoreTests : public Plugin {
 public:
     CoreTests();
     virtual ~CoreTests();
+
 private:
-    template <class Factory>
+    template<class Factory>
     bool registerFactory(XMLTestFormat *xmlTestFormat);
     void registerFactories();
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

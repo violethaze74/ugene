@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,10 +30,7 @@ using namespace HI;
 class FindEnzymesDialogFiller : public Filler {
 public:
     FindEnzymesDialogFiller(HI::GUITestOpStatus &os, const QStringList &enzymesToFind, CustomScenario *scenario = NULL);
-    FindEnzymesDialogFiller(HI::GUITestOpStatus &os, const QStringList &enzymesToFind,
-                            qint64 searchRegionStart, qint64 searchRegionEnd,
-                            qint64 excludedRegionStart = -1, qint64 excludedRegionEnd = -1,
-                            CustomScenario *scenario = NULL);
+    FindEnzymesDialogFiller(HI::GUITestOpStatus &os, const QStringList &enzymesToFind, qint64 searchRegionStart, qint64 searchRegionEnd, qint64 excludedRegionStart = -1, qint64 excludedRegionEnd = -1, CustomScenario *scenario = NULL);
 
     void commonScenario();
 
@@ -45,6 +42,6 @@ private:
     qint64 excludeEnd;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_GT_FIND_ENZYMES_DIALOG_FILLER_H_
+#endif    // _U2_GT_FIND_ENZYMES_DIALOG_FILLER_H_

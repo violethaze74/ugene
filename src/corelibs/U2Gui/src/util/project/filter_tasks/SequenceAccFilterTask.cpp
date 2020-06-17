@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,12 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include "SequenceAccFilterTask.h"
+
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "../ProjectFilterNames.h"
-
-#include "SequenceAccFilterTask.h"
 
 namespace U2 {
 
@@ -32,10 +32,8 @@ namespace U2 {
 /// SequenceAccFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-SequenceAccFilterTask::SequenceAccFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs)
-    : AbstractProjectFilterTask(settings, ProjectFilterNames::SEQUENCE_ACC_FILTER_NAME, docs)
-{
-
+SequenceAccFilterTask::SequenceAccFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+    : AbstractProjectFilterTask(settings, ProjectFilterNames::SEQUENCE_ACC_FILTER_NAME, docs) {
 }
 
 bool SequenceAccFilterTask::filterAcceptsObject(GObject *obj) {
@@ -48,10 +46,9 @@ bool SequenceAccFilterTask::filterAcceptsObject(GObject *obj) {
 /// SequenceAccFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask * SequenceAccFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-    const QList<QPointer<Document> > &docs) const
-{
+AbstractProjectFilterTask *SequenceAccFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
+                                                                       const QList<QPointer<Document>> &docs) const {
     return new SequenceAccFilterTask(settings, docs);
 }
 
-} // namespace U2
+}    // namespace U2

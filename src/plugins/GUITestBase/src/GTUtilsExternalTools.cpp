@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,25 +19,23 @@
  * MA 02110-1301, USA.
  */
 
+#include "GTUtilsExternalTools.h"
+
 #include <QApplication>
 
 #include <U2Gui/MainWindow.h>
 
-#include "utils/GTUtilsDialog.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
-
-#include "GTUtilsExternalTools.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 
 class RemoveToolScenario : public CustomScenario {
 public:
     RemoveToolScenario(const QString &toolName)
-    : CustomScenario(), toolName(toolName)
-    {
-
+        : CustomScenario(), toolName(toolName) {
     }
 
     void run(HI::GUITestOpStatus &os) {
@@ -52,12 +50,29 @@ private:
     const QString toolName;
 };
 
+class CheckValidationScenario : public CustomScenario {
+public:
+    CheckValidationScenario(const QString &toolName)
+        : CustomScenario(), toolName(toolName) {
+    }
+
+    void run(HI::GUITestOpStatus &os) {
+        bool isValid = AppSettingsDialogFiller::isExternalToolValid(os, toolName);
+        CHECK_SET_ERR(isValid, QString("External Tool %1 is not valid, byu should be").arg(toolName));
+
+        QWidget *dialog = QApplication::activeModalWidget();
+        CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+    }
+
+private:
+    const QString toolName;
+};
+
 class SetToolUrlScenario : public CustomScenario {
 public:
     SetToolUrlScenario(const QString &toolName, const QString &url)
-        : CustomScenario(), toolName(toolName), url(url)
-    {
-
+        : CustomScenario(), toolName(toolName), url(url) {
     }
 
     void run(HI::GUITestOpStatus &os) {
@@ -78,17 +93,27 @@ private:
 #define GT_METHOD_NAME "removeTool"
 void GTUtilsExternalTools::removeTool(HI::GUITestOpStatus &os, const QString &toolName) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new RemoveToolScenario(toolName)));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isValid"
+void GTUtilsExternalTools::checkValidation(HI::GUITestOpStatus &os, const QString &toolName) {
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckValidationScenario(toolName)));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setToolUrl"
 void GTUtilsExternalTools::setToolUrl(HI::GUITestOpStatus &os, const QString &toolName, const QString &url) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetToolUrlScenario(toolName, url)));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
 }
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
-} // U2
+}    // namespace U2

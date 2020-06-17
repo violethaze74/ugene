@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,10 +31,11 @@ class U2VIEW_EXPORT McaGeneralTabFactory : public OPWidgetFactory {
 public:
     McaGeneralTabFactory();
 
-    QWidget * createWidget(GObjectView* objView);
-    OPGroupParameters getOPGroupParameters();
+    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
 
-    static const QString & getGroupId();
+    OPGroupParameters getOPGroupParameters() override;
+
+    static const QString &getGroupId();
 
 private:
     static const QString GROUP_ID;
@@ -43,6 +44,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // _U2_MCA_GENERAL_TAB_FACTORY_H_
+#endif    // _U2_MCA_GENERAL_TAB_FACTORY_H_

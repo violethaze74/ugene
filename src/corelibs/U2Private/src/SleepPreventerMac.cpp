@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,9 @@ public:
     IOReturn doCapture() {
         CFStringRef reasonForActivity = CFSTR("New UGENE task is started");
         return IOPMAssertionCreateWithName(kIOPMAssertionTypeNoIdleSleep,
-                             kIOPMAssertionLevelOn, reasonForActivity, &assertionID);
+                                           kIOPMAssertionLevelOn,
+                                           reasonForActivity,
+                                           &assertionID);
     }
 
     IOReturn doRelease() {
@@ -74,4 +76,4 @@ void SleepPreventerMac::release() {
 
 #endif
 
-}   // namespace U2
+}    // namespace U2

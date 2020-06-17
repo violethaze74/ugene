@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,25 +24,21 @@
 #include <QMutexLocker>
 #include <QStringList>
 
-
 namespace U2 {
 
-RepeatFinderTaskFactoryRegistry::RepeatFinderTaskFactoryRegistry(QObject* pOwn):
-    QObject(pOwn)
-{
+RepeatFinderTaskFactoryRegistry::RepeatFinderTaskFactoryRegistry(QObject *pOwn)
+    : QObject(pOwn) {
 }
 
-RepeatFinderTaskFactoryRegistry::~RepeatFinderTaskFactoryRegistry()
-{
-    foreach (const RepeatFinderTaskFactory* factory, factories) {
+RepeatFinderTaskFactoryRegistry::~RepeatFinderTaskFactoryRegistry() {
+    foreach (const RepeatFinderTaskFactory *factory, factories) {
         delete factory;
     }
 }
 
 bool RepeatFinderTaskFactoryRegistry::registerFactory(
-                                                RepeatFinderTaskFactory* factory,
-                                                const QString& factoryId)
-{
+    RepeatFinderTaskFactory *factory,
+    const QString &factoryId) {
     QMutexLocker locker(&mutex);
     if (factories.contains(factoryId)) {
         return false;
@@ -51,7 +47,7 @@ bool RepeatFinderTaskFactoryRegistry::registerFactory(
     return true;
 }
 
-RepeatFinderTaskFactory* RepeatFinderTaskFactoryRegistry::getFactory(const QString& factoryId) {
+RepeatFinderTaskFactory *RepeatFinderTaskFactoryRegistry::getFactory(const QString &factoryId) {
     return factories.value(factoryId, 0);
 }
 
@@ -59,8 +55,8 @@ QStringList RepeatFinderTaskFactoryRegistry::getListFactoryNames() {
     return factories.keys();
 }
 
-bool RepeatFinderTaskFactoryRegistry::hadRegistered(const QString& factoryId) {
+bool RepeatFinderTaskFactoryRegistry::hadRegistered(const QString &factoryId) {
     return factories.contains(factoryId);
 }
 
-} // namespace
+}    // namespace U2

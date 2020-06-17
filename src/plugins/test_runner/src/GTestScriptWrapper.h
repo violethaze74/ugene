@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,8 +47,8 @@ public:
     static QScriptValue qtestSleepE(QScriptContext *ctx, QScriptEngine *eng);
     static QScriptValue qtestWaitE(QScriptContext *ctx, QScriptEngine *eng);
 
-    static void setQTest(QScriptEngine* curEng);
+    static void setQTest(QScriptEngine *curEng);
 };
-}//namespace
+}    // namespace U2
 
 #endif

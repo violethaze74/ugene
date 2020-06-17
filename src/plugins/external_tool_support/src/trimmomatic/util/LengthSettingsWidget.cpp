@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
+#include "LengthSettingsWidget.h"
+
 #include <QIntValidator>
 
-#include "LengthSettingsWidget.h"
+#include <U2Core/U2SafePoints.h>
+
 #include "LineEditHighlighter.h"
 
 namespace U2 {
@@ -97,5 +99,5 @@ QVariantMap LengthSettingsWidget::parseState(const QString &command, const QStri
     return state;
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

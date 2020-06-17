@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,25 +24,21 @@
 #include <QMutexLocker>
 #include <QStringList>
 
-
 namespace U2 {
 
-SmithWatermanTaskFactoryRegistry::SmithWatermanTaskFactoryRegistry(QObject* pOwn):
-    QObject(pOwn)
-{
+SmithWatermanTaskFactoryRegistry::SmithWatermanTaskFactoryRegistry(QObject *pOwn)
+    : QObject(pOwn) {
 }
 
-SmithWatermanTaskFactoryRegistry::~SmithWatermanTaskFactoryRegistry()
-{
-    foreach (const SmithWatermanTaskFactory* factory, factories) {
+SmithWatermanTaskFactoryRegistry::~SmithWatermanTaskFactoryRegistry() {
+    foreach (const SmithWatermanTaskFactory *factory, factories) {
         delete factory;
     }
 }
 
 bool SmithWatermanTaskFactoryRegistry::registerFactory(
-                                                SmithWatermanTaskFactory* factory,
-                                                const QString& factoryId)
-{
+    SmithWatermanTaskFactory *factory,
+    const QString &factoryId) {
     QMutexLocker locker(&mutex);
     if (factories.contains(factoryId)) {
         return false;
@@ -51,17 +47,16 @@ bool SmithWatermanTaskFactoryRegistry::registerFactory(
     return true;
 }
 
-SmithWatermanTaskFactory* SmithWatermanTaskFactoryRegistry::getFactory(const QString& factoryId) {
+SmithWatermanTaskFactory *SmithWatermanTaskFactoryRegistry::getFactory(const QString &factoryId) {
     return factories.value(factoryId, 0);
 }
-
 
 QStringList SmithWatermanTaskFactoryRegistry::getListFactoryNames() {
     return factories.keys();
 }
 
-bool SmithWatermanTaskFactoryRegistry::hadRegistered(const QString& factoryId) {
+bool SmithWatermanTaskFactoryRegistry::hadRegistered(const QString &factoryId) {
     return factories.contains(factoryId);
 }
 
-} // namespace
+}    // namespace U2

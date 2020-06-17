@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include "TabixSupport.h"
 
 #include <U2Core/AppContext.h>
+
 #include <U2Gui/MainWindow.h>
 
 namespace U2 {
@@ -29,9 +30,8 @@ namespace U2 {
 const QString TabixSupport::ET_TABIX = "Tabix";
 const QString TabixSupport::ET_TABIX_ID = "USUPP_TABIX";
 
-TabixSupport::TabixSupport(const QString& id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path)
-{
+TabixSupport::TabixSupport(const QString &id, const QString &name, const QString &path)
+    : ExternalTool(id, name, path) {
     if (AppContext::getMainWindow() != NULL) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
@@ -39,11 +39,11 @@ TabixSupport::TabixSupport(const QString& id, const QString &name, const QString
     }
 
 #ifdef Q_OS_WIN
-    executableFileName="tabix.exe";
+    executableFileName = "tabix.exe";
 #else
-    #if defined(Q_OS_UNIX)
+#    if defined(Q_OS_UNIX)
     executableFileName = "tabix";
-    #endif
+#    endif
 #endif
 
     muted = true;
@@ -54,4 +54,4 @@ TabixSupport::TabixSupport(const QString& id, const QString &name, const QString
     toolKitName = "SAMtools";
 }
 
-} // namespace
+}    // namespace U2

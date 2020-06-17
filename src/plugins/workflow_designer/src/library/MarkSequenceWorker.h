@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,12 +31,14 @@ namespace LocalWorkflow {
 class MarkSequencePrompter : public PrompterBase<MarkSequencePrompter> {
     Q_OBJECT
 public:
-    MarkSequencePrompter(Actor *p = NULL) : PrompterBase<MarkSequencePrompter>(p) {}
+    MarkSequencePrompter(Actor *p = NULL)
+        : PrompterBase<MarkSequencePrompter>(p) {
+    }
 
 protected:
     QString composeRichDoc();
 
-}; // MarkSequencePrompter
+};    // MarkSequencePrompter
 
 class MarkSequenceWorker : public BaseWorker {
     Q_OBJECT
@@ -48,26 +50,29 @@ public:
 
     virtual void init();
     virtual Task *tick();
-    virtual void cleanup() {}
+    virtual void cleanup() {
+    }
 
 private:
     IntegralBus *inChannel;
     IntegralBus *outChannel;
     DataTypePtr mtype;
 
-}; // MarkSequenceWorker
+};    // MarkSequenceWorker
 
 class MarkSequenceWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
 
-    MarkSequenceWorkerFactory() : DomainFactory(ACTOR_ID) {}
+    MarkSequenceWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-}; // MarkSequenceWorkerFactory
+};    // MarkSequenceWorkerFactory
 
-} // LocalWorkflow
-} // U2
+}    // namespace LocalWorkflow
+}    // namespace U2
 
-#endif // _MARK_SEQUENCE_WORKER_H_
+#endif    // _MARK_SEQUENCE_WORKER_H_

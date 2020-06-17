@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 
 #include <QObject>
 
-#include <U2Core/global.h>
 #include <U2Core/MaIterator.h>
+#include <U2Core/global.h>
 
 class QAction;
 
@@ -64,6 +64,6 @@ private:
     static const QPoint INVALID_POINT;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MA_AMBIGUOUS_CHARACTERS_CONTROLLER_H_
+#endif    // _U2_MA_AMBIGUOUS_CHARACTERS_CONTROLLER_H_

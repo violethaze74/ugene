@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+#include "DashboardInfoRegistry.h"
+
 #include <QSet>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "DashboardInfoRegistry.h"
 #include "RemoveDashboardsTask.h"
 
 namespace U2 {
@@ -164,4 +165,4 @@ bool DashboardInfoRegistry::updateInfo(const DashboardInfo &newDashboardInfo) {
     return true;
 }
 
-}   // namespace U2
+}    // namespace U2

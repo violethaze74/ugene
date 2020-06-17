@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,11 @@
 #ifndef _U2_EXPORT_MSA2SEQ_DIALOG_H_
 #define _U2_EXPORT_MSA2SEQ_DIALOG_H_
 
+#include <ui_ExportMSA2SequencesDialog.h>
+
 #include <QDialog>
 
 #include <U2Core/global.h>
-
-#include <ui_ExportMSA2SequencesDialog.h>
 
 namespace U2 {
 
@@ -35,24 +35,24 @@ class SaveDocumentController;
 class ExportMSA2SequencesDialog : public QDialog, private Ui_ExportMSA2SequencesDialog {
     Q_OBJECT
 public:
-    ExportMSA2SequencesDialog(const QString &defaultDir, const QString &defaultFilename, QWidget* p);
+    ExportMSA2SequencesDialog(const QString &defaultDir, const QString &defaultFilename, QWidget *p);
 
     virtual void accept();
 
 public:
-    QString             url;
-    QString             defaultDir;
-    QString             defaultFileName;
-    DocumentFormatId    format;
-    bool                trimGapsFlag;
-    bool                addToProjectFlag;
+    QString url;
+    QString defaultDir;
+    QString defaultFileName;
+    DocumentFormatId format;
+    bool trimGapsFlag;
+    bool addToProjectFlag;
 
 private:
     void initSaveController();
 
-    SaveDocumentController* saveController;
+    SaveDocumentController *saveController;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

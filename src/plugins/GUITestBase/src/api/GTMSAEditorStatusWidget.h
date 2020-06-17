@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,9 @@
 #ifndef _U2_GT_MSAEDITOR_STATUSWIDGET_H_
 #define _U2_GT_MSAEDITOR_STATUSWIDGET_H_
 
-#include "GTGlobals.h"
 #include <U2View/MaEditorStatusBar.h>
+
+#include "GTGlobals.h"
 
 namespace U2 {
 using namespace HI;
@@ -33,7 +34,7 @@ public:
     static QWidget *getStatusWidget(HI::GUITestOpStatus &os);
 
     // fails if the widget is NULL or can't get length
-    static int length(HI::GUITestOpStatus& os, QWidget* w);
+    static int length(HI::GUITestOpStatus &os, QWidget *w);
     static int getSequencesCount(HI::GUITestOpStatus &os, QWidget *w);
 
     static QString getRowNumberString(HI::GUITestOpStatus &os);
@@ -46,5 +47,5 @@ public:
     static QString getSequenceUngappedLengthString(HI::GUITestOpStatus &os);
 };
 
-}
-#endif // _U2_GT_MSAEDITOR_STATUSWIDGET_H_
+}    // namespace U2
+#endif    // _U2_GT_MSAEDITOR_STATUSWIDGET_H_

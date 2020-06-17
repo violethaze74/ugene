@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ class ProjectFilterProxyModel : public QSortFilterProxyModel {
 public:
     ProjectFilterProxyModel(const ProjectTreeControllerModeSettings &settings, QObject *p = NULL);
 
-    ProjectViewModel * sourceModel() const;
+    ProjectViewModel *sourceModel() const;
 
     void updateSettings(const ProjectTreeControllerModeSettings &settings);
     // wraps the ProjectViewModel's method with the same name
@@ -48,6 +48,6 @@ private:
     ProjectTreeControllerModeSettings settings;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_PROJECT_FILTER_PROXY_MODEL_H_
+#endif    // _U2_PROJECT_FILTER_PROXY_MODEL_H_

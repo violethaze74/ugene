@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -26,12 +26,10 @@ namespace U2 {
 OutputCollector::OutputCollector(bool _skipMessageWithCommand)
     : ExternalToolListener(),
       skipMessageWithCommand(_skipMessageWithCommand),
-      firstLineSkipped(false)
-{
-
+      firstLineSkipped(false) {
 }
 
-void OutputCollector::addNewLogMessage(const QString& message, int /*messageType*/) {
+void OutputCollector::addNewLogMessage(const QString &message, int /*messageType*/) {
     //skip first line of the output with tool calling string
     if (skipMessageWithCommand && collectedLog.isEmpty() && !firstLineSkipped) {
         firstLineSkipped = true;
@@ -40,8 +38,8 @@ void OutputCollector::addNewLogMessage(const QString& message, int /*messageType
     collectedLog.append(message);
 }
 
-const QString& OutputCollector::getLog() const {
+const QString &OutputCollector::getLog() const {
     return collectedLog;
 }
 
-}
+}    // namespace U2

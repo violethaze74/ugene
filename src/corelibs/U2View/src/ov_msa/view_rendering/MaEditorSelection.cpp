@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,30 +27,22 @@ namespace U2 {
 /* MaEditorSelection */
 /************************************************************************/
 MaEditorSelection::MaEditorSelection() {
-
 }
 
 MaEditorSelection::MaEditorSelection(int left, int top, int width, int height)
     : selArea(left, top, width, height) {
-
 }
 
-MaEditorSelection::MaEditorSelection(const QPoint& topLeft, const QPoint& bottomRight)
+MaEditorSelection::MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight)
     : selArea(topLeft, bottomRight) {
-
 }
 
-MaEditorSelection::MaEditorSelection(const QPoint& topLeft, int width, int height)
-    : selArea(topLeft, QSize(width,height)) {
-
-}
-
-bool MaEditorSelection::isNull() const {
-    return selArea.isNull();
+MaEditorSelection::MaEditorSelection(const QPoint &topLeft, int width, int height)
+    : selArea(topLeft, QSize(width, height)) {
 }
 
 bool MaEditorSelection::isEmpty() const {
-    return selArea.isEmpty();
+    return selArea.width() <= 0 || selArea.height() <= 0;
 }
 
 QPoint MaEditorSelection::topLeft() const {
@@ -61,8 +53,8 @@ QPoint MaEditorSelection::bottomRight() const {
     return selArea.bottomRight();
 }
 
-const QRect& MaEditorSelection::getRect() const {
-    return selArea;
+QRect MaEditorSelection::toRect() const {
+    return isEmpty() ? QRect(0, 0, 0, 0) : selArea;
 }
 
 int MaEditorSelection::x() const {
@@ -93,18 +85,17 @@ U2Region MaEditorSelection::getYRegion() const {
     return U2Region(selArea.y(), selArea.height());
 }
 
-bool MaEditorSelection::operator==(const MaEditorSelection& other) const {
+bool MaEditorSelection::operator==(const MaEditorSelection &other) const {
     return selArea == other.selArea;
 }
 
-MaEditorSelection MaEditorSelection::intersected(const MaEditorSelection& selection) const {
+MaEditorSelection MaEditorSelection::intersected(const MaEditorSelection &selection) const {
     QRect r = selArea.intersected(selection.selArea);
     return MaEditorSelection(r);
 }
 
-MaEditorSelection::MaEditorSelection(QRect& rect)
+MaEditorSelection::MaEditorSelection(QRect &rect)
     : selArea(rect) {
-
 }
 
-} // namespace
+}    // namespace U2

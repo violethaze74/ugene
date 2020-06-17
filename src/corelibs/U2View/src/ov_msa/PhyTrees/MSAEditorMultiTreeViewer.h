@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,30 +35,32 @@ class MsaEditorTreeTabArea;
 class GObjectViewWindow;
 class MsaEditorTreeTab;
 
-class U2VIEW_EXPORT MSAEditorMultiTreeViewer: public QWidget {
+class U2VIEW_EXPORT MSAEditorMultiTreeViewer : public QWidget {
     Q_OBJECT
 public:
-    MSAEditorMultiTreeViewer(QString _title, MSAEditor* _editor);
-    ~MSAEditorMultiTreeViewer(){}
+    MSAEditorMultiTreeViewer(QString _title, MSAEditor *_editor);
+    ~MSAEditorMultiTreeViewer() {
+    }
 
-    void addTreeView(GObjectViewWindow* treeView);
+    void addTreeView(GObjectViewWindow *treeView);
 
-    QWidget* getCurrentWidget() const;
+    QWidget *getCurrentWidget() const;
 
-    MsaEditorTreeTab* getCurrentTabWidget() const;
+    MsaEditorTreeTab *getCurrentTabWidget() const;
 
-    const QStringList& getTreeNames() const;
+    const QStringList &getTreeNames() const;
 signals:
     void si_tabsCountChanged(int tabsCount);
 public slots:
-    void sl_onTabCloseRequested(QWidget*);
+    void sl_onTabCloseRequested(QWidget *);
+
 private:
-    MsaEditorTreeTabArea*           treeTabs;
-    QWidget*                        titleWidget;
-    MSAEditor*                      editor;
-    QList<QWidget*>                 treeViews;
-    QStringList                     tabsNames;
+    MsaEditorTreeTabArea *treeTabs;
+    QWidget *titleWidget;
+    MSAEditor *editor;
+    QList<QWidget *> treeViews;
+    QStringList tabsNames;
 };
 
-}//namespace
+}    // namespace U2
 #endif

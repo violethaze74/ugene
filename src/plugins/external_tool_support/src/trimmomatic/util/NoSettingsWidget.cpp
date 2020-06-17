@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include "NoSettingsWidget.h"
+
 #include <QLabel>
 #include <QVBoxLayout>
-
-#include "NoSettingsWidget.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -54,5 +54,5 @@ QVariantMap NoSettingsWidget::parseState(const QString &) {
     return QVariantMap();
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

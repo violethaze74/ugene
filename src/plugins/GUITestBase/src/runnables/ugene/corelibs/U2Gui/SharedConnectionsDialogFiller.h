@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,21 +23,29 @@
 #define _SHARED_CONNECTIONS_DIALOG_FILLER_H_
 
 #ifdef DELETE
-#undef DELETE
+#    undef DELETE
 #endif
+
+#include <base_dialogs/GTFileDialog.h>
 
 #include <QFlags>
 
 #include "utils/GTUtilsDialog.h"
-#include <base_dialogs/GTFileDialog.h>
 
 namespace U2 {
+using namespace HI;
 
 class SharedConnectionsDialogFiller : public Filler {
 public:
     class Action {
     public:
-        enum Type {ADD, CLICK, EDIT, DELETE, CONNECT, DISCONNECT, CLOSE};
+        enum Type { ADD,
+                    CLICK,
+                    EDIT,
+                    DELETE,
+                    CONNECT,
+                    DISCONNECT,
+                    CLOSE };
 
         Action(Type type, QString itemName = "");
         Type type;
@@ -45,7 +53,12 @@ public:
         QString dbName;
 
         // for CONNECT
-        enum ConnectResult {OK, WRONG_DATA, INITIALIZE, DONT_INITIALIZE, VERSION, LOGIN};
+        enum ConnectResult { OK,
+                             WRONG_DATA,
+                             INITIALIZE,
+                             DONT_INITIALIZE,
+                             VERSION,
+                             LOGIN };
         ConnectResult expectedResult;
     };
 
@@ -58,6 +71,6 @@ private:
     QList<Action> actions;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _SHARED_CONNECTIONS_DIALOG_FILLER_H_
+#endif    // _SHARED_CONNECTIONS_DIALOG_FILLER_H_

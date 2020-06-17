@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,11 @@
 #ifndef GTGRAPHICSITEM_H
 #define GTGRAPHICSITEM_H
 
-#include <U2Core/U2OpStatus.h>
-#include "GTGlobals.h"
 #include <QGraphicsItem>
+
+#include <U2Core/U2OpStatus.h>
+
+#include "GTGlobals.h"
 
 namespace U2 {
 using namespace HI;
@@ -35,6 +37,6 @@ public:
     static QPoint getItemCenter(HI::GUITestOpStatus &os, QGraphicsItem *it);
 };
 
-} //namespace
+}    // namespace U2
 
-#endif // GTGRAPHICSITEM_H
+#endif    // GTGRAPHICSITEM_H

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,15 +35,17 @@ public:
                            const QString &_method = "UGENE Genome Aligner",
                            bool _useDefaultIndexName = true,
                            const QString &_indPath = QString(),
-                           const QString &_indFileName = QString()):
-        Filler(os, "BuildIndexFromRefDialog"),
-        refPath(_refPath),
-        refFileName(_refFileName),
-        indPath(_indPath),
-        indFileName(_indFileName),
-        method(_method),
-        useDefaultIndexName(_useDefaultIndexName) {}
+                           const QString &_indFileName = QString())
+        : Filler(os, "BuildIndexFromRefDialog"),
+          refPath(_refPath),
+          refFileName(_refFileName),
+          indPath(_indPath),
+          indFileName(_indFileName),
+          method(_method),
+          useDefaultIndexName(_useDefaultIndexName) {
+    }
     void commonScenario();
+
 private:
     QString refPath;
     QString refFileName;
@@ -53,6 +55,6 @@ private:
     bool useDefaultIndexName;
 };
 
-}
+}    // namespace U2
 
-#endif // _U2_GT_BUILD_INDEX_DIALOG_FILLER_H_
+#endif    // _U2_GT_BUILD_INDEX_DIALOG_FILLER_H_

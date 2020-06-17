@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,30 +24,31 @@
 
 #include <ui_TmpDirChangeDialog.h>
 
-#include <QLabel>
 #include <QDialog>
+#include <QLabel>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/TmpDirChecker.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 namespace U2 {
 
 class TmpDirChangeDialogController : public QDialog, public Ui_TmpDirChangeDialog {
     Q_OBJECT
 public:
-    TmpDirChangeDialogController(QString path, QWidget* p);
+    TmpDirChangeDialogController(QString path, QWidget *p);
     QString getTmpDirPath();
 public slots:
     void sl_changeDirButtonClicked();
     void sl_exitAppButtonClicked();
     void sl_okButtonClicked();
+
 private:
     QString tmpDirPath;
-    TmpDirChecker* tmpDirChecker;
+    TmpDirChecker *tmpDirChecker;
 };
 
-} //namespace
+}    // namespace U2
 
-#endif // _U2_TMP_DIR_CHANGE_DIALOG_CONTROLLER_
+#endif    // _U2_TMP_DIR_CHANGE_DIALOG_CONTROLLER_

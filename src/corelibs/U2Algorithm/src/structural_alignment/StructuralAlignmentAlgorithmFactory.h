@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,11 +30,12 @@ namespace U2 {
 
 class U2ALGORITHM_EXPORT StructuralAlignmentAlgorithmFactory {
 public:
-    virtual ~StructuralAlignmentAlgorithmFactory() {}
+    virtual ~StructuralAlignmentAlgorithmFactory() {
+    }
 
-    virtual StructuralAlignmentAlgorithm* create() = 0;
+    virtual StructuralAlignmentAlgorithm *create() = 0;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif  // #ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_FACTORY_H_
+#endif    // #ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_FACTORY_H_

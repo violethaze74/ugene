@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,4 +28,4 @@ const QString BuiltInPWMConversionAlgorithms::LOD_ALGO("Log-odds");
 const QString BuiltInPWMConversionAlgorithms::MCH_ALGO("Match");
 const QString BuiltInPWMConversionAlgorithms::NLG_ALGO("NLG");
 
-}//namespace
+}    // namespace U2

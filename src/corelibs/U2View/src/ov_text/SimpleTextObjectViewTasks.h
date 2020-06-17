@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ private:
 class OpenSavedTextObjectViewTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenSavedTextObjectViewTask(const QString& viewName, const QVariantMap& stateData);
+    OpenSavedTextObjectViewTask(const QString &viewName, const QVariantMap &stateData);
     virtual void open();
 
 private:
@@ -48,13 +48,11 @@ private:
 
 class UpdateSimpleTextObjectViewTask : public ObjectViewTask {
 public:
-    UpdateSimpleTextObjectViewTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
+    UpdateSimpleTextObjectViewTask(GObjectView *v, const QString &stateName, const QVariantMap &stateData);
 
     virtual void update();
 };
 
-
-} // namespace
+}    // namespace U2
 
 #endif
-

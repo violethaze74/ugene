@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_ENZYMES_PLUGIN_H_
 
 #include <U2Core/PluginModel.h>
+
 #include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
@@ -48,7 +49,7 @@ private:
     QAction *openCreateFragmentDialog;
 };
 
-class EnzymesADVContext: public GObjectViewWindowContext {
+class EnzymesADVContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
     EnzymesADVContext(QObject *p, const QList<QAction *> &cloningActions);
@@ -63,8 +64,6 @@ protected:
     QList<QAction *> cloningActions;
 };
 
-
-
-} //namespace
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ const QString EnzymeSettings::MIN_HIT_VALUE("plugin_enzymes/min_hit_value");
 const QString EnzymeSettings::SEARCH_REGION("plugin_enzymes/search_region");
 const QString EnzymeSettings::EXCLUDED_REGION("plugin_enzymes/non_cut_region");
 const QString EnzymeSettings::MAX_RESULTS("plugin_enzymes/max_results");
-const QString EnzymeSettings::COMMON_ENZYMES( "ClaI,BamHI,BglII,DraI,EcoRI,EcoRV,HindIII,PstI,SalI,SmaI,XmaI");
+const QString EnzymeSettings::COMMON_ENZYMES("ClaI,BamHI,BglII,DraI,EcoRI,EcoRV,HindIII,PstI,SalI,SmaI,XmaI");
 
 EnzymeData::EnzymeData() {
     cutDirect = ENZYME_CUT_UNKNOWN;
@@ -40,4 +40,4 @@ EnzymeData::EnzymeData() {
     alphabet = NULL;
 }
 
-} // namespace
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,20 +21,19 @@
 
 #include "GraphMenu.h"
 
+#include <QApplication>
+#include <QMessageBox>
+
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/DNAAlphabet.h>
 
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
-
-#include <QApplication>
-#include <QMessageBox>
-
 
 namespace U2 {
 
@@ -43,13 +42,12 @@ namespace U2 {
  *
  * @param _factory The factory that should be used to draw the graph
  */
-GraphAction::GraphAction(GSequenceGraphFactory* _factory)
+GraphAction::GraphAction(GSequenceGraphFactory *_factory)
     : QAction(_factory->getGraphName(), NULL),
       factory(_factory),
       view(NULL),
-      isBookmarkUpdate(false)
-{
-    setObjectName(_factory->getGraphName());
+      isBookmarkUpdate(false) {
+    setObjectName(factory->getGraphName());
     connect(this, SIGNAL(triggered()), SLOT(sl_handleGraphAction()));
 }
 
@@ -63,15 +61,15 @@ GraphAction::GraphAction(GSequenceGraphFactory* _factory)
  */
 void GraphAction::sl_handleGraphAction() {
     if (isChecked()) {
-        SAFE_POINT(view == NULL, "Graph view is checked, but not available!",);
+        SAFE_POINT(view == NULL, "Graph view is checked, but not available!", );
         // Getting the menu action
-        GraphMenuAction* menuAction = qobject_cast<GraphMenuAction*>(parent());
-        SAFE_POINT(menuAction!=NULL, "GraphMenuAction is not available (while handling an action)!",);
+        GraphMenuAction *menuAction = qobject_cast<GraphMenuAction *>(parent());
+        SAFE_POINT(menuAction != NULL, "GraphMenuAction is not available (while handling an action)!", );
 
         // Creating graphs
-        ADVSingleSequenceWidget* sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(menuAction->seqWidget);
+        ADVSingleSequenceWidget *sequenceWidget = qobject_cast<ADVSingleSequenceWidget *>(menuAction->seqWidget);
         if (sequenceWidget->getSequenceLength() > MAX_SEQUENCE_LENGTH_TO_ALLOW_GRAPHS) {
-            QMessageBox::warning(sequenceWidget->window(), L10N::warningTitle(),  tr("Sequence size is too large to calculate graphs!"));
+            QMessageBox::warning(sequenceWidget->window(), L10N::warningTitle(), tr("Sequence size is too large to calculate graphs!"));
             this->setChecked(false);
             return;
         }
@@ -79,17 +77,17 @@ void GraphAction::sl_handleGraphAction() {
         GSequenceGraphDrawer *graphDrawer = factory->getDrawer(view);
         connect(graphDrawer, SIGNAL(si_graphRenderError()), SLOT(sl_renderError()));
         view->setGraphDrawer(graphDrawer);
-        QList<QSharedPointer<GSequenceGraphData> > graphs = factory->createGraphs(view);
-        foreach(const QSharedPointer<GSequenceGraphData>& graph, graphs) {
+        QList<QSharedPointer<GSequenceGraphData>> graphs = factory->createGraphs(view);
+        foreach (const QSharedPointer<GSequenceGraphData> &graph, graphs) {
             view->addGraphData(graph);
         }
         sequenceWidget->addSequenceView(view);
-        if(true == isBookmarkUpdate) {
+        if (true == isBookmarkUpdate) {
             view->createLabelsOnPositions(positions);
             isBookmarkUpdate = false;
         }
     } else {
-        SAFE_POINT(view != NULL, "Graph view is not checked, but is present!",);
+        SAFE_POINT(view != NULL, "Graph view is not checked, but is present!", );
         delete view;
         view = NULL;
     }
@@ -110,28 +108,28 @@ void GraphAction::sl_updateGraphView(const QStringList &graphName, const QVarian
             activate(QAction::Trigger);
         }
     }
-    if(view != NULL) {
+    if (view != NULL) {
         activate(QAction::Trigger);
     }
 }
 
-
 /** The name of the menu action for graphs */
 const QString GraphMenuAction::ACTION_NAME("GraphMenuAction");
-
 
 /**
  * Creates a new graphs menu and adds it to toolbar
  */
-GraphMenuAction::GraphMenuAction(const DNAAlphabet* a) : ADVSequenceWidgetAction(ACTION_NAME, tr("Graphs")) {
+GraphMenuAction::GraphMenuAction(const DNAAlphabet *a)
+    : ADVSequenceWidgetAction(ACTION_NAME, tr("Graphs")) {
     menu = new QMenu();
+    menu->setObjectName("graph_menu");
     this->setIcon(QIcon(":core/images/graphs.png"));
     this->setMenu(menu);
     addToBar = true;
 
     separator = menu->addSeparator();
 
-    QAction* closeAllAction = new QAction(GraphMenuAction::tr("Close all graphs"), this);
+    QAction *closeAllAction = new QAction(GraphMenuAction::tr("Close all graphs"), this);
     menu->addAction(closeAllAction);
     connect(closeAllAction, SIGNAL(triggered()), this, SLOT(sl_closeAllGraphs()));
     setVisible(a->isNucleic());
@@ -143,14 +141,14 @@ GraphMenuAction::GraphMenuAction(const DNAAlphabet* a) : ADVSequenceWidgetAction
  * @param ctx Sequence context.
  * @return The menu action with graphs.
  */
-GraphMenuAction* GraphMenuAction::findGraphMenuAction(ADVSequenceObjectContext* ctx) {
-    foreach(ADVSequenceWidget* sequenceWidget, ctx->getSequenceWidgets())     {
-        ADVSequenceWidgetAction* advAction = sequenceWidget->getADVSequenceWidgetAction(
+GraphMenuAction *GraphMenuAction::findGraphMenuAction(ADVSequenceObjectContext *ctx) {
+    foreach (ADVSequenceWidget *sequenceWidget, ctx->getSequenceWidgets()) {
+        ADVSequenceWidgetAction *advAction = sequenceWidget->getADVSequenceWidgetAction(
             GraphMenuAction::ACTION_NAME);
         if (advAction == NULL) {
             continue;
         } else {
-            return qobject_cast<GraphMenuAction*>(advAction);
+            return qobject_cast<GraphMenuAction *>(advAction);
         }
     }
 
@@ -163,10 +161,9 @@ GraphMenuAction* GraphMenuAction::findGraphMenuAction(ADVSequenceObjectContext* 
  * @param ctx Sequence context where the graphs menu should be searched for.
  * @param action The graphs action that should be added.
  */
-void GraphMenuAction::addGraphAction(ADVSequenceObjectContext* ctx, GraphAction* action)
-{
-    GraphMenuAction* graphMenuAction = findGraphMenuAction(ctx);
-    SAFE_POINT(graphMenuAction, "GraphMenuAction is not available (while adding a new action)!",);
+void GraphMenuAction::addGraphAction(ADVSequenceObjectContext *ctx, GraphAction *action) {
+    GraphMenuAction *graphMenuAction = findGraphMenuAction(ctx);
+    SAFE_POINT(graphMenuAction, "GraphMenuAction is not available (while adding a new action)!", );
 
     action->setParent(graphMenuAction);
     graphMenuAction->menu->insertAction(graphMenuAction->separator, action);
@@ -174,14 +171,13 @@ void GraphMenuAction::addGraphAction(ADVSequenceObjectContext* ctx, GraphAction*
 }
 
 void GraphMenuAction::sl_closeAllGraphs() {
-    QList<QAction*> allActions = menu->actions();
-    foreach (QAction* a, allActions) {
-        GraphAction* graphAction = qobject_cast<GraphAction*>(a);
+    QList<QAction *> allActions = menu->actions();
+    foreach (QAction *a, allActions) {
+        GraphAction *graphAction = qobject_cast<GraphAction *>(a);
         if (graphAction != NULL && graphAction->isChecked()) {
             graphAction->trigger();
         }
     }
 }
 
-
-}//namespace
+}    // namespace U2

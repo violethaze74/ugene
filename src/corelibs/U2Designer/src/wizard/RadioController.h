@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ public:
     RadioController(WizardController *wc, RadioWidget *rw);
     virtual ~RadioController();
 
-    virtual QWidget * createGUI(U2OpStatus &os);
+    virtual QWidget *createGUI(U2OpStatus &os);
 
 private slots:
     void sl_buttonClicked(QAbstractButton *button);
@@ -45,6 +45,6 @@ private:
     RadioWidget *rw;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_RADIOCONTROLLER_H_
+#endif    // _U2_RADIOCONTROLLER_H_

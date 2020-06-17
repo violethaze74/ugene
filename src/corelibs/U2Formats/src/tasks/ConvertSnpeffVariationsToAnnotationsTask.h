@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,13 +41,13 @@ class ConvertSnpeffVariationsToAnnotationsTask : public Task {
 public:
     ConvertSnpeffVariationsToAnnotationsTask(const QList<VariantTrackObject *> &variantTrackObjects);
 
-    const QMap<QString, QList<SharedAnnotationData> > & getAnnotationsData() const;
+    const QMap<QString, QList<SharedAnnotationData>> &getAnnotationsData() const;
 
 private:
     void run();
 
     const QList<VariantTrackObject *> variantTrackObjects;
-    QMap<QString, QList<SharedAnnotationData> > annotationTablesData;
+    QMap<QString, QList<SharedAnnotationData>> annotationTablesData;
 
     static const QString CHROM_QUALIFIER_NAME;
     static const QString LOCATION_QUALIFIER_NAME;
@@ -63,13 +63,13 @@ public:
     LoadConvertAndSaveSnpeffVariationsToAnnotationsTask(const QString &variationsUrl, const U2DbiRef &dstDbiRef, const QString &dstUrl, const QString &formatId);
     ~LoadConvertAndSaveSnpeffVariationsToAnnotationsTask();
 
-    const QString & getResultUrl() const;
+    const QString &getResultUrl() const;
 
 private:
     void prepare();
     QList<Task *> onSubTaskFinished(Task *subTask);
 
-    Document * prepareDocument();
+    Document *prepareDocument();
     void prepareSaveTask();
 
     const QString variationsUrl;
@@ -87,6 +87,6 @@ private:
     QList<AnnotationTableObject *> annotationTableObjects;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_TASK_H_
+#endif    // _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_TASK_H_

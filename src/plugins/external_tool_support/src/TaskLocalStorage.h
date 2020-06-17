@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,26 +30,26 @@ namespace U2 {
 
 class ETSContextTLSRef {
 public:
-    ETSContextTLSRef(ETSContext* _ctx, int _workerID) : ctx(_ctx), workerID(_workerID){}
-    ETSContext* ctx;
+    ETSContextTLSRef(ETSContext *_ctx, int _workerID)
+        : ctx(_ctx), workerID(_workerID) {
+    }
+    ETSContext *ctx;
     int workerID;
 };
 
 class TaskLocalData {
 public:
-    static ETSContext* current();
+    static ETSContext *current();
 
     static unsigned currentWorkerID();
-
 
     static void bindToETSTLSContext(ETSContext *ctx, int workerID = 0);
 
     static void detachETSTLSContext();
 
-
 private:
-    static QThreadStorage<ETSContextTLSRef*> tls;
+    static QThreadStorage<ETSContextTLSRef *> tls;
 };
-} //namespace
+}    // namespace U2
 
 #endif

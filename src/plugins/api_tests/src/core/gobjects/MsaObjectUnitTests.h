@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,12 @@
 #ifndef _MSA_OBEJCT_UNIT_TESTS_H_
 #define _MSA_OBEJCT_UNIT_TESTS_H_
 
-#include "core/dbi/DbiTest.h"
-
 #include <unittest.h>
 
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Dbi.h>
 
+#include "core/dbi/DbiTest.h"
 
 namespace U2 {
 
@@ -47,22 +46,22 @@ public:
 
 private:
     static TestDbiProvider dbiProvider;
-    static const QString& MAL_OBJ_DB_URL;
+    static const QString &MAL_OBJ_DB_URL;
     static U2DbiRef dbiRef;
 };
 
 DECLARE_TEST(MsaObjectUnitTests, getMAlignment);
 DECLARE_TEST(MsaObjectUnitTests, setMAlignment);
-DECLARE_TEST( MsaObjectUnitTests, deleteGap_trailingGaps );
-DECLARE_TEST( MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols );
-DECLARE_TEST( MsaObjectUnitTests, deleteGap_gapRegion );
+DECLARE_TEST(MsaObjectUnitTests, deleteGap_trailingGaps);
+DECLARE_TEST(MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols);
+DECLARE_TEST(MsaObjectUnitTests, deleteGap_gapRegion);
 
-} // namespace
+}    // namespace U2
 
 DECLARE_METATYPE(MsaObjectUnitTests, getMAlignment);
 DECLARE_METATYPE(MsaObjectUnitTests, setMAlignment);
-DECLARE_METATYPE( MsaObjectUnitTests, deleteGap_trailingGaps );
-DECLARE_METATYPE( MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols );
-DECLARE_METATYPE( MsaObjectUnitTests, deleteGap_gapRegion );
+DECLARE_METATYPE(MsaObjectUnitTests, deleteGap_trailingGaps);
+DECLARE_METATYPE(MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols);
+DECLARE_METATYPE(MsaObjectUnitTests, deleteGap_gapRegion);
 
 #endif

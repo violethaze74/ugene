@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,35 +22,36 @@
 #ifndef _U2_GT_RUNNABLES_WIZARD_FILLER_H_
 #define _U2_GT_RUNNABLES_WIZARD_FILLER_H_
 
-#include "utils/GTUtilsDialog.h"
-
 #include <QPushButton>
 #include <QToolButton>
+
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 using namespace HI;
 
 class WizardFiller : public Filler {
 public:
-    WizardFiller(HI::GUITestOpStatus &_os, QString name, QList<QStringList> _inputFiles = QList<QStringList>(), QMap<QString, QVariant> _map = (QMap<QString, QVariant>())):
-        Filler(_os, name), inputFiles(_inputFiles), map(_map){}
-    WizardFiller(HI::GUITestOpStatus &_os, QString name, QStringList _inputFiles, QMap<QString, QVariant> _map = (QMap<QString, QVariant>())):
-        Filler(_os, name), inputFiles(QList<QStringList>()<<_inputFiles), map(_map){}
-    WizardFiller(HI::GUITestOpStatus &_os, QString name, CustomScenario* c): Filler(_os, name, c){}
+    WizardFiller(HI::GUITestOpStatus &_os, QString name, QList<QStringList> _inputFiles = QList<QStringList>(), QMap<QString, QVariant> _map = (QMap<QString, QVariant>()))
+        : Filler(_os, name), inputFiles(_inputFiles), map(_map) {
+    }
+    WizardFiller(HI::GUITestOpStatus &_os, QString name, QStringList _inputFiles, QMap<QString, QVariant> _map = (QMap<QString, QVariant>()))
+        : Filler(_os, name), inputFiles(QList<QStringList>() << _inputFiles), map(_map) {
+    }
+    WizardFiller(HI::GUITestOpStatus &_os, QString name, CustomScenario *c)
+        : Filler(_os, name, c) {
+    }
     void commonScenario();
 
-    static QToolButton* getExpandButton(HI::GUITestOpStatus &_os);
-
+    static QToolButton *getExpandButton(HI::GUITestOpStatus &_os);
 
     static void setInputFiles();
 
 private:
     QList<QStringList> inputFiles;
     QMap<QString, QVariant> map;
-
 };
 
-
-}
+}    // namespace U2
 
 #endif

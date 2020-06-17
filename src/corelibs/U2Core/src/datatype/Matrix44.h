@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,26 +34,26 @@ public:
     Matrix44(const float *data);
     Matrix44(const Matrix44 &other);
 
-    Matrix44& operator= (const Matrix44 &other);
+    Matrix44 &operator=(const Matrix44 &other);
 
     void loadZero();
     void loadIdentity();
 
     void transpose();
 
-    float* data();
-    const float* data() const;
+    float *data();
+    const float *data() const;
 
-    float& operator[] (unsigned int i);
-    float operator[] (unsigned int i) const;
+    float &operator[](unsigned int i);
+    float operator[](unsigned int i) const;
 
     void load(const QVariantList &values);
     QVariantList store();
 
 private:
     QVector<float> m;
-};  // class Matrix44
+};    // class Matrix44
 
-}   // namespace U2
+}    // namespace U2
 
-#endif  // #ifndef _U2_MATRIX_44_H_
+#endif    // #ifndef _U2_MATRIX_44_H_

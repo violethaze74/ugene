@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,21 +22,20 @@
 #ifndef _U2_MSA_ROW_UNIT_TESTS_H_
 #define _U2_MSA_ROW_UNIT_TESTS_H_
 
-#include <U2Core/MultipleSequenceAlignment.h>
-
 #include <unittest.h>
 
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
 class MsaRowTestUtils {
 public:
-    static MultipleSequenceAlignmentRow initTestRowWithGaps(MultipleSequenceAlignment& ma);
-    static MultipleSequenceAlignmentRow initTestRowWithGapsInMiddle(MultipleSequenceAlignment& ma);
-    static MultipleSequenceAlignmentRow initTestRowWithTrailingGaps(MultipleSequenceAlignment& ma);
-    static MultipleSequenceAlignmentRow initTestRowWithoutGaps(MultipleSequenceAlignment& ma);
-    static MultipleSequenceAlignmentRow initTestRowForModification(MultipleSequenceAlignment& ma);
-    static MultipleSequenceAlignmentRow initEmptyRow(MultipleSequenceAlignment& ma);
+    static MultipleSequenceAlignmentRow initTestRowWithGaps(MultipleSequenceAlignment &ma);
+    static MultipleSequenceAlignmentRow initTestRowWithGapsInMiddle(MultipleSequenceAlignment &ma);
+    static MultipleSequenceAlignmentRow initTestRowWithTrailingGaps(MultipleSequenceAlignment &ma);
+    static MultipleSequenceAlignmentRow initTestRowWithoutGaps(MultipleSequenceAlignment &ma);
+    static MultipleSequenceAlignmentRow initTestRowForModification(MultipleSequenceAlignment &ma);
+    static MultipleSequenceAlignmentRow initEmptyRow(MultipleSequenceAlignment &ma);
     static QString getRowData(const MultipleSequenceAlignmentRow &row);
 
     static const int rowWithGapsLength;
@@ -339,8 +338,7 @@ DECLARE_TEST(MsaRowUnitTests, replaceChars_tildasToGapsNoGaps);
 DECLARE_TEST(MsaRowUnitTests, replaceChars_tildasToGapsWithGaps);
 DECLARE_TEST(MsaRowUnitTests, replaceChars_trailingGaps);
 
-
-} // namespace
+}    // namespace U2
 
 DECLARE_METATYPE(MsaRowUnitTests, createRow_fromBytes)
 DECLARE_METATYPE(MsaRowUnitTests, createRow_fromBytesTrailing)

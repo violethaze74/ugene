@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,26 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Lang/WorkflowContext.h>
-
 #include "BaseMessageTranslator.h"
+
+#include <U2Lang/WorkflowContext.h>
 
 namespace U2 {
 
 using namespace Workflow;
 
-BaseMessageTranslator::BaseMessageTranslator( const QVariant &atomicMessage,
-    WorkflowContext *initContext ) : source( atomicMessage ), context( initContext )
-{
-
+BaseMessageTranslator::BaseMessageTranslator(const QVariant &atomicMessage,
+                                             WorkflowContext *initContext)
+    : source(atomicMessage), context(initContext) {
 }
 
-BaseMessageTranslator::~BaseMessageTranslator( ) {
-
+BaseMessageTranslator::~BaseMessageTranslator() {
 }
 
-QString BaseMessageTranslator::getTranslation( ) const {
-    return source.toString( );
+QString BaseMessageTranslator::getTranslation() const {
+    return source.toString();
 }
 
-} // namespace U2
+}    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ class PrimerLibrary : public QObject {
 public:
     ~PrimerLibrary();
 
-    static PrimerLibrary * getInstance(U2OpStatus &os);
+    static PrimerLibrary *getInstance(U2OpStatus &os);
     static void release();
 
     void addPrimer(const Primer &primer, U2OpStatus &os);
@@ -60,7 +60,7 @@ signals:
 
 private:
     static void initPrimerUdr(U2OpStatus &os);
-    static void setTmAndGcOfPrimer(Primer& primer);
+    static void setTmAndGcOfPrimer(Primer &primer);
 
     PrimerLibrary(DbiConnection *connection);
 
@@ -72,6 +72,6 @@ private:
     UdrDbi *udrDbi;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_PRIMERLIBRARY_H_
+#endif    // _U2_PRIMERLIBRARY_H_

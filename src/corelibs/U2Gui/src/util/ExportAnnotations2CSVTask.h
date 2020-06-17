@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -32,26 +32,25 @@ class DNATranslation;
 class U2GUI_EXPORT ExportAnnotations2CSVTask : public Task {
     Q_OBJECT
 public:
-    ExportAnnotations2CSVTask(const QList<Annotation *> &annotations, const QByteArray &sequence, const QString &seqName,
-        const DNATranslation *complementTranslation, bool exportSequence, bool exportSequenceName, const QString &url,
-        bool append = false, const QString &sep = ",");
+    ExportAnnotations2CSVTask(const QList<Annotation *> &annotations, const QByteArray &sequence, const QString &seqName, const DNATranslation *complementTranslation, bool exportSequence, bool exportSequenceName, const QString &url, bool append = false, const QString &sep = ",");
 
-    void                    run();
+    void run();
+
 private:
-    QList<Annotation *>     annotations;
-    QByteArray              sequence;
-    QString                 seqName;
-    const DNATranslation *  complementTranslation;
-    bool                    exportSequence;
-    bool                    exportSequenceName;
-    QString                 url;
-    bool                    append;
-    QString                 separator;
+    QList<Annotation *> annotations;
+    QByteArray sequence;
+    QString seqName;
+    const DNATranslation *complementTranslation;
+    bool exportSequence;
+    bool exportSequenceName;
+    QString url;
+    bool append;
+    QString separator;
 
 public:
-    static const QString    SEQUENCE_NAME;
+    static const QString SEQUENCE_NAME;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_EXPORT_ANNOTATIONS_2_CSV_TASK_H_
+#endif    // _U2_EXPORT_ANNOTATIONS_2_CSV_TASK_H_

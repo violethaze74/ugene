@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,9 +25,7 @@ namespace U2 {
 namespace Workflow {
 
 RequiredSlotsValidator::RequiredSlotsValidator(const QList<Descriptor> &_requiredSlots)
-: requiredSlots(_requiredSlots)
-{
-
+    : requiredSlots(_requiredSlots) {
 }
 
 bool RequiredSlotsValidator::validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
@@ -41,5 +39,5 @@ bool RequiredSlotsValidator::validate(const IntegralBusPort *port, Notifications
     return noErrors;
 }
 
-} // Workflow
-} // U2
+}    // namespace Workflow
+}    // namespace U2

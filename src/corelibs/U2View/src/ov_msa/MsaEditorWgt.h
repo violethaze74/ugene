@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,28 +42,28 @@ class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
     friend class MsaEditorSimilarityColumn;
 
 public:
-    MsaEditorWgt(MSAEditor* editor);
+    MsaEditorWgt(MSAEditor *editor);
 
-    MSAEditor* getEditor() const;
+    MSAEditor *getEditor() const;
 
-    MSAEditorSequenceArea* getSequenceArea() const;
+    MSAEditorSequenceArea *getSequenceArea() const;
 
-    void createDistanceColumn(MSADistanceMatrix* matrix);
+    void createDistanceColumn(MSADistanceMatrix *matrix);
 
-    void addTreeView(GObjectViewWindow* treeView);
+    void addTreeView(GObjectViewWindow *treeView);
 
-    void setSimilaritySettings(const SimilarityStatisticsSettings* settings);
+    void setSimilaritySettings(const SimilarityStatisticsSettings *settings);
 
     void refreshSimilarityColumn();
 
     void showSimilarity();
     void hideSimilarity();
 
-    const MsaEditorAlignmentDependentWidget* getSimilarityWidget();
+    const MsaEditorAlignmentDependentWidget *getSimilarityWidget();
 
-    MSAEditorTreeViewer* getCurrentTree() const;
+    MSAEditorTreeViewer *getCurrentTree() const;
 
-    MSAEditorMultiTreeViewer* getMultiTreeViewer();
+    MSAEditorMultiTreeViewer *getMultiTreeViewer();
 
 private slots:
     void sl_onTabsCountChanged(int tabsCount);
@@ -72,19 +72,19 @@ signals:
     void si_hideTreeOP();
 
 protected:
-    void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
+    void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar);
     void initOverviewArea();
     void initNameList(QScrollBar *nhBar);
     void initConsensusArea();
     void initStatusBar();
 
 private:
-    MsaEditorSimilarityColumn*         dataList;
-    MSAEditorMultiTreeViewer*          multiTreeViewer;
-    MsaEditorAlignmentDependentWidget* similarityStatistics;
-    MSAEditorTreeViewer*               treeViewer;
+    MsaEditorSimilarityColumn *dataList;
+    MSAEditorMultiTreeViewer *multiTreeViewer;
+    MsaEditorAlignmentDependentWidget *similarityStatistics;
+    MSAEditorTreeViewer *treeViewer;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_MSA_EDITOR_WGT_H_
+#endif    // _U2_MSA_EDITOR_WGT_H_

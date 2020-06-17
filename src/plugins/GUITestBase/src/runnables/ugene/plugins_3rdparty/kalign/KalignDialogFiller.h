@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,13 +29,14 @@ using namespace HI;
 
 class KalignDialogFiller : public Filler {
 public:
-    KalignDialogFiller(HI::GUITestOpStatus &_os, int _gapOpenVal=0, bool _toAmino = false);
+    KalignDialogFiller(HI::GUITestOpStatus &_os, int _gapOpenVal = 0, bool _toAmino = false);
     void commonScenario();
+
 private:
     int gapOpenVal;
     bool toAmino;
 };
 
-}
+}    // namespace U2
 
 #endif

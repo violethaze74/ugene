@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include <QIntValidator>
-#include <U2Core/U2SafePoints.h>
-
 #include "QualitySettingsWidget.h"
+
+#include <QIntValidator>
+
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -84,5 +85,5 @@ QVariantMap QualitySettingsWidget::parseState(const QString &command, const QStr
     return state;
 }
 
-}   // namespace LocalWorkflow
-}   // namespace U2
+}    // namespace LocalWorkflow
+}    // namespace U2

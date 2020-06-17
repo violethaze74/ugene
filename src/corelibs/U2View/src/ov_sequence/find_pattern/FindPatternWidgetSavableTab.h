@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,12 +35,13 @@ public:
     FindPatternWidgetSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow);
     ~FindPatternWidgetSavableTab();
 
-    void    setChildValue(const QString &childId, const QVariant &value);
-    void    setRegionWidgetIds(const QStringList &s);
+    void setChildValue(const QString &childId, const QVariant &value);
+    void setRegionWidgetIds(const QStringList &s);
+
 private:
     QStringList regionWidgetIds;
 };
 
-} // namespace U2
+}    // namespace U2
 
 #endif

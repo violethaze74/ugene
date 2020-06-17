@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 
 #include <ui_AppSettingsDialog.h>
 
-#include <QTreeWidgetItem>
 #include <QTimerEvent>
+#include <QTreeWidgetItem>
 
 class AppSettingsDialogTree;
 
@@ -41,38 +41,38 @@ class AppSettingsDialogController : public QDialog, public Ui_AppSettingsDialog 
     Q_OBJECT
 
 public:
-    AppSettingsDialogController(const QString& pageId = QString(), QWidget *p = NULL);
+    AppSettingsDialogController(const QString &pageId = QString(), QWidget *p = NULL);
 
 public slots:
     virtual void accept();
     virtual void reject();
-    void sl_currentItemChanged(QTreeWidgetItem * current, QTreeWidgetItem * previous);
+    void sl_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
 
 protected:
-    void timerEvent(QTimerEvent* e);
+    void timerEvent(QTimerEvent *e);
 
 private slots:
     void sl_setLockState(bool);
 
 private:
     bool checkCurrentState(bool saveStateInItem, bool showError);
-    bool turnPage(AppSettingsTreeItem* page);
-    void registerPage(AppSettingsGUIPageController* page);
+    bool turnPage(AppSettingsTreeItem *page);
+    void registerPage(AppSettingsGUIPageController *page);
 
-    AppSettingsTreeItem* findPageItem(const QString& id) const;
+    AppSettingsTreeItem *findPageItem(const QString &id) const;
 
-    AppSettingsTreeItem*    currentPage;
-    HelpButton*             helpButton;
+    AppSettingsTreeItem *currentPage;
+    HelpButton *helpButton;
 };
 
 class AppSettingsTreeItem : public QTreeWidgetItem {
 public:
-    AppSettingsTreeItem(AppSettingsGUIPageController* pageController);
-    AppSettingsGUIPageController*   pageController;
-    AppSettingsGUIPageState*        pageState;
-    AppSettingsGUIPageWidget*       pageWidget;
+    AppSettingsTreeItem(AppSettingsGUIPageController *pageController);
+    AppSettingsGUIPageController *pageController;
+    AppSettingsGUIPageState *pageState;
+    AppSettingsGUIPageWidget *pageWidget;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

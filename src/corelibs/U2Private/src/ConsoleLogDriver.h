@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_CONSOLE_LOG_DRIVER_H_
 
 #include <U2Core/Log.h>
+
 #include "LogSettings.h"
 
 namespace U2 {
@@ -53,21 +54,21 @@ public:
     ConsoleLogDriver();
     virtual ~ConsoleLogDriver();
 
-    void onMessage(const LogMessage& msg);
+    void onMessage(const LogMessage &msg);
 
 private:
     void setCmdLineSettings();
-    QString getEffectiveCategory(const LogMessage& msg) const;
+    QString getEffectiveCategory(const LogMessage &msg) const;
     QString getLevelName(int i) const;
 
 private slots:
-    QString prepareText(const LogMessage& msg) const;
+    QString prepareText(const LogMessage &msg) const;
+
 private:
     bool printToConsole;
     bool colored;
-
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

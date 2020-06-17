@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,8 @@ using namespace HI;
 
 class ExportPrimersDialogFiller : public Filler {
 public:
-    enum ExportTarget {LocalFile, SharedDb};
+    enum ExportTarget { LocalFile,
+                        SharedDb };
 
     ExportPrimersDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario = NULL);
 
@@ -43,6 +44,6 @@ public:
     static void setFolder(HI::GUITestOpStatus &os, const QString &folder);
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_EXPORT_PRIMERS_DIALOG_FILLER_H_
+#endif    // _U2_EXPORT_PRIMERS_DIALOG_FILLER_H_

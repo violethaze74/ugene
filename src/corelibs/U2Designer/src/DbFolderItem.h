@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ public:
     ~DbFolderItem();
 
     virtual void accept(UrlItemVisitor *visitor);
-    virtual QWidget * getOptionsWidget();
+    virtual QWidget *getOptionsWidget();
 
     void setRecursive(bool value);
     bool isRecursive() const;
@@ -62,6 +62,6 @@ private:
     Ui_DbFolderOptions *ui;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif //_U2_DB_FOLDER_ITEM_H_
+#endif    //_U2_DB_FOLDER_ITEM_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,20 +19,18 @@
  * MA 02110-1301, USA.
  */
 
+#include "MsaHighlightingSchemeGaps.h"
+
 #include <QColor>
 
 #include <U2Core/MultipleSequenceAlignment.h>
-
-#include "MsaHighlightingSchemeGaps.h"
 
 namespace U2 {
 
 const QColor MsaHighlightingSchemeGaps::gapColor = QColor(192, 192, 192);
 
 MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
-    : MsaHighlightingScheme(parent, factory, maObj)
-{
-
+    : MsaHighlightingScheme(parent, factory, maObj) {
 }
 
 void MsaHighlightingSchemeGaps::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
@@ -47,13 +45,11 @@ void MsaHighlightingSchemeGaps::process(const char refChar, char &seqChar, QColo
 }
 
 MsaHighlightingSchemeGapsFactory::MsaHighlightingSchemeGapsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
-    : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets, true)
-{
-
+    : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets, true) {
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeGapsFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaHighlightingScheme *MsaHighlightingSchemeGapsFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaHighlightingSchemeGaps(parent, this, maObj);
 }
 
-}   // namespace U2
+}    // namespace U2

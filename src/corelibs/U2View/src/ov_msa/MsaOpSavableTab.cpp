@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -19,18 +19,16 @@
 * MA 02110-1301, USA.
 */
 
+#include "MsaOpSavableTab.h"
+
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include "SequenceSelectorWidgetController.h"
 
-#include "MsaOpSavableTab.h"
-
 namespace U2 {
 
 MsaOpSavableTab::MsaOpSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow)
-    : U2SavableWidget(wrappedWidget, contextWindow)
-{
-
+    : U2SavableWidget(wrappedWidget, contextWindow) {
 }
 
 MsaOpSavableTab::~MsaOpSavableTab() {
@@ -48,4 +46,4 @@ QSet<QWidget *> MsaOpSavableTab::getCompoundChildren() const {
     return result;
 }
 
-} // namespace U2
+}    // namespace U2

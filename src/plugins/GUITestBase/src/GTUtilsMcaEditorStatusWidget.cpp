@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
 
 #include <U2View/McaEditor.h>
 
-#include "GTUtilsMcaEditorStatusWidget.h"
 #include "GTUtilsMcaEditor.h"
+#include "GTUtilsMcaEditorStatusWidget.h"
 
 using namespace HI;
 
@@ -185,4 +185,4 @@ bool GTUtilsMcaEditorStatusWidget::isGapInRead(GUITestOpStatus &os) {
 
 #undef GT_CLASS_NAME
 
-}   // namespace U2
+}    // namespace U2

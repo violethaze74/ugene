@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_FORMAT_DETECTION_TESTS_H_
 
 #include <U2Core/DocumentUtils.h>
+
 #include <U2Test/XMLTestUtils.h>
 
 namespace U2 {
@@ -67,9 +68,9 @@ private:
 
 class FormatDetectionTests {
 public:
-    static QList<XMLTestFactory*> createTestFactories();
+    static QList<XMLTestFactory *> createTestFactories();
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif  // #ifndef _U2_FORMAT_DETECTION_TESTS_H_
+#endif    // #ifndef _U2_FORMAT_DETECTION_TESTS_H_

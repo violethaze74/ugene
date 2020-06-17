@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -103,7 +103,7 @@ public:
     /**
      * Returns the unique record identifier.
      */
-    const UdrRecordId & getId() const;
+    const UdrRecordId &getId() const;
 
     /**
      * Returns the integer value of the field with the number @fieldNum.
@@ -134,6 +134,6 @@ private:
     bool checkNum(int fieldNum, U2OpStatus &os) const;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_UDRRECORD_H_
+#endif    // _U2_UDRRECORD_H_

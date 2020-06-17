@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ namespace U2 {
 class U2GUI_EXPORT ScaleBar : public QWidget {
     Q_OBJECT
 public:
-    ScaleBar(Qt::Orientation ori = Qt::Vertical, QWidget* parent = 0);
+    ScaleBar(Qt::Orientation ori = Qt::Vertical, QWidget *parent = 0);
 
     int value() const;
     void setValue(int value);
@@ -66,6 +66,6 @@ protected:
     QToolButton *minusButton;
 };
 
-}   // namespace U2
+}    // namespace U2
 
-#endif // _U2_SCALE_BAR_H_
+#endif    // _U2_SCALE_BAR_H_

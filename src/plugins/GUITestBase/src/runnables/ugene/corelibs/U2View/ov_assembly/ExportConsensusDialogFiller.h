@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,18 +24,17 @@
 
 #include "utils/GTUtilsDialog.h"
 
-namespace U2{
+namespace U2 {
 using namespace HI;
 
-class ExportConsensusDialogFiller: public Filler
-{
+class ExportConsensusDialogFiller : public Filler {
 public:
-    ExportConsensusDialogFiller(HI::GUITestOpStatus &os, CustomScenario* _c):
-        Filler(os, "ExportConsensusDialog", _c){}
+    ExportConsensusDialogFiller(HI::GUITestOpStatus &os, CustomScenario *_c)
+        : Filler(os, "ExportConsensusDialog", _c) {
+    }
     void commonScenario();
-
 };
 
-}
+}    // namespace U2
 
-#endif // EXPORTCONSENSUSDIALOG_H
+#endif    // EXPORTCONSENSUSDIALOG_H

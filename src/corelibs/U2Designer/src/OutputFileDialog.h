@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ private slots:
 private:
     void updateSaveButton();
     QString selectedPath() const;
-    FSItem * selectedItem() const;
+    FSItem *selectedItem() const;
     void updateFocus();
     void setupSettings();
 
@@ -73,7 +73,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-    FSItem * toItem(const QModelIndex &index) const;
+    FSItem *toItem(const QModelIndex &index) const;
     QString getPath(FSItem *target) const;
     QModelIndex addDir(const QModelIndex &index, const QString &dirName);
 
@@ -97,6 +97,6 @@ private:
     QString parentDir;
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_OUTPUTFILEDIALOG_H_
+#endif    // _U2_OUTPUTFILEDIALOG_H_

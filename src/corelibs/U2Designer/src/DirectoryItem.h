@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -23,7 +23,6 @@
 #define _U2_DIRECTORY_ITEM_H_
 
 #include "UrlItem.h"
-
 #include "ui_DirectoryOptions.h"
 
 namespace U2 {
@@ -37,7 +36,7 @@ public:
     virtual ~DirectoryItem();
 
     virtual void accept(UrlItemVisitor *visitor);
-    virtual QWidget * getOptionsWidget();
+    virtual QWidget *getOptionsWidget();
 
     void setIncludeFilter(const QString &value);
     void setExcludeFilter(const QString &value);
@@ -68,6 +67,6 @@ signals:
     void si_dataChanged();
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_DIRECTORY_ITEM_H_
+#endif    // _U2_DIRECTORY_ITEM_H_

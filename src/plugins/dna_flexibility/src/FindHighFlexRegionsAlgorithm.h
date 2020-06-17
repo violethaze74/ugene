@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,36 +22,32 @@
 #ifndef _U2_FIND_HIGH_FLEX_REGIONS_ALGORITHM_H_
 #define _U2_FIND_HIGH_FLEX_REGIONS_ALGORITHM_H_
 
-#include "FindHighFlexRegions.h"
-#include "HighFlexResult.h"
+#include <QMap>
 
 #include <U2Core/Task.h>
 
-#include <QMap>
-
+#include "FindHighFlexRegions.h"
+#include "HighFlexResult.h"
 
 namespace U2 {
 
-
 class FindHighFlexRegionsListener;
 
-class FindHighFlexRegionsAlgorithm : public Task
-{
+class FindHighFlexRegionsAlgorithm : public Task {
 public:
-    static void find(FindHighFlexRegionsListener* resultsListener,
-        const HighFlexSettings& settings,
-        const QByteArray sequence,
-        const int seqLength,
-        int& stopFlag,
-        int& percentsCompleted);
+    static void find(FindHighFlexRegionsListener *resultsListener,
+                     const HighFlexSettings &settings,
+                     const QByteArray sequence,
+                     const int seqLength,
+                     int &stopFlag,
+                     int &percentsCompleted);
 
     static double flexibilityAngle(char firstNucleotide, char secondNucleotide);
 
 private:
-    static void addToResults(FindHighFlexRegionsListener* listener, const HighFlexResult& result);
+    static void addToResults(FindHighFlexRegionsListener *listener, const HighFlexResult &result);
 };
 
-
-} // namespace
+}    // namespace U2
 
 #endif

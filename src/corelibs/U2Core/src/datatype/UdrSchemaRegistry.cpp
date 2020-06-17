@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,19 +19,17 @@
  * MA 02110-1301, USA.
  */
 
+#include "UdrSchemaRegistry.h"
+
 #include <QRegExp>
 
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "UdrSchemaRegistry.h"
-
 namespace U2 {
 
 UdrSchemaRegistry::UdrSchemaRegistry()
-: mutex(QMutex::Recursive)
-{
-
+    : mutex(QMutex::Recursive) {
 }
 
 UdrSchemaRegistry::~UdrSchemaRegistry() {
@@ -52,7 +50,7 @@ QList<UdrSchemaId> UdrSchemaRegistry::getRegisteredSchemas() const {
     return schemas.keys();
 }
 
-const UdrSchema * UdrSchemaRegistry::getSchemaById(const UdrSchemaId &id) const {
+const UdrSchema *UdrSchemaRegistry::getSchemaById(const UdrSchemaId &id) const {
     QMutexLocker lock(&mutex);
     return schemas.value(id, NULL);
 }
@@ -62,4 +60,4 @@ bool UdrSchemaRegistry::isCorrectName(const QByteArray &name) {
     return regExp.exactMatch(name);
 }
 
-} // U2
+}    // namespace U2

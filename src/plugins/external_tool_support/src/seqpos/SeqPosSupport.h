@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,16 +29,17 @@ namespace U2 {
 class SeqPosSupport : public ExternalTool {
     Q_OBJECT
 public:
-    SeqPosSupport(const QString& id, const QString &name);
+    SeqPosSupport(const QString &id, const QString &name);
 
     static const QString ET_SEQPOS;
     static const QString ET_SEQPOS_ID;
     static const QString ASSEMBLY_DIR_NAME;
     static const QString ASSEMBLY_DIR;
+
 private:
     void initialize();
 };
 
-} // U2
+}    // namespace U2
 
-#endif // _U2_SEQPOS_SUPPORT_
+#endif    // _U2_SEQPOS_SUPPORT_

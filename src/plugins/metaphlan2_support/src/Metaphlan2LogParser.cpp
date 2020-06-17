@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@ namespace U2 {
 const QStringList Metaphlan2LogParser::wellKnownErrors = Metaphlan2LogParser::initWellKnownErrors();
 
 bool Metaphlan2LogParser::isError(const QString &line) const {
-    foreach(const QString &wellKnownError, wellKnownErrors) {
+    foreach (const QString &wellKnownError, wellKnownErrors) {
         if (line.contains(wellKnownError)) {
             return true;
         }
@@ -40,4 +40,4 @@ QStringList Metaphlan2LogParser::initWellKnownErrors() {
     return result;
 }
 
-}   // namespace U2
+}    // namespace U2

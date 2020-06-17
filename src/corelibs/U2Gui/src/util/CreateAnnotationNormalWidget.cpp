@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "CreateAnnotationNormalWidget.h"
+
 #include <QMenu>
 
 #include <U2Core/Counter.h>
@@ -27,13 +29,10 @@
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 
-#include "CreateAnnotationNormalWidget.h"
-
 namespace U2 {
 
-CreateAnnotationNormalWidget::CreateAnnotationNormalWidget(QWidget *parent) :
-    CreateAnnotationWidget(parent)
-{
+CreateAnnotationNormalWidget::CreateAnnotationNormalWidget(QWidget *parent)
+    : CreateAnnotationWidget(parent) {
     setupUi(this);
     initLayout();
     init();
@@ -243,4 +242,4 @@ void CreateAnnotationNormalWidget::connectSignals() {
     connect(chbUsePatternNames, SIGNAL(stateChanged(int)), SIGNAL(si_usePatternNamesStateChanged()));
 }
 
-}   // namespace U2
+}    // namespace U2

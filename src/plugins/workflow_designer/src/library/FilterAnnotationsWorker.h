@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,14 +27,16 @@
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
-
 namespace U2 {
 namespace LocalWorkflow {
 
 class FilterAnnotationsPrompter : public PrompterBase<FilterAnnotationsPrompter> {
     Q_OBJECT
 public:
-    FilterAnnotationsPrompter(Actor* p = 0) : PrompterBase<FilterAnnotationsPrompter>(p) {}
+    FilterAnnotationsPrompter(Actor *p = 0)
+        : PrompterBase<FilterAnnotationsPrompter>(p) {
+    }
+
 protected:
     QString composeRichDoc();
 };
@@ -42,13 +44,15 @@ protected:
 class FilterAnnotationsWorker : public BaseWorker {
     Q_OBJECT
 public:
-    FilterAnnotationsWorker(Actor* a) : BaseWorker(a), input(NULL), output(NULL) {};
+    FilterAnnotationsWorker(Actor *a)
+        : BaseWorker(a), input(NULL), output(NULL) {};
 
     virtual void init();
-    virtual Task* tick();
+    virtual Task *tick();
     virtual void cleanup();
 private slots:
     void sl_taskFinished(Task *t);
+
 private:
     IntegralBus *input;
     IntegralBus *output;
@@ -58,8 +62,12 @@ class FilterAnnotationsWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
     static void init();
-    FilterAnnotationsWorkerFactory() : DomainFactory(ACTOR_ID) {}
-    virtual Worker* createWorker(Actor* a) { return new FilterAnnotationsWorker(a); }
+    FilterAnnotationsWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
+    virtual Worker *createWorker(Actor *a) {
+        return new FilterAnnotationsWorker(a);
+    }
 };
 
 class FilterAnnotationsValidator : public ActorValidator {
@@ -86,7 +94,7 @@ private:
     bool accept;
 };
 
-} // LocalWorkflow namespace
-} // U2 namespace
+}    // namespace LocalWorkflow
+}    // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,7 @@
 
 #include <U2Core/Task.h>
 
-namespace U2
-{
+namespace U2 {
 /**
 * Intended for deferred task run, triggered by a signal.
 */
@@ -37,14 +36,17 @@ public:
         NoProject
     };
 
-    TaskStarter(Task* t, StartCondition condition = NoCondition) : QObject(t), t(t), condition(condition) {}
+    TaskStarter(Task *t, StartCondition condition = NoCondition)
+        : QObject(t), t(t), condition(condition) {
+    }
 public slots:
     void registerTask();
+
 private:
-    Task* t;
+    Task *t;
     StartCondition condition;
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

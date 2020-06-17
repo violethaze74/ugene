@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,19 +19,18 @@
  * MA 02110-1301, USA.
  */
 
+#include "AssemblyAnnotationsArea.h"
+
 #include <QPainter>
 #include <QVBoxLayout>
 
 #include "AssemblyBrowser.h"
 #include "AssemblyVariantRow.h"
 
-#include "AssemblyAnnotationsArea.h"
-
 namespace U2 {
 
 AssemblyAnnotationsArea::AssemblyAnnotationsArea(AssemblyBrowserUi *ui)
-: QWidget(ui)
-{
+    : QWidget(ui) {
     this->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Maximum);
     variantRowManager = new AssemblyVariantRowManager(ui);
     QVBoxLayout *vLayout = new QVBoxLayout(this);
@@ -44,4 +43,4 @@ AssemblyAnnotationsArea::~AssemblyAnnotationsArea() {
     delete variantRowManager;
 }
 
-} // U2
+}    // namespace U2

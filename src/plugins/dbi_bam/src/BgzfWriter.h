@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,13 +25,13 @@
 #include <3rdparty/zlib/zlib.h>
 
 #include <U2Core/IOAdapter.h>
+
 #include "VirtualOffset.h"
 
 namespace U2 {
 namespace BAM {
 
-class BgzfWriter
-{
+class BgzfWriter {
 public:
     BgzfWriter(IOAdapter &ioAdapter);
     ~BgzfWriter();
@@ -39,7 +39,8 @@ public:
     void write(const char *buff, qint64 size);
     void finish();
 
-    VirtualOffset getOffset()const;
+    VirtualOffset getOffset() const;
+
 private:
     void finishBlock();
 
@@ -53,7 +54,7 @@ private:
     bool finished;
 };
 
-} // namespace BAM
-} // namespace U2
+}    // namespace BAM
+}    // namespace U2
 
-#endif // _U2_BAM_BGZF_WRITER_H_
+#endif    // _U2_BAM_BGZF_WRITER_H_

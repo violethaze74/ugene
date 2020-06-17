@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,10 +28,15 @@ namespace U2 {
 
 class SnpEffDatabaseInfo {
 public:
-    SnpEffDatabaseInfo() {}
+    SnpEffDatabaseInfo() {
+    }
     SnpEffDatabaseInfo(QString line);
-    QString getGenome() const { return genome; }
-    QString getOrganism() const { return organism; }
+    QString getGenome() const {
+        return genome;
+    }
+    QString getOrganism() const {
+        return organism;
+    }
 
 private:
     QString genome;
@@ -41,11 +46,13 @@ private:
 class SnpEffDatabaseListModel : public QAbstractTableModel {
     Q_OBJECT
 public:
-    SnpEffDatabaseListModel(QObject* parent = 0);
-    void getData(const QString& databaseListFilePath);
+    SnpEffDatabaseListModel(QObject *parent = 0);
+    void getData(const QString &databaseListFilePath);
 
     QString getGenome(int index) const;
-    bool isEmpty() { return databaseCount == 0; }
+    bool isEmpty() {
+        return databaseCount == 0;
+    }
 
 private:
     int rowCount(const QModelIndex &parent) const;
@@ -58,6 +65,6 @@ private:
     QMap<int, SnpEffDatabaseInfo> databaseList;
 };
 
-} // namespace U2
+}    // namespace U2
 
-#endif // _U2_SNPEFF_DATABASE_LIST_MODEL_H_
+#endif    // _U2_SNPEFF_DATABASE_LIST_MODEL_H_
