@@ -180,6 +180,16 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_2268); // "UGENE-4948"
+    REGISTER_TEST(GUITest_regression_scenarios::test_2540); // "UGENE-4948"
+    REGISTER_TEST(GUITest_regression_scenarios::test_3625); // "UGENE-3999"
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0001); // "runs > 8 mins in teamcity"
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0001); // "runs > 8 mins and fails"
+
+
     //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0058); not completed yet
     //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068); removed as obsolete
     //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946);
@@ -214,7 +224,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0056, "UGENE-5042");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0057, "UGENE-5042");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0058, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project_remote_request::test_0001, "runs > 8 mins and fails");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_sequence_view::test_0077, "UGENE-5579");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_database::cm_test_0002, "UGENE-4892");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_database::export_test_0005, "UGENE-5616");
@@ -224,10 +233,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_database::import_test_0017, "UGENE-4507");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003, "names conflict in database");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::misc_test_0005, "UTI-263");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0001, "runs > 8 mins in teamcity");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0002, "runs > 8 mins in teamcity");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0003, "runs > 8 mins in teamcity");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0004, "runs > 8 mins in teamcity");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005, "runs > 8 mins in teamcity");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1, "runs > 8 mins in teamcity");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0006, "runs > 8 mins in teamcity");
@@ -247,15 +252,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1688, "big data");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1701, "The test stopped passing after http://ugene-teamcity.unipro.ru:8111/ugene-teamcity/viewLog.html?buildId=195968&tab=buildChangesDiv&buildTypeId=UgeneNightlyBuilds_GuiTests_WindowsSuites_GuiTestsSeparateWindows1032bitSuite2 change.");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1946, "Not finished. Requires large data.");
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2268, "UGENE-4948");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2513, "UGENE-4527");
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2540, "UGENE-4948");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2544, "UGENE-4948");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2894, "proper data needed");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3545, "big data");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3603, "UGENE-3830");
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3625, "UGENE-3999");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3732, "big data");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_4022, "big data");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_4209, "test consumes too much memory");
