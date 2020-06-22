@@ -174,8 +174,39 @@ EnableServiceTask::EnableServiceTask(ServiceRegistryImpl *_sr, Service *_s, bool
     : AbstractServiceTask(tr("Enable '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s, lockServiceResource) {
 }
 
-static bool findCircular(ServiceRegistryImpl *sr, Service *s, int currentDepth = 0);
-static bool checkAllParentsEnabled(ServiceRegistryImpl *sr, Service *s);
+static bool findCircular(ServiceRegistryImpl *sr, Service *s, int currentDepth) {
+    currentDepth++;
+    if (currentDepth > sr->getServices().size()) {
+        return true;
+    }
+    foreach (ServiceType st, s->getParentServiceTypes()) {
+        QList<Service *> parents = sr->findServices(st);
+        foreach (Service *p, parents) {
+            bool circular = findCircular(sr, p, currentDepth);
+            if (circular) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+static QStringList findNotEnabledServices(ServiceRegistryImpl *registry, const QList<ServiceType> &serviceTypeList) {
+    QStringList result;
+    for (ServiceType serviceType : serviceTypeList) {
+        QList<Service *> parentServices = registry->findServices(serviceType);
+        if (parentServices.isEmpty()) {
+            result << "NA: " + QString::number(serviceType.id);
+            continue;
+        }
+        foreach (Service *parentService, parentServices) {
+            if (parentService->isDisabled()) {
+                result << parentService->getName();
+            }
+        }
+    }
+    return result;
+}
 
 void EnableServiceTask::prepare() {
     //TODO: improve messaging. The service name is already mentioned in task name!
@@ -183,16 +214,16 @@ void EnableServiceTask::prepare() {
     CHECK_EXT(s->isDisabled(), stateInfo.setError(tr("Service is enabled")), );
     CHECK_EXT(sr->services.contains(s), stateInfo.setError(tr("Service is not registered")), );
 
-    bool circular = findCircular(sr, s);
+    bool circular = findCircular(sr, s, 0);
     if (circular) {
         sr->setServiceState(s, ServiceState_Disabled_CircularDependency);
         stateInfo.setError(tr("Circular service dependency: %1").arg(s->getName()));
         return;
     }
-    bool noparent = !checkAllParentsEnabled(sr, s);
-    if (noparent) {
+    QStringList notEnabledParentServiceTypesList = findNotEnabledServices(sr, s->getParentServiceTypes());
+    if (!notEnabledParentServiceTypesList.isEmpty()) {
         sr->setServiceState(s, ServiceState_Disabled_ParentDisabled);
-        stateInfo.setError(tr("Required service is not enabled: %1").arg(s->getName()));
+        stateInfo.setError(tr("Required services are not enabled: %1").arg(notEnabledParentServiceTypesList.join(",")));
         return;
     }
 
@@ -212,38 +243,6 @@ Task::ReportResult EnableServiceTask::report() {
     bool success = !propagateSubtaskError();
     sr->setServiceState(s, success ? ServiceState_Enabled : ServiceState_Disabled_FailedToStart);
     return ReportResult_Finished;
-}
-
-static bool findCircular(ServiceRegistryImpl *sr, Service *s, int currentDepth) {
-    currentDepth++;
-    if (currentDepth > sr->getServices().size()) {
-        return true;
-    }
-    foreach (ServiceType st, s->getParentServiceTypes()) {
-        QList<Service *> parents = sr->findServices(st);
-        foreach (Service *p, parents) {
-            bool circular = findCircular(sr, p, currentDepth);
-            if (circular) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-static bool checkAllParentsEnabled(ServiceRegistryImpl *sr, Service *s) {
-    foreach (ServiceType st, s->getParentServiceTypes()) {
-        QList<Service *> parents = sr->findServices(st);
-        if (parents.isEmpty()) {
-            return false;
-        }
-        foreach (Service *p, parents) {
-            if (p->isDisabled()) {
-                return false;
-            }
-        }
-    }
-    return true;
 }
 
 /// UnregisterServiceTask

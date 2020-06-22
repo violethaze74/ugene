@@ -679,33 +679,33 @@ GUI_TEST_CLASS_DEFINITION(test_2030) {
 GUI_TEST_CLASS_DEFINITION(test_2032) {
     // 1. Open {_common_data/fasta/abcd.fa} as separate sequences
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/abcd.fa");
+    GTFileDialog::openFileWithDialog(os, testDir, "_common_data/fasta/abcd.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
 
     // Expected result: order of sequences in the project view is {d, a, c, b}
     QModelIndex documentItem = GTUtilsProjectTreeView::findIndex(os, "abcd.fa");
 
-    CHECK_SET_ERR("[s] a" == documentItem.child(0, 0).data(), "Unexpected name of the object in the project view!");
-    CHECK_SET_ERR("[s] b" == documentItem.child(1, 0).data(), "Unexpected name of the object in the project view!");
-    CHECK_SET_ERR("[s] c" == documentItem.child(2, 0).data(), "Unexpected name of the object in the project view!");
-    CHECK_SET_ERR("[s] d" == documentItem.child(3, 0).data(), "Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.child(0, 0).data() == "[s] a", "1. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.child(1, 0).data() == "[s] b", "2. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.child(2, 0).data() == "[s] c", "3. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.child(3, 0).data() == "[s] d", "4. Unexpected name of the object in the project view!");
 
     // Expected result: order of sequences in the sequences view is {d, a, c, b}
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     ADVSingleSequenceWidget *seq0 = dynamic_cast<ADVSingleSequenceWidget *>(GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     ADVSingleSequenceWidget *seq1 = dynamic_cast<ADVSingleSequenceWidget *>(GTWidget::findWidget(os, "ADV_single_sequence_widget_1"));
     ADVSingleSequenceWidget *seq2 = dynamic_cast<ADVSingleSequenceWidget *>(GTWidget::findWidget(os, "ADV_single_sequence_widget_2"));
     ADVSingleSequenceWidget *seq3 = dynamic_cast<ADVSingleSequenceWidget *>(GTWidget::findWidget(os, "ADV_single_sequence_widget_3"));
 
-    CHECK_SET_ERR(NULL != seq0, "Failed to find a sequence widget!");
-    CHECK_SET_ERR(NULL != seq1, "Failed to find a sequence widget!");
-    CHECK_SET_ERR(NULL != seq2, "Failed to find a sequence widget!");
-    CHECK_SET_ERR(NULL != seq3, "Failed to find a sequence widget!");
+    CHECK_SET_ERR(seq0 != NULL, "1. Failed to find a sequence widget!");
+    CHECK_SET_ERR(seq1 != NULL, "2. Failed to find a sequence widget!");
+    CHECK_SET_ERR(seq2 != NULL, "3. Failed to find a sequence widget!");
+    CHECK_SET_ERR(seq3 != NULL, "4. Failed to find a sequence widget!");
 
-    CHECK_SET_ERR("d" == seq0->getSequenceObject()->getSequenceName(), "Unexpected sequence name!");
-    CHECK_SET_ERR("a" == seq1->getSequenceObject()->getSequenceName(), "Unexpected sequence name!");
-    CHECK_SET_ERR("c" == seq2->getSequenceObject()->getSequenceName(), "Unexpected sequence name!");
-    CHECK_SET_ERR("b" == seq3->getSequenceObject()->getSequenceName(), "Unexpected sequence name!");
+    CHECK_SET_ERR(seq0->getSequenceObject()->getSequenceName() == "d", "1. Unexpected sequence name!");
+    CHECK_SET_ERR(seq1->getSequenceObject()->getSequenceName() == "a", "2. Unexpected sequence name!");
+    CHECK_SET_ERR(seq2->getSequenceObject()->getSequenceName() == "c", "3. Unexpected sequence name!");
+    CHECK_SET_ERR(seq3->getSequenceObject()->getSequenceName() == "b", "4. Unexpected sequence name!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2049) {
