@@ -3197,7 +3197,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
 
             GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "SelectSubalignmentDialog", QDialogButtonBox::Cancel));
             QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
-            GTComboBox::setIndexWithText(os, exportType, "Custom region", false, GTGlobals::UseKey);
+            GTComboBox::setIndexWithText(os, exportType, "Custom region", false, GTGlobals::UseMouse);
 
             GTGlobals::sleep();
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
