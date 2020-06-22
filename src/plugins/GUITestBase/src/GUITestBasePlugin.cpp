@@ -179,23 +179,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     //////////////////////////////////////////////////////////////////////////
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
-
-    REGISTER_TEST(GUITest_regression_scenarios::test_2268); // "UGENE-4948"
-    REGISTER_TEST(GUITest_regression_scenarios::test_2540); // "UGENE-4948"
-    REGISTER_TEST(GUITest_regression_scenarios::test_3625); // "UGENE-3999"
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0001); // "runs > 8 mins in teamcity"
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0001); // "runs > 8 mins and fails"
-
-
     //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0058); not completed yet
     //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068); removed as obsolete
     //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946);
     //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2475);
     //REGISTER_TEST(GUITest_regression_scenarios::test_4881);
-
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_fake);
     REGISTER_TEST_IGNORED(GUITest_Assembly_browser::test_0015, "UTI-306");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
@@ -814,6 +802,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_2267_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_2267_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2268);
     REGISTER_TEST(GUITest_regression_scenarios::test_2269);
     REGISTER_TEST(GUITest_regression_scenarios::test_2270);
     REGISTER_TEST(GUITest_regression_scenarios::test_2281);
@@ -874,6 +863,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2506_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_2519);
     REGISTER_TEST(GUITest_regression_scenarios::test_2538);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2540);
     REGISTER_TEST(GUITest_regression_scenarios::test_2542);
     REGISTER_TEST(GUITest_regression_scenarios::test_2543);
     REGISTER_TEST(GUITest_regression_scenarios::test_2545);
@@ -1097,6 +1087,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3619);
     REGISTER_TEST(GUITest_regression_scenarios::test_3622);
     REGISTER_TEST(GUITest_regression_scenarios::test_3623);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3625);
     REGISTER_TEST(GUITest_regression_scenarios::test_3629);
     REGISTER_TEST(GUITest_regression_scenarios::test_3634);
     REGISTER_TEST(GUITest_regression_scenarios::test_3639);
@@ -1107,11 +1098,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3658);
     REGISTER_TEST(GUITest_regression_scenarios::test_3675);
     REGISTER_TEST(GUITest_regression_scenarios::test_3676);
-
-
-
     REGISTER_TEST(GUITest_regression_scenarios::test_3697);
-
     REGISTER_TEST(GUITest_regression_scenarios::test_3702);
     REGISTER_TEST(GUITest_regression_scenarios::test_3710);
     REGISTER_TEST(GUITest_regression_scenarios::test_3715);
@@ -1992,6 +1979,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // Common scenarios/remote request/
     //////////////////////////////////////////////////////////////////////////
 
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0004);
@@ -2005,6 +1993,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0012);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0014);
+
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/toggle view/
@@ -3025,7 +3014,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0011);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0012);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0013);
-
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0016);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0017);
@@ -3035,7 +3023,10 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::view_opening_test_0004);
 
-
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0004);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer/Estimating
