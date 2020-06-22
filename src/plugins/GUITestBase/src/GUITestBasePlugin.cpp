@@ -208,7 +208,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007, "runs > 8 mins and fails");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008, "UGENE-6253. Tests should be run on CUDA server");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001, "UGENE-6253. Tests should be run on CUDA server");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_msa_editor::test_0045, "UGENE-4762");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-4835");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007, "UGENE-5188");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_primer_library::test_0008, "UGENE-5609");
@@ -2254,6 +2253,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0043);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0044);
 
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0045);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0045_1);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0046);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0047);
