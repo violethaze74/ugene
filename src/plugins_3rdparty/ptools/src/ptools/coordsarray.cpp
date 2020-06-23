@@ -127,7 +127,7 @@ return matrix;
 
 
 
-void CoordsArray::GetCoords(const uint i, Coord3D& co)  const throw(std::out_of_range)
+void CoordsArray::GetCoords(const uint i, Coord3D& co) const
 {
 
     if (i>=Size())

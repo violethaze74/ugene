@@ -99,7 +99,7 @@ public:
     uint Size() const {return _refcoords.size();};
 
 
-    void GetCoords(const uint i, Coord3D& co)  const throw(std::out_of_range) ;
+    void GetCoords(const uint i, Coord3D& co) const;
 
     void SetCoords(const uint k, const Coord3D& co);
 
